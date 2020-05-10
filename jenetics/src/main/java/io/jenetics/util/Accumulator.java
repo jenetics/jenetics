@@ -19,9 +19,11 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
-
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 /**
@@ -57,17 +59,22 @@ import java.util.stream.Collector;
  * </pre>
  *
  * @apiNote
+ * In contrast to the {@link Collector} interface, the {@code Accumulator} is
+ * not mergeable.
  * The <em>accumulator</em> is not thread-safe and can't be used for parallel
  * streams.
  *
  * @param <T> the type of input elements to the accumulate operation
+ * @param <A> the accumulator type
  * @param <R> the result type of the accumulated operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Accumulator<T, R> extends Consumer<T> {
+public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
+	extends Consumer<T>, Collector<T, A, R>
+{
 
 	/**
 	 * Return a <em>copy</em>  of the current result of the accumulated elements.
@@ -76,6 +83,30 @@ public interface Accumulator<T, R> extends Consumer<T> {
 	 * @return the current result of the accumulated elements
 	 */
 	R result();
+
+	default A combine(final A other) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default BiConsumer<A, T> accumulator() {
+		return A::accept;
+	}
+
+	@Override
+	default BinaryOperator<A> combiner() {
+		return A::combine;
+	}
+
+	@Override
+	default Function<A, R> finisher() {
+		return A::result;
+	}
+
+	@Override
+	default Set<Characteristics> characteristics() {
+		return Set.of();
+	}
 
 	/**
 	 * Create a new accumulator from the given {@code collector}.
@@ -87,31 +118,13 @@ public interface Accumulator<T, R> extends Consumer<T> {
 	 * @param collector the collector which is used for accumulation and creation
 	 *        the result value.
 	 * @param <T> the type of input elements to the reduction operation
-	 * @param <A> the mutable accumulation type of the reduction operation
-	 *            (often hidden as an implementation detail)
 	 * @param <R> the result type of the reduction operation
 	 * @return a new accumulator which is backed by the given {@code collector}
 	 * @throws NullPointerException if the given {@code collector} is {@code null}
 	 */
-	static <T, A, R> Accumulator<T, R> of(final Collector<T, A, R> collector) {
-		requireNonNull(collector);
-
-		return new Accumulator<>() {
-			private A _collection;
-
-			@Override
-			public void accept(final T value) {
-				if (_collection == null) {
-					_collection = collector.supplier().get();
-				}
-				collector.accumulator().accept(_collection, value);
-			}
-
-			@Override
-			public R result() {
-				return collector.finisher().apply(_collection);
-			}
-		};
+	static <T, R> Accumulator<T, ?, R>
+	of(final Collector<T, ?, R> collector) {
+		return new CollectorAccumulator<>(collector);
 	}
 
 	/**
@@ -127,28 +140,16 @@ public interface Accumulator<T, R> extends Consumer<T> {
 	 * @return a synchronized view of the specified accumulator
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	static <T, R> Accumulator<T, R> sync(
-		final Accumulator<T, R> accumulator,
+	static <T, R> Accumulator<T, ?, R> sync(
+		final Accumulator<T, ?, R> accumulator,
 		final Object lock
 	) {
-		requireNonNull(accumulator);
-		requireNonNull(lock);
-
-		return new Accumulator<T, R>() {
-			@Override
-			public R result() {
-				synchronized (lock) {
-					return accumulator.result();
-				}
-			}
-
-			@Override
-			public void accept(final T value) {
-				synchronized (lock) {
-					accumulator.accept(value);
-				}
-			}
-		};
+		@SuppressWarnings({"rawtypes", "unchecked"})
+		final Accumulator<T, ?, R> result = new SynchronizedAccumulator(
+			accumulator,
+			lock
+		);
+		return result;
 	}
 
 	/**
@@ -163,8 +164,10 @@ public interface Accumulator<T, R> extends Consumer<T> {
 	 * @return a synchronized view of the specified accumulator
 	 * @throws NullPointerException if the {@code accumulator} is {@code null}
 	 */
-	static <T, R> Accumulator<T, R> sync(final Accumulator<T, R> accumulator) {
+	static <T, R> Accumulator<T, ?, R>
+	sync(final Accumulator<T, ?, R> accumulator) {
 		return sync(accumulator, accumulator);
 	}
 
 }
+

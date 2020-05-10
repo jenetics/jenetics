@@ -21,11 +21,14 @@ package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
+import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
 import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.util.Accumulator;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
@@ -69,7 +72,7 @@ import io.jenetics.internal.math.DoubleAdder;
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
-	implements DoubleConsumer
+	implements Accumulator<Double, DoubleMomentStatistics, DoubleMoments>, DoubleConsumer
 {
 
 	private double _min = Double.POSITIVE_INFINITY;
@@ -96,6 +99,11 @@ public class DoubleMomentStatistics
 		_sum.add(value);
 	}
 
+	@Override
+	public void accept(final Double value) {
+		accept(value.doubleValue());
+	}
+
 	/**
 	 * Combine two {@code DoubleMoments} statistic objects.
 	 *
@@ -112,6 +120,11 @@ public class DoubleMomentStatistics
 		_sum.add(other._sum);
 
 		return this;
+	}
+
+	@Override
+	public Supplier<DoubleMomentStatistics> supplier() {
+		return DoubleMomentStatistics::new;
 	}
 
 	/**
@@ -187,6 +200,10 @@ public class DoubleMomentStatistics
 	 */
 	public DoubleMoments toDoubleMoments() {
 		return DoubleMoments.of(this);
+	}
+
+	public DoubleMoments result() {
+		return toDoubleMoments();
 	}
 
 	@Override

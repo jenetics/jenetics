@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -31,14 +33,12 @@ public class AccumulatorTest {
 
 	@Test
 	public void accumulate() {
-		final Accumulator<Integer, ISeq<Integer>> accu = Accumulator.of(ISeq.toISeq());
+		final Accumulator<Integer, ?, ISeq<Integer>> accu = Accumulator.of(ISeq.toISeq());
 
 		final ISeq<ISeq<Integer>> result = IntStream.range(0, 10).boxed()
 			.peek(accu)
 			.map(i -> accu.result())
 			.collect(ISeq.toISeq());
-
-		result.forEach(System.out::println);
 
 		for (int i = 0; i < result.size(); ++i) {
 			final var seq = result.get(i);
@@ -48,6 +48,39 @@ public class AccumulatorTest {
 				Assert.assertEquals(seq.get(j).intValue(), j);
 			}
 		}
+	}
+
+	@Test
+	public void parallelSynchronizedAccumulate() {
+		final Collector<Integer, ?, Long> counting = Collectors.counting();
+		final var accu = Accumulator.of(counting);
+		final var saccu = Accumulator.sync(accu);
+
+		IntStream.range(0, 100).boxed().parallel()
+			.forEach(saccu);
+
+		Assert.assertEquals(saccu.result().longValue(), 100);
+	}
+
+	@Test
+	public void parallelCollect() {
+		final Collector<Integer, ?, Long> counting = Collectors.counting();
+		final Accumulator<Integer, ?, Long> accu = Accumulator.of(counting);
+
+		final long count = IntStream.range(0, 100).parallel().boxed()
+			.collect(accu);
+		Assert.assertEquals(count, 100);
+	}
+
+	@Test
+	public void parallelSynchronizedCollect() {
+		final Collector<Integer, ?, Long> counting = Collectors.counting();
+		final var accu = Accumulator.of(counting);
+		final var saccu = Accumulator.sync(accu);
+
+		final long count = IntStream.range(0, 100).parallel().boxed()
+			.collect(saccu);
+		Assert.assertEquals(count, 100);
 	}
 
 }
