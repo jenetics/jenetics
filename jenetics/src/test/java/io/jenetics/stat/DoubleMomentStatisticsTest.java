@@ -154,13 +154,4 @@ public class DoubleMomentStatisticsTest {
 		}
 	}
 
-	@Test
-	public void collector() {
-		final DoubleMoments moments = new Random().doubles(0, 100).boxed()
-			.limit(100)
-			.collect(new DoubleMomentStatistics());
-
-		System.out.println(moments);
-	}
-
 }
