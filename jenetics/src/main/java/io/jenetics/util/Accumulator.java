@@ -35,7 +35,8 @@ import java.util.stream.Collector;
  * implementation ({@link #of(Collector)}).
  *
  * <pre>{@code
- * final Accumulator<Integer, List<Integer>> accu = Accumulator.of(Collectors.toList());
+ * final Accumulator<Integer, List<Integer>> accu =
+ *     Accumulator.of(Collectors.toList());
  *
  * final ISeq<List<Integer>> result = IntStream.range(0, 10).boxed()
  *     .peek(accu)
@@ -112,7 +113,8 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	 * Create a new accumulator from the given {@code collector}.
 	 *
 	 * <pre>{@code
-	 * final Accumulator<Integer, ISeq<Integer>> accu = Accumulator.of(ISeq.toISeq());
+	 * final Accumulator<Integer, ISeq<Integer>> accu =
+	 *     Accumulator.of(ISeq.toISeq());
 	 * }</pre>
 	 *
 	 * @param collector the collector which is used for accumulation and creation
