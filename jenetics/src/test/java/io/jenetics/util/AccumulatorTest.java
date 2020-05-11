@@ -53,13 +53,12 @@ public class AccumulatorTest {
 	@Test
 	public void parallelSynchronizedAccumulate() {
 		final Collector<Integer, ?, Long> counting = Collectors.counting();
-		final var accu = Accumulator.of(counting);
-		final var saccu = Accumulator.sync(accu);
+		final var accu = Accumulator.of(counting).synced();
 
 		IntStream.range(0, 100).boxed().parallel()
-			.forEach(saccu);
+			.forEach(accu);
 
-		Assert.assertEquals(saccu.result().longValue(), 100);
+		Assert.assertEquals(accu.result().longValue(), 100);
 	}
 
 	@Test
@@ -75,11 +74,10 @@ public class AccumulatorTest {
 	@Test
 	public void parallelSynchronizedCollect() {
 		final Collector<Integer, ?, Long> counting = Collectors.counting();
-		final var accu = Accumulator.of(counting);
-		final var saccu = Accumulator.sync(accu);
+		final var accu = Accumulator.of(counting).synced();
 
 		final long count = IntStream.range(0, 100).parallel().boxed()
-			.collect(saccu);
+			.collect(accu);
 		Assert.assertEquals(count, 100);
 	}
 

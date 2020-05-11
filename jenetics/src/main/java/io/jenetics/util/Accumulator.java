@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -110,6 +112,36 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	}
 
 	/**
+	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
+	 * accumulator. The given {@code lock} is used as synchronization object.
+	 *
+	 * @param lock the <em>lock</em> used for synchronization
+	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
+	 * 	       accumulator
+	 * @throws NullPointerException if the given {@code lock} is {@code null}
+	 */
+	default Accumulator<T, ?, R> synced(final Object lock) {
+		requireNonNull(lock);
+
+		@SuppressWarnings("unchecked")
+		final A self = (A)this;
+		return this instanceof SynchronizedAccumulator
+			? this
+			: new SynchronizedAccumulator<>(self, lock);
+	}
+
+	/**
+	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
+	 * accumulator. {@code this} accumulator is used as synchronization object.
+	 *
+	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
+	 * 	       accumulator
+	 */
+	default Accumulator<T, ?, R> synced() {
+		return synced(this);
+	}
+
+	/**
 	 * Create a new accumulator from the given {@code collector}.
 	 *
 	 * <pre>{@code
@@ -124,51 +156,8 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	 * @return a new accumulator which is backed by the given {@code collector}
 	 * @throws NullPointerException if the given {@code collector} is {@code null}
 	 */
-	static <T, R> Accumulator<T, ?, R>
-	of(final Collector<T, ?, R> collector) {
+	static <T, R> Accumulator<T, ?, R> of(final Collector<T, ?, R> collector) {
 		return new CollectorAccumulator<>(collector);
-	}
-
-	/**
-	 * Returns a synchronized (thread-safe) accumulator backed by the specified
-	 * {@code accumulator}. The given {@code lock} object is used for
-	 * synchronization.
-	 *
-	 * @param accumulator the accumulator to be "wrapped" in a synchronized
-	 *        accumulator
-	 * @param lock the <em>lock</em> used for synchronization
-	 * @param <T> the type of input elements to the accumulate operation
-	 * @param <R> the result type of the accumulated operation
-	 * @return a synchronized view of the specified accumulator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	static <T, R> Accumulator<T, ?, R> sync(
-		final Accumulator<T, ?, R> accumulator,
-		final Object lock
-	) {
-		@SuppressWarnings({"rawtypes", "unchecked"})
-		final Accumulator<T, ?, R> result = new SynchronizedAccumulator(
-			accumulator,
-			lock
-		);
-		return result;
-	}
-
-	/**
-	 * Returns a synchronized (thread-safe) accumulator backed by the specified
-	 * {@code accumulator}. The given {@code accumulator} is used for as
-	 * synchronization object.
-	 *
-	 * @param accumulator the accumulator to be "wrapped" in a synchronized
-	 *        accumulator
-	 * @param <T> the type of input elements to the accumulate operation
-	 * @param <R> the result type of the accumulated operation
-	 * @return a synchronized view of the specified accumulator
-	 * @throws NullPointerException if the {@code accumulator} is {@code null}
-	 */
-	static <T, R> Accumulator<T, ?, R>
-	sync(final Accumulator<T, ?, R> accumulator) {
-		return sync(accumulator, accumulator);
 	}
 
 }
