@@ -87,8 +87,18 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	 */
 	R result();
 
+	/**
+	 * Combines {@code this} accumulator with the {@code other} one.
+	 *
+	 * @param other the other accumulator
+	 * @return the combined accumulator
+	 * @throws UnsupportedOperationException unless it's overridden by the
+	 *         implementation
+	 */
 	default A combine(final A other) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(
+			"No implementation for combining accumulators."
+		);
 	}
 
 	@Override
