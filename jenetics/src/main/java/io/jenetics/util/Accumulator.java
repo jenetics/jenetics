@@ -30,14 +30,12 @@ import java.util.stream.Collector;
 
 /**
  * This interface lets you accumulate elements of type {@code T} to a result of
- * type {@code R}. It can be seen as a continuous {@link Collector}. In contrast
- * to a {@link Collector} an {@code Accumulator} can deliver intermediate results
- * while accumulating. Due to the similarities between the {@link Collector}
- * class, an {@code Accumulator} can be created from any {@link Collector}
- * implementation ({@link #of(Collector)}).
+ * type {@code R}.  In contrast to a {@link Collector} an {@code Accumulator}
+ * can deliver intermediate results while accumulating. An accumulator can be
+ * created from any {@link Collector} with the ({@link #of(Collector)}) method.
  *
  * <pre>{@code
- * final Accumulator<Integer, List<Integer>> accu =
+ * final Accumulator<Integer, ?, List<Integer>> accu =
  *     Accumulator.of(Collectors.toList());
  *
  * final ISeq<List<Integer>> result = IntStream.range(0, 10).boxed()
@@ -63,9 +61,8 @@ import java.util.stream.Collector;
  *
  * @apiNote
  * In contrast to the {@link Collector} interface, the {@code Accumulator} is
- * not mergeable.
- * The <em>accumulator</em> is not thread-safe and can't be used for parallel
- * streams.
+ * not mergeable. The <em>accumulator</em> is not thread-safe and can't be used
+ * for parallel streams.
  *
  * @param <T> the type of input elements to the accumulate operation
  * @param <A> the accumulator type
@@ -155,7 +152,7 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	 * Create a new accumulator from the given {@code collector}.
 	 *
 	 * <pre>{@code
-	 * final Accumulator<Integer, ISeq<Integer>> accu =
+	 * final Accumulator<Integer, ?, ISeq<Integer>> accu =
 	 *     Accumulator.of(ISeq.toISeq());
 	 * }</pre>
 	 *
