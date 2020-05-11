@@ -69,8 +69,8 @@ import java.util.stream.Collector;
  * @param <R> the result type of the accumulated operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.1
+ * @since 6.1
  */
 public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	extends Consumer<T>, Collector<T, A, R>

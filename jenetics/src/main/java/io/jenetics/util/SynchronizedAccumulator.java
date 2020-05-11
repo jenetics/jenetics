@@ -33,8 +33,8 @@ import java.util.function.Supplier;
  * @param <R> the result type of the accumulated operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.1
+ * @since 6.1
  */
 final class SynchronizedAccumulator<T, A extends Accumulator<T, A, R>, R>
 	implements Accumulator<T, SynchronizedAccumulator<T, A, R>, R>

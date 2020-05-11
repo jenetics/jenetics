@@ -31,8 +31,8 @@ import java.util.stream.Collector;
  * @param <R> the result type of the accumulated operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.1
+ * @since 6.1
  */
 final class CollectorAccumulator<T, A, R>
 	implements Accumulator<T, CollectorAccumulator<T, A, R>, R>
