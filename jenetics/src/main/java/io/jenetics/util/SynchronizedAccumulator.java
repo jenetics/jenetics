@@ -19,8 +19,11 @@
  */
 package io.jenetics.util;
 
+import static java.util.Collections.addAll;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -39,10 +42,16 @@ final class SynchronizedAccumulator<T, A extends Accumulator<T, A, R>, R>
 
 	private final A _accumulator;
 	private final Object _lock;
+	private final Set<Characteristics> _characteristics;
 
 	SynchronizedAccumulator(final A accumulator, final Object lock) {
 		_accumulator = requireNonNull(accumulator);
 		_lock = requireNonNull(lock);
+
+		final var cs = EnumSet.noneOf(Characteristics.class);
+		addAll(cs, _accumulator.characteristics().toArray(Characteristics[]::new));
+		addAll(cs, Characteristics.CONCURRENT);
+		_characteristics = Collections.unmodifiableSet(cs);
 	}
 
 	@Override
@@ -78,7 +87,7 @@ final class SynchronizedAccumulator<T, A extends Accumulator<T, A, R>, R>
 
 	@Override
 	public Set<Characteristics> characteristics() {
-		return _accumulator.characteristics();
+		return _characteristics;
 	}
 
 }
