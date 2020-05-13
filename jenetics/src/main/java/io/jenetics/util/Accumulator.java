@@ -62,7 +62,12 @@ import java.util.stream.Collector;
  * @apiNote
  * In contrast to the {@link Collector} interface, the {@code Accumulator} is
  * not mergeable. The <em>accumulator</em> is not thread-safe and can't be used
- * for parallel streams.
+ * for parallel streams when used as {@link Consumer} in the
+ * {@link java.util.stream.Stream#peek(Consumer)} or
+ * {@link java.util.stream.Stream#forEach(Consumer)} method. Obtaining a
+ * synchronized view of the accumulator with the {@link #synced()} method, will
+ * solve this problem. If the accumulator is used as {@link Collector}, the
+ * usage in parallel streams is safe.
  *
  * @param <T> the type of input elements to the accumulate operation
  * @param <A> the accumulator type
