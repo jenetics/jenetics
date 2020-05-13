@@ -65,6 +65,9 @@ subprojects {
 		java {
 			modularity.inferModulePath = true
 		}
+		javadoc {
+			modularity.inferModulePath = true
+		}
 	}
 }
 
