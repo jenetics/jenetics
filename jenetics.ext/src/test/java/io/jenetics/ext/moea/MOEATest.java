@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.testng.Assert;
@@ -40,7 +41,9 @@ import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
+import io.jenetics.util.Accumulator;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -71,8 +74,11 @@ public class MOEATest {
 
 		final List<Vec<double[]>> pop = new ArrayList<>();
 
+		final var accu = Accumulator.of(MOEA.<DoubleGene, double[], Vec<double[]>>toParetoSet(IntRange.of(20, 25)));
+
 		final ISeq<Vec<double[]>> result = engine.stream()
 			.limit(100)
+			.peek(accu)
 			.peek(er -> pop.addAll(er.population()
 				.map(Phenotype::fitness).asList()))
 			.collect(MOEA.toParetoSet(IntRange.of(20, 25)))
@@ -80,6 +86,8 @@ public class MOEATest {
 
 		Assert.assertTrue(result.size() >= 10, "Expected >= 10, got " + result.size());
 		Assert.assertTrue(result.size() <= 50, "Expected <= 50, got " + result.size());
+		Assert.assertEquals(accu.result().size(), result.size());
+		Assert.assertEquals(accu.result().map(Phenotype::fitness), result);
 
 		final Set<Vec<double[]>> front = new HashSet<>(
 			Pareto

@@ -189,6 +189,10 @@ public class DoubleMomentStatistics
 		return DoubleMoments.of(this);
 	}
 
+	public DoubleMoments result() {
+		return toDoubleMoments();
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
