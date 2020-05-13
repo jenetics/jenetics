@@ -57,8 +57,8 @@ idea {
 
 javadoc {
 	options {
-		links 'https://jenetics.io/javadoc/jenetics',
-			'https://jenetics.io/javadoc/jenetics.ext'
+		//links 'https://jenetics.io/javadoc/jenetics',
+		//	'https://jenetics.io/javadoc/jenetics.ext'
 	}
 }
 
