@@ -129,8 +129,6 @@ class SetupPlugin extends JeneticsPlugin {
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
 				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
-				exclude '**/internal/**'
-
 				//options.addStringOption('subpackages', 'io.jenetics')
                 //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
 				options.addStringOption('noqualifier', 'io.jenetics.internal.collection')
