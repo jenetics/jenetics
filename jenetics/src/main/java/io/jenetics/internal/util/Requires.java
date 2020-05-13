@@ -63,6 +63,7 @@ public final class Requires {
 	 * Check if the given integer is negative.
 	 *
 	 * @param length the value to check.
+	 * @return the length input
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
 	 */

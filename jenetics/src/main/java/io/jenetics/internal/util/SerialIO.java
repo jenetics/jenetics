@@ -508,7 +508,7 @@ public final class SerialIO {
 		}
 		return values;
 	}
-	
+
 	/**
 	 * Read an {@code int[]} array from the data input.
 	 *
@@ -576,6 +576,7 @@ public final class SerialIO {
 	 * @param in the data source
 	 * @return the read values
 	 * @throws IOException if an I/O error occurs
+	 * @throws ClassNotFoundException if the class can't be loaded
 	 */
 	public static Object[] readObjectArray(final ObjectInput in)
 		throws IOException, ClassNotFoundException
