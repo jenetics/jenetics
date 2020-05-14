@@ -116,6 +116,8 @@ class SetupPlugin extends JeneticsPlugin {
 
 	private void configureJavadoc() {
 		project.javadoc {
+			exclude "**/internal/**"
+
 			project.configure(options) {
 				memberLevel = 'PROTECTED'
 				version = true
@@ -130,8 +132,12 @@ class SetupPlugin extends JeneticsPlugin {
 				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				//options.addStringOption('subpackages', 'io.jenetics')
-                //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
+                options.addStringOption('excludedocfilessubdir', 'io/jenetics/internal')
 				options.addStringOption('noqualifier', 'io.jenetics.internal.collection')
+				options.addStringOption('-html5')
+				options.addStringOption('-frames')
+				options.addStringOption('-show-module-contents', 'api')
+				options.addStringOption('-show-packages', 'exported')
 				options.tags = ["apiNote:a:API Note:",
 								"implSpec:a:Implementation Requirements:",
 								"implNote:a:Implementation Note:"]

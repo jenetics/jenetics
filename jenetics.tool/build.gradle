@@ -41,7 +41,7 @@ jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
 
 javadoc {
 	options {
-		links 'https://jenetics.io/javadoc/jenetics'
+		//links 'https://jenetics.io/javadoc/jenetics'
 	}
 }
 
