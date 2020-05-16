@@ -41,7 +41,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.4
+ * @version 6.1
  */
 public class GaussianMutator<
 	G extends NumericGene<?, G>,
