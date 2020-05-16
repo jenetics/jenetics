@@ -157,6 +157,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			{DoubleGene.of(0, 0, 1), true},
 			{DoubleGene.of(1, 0, 1), false},
 			{DoubleGene.of(1, 1, 0), false},
+			{DoubleGene.of(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE), false},
 			{DoubleGene.of(Double.MAX_VALUE, -Double.MAX_VALUE, Double.MAX_VALUE), false},
 			{DoubleGene.of(0.5, 1, 0), false},
 			{DoubleGene.of(-Double.MAX_VALUE, Double.MAX_VALUE), true},
