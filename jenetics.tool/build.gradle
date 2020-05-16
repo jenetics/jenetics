@@ -41,7 +41,10 @@ jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
 
 javadoc {
 	options {
-		links 'https://jenetics.io/javadoc/jenetics'
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+		)
 	}
 }
 

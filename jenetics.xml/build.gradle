@@ -59,7 +59,10 @@ test.dependsOn(compileJmhJava)
 
 javadoc {
 	options {
-		links 'https://jenetics.io/javadoc/jenetics'
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+		)
 	}
 }
 

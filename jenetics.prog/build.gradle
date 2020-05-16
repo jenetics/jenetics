@@ -57,8 +57,14 @@ idea {
 
 javadoc {
 	options {
-		links 'https://jenetics.io/javadoc/jenetics',
-			'https://jenetics.io/javadoc/jenetics.ext'
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+		)
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics.ext',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.ext"
+		)
 	}
 }
 

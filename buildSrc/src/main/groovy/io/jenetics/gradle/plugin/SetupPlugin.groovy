@@ -123,7 +123,10 @@ class SetupPlugin extends JeneticsPlugin {
 				docEncoding = 'UTF-8'
 				charSet = 'UTF-8'
 				linkSource = true
-				links 'https://docs.oracle.com/en/java/javase/11/docs/api'
+				linksOffline(
+					'https://docs.oracle.com/en/java/javase/11/docs/api',
+					"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+				)
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
