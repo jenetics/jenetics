@@ -144,8 +144,12 @@ public final class DoubleGene
 
 	@Override
 	public boolean isValid() {
-		return Double.compare(_allele, _min) >= 0 &&
-			Double.compare(_allele, _max) <= 0;
+		return
+			Double.isFinite(_allele) &&
+			Double.isFinite(_min) &&
+			Double.isFinite(_max) &&
+			Double.compare(_allele, _min) >= 0 &&
+			Double.compare(_allele, _max) < 0;
 	}
 
 	@Override
