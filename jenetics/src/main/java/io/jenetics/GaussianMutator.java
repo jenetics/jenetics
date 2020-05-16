@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
@@ -59,13 +60,17 @@ public class GaussianMutator<
 
 	@Override
 	protected G mutate(final G gene, final Random random) {
+		return gene.isValid() ? mutate0(gene, random) : gene;
+	}
+
+	private G mutate0(final G gene, final Random random) {
 		final double min = gene.min().doubleValue();
 		final double max = gene.max().doubleValue();
 		final double std = (max - min)*0.25;
 
 		final double value = gene.doubleValue();
 		final double gaussian = random.nextGaussian();
-		return gene.newInstance(clamp(gaussian*std + value, min, max));
+		return gene.newInstance(clamp(gaussian*std + value, min, nextDown(max)));
 	}
 
 	@Override
