@@ -56,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 6.0
+ * @version 6.1
  */
 public final class LongGene
 	implements
@@ -177,7 +177,11 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance(final Number allele) {
-		return LongGene.of(allele.longValue(), _min, _max);
+		final long value = allele instanceof Double || allele instanceof Float
+			? Math.round(allele.doubleValue())
+			: allele.longValue();
+
+		return LongGene.of(value, _min, _max);
 	}
 
 	@Override
