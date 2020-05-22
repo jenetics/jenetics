@@ -46,7 +46,7 @@ public class TreePerf {
 	@State(Scope.Benchmark)
 	public static class Trees {
 		Tree<?, ?> tree = newTree(4, new Random(123));
-		Tree<?, ?> flatTree = FlatTreeNode.of(tree);
+		Tree<?, ?> flatTree = FlatTreeNode.ofTree(tree);
 	}
 
 	private static TreeNode<Integer> newTree(final int levels, final Random random) {
