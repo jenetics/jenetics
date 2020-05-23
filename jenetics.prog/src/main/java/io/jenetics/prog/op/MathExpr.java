@@ -42,6 +42,7 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
+import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -172,7 +173,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(TreeNode.ofTree(tree), true);
+		this(FlatTreeNode.ofTree(tree), true);
 		Program.check(tree);
 	}
 
@@ -272,7 +273,7 @@ public final class MathExpr
 	) {
 		final TreeNode<Op<Double>> tree = toTree();
 		rewriter.rewrite(tree, limit);
-		return new MathExpr(tree, true);
+		return new MathExpr(FlatTreeNode.ofTree(tree), true);
 	}
 
 	/**
