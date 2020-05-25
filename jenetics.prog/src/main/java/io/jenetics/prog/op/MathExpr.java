@@ -229,14 +229,14 @@ public final class MathExpr
 
 	@Override
 	public int hashCode() {
-		return _tree.hashCode();
+		return Tree.hashCode(_tree);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr &&
-			Objects.equals(((MathExpr)obj)._tree, _tree);
+			Tree.equals(((MathExpr)obj)._tree, _tree);
 	}
 
 	/**
