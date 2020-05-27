@@ -254,4 +254,25 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		};
 	}
 
+	@Test
+	public void map() {
+		final var ch1 = BitChromosome.of(1000, 0.3);
+
+		final var ch2 = ch1.map(BitChromosomeTest::flip);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toBitSet(), flip(ch1.toBitSet()));
+	}
+
+	static BitSet flip(final BitSet values) {
+		values.flip(0, values.length());
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = BitChromosome.of(1000, 0.3);
+		ch.map(null);
+	}
+
 }

@@ -114,7 +114,7 @@ public class DoubleChromosome
 	 * @return a newly created chromosome with the mapped gene values
 	 * @throws NullPointerException if the mapper function is {@code null}.
 	 * @throws IllegalArgumentException if the length of the mapped
-	 *         {@code double[]} array is empty, doesn't match with the allowed
+	 *         {@code double[]} array is empty or doesn't match with the allowed
 	 *         length range
 	 */
 	public DoubleChromosome map(final Function<? super double[], double[]> f) {

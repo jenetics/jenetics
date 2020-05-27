@@ -113,7 +113,7 @@ public class IntegerChromosome
 	 * @return a newly created chromosome with the mapped gene values
 	 * @throws NullPointerException if the mapper function is {@code null}.
 	 * @throws IllegalArgumentException if the length of the mapped
-	 *         {@code int[]} array is empty, doesn't match with the allowed
+	 *         {@code int[]} array is empty or doesn't match with the allowed
 	 *         length range
 	 */
 	public IntegerChromosome map(final Function<? super int[], int[]> f) {

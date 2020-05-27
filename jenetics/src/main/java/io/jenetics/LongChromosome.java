@@ -115,7 +115,7 @@ public class LongChromosome
 	 * @return a newly created chromosome with the mapped gene values
 	 * @throws NullPointerException if the mapper function is {@code null}.
 	 * @throws IllegalArgumentException if the length of the mapped
-	 *         {@code long[]} array is empty, doesn't match with the allowed
+	 *         {@code long[]} array is empty or doesn't match with the allowed
 	 *         length range
 	 */
 	public LongChromosome map(final Function<? super long[], long[]> f) {
