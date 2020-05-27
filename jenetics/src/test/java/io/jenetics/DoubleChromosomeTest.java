@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.math.DoubleAdder.sum;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
@@ -29,6 +30,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.DoubleRange;
@@ -129,6 +132,40 @@ public class DoubleChromosomeTest
 				DoubleGene.of(5, 6)
 			)
 		);
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = DoubleChromosome.of(
+			new Random().doubles(1000)
+			.mapToObj(v -> DoubleGene.of(v, 0.0, 1.0))
+			.toArray(DoubleGene[]::new)
+		);
+
+		final var ch2 = ch1.map(DoubleChromosomeTest::normalize);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), normalize(ch1.toArray()));
+	}
+
+	static double[] normalize(final double[] values) {
+		final double sum = sum(values);
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= sum;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = DoubleChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = DoubleChromosome.of(0, 1);
+		ch.map(v -> new double[0]);
 	}
 
 }
