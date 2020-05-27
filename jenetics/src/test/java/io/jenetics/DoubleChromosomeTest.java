@@ -30,8 +30,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.DoubleAdder;
-import io.jenetics.internal.util.Arrays;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.DoubleRange;
@@ -136,11 +134,7 @@ public class DoubleChromosomeTest
 
 	@Test
 	public void map() {
-		final var ch1 = DoubleChromosome.of(
-			new Random().doubles(1000)
-			.mapToObj(v -> DoubleGene.of(v, 0.0, 1.0))
-			.toArray(DoubleGene[]::new)
-		);
+		final var ch1 = DoubleChromosome.of(0, 1, 1000);
 
 		final var ch2 = ch1.map(DoubleChromosomeTest::normalize);
 

@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
@@ -28,9 +29,12 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.function.Function;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -45,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 5.2
+ * @version !__version__!
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
@@ -84,6 +88,43 @@ public class IntegerChromosome
 	@Override
 	public IntegerChromosome newInstance() {
 		return of(_min, _max, lengthRange());
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@code int[]} array,
+	 * by applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * <pre>{@code
+	 * final IntegerChromosome chromosome = ...;
+	 * final IntegerChromosome halved = chromosome.map(Main::half);
+	 *
+	 * static int[] half(final int[] values) {
+	 *     for (int i = 0; i < values.length; ++i) {
+	 *         values[i] /= 2;
+	 *     }
+	 *     return values;
+	 * }
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 * @throws IllegalArgumentException if the length of the mapped
+	 *         {@code int[]} array is empty, doesn't match with the allowed
+	 *         length range
+	 */
+	public IntegerChromosome map(final Function<? super int[], int[]> f) {
+		requireNonNull(f);
+
+		final var range = IntRange.of(_min, _max);
+		final var genes = IntStream.of(f.apply(toArray()))
+			.mapToObj(v -> IntegerGene.of(v, range))
+			.collect(ISeq.toISeq());
+
+		return newInstance(genes);
 	}
 
 	/**
