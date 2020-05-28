@@ -115,7 +115,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			bits.set(i, i % 2 == 0);
 		}
 
-		BitChromosome c = BitChromosome.of(bits);
+		BitChromosome c = BitChromosome.of(bits, 10);
 		for (int i = 0; i < bits.length(); ++i) {
 			assertEquals(c.get(i).bit(), i % 2 == 0);
 		}
@@ -196,12 +196,13 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test
 	public void fromBitSet() {
 		final Random random = new Random(234);
-		final BitSet bits = new BitSet(2343);
-		for (int i = 0; i < bits.size(); ++i) {
+		final int size = 2343;
+		final BitSet bits = new BitSet(size);
+		for (int i = 0; i < size; ++i) {
 			bits.set(i, random.nextBoolean());
 		}
 
-		final BitChromosome c = BitChromosome.of(bits);
+		final BitChromosome c = BitChromosome.of(bits, size);
 		Assert.assertEquals(c.toByteArray(), bits.toByteArray());
 	}
 
@@ -212,7 +213,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		random.nextBytes(bytes);
 
 		final BitSet bits = BitSet.valueOf(bytes);
-		final BitChromosome c = BitChromosome.of(bits);
+		final BitChromosome c = BitChromosome.of(bits, bytes.length*8);
 		Assert.assertEquals(c.toByteArray(), bytes);
 		Assert.assertEquals(bits.toByteArray(), bytes);
 	}
@@ -273,6 +274,24 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void mapNull() {
 		final var ch = BitChromosome.of(1000, 0.3);
 		ch.map(null);
+	}
+
+	@Test(dataProvider = "bitSetLength")
+	public void ofBitSetSize(final int length) {
+		final var ch1 = BitChromosome.of(length, 0.33333);
+		Assert.assertEquals(ch1.length(), length);
+
+		final var bits = ch1.toBitSet();
+
+		final var ch2 = BitChromosome.of(bits, length);
+		Assert.assertEquals(ch2, ch1);
+	}
+
+	@DataProvider
+	public Object[][] bitSetLength() {
+		return new Object[][] {
+			{1}, {2}, {3}, {5}, {7}, {11}, {16}, {17}, {23}, {55}, {101}, {1111}
+		};
 	}
 
 }
