@@ -49,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 6.1
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -108,7 +108,7 @@ public class DoubleChromosome
 	 * }
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @param f the mapper function
 	 * @return a newly created chromosome with the mapped gene values

@@ -54,7 +54,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 6.1
  */
 public class BitChromosome extends Number
 	implements
@@ -401,7 +401,7 @@ public class BitChromosome extends Number
 	 * applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @param f the mapper function
 	 * @return a newly created chromosome with the mapped gene values
