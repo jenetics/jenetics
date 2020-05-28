@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.function.Function;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -47,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.2
+ * @version !__version__!
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -86,6 +88,44 @@ public class DoubleChromosome
 	@Override
 	public DoubleChromosome newInstance() {
 		return of(_min, _max, lengthRange());
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@code double[]} array,
+	 * by applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * <pre>{@code
+	 * final DoubleChromosome chromosome = ...;
+	 * final DoubleChromosome normalized = chromosome.map(Main::normalize);
+	 *
+	 * static double[] normalize(final double[] values) {
+	 *     final double sum = sum(values);
+	 *     for (int i = 0; i < values.length; ++i) {
+	 *         values[i] /= sum;
+	 *     }
+	 *     return values;
+	 * }
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 * @throws IllegalArgumentException if the length of the mapped
+	 *         {@code double[]} array is empty or doesn't match with the allowed
+	 *         length range
+	 */
+	public DoubleChromosome map(final Function<? super double[], double[]> f) {
+		requireNonNull(f);
+
+		final var range = DoubleRange.of(_min, _max);
+		final var genes = DoubleStream.of(f.apply(toArray()))
+			.mapToObj(v -> DoubleGene.of(v, range))
+			.collect(ISeq.toISeq());
+
+		return newInstance(genes);
 	}
 
 	/**

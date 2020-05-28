@@ -37,6 +37,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.ListIterator;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.Bits;
@@ -53,7 +54,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.0
+ * @version !__version__!
  */
 public class BitChromosome extends Number
 	implements
@@ -393,6 +394,21 @@ public class BitChromosome extends Number
 	@Override
 	public BitChromosome newInstance() {
 		return of(_length, _p);
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@link BitSet}, by
+	 * applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 */
+	public BitChromosome map(final Function<? super BitSet, ? extends BitSet> f) {
+		return of(f.apply(toBitSet()), length(), oneProbability());
 	}
 
 	/**
