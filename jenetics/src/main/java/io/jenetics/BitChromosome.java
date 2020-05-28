@@ -527,7 +527,11 @@ public class BitChromosome extends Number
 	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *        {@code null}.
+	 * @deprecated This method doesn't let you control the actual length of the
+	 *             created {@code BitChromosome}. Use {@link #of(BitSet, int, double)}
+	 *             or {@link #of(BitSet, int)} instead.
 	 */
+	@Deprecated(since = "6.1", forRemoval = true)
 	public static BitChromosome of(final BitSet bits) {
 		return new BitChromosome(bits.toByteArray(), -1);
 	}
