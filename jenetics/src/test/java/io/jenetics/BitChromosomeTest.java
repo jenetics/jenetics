@@ -46,6 +46,17 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		return () -> BitChromosome.of(500, 0.3);
 	}
 
+	@Test
+	public void createWithStartAndBegin() {
+		final var random = new Random();
+		final var bits = new byte[100];
+		random.nextBytes(bits);
+
+		final var ch = new BitChromosome(bits, 13, 71, 0.33);
+		Assert.assertEquals(ch.length(), 71 - 13);
+		Assert.assertEquals(ch.oneProbability(), 0.33);
+	}
+
 	@Test(invocationCount = 20, successPercentage = 90)
 	public void newInstance() {
 		final int size = 50_000;

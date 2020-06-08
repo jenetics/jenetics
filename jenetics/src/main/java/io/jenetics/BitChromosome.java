@@ -68,7 +68,7 @@ public class BitChromosome extends Number
 	/**
 	 * The ones probability of the randomly generated Chromosome.
 	 */
-	protected double _p;
+	protected final double _p;
 
 	/**
 	 * The length of the chromosomes (number of bits).
@@ -88,7 +88,35 @@ public class BitChromosome extends Number
 		_genes = bits;
 		_length = length;
 		_p = p;
+
 		_seq = BitGeneMSeq.of(_genes, length).toISeq();
+	}
+
+	/**
+	 * Create a new bit chromosome from the given bit (byte) array.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @param p the ones probability
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
+	 *         {@code start > bits.length*8}
+	 * @throws java.lang.IllegalArgumentException if {@code start > end}
+	 * @throws java.lang.NullPointerException if the {@code bits} array is
+	 *         {@code null}.
+	 */
+	public BitChromosome(
+		final byte[] bits, final int start, final int end,
+		final double p
+	) {
+		this(
+			Bits.copy(bits, start, end),
+			min(bits.length << 3, end) - start,
+			p
+		);
 	}
 
 	/**
@@ -105,12 +133,12 @@ public class BitChromosome extends Number
 	 *         {@code null}.
 	 */
 	public BitChromosome(final byte[] bits, final int start, final int end) {
-		this(
-			Bits.copy(bits, start, end),
-			min(bits.length << 3, end) - start,
-			0.0
-		);
-		_p = (double) Bits.count(_genes)/(double)_length;
+		this(bits, start, end, p(bits, start, end));
+	}
+
+	private static double p(final byte[] bits, final int start, final int end) {
+		return (double)Bits.count(bits, start, end)/
+			min(bits.length << 3, end) - start;
 	}
 
 	/**
@@ -387,7 +415,7 @@ public class BitChromosome extends Number
 			}
 		}
 
-		chromosome._p = (double)ones/(double)genes.length();
+		//chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
 	}
 

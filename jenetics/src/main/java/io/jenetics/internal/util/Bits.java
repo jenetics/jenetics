@@ -201,6 +201,30 @@ public final class Bits {
 	}
 
 	/**
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @return @return the number of one bits in the given {@code byte} array.
+	 */
+	public static int count(final byte[] bits, final int start, final int end) {
+		final int length = min(bits.length << 3, end) - start;
+
+		int count = 0;
+		int i = start;
+		while (i%Byte.SIZE != 0) {
+			if (get(bits, i)) {
+				++count;
+			}
+			++i;
+		}
+
+
+		return count;
+	}
+
+	/**
 	 * Returns the number of one-bits in the given {@code byte} {@code value}.
 	 *
 	 * @param value the value for which the one bits should be counted.
