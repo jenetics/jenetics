@@ -186,21 +186,18 @@ public final class Bits {
 	}
 
 	/**
-	 * Returns the number of one-bits in the given {@code byte} array.
+	 * Returns the number of one-bits in the given {@code byte[]} array.
 	 *
 	 * @param data the {@code byte} array for which the one bits should be
 	 *        counted.
 	 * @return the number of one bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] data) {
-		int count = 0;
-		for (int i = data.length; --i >= 0;) {
-			count += count(data[i]);
-		}
-		return count;
+		return count(data, 0, data.length*Byte.SIZE);
 	}
 
 	/**
+	 * Returns the number of one-bits in the given {@code byte[]} array.
 	 *
 	 * @param bits the bit values of the new chromosome gene.
 	 * @param start the initial (bit) index of the range to be copied, inclusive
@@ -209,17 +206,24 @@ public final class Bits {
 	 * @return @return the number of one bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] bits, final int start, final int end) {
-		final int length = min(bits.length << 3, end) - start;
+		final int byteStart = start/Byte.SIZE + 1;
+		final int byteEnd = end/Byte.SIZE;
 
 		int count = 0;
-		int i = start;
-		while (i%Byte.SIZE != 0) {
+		for (int i = byteStart; i < byteEnd; ++i) {
+			count += count(bits[i]);
+		}
+
+		for (int i = start, n = byteStart*Byte.SIZE; i < n; ++i) {
 			if (get(bits, i)) {
 				++count;
 			}
-			++i;
 		}
-
+		for (int i = byteEnd*8; i < end; ++i) {
+			if (get(bits, i)) {
+				++count;
+			}
+		}
 
 		return count;
 	}
