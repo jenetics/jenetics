@@ -19,13 +19,6 @@
  */
 
 
-import io.jenetics.gradle.Version
-import io.jenetics.gradle.plugin.SetupPlugin
-
-import java.time.Year
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -38,15 +31,24 @@ plugins {
 
 rootProject.version = Jenetics.Version
 
+/*
+ * Project configuration *before* the projects has been evaluated.
+ */
 allprojects {
 	group =  Jenetics.Group
 	version = Jenetics.Version
 
 	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
 		flatDir {
 			dirs("${rootDir}/buildSrc/lib")
 		}
-		mavenCentral()
+	}
+
+	configurations.all {
+		resolutionStrategy.preferProjectModules()
 	}
 }
 
@@ -55,8 +57,96 @@ allprojects {
  */
 gradle.projectsEvaluated {
 	subprojects {
-		plugins.apply(SetupPlugin::class)
+		val project = this
+
+		tasks.withType<JavaCompile> {
+			options.compilerArgs.add("-Xlint:" + xlint())
+		}
+
+		plugins.withType<JavaPlugin> {
+			configure<JavaPluginConvention> {
+				sourceCompatibility = JavaVersion.VERSION_11
+				targetCompatibility = JavaVersion.VERSION_11
+			}
+
+			setupTestReporting(project)
+		}
 	}
+
+	tasks.withType<Jar> {
+		manifest {
+			from(manifest(project))
+		}
+	}
+}
+
+fun manifest(project: Project): Manifest {
+	return the<JavaPluginConvention>().manifest {
+		attributes (
+			"Implementation-Title" to project.name,
+			"Implementation-Version" to project.version.toString(),
+			"Implementation-URL" to Jenetics.Url,
+			"Implementation-Vendor" to Jenetics.Name,
+			"ProjectName" to Jenetics.Name,
+			"Version" to project.version.toString(),
+			"Maintainer" to Jenetics.Author,
+			"Project" to project.name,
+			"Project-Version" to project.version,
+			"Built-By" to System.getProperty("user.name"),
+			"Build-Timestamp" to Env.dateformat.format(Env.now),
+			"Created-By" to "Gradle ${gradle.gradleVersion}",
+			"Build-Jdk" to "${System.getProperty("java.vm.name")} " +
+			"(${System.getProperty("java.vm.vendor")} " +
+				"${System.getProperty("java.vm.version")})",
+			"Build-OS" to "${System.getProperty("os.name")} " +
+			"${System.getProperty("os.arch")} " +
+				System.getProperty("os.version")
+		)
+	}
+}
+
+fun setupTestReporting(project: Project) {
+	project.apply(plugin = "jacoco")
+
+	project.configure<JacocoPluginExtension> {
+		toolVersion = "0.8.5"
+		reportsDir = file("${buildDir}/jacocoReportDir")
+	}
+
+	project.tasks {
+		named<JacocoReport>("jacocoTestReport") {
+			dependsOn("test")
+
+			reports {
+				xml.isEnabled = true
+				csv.isEnabled = false
+			}
+		}
+
+		named<Test>("test") {
+			useTestNG()
+			finalizedBy("jacocoTestReport")
+		}
+	}
+}
+
+fun xlint(): String {
+	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
+	return listOf(
+		"cast",
+		"classfile",
+		"deprecation",
+		"dep-ann",
+		"divzero",
+		"empty",
+		"finally",
+		"overrides",
+		"rawtypes",
+		"serial",
+		"static",
+		"try",
+		"unchecked"
+	).joinToString(separator = ",")
 }
 
 tasks.register<Zip>("zip") {
@@ -74,122 +164,3 @@ tasks.register<Zip>("zip") {
 		zip.renameTo(file("build/package${zip.name}"))
 	}
 }
-
-//ext {
-//	set("javaVersion", property("build.JavaVersion"))
-//	set("now", ZonedDateTime.now())
-//	set("year", Year.now())
-//	//set("copyrightYear", "2007-${year}")
-//	set("identifier", "${rootProject.name}-${version}")
-//	set("manualDate", DateTimeFormatter.ofPattern("yyyy/MM/dd").format(ZonedDateTime.now()))
-//	set("manualIdentifier", "${version}—${extra["manualDate"]}")
-//	set("dateformat", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-//}
-
-
-
-//subprojects { Project prj ->
-//	prj.plugins.apply(SetupPlugin.class)
-//}
-//
-//allprojects { Project prj ->
-//	repositories {
-//		mavenCentral()
-//		jcenter()
-//	}
-//
-//	if (prj.plugins.hasPlugin("java")) {
-//		sourceCompatibility = javaVersion
-//		targetCompatibility = javaVersion
-//
-//		jar {
-//			manifest {
-//				attributes(
-//					"Implementation-Title": prj.name,
-//					"Implementation-Version": prj.version,
-//					"Implementation-URL": project.property("jenetics.Url"),
-//					"Implementation-Vendor": project.property("jenetics.Name"),
-//					"ProjectName": project.property("jenetics.Name"),
-//					"Version": project.version,
-//					"Maintainer": project.property("jenetics.Author"),
-//					"Project": prj.name,
-//					"Project-Version": prj.version,
-//					"Built-By": System.properties["user.name"],
-//					"Build-Timestamp": dateformat.format(now),
-//					"Created-By": "Gradle ${gradle.gradleVersion}",
-//					"Build-Jdk": "${System.properties["java.vm.name"]} " +
-//						"(${System.properties["java.vm.vendor"]} " +
-//						"${System.properties["java.vm.version"]})",
-//					"Build-OS": "${System.properties["os.name"]} " +
-//						"${System.properties["os.arch"]} " +
-//						"${System.properties["os.version"]}"
-//				)
-//			}
-//		}
-//	}
-//	if (prj.plugins.hasPlugin("jacoco")) {
-//		prj.jacoco {
-//			toolVersion = "0.8.5"
-//		}
-//	}
-//}
-//
-//task updateGradle(type: Wrapper) {
-//	gradleVersion = project.property("build.GradleVersion")
-//}
-//
-//rootProject.gradle.projectsEvaluated {
-//	def PROJECTS = [
-//		"jenetics",
-//		"jenetics.ext",
-//		"jenetics.prog",
-//		"jenetics.xml"
-//	]
-//
-//	final Set<Project> projects = project.subprojects
-//		.findAll { prj -> PROJECTS.contains(prj.name) }
-//
-//	if (!projects.isEmpty()) {
-//		rootProject.task("alljavadoc", type: Javadoc) {
-//			description = "Aggregates Javadoc API documentation of all subprojects."
-//			group = JavaBasePlugin.DOCUMENTATION_GROUP
-//
-//			source = projects.javadoc.source
-//			exclude "**/internal/**"
-//			destinationDir rootProject.file("$project.buildDir/docs/javadoc")
-//			classpath = rootProject.files(projects.javadoc.classpath)
-//			title = "${project.name} documentation"
-//
-//			options {
-//				memberLevel = JavadocMemberLevel.PROTECTED
-//				version = true
-//				author = true
-//				docEncoding = "UTF-8"
-//				charSet = "UTF-8"
-//				windowTitle = "${project.name} ${project.version}"
-//				docTitle = "<h1>${project.name} ${project.version}</h1>"
-//
-//				tags "apiNote:a:API Note:",
-//					"implSpec:a:Implementation Requirements:",
-//					"implNote:a:Implementation Note:"
-//
-//				links "https://docs.oracle.com/en/java/javase/11/docs/api"
-//			}
-//		}
-//	}
-//}
-//
-//// Create a zip file from the export directory.
-//task zip(type: Zip) {
-//	from("build/package/${identifier}") {
-//		into identifier
-//	}
-//
-//	archiveBaseName = rootProject.name
-//	version = project.property("jenetics.Version")
-//
-//	doLast {
-//		def zip = file("${identifier}.zip")
-//		zip.renameTo(new File("build/package", zip.getName()))
-//	}
-//}
