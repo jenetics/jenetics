@@ -29,34 +29,64 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 6.0
+ * @version !__version__!
  */
-rootProject.version = Version.parse(property("jenetics.Version"))
-
-apply(plugin = "signing")
-apply(plugin = "packaging")
-
-ext {
-	set("javaVersion", property("build.JavaVersion"))
-	set("now", ZonedDateTime.now())
-	set("year", Year.now())
-	//set("copyrightYear", "2007-${year}")
-	set("identifier", "${rootProject.name}-${version}")
-	set("manualDate", DateTimeFormatter.ofPattern("yyyy/MM/dd").format(ZonedDateTime.now()))
-	set("manualIdentifier", "${version}—${extra["manualDate"]}")
-	set("dateformat", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+plugins {
+	signing
+	packaging
 }
+
+rootProject.version = Jenetics.Version
 
 allprojects {
-	group =  Jenetics.Group //extra["jenetics.Group"] //property("jenetics.Group")
-	//version = property("jenetics.Version")
+	group =  Jenetics.Group
+	version = Jenetics.Version
 
 	repositories {
-		//flatDir(dir = "${rootDir}/buildSrc/lib")
+		flatDir {
+			dirs("${rootDir}/buildSrc/lib")
+		}
 		mavenCentral()
 	}
-	plugins.apply(SetupPlugin::class)
 }
+
+/*
+ * Project configuration *after* the projects has been evaluated.
+ */
+gradle.projectsEvaluated {
+	subprojects {
+		plugins.apply(SetupPlugin::class)
+	}
+}
+
+tasks.register<Zip>("zip") {
+	val identifier = "${Jenetics.Name}-${Jenetics.Version}"
+
+	from("build/package/${identifier}") {
+		into(identifier)
+	}
+
+	archiveBaseName.set(identifier)
+	archiveVersion.set(Jenetics.Version)
+
+	doLast {
+		val zip = file("${identifier}.zip")
+		zip.renameTo(file("build/package${zip.name}"))
+	}
+}
+
+//ext {
+//	set("javaVersion", property("build.JavaVersion"))
+//	set("now", ZonedDateTime.now())
+//	set("year", Year.now())
+//	//set("copyrightYear", "2007-${year}")
+//	set("identifier", "${rootProject.name}-${version}")
+//	set("manualDate", DateTimeFormatter.ofPattern("yyyy/MM/dd").format(ZonedDateTime.now()))
+//	set("manualIdentifier", "${version}—${extra["manualDate"]}")
+//	set("dateformat", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+//}
+
+
 
 //subprojects { Project prj ->
 //	prj.plugins.apply(SetupPlugin.class)

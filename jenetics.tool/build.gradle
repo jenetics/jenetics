@@ -23,6 +23,10 @@
  * @version 4.4
  */
 
+plugins {
+	id("java-library")
+}
+
 apply plugin: 'packaging'
 
 ext.moduleName = 'io.jenetics.tool'
