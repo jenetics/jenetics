@@ -21,12 +21,21 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.9
+ * @version !__version__!
  */
 
-apply plugin: 'java'
+plugins {
+	`java-gradle-plugin`
+	kotlin("jvm") version "1.3.72"
 
-project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 11
-	targetCompatibility = 11
+}
+
+repositories {
+	mavenLocal()
+	gradlePluginPortal()
+}
+
+configure<JavaPluginConvention> {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
 }

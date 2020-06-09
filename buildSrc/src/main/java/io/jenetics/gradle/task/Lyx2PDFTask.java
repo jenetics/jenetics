@@ -35,14 +35,13 @@ import org.gradle.api.tasks.TaskExecutionException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
 public class Lyx2PDFTask extends DefaultTask {
 
 	private static final String BINARY = "lyx";
 
 	private File _document;
-	private Integer _exitValue;
 
 	@InputFile
 	public File getDocument() {
@@ -51,10 +50,6 @@ public class Lyx2PDFTask extends DefaultTask {
 
 	public void setDocument(final File document) {
 		_document = document;
-	}
-
-	public Integer getExitValue() {
-		return _exitValue;
 	}
 
 	@TaskAction
@@ -81,8 +76,8 @@ public class Lyx2PDFTask extends DefaultTask {
 		try {
 			final Process process = builder.start();
 			output(process.getInputStream());
-			_exitValue = process.waitFor();
-			if (_exitValue != 0) {
+			final int exitValue = process.waitFor();
+			if (exitValue != 0) {
 				getLogger().lifecycle("Error while generating PDF.");
 				getLogger().lifecycle("Manual PDF has not been created.");
 			}

@@ -25,6 +25,7 @@
  */
 
 plugins {
+	id("idea")
 	id 'me.champeau.gradle.jmh' version '0.5.0'
 }
 
@@ -99,13 +100,13 @@ modifyPom {
 	}
 }
 
-nexus {
-	identifier = project.identifier
-	copyrightYear = project.copyrightYear
-	attachSources = true
-	attachTests = false
-	attachJavadoc = true
-	sign = true
-	repository = project.property('build.MavenRepository')
-	snapshotRepository = project.property('build.MavenSnapshotRepository')
-}
+//nexus {
+//	identifier = project.identifier
+//	copyrightYear = project.copyrightYear
+//	attachSources = true
+//	attachTests = false
+//	attachJavadoc = true
+//	sign = true
+//	repository = project.property('build.MavenRepository')
+//	snapshotRepository = project.property('build.MavenSnapshotRepository')
+//}

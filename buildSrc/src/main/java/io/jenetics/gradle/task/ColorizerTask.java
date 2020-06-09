@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
 
@@ -32,13 +33,13 @@ import io.jenetics.colorizer.Colorizer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
 public class ColorizerTask extends DefaultTask {
 
 	private File _directory;
 
-	@Input
+	@InputFile
 	public File getDirectory() {
 		return _directory;
 	}
