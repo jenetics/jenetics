@@ -38,10 +38,10 @@ import io.jenetics.util.Seq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 6.0
  * @since 4.0
  */
-public final class AltererResult<
+public final /*record*/ class AltererResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -53,7 +53,7 @@ public final class AltererResult<
 	private final int _alterations;
 
 	private AltererResult(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int alterations
 	) {
 		if (alterations < 0) {
@@ -62,7 +62,7 @@ public final class AltererResult<
 			);
 		}
 
-		_population = requireNonNull(population);
+		_population = requireNonNull(population).asISeq();
 		_alterations = alterations;
 	}
 
@@ -71,7 +71,7 @@ public final class AltererResult<
 	 *
 	 * @return the altered population
 	 */
-	public ISeq<Phenotype<G, C>> getPopulation() {
+	public ISeq<Phenotype<G, C>> population() {
 		return _population;
 	}
 
@@ -80,7 +80,7 @@ public final class AltererResult<
 	 *
 	 * @return the number of altered individuals
 	 */
-	public int getAlterations() {
+	public int alterations() {
 		return _alterations;
 	}
 
@@ -88,8 +88,7 @@ public final class AltererResult<
 	public int hashCode() {
 		return
 			hash(_population,
-			hash(_alterations,
-			hash(AltererResult.class)));
+			hash(_alterations));
 	}
 
 	@Override
@@ -119,7 +118,7 @@ public final class AltererResult<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererResult<G, C> of(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int alterations
 	) {
 		return new AltererResult<>(population, alterations);
@@ -135,7 +134,8 @@ public final class AltererResult<
 	 * @throws NullPointerException if the given population is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
+	AltererResult<G, C>
+	of(final Seq<Phenotype<G, C>> population) {
 		return new AltererResult<>(population, 0);
 	}
 

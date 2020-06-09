@@ -56,7 +56,7 @@ public final class factories {
 	 * @return an integer factory.
 	 */
 	public static Supplier<Integer> Int(final int start, final int step) {
-		return new Supplier<Integer>() {
+		return new Supplier<>() {
 			private int _value = start;
 
 			@Override

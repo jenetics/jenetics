@@ -35,7 +35,6 @@ import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
@@ -77,7 +76,7 @@ final class EvolvingImagesCmd {
 	private int _generations;
 	private int _imageGeneration;
 
-	public EvolvingImagesCmd(final String[] args) {
+	EvolvingImagesCmd(final String[] args) {
 		if (args.length >= 1 && "evolve".equalsIgnoreCase(args[0])) {
 			final Map<String, String> params = toMap(args);
 			if (params.containsKey("--help")) {
@@ -195,7 +194,7 @@ final class EvolvingImagesCmd {
 		final AtomicLong time = new AtomicLong(0);
 
 		worker.start((current, best) -> {
-			final long generation = current.getGeneration();
+			final long generation = current.generation();
 
 			if (generation%generationGap == 0 || generation == 1) {
 				final double duration = System.currentTimeMillis() - time.get();
@@ -207,22 +206,22 @@ final class EvolvingImagesCmd {
 					format(IMAGE_PATTERN, generation)
 				);
 
-				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
+				final Phenotype<PolygonGene, Double> pt = best.bestPhenotype();
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
 					log(
 						"Writing '%s': fitness=%1.4f, speed=%1.2f.",
-						file, pt.getFitness(), speed
+						file, pt.fitness(), speed
 					);
 
 					latest.set(pt);
 					final PolygonChromosome ch =
-						(PolygonChromosome)pt.getGenotype().getChromosome();
+						(PolygonChromosome)pt.genotype().chromosome();
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
 					log(
 						"No improvement - %07d: fitness=%1.4f, speed=%1.2f.",
-						generation, pt.getFitness(), speed
+						generation, pt.fitness(), speed
 					);
 				}
 			}
@@ -262,7 +261,7 @@ final class EvolvingImagesCmd {
 	}
 
 	private static void println(final Object format, final Object... args) {
-		System.out.printf(Objects.toString(format) + "\n", args);
+		System.out.printf(format + "\n", args);
 	}
 
 	private static void log(final Object pattern, final Object... args) {

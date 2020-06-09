@@ -21,7 +21,14 @@ package io.jenetics.util;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.stream.IntStream;
 
@@ -32,12 +39,12 @@ import java.util.stream.IntStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 6.0
  * @since 3.2
  */
-public final class IntRange implements Serializable {
+public final /*record*/ class IntRange implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final int _min;
 	private final int _max;
@@ -58,7 +65,7 @@ public final class IntRange implements Serializable {
 	 *
 	 * @return the minimum value of the integer range
 	 */
-	public int getMin() {
+	public int min() {
 		return _min;
 	}
 
@@ -67,7 +74,7 @@ public final class IntRange implements Serializable {
 	 *
 	 * @return the maximum value of the integer range
 	 */
-	public int getMax() {
+	public int max() {
 		return _max;
 	}
 
@@ -83,14 +90,14 @@ public final class IntRange implements Serializable {
 	}
 
 	/**
-	 * Returns a sequential ordered {@code IntStream} from {@link #getMin()}
-	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * Returns a sequential ordered {@code IntStream} from {@link #min()}
+	 * (inclusive) to {@link #max()} (exclusive) by an incremental step of
 	 * {@code 1}.
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
 	 * <pre>{@code
-	 * for (int i = range.getMin(); i < range.getMax(); ++i) {
+	 * for (int i = range.min(); i < range.max(); ++i) {
 	 *     ...
 	 * }
 	 * }</pre>
@@ -132,7 +139,7 @@ public final class IntRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_min, hash(_max, hash(getClass())));
+		return hash(_min, hash(_max));
 	}
 
 	@Override
@@ -146,6 +153,30 @@ public final class IntRange implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + _min + ", " + _max + "]";
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.INT_RANGE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_min, out);
+		writeInt(_max, out);
+	}
+
+	static IntRange read(final DataInput in) throws IOException {
+		return of(readInt(in), readInt(in));
 	}
 
 }

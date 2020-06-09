@@ -37,8 +37,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
-
-import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.util.ISeq;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
 
@@ -110,7 +109,7 @@ public final class Writers {
 		public static Writer<io.jenetics.BitChromosome> writer() {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.BitChromosome::length),
-				attr(ONES_PROBABILITY_NAME).map(ch -> ch.getOneProbability()),
+				attr(ONES_PROBABILITY_NAME).map(ch -> ch.oneProbability()),
 				text().map(io.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
@@ -135,7 +134,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				writer().write(xml, data);
 			}
 		}
@@ -180,7 +179,7 @@ public final class Writers {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.CharacterChromosome::length),
 				elem(VALID_ALLELES_NAME,
-					text().map(ch -> ch.getGene().getValidCharacters())),
+					text().map(ch -> ch.gene().validChars())),
 				elem(ALLELES_NAME,
 					text().map(io.jenetics.CharacterChromosome::toString))
 			);
@@ -208,7 +207,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -287,11 +286,11 @@ public final class Writers {
 
 			return elem(rootName,
 				attr(LENGTH_NAME).map(ch -> ch.length()),
-				elem(MIN_NAME, alleleWriter.map(ch -> ch.getMin())),
-				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
+				elem(MIN_NAME, alleleWriter.map(ch -> ch.min())),
+				elem(MAX_NAME, alleleWriter.map(ch -> ch.max())),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.toSeq().map(G::getAllele))
+						.map(ch -> ISeq.of(ch).map(G::allele))
 				)
 			);
 		}
@@ -392,7 +391,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -511,7 +510,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -635,7 +634,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -719,11 +718,11 @@ public final class Writers {
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					Writer.<A>elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.getValidAlleles())
+						.map(io.jenetics.PermutationChromosome::validAlleles)
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
-						.map(g -> Integer.toString(g.getAlleleIndex()))
+						.map(g -> Integer.toString(g.alleleIndex()))
 						.collect(Collectors.joining(" ")))
 			);
 		}
@@ -731,7 +730,7 @@ public final class Writers {
 		private static String toAlleleTypeName(
 			final io.jenetics.PermutationChromosome<?> ch
 		) {
-			return ch.getGene().getAllele().getClass().getCanonicalName();
+			return ch.gene().allele().getClass().getCanonicalName();
 		}
 
 		/**
@@ -797,7 +796,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer().write(writer, data);
 			}
 		}
@@ -828,7 +827,7 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer(alleleWriter)
 					.write(xml, data);
 			}
@@ -949,9 +948,9 @@ public final class Writers {
 		Writer<io.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem(
 				ROOT_NAME,
-				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
-				elems(writer).map(gt -> cast(gt.toSeq()))
+				attr(LENGTH_NAME).map(io.jenetics.Genotype::length),
+				attr(NGENES_NAME).map(io.jenetics.Genotype::geneCount),
+				elems(writer).map(gt -> cast(ISeq.of(gt)))
 			);
 		}
 
@@ -994,7 +993,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
@@ -1031,7 +1030,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1152,7 +1151,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1189,7 +1188,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}

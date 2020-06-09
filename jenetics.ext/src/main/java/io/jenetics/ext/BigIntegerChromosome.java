@@ -19,16 +19,22 @@
  */
 package io.jenetics.ext;
 
+import static io.jenetics.internal.util.SerialIO.readBytes;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeBytes;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 
 import io.jenetics.AbstractChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.NumericChromosome;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -36,7 +42,7 @@ import io.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds arbitrary sized integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version 5.2
  * @since 3.5
  */
 public class BigIntegerChromosome
@@ -62,8 +68,8 @@ public class BigIntegerChromosome
 	 */
 	protected BigIntegerChromosome(final ISeq<BigIntegerGene> genes) {
 		super(genes);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	/**
@@ -98,12 +104,12 @@ public class BigIntegerChromosome
 	}
 
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 
@@ -162,35 +168,38 @@ public class BigIntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.BIG_INTEGER_CHROMOSOME, this);
+	}
 
-		out.writeInt(length());
-		out.writeObject(_min);
-		out.writeObject(_max);
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeBytes(_min.toByteArray(), out);
+		writeBytes(_max.toByteArray(), out);
 
 		for (BigIntegerGene gene : _genes) {
-			out.writeObject(gene.getAllele());
+			writeBytes(gene.allele().toByteArray(), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static BigIntegerChromosome read(final DataInput in) throws IOException {
+		final var length = readInt(in);
+		final var min = new BigInteger(readBytes(in));
+		final var max = new BigInteger(readBytes(in));
 
-		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_min", in.readObject());
-		reflect.setField(this, "_max", in.readObject());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			final BigInteger value = (BigInteger)in.readObject();
-			genes.set(i, BigIntegerGene.of(value, _min, _max));
+		final MSeq<BigIntegerGene> genes = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			final BigInteger value = new BigInteger(readBytes(in));
+			genes.set(i, BigIntegerGene.of(value, min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new BigIntegerChromosome(genes.toISeq());
 	}
 
 }

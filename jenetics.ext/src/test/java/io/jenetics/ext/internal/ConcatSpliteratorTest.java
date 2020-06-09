@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.internal;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -37,7 +37,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -50,7 +50,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1, s2)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -64,7 +64,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -78,7 +78,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(2)
 			.toArray();
@@ -93,7 +93,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(5)
 			.toArray();
@@ -108,7 +108,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(5)
 			.toArray();

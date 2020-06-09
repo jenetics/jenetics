@@ -47,7 +47,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 6.0
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -89,7 +89,7 @@ public interface EvolutionStream<
 	 * @return the new stream
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public EvolutionStream<G, C>
+	EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
 
 	/**
@@ -111,7 +111,7 @@ public interface EvolutionStream<
 	 *
 	 *     // The fitness function.
 	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
-	 *         return gt.getGene().getAllele();
+	 *         return gt.gene().allele();
 	 *     }
 	 *
 	 *     // Create new evolution start object.
@@ -135,7 +135,7 @@ public interface EvolutionStream<
 	 *
 	 *     public static void main(final String[] args) {
 	 *         final Genotype<DoubleGene> best = EvolutionStream
-	 *             .of(() -> start(50, 0), SpecialEngine::evolve)
+	 *             .ofEvolution(() -> start(50, 0), SpecialEngine::evolve)
 	 *             .limit(Limits.bySteadyFitness(10))
 	 *             .limit(1000)
 	 *             .collect(EvolutionResult.toBestGenotype());
@@ -146,7 +146,9 @@ public interface EvolutionStream<
 	 * }</pre>
 	 *
 	 *
-	 * @since 3.1
+	 * @since 5.1
+	 *
+	 * @see #ofAdjustableEvolution(Supplier, Function)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -157,12 +159,87 @@ public interface EvolutionStream<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> of(
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> ofEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+		final Evolution<G, C> evolution
 	) {
 		return new EvolutionStreamImpl<>(start, evolution);
+	}
+
+	/**
+	 * Create a new evolution stream with an <em>adjustable</em> evolution
+	 * function.
+	 *
+	 * <pre>{@code
+	 * public static void main(final String[] args) {
+	 *     final Problem<double[], DoubleGene, Double> problem = Problem.of(
+	 *         v -> Math.sin(v[0])*Math.cos(v[1]),
+	 *         Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+	 *     );
+	 *
+	 *     // Engine builder template.
+	 *     final Engine.Builder<DoubleGene, Double> builder = Engine
+	 *         .builder(problem)
+	 *         .minimizing();
+	 *
+	 *     // Evolution used for low fitness variance.
+	 *     final Evolution<DoubleGene, Double> lowVar = builder.copy()
+	 *         .alterers(new Mutator<>(0.5))
+	 *         .selector(new MonteCarloSelector<>())
+	 *         .build();
+	 *
+	 *     // Evolution used for high fitness variance.
+	 *     final Evolution<DoubleGene, Double> highVar = builder.copy()
+	 *         .alterers(
+	 *             new Mutator<>(0.05),
+	 *             new MeanAlterer<>())
+	 *         .selector(new RouletteWheelSelector<>())
+	 *         .build();
+	 *
+	 *     final EvolutionStream<DoubleGene, Double> stream =
+	 *         EvolutionStream.ofAdjustableEvolution(
+	 *             EvolutionStart::empty,
+	 *             er -> var(er) < 0.2 ? lowVar : highVar
+	 *         );
+	 *
+	 *     final Genotype<DoubleGene> result = stream
+	 *         .limit(Limits.bySteadyFitness(50))
+	 *         .collect(EvolutionResult.toBestGenotype());
+	 *
+	 *     System.out.println(result + ": " +
+	 *         problem.fitness().apply(problem.codec().decode(result)));
+	 * }
+	 *
+	 * private static double var(final EvolutionStart<DoubleGene, Double> result) {
+	 *     return result != null
+	 *         ? result.getPopulation().stream()
+	 *             .map(Phenotype::fitness)
+	 *             .collect(DoubleMoments.toDoubleMoments())
+	 *             .variance()
+	 *         : 0.0;
+	 * }
+	 * }</pre>
+	 *
+	 * @see #ofEvolution(Supplier, Evolution)
+	 *
+	 * @param start the evolution start object
+	 * @param evolution the adaptable evolution function
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a new {@code EvolutionStream} with the given {@code start} and
+	 *         {@code evolution} function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 */
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> ofAdjustableEvolution(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
+	) {
+		return EvolutionStreamImpl.of(start, evolution);
 	}
 
 }

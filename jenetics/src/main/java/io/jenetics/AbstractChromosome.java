@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 
@@ -39,7 +38,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 5.2
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -84,13 +83,13 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
-	public G getGene(final int index) {
+	public G get(final int index) {
 		return _genes.get(index);
 	}
 
 	@Override
-	public ISeq<G> toSeq() {
-		return _genes;
+	public int length() {
+		return _genes.length();
 	}
 
 	@Override
@@ -98,18 +97,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		if (_valid == null) {
 			_valid = _genes.forAll(Verifiable::isValid);
 		}
-
 		return _valid;
-	}
-
-	@Override
-	public Iterator<G> iterator() {
-		return _genes.iterator();
-	}
-
-	@Override
-	public int length() {
-		return _genes.length();
 	}
 
 	@Override

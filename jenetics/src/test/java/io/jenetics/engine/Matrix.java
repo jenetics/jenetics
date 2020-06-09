@@ -65,9 +65,9 @@ public class Matrix {
 	private static int fitness(final int[] v) {
 		int sum = 0;
 		int tens = 0;
-		for (int i = 0; i < v.length; ++i) {
-			sum += v[i];
-			if (v[i] == 10) ++tens;
+		for (int value : v) {
+			sum += value;
+			if (value == 10) ++tens;
 		}
 
 		return tens <= 1 ? sum : 0;

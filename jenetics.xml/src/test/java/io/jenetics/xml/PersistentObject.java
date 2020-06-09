@@ -21,10 +21,10 @@ package io.jenetics.xml;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.random.nextByte;
-import static io.jenetics.internal.math.random.nextChar;
-import static io.jenetics.internal.math.random.nextShort;
-import static io.jenetics.internal.math.random.nextASCIIString;
+import static io.jenetics.internal.math.Randoms.nextASCIIString;
+import static io.jenetics.internal.math.Randoms.nextByte;
+import static io.jenetics.internal.math.Randoms.nextChar;
+import static io.jenetics.internal.math.Randoms.nextShort;
 import static io.jenetics.util.RandomRegistry.using;
 import static io.jenetics.xml.stream.Reader.text;
 
@@ -40,8 +40,6 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
-import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.CharacterChromosome;
@@ -55,9 +53,9 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
-
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
@@ -129,7 +127,7 @@ public class PersistentObject<T> {
 		final Reader<? extends T> reader
 	) {
 		VALUES.add(new PersistentObject<>(name, value, writer, reader));
-		RandomRegistry.getRandom().setSeed(SEED);
+		RandomRegistry.random().setSeed(SEED);
 	}
 
 	private static void init() {
@@ -286,7 +284,7 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.of(ISeq.<Integer>of(random()::nextInt, 5));
+		return EnumGene.of(ISeq.of(random()::nextInt, 5));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
@@ -460,7 +458,7 @@ public class PersistentObject<T> {
 
 
 	private static Random random() {
-		return RandomRegistry.getRandom();
+		return RandomRegistry.random();
 	}
 
 	static {

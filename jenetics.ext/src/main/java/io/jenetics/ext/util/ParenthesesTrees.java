@@ -23,6 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
+import io.jenetics.ext.internal.Escaper;
+
 /**
  * Helper methods for creating parentheses tree strings.
  *
@@ -33,56 +35,17 @@ import java.util.function.Function;
 final class ParenthesesTrees {
 	private ParenthesesTrees() {}
 
-
+	private static final char[] PROTECTED_CHARS = { '(', ')', ',' };
 	static final char ESCAPE_CHAR = '\\';
 
-	private static final char[] PROTECTED_CHARS = new char[] {
-		'(', ')', ',', ESCAPE_CHAR
-	};
+	private static final Escaper ESCAPER = new Escaper(ESCAPE_CHAR, PROTECTED_CHARS);
 
-	static String escape(final String value) {
-		final StringBuilder result = new StringBuilder();
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-			if (isProtectedChar(c)) {
-				result.append(ESCAPE_CHAR);
-			}
-			result.append(c);
-		}
-
-		return result.toString();
+	static String escape(final CharSequence value) {
+		return ESCAPER.escape(value);
 	}
 
-	private static boolean isProtectedChar(final char c) {
-		for (int i = 0; i < PROTECTED_CHARS.length; ++i) {
-			if (c == PROTECTED_CHARS[i]) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-
-	static String unescape(final String value) {
-		final StringBuilder result = new StringBuilder();
-
-		boolean escaping = false;
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-
-			if (c == ESCAPE_CHAR && !escaping) {
-				escaping = true;
-				continue;
-			}
-
-			if (escaping) {
-				escaping = false;
-			}
-			result.append(c);
-		}
-
-		return result.toString();
+	static String unescape(final CharSequence value) {
+		return ESCAPER.unescape(value);
 	}
 
 	/* *************************************************************************
@@ -96,11 +59,12 @@ final class ParenthesesTrees {
 	 * </pre>
 	 *
 	 * @param tree the input tree
+	 * @param mapper the string mapper function
 	 * @return the string representation of the given tree
 	 */
-	static <V, T extends Tree<V, T>> String toString(
-		final T tree,
-		final Function<? super V, String> mapper
+	static <V> String toString(
+		final Tree<V, ?> tree,
+		final Function<? super V, ? extends CharSequence> mapper
 	) {
 		requireNonNull(mapper);
 
@@ -113,18 +77,18 @@ final class ParenthesesTrees {
 		}
 	}
 
-	private static  <V, T extends Tree<V, T>> void toString(
+	private static  <V> void toString(
 		final StringBuilder out,
-		final T tree,
-		final Function<? super V, String> mapper
+		final Tree<V, ?> tree,
+		final Function<? super V, ? extends CharSequence> mapper
 	) {
-		out.append(escape(mapper.apply(tree.getValue())));
+		out.append(escape(mapper.apply(tree.value())));
 		if (!tree.isLeaf()) {
 			out.append("(");
-			toString(out, tree.getChild(0), mapper);
+			toString(out, tree.childAt(0), mapper);
 			for (int i = 1; i < tree.childCount(); ++i) {
 				out.append(",");
-				toString(out, tree.getChild(i), mapper);
+				toString(out, tree.childAt(i), mapper);
 			}
 			out.append(")");
 		}

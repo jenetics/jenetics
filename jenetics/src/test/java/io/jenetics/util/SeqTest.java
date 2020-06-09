@@ -36,7 +36,7 @@ public class SeqTest {
 	@Test
 	public void collector() {
 		final int size = 10_000;
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final List<Double> list = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
@@ -182,6 +182,40 @@ public class SeqTest {
 	public void toArray4() {
 		final Seq<String> mseq = MSeq.of("1", "2");
 		final Integer[] array = mseq.toArray(new Integer[]{1, 2, 3, 4});
+	}
+
+	@Test
+	public void toArray5() {
+		final Seq<String> mseq = MSeq.of("1", "2");
+		final String[] array = mseq.toArray(String[]::new);
+
+		Assert.assertEquals(array.length, 2);
+		Assert.assertEquals(array[0], mseq.get(0));
+		Assert.assertEquals(array[1], mseq.get(1));
+	}
+
+	@Test
+	public void collectLimitedSeq() {
+		final Seq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(Seq.toSeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(Seq.toSeq(25)),
+			seq.subSeq(75)
+		);
+	}
+
+	@Test
+	public void collectEmptySeq() {
+		final Seq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(Seq.toSeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(Seq.toSeq(0)),
+			Seq.empty()
+		);
 	}
 
 }

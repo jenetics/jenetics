@@ -27,15 +27,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.util.Tree;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 6.0
  * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
@@ -51,7 +50,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	private final int _childOffset;
 	private final int _childCount;
 
-	private ISeq<G> _genes;
+	private BaseSeq<G> _genes;
 
 	/**
 	 * Creates a new tree-gene from the given data.
@@ -88,22 +87,22 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 */
 	@Override
 	public ISeq<G> flattenedNodes() {
-		return _genes;
+		return ISeq.of(_genes);
 	}
 
 	@Override
-	public G getRoot() {
+	public G root() {
 		return _genes.get(0);
 	}
 
 	@Override
 	public boolean isRoot() {
-		return getRoot() == this;
+		return root() == this;
 	}
 
 	@Override
 	public int size() {
-		return isRoot() ? _genes.size() : TreeGene.super.size();
+		return isRoot() ? _genes.length() : TreeGene.super.size();
 	}
 
 	protected void checkTreeState() {
@@ -120,7 +119,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 *
 	 * @param genes the genes of the attached chromosome
 	 */
-	protected void bind(final ISeq<G> genes) {
+	protected void bind(final BaseSeq<G> genes) {
 		_genes = requireNonNull(genes);
 	}
 
@@ -130,7 +129,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public A getAllele() {
+	public A allele() {
 		return _allele;
 	}
 
@@ -142,7 +141,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
-	public Optional<G> getParent() {
+	public Optional<G> parent() {
 		checkTreeState();
 
 		return _genes.stream()
@@ -160,7 +159,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
-	public G getChild(final int index) {
+	public G childAt(final int index) {
 		checkTreeState();
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException(format(
@@ -180,15 +179,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public boolean isValid() {
 		return _genes != null;
-	}
-
-	@Override
-	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof AbstractTreeGene &&
-			Objects.equals(((AbstractTreeGene)other)._allele, _allele) &&
-			((AbstractTreeGene)other)._genes == _genes &&
-			((AbstractTreeGene)other)._childOffset == _childOffset &&
-			((AbstractTreeGene)other)._childCount == _childCount;
 	}
 
 	@Override

@@ -21,8 +21,7 @@ package io.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.base.normalize;
-import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.math.Basics.normalize;
 
 import java.util.Arrays;
 
@@ -57,7 +56,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
@@ -98,11 +97,11 @@ public final class BoltzmannSelector<
 		// Copy the fitness values to probabilities arrays.
 		final double[] fitness = new double[population.size()];
 
-		fitness[0] = population.get(0).getFitness().doubleValue();
+		fitness[0] = population.get(0).fitness().doubleValue();
 		double min = fitness[0];
 		double max = fitness[0];
 		for (int i = 1; i < fitness.length; ++i) {
-			fitness[i] = population.get(i).getFitness().doubleValue();
+			fitness[i] = population.get(i).fitness().doubleValue();
 			if (fitness[i] < min) min = fitness[i];
 			else if (fitness[i] > max) max = fitness[i];
 		}
@@ -124,18 +123,6 @@ public final class BoltzmannSelector<
 		}
 
 		return normalize(fitness);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_b);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof BoltzmannSelector &&
-			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 
 	@Override

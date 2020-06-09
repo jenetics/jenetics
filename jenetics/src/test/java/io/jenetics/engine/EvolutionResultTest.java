@@ -39,6 +39,7 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.stat.MinMax;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -56,16 +57,19 @@ public class EvolutionResultTest
 	protected Factory<EvolutionResult<DoubleGene, Double>> factory() {
 		final Function<Genotype<DoubleGene>, Double> ff =
 			(Function<Genotype<DoubleGene>, Double> & Serializable)
-				a -> a.getGene().getAllele();
+				a -> a.gene().allele();
 
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
-			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0, 1));
+			final Random random = RandomRegistry.random();
+			final Genotype<DoubleGene> gtf = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
 				random.nextBoolean() ? Optimize.MAXIMUM : Optimize.MINIMUM,
 				IntStream.range(0, 100)
-					.mapToObj(i -> Phenotype.of(gt.newInstance(), 1, ff))
+					.mapToObj(i -> {
+						final Genotype<DoubleGene> gt = gtf.newInstance();
+						return Phenotype.of(gt, 1, gt.gene().doubleValue());
+					})
 					.collect(ISeq.toISeq()),
 				random.nextInt(1000),
 				random.nextInt(1000),
@@ -89,7 +93,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectEvolutionResult() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
@@ -103,7 +107,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectPhenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
@@ -117,7 +121,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectGenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Genotype<DoubleGene> result = engine.stream()
@@ -130,56 +134,55 @@ public class EvolutionResultTest
 	@Test
 	public void bestWorstPhenotype() {
 		final int length = 100;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> population = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			population.set(i, Phenotype.of(gt, 1, ff));
+			population.set(i, Phenotype.of(gt, 1, i));
 		}
-		population.shuffle(RandomRegistry.getRandom());
+		population.shuffle(RandomRegistry.random());
 
 		final EvolutionResult<IntegerGene, Integer> maxResult = EvolutionResult.of(
 			Optimize.MAXIMUM, population.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
-		Assert.assertEquals(maxResult.getBestFitness().intValue(), length - 1);
-		Assert.assertEquals(maxResult.getWorstFitness().intValue(), 0);
+		Assert.assertEquals(maxResult.bestFitness().intValue(), length - 1);
+		Assert.assertEquals(maxResult.worstFitness().intValue(), 0);
 
 		final EvolutionResult<IntegerGene, Integer> minResult = EvolutionResult.of(
 				Optimize.MINIMUM, population.toISeq(),
 				0, 0, EvolutionDurations.ZERO, 0, 0, 0
 			);
 
-		Assert.assertEquals(minResult.getBestFitness().intValue(), 0);
-		Assert.assertEquals(minResult.getWorstFitness().intValue(), length - 1);
+		Assert.assertEquals(minResult.bestFitness().intValue(), 0);
+		Assert.assertEquals(minResult.worstFitness().intValue(), length - 1);
 	}
 
 	@Test
 	public void compareTo() {
 		final int length = 100;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().allele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> small = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			small.set(i, Phenotype.of(gt, 1, ff));
+			small.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
-		small.shuffle(RandomRegistry.getRandom());
+		small.shuffle(RandomRegistry.random());
 
 		final MSeq<Phenotype<IntegerGene, Integer>> big = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i + length, 0, length)
 			));
-			big.set(i, Phenotype.of(gt, 1, ff));
+			big.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
-		big.shuffle(RandomRegistry.getRandom());
+		big.shuffle(RandomRegistry.random());
 
 
 		final EvolutionResult<IntegerGene, Integer> smallMaxResult = EvolutionResult.of(
@@ -217,14 +220,14 @@ public class EvolutionResultTest
 		final int bestMaxValue = IntStream.range(0, 100)
 			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
 			.collect(toBestEvolutionResult())
-			.getBestFitness();
+			.bestFitness();
 
 		Assert.assertEquals(bestMaxValue, 99);
 
 		final int bestMinValue = IntStream.range(0, 100)
 			.mapToObj(value -> newResult(Optimize.MINIMUM, value))
 			.collect(EvolutionResult.toBestGenotype())
-			.getGene().getAllele();
+			.gene().allele();
 
 		Assert.assertEquals(bestMinValue, 0);
 	}
@@ -234,16 +237,16 @@ public class EvolutionResultTest
 		final int value
 	) {
 		final int length = 1000;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().allele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> pop = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(value, 0, length)
 			));
-			pop.set(i, Phenotype.of(gt, 1, ff));
+			pop.set(i, Phenotype.of(gt, 1, value));
 		}
-		pop.shuffle(RandomRegistry.getRandom());
+		pop.shuffle(RandomRegistry.random());
 
 
 		return EvolutionResult
@@ -259,7 +262,7 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
 		Assert.assertSame(
-			EvolutionResult.<IntegerGene, Integer>toUniquePopulation().apply(result),
+			EvolutionResult.<IntegerGene, Integer>toUniquePopulation().after(result),
 			result
 		);
 	}
@@ -268,7 +271,7 @@ public class EvolutionResultTest
 	result(final ISeq<Genotype<IntegerGene>> genotypes) {
 		return EvolutionResult.of(
 			Optimize.MAXIMUM,
-			genotypes.map(gt -> Phenotype.of(gt, 1, Genotype::length)),
+			genotypes.map(gt -> Phenotype.of(gt, 1)),
 			8,
 			2,
 			EvolutionDurations.ZERO,
@@ -285,21 +288,21 @@ public class EvolutionResultTest
 				.limit(100)
 				.collect(ISeq.toISeq());
 
-		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
-			unifier = EvolutionResult.toUniquePopulation(
-				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE)));
+		final var unifier = EvolutionResult.<IntegerGene, Integer>toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))
+		);
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
-		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.after(result);
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertEquals(
-			unified.getGenotypes().stream().collect(Collectors.toSet()).size(),
-			unified.getPopulation().size()
+			unified.genotypes().stream().collect(Collectors.toSet()).size(),
+			unified.population().size()
 		);
 		Assert.assertEquals(
-			result.getPopulation().size(),
-			unified.getPopulation().size()
+			result.population().size(),
+			unified.population().size()
 		);
 	}
 
@@ -310,22 +313,35 @@ public class EvolutionResultTest
 				.limit(100)
 				.collect(ISeq.toISeq());
 
-		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
-			unifier = EvolutionResult.toUniquePopulation(
-			Genotype.of(IntegerChromosome.of(0, 10)));
+		final EvolutionInterceptor<IntegerGene, Integer> unifier =
+			EvolutionResult.toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, 10))
+			);
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
-		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.after(result);
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertTrue(
-			unified.getGenotypes().stream().collect(Collectors.toSet()).size() <
-			unified.getPopulation().size()
+			unified.genotypes().stream().collect(Collectors.toSet()).size() <
+			unified.population().size()
 		);
 		Assert.assertEquals(
-			result.getPopulation().size(),
-			unified.getPopulation().size()
+			result.population().size(),
+			unified.population().size()
 		);
+	}
+
+	@Test
+	public void toStrictlyImprovingResults() {
+		final ISeq<Integer> results = new Random()
+			.ints(100, 0, 100)
+			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
+			.flatMap(MinMax.toStrictlyIncreasing())
+			.map(EvolutionResult::bestFitness)
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(results.isSorted());
 	}
 
 }

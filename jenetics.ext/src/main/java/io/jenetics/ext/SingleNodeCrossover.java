@@ -20,7 +20,6 @@
 package io.jenetics.ext;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -67,7 +66,7 @@ import io.jenetics.ext.util.TreeNode;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.0
  * @since 3.9
  */
 public class SingleNodeCrossover<
@@ -95,7 +94,7 @@ public class SingleNodeCrossover<
 		assert that != null;
 		assert other != null;
 
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final ISeq<TreeNode<A>> seq1 = that.breadthFirstStream()
 			.collect(ISeq.toISeq());
@@ -106,13 +105,13 @@ public class SingleNodeCrossover<
 		final int changed;
 		if (seq1.length() > 1 && seq2.length() > 1) {
 			final TreeNode<A> n1 = seq1.get(random.nextInt(seq1.length() - 1) + 1);
-			final TreeNode<A> p1 = n1.getParent().orElseThrow(AssertionError::new);
+			final TreeNode<A> p1 = n1.parent().orElseThrow(AssertionError::new);
 
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
-			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
+			final TreeNode<A> p2 = n2.parent().orElseThrow(AssertionError::new);
 
-			final int i1 = p1.getIndex(n1);
-			final int i2 = p2.getIndex(n2);
+			final int i1 = p1.indexOf(n1);
+			final int i2 = p2.indexOf(n2);
 
 			p1.insert(i1, n2.detach());
 			p2.insert(i2, n1.detach());
@@ -123,18 +122,6 @@ public class SingleNodeCrossover<
 		}
 
 		return changed;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_probability);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof SingleNodeCrossover &&
-			Double.compare(((SingleNodeCrossover)obj)._probability, _probability) == 0;
 	}
 
 	@Override

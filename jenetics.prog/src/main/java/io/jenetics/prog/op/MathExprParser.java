@@ -24,13 +24,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,11 +44,10 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprParser {
 
-	static final Map<String, Const<Double>> CONST = new HashMap<>();
-	static {
-		CONST.put("PI", MathOp.PI);
-		CONST.put("π",  MathOp.PI);
-	}
+	private static final Map<String, Const<Double>> CONST = Map.of(
+		"PI", MathOp.PI,
+		"π", MathOp.PI
+	);
 
 	/**
 	 * Contains the token regex and the token kind;
@@ -133,7 +129,7 @@ final class MathExprParser {
 			_infos.add(new TokenDesc(Pattern.compile("^(" + regex+")"), token));
 		}
 
-		public Deque<Token> tokenize(final String expression) {
+		Deque<Token> tokenize(final String expression) {
 			final Deque<Token> tokens = new LinkedList<>();
 
 			String string = expression.trim();
@@ -191,30 +187,8 @@ final class MathExprParser {
 			));
 		}
 
-		return addVarIndex(expr);
-	}
-
-	private static TreeNode<Op<Double>>
-	addVarIndex(final TreeNode<Op<Double>> tree) {
-		final SortedSet<String> vars = tree.stream()
-			.filter(node -> node.getValue() instanceof Var)
-			.map(node -> node.getValue().name())
-			.collect(Collectors.toCollection(TreeSet::new));
-
-		int nextIndex = 0;
-		final Map<String, Integer> indexes = new HashMap<>();
-		for (String name : vars) {
-			indexes.put(name, nextIndex++);
-		}
-
-		for (TreeNode<Op<Double>> node : tree) {
-			final Op<Double> op = node.getValue();
-			if (op instanceof Var) {
-				node.setValue(Var.of(op.name(), indexes.get(op.name())));
-			}
-		}
-
-		return tree;
+		Var.reindex(expr);
+		return expr;
 	}
 
 	private TreeNode<Op<Double>> expression() {
@@ -335,7 +309,9 @@ final class MathExprParser {
 			final TreeNode<Op<Double>> node = TreeNode.of(function);
 			list(argument(), new ArrayList<>()).forEach(node::attach);
 			return node;
-		} else if (_next.token == Token.COMMA) {
+		} else if (_next.token == Token.COMMA ||
+			_next.token == Token.OPEN_BRACKET)
+		{
 			nextToken();
 			TreeNode<Op<Double>> expr = expression();
 			if (_next.token == Token.COMMA) {
@@ -347,25 +323,6 @@ final class MathExprParser {
 				return expr;
 			}
 
-			if (_next.token != Token.CLOSE_BRACKET) {
-				throw new IllegalArgumentException(format(
-					"Closing brackets expected: %s", _next));
-			}
-
-			nextToken();
-			return expr;
-		}  else if (_next.token == Token.OPEN_BRACKET) {
-			nextToken();
-			TreeNode<Op<Double>> expr = expression();
-
-			if (_next.token == Token.COMMA) {
-				expr = TreeNode
-					.of(LIST_OP)
-					.attach(expr)
-					.attach(argument());
-
-				return expr;
-			}
 			if (_next.token != Token.CLOSE_BRACKET) {
 				throw new IllegalArgumentException(format(
 					"Closing brackets expected: %s", _next));
@@ -388,7 +345,7 @@ final class MathExprParser {
 		final TreeNode<Op<Double>> tree,
 		final List<TreeNode<Op<Double>>> list
 	) {
-		if (tree.getValue() == LIST_OP) {
+		if (tree.value() == LIST_OP) {
 			tree.childStream().forEach(child -> list(child, list));
 		} else {
 			list.add(tree);

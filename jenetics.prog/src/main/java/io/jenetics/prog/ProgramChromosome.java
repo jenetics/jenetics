@@ -21,15 +21,18 @@ package io.jenetics.prog;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -69,8 +72,8 @@ public class ProgramChromosome<A>
 	private static final long serialVersionUID = 1L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
-	private final ISeq<? extends Op<A>> _operations;
-	private final ISeq<? extends Op<A>> _terminals;
+	private final ISeq<Op<A>> _operations;
+	private final ISeq<Op<A>> _terminals;
 
 	/**
 	 * Create a new program chromosome from the given program genes. This
@@ -97,8 +100,8 @@ public class ProgramChromosome<A>
 	) {
 		super(program);
 		_validator = requireNonNull(validator);
-		_operations = requireNonNull(operations);
-		_terminals = requireNonNull(terminals);
+		_operations = requireNonNull(ISeq.upcast(operations));
+		_terminals = requireNonNull(ISeq.upcast(terminals));
 
 		if (operations.isEmpty()) {
 			throw new IllegalArgumentException("No operations given.");
@@ -111,18 +114,22 @@ public class ProgramChromosome<A>
 	/**
 	 * Return the allowed operations.
 	 *
+	 * @since 5.0
+	 *
 	 * @return the allowed operations
 	 */
-	public ISeq<? extends Op<A>> getOperations() {
+	public ISeq<Op<A>> operations() {
 		return _operations;
 	}
 
 	/**
 	 * Return the allowed terminal operations.
 	 *
+	 * @since 5.0
+	 *
 	 * @return the allowed terminal operations
 	 */
-	public ISeq<? extends Op<A>> getTerminals() {
+	public ISeq<Op<A>> terminals() {
 		return _terminals;
 	}
 
@@ -136,7 +143,7 @@ public class ProgramChromosome<A>
 	}
 
 	private boolean isSuperValid() {
-		return ProgramChromosome.super.isValid();
+		return super.isValid();
 	}
 
 	/**
@@ -151,7 +158,7 @@ public class ProgramChromosome<A>
 	 */
 	@Override
 	public A apply(final A[] args) {
-		return getRoot().apply(args);
+		return root().apply(args);
 	}
 
 	/**
@@ -166,7 +173,7 @@ public class ProgramChromosome<A>
 	 */
 	@SafeVarargs
 	public final A eval(final A... args) {
-		return getRoot().eval(args);
+		return root().eval(args);
 	}
 
 	@Override
@@ -176,7 +183,7 @@ public class ProgramChromosome<A>
 
 	@Override
 	public ProgramChromosome<A> newInstance() {
-		return create(getRoot().depth(), _validator, _operations, _terminals);
+		return create(root().depth(), _validator, _operations, _terminals);
 	}
 
 	/**
@@ -215,9 +222,9 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
+		final ISeq<ProgramGene<A>> genes = FlatTreeNode.ofTree(program).stream()
 			.map(n -> new ProgramGene<>(
-				n.getValue(), n.childOffset(), operations, terminals))
+				n.value(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());
 
 		return new ProgramChromosome<>(genes, validator, operations, terminals);
@@ -225,8 +232,7 @@ public class ProgramChromosome<A>
 
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
 		final ISeq<?> terminals = operations.stream()
-			.filter(op -> op.isTerminal())
-			.map(op -> (Op<?>)op)
+			.filter(Op::isTerminal)
 			.collect(ISeq.toISeq());
 
 		if (!terminals.isEmpty()) {
@@ -240,7 +246,6 @@ public class ProgramChromosome<A>
 	private static void checkTerminals(final ISeq<? extends Op<?>> terminals) {
 		final ISeq<?> operations = terminals.stream()
 			.filter(op -> !op.isTerminal())
-			.map(op -> (Op<?>)op)
 			.collect(ISeq.toISeq());
 
 		if (!operations.isEmpty()) {
@@ -337,7 +342,8 @@ public class ProgramChromosome<A>
 	) {
 		return of(
 			depth,
-			(Predicate<? super ProgramChromosome<A>> & Serializable)ProgramChromosome::isSuperValid,
+			(Predicate<? super ProgramChromosome<A>> & Serializable)
+				ProgramChromosome::isSuperValid,
 			operations,
 			terminals
 		);
@@ -400,38 +406,43 @@ public class ProgramChromosome<A>
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
+	}
 
-		out.writeInt(length());
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(length(), out);
 		out.writeObject(_operations);
 		out.writeObject(_terminals);
 
 		for (ProgramGene<A> gene : _genes) {
-			out.writeObject(gene.getAllele());
-			out.writeInt(gene.childOffset());
+			out.writeObject(gene.allele());
+			writeInt(gene.childOffset(), out);
 		}
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void readObject(final ObjectInputStream in)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static ProgramChromosome read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
+		final var length = readInt(in);
+		final var operations = (ISeq)in.readObject();
+		final var terminals = (ISeq)in.readObject();
 
-		final MSeq<ProgramGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_operations", in.readObject());
-		reflect.setField(this, "_terminals", in.readObject());
-
+		final MSeq genes = MSeq.ofLength(length);
 		for (int i = 0; i < genes.length(); ++i) {
 			final Op op = (Op)in.readObject();
-			final int childOffset = in.readInt();
-			genes.set(i, new ProgramGene(op, childOffset, _operations, _terminals));
+			final int childOffset = readInt(in);
+			genes.set(i, new ProgramGene(op, childOffset, operations, terminals));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return ProgramChromosome.of(genes.toISeq(), operations, terminals);
 	}
 
 }

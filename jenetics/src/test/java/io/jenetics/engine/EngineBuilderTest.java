@@ -43,7 +43,7 @@ public class EngineBuilderTest {
 	@Test
 	public void build() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 		final Selector<DoubleGene, Double> survivorsSelector = new RouletteWheelSelector<>();
@@ -65,21 +65,20 @@ public class EngineBuilderTest {
 			.maximalPhenotypeAge(phenotypeAge)
 			.build();
 
-		Assert.assertEquals(engine.getFitnessFunction(), fitnessFunction);
-		Assert.assertEquals(engine.getOffspringSelector(), offspringSelector);
-		Assert.assertEquals(engine.getSurvivorsSelector(), survivorsSelector);
-		Assert.assertEquals(engine.getAlterer(), alterer);
-		Assert.assertEquals(engine.getOptimize(), optimize);
-		Assert.assertEquals(engine.getOffspringCount(), (int)(offspringFraction*populationSize));
-		Assert.assertEquals(engine.getOffspringCount() + engine.getSurvivorsCount(), populationSize);
-		Assert.assertEquals(engine.getPopulationSize(), populationSize);
-		Assert.assertEquals(engine.getMaximalPhenotypeAge(), phenotypeAge);
+		Assert.assertEquals(engine.offspringSelector(), offspringSelector);
+		Assert.assertEquals(engine.survivorsSelector(), survivorsSelector);
+		Assert.assertEquals(engine.alterer(), alterer);
+		Assert.assertEquals(engine.optimize(), optimize);
+		Assert.assertEquals(engine.offspringSize(), (int)(offspringFraction*populationSize));
+		Assert.assertEquals(engine.offspringSize() + engine.survivorsSize(), populationSize);
+		Assert.assertEquals(engine.populationSize(), populationSize);
+		Assert.assertEquals(engine.maximalPhenotypeAge(), phenotypeAge);
 	}
 
 	@Test
 	public void offspringFractionZero() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -96,7 +95,7 @@ public class EngineBuilderTest {
 	@Test
 	public void offspringFractionOne() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -113,7 +112,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsFraction() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -122,14 +121,14 @@ public class EngineBuilderTest {
 			.survivorsFraction(0.3)
 			.build();
 
-		Assert.assertEquals(engine.getSurvivorsCount(), 15);
-		Assert.assertEquals(engine.getOffspringCount(), 35);
+		Assert.assertEquals(engine.survivorsSize(), 15);
+		Assert.assertEquals(engine.offspringSize(), 35);
 	}
 
 	@Test
 	public void survivorsFractionZero() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -146,7 +145,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsFractionOne() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -163,7 +162,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsSize() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -172,14 +171,14 @@ public class EngineBuilderTest {
 			.survivorsSize(15)
 			.build();
 
-		Assert.assertEquals(engine.getSurvivorsCount(), 15);
-		Assert.assertEquals(engine.getOffspringCount(), 35);
+		Assert.assertEquals(engine.survivorsSize(), 15);
+		Assert.assertEquals(engine.offspringSize(), 35);
 	}
 
 	@Test
 	public void offspringSize() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -188,8 +187,8 @@ public class EngineBuilderTest {
 			.offspringSize(35)
 			.build();
 
-		Assert.assertEquals(engine.getSurvivorsCount(), 15);
-		Assert.assertEquals(engine.getOffspringCount(), 35);
+		Assert.assertEquals(engine.survivorsSize(), 15);
+		Assert.assertEquals(engine.offspringSize(), 35);
 	}
 
 }

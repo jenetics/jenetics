@@ -21,11 +21,13 @@ package io.jenetics.ext.moea;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.util.List;
+import java.util.Random;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.moea.Vecs.DoubleVec;
-import io.jenetics.ext.moea.Vecs.IntVec;
-import io.jenetics.ext.moea.Vecs.LongVec;
+import io.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -33,18 +35,68 @@ import io.jenetics.ext.moea.Vecs.LongVec;
 public class VecsTest {
 
 	@Test
-	public void intVecEqualsVerifier() {
-		EqualsVerifier.forClass(IntVec.class).verify();
+	public void simpleIntVecEqualsVerifier() {
+		EqualsVerifier.forClass(SimpleIntVec.class).verify();
 	}
 
 	@Test
-	public void longVecEqualsVerifier() {
-		EqualsVerifier.forClass(LongVec.class).verify();
+	public void simpleLongVecEqualsVerifier() {
+		EqualsVerifier.forClass(SimpleLongVec.class).verify();
 	}
 
 	@Test
-	public void doubleVecEqualsVerifier() {
-		EqualsVerifier.forClass(DoubleVec.class).verify();
+	public void simpleDoubleVecEqualsVerifier() {
+		EqualsVerifier.forClass(SimpleDoubleVec.class).verify();
+	}
+
+	@Test
+	public void generalIntVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralIntVec.class)
+			.withPrefabValues(Object.class, new int[]{1, 3, 2}, new int[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void generalLongVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralLongVec.class)
+			.withPrefabValues(Object.class, new long[]{1, 3, 2}, new long[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void generalDoubleVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralDoubleVec.class)
+			.withPrefabValues(Object.class, new double[]{1, 3, 2}, new double[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void generalObjectVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralObjectVec.class)
+			.withPrefabValues(Object.class, new String[]{"1", "3", "2"}, new String[]{"1"})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void toFlags() {
+		final Random random = new Random();
+
+		final boolean[] flags = new boolean[100];
+		final Optimize[] opts = new Optimize[flags.length];
+		for (int i = 0; i < flags.length; ++i) {
+			flags[i]  = random.nextBoolean();
+			if (flags[i]) {
+				opts[i] = Optimize.MAXIMUM;
+			} else {
+				opts[i] = Optimize.MINIMUM;
+			}
+		}
+
+		Assert.assertEquals(Vecs.toFlags(List.of(opts)), flags);
 	}
 
 }

@@ -35,12 +35,12 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		for (int i = 0; i < 1000; ++i) {
 			final G gene = factory().newInstance();
 			Assert.assertNotNull(gene);
-			Assert.assertNotNull(gene.getAllele());
+			Assert.assertNotNull(gene.allele());
 			Assert.assertTrue(gene.isValid());
 
 			final G gene2 = gene.newInstance();
 			Assert.assertNotNull(gene2);
-			Assert.assertNotNull(gene2.getAllele());
+			Assert.assertNotNull(gene2.allele());
 			Assert.assertTrue(gene2.isValid());
 		}
 	}
@@ -53,30 +53,30 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		for (int i = 1; i < same.length(); ++i) {
 			final G other = same.get(i);
 
-			Assert.assertEquals(other.getAllele(), other.getAllele());
-			Assert.assertEquals(other.getAllele(), that.getAllele());
-			Assert.assertEquals(that.getAllele(), other.getAllele());
+			Assert.assertEquals(other.allele(), other.allele());
+			Assert.assertEquals(other.allele(), that.allele());
+			Assert.assertEquals(that.allele(), other.allele());
 		}
 	}
 
 	@Test
 	public void alleleNotNull() {
 		for (int i = 0; i < 1000; ++i) {
-			Assert.assertNotNull(factory().newInstance().getAllele());
+			Assert.assertNotNull(factory().newInstance().allele());
 		}
 	}
 
 	@Test
 	public void notEqualsAlleleNull() {
-		final Object that = factory().newInstance().getAllele();
-		Assert.assertFalse(that.equals(null));
+		final Object that = factory().newInstance().allele();
+		Assert.assertNotNull(that);
 	}
 
 	@Test
 	public void notEqualsAllele() {
 		for (int i = 0; i < 1000; ++i) {
-			final Object that = factory().newInstance().getAllele();
-			final Object other = factory().newInstance().getAllele();
+			final Object that = factory().newInstance().allele();
+			final Object other = factory().newInstance().allele();
 
 			if (that.equals(other)) {
 				Assert.assertEquals(other, that);

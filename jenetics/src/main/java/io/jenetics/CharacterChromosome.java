@@ -21,17 +21,22 @@ package io.jenetics;
 
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readString;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeString;
+import static java.util.Objects.requireNonNull;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.IntRef;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -47,18 +52,17 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.3
+ * @version 6.1
  */
 public class CharacterChromosome
-	extends
-		VariableChromosome<CharacterGene>
+	extends VariableChromosome<CharacterGene>
 	implements
 		CharSequence,
 		Serializable
 {
 	private static final long serialVersionUID = 3L;
 
-	private transient CharSeq _validCharacters;
+	private transient final CharSeq _validCharacters;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
@@ -78,61 +82,12 @@ public class CharacterChromosome
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_validCharacters = genes.get(0).getValidCharacters();
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @since 4.0
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param lengthRange the allowed length range of the chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene sequence is
-	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
-	 *         range size is zero.
-	 *
-	 * @deprecated Use {@link #of(CharSeq, IntRange)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(
-		final CharSeq validCharacters,
-		final IntRange lengthRange
-	) {
-		this(CharacterGene.seq(validCharacters, lengthRange), lengthRange);
-		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene sequence is
-	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
-	 *         range size is zero.
-	 *
-	 * @deprecated Use {@link #of(CharSeq, int)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(
-		final CharSeq validCharacters,
-		final int length
-	) {
-		this(validCharacters, IntRange.of(length));
+		_validCharacters = genes.get(0).validChars();
 	}
 
 	@Override
 	public char charAt(final int index) {
-		return getGene(index).charValue();
+		return get(index).charValue();
 	}
 
 	@Override
@@ -154,6 +109,43 @@ public class CharacterChromosome
 	@Override
 	public CharacterChromosome newInstance() {
 		return of(_validCharacters, lengthRange());
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@code char[]} array,
+	 * by applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * <pre>{@code
+	 * final CharacterChromosome chromosome = ...;
+	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
+	 *
+	 * static int[] uppercase(final int[] values) {
+	 *     for (int i = 0; i < values.length; ++i) {
+	 *         values[i] = Character.toUpperCase(values[i]);
+	 *     }
+	 *     return values;
+	 * }
+	 * }</pre>
+	 *
+	 * @since 6.1
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 * @throws IllegalArgumentException if the length of the mapped
+	 *         {@code char[]} array is empty or doesn't match with the allowed
+	 *         length range
+	 */
+	public CharacterChromosome map(final Function<? super char[], char[]> f) {
+		requireNonNull(f);
+
+		final char[] chars = f.apply(toArray());
+		final var genes = IntStream.range(0, chars.length)
+			.mapToObj(i -> CharacterGene.of(chars[i], _validCharacters))
+			.collect(ISeq.toISeq());
+
+		return newInstance(genes);
 	}
 
 	@Override
@@ -190,8 +182,9 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public char[] toArray(final char[] array) {
-		final char[] a = array.length >= length() ?
-			array : new char[length()];
+		final char[] a = array.length >= length()
+			? array
+			: new char[length()];
 
 		for (int i = length(); --i >= 0;) {
 			a[i] = charAt(i);
@@ -304,17 +297,12 @@ public class CharacterChromosome
 		final String alleles,
 		final CharSeq validChars
 	) {
-		final IntRef index = new IntRef();
-		final Supplier<CharacterGene> geneFactory = () -> CharacterGene.of(
-			alleles.charAt(index.value++), validChars
-		);
+		final MSeq<CharacterGene> genes = MSeq.ofLength(alleles.length());
+		for (int i = 0; i < alleles.length(); ++i) {
+			genes.set(i, CharacterGene.of(alleles.charAt(i), validChars));
+		}
 
-		final ISeq<CharacterGene> genes =
-			MSeq.<CharacterGene>ofLength(alleles.length())
-				.fill(geneFactory)
-				.toISeq();
-
-		return new CharacterChromosome(genes, IntRange.of(alleles.length()));
+		return new CharacterChromosome(genes.toISeq(), IntRange.of(alleles.length()));
 	}
 
 	/**
@@ -333,36 +321,34 @@ public class CharacterChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		out.writeObject(_validCharacters);
-
-		for (CharacterGene gene : _genes) {
-			out.writeChar(gene.getAllele());
-		}
+	private Object writeReplace() {
+		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		in.defaultReadObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		final int length = in.readInt();
-		_validCharacters = (CharSeq)in.readObject();
+	void write(final DataOutput out) throws IOException {
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
+		writeString(_validCharacters.toString(), out);
+		writeString(toString(), out);
+	}
 
-		final MSeq<CharacterGene> genes = MSeq.ofLength(length);
-		for (int i = 0; i < length; ++i) {
-			final CharacterGene gene = CharacterGene.of(
-				in.readChar(),
-				_validCharacters
-			);
-			genes.set(i, gene);
+	static CharacterChromosome read(final DataInput in) throws IOException {
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var validCharacters = new CharSeq(readString(in));
+		final var chars = readString(in);
+
+		final MSeq<CharacterGene> values = MSeq.ofLength(chars.length());
+		for (int i = 0, n = chars.length(); i <  n; ++i) {
+			values.set(i, CharacterGene.of(chars.charAt(i), validCharacters));
 		}
-		reflect.setField(this, "_genes", genes.toISeq());
+
+		return new CharacterChromosome(values.toISeq(), lengthRange);
 	}
 
 }

@@ -90,7 +90,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> chromosome = ProgramChromosome
 			.of(tree, OPERATIONS, TERMINALS);
 
-		Assert.assertTrue(Tree.equals(tree, chromosome.getRoot()));
+		Assert.assertTrue(Tree.equals(tree, chromosome.root()));
 	}
 
 	@Test(invocationCount = 10)
@@ -103,7 +103,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> ch1 =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final ISeq<ProgramGene<Double>> genes = ch1.toSeq();
+		final ISeq<ProgramGene<Double>> genes = ISeq.of(ch1);
 		final ProgramChromosome<Double> ch2 =
 			ProgramChromosome.of(genes, OPERATIONS, TERMINALS);
 
@@ -120,7 +120,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> ch =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final TreeNode<Op<Double>> node = TreeNode.ofTree(ch.getGene());
+		final TreeNode<Op<Double>> node = TreeNode.ofTree(ch.gene());
 		System.out.println(node);
 	}
 
@@ -134,7 +134,7 @@ public class ProgramChromosomeTest {
 
 		System.out.println(tree);
 
-		final FlatTreeNode<Op<Double>> flat = FlatTreeNode.of(tree);
+		final FlatTreeNode<Op<Double>> flat = FlatTreeNode.ofTree(tree);
 		System.out.println(Tree.toString(flat));
 
 		flat.stream().forEach(System.out::println);
@@ -150,6 +150,16 @@ public class ProgramChromosomeTest {
 
 		System.out.println(tree);
 		System.out.println(tree.toParenthesesString());
+	}
+
+	@Test
+	public void sameRootAndFirstGene() {
+		final ProgramChromosome<Double> ch = ProgramChromosome.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+		Assert.assertSame(ch.root(), ch.gene());
 	}
 
 	@Test

@@ -38,7 +38,7 @@ final class PolygonGene
 	}
 
 	@Override
-	public Polygon getAllele() {
+	public Polygon allele() {
 		return _polygon;
 	}
 
@@ -59,7 +59,7 @@ final class PolygonGene
 
 	@Override
 	public PolygonGene mean(final PolygonGene other) {
-		return of(getAllele().mean(other.getAllele()));
+		return of(allele().mean(other.allele()));
 	}
 
 	static ISeq<PolygonGene> seq(final int polygonCount, final int polygonLength) {

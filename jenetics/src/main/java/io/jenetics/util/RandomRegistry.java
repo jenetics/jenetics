@@ -43,11 +43,11 @@ import java.util.function.Supplier;
  *     public static void main(final String[] args) {
  *         // Initialize the registry with a ThreadLocal instance of the PRGN.
  *         // This is the preferred way setting a new PRGN.
- *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+ *         RandomRegistry.random(new LCG64ShiftRandom.ThreadLocal());
  *
  *         // Using a thread safe variant of the PRGN. Leads to slower PRN
  *         // generation, but gives you the possibility to set a PRNG seed.
- *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *         RandomRegistry.random(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
  *         final EvolutionResult<DoubleGene, Double> result = stream
@@ -103,11 +103,7 @@ public final class RandomRegistry {
 	 *
 	 * @return the global {@link Random} object.
 	 */
-	public static Random getRandom() {
-		return CONTEXT.get().get();
-	}
-
-	static Random random() {
+	public static Random random() {
 		return CONTEXT.get().get();
 	}
 
@@ -120,12 +116,12 @@ public final class RandomRegistry {
 	 * PRN generation, because the given {@code Random} engine don't have to be
 	 * thread-safe.
 	 *
-	 * @see #setRandom(ThreadLocal)
+	 * @see #random(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
-	public static void setRandom(final Random random) {
+	public static void random(final Random random) {
 		requireNonNull(random, "Random must not be null.");
 		CONTEXT.set(() -> random);
 	}
@@ -141,8 +137,7 @@ public final class RandomRegistry {
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
-	public static void setRandom(final ThreadLocal<? extends Random> random) {
+	public static void random(final ThreadLocal<? extends Random> random) {
 		requireNonNull(random, "Random must not be null.");
 		CONTEXT.set(random::get);
 	}

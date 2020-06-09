@@ -63,7 +63,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 6.0
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -117,7 +117,7 @@ public class IntMomentStatistics
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
-	public int getMin() {
+	public int min() {
 		return _min;
 	}
 
@@ -127,7 +127,7 @@ public class IntMomentStatistics
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
-	public int getMax() {
+	public int max() {
 		return _max;
 	}
 
@@ -137,7 +137,7 @@ public class IntMomentStatistics
 	 *
 	 * @return the sum of values, or zero if none
 	 */
-	public long getSum() {
+	public long sum() {
 		return _sum;
 	}
 
@@ -190,8 +190,8 @@ public class IntMomentStatistics
 	public String toString() {
 		return String.format(
 			"IntMomentStatistics[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
-			getCount(), getMin(), getMax(), getSum(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			count(), min(), max(), sum(),
+			mean(), variance(), skewness(), kurtosis()
 		);
 	}
 

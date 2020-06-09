@@ -19,6 +19,8 @@
  */
 package io.jenetics.stat;
 
+import static org.testng.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
@@ -32,6 +34,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.Optimize;
 import io.jenetics.internal.util.Named;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -41,12 +44,12 @@ public class MinMaxTest {
 
 	private static final Named<Comparator<Integer>> NORMAL = Named.of(
 		"NORMAL",
-		(Comparator<Integer>)Optimize.MAXIMUM::compare
+		Optimize.MAXIMUM::compare
 	);
 
 	private static final Named<Comparator<Integer>> REVERSE = Named.of(
 		"REVERSE",
-		(Comparator<Integer>)Optimize.MINIMUM::compare
+		Optimize.MINIMUM::compare
 	);
 
 	@Test(dataProvider = "minTestValues")
@@ -56,7 +59,7 @@ public class MinMaxTest {
 		final Integer b,
 		final Integer min
 	) {
-		Assert.assertEquals(MinMax.min(comparator.value, a, b), min);
+		assertEquals(MinMax.min(comparator.value, a, b), min);
 	}
 
 	@DataProvider(name = "minTestValues")
@@ -85,7 +88,7 @@ public class MinMaxTest {
 		final Integer b,
 		final Integer max
 	) {
-		Assert.assertEquals(MinMax.max(comparator.value, a, b), max);
+		assertEquals(MinMax.max(comparator.value, a, b), max);
 	}
 
 	@DataProvider(name = "maxTestValues")
@@ -109,7 +112,7 @@ public class MinMaxTest {
 
 	@Test
 	public void acceptNormalMinMax() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of();
@@ -117,48 +120,47 @@ public class MinMaxTest {
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		Assert.assertEquals(minMax.getMin(), StatUtils.min(numbers));
-		Assert.assertEquals(minMax.getMax(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
 	public void acceptReverseMinMax() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
-		final MinMax<Double> minMax = MinMax.of((a, b) -> b.compareTo(a));
+		final MinMax<Double> minMax = MinMax.of(Comparator.reverseOrder());
 		Arrays.stream(numbers)
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
-		Assert.assertEquals(minMax.getMax(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
 	public void toMinMaxNormal() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers)
 			.mapToObj(Double::valueOf)
 			.collect(MinMax.toMinMax());
 
-		Assert.assertEquals(minMax.getMin(), StatUtils.min(numbers));
-		Assert.assertEquals(minMax.getMax(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
 	public void toMinMaxReverse() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
-		final MinMax<Double> minMax = Arrays.stream(numbers)
-			.mapToObj(Double::valueOf)
-			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
+		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
+			.collect(MinMax.toMinMax(Comparator.reverseOrder()));
 
-		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
-		Assert.assertEquals(minMax.getMax(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
@@ -170,9 +172,9 @@ public class MinMaxTest {
 			MinMax::combine
 		);
 
-		Assert.assertEquals(minMax.getMax(), Integer.valueOf(99));
-		Assert.assertEquals(minMax.getMin(), Integer.valueOf(0));
-		Assert.assertEquals(100, minMax.getCount());
+		assertEquals(minMax.max(), Integer.valueOf(99));
+		assertEquals(minMax.min(), Integer.valueOf(0));
+		assertEquals(100, minMax.count());
 	}
 
 	@Test
@@ -191,6 +193,39 @@ public class MinMaxTest {
 			Assert.assertTrue(mm1.sameState(mm1));
 			Assert.assertTrue(mm2.sameState(mm2));
 		}
+	}
+
+	@Test
+	public void toStrictlyIncreasing() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(500)
+			.flatMap(MinMax.toStrictlyIncreasing())
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(values.isSorted());
+	}
+
+	@Test
+	public void toStrictlyImproving() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(500)
+			.flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(values.isSorted());
+	}
+
+	@Test
+	public void toStrictlyDecreasing() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(100)
+			.flatMap(MinMax.toStrictlyDecreasing())
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(values.copy().reverse().isSorted());
 	}
 
 }

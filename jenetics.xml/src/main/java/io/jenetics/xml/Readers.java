@@ -44,7 +44,6 @@ import io.jenetics.LongGene;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-
 import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.XML;
@@ -372,7 +371,7 @@ public final class Readers {
 		public static io.jenetics.LongChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
-			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+			try (var reader = XML.reader(in)) {
 				reader.next();
 				return reader().read(reader);
 			}
@@ -435,7 +434,7 @@ public final class Readers {
 		public static io.jenetics.DoubleChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
-			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+			try (var reader = XML.reader(in)) {
 				reader.next();
 				return reader().read(reader);
 			}
@@ -492,7 +491,7 @@ public final class Readers {
 					alleles.set(i, gene);
 				}
 
-				return new io.jenetics.PermutationChromosome<A>(alleles.toISeq());
+				return new io.jenetics.PermutationChromosome<>(alleles.toISeq());
 			},
 				Writers.PermutationChromosome.ROOT_NAME,
 				attr(Writers.PermutationChromosome.LENGTH_NAME).map(Integer::parseInt),
@@ -521,7 +520,7 @@ public final class Readers {
 			requireNonNull(alleleReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return PermutationChromosome.<A>reader(alleleReader).read(xml);
 			}
@@ -632,7 +631,7 @@ public final class Readers {
 			requireNonNull(chromosomeReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return reader(chromosomeReader).read(xml);
 			}
@@ -721,7 +720,7 @@ public final class Readers {
 			requireNonNull(chromosomeReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return reader(chromosomeReader).read(xml);
 			}

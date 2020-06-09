@@ -69,8 +69,8 @@ public class SinglePointCrossoverTest extends AltererTester {
 	public void crossover() {
 		final CharSeq chars = CharSeq.of("a-zA-Z");
 
-		final ISeq<CharacterGene> g1 = CharacterChromosome.of(chars, 20).toSeq();
-		final ISeq<CharacterGene> g2 = CharacterChromosome.of(chars, 20).toSeq();
+		final ISeq<CharacterGene> g1 = ISeq.of(CharacterChromosome.of(chars, 20));
+		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of(chars, 20));
 
 		final int rv1 = 12;
 		using(new ConstRandom(rv1), r -> {
@@ -135,7 +135,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 200;
-		final double mean = crossover.getOrder()*npopulation*p;
+		final double mean = crossover.order()*npopulation*p;
 
 		final long min = 0;
 		final long max = nallgenes;
@@ -147,13 +147,12 @@ public class SinglePointCrossoverTest extends AltererTester {
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover
 				.alter(population, 1)
-				.getAlterations();
+				.alterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}
 
 		// Normal distribution as approximation for binomial distribution.
-		System.out.println(histogram);
 		// TODO: Implement test
 		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}

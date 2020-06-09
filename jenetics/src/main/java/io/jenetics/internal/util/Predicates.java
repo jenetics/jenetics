@@ -43,5 +43,4 @@ public final class Predicates {
 	public static <T> Predicate<T> True() {
 		return (Predicate<T>)TRUE;
 	}
-
 }

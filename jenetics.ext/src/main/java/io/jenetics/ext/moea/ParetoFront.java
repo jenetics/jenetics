@@ -20,6 +20,7 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Arrays.revert;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -27,14 +28,16 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -70,13 +73,33 @@ import io.jenetics.util.Seq;
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.1
  * @since 4.1
  */
 public final class ParetoFront<T> extends AbstractSet<T> {
 
-	private final Comparator<? super T> _dominance;
 	private final List<T> _population = new ArrayList<>();
+
+	private final Comparator<? super T> _dominance;
+	private final BiPredicate<? super T, ? super T> _equals;
+
+	/**
+	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
+	 *
+	 * @since 5.1
+	 *
+	 * @param dominance the <em>Pareto</em> dominance measure
+	 * @param equals the equals predicate used for keeping the set distinct
+	 * @throws NullPointerException if the given {@code dominance} measure is
+	 *         {@code null}
+	 */
+	public ParetoFront(
+		final Comparator<? super T> dominance,
+		final BiPredicate<? super T, ? super T> equals
+	) {
+		_dominance = requireNonNull(dominance);
+		_equals = requireNonNull(equals);
+	}
 
 	/**
 	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
@@ -86,14 +109,15 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 *         {@code null}
 	 */
 	public ParetoFront(final Comparator<? super T> dominance) {
-		_dominance = requireNonNull(dominance);
+		this(dominance, Objects::equals);
 	}
 
 	/**
 	 * Inserts an {@code element} to this pareto front.
 	 *
-	 * @apiNote
-	 * Inserting a new element has a time complexity of {@code O(n)}.
+	 * @implNote
+	 * Inserting a new element has a time complexity of {@code O(this.size())},
+	 * where <em>n</em> is the number of elements of {@code this} pareto-front.
 	 *
 	 * @param element the element to add
 	 * @return {@code true} if this set did not already contain the specified
@@ -112,7 +136,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 			if (cmp > 0) {
 				iterator.remove();
 				updated = true;
-			} else if (cmp < 0 || element.equals(existing)) {
+			} else if (cmp < 0 || _equals.test(element, existing)) {
 				return updated;
 			}
 		}
@@ -121,6 +145,17 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		return true;
 	}
 
+	/**
+	 * Adds all elements of the given collection to {@code this} pareto front.
+	 *
+	 * @implNote
+	 * The runtime complexity of this operation is
+	 * {@code O(elements.size()*this.size())}.
+	 *
+	 * @param elements the elements to add to {@code this} pareto front
+	 * @return {@code true} if {@code this} pareto front has been changed,
+	 *         {@code false} otherwise
+	 */
 	@Override
 	public boolean addAll(final Collection<? extends T> elements) {
 		final int sum = elements.stream()
@@ -132,8 +167,9 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	/**
 	 * Add the all {@code elements} to {@code this} pareto-set.
 	 *
-	 * @apiNote
-	 * Merging two pareto fronts has a time complexity of {@code O(n*m)}.
+	 * @implNote
+	 * Merging two pareto fronts has a time complexity of
+	 * {@code O(elements.size()*this.size())}.
 	 *
 	 * @param elements the elements to add
 	 * @return {@code this} pareto-set
@@ -181,8 +217,10 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 				distance,
 				dimension
 			);
+			final int[] indexes = ProxySorter.sort(distances);
+			revert(indexes);
 
-			final List<T> list = IntStream.of(IndexSorter.sort(distances))
+			final List<T> list = IntStream.of(indexes)
 				.limit(size)
 				.mapToObj(_population::get)
 				.collect(Collectors.toList());

@@ -23,6 +23,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -56,7 +57,7 @@ public class StochasticUniversalSelectorTest
 	@Test
 	public void selectMinimum() {
 		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
-			gt.getChromosome().toSeq().stream()
+			gt.chromosome().stream()
 				.mapToInt(IntegerGene::intValue)
 				.sum();
 
@@ -65,7 +66,10 @@ public class StochasticUniversalSelectorTest
 
 		final ISeq<Phenotype<IntegerGene, Integer>> population =
 			IntStream.range(0, 50)
-				.mapToObj(i -> Phenotype.of(gtf.newInstance(), 50, ff))
+				.mapToObj(i -> {
+					final Genotype<IntegerGene> gt = gtf.newInstance();
+					return Phenotype.of(gt, 50, gt.gene().intValue());
+				})
 				.collect(ISeq.toISeq());
 
 		final StochasticUniversalSelector<IntegerGene, Integer> selector =
@@ -126,8 +130,8 @@ public class StochasticUniversalSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(""),
-				value -> new StochasticUniversalSelector<DoubleGene, Double>(),
+				List.of(""),
+				value -> new StochasticUniversalSelector<>(),
 				opt,
 				npopulation,
 				loops

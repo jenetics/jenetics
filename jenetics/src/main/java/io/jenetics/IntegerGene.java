@@ -21,12 +21,19 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.util.RandomRegistry.random;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -48,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 4.3
+ * @version 6.1
  */
 public final class IntegerGene
 	implements
@@ -60,7 +67,7 @@ public final class IntegerGene
 
 	private static final long serialVersionUID = 2L;
 
-	private final int _value;
+	private final int _allele;
 	private final int _min;
 	private final int _max;
 
@@ -70,108 +77,134 @@ public final class IntegerGene
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	private IntegerGene(final int value, final int min, final int max) {
-		_value = value;
+	private IntegerGene(final int allele, final int min, final int max) {
+		_allele = allele;
 		_min = min;
 		_max = max;
 	}
 
 	@Override
-	public Integer getAllele() {
-		return _value;
+	public Integer allele() {
+		return _allele;
 	}
 
 	@Override
-	public Integer getMin() {
+	public Integer min() {
 		return _min;
 	}
 
 	@Override
-	public Integer getMax() {
+	public Integer max() {
 		return _max;
+	}
+
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public IntRange range() {
+		return IntRange.of(_min, _max);
 	}
 
 	@Override
 	public byte byteValue() {
-		return (byte)_value;
+		return (byte) _allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short)_value;
+		return (short) _allele;
 	}
 
 	@Override
 	public int intValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public long longValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float)_value;
+		return (float) _allele;
 	}
 
 	@Override
 	public double doubleValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public boolean isValid() {
-		return _value >= _min && _value <= _max;
+		return _allele >= _min && _allele <= _max;
 	}
 
 	@Override
 	public int compareTo(final IntegerGene other) {
-		return Integer.compare(_value, other._value);
-	}
-
-	@Override
-	public IntegerGene newInstance(final Integer number) {
-		return IntegerGene.of(number, _min, _max);
-	}
-
-	@Override
-	public IntegerGene newInstance(final Number number) {
-		return IntegerGene.of(number.intValue(), _min, _max);
-	}
-
-	@Override
-	public IntegerGene newInstance() {
-		return IntegerGene.of(nextInt(getRandom(), _min, _max), _min, _max);
+		return Integer.compare(_allele, other._allele);
 	}
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return IntegerGene.of(_value + (that._value - _value)/2, _min, _max);
+		return IntegerGene.of(_allele + (that._allele - _allele)/2, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 5.0
+	 * @param allele the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public IntegerGene newInstance(final int allele) {
+		return IntegerGene.of(allele, _min, _max);
+	}
+
+	@Override
+	public IntegerGene newInstance(final Integer allele) {
+		return IntegerGene.of(allele, _min, _max);
+	}
+
+	@Override
+	public IntegerGene newInstance(final Number allele) {
+		final int value = allele instanceof Double || allele instanceof Float
+			? (int)Math.round(allele.doubleValue())
+			: allele.intValue();
+
+		return IntegerGene.of(value, _min, _max);
+	}
+
+	@Override
+	public IntegerGene newInstance() {
+		return IntegerGene.of(nextInt(random(), _min, _max), _min, _max);
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
+		return hash(_allele, hash(_min, hash(_max)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof IntegerGene &&
-			((IntegerGene)obj)._value == _value &&
+			((IntegerGene)obj)._allele == _allele &&
 			((IntegerGene)obj)._min == _min &&
 			((IntegerGene)obj)._max == _max;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("[%s]", _value);
+		return String.format("[%s]", _allele);
 	}
 
 	/* *************************************************************************
@@ -184,13 +217,13 @@ public final class IntegerGene
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @return a new {@code IntegerGene} with the given {@code value}
 	 */
-	public static IntegerGene of(final int value, final int min, final int max) {
-		return new IntegerGene(value, min, max);
+	public static IntegerGene of(final int allele, final int min, final int max) {
+		return new IntegerGene(allele, min, max);
 	}
 
 	/**
@@ -201,13 +234,13 @@ public final class IntegerGene
 	 *
 	 * @since 3.2
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param range the integer range to use
 	 * @return a new {@code IntegerGene} with the give {@code value}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
-	public static IntegerGene of(final int value, final IntRange range) {
-		return IntegerGene.of(value, range.getMin(), range.getMax());
+	public static IntegerGene of(final int allele, final IntRange range) {
+		return IntegerGene.of(allele, range.min(), range.max());
 	}
 
 	/**
@@ -219,7 +252,7 @@ public final class IntegerGene
 	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
-		return of(nextInt(getRandom(), min, max), min, max);
+		return of(nextInt(random(), min, max), min, max);
 	}
 
 	/**
@@ -233,7 +266,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextInt(random(), range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -241,9 +274,8 @@ public final class IntegerGene
 		final int max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
-
-		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
+		final Random r = random();
+		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
 	}
@@ -284,6 +316,31 @@ public final class IntegerGene
 		}
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_allele, out);
+		writeInt(_min, out);
+		writeInt(_max, out);
+	}
+
+	static IntegerGene read(final DataInput in) throws IOException {
+		return of(readInt(in), readInt(in), readInt(in));
 	}
 
 }

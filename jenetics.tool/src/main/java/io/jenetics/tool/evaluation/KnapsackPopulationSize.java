@@ -35,7 +35,6 @@ import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.tool.trial.Tuple2;
 import io.jenetics.util.ISeq;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

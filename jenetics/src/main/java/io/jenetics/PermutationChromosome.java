@@ -20,20 +20,23 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.bit.getAndSet;
+import static io.jenetics.internal.util.Bits.getAndSet;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.array;
-import io.jenetics.internal.util.bit;
-import io.jenetics.internal.util.reflect;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.Combinatorics;
+import io.jenetics.internal.util.Arrays;
+import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -100,7 +103,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 6.0
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -108,7 +111,7 @@ public final class PermutationChromosome<T>
 {
 	private static final long serialVersionUID = 2L;
 
-	private ISeq<T> _validAlleles;
+	private final ISeq<T> _validAlleles;
 
 	// Private primary constructor.
 	private PermutationChromosome(
@@ -118,7 +121,7 @@ public final class PermutationChromosome<T>
 		super(genes);
 
 		assert !genes.isEmpty();
-		_validAlleles = genes.get(0).getValidAlleles();
+		_validAlleles = genes.get(0).validAlleles();
 		_valid = valid;
 	}
 
@@ -142,7 +145,7 @@ public final class PermutationChromosome<T>
 	 *
 	 * @return the sequence of valid alleles of this chromosome
 	 */
-	public ISeq<T> getValidAlleles() {
+	public ISeq<T> validAlleles() {
 		return _validAlleles;
 	}
 
@@ -153,8 +156,8 @@ public final class PermutationChromosome<T>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			final byte[] check = bit.newArray(_validAlleles.length());
-			_valid = _genes.forAll(g -> !getAndSet(check, g.getAlleleIndex()));
+			final byte[] check = Bits.newArray(_validAlleles.length());
+			_valid = _genes.forAll(g -> !getAndSet(check, g.alleleIndex()));
 		}
 
 		return _valid;
@@ -175,8 +178,8 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		return _genes.asList().stream()
-			.map(g -> g.getAllele().toString())
+		return _genes.stream()
+			.map(g -> g.allele().toString())
 			.collect(Collectors.joining("|"));
 	}
 
@@ -210,7 +213,7 @@ public final class PermutationChromosome<T>
 		final ISeq<? extends T> alleles,
 		final int length
 	) {
-		require.positive(length);
+		Requires.positive(length);
 		if (length > alleles.size()) {
 			throw new IllegalArgumentException(format(
 				"The sub-set size must be be greater then the base-set: %d > %d",
@@ -218,7 +221,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final int[] subset = array.shuffle(comb.subset(alleles.size(), length));
+		final int[] subset = Arrays.shuffle(Combinatorics.subset(alleles.size(), length));
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());
@@ -263,7 +266,7 @@ public final class PermutationChromosome<T>
 	 * @throws IllegalArgumentException if {@code length <= 0}.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return ofInteger(0, require.positive(length));
+		return ofInteger(0, Requires.positive(length));
 	}
 
 	/**
@@ -309,9 +312,7 @@ public final class PermutationChromosome<T>
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
 		return of(
-			range.stream()
-				.boxed()
-				.collect(ISeq.toISeq()),
+			range.stream().boxed().collect(ISeq.toISeq()),
 			length
 		);
 	}
@@ -320,31 +321,34 @@ public final class PermutationChromosome<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.PERMUTATION_CHROMOSOME, this);
+	}
 
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
 		out.writeObject(_validAlleles);
 		for (EnumGene<?> gene : _genes) {
-			out.writeInt(gene.getAlleleIndex());
+			writeInt(gene.alleleIndex(), out);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void readObject(final ObjectInputStream in)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static PermutationChromosome read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-
-		_validAlleles = (ISeq<T>)in.readObject();
-
-		final MSeq<EnumGene<T>> genes = MSeq.ofLength(_validAlleles.length());
-		for (int i = 0; i < _validAlleles.length(); ++i) {
-			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
+		final ISeq validAlleles = (ISeq)in.readObject();
+		final MSeq genes = MSeq.ofLength(validAlleles.length());
+		for (int i = 0, n = validAlleles.length(); i < n; ++i) {
+			genes.set(i, new EnumGene(readInt(in), validAlleles));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new PermutationChromosome(genes.toISeq());
 	}
 
 }

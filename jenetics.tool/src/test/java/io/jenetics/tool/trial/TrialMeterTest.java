@@ -24,7 +24,6 @@ import java.util.Random;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
-
 import io.jenetics.xml.stream.Writer;
 
 /**
@@ -45,10 +44,8 @@ public class TrialMeterTest {
 		final Random random = new Random();
 
 		for (int i = 0; i < 10; ++i) {
-			trialMeter.sample(p -> {
-				return new double[] {
-					random.nextDouble(), random.nextDouble()
-				};
+			trialMeter.sample(p -> new double[] {
+				random.nextDouble(), random.nextDouble()
 			});
 		}
 

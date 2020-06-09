@@ -33,7 +33,7 @@ package io.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version 6.0
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,
@@ -47,25 +47,25 @@ public interface BoundedGene<
 	 *
 	 * @return The allowed min value.
 	 */
-	public A getMin();
+	A min();
 
 	/**
 	 * Return the allowed max value.
 	 *
 	 * @return The allowed max value.
 	 */
-	public A getMax();
+	A max();
 
 	@Override
-	public default boolean isValid() {
+	default boolean isValid() {
 		return
-			getAllele().compareTo(getMin()) >= 0 &&
-			getAllele().compareTo(getMax()) <= 0;
+			allele().compareTo(min()) >= 0 &&
+			allele().compareTo(max()) <= 0;
 	}
 
 	@Override
-	public default int compareTo(final G other) {
-		return getAllele().compareTo(other.getAllele());
+	default int compareTo(final G other) {
+		return allele().compareTo(other.allele());
 	}
 
 	/**
@@ -75,6 +75,6 @@ public interface BoundedGene<
 	 * @return a new gene with the given value.
 	 */
 	@Override
-	public G newInstance(final A value);
+	G newInstance(final A value);
 
 }

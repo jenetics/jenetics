@@ -34,10 +34,10 @@ public class CompositeAltererTest {
 
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
-		return CompositeAlterer.of(
-			new Mutator<DoubleGene, Double>(p3),
-			new Mutator<DoubleGene, Double>(p3),
-			new Mutator<DoubleGene, Double>(p3)
+		return CompositeAlterer.<DoubleGene, Double>of(
+			new Mutator<>(p3),
+			new Mutator<>(p3),
+			new Mutator<>(p3)
 		);
 	}
 
@@ -54,8 +54,8 @@ public class CompositeAltererTest {
 		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		Assert.assertEquals(
-			result.getAlterations(),
-			diff(p1, result.getPopulation())
+			result.alterations(),
+			diff(p1, result.population())
 		);
 	}
 
@@ -74,7 +74,7 @@ public class CompositeAltererTest {
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -89,15 +89,15 @@ public class CompositeAltererTest {
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
-			final Genotype<?> gt1 = p1.get(i).getGenotype();
-			final Genotype<?> gt2 = p2.get(i).getGenotype();
+			final Genotype<?> gt1 = p1.get(i).genotype();
+			final Genotype<?> gt2 = p2.get(i).genotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
-				final Chromosome<?> c1 = gt1.getChromosome(j);
-				final Chromosome<?> c2 = gt2.getChromosome(j);
+				final Chromosome<?> c1 = gt1.get(j);
+				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
-					if (!c1.getGene(k).equals(c2.getGene(k))) {
+					if (!c1.get(k).equals(c2.get(k))) {
 						++count;
 					}
 				}
@@ -144,21 +144,22 @@ public class CompositeAltererTest {
 
 	@Test
 	public void join() {
-		CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer.join(
-				new Mutator<DoubleGene, Double>(),
-				new SwapMutator<DoubleGene, Double>()
-			);
+		CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer
+			.<DoubleGene, Double>join(
+					new Mutator<>(),
+					new SwapMutator<>()
+				);
 
-		Assert.assertEquals(alterer.getAlterers().length(), 2);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.alterers().length(), 2);
+		Assert.assertTrue(alterer.alterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.alterers().get(1) instanceof SwapMutator);
 
 		alterer = CompositeAlterer.join(alterer, new MeanAlterer<>());
 
-		Assert.assertEquals(alterer.getAlterers().length(), 3);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene, Double>());
+		Assert.assertEquals(alterer.alterers().length(), 3);
+		Assert.assertTrue(alterer.alterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.alterers().get(1) instanceof SwapMutator);
+		Assert.assertTrue(alterer.alterers().get(2) instanceof MeanAlterer);
 
 		alterer = CompositeAlterer.of(
 			new MeanAlterer<>(),
@@ -167,13 +168,7 @@ public class CompositeAltererTest {
 			new SwapMutator<>()
 		);
 
-		Assert.assertEquals(alterer.getAlterers().length(), 6);
-		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(3), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene, Double>());
+		Assert.assertEquals(alterer.alterers().length(), 6);
 	}
 
 }

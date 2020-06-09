@@ -21,7 +21,9 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
@@ -91,18 +93,25 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private Object[] groups(final Genotype<G> genotype) {
 		final Object[] groups = new Object[_codecs.length()];
-		final ISeq<Chromosome<G>> chromosomes = genotype.toSeq();
+		final ISeq<Chromosome<G>> chromosomes = ISeq.of(genotype);
 
 		int start = 0;
 		for (int i = 0; i < _codecs.length(); ++i) {
 			final int end = start + _lengths[i];
 			final Genotype<G> gt = Genotype.of(chromosomes.subSeq(start, end));
 
-			groups[i] = _codecs.get(i).decoder().apply(gt);
+			groups[i] = _codecs.get(i).decode(gt);
 			start = end;
 		}
 
 		return groups;
+	}
+
+	@Override
+	public String toString() {
+		return _codecs.stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining(",", "CompositeCodec[", "]"));
 	}
 
 }

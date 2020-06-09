@@ -22,18 +22,18 @@ package io.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.base.pow;
-import static io.jenetics.internal.math.base.ulpDistance;
-import static io.jenetics.internal.util.IndexSorter.sort;
+import static io.jenetics.internal.math.Basics.pow;
+import static io.jenetics.internal.math.Basics.ulpDistance;
 
 import java.util.Comparator;
 import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.internal.math.DoubleAdder;
-import io.jenetics.internal.util.array;
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
@@ -65,7 +65,7 @@ public abstract class ProbabilitySelector<
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected final Comparator<Phenotype<G, C>> POPULATION_COMPARATOR = (a, b) ->
-		Optimize.MAXIMUM.<C>descending().compare(a.getFitness(), b.getFitness());
+		Optimize.MAXIMUM.<C>descending().compare(a.fitness(), b.fitness());
 
 	protected final boolean _sorted;
 	protected final Function<double[], double[]> _reverter;
@@ -83,7 +83,7 @@ public abstract class ProbabilitySelector<
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
 		_sorted = sorted;
-		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
+		_reverter = sorted ? Arrays::revert : ProbabilitySelector::sortAndRevert;
 	}
 
 	/**
@@ -126,7 +126,7 @@ public abstract class ProbabilitySelector<
 
 			incremental(prob);
 
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			selection.fill(() -> pop.get(indexOf(prob, random.nextDouble())));
 		}
 
@@ -157,12 +157,12 @@ public abstract class ProbabilitySelector<
 
 	// Package private for testing.
 	static double[] sortAndRevert(final double[] array) {
-		final int[] indexes = sort(array);
+		final int[] indexes = ProxySorter.sort(array);
 
 		// Copy the elements in reversed order.
 		final double[] result = new double[array.length];
 		for (int i = 0; i < result.length; ++i) {
-			result[indexes[result.length - 1 - i]] = array[indexes[i]];
+			result[indexes[i]] = array[indexes[result.length - 1 - i]];
 		}
 
 		return result;

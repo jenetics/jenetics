@@ -30,6 +30,8 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 
+import io.jenetics.ext.util.Tree.Path;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -48,7 +50,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
+			child.value(random.nextInt());
 
 			if (level > 0) {
 				fill(child, level - 1, random);
@@ -56,6 +58,12 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 			node.attach(child);
 		}
+	}
+
+	@Test
+	public void childIterator() {
+		final TreeNode<Integer> tree = TreeNode.of(0).attach(1, 2, 3, 4, 5);
+		Assert.assertEquals(tree.childStream().count(), tree.childCount());
 	}
 
 	@Test
@@ -79,11 +87,43 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final DefaultMutableTreeNode stree = newSwingTree(5, random);
 		final DefaultMutableTreeNode stree1 = newSwingTree(2, random);
 
-		tree.getChild(1).insert(0, tree1);
+		tree.childAt(1).insert(0, tree1);
 		Assert.assertFalse(equals(tree, stree));
 
 		((DefaultMutableTreeNode)stree.getChildAt(1)).insert(stree1, 0);
 		Assert.assertTrue(equals(tree, stree));
+	}
+
+	@Test
+	public void replace() {
+		final Random random = new Random(124);
+
+		final TreeNode<Integer> tree = newTree(5, random);
+		final TreeNode<Integer> tree1 = newTree(2, random);
+
+		final TreeNode<Integer> child = tree.childAtPath(0 , 1)
+			.orElseThrow(AssertionError::new);
+		Assert.assertNotEquals(child, tree1);
+
+		child.replace(0, tree1);
+		Assert.assertEquals(child.childAt(0), tree1);
+	}
+
+	@Test
+	public void replaceAt() {
+		final Random random = new Random(124);
+
+		final TreeNode<Integer> tree = newTree(5, random);
+		final TreeNode<Integer> tree1 = newTree(2, random);
+
+		final TreeNode<Integer> child = tree.childAtPath(0 , 1, 0)
+			.orElseThrow(AssertionError::new);
+
+		tree.replaceAtPath(Path.of(0, 1, 0), tree1);
+		Assert.assertEquals(
+			tree.childAtPath(0, 1, 0).orElseThrow(AssertionError::new),
+			tree1
+		);
 	}
 
 	@Test
@@ -98,7 +138,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		Assert.assertEquals(tree.size(), 7);
 
-		final TreeNode<Integer> detached = tree.getChild(1).detach();
+		final TreeNode<Integer> detached = tree.childAt(1).detach();
 		Assert.assertEquals(tree.size(), 4);
 		Assert.assertEquals(detached.size(), 3);
 	}
@@ -125,10 +165,10 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		Assert.assertEquals(
 			mapped.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.toArray(String[]::new),
 			tree.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.map(Objects::toString)
 				.toArray(String[]::new)
 		);
@@ -136,8 +176,9 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 	@Test
 	public void serialize() throws IOException {
-		final TreeNode<Integer> tree = newTree(6, new Random());
+		final TreeNode<Integer> tree = newTree(6, new Random(345));
 		final byte[] data = IO.object.toByteArray(tree);
+		System.out.println(data.length);
 		Assert.assertEquals(IO.object.fromByteArray(data), tree);
 	}
 

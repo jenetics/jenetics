@@ -19,7 +19,7 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
@@ -28,7 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.probability;
+import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
@@ -111,9 +111,7 @@ public class RandomIndexStreamTest {
 
 	long k(final int n, final double p, final Random random) {
 		final IntRef kt = new IntRef(0);
-		indexes(random, n, p).forEach(i -> {
-			++kt.value;
-		});
+		indexes(random, n, p).forEach(i -> ++kt.value);
 
 		return kt.value;
 	}
@@ -174,7 +172,7 @@ public class RandomIndexStreamTest {
 		final Random random
 	) {
 		return new IndexStream() {
-			private final int P = probability.toInt(p);
+			private final int P = Probabilities.toInt(p);
 			private int _pos = -1;
 			@Override public int next() {
 				while (_pos < n && random.nextInt() >= P) {
@@ -187,7 +185,7 @@ public class RandomIndexStreamTest {
 	}
 
 	interface IndexStream {
-		public int next();
+		int next();
 	}
 
 
@@ -199,7 +197,7 @@ public class RandomIndexStreamTest {
 			final Random random = new Random(0);
 			final IndexStream stream = ReferenceRandomStream(delta, p, random);
 
-			System.out.print(Double.toString(p));
+			System.out.print(p);
 			System.out.print(",");
 			for (int j = stream.next(); j != -1; j = stream.next()) {
 				System.out.print(j);

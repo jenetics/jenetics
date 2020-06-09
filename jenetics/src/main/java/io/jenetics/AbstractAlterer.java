@@ -19,16 +19,14 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
-
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 
 /**
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 6.0
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
@@ -50,7 +48,7 @@ public abstract class AbstractAlterer<
 	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
-		_probability = require.probability(probability);
+		_probability = Requires.probability(probability);
 	}
 
 	/**
@@ -58,21 +56,8 @@ public abstract class AbstractAlterer<
 	 *
 	 * @return The recombination probability.
 	 */
-	public double getProbability() {
+	public double probability() {
 		return _probability;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_probability);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			Double.compare(_probability, ((AbstractAlterer)obj)._probability) == 0;
 	}
 
 }

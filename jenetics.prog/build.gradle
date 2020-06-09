@@ -24,33 +24,51 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.3
+ * @version 4.4
  */
 
+plugins {
+	id 'me.champeau.gradle.jmh' version '0.5.0'
+}
+
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
-dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
+ext.moduleName = 'io.jenetics.prog'
 
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
+dependencies {
+	api project(':jenetics')
+	api project(':jenetics.ext')
+
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
 }
 
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.prog',
-	'io.jenetics.prog.op'
-)
+jmh {
+	include = ['.*MathExprPerf.*']
+}
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
+}
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/jenetics',
-			'http://jenetics.io/javadoc/jenetics.ext'
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+		)
+		linksOffline(
+			'https://jenetics.io/javadoc/jenetics.ext',
+			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.ext"
+		)
 	}
 }
+
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 packaging {
 	name = property('jenetics.prog.Name')

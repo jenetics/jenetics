@@ -23,6 +23,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -31,7 +32,7 @@ import io.jenetics.util.IntRange;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 1.6
+ * @version 5.2
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
@@ -65,22 +66,22 @@ abstract class AbstractBoundedChromosome<
 	 * @throws IllegalArgumentException if the given range size is zero
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected AbstractBoundedChromosome(
+	AbstractBoundedChromosome(
 		final ISeq<? extends G> genes,
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	@Override
-	public A getMin() {
+	public A min() {
 		return _min;
 	}
 
 	@Override
-	public A getMax() {
+	public A max() {
 		return _max;
 	}
 
@@ -100,6 +101,14 @@ abstract class AbstractBoundedChromosome<
 			Objects.equals(_min, ((AbstractBoundedChromosome)obj)._min) &&
 			Objects.equals(_max, ((AbstractBoundedChromosome)obj)._max) &&
 			super.equals(obj);
+	}
+
+	static void checkGeneRange(final Stream<?> ranges) {
+		if (ranges.distinct().count() > 1) {
+			throw new IllegalArgumentException(
+				"All genes must have the same range."
+			);
+		}
 	}
 
 }

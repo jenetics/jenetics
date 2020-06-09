@@ -61,10 +61,10 @@ public class PartiallyMatchedCrossoverTest {
 		pmco.crossover(that, other);
 
 		final PermutationChromosome<Integer> thatChrom2 = new PermutationChromosome<>(that.toISeq());
-		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
+		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2);
 
 		final PermutationChromosome<Integer> otherChrom2 = new PermutationChromosome<>(other.toISeq());
-		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
+		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2);
 
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
 		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
@@ -100,7 +100,7 @@ public class PartiallyMatchedCrossoverTest {
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
-		final double mean = crossover.getOrder()*npopulation*p;
+		final double mean = crossover.order()*npopulation*p;
 
 		final long min = 0;
 		final long max = nallgenes;
@@ -112,7 +112,7 @@ public class PartiallyMatchedCrossoverTest {
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover
 				.alter(population, 1)
-				.getAlterations();
+				.alterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

@@ -19,24 +19,18 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 5.0
  * @since 3.9
  */
 final class Trees {
 	private Trees() {}
-
 
 	@SuppressWarnings("unchecked")
 	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
@@ -54,7 +48,7 @@ final class Trees {
 	 * @return an array of nodes giving the path from the root to the specified
 	 *         node
 	 */
-	static <V, T extends Tree<V, T>> MSeq<T> pathToRoot(
+	static <V, T extends Tree<V, T>> MSeq<T> pathElementsFromRoot(
 		final T node,
 		final int depth
 	) {
@@ -62,150 +56,37 @@ final class Trees {
 		if (node == null) {
 			path = MSeq.ofLength(depth);
 		} else {
-			path = pathToRoot(node.getParent().orElse(null), depth + 1);
+			path = pathElementsFromRoot(
+				node.parent().orElse(null),
+				depth + 1
+			);
 			path.set(path.length() - depth - 1, node);
 		}
 
 		return path;
 	}
 
-	static String toString(final Tree<?, ?> tree) {
-		return toString(tree, t -> Objects.toString(t.getValue()));
-	}
-
-	/**
-	 * Return a string representation of the given tree.
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 */
-	static String toString(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
+	static <V, T extends Tree<V, T>> int[] pathFromRoot(
+		final T node,
+		final int depth
 	) {
-		return tree != null
-			? toStrings(tree, toNodeString).stream()
-				.map(StringBuilder::toString)
-				.collect(Collectors.joining("\n"))
-			: "null";
-	}
+		final int[] path;
+		if (node == null) {
+			path = new int[depth - 1];
+		} else {
+			final T parent = node.parent().orElse(null);
+			path = pathFromRoot(parent, depth + 1);
 
-	private static List<StringBuilder> toStrings(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final List<StringBuilder> result = new ArrayList<>();
-		result.add(new StringBuilder().append(toNodeString.apply(tree)));
+			if (parent != null) {
+				final int index = node.parent()
+					.map(p -> p.indexOf(node))
+					.orElseThrow(AssertionError::new);
 
-		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
-		while (it.hasNext()) {
-			final List<StringBuilder> subtree = toStrings(it.next(), toNodeString);
-			if (it.hasNext()) {
-				subtree(result, subtree, toNodeString);
-			} else {
-				lastSubtree(result, subtree);
+				path[path.length - depth - 1] = index;
 			}
 		}
-		return result;
-	}
 
-	private static void subtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "├── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "│   "));
-		}
-	}
-
-	private static void lastSubtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "└── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "    "));
-		}
-	}
-
-	static String toInfixString(final Tree<?, ?> tree) {
-		final StringBuilder out = new StringBuilder();
-		toInfixString(out, tree);
-		return out.toString();
-	}
-
-	private static void toInfixString(final StringBuilder out, final Tree<?, ?> tree) {
-		if (!tree.isLeaf()) {
-			toInfixChild(out, tree.getChild(0));
-			out.append(tree.getValue());
-			toInfixChild(out, tree.getChild(1));
-		} else {
-			out.append(tree.getValue());
-		}
-	}
-
-	private static void toInfixChild(final StringBuilder out, final Tree<?, ?> child) {
-		if (child.isLeaf()) {
-			toInfixString(out, child);
-		} else {
-			out.append("(");
-			toInfixString(out, child);
-			out.append(")");
-		}
-	}
-
-	public static String toDottyString(final String name, final Tree<?, ?> tree) {
-		final StringBuilder out = new StringBuilder();
-		out.append("digraph ").append(name).append(" {\n");
-		dotty(out, tree);
-		labels(out, tree);
-		out.append("}\n");
-		return out.toString();
-	}
-
-	private static void dotty(final StringBuilder out, final Tree<?, ?> node) {
-		final ISeq<? extends Tree<?, ?>> nodes = node.breadthFirstStream()
-			.collect(ISeq.toISeq());
-
-		for (int i = 0; i < nodes.length(); ++i) {
-			final Tree<?, ?> n = nodes.get(i);
-			n.childStream().forEach(child ->
-				out.append("    ")
-					.append(id(n))
-					.append(" -> ")
-					.append(id(child))
-					.append(";\n")
-			);
-		}
-	}
-
-	private static String id(final Tree<?, ?> node) {
-		return "node_" + Math.abs(System.identityHashCode(node));
-	}
-
-	private static void labels(final StringBuilder out, final Tree<?, ?> tree) {
-		tree.depthFirstStream().forEach(node -> {
-			out.append("    ");
-			out.append(id(node));
-			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
-		});
-	}
-
-
-	static String toLispString(Tree<?, ?> tree) {
-		final String value = String.valueOf(tree.getValue());
-		if (tree.isLeaf()) {
-			return value;
-		} else {
-			final String children = tree.childStream()
-				.map(Trees::toLispString)
-				.collect(Collectors.joining(" "));
-			return "(" + value + " " + children + ")";
-		}
+		return path;
 	}
 
 	/**
@@ -221,7 +102,7 @@ final class Trees {
 		if (!equals && a != null && b != null) {
 			equals = a.childCount() == b.childCount();
 			if (equals) {
-				equals = Objects.equals(a.getValue(), b.getValue());
+				equals = Objects.equals(a.value(), b.value());
 				if (equals && a.childCount() > 0) {
 					equals = equals(a.childIterator(), b.childIterator());
 				}
@@ -241,6 +122,14 @@ final class Trees {
 		}
 
 		return equals;
+	}
+
+	static int countChildren(final Tree<?, ?> tree) {
+		int cnt = tree.childCount();
+		for (int i = 0; i < tree.childCount(); ++i) {
+			cnt += countChildren(tree.childAt(i));
+		}
+		return cnt;
 	}
 
 }

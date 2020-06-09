@@ -51,7 +51,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
 			chromosome.stream()
-				.map(g -> Long.valueOf(g.getAllele().toString()))
+				.map(g -> Long.valueOf(g.allele().toString()))
 				.forEach(histogram);
 
 			final double[] expected = dist.uniform(histogram.length());
@@ -86,6 +86,35 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 				{"54304897"},
 				{"5433457245"}
 		};
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = CharacterChromosome.of(1000);
+
+		final var ch2 = ch1.map(CharacterChromosomeTest::uppercase);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), uppercase(ch1.toArray()));
+	}
+
+	static char[] uppercase(final char[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = Character.toUpperCase(values[i]);
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = CharacterChromosome.of(1000);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = CharacterChromosome.of(1000);
+		ch.map(v -> new char[0]);
 	}
 
 }

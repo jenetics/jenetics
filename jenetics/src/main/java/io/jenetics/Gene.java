@@ -44,7 +44,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.1
+ * @version 6.0
  */
 public interface Gene<A, G extends Gene<A, G>>
 	extends
@@ -57,7 +57,7 @@ public interface Gene<A, G extends Gene<A, G>>
 	 *
 	 * @return the allele of this gene.
 	 */
-	public A getAllele();
+	A allele();
 
 	/**
 	 * Return a new, random gene with the same type and with the same constraints
@@ -67,7 +67,7 @@ public interface Gene<A, G extends Gene<A, G>>
 	 * be fetched from the {@link io.jenetics.util.RandomRegistry}.
 	 */
 	@Override
-	public G newInstance();
+	G newInstance();
 
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
@@ -76,6 +76,6 @@ public interface Gene<A, G extends Gene<A, G>>
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public G newInstance(final A value);
+	G newInstance(final A value);
 
 }

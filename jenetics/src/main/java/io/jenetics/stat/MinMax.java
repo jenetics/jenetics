@@ -25,7 +25,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
+
+import io.jenetics.util.Streams;
 
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
@@ -51,7 +55,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 6.0
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -94,12 +98,21 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 */
+	public long count() {
+		return _count;
+	}
+
+	/**
 	 * Return the current minimal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
 	 * @return the current minimal object
 	 */
-	public C getMin() {
+	public C min() {
 		return _min;
 	}
 
@@ -109,17 +122,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @return the current maximal object
 	 */
-	public C getMax() {
+	public C max() {
 		return _max;
-	}
-
-	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 */
-	public long getCount() {
-		return _count;
 	}
 
 	/**
@@ -271,6 +275,96 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>> MinMax<C> of() {
 		return of(Comparator.naturalOrder());
+	}
+
+
+	/* *************************************************************************
+	 *  Some "flat" mapper functions.
+	 * ************************************************************************/
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly increasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyIncreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyIncreasing() {
+		return Streams.toStrictlyIncreasing();
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly decreasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyDecreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [45,32,15,12,3,1]
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyDecreasing() {
+		return Streams.toStrictlyDecreasing();
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @since 6.0
+	 *
+	 * @see #toStrictlyIncreasing()
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Function<T, Stream<T>>
+	toStrictlyImproving(final Comparator<? super T> comparator) {
+		return Streams.toStrictlyImproving(comparator);
 	}
 
 }

@@ -19,14 +19,23 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
+
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -42,7 +51,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version 6.1
  */
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>
@@ -50,7 +59,7 @@ public class LongChromosome
 		NumericChromosome<Long, LongGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed
@@ -73,60 +82,6 @@ public class LongChromosome
 		super(genes, lengthRange);
 	}
 
-	/**
-	 * Create a new random chromosome.
-	 *
-	 * @since 4.0
-	 *
-	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
-	 * @param lengthRange the allowed length range of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the length is smaller than one
-	 *
-	 * @deprecated Use {@link #of(long, long, IntRange)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(
-		final Long min,
-		final Long max,
-		final IntRange lengthRange
-	) {
-		this(LongGene.seq(min, max, lengthRange), lengthRange);
-		_valid = true;
-	}
-
-	/**
-	 * Create a new random {@code LongChromosome}.
-	 *
-	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 *
-	 * @deprecated Use {@link #of(long, long, int)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(final Long min, final Long max, final int length) {
-		this(min, max, IntRange.of(length));
-	}
-
-	/**
-	 * Create a new random {@code LongChromosome} of length one.
-	 *
-	 * @param min the minimal value of this chromosome (inclusively).
-	 * @param max the maximal value of this chromosome (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(long, long)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(final Long min, final Long max) {
-		this(min, max, 1);
-	}
-
 	@Override
 	public LongChromosome newInstance(final ISeq<LongGene> genes) {
 		return new LongChromosome(genes, lengthRange());
@@ -135,6 +90,43 @@ public class LongChromosome
 	@Override
 	public LongChromosome newInstance() {
 		return of(_min, _max, lengthRange());
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@code long[]} array,
+	 * by applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * <pre>{@code
+	 * final LongChromosome chromosome = ...;
+	 * final LongChromosome halved = chromosome.map(Main::half);
+	 *
+	 * static long[] half(final long[] values) {
+	 *     for (int i = 0; i < values.length; ++i) {
+	 *         values[i] /= 2;
+	 *     }
+	 *     return values;
+	 * }
+	 * }</pre>
+	 *
+	 * @since 6.1
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 * @throws IllegalArgumentException if the length of the mapped
+	 *         {@code long[]} array is empty or doesn't match with the allowed
+	 *         length range
+	 */
+	public LongChromosome map(final Function<? super long[], long[]> f) {
+		requireNonNull(f);
+
+		final var range = LongRange.of(_min, _max);
+		final var genes = LongStream.of(f.apply(toArray()))
+			.mapToObj(v -> LongGene.of(v, range))
+			.collect(ISeq.toISeq());
+
+		return newInstance(genes);
 	}
 
 	/**
@@ -194,11 +186,12 @@ public class LongChromosome
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
+	 * @throws IllegalArgumentException if the length of the genes array is
+	 *         empty or the given {@code genes} doesn't have the same range.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
+		checkGeneRange(Stream.of(genes).map(LongGene::range));
 		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
@@ -210,11 +203,12 @@ public class LongChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 * @throws IllegalArgumentException if the of the genes iterable is empty or
+	 *         the given {@code genes} doesn't have the same range.
 	 */
 	public static LongChromosome of(final Iterable<LongGene> genes) {
 		final ISeq<LongGene> values = ISeq.of(genes);
+		checkGeneRange(values.stream().map(LongGene::range));
 		return new LongChromosome(values, IntRange.of(values.length()));
 	}
 
@@ -280,7 +274,7 @@ public class LongChromosome
 		final LongRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -296,7 +290,7 @@ public class LongChromosome
 	 *         one.
 	 */
 	public static LongChromosome of(final LongRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -320,44 +314,49 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static LongChromosome of(final LongRange range) {
-		return of(range.getMin(), range.getMax());
+		return of(range.min(), range.max());
 	}
+
 
 
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.defaultWriteObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeLong(_min);
-		out.writeLong(_max);
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
+		writeLong(_min, out);
+		writeLong(_max, out);
 
-		for (LongGene gene : _genes) {
-			out.writeLong(gene.getAllele());
+		for (int i = 0, n = length(); i < n; ++i) {
+			writeLong(longValue(i), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static LongChromosome read(final DataInput in) throws IOException {
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = readLong(in);
+		final var max = readLong(in);
 
-		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readLong());
-		reflect.setField(this, "_max", in.readLong());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, LongGene.of(in.readLong(), _min, _max));
+		final MSeq<LongGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, LongGene.of(readLong(in), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new LongChromosome(values.toISeq(), lengthRange);
 	}
 
 }

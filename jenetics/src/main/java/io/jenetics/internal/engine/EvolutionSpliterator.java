@@ -27,13 +27,19 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.Evolution;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 
 /**
+ * The {@code Spliterator} implementation of the {@code EvolutionStream}.
+ *
+ * @param <G> the gene type
+ * @param <C> the evolution result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 5.1
  */
 public final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -43,14 +49,14 @@ public final class EvolutionSpliterator<
 {
 
 	private final Supplier<EvolutionStart<G, C>> _start;
-	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
+	private final Evolution<G, C> _evolution;
 
 	private long _estimate;
 	private EvolutionStart<G, C> _next = null;
 
 	private EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
+		final Evolution<G, C> evolution,
 		final long estimate
 	) {
 		_evolution = requireNonNull(evolution);
@@ -58,9 +64,18 @@ public final class EvolutionSpliterator<
 		_estimate = estimate;
 	}
 
+	/**
+	 * Create a new evolution spliterator with the given {@code start} element
+	 * and the {@code evolution} function.
+	 *
+	 *
+	 * @param start the start element
+	 * @param evolution the evolution function
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
 	public EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+		final Evolution<G, C> evolution
 	) {
 		this(start, evolution, Long.MAX_VALUE);
 	}
@@ -72,7 +87,7 @@ public final class EvolutionSpliterator<
 			_next = _start.get();
 		}
 
-		final EvolutionResult<G, C> result = _evolution.apply(_next);
+		final EvolutionResult<G, C> result = _evolution.evolve(_next);
 		action.accept(result);
 		_next = result.next();
 		return true;
@@ -93,6 +108,31 @@ public final class EvolutionSpliterator<
 	@Override
 	public int characteristics() {
 		return NONNULL | IMMUTABLE | ORDERED;
+	}
+
+	/**
+	 * Create a new spliterator with the given {@code start} element and the
+	 * {@code evolution} function-function.
+	 *
+	 * @since 5.1
+	 *
+	 * @param start the start element
+	 * @param evolution the evolution function-function
+	 * @param <G> the gene type
+	 * @param <C> the evolution result type
+	 * @return a new evolution spliterator
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionSpliterator<G, C> of(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
+	) {
+		return new EvolutionSpliterator<>(
+			start,
+			result -> evolution.apply(result).evolve(result)
+		);
 	}
 
 }

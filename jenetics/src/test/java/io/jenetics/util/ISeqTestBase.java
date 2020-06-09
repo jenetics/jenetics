@@ -19,13 +19,14 @@
  */
 package io.jenetics.util;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -53,7 +54,7 @@ public abstract class ISeqTestBase extends SeqTestBase {
 			Assert.assertEquals(mcopy[i], seq.get(i));
 		}
 
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 		for (int i = 0; i < copy.length(); ++i) {
 			copy.set(i, random.nextInt());
@@ -67,5 +68,15 @@ public abstract class ISeqTestBase extends SeqTestBase {
 		for (int i = 0; i < copy.length(); ++i) {
 			Assert.assertEquals(copy.get(i).intValue(), random.nextInt());
 		}
+	}
+
+	@Test
+	public void iterator() {
+		final Iterator<Integer> it = newSeq(100).iterator();
+		for (int i = 0; i < 100; ++i) {
+			it.next();
+		}
+
+		Assert.assertFalse(it.hasNext());
 	}
 }

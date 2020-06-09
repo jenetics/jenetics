@@ -22,7 +22,6 @@ package io.jenetics.ext.moea;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.IndexSorter.init;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,10 +29,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
 
-import io.jenetics.internal.util.IndexSorter;
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Seq;
+import io.jenetics.util.ProxySorter;
 
 import io.jenetics.ext.internal.IntList;
 
@@ -65,7 +64,7 @@ public final class Pareto {
 	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
 	 * {@code n} the {@code set} size.
 	 *
-	 * @see #crowdingDistance(Seq, ElementComparator, ElementDistance, ToIntFunction)
+	 * @see #crowdingDistance(BaseSeq, ElementComparator, ElementDistance, ToIntFunction)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param <T> the vector type
@@ -73,7 +72,8 @@ public final class Pareto {
 	 * @throws NullPointerException if the input {@code set} is {@code null}
 	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
 	 */
-	public static <T> double[] crowdingDistance(final Seq<? extends Vec<T>> set) {
+	public static <T> double[]
+	crowdingDistance(final BaseSeq<? extends Vec<T>> set) {
 		return crowdingDistance(
 			set,
 			Vec::compare,
@@ -93,7 +93,7 @@ public final class Pareto {
 	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
 	 * {@code n} the {@code set} size.
 	 *
-	 * @see #crowdingDistance(Seq)
+	 * @see #crowdingDistance(BaseSeq)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param comparator the comparator which defines the (total) order of the
@@ -105,7 +105,7 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> double[] crowdingDistance(
-		final Seq<? extends T> set,
+		final BaseSeq<? extends T> set,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
 		final ToIntFunction<? super T> dimension
@@ -114,25 +114,25 @@ public final class Pareto {
 		requireNonNull(comparator);
 		requireNonNull(distance);
 
-		final double[] result = new double[set.size()];
-		if (set.size() < 3) {
+		final double[] result = new double[set.length()];
+		if (set.length() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final int[] idx = new int[set.size()];
-			final IndexSorter sorter = IndexSorter.sorter(set.size());
-
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
-				sorter.sort(set, init(idx), comparator.ofIndex(m));
+				final int[] idx = ProxySorter.sort(
+					set,
+					comparator.ofIndex(m).reversed()
+				);
 
 				result[idx[0]] = POSITIVE_INFINITY;
-				result[idx[set.size() - 1]] = POSITIVE_INFINITY;
+				result[idx[set.length() - 1]] = POSITIVE_INFINITY;
 
 				final T max = set.get(idx[0]);
-				final T min = set.get(idx[set.size() - 1]);
+				final T min = set.get(idx[set.length() - 1]);
 				final double dm = distance.distance(max, min, m);
 
 				if (Double.compare(dm, 0) > 0) {
-					for (int i = 1, n = set.size() - 1; i < n; ++i) {
+					for (int i = 1, n = set.length() - 1; i < n; ++i) {
 						final double dist = distance.distance(
 							set.get(idx[i - 1]),
 							set.get(idx[i + 1]),
@@ -173,7 +173,7 @@ public final class Pareto {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] rank(final Seq<? extends Vec<T>> set) {
+	public static <T> int[] rank(final BaseSeq<? extends Vec<T>> set) {
 		return rank(set, Vec::dominance);
 	}
 
@@ -199,13 +199,13 @@ public final class Pareto {
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
 	public static <T> int[] rank(
-		final Seq<? extends T> set,
+		final BaseSeq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {
 		// Pre-compute the dominance relations.
-		final int[][] d = new int[set.size()][set.size()];
-		for (int i = 0; i < set.size(); ++i) {
-			for (int j = i + 1; j < set.size(); ++j) {
+		final int[][] d = new int[set.length()][set.length()];
+		for (int i = 0; i < set.length(); ++i) {
+			for (int j = i + 1; j < set.length(); ++j) {
 				d[i][j] = dominance.compare(set.get(i), set.get(j));
 				d[j][i] = -d[i][j];
 			}
@@ -214,15 +214,15 @@ public final class Pareto {
 		// Compute for each element p the element q that it dominates and the
 		// number of times it is dominated. Using the names as defined in the
 		// referenced paper.
-		final int[] nq = new int[set.size()];
+		final int[] nq = new int[set.length()];
 		final List<IntList> fronts = new ArrayList<>();
 		IntList Fi = new IntList();
 
-		for (int p = 0; p < set.size(); ++p) {
+		for (int p = 0; p < set.length(); ++p) {
 			final IntList Sp = new IntList();
 			int np = 0;
 
-			for (int q = 0; q < set.size(); ++q) {
+			for (int q = 0; q < set.length(); ++q) {
 				if (p != q) {
 					// If p dominates q, add q to the set of solutions
 					// dominated by p.
@@ -247,7 +247,7 @@ public final class Pareto {
 
 		// Initialize the front counter.
 		int i = 0;
-		final int[] ranks = new int[set.size()];
+		final int[] ranks = new int[set.length()];
 		while (!Fi.isEmpty()) {
 			// Used to store the members of the next front.
 			final IntList Q = new IntList();
@@ -296,7 +296,7 @@ public final class Pareto {
 	 * @return the elements which are part of the pareto set
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> ISeq<Vec<T>> front(final Seq<? extends Vec<T>> set) {
+	public static <T> ISeq<Vec<T>> front(final BaseSeq<? extends Vec<T>> set) {
 		return front(set, Vec::dominance);
 	}
 
@@ -318,7 +318,7 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> ISeq<T> front(
-		final Seq<? extends T> set,
+		final BaseSeq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {
 		final MSeq<T> front = MSeq.of(set);
@@ -467,27 +467,44 @@ public final class Pareto {
 		}
 	}
 
-	private static <T> int dominance(
-		final T u,
-		final T v,
-		final int dimension,
-		final ElementComparator<? super T> comparator
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @since 5.2
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param dimensions the number of vector elements
+	 * @param comparator the comparator used for comparing the vector elements
+	 * @param <V> the vector type
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <V> int dominance(
+		final V u,
+		final V v,
+		final int dimensions,
+		final ElementComparator<? super V> comparator
 	) {
 		boolean udominated = false;
 		boolean vdominated = false;
 
-		for (int i = 0; i < dimension; ++i) {
+		for (int i = 0; i < dimensions; ++i) {
 			final int cmp = comparator.compare(u, v, i);
 
 			if (cmp > 0) {
-				udominated = true;
 				if (vdominated) {
 					return 0;
+				} else {
+					udominated = true;
 				}
 			} else if (cmp < 0) {
-				vdominated = true;
 				if (udominated) {
 					return 0;
+				} else {
+					vdominated = true;
 				}
 			}
 		}

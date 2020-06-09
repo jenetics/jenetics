@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 
@@ -62,13 +63,13 @@ public class LongChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
 				for (LongGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100L) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0L) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100L) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -79,7 +80,7 @@ public class LongChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -104,9 +105,58 @@ public class LongChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).longValue(), values[i]);
 			Assert.assertEquals(chromosome.longValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		LongChromosome.of(
+			LongGene.of(1, 2),
+			LongGene.of(3, 4),
+			LongGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		LongChromosome.of(
+			ISeq.of(
+				LongGene.of(1, 2),
+				LongGene.of(3, 4),
+				LongGene.of(5, 6)
+			)
+		);
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = LongChromosome.of(0, 10_000, 100);
+
+		final var ch2 = ch1.map(LongChromosomeTest::half);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), half(ch1.toArray()));
+	}
+
+	static long[] half(final long[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= 2;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = LongChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = LongChromosome.of(0, 1);
+		ch.map(v -> new long[0]);
 	}
 
 }

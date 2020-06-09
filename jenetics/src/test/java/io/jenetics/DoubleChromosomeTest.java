@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.math.DoubleAdder.sum;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
@@ -32,6 +33,7 @@ import org.testng.annotations.Test;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -63,13 +65,13 @@ public class DoubleChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
 				for (DoubleGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0.0) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100.0) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -80,7 +82,7 @@ public class DoubleChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -105,9 +107,59 @@ public class DoubleChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).doubleValue(), values[i]);
 			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		DoubleChromosome.of(
+			DoubleGene.of(1, 2),
+			DoubleGene.of(3, 4),
+			DoubleGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		DoubleChromosome.of(
+			ISeq.of(
+				DoubleGene.of(1, 2),
+				DoubleGene.of(3, 4),
+				DoubleGene.of(5, 6)
+			)
+		);
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = DoubleChromosome.of(0, 1, 1000);
+
+		final var ch2 = ch1.map(DoubleChromosomeTest::normalize);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), normalize(ch1.toArray()));
+	}
+
+	static double[] normalize(final double[] values) {
+		final double sum = sum(values);
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= sum;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = DoubleChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = DoubleChromosome.of(0, 1);
+		ch.map(v -> new double[0]);
 	}
 
 }

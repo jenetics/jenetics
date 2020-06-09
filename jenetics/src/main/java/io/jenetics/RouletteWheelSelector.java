@@ -19,12 +19,11 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.stat.DoubleSummary.min;
-
 import java.util.Arrays;
 
 import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.stat.DoubleSummary;
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -39,7 +38,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -65,34 +64,36 @@ public class RouletteWheelSelector<
 		assert population.nonEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
-		// Copy the fitness values to probabilities arrays.
-		final double[] fitness = new double[population.size()];
-		for (int i = population.size(); --i >= 0;) {
-			fitness[i] = population.get(i).getFitness().doubleValue();
-		}
-
-		final double worst = Math.min(min(fitness), 0.0);
-		final double sum = DoubleAdder.sum(fitness) - worst*population.size();
+		final double[] fitness = fitnessOf(population);
+		sub(fitness, Math.min(DoubleSummary.min(fitness), 0.0));
+		final double sum = DoubleAdder.sum(fitness);
 
 		if (eq(sum, 0.0)) {
 			Arrays.fill(fitness, 1.0/population.size());
 		} else {
-			for (int i = population.size(); --i >= 0;) {
-				fitness[i] = (fitness[i] - worst)/sum;
+			for (int i = fitness.length; --i >= 0;) {
+				fitness[i] = fitness[i]/sum;
 			}
 		}
 
 		return fitness;
 	}
 
-	@Override
-	public int hashCode() {
-		return hash(getClass());
+	private double[] fitnessOf(final BaseSeq<Phenotype<G, N>> population) {
+		final double[] fitness = new double[population.length()];
+		for (int i = fitness.length; --i >= 0;) {
+			final double fit = population.get(i).fitness().doubleValue();
+			fitness[i] = Double.isFinite(fit) ? fit : 0.0;
+		}
+		return fitness;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj != null && getClass() == obj.getClass();
+	private static void sub(final double[] values, final double subtrahend) {
+		if (Double.compare(subtrahend, 0.0) != 0) {
+			for (int i = values.length; --i >= 0;) {
+				values[i] -= subtrahend;
+			}
+		}
 	}
 
 	@Override

@@ -22,13 +22,10 @@ package io.jenetics.ext;
 import java.util.Random;
 
 import io.jenetics.Chromosome;
-import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.probability;
-import io.jenetics.util.ISeq;
+import io.jenetics.internal.math.Probabilities;
 
-import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
 
@@ -46,6 +43,7 @@ public abstract class TreeMutator<
 >
 	extends Mutator<G, C>
 {
+
 	public TreeMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
@@ -58,8 +56,6 @@ public abstract class TreeMutator<
 	/**
 	 * Mutates the given chromosome.
 	 *
-	 * @see #mutate(Gene, Random)
-	 *
 	 * @param chromosome the chromosome to mutate
 	 * @param p the mutation probability for the underlying genetic objects
 	 * @param random the random engine used for the genotype mutation
@@ -71,30 +67,19 @@ public abstract class TreeMutator<
 		final double p,
 		final Random random
 	) {
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 		return random.nextInt() < P
 			? mutate(chromosome)
 			: MutatorResult.of(chromosome);
 	}
 
 	private MutatorResult<Chromosome<G>> mutate(final Chromosome<G> chromosome) {
-		final TreeNode<A> tree = TreeNode.ofTree(chromosome.getGene());
+		final TreeNode<A> tree = TreeNode.ofTree(chromosome.gene());
 		mutate(tree);
 
-		final FlatTreeNode<A> flat = FlatTreeNode.of(tree);
-		final ISeq<G> genes = flat.map(t -> gene(chromosome.getGene(), t));
+		final var flat = FlatTreeNode.ofTree(tree);
+		final var genes = flat.map(t -> chromosome.gene().newInstance(t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
-	}
-
-	private G gene(
-		final G template,
-		final FlatTree<? extends A, ?> tree
-	) {
-		return template.newInstance(
-			tree.getValue(),
-			tree.childOffset(),
-			tree.childCount()
-		);
 	}
 
 	/**

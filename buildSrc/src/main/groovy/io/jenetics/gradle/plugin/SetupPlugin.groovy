@@ -20,10 +20,10 @@
 package io.jenetics.gradle.plugin
 
 import io.jenetics.gradle.task.ColorizerTask
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.osgi.OsgiPlugin
 import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
@@ -37,7 +37,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.8
+ * @version 4.4
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -81,33 +81,8 @@ class SetupPlugin extends JeneticsPlugin {
 		}
 
 		if (!isBuildSrc()) {
-			configureOsgi()
 			configureTestReporting()
 			configureJavadoc()
-		}
-	}
-
-	private void configureOsgi() {
-		project.plugins.apply(OsgiPlugin)
-		project.jar {
-			manifest {
-				version = version
-				symbolicName = project.name
-				name = project.name
-				instruction 'Bundle-Vendor', project.property('jenetics.Author')
-				instruction 'Bundle-Description', project.property('jenetics.Description')
-				instruction 'Bundle-DocURL', project.property('jenetics.Url')
-
-				attributes(
-					'Implementation-Title': project.name,
-					'Implementation-Version': project.version,
-					'Implementation-URL': project.property('jenetics.Url'),
-					'Implementation-Vendor': project.property('jenetics.Name'),
-					'ProjectName': project.property('jenetics.Name'),
-					'Version': project.version,
-					'Maintainer': project.property('jenetics.Author')
-				)
-			}
 		}
 	}
 
@@ -129,8 +104,13 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
+
 		project.task('testReport', dependsOn: 'test').doLast {
-			project.jacocoTestReport.execute()
+			if (project.file(project.jacoco.reportsDir).exists()) {
+				project.jacocoTestReport.actions.each { Action action ->
+					action.execute(project.jacocoTestReport)
+				}
+			}
 		}
 	}
 
@@ -143,8 +123,10 @@ class SetupPlugin extends JeneticsPlugin {
 				docEncoding = 'UTF-8'
 				charSet = 'UTF-8'
 				linkSource = true
-				linksOffline 'https://docs.oracle.com/javase/8/docs/api',
-					"$project.rootDir/buildSrc/resources/javadoc"
+				linksOffline(
+					'https://docs.oracle.com/en/java/javase/11/docs/api',
+					"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+				)
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
@@ -198,8 +180,12 @@ class SetupPlugin extends JeneticsPlugin {
 		}
 
 		project.javadoc.doLast {
-			project.colorize.execute()
-			project.java2html.execute()
+			project.colorize.actions.each { Action action ->
+				action.execute(project.colorize)
+			}
+			project.java2html.actions.each { Action action ->
+				action.execute(project.java2html)
+			}
 		}
 	}
 

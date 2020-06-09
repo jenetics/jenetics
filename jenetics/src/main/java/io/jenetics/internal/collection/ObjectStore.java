@@ -21,7 +21,14 @@ package io.jenetics.internal.collection;
 
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readObjectArray;
+import static io.jenetics.internal.util.SerialIO.writeObjectArray;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,12 +37,12 @@ import io.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
- * @since 3.4
+ * @version 6.0
+ * @since 6.0
  */
 public final class ObjectStore<T> implements Store<T>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final Object[] _array;
 
@@ -85,6 +92,32 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 
 	public static <T> ObjectStore<T> ofLength(final int length) {
 		return new ObjectStore<>(new Object[length]);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.OBJECT_STORE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeObjectArray(_array, out);
+	}
+
+	@SuppressWarnings("rawtypes")
+	static Object read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new ObjectStore(readObjectArray(in));
 	}
 
 }

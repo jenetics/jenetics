@@ -21,11 +21,10 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -51,7 +50,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.0
+ * @version 6.0
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
@@ -115,7 +114,7 @@ public class MultiPointCrossover<
 	 *
 	 * @return the number of crossover points.
 	 */
-	public int getN() {
+	public int crossoverPointCount() {
 		return _n;
 	}
 
@@ -126,8 +125,8 @@ public class MultiPointCrossover<
 		final int n = min(that.length(), other.length());
 		final int k = min(n, _n);
 
-		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? comb.subset(n, k, random) : new int[0];
+		final Random random = RandomRegistry.random();
+		final int[] points = k > 0 ? Combinatorics.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;
@@ -149,20 +148,6 @@ public class MultiPointCrossover<
 			final int index = indexes[indexes.length - 1];
 			that.swap(index, min(that.length(), other.length()), other, index);
 		}
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(super.hashCode(), hash(_n));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			_n == ((MultiPointCrossover)obj)._n &&
-			super.equals(obj);
 	}
 
 	@Override

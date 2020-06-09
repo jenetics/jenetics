@@ -36,7 +36,7 @@ public class ISeqTest {
 	@Test
 	public void collector() {
 		final int size = 10_000;
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final List<Double> list = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {
@@ -108,6 +108,30 @@ public class ISeqTest {
 	@Test
 	public void copyEmptyISeq() {
 		Assert.assertSame(ISeq.empty().copy(), MSeq.empty());
+	}
+
+	@Test
+	public void collectLimitedSeq() {
+		final ISeq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(ISeq.toISeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(ISeq.toISeq(25)),
+			seq.subSeq(75)
+		);
+	}
+
+	@Test
+	public void collectEmptySeq() {
+		final ISeq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(ISeq.toISeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(ISeq.toISeq(0)),
+			ISeq.empty()
+		);
 	}
 
 }

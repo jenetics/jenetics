@@ -26,8 +26,10 @@ import static java.lang.Math.sin;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -120,17 +122,52 @@ public class ParetoFrontTest {
 		set.trim(trimmedSize, Vec::compare, Vec::distance, Vec::length);
 		Assert.assertEquals(set.size(), trimmedSize);
 
+		/*
 		final List<Vec<double[]>> missing = set.stream()
 			.filter(v -> !front.contains(v))
 			.collect(Collectors.toList());
 
 		System.out.println(missing);
+		*/
 	}
 
 	private static Vec<double[]> circle(final Random random) {
 		final double r = random.nextDouble();
 		final double a = random.nextDouble()*2*PI;
 		return Vec.of(r*sin(a), r*cos(a));
+	}
+
+	@Test
+	public void withEqualsPredicate() {
+		final class Entry {
+			final int random = ThreadLocalRandom.current().nextInt();
+			final Vec<int[]> data;
+			Entry(final Vec<int[]> data) {
+				this.data = data;
+			}
+			@Override
+			public int hashCode() {
+				return Objects.hash(random, data);
+			}
+			@Override
+			public boolean equals(final Object obj) {
+				return obj == this ||
+					obj instanceof Entry &&
+					random == ((Entry)obj).random &&
+					Objects.equals(data, ((Entry)obj).data);
+			}
+		}
+
+		final ParetoFront<Entry> front = new ParetoFront<>(
+			(e1, e2) -> e1.data.dominance(e2.data),
+			(e1, e2) -> e1.data.equals(e2.data)
+		);
+		front.add(new Entry(Vec.of(1, 2, 3)));
+		front.add(new Entry(Vec.of(1, 2, 3)));
+		front.add(new Entry(Vec.of(1, 2, 4)));
+		front.add(new Entry(Vec.of(1, 2, 4)));
+
+		Assert.assertEquals(front.size(), 1);
 	}
 
 }

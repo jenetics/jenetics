@@ -23,15 +23,16 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
 import io.jenetics.internal.collection.Array.Store.Ref;
-import io.jenetics.internal.util.reflect;
 
 /**
  * Array implementation class. This class manages the actual array (store) and
@@ -39,13 +40,14 @@ import io.jenetics.internal.util.reflect;
  *
  * @param <T> the array element type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 6.0
  * @since 3.4
  */
-public final class Array<T> implements Serializable {
-	private static final long serialVersionUID = 1L;
+public final class Array<T> implements BaseMSeq<T>, Serializable {
 
-	private transient final Store.Ref<T> _store;
+	private static final long serialVersionUID = 2L;
+
+	private final Store.Ref<T> _store;
 	private final int _start;
 	private final int _length;
 
@@ -69,6 +71,39 @@ public final class Array<T> implements Serializable {
 	 */
 	private Array(final Store<T> store) {
 		this(Store.Ref.of(store), 0, store.length());
+	}
+
+	/**
+	 * Get the array value at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @return the value at the given index
+	 */
+	@Override
+	public T get(final int index) {
+		return _store.get(index + _start);
+	}
+
+	/**
+	 * Return the array length.
+	 *
+	 * @return the array length
+	 */
+	@Override
+	public int length() {
+		return _length;
+	}
+
+	/**
+	 * Set the {@code value} at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @param value the value to set
+	 */
+	public void set(final int index, final T value) {
+		_store.set(index + _start, value);
 	}
 
 	/**
@@ -104,17 +139,6 @@ public final class Array<T> implements Serializable {
 	}
 
 	/**
-	 * Set the {@code value} at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @param value the value to set
-	 */
-	public void set(final int index, final T value) {
-		_store.set(index + _start, value);
-	}
-
-	/**
 	 * Sort the store.
 	 *
 	 * @param from the start index where to start sorting (inclusively)
@@ -129,17 +153,6 @@ public final class Array<T> implements Serializable {
 		final Comparator<? super T> comparator
 	) {
 		_store.sort(from + _start, until + _start, comparator);
-	}
-
-	/**
-	 * Get the array value at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @return the value at the given index
-	 */
-	public T get(final int index) {
-		return _store.get(index + _start);
 	}
 
 	/**
@@ -233,15 +246,6 @@ public final class Array<T> implements Serializable {
 		}
 
 		return size;
-	}
-
-	/**
-	 * Return the array length.
-	 *
-	 * @return the array length
-	 */
-	public int length() {
-		return _length;
 	}
 
 	/**
@@ -350,14 +354,25 @@ public final class Array<T> implements Serializable {
 	 * @return a new array with the given {@code length}
 	 */
 	public static <T> Array<T> ofLength(final int length) {
-		return new Array<T>(ObjectStore.ofLength(length));
+		return new Array<>(ObjectStore.ofLength(length));
 	}
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.ARRAY, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
 		final Store<T> store = _start == 0
 			? _store._value
 			: _store._value.copy(_start, _start + _length);
@@ -366,19 +381,15 @@ public final class Array<T> implements Serializable {
 		out.writeObject(store);
 	}
 
-	private void readObject(final ObjectInputStream in)
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-
 		final boolean sealed = in.readBoolean();
-		@SuppressWarnings("unchecked")
-		final Store<T> store = (Store<T>) in.readObject();
-		final Store.Ref<T> ref = new Ref<>(store, sealed);
+		final Store store = (Store)in.readObject();
+		final Store.Ref ref = new Ref(store, sealed);
 
-		reflect.setField(this, "_start", 0);
-		reflect.setField(this, "_length", store.length());
-		reflect.setField(this, "_store", ref);
+		return new Array(ref, 0, store.length());
 	}
 
 	/**
@@ -398,7 +409,7 @@ public final class Array<T> implements Serializable {
 		 * @param index the array index
 		 * @param value the value to set
 		 */
-		public void set(final int index, final T value);
+		void set(final int index, final T value);
 
 		/**
 		 * Return the value at the given array {@code index}.
@@ -406,7 +417,7 @@ public final class Array<T> implements Serializable {
 		 * @param index the array index
 		 * @return the value at the given index
 		 */
-		public T get(final int index);
+		T get(final int index);
 
 		/**
 		 * Sort the store.
@@ -417,7 +428,7 @@ public final class Array<T> implements Serializable {
 		 *        elements. A {@code null} value indicates that the elements'
 		 *        Comparable natural ordering should be used
 		 */
-		public void sort(
+		void sort(
 			final int from,
 			final int until,
 			final Comparator<? super T> comparator
@@ -428,7 +439,7 @@ public final class Array<T> implements Serializable {
 		 *
 		 * @return the array store length
 		 */
-		public int length();
+		int length();
 
 		/**
 		 * Return a new array {@code Store} with the copied portion of the
@@ -438,7 +449,7 @@ public final class Array<T> implements Serializable {
 		 * @param until the end index of the copied array
 		 * @return a new copy of the given range
 		 */
-		public Store<T> copy(final int from, final int until);
+		Store<T> copy(final int from, final int until);
 
 		/**
 		 * Return a new array {@code Store} with the copied portion of the
@@ -447,7 +458,7 @@ public final class Array<T> implements Serializable {
 		 * @param from the start index of the copied array
 		 * @return a new copy of the given range
 		 */
-		public default Store<T> copy(final int from) {
+		default Store<T> copy(final int from) {
 			return copy(from, length());
 		}
 
@@ -456,7 +467,7 @@ public final class Array<T> implements Serializable {
 		 *
 		 * @return a new array {@code Store} copy
 		 */
-		public default Store<T> copy() {
+		default Store<T> copy() {
 			return copy(0, length());
 		}
 
@@ -467,7 +478,7 @@ public final class Array<T> implements Serializable {
 		 * @return a new {@code Store} of the same type and the given length.
 		 * @throws NegativeArraySizeException if the length is smaller than zero
 		 */
-		public Store<T> newInstance(final int length);
+		Store<T> newInstance(final int length);
 
 		/**
 		 * Mutable reference of an underlying array {@code Store}.
@@ -477,7 +488,7 @@ public final class Array<T> implements Serializable {
 		 * @version 3.4
 		 * @since 3.4
 		 */
-		public static final class Ref<T> implements Store<T> {
+		final class Ref<T> implements Store<T> {
 			private Store<T> _value;
 			private boolean _sealed;
 

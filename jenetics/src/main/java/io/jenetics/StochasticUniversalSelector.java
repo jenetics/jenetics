@@ -46,7 +46,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -88,12 +88,12 @@ public class StochasticUniversalSelector<
 			: population;
 
 		final double[] probabilities = probabilities(pop, count, opt);
-		assert  pop.size() == probabilities.length;
+		assert pop.size() == probabilities.length;
 
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
-		points[0] = RandomRegistry.getRandom().nextDouble()*delta;
+		points[0] = RandomRegistry.random().nextDouble()*delta;
 		for (int i = 1; i < count; ++i) {
 			points[i] = delta*i;
 		}

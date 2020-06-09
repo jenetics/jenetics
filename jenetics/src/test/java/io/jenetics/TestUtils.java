@@ -128,7 +128,7 @@ class TestUtils {
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -158,14 +158,14 @@ class TestUtils {
 			MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, PFF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
-	PFF = gt -> gt.getGene().getAllele();
+	PFF = gt -> gt.gene().allele();
 
 	/**
 	 * Count the number of different genes.
@@ -176,15 +176,15 @@ class TestUtils {
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
-			final Genotype<?> gt1 = p1.get(i).getGenotype();
-			final Genotype<?> gt2 = p2.get(i).getGenotype();
+			final Genotype<?> gt1 = p1.get(i).genotype();
+			final Genotype<?> gt2 = p2.get(i).genotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
-				final Chromosome<?> c1 = gt1.getChromosome(j);
-				final Chromosome<?> c2 = gt2.getChromosome(j);
+				final Chromosome<?> c1 = gt1.get(j);
+				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
-					if (!c1.getGene(k).equals(c2.getGene(k))) {
+					if (!c1.get(k).equals(c2.get(k))) {
 						++count;
 					}
 				}
@@ -197,20 +197,24 @@ class TestUtils {
 	 * 'Identity' fitness function.
 	 */
 	public static final Function<Genotype<DoubleGene>, Double> FF =
-		gt -> gt.getGene().getAllele();
+		gt -> gt.gene().allele();
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
-		return Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), 0, FF
-		).evaluate();
+		return Phenotype.of(
+			Genotype.of(
+				DoubleChromosome.of(DoubleGene.of(value, 0, 10))
+			),
+			0,
+			value
+		);
 	}
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(
 		final double min,
 		final double max
 	) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		return newDoublePhenotype(random.nextDouble()*(max - min) + min);
 	}
 

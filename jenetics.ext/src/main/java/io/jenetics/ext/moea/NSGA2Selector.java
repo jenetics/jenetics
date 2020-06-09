@@ -20,7 +20,6 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.IndexSorter.init;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,8 +31,8 @@ import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -95,10 +94,10 @@ public class NSGA2Selector<
 		requireNonNull(distance);
 		requireNonNull(dimension);
 
-		_dominance = (a, b) -> dominance.compare(a.getFitness(), b.getFitness());
-		_comparator = comparator.map(Phenotype::getFitness);
-		_distance = distance.map(Phenotype::getFitness);
-		_dimension = v -> dimension.applyAsInt(v.getFitness());
+		_dominance = (a, b) -> dominance.compare(a.fitness(), b.fitness());
+		_comparator = comparator.map(Phenotype::fitness);
+		_distance = distance.map(Phenotype::fitness);
+		_dimension = v -> dimension.applyAsInt(v.fitness());
 	}
 
 	@Override
@@ -116,11 +115,10 @@ public class NSGA2Selector<
 			_dimension
 		);
 
-		final IndexSorter sorter = IndexSorter.sorter(population.size());
-		final int[] idx = sorter.sort(
+		final int[] idx = ProxySorter.sort(
 			init(new int[population.size()]),
-			init(new int[population.size()]),
-			cc
+			population.size(),
+			(a, i, j) -> cc.compare(a[j], a[i])
 		);
 
 		final List<Phenotype<G, C>> result = new ArrayList<>();
@@ -132,6 +130,11 @@ public class NSGA2Selector<
 		}
 
 		return ISeq.of(result);
+	}
+
+	private static int[] init(final int[] indexes) {
+		for (int i = 0; i < indexes.length; ++i) indexes[i] = i;
+		return indexes;
 	}
 
 	/**
@@ -154,10 +157,10 @@ public class NSGA2Selector<
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	NSGA2Selector<G, V> ofVec() {
 		return new NSGA2Selector<>(
-			Vec<T>::dominance,
-			Vec<T>::compare,
-			Vec<T>::distance,
-			Vec<T>::length
+			Vec::dominance,
+			Vec::compare,
+			Vec::distance,
+			Vec::length
 		);
 	}
 

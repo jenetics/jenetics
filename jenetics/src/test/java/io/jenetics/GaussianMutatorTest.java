@@ -21,6 +21,7 @@ package io.jenetics;
 
 import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
@@ -39,7 +40,7 @@ public class GaussianMutatorTest extends MutatorTester {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double min = 0;
 		final double max = 10;
@@ -52,13 +53,51 @@ public class GaussianMutatorTest extends MutatorTester {
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 10.0, 10);
 
 		for (int i = 0; i < 10000; ++i) {
-			final double value = mutator.mutate(gene, random).getAllele();
+			final double value = mutator.mutate(gene, random).allele();
 			histogram.accept(value);
 		}
 
 		final Range<Double> domain = new Range<>(min, max);
 		// TODO: Implement test
 		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, var));
+	}
+
+	@Test
+	public void mutateValidGene() {
+		final var mutator = new GaussianMutator<DoubleGene, Double>() {
+			public DoubleGene mutate(final DoubleGene gene, final Random random) {
+				return super.mutate(gene, random);
+			}
+		};
+
+		final var random = new Random() {
+			@Override
+			public double nextGaussian() {
+				return 1;
+			}
+		};
+
+		DoubleGene gene = DoubleGene.of(0.9, 0, 1);
+		Assert.assertTrue(gene.isValid());
+
+		gene = mutator.mutate(gene, random);
+		Assert.assertTrue(gene.isValid());
+		Assert.assertEquals(gene.doubleValue(), Math.nextDown(1.0));
+	}
+
+	@Test
+	public void mutateInvalidGene() {
+		final var mutator = new GaussianMutator<DoubleGene, Double>() {
+			public DoubleGene mutate(final DoubleGene gene, final Random random) {
+				return super.mutate(gene, random);
+			}
+		};
+
+		final DoubleGene gene = DoubleGene.of(0.9, 5, 1);
+		Assert.assertFalse(gene.isValid());
+
+		final DoubleGene gene1 = mutator.mutate(gene, new Random());
+		Assert.assertSame(gene1, gene);
 	}
 
 }

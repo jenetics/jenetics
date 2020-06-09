@@ -1,5 +1,237 @@
 ## Release notes
 
+### [6.0.0](https://github.com/jenetics/jenetics/releases/tag/v6.0.0)
+
+#### Improvements
+
+* [#403](https://github.com/jenetics/jenetics/issues/403): Converting library to Java 11.
+* [#581](https://github.com/jenetics/jenetics/issues/581): Minimize the required _evaluation_ calls per generation.
+* [#587](https://github.com/jenetics/jenetics/issues/587): Fix Javadoc for Java 11.
+* [#590](https://github.com/jenetics/jenetics/issues/590): Improve serialization of `Seq` implementations.
+* [#591](https://github.com/jenetics/jenetics/issues/591): Remove deprecated classes and methods.
+* [#606](https://github.com/jenetics/jenetics/issues/606): Improve serialization of `*Range` classes.
+* [#630](https://github.com/jenetics/jenetics/issues/630): Fix inconsistency in `Codec.of` factory methods.
+* [#659](https://github.com/jenetics/jenetics/issues/659): Additional factory methods for `VecFactory` interface in the `moea` package.
+* [#661](https://github.com/jenetics/jenetics/issues/661): Allow the re-evaluation of the population fitness value
+* [#665](https://github.com/jenetics/jenetics/issues/665): Implement `CombineAlterer`, which is a generalization of th `MeanAlterer` class.
+* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically chaning sample points.
+```java
+final var scheduler = Executors.newScheduledThreadPool(1);
+final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
+final var sampling = new SampleBuffer<Double>(100);
+scheduler.scheduleWithFixedDelay(
+    () -> {
+        // Adding a new sample point every second to the ring buffer.
+        sampling.add(nextSamplePoint());
+        // Force re-evaluation of populations fitness values.
+        nullifier.nullifyFitness();
+    },
+    1, 1, TimeUnit.SECONDS
+);
+
+final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec =
+    Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30);
+
+final Regression<Double> regression = Regression.of(
+    codec,
+    Error.of(LossFunction::mse),
+    sampling
+);
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+    .builder(regression)
+    .interceptor(nullifier)
+    .build();
+
+engine.stream()
+    .flatMap(Streams.toIntervalMax(Duration.ofSeconds(30)))
+    .map(program -> program.bestPhenotype()
+        .genotype().gene()
+        .toParenthesesString())
+    // Printing the best program found so far every 30 seconds.
+    .forEach(System.out::println);
+```
+* [#671](https://github.com/jenetics/jenetics/issues/671): Adding helper methods in `Streams` class, which allows to emit the best evolution result of every _n_ generation.
+```java
+final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+    .flatMap(Streams.toIntervalMax(sliceSize))
+    .collect(ISeq.toISeq());
+``` 
+* [#672](https://github.com/jenetics/jenetics/issues/672): Introduce the `StreamPublisher` class, which allows to use a _normal_ Java Stream in a _reactive_ way.
+```java
+final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
+try (publisher) {
+    final var stream= engine.stream();
+    publisher.subscribe(new Subscriber<>() { ... });
+    publisher.attach(stream);
+    ...
+}
+```
+* [#679](https://github.com/jenetics/jenetics/issues/679): Additional constructor for the `TournamentSelector`, which allows to define own `Phenotype` comparator.
+* [#685](https://github.com/jenetics/jenetics/issues/685): Add `Engine.Setup` interface, which allows combining different dependent engine configurations.
+* [#687](https://github.com/jenetics/jenetics/issues/687): Add engien setup for (μ,λ)- and (μ+λ)-Evolution Strategy.
+
+#### Bugs
+
+* [#663](https://github.com/jenetics/jenetics/issues/663): `PartialAlterer` uses fitness of unaltered phenotype.
+* [#667](https://github.com/jenetics/jenetics/issues/667): Fix `Concurrency.close()` method.
+
+
+### [5.2.0](https://github.com/jenetics/jenetics/releases/tag/v5.2.0)
+
+#### Improvements
+
+* [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
+```java
+public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
+    Function<T, Genotype<G>> encoder();
+    default Genotype<G> encode(final T value) {
+        return encoder().apply(value); 
+    }
+}
+```
+* [#543](https://github.com/jenetics/jenetics/issues/543): Simplified `Constraint` factory methods.
+* [#566](https://github.com/jenetics/jenetics/issues/566): New parameter class, `EvolutionParams`, contains all `Engine` parameters which influence the evolution performance.
+* [#607](https://github.com/jenetics/jenetics/issues/607): More flexible MOEA optimization. It is now possible to do minimization/maximization on every dimension independently.
+* [#614](https://github.com/jenetics/jenetics/issues/614): Generalize the `ConstExprRewriter` class. It can no be used with every type, not only with `Double` values.
+* [#635](https://github.com/jenetics/jenetics/issues/635): Mark the `Chromosome.toSeq()` and `Genotype.toSeq()` methods as deprecated. This methods are no longer needed, because the `Chromosome` and `Genotype` itself will implement the new `BaseSeq` interfaces and are now _sequences_ itself. 
+* [#645](https://github.com/jenetics/jenetics/issues/645): Mark all bean-like _getter_ methods as deprecated. This methods will be replaced by simple _accessor_-methods, and is a preparation step for using the new Java _records_.
+
+
+#### Bugs
+
+* [#621](https://github.com/jenetics/jenetics/issues/621): `ìo.jenetics.prog.op.Program.arity()` returns the wrong value.
+
+
+
+### [5.1.0](https://github.com/jenetics/jenetics/releases/tag/v5.1.0)
+
+#### Improvements
+
+* [#522](https://github.com/jenetics/jenetics/issues/522): Replace `io.jenetics.ext.engine.AdaptiveEngine` with `io.jenetics.ext.engine.UpdatableEngine`. The `AdaptiveEngine` has been marked as deprecated.
+* [#557](https://github.com/jenetics/jenetics/issues/557): Implementation `io.jenetics.util.ProxySorter` class, which sorts a proxy array instead of an sequence itself.
+* [#563](https://github.com/jenetics/jenetics/issues/563): Introduction of `Evolution` interface, which makes the _concept_ of an _evolution_ function more explicit.
+* [#579](https://github.com/jenetics/jenetics/issues/579): Improve internal `RingBuffer` implementation.
+* [#585](https://github.com/jenetics/jenetics/issues/585): Improve `EphemeralConst` serialization.
+* [#592](https://github.com/jenetics/jenetics/issues/592): Add `Tree.path()` and `Tree.pathElements()` methods.
+
+#### Bugs
+
+* [#539](https://github.com/jenetics/jenetics/issues/539): Fix JHM tests.
+* [#599](https://github.com/jenetics/jenetics/issues/599): `Recombinator` performs `recombine` on an individual with itself.
+* [#600](https://github.com/jenetics/jenetics/issues/600): Duplicates in Pareto set owing to the `equals` method in `Phenotype` class.
+
+### [5.0.1](https://github.com/jenetics/jenetics/releases/tag/v5.0.1)
+
+#### Bugs
+
+* [#550](https://github.com/jenetics/jenetics/issues/550): Erroneous index check for `Sample.argAt(int)` method in `io.jenetics.prog.regression` package. 
+* [#554](https://github.com/jenetics/jenetics/issues/550): `ClassCastException` in `io.jenetics.prog.regression.Regression` class. 
+
+### [5.0.0](https://github.com/jenetics/jenetics/releases/tag/v5.0.0)
+
+#### Improvements
+
+* [#534](https://github.com/jenetics/jenetics/issues/534): Generify `Regression` classes so it can be used for regression analysis of arbitrary types.
+* [#529](https://github.com/jenetics/jenetics/issues/529): Implementation of Hybridizing PSM and RSM mutation operator (HPRM)
+* [#518](https://github.com/jenetics/jenetics/issues/518): Implementation of Symbolic Regression classes. This makes it easier to solve such optimization problems.
+* [#515](https://github.com/jenetics/jenetics/issues/515): Rename `Tree.getIndex(Tree)` to `Tree.indexOf(Tree)`.
+* [#509](https://github.com/jenetics/jenetics/issues/509): Allow to collect the nth best optimization results.
+```java
+final ISeq<EvolutionResult<DoubleGene, Double>> best = engine.stream()
+    .limit(Limits.bySteadyFitness(50))
+    .flatMap(MinMax.toStrictlyIncreasing())
+    .collect(ISeq.toISeq(10));
+```
+* [#504](https://github.com/jenetics/jenetics/issues/504): Rename `Tree.getChild(int)` to `Tree.childAt(int)`.
+* [#500](https://github.com/jenetics/jenetics/issues/500): Implementation of Reverse Sequence mutation operator (RSM).
+* [#497](https://github.com/jenetics/jenetics/issues/497): Implement Boolean operators for GP.
+* [#496](https://github.com/jenetics/jenetics/issues/496): Implement `GT` operator for GP.
+* [#493](https://github.com/jenetics/jenetics/issues/493): Add dotty tree formatter
+* [#488](https://github.com/jenetics/jenetics/issues/488): Implement new tree formatter `TreeFormatter.LISP`. This allows to create a Lisp string representation from a given `Tree`.
+* [#487](https://github.com/jenetics/jenetics/issues/487): Re-implementation of 'MathTreePruneAlterer'. The new implementation uses the newly introduced Tree Rewriting API, implemented in #442.
+* [#486](https://github.com/jenetics/jenetics/issues/486): Implement `TreeRewriteAlterer`, based on the new Tree Rewriting API.
+* [#485](https://github.com/jenetics/jenetics/issues/485): Cleanup of `MathExpr` class.
+* [#484](https://github.com/jenetics/jenetics/issues/484): The `Tree.toString()` now returns a parentheses string.
+* [#481](https://github.com/jenetics/jenetics/issues/481): The parentheses tree representation now only escapes "protected" characters.
+* [#469](https://github.com/jenetics/jenetics/issues/469): Implementation of additional `Evaluator` factory methods.
+* [#465](https://github.com/jenetics/jenetics/issues/465): Remove fitness scaler classes. The fitness scaler doesn't carry its weight.
+* [#455](https://github.com/jenetics/jenetics/issues/455): Implementation of `CompletableFutureEvaluator`.
+* [#450](https://github.com/jenetics/jenetics/issues/450): Improvement of `FutureEvaluator` class.
+* [#449](https://github.com/jenetics/jenetics/issues/449): The `Engine.Builder` constructor is now public and is the most generic way for creating engine builder instances. All other builder factory methods are calling this _primary_ constructor.
+* [#447](https://github.com/jenetics/jenetics/issues/447): Remove evolution iterators. The whole evolution is no performed via streams.
+* [#442](https://github.com/jenetics/jenetics/issues/442): Introduce Tree Rewriting API, which allows to define own rewrite rules/system. This is very helpful when solving GP related problems.
+```java
+final TRS<String> trs = TRS.parse(
+    "add(0,$x) -> $x",
+    "add(S($x),$y) -> S(add($x,$y))",
+    "mul(0,$x) -> 0",
+    "mul(S($x),$y) -> add(mul($x,$y),$y)"
+);
+
+// Converting the input tree into its normal form.
+final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
+trs.rewrite(tree);
+assert tree.equals(TreeNode.parse("S(S(S(S(0))))"));
+```
+* [#372](https://github.com/jenetics/jenetics/issues/372): Allow to define the chromosome index an `Alterer` is allowed to change. This allows to define alterers for specific chromosomes in a genotype.
+```java
+// The genotype prototype, consisting of 4 chromosomes
+final Genotype<DoubleGene> gtf = Genotype.of(
+    DoubleChromosome.of(0, 1),
+    DoubleChromosome.of(1, 2),
+    DoubleChromosome.of(2, 3),
+    DoubleChromosome.of(3, 4)
+);
+
+// Define the GA engine.
+final Engine<DoubleGene, Double> engine = Engine
+    .builder(gt -> gt.getGene().doubleValue(), gtf)
+    .selector(new RouletteWheelSelector<>())
+    .alterers(
+        // The `Mutator` is used on chromosome with index 0 and 2.
+        SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+        // The `MeanAlterer` is used on chromosome 3.
+        SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
+        // The `GaussianMutator` is used on all chromosomes.
+        new GaussianMutator<>()
+    )
+    .build();
+```
+* [#368](https://github.com/jenetics/jenetics/issues/368): Remove deprecated code.
+* [#364](https://github.com/jenetics/jenetics/issues/364): Clean implementation of async fitness functions.
+* [#342](https://github.com/jenetics/jenetics/issues/342): The `Tree` accessor names are no longer in a Java Bean style: `getChild(int)` -> `childAt(int)`. This corresponds to the `childAtPath(path)` methods.
+* [#331](https://github.com/jenetics/jenetics/issues/331): Remove `hashCode` and `equals` method from `Selector` and `Alterer`.
+* [#314](https://github.com/jenetics/jenetics/issues/314): Add factory method for `AdaptiveEngine`, which simplifies its creation.
+* [#308](https://github.com/jenetics/jenetics/issues/308): General improvement of object serialization.
+* [#50](https://github.com/jenetics/jenetics/issues/50): Improve Genotype validation. The new `Constraint` interface, and its implementation `RetryConstraint`, now allows a finer control of the validation and recreation of individuals.
+
+
+#### Bugs
+
+* [#520](https://github.com/jenetics/jenetics/issues/520): Fix tree-rewriting for `Const` values. This leads to non-matching nodes when trying to simplify the GP tree.
+* [#475](https://github.com/jenetics/jenetics/issues/475): Level function returns different results depending on whether the iterator is iterating through a `ProgramGene` or `TreeNode`.
+* [#473](https://github.com/jenetics/jenetics/issues/473): `DynamicGenotype` example causes `IllegalArgumentException`.
+
+### [4.4.0](https://github.com/jenetics/jenetics/releases/tag/v4.4.0)
+
+#### Improvements
+
+* [#316](https://github.com/jenetics/jenetics/issues/316): Improve implementation of tree rewriting. This is a preparations tep for [#442](https://github.com/jenetics/jenetics/issues/442).
+* [#414](https://github.com/jenetics/jenetics/issues/414): Use Gradle 'implementation' instead of 'compile' dependency
+* [#426](https://github.com/jenetics/jenetics/issues/426): Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed. 
+* [#430](https://github.com/jenetics/jenetics/issues/430): Codec for numeric 2d matrices.
+* [#433](https://github.com/jenetics/jenetics/issues/433): Upgrade Gradle to 5.x.
+* [#443](https://github.com/jenetics/jenetics/issues/443): Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+* [#445](https://github.com/jenetics/jenetics/issues/445): Mark `Phenotype.newInstance` methods as deprecated. 
+* [#457](https://github.com/jenetics/jenetics/issues/457): Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
+
+#### Bugs
+
+* [#425](https://github.com/jenetics/jenetics/issues/425): Manual fixes.
+
+
 ### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
 
 #### Improvements

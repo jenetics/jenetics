@@ -22,10 +22,21 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
+import static io.jenetics.internal.util.SerialIO.readIntArray;
+import static io.jenetics.internal.util.SerialIO.writeIntArray;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -39,7 +50,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 6.0
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -55,7 +66,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the value of the current {@code Tree} node
 	 */
-	public V getValue();
+	V value();
 
 	/**
 	 * Return the <em>parent</em> node of this tree node.
@@ -63,7 +74,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the parent node, or {@code Optional.empty()} if this node is the
 	 *         root of the tree
 	 */
-	public Optional<T> getParent();
+	Optional<T> parent();
 
 	/**
 	 * Return the child node with the given index.
@@ -73,14 +84,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds ({@code [0, childCount())})
 	 */
-	public T getChild(final int index);
+	T childAt(final int index);
 
 	/**
 	 * Return the number of children this tree node consists of.
 	 *
 	 * @return the number of children this tree node consists of
 	 */
-	public int childCount();
+	int childCount();
 
 
 	/* *************************************************************************
@@ -92,8 +103,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return an iterator of the children of this {@code Tree} node.
 	 */
-	public default Iterator<T> childIterator() {
-		return new TreeChildIterator<V, T>(Trees.<V, T>self(this));
+	default Iterator<T> childIterator() {
+		return new TreeChildIterator<V, T>(Trees.self(this));
 	}
 
 	/**
@@ -101,9 +112,15 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return a stream of children of {@code this} node
 	 */
-	public default Stream<T> childStream() {
-		return StreamSupport
-			.stream(spliteratorUnknownSize(childIterator(), 0), false);
+	default Stream<T> childStream() {
+		return StreamSupport.stream(
+			Spliterators.spliterator(
+				childIterator(),
+				childCount(),
+				Spliterator.SIZED | Spliterator.ORDERED
+			),
+			false
+		);
 	}
 
 	/**
@@ -112,8 +129,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if this node is the root of its tree, {@code false}
 	 *         otherwise
 	 */
-	public default boolean isRoot() {
-		return !getParent().isPresent();
+	default boolean isRoot() {
+		return parent().isEmpty();
 	}
 
 	/**
@@ -125,7 +142,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the depth of the tree whose root is this node
 	 */
-	public default int depth() {
+	default int depth() {
 		final Iterator<T> it = breadthFirstIterator();
 
 		T last = null;
@@ -144,10 +161,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the number of levels above this node
 	 */
-	public default int level() {
+	default int level() {
 		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
-		while ((ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent()) {
+		while ((ancestor = ancestor.flatMap(Tree::parent)).isPresent()) {
 			++levels;
 		}
 
@@ -165,10 +182,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the index of the node in this node's child array, or {@code -1}
 	 *         if the node could not be found
 	 */
-	public default int getIndex(final Tree<?, ?> child) {
+	default int indexOf(final Tree<?, ?> child) {
 		int index = -1;
 		for (int i = 0, n = childCount(); i < n && index == -1; ++i) {
-			if (getChild(i).identical(child)) {
+			if (childAt(i).identical(child)) {
 				index = i;
 			}
 		}
@@ -181,8 +198,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
-	public default int size() {
-		return (int)breadthFirstStream().count();
+	default int size() {
+		return Trees.countChildren(this) + 1;
 	}
 
 
@@ -193,11 +210,41 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/**
 	 * Return the child node at the given {@code path}. A path consists of the
 	 * child index at a give level, starting with level 1. (The root note has
+	 * level zero.) {@code tree.childAtPath(Path.of(2))} will return the third
+	 * child node of {@code this} node, if it exists and
+	 * {@code tree.childAtPath(Path.of(2, 0))} will return the first child of
+	 * the third child of {@code this node}.
+	 *
+	 * @since 4.4
+	 *
+	 * @see #childAtPath(int...)
+	 *
+	 * @param path the child path
+	 * @return the child node at the given {@code path}
+	 * @throws NullPointerException if the given {@code path} array is
+	 *         {@code null}
+	 */
+	default Optional<T> childAtPath(final Path path) {
+		T node = Trees.self(this);
+		for (int i = 0; i < path.length() && node != null; ++i) {
+			node = path.get(i) < node.childCount()
+				? node.childAt(path.get(i))
+				: null;
+		}
+
+		return Optional.ofNullable(node);
+	}
+
+	/**
+	 * Return the child node at the given {@code path}. A path consists of the
+	 * child index at a give level, starting with level 1. (The root note has
 	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
 	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
 	 * return the first child of the third child of {@code this node}.
 	 *
 	 * @since 4.3
+	 *
+	 * @see #childAtPath(Path)
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
@@ -206,23 +253,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws IllegalArgumentException if one of the path elements is smaller
 	 *         than zero
 	 */
-	public default Optional<T> childAtPath(final int... path) {
-		T node = Trees.self(this);
-		for (int i = 0; i < path.length && node != null; ++i) {
-			final int childIndex = path[i];
-			if (childIndex < 0) {
-				throw new IllegalArgumentException(format(
-					"Path element at position %d is smaller than zero: %d",
-					i, childIndex
-				));
-			}
-
-			node = childIndex < node.childCount()
-				? node.getChild(childIndex)
-				: null;
-		}
-
-		return Optional.ofNullable(node);
+	default Optional<T> childAtPath(final int... path) {
+		return childAtPath(Path.of(path));
 	}
 
 	/**
@@ -235,7 +267,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         {@code this} node, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isAncestor(final Tree<?, ?> node) {
+	default boolean isAncestor(final Tree<?, ?> node) {
 		requireNonNull(node);
 
 		Optional<T> ancestor = Optional.of(Trees.self(this));
@@ -243,7 +275,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
-				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree::parent)).isPresent());
 
 		return result;
 	}
@@ -258,7 +290,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isDescendant(final Tree<?, ?> node) {
+	default boolean isDescendant(final Tree<?, ?> node) {
 		return requireNonNull(node).isAncestor(this);
 	}
 
@@ -271,12 +303,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         or {@link Optional#empty()} if no common ancestor exists.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default Optional<T> sharedAncestor(final Tree<?, ?> node) {
+	default Optional<T> sharedAncestor(final Tree<?, ?> node) {
 		requireNonNull(node);
 
 		T ancestor = null;
 		if (node.identical(this)) {
-			ancestor = Trees.<V, T>self(this);
+			ancestor = Trees.self(this);
 		} else {
 			final int level1 = level();
 			final int level2 = node.level();
@@ -287,26 +319,26 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			if (level2 > level1) {
 				diff = level2 - level1;
 				node1 = node;
-				node2 = Trees.<V, T>self(this);
+				node2 = Trees.self(this);
 			} else {
 				diff = level1 - level2;
-				node1 = Trees.<V, T>self(this);
+				node1 = Trees.self(this);
 				node2 = node;
 			}
 
 			while (diff > 0 && node1 != null) {
-				node1 = node1.getParent().orElse(null);
+				node1 = node1.parent().orElse(null);
 				--diff;
 			}
 
 			do {
 				if (node1 != null && node1.identical(node2)) {
-					ancestor = Trees.<V, T>self(node1);
+					ancestor = Trees.self(node1);
 				}
 				node1 = node1 != null
-					? node1.getParent().orElse(null)
+					? node1.parent().orElse(null)
 					: null;
-				node2 = node2.getParent().orElse(null);
+				node2 = node2.parent().orElse(null);
 			} while (node1 != null && node2 != null && ancestor == null);
 		}
 
@@ -322,21 +354,42 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         node, {@code false} otherwise.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isRelated(final Tree<?, ?> node) {
+	default boolean isRelated(final Tree<?, ?> node) {
 		requireNonNull(node);
-		return node.getRoot().identical(getRoot());
+		return node.root().identical(root());
 	}
 
 	/**
 	 * Returns the path from the root, to get to this node. The last element in
 	 * the path is this node.
 	 *
+	 * @since 5.1
+	 *
 	 * @return an array of TreeNode objects giving the path, where the
 	 *         first element in the path is the root and the last
 	 *         element is this node.
 	 */
-	public default ISeq<T> getPath() {
-		return Trees.pathToRoot(Trees.<V, T>self(this), 0).toISeq();
+	default ISeq<T> pathElements() {
+		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
+	}
+
+	/**
+	 * Return the {@link Path} of {@code this} tree, such that
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = ...;
+	 * final Tree.Path path = tree.path();
+	 * assert tree == tree.getRoot()
+	 *     .childAtPath(path)
+	 *     .orElse(null);
+	 * }</pre>
+	 *
+	 * @since 5.1
+	 *
+	 * @return the path from the root element to {@code this} node.
+	 */
+	default Path path() {
+		final int[] p = Trees.pathFromRoot(Trees.<V, T>self(this), 0);
+		return Path.of(p);
 	}
 
 	/**
@@ -345,13 +398,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the root of the tree that contains this node
 	 */
-	public default T getRoot() {
-		T anc = Trees.<V, T>self(this);
+	default T root() {
+		T anc = Trees.self(this);
 		T prev;
 
 		do {
 			prev = anc;
-			anc = anc.getParent().orElse(null);
+			anc = anc.parent().orElse(null);
 		} while (anc != null);
 
 		return prev;
@@ -369,10 +422,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isChild(final Tree<?, ?> node) {
+	default boolean isChild(final Tree<?, ?> node) {
 		requireNonNull(node);
 		return childCount() != 0 &&
-			node.getParent().equals(Optional.of(Trees.<V, T>self(this)));
+			node.parent().equals(Optional.of(Trees.<V, T>self(this)));
 	}
 
 	/**
@@ -381,9 +434,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the first child of this node
 	 */
-	public default Optional<T> firstChild() {
+	default Optional<T> firstChild() {
 		return childCount() > 0
-			? Optional.of(getChild(0))
+			? Optional.of(childAt(0))
 			: Optional.empty();
 	}
 
@@ -393,9 +446,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the last child of this node
 	 */
-	public default Optional<T> lastChild() {
+	default Optional<T> lastChild() {
 		return childCount() > 0
-			? Optional.of(getChild(childCount() - 1))
+			? Optional.of(childAt(childCount() - 1))
 			: Optional.empty();
 	}
 
@@ -410,16 +463,16 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *          first node.
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public default Optional<T> childAfter(final Tree<?, ?> child) {
+	default Optional<T> childAfter(final Tree<?, ?> child) {
 		requireNonNull(child);
 
-		final int index = getIndex(child);
+		final int index = indexOf(child);
 		if (index == -1) {
 			throw new IllegalArgumentException("The given node is not a child.");
 		}
 
 		return index < childCount() - 1
-			? Optional.of(getChild(index + 1))
+			? Optional.of(childAt(index + 1))
 			: Optional.empty();
 	}
 
@@ -433,16 +486,16 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *          or {@code null} if the given {@code node} is the first node.
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public default Optional<T> childBefore(final Tree<?, ?> child) {
+	default Optional<T> childBefore(final Tree<?, ?> child) {
 		requireNonNull(child);
 
-		final int index = getIndex(child);
+		final int index = indexOf(child);
 		if (index == -1) {
 			throw new IllegalArgumentException("The given node is not a child.");
 		}
 
 		return index > 0
-			? Optional.of(getChild(index - 1))
+			? Optional.of(childAt(index - 1))
 			: Optional.empty();
 	}
 
@@ -456,16 +509,16 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the node that follows this node in a pre-order traversal, or
 	 *        {@code Optional.empty()} if this node is last
 	 */
-	public default Optional<T> nextNode() {
+	default Optional<T> nextNode() {
 		Optional<T> next = Optional.empty();
 
 		if (childCount() == 0) {
-			T node = Trees.<V, T>self(this);
-			while (node != null && !(next = node.nextSibling()).isPresent()) {
-				node = node.getParent().orElse(null);
+			T node = Trees.self(this);
+			while (node != null && (next = node.nextSibling()).isEmpty()) {
+				node = node.parent().orElse(null);
 			}
 		} else {
-			next = Optional.of(getChild(0));
+			next = Optional.of(childAt(0));
 		}
 
 		return next;
@@ -481,17 +534,17 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the node that precedes this node in a pre-order traversal, or
 	 *         {@code Optional.empty()} if this node is the first
 	 */
-	public default Optional<T> previousNode() {
+	default Optional<T> previousNode() {
 		Optional<T> node = Optional.empty();
 
-		if (getParent().isPresent()) {
+		if (parent().isPresent()) {
 			final Optional<T> prev = previousSibling();
 			if (prev.isPresent()) {
 				node = prev.get().childCount() == 0
 					? prev
-					: prev.map(Tree<V, T>::lastLeaf);
+					: prev.map(Tree::lastLeaf);
 			} else {
-				node = getParent();
+				node = parent();
 			}
 		}
 
@@ -510,9 +563,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         node
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isSibling(final Tree<?, ?> node) {
+	default boolean isSibling(final Tree<?, ?> node) {
 		return identical(requireNonNull(node)) ||
-			getParent().equals(node.getParent());
+			parent().equals(node.parent());
 	}
 
 	/**
@@ -522,8 +575,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the number of siblings of {@code this} node
 	 */
-	public default int siblingCount() {
-		return getParent().map(Tree<V, T>::childCount).orElse(1);
+	default int siblingCount() {
+		return parent().map(Tree::childCount).orElse(1);
 	}
 
 	/**
@@ -537,8 +590,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the sibling of {@code this} node that immediately follows
 	 *         {@code this} node
 	 */
-	public default Optional<T> nextSibling() {
-		return getParent().flatMap(p -> p.childAfter(Trees.<V, T>self(this)));
+	default Optional<T> nextSibling() {
+		return parent().flatMap(p -> p.childAfter(Trees.<V, T>self(this)));
 	}
 
 	/**
@@ -550,8 +603,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the sibling of {@code this} node that immediately precedes this
 	 *         node
 	 */
-	public default Optional<T> previousSibling() {
-		return getParent().flatMap(p -> p.childBefore(Trees.<V, T>self(this)));
+	default Optional<T> previousSibling() {
+		return parent().flatMap(p -> p.childBefore(Trees.<V, T>self(this)));
 	}
 
 
@@ -565,7 +618,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if {@code this} node has no children, {@code false}
 	 *         otherwise
 	 */
-	public default boolean isLeaf() {
+	default boolean isLeaf() {
 		return childCount() == 0;
 	}
 
@@ -578,8 +631,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see  #isDescendant
 	 * @return the first leaf in the subtree rooted at this node
 	 */
-	public default T firstLeaf() {
-		T leaf = Trees.<V, T>self(this);
+	default T firstLeaf() {
+		T leaf = Trees.self(this);
 		while (!leaf.isLeaf()) {
 			leaf = leaf.firstChild().orElseThrow(AssertionError::new);
 		}
@@ -596,8 +649,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #isDescendant
 	 * @return the last leaf in this subtree
 	 */
-	public default T lastLeaf() {
-		T leaf = Trees.<V, T>self(this);
+	default T lastLeaf() {
+		T leaf = Trees.self(this);
 		while (!leaf.isLeaf()) {
 			leaf = leaf.lastChild().orElseThrow(AssertionError::new);
 		}
@@ -621,10 +674,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #isLeaf
 	 * @return return the next leaf past this node
 	 */
-	public default Optional<T> nextLeaf() {
+	default Optional<T> nextLeaf() {
 		return nextSibling()
-			.map(s -> Optional.of(s.firstLeaf()))
-			.orElseGet(() -> getParent().flatMap(Tree<V, T>::nextLeaf));
+			.map(Tree::firstLeaf)
+			.or(() -> parent().flatMap(Tree::nextLeaf));
 	}
 
 	/**
@@ -644,10 +697,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #isLeaf
 	 * @return returns the leaf before {@code this} node
 	 */
-	public default Optional<T> previousLeaf() {
+	default Optional<T> previousLeaf() {
 		return previousSibling()
-			.map(s -> Optional.of(s.lastLeaf()))
-			.orElseGet(() -> getParent().flatMap(Tree<V, T>::previousLeaf));
+			.map(Tree::lastLeaf)
+			.or(() -> parent().flatMap(Tree::previousLeaf));
 	}
 
 	/**
@@ -658,9 +711,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #isLeaf()
 	 * @return the number of leaves beneath this node
 	 */
-	public default int leafCount() {
-		return (int) breadthFirstStream()
-			.filter(Tree<V, T>::isLeaf)
+	default int leafCount() {
+		return (int)breadthFirstStream()
+			.filter(Tree::isLeaf)
 			.count();
 	}
 
@@ -679,7 +732,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #depthFirstIterator
 	 * @return an iterator for traversing the tree in breadth-first order
 	 */
-	public default Iterator<T> breadthFirstIterator() {
+	default Iterator<T> breadthFirstIterator() {
 		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
 	}
 
@@ -694,7 +747,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return an iterator for traversing the tree in breadth-first order
 	 */
 	@Override
-	public default Iterator<T> iterator() {
+	default Iterator<T> iterator() {
 		return breadthFirstIterator();
 	}
 
@@ -707,7 +760,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #stream()
 	 * @return a stream for traversing the tree in breadth-first order
 	 */
-	public default Stream<T> breadthFirstStream() {
+	default Stream<T> breadthFirstStream() {
 		return StreamSupport
 			.stream(spliteratorUnknownSize(breadthFirstIterator(), 0), false);
 	}
@@ -720,7 +773,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #breadthFirstStream
 	 * @return a stream for traversing the tree in breadth-first order
 	 */
-	public default Stream<T> stream() {
+	default Stream<T> stream() {
 		return breadthFirstStream();
 	}
 
@@ -735,7 +788,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #postorderIterator
 	 * @return an iterator for traversing the tree in pre-order
 	 */
-	public default Iterator<T> preorderIterator() {
+	default Iterator<T> preorderIterator() {
 		return new TreeNodePreorderIterator<>(Trees.<V, T>self(this));
 	}
 
@@ -749,7 +802,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #preorderIterator
 	 * @return a stream for traversing the tree in pre-order
 	 */
-	public default Stream<T> preorderStream() {
+	default Stream<T> preorderStream() {
 		return StreamSupport
 			.stream(spliteratorUnknownSize(preorderIterator(), 0), false);
 	}
@@ -763,7 +816,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #preorderIterator
 	 * @return an iterator for traversing the tree in post-order
 	 */
-	public default Iterator<T> postorderIterator() {
+	default Iterator<T> postorderIterator() {
 		return new TreeNodePostorderIterator<>(Trees.<V, T>self(this));
 	}
 
@@ -776,7 +829,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #preorderIterator
 	 * @return a stream for traversing the tree in post-order
 	 */
-	public default Stream<T> postorderStream() {
+	default Stream<T> postorderStream() {
 		return StreamSupport
 			.stream(spliteratorUnknownSize(postorderIterator(), 0), false);
 	}
@@ -793,7 +846,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #postorderIterator
 	 * @return an iterator for traversing the tree in depth-first order
 	 */
-	public default Iterator<T> depthFirstIterator() {
+	default Iterator<T> depthFirstIterator() {
 		return postorderIterator();
 	}
 
@@ -806,7 +859,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #preorderIterator
 	 * @return a stream for traversing the tree in post-order
 	 */
-	public default Stream<T> depthFirstStream() {
+	default Stream<T> depthFirstStream() {
 		return postorderStream();
 	}
 
@@ -828,9 +881,45 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         ancestor of this node
 	 * @throws NullPointerException if the given {@code ancestor} is {@code null}
 	 */
-	public default Iterator<T>
-	pathFromAncestorIterator(final Tree<?, ?> ancestor) {
+	default Iterator<T> pathFromAncestorIterator(final Tree<?, ?> ancestor) {
 		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
+	}
+
+	/**
+	 * Return the path of {@code this} child node from the root node. You will
+	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
+	 * root node of {@code this} node.
+	 * <pre>{@code
+	 * final Tree<?, ?> node = ...;
+	 * final Tree<?, ?> root = node.getRoot();
+	 * final int[] path = node.childPath();
+	 * assert node == root.childAtPath(path);
+	 * }</pre>
+	 *
+	 * @since 4.4
+	 *
+	 * @see #childAtPath(Path)
+	 *
+	 * @return the path of {@code this} child node from the root node.
+	 */
+	default Path childPath() {
+		final Iterator<T> it = pathFromAncestorIterator(root());
+		final int[] path = new int[level()];
+
+		T tree = null;
+		int index = 0;
+		while (it.hasNext()) {
+			final T child = it.next();
+			if (tree != null) {
+				path[index++] = tree.indexOf(child);
+			}
+
+			tree = child;
+		}
+
+		assert index == path.length;
+
+		return new Path(path);
 	}
 
 	/**
@@ -843,7 +932,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if the {@code other} node is the same as {@code this}
 	 *         node.
 	 */
-	public default boolean identical(final Tree<?, ?> other) {
+	default boolean identical(final Tree<?, ?> other) {
 		return this == other;
 	}
 
@@ -873,14 +962,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString()
+	 * @see TreeFormatter#PARENTHESES
 	 *
 	 * @param mapper the {@code mapper} which converts the tree value to a string
 	 * @return the string representation of the given tree
 	 */
-	public default String
-	toParenthesesString(final Function<? super V, String> mapper) {
-		requireNonNull(mapper);
-		return ParenthesesTrees.toString(Trees.<V, T>self(this), mapper);
+	default String toParenthesesString(final Function<? super V, String> mapper) {
+		return TreeFormatter.PARENTHESES.format(this, mapper);
 	}
 
 	/**
@@ -905,14 +993,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString(Function)
+	 * @see TreeFormatter#PARENTHESES
 	 *
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the {@code mapper} is {@code null}
 	 */
-	public default String toParenthesesString() {
+	default String toParenthesesString() {
 		return toParenthesesString(Objects::toString);
 	}
-
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -925,10 +1013,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the hash code of the tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static int hashCode(final Tree<?, ?> tree) {
+	static int hashCode(final Tree<?, ?> tree) {
 		return tree != null
 			? tree.breadthFirstStream()
-				.mapToInt(node -> 31*Objects.hashCode(node.getValue()) + 37)
+				.mapToInt(node -> 31*Objects.hashCode(node.value()) + 37)
 				.sum() + 17
 			: 0;
 	}
@@ -941,7 +1029,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if the two given trees are structurally equals,
 	 *         {@code false} otherwise
 	 */
-	public static boolean equals(final Tree<?, ?> a, final Tree<?, ?> b) {
+	static boolean equals(final Tree<?, ?> a, final Tree<?, ?> b) {
 		return Trees.equals(a, b);
 	}
 
@@ -950,18 +1038,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * example.
 	 *
 	 * <pre>
-	 * 0
-	 * ├── 1
-	 * │   ├── 4
-	 * │   └── 5
-	 * ├── 2
-	 * │   └── 6
-	 * └── 3
-	 *     ├── 7
-	 *     │   ├── 10
-	 *     │   └── 11
-	 *     ├── 8
-	 *     └── 9
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
 	 * This method is intended to be used when override the
@@ -970,52 +1047,141 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
 	 */
-	public static String toString(final Tree<?, ?> tree) {
-		return Trees.toString(tree);
+	static String toString(final Tree<?, ?> tree) {
+		return tree.toParenthesesString();
 	}
 
 
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 *
-	 * @deprecated Use {@link #toParenthesesString()} instead
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static String toCompactString(final Tree<?, ?> tree) {
-		return ParenthesesTrees.toString((Tree)tree, Objects::toString);
-	}
+	/* *************************************************************************
+	 * Inner classes
+	 **************************************************************************/
 
 	/**
-	 * Return a string representation of the given {@code tree} in dotty syntax.
+	 * This class represents the path to child within a given tree. It allows to
+	 * point (and fetch) a tree child.
 	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
+	 * @see Tree#childAtPath(Path)
 	 *
-	 * @deprecated Will be removed; very special to-string method.
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version 6.0
+	 * @since 4.4
 	 */
-	@Deprecated
-	public static String toDottyString(final Tree<?, ?> tree) {
-		return Trees.toDottyString("T", tree);
+	final class Path implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		private final int[] _path;
+
+		private Path(final int[] path) {
+			_path = requireNonNull(path);
+		}
+
+		/**
+		 * Return the path length, which is the level of the child {@code this}
+		 * path points to.
+		 *
+		 * @return the path length
+		 */
+		public int length() {
+			return _path.length;
+		}
+
+		/**
+		 * Return the child index at the given index (child level).
+		 *
+		 * @param index the path index
+		 * @return the child index at the given child level
+		 * @throws IndexOutOfBoundsException if the index is not with the range
+		 *         {@code [0, length())}
+		 */
+		public int get(final int index) {
+			return _path[index];
+		}
+
+		/**
+		 * Return the path as {@code int[]} array.
+		 *
+		 * @return the path as {@code int[]} array
+		 */
+		public int[] toArray() {
+			return _path.clone();
+		}
+
+		/**
+		 * Appends the given {@code path} to {@code this} one.
+		 *
+		 * @param path the path to append
+		 * @return a new {@code Path} with the given {@code path} appended
+		 * @throws NullPointerException if the given {@code path} is {@code null}
+		 */
+		public Path append(final Path path) {
+			final int[] p = new int[length() + path.length()];
+			System.arraycopy(_path, 0, p, 0, length());
+			System.arraycopy(path._path, 0, p, length(), path.length());
+			return new Path(p);
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(_path);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Path &&
+				Arrays.equals(_path, ((Path)obj)._path);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(_path);
+		}
+
+		/**
+		 * Create a new path object from the given child indexes.
+		 *
+		 * @param path the child indexes
+		 * @return a new tree path
+		 * @throws IllegalArgumentException if one of the path elements is
+		 *         smaller than zero
+		 */
+		public static Path of(final int... path) {
+			for (int i = 0; i < path.length; ++i) {
+				if (path[i] < 0) {
+					throw new IllegalArgumentException(format(
+						"Path element at position %d is smaller than zero: %d",
+						i, path[i]
+					));
+				}
+			}
+
+			return new Path(path.clone());
+		}
+
+
+		/* *********************************************************************
+		 *  Java object serialization
+		 * ********************************************************************/
+
+		private Object writeReplace() {
+			return new Serial(Serial.TREE_PATH, this);
+		}
+
+		private void readObject(final ObjectInputStream stream)
+			throws InvalidObjectException
+		{
+			throw new InvalidObjectException("Serialization proxy required.");
+		}
+
+
+		void write(final DataOutput out) throws IOException {
+			writeIntArray(_path, out);
+		}
+
+		static Object read(final DataInput in) throws IOException {
+			return Path.of(readIntArray(in));
+		}
+
 	}
 
 }

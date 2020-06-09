@@ -19,8 +19,7 @@
  */
 package io.jenetics.ext.engine;
 
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import static io.jenetics.ext.engine.EvolutionStreamables.streamable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,9 +38,7 @@ import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
@@ -60,7 +57,7 @@ public class ConcatEngineTest {
 			ConcatEngine.<IntegerGene, Integer>of().stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{});
@@ -73,7 +70,7 @@ public class ConcatEngineTest {
 				.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1});
@@ -86,7 +83,7 @@ public class ConcatEngineTest {
 				.stream(() -> EvolutionStreams.result(5).toEvolutionStart());
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6});
@@ -97,8 +94,8 @@ public class ConcatEngineTest {
 		EvolutionInit<IntegerGene> init = EvolutionInit.of(
 			EvolutionStreams.result(5)
 				.toEvolutionStart()
-				.getPopulation().stream()
-				.map(Phenotype::getGenotype)
+				.population().stream()
+				.map(Phenotype::genotype)
 				.collect(ISeq.toISeq()),
 			1
 		);
@@ -108,7 +105,7 @@ public class ConcatEngineTest {
 				.stream(init);
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6});
@@ -121,7 +118,7 @@ public class ConcatEngineTest {
 				.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5});
@@ -135,7 +132,7 @@ public class ConcatEngineTest {
 				.limit(Limits.byFixedGeneration(3));
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3});
@@ -152,7 +149,7 @@ public class ConcatEngineTest {
 			.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
@@ -172,7 +169,7 @@ public class ConcatEngineTest {
 			.limit(Limits.byFixedGeneration(15));
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
@@ -198,57 +195,10 @@ public class ConcatEngineTest {
 
 		final int[] array = stream
 			.limit(12)
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17});
-	}
-
-	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
-		return new EvolutionStreamable<IntegerGene, Integer>() {
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final Supplier<EvolutionStart<IntegerGene, Integer>> start) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
-
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = start.get().getPopulation().isEmpty()
-									? 0
-									: start.get().getPopulation()
-									.get(0).getGenotype().getGene().intValue();
-							}
-							value += 1;
-
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final EvolutionInit<IntegerGene> init) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
-
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = init.getPopulation().get(0).getGene().intValue();
-							}
-							value += 1;
-
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-		};
 	}
 
 

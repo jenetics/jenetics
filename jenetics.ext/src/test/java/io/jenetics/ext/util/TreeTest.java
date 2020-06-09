@@ -25,6 +25,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.ext.util.Tree.Path;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -95,7 +97,7 @@ public class TreeTest {
 	@Test(dataProvider = "paths")
 	public void childByPath(final int[] path, final String result)  {
 		Assert.assertEquals(
-			TREE.childAtPath(path).map(t -> t.getValue()),
+			TREE.childAtPath(Path.of(path)).map(Tree::value),
 			Optional.ofNullable(result)
 		);
 	}
@@ -114,6 +116,28 @@ public class TreeTest {
 			{new int[]{10}, null},
 			{new int[]{0, 0, 0, 0}, null}
 		};
+	}
+
+	@Test
+	public void childPath() {
+		TREE.forEach(node -> {
+			final Path path = node.childPath();
+			Assert.assertEquals(
+				TREE.childAtPath(path).orElseThrow(AssertionError::new),
+				node
+			);
+		});
+	}
+
+	@Test(dataProvider = "paths")
+	public void path(final int[] path, final String result) {
+		final Tree<String, ?> child = TREE.childAtPath(path).orElse(null);
+
+		if (result == null) {
+			Assert.assertNull(child);
+		} else {
+			Assert.assertSame(TREE.childAtPath(child.path()).get(), child);
+		}
 	}
 
 }

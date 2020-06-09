@@ -19,8 +19,7 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
 
@@ -32,10 +31,16 @@ import io.jenetics.util.MSeq;
  * production of building blocks. This mutation operator can also be used for
  * combinatorial problems, where no duplicated genes within a chromosome are
  * allowed, e.g. for the TSP.
+ * <p>
+ * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
+ *
+ * @see <a href="https://arxiv.org/ftp/arxiv/papers/1203/1203.3099.pdf">
+ *     Analyzing the Performance of Mutation Operators to Solve the Travelling
+ *     Salesman Problem</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class SwapMutator<
 	G extends Gene<?, G>,
@@ -75,7 +80,7 @@ public class SwapMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final MSeq<G> genes = MSeq.of(chromosome);
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();
@@ -88,11 +93,6 @@ public class SwapMutator<
 		}
 
 		return result;
-	}
-
-	@Override
-	public String toString() {
-		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

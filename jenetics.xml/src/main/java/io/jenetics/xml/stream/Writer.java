@@ -81,7 +81,7 @@ public interface Writer<T> {
 	 * @throws XMLStreamException if writing the data fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public void write(final XMLStreamWriter xml, final T data)
+	void write(final XMLStreamWriter xml, final T data)
 		throws XMLStreamException;
 
 	/**
@@ -94,8 +94,7 @@ public interface Writer<T> {
 	 * @param <B> the new data type of returned writer
 	 * @return a writer with changed type
 	 */
-	public default <B> Writer<B>
-	map(final Function<? super B, ? extends T> mapper) {
+	default <B> Writer<B> map(final Function<? super B, ? extends T> mapper) {
 		return (xml, data) -> {
 			if (data != null) {
 				final T value = mapper.apply(data);
@@ -132,7 +131,7 @@ public interface Writer<T> {
 	 * @return a new writer instance
 	 * @throws NullPointerException if the attribute {@code name} is {@code null}
 	 */
-	public static <T> Writer<T> attr(final String name) {
+	static <T> Writer<T> attr(final String name) {
 		requireNonNull(name);
 
 		return (xml, data) -> {
@@ -156,7 +155,7 @@ public interface Writer<T> {
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the {@code name} is {@code null}
 	 */
-	public static <T> Writer<T> attr(
+	static <T> Writer<T> attr(
 		final String name,
 		final Object value
 	) {
@@ -179,7 +178,7 @@ public interface Writer<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SafeVarargs
-	public static <T> Writer<T> elem(
+	static <T> Writer<T> elem(
 		final String name,
 		final Writer<? super T>... children
 	) {
@@ -204,7 +203,7 @@ public interface Writer<T> {
 	 * @param <T> the data type, which is written as string to the outer element
 	 * @return a new text writer
 	 */
-	public static <T> Writer<T> text() {
+	static <T> Writer<T> text() {
 		return (xml, data) -> {
 			if (data != null) {
 				xml.writeCharacters(data.toString());
@@ -222,7 +221,7 @@ public interface Writer<T> {
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> Writer<Iterable<T>> elems(
+	static <T> Writer<Iterable<T>> elems(
 		final String name,
 		final Writer<? super T> writer
 	) {
@@ -251,7 +250,7 @@ public interface Writer<T> {
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> Writer<Iterable<T>> elems(final Writer<? super T> writer) {
+	static <T> Writer<Iterable<T>> elems(final Writer<? super T> writer) {
 		requireNonNull(writer);
 
 		return (xml, data) -> {
@@ -277,7 +276,7 @@ public interface Writer<T> {
 	 * @param <T> the writer data type
 	 * @return a new writer instance
 	 */
-	public static <T> Writer<T> doc(final Writer<? super T> writer) {
+	static <T> Writer<T> doc(final Writer<? super T> writer) {
 		return (xml, data) -> {
 			xml.writeStartDocument("UTF-8", "1.0");
 			writer.write(xml, data);

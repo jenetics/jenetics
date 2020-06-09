@@ -65,8 +65,8 @@ final class Operation<T> implements Op<T>, Serializable {
 	}
 
 	@Override
-	public T apply(final T[] doubles) {
-		return _function.apply(doubles);
+	public T apply(final T[] values) {
+		return _function.apply(values);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ final class Operation<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof Operation &&
 			Objects.equals(((Operation)obj)._name, _name) &&
-			((Operation) obj)._arity == _arity;
+			((Operation)obj)._arity == _arity;
 	}
 
 	@Override

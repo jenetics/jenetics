@@ -22,7 +22,9 @@ package io.jenetics;
 import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -58,10 +60,12 @@ public class RouletteWheelSelectorTest
 	public void minimize() {
 		using(new Random(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
-				g -> g.getChromosome().getGene().getAllele();
+				g -> g.chromosome().gene().allele();
 
-			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
+				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
+				return Phenotype.of(gt, 1, gt.gene().intValue());
+			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =
 				IntStream.range(0, 1000)
@@ -80,10 +84,12 @@ public class RouletteWheelSelectorTest
 	public void maximize() {
 		using(new Random(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
-				g -> g.getChromosome().getGene().getAllele();
+				g -> g.chromosome().gene().allele();
 
-			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
+				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
+				return Phenotype.of(gt, 1, gt.gene().intValue());
+			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =
 				IntStream.range(0, 1000)
@@ -149,13 +155,43 @@ public class RouletteWheelSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(""),
-				value -> new RouletteWheelSelector<DoubleGene, Double>(),
+				List.of(""),
+				value -> new RouletteWheelSelector<>(),
 				opt,
 				npopulation,
 				loops
 			);
 		});
+	}
+
+	@Test
+	public void issue713() {
+		final List<DoubleChromosome> chromosomes = new ArrayList<>();
+
+		var gene = DoubleGene.of(-6480.008430943683, -10_000, 10_000);
+		var ch = DoubleChromosome.of(gene);
+		chromosomes.add(ch);
+
+		for (int i = 1; i < 100; ++i) {
+			gene = DoubleGene.of(-6480.008430943731, -10_000, 10_000);
+			ch = DoubleChromosome.of(gene);
+			chromosomes.add(ch);
+		}
+
+		final var population = chromosomes.stream()
+			.map(Genotype::of)
+			.map(gt -> Phenotype.of(gt, 10, gt.gene().allele()))
+			.collect(ISeq.toISeq());
+
+		final var selector = new RouletteWheelSelector<DoubleGene, Double>();
+
+		final var selected = selector.select(population, 10, Optimize.MINIMUM);
+		for (var individual : selected) {
+			Assert.assertEquals(
+				individual.genotype().gene().allele().doubleValue(),
+				-6480.008430943731
+			);
+		}
 	}
 
 }

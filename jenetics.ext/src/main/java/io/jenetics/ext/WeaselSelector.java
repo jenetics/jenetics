@@ -43,8 +43,7 @@ import io.jenetics.util.Seq;
  * </p>
  * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
  * <pre>{@code
- * final Engine<CharacterGene, Integer> engine = Engine
- *     .builder(fitness, gtf)
+ * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *      // Set the 'WeaselSelector'.
  *     .selector(new WeaselSelector<>())
  *      // Disable survivors selector.
@@ -57,9 +56,12 @@ import io.jenetics.util.Seq;
  * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * @see WeaselMutator
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.0
  */
 public class WeaselSelector<
 	G extends Gene<?, G>,
@@ -86,17 +88,7 @@ public class WeaselSelector<
 			.collect(MinMax.toMinMax(opt.ascending()));
 
 		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(count);
-		return result.fill(minMax::getMax).toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return WeaselMutator.class.hashCode();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof WeaselMutator;
+		return result.fill(minMax::max).toISeq();
 	}
 
 	@Override

@@ -20,47 +20,62 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readIntArray;
+import static io.jenetics.internal.util.SerialIO.readObjectArray;
+import static io.jenetics.internal.util.SerialIO.writeIntArray;
+import static io.jenetics.internal.util.SerialIO.writeObjectArray;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
 
 /**
- * Default implementation of the {@link FlatTree} interface.
+ * Default implementation of the {@link FlatTree} interface. Beside the
+ * flattened and dense layout it is also an <em>immutable</em> implementation of
+ * the {@link Tree} interface. It can only be created from an existing tree.
+ *
+ * <pre>{@code
+ * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
+ * }</pre>
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 6.0
  * @since 3.9
  */
-public final class FlatTreeNode<T>
+public final class FlatTreeNode<V>
 	implements
-		FlatTree<T, FlatTreeNode<T>>,
+		FlatTree<V, FlatTreeNode<V>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
 
 	private final int _index;
-	private final MSeq<T> _nodes;
+	private final Object[] _elements;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final MSeq<T> nodes,
+		final Object[] elements,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
 		_index = index;
-		_nodes = requireNonNull(nodes);
+		_elements = requireNonNull(elements);
 		_childOffsets = requireNonNull(childOffsets);
 		_childCounts = requireNonNull(childCounts);
 	}
@@ -73,7 +88,7 @@ public final class FlatTreeNode<T>
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTreeNode<T> getRoot() {
+	public FlatTreeNode<V> root() {
 		return nodeAt(0);
 	}
 
@@ -82,39 +97,48 @@ public final class FlatTreeNode<T>
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> nodeAt(final int index) {
-		return new FlatTreeNode<T>(
+	private FlatTreeNode<V> nodeAt(final int index) {
+		return new FlatTreeNode<>(
 			index,
-			_nodes,
+			_elements,
 			_childOffsets,
 			_childCounts
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public T getValue() {
-		return _nodes.get(_index);
+	public V value() {
+		return (V)_elements[_index];
 	}
 
 	@Override
-	public Optional<FlatTreeNode<T>> getParent() {
-		return stream()
-			.filter(node -> node.childStream().anyMatch(this::identical))
-			.findFirst();
+	public Optional<FlatTreeNode<V>> parent() {
+		int index = -1;
+		for (int i = _index; --i >= 0 && index == -1;) {
+			if (isParent(i)) {
+				index = i;
+			}
+		}
+
+		return index != -1
+			? Optional.of(nodeAt(index))
+			: Optional.empty();
+	}
+
+	private boolean isParent(final int index) {
+		return _childCounts[index] > 0 &&
+			_childOffsets[index] <= _index &&
+			_childOffsets[index] + _childCounts[index] > _index;
 	}
 
 	@Override
-	public FlatTreeNode<T> getChild(final int index) {
+	public FlatTreeNode<V> childAt(final int index) {
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
 
-		return new FlatTreeNode<T>(
-			childOffset() + index,
-			_nodes,
-			_childOffsets,
-			_childCounts
-		);
+		return nodeAt(childOffset() + index);
 	}
 
 	@Override
@@ -135,21 +159,22 @@ public final class FlatTreeNode<T>
 	}
 
 	@Override
-	public ISeq<FlatTreeNode<T>> flattenedNodes() {
+	public ISeq<FlatTreeNode<V>> flattenedNodes() {
 		return stream().collect(ISeq.toISeq());
 	}
 
-	/**
-	 * Return a stream of all nodes of the whole underlying tree. This method
-	 * call is equivalent to
-	 * <pre>{@code
-	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breadthFirstStream();
-	 * }</pre>
-	 *
-	 * @return a stream of all nodes of the whole underlying tree
-	 */
-	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.size()).mapToObj(this::nodeAt);
+	@Override
+	public Iterator<FlatTreeNode<V>> breadthFirstIterator() {
+		return _index == 0
+			? new IntIterator<>(_elements.length, this::nodeAt)
+			: FlatTree.super.breadthFirstIterator();
+	}
+
+	@Override
+	public Stream<FlatTreeNode<V>> breadthFirstStream() {
+		return _index == 0
+			? IntStream.range(0, _elements.length).mapToObj(this::nodeAt)
+			: FlatTree.super.breadthFirstStream();
 	}
 
 	/**
@@ -165,7 +190,8 @@ public final class FlatTreeNode<T>
 	 * @param <B> the mapped type
 	 * @return a sequence of all <em>mapped</em> nodes
 	 */
-	public <B> ISeq<B> map(final Function<FlatTreeNode<T>, ? extends B> mapper) {
+	public <B> ISeq<B>
+	map(final Function<? super FlatTreeNode<V>, ? extends B> mapper) {
 		return stream()
 			.map(mapper)
 			.collect(ISeq.toISeq());
@@ -176,61 +202,89 @@ public final class FlatTreeNode<T>
 		return other == this ||
 			other instanceof FlatTreeNode &&
 			((FlatTreeNode)other)._index == _index &&
-			((FlatTreeNode)other)._nodes == _nodes;
+			((FlatTreeNode)other)._elements == _elements;
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_index, hash(_nodes, hash(_childCounts, hash(_childOffsets))));
+		return Tree.hashCode(this);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FlatTreeNode &&
-			((FlatTreeNode)obj)._index == _index &&
-			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
-			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
-			Arrays.equals(((FlatTreeNode)obj)._childOffsets, _childOffsets);
+		return obj == this ||
+			obj instanceof FlatTreeNode &&
+			(equals((FlatTreeNode<?>)obj) || Tree.equals((Tree<?, ?>)obj, this));
+	}
+
+	private boolean equals(final FlatTreeNode<?> tree) {
+		return tree._index == _index &&
+			Arrays.equals(tree._elements, _elements) &&
+			Arrays.equals(tree._childCounts, _childCounts) &&
+			Arrays.equals(tree._childOffsets, _childOffsets);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(getValue());
+		return toParenthesesString();
+	}
+
+	@Override
+	public int size() {
+		return _index == 0
+			? _elements.length
+			: countChildren(_index) + 1;
+	}
+
+	private int countChildren(final int index) {
+		int count = _childCounts[index];
+		for (int i = 0; i < _childCounts[index]; ++i) {
+			count += countChildren(_childOffsets[index] + i);
+		}
+		return count;
+	}
+
+	/* *************************************************************************
+	 *  Static factories
+	 * ************************************************************************/
+
+	/**
+	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
+	 *
+	 * @param tree the source tree
+	 * @param <V> the tree value types
+	 * @return a new {@code FlatTreeNode} from the given {@code tree}
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 * @deprecated Use {@link #ofTree(Tree)} instead
+	 */
+	@Deprecated(since = "6.1", forRemoval = true)
+	public static <V> FlatTreeNode<V> of(final Tree<? extends V, ?> tree) {
+		return ofTree(tree);
 	}
 
 	/**
-	 * Create a new {@code FlatTreeNode} from the given {@code tree}.
+	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
 	 *
 	 * @param tree the source tree
 	 * @param <V> the tree value types
 	 * @return a new {@code FlatTreeNode} from the given {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <V> FlatTreeNode<V> of(final Tree<? extends V, ?> tree) {
+	public static <V> FlatTreeNode<V> ofTree(final Tree<? extends V, ?> tree) {
 		requireNonNull(tree);
 
 		final int size = tree.size();
-		final MSeq<V> elements = MSeq.ofLength(size);
+		assert size >= 1;
+
+		final Object[] elements = new Object[size];
 		final int[] childOffsets = new int[size];
 		final int[] childCounts = new int[size];
 
-		assert size >= 1;
-		final FlatTreeNode<V> root = new FlatTreeNode<>(
-			0,
-			elements,
-			childOffsets,
-			childCounts
-		);
-
 		int childOffset = 1;
 		int index = 0;
-		final Iterator<? extends Tree<? extends V, ?>> it =
-			tree.breadthFirstIterator();
 
-		while (it.hasNext()) {
-			final Tree<? extends V, ?> node = it.next();
-
-			elements.set(index, node.getValue());
+		for (Tree<?, ?> node : tree) {
+			elements[index] = node.value();
 			childCounts[index] = node.childCount();
 			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
 
@@ -238,7 +292,110 @@ public final class FlatTreeNode<T>
 			++index;
 		}
 
-		return root;
+		return new FlatTreeNode<>(
+			0,
+			elements,
+			childOffsets,
+			childCounts
+		);
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static FlatTreeNode<String> parse(final String tree) {
+		return ofTree(ParenthesesTreeParser.parse(tree, Function.identity()));
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = FlatTreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
+	 *
+	 * @since 5.0
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> FlatTreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return ofTree(ParenthesesTreeParser.parse(tree, mapper));
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.FLAT_TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		final FlatTreeNode<V> node = _index == 0
+			? this
+			: FlatTreeNode.ofTree(this);
+
+		writeObjectArray(node._elements, out);
+		writeIntArray(node._childOffsets, out);
+		writeIntArray(node._childCounts, out);
+	}
+
+	@SuppressWarnings("rawtypes")
+	static FlatTreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new FlatTreeNode(
+			0,
+			readObjectArray(in),
+			readIntArray(in),
+			readIntArray(in)
+		);
 	}
 
 }

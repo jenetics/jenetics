@@ -24,7 +24,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.probability;
+import io.jenetics.internal.math.Probabilities;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -81,7 +81,7 @@ public class Mutator<
 	 *         divided by the number of chromosomes of the genotype to form
 	 *         the concrete mutation probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}..
+	 *          valid range of {@code [0, 1]}.
 	 */
 	public Mutator(final double probability) {
 		super(probability);
@@ -113,9 +113,9 @@ public class Mutator<
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double p = pow(_probability, 1.0/3.0);
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 
 		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> random.nextInt() < P
@@ -123,8 +123,8 @@ public class Mutator<
 				: MutatorResult.of(pt));
 
 		return AltererResult.of(
-			result.map(MutatorResult::getResult).asISeq(),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			result.map(MutatorResult::result).asISeq(),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 
@@ -147,8 +147,8 @@ public class Mutator<
 		final double p,
 		final Random random
 	) {
-		return mutate(phenotype.getGenotype(), p, random)
-			.map(gt -> phenotype.newInstance(gt, generation));
+		return mutate(phenotype.genotype(), p, random)
+			.map(gt -> Phenotype.of(gt, generation));
 	}
 
 	/**
@@ -167,15 +167,16 @@ public class Mutator<
 		final double p,
 		final Random random
 	) {
-		final int P = probability.toInt(p);
-		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
+		final int P = Probabilities.toInt(p);
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.stream()
 			.map(gt -> random.nextInt() < P
 				? mutate(gt, p, random)
-				: MutatorResult.of(gt));
+				: MutatorResult.of(gt))
+			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			Genotype.of(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			Genotype.of(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 
@@ -194,7 +195,7 @@ public class Mutator<
 		final double p,
 		final Random random
 	) {
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 		final ISeq<MutatorResult<G>> result = chromosome.stream()
 			.map(gene -> random.nextInt() < P
 				? MutatorResult.of(mutate(gene, random), 1)
@@ -202,8 +203,8 @@ public class Mutator<
 			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			chromosome.newInstance(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			chromosome.newInstance(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 

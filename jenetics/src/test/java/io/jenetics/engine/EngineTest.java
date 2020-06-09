@@ -68,13 +68,42 @@ import io.jenetics.util.IntRange;
  */
 public class EngineTest {
 
+
+	@Test(dataProvider = "minimalEvaluationLimits")
+	public void minimalEvaluation(final int limit) {
+		final AtomicInteger count = new AtomicInteger();
+		final Evaluator<IntegerGene, Integer> evaluator = population -> {
+			count.incrementAndGet();
+			return population
+				.map(pt -> pt.withFitness(1))
+				.asISeq();
+		};
+		final Codec<Integer, IntegerGene> codec = Codecs.ofScalar(IntRange.of(1, 100));
+
+		final Engine<IntegerGene, Integer> engine =
+			new Engine.Builder<>(evaluator, codec.encoding())
+				.alterers(new Mutator<>(1.0))
+				.build();
+
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
+			.limit(limit)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.get(), limit == 0 ? 0 : limit +1);
+	}
+
+	@DataProvider
+	public Object[][] minimalEvaluationLimits() {
+		return new Object[][] {{0}, {1}, {2}, {3}, {5}, {11}, {20}, {50}, {100}};
+	}
+
 	@Test
 	public void streamWithInitialGenotypes() {
 		final Problem<Integer, IntegerGene, Integer> problem = Problem.of(
 			a -> a,
 			Codec.of(
 				Genotype.of(IntegerChromosome.of(0, 1000)),
-				g -> g.getGene().getAllele()
+				g -> g.gene().allele()
 			)
 		);
 
@@ -93,11 +122,11 @@ public class EngineTest {
 			.limit(1)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final long maxCount = result.getPopulation().stream()
-			.filter(pt -> pt.getFitness() == max)
+		final long maxCount = result.population().stream()
+			.filter(pt -> pt.fitness() == max)
 			.count();
 
-		Assert.assertTrue(maxCount >= genotypeCount);
+		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);
 	}
 
 	@Test
@@ -150,41 +179,41 @@ public class EngineTest {
 			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		engine.builder()
-			.alterers(new Mutator<>()).build()
-			.stream(interimResult);
+		//engine.toBuilder()
+		//	.alterers(new Mutator<>()).build()
+		//	.stream(interimResult);
 	}
 
 	@Test(dataProvider = "generations")
 	public void generationCount(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(generations)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
 	public void generationLimit(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(Limits.byFixedGeneration(generations))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
 	public void engineGenerationLimit1(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -192,13 +221,13 @@ public class EngineTest {
 			.stream()
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
 	public void engineGenerationLimit2(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -207,7 +236,7 @@ public class EngineTest {
 			.stream()
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(Math.min(generations, 5), result.getTotalGenerations());
+		Assert.assertEquals(Math.min(generations, 5), result.totalGenerations());
 	}
 
 	@DataProvider(name = "generations")
@@ -218,12 +247,12 @@ public class EngineTest {
 	}
 
 	@Test
-	public void phenotypeValidator() {
+	public void constraint() {
 		final int populationSize = 100;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.phenotypeValidator(pt -> false)
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
+			.constraint(RetryConstraint.of(pt -> false))
 			.populationSize(populationSize)
 			.build();
 
@@ -231,24 +260,7 @@ public class EngineTest {
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(result.getInvalidCount(), populationSize);
-	}
-
-	@Test
-	public void genotypeValidator() {
-		final int populationSize = 100;
-
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.genotypeValidator(pt -> false)
-			.populationSize(populationSize)
-			.build();
-
-		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(10)
-			.collect(EvolutionResult.toBestEvolutionResult());
-
-		Assert.assertEquals(result.getInvalidCount(), populationSize);
+		Assert.assertEquals(result.invalidCount(), populationSize);
 	}
 
 	@Test
@@ -256,34 +268,34 @@ public class EngineTest {
 		final int populationSize = 100;
 
 		final Engine<IntegerGene, Integer> engine = Engine
-			.builder(a -> a.getGene().getAllele(), IntegerChromosome.of(0, 10))
+			.builder(a -> a.gene().allele(), IntegerChromosome.of(0, 10))
 			.populationSize(populationSize)
-			.mapping(EvolutionResult.toUniquePopulation(
+			.interceptor(EvolutionResult.toUniquePopulation(
 				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))))
 			.build();
 
 		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
 			.limit(10)
 			.peek(r -> {
-				if (r.getGenotypes().stream().collect(Collectors.toSet()).size() !=
+				if (r.genotypes().stream().collect(Collectors.toSet()).size() !=
 					populationSize)
 				{
 					throw new AssertionError(format(
 						"Expected unique population size %d, but got %d.",
 						populationSize,
-						r.getGenotypes().stream().collect(Collectors.toSet()).size()
+						r.genotypes().stream().collect(Collectors.toSet()).size()
 					));
 				}
 			})
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(result.getPopulation().size(), populationSize);
+		Assert.assertEquals(result.population().size(), populationSize);
 	}
 
 	@Test
 	public void parallelStream() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -293,9 +305,9 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(
-			result.getTotalGenerations() >= 1000,
+			result.totalGenerations() >= 1000,
 			"Total generation must be bigger than 1000: " +
-			result.getTotalGenerations()
+			result.totalGenerations()
 		);
 	}
 
@@ -305,7 +317,7 @@ public class EngineTest {
 			array -> IntStream.of(array).sum(),
 			Codec.of(
 				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
-				gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+				gt -> gt.chromosome().as(IntegerChromosome.class).toArray()
 			)
 		);
 		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
@@ -390,7 +402,7 @@ public class EngineTest {
 			} catch (InterruptedException ignore) {
 				Thread.currentThread().interrupt();
 			}
-			return gt.getGene().getAllele();
+			return gt.gene().allele();
 		};
 
 		final Engine<DoubleGene, Double> engine = Engine
@@ -411,7 +423,7 @@ public class EngineTest {
 	public void executorDeadLock(final Executor executor) {
 		try {
 			final Engine<DoubleGene, Double> engine = Engine
-				.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+				.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 				.executor(executor)
 				.populationSize(10)
 				.build();
@@ -438,6 +450,7 @@ public class EngineTest {
 		};
 	}
 
+	/*
 	@Test
 	public void populationEvaluator() {
 		final int populationSize = 100;
@@ -458,6 +471,7 @@ public class EngineTest {
 
 		Assert.assertEquals(count.get(), populationSize);
 	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test
@@ -465,7 +479,7 @@ public class EngineTest {
 		final int populationSize = 20;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 			.populationSize(populationSize)
 			.survivorsSize(0)
 			.build();
@@ -473,10 +487,10 @@ public class EngineTest {
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(100)
 			.peek(r -> {
-				if (r.getPopulation().size() != populationSize) {
+				if (r.population().size() != populationSize) {
 					throw new AssertionError(format(
 						"Expected population size %d, but got %d.",
-						populationSize, r.getPopulation().size()
+						populationSize, r.population().size()
 					));
 				}
 			})
@@ -489,7 +503,7 @@ public class EngineTest {
 		final int populationSize = 20;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 			.populationSize(populationSize)
 			.offspringSize(0)
 			.build();
@@ -497,10 +511,10 @@ public class EngineTest {
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(100)
 			.peek(r -> {
-				if (r.getPopulation().size() != populationSize) {
+				if (r.population().size() != populationSize) {
 					throw new AssertionError(format(
 						"Expected population size %d, but got %d.",
-						populationSize, r.getPopulation().size()
+						populationSize, r.population().size()
 					));
 				}
 			})

@@ -23,7 +23,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -72,9 +72,9 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.4
  */
-public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
+public class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
 {
 
@@ -95,8 +95,8 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 		}
 
 		if (that.length() >= 2) {
-			final Random random = RandomRegistry.getRandom();
-			final int[] points = comb.subset(that.length(), 2, random);
+			final Random random = RandomRegistry.random();
+			final int[] points = Combinatorics.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);

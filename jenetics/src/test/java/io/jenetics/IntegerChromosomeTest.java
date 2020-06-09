@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.math.DoubleAdder.sum;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
@@ -31,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -61,14 +63,14 @@ public class IntegerChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
-				chromosome.toSeq().forEach(g -> {
-					mm.accept(g.getAllele());
-					histogram.accept(g.getAllele());
+				chromosome.forEach(g -> {
+					mm.accept(g.allele());
+					histogram.accept(g.allele());
 				});
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -79,7 +81,7 @@ public class IntegerChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -104,9 +106,58 @@ public class IntegerChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).intValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).intValue(), values[i]);
 			Assert.assertEquals(chromosome.intValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		IntegerChromosome.of(
+			IntegerGene.of(1, 2),
+			IntegerGene.of(3, 4),
+			IntegerGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		IntegerChromosome.of(
+			ISeq.of(
+				IntegerGene.of(1, 2),
+				IntegerGene.of(3, 4),
+				IntegerGene.of(5, 6)
+			)
+		);
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = IntegerChromosome.of(0, 10_000, 100);
+
+		final var ch2 = ch1.map(IntegerChromosomeTest::half);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), half(ch1.toArray()));
+	}
+
+	static int[] half(final int[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= 2;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = IntegerChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = IntegerChromosome.of(0, 1);
+		ch.map(v -> new int[0]);
 	}
 
 }
