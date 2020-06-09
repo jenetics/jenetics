@@ -23,7 +23,6 @@
  * @since 1.4
  * @version !__version__!
  */
-
 plugins {
 	`java-gradle-plugin`
 	kotlin("jvm") version "1.3.72"

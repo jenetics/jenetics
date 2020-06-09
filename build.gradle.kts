@@ -18,6 +18,7 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+import io.jenetics.gradle.task.ColorizerTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -29,14 +30,14 @@ plugins {
 	packaging
 }
 
-rootProject.version = Jenetics.Version
+rootProject.version = Jenetics.VERSION
 
 /*
  * Project configuration *before* the projects has been evaluated.
  */
 allprojects {
-	group =  Jenetics.Group
-	version = Jenetics.Version
+	group =  Jenetics.GROUP
+	version = Jenetics.VERSION
 
 	repositories {
 		mavenLocal()
@@ -70,6 +71,7 @@ gradle.projectsEvaluated {
 			}
 
 			setupTestReporting(project)
+			setupJavadoc(project)
 		}
 	}
 
@@ -84,23 +86,19 @@ fun manifest(project: Project): Manifest {
 	return the<JavaPluginConvention>().manifest {
 		attributes (
 			"Implementation-Title" to project.name,
-			"Implementation-Version" to project.version.toString(),
-			"Implementation-URL" to Jenetics.Url,
-			"Implementation-Vendor" to Jenetics.Name,
-			"ProjectName" to Jenetics.Name,
-			"Version" to project.version.toString(),
-			"Maintainer" to Jenetics.Author,
+			"Implementation-Version" to Jenetics.VERSION,
+			"Implementation-URL" to Jenetics.URL,
+			"Implementation-Vendor" to Jenetics.NAME,
+			"ProjectName" to Jenetics.NAME,
+			"Version" to Jenetics.VERSION,
+			"Maintainer" to Jenetics.AUTHOR,
 			"Project" to project.name,
-			"Project-Version" to project.version,
-			"Built-By" to System.getProperty("user.name"),
-			"Build-Timestamp" to Env.dateformat.format(Env.now),
+			"Project-Version" to Jenetics.VERSION,
+			"Built-By" to Env.USER_NAME,
+			"Build-Timestamp" to Env.BUILD_TIME,
 			"Created-By" to "Gradle ${gradle.gradleVersion}",
-			"Build-Jdk" to "${System.getProperty("java.vm.name")} " +
-			"(${System.getProperty("java.vm.vendor")} " +
-				"${System.getProperty("java.vm.version")})",
-			"Build-OS" to "${System.getProperty("os.name")} " +
-			"${System.getProperty("os.arch")} " +
-				System.getProperty("os.version")
+			"Build-Jdk" to Env.BUILD_JDK,
+			"Build-OS" to Env.BUILD_OS
 		)
 	}
 }
@@ -110,7 +108,6 @@ fun setupTestReporting(project: Project) {
 
 	project.configure<JacocoPluginExtension> {
 		toolVersion = "0.8.5"
-		reportsDir = file("${buildDir}/jacocoReportDir")
 	}
 
 	project.tasks {
@@ -119,13 +116,88 @@ fun setupTestReporting(project: Project) {
 
 			reports {
 				xml.isEnabled = true
-				csv.isEnabled = false
+				csv.isEnabled = true
 			}
 		}
 
 		named<Test>("test") {
 			useTestNG()
 			finalizedBy("jacocoTestReport")
+		}
+	}
+}
+
+fun setupJavadoc(project: Project) {
+	project.tasks.withType<Javadoc> {
+		val doclet = options as StandardJavadocDocletOptions
+
+		exclude("**/internal/**")
+
+		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.version(true)
+		doclet.docEncoding = "UTF-8"
+		doclet.charSet = "UTF-8"
+		doclet.linkSource(true)
+		doclet.linksOffline(
+				"https://docs.oracle.com/en/java/javase/11/docs/api",
+				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+			)
+		doclet.windowTitle = "Jenetics ${project.version}"
+		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
+		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_TIME})</i>"
+		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+
+		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
+		doclet.tags = listOf(
+				"apiNote:a:API Note:",
+				"implSpec:a:Implementation Requirements:",
+				"implNote:a:Implementation Note:"
+			)
+
+		doclet.group("Core API", "io.jeneics", "io.jenetics.engine")
+		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
+
+		doLast {
+			copySpec {
+				from("src/main/java") {
+					include("io/**/doc-files/*.*")
+				}
+				includeEmptyDirs = false
+				into(destinationDir!!)
+			}
+		}
+	}
+
+	val javadoc = project.tasks.findByName("javadoc") as Javadoc?
+	if (javadoc != null) {
+		project.tasks.register<ColorizerTask>("colorizer") {
+			directory = javadoc.destinationDir!!
+		}
+
+		project.tasks.register("java2html") {
+			doLast {
+				project.javaexec {
+					main = "de.java2html.Java2Html"
+					args = listOf(
+						"-srcdir", "src/main/java",
+						"-targetdir", "${javadoc.destinationDir}/src-html"
+					)
+					classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
+				}
+			}
+		}
+
+		javadoc.doLast {
+			val colorizer = project.tasks.findByName("colorizer")
+			colorizer?.actions?.forEach {
+				it.execute(colorizer)
+			}
+
+
+			val java2html = project.tasks.findByName("java2html")
+			java2html?.actions?.forEach {
+				it.execute(java2html)
+			}
 		}
 	}
 }
@@ -150,14 +222,14 @@ fun xlint(): String {
 }
 
 tasks.register<Zip>("zip") {
-	val identifier = "${Jenetics.Name}-${Jenetics.Version}"
+	val identifier = "${Jenetics.NAME}-${Jenetics.VERSION}"
 
 	from("build/package/${identifier}") {
 		into(identifier)
 	}
 
 	archiveBaseName.set(identifier)
-	archiveVersion.set(Jenetics.Version)
+	archiveVersion.set(Jenetics.VERSION)
 
 	doLast {
 		val zip = file("${identifier}.zip")

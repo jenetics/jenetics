@@ -1,51 +1,48 @@
+import org.gradle.api.Project
 import java.time.Year
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 object Env {
-	val now = ZonedDateTime.now()
-	val year = Year.now();
-	val copyrightYear = "2007-${year}"
-	val manualDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(now)
+	val NOW = ZonedDateTime.now()
 
-	val dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+	val YEAR = Year.now();
+
+	val COPYRIGHT_YEAR = "2007-${YEAR}"
+
+	val MANUAL_DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(NOW)
+
+	val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+
+	val USER_NAME = System.getProperty("user.name")
+
+	val BUILD_TIME = DATE_FORMAT.format(NOW)
+
+	val BUILD_JDK =  "${System.getProperty("java.vm.name")} " +
+		"(${System.getProperty("java.vm.vendor")} " +
+		"${System.getProperty("java.vm.version")})"
+
+	val BUILD_OS = "${System.getProperty("os.name")} " +
+		"${System.getProperty("os.arch")} " +
+		System.getProperty("os.version")
+
 }
 
 object Jenetics {
-	val Version = "6.1.0-SNAPSHOT"
-	val Id = "jenetics"
-	val Name = "Jenetics"
-	val Group = "io.jenetics"
-	val Description = "Jenetics - Java Genetic Algorithm Library"
-	val Author = "Franz Wilhelmstötter"
-	val Email = "franz.wilhelmstoetter@gmail.com"
-	val Url = "https://jenetics.io"
+	const val VERSION = "6.1.0-SNAPSHOT"
+	const val ID = "jenetics"
+	const val NAME = "Jenetics"
+	const val GROUP = "io.jenetics"
+	const val DESCRIPTION = "Jenetics - Java Genetic Algorithm Library"
+	const val AUTHOR = "Franz Wilhelmstötter"
+	const val EMAIL = "franz.wilhelmstoetter@gmail.com"
+	const val URL = "https://jenetics.io"
+
 	val MavenScmUrl = "https://github.com/jenetics/jenetics"
 	val MavenScmConnection = "scm:git:https://github.com/jenetics/jenetics.git"
 	val MavenScmDeveloperConnection = "scm:git:https://github.com/jenetics/jenetics.git"
 
-	val manualIdentifier = "${Version}—${Env.manualDate}"
-
-//	val MANIFEST_ATTRIBUTES = mapOf(
-//		"Implementation-Title" to project.name,
-//		"Implementation-Version" to project.version.toString(),
-//		"Implementation-URL" to Jenetics.Url,
-//		"Implementation-Vendor" to Jenetics.Name,
-//		"ProjectName" to Jenetics.Name,
-//		"Version" to project.version.toString(),
-//		"Maintainer" to Jenetics.Author,
-//		"Project" to project.name,
-//		"Project-Version" to project.version,
-//		"Built-By" to System.getProperty("user.name"),
-//		"Build-Timestamp" to Env.dateformat.format(Env.now),
-//		"Created-By" to "Gradle ${gradle.gradleVersion}",
-//		"Build-Jdk" to "${System.getProperty("java.vm.name")} " +
-//			"(${System.getProperty("java.vm.vendor")} " +
-//			"${System.getProperty("java.vm.version")})",
-//		"Build-OS" to "${System.getProperty("os.name")} " +
-//			"${System.getProperty("os.arch")} " +
-//			System.getProperty("os.version")
-//	)
+	val manualIdentifier = "${VERSION}—${Env.MANUAL_DATE}"
 
 	object Ext {
 		val Name = "Jenetics Extensions"
