@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.gradle.task;
+package io.jenetics.gradle.task
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.BufferedReader
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
-import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.InputFile;
-import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.TaskExecutionException;
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskExecutionException
 
 /**
  * This tasks converts a lyx document into a PDF.
@@ -37,73 +37,72 @@ import org.gradle.api.tasks.TaskExecutionException;
  * @since 1.4
  * @version !__version__!
  */
-public class Lyx2PDFTask extends DefaultTask {
+open class Lyx2PDFTask : DefaultTask() {
 
-	private static final String BINARY = "lyx";
-
-	private File _document;
-
-	@InputFile
-	public File getDocument() {
-		return _document;
-	}
-
-	public void setDocument(final File document) {
-		_document = document;
-	}
+	@get:InputFile
+	private var document: File? = null
 
 	@TaskAction
-	public void lyx2PDF() {
+	fun lyx2PDF() {
 		if (lyxExists()) {
-			convert();
+			convert()
 		} else {
-			getLogger().lifecycle("Binary '{}' not found.", BINARY);
-			getLogger().lifecycle("Manual PDF has not been created.");
+			logger.lifecycle("Binary '{}' not found.", BINARY)
+			logger.lifecycle("Manual PDF has not been created.")
 		}
 	}
 
-	private void convert() {
-		final File workingDir = _document.getParentFile();
-		final String documentName = _document.getName();
+	private fun convert() {
+		val workingDir = document?.parentFile
+		val documentName = document?.name
 
-		final ProcessBuilder builder = new ProcessBuilder(
+		val builder = ProcessBuilder(
 			BINARY, "-e", "pdf2", documentName
-		);
-		builder.directory(workingDir);
-		builder.redirectErrorStream(true);
-		getLogger().debug(workingDir + "/" + documentName);
+		)
+		builder.directory(workingDir)
+		builder.redirectErrorStream(true)
+		logger.debug("${workingDir}/${documentName}")
 
 		try {
-			final Process process = builder.start();
-			output(process.getInputStream());
-			final int exitValue = process.waitFor();
+			val process = builder.start()
+			output(process.inputStream)
+			val exitValue = process.waitFor()
+
 			if (exitValue != 0) {
-				getLogger().lifecycle("Error while generating PDF.");
-				getLogger().lifecycle("Manual PDF has not been created.");
+				logger.lifecycle("Error while generating PDF.")
+				logger.lifecycle("Manual PDF has not been created.")
 			}
-		} catch (IOException | InterruptedException e) {
-			throw new TaskExecutionException(this, e);
+		} catch (e: Exception) {
+			throw TaskExecutionException(this, e)
 		}
 	}
 
-	private void output(final InputStream in) throws IOException {
-		final BufferedReader d = new BufferedReader(new InputStreamReader(in));
-		String line = null;
-		while ((line = d.readLine()) != null) {
-			getLogger().info(line);
+	private fun output(input: InputStream) {
+		val d = BufferedReader(InputStreamReader(input))
+		var line: String? = d.readLine()
+		while (line != null) {
+			logger.info(line)
+			line = d.readLine()
 		}
 	}
 
-	private static boolean lyxExists() {
-		final ProcessBuilder builder = new ProcessBuilder(BINARY, "-version");
 
-		try {
-			final Process process = builder.start();
-			return process.waitFor() == 0;
-		} catch (IOException | InterruptedException e) {
-			return false;
+	companion object {
+		private const val BINARY = "lyx"
+
+		private fun lyxExists(): Boolean {
+			val builder = ProcessBuilder(BINARY, "-version")
+
+			return try {
+				val process = builder.start();
+				process.waitFor() == 0;
+			} catch (e: IOException) {
+				false
+			} catch (e: InterruptedException) {
+				Thread.currentThread().interrupt()
+				return false
+			}
 		}
 	}
-
 
 }
