@@ -18,65 +18,35 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.4
+ * @version !__version__!
  */
 plugins {
-	id("java-library")
+	`java-library`
+	packaging
 }
-apply plugin: 'packaging'
 
-ext.moduleName = 'io.jenetics.doc'
-
-repositories {
-	mavenCentral()
-	jcenter()
-}
+val moduleName = "io.jenetics.doc"
 
 dependencies {
-	implementation project(':jenetics')
-	implementation project(':jenetics.ext')
-	implementation project(':jenetics.prog')
-	implementation project(':jenetics.tool')
+	implementation(project(":jenetics"))
+	implementation(project(":jenetics.ext"))
+	implementation(project(":jenetics.prog"))
+	implementation(project(":jenetics.tool"))
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.doc')
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
+	}
+}
 
 packaging {
-	name = 'Jenetics doc'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	name = Jenetics.NAME
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 
 	jarjar = false
 }
-
-task asciidoc(type: Exec) {
-	outputs.upToDateWhen { false }
-
-	def mainDoc = file("$projectDir/src/main/asciidoc/internals/main.adoc")
-	def outputFile = file("$buildDir/asciidoc/internals.html")
-
-	outputFile.parentFile.mkdirs()
-	inputs.dir mainDoc.parentFile
-	outputs.file outputFile
-
-	commandLine([
-		'asciidoc',
-		//'-b', 'html5',
-		//'-a', 'linkcss',
-		//'-a', 'docinfo',
-		'-a', 'toc-placement=manual',
-		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
-		'-a', "scriptsdir=${projectDir}/src/main/asciidoc",
-		'-a', "stylesheet=${projectDir}/src/main/asciidoc/asciidoc.css",
-		//'--theme', 'volnitsky',
-		'-o', outputFile,
-		mainDoc
-	])
-}
-
-//asciidoc -b html5 -a linkcss -a stylesdir=$PWD myfile.txt
-
