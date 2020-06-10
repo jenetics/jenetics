@@ -17,10 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.gradle;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.TaskExecutionException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
-package io.jenetics.colorizer;
+public class ColorizerTask extends DefaultTask {
+
+	private File _directory;
+
+	@InputFile
+	public File getDirectory() {
+		return _directory;
+	}
+
+	public void setDirectory(final File directory) {
+		_directory = directory;
+	}
+
+	@TaskAction
+	public void colorize() {
+		try {
+			final Colorizer colorizer = new Colorizer(_directory);
+			colorizer.colorize();
+
+			getLogger().lifecycle(
+				"Colorizer processed {} files and modified {}.",
+				colorizer.getProcessed(), colorizer.getModified()
+			);
+		} catch (final IOException e) {
+			throw new TaskExecutionException(this, e);
+		}
+	}
+
+}

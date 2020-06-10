@@ -18,7 +18,6 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-import io.jenetics.gradle.task.ColorizerTask
 import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
@@ -184,7 +183,7 @@ fun setupJavadoc(project: Project) {
 
 	val javadoc = project.tasks.findByName("javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<ColorizerTask>("colorizer") {
+		project.tasks.register<io.jenetics.gradle.ColorizerTask>("colorizer") {
 			directory = javadoc.destinationDir!!
 		}
 
