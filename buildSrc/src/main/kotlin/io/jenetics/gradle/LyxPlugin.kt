@@ -17,10 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.gradle.plugin
-
-import io.jenetics.gradle.Version
-import io.jenetics.gradle.task.Lyx2PDFTask
+package io.jenetics.gradle
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
