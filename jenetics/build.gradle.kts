@@ -18,6 +18,8 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -26,11 +28,14 @@
 plugins {
 	`java-library`
 	idea
-	packaging
+	`maven-publish`
+	signing
 	id("me.champeau.gradle.jmh")
 }
 
 description = Jenetics.DESCRIPTION
+
+extra["moduleName"] = "io.jenetics.base"
 
 val moduleName = "io.jenetics.base"
 
@@ -55,53 +60,98 @@ tasks.jar {
 	}
 }
 
-packaging {
-	name = Jenetics.NAME
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-
-	jarjar = false
-	javadoc = true
+java {
+	withJavadocJar()
+	withSourcesJar()
 }
 
-//modifyPom {
-//	project {
-//		name "jenetics"
-//		description "Jenetics - Java Genetic Algorithm Library"
-//		url project.property("jenetics.Url")
-//		inceptionYear "2007"
-//
-//		scm {
-//			url project.property("jenetics.MavenScmUrl")
-//			connection project.property("jenetics.MavenScmConnection")
-//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
-//		}
-//
-//		licenses {
-//			license {
-//				name "The Apache Software License, Version 2.0"
-//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-//				distribution "repo"
-//			}
-//		}
-//
-//		developers {
-//			developer {
-//				id project.property("jenetics.Id")
-//				name project.property("jenetics.Author")
-//				email project.property("jenetics.Email")
-//			}
-//		}
-//	}
-//}
+tasks.named<Jar>("sourcesJar") {
+	filter(
+		ReplaceTokens::class, "tokens" to mapOf(
+			"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+			"__year__" to Env.COPYRIGHT_YEAR
+		)
+	)
+}
 
-//nexus {
-//	identifier = project.identifier
-//	copyrightYear = project.copyrightYear
-//	attachSources = true
-//	attachTests = false
-//	attachJavadoc = true
-//	sign = true
-//	repository = project.property("build.MavenRepository")
-//	snapshotRepository = project.property("build.MavenSnapshotRepository")
-//}
+tasks.named<Jar>("javadocJar") {
+	filter(
+		ReplaceTokens::class, "tokens" to mapOf(
+		"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+		"__year__" to Env.COPYRIGHT_YEAR
+	)
+	)
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("mavenJava") {
+			artifactId = Jenetics.ID
+			from(components["java"])
+			versionMapping {
+				usage("java-api") {
+					fromResolutionOf("runtimeClasspath")
+				}
+				usage("java-runtime") {
+					fromResolutionResult()
+				}
+			}
+			pom {
+				name.set(Jenetics.ID)
+				description.set(Jenetics.DESCRIPTION)
+				url.set(Jenetics.URL)
+				inceptionYear.set("2007")
+
+				properties.set(mapOf(
+					"myProp" to "value",
+					"prop.with.dots" to "anotherValue"
+				))
+				licenses {
+					license {
+						name.set("The Apache License, Version 2.0")
+						url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+						distribution.set("repo")
+					}
+				}
+				developers {
+					developer {
+						id.set(Jenetics.ID)
+						name.set(Jenetics.AUTHOR)
+						email.set(Jenetics.EMAIL)
+					}
+				}
+				scm {
+					connection.set(Jenetics.MavenScmConnection)
+					developerConnection.set(Jenetics.MavenScmDeveloperConnection)
+					url.set(Jenetics.MavenScmUrl)
+				}
+			}
+		}
+	}
+	repositories {
+		maven {
+			url = if (version.toString().endsWith("SNAPSHOT")) {
+				uri(Maven.SNAPSHOT_URL)
+			} else {
+				uri(Maven.RELEASE_URL)
+			}
+
+			credentials {
+				username = if (extra.properties["nexus_username"] != null) {
+					extra.properties["nexus_username"] as String
+				} else {
+					"nexus_username"
+				}
+				password = if (extra.properties["nexus_password"] != null) {
+					extra.properties["nexus_password"] as String
+				} else {
+					"nexus_password"
+				}
+			}
+		}
+	}
+}
+
+signing {
+	sign(publishing.publications["mavenJava"])
+}
