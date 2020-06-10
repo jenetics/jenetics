@@ -31,7 +31,7 @@ plugins {
 
 rootProject.version = Jenetics.VERSION
 
-/*
+/**
  * Project configuration *before* the projects has been evaluated.
  */
 allprojects {
@@ -52,7 +52,7 @@ allprojects {
 	}
 }
 
-/*
+/**
  * Project configuration *after* the projects has been evaluated.
  */
 gradle.projectsEvaluated {
@@ -81,6 +81,9 @@ gradle.projectsEvaluated {
 
 }
 
+/**
+ * Some common Java setup.
+ */
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
@@ -109,7 +112,7 @@ fun setupJava(project: Project) {
 	}
 }
 
-/*
+/**
  * Setup of the Java test-environment and reporting.
  */
 fun setupTestReporting(project: Project) {
@@ -137,7 +140,7 @@ fun setupTestReporting(project: Project) {
 	}
 }
 
-/*
+/**
  * Setup of the projects Javadoc.
  */
 fun setupJavadoc(project: Project) {
@@ -215,6 +218,9 @@ fun setupJavadoc(project: Project) {
 	}
 }
 
+/**
+ * The Java compiler XLint flags.
+ */
 fun xlint(): String {
 	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
 	return listOf(
@@ -234,6 +240,9 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
+/**
+ * Setup of the Maven publishing.
+ */
 fun setupPublishing(project: Project) {
 	project.configure<JavaPluginExtension> {
 		withJavadocJar()
@@ -277,10 +286,6 @@ fun setupPublishing(project: Project) {
 					url.set(Jenetics.URL)
 					inceptionYear.set("2007")
 
-					properties.set(mapOf(
-						"myProp" to "value",
-						"prop.with.dots" to "anotherValue"
-					))
 					licenses {
 						license {
 							name.set("The Apache License, Version 2.0")
@@ -296,9 +301,9 @@ fun setupPublishing(project: Project) {
 						}
 					}
 					scm {
-						connection.set(Jenetics.MavenScmConnection)
-						developerConnection.set(Jenetics.MavenScmDeveloperConnection)
-						url.set(Jenetics.MavenScmUrl)
+						connection.set(Maven.SCM_CONNECTION)
+						developerConnection.set(Maven.DEVELOPER_CONNECTION)
+						url.set(Maven.SCM_URL)
 					}
 				}
 			}

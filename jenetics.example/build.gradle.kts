@@ -33,7 +33,7 @@ dependencies {
 	implementation(project(":jenetics.prog"))
 	implementation(Libs.JPX)
 	implementation(Libs.PRNGine)
-	implementation(Libs.RX_JAVA)
+	implementation(Libs.RxJava)
 
 	testImplementation(Libs.TestNG)
 }

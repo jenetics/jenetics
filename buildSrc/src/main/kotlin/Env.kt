@@ -2,6 +2,9 @@ import java.time.Year
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Common environment values.
+ */
 object Env {
 	val NOW = ZonedDateTime.now()
 
@@ -37,9 +40,7 @@ object Jenetics {
 	const val EMAIL = "franz.wilhelmstoetter@gmail.com"
 	const val URL = "https://jenetics.io"
 
-	val MavenScmUrl = "https://github.com/jenetics/jenetics"
-	val MavenScmConnection = "scm:git:https://github.com/jenetics/jenetics.git"
-	val MavenScmDeveloperConnection = "scm:git:https://github.com/jenetics/jenetics.git"
+
 
 	val manualIdentifier = "${VERSION}—${Env.MANUAL_DATE}"
 
@@ -66,4 +67,8 @@ object Jenetics {
 object Maven {
 	const val SNAPSHOT_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
 	const val RELEASE_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+	const val SCM_URL = "https://github.com/jenetics/jenetics"
+	const val SCM_CONNECTION = "scm:git:https://github.com/jenetics/jenetics.git"
+	const val DEVELOPER_CONNECTION = "scm:git:https://github.com/jenetics/jenetics.git"
 }
