@@ -43,8 +43,13 @@ dependencies {
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 
-tasks.named("compileTestJava") {
-	dependsOn(":jenetics:compileTestJava")
+tasks.compileTestJava.get().dependsOn(":jenetics:compileTestJava")
+tasks.test.get().dependsOn(tasks.compileJmhJava)
+
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
+	}
 }
 
 jmh {
@@ -56,22 +61,6 @@ jmh {
 	include = listOf(".*TreePerf.*")
 }
 
-tasks.named("test") {
-	dependsOn("compileJmhJava")
-}
-
-tasks.withType<Jar> {
-	manifest.attributes("Automatic-Module-Name" to moduleName)
-}
-
-tasks.withType<Javadoc> {
-	val doclet = options as StandardJavadocDocletOptions
-	doclet.linksOffline(
-		"https://jenetics.io/javadoc/jenetics",
-		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-	)
-}
-
 packaging {
 	name = Jenetics.Ext.Name
 	author = Jenetics.AUTHOR
@@ -80,6 +69,16 @@ packaging {
 	jarjar = false
 	javadoc = true
 }
+
+tasks.javadoc {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
+}
+
+
 
 //modifyPom {
 //	project {

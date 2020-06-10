@@ -43,16 +43,16 @@ dependencies {
 	jmh(Libs.PRNGine)
 }
 
+tasks.test.get().dependsOn(tasks.compileJmhJava)
+
 jmh {
 	include = listOf(".*IntegerChromosomePerf.*")
 }
 
-tasks.withType<Jar> {
-	manifest.attributes("Automatic-Module-Name" to moduleName)
-}
-
-tasks.named("test") {
-	dependsOn("compileJmhJava")
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
+	}
 }
 
 packaging {
