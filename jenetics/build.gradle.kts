@@ -21,85 +21,79 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.4
+ * @version !__version__!
  */
-
 plugins {
-	id("java-library")
-	id("idea")
-	id 'me.champeau.gradle.jmh'
+	`java-library`
+	idea
+	packaging
+	id("me.champeau.gradle.jmh")
 }
 
-apply plugin: 'java-library'
-apply plugin: 'packaging'
-apply plugin: 'nexus'
+description = Jenetics.DESCRIPTION
 
-description = property('jenetics.Description')
-
-ext.moduleName = 'io.jenetics.base'
+val moduleName = "io.jenetics.base"
 
 dependencies {
-	testImplementation property('include.ApacheCommonsMath')
-	testImplementation property('include.TestNG')
-	testImplementation property('include.EqualsVerifier')
-	testImplementation property('include.PRNGine')
+	testImplementation(Libs.ApacheCommonsMath)
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.EqualsVerifier)
+	testImplementation(Libs.PRNGine)
 
-	jmh property('include.PRNGine')
+	jmh(Libs.PRNGine)
 }
 
 jmh {
-	include = ['.*IntegerChromosomePerf.*']
+	include = listOf(".*IntegerChromosomePerf.*")
 }
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
+tasks.withType<Jar> {
+	manifest.attributes("Automatic-Module-Name" to moduleName)
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
-
-test.dependsOn(compileJmhJava)
+tasks.named("test") {
+	dependsOn("compileJmhJava")
+}
 
 packaging {
-	name = project.property('jenetics.Name')
-	author = project.property('jenetics.Author')
-	url = project.property('jenetics.Url')
+	name = Jenetics.NAME
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 
 	jarjar = false
 	javadoc = true
 }
 
-modifyPom {
-	project {
-		name 'jenetics'
-		description 'Jenetics - Java Genetic Algorithm Library'
-		url project.property('jenetics.Url')
-		inceptionYear '2007'
-
-		scm {
-			url project.property('jenetics.MavenScmUrl')
-			connection project.property('jenetics.MavenScmConnection')
-			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
-		}
-
-		licenses {
-			license {
-				name 'The Apache Software License, Version 2.0'
-				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-				distribution 'repo'
-			}
-		}
-
-		developers {
-			developer {
-				id project.property('jenetics.Id')
-				name project.property('jenetics.Author')
-				email project.property('jenetics.Email')
-			}
-		}
-	}
-}
+//modifyPom {
+//	project {
+//		name "jenetics"
+//		description "Jenetics - Java Genetic Algorithm Library"
+//		url project.property("jenetics.Url")
+//		inceptionYear "2007"
+//
+//		scm {
+//			url project.property("jenetics.MavenScmUrl")
+//			connection project.property("jenetics.MavenScmConnection")
+//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
+//		}
+//
+//		licenses {
+//			license {
+//				name "The Apache Software License, Version 2.0"
+//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//				distribution "repo"
+//			}
+//		}
+//
+//		developers {
+//			developer {
+//				id project.property("jenetics.Id")
+//				name project.property("jenetics.Author")
+//				email project.property("jenetics.Email")
+//			}
+//		}
+//	}
+//}
 
 //nexus {
 //	identifier = project.identifier
@@ -108,6 +102,6 @@ modifyPom {
 //	attachTests = false
 //	attachJavadoc = true
 //	sign = true
-//	repository = project.property('build.MavenRepository')
-//	snapshotRepository = project.property('build.MavenSnapshotRepository')
+//	repository = project.property("build.MavenRepository")
+//	snapshotRepository = project.property("build.MavenSnapshotRepository")
 //}

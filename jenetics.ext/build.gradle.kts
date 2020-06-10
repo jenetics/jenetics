@@ -30,12 +30,9 @@ plugins {
 	id("me.champeau.gradle.jmh")
 }
 
-extra["moduleName"] = "io.jenetics.ext"
+val moduleName = "io.jenetics.ext"
 
-description = "Jenetics extension - Java Genetic Algorithm Library Extension"
-
-tasks.getByName("compileTestJava")
-	.dependsOn(tasks.getByPath(":jenetics:compileTestJava"))
+description = Jenetics.DESCRIPTION
 
 dependencies {
 	api(project(":jenetics"))
@@ -44,6 +41,10 @@ dependencies {
 	testImplementation(Libs.TestNG)
 	testImplementation(Libs.EqualsVerifier)
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
+}
+
+tasks.named("compileTestJava") {
+	dependsOn(":jenetics:compileTestJava")
 }
 
 jmh {
@@ -55,8 +56,12 @@ jmh {
 	include = listOf(".*TreePerf.*")
 }
 
+tasks.named("test") {
+	dependsOn("compileJmhJava")
+}
+
 tasks.withType<Jar> {
-	manifest.attributes("Automatic-Module-Name" to project.extra["moduleName"])
+	manifest.attributes("Automatic-Module-Name" to moduleName)
 }
 
 tasks.withType<Javadoc> {
