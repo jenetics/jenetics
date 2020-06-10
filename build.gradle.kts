@@ -31,6 +31,11 @@ plugins {
 
 rootProject.version = Jenetics.VERSION
 
+tasks.named<Wrapper>("wrapper") {
+	version = "6.5"
+	distributionType = Wrapper.DistributionType.ALL
+}
+
 /**
  * Project configuration *before* the projects has been evaluated.
  */
