@@ -1,4 +1,3 @@
-import org.gradle.api.Project
 import java.time.Year
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -59,4 +58,12 @@ object Jenetics {
 	object Example {
 		val Name = "Jenetics Examples"
 	}
+}
+
+/**
+ * Environment variables for publishing to Maven Central.
+ */
+object Maven {
+	const val SNAPSHOT_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
+	const val RELEASE_URL = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }

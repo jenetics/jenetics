@@ -26,11 +26,11 @@
 plugins {
 	`java-library`
 	idea
-	packaging
+	`maven-publish`
 	id("me.champeau.gradle.jmh")
 }
 
-val moduleName = "io.jenetics.xml"
+extra["moduleName"] = "io.jenetics.xml"
 
 dependencies {
 	api(project(":jenetics"))
@@ -43,12 +43,6 @@ dependencies {
 
 tasks.test.get().dependsOn(tasks.compileJmhJava)
 
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
 tasks.javadoc {
 	val doclet = options as StandardJavadocDocletOptions
 	doclet.linksOffline(
@@ -56,53 +50,3 @@ tasks.javadoc {
 		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
 	)
 }
-
-packaging {
-	name = Jenetics.Ext.Name
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-	jarjar = false
-	javadoc = true
-}
-
-//modifyPom {
-//	project {
-//		name "jenetics.xml"
-//		description "Jenetics XML marshalling module"
-//		url project.property("jenetics.Url")
-//		inceptionYear "2017"
-//
-//		scm {
-//			url project.property("jenetics.MavenScmUrl")
-//			connection project.property("jenetics.MavenScmConnection")
-//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
-//		}
-//
-//		licenses {
-//			license {
-//				name "The Apache Software License, Version 2.0"
-//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-//				distribution "repo"
-//			}
-//		}
-//
-//		developers {
-//			developer {
-//				id project.property("jenetics.Id")
-//				name project.property("jenetics.Author")
-//				email project.property("jenetics.Email")
-//			}
-//		}
-//	}
-//}
-
-//nexus {
-//	identifier = project.identifier
-//	copyrightYear = project.copyrightYear
-//	attachSources = true
-//	attachTests = false
-//	attachJavadoc = true
-//	sign = true
-//	repository = project.property("build.MavenRepository")
-//	snapshotRepository = project.property("build.MavenSnapshotRepository")
-//}

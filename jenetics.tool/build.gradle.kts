@@ -17,18 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.4
- * @version 4.4
+ * @version !__version__!
  */
-
 plugins {
 	`java-library`
-	packaging
 }
-
-val moduleName = "io.jenetics.tool"
 
 dependencies {
 	implementation(project(":jenetics"))
@@ -39,27 +36,3 @@ dependencies {
 
 	testImplementation(Libs.TestNG)
 }
-
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
-tasks.javadoc {
-	val doclet = options as StandardJavadocDocletOptions
-	doclet.linksOffline(
-		"https://jenetics.io/javadoc/jenetics",
-		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-	)
-}
-
-packaging {
-	name = Jenetics.Ext.Name
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-	jarjar = false
-	javadoc = true
-}
-
-

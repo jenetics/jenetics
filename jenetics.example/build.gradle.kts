@@ -18,8 +18,6 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -27,10 +25,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	`java-library`
-	packaging
 }
-
-val moduleName = "io.jenetics.example"
 
 dependencies {
 	implementation(project(":jenetics"))
@@ -42,35 +37,3 @@ dependencies {
 
 	testImplementation(Libs.TestNG)
 }
-
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
-packaging {
-	name = Jenetics.NAME
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from("src/main/scripts") {
-				include("**/*")
-			}
-			into(packaging.ext["exportScriptDir"]!!)
-			filter(
-				ReplaceTokens::class, "tokens" to mapOf(
-					"__version__" to project.version,
-					"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-					"__year__" to Env.COPYRIGHT_YEAR
-				)
-			)
-		}
-	}
-}
-
-

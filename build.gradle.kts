@@ -19,6 +19,7 @@
  */
 
 import io.jenetics.gradle.task.ColorizerTask
+import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -26,8 +27,6 @@ import io.jenetics.gradle.task.ColorizerTask
  * @version !__version__!
  */
 plugins {
-	signing
-	packaging
 	id("me.champeau.gradle.jmh") version "0.5.0" apply false
 }
 
@@ -71,39 +70,49 @@ gradle.projectsEvaluated {
 				targetCompatibility = JavaVersion.VERSION_11
 			}
 
+			setupJava(project)
 			setupTestReporting(project)
 			setupJavadoc(project)
 		}
+
+		if (plugins.hasPlugin("maven-publish")) {
+			setupPublishing(project)
+		}
 	}
 
-	tasks.withType<Jar> {
+}
+
+fun setupJava(project: Project) {
+	val attr = mutableMapOf(
+		"Implementation-Title" to project.name,
+		"Implementation-Version" to Jenetics.VERSION,
+		"Implementation-URL" to Jenetics.URL,
+		"Implementation-Vendor" to Jenetics.NAME,
+		"ProjectName" to Jenetics.NAME,
+		"Version" to Jenetics.VERSION,
+		"Maintainer" to Jenetics.AUTHOR,
+		"Project" to project.name,
+		"Project-Version" to Jenetics.VERSION,
+		"Built-By" to Env.USER_NAME,
+		"Build-Timestamp" to Env.BUILD_TIME,
+		"Created-By" to "Gradle ${gradle.gradleVersion}",
+		"Build-Jdk" to Env.BUILD_JDK,
+		"Build-OS" to Env.BUILD_OS
+	)
+	if (project.extra.has("moduleName")) {
+		attr["Automatic-Module-Name"] = project.extra["moduleName"].toString()
+	}
+
+	project.tasks.withType<Jar> {
 		manifest {
-			from(manifest(project))
+			attributes(attr)
 		}
 	}
 }
 
-fun manifest(project: Project): Manifest {
-	return the<JavaPluginConvention>().manifest {
-		attributes (
-			"Implementation-Title" to project.name,
-			"Implementation-Version" to Jenetics.VERSION,
-			"Implementation-URL" to Jenetics.URL,
-			"Implementation-Vendor" to Jenetics.NAME,
-			"ProjectName" to Jenetics.NAME,
-			"Version" to Jenetics.VERSION,
-			"Maintainer" to Jenetics.AUTHOR,
-			"Project" to project.name,
-			"Project-Version" to Jenetics.VERSION,
-			"Built-By" to Env.USER_NAME,
-			"Build-Timestamp" to Env.BUILD_TIME,
-			"Created-By" to "Gradle ${gradle.gradleVersion}",
-			"Build-Jdk" to Env.BUILD_JDK,
-			"Build-OS" to Env.BUILD_OS
-		)
-	}
-}
-
+/*
+ * Setup of the Java test-environment and reporting.
+ */
 fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
@@ -129,6 +138,9 @@ fun setupTestReporting(project: Project) {
 	}
 }
 
+/*
+ * Setup of the projects Javadoc.
+ */
 fun setupJavadoc(project: Project) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
@@ -223,18 +235,102 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
-tasks.register<Zip>("zip") {
-	val identifier = "${Jenetics.NAME}-${Jenetics.VERSION}"
-
-	from("build/package/${identifier}") {
-		into(identifier)
+fun setupPublishing(project: Project) {
+	project.configure<JavaPluginExtension> {
+		withJavadocJar()
+		withSourcesJar()
 	}
 
-	archiveBaseName.set(identifier)
-	archiveVersion.set(Jenetics.VERSION)
+	project.tasks.named<Jar>("sourcesJar") {
+		filter(
+			ReplaceTokens::class, "tokens" to mapOf(
+				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+				"__year__" to Env.COPYRIGHT_YEAR
+			)
+		)
+	}
 
-	doLast {
-		val zip = file("${identifier}.zip")
-		zip.renameTo(file("build/package${zip.name}"))
+	project.tasks.named<Jar>("javadocJar") {
+		filter(
+			ReplaceTokens::class, "tokens" to mapOf(
+			"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+			"__year__" to Env.COPYRIGHT_YEAR
+		)
+		)
+	}
+
+	project.configure<PublishingExtension> {
+		publications {
+			create<MavenPublication>("mavenJava") {
+				artifactId = Jenetics.ID
+				from(project.components["java"])
+				versionMapping {
+					usage("java-api") {
+						fromResolutionOf("runtimeClasspath")
+					}
+					usage("java-runtime") {
+						fromResolutionResult()
+					}
+				}
+				pom {
+					name.set(Jenetics.ID)
+					description.set(Jenetics.DESCRIPTION)
+					url.set(Jenetics.URL)
+					inceptionYear.set("2007")
+
+					properties.set(mapOf(
+						"myProp" to "value",
+						"prop.with.dots" to "anotherValue"
+					))
+					licenses {
+						license {
+							name.set("The Apache License, Version 2.0")
+							url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+							distribution.set("repo")
+						}
+					}
+					developers {
+						developer {
+							id.set(Jenetics.ID)
+							name.set(Jenetics.AUTHOR)
+							email.set(Jenetics.EMAIL)
+						}
+					}
+					scm {
+						connection.set(Jenetics.MavenScmConnection)
+						developerConnection.set(Jenetics.MavenScmDeveloperConnection)
+						url.set(Jenetics.MavenScmUrl)
+					}
+				}
+			}
+		}
+		repositories {
+			maven {
+				url = if (version.toString().endsWith("SNAPSHOT")) {
+					uri(Maven.SNAPSHOT_URL)
+				} else {
+					uri(Maven.RELEASE_URL)
+				}
+
+				credentials {
+					username = if (extra.properties["nexus_username"] != null) {
+						extra.properties["nexus_username"] as String
+					} else {
+						"nexus_username"
+					}
+					password = if (extra.properties["nexus_password"] != null) {
+						extra.properties["nexus_password"] as String
+					} else {
+						"nexus_password"
+					}
+				}
+			}
+		}
+	}
+
+	project.apply(plugin = "signing")
+
+	project.configure<SigningExtension> {
+		sign(project.the<PublishingExtension>().publications["mavenJava"])
 	}
 }

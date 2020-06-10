@@ -26,13 +26,13 @@
 plugins {
 	`java-library`
 	idea
-	packaging
+	`maven-publish`
 	id("me.champeau.gradle.jmh")
 }
 
-val moduleName = "io.jenetics.ext"
-
 description = Jenetics.DESCRIPTION
+
+extra["moduleName"] = "io.jenetics.ext"
 
 dependencies {
 	api(project(":jenetics"))
@@ -46,27 +46,8 @@ dependencies {
 tasks.compileTestJava.get().dependsOn(":jenetics:compileTestJava")
 tasks.test.get().dependsOn(tasks.compileJmhJava)
 
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
 jmh {
-	//jmhVersion = "1.20"
-	//duplicateClassesStrategy = "include"
-	warmupIterations = 2
-	iterations = 4
-	fork = 1
 	include = listOf(".*TreePerf.*")
-}
-
-packaging {
-	name = Jenetics.Ext.Name
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-	jarjar = false
-	javadoc = true
 }
 
 tasks.javadoc {
@@ -76,47 +57,3 @@ tasks.javadoc {
 		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
 	)
 }
-
-
-
-//modifyPom {
-//	project {
-//		name "jenetics.ext"
-//		description "Jenetics Extension Library"
-//		url project.property("jenetics.Url")
-//		inceptionYear "2015"
-//
-//		scm {
-//			url project.property("jenetics.MavenScmUrl")
-//			connection project.property("jenetics.MavenScmConnection")
-//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
-//		}
-//
-//		licenses {
-//			license {
-//				name "The Apache Software License, Version 2.0"
-//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-//				distribution "repo"
-//			}
-//		}
-//
-//		developers {
-//			developer {
-//				id project.property("jenetics.Id")
-//				name project.property("jenetics.Author")
-//				email project.property("jenetics.Email")
-//			}
-//		}
-//	}
-//}
-
-//nexus {
-//	identifier = project.identifier
-//	copyrightYear = project.copyrightYear
-//	attachSources = true
-//	attachTests = false
-//	attachJavadoc = true
-//	sign = true
-//	repository = project.property("build.MavenRepository")
-//	snapshotRepository = project.property("build.MavenSnapshotRepository")
-//}

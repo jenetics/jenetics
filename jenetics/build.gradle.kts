@@ -18,8 +18,6 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -29,15 +27,12 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	signing
 	id("me.champeau.gradle.jmh")
 }
 
 description = Jenetics.DESCRIPTION
 
 extra["moduleName"] = "io.jenetics.base"
-
-val moduleName = "io.jenetics.base"
 
 dependencies {
 	testImplementation(Libs.ApacheCommonsMath)
@@ -52,106 +47,4 @@ tasks.test.get().dependsOn(tasks.compileJmhJava)
 
 jmh {
 	include = listOf(".*IntegerChromosomePerf.*")
-}
-
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
-java {
-	withJavadocJar()
-	withSourcesJar()
-}
-
-tasks.named<Jar>("sourcesJar") {
-	filter(
-		ReplaceTokens::class, "tokens" to mapOf(
-			"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-			"__year__" to Env.COPYRIGHT_YEAR
-		)
-	)
-}
-
-tasks.named<Jar>("javadocJar") {
-	filter(
-		ReplaceTokens::class, "tokens" to mapOf(
-		"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-		"__year__" to Env.COPYRIGHT_YEAR
-	)
-	)
-}
-
-publishing {
-	publications {
-		create<MavenPublication>("mavenJava") {
-			artifactId = Jenetics.ID
-			from(components["java"])
-			versionMapping {
-				usage("java-api") {
-					fromResolutionOf("runtimeClasspath")
-				}
-				usage("java-runtime") {
-					fromResolutionResult()
-				}
-			}
-			pom {
-				name.set(Jenetics.ID)
-				description.set(Jenetics.DESCRIPTION)
-				url.set(Jenetics.URL)
-				inceptionYear.set("2007")
-
-				properties.set(mapOf(
-					"myProp" to "value",
-					"prop.with.dots" to "anotherValue"
-				))
-				licenses {
-					license {
-						name.set("The Apache License, Version 2.0")
-						url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-						distribution.set("repo")
-					}
-				}
-				developers {
-					developer {
-						id.set(Jenetics.ID)
-						name.set(Jenetics.AUTHOR)
-						email.set(Jenetics.EMAIL)
-					}
-				}
-				scm {
-					connection.set(Jenetics.MavenScmConnection)
-					developerConnection.set(Jenetics.MavenScmDeveloperConnection)
-					url.set(Jenetics.MavenScmUrl)
-				}
-			}
-		}
-	}
-	repositories {
-		maven {
-			url = if (version.toString().endsWith("SNAPSHOT")) {
-				uri(Maven.SNAPSHOT_URL)
-			} else {
-				uri(Maven.RELEASE_URL)
-			}
-
-			credentials {
-				username = if (extra.properties["nexus_username"] != null) {
-					extra.properties["nexus_username"] as String
-				} else {
-					"nexus_username"
-				}
-				password = if (extra.properties["nexus_password"] != null) {
-					extra.properties["nexus_password"] as String
-				} else {
-					"nexus_password"
-				}
-			}
-		}
-	}
-}
-
-signing {
-	sign(publishing.publications["mavenJava"])
 }

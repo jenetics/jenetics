@@ -25,29 +25,12 @@
  */
 plugins {
 	`java-library`
-	packaging
 	lyx
 }
-
-val moduleName = "io.jenetics.doc"
 
 dependencies {
 	implementation(project(":jenetics"))
 	implementation(project(":jenetics.ext"))
 	implementation(project(":jenetics.prog"))
 	implementation(project(":jenetics.tool"))
-}
-
-tasks.jar {
-	manifest {
-		attributes("Automatic-Module-Name" to moduleName)
-	}
-}
-
-packaging {
-	name = Jenetics.NAME
-	author = Jenetics.AUTHOR
-	url = Jenetics.URL
-
-	jarjar = false
 }
