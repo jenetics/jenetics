@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.gradle.task
+package io.jenetics.gradle
 
 import java.io.BufferedReader
 import java.io.File
