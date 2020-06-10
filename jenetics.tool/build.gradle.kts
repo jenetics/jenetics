@@ -24,38 +24,40 @@
  */
 
 plugins {
-	id("java-library")
+	`java-library`
+	packaging
 }
 
-apply plugin: 'packaging'
-
-ext.moduleName = 'io.jenetics.tool'
+val moduleName = "io.jenetics.tool"
 
 dependencies {
-	implementation project(':jenetics')
-	implementation project(':jenetics.example')
-	implementation project(':jenetics.ext')
-	implementation project(':jenetics.xml')
-	implementation property('include.PRNGine')
+	implementation(project(":jenetics"))
+	implementation(project(":jenetics.example"))
+	implementation(project(":jenetics.ext"))
+	implementation(project(":jenetics.xml"))
+	implementation(Libs.PRNGine)
 
-	testImplementation property('include.TestNG')
+	testImplementation(Libs.TestNG)
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
-
-javadoc {
-	options {
-		linksOffline(
-			'https://jenetics.io/javadoc/jenetics',
-			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-		)
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
 	}
 }
 
+tasks.javadoc {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
+}
+
 packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	name = Jenetics.Ext.Name
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 	jarjar = false
 	javadoc = true
 }

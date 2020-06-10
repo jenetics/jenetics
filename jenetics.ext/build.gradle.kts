@@ -65,7 +65,6 @@ packaging {
 	name = Jenetics.Ext.Name
 	author = Jenetics.AUTHOR
 	url = Jenetics.URL
-
 	jarjar = false
 	javadoc = true
 }
