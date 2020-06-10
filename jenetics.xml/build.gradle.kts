@@ -21,91 +21,80 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.4
+ * @version !__version__!
  */
-
 plugins {
-	id("idea")
-	id 'me.champeau.gradle.jmh'
+	`java-library`
+	idea
+	packaging
+	id("me.champeau.gradle.jmh")
 }
 
-apply plugin: 'java-library'
-apply plugin: 'packaging'
-apply plugin: 'nexus'
-
-ext.moduleName = 'io.jenetics.xml'
+val moduleName = "io.jenetics.xml"
 
 dependencies {
-	api project(':jenetics')
+	api(project(":jenetics"))
 
-	testImplementation property('include.TestNG')
-	testImplementation property('include.PRNGine')
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.PRNGine)
 
-	jmh project(':jenetics')
+	jmh(project(":jenetics"))
 }
 
-jmh {
-	duplicateClassesStrategy = 'warn'
-}
+tasks.test.get().dependsOn(tasks.compileJmhJava)
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
 	}
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.xml')
-
-test.dependsOn(compileJmhJava)
-
-javadoc {
-	options {
-		linksOffline(
-			'https://jenetics.io/javadoc/jenetics',
-			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-		)
-	}
+tasks.javadoc {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
 }
 
 packaging {
-	name = property('jenetics.xml.Name')
-	author = property('jenetics.Author')
-	url = property('jenetics.Url')
-
+	name = Jenetics.Ext.Name
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 	jarjar = false
 	javadoc = true
 }
 
-modifyPom {
-	project {
-		name 'jenetics.xml'
-		description 'Jenetics XML marshalling module'
-		url project.property('jenetics.Url')
-		inceptionYear '2017'
-
-		scm {
-			url project.property('jenetics.MavenScmUrl')
-			connection project.property('jenetics.MavenScmConnection')
-			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
-		}
-
-		licenses {
-			license {
-				name 'The Apache Software License, Version 2.0'
-				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-				distribution 'repo'
-			}
-		}
-
-		developers {
-			developer {
-				id project.property('jenetics.Id')
-				name project.property('jenetics.Author')
-				email project.property('jenetics.Email')
-			}
-		}
-	}
-}
+//modifyPom {
+//	project {
+//		name "jenetics.xml"
+//		description "Jenetics XML marshalling module"
+//		url project.property("jenetics.Url")
+//		inceptionYear "2017"
+//
+//		scm {
+//			url project.property("jenetics.MavenScmUrl")
+//			connection project.property("jenetics.MavenScmConnection")
+//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
+//		}
+//
+//		licenses {
+//			license {
+//				name "The Apache Software License, Version 2.0"
+//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//				distribution "repo"
+//			}
+//		}
+//
+//		developers {
+//			developer {
+//				id project.property("jenetics.Id")
+//				name project.property("jenetics.Author")
+//				email project.property("jenetics.Email")
+//			}
+//		}
+//	}
+//}
 
 //nexus {
 //	identifier = project.identifier
@@ -114,6 +103,6 @@ modifyPom {
 //	attachTests = false
 //	attachJavadoc = true
 //	sign = true
-//	repository = project.property('build.MavenRepository')
-//	snapshotRepository = project.property('build.MavenSnapshotRepository')
+//	repository = project.property("build.MavenRepository")
+//	snapshotRepository = project.property("build.MavenSnapshotRepository")
 //}
