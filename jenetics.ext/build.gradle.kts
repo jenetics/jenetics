@@ -21,98 +21,91 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 4.4
+ * @version !__version__!
  */
-
 plugins {
-	id("idea")
-	id 'me.champeau.gradle.jmh' version '0.5.0'
+	`java-library`
+	idea
+	packaging
+	id("me.champeau.gradle.jmh")
 }
 
-apply plugin: 'java-library'
-apply plugin: 'packaging'
-apply plugin: 'nexus'
+extra["moduleName"] = "io.jenetics.ext"
 
-ext.moduleName = 'io.jenetics.ext'
+description = "Jenetics extension - Java Genetic Algorithm Library Extension"
 
-description = 'Jenetics extension - Java Genetic Algorithm Library Extension'
-
-compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
+tasks.getByName("compileTestJava")
+	.dependsOn(tasks.getByPath(":jenetics:compileTestJava"))
 
 dependencies {
-	api project(':jenetics')
+	api(project(":jenetics"))
 
-	testImplementation property('include.ApacheCommonsMath')
-	testImplementation property('include.TestNG')
-	testImplementation property('include.EqualsVerifier')
-	testImplementation project(':jenetics').sourceSets.test.output
+	testImplementation(Libs.ApacheCommonsMath)
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.EqualsVerifier)
+	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 
 jmh {
-	//jmhVersion = '1.20'
-	//duplicateClassesStrategy = 'include'
+	//jmhVersion = "1.20"
+	//duplicateClassesStrategy = "include"
 	warmupIterations = 2
 	iterations = 4
 	fork = 1
-	include = ['.*TreePerf.*']
+	include = listOf(".*TreePerf.*")
 }
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
+tasks.withType<Jar> {
+	manifest.attributes("Automatic-Module-Name" to project.extra["moduleName"])
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.ext')
-
-javadoc {
-	options {
-		linksOffline(
-			'https://jenetics.io/javadoc/jenetics',
-			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-		)
-	}
+tasks.withType<Javadoc> {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
 }
 
 packaging {
-	name = property('jenetics.ext.Name')
-	author = property('jenetics.Author')
-	url = property('jenetics.Url')
+	name = Jenetics.Ext.Name
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 
 	jarjar = false
 	javadoc = true
 }
 
-modifyPom {
-	project {
-		name 'jenetics.ext'
-		description 'Jenetics Extension Library'
-		url project.property('jenetics.Url')
-		inceptionYear '2015'
-
-		scm {
-			url project.property('jenetics.MavenScmUrl')
-			connection project.property('jenetics.MavenScmConnection')
-			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
-		}
-
-		licenses {
-			license {
-				name 'The Apache Software License, Version 2.0'
-				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-				distribution 'repo'
-			}
-		}
-
-		developers {
-			developer {
-				id project.property('jenetics.Id')
-				name project.property('jenetics.Author')
-				email project.property('jenetics.Email')
-			}
-		}
-	}
-}
+//modifyPom {
+//	project {
+//		name "jenetics.ext"
+//		description "Jenetics Extension Library"
+//		url project.property("jenetics.Url")
+//		inceptionYear "2015"
+//
+//		scm {
+//			url project.property("jenetics.MavenScmUrl")
+//			connection project.property("jenetics.MavenScmConnection")
+//			developerConnection project.property("jenetics.MavenScmDeveloperConnection")
+//		}
+//
+//		licenses {
+//			license {
+//				name "The Apache Software License, Version 2.0"
+//				url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//				distribution "repo"
+//			}
+//		}
+//
+//		developers {
+//			developer {
+//				id project.property("jenetics.Id")
+//				name project.property("jenetics.Author")
+//				email project.property("jenetics.Email")
+//			}
+//		}
+//	}
+//}
 
 //nexus {
 //	identifier = project.identifier
@@ -121,6 +114,6 @@ modifyPom {
 //	attachTests = false
 //	attachJavadoc = true
 //	sign = true
-//	repository = project.property('build.MavenRepository')
-//	snapshotRepository = project.property('build.MavenSnapshotRepository')
+//	repository = project.property("build.MavenRepository")
+//	snapshotRepository = project.property("build.MavenSnapshotRepository")
 //}

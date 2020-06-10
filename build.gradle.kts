@@ -28,6 +28,7 @@ import io.jenetics.gradle.task.ColorizerTask
 plugins {
 	signing
 	packaging
+	id("me.champeau.gradle.jmh") version "0.5.0" apply false
 }
 
 rootProject.version = Jenetics.VERSION
