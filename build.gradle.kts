@@ -115,6 +115,7 @@ fun setupTestReporting(project: Project) {
 			dependsOn("test")
 
 			reports {
+				html.isEnabled = true
 				xml.isEnabled = true
 				csv.isEnabled = true
 			}
@@ -158,7 +159,7 @@ fun setupJavadoc(project: Project) {
 		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
 
 		doLast {
-			copySpec {
+			project.copy {
 				from("src/main/java") {
 					include("io/**/doc-files/*.*")
 				}
