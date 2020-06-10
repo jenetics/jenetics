@@ -20,8 +20,10 @@
 package io.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.bundling.Jar
 
 /**
@@ -294,12 +296,12 @@ class PackagingPlugin implements Plugin<Project> {
 		}
 	}
 
-	void doFirstPackaging(final Closure closure) {
-		_project.tasks.findByPath(PACKAGING).doFirst(closure)
+	void doFirstPackaging(final Action<? super Task> action) {
+		_project.tasks.findByPath(PACKAGING).doFirst(action)
 	}
 
-	void doLastPackaging(final Closure closure) {
-		_project.tasks.findByPath(PACKAGING).doLast(closure)
+	void doLastPackaging(final Action<? super Task> action) {
+		_project.tasks.findByPath(PACKAGING).doLast(action)
 	}
 
 	private static final def IGNORED_FILES = [
@@ -363,11 +365,11 @@ class PackagingPluginExtension {
 	Boolean jarjar = true
 	Boolean javadoc = true
 
-	void doFirst(final Closure closure) {
-		_plugin.doFirstPackaging(closure)
+	void doFirst(final Action<? super Task> action) {
+		_plugin.doFirstPackaging(action)
 	}
 
-	void doLast(final Closure closure) {
-		_plugin.doLastPackaging(closure)
+	void doLast(final Action<? super Task> action) {
+		_plugin.doLastPackaging(action)
 	}
 }

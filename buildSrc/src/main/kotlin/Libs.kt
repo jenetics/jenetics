@@ -6,5 +6,6 @@ object Libs {
 	const val TestNG = "org.testng:testng:7.1.0"
 	const val JPX = "io.jenetics:jpx:2.0.0"
 	const val PRNGine = "io.jenetics:prngine:1.0.2"
+	const val RX_JAVA = "io.reactivex.rxjava2:rxjava:2.1.14"
 
 }

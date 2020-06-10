@@ -23,46 +23,52 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.4
+ * @version !__version__!
  */
 plugins {
-	id("java-library")
+	`java-library`
+	packaging
 }
-apply plugin: 'packaging'
 
-ext.moduleName = 'io.jenetics.example'
+val moduleName = "io.jenetics.example"
 
 dependencies {
-	implementation project(':jenetics')
-	implementation project(':jenetics.ext')
-	implementation project(':jenetics.prog')
-	implementation property('include.JPX')
-	implementation property('include.PRNGine')
-	implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+	implementation(project(":jenetics"))
+	implementation(project(":jenetics.ext"))
+	implementation(project(":jenetics.prog"))
+	implementation(Libs.JPX)
+	implementation(Libs.PRNGine)
+	implementation(Libs.RX_JAVA)
 
-	testImplementation property('include.TestNG')
+	testImplementation(Libs.TestNG)
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
+tasks.jar {
+	manifest {
+		attributes("Automatic-Module-Name" to moduleName)
+	}
+}
 
 packaging {
-	name = property('jenetics.example.Name')
-	author = property('jenetics.Author')
-	url = property('jenetics.Url')
+	name = Jenetics.NAME
+	author = Jenetics.AUTHOR
+	url = Jenetics.URL
 	jarjar = false
 	javadoc = false
 
 	doLast {
 		copy {
-			from('src/main/scripts') {
-				include '**/*'
+			from("src/main/scripts") {
+				include("**/*")
 			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
+			into(packaging.ext["exportScriptDir"]!!)
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+					"__version__" to project.version,
+					"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
+			)
 		}
 	}
 }
