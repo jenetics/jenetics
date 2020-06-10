@@ -26,6 +26,7 @@
 plugins {
 	`java-library`
 	packaging
+	lyx
 }
 
 val moduleName = "io.jenetics.doc"

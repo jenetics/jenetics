@@ -25,6 +25,7 @@
  */
 plugins {
 	`java-gradle-plugin`
+	`kotlin-dsl`
 	kotlin("jvm") version "1.3.72"
 
 }

@@ -21,79 +21,82 @@ package io.jenetics.gradle.plugin
 
 import io.jenetics.gradle.Version
 import io.jenetics.gradle.task.Lyx2PDFTask
+
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.kotlin.dsl.*
 
 /**
  * Plugin which adds a build task for creating a PDF file from the lyx sources.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.8
+ * @version !__version__!
  */
-class LyxPlugin extends JeneticsPlugin {
+open class LyxPlugin : Plugin<Project> {
 
-	private static final String BUILD = 'build'
-	private static final String CLEAN = 'clean'
-	private static final String LYX = 'lyx'
-
-	@Override
-	public void apply(final Project project) {
-		this.project = project
-
-		if (hasLyxSources()) {
-			applyLyx()
-		}
-	}
-
-	private void applyLyx() {
-		if (project.tasks.findByPath(BUILD) != null) {
-			project.tasks.findByPath(BUILD).dependsOn(LYX)
+	override fun apply(project: Project) {
+		val build: Task = if (project.tasks.findByPath(BUILD) != null) {
+			project.tasks.getByPath(BUILD)
 		} else {
-			project.task(BUILD, dependsOn: LYX).doLast {}
+			project.tasks.register(BUILD).get()
 		}
+		build.dependsOn(LYX)
 
-		project.task('preparePDFGeneration').doLast {
-			project.copy {
-				from("${project.projectDir}/src/main") {
-					include 'lyx/manual.lyx'
-				}
-				into project.build.temporaryDir
-				filter(ReplaceTokens, tokens: [
-					__year__: project.copyrightYear,
-					__identifier__: project.manualIdentifier,
-					__version__: project.version,
-					__minor_version__: Version.parse(project.version.toString())
-						.minorVersionString()
-				])
-			}
-			project.copy {
-				from("${project.projectDir}/src/main") {
-					exclude 'lyx/manual.lyx'
-				}
-				into project.build.temporaryDir
-			}
-		}
-
-		project.task(LYX, type: Lyx2PDFTask, dependsOn: 'preparePDFGeneration') {
-			document = new File("${project.build.temporaryDir}/lyx/manual.lyx")
-
+		project.tasks.register(PREPARE_PDF_GENERATION) {
 			doLast {
 				project.copy {
-					from "${project.build.temporaryDir}/lyx/manual.pdf"
-					into "${project.buildDir}/doc"
-					rename { String fileName ->
-						fileName.replace('manual.pdf', "manual-${project.version}.pdf")
+					from("${project.projectDir}/src/main") {
+						include("lyx/manual.lyx")
+					}
+
+					into(build.temporaryDir)
+					filter(
+						ReplaceTokens::class, "tokens" to mapOf(
+							"__version__" to project.version,
+							"__minor_version__" to Version.parse(project.version).minorVersionString(),
+							"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+							"__year__" to Env.COPYRIGHT_YEAR
+						)
+					)
+				}
+				project.copy {
+					from("${project.projectDir}/src/main") {
+						exclude("lyx/manual.lyx")
+					}
+					into(build.temporaryDir)
+				}
+			}
+		}
+
+		project.tasks.register<Lyx2PDFTask>("lyx") {
+			document = project.file("${build.temporaryDir}/lyx/manual.lyx")
+
+			dependsOn(PREPARE_PDF_GENERATION)
+			doLast {
+				project.copy {
+					from("${build.temporaryDir}/lyx/manual.pdf")
+					into("${project.buildDir}/doc")
+					rename { name ->
+						name.replace("manual.pdf", "manual-${project.version}.pdf")
 					}
 				}
 			}
 		}
 
 		if (project.tasks.findByPath(CLEAN) == null) {
-			project.task(CLEAN).doLast {
-				project.buildDir.deleteDir()
+			project.tasks.getByPath(CLEAN).doLast {
+				project.buildDir.deleteRecursively()
 			}
 		}
 	}
 
+	companion object {
+		private const val BUILD = "build"
+		private const val CLEAN = "clean"
+		private const val LYX = "lyx"
+		private const val PREPARE_PDF_GENERATION = "preparePDFGeneration"
+	}
 }

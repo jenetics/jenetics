@@ -40,7 +40,7 @@ import org.gradle.api.tasks.TaskExecutionException
 open class Lyx2PDFTask : DefaultTask() {
 
 	@get:InputFile
-	private var document: File? = null
+	var document: File? = null
 
 	@TaskAction
 	fun lyx2PDF() {
