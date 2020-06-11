@@ -41,7 +41,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 6.1
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 

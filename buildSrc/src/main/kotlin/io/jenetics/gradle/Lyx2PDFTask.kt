@@ -35,7 +35,7 @@ import org.gradle.api.tasks.TaskExecutionException
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 6.1
  */
 open class Lyx2PDFTask : DefaultTask() {
 

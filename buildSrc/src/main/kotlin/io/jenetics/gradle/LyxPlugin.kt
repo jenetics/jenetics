@@ -30,7 +30,7 @@ import org.gradle.kotlin.dsl.*
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version !__version__!
+ * @version 6.1
  */
 open class LyxPlugin : Plugin<Project> {
 
