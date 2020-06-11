@@ -20,18 +20,19 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 3.9
+ * @since 3.4
+ * @version !__version__!
  */
+plugins {
+	`java-library`
+}
 
-// The Jenetics modules.
-include 'jenetics'
-include 'jenetics.doc'
-include 'jenetics.example'
-include 'jenetics.ext'
-include 'jenetics.prog'
-include 'jenetics.tool'
-include 'jenetics.xml'
+dependencies {
+	implementation(project(":jenetics"))
+	implementation(project(":jenetics.example"))
+	implementation(project(":jenetics.ext"))
+	implementation(project(":jenetics.xml"))
+	implementation(Libs.PRNGine)
 
-rootProject.name = 'jenetics'
-
+	testImplementation(Libs.TestNG)
+}
