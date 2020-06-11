@@ -436,9 +436,9 @@ fun copyJavadoc(name: String, exportDir: File) {
 		from("${name}/build/docs/javadoc") {
 			filter(
 				ReplaceTokens::class, "tokens" to mapOf(
-				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-				"__year__" to Env.COPYRIGHT_YEAR
-			)
+					"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
 			)
 		}
 		into("${exportDir}/javadoc/${name}")
@@ -447,7 +447,14 @@ fun copyJavadoc(name: String, exportDir: File) {
 
 fun copyTestReports(name: String, exportDir: File) {
 	copy {
-		from("${name}/build/reports")
+		from("${name}/build/reports") {
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+					"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
+			)
+		}
 		into("${exportDir}/reports/${name}")
 	}
 }
