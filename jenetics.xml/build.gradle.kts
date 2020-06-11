@@ -20,13 +20,35 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.9
+ * @since 3.9
+ * @version !__version__!
  */
+plugins {
+	`java-library`
+	idea
+	`maven-publish`
+	id("me.champeau.gradle.jmh")
+}
 
-apply plugin: 'java'
+description = "Jenetics XML-Marshalling"
 
-project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 11
-	targetCompatibility = 11
+extra["moduleName"] = "io.jenetics.xml"
+
+dependencies {
+	api(project(":jenetics"))
+
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.PRNGine)
+
+	jmh(project(":jenetics"))
+}
+
+tasks.test.get().dependsOn(tasks.compileJmhJava)
+
+tasks.javadoc {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
 }

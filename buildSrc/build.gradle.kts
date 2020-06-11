@@ -21,6 +21,21 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version !__version__!
  */
-package io.jenetics.colorizer;
+plugins {
+	`java-gradle-plugin`
+	`kotlin-dsl`
+	kotlin("jvm") version "1.3.72"
+
+}
+
+repositories {
+	mavenLocal()
+	gradlePluginPortal()
+}
+
+configure<JavaPluginConvention> {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}

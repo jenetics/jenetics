@@ -17,43 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 4.4
+ * @since 1.2
+ * @version !__version__!
  */
+plugins {
+	`java-library`
+	idea
+	`maven-publish`
+	id("me.champeau.gradle.jmh")
+}
 
-apply plugin: 'packaging'
+description = "Jenetics - Java Genetic Algorithm Library"
 
-ext.moduleName = 'io.jenetics.tool'
+extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	implementation project(':jenetics')
-	implementation project(':jenetics.example')
-	implementation project(':jenetics.ext')
-	implementation project(':jenetics.xml')
-	implementation property('include.PRNGine')
+	testImplementation(Libs.ApacheCommonsMath)
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.EqualsVerifier)
+	testImplementation(Libs.PRNGine)
 
-	testImplementation property('include.TestNG')
+	jmh(Libs.PRNGine)
 }
 
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
+tasks.test.get().dependsOn(tasks.compileJmhJava)
 
-javadoc {
-	options {
-		linksOffline(
-			'https://jenetics.io/javadoc/jenetics',
-			"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
-		)
-	}
+jmh {
+	include = listOf(".*IntegerChromosomePerf.*")
 }
-
-packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = true
-}
-
-

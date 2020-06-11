@@ -20,7 +20,40 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4
+ * @since 3.5
+ * @version !__version__!
  */
-package io.jenetics.gradle.task;
+plugins {
+	`java-library`
+	idea
+	`maven-publish`
+	id("me.champeau.gradle.jmh")
+}
+
+description = "Jenetics Extension"
+
+extra["moduleName"] = "io.jenetics.ext"
+
+dependencies {
+	api(project(":jenetics"))
+
+	testImplementation(Libs.ApacheCommonsMath)
+	testImplementation(Libs.TestNG)
+	testImplementation(Libs.EqualsVerifier)
+	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
+}
+
+tasks.compileTestJava.get().dependsOn(":jenetics:compileTestJava")
+tasks.test.get().dependsOn(tasks.compileJmhJava)
+
+jmh {
+	include = listOf(".*TreePerf.*")
+}
+
+tasks.javadoc {
+	val doclet = options as StandardJavadocDocletOptions
+	doclet.linksOffline(
+		"https://jenetics.io/javadoc/jenetics",
+		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.base"
+	)
+}
