@@ -26,6 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version !__version__!
  */
 plugins {
+	base
 	id("me.champeau.gradle.jmh") version "0.5.0" apply false
 }
 
@@ -35,6 +36,7 @@ tasks.named<Wrapper>("wrapper") {
 	version = "6.5"
 	distributionType = Wrapper.DistributionType.ALL
 }
+
 
 /**
  * Project configuration *before* the projects has been evaluated.
@@ -269,9 +271,9 @@ fun setupPublishing(project: Project) {
 	project.tasks.named<Jar>("javadocJar") {
 		filter(
 			ReplaceTokens::class, "tokens" to mapOf(
-			"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-			"__year__" to Env.COPYRIGHT_YEAR
-		)
+				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+				"__year__" to Env.COPYRIGHT_YEAR
+			)
 		)
 	}
 
@@ -346,3 +348,120 @@ fun setupPublishing(project: Project) {
 		sign(project.the<PublishingExtension>().publications["mavenJava"])
 	}
 }
+
+val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+val exportDir = file("${rootProject.buildDir}/package/${identifier}")
+
+tasks.register("assemblePkg") {
+	val task = this
+	subprojects { task.dependsOn(tasks.build) }
+
+	group ="archive"
+	description = "Create the project package"
+
+	doLast {
+		val modules = arrayOf(
+			"jenetics",
+			"jenetics.ext",
+			"jenetics.prog",
+			"jenetics.xml"
+		)
+
+		exportDir.deleteRecursively()
+
+		// Copy the project code.
+		copy {
+			from(".") {
+				exclude(
+					"**/build",
+					"**/out",
+					"**/.idea",
+					"**/.settings",
+					"**/.gradle"
+				)
+			}
+			into("${exportDir}/project")
+		}
+
+		// Copy external JAR files.
+		allprojects {
+			val project = this
+
+			plugins.withType<JavaPlugin> {
+				configurations.all {
+					if (isCanBeResolved) {
+						resolvedConfiguration.files.forEach {
+							if (it.name.endsWith(".jar") &&
+								!it.name.startsWith("jenetics"))
+							{
+								project.copy {
+									from(it)
+									into("${exportDir}/project/buildSrc/lib")
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Copy the JAR files.
+		copy {
+			from(*modules)
+			into("${exportDir}/libs")
+			include("**/build/libs/*.jar")
+
+			includeEmptyDirs = false
+
+			eachFile {
+				relativePath = RelativePath(true, name)
+			}
+		}
+
+		modules.forEach { copyJavadoc(it, exportDir) }
+		modules.forEach { copyTestReports(it, exportDir) }
+
+		// Copy the User's Manual.
+		copy {
+			from("jenetics.doc/build/doc") {
+				include("*.pdf")
+			}
+			into(exportDir)
+		}
+	}
+}
+
+fun copyJavadoc(name: String, exportDir: File) {
+	copy {
+		from("${name}/build/docs/javadoc") {
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+				"__year__" to Env.COPYRIGHT_YEAR
+			)
+			)
+		}
+		into("${exportDir}/javadoc/${name}")
+	}
+}
+
+fun copyTestReports(name: String, exportDir: File) {
+	copy {
+		from("${name}/build/reports")
+		into("${exportDir}/reports/${name}")
+	}
+}
+
+tasks.register<Zip>("pkgZip") {
+	dependsOn("assemblePkg")
+
+	group ="archive"
+	description = "Zips the project package"
+
+	archiveFileName.set("${identifier}.zip")
+	destinationDirectory.set(file("${rootProject.buildDir}/package"))
+
+	from(exportDir)
+}
+
+
