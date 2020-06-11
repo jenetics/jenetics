@@ -12,21 +12,21 @@ object Env {
 
 	val COPYRIGHT_YEAR = "2007-${YEAR}"
 
-	val MANUAL_DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(NOW)
-
 	val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
-	val USER_NAME = System.getProperty("user.name")
+	val MANUAL_DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(NOW)
 
-	val BUILD_TIME = DATE_FORMAT.format(NOW)
+	val BUILD_DATE = DATE_FORMAT.format(NOW)
 
-	val BUILD_JDK =  "${System.getProperty("java.vm.name")} " +
-		"(${System.getProperty("java.vm.vendor")} " +
-		"${System.getProperty("java.vm.version")})"
+	val BUILD_JDK = System.getProperty("java.version")
 
-	val BUILD_OS = "${System.getProperty("os.name")} " +
-		"${System.getProperty("os.arch")} " +
-		System.getProperty("os.version")
+	val BUILD_OS_NAME = System.getProperty("os.name")
+
+	val BUILD_OS_ARCH = System.getProperty("os.arch")
+
+	val BUILD_OS_VERSION = System.getProperty("os.version")
+
+	val BUILD_BY = System.getProperty("user.name")
 
 }
 

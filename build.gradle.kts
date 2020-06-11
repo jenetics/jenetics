@@ -99,12 +99,15 @@ fun setupJava(project: Project) {
 		"Version" to Jenetics.VERSION,
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
-		"Project-Version" to Jenetics.VERSION,
-		"Built-By" to Env.USER_NAME,
-		"Build-Timestamp" to Env.BUILD_TIME,
-		"Created-By" to "Gradle ${gradle.gradleVersion}",
-		"Build-Jdk" to Env.BUILD_JDK,
-		"Build-OS" to Env.BUILD_OS
+		"Project-Version" to project.version,
+
+		"Created-With" to "Gradle ${gradle.gradleVersion}",
+		"Built-By" to Env.BUILD_BY,
+		"Build-Date" to Env.BUILD_DATE,
+		"Build-JDK" to Env.BUILD_JDK,
+		"Build-OS-Name" to Env.BUILD_OS_NAME,
+		"Build-OS-Arch" to Env.BUILD_OS_ARCH,
+		"Build-OS-Version" to Env.BUILD_OS_VERSION
 	)
 	if (project.extra.has("moduleName")) {
 		attr["Automatic-Module-Name"] = project.extra["moduleName"].toString()
@@ -165,7 +168,7 @@ fun setupJavadoc(project: Project) {
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
-		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_TIME})</i>"
+		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
 		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
