@@ -30,6 +30,8 @@ plugins {
 	id("me.champeau.gradle.jmh")
 }
 
+description = "Jenetics XML-Marshalling"
+
 extra["moduleName"] = "io.jenetics.xml"
 
 dependencies {

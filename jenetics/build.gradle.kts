@@ -30,7 +30,7 @@ plugins {
 	id("me.champeau.gradle.jmh")
 }
 
-description = Jenetics.DESCRIPTION
+description = "Jenetics - Java Genetic Algorithm Library"
 
 extra["moduleName"] = "io.jenetics.base"
 

@@ -33,6 +33,8 @@ plugins {
 	id("me.champeau.gradle.jmh")
 }
 
+description = "Jenetics Genetic Programming"
+
 extra["moduleName"] = "io.jenetics.prog"
 
 dependencies {

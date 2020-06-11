@@ -44,12 +44,12 @@ allprojects {
 	version = Jenetics.VERSION
 
 	repositories {
-		mavenLocal()
-		mavenCentral()
-		jcenter()
 		flatDir {
 			dirs("${rootDir}/buildSrc/lib")
 		}
+		mavenLocal()
+		mavenCentral()
+		jcenter()
 	}
 
 	configurations.all {
@@ -290,7 +290,7 @@ fun setupPublishing(project: Project) {
 				}
 				pom {
 					name.set(Jenetics.ID)
-					description.set(Jenetics.DESCRIPTION)
+					description.set(project.description)
 					url.set(Jenetics.URL)
 					inceptionYear.set("2007")
 

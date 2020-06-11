@@ -14,8 +14,6 @@ object Env {
 
 	val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
-	val MANUAL_DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(NOW)
-
 	val BUILD_DATE = DATE_FORMAT.format(NOW)
 
 	val BUILD_JDK = System.getProperty("java.version")
@@ -30,35 +28,17 @@ object Env {
 
 }
 
+/**
+ * Information about the library and author.
+ */
 object Jenetics {
 	const val VERSION = "6.1.0-SNAPSHOT"
 	const val ID = "jenetics"
 	const val NAME = "Jenetics"
 	const val GROUP = "io.jenetics"
-	const val DESCRIPTION = "Jenetics - Java Genetic Algorithm Library"
 	const val AUTHOR = "Franz Wilhelmstötter"
 	const val EMAIL = "franz.wilhelmstoetter@gmail.com"
 	const val URL = "https://jenetics.io"
-
-
-
-	val manualIdentifier = "${VERSION}—${Env.MANUAL_DATE}"
-
-	object Ext {
-		val Name = "Jenetics Extensions"
-	}
-
-	object Prog {
-		val Name = "Jenetics Genetic Programming"
-	}
-
-	object Xml {
-		val Name = "Jenetics XML Marshalling"
-	}
-
-	object Example {
-		val Name = "Jenetics Examples"
-	}
 }
 
 /**
