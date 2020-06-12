@@ -40,7 +40,7 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 	public FlatTreeNode<Integer> newTree(final int levels, final Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		TreeNodeTest.fill(root, levels, random);
-		return FlatTreeNode.of(root);
+		return FlatTreeNode.ofTree(root);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 				.attach(TreeNode.of(9)));
 
 		final ISeq<FlatTreeNode<Integer>> nodes =
-			FlatTreeNode.of(tree).flattenedNodes();
+			FlatTreeNode.ofTree(tree).flattenedNodes();
 		assert Tree.equals(tree, nodes.get(0));
 
 		final TreeNode<Integer> unflattened = TreeNode.ofTree(nodes.get(0));
@@ -77,7 +77,7 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 	public void methodResults(final Function<Tree<?, ?>, Object> method) {
 		final TreeNode<Integer> tree = TreeNode.of(0);
 		TreeNodeTest.fill(tree, 2, new Random(345));
-		final FlatTreeNode<Integer> flatTree = FlatTreeNode.of(tree);
+		final FlatTreeNode<Integer> flatTree = FlatTreeNode.ofTree(tree);
 
 		final Iterator<? extends Tree<?, ?>> it1 = tree.iterator();
 		final Iterator<? extends Tree<?, ?>> it2 = flatTree.iterator();
