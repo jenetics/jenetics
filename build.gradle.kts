@@ -37,7 +37,6 @@ tasks.named<Wrapper>("wrapper") {
 	distributionType = Wrapper.DistributionType.ALL
 }
 
-
 /**
  * Project configuration *before* the projects has been evaluated.
  */
@@ -250,6 +249,8 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
+val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+
 /**
  * Setup of the Maven publishing.
  */
@@ -262,7 +263,7 @@ fun setupPublishing(project: Project) {
 	project.tasks.named<Jar>("sourcesJar") {
 		filter(
 			ReplaceTokens::class, "tokens" to mapOf(
-				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+				"__identifier__" to identifier,
 				"__year__" to Env.COPYRIGHT_YEAR
 			)
 		)
@@ -271,7 +272,7 @@ fun setupPublishing(project: Project) {
 	project.tasks.named<Jar>("javadocJar") {
 		filter(
 			ReplaceTokens::class, "tokens" to mapOf(
-				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+				"__identifier__" to identifier,
 				"__year__" to Env.COPYRIGHT_YEAR
 			)
 		)
@@ -349,7 +350,6 @@ fun setupPublishing(project: Project) {
 	}
 }
 
-val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
 val exportDir = file("${rootProject.buildDir}/package/${identifier}")
 
 tasks.register("assemblePkg") {
@@ -377,7 +377,8 @@ tasks.register("assemblePkg") {
 					"**/out",
 					"**/.idea",
 					"**/.settings",
-					"**/.gradle"
+					"**/.gradle",
+					"**/.git"
 				)
 			}
 			into("${exportDir}/project")
@@ -436,9 +437,9 @@ fun copyJavadoc(name: String, exportDir: File) {
 		from("${name}/build/docs/javadoc") {
 			filter(
 				ReplaceTokens::class, "tokens" to mapOf(
-				"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
-				"__year__" to Env.COPYRIGHT_YEAR
-			)
+					"__identifier__" to identifier,
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
 			)
 		}
 		into("${exportDir}/javadoc/${name}")
@@ -447,7 +448,14 @@ fun copyJavadoc(name: String, exportDir: File) {
 
 fun copyTestReports(name: String, exportDir: File) {
 	copy {
-		from("${name}/build/reports")
+		from("${name}/build/reports") {
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+					"__identifier__" to identifier,
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
+			)
+		}
 		into("${exportDir}/reports/${name}")
 	}
 }

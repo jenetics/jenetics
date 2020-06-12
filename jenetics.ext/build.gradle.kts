@@ -43,8 +43,8 @@ dependencies {
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 
-tasks.compileTestJava.get().dependsOn(":jenetics:compileTestJava")
-tasks.test.get().dependsOn(tasks.compileJmhJava)
+tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
+tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
 	include = listOf(".*TreePerf.*")

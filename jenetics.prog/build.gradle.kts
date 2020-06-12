@@ -45,7 +45,7 @@ dependencies {
 	testImplementation(Libs.EqualsVerifier)
 }
 
-tasks.test.get().dependsOn(tasks.compileJmhJava)
+tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
 	include = listOf(".*MathExprPerf.*")

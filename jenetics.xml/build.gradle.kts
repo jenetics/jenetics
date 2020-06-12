@@ -43,7 +43,7 @@ dependencies {
 	jmh(project(":jenetics"))
 }
 
-tasks.test.get().dependsOn(tasks.compileJmhJava)
+tasks.test { dependsOn(tasks.compileJmhJava) }
 
 tasks.javadoc {
 	val doclet = options as StandardJavadocDocletOptions
