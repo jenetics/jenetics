@@ -1,3 +1,4 @@
+module:io.jenetics.base
 io.jenetics
 io.jenetics.engine
 io.jenetics.stat
