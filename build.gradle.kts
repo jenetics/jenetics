@@ -377,7 +377,8 @@ tasks.register("assemblePkg") {
 					"**/out",
 					"**/.idea",
 					"**/.settings",
-					"**/.gradle"
+					"**/.gradle",
+					"**/.git"
 				)
 			}
 			into("${exportDir}/project")
