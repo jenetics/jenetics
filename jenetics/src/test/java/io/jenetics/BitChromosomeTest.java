@@ -159,6 +159,21 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		assertEquals(chromosome.toBigInteger(), value);
 	}
 
+	//@Test
+	public void toFromBigInteger() {
+		final var ch1 = BitChromosome.of(100);
+		final var value = ch1.toBigInteger();
+		final var ch2 = BitChromosome.of(value, 100);
+		System.out.println(ch1);
+		System.out.println(BitChromosome.of(value, 200));
+
+		assertEquals((Object)ch2, (Object)ch1);
+		assertEquals(
+			BitChromosome.of(value, 200).toCanonicalString().substring(100),
+			ch1.toCanonicalString()
+		);
+	}
+
 	@Test
 	public void toBitSet() {
 		BitChromosome c1 = BitChromosome.of(34);

@@ -153,9 +153,9 @@ public class BitChromosome extends Number
 		this(bits, 0, bits.length*Byte.SIZE);
 	}
 
-	private static byte[] toByteArray(final CharSequence value) {
-		final byte[] bytes = Bits.newArray(value.length());
-		for (int i = value.length(); --i >= 0;) {
+	private static byte[] toByteArray(final CharSequence value, final int length) {
+		final byte[] bytes = Bits.newArray(length);
+		for (int i = length; --i >= 0;) {
 			final char c = value.charAt(i);
 			if (c == '1') {
 				Bits.set(bytes, i);
@@ -571,14 +571,49 @@ public class BitChromosome extends Number
 	 * ones probability.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
+	 * @param length length of the BitChromosome
 	 * @param p Probability of the TRUEs in the BitChromosome.
 	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
-	public static BitChromosome of(final BigInteger value, final double p) {
-		final byte[] bits = value.toByteArray();
-		return new BitChromosome(bits, bits.length*Byte.SIZE, probability(p));
+	public static BitChromosome of(
+		final BigInteger value,
+		final int length,
+		final double p
+	) {
+		final int bl = Bits.toByteLength(length);
+		byte[] bits = value.toByteArray();
+		if (bits.length != bl) {
+			final byte[] bytes = Bits.newArray(length);
+			if (bl > bits.length) {
+				System.arraycopy(bits, 0, bytes, bl - bits.length, bits.length);
+			} else {
+				System.arraycopy(bits, bl - bits.length, bytes, 0, bl);
+			}
+			bits = bytes;
+		}
+		return new BitChromosome(bits, length, probability(p));
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given big integer value and
+	 * ones probability. The {@link #oneProbability()} of the chromosome is set
+	 * to {@code 0.5}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param value the value of the created {@code BitChromosome}
+	 * @param length length of the BitChromosome
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(
+		final BigInteger value,
+		final int length
+	) {
+		return of(value, length, 0.5);
 	}
 
 
@@ -591,7 +626,8 @@ public class BitChromosome extends Number
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public static BitChromosome of(final BigInteger value) {
-		return of(value, 0.5);
+		final byte[] bits = value.toByteArray();
+		return new BitChromosome(bits, bits.length*Byte.SIZE, 0.5);
 	}
 
 	/**
@@ -613,7 +649,7 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
+		final byte[] bits = toByteArray(value, length);
 		return new BitChromosome(bits, length, probability(p));
 	}
 
@@ -647,7 +683,7 @@ public class BitChromosome extends Number
 	 *         is zero or contains other characters than '0' or '1'.
 	 */
 	public static BitChromosome of(final CharSequence value) {
-		return of(value, 0.5);
+		return of(value, value.length(), 0.5);
 	}
 
 

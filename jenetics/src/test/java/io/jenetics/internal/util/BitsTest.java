@@ -378,11 +378,12 @@ public class BitsTest {
 
 	@Test
 	public void setGetBit1() {
-		final byte[] data = new byte[625];
+		final byte[] data = new byte[3];
 		Arrays.fill(data, (byte)0);
 
 		for (int i = 0; i < data.length*8; ++i) {
 			Bits.set(data, i);
+			System.out.println(Bits.toByteString(data));
 			Assert.assertTrue(Bits.get(data, i));
 		}
 	}

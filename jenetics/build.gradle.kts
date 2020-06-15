@@ -35,6 +35,7 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
+	implementation("commons-codec:commons-codec:1.14")
 	testImplementation(Libs.ApacheCommonsMath)
 	testImplementation(Libs.TestNG)
 	testImplementation(Libs.EqualsVerifier)
