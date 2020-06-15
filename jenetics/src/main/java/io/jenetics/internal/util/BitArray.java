@@ -1,7 +1,5 @@
 package io.jenetics.internal.util;
 
-import static java.lang.Integer.min;
-
 import java.math.BigInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,13 +55,40 @@ public final class BitArray {
 	}
 
 	public static BitArray of(final BigInteger value, final int length) {
-		final int byteLength = Bits.toByteLength(length);
+		final byte[] array = Bits.newArray(length);
 		final byte[] data = value.toByteArray();
-		if (byteLength == data.length) {
 
+		Bits.reverse(data);
+		if (value.signum() < 0) {
+			java.util.Arrays.fill(array, (byte)-1);
+		}
+		for (int i = 0; i < Math.min(length, data.length*8); ++i) {
+			Bits.set(array, i, Bits.get(data, i));
 		}
 
-		return new BitArray(data, 0, length);
+//		if (byteLength > data.length) {
+//			final byte[] temp = new byte[byteLength];
+//			for (int i = 0; i < data.length; ++i) {
+//				temp[temp.length - 1 - i] = data[data.length - 1 - i];
+//			}
+//			data = temp;
+//		}
+//
+//		if (value.signum() < 0) {
+//			final int bitLength = data.length*8;
+//			if (length > bitLength) {
+//				for (int i = 0; i < length - bitLength; ++i) {
+//					Bits.set(data, bitLength + i);
+//				}
+//			} else {
+//				for (int i = 0; i < bitLength - length; ++i) {
+//					Bits.set(data, length + i);
+//				}
+//			}
+//		}
+//		Bits.reverse(data);
+
+		return new BitArray(array, 0, length);
 	}
 
 	@Override

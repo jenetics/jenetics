@@ -1,21 +1,18 @@
 package io.jenetics.internal.util;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.codec.binary.BinaryCodec;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class BitArrayTest {
 
-	//@Test(dataProvider = "arrays")
+	@Test(dataProvider = "arrays")
 	public void toBigInteger(final BitArray array) {
 		final var bint = array.toBigInteger();
 		final var bar = BitArray.of(bint, array.length());
@@ -34,7 +31,7 @@ public class BitArrayTest {
 		for (int i = 0; i < 200; ++i) {
 			final int length = random.nextInt(30) + 5;
 			final int start = random.nextInt(23);
-			final int end = length*Byte.SIZE - random.nextInt(10);
+			final int end = length*Byte.SIZE - random.nextInt(25);
 
 			final byte[] bits = new byte[length];
 			random.nextBytes(bits);
@@ -47,12 +44,14 @@ public class BitArrayTest {
 
 	@Test
 	public void fromBigInteger() {
-		final var string = "110000001111111001111111000";
+		final var string = "11111110101001100101101100100111101101011101";
 		final var ba = BitArray.of(string);
+		System.out.println(string.length());
 
 		var bi = ba.toBigInteger();
 		System.out.println(bi);
-		System.out.println(new BitArray(bi.toByteArray()));
+		System.out.println(BitArray.of(bi, string.length()));
+		System.out.println(BitArray.of(bi, string.length()).toBigInteger());
 	}
 
 	@Test(dataProvider = "bitStrings")
