@@ -39,14 +39,13 @@ public final class BitArray {
 	}
 
 	public BigInteger toBigInteger() {
-		final int byteLength = Bits.toByteLength(length());
 		final byte[] array = Bits.newArray(length());
 
 		for (int i = 0; i < length(); ++i) {
 			Bits.set(array, i, get(i));
 		}
 		if (isNegative()) {
-			for (int i = 0; i < array.length*8 - length(); ++i) {
+			for (int i = 0, n = array.length*8; i < n - length(); ++i) {
 				Bits.set(array, length() + i);
 			}
 		}
@@ -62,31 +61,9 @@ public final class BitArray {
 		if (value.signum() < 0) {
 			java.util.Arrays.fill(array, (byte)-1);
 		}
-		for (int i = 0; i < Math.min(length, data.length*8); ++i) {
+		for (int i = 0, n = Math.min(length, data.length*8); i < n; ++i) {
 			Bits.set(array, i, Bits.get(data, i));
 		}
-
-//		if (byteLength > data.length) {
-//			final byte[] temp = new byte[byteLength];
-//			for (int i = 0; i < data.length; ++i) {
-//				temp[temp.length - 1 - i] = data[data.length - 1 - i];
-//			}
-//			data = temp;
-//		}
-//
-//		if (value.signum() < 0) {
-//			final int bitLength = data.length*8;
-//			if (length > bitLength) {
-//				for (int i = 0; i < length - bitLength; ++i) {
-//					Bits.set(data, bitLength + i);
-//				}
-//			} else {
-//				for (int i = 0; i < bitLength - length; ++i) {
-//					Bits.set(data, length + i);
-//				}
-//			}
-//		}
-//		Bits.reverse(data);
 
 		return new BitArray(array, 0, length);
 	}

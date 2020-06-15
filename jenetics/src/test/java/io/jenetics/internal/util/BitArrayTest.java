@@ -28,7 +28,7 @@ public class BitArrayTest {
 		final var random = new Random(1234);
 
 		final List<Object[]> values = new ArrayList<>();
-		for (int i = 0; i < 200; ++i) {
+		for (int i = 0; i < 20; ++i) {
 			final int length = random.nextInt(30) + 5;
 			final int start = random.nextInt(23);
 			final int end = length*Byte.SIZE - random.nextInt(25);
@@ -50,7 +50,7 @@ public class BitArrayTest {
 
 		var bi = ba.toBigInteger();
 		System.out.println(bi);
-		System.out.println(BitArray.of(bi, string.length()));
+		System.out.println(BitArray.of(bi, 40));
 		System.out.println(BitArray.of(bi, string.length()).toBigInteger());
 	}
 
