@@ -191,18 +191,8 @@ public final class BitArray {
 	@Override
 	public String toString() {
 		final char[] chars = new char[length()];
-
-		for (int i = 0, j = chars.length - 1;
-			 i < _data.length;
-			 i++, j -= Byte.SIZE)
-		{
-			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
-				if ((_data[i] & BITS[bits]) == 0) {
-					chars[j - bits] = '0';
-				} else {
-					chars[j - bits] = '1';
-				}
-			}
+		for (int i = 0; i < length(); ++i) {
+			chars[i] = get(i) ? '1' : '0';
 		}
 
 		return new String(chars);
