@@ -19,12 +19,10 @@
  */
 package io.jenetics.internal.util;
 
+import static java.lang.String.format;
+
 import java.math.BigInteger;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static java.lang.String.format;
 
 /**
  * This class represents a fixed sized array of <em>bit</em> or <em>boolean</em>
@@ -179,14 +177,35 @@ public final class BitArray {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof BitArray &&
-			obj.toString().equals(toString());
+			equals((BitArray)obj);
+	}
+
+	private boolean equals(final BitArray array) {
+		if (array.length() != length()) return false;
+		for (int i = 0; i < length(); ++i) {
+			if (get(i) != array.get(i)) return false;
+		}
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return IntStream.range(0, length())
-			.mapToObj(i -> get(length() - 1 - i) ? "1" : "0")
-			.collect(Collectors.joining());
+		final char[] chars = new char[length()];
+
+		for (int i = 0, j = chars.length - 1;
+			 i < _data.length;
+			 i++, j -= Byte.SIZE)
+		{
+			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
+				if ((_data[i] & BITS[bits]) == 0) {
+					chars[j - bits] = '0';
+				} else {
+					chars[j - bits] = '1';
+				}
+			}
+		}
+
+		return new String(chars);
 	}
 
 	/* *************************************************************************
@@ -232,17 +251,19 @@ public final class BitArray {
 
 
 	public static BitArray of(final CharSequence value) {
-		final byte[] data = fromString(value);
+		final byte[] data = toByteArray(value);
 		return new BitArray(data, 0, value.length());
 	}
 
-	private static byte[] fromString(final CharSequence ascii) {
-		final byte[] array = Bits.newArray(ascii.length());
-
-		for (int ii = 0, jj = ascii.length() - 1; ii < array.length; ii++, jj -= 8) {
-			for (int bits = 0; bits < BITS.length && (jj - bits) >= 0; ++bits) {
-				if (ascii.charAt(jj - bits) == '1') {
-					array[ii] |= BITS[bits];
+	private static byte[] toByteArray(final CharSequence chars) {
+		final byte[] array = Bits.newArray(chars.length());
+		for (int i = 0, j = chars.length() - 1;
+			 i < array.length;
+			 i++, j -= Byte.SIZE)
+		{
+			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
+				if (chars.charAt(j - bits) == '1') {
+					array[i] |= BITS[bits];
 				}
 			}
 		}
