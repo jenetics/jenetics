@@ -28,7 +28,7 @@ import java.util.Objects;
  * This class represents a fixed sized array of <em>bit</em> or <em>boolean</em>
  * values, backed by a {@code byte[]} array. The order of the bit values is shown
  * if the drawing.
- * <pre>{@code
+ * <pre> {@code
  *  Byte:       3        2        1        0
  *              |        |        |        |
  *  Array: |11110011|10011101|01000000|00101010|

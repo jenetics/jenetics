@@ -46,12 +46,20 @@ import io.jenetics.util.ISeq;
  *
  * @see BitGene
  *
- * @implSpec
- * This class is immutable and thread-safe.
+ * @implNote
+ * This class is immutable and thread-safe. The bits of the bit chromosome are
+ * backed by a {@code byte[]} array with the following layout:
+ * <pre> {@code
+ *  Byte:       3        2        1        0
+ *              |        |        |        |
+ *  Array: |11110011|10011101|01000000|00101010|
+ *          |                 |        |      |
+ *  Bit:    23                15       7      0
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.1
+ * @version !__version__!
  */
 public class BitChromosome extends Number
 	implements
