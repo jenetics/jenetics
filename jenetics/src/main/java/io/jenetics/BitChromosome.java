@@ -22,7 +22,6 @@ package io.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.Requires.probability;
 import static io.jenetics.internal.util.SerialIO.readInt;
@@ -35,12 +34,12 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.BitSet;
 import java.util.ListIterator;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
+import io.jenetics.internal.util.BitArray;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.util.ISeq;
 
@@ -73,23 +72,24 @@ public class BitChromosome extends Number
 	/**
 	 * The length of the chromosomes (number of bits).
 	 */
+	@Deprecated(forRemoval = true, since = "!__version__!")
 	protected final int _length;
 
 	/**
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
-	protected final byte[] _genes;
+	protected final BitArray _genes;
 
 	// Wraps the genes byte array into a Seq<BitGene>.
-	private final transient BitGeneISeq _seq;
+	//private final transient BitGeneISeq _seq;
 
 	// Private primary constructor.
-	private BitChromosome(final byte[] bits, final int length, final double p) {
-		_genes = bits;
-		_length = length;
+	private BitChromosome(final BitArray genes, final double p) {
+		_genes = genes;
+		_length = genes.length();
 		_p = p;
 
-		_seq = BitGeneMSeq.of(_genes, length).toISeq();
+		//_seq = BitGeneMSeq.of(_genes).toISeq();
 	}
 
 	/**
@@ -114,11 +114,7 @@ public class BitChromosome extends Number
 		final int end,
 		final double p
 	) {
-		this(
-			Bits.copy(bits, start, end),
-			min(bits.length*Byte.SIZE, end) - start,
-			p
-		);
+		this(BitArray.of(bits, start, min(end, bits.length*Byte.SIZE)), p);
 	}
 
 	/**
@@ -190,7 +186,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitGene gene() {
-		return BitGene.of(Bits.get(_genes, 0));
+		return BitGene.of(_genes.get(0));
 	}
 
 	/**
@@ -201,13 +197,12 @@ public class BitChromosome extends Number
 	 * @return the first value of this chromosome.
 	 */
 	public boolean booleanValue() {
-		return Bits.get(_genes, 0);
+		return _genes.get(0);
 	}
 
 	@Override
 	public BitGene get(final int index) {
-		rangeCheck(index);
-		return BitGene.of(Bits.get(_genes, index));
+		return BitGene.of(_genes.get(index));
 	}
 
 	@Override
@@ -226,8 +221,7 @@ public class BitChromosome extends Number
 	 *          (index &lt; 1 || index &gt;= length()).
 	 */
 	public boolean booleanValue(final int index) {
-		rangeCheck(index);
-		return Bits.get(_genes, index);
+		return _genes.get(index);
 	}
 
 	/**
@@ -236,16 +230,7 @@ public class BitChromosome extends Number
 	 * @return the number of bits set to true in this {@code BitChromosome}
 	 */
 	public int bitCount() {
-		return Bits.count(_genes);
-	}
-
-	/**
-	 * Return a list iterator over the bit-genes of this chromosome.
-	 *
-	 * @return a list iterator over the bit-genes of this chromosome
-	 */
-	public ListIterator<BitGene> listIterator() {
-		return _seq.listIterator();
+		return _genes.bitCount();
 	}
 
 	/**
@@ -304,12 +289,12 @@ public class BitChromosome extends Number
 	 * @return {@code BigInteger} value this {@code BitChromosome} represents.
 	 */
 	public BigInteger toBigInteger() {
-		return new BigInteger(_genes);
+		return _genes.toBigInteger();
 	}
 
 	/**
-	 * Returns the two's-complement binary representation of this
-	 * large integer. The output array is in <i>big-endian</i>
+	 * creates the two's complement binary representation of this
+	 * big integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
 	 *
 	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
@@ -317,31 +302,34 @@ public class BitChromosome extends Number
 	 *          between the two classes.</p>
 	 *
 	 * @param bytes the bytes to hold the binary representation
-	 *	       (two's-complement) of this large integer.
+	 *	       (two's complement) of this large integer.
 	 * @return the number of bytes written.
 	 * @throws IndexOutOfBoundsException
 	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
 	public int toByteArray(final byte[] bytes) {
-		if (bytes.length < _genes.length) {
+		if (bytes.length < (int)Math.ceil(length()/8.0)) {
 			throw new IndexOutOfBoundsException();
 		}
 
-		System.arraycopy(_genes, 0, bytes, 0, _genes.length);
-		return _genes.length;
+		final var array = toByteArray();
+		System.arraycopy(array, 0, bytes, 0, array.length);
+		return array.length;
 	}
 
 	/**
+	 * Returns the two's-complement binary representation of this
+	 * big integer. The output array is in <i>big-endian</i>
+	 * byte-order: the most significant byte is at the offset position.
+	 *
 	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
 	 *
 	 * @see #toByteArray(byte[])
 	 */
 	public byte[] toByteArray() {
-		final byte[] data = new byte[_genes.length];
-		toByteArray(data);
-		return data;
+		return _genes.toByteArray();
 	}
 
 	/**
@@ -366,7 +354,7 @@ public class BitChromosome extends Number
 	 */
 	public IntStream ones() {
 		return IntStream.range(0, length())
-			.filter(index -> Bits.get(_genes, index));
+			.filter(_genes::get);
 	}
 
 	/**
@@ -378,7 +366,7 @@ public class BitChromosome extends Number
 	 */
 	public IntStream zeros() {
 		return IntStream.range(0, length())
-			.filter(index -> !Bits.get(_genes, index));
+			.filter(index -> !_genes.get(index));
 	}
 
 	@Override
@@ -390,18 +378,12 @@ public class BitChromosome extends Number
 			);
 		}
 
-		final byte[] bits = Bits.newArray(genes.length());
-		if (genes instanceof BitGeneISeq) {
-			((BitGeneISeq)genes).copyTo(bits);
-		} else {
-			for (int i = genes.length(); --i >= 0;) {
-				if (genes.get(i).booleanValue()) {
-					Bits.set(bits, i);
-				}
-			}
+		final var array = BitArray.ofLength(genes.length());
+		for (int i = 0; i < genes.length(); ++i) {
+			array.set(i, genes.get(i).booleanValue());
 		}
 
-		return new BitChromosome(bits, genes.length(), _p);
+		return new BitChromosome(array, _p);
 	}
 
 	@Override
@@ -433,9 +415,7 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		return stream()
-			.map(g -> g.booleanValue() ? "1" : "0")
-			.collect(joining());
+		return _genes.toString();
 	}
 
 	@Override
@@ -449,9 +429,9 @@ public class BitChromosome extends Number
 	 * @return a new BitChromosome with inverted ones and zeros.
 	 */
 	public BitChromosome invert() {
-		final byte[] data = _genes.clone();
-		Bits.invert(data);
-		return new BitChromosome(data, _length, 1.0 - _p);
+		final var array = _genes.copy();
+		array.invert();
+		return new BitChromosome(array, 1.0 - _p);
 	}
 
 	@Override
@@ -464,13 +444,12 @@ public class BitChromosome extends Number
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			length() == ((BitChromosome)obj).length() &&
-			Arrays.equals(_genes, ((BitChromosome)obj)._genes);
+			_genes.equals(((BitChromosome)obj)._genes);
 	}
 
 	@Override
 	public String toString() {
-		return Bits.toByteString(_genes);
+		return _genes.toByteString();
 	}
 
 
@@ -489,7 +468,8 @@ public class BitChromosome extends Number
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
 	public static BitChromosome of(final int length, final double p) {
-		return new BitChromosome(Bits.newArray(length, p), length, p);
+		final var array = BitArray.ofLength(length);
+		return new BitChromosome(array, p);
 	}
 
 	/**
@@ -522,14 +502,14 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final byte[] bytes = Bits.newArray(length);
+		final var array = BitArray.ofLength(Bits.toByteLength(length));
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
-				Bits.set(bytes, i);
+				array.set(i, true);
 			}
 		}
 
-		return new BitChromosome(bytes, length, probability(p));
+		return new BitChromosome(array, probability(p));
 	}
 
 	/**
@@ -582,18 +562,8 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final int bl = Bits.toByteLength(length);
-		byte[] bits = value.toByteArray();
-		if (bits.length != bl) {
-			final byte[] bytes = Bits.newArray(length);
-			if (bl > bits.length) {
-				System.arraycopy(bits, 0, bytes, bl - bits.length, bits.length);
-			} else {
-				System.arraycopy(bits, bl - bits.length, bytes, 0, bl);
-			}
-			bits = bytes;
-		}
-		return new BitChromosome(bits, length, probability(p));
+		final var array = BitArray.of(value, length);
+		return new BitChromosome(array, probability(p));
 	}
 
 	/**
@@ -626,8 +596,8 @@ public class BitChromosome extends Number
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public static BitChromosome of(final BigInteger value) {
-		final byte[] bits = value.toByteArray();
-		return new BitChromosome(bits, bits.length*Byte.SIZE, 0.5);
+		final var array = BitArray.of(value);
+		return new BitChromosome(array, 0.5);
 	}
 
 	/**
@@ -649,8 +619,8 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final byte[] bits = toByteArray(value, length);
-		return new BitChromosome(bits, length, probability(p));
+		final var array = BitArray.of(value);
+		return new BitChromosome(array, probability(p));
 	}
 
 	/**
@@ -704,8 +674,8 @@ public class BitChromosome extends Number
 	void write(final DataOutput out) throws IOException {
 		writeInt(_length, out);
 		out.writeDouble(_p);
-		writeInt(_genes.length, out);
-		out.write(_genes);
+		writeInt(_genes.length(), out);
+		//out.write(_genes);
 	}
 
 	static BitChromosome read(final DataInput in) throws IOException {
@@ -714,7 +684,7 @@ public class BitChromosome extends Number
 		final byte[] genes = new byte[readInt(in)];
 		in.readFully(genes);
 
-		return new BitChromosome(genes, length, p);
+		return new BitChromosome(null, p);
 	}
 
 }

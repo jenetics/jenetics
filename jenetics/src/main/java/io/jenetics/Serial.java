@@ -48,7 +48,7 @@ final class Serial implements Externalizable {
 	static final byte GENOTYPE = 10;
 	static final byte PHENOTYPE = 11;
 
-	static final byte BIT_GENE_STORE = 12;
+	//static final byte BIT_GENE_STORE = 12;
 
 	/**
 	 * The type being serialized.
@@ -92,7 +92,6 @@ final class Serial implements Externalizable {
 			case PERMUTATION_CHROMOSOME: ((PermutationChromosome)_object).write(out); break;
 			case GENOTYPE: ((Genotype)_object).write(out); break;
 			case PHENOTYPE: ((Phenotype)_object).write(out); break;
-			case BIT_GENE_STORE: ((BitGeneStore)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -115,7 +114,6 @@ final class Serial implements Externalizable {
 			case PERMUTATION_CHROMOSOME: _object = PermutationChromosome.read(in); break;
 			case GENOTYPE: _object = Genotype.read(in); break;
 			case PHENOTYPE: _object = Phenotype.read(in); break;
-			case BIT_GENE_STORE: _object = BitGeneStore.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

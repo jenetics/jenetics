@@ -102,6 +102,15 @@ public final class BitArray {
 	}
 
 	/**
+	 * Return the number of set bits of this bit-array.
+	 *
+	 * @return the number of set bits
+	 */
+	public int bitCount() {
+		return Bits.count(_data, _begin,_end);
+	}
+
+	/**
 	 * Sets the specified bit {@code value} at the given bit {@code index}.
 	 *
 	 * @param index the bit index
@@ -112,6 +121,13 @@ public final class BitArray {
 	public void set(final int index, final boolean value) {
 		Objects.checkIndex(index, length());
 		Bits.set(_data, _begin + index, value);
+	}
+
+	/**
+	 * Inverts {@code this} bit-array.
+	 */
+	public void invert() {
+		Bits.invert(_data);
 	}
 
 	/**
@@ -155,6 +171,23 @@ public final class BitArray {
 	 *         value of this bit-array
 	 */
 	public BigInteger toBigInteger() {
+		return new BigInteger(toByteArray());
+	}
+
+	/**
+	 * Returns the two's complement binary representation of this
+	 * big integer. The output array is in <i>big-endian</i>
+	 * byte-order: the most significant byte is at the offset position.
+	 *
+	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
+	 *          } byte array representation and can be used for conversion
+	 *          between the two classes.</p>
+	 * @return the two's complement byte array representation
+	 * @throws IndexOutOfBoundsException
+	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
+	 * @throws NullPointerException it the give array is {@code null}.
+	 */
+	public byte[] toByteArray() {
 		final byte[] array = Bits.newArray(length());
 
 		for (int i = 0; i < length(); ++i) {
@@ -166,7 +199,16 @@ public final class BitArray {
 			}
 		}
 		Bits.reverse(array);
-		return new BigInteger(array);
+		return array;
+	}
+
+	public BitArray copy() {
+		final byte[] array = Bits.newArray(length());
+		for (int i = 0; i < length(); ++i) {
+			Bits.set(array, i, get(i));
+		}
+
+		return new BitArray(array, 0, length());
 	}
 
 	@Override
@@ -196,6 +238,14 @@ public final class BitArray {
 		}
 
 		return new String(chars);
+	}
+
+	public String toByteString() {
+		final byte[] array = Bits.newArray(length());
+		for (int i = 0; i < length(); ++i) {
+			Bits.set(array, i, get(i));
+		}
+		return Bits.toByteString(array);
 	}
 
 	/* *************************************************************************
@@ -239,6 +289,21 @@ public final class BitArray {
 		return new BitArray(array, 0, length);
 	}
 
+	public static BitArray of(final BigInteger value) {
+		final byte[] data = value.toByteArray();
+		final byte[] array = new byte[data.length];
+
+		Bits.reverse(data);
+		if (value.signum() < 0) {
+			java.util.Arrays.fill(array, (byte)-1);
+		}
+		for (int i = 0, n = data.length*Byte.SIZE; i < n; ++i) {
+			Bits.set(array, i, Bits.get(data, i));
+		}
+
+		return new BitArray(array, 0, data.length*Byte.SIZE);
+	}
+
 	/**
 	 * Creates a new bit-array from the given string {@code value}. The string,
 	 * created by the {@link #toString()} method, will be equals to the given
@@ -256,12 +321,12 @@ public final class BitArray {
 	 *         empty
 	 */
 	public static BitArray of(final CharSequence value) {
-		final byte[] data = toByteArray(value);
+		final byte[] data = toByteArray(value, value.length());
 		return new BitArray(data, 0, value.length());
 	}
 
-	private static byte[] toByteArray(final CharSequence chars) {
-		final byte[] array = Bits.newArray(chars.length());
+	private static byte[] toByteArray(final CharSequence chars, final int length) {
+		final byte[] array = Bits.newArray(Math.max(chars.length(), length));
 		for (int i = 0, j = chars.length() - 1;
 			 i < array.length;
 			 i++, j -= Byte.SIZE)
@@ -273,6 +338,10 @@ public final class BitArray {
 			}
 		}
 		return array;
+	}
+
+	public static BitArray of(final byte[] data, final int begin, final int end) {
+		return new BitArray(data.clone(), begin, end);
 	}
 
 	/**
