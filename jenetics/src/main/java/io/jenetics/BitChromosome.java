@@ -35,7 +35,6 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.BitSet;
-import java.util.ListIterator;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -64,6 +63,8 @@ public class BitChromosome extends Number
 	private static final long serialVersionUID = 2L;
 
 
+	private static final double DEFAULT_PROBABILITY = 0.5;
+
 	/**
 	 * The ones probability of the randomly generated Chromosome.
 	 */
@@ -80,16 +81,12 @@ public class BitChromosome extends Number
 	 */
 	protected final BitArray _genes;
 
-	// Wraps the genes byte array into a Seq<BitGene>.
-	//private final transient BitGeneISeq _seq;
-
 	// Private primary constructor.
+	@SuppressWarnings("deprecated")
 	private BitChromosome(final BitArray genes, final double p) {
 		_genes = genes;
 		_length = genes.length();
 		_p = p;
-
-		//_seq = BitGeneMSeq.of(_genes).toISeq();
 	}
 
 	/**
@@ -131,12 +128,7 @@ public class BitChromosome extends Number
 	 *         {@code null}.
 	 */
 	public BitChromosome(final byte[] bits, final int start, final int end) {
-		this(bits, start, end, prop(bits, start, end));
-	}
-
-	private static double prop(final byte[] bits, final int start, final int end) {
-		final int e = min(bits.length*Byte.SIZE, end) - start;
-		return (double)Bits.count(bits, start, e)/(double)e;
+		this(bits, start, end, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -163,14 +155,6 @@ public class BitChromosome extends Number
 		}
 
 		return bytes;
-	}
-
-	private void rangeCheck(final int index) {
-		if (index < 0 || index >= _length) {
-			throw new IndexOutOfBoundsException(
-				"Index: " + index + ", Length: " + _length
-			);
-		}
 	}
 
 	/**
@@ -207,7 +191,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public int length() {
-		return _length;
+		return _genes.length();
 	}
 
 	/**
@@ -329,7 +313,7 @@ public class BitChromosome extends Number
 	 * @see #toByteArray(byte[])
 	 */
 	public byte[] toByteArray() {
-		return _genes.toByteArray();
+		return _genes.toTowsComplementByteArray();
 	}
 
 	/**
@@ -388,7 +372,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitChromosome newInstance() {
-		return of(_length, _p);
+		return of(length(), _p);
 	}
 
 	/**
@@ -458,7 +442,7 @@ public class BitChromosome extends Number
 	 **************************************************************************/
 
 	/**
-	 * Construct a new BitChromosome with the given _length.
+	 * Construct a new BitChromosome with the given length.
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
@@ -478,11 +462,11 @@ public class BitChromosome extends Number
 	 *
 	 * @param length Length of the BitChromosome.
 	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NegativeArraySizeException if the {@code _length} is smaller
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 */
 	public static BitChromosome of(final int length) {
-		return of(length, 0.5);
+		return of(length, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -525,7 +509,7 @@ public class BitChromosome extends Number
 	 *         {@code null}.
 	 */
 	public static BitChromosome of(final BitSet bits, final int length) {
-		return of(bits, length, 0.5);
+		return of(bits, length, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -672,7 +656,7 @@ public class BitChromosome extends Number
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(_length, out);
+		writeInt(length(), out);
 		out.writeDouble(_p);
 		writeInt(_genes.length(), out);
 		//out.write(_genes);

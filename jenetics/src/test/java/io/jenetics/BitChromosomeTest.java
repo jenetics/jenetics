@@ -86,6 +86,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void invert() {
 		final BitChromosome c1 = BitChromosome.of(100, 0.3);
 		final BitChromosome c3 = c1.invert();
+		System.out.println(c1);
 
 		for (int i = 0; i < c1.length(); ++i) {
 			Assert.assertTrue(c1.get(i).bit() != c3.get(i).bit());

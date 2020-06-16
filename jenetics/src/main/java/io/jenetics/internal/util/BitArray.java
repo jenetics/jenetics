@@ -171,7 +171,7 @@ public final class BitArray {
 	 *         value of this bit-array
 	 */
 	public BigInteger toBigInteger() {
-		return new BigInteger(toByteArray());
+		return new BigInteger(toTowsComplementByteArray());
 	}
 
 	/**
@@ -179,15 +179,16 @@ public final class BitArray {
 	 * big integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
 	 *
-	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
-	 *          } byte array representation and can be used for conversion
-	 *          between the two classes.</p>
+	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger}
+	 * byte array representation and can be used for conversion between the two
+	 * classes.</p>
+	 *
 	 * @return the two's complement byte array representation
 	 * @throws IndexOutOfBoundsException
 	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
-	public byte[] toByteArray() {
+	public byte[] toTowsComplementByteArray() {
 		final byte[] array = Bits.newArray(length());
 
 		for (int i = 0; i < length(); ++i) {

@@ -18,7 +18,6 @@ public class BitArrayTest {
 		final var bar = BitArray.of(bint, ba.length());
 
 		Assert.assertEquals(bar, ba);
-		Assert.assertEquals(bar.toString(), ba.toString());
 		Assert.assertEquals(bar.toBigInteger(), bint);
 	}
 
