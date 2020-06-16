@@ -79,4 +79,19 @@ public class BitArrayTest {
 		return values.toArray(new Object[0][]);
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void fromEmptyString() {
+		BitArray.of("");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void withZeroLength() {
+		BitArray.ofLength(0);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void withNegativeLength() {
+		BitArray.ofLength(-10);
+	}
+
 }

@@ -239,7 +239,22 @@ public final class BitArray {
 		return new BitArray(array, 0, length);
 	}
 
-
+	/**
+	 * Creates a new bit-array from the given string {@code value}. The string,
+	 * created by the {@link #toString()} method, will be equals to the given
+	 * input {@code value}.
+	 *
+	 * <pre>{@code
+	 * final var string = "11111110101001100101101100100111101101011101";
+	 * final var bits = BitArray.of(string);
+	 * assert bits.toString().eqals(string);
+	 * }</pre>
+	 *
+	 * @param value the given input string, consisting only of '0's and '1's
+	 * @return a new bit-array from the given input {@code value}
+	 * @throws IllegalArgumentException if the given input {@code value} is
+	 *         empty
+	 */
 	public static BitArray of(final CharSequence value) {
 		final byte[] data = toByteArray(value);
 		return new BitArray(data, 0, value.length());
@@ -260,6 +275,14 @@ public final class BitArray {
 		return array;
 	}
 
+	/**
+	 * Crate a new bit-array with the given length. All bits are set to '0'.
+	 *
+	 * @param length the length of the bit-array
+	 * @return a newly created bit-array with the given {@code length}
+	 * @throws IllegalArgumentException if the given {@code length} is smaller
+	 *         then one
+	 */
 	public static BitArray ofLength(final int length) {
 		return new BitArray(Bits.newArray(length), 0, length);
 	}
