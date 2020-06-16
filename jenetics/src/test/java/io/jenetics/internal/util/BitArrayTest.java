@@ -1,5 +1,6 @@
 package io.jenetics.internal.util;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,14 +14,21 @@ import org.testng.annotations.Test;
 public class BitArrayTest {
 
 	@Test(dataProvider = "arrays")
-	public void toBigInteger(final BitArray array) {
-		final var bint = array.toBigInteger();
-		final var bar = BitArray.of(bint, array.length());
-		System.out.println(bint);
-		System.out.println(bar.toBigInteger());
+	public void toBigInteger(final BitArray ba) {
+		final var bint = ba.toBigInteger();
+		final var bar = BitArray.of(bint, ba.length());
 
-		Assert.assertEquals(bar, array);
+		Assert.assertEquals(bar, ba);
 		Assert.assertEquals(bar.toBigInteger(), bint);
+
+		final var bits = BitArray.of("1111111010100110010110110010011110110101");
+		final var bint2 = bits.toBigInteger();
+		Assert.assertEquals(BitArray.of(bint2, bits.length()), bits);
+
+		final var length = 2048;
+		final var bint3 = BigInteger.probablePrime(length, new Random());
+		final var bits3 = BitArray.of(bint3, length + 1);
+		Assert.assertEquals(bits3.toBigInteger(), bint3);
 	}
 
 	@DataProvider

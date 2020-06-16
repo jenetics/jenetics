@@ -1,43 +1,161 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.internal.util;
 
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.lang.String.format;
+
+/**
+ * This class represents a fixed sized array of <em>bit</em> or <em>boolean</em>
+ * values, backed by a {@code byte[]} array. The order of the bit values is shown
+ * if the drawing.
+ * <pre>{@code
+ *  Byte:       3        2        1        0
+ *              |        |        |        |
+ *  Array: |11110011|10011101|01000000|00101010|
+ *          |                 |        |      |
+ *  Bit:    23                15       7      0
+ * }</pre>
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public final class BitArray {
 
 	private static final int[] BITS = {1, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 
 	final byte[] _data;
-	private final int _start;
+	private final int _begin;
 	private final int _end;
 
-	BitArray(final byte[] data, final int start, final int end) {
+	/**
+	 * Create a new bit-array with the given {@code data} values and
+	 * {@code begin} and {@code end} <em>bit</em> indexes.
+	 *
+	 * @param data the {@code byte[]} array which contains the bit data
+	 * @param begin the start bit index (inclusively)
+	 * @param end the end bit index (exclusively)
+	 * @throws NullPointerException if the given {@code data} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code begin} and {@code end}
+	 *         indexes are not within the valid range
+	 */
+	BitArray(final byte[] data, final int begin, final int end) {
+		if (data.length == 0) {
+			throw new IllegalArgumentException("Byte array must not be empty.");
+		}
+		if (begin < 0) {
+			throw new IllegalArgumentException(
+				"Begin index is smaller then zero: " + begin
+			);
+		}
+		if (end < begin || end > data.length*Byte.SIZE) {
+			throw new IllegalArgumentException(format(
+				"End index is not within the valid range of [%d, %d]: %d",
+				begin, data.length*Byte.SIZE, end
+			));
+		}
+
 		_data = data;
-		_start = start;
+		_begin = begin;
 		_end = end;
 	}
 
+	/**
+	 * Create a new bit-array with the given {@code data} values.
+	 *
+	 * @param data the {@code byte[]} array which contains the bit data
+	 * @throws NullPointerException if the given {@code data} array is
+	 *         {@code null}
+	 */
 	BitArray(final byte[] data) {
-		this(data, 0, data.length*8);
+		this(data, 0, data.length*Byte.SIZE);
 	}
 
+	/**
+	 * Return the length of the bit-array.
+	 *
+	 * @return the length of the bit array
+	 */
 	public int length() {
-		return _end - _start;
+		return _end - _begin;
 	}
 
+	/**
+	 * Sets the specified bit {@code value} at the given bit {@code index}.
+	 *
+	 * @param index the bit index
+	 * @param value the bit value
+	 * @throws IndexOutOfBoundsException if the index is not within the valid
+	 *         range of {@code [0, length())}
+	 */
 	public void set(final int index, final boolean value) {
-		Bits.set(_data, _start + index, value);
+		Objects.checkIndex(index, length());
+		Bits.set(_data, _begin + index, value);
 	}
 
+	/**
+	 * Return the bit value at the given bit {@code index}.
+	 *
+	 * @param index the bit index
+	 * @return the bit value
+	 * @throws IndexOutOfBoundsException if the index is not within the valid
+	 *         range of {@code [0, length())}
+	 */
 	public boolean get(final int index) {
-		return Bits.get(_data, _start + index);
+		Objects.checkIndex(index, length());
+		return Bits.get(_data, _begin + index);
 	}
 
+	/**
+	 * Check if the integer, represented by this bit-array (in two's complement
+	 * representation), is negative.
+	 *
+	 * @return {@code true} if <em>this</em> integer is negative, {@code false}
+	 *         otherwise
+	 */
 	public boolean isNegative() {
 		return get(length() - 1);
 	}
 
+	/**
+	 * Return the value of this bit-array as {@link BigInteger} value. This
+	 * bit-array can be recreated by the returned {@code BigInteger} value. But
+	 * only with the same {@link #length()} of {@code this} bit-array.
+	 *
+	 * <pre>{@code
+	 * final var bits = BitArray.of("1111111010100110010110110010011110110101");
+	 * final var bint = bits.toBigInteger();
+	 * assert BitArray.of(bint, bits.length()).equals(bits);
+	 * }</pre>
+	 *
+	 * @see #of(BigInteger, int)
+	 *
+	 * @return a new {@code BigInteger} object, which represents the integer
+	 *         value of this bit-array
+	 */
 	public BigInteger toBigInteger() {
 		final byte[] array = Bits.newArray(length());
 
@@ -51,21 +169,6 @@ public final class BitArray {
 		}
 		Bits.reverse(array);
 		return new BigInteger(array);
-	}
-
-	public static BitArray of(final BigInteger value, final int length) {
-		final byte[] array = Bits.newArray(length);
-		final byte[] data = value.toByteArray();
-
-		Bits.reverse(data);
-		if (value.signum() < 0) {
-			java.util.Arrays.fill(array, (byte)-1);
-		}
-		for (int i = 0, n = Math.min(length, data.length*8); i < n; ++i) {
-			Bits.set(array, i, Bits.get(data, i));
-		}
-
-		return new BitArray(array, 0, length);
 	}
 
 	@Override
@@ -86,6 +189,46 @@ public final class BitArray {
 			.collect(Collectors.joining());
 	}
 
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Creates a new bit-array from the given {@code value} and the given
+	 * {@code length}. It is guaranteed, that the created bit-array will
+	 * represent the given {@link BigInteger}, as long as the {@code length}
+	 * is big enough to store the whole value. If the length is shorter then
+	 * required, the higher order bits will be truncated.
+	 *
+	 * <pre>{@code
+	 * final var length = 2048;
+	 * final var bint = BigInteger.probablePrime(length, new Random());
+	 * final var bits = BitArray.of(bint, length + 1);
+	 * assert bits3.toBigInteger().equals(bint);
+	 * }</pre>
+	 *
+	 * @see #toBigInteger()
+	 *
+	 * @param value the integer value
+	 * @param length the length of the created bit-array
+	 * @return a newly created bit-array which represent the given {@code value}
+	 * @throws NullPointerException if the given {@code value} is {@code null}
+	 * @throws NegativeArraySizeException if the {@code length} is negative
+	 */
+	public static BitArray of(final BigInteger value, final int length) {
+		final byte[] array = Bits.newArray(length);
+		final byte[] data = value.toByteArray();
+
+		Bits.reverse(data);
+		if (value.signum() < 0) {
+			java.util.Arrays.fill(array, (byte)-1);
+		}
+		for (int i = 0, n = Math.min(length, data.length*8); i < n; ++i) {
+			Bits.set(array, i, Bits.get(data, i));
+		}
+
+		return new BitArray(array, 0, length);
+	}
 
 
 	public static BitArray of(final CharSequence value) {
