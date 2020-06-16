@@ -551,6 +551,11 @@ public final class Bits {
 	 * @return the number of bytes needed to store the given number of bits.
 	 */
 	public static int toByteLength(final int bitLength) {
+		if (bitLength < 0) {
+			throw new IllegalArgumentException(
+				"Bit length must not smaller then zero: " + bitLength
+			);
+		}
 		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
 	}
 
