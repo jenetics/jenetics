@@ -67,24 +67,16 @@ public class BitChromosome extends Number
 	/**
 	 * The ones probability of the randomly generated Chromosome.
 	 */
-	protected final double _p;
-
-	/**
-	 * The length of the chromosomes (number of bits).
-	 */
-	@Deprecated(forRemoval = true, since = "!__version__!")
-	protected final int _length;
+	private final double _p;
 
 	/**
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
-	protected final BitArray _genes;
+	private final BitArray _genes;
 
 	// Private primary constructor.
-	@SuppressWarnings("deprecated")
 	private BitChromosome(final BitArray genes, final double p) {
 		_genes = genes;
-		_length = genes.length();
 		_p = p;
 	}
 
