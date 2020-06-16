@@ -20,11 +20,11 @@
 package io.jenetics;
 
 import static java.lang.Math.min;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.Requires.probability;
+import static io.jenetics.internal.util.SerialIO.readBytes;
 import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeBytes;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.DataInput;
@@ -39,7 +39,6 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.BitArray;
-import io.jenetics.internal.util.Bits;
 import io.jenetics.util.ISeq;
 
 /**
@@ -139,22 +138,6 @@ public class BitChromosome extends Number
 	 */
 	public BitChromosome(final byte[] bits) {
 		this(bits, 0, bits.length*Byte.SIZE);
-	}
-
-	private static byte[] toByteArray(final CharSequence value, final int length) {
-		final byte[] bytes = Bits.newArray(length);
-		for (int i = length; --i >= 0;) {
-			final char c = value.charAt(i);
-			if (c == '1') {
-				Bits.set(bytes, i);
-			} else if (c != '0') {
-				throw new IllegalArgumentException(format(
-					"Illegal character '%s' at position %d", c, i
-				));
-			}
-		}
-
-		return bytes;
 	}
 
 	/**
@@ -292,14 +275,26 @@ public class BitChromosome extends Number
 	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
+	@Deprecated(forRemoval = true, since = "!__version__!")
 	public int toByteArray(final byte[] bytes) {
 		if (bytes.length < (int)Math.ceil(length()/8.0)) {
 			throw new IndexOutOfBoundsException();
 		}
 
-		final var array = toByteArray();
+		final var array = _genes.toByteArray();
 		System.arraycopy(array, 0, bytes, 0, array.length);
 		return array.length;
+	}
+
+	/**
+	 * Returns the byte array, which represents the bit values of {@code this}
+	 * chromosome.
+	 *
+	 * @return a byte array which represents this {@code BitChromosome}. The
+	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
+	 */
+	public byte[] toByteArray() {
+		return _genes.toByteArray();
 	}
 
 	/**
@@ -307,12 +302,12 @@ public class BitChromosome extends Number
 	 * big integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
 	 *
+	 * @since !__version__!
+	 *
 	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
-	 *
-	 * @see #toByteArray(byte[])
 	 */
-	public byte[] toByteArray() {
+	public byte[] toTowsComplementByteArray() {
 		return _genes.toTowsComplementByteArray();
 	}
 
@@ -355,7 +350,6 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		requireNonNull(genes, "Genes");
 		if (genes.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The genes sequence must contain at least one gene."
@@ -452,8 +446,7 @@ public class BitChromosome extends Number
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
 	public static BitChromosome of(final int length, final double p) {
-		final var array = BitArray.ofLength(length);
-		return new BitChromosome(array, p);
+		return new BitChromosome(BitArray.ofLength(length, p), p);
 	}
 
 	/**
@@ -486,7 +479,7 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final var array = BitArray.ofLength(Bits.toByteLength(length));
+		final var array = BitArray.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
 				array.set(i, true);
@@ -567,7 +560,7 @@ public class BitChromosome extends Number
 		final BigInteger value,
 		final int length
 	) {
-		return of(value, length, 0.5);
+		return of(value, length, DEFAULT_PROBABILITY);
 	}
 
 
@@ -581,7 +574,7 @@ public class BitChromosome extends Number
 	 */
 	public static BitChromosome of(final BigInteger value) {
 		final var array = BitArray.of(value);
-		return new BitChromosome(array, 0.5);
+		return new BitChromosome(array, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -603,7 +596,7 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final var array = BitArray.of(value);
+		final var array = BitArray.of(value, length);
 		return new BitChromosome(array, probability(p));
 	}
 
@@ -637,7 +630,7 @@ public class BitChromosome extends Number
 	 *         is zero or contains other characters than '0' or '1'.
 	 */
 	public static BitChromosome of(final CharSequence value) {
-		return of(value, value.length(), 0.5);
+		return of(value, value.length(), DEFAULT_PROBABILITY);
 	}
 
 
@@ -656,19 +649,18 @@ public class BitChromosome extends Number
 	}
 
 	void write(final DataOutput out) throws IOException {
+		writeBytes(_genes.toByteArray(), out);
 		writeInt(length(), out);
 		out.writeDouble(_p);
-		writeInt(_genes.length(), out);
-		//out.write(_genes);
 	}
 
 	static BitChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final double p = in.readDouble();
-		final byte[] genes = new byte[readInt(in)];
-		in.readFully(genes);
+		final var bytes = readBytes(in);
+		final var length  = readInt(in);
+		final var p = in.readDouble();
+		final var genes = BitArray.of(bytes,0, length);
 
-		return new BitChromosome(null, p);
+		return new BitChromosome(genes, p);
 	}
 
 }

@@ -78,7 +78,8 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(
 			c.oneProbability(),
-			(double)Bits.count(data)/(double)(data.length*8)
+			(double)Bits.count(data)/(double)(data.length*8),
+			0.15
 		);
 	}
 
@@ -124,12 +125,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void bitChromosomeBitSet() {
 		BitSet bits = new BitSet(10);
 		for (int i = 0; i < 10; ++i) {
-			bits.set(i, i % 2 == 0);
+			bits.set(i, i%2 == 0);
 		}
 
 		BitChromosome c = BitChromosome.of(bits, 10);
 		for (int i = 0; i < bits.length(); ++i) {
-			assertEquals(c.get(i).bit(), i % 2 == 0);
+			assertEquals(c.get(i).bit(), i%2 == 0);
 		}
 	}
 
@@ -222,15 +223,17 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void fromBitSet() {
-		final Random random = new Random(234);
-		final int size = 2343;
-		final BitSet bits = new BitSet(size);
+		final var random = new Random(234);
+		final var size = 2343;
+		final var bits = new BitSet(size);
 		for (int i = 0; i < size; ++i) {
 			bits.set(i, random.nextBoolean());
 		}
 
-		final BitChromosome c = BitChromosome.of(bits, size);
-		Assert.assertEquals(c.toByteArray(), bits.toByteArray());
+		final var ch = BitChromosome.of(bits, size);
+		for (int i = 0; i < size; ++i) {
+			Assert.assertEquals(ch.get(i).bit(), bits.get(i));
+		}
 	}
 
 	@Test
@@ -239,10 +242,11 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final byte[] bytes = new byte[234];
 		random.nextBytes(bytes);
 
-		final BitSet bits = BitSet.valueOf(bytes);
-		final BitChromosome c = BitChromosome.of(bits, bytes.length*8);
-		Assert.assertEquals(c.toByteArray(), bytes);
-		Assert.assertEquals(bits.toByteArray(), bytes);
+		final var bits = BitSet.valueOf(bytes);
+		final var ch = BitChromosome.of(bits, bytes.length*8);
+		for (int i = 0; i < bytes.length*8; ++i) {
+			Assert.assertEquals(ch.get(i).bit(), bits.get(i));
+		}
 	}
 
 	@Test(dataProvider = "bitCountProbability")

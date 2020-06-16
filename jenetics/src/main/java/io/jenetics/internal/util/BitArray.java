@@ -203,6 +203,14 @@ public final class BitArray {
 		return array;
 	}
 
+	public byte[] toByteArray() {
+		final byte[] array = Bits.newArray(length());
+		for (int i = 0; i < length(); ++i) {
+			Bits.set(array, i, get(i));
+		}
+		return array;
+	}
+
 	public BitArray copy() {
 		final byte[] array = Bits.newArray(length());
 		for (int i = 0; i < length(); ++i) {
@@ -326,9 +334,14 @@ public final class BitArray {
 		return new BitArray(data, 0, value.length());
 	}
 
+	public static BitArray of(final CharSequence value, final int length) {
+		final byte[] data = toByteArray(value, length);
+		return new BitArray(data, 0, value.length());
+	}
+
 	private static byte[] toByteArray(final CharSequence chars, final int length) {
-		final byte[] array = Bits.newArray(Math.max(chars.length(), length));
-		for (int i = 0, j = chars.length() - 1;
+		final byte[] array = Bits.newArray(length);
+		for (int i = 0, j = length - 1;
 			 i < array.length;
 			 i++, j -= Byte.SIZE)
 		{
@@ -355,6 +368,21 @@ public final class BitArray {
 	 */
 	public static BitArray ofLength(final int length) {
 		return new BitArray(Bits.newArray(length), 0, length);
+	}
+
+	/**
+	 * Create a new bit-array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter. The returned
+	 * byte array is initialized with ones according to the given ones
+	 * probability {@code p}.
+	 *
+	 * @param length the number of bits, the returned bit-array can store.
+	 * @param p the ones probability of the returned byte array.
+	 * @return the new byte array.s
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitArray ofLength(final int length, final double p) {
+		return new BitArray(Bits.newArray(length, p), 0, length);
 	}
 
 }
