@@ -359,8 +359,9 @@ public final class BitArray {
 	 *         empty
 	 */
 	public static BitArray of(final CharSequence value) {
-		final byte[] data = toByteArray(value, value.length());
-		return new BitArray(data, 0, value.length());
+		return of(value, value.length());
+		//final byte[] data = toByteArray(value, value.length());
+		//return new BitArray(data, 0, value.length());
 	}
 
 	/**
@@ -379,7 +380,7 @@ public final class BitArray {
 	 */
 	public static BitArray of(final CharSequence value, final int length) {
 		final byte[] data = toByteArray(value, length);
-		return new BitArray(data, 0, value.length());
+		return new BitArray(data, 0, length);
 	}
 
 	private static byte[] toByteArray(final CharSequence chars, final int length) {
@@ -389,12 +390,23 @@ public final class BitArray {
 			 i++, j -= Byte.SIZE)
 		{
 			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
-				if (chars.charAt(j - bits) == '1') {
+				if (get(chars, j - bits, length) == '1') {
 					array[i] |= BITS[bits];
 				}
 			}
 		}
 		return array;
+	}
+
+	private static char get(final CharSequence chars, final int i, final int length) {
+		if (chars.length() < length) {
+			final int d = length - i;
+			return d <= chars.length() ? chars.charAt(chars.length() - d) : '0';
+		} else if (chars.length() > length) {
+			return chars.charAt(chars.length() - length  + i);
+		} else {
+			return chars.charAt(i);
+		}
 	}
 
 	/**

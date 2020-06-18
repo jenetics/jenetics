@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -156,6 +157,31 @@ public class BitArrayTest {
 		values.add(new Object[]{BitArray.of("11111110101001100101101100100111101101011101")});
 
 		return values.toArray(new Object[0][]);
+	}
+
+
+	@Test
+	public void fromShortStringWithLength() {
+		final var length = 30;
+		final var value = "10010101";
+		final var bits = BitArray.of(value, length);
+		Assert.assertEquals(bits.length(), length);
+
+		final var string = bits.toString();
+		Assert.assertEquals(string.length(), length);
+		Assert.assertEquals(string.substring(length - value.length()), value);
+	}
+
+	@Test
+	public void fromLongStringWithLength() {
+		final var length = 5;
+		final var value = "11111111111111110010100";
+		final var bits = BitArray.of(value, length);
+		Assert.assertEquals(bits.length(), length);
+
+		final var string = bits.toString();
+		Assert.assertEquals(string.length(), length);
+		Assert.assertEquals(string, value.substring(value.length() - length));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
