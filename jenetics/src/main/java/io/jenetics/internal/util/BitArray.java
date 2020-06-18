@@ -24,6 +24,8 @@ import static java.lang.String.format;
 import java.math.BigInteger;
 import java.util.Objects;
 
+import io.jenetics.util.Copyable;
+
 /**
  * This class represents a fixed sized array of <em>bit</em> or <em>boolean</em>
  * values, backed by a {@code byte[]} array. The order of the bit values is shown
@@ -40,11 +42,13 @@ import java.util.Objects;
  * @since !__version__!
  * @version !__version__!
  */
-public final class BitArray {
+public final class BitArray implements Copyable<BitArray> {
 
-	private static final int[] BITS = {1, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+	private static final int[] BITS = {
+		1, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
+	};
 
-	final byte[] _data;
+	private final byte[] _data;
 	private final int _begin;
 	private final int _end;
 
@@ -124,10 +128,29 @@ public final class BitArray {
 	}
 
 	/**
-	 * Inverts {@code this} bit-array.
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code true}.
+	 *
+	 * @param index the bit index
+	 * @throws IndexOutOfBoundsException if the index is not within the valid
+	 *         range of {@code [0, length())}
 	 */
-	public void invert() {
-		Bits.invert(_data);
+	public void set(final int index) {
+		Objects.checkIndex(index, length());
+		Bits.set(_data, _begin + index);
+	}
+
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code false}.
+	 *
+	 * @param index the bit index
+	 * @throws IndexOutOfBoundsException if the index is not within the valid
+	 *         range of {@code [0, length())}
+	 */
+	public void unset(final int index) {
+		Objects.checkIndex(index, length());
+		Bits.unset(_data, _begin + index);
 	}
 
 	/**
@@ -144,14 +167,31 @@ public final class BitArray {
 	}
 
 	/**
-	 * Check if the integer, represented by this bit-array (in two's complement
-	 * representation), is negative.
-	 *
-	 * @return {@code true} if <em>this</em> integer is negative, {@code false}
-	 *         otherwise
+	 * Inverts {@code this} bit-array.
 	 */
-	public boolean isNegative() {
-		return get(length() - 1);
+	public void invert() {
+		Bits.invert(_data);
+	}
+
+	/**
+	 * Return the signum of the number, represented by this bit-array (-1 for
+	 * negative, 0 for zero, 1 for positive).
+	 *
+	 * <pre>{@code
+	 * final BitArray bits = ...;
+	 * final BigInteger i = bits.toBigInteger();
+	 * assert bits.signum() == i.signum();
+	 * }</pre>
+	 *
+	 * @return the signum of the number, represented by this bit-array (-1 for
+	 * 	       negative, 0 for zero, 1 for positive)
+	 */
+	public int signum() {
+		if (get(length() - 1)) {
+			return -1;
+		} else {
+			return bitCount() == 0 ? 0 : 1;
+		}
 	}
 
 	/**
@@ -188,13 +228,13 @@ public final class BitArray {
 	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
-	byte[] toTowsComplementByteArray() {
+	private byte[] toTowsComplementByteArray() {
 		final byte[] array = Bits.newArray(length());
 
 		for (int i = 0; i < length(); ++i) {
 			Bits.set(array, i, get(i));
 		}
-		if (isNegative()) {
+		if (signum() == -1) {
 			for (int i = 0, n = array.length*8; i < n - length(); ++i) {
 				Bits.set(array, length() + i);
 			}
@@ -203,6 +243,18 @@ public final class BitArray {
 		return array;
 	}
 
+	/**
+	 * Return the {@code byte[]} array, which represents the state of the state
+	 * of {@code this} bit-array.
+	 *
+	 * <pre>{@code
+	 * final BitArray bits = ...;
+	 * final byte[] bytes = bits.toByteArray();
+	 * assert bits.equals(BitArray.of(bytes, bits.length()));
+	 * }</pre>
+	 *
+	 * @return the bit-array data as {@code byte[]} array
+	 */
 	public byte[] toByteArray() {
 		final byte[] array = Bits.newArray(length());
 		for (int i = 0; i < length(); ++i) {
@@ -216,6 +268,7 @@ public final class BitArray {
 	 *
 	 * @return a new copy of {@code this} bit-array
 	 */
+	@Override
 	public BitArray copy() {
 		final byte[] array = Bits.newArray(length());
 		for (int i = 0; i < length(); ++i) {
@@ -341,6 +394,50 @@ public final class BitArray {
 	}
 
 	/**
+	 * Creates a new bit-array from the given string {@code value}. The given
+	 * {@code length} might be bigger and smaller than the length of the given
+	 * {@code value} string. The higher order bits of the created bit-array are
+	 * trimmed or filled with zero if the {@code length} is smaller or bigger
+	 * than the given string.
+	 *
+	 * @see #of(CharSequence)
+	 * @see #toString()
+	 *
+	 * @param value the given input string, consisting only of '0's and '1's
+	 * @param length the length of the created bit-array
+	 * @return a new bit-array from the given input {@code value}
+	 * @throws IllegalArgumentException if the given input {@code value} is
+	 *         empty
+	 */
+	public static BitArray of(final CharSequence value, final int length) {
+		final byte[] data = toByteArray(value, length);
+		return new BitArray(data, 0, length);
+	}
+
+	private static byte[] toByteArray(final CharSequence chars, final int length) {
+		final byte[] array = Bits.newArray(length);
+		for (int i = 0, j = length - 1; i < array.length; i++, j -= Byte.SIZE) {
+			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
+				if (get(chars, j - bits, length) == '1') {
+					array[i] |= BITS[bits];
+				}
+			}
+		}
+		return array;
+	}
+
+	private static char get(final CharSequence chars, final int i, final int length) {
+		if (chars.length() < length) {
+			final int d = length - i;
+			return d <= chars.length() ? chars.charAt(chars.length() - d) : '0';
+		} else if (chars.length() > length) {
+			return chars.charAt(chars.length() - length  + i);
+		} else {
+			return chars.charAt(i);
+		}
+	}
+
+	/**
 	 * Creates a new bit-array from the given string {@code value}. The string,
 	 * created by the {@link #toString()} method, will be equals to the given
 	 * input {@code value}.
@@ -363,53 +460,9 @@ public final class BitArray {
 	}
 
 	/**
-	 * Creates a new bit-array from the given string {@code value}. The string,
-	 * created by the {@link #toString()} method, will be equals to the given
-	 * input {@code value}.
-	 *
-	 * @see #of(CharSequence)
-	 * @see #toString()
-	 *
-	 * @param value the given input string, consisting only of '0's and '1's
-	 * @param length the length of the created bit-array
-	 * @return a new bit-array from the given input {@code value}
-	 * @throws IllegalArgumentException if the given input {@code value} is
-	 *         empty
-	 */
-	public static BitArray of(final CharSequence value, final int length) {
-		final byte[] data = toByteArray(value, length);
-		return new BitArray(data, 0, length);
-	}
-
-	private static byte[] toByteArray(final CharSequence chars, final int length) {
-		final byte[] array = Bits.newArray(length);
-		for (int i = 0, j = length - 1;
-			 i < array.length;
-			 i++, j -= Byte.SIZE)
-		{
-			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
-				if (get(chars, j - bits, length) == '1') {
-					array[i] |= BITS[bits];
-				}
-			}
-		}
-		return array;
-	}
-
-	private static char get(final CharSequence chars, final int i, final int length) {
-		if (chars.length() < length) {
-			final int d = length - i;
-			return d <= chars.length() ? chars.charAt(chars.length() - d) : '0';
-		} else if (chars.length() > length) {
-			return chars.charAt(chars.length() - length  + i);
-		} else {
-			return chars.charAt(i);
-		}
-	}
-
-	/**
 	 * Create a new bit-array with the given {@code data} values and
-	 * {@code begin} and {@code end} <em>bit</em> indexes.
+	 * {@code begin} and {@code end} <em>bit</em> indexes. The given
+	 * {@code data} is copied.
 	 *
 	 * @param data the {@code byte[]} array which contains the bit data
 	 * @param begin the start bit index (inclusively)
@@ -431,7 +484,7 @@ public final class BitArray {
 
 	/**
 	 * Create a new bit-array with the given {@code data} values and
-	 * {@code length}.
+	 * {@code length}. The given {@code data} is copied.
 	 *
 	 * @param data the {@code byte[]} array which contains the bit data
 	 * @param length the bit length
@@ -447,7 +500,7 @@ public final class BitArray {
 
 	/**
 	 * Create a new bit-array with the given {@code data} values and
-	 * {@code length}.
+	 * {@code length}. The given {@code data} is copied.
 	 *
 	 * @param data the {@code byte[]} array which contains the bit data
 	 * @return a newly created bit-array

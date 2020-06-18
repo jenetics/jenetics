@@ -194,6 +194,21 @@ public class BitArrayTest {
 		Assert.assertEquals(BitArray.of(bits.toByteArray(), bits.length()), bits);
 	}
 
+	@Test
+	public void signum() {
+		var bits = BitArray.of("10000000010110010111");
+		Assert.assertEquals(bits.signum(), -1);
+		Assert.assertEquals(bits.signum(), bits.toBigInteger().signum());
+
+		bits = BitArray.of("0000000010110010111");
+		Assert.assertEquals(bits.signum(), 1);
+		Assert.assertEquals(bits.signum(), bits.toBigInteger().signum());
+
+		bits = BitArray.of("00000000");
+		Assert.assertEquals(bits.signum(), 0);
+		Assert.assertEquals(bits.signum(), bits.toBigInteger().signum());
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void fromEmptyString() {
 		BitArray.of("");
