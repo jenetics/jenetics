@@ -184,6 +184,16 @@ public class BitArrayTest {
 		Assert.assertEquals(string, value.substring(value.length() - length));
 	}
 
+	@Test
+	public void fromBytesRange() {
+		final var random = new Random();
+		final var bytes = new byte[10];
+		random.nextBytes(bytes);
+
+		final var bits = BitArray.of(bytes, 6, 65);
+		Assert.assertEquals(BitArray.of(bits.toByteArray(), bits.length()), bits);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void fromEmptyString() {
 		BitArray.of("");

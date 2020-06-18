@@ -360,8 +360,6 @@ public final class BitArray {
 	 */
 	public static BitArray of(final CharSequence value) {
 		return of(value, value.length());
-		//final byte[] data = toByteArray(value, value.length());
-		//return new BitArray(data, 0, value.length());
 	}
 
 	/**
@@ -423,7 +421,12 @@ public final class BitArray {
 	 *         indexes are not within the valid range
 	 */
 	public static BitArray of(final byte[] data, final int begin, final int end) {
-		return new BitArray(data.clone(), begin, end);
+		final byte[] bytes = Bits.newArray(end - begin);
+		for (int i = 0, n = end - begin; i < n; ++i) {
+			Bits.set(bytes, i, Bits.get(data, i + begin));
+		}
+
+		return new BitArray(bytes, 0, end - begin);
 	}
 
 	/**
