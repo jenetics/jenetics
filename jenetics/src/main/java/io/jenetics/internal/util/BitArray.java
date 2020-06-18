@@ -188,7 +188,7 @@ public final class BitArray {
 	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
-	public byte[] toTowsComplementByteArray() {
+	byte[] toTowsComplementByteArray() {
 		final byte[] array = Bits.newArray(length());
 
 		for (int i = 0; i < length(); ++i) {
@@ -211,6 +211,11 @@ public final class BitArray {
 		return array;
 	}
 
+	/**
+	 * Create a new copy of {@code this} bit-array.
+	 *
+	 * @return a new copy of {@code this} bit-array
+	 */
 	public BitArray copy() {
 		final byte[] array = Bits.newArray(length());
 		for (int i = 0; i < length(); ++i) {
@@ -249,6 +254,19 @@ public final class BitArray {
 		return new String(chars);
 	}
 
+	/**
+	 * Convert a binary representation of {@code this} bit-array to a string. The
+	 * string has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 *
+	 * @return the binary representation of {@code this} bit array.
+	 */
 	public String toByteString() {
 		final byte[] array = Bits.newArray(length());
 		for (int i = 0; i < length(); ++i) {
@@ -298,6 +316,15 @@ public final class BitArray {
 		return new BitArray(array, 0, length);
 	}
 
+	/**
+	 * Create a new bit-array from the given {@link BigInteger} value.
+	 *
+	 * @see #of(BigInteger, int)
+	 *
+	 * @param value the integer value
+	 * @return a newly created bit-array which represent the given {@code value}
+	 * @throws NullPointerException if the given {@code value} is {@code null}
+	 */
 	public static BitArray of(final BigInteger value) {
 		final byte[] data = value.toByteArray();
 		final byte[] array = new byte[data.length];
@@ -321,8 +348,10 @@ public final class BitArray {
 	 * <pre>{@code
 	 * final var string = "11111110101001100101101100100111101101011101";
 	 * final var bits = BitArray.of(string);
-	 * assert bits.toString().eqals(string);
+	 * assert bits.toString().equals(string);
 	 * }</pre>
+	 *
+	 * @see #toString()
 	 *
 	 * @param value the given input string, consisting only of '0's and '1's
 	 * @return a new bit-array from the given input {@code value}
@@ -334,6 +363,20 @@ public final class BitArray {
 		return new BitArray(data, 0, value.length());
 	}
 
+	/**
+	 * Creates a new bit-array from the given string {@code value}. The string,
+	 * created by the {@link #toString()} method, will be equals to the given
+	 * input {@code value}.
+	 *
+	 * @see #of(CharSequence)
+	 * @see #toString()
+	 *
+	 * @param value the given input string, consisting only of '0's and '1's
+	 * @param length the length of the created bit-array
+	 * @return a new bit-array from the given input {@code value}
+	 * @throws IllegalArgumentException if the given input {@code value} is
+	 *         empty
+	 */
 	public static BitArray of(final CharSequence value, final int length) {
 		final byte[] data = toByteArray(value, length);
 		return new BitArray(data, 0, value.length());
@@ -354,8 +397,50 @@ public final class BitArray {
 		return array;
 	}
 
+	/**
+	 * Create a new bit-array with the given {@code data} values and
+	 * {@code begin} and {@code end} <em>bit</em> indexes.
+	 *
+	 * @param data the {@code byte[]} array which contains the bit data
+	 * @param begin the start bit index (inclusively)
+	 * @param end the end bit index (exclusively)
+	 * @return a newly created bit-array
+	 * @throws NullPointerException if the given {@code data} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code begin} and {@code end}
+	 *         indexes are not within the valid range
+	 */
 	public static BitArray of(final byte[] data, final int begin, final int end) {
 		return new BitArray(data.clone(), begin, end);
+	}
+
+	/**
+	 * Create a new bit-array with the given {@code data} values and
+	 * {@code length}.
+	 *
+	 * @param data the {@code byte[]} array which contains the bit data
+	 * @param length the bit length
+	 * @return a newly created bit-array
+	 * @throws NullPointerException if the given {@code data} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is greater than
+	 *         {@code data.length*Byte.SIZE}
+	 */
+	public static BitArray of(final byte[] data, final int length) {
+		return of(data, 0, length);
+	}
+
+	/**
+	 * Create a new bit-array with the given {@code data} values and
+	 * {@code length}.
+	 *
+	 * @param data the {@code byte[]} array which contains the bit data
+	 * @return a newly created bit-array
+	 * @throws NullPointerException if the given {@code data} array is
+	 *         {@code null}
+	 */
+	public static BitArray of(final byte[] data) {
+		return of(data, 0, data.length*Byte.SIZE);
 	}
 
 	/**

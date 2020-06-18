@@ -298,20 +298,6 @@ public class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns the two's-complement binary representation of this
-	 * big integer. The output array is in <i>big-endian</i>
-	 * byte-order: the most significant byte is at the offset position.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return a byte array which represents this {@code BitChromosome}. The
-	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
-	 */
-	public byte[] toTowsComplementByteArray() {
-		return _genes.toTowsComplementByteArray();
-	}
-
-	/**
 	 * Return the corresponding BitSet of this BitChromosome.
 	 *
 	 * @return The corresponding BitSet of this BitChromosome.
