@@ -24,8 +24,14 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -33,6 +39,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.EquivalentValidator;
 import io.jenetics.util.Factory;
 import io.jenetics.util.RandomRegistry;
 
@@ -41,9 +48,125 @@ import io.jenetics.util.RandomRegistry;
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
+	private static final EquivalentValidator<byte[], BitChromosome> FROM_BYTES =
+		EquivalentValidator.of(BitChromosome::new, (v, a) -> a.toByteArray());
+
+	private static final EquivalentValidator<BigInteger, BitChromosome> FROM_BIGINT =
+		EquivalentValidator.of(BitChromosome::of, (v, a) -> a.toBigInteger());
+
+	private static final EquivalentValidator<String, BitChromosome> FROM_STRING =
+		EquivalentValidator.of(BitChromosome::of, (v, a) -> a.toCanonicalString());
+
+	private static final EquivalentValidator<BitChromosome, byte[]> TO_BYTES =
+		EquivalentValidator.of(
+			BitChromosome::toByteArray,
+			(a, v) -> new BitChromosome(v, 0, a.length())
+		);
+
+	private static final EquivalentValidator<BitChromosome, BigInteger> TO_BIGINT =
+		EquivalentValidator.of(
+			BitChromosome::toBigInteger,
+			(a, v) -> BitChromosome.of(v, a.length())
+		);
+
+	private static final EquivalentValidator<BitChromosome, String> TO_STRING =
+		EquivalentValidator.of(
+			BitChromosome::toCanonicalString,
+			(a, v) -> BitChromosome.of(v)
+		);
+
 	@Override
 	protected Factory<Chromosome<BitGene>> factory() {
 		return () -> BitChromosome.of(500, 0.3);
+	}
+
+	@Test(dataProvider = "bytes")
+	public void fromBytes(final byte[] value) {
+		FROM_BYTES.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] bytes() {
+		final Random random = new Random();
+		final Supplier<byte[]> supplier = () -> {
+			final int length = random.nextInt(100) + 1;
+			final byte[] array = new byte[length];
+			random.nextBytes(array);
+			return array;
+		};
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
+	}
+
+	@Test(dataProvider = "bigIntegers")
+	public void fromBigInteger(final BigInteger value) {
+		FROM_BIGINT.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] bigIntegers() {
+		final Random random = new Random();
+		final Supplier<BigInteger> supplier = () ->
+			BigInteger.probablePrime(random.nextInt(100) + 100, random);
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
+	}
+
+	@Test(dataProvider = "strings")
+	public void fromString(final String value) {
+		FROM_STRING.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] strings() {
+		final var random = new Random(1234);
+
+		final List<Object[]> values = new ArrayList<>();
+		for (int i = 0; i < 25; ++i) {
+			final int length = random.nextInt(1000) + 1;
+			final var string = IntStream.range(0, length)
+				.mapToObj(__ -> random.nextBoolean() ? "1" : "0")
+				.collect(Collectors.joining());
+
+			values.add(new Object[]{string});
+		}
+
+		return values.toArray(new Object[0][]);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toBytes(final BitChromosome chromosome) {
+		TO_BYTES.verify(chromosome);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toBigInteger(final BitChromosome chromosomes) {
+		TO_BIGINT.verify(chromosomes);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toString(final BitChromosome chromosomes) {
+		TO_STRING.verify(chromosomes);
+	}
+
+	@DataProvider
+	public Object[][] chromosomes() {
+		final var random = new Random();
+		final Supplier<BitChromosome> supplier = () -> {
+			final int length = random.nextInt(1000) + 10;
+			return BitChromosome.of(length);
+		};
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
 	}
 
 	@Test
