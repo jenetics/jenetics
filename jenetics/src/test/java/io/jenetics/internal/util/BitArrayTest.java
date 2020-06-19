@@ -234,4 +234,14 @@ public class BitArrayTest {
 		BitArray.ofLength(-10);
 	}
 
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void indexOutOfBounds1() {
+		BitArray.of("101010").get(6);
+	}
+
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void indexOutOfBounds2() {
+		BitArray.of("101010").get(-1);
+	}
+
 }
