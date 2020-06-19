@@ -270,17 +270,18 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	@Override
 	public BitArray copy() {
-		final byte[] array = Bits.newArray(length());
-		for (int i = 0; i < length(); ++i) {
-			Bits.set(array, i, get(i));
-		}
-
-		return new BitArray(array, 0, length());
+		return new BitArray(toByteArray(), 0, length());
 	}
 
 	@Override
 	public int hashCode() {
-		return toString().hashCode();
+		int hash = 0;
+		int factor = 1;
+		for (int i = 0; i < length(); ++i) {
+			hash += factor*(get(i) ? 1 : 0);
+			factor *= 2;
+		}
+		return hash;
 	}
 
 	@Override

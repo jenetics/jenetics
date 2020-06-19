@@ -209,6 +209,16 @@ public class BitArrayTest {
 		Assert.assertEquals(bits.signum(), bits.toBigInteger().signum());
 	}
 
+	@Test(invocationCount = 10)
+	public void hash() {
+		final var random = new Random();
+		final var value = Math.abs(random.nextInt());
+		final var big = BigInteger.valueOf(value);
+		final var bits = BitArray.of(big);
+
+		Assert.assertEquals(bits.hashCode(), value);
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void fromEmptyString() {
 		BitArray.of("");
