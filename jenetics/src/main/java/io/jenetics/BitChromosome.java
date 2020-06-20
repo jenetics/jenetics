@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.Requires.probability;
 import static io.jenetics.internal.util.SerialIO.readBytes;
 import static io.jenetics.internal.util.SerialIO.readInt;
@@ -375,14 +374,13 @@ public final class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return hash(_genes, hash(getClass()));
+		return _genes.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
+			obj instanceof BitChromosome &&
 			_genes.equals(((BitChromosome)obj)._genes);
 	}
 
