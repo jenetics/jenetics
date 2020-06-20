@@ -54,7 +54,8 @@ allprojects {
 	}
 
 	configurations.all {
-		resolutionStrategy.preferProjectModules()
+		resolutionStrategy.failOnVersionConflict()
+		resolutionStrategy.force(*Libs.All)
 	}
 }
 
