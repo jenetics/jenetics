@@ -229,12 +229,8 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
 	private byte[] toTowsComplementByteArray() {
-		final byte[] array = Bits.newArray(length());
-
-		for (int i = 0; i < length(); ++i) {
-			Bits.set(array, i, get(i));
-		}
-		if (signum() == -1) {
+		final byte[] array = toByteArray();
+		if (get(length() - 1)) {
 			for (int i = 0, n = array.length*8; i < n - length(); ++i) {
 				Bits.set(array, length() + i);
 			}
@@ -256,11 +252,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @return the bit-array data as {@code byte[]} array
 	 */
 	public byte[] toByteArray() {
-		final byte[] array = Bits.newArray(length());
-		for (int i = 0; i < length(); ++i) {
-			Bits.set(array, i, get(i));
-		}
-		return array;
+		return Bits.copy(_data, _begin, _end);
 	}
 
 	/**
@@ -286,8 +278,7 @@ public final class BitArray implements Copyable<BitArray> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof BitArray &&
-			equals((BitArray)obj);
+		return obj instanceof BitArray && equals((BitArray)obj);
 	}
 
 	private boolean equals(final BitArray array) {
@@ -322,11 +313,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @return the binary representation of {@code this} bit array.
 	 */
 	public String toByteString() {
-		final byte[] array = Bits.newArray(length());
-		for (int i = 0; i < length(); ++i) {
-			Bits.set(array, i, get(i));
-		}
-		return Bits.toByteString(array);
+		return Bits.toByteString(toByteArray());
 	}
 
 	/* *************************************************************************
@@ -475,11 +462,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 *         indexes are not within the valid range
 	 */
 	public static BitArray of(final byte[] data, final int begin, final int end) {
-		final byte[] bytes = Bits.newArray(end - begin);
-		for (int i = 0, n = end - begin; i < n; ++i) {
-			Bits.set(bytes, i, Bits.get(data, i + begin));
-		}
-
+		final var bytes = Bits.copy(data, begin, end);
 		return new BitArray(bytes, 0, end - begin);
 	}
 
