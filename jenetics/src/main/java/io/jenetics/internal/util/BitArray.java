@@ -267,6 +267,7 @@ public final class BitArray implements Copyable<BitArray> {
 
 	@Override
 	public int hashCode() {
+		/*
 		int hash = 0;
 		int factor = 1;
 		for (int i = 0; i < length(); ++i) {
@@ -274,6 +275,9 @@ public final class BitArray implements Copyable<BitArray> {
 			factor *= 2;
 		}
 		return hash;
+	 	*/
+
+		return toBigInteger().hashCode();
 	}
 
 	@Override
@@ -285,11 +289,13 @@ public final class BitArray implements Copyable<BitArray> {
 		if (array.length() != length()) {
 			return false;
 		}
-
+		return toBigInteger().equals(array.toBigInteger());
+		/*
 		for (int i = 0; i < length(); ++i) {
 			if (get(i) != array.get(i)) return false;
 		}
 		return true;
+ 		*/
 	}
 
 	@Override
