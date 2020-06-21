@@ -19,6 +19,7 @@
  */
 package io.jenetics.internal.util;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -35,8 +36,6 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-
-import io.jenetics.util.ProxySorterPerf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -68,6 +67,21 @@ public class BitArrayPerf {
 	@Benchmark
 	public byte[] toBitArray() {
 		return array.toByteArray();
+	}
+
+	@Benchmark
+	public int bitArrayHashCode() {
+		return array.hashCode();
+	}
+
+	@Benchmark
+	public int byteArrayHashCode() {
+		return Arrays.hashCode(array.toByteArray());
+	}
+
+	@Benchmark
+	public int bigIntegerHashCode() {
+		return array.toBigInteger().hashCode();
 	}
 
 	public static void main(String[] args) throws RunnerException {
