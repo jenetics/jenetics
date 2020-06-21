@@ -53,7 +53,7 @@ public final /*record*/ class AltererResult<
 	private final int _alterations;
 
 	private AltererResult(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int alterations
 	) {
 		if (alterations < 0) {
@@ -62,7 +62,7 @@ public final /*record*/ class AltererResult<
 			);
 		}
 
-		_population = requireNonNull(population);
+		_population = requireNonNull(population).asISeq();
 		_alterations = alterations;
 	}
 
@@ -118,7 +118,7 @@ public final /*record*/ class AltererResult<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererResult<G, C> of(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int alterations
 	) {
 		return new AltererResult<>(population, alterations);
@@ -135,7 +135,7 @@ public final /*record*/ class AltererResult<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AltererResult<G, C>
-	of(final ISeq<Phenotype<G, C>> population) {
+	of(final Seq<Phenotype<G, C>> population) {
 		return new AltererResult<>(population, 0);
 	}
 

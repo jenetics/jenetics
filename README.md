@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.0.0.pdf)).
 
 
 ## Requirements
@@ -145,8 +145,9 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
 * <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
 
-## Blogs
+## Blogs and articles
 
+* <a href="http://www.fx361.com/page/2018/1126/4534731.shtml">一种基于Jenetics的遗传算法程序设计</a>, <em>电脑知识与技术 2018年22期 by 王康</em>, Nov. 26. 2018
 * <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
 * <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
 * <a href="http://fxapps.blogspot.co.at/2017/01/genetic-algorithms-with-java.html">Genetic algorithms with Java</a>, by <em>William Antônio</em>, January 10. 2017
@@ -155,7 +156,10 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for GraduallySaturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
 * Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/EvoML2020.pdf">Constrained Evolutionary Piecemeal Training to Design Convolutional Neural Networks.</a> <em>IEA/AIE 2020 – Kitakyushu, Japan. </em></a> July. 2020.
+* Femi Emmanuel Ayo, Sakinat Oluwabukonla Folorunso, Adebayo A. Abayomi-Alli, Adebola Olayinka Adekunle, Joseph Bamidele   Awotunde. <a href="https://doi.org/10.1080/19393555.2020.1767240">Network intrusion detection based on deep learning model optimized with rule-based hybrid feature selection.</a> <em>Information Security Journal: A Global Perspective. </em></a> May 2020.
+* Zainol N., Fakharudin A.S., Zulaidi N.I.S. <a href="https://link.springer.com/chapter/10.1007%2F978-981-15-4821-5_11">Model Optimization Using Artificial Intelligence Algorithms for Biological Food Waste Degradation.</a> <em>Yaser A. (eds) Advances in Waste Processing Technology. Springer, Singapore. </em></a> May 2020.
 * Raúl Lara-Cabrera, Ángel González-Prieto, Fernando Ortega and Jesús Bobadilla. <a href="https://www.mdpi.com/2076-3417/10/2/675">Evolving Matrix-Factorization-Based Collaborative Filtering Using Genetic Programming.</a> <em>MDPI, Applied Sciences. </em></a> Feb. 2020.
 * Humm B.G., Hutter M. <a href="https://link.springer.com/chapter/10.1007/978-3-030-41913-4_12">Learning Patterns for Complex Event Detection in Robot Sensor Data.</a> <em>Optimization and Learning. OLA 2020. Communications in Computer and Information Science, vol 1173. Springer </em></a> Feb. 2020.
 * Erich C. Teppan, Giacomo Da Col. <a href="https://link.springer.com/chapter/10.1007/978-981-15-1918-5_7">Genetic Algorithms for Creating Large Job Shop Dispatching Rules. </a> <em>Advances in Integrations of Intelligent Methods. Smart Innovation, Systems and Technologies, vol 170. Springer, Singapore. </em></a> Jan. 2020.
@@ -168,9 +172,11 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * Jin-wooLee, Gwangseon Jang, Hohyun Jung, Jae-Gil Lee, Uichin Lee. <a href="https://doi.org/10.1016/j.pmcj.2019.101082">Maximizing MapReduce job speed and reliability in the mobile cloud by optimizing task allocation. </a> <em>Pervasive and Mobile Computing. </em></a> Oct. 2019.
 * Krawczyk, Lukas, Mahmoud Bazzal, Ram Prasath Govindarajan and Carsten Wolff. <a href="https://ieeexplore.ieee.org/document/8904877">Model-Based Timing Analysis and Deployment Optimization for Heterogeneous Multi-core Systems using Eclipse APP4MC. </a> <em>2019 ACM/IEEE 22nd International Conference on Model Driven Engineering Languages and Systems Companion: 44-53. </em></a> Sep. 2019.
 * Junio Cezar Ribeiro da Silva, Lorena Leão, Vinicius Petrucci, Abdoulaye Gamatié, Fernando MagnoQuintao Pereira. <a href="https://hal-lirmm.ccsd.cnrs.fr/lirmm-02281112/document">Scheduling in Heterogeneous Architectures via Multivariate Linear Regression on Function Inputs. </a> <em>lirmm-02281112. </em></a> Sep. 2019.
+* Eric O. Scott, Sean Luke. <a href="https://dl.acm.org/doi/10.1145/3319619.3326865">ECJ at 20: toward a general metaheuristics toolkit. </a> <em>GECCO '19: Proceedings of the Genetic and Evolutionary Computation Conference Companion, Pages 1391–1398. </em></a> July 2019.
 * Francisco G. Montoya and Raúl Baños Navarro (Eds.). <a href="https://www.mdpi.com/books/pdfview/book/1450">Optimization Methods Applied to Power Systems, Volume 2. </a> <em>MDPI Books, ISBN 978-3-03921-156-2. </em></a> July 2019.
 * Höttger, Robert & Ki, Junhyung & Bui, Bao & Igel, Burkhard & Spinczyk, Olaf. <a href="https://www.researchgate.net/publication/335137686_CPU-GPU_Response_Time_and_Mapping_Analysis_for_High-Performance_Automotive_Systems">CPU-GPU Response Time and Mapping Analysis for High-Performance Automotive Systems. </a> <em>10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS) co-located with the 31st Euromicro Conference on Real-Time Systems (ECRTS'19). </em></a> July 2019.
 * Maxime Cordy, Steve Muller, Mike Papadakis, and Yves Le Traon. <a href="http://delivery.acm.org/10.1145/3340000/3330580/issta19main-p399-p.pdf?ip=84.114.111.7&id=3330580&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1563299816_46b771752984b933c8c119b7f7d81805">Search-based test and improvement of machine-learning-based anomaly detection systems. </a> <em>Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA 2019). ACM, New York, NY, USA, 158-168. </em></a> July 2019.
+* Michael Vistein, Jan Faber, Clemens Schmidt-Eisenlohr, Daniel Reiter. <a href="https://doi.org/10.1016/j.promfg.2020.01.220">Automated Handling of Auxiliary Materials using a Multi-Kinematic Gripping System. </a> <em>Procedia Manufacturing Volume 38, 2019, Pages 1276-1283. </em></a> June 2019.
 * Nikolaos Nikolakis, Ioannis Stathakis, Sotirios Makris. <a href="https://doi.org/10.1016/j.procir.2019.03.153">On an evolutionary information system for personalized support to plant operators. </a> <em>52nd CIRP Conference on Manufacturing Systems (CMS), Ljubljana, Slovenia. </em></a> June 2019.
 * Michael Trotter, Timothy Wood and Jinho Hwang. <a href="http://faculty.cs.gwu.edu/timwood/papers/19-ICAC-storm.pdf">Forecasting a Storm: Divining Optimal Configurations using Genetic Algorithms and Supervised Learning. </a> <em>13th IEEE International Conference on Self-Adaptive and Self-Organizing Systems (SASO 2019). </em></a> June 2019.
 * Krawczyk, Lukas & Bazzal, Mahmoud & Prasath Govindarajan, Ram & Wolff, Carsten. <a href="https://www.researchgate.net/publication/334084554_An_analytical_approach_for_calculating_end-to-end_response_times_in_autonomous_driving_applications">An analytical approach for calculating end-to-end response times in autonomous driving applications. </a> <em>10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS 2019). </em></a> June 2019.
@@ -210,31 +216,81 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [5.2.0](https://github.com/jenetics/jenetics/releases/tag/v5.2.0)
+### [6.0.0](https://github.com/jenetics/jenetics/releases/tag/v6.0.0)
 
 #### Improvements
 
-* [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
+* [#403](https://github.com/jenetics/jenetics/issues/403): Converting library to Java 11.
+* [#581](https://github.com/jenetics/jenetics/issues/581): Minimize the required _evaluation_ calls per generation.
+* [#587](https://github.com/jenetics/jenetics/issues/587): Fix Javadoc for Java 11.
+* [#590](https://github.com/jenetics/jenetics/issues/590): Improve serialization of `Seq` implementations.
+* [#591](https://github.com/jenetics/jenetics/issues/591): Remove deprecated classes and methods.
+* [#606](https://github.com/jenetics/jenetics/issues/606): Improve serialization of `*Range` classes.
+* [#630](https://github.com/jenetics/jenetics/issues/630): Fix inconsistency in `Codec.of` factory methods.
+* [#659](https://github.com/jenetics/jenetics/issues/659): Additional factory methods for `VecFactory` interface in the `moea` package.
+* [#661](https://github.com/jenetics/jenetics/issues/661): Allow the re-evaluation of the population fitness value
+* [#665](https://github.com/jenetics/jenetics/issues/665): Implement `CombineAlterer`, which is a generalization of th `MeanAlterer` class.
+* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically changing sample points.
 ```java
-public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
-    Function<T, Genotype<G>> encoder();
-    default Genotype<G> encode(final T value) {
-        return encoder().apply(value); 
-    }
+final var scheduler = Executors.newScheduledThreadPool(1);
+final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
+final var sampling = new SampleBuffer<Double>(100);
+scheduler.scheduleWithFixedDelay(
+    () -> {
+        // Adding a new sample point every second to the ring buffer.
+        sampling.add(nextSamplePoint());
+        // Force re-evaluation of populations fitness values.
+        nullifier.nullifyFitness();
+    },
+    1, 1, TimeUnit.SECONDS
+);
+
+final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec =
+    Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30);
+
+final Regression<Double> regression = Regression.of(
+    codec,
+    Error.of(LossFunction::mse),
+    sampling
+);
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+    .builder(regression)
+    .interceptor(nullifier)
+    .build();
+
+engine.stream()
+    .flatMap(Streams.toIntervalMax(Duration.ofSeconds(30)))
+    .map(program -> program.bestPhenotype()
+        .genotype().gene()
+        .toParenthesesString())
+    // Printing the best program found so far every 30 seconds.
+    .forEach(System.out::println);
+```
+* [#671](https://github.com/jenetics/jenetics/issues/671): Adding helper methods in `Streams` class, which allows to emit the best evolution result of every _n_ generation.
+```java
+final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+    .flatMap(Streams.toIntervalMax(sliceSize))
+    .collect(ISeq.toISeq());
+``` 
+* [#672](https://github.com/jenetics/jenetics/issues/672): Introduce the `StreamPublisher` class, which allows to use a _normal_ Java Stream in a _reactive_ way.
+```java
+final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
+try (publisher) {
+    final var stream= engine.stream();
+    publisher.subscribe(new Subscriber<>() { ... });
+    publisher.attach(stream);
+    ...
 }
 ```
-* [#543](https://github.com/jenetics/jenetics/issues/543): Simplified `Constraint` factory methods.
-* [#566](https://github.com/jenetics/jenetics/issues/566): New parameter class, `EvolutionParams`, contains all `Engine` parameters which influence the evolution performance.
-* [#607](https://github.com/jenetics/jenetics/issues/607): More flexible MOEA optimization. It is now possible to do minimization/maximization on every dimension independently.
-* [#614](https://github.com/jenetics/jenetics/issues/614): Generalize the `ConstExprRewriter` class. It can no be used with every type, not only with `Double` values.
-* [#635](https://github.com/jenetics/jenetics/issues/635): Mark the `Chromosome.toSeq()` and `Genotype.toSeq()` methods as deprecated. This methods are no longer needed, because the `Chromosome` and `Genotype` itself will implement the new `BaseSeq` interfaces and are now _sequences_ itself. 
-* [#645](https://github.com/jenetics/jenetics/issues/645): Mark all bean-like _getter_ methods as deprecated. This methods will be replaced by simple _accessor_-methods, and is a preparation step for using the new Java _records_.
-
+* [#679](https://github.com/jenetics/jenetics/issues/679): Additional constructor for the `TournamentSelector`, which allows to define own `Phenotype` comparator.
+* [#685](https://github.com/jenetics/jenetics/issues/685): Add `Engine.Setup` interface, which allows combining different dependent engine configurations.
+* [#687](https://github.com/jenetics/jenetics/issues/687): Add engien setup for (μ,λ)- and (μ+λ)-Evolution Strategy.
 
 #### Bugs
 
-* [#621](https://github.com/jenetics/jenetics/issues/621): `ìo.jenetics.prog.op.Program.arity()` returns the wrong value.
-
+* [#663](https://github.com/jenetics/jenetics/issues/663): `PartialAlterer` uses fitness of unaltered phenotype.
+* [#667](https://github.com/jenetics/jenetics/issues/667): Fix `Concurrency.close()` method.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

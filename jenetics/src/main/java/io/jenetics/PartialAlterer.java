@@ -78,24 +78,24 @@ public final class PartialAlterer<
 {
 
 	private final Alterer<G, C> _alterer;
-	private final Section _section;
+	private final Projection _projection;
 
-	private PartialAlterer(final Alterer<G, C> alterer, final Section section) {
+	private PartialAlterer(final Alterer<G, C> alterer, final Projection projection) {
 		_alterer = requireNonNull(alterer);
-		_section = requireNonNull(section);
+		_projection = requireNonNull(projection);
 	}
 
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
 		if (!population.isEmpty()) {
-			_section.checkIndices(population.get(0).genotype().length());
+			_projection.checkIndices(population.get(0).genotype().length());
 
-			final Seq<Phenotype<G, C>> split  = _section.split(population);
-			final AltererResult<G, C> result = _alterer.alter(split, generation);
+			final var projectedPopulation  = _projection.project(population);
+			final var result = _alterer.alter(projectedPopulation, generation);
 
 			return AltererResult.of(
-				_section.merge(result.population(), population),
+				_projection.merge(result.population(), population),
 				result.alterations()
 			);
 		} else {
@@ -125,7 +125,7 @@ public final class PartialAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new PartialAlterer<>(alterer, Section.of(indices));
+		return new PartialAlterer<>(alterer, Projection.of(indices));
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class PartialAlterer<
 	Alterer<G, C> of(final Alterer<G, C> alterer, final IntRange section) {
 		return new PartialAlterer<>(
 			alterer,
-			Section.of(section.stream().toArray())
+			Projection.of(section.stream().toArray())
 		);
 	}
 
@@ -160,10 +160,10 @@ public final class PartialAlterer<
 	/**
 	 * The section class, which defines the chromosomes used by the alterer.
 	 */
-	static final class Section {
+	static final class Projection {
 		final int[] indices;
 
-		private Section(final int[] indices) {
+		private Projection(final int[] indices) {
 			if (indices.length == 0) {
 				throw new IllegalArgumentException(
 					"Chromosome indices must not be empty."
@@ -189,61 +189,53 @@ public final class PartialAlterer<
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
-		Seq<Phenotype<G, C>> split(final Seq<Phenotype<G, C>> population) {
-			return population.map(this::split);
+		Seq<Phenotype<G, C>> project(final Seq<Phenotype<G, C>> population) {
+			return population.map(this::project);
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
-		Phenotype<G, C> split(final Phenotype<G, C> phenotype) {
-			final ISeq<Chromosome<G>> chromosomes = IntStream.of(indices)
-				.mapToObj(phenotype.genotype()::get)
-				.collect(ISeq.toISeq());
+		Phenotype<G, C> project(final Phenotype<G, C> pt) {
+			final MSeq<Chromosome<G>> chromosomes = MSeq.ofLength(indices.length);
+			for (int i = 0; i < indices.length; ++i) {
+				chromosomes.set(i, pt.genotype().get(indices[i]));
+			}
+			final var gt = Genotype.of(chromosomes);
 
-			final Genotype<G> genotype = Genotype.of(chromosomes);
-
-			return phenotype.isEvaluated()
-				? Phenotype.of(
-					genotype,
-					phenotype.generation(),
-					phenotype.fitness())
-				: Phenotype.of(genotype, phenotype.generation());
+			return pt.isEvaluated()
+				? Phenotype.of(gt, pt.generation(), pt.fitness())
+				: Phenotype.of(gt, pt.generation());
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
 		ISeq<Phenotype<G, C>> merge(
-			final Seq<Phenotype<G, C>> section,
+			final Seq<Phenotype<G, C>> projection,
 			final Seq<Phenotype<G, C>> population
 		) {
-			assert section.length() == population.length();
+			assert projection.length() == population.length();
 
-			return IntStream.range(0, section.length())
-				.mapToObj(i -> merge(section.get(i), population.get(i)))
+			return IntStream.range(0, projection.length())
+				.mapToObj(i -> merge(projection.get(i), population.get(i)))
 				.collect(ISeq.toISeq());
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
 		Phenotype<G, C> merge(
-			final Phenotype<G, C> section,
-			final Phenotype<G, C> phenotype
+			final Phenotype<G, C> projection,
+			final Phenotype<G, C> pt
 		) {
-			final MSeq<Chromosome<G>> ch = MSeq.of(phenotype.genotype());
-
+			final var ch = MSeq.of(pt.genotype());
 			for (int i = 0; i < indices.length; ++i) {
-				ch.set(indices[i], section.genotype().get(i));
+				ch.set(indices[i], projection.genotype().get(i));
 			}
+			final var gt = Genotype.of(ch);
 
-			final Genotype<G> genotype = Genotype.of(ch);
-
-			return phenotype.isEvaluated()
-				? Phenotype.of(
-					genotype,
-					phenotype.generation(),
-					phenotype.fitness())
-				: Phenotype.of(genotype, phenotype.generation());
+			return gt.equals(pt.genotype())
+				? pt
+				: Phenotype.of(gt, pt.generation());
 		}
 
-		static Section of(final int... indices) {
-			return new Section(indices);
+		static Projection of(final int... indices) {
+			return new Projection(indices);
 		}
 
 	}

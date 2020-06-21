@@ -255,8 +255,22 @@ public final class FlatTreeNode<V>
 	 * @param <V> the tree value types
 	 * @return a new {@code FlatTreeNode} from the given {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 * @deprecated Use {@link #ofTree(Tree)} instead
 	 */
+	@Deprecated(since = "6.1", forRemoval = true)
 	public static <V> FlatTreeNode<V> of(final Tree<? extends V, ?> tree) {
+		return ofTree(tree);
+	}
+
+	/**
+	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
+	 *
+	 * @param tree the source tree
+	 * @param <V> the tree value types
+	 * @return a new {@code FlatTreeNode} from the given {@code tree}
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static <V> FlatTreeNode<V> ofTree(final Tree<? extends V, ?> tree) {
 		requireNonNull(tree);
 
 		final int size = tree.size();
@@ -307,7 +321,7 @@ public final class FlatTreeNode<V>
 	 *         parsed
 	 */
 	public static FlatTreeNode<String> parse(final String tree) {
-		return of(TreeParser.parse(tree, Function.identity()));
+		return ofTree(ParenthesesTreeParser.parse(tree, Function.identity()));
 	}
 
 	/**
@@ -343,7 +357,7 @@ public final class FlatTreeNode<V>
 		final String tree,
 		final Function<? super String, ? extends B> mapper
 	) {
-		return of(TreeParser.parse(tree, mapper));
+		return ofTree(ParenthesesTreeParser.parse(tree, mapper));
 	}
 
 
@@ -365,7 +379,7 @@ public final class FlatTreeNode<V>
 	void write(final ObjectOutput out) throws IOException {
 		final FlatTreeNode<V> node = _index == 0
 			? this
-			: FlatTreeNode.of(this);
+			: FlatTreeNode.ofTree(this);
 
 		writeObjectArray(node._elements, out);
 		writeIntArray(node._childOffsets, out);

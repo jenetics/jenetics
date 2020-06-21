@@ -37,6 +37,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.ListIterator;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.Bits;
@@ -53,7 +54,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.0
+ * @version 6.1
  */
 public class BitChromosome extends Number
 	implements
@@ -396,6 +397,21 @@ public class BitChromosome extends Number
 	}
 
 	/**
+	 * Maps the gene alleles of this chromosome, given as {@link BitSet}, by
+	 * applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * @since 6.1
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 */
+	public BitChromosome map(final Function<? super BitSet, ? extends BitSet> f) {
+		return of(f.apply(toBitSet()), length(), oneProbability());
+	}
+
+	/**
 	 * Return the BitChromosome as String. A TRUE is represented by a 1 and
 	 * a FALSE by a 0. The returned string can be used to create a new
 	 * chromosome with the {@link #of(CharSequence)} constructor.
@@ -511,7 +527,11 @@ public class BitChromosome extends Number
 	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *        {@code null}.
+	 * @deprecated This method doesn't let you control the actual length of the
+	 *             created {@code BitChromosome}. Use {@link #of(BitSet, int, double)}
+	 *             or {@link #of(BitSet, int)} instead.
 	 */
+	@Deprecated(since = "6.1", forRemoval = true)
 	public static BitChromosome of(final BitSet bits) {
 		return new BitChromosome(bits.toByteArray(), -1);
 	}

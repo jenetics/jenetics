@@ -24,7 +24,7 @@ package io.jenetics.util;
  * @version 3.4
  * @since 3.4
  */
-final class MSeqList<T> extends SeqList<T> {
+final class MSeqList<T> extends BaseSeqList<T> {
 	private static final long serialVersionUID = 1L;
 
 	MSeqList(final MSeq<T> array) {
@@ -32,6 +32,7 @@ final class MSeqList<T> extends SeqList<T> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public T set(final int index, final T element) {
 		final T oldElement = seq.get(index);
 		((MSeq<T>)seq).set(index, element);

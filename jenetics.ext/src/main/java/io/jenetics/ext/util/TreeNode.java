@@ -554,7 +554,7 @@ public final class TreeNode<T>
 	 *         parsed
 	 */
 	public static TreeNode<String> parse(final String tree) {
-		return TreeParser.parse(tree, Function.identity());
+		return ParenthesesTreeParser.parse(tree, Function.identity());
 	}
 
 	/**
@@ -590,7 +590,7 @@ public final class TreeNode<T>
 		final String tree,
 		final Function<? super String, ? extends B> mapper
 	) {
-		return TreeParser.parse(tree, mapper);
+		return ParenthesesTreeParser.parse(tree, mapper);
 	}
 
 
@@ -610,7 +610,7 @@ public final class TreeNode<T>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		FlatTreeNode.of(this).write(out);
+		FlatTreeNode.ofTree(this).write(out);
 	}
 
 	@SuppressWarnings("unchecked")

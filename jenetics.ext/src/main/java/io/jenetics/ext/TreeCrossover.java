@@ -112,8 +112,8 @@ public abstract class TreeCrossover<
 
 		crossover(tree1, tree2);
 
-		final var flat1 = FlatTreeNode.of(tree1);
-		final var flat2 = FlatTreeNode.of(tree2);
+		final var flat1 = FlatTreeNode.ofTree(tree1);
+		final var flat2 = FlatTreeNode.ofTree(tree2);
 
 		@SuppressWarnings("unchecked")
 		final var template = (TreeGene<A, ?>)c1.get(0).gene();

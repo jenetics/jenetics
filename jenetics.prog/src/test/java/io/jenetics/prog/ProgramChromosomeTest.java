@@ -134,7 +134,7 @@ public class ProgramChromosomeTest {
 
 		System.out.println(tree);
 
-		final FlatTreeNode<Op<Double>> flat = FlatTreeNode.of(tree);
+		final FlatTreeNode<Op<Double>> flat = FlatTreeNode.ofTree(tree);
 		System.out.println(Tree.toString(flat));
 
 		flat.stream().forEach(System.out::println);

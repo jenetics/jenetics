@@ -59,7 +59,7 @@ public abstract class TreeFormatter {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
 			requireNonNull(tree);
 			requireNonNull(mapper);
@@ -71,7 +71,7 @@ public abstract class TreeFormatter {
 
 		private <V> List<StringBuilder> toStrings(
 			final Tree<V, ?> tree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
 			final List<StringBuilder> result = new ArrayList<>();
 			result.add(new StringBuilder().append(mapper.apply(tree.value())));
@@ -91,7 +91,7 @@ public abstract class TreeFormatter {
 		private <V> void subtree(
 			final List<StringBuilder> result,
 			final List<StringBuilder> subtree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
 			final Iterator<StringBuilder> it = subtree.iterator();
 			result.add(it.next().insert(0, "├── "));
@@ -122,7 +122,7 @@ public abstract class TreeFormatter {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
 			requireNonNull(tree);
 			requireNonNull(mapper);
@@ -140,11 +140,11 @@ public abstract class TreeFormatter {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
-			final String value = mapper.apply(tree.value());
+			final CharSequence value = mapper.apply(tree.value());
 			if (tree.isLeaf()) {
-				return value;
+				return value.toString();
 			} else {
 				final String children = tree.childStream()
 					.map(child -> format(child, mapper))
@@ -207,7 +207,7 @@ public abstract class TreeFormatter {
 	 */
 	public abstract  <V> String format(
 		final Tree<V, ?> tree,
-		final Function<? super V, String> mapper
+		final Function<? super V, ? extends CharSequence> mapper
 	);
 
 	/**
@@ -282,22 +282,22 @@ public abstract class TreeFormatter {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
-			final Function<? super V, String> mapper
+			final Function<? super V, ? extends CharSequence> mapper
 		) {
 			return new Helper<>(_name, tree, mapper).draw();
 		}
 
 		private static final class Helper<V> {
 			private final String _name;
-			private final Function<? super V, String> _mapper;
+			private final Function<? super V, ? extends CharSequence> _mapper;
 
-			private final Map<String, String> _labels = new HashMap<>();
+			private final Map<String, CharSequence> _labels = new HashMap<>();
 			private final List<String> _edges = new ArrayList<>();
 
 			Helper(
 				final String name,
 				final Tree<V, ?> tree,
-				final Function<? super V, String> mapper
+				final Function<? super V, ? extends CharSequence> mapper
 			) {
 				_name = requireNonNull(name);
 				_mapper = requireNonNull(mapper);
@@ -310,7 +310,7 @@ public abstract class TreeFormatter {
 				final int index
 			) {
 				int idx = index;
-				final String value = _mapper.apply(tree.value());
+				final CharSequence value = _mapper.apply(tree.value());
 				final String label = String.format("node_%03d", idx);
 				_labels.put(label, value);
 
@@ -336,7 +336,7 @@ public abstract class TreeFormatter {
 						.append("    ")
 						.append(key)
 						.append(" [label=\"")
-						.append(value.replace("\"", "\\\""))
+						.append(value.toString().replace("\"", "\\\""))
 						.append("\"];\n")
 				);
 

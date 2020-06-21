@@ -2,7 +2,7 @@ sudo: false
 language: java
 jdk:
   - openjdk11
-  - openjdk13
+  - openjdk14
 
 script:
   - travis_wait 20 ./gradlew check --info --stacktrace -PexcludeGroups=statistics
