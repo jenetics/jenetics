@@ -97,3 +97,13 @@ public class BitArrayPerf {
 	}
 
 }
+
+/*
+Benchmark                        Mode  Cnt     Score    Error  Units
+BitArrayPerf.bigIntegerHashCode  avgt   15   140.946 ±  1.040  ns/op
+BitArrayPerf.bitArrayHashCode    avgt   15  1406.953 ± 10.515  ns/op
+BitArrayPerf.byteArrayHashCode   avgt   15   137.089 ±  1.635  ns/op
+BitArrayPerf.naiveBitArray       avgt   15  2687.904 ± 37.137  ns/op
+BitArrayPerf.toBitArray          avgt   15    30.531 ±  0.407  ns/op
+
+ */
