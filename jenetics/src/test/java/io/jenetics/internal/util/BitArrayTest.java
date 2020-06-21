@@ -97,7 +97,7 @@ public class BitArrayTest {
 			BigInteger.probablePrime(random.nextInt(100) + 100, random);
 
 		return Stream.generate(supplier)
-			.limit(25)
+			.limit(35)
 			.map(value -> new Object[]{value})
 			.toArray(Object[][]::new);
 	}

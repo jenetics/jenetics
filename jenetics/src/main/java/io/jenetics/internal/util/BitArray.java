@@ -49,7 +49,7 @@ public final class BitArray implements Copyable<BitArray> {
 	};
 
 	private final byte[] _data;
-	private final int _begin;
+	private final int _start;
 	private final int _end;
 
 	/**
@@ -57,31 +57,31 @@ public final class BitArray implements Copyable<BitArray> {
 	 * {@code begin} and {@code end} <em>bit</em> indexes.
 	 *
 	 * @param data the {@code byte[]} array which contains the bit data
-	 * @param begin the start bit index (inclusively)
+	 * @param starrt the start bit index (inclusively)
 	 * @param end the end bit index (exclusively)
 	 * @throws NullPointerException if the given {@code data} array is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code begin} and {@code end}
 	 *         indexes are not within the valid range
 	 */
-	BitArray(final byte[] data, final int begin, final int end) {
+	BitArray(final byte[] data, final int starrt, final int end) {
 		if (data.length == 0) {
 			throw new IllegalArgumentException("Byte array must not be empty.");
 		}
-		if (begin < 0) {
+		if (starrt < 0) {
 			throw new IllegalArgumentException(
-				"Begin index is smaller then zero: " + begin
+				"Begin index is smaller then zero: " + starrt
 			);
 		}
-		if (end < begin || end > data.length*Byte.SIZE) {
+		if (end < starrt || end > data.length*Byte.SIZE) {
 			throw new IllegalArgumentException(format(
 				"End index is not within the valid range of [%d, %d]: %d",
-				begin, data.length*Byte.SIZE, end
+				starrt, data.length*Byte.SIZE, end
 			));
 		}
 
 		_data = data;
-		_begin = begin;
+		_start = starrt;
 		_end = end;
 	}
 
@@ -102,7 +102,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @return the length of the bit array
 	 */
 	public int length() {
-		return _end - _begin;
+		return _end - _start;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @return the number of set bits
 	 */
 	public int bitCount() {
-		return Bits.count(_data, _begin,_end);
+		return Bits.count(_data, _start,_end);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	public void set(final int index, final boolean value) {
 		Objects.checkIndex(index, length());
-		Bits.set(_data, _begin + index, value);
+		Bits.set(_data, _start + index, value);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	public void set(final int index) {
 		Objects.checkIndex(index, length());
-		Bits.set(_data, _begin + index);
+		Bits.set(_data, _start + index);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	public void unset(final int index) {
 		Objects.checkIndex(index, length());
-		Bits.unset(_data, _begin + index);
+		Bits.unset(_data, _start + index);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	public boolean get(final int index) {
 		Objects.checkIndex(index, length());
-		return Bits.get(_data, _begin + index);
+		return Bits.get(_data, _start + index);
 	}
 
 	/**
@@ -231,8 +231,8 @@ public final class BitArray implements Copyable<BitArray> {
 	private byte[] toTowsComplementByteArray() {
 		final byte[] array = toByteArray();
 		if (get(length() - 1)) {
-			for (int i = 0, n = array.length*8; i < n - length(); ++i) {
-				Bits.set(array, length() + i);
+			for (int i = length(), n = array.length*Byte.SIZE; i < n; ++i) {
+				Bits.set(array, i);
 			}
 		}
 		Bits.reverse(array);
@@ -252,7 +252,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * @return the bit-array data as {@code byte[]} array
 	 */
 	public byte[] toByteArray() {
-		return Bits.copy(_data, _begin, _end);
+		return Bits.copy(_data, _start, _end);
 	}
 
 	/**
@@ -282,7 +282,10 @@ public final class BitArray implements Copyable<BitArray> {
 	}
 
 	private boolean equals(final BitArray array) {
-		if (array.length() != length()) return false;
+		if (array.length() != length()) {
+			return false;
+		}
+
 		for (int i = 0; i < length(); ++i) {
 			if (get(i) != array.get(i)) return false;
 		}
@@ -348,11 +351,9 @@ public final class BitArray implements Copyable<BitArray> {
 
 		Bits.reverse(data);
 		if (value.signum() < 0) {
-			java.util.Arrays.fill(array, (byte)-1);
+			array[array.length - 1] = (byte)-1;
 		}
-		for (int i = 0, n = Math.min(length, data.length*8); i < n; ++i) {
-			Bits.set(array, i, Bits.get(data, i));
-		}
+		System.arraycopy(data, 0, array, 0, data.length);
 
 		return new BitArray(array, 0, length);
 	}
@@ -368,17 +369,8 @@ public final class BitArray implements Copyable<BitArray> {
 	 */
 	public static BitArray of(final BigInteger value) {
 		final byte[] data = value.toByteArray();
-		final byte[] array = new byte[data.length];
-
 		Bits.reverse(data);
-		if (value.signum() < 0) {
-			java.util.Arrays.fill(array, (byte)-1);
-		}
-		for (int i = 0, n = data.length*Byte.SIZE; i < n; ++i) {
-			Bits.set(array, i, Bits.get(data, i));
-		}
-
-		return new BitArray(array, 0, data.length*Byte.SIZE);
+		return new BitArray(data, 0, data.length*Byte.SIZE);
 	}
 
 	/**
