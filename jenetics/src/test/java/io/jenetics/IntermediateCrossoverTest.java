@@ -80,4 +80,19 @@ public class IntermediateCrossoverTest {
 		});
 	}
 
+	// https://github.com/jenetics/jenetics/issues/718
+	@Test(timeOut = 1000)
+	public void recombineEqualIndividuals() {
+		final MSeq<DoubleGene> v = MSeq.of(
+			DoubleGene.of(100, 0, 100),
+			DoubleGene.of(100, 0, 100),
+			DoubleGene.of(100, 0, 100),
+			DoubleGene.of(100, 0, 100),
+			DoubleGene.of(100, 0, 100)
+		);
+
+		final var recombinator = new IntermediateCrossover<DoubleGene, Double>();
+		recombinator.crossover(v, v);
+	}
+
 }
