@@ -43,10 +43,11 @@ public class IntermediateCrossoverTest {
 
 		final MSeq<DoubleGene> v = MSeq.of(factory::newInstance, 10);
 		final MSeq<DoubleGene> w = MSeq.of(factory::newInstance, 10);
+		Assert.assertTrue(v.forAll(DoubleGene::isValid));
+		Assert.assertTrue(w.forAll(DoubleGene::isValid));
 
-		final IntermediateCrossover<DoubleGene, Double> recombinator =
-			new IntermediateCrossover<>(0.1, 10);
-		recombinator.crossover(v, w);
+		final var co = new IntermediateCrossover<DoubleGene, Double>(0.1, 0);
+		co.crossover(v, w);
 
 		Assert.assertTrue(v.forAll(DoubleGene::isValid));
 		Assert.assertTrue(w.forAll(DoubleGene::isValid));

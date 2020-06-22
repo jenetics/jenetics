@@ -118,6 +118,7 @@ public class IntermediateCrossover<
 			final double vi = v.get(i).doubleValue();
 			final double wi = w.get(i).doubleValue();
 
+			int count = 0;
 			double t, s;
 			do {
 				final double a = nextDouble(-_p, 1 + _p, random);
@@ -125,7 +126,7 @@ public class IntermediateCrossover<
 
 				t = a*vi + (1 - a)*wi;
 				s = b*wi + (1 - b)*vi;
-			} while (t < min || s < min || t >= max || s >= max);
+			} while (count++ < 10 && (t < min || s < min || t >= max || s >= max));
 
 			v.set(i, v.get(i).newInstance(t));
 			w.set(i, w.get(i).newInstance(s));
