@@ -176,7 +176,8 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance(final Number allele) {
-		return IntegerGene.of(allele.intValue(), _min, _max);
+		final int value = (int)Math.round(allele.doubleValue());
+		return IntegerGene.of(value, _min, _max);
 	}
 
 	@Override
