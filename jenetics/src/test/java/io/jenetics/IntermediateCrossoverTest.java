@@ -24,6 +24,7 @@ import static io.jenetics.TestUtils.newDoubleGenePopulation;
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.BaseSeq;
@@ -43,10 +44,11 @@ public class IntermediateCrossoverTest {
 
 		final MSeq<DoubleGene> v = MSeq.of(factory::newInstance, 10);
 		final MSeq<DoubleGene> w = MSeq.of(factory::newInstance, 10);
+		Assert.assertTrue(v.forAll(DoubleGene::isValid));
+		Assert.assertTrue(w.forAll(DoubleGene::isValid));
 
-		final IntermediateCrossover<DoubleGene, Double> recombinator =
-			new IntermediateCrossover<>(0.1, 10);
-		recombinator.crossover(v, w);
+		final var co = new IntermediateCrossover<DoubleGene, Double>(0.1, 0);
+		co.crossover(v, w);
 
 		Assert.assertTrue(v.forAll(DoubleGene::isValid));
 		Assert.assertTrue(w.forAll(DoubleGene::isValid));
@@ -78,6 +80,49 @@ public class IntermediateCrossoverTest {
 				}
 			}
 		});
+	}
+
+	// https://github.com/jenetics/jenetics/issues/718
+	@Test(timeOut = 1000, dataProvider = "recombinations")
+	public void recombineEqualIndividuals(
+		final double min,
+		final double max,
+		final double v1,
+		final double v2
+	) {
+		final MSeq<DoubleGene> u = MSeq.of(
+			DoubleGene.of(v1, min, max),
+			DoubleGene.of(v1, min, max),
+			DoubleGene.of(v1, min, max),
+			DoubleGene.of(v1, min, max),
+			DoubleGene.of(v1, min, max)
+		);
+		final MSeq<DoubleGene> v = MSeq.of(
+			DoubleGene.of(v2, min, max),
+			DoubleGene.of(v2, min, max),
+			DoubleGene.of(v2, min, max),
+			DoubleGene.of(v2, min, max),
+			DoubleGene.of(v2, min, max)
+		);
+
+		final var recombinator = new IntermediateCrossover<DoubleGene, Double>();
+		recombinator.crossover(v, u);
+	}
+
+	@DataProvider
+	public Object[][] recombinations() {
+		return new Object[][] {
+			{0.0, 100.0, 100.0, 100.0},
+			{-0.0, 100.0, 100.0, 100.0},
+			{0.0, 0.0, 0.0, 0.0},
+			{100.0, 100.0, 0.0, 0.0},
+			{50.0, 100.0, 10.0, 0.0},
+			{50.0, 100.0, 10.0, 70.0},
+			{50.0, 100.0, Math.nextDown(100.0), 100.0},
+			{50.0, 100.0, Math.nextDown(100.0), Math.nextDown(100.0)},
+			{50.0, 100.0, -100000.0, Math.nextUp(50.0)},
+			{50.0, -50.0, 50.0, 50.0}
+		};
 	}
 
 }
