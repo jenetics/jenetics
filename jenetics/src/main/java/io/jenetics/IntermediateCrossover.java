@@ -115,21 +115,25 @@ public class IntermediateCrossover<
 		final double max = v.get(0).max().doubleValue();
 
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
-			final double vi = v.get(i).doubleValue();
-			final double wi = w.get(i).doubleValue();
+			final var g1 = v.get(i);
+			final var g2 = w.get(i);
 
-			int count = 0;
-			double t, s;
-			do {
-				final double a = nextDouble(-_p, 1 + _p, random);
-				final double b = nextDouble(-_p, 1 + _p, random);
+			if (g1.isValid() && g2.isValid()) {
+				final double vi = g1.doubleValue();
+				final double wi = g2.doubleValue();
 
-				t = a*vi + (1 - a)*wi;
-				s = b*wi + (1 - b)*vi;
-			} while (count++ < 10 && (t < min || s < min || t >= max || s >= max));
+				double t, s;
+				do {
+					final double a = nextDouble(-_p, 1 + _p, random);
+					final double b = nextDouble(-_p, 1 + _p, random);
 
-			v.set(i, v.get(i).newInstance(t));
-			w.set(i, w.get(i).newInstance(s));
+					t = a*vi + (1 - a)*wi;
+					s = b*wi + (1 - b)*vi;
+				} while (t < min || s < min || t >= max || s >= max);
+
+				v.set(i, v.get(i).newInstance(t));
+				w.set(i, w.get(i).newInstance(s));
+			}
 		}
 
 		return 2;
