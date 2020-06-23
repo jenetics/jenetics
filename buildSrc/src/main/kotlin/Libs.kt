@@ -8,4 +8,13 @@ object Libs {
 	const val JPX = "io.jenetics:jpx:2.0.0"
 	const val PRNGine = "io.jenetics:prngine:1.0.2"
 	const val RxJava = "io.reactivex.rxjava2:rxjava:2.1.14"
+
+	val All = arrayOf(
+		ApacheCommonsMath,
+		EqualsVerifier,
+		TestNG,
+		JPX,
+		PRNGine,
+		RxJava
+	)
 }
