@@ -1,5 +1,13 @@
 ## Release notes
 
+### [6.0.1](https://github.com/jenetics/jenetics/releases/tag/v6.0.0)
+
+#### Bugs
+
+* [#701](https://github.com/jenetics/jenetics/issues/701): Invalid `DoubleGene.isValid` method.
+* [#713](https://github.com/jenetics/jenetics/issues/713): Fix numeric instability of `RouletteWheleSelector`class.
+* [#718](https://github.com/jenetics/jenetics/issues/718): `IntermediateCrossover` is not terminating for invalid genes.
+
 ### [6.0.0](https://github.com/jenetics/jenetics/releases/tag/v6.0.0)
 
 #### Improvements
