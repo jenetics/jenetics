@@ -41,8 +41,6 @@ dependencies {
 	testImplementation(Libs.PRNGine)
 
 	jmh(Libs.PRNGine)
-	jmh("org.openjdk.jmh:jmh-core:1.23")
-	jmh("org.openjdk.jmh:jmh-generator-annprocess:1.23")
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
