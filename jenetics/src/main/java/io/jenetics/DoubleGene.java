@@ -109,11 +109,11 @@ public final record DoubleGene(Double allele, Double min, Double max)
 	@Override
 	public boolean isValid() {
 		return
-			Double.isFinite(_allele) &&
-			Double.isFinite(_min) &&
-			Double.isFinite(_max) &&
-			Double.compare(_allele, _min) >= 0 &&
-			Double.compare(_allele, _max) < 0;
+			Double.isFinite(allele) &&
+			Double.isFinite(min) &&
+			Double.isFinite(max) &&
+			Double.compare(allele, min) >= 0 &&
+			Double.compare(allele, max) < 0;
 	}
 
 	@Override
