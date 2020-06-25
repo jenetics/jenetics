@@ -84,13 +84,19 @@ gradle.projectsEvaluated {
 		).joinToString(separator = ",")
 
 		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:" + xlint)
+			options.compilerArgs.add("-Xlint:$xlint")
 			options.compilerArgs.add("--enable-preview")
 		}
 
 		tasks.withType<Test> {
 			useTestNG()
 			jvmArgs("--enable-preview")
+		}
+
+		tasks.withType<Javadoc> {
+			val doclet = options as StandardJavadocDocletOptions
+			doclet.addBooleanOption("-enable-preview", true)
+			doclet.addStringOption("-release", "14")
 		}
 
 		plugins.withType<JavaPlugin> {
