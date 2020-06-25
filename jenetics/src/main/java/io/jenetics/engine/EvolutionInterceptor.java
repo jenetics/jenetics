@@ -138,7 +138,7 @@ public interface EvolutionInterceptor<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofBefore(final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before) {
-		return of(before, Function.identity());
+		return EvolutionInterceptor.of(before, Function.identity());
 	}
 
 	/**
@@ -153,7 +153,7 @@ public interface EvolutionInterceptor<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofAfter(final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after) {
-		return of(Function.identity(), after);
+		return EvolutionInterceptor.of(Function.identity(), after);
 	}
 
 	/**
@@ -165,7 +165,7 @@ public interface EvolutionInterceptor<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C> identity() {
-		return of(Function.identity(), Function.identity());
+		return EvolutionInterceptor.of(Function.identity(), Function.identity());
 	}
 
 }

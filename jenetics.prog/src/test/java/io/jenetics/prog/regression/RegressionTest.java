@@ -19,6 +19,9 @@
  */
 package io.jenetics.prog.regression;
 
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.util.Streams;
 import org.testng.annotations.Test;
 
 import io.jenetics.engine.Codec;
@@ -32,6 +35,12 @@ import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
+
+import java.time.Duration;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -79,6 +88,49 @@ public class RegressionTest {
 
 		final Tree<Op<Double>, ?> tree = codec.encoding().newInstance().gene();
 		regression.error(tree);
+	}
+
+	//@Test
+	public void dynamicSamples() {
+		final var scheduler = Executors.newScheduledThreadPool(1);
+		final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
+		final var sampling = new SampleBuffer<Double>(100);
+		scheduler.scheduleWithFixedDelay(
+			() -> {
+				// Adding a new sample point every second to the ring buffer.
+				sampling.add(nextSamplePoint());
+				// Force re-evaluation of populations fitness values.
+				nullifier.nullifyFitness();
+			},
+			1, 1, TimeUnit.SECONDS
+		);
+
+		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec =
+			Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30);
+
+		final Regression<Double> regression = Regression.of(
+			codec,
+			Error.of(LossFunction::mse),
+			sampling
+		);
+
+		final Engine<ProgramGene<Double>, Double> engine = Engine
+			.builder(regression)
+			.interceptor(nullifier)
+			.build();
+
+		engine.stream()
+			.flatMap(Streams.toIntervalMax(Duration.ofSeconds(30)))
+			.map(program -> program.bestPhenotype()
+				.genotype().gene()
+				.toParenthesesString())
+			// Printing the best program found so far every 30 seconds.
+			.forEach(System.out::println);
+	}
+
+	private static Sample<Double> nextSamplePoint() {
+		final Random random = new Random();
+		return Sample.ofDouble(random.nextDouble(), random.nextDouble());
 	}
 
 }

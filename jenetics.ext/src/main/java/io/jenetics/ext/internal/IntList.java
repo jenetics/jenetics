@@ -147,7 +147,7 @@ public final class IntList {
 	 * list.
 	 *
 	 * @param elements array containing elements to be added to this list
-	 * @return <tt>true</tt> if this list changed as a result of the call
+	 * @return {@code true} if this list changed as a result of the call
 	 * @throws NullPointerException if the specified array is null
 	 */
 	public boolean addAll(final int[] elements) {
@@ -166,7 +166,7 @@ public final class IntList {
 	 * @param index index at which to insert the first element from the
 	 *              specified collection
 	 * @param elements collection containing elements to be added to this list
-	 * @return <tt>true</tt> if this list changed as a result of the call
+	 * @return {@code true} if this list changed as a result of the call
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0 || index > size())}
 	 * @throws NullPointerException if the specified array is null
@@ -196,9 +196,9 @@ public final class IntList {
 	}
 
 	/**
-	 * Trims the capacity of this <tt>ArrayList</tt> instance to be the list's
+	 * Trims the capacity of this {@code ArrayList} instance to be the list's
 	 * current size.  An application can use this operation to minimize the
-	 * storage of an <tt>ArrayList</tt> instance.
+	 * storage of an {@code ArrayList} instance.
 	 */
 	public void trimToSize() {
 		if (_size < _data.length) {

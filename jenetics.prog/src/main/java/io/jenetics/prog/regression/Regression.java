@@ -262,12 +262,14 @@ public final class Regression<T>
 		}
 
 		return Codec.of(
-			Genotype.of(ProgramChromosome.of(
-				depth,
-				validator,
-				operations,
-				terminals
-			)),
+			Genotype.of(
+				ProgramChromosome.of(
+					depth,
+					validator,
+					operations,
+					terminals
+				)
+			),
 			Genotype::gene
 		);
 	}

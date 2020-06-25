@@ -610,7 +610,7 @@ public final class TreeNode<T>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		FlatTreeNode.of(this).write(out);
+		FlatTreeNode.ofTree(this).write(out);
 	}
 
 	@SuppressWarnings("unchecked")

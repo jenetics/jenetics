@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.math.DoubleAdder.sum;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
@@ -128,6 +129,35 @@ public class IntegerChromosomeTest
 				IntegerGene.of(5, 6)
 			)
 		);
+	}
+
+	@Test
+	public void map() {
+		final var ch1 = IntegerChromosome.of(0, 10_000, 100);
+
+		final var ch2 = ch1.map(IntegerChromosomeTest::half);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), half(ch1.toArray()));
+	}
+
+	static int[] half(final int[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= 2;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = IntegerChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = IntegerChromosome.of(0, 1);
+		ch.map(v -> new int[0]);
 	}
 
 }

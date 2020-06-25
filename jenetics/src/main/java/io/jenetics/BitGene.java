@@ -98,7 +98,7 @@ public enum BitGene
 	}
 
 	/**
-	 * Create a new gene from the given {@code value}..
+	 * Create a new gene from the given {@code value}.
 	 *
 	 * @since 1.6
 	 * @param value the value of the new gene.
