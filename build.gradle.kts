@@ -66,14 +66,37 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
+		val xlint = listOf(
+			//"preview",
+			"cast",
+			"classfile",
+			"deprecation",
+			"dep-ann",
+			"divzero",
+			"empty",
+			"finally",
+			"overrides",
+			"rawtypes",
+			"serial",
+			"static",
+			"try",
+			"unchecked"
+		).joinToString(separator = ",")
+
 		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:" + xlint())
+			options.compilerArgs.add("-Xlint:" + xlint)
+			options.compilerArgs.add("--enable-preview")
+		}
+
+		tasks.withType<Test> {
+			useTestNG()
+			jvmArgs("--enable-preview")
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_11
-				targetCompatibility = JavaVersion.VERSION_11
+				sourceCompatibility = JavaVersion.VERSION_14
+				targetCompatibility = JavaVersion.VERSION_14
 			}
 
 			setupJava(project)
@@ -144,7 +167,6 @@ fun setupTestReporting(project: Project) {
 		}
 
 		named<Test>("test") {
-			useTestNG()
 			finalizedBy("jacocoTestReport")
 		}
 	}
@@ -226,28 +248,6 @@ fun setupJavadoc(project: Project) {
 			}
 		}
 	}
-}
-
-/**
- * The Java compiler XLint flags.
- */
-fun xlint(): String {
-	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
-	return listOf(
-		"cast",
-		"classfile",
-		"deprecation",
-		"dep-ann",
-		"divzero",
-		"empty",
-		"finally",
-		"overrides",
-		"rawtypes",
-		"serial",
-		"static",
-		"try",
-		"unchecked"
-	).joinToString(separator = ",")
 }
 
 val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
