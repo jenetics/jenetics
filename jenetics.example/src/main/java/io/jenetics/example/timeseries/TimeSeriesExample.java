@@ -46,7 +46,7 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public class TimeSeries {
+public class TimeSeriesExample {
 
 	private final SampleBuffer<Double> _samples = new SampleBuffer<>(50);
 
@@ -89,7 +89,7 @@ public class TimeSeries {
 
 
 	public static void main(final String[] args) {
-		final TimeSeries ts = new TimeSeries();
+		final TimeSeriesExample ts = new TimeSeriesExample();
 
 		final Thread producer = new Thread(ts._producer);
 		producer.start();
