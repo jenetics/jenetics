@@ -54,7 +54,7 @@ open class LyxPlugin : Plugin<Project> {
 						ReplaceTokens::class, "tokens" to mapOf(
 							"__version__" to project.version,
 							"__minor_version__" to Version.parse(project.version).minorVersionString(),
-							"__identifier__" to "${Jenetics.NAME}-${Jenetics.VERSION}",
+							"__identifier__" to "${Jenetics.ID}-${Jenetics.VERSION}",
 							"__year__" to Env.COPYRIGHT_YEAR
 						)
 					)
