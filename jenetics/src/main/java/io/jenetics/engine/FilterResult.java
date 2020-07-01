@@ -33,7 +33,7 @@ import io.jenetics.util.ISeq;
  * @since 3.0
  * @version !__version__!
  */
-record FilterResult<G extends Gene<?, G>, C extends Comparable<? super C>>(
+final record FilterResult<G extends Gene<?, G>, C extends Comparable<? super C>>(
 	ISeq<Phenotype<G, C>> population,
 	int killCount,
 	int invalidCount
