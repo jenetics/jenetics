@@ -19,8 +19,11 @@
  */
 package io.jenetics.example.timeseries;
 
+import io.jenetics.engine.Engine.Setup;
+
 import io.jenetics.ext.util.Tree;
 
+import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.regression.Sampling;
 
@@ -33,6 +36,10 @@ public class TimeSeries<T> implements Sampling<T> {
 
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
+		return null;
+	}
+
+	public <R extends Comparable<? super R>> Setup<ProgramGene<T>, R> setup() {
 		return null;
 	}
 
