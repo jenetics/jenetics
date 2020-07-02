@@ -19,12 +19,33 @@
  */
 package io.jenetics.example.timeseries;
 
-import io.jenetics.engine.Engine.Setup;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.SubmissionPublisher;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import io.jenetics.Mutator;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.Engine.Setup;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
+import io.jenetics.prog.regression.Complexity;
+import io.jenetics.prog.regression.Error;
+import io.jenetics.prog.regression.LossFunction;
+import io.jenetics.prog.regression.Regression;
+import io.jenetics.prog.regression.Sample;
+import io.jenetics.prog.regression.SampleBuffer;
 import io.jenetics.prog.regression.Sampling;
 
 /**
@@ -43,4 +64,48 @@ public class TimeSeries<T> implements Sampling<T> {
 		return null;
 	}
 
+}
+
+class Series<T> implements Function<Sample<T>, Stream<Tree<Op<T>, ?>>> {
+
+	private Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec;
+	private Error<T> error;
+
+	private final SampleBuffer<T> samples = new SampleBuffer<>(50);
+	private final FitnessNullifier<ProgramGene<T>, Double> nullifier = new FitnessNullifier<>();
+
+	private final Regression<T> regression;
+	private final Engine<ProgramGene<T>, Double> engine;
+	private final EvolutionStream<ProgramGene<T>, Double> stream;
+
+	Series() {
+		regression = Regression.of(codec, error, samples);
+		engine = Engine
+			.builder(regression)
+			.interceptor(nullifier)
+			.minimizing()
+			.alterers(
+				new SingleNodeCrossover<>(),
+				new Mutator<>())
+			.build();
+
+		stream = engine.stream();
+	}
+
+	@Override
+	public Stream<Tree<Op<T>, ?>> apply(final Sample<T> sample) {
+		samples.add(sample);
+
+		return Stream.empty();
+	}
+}
+
+class Test {
+	static void main(final String[] args) {
+		final Stream<Sample<Double>> data = Stream.empty();
+
+		final Stream<Tree<Op<Double>, ?>> programs = data
+			.flatMap(new Series<>());
+
+	}
 }
