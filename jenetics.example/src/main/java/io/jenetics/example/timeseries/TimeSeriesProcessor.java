@@ -21,21 +21,21 @@ package io.jenetics.example.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import io.jenetics.Genotype;
-import io.jenetics.Phenotype;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionParams;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.util.Streams;
 
 import io.jenetics.ext.util.Tree;
 
@@ -55,22 +55,15 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	implements Flow.Processor<Sample<T>, Tree<Op<T>, ?>>
 {
 	private final Object _lock = new Object(){};
-	private final AtomicBoolean _proceed = new AtomicBoolean(true);
-
-	private final Codec<Tree<Op<T>, ?>, ProgramGene<T>> _codec;
-	private final Error<T> _error;
-	private final EvolutionParams<ProgramGene<T>, Double> _params;
 
 	private final SampleBuffer<T> _samples = new SampleBuffer<>(50);
 	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier = new FitnessNullifier<>();
-
-	private final Regression<T> _regression;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private Stream<? extends Tree<Op<T>, ?>> _stream;
+	private ElementSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 
-	Flow.Subscription subscription;
+	private Flow.Subscription _subscription;
 
 	TimeSeriesProcessor(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
@@ -80,15 +73,10 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 		final int maxBufferCapacity
 	) {
 		super(executor, maxBufferCapacity);
-		_codec = requireNonNull(codec);
-		_error = requireNonNull(error);
-		_params = requireNonNull(params);
-
-		_regression = Regression.of(_codec, _error, _samples);
 
 		_engine = Engine
-			.builder(_regression)
-			.evolutionParams(_params)
+			.builder(Regression.of(codec, error, _samples))
+			.evolutionParams(params)
 			.interceptor(_nullifier)
 			.minimizing()
 			.build();
@@ -96,44 +84,20 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 
 	@Override
 	public void onSubscribe(final Subscription subscription) {
-		(this.subscription = subscription).request(1);
+		(this._subscription = subscription).request(1);
 	}
 
 	@Override
 	public void onNext(final Sample<T> item) {
 		_samples.add(item);
+		_samples.publish();
 		_nullifier.nullifyFitness();
-		subscription.request(1);
-		//submit(function.apply(item));
+		_subscription.request(1);
 	}
 
-	private void start() {
-		synchronized (_lock) {
-			if (_stream != null) {
-				throw new IllegalStateException(
-					"Already attached evolution stream."
-				);
-			}
-
-			_stream = _engine.stream()
-				.limit(e -> _proceed.get())
-				.map(EvolutionResult::bestPhenotype)
-				.map(Phenotype::genotype)
-				.map(Genotype::gene);
-
-			_thread = new Thread(() -> {
-				try {
-					_stream.forEach(this::submit);
-					close();
-				} catch(CancellationException e) {
-					Thread.currentThread().interrupt();
-					close();
-				} catch (Throwable e) {
-					closeExceptionally(e);
-				}
-			});
-			_thread.start();
-		}
+	private void doSubmit(final EvolutionResult<ProgramGene<T>, Double> result) {
+		final Tree<Op<T>, ?> item = result.bestPhenotype().genotype().gene();
+		submit(item);
 	}
 
 	@Override
@@ -146,6 +110,26 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 		close();
 	}
 
+	private void start() {
+		synchronized (_lock) {
+			if (_submitter != null) {
+				throw new IllegalStateException("Processor already started.");
+			}
+
+			_submitter = new ElementSubmitter<>(
+				_engine.stream(),
+				__ -> _nullifier.nullifyFitness(),
+				this::doSubmit
+			);
+
+			_thread = new Thread(_submitter);
+			_thread.setUncaughtExceptionHandler((thread, throwable) ->
+				closeExceptionally(throwable)
+			);
+			_thread.start();
+		}
+	}
+
 	/**
 	 * Unless already closed, issues {@code onComplete} signals to current
 	 * subscribers, and disallows subsequent attempts to publish. Upon return,
@@ -154,12 +138,46 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	@Override
 	public void close() {
 		synchronized (_lock) {
-			_proceed.set(false);
-			if (_thread != null) {
+			if (_submitter != null) {
+				_submitter.stop();
 				_thread.interrupt();
 			}
 		}
 		super.close();
+	}
+
+}
+
+final class ElementSubmitter<T extends Comparable<? super T>>
+	implements Runnable
+{
+
+	private final Stream<T> _stream;
+	private final Predicate<? super T> _reset;
+	private final Consumer<? super T> _sink;
+
+	private final AtomicBoolean _proceed = new AtomicBoolean();
+
+	ElementSubmitter(
+		final Stream<T> stream,
+		final Predicate<? super T> reset,
+		final Consumer<? super T> sink
+	) {
+		_stream = requireNonNull(stream);
+		_reset = requireNonNull(reset);
+		_sink = requireNonNull(sink);
+	}
+
+	@Override
+	public void run() {
+		_stream
+			.takeWhile(e -> _proceed.get())
+			.flatMap(Streams.<T>toStrictlyDecreasing(_reset))
+			.forEach(_sink);
+	}
+
+	void stop() {
+		_proceed.set(false);
 	}
 
 }
