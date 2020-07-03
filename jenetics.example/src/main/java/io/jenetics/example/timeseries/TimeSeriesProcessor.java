@@ -27,7 +27,6 @@ import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.engine.Codec;
@@ -89,9 +88,12 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 
 	@Override
 	public void onNext(final Sample<T> item) {
-		_samples.add(item);
-		_samples.publish();
-		_nullifier.nullifyFitness();
+		synchronized (_lock) {
+			if (_submitter != null) {
+				_samples.add(item);
+				publish();
+			}
+		}
 		_subscription.request(1);
 	}
 
@@ -110,18 +112,19 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 		close();
 	}
 
+	private void publish() {
+		_samples.publish();
+		_nullifier.nullifyFitness();
+		_submitter.reset();
+	}
+
 	private void start() {
 		synchronized (_lock) {
 			if (_submitter != null) {
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new ElementSubmitter<>(
-				_engine.stream(),
-				__ -> _nullifier.nullifyFitness(),
-				this::doSubmit
-			);
-
+			_submitter = new ElementSubmitter<>(_engine.stream(), this::doSubmit);
 			_thread = new Thread(_submitter);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
@@ -142,6 +145,8 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 				_submitter.stop();
 				_thread.interrupt();
 			}
+			_submitter = null;
+			_thread = null;
 		}
 		super.close();
 	}
@@ -153,18 +158,16 @@ final class ElementSubmitter<T extends Comparable<? super T>>
 {
 
 	private final Stream<T> _stream;
-	private final Predicate<? super T> _reset;
 	private final Consumer<? super T> _sink;
 
-	private final AtomicBoolean _proceed = new AtomicBoolean();
+	private final AtomicBoolean _reset = new AtomicBoolean(false);
+	private final AtomicBoolean _proceed = new AtomicBoolean(true);
 
 	ElementSubmitter(
 		final Stream<T> stream,
-		final Predicate<? super T> reset,
 		final Consumer<? super T> sink
 	) {
 		_stream = requireNonNull(stream);
-		_reset = requireNonNull(reset);
 		_sink = requireNonNull(sink);
 	}
 
@@ -172,8 +175,16 @@ final class ElementSubmitter<T extends Comparable<? super T>>
 	public void run() {
 		_stream
 			.takeWhile(e -> _proceed.get())
-			.flatMap(Streams.<T>toStrictlyDecreasing(_reset))
+			.flatMap(Streams.<T>toStrictlyDecreasing(this::reset))
 			.forEach(_sink);
+	}
+
+	private boolean reset(final T element) {
+		return _reset.getAndSet(false);
+	}
+
+	void reset() {
+		_reset.set(true);
 	}
 
 	void stop() {
