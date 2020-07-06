@@ -26,7 +26,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
+import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.util.Factory;
 
 /**
  * This interface allows you to define constraints on single phenotypes. It is a
@@ -44,6 +46,14 @@ import io.jenetics.Phenotype;
  * }
  * }</pre>
  *
+ * <b>Note: </b>
+ * Keep in mind, that this interface only repairs invalid individuals, which
+ * has been destroyed by the <em>evolution</em> process. Individuals, created
+ * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
+ * This means, that it is still possible, to have invalid individuals, created
+ * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
+ * factory which obeys {@code this} constraint.
+ * <p>
  * The following example illustrates how a constraint which its repair function
  * can be look like. Imagine that your problem domain consists of double values
  * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
@@ -106,6 +116,7 @@ import io.jenetics.Phenotype;
  *
  * @see Engine.Builder#constraint(Constraint)
  * @see RetryConstraint
+ * @see #constrain(Factory)
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
@@ -155,6 +166,32 @@ public interface Constraint<
 		final long generation
 	);
 
+	/**
+	 * Wraps the given genotype factory into a factory, which only creates
+	 * individuals obeying {@code this} constraint. The following code will
+	 * create an evolution engine, where also the genotype factory will only
+	 * create valid individuals.
+	 *
+	 * <pre>{@code
+	 * final Constraint<DoubleGene, Double> constraint = ...;
+	 * final Factory<Genotype<DoubleGene>> gtf = ...;
+	 * final Engine<DoubleGene, Double> engine = Engine
+	 *     .builder(fitness, constraint.constrain(gtf))
+	 *     .constraint(constraint)
+	 *     .build();
+	 * }</pre>
+	 *
+	 * @param gtf the genotype factory to wrap
+	 * @return a new constrained genotype factory.
+	 * @throws NullPointerException if the given genotype factory is {@code null}
+	 */
+	default Factory<Genotype<G>> constrain(final Factory<Genotype<G>> gtf) {
+		requireNonNull(gtf);
+		return () -> {
+			final Phenotype<G, C> result = Phenotype.of(gtf.newInstance(), 1);
+			return (test(result) ? result : repair(result, 1)).genotype();
+		};
+	}
 
 	/**
 	 * Return a new constraint object with the given {@code validator} and
