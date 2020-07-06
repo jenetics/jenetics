@@ -46,13 +46,13 @@ import io.jenetics.util.Factory;
  * }
  * }</pre>
  *
- * <b>Note: </b>
- * Keep in mind, that this interface only repairs invalid individuals, which
+ * <b>Note</b><br>
+ * <i>Keep in mind, that this interface only repairs invalid individuals, which
  * has been destroyed by the <em>evolution</em> process. Individuals, created
  * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
  * This means, that it is still possible, to have invalid individuals, created
  * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
- * factory which obeys {@code this} constraint.
+ * factory which obeys {@code this} constraint.</i>
  * <p>
  * The following example illustrates how a constraint which its repair function
  * can be look like. Imagine that your problem domain consists of double values
@@ -129,7 +129,7 @@ import io.jenetics.util.Factory;
  * invalid individuals after the selection and altering step.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version !__version__!
  * @since 5.0
  */
 public interface Constraint<
@@ -180,6 +180,8 @@ public interface Constraint<
 	 *     .constraint(constraint)
 	 *     .build();
 	 * }</pre>
+	 *
+	 * @since !__version__!
 	 *
 	 * @param gtf the genotype factory to wrap
 	 * @return a new constrained genotype factory.
