@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the argument type of the compound codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version !__version__!
  * @since 3.3
  */
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
@@ -65,17 +65,14 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
 
-		final ISeq<Factory<Genotype<G>>> factories = _codecs
-			.map(Codec::encoding);
-
-		_lengths = factories.stream()
-			.map(Factory::newInstance)
+		_lengths = _codecs.stream()
+			.map(codec -> codec.encoding().newInstance())
 			.mapToInt(Genotype::length)
 			.toArray();
 
 		_encoding = () -> Genotype.of(
-			factories.stream()
-				.map(Factory::newInstance)
+			_codecs.stream()
+				.map(codec -> codec.encoding().newInstance())
 				.flatMap(Genotype::stream)
 				.collect(ISeq.toISeq())
 		);
