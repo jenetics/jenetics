@@ -193,6 +193,9 @@ public interface Constraint<
 	 *
 	 * @since !__version__!
 	 *
+	 * @see #constrain(Codec)
+	 * @see #constrain(InvertibleCodec)
+	 *
 	 * @param gtf the genotype factory to wrap
 	 * @return a new constrained genotype factory.
 	 * @throws NullPointerException if the given genotype factory is {@code null}
@@ -203,6 +206,44 @@ public interface Constraint<
 			final Phenotype<G, C> result = Phenotype.of(gtf.newInstance(), 1);
 			return (test(result) ? result : repair(result, 1)).genotype();
 		};
+	}
+
+	/**
+	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #constrain(Factory)
+	 * @see #constrain(InvertibleCodec)
+	 *
+	 * @param codec the codec to wrap
+	 * @param <T> the argument type of a given problem
+	 * @return the wrapped codec, which obeys {@code this} constraint
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	default <T> Codec<T, G> constrain(final Codec<T, G> codec) {
+		return Codec.of(constrain(codec.encoding()), codec.decoder());
+	}
+
+	/**
+	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #constrain(Factory)
+	 * @see #constrain(Codec)
+	 *
+	 * @param codec the codec to wrap
+	 * @param <T> the argument type of a given problem
+	 * @return the wrapped codec, which obeys {@code this} constraint
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	default <T> InvertibleCodec<T, G> constrain(final InvertibleCodec<T, G> codec) {
+		return InvertibleCodec.of(
+			constrain(codec.encoding()),
+			codec.decoder(),
+			codec.encoder()
+		);
 	}
 
 	/**
