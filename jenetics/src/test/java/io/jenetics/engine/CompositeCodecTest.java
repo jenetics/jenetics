@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.stream.Stream;
@@ -172,6 +173,42 @@ public class CompositeCodecTest {
 	}
 
 	@Test
+	public void cleanEncoding() {
+		ISeq<Codec<?, DoubleGene>> codecs = ISeq
+			.of(
+				Codecs.ofScalar(DoubleRange.of(0, 1)),
+				Codecs.ofVector(DoubleRange.of(10, 100), 3),
+				Codecs.ofScalar(DoubleRange.of(2, 3)),
+				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500)))
+			.map(codec ->
+				Codec.of(
+					() -> codec.encoding().newInstance(),
+					codec.decoder()));
+
+		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
+			codecs,
+			values -> {
+				final Double v1 = (Double)values[0];
+				final double[] v2 = (double[])values[1];
+				final Double v3 = (Double)values[2];
+				final double[] v4 = (double[])values[3];
+
+				return v1 + DoubleAdder.sum(v2) + v3 + DoubleAdder.sum(v4);
+			}
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+
+		final double sum = gt.stream()
+			.mapToDouble(c -> c.stream()
+				.mapToDouble(DoubleGene::doubleValue)
+				.sum())
+			.sum();
+
+		Assert.assertEquals(sum, codec.decoder().apply(gt), 0.000001);
+	}
+
+	@Test
 	public void example() {
 		final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
 			Genotype.of(LongChromosome.of(0, 10_000)),
@@ -235,7 +272,6 @@ public class CompositeCodecTest {
 		final Duration duration = durationCodec.decoder()
 			.apply(pt.genotype());
 		//System.out.println(duration);
-
 	}
 
 }
