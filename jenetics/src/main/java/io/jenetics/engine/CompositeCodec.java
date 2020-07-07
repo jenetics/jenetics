@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the argument type of the compound codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 6.1
  * @since 3.3
  */
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {

@@ -84,7 +84,7 @@ public interface Problem<
 	/**
 	 * Return the constraint, associated with {@code this} problem, if available.
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @return the constraint, associated with {@code this} problem
 	 */
@@ -141,7 +141,7 @@ public interface Problem<
 	/**
 	 * Return a new optimization <i>problem</i> with the given parameters.
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @param fitness the problem fitness function
 	 * @param codec the evolution engine codec

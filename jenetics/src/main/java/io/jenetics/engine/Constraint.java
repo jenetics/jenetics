@@ -139,7 +139,7 @@ import io.jenetics.util.Factory;
  * invalid individuals after the selection and altering step.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 6.1
  * @since 5.0
  */
 public interface Constraint<
@@ -191,7 +191,7 @@ public interface Constraint<
 	 *     .build();
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @see #constrain(Codec)
 	 * @see #constrain(InvertibleCodec)
@@ -211,7 +211,7 @@ public interface Constraint<
 	/**
 	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @see #constrain(Factory)
 	 * @see #constrain(InvertibleCodec)
@@ -228,7 +228,7 @@ public interface Constraint<
 	/**
 	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
 	 *
-	 * @since !__version__!
+	 * @since 6.1
 	 *
 	 * @see #constrain(Factory)
 	 * @see #constrain(Codec)
