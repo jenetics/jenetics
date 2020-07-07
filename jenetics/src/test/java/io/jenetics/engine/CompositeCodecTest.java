@@ -19,15 +19,6 @@
  */
 package io.jenetics.engine;
 
-import java.io.Serializable;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.stream.Stream;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.LongChromosome;
@@ -36,6 +27,13 @@ import io.jenetics.Phenotype;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -172,28 +170,31 @@ public class CompositeCodecTest {
 		Assert.assertEquals(sum, codec.decoder().apply(gt), 0.000001);
 	}
 
-	@Test
-	public void cleanEncoding() {
+	@Test(invocationCount = 10)
+	public void constrainedEncoding() {
+		final Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
+			pt -> pt.genotype().gene().doubleValue() < 0.5,
+			100
+		);
+
 		ISeq<Codec<?, DoubleGene>> codecs = ISeq
 			.of(
-				Codecs.ofScalar(DoubleRange.of(0, 1)),
-				Codecs.ofVector(DoubleRange.of(10, 100), 3),
-				Codecs.ofScalar(DoubleRange.of(2, 3)),
-				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500)))
-			.map(codec ->
-				Codec.of(
-					() -> codec.encoding().newInstance(),
-					codec.decoder()));
+				Codecs.ofScalar(DoubleRange.of(0.1, 0.9)),
+				Codecs.ofScalar(DoubleRange.of(0.3, 0.7)),
+				Codecs.ofVector(DoubleRange.of(0.3, 1.7), DoubleRange.of(0.3, 0.7)))
+			.map(codec -> constraint.constrain(codec));
 
 		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
 			codecs,
 			values -> {
 				final Double v1 = (Double)values[0];
-				final double[] v2 = (double[])values[1];
-				final Double v3 = (Double)values[2];
-				final double[] v4 = (double[])values[3];
+				final Double v2 = (Double)values[1];
+				final double[] v3 = (double[])values[2];
 
-				return v1 + DoubleAdder.sum(v2) + v3 + DoubleAdder.sum(v4);
+				Assert.assertTrue(v1 < 0.5, "v1: " + v1);
+				Assert.assertTrue(v2 < 0.5, "v2: " + v2);
+				Assert.assertTrue(v3[0] < 0.5, "v3[0]: " + v3[0]);
+				return v1 + v2 + v3[0] + v3[1];
 			}
 		);
 

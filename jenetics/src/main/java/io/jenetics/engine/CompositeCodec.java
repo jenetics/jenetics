@@ -47,7 +47,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	private final Function<? super Object[], ? extends T> _decoder;
 
 	private final int[] _lengths;
-	private final Genotype<G> _encoding;
+	private final Factory<Genotype<G>> _encoding;
 
 	/**
 	 * Combines the given {@code codecs} into one codec. This lets you divide
@@ -65,20 +65,20 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
 
-		final ISeq<Genotype<G>> genotypes = _codecs
-			.map(c -> c.encoding() instanceof Genotype
-				? (Genotype<G>)c.encoding()
-				: c.encoding().newInstance());
+		final ISeq<Factory<Genotype<G>>> factories = _codecs
+			.map(Codec::encoding);
 
-		_lengths = genotypes.stream()
+		_lengths = factories.stream()
+			.map(Factory::newInstance)
 			.mapToInt(Genotype::length)
 			.toArray();
 
-		_encoding = Genotype.of(
-				genotypes.stream()
-					.flatMap(Genotype::stream)
-					.collect(ISeq.toISeq())
-			);
+		_encoding = () -> Genotype.of(
+			factories.stream()
+				.map(Factory::newInstance)
+				.flatMap(Genotype::stream)
+				.collect(ISeq.toISeq())
+		);
 	}
 
 	@Override
