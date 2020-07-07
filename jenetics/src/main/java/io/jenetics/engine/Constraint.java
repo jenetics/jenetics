@@ -47,13 +47,23 @@ import io.jenetics.util.Factory;
  * }</pre>
  *
  * <b>Note</b><br>
- * <i>Keep in mind, that this interface only repairs invalid individuals, which
+ * Keep in mind, that this interface only repairs invalid individuals, which
  * has been destroyed by the <em>evolution</em> process. Individuals, created
  * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
  * This means, that it is still possible, to have invalid individuals, created
  * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
- * factory which obeys {@code this} constraint.</i>
- * <p>
+ * factory which obeys {@code this} constraint. The following code will show
+ * how to create such a <em>constrained</em> genotype factory and use it for
+ * creating an evolution engine.
+ * <pre>{@code
+ * final Constraint<DoubleGene, Double> constraint = ...;
+ * final Factory<Genotype<DoubleGene>> gtf = ...;
+ * final Engine<DoubleGene, Double> engine = Engine
+ *     .builder(fitness, constraint.constrain(gtf))
+ *     .constraint(constraint)
+ *     .build();
+ * }</pre>
+ *
  * The following example illustrates how a constraint which its repair function
  * can be look like. Imagine that your problem domain consists of double values
  * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
