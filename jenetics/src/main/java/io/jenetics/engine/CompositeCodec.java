@@ -66,7 +66,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_decoder = requireNonNull(decoder);
 
 		_lengths = _codecs.stream()
-			.map(codec -> codec.encoding().newInstance())
+			.map(codec -> toGenotype(codec.encoding()))
 			.mapToInt(Genotype::length)
 			.toArray();
 
@@ -76,6 +76,13 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 				.flatMap(Genotype::stream)
 				.collect(ISeq.toISeq())
 		);
+	}
+
+	private static <G extends Gene<?, G>> Genotype<G>
+	toGenotype(final Factory<Genotype<G>> factory) {
+		return factory instanceof Genotype
+			? (Genotype<G>)factory
+			: factory.newInstance();
 	}
 
 	@Override
