@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the argument type of the compound codec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version !__version__!
  * @since 3.3
  */
 final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
@@ -47,7 +47,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	private final Function<? super Object[], ? extends T> _decoder;
 
 	private final int[] _lengths;
-	private final Genotype<G> _encoding;
+	private final Factory<Genotype<G>> _encoding;
 
 	/**
 	 * Combines the given {@code codecs} into one codec. This lets you divide
@@ -65,20 +65,17 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_codecs = requireNonNull(codecs);
 		_decoder = requireNonNull(decoder);
 
-		final ISeq<Genotype<G>> genotypes = _codecs
-			.map(c -> c.encoding() instanceof Genotype
-				? (Genotype<G>)c.encoding()
-				: c.encoding().newInstance());
-
-		_lengths = genotypes.stream()
+		_lengths = _codecs.stream()
+			.map(codec -> codec.encoding().newInstance())
 			.mapToInt(Genotype::length)
 			.toArray();
 
-		_encoding = Genotype.of(
-				genotypes.stream()
-					.flatMap(Genotype::stream)
-					.collect(ISeq.toISeq())
-			);
+		_encoding = () -> Genotype.of(
+			_codecs.stream()
+				.map(codec -> codec.encoding().newInstance())
+				.flatMap(Genotype::stream)
+				.collect(ISeq.toISeq())
+		);
 	}
 
 	@Override
