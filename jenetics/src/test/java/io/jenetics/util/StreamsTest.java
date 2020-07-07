@@ -19,7 +19,10 @@
  */
 package io.jenetics.util;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.stream.IntStream;
 
@@ -76,17 +79,23 @@ public class StreamsTest {
 		};
 	}
 
+	private final static class TestClock extends Clock {
+		long count = 0;
+		@Override
+		public ZoneId getZone() { return null; }
+		@Override
+		public Clock withZone(ZoneId zoneId) { return null; }
+		@Override
+		public Instant instant() {
+			++count;
+			return Instant.ofEpochMilli(count);
+		}
+	}
+
 	@Test
 	public void toTimespanIntervalMax() {
-		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
-			.peek(i -> {
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					throw new AssertionError(e);
-				}
-			})
-			.flatMap(Streams.toIntervalMax(Duration.ofMillis(10)))
+		final ISeq<Integer> values = IntStream.range(1, 101).boxed()
+			.flatMap(Streams.toIntervalMax(Duration.ofMillis(10), new TestClock()))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(
@@ -97,10 +106,7 @@ public class StreamsTest {
 		int start = 0;
 		for (int i = 0; i < values.size(); ++i) {
 			final int diff = values.get(i) - start;
-			Assert.assertTrue(
-				diff > 4 && diff < 20,
-				"Expected value between [4, 20]: " + diff
-			);
+			Assert.assertEquals(diff, 10);
 			start = values.get(i);
 		}
 	}
@@ -108,14 +114,7 @@ public class StreamsTest {
 	@Test
 	public void toTimespanIntervalMin() {
 		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
-			.peek(i -> {
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					throw new AssertionError(e);
-				}
-			})
-			.flatMap(Streams.toIntervalMin(Duration.ofMillis(10)))
+			.flatMap(Streams.toIntervalMin(Duration.ofMillis(10), new TestClock()))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(
@@ -127,10 +126,7 @@ public class StreamsTest {
 		int start = values.get(0);
 		for (int i = 1; i < values.size(); ++i) {
 			final int diff = values.get(i) - start;
-			Assert.assertTrue(
-				diff > 4 && diff < 20,
-				"Expected value between [4, 20]: " + diff
-			);
+			Assert.assertEquals(diff, 10);
 			start = values.get(i);
 		}
 	}
