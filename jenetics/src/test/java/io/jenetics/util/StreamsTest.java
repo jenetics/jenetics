@@ -98,10 +98,7 @@ public class StreamsTest {
 			.flatMap(Streams.toIntervalMax(Duration.ofMillis(10), new TestClock()))
 			.collect(ISeq.toISeq());
 
-		Assert.assertTrue(
-			values.size() > 1,
-			"Expect more than one element: " + values.size()
-		);
+		Assert.assertEquals(values.length(),10);
 
 		int start = 0;
 		for (int i = 0; i < values.size(); ++i) {
@@ -117,10 +114,7 @@ public class StreamsTest {
 			.flatMap(Streams.toIntervalMin(Duration.ofMillis(10), new TestClock()))
 			.collect(ISeq.toISeq());
 
-		Assert.assertTrue(
-			values.size() > 1,
-			"Expect more than one element: " + values.size()
-		);
+		Assert.assertEquals(values.length(),10);
 		Assert.assertEquals(values.get(0).intValue(), 0);
 
 		int start = values.get(0);
