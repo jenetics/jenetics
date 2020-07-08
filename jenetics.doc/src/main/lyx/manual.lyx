@@ -22581,6 +22581,79 @@ Engine
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The 
+\family typewriter
+Constraint
+\family sans
+, defined in the Engine, only fixes individuals which has been destroyed
+ during the evolution process.
+ Individuals, created by the 
+\family typewriter
+Genotype
+\family sans
+ factory may still be invalid.
+ Use the 
+\family typewriter
+Constraint::constrain
+\family sans
+ method for creating safe 
+\family typewriter
+Genotype
+\family sans
+ factories.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Termination
 \begin_inset CommandInset label
@@ -22689,7 +22762,7 @@ height "1pt"
 \family sans
 The predicate given to the
 \family typewriter
- EvolutionStream.limit
+ EvolutionStream::limit
 \family sans
  function must return
 \emph on
