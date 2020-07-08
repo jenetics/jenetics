@@ -139,9 +139,15 @@ public interface Problem<
 	}
 
 	/**
-	 * Return a new optimization <i>problem</i> with the given parameters.
+	 * Return a new optimization <i>problem</i> with the given parameters. The
+	 * given {@code constraint} is applied to the {@link Engine}, via
+	 * {@link Engine.Builder#constraint(Constraint)}, and the {@link Codec}, via
+	 * {@link Constraint#constrain(Codec)}.
 	 *
 	 * @since 6.1
+	 *
+	 * @see Engine.Builder#constraint(Constraint)
+	 * @see Constraint#constrain(Codec)
 	 *
 	 * @param fitness the problem fitness function
 	 * @param codec the evolution engine codec
@@ -161,12 +167,14 @@ public interface Problem<
 	) {
 		requireNonNull(fitness);
 		requireNonNull(codec);
-		final Optional<Constraint<G, C>> ctr = Optional.ofNullable(constraint);
+
+		final var constrainedCodec = wrap(constraint, codec);
+		final var constraintOptional = Optional.ofNullable(constraint);
 
 		return new Problem<>() {
 			@Override
 			public Codec<T, G> codec() {
-				return codec;
+				return constrainedCodec;
 			}
 			@Override
 			public Function<T, C> fitness() {
@@ -174,9 +182,23 @@ public interface Problem<
 			}
 			@Override
 			public Optional<Constraint<G, C>> constraint() {
-				return ctr;
+				return constraintOptional;
 			}
 		};
+	}
+
+	private static  <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<T, G> wrap(final Constraint<G, C> constraint, final Codec<T, G> codec) {
+		Codec<T, G> result = codec;
+		if (constraint != null) {
+			if (codec instanceof InvertibleCodec) {
+				result = constraint.constrain((InvertibleCodec<T, G>)codec);
+			} else {
+				result = constraint.constrain(codec);
+			}
+		}
+
+		return result;
 	}
 
 	/**
