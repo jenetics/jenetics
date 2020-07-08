@@ -287,6 +287,8 @@ public interface Constraint<
 	 * repaired as template. The <em>repaired</em> phenotype might still be
 	 * invalid.
 	 *
+	 * @see RetryConstraint#of(Predicate)
+	 *
 	 * @param validator the phenotype validator used by the constraint
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
@@ -295,10 +297,7 @@ public interface Constraint<
 	 */
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
-		return of(
-			validator,
-			(pt, gen) -> Phenotype.of(pt.genotype().newInstance(), gen)
-		);
+		return RetryConstraint.of(validator);
 	}
 
 	/**
