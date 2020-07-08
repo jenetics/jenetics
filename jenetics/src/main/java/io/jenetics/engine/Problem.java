@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
@@ -81,6 +82,17 @@ public interface Problem<
 	Codec<T, G> codec();
 
 	/**
+	 * Return the constraint, associated with {@code this} problem, if available.
+	 *
+	 * @since 6.1
+	 *
+	 * @return the constraint, associated with {@code this} problem
+	 */
+	default Optional<Constraint<G, C>> constraint() {
+		return Optional.empty();
+	}
+
+	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
 	 * <pre>{@code
@@ -129,6 +141,47 @@ public interface Problem<
 	/**
 	 * Return a new optimization <i>problem</i> with the given parameters.
 	 *
+	 * @since 6.1
+	 *
+	 * @param fitness the problem fitness function
+	 * @param codec the evolution engine codec
+	 * @param constraint the problem constraint, may be {@code null}
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return a new problem object from the given parameters
+	 * @throws NullPointerException if the {@code fitness} or {@code codec} is
+	 *         {@code null}
+	 */
+	static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Problem<T, G, C> of(
+		final Function<T, C> fitness,
+		final Codec<T, G> codec,
+		final Constraint<G, C> constraint
+	) {
+		requireNonNull(fitness);
+		requireNonNull(codec);
+		final Optional<Constraint<G, C>> ctr = Optional.ofNullable(constraint);
+
+		return new Problem<>() {
+			@Override
+			public Codec<T, G> codec() {
+				return codec;
+			}
+			@Override
+			public Function<T, C> fitness() {
+				return fitness;
+			}
+			@Override
+			public Optional<Constraint<G, C>> constraint() {
+				return ctr;
+			}
+		};
+	}
+
+	/**
+	 * Return a new optimization <i>problem</i> with the given parameters.
+	 *
 	 * @param fitness the problem fitness function
 	 * @param codec the evolution engine codec
 	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
@@ -142,20 +195,7 @@ public interface Problem<
 		final Function<T, C> fitness,
 		final Codec<T, G> codec
 	) {
-		requireNonNull(fitness);
-		requireNonNull(codec);
-
-		return new Problem<>() {
-			@Override
-			public Codec<T, G> codec() {
-				return codec;
-			}
-
-			@Override
-			public Function<T, C> fitness() {
-				return fitness;
-			}
-		};
+		return of(fitness, codec, null);
 	}
 
 }
