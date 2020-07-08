@@ -143,6 +143,11 @@ public interface Problem<
 	 * given {@code constraint} is applied to the {@link Engine}, via
 	 * {@link Engine.Builder#constraint(Constraint)}, and the {@link Codec}, via
 	 * {@link Constraint#constrain(Codec)}.
+	 * <p>
+	 * <b>Note</b><br>
+	 *     When creating a new {@code Problem} instance with this factory method,
+	 *     there is no need for additionally <em>constraining</em> the given
+	 *     {@code codec} with {@link Constraint#constrain(Codec)}.
 	 *
 	 * @since 6.1
 	 *
