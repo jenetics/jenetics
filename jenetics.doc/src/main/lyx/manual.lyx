@@ -8174,7 +8174,7 @@ Constraint
 \family typewriter
  Pheno\SpecialChar softhyphen
 type\SpecialChar softhyphen
-.isValid
+::isValid
 \family default
  method, which is useful if the
 \family typewriter
@@ -8486,7 +8486,7 @@ Engine
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
-.limit
+::limit
 \family default
  methods.
  Alternatively, the 
@@ -8496,7 +8496,7 @@ Engine
  instance itself can be limited with the 
 \family typewriter
 Engine\SpecialChar softhyphen
-.limit
+::limit
 \family default
  methods.
  This limited 
@@ -8578,7 +8578,7 @@ Engine\SpecialChar softhyphen
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
-.limit
+::limit
 \family default
  method is, that the limit me\SpecialChar softhyphen
 thod of the 
@@ -8615,7 +8615,7 @@ Predicate
  The 
 \family typewriter
 Engine\SpecialChar softhyphen
-.limit
+::limit
 \family default
  function will return an 
 \family typewriter
@@ -9044,7 +9044,7 @@ Stream
  is usually created via the
 \family typewriter
  Engine\SpecialChar softhyphen
-.stream()
+::stream
 \family default
  method.
  The
@@ -9171,7 +9171,7 @@ Stream
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
-.of
+::of
 \family default
  factory method for creating an new
 \family typewriter
@@ -9585,16 +9585,16 @@ n
 \family typewriter
 Min\SpecialChar softhyphen
 Max\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Strictly\SpecialChar softhyphen
 In\SpecialChar softhyphen
 crea\SpecialChar softhyphen
-sing()
+sing
 \family default
  and 
 \family typewriter
 ISeq\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 ISeq(int)
 \family default
  method.
@@ -9811,8 +9811,8 @@ s and fitness types.
  It can be created via the
 \family typewriter
  Evolution\SpecialChar softhyphen
-Statistics.\SpecialChar softhyphen
-ofComparable()
+Statistics\SpecialChar softhyphen
+::ofComparable
 \family default
  method.
  The second one collects additional statistical data for numerical fitness
@@ -9820,8 +9820,8 @@ ofComparable()
  This can be created with the
 \family typewriter
  Evolution\SpecialChar softhyphen
-Statistics.\SpecialChar softhyphen
-ofNumber()
+Statistics\SpecialChar softhyphen
+::ofNumber
 \family default
  method.
 \begin_inset ERT
@@ -10159,7 +10159,8 @@ type
  is available, it is stored and logged.
  With the
 \family typewriter
- TSM::update
+ TSM\SpecialChar softhyphen
+::update
 \family default
  method, which is called on every finished generation, you created a
 \emph on
@@ -10996,12 +10997,12 @@ old
  Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Task\SpecialChar softhyphen
-.get\SpecialChar softhyphen
+::get\SpecialChar softhyphen
 Sur\SpecialChar softhyphen
 plus\SpecialChar softhyphen
 Queued\SpecialChar softhyphen
 Task\SpecialChar softhyphen
-Count()
+Count
 \family default
  method.
 \begin_inset Foot
@@ -12319,7 +12320,7 @@ split
 \family default
  Changes the internal state of the PRNG in a way that future calls to
 \family typewriter
- nextLong()
+ nextLong
 \family default
  will generated the 
 \begin_inset Formula $s^{th}$
@@ -13768,9 +13769,10 @@ For implementing your own gene type you have to implement the
 \family default
  interface with three methods: (1) the
 \family typewriter
- allele
+ Gene\SpecialChar softhyphen
+::allele
 \family default
-()
+
 \begin_inset Index idx
 status collapsed
 
@@ -13782,12 +13784,14 @@ Allele
 
  method which will return the wrapped data, (2) the
 \family typewriter
- newInstance
+ Gene\SpecialChar softhyphen
+::newInstance
 \family default
  method for creating new, random instances of the gene—must be of the same
  type and have the same constraint—and (3) the
 \family typewriter
- isValid()
+ Gene\SpecialChar softhyphen
+::isValid
 \family default
  method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
@@ -13905,7 +13909,7 @@ Gene
 \family typewriter
  Any\SpecialChar softhyphen
 Gene\SpecialChar softhyphen
-.of(Sup\SpecialChar softhyphen
+::of(Sup\SpecialChar softhyphen
 plier, Predi\SpecialChar softhyphen
 cate)
 \family default
@@ -15615,7 +15619,7 @@ noprefix "false"
 Evo\SpecialChar softhyphen
 lution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
-.of\SpecialChar softhyphen
+::of\SpecialChar softhyphen
 Adjust\SpecialChar softhyphen
 able\SpecialChar softhyphen
 Evo\SpecialChar softhyphen
@@ -16125,7 +16129,7 @@ some
 \family default
 , with the
 \family typewriter
- gene()
+ gene
 \family default
  method, and convert it to a
 \family typewriter
@@ -18205,7 +18209,7 @@ noprefix "false"
  interface.
  The
 \family typewriter
- encoding()
+ encoding
 \family default
  method returns the
 \family typewriter
@@ -18226,7 +18230,7 @@ noprefix "false"
 \family default
 , which is returned by the
 \family typewriter
- decoder()
+ decoder
 \family default
  method, transforms the
 \family typewriter
@@ -18300,8 +18304,8 @@ The
 \family default
  interface, instead you can use the
 \family typewriter
- Codec.\SpecialChar softhyphen
-of
+ Codec\SpecialChar softhyphen
+::of
 \family default
  factory method for creating new
 \family typewriter
@@ -18460,7 +18464,7 @@ noprefix "false"
  shows the implementation of the
 \family typewriter
  Codecs\SpecialChar softhyphen
-.ofScalar
+::ofScalar
 \family default
  factory method—for
 \family typewriter
@@ -20931,7 +20935,7 @@ Codec
  function: 
 \family typewriter
 Codec\SpecialChar softhyphen
-.of(\SpecialChar softhyphen
+::of(\SpecialChar softhyphen
 ISeq<Codec<?, G>>,\SpecialChar softhyphen
  Function<Object[], T>\SpecialChar softhyphen
 )
@@ -21127,7 +21131,7 @@ type
 \family typewriter
 Const\SpecialChar softhyphen
 raint\SpecialChar softhyphen
-.repair
+::repair
 \family default
  method.
  Most of the factory methods in the 
@@ -23052,7 +23056,7 @@ Stream
  Additionally, the 
 \family typewriter
 Limits\SpecialChar softhyphen
-.by\SpecialChar softhyphen
+::by\SpecialChar softhyphen
 Fixed\SpecialChar softhyphen
 Gene\SpecialChar softhyphen
 ration(\SpecialChar softhyphen
@@ -23062,7 +23066,7 @@ long\SpecialChar softhyphen
  predicate can be used instead of the 
 \family typewriter
 Stream\SpecialChar softhyphen
-.limit(\SpecialChar softhyphen
+::limit(\SpecialChar softhyphen
 long\SpecialChar softhyphen
 )
 \family default
@@ -23071,7 +23075,7 @@ long\SpecialChar softhyphen
  as the 
 \family typewriter
 Stream\SpecialChar softhyphen
-.limit(\SpecialChar softhyphen
+::limit(\SpecialChar softhyphen
 long\SpecialChar softhyphen
 )
 \family default
@@ -23097,7 +23101,7 @@ evaluated
  If this is an unacceptable performance penalty, better use the 
 \family typewriter
 Stream\SpecialChar softhyphen
-.limit(\SpecialChar softhyphen
+::limit(\SpecialChar softhyphen
 long\SpecialChar softhyphen
 )
 \family default
@@ -23438,7 +23442,7 @@ noprefix "false"
  shows the implementation of the
 \family typewriter
  Limits\SpecialChar softhyphen
-.byStea\SpecialChar softhyphen
+::byStea\SpecialChar softhyphen
 dy\SpecialChar softhyphen
 Fit\SpecialChar softhyphen
 ness(int)
@@ -26645,8 +26649,8 @@ Value
  in the diagram is the string representation of the 
 \family typewriter
 Tree\SpecialChar softhyphen
-.val\SpecialChar softhyphen
-ue()
+::val\SpecialChar softhyphen
+ue
 \family default
  object.
 \end_layout
@@ -26693,25 +26697,25 @@ Parentheses tree syntax diagram
 To get the parentheses tree representation, you just have to call 
 \family typewriter
 Tree\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Paren\SpecialChar softhyphen
 the\SpecialChar softhyphen
 ses\SpecialChar softhyphen
-Tree()
+Tree
 \family default
 .
  This method uses the 
 \family typewriter
 Ob\SpecialChar softhyphen
 ject\SpecialChar softhyphen
-.to\SpecialChar softhyphen
-String()
+::to\SpecialChar softhyphen
+String
 \family default
  method for serializing the tree node value.
  If you need a different string representation you can use the 
 \family typewriter
 Tree\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Paren\SpecialChar softhyphen
 the\SpecialChar softhyphen
 ses\SpecialChar softhyphen
@@ -26810,7 +26814,7 @@ Serializing a tree into parentheses form is just one part of the story.
 \family typewriter
 Tree\SpecialChar softhyphen
 Node\SpecialChar softhyphen
-.parse(\SpecialChar softhyphen
+::parse(\SpecialChar softhyphen
 String\SpecialChar softhyphen
 )
 \family default
@@ -26972,7 +26976,7 @@ Tree
 \family typewriter
  child\SpecialChar softhyphen
 Off\SpecialChar softhyphen
-set()
+set
 \family default
  method, which returns the absolute start index of the tree's children.
 \end_layout
@@ -27319,8 +27323,8 @@ TreeFormatter.PARENTHESES
  This is the default format and is also used by the 
 \family typewriter
 Tree\SpecialChar softhyphen
-.to\SpecialChar softhyphen
-String()
+::to\SpecialChar softhyphen
+String
 \family default
  method.
 \end_layout
@@ -30896,7 +30900,7 @@ io.jenetics.ext.moea
  package, 
 \family typewriter
 MOEA\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Pareto\SpecialChar softhyphen
 Set(\SpecialChar softhyphen
 Int\SpecialChar softhyphen
@@ -31400,7 +31404,7 @@ Limits
 \begin_layout Itemize
 
 \family typewriter
-Limits.byFixedGeneration
+Limits::byFixedGeneration
 \family default
 ,
 \end_layout
@@ -31408,7 +31412,7 @@ Limits.byFixedGeneration
 \begin_layout Itemize
 
 \family typewriter
-Limits.byExecutionTime
+Limits::byExecutionTime
 \family default
  and
 \end_layout
@@ -31416,7 +31420,7 @@ Limits.byExecutionTime
 \begin_layout Itemize
 
 \family typewriter
-Limits.byGeneConvergence
+Limits::byGeneConvergence
 \family default
 .
 \end_layout
@@ -31674,7 +31678,7 @@ Factory
 \family default
  instance for creating the fitness values instead of the 
 \family typewriter
-Vec.of(double...)
+Vec::of(double...)
 \family default
  factory method.
  The optimization direction of the evolution 
@@ -33111,7 +33115,7 @@ In the example above, half of the expression trees are simplified in each
 \family typewriter
 Math\SpecialChar softhyphen
 Expr\SpecialChar softhyphen
-.rewrite 
+::rewrite 
 \family default
 method, which uses the 
 \family typewriter
@@ -37450,7 +37454,7 @@ Before applying this method throughout the whole library, I decided to perform
  some statistical tests.
  For this purpose I treated the
 \family typewriter
- seed()
+ seed
 \family default
  method itself as PRNG and analyzed the created long values with the
 \family typewriter
@@ -37460,7 +37464,7 @@ Harder class
 .
  The
 \family typewriter
- seed()
+ seed
 \family default
  method has been wrapped into the
 \family typewriter
@@ -37673,8 +37677,8 @@ An alternative source of entropy, for generating seed values, would be the
 \begin_layout Standard
 The next attempt tries to fetch the seeds from the JVM, via the
 \family typewriter
- Object.\SpecialChar softhyphen
-hashCode()
+ Object\SpecialChar softhyphen
+::hashCode
 \family default
  method.
  Since the hash code of an Object is available for every operating system
@@ -38227,7 +38231,7 @@ harder
  engine.
  Using the proposed
 \family typewriter
- seed()
+ seed
 \family default
  method is in any case preferable to the simple
 \family typewriter
