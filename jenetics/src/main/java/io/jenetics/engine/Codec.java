@@ -230,7 +230,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 			@Override
 			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return (Function<Genotype<G>, T>) decoder;
+				return (Function<Genotype<G>, T>)decoder;
 			}
 		};
 	}
