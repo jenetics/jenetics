@@ -164,7 +164,8 @@ public interface Constraint<
 	 * {@code false}.
 	 *
 	 * @param individual the phenotype to repair
-	 * @param generation the actual generation used for the repaired phenotype
+	 * @param generation the actual generation, where this method is called by
+	 *        the evolution engine
 	 * @return a newly created, valid phenotype. The implementation is free to
 	 *         use the given invalid {@code individual} as a starting point for
 	 *         the created phenotype.
