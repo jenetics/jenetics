@@ -56,7 +56,7 @@ import io.jenetics.Genotype;
  * @param <C> the result type of the fitness function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.2
+ * @version 6.1
  * @since 3.4
  */
 public interface Problem<
@@ -174,7 +174,6 @@ public interface Problem<
 		requireNonNull(codec);
 
 		final var constrainedCodec = wrap(constraint, codec);
-		final var constraintOptional = Optional.ofNullable(constraint);
 
 		return new Problem<>() {
 			@Override
@@ -187,7 +186,7 @@ public interface Problem<
 			}
 			@Override
 			public Optional<Constraint<G, C>> constraint() {
-				return constraintOptional;
+				return Optional.ofNullable(constraint);
 			}
 		};
 	}
