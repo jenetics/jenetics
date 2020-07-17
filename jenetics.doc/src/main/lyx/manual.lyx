@@ -913,7 +913,7 @@ Jenetics
 \family default
 \series default
 \shape default
-, lets start with a simple 
+, let's start with a simple 
 \begin_inset Quotes ald
 \end_inset
 
@@ -1186,7 +1186,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Enumerate
-The probably most challenging part when setting up a new evolution
+Probably the most challenging part when setting up a new evolution
 \family typewriter
  Engine
 \family default
@@ -1297,7 +1297,7 @@ Chromosome
 \family typewriter
  eval
 \family default
- method is then used as fitness function and passed to the
+ method is then used as a fitness function and passed to the
 \family typewriter
  Engine\SpecialChar softhyphen
 .build
@@ -2234,7 +2234,7 @@ Domain
 \begin_inset space ~
 \end_inset
 
-classes This classes form the domain model of the evolutionary algorithm
+classes These classes form the domain model of the evolutionary algorithm
  and contain the structural classes like
 \family typewriter
  Gene
@@ -2257,7 +2257,7 @@ Operation
 \begin_inset space ~
 \end_inset
 
-classes This classes operates on the domain classes and includes the
+classes These classes operate on the domain classes and includes the
 \family typewriter
  Alterer
 \family default
@@ -2279,7 +2279,7 @@ Engine
 \begin_inset space ~
 \end_inset
 
-classes This classes implements the actual evolutionary algorithm and can
+classes These classes implement the actual evolutionary algorithm and can
  be found in the
 \family typewriter
  io.jenetics\SpecialChar softhyphen
@@ -2502,7 +2502,7 @@ Allele
 \end_inset
 
 .
- Some of the implementations also contains domain information of the
+ Some of the implementations also contain domain information of the
 \emph on
  
 \emph default
@@ -2512,7 +2512,7 @@ wrapped allele.
  Bounded\SpecialChar softhyphen
 Gene
 \family default
-, which contain the allowed minimum and maximum values.
+s, which contain the allowed minimum and maximum values.
  All
 \family typewriter
  Gene
@@ -2773,7 +2773,7 @@ s which must contain at least one
  Gene
 \family default
 .
- This allows to define problems which requires more than one
+ This allows defining problems which require more than one
 \family typewriter
  Gene
 \family default
@@ -2786,7 +2786,7 @@ s which must contain at least one
 \family typewriter
  Chromosome
 \family default
- is also it's own factory and allows to create a new
+ is also its own factory and allows creation of a new
 \family typewriter
  Chromosome
 \family default
@@ -2878,7 +2878,7 @@ noprefix "false"
  Chromosome
 \family default
  interface.
- This are the methods for accessing single
+ These are the methods for accessing single
 \family typewriter
  Gene
 \family default
@@ -2897,9 +2897,10 @@ s.
 \family default
  classes which were able to create altered
 \family typewriter
- Chromosome
+ Chromo\SpecialChar softhyphen
+some
 \family default
- from a (changed)
+s from a (changed)
 \family typewriter
  Gene
 \family default
@@ -3245,7 +3246,7 @@ s of a
 \family typewriter
  Genotype
 \family default
- doesn't have to have necessarily the same size.
+ don't necessarily have to have the same size.
  It is only required that all genes are from the same type and the
 \family typewriter
  Gene
@@ -3328,7 +3329,7 @@ noprefix "false"
  Double\SpecialChar softhyphen
 Gene
 \family default
- has been chosen as
+ has been chosen as the
 \family typewriter
  Gene
 \family default
@@ -3602,7 +3603,7 @@ s derived from the
 \family typewriter
  Recombinator
 \family default
- do a fairly good job in exploring the problem space for row-major
+ do a fairly good job in exploring the problem space for a row-major
 \family typewriter
  Genotype
 \family default
@@ -3798,7 +3799,7 @@ The greater flexibility of a column-major
 \family typewriter
  Genotype
 \family default
- vector has to be payed with a lower exploration capability of the
+ vector has to be paid with a lower exploration capability of the
 \family typewriter
  Recombinator
 \family default
@@ -4312,8 +4313,8 @@ Phenotype
  Phenotype
 \family default
  contains the generation when it was created.
- This allows to calculate the current age and allow the removal of overaged
- individuals from the population.
+ This allows for the calculation of the current age and allows for the removal
+ of overaged individuals from the population.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4341,7 +4342,7 @@ just
 Phenotype
 \family default
 s.
- As collection class, the 
+ As a collection class, the 
 \family typewriter
 ISeq
 \family default
@@ -4350,8 +4351,8 @@ ISeq
 \family typewriter
 ISeq
 \family default
- interface allows to express the immutability of the population at the type
- level and makes the code more readable.
+ interface allows for the expression of the immutability of the population
+ at the type level and makes the code more readable.
  For a detailed description of this collection classes see section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4775,7 +4776,7 @@ literal "false"
 
  competitors.
  Note that the worst individual never survives, and the best individual
- wins in all the tournaments it participates.
+ wins in all the tournaments in which it participates.
  The selection pressure can be varied by changing the tournament size, 
 \begin_inset Formula $s$
 \end_inset
@@ -5028,7 +5029,7 @@ where
 \begin_inset Formula $k$
 \end_inset
 
- the number of individual 
+ the number of individuals 
 \begin_inset Formula $i$
 \end_inset
 
@@ -5068,7 +5069,7 @@ name "par:Roulette-wheel-selector"
 \end_layout
 
 \begin_layout Standard
-The roulette-wheel selector is also known as fitness proportional selector
+The roulette-wheel selector is also known as the fitness proportional selector
  and 
 \family sans
 \series bold
@@ -5077,7 +5078,7 @@ Jenetics
 \family default
 \series default
 \shape default
- implements it as
+ implements it as a
 \emph on
  
 \emph default
@@ -5111,7 +5112,7 @@ Selecting
 \end_inset
 
  times on the roulette-wheel.
- The population don't have to be sorted before selecting the individuals.
+ The population doesn't have to be sorted before selecting the individuals.
  Notice that equation 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -5148,7 +5149,7 @@ As you can see, the worst fitness value,
 \begin_inset Formula $f_{\mathrm{min}}$
 \end_inset
 
-, if negative, has now a selection probability of zero.
+, if negative, now has a selection probability of zero.
  In the case that the sum of the corrected fitness values is zero, the selection
  probability of all fitness values will be set 
 \begin_inset Formula $\frac{1}{N}$
@@ -5537,7 +5538,7 @@ EliteSelector
 remember the best solution found so far
 \emph default
 .
- A problem with elitism is that it may causes the GA to converge to a 
+ A problem with elitism is that it may cause the GA to converge to a 
 \emph on
 local
 \emph default
@@ -5690,7 +5691,7 @@ Exploring the search space
 Maintaining diversity
 \series default
 : Mutation prevents a population from converging to a local minimum by stopping
- the solution to become to close to one another.
+ the solution to become too close to one another.
  A genetic algorithm can improve the solution solely by the mutation operator.
  Even if most of the search is being performed by crossover, mutation can
  be vital to provide the diversity which crossover needs.
@@ -5953,14 +5954,14 @@ Recombination
 
 \end_inset
 
- — An enhanced genetic algorithm (EGA) combine elements of existing solutions
+ — An enhanced genetic algorithm (EGA) combines elements of existing solutions
  in order to create a new solution, with some of the properties of each
- parents.
+ parent.
  Recombination creates a new chromosome by combining parts of two (or more)
  parent chromosomes.
  This combination of chromosomes can be made by selecting one or more crossover
- points, splitting these chromosomes on the selected points, and merge those
- portions of different chromosomes to form new ones.
+ points, splitting these chromosomes on the selected points, and merging
+ those portions of different chromosomes to form new ones.
 \end_layout
 
 \begin_layout Standard
@@ -6311,8 +6312,8 @@ The single-point crossover changes two children chromosomes by taking two
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem single-point crossover can lead to smaller disruption than multiple-poi
-nt or uniform crossover.
+ problem, single-point crossover can lead to smaller disruption than multiple-po
+int or uniform crossover.
 \end_layout
 
 \begin_layout Standard
@@ -6400,7 +6401,7 @@ b)
 \emph on
 f)
 \emph default
- illustrates the crossover results for indexes 
+ illustrate the crossover results for indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6896,7 +6897,7 @@ In uniform crossover, the genes at index
 \end_inset
 
 .
- Empirical studies shows that uniform crossover is a more exploitative approach
+ Empirical studies show that uniform crossover is a more exploitative approach
  than the traditional exploitative approach that maintains longer schemata.
  This leads to a better search of the design space with maintaining the
  exchange of good information.
@@ -7059,7 +7060,7 @@ Combine alterer
 \end_layout
 
 \begin_layout Standard
-This alterer changes a two genes by combining them.
+This alterer changes two genes by combining them.
  The combine function can be defined when the alterer is created.
  How this is done, is shown in the code snippet below.
 \begin_inset listings
@@ -7172,12 +7173,12 @@ literal "true"
  
 \emph default
 numeric chromosomes and treats it as a real number vector.
- Each of this vectors can also be seen as a point in 
+ Each of these vectors can also be seen as a point in 
 \begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
 
 .
- If we draw a line through this two points (chromosome), we have the possible
+ If we draw a line through these two points (chromosome), we have the possible
  values of the new chromosomes, which all lie on this line.
 \end_layout
 
@@ -7375,8 +7376,9 @@ Partial alterer
 \begin_layout Standard
 Alterers are working on the whole population, which is effectively a sequence
  of genotypes.
- If your genotype consists of more than one chromosome, it is not possible
- to specify the chromosome, the alterer is using for alteration.
+ If your genotype consists of more than one chromosome, the alterer is applied
+ to all chromosomes.
+ There is no way to bind an alterer to a specific chromosome.
  The 
 \family typewriter
 Partial\SpecialChar softhyphen
@@ -7633,12 +7635,12 @@ le
 \family default
 , respectively the selection operators, to select the offspring- and survivor
  population.
- Some selectors have stronger requirements to the fitness value than a
+ Some selectors have stronger requirements for the fitness value than a
 \family typewriter
  Compar\SpecialChar softhyphen
 able
 \family default
-, but this constraints is checked by the Java type system at compile time.
+, but these constraints are checked by the Java type system at compile time.
 \end_layout
 
 \begin_layout Standard
@@ -7889,8 +7891,8 @@ Engine
  Builder
 \family default
  class, it can't be changed.
- It doesn't contain any mutable global state and can therefore safely used/calle
-d from different threads.
+ It doesn't contain any mutable global state and can therefore be safely
+ used/called from different threads.
  This allows to create more than one
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -8018,7 +8020,7 @@ noprefix "false"
 \family typewriter
 Engine
 \family default
- is used for performing the actual evolution of a give population.
+ is used for performing the actual evolution of a given population.
  One evolution step is executed by calling the
 \family typewriter
  Engine.\SpecialChar softhyphen
@@ -8279,7 +8281,7 @@ genotypeFactory
 \family typewriter
  Genotype
 \family default
-, which serves as template.
+, which serves as a template.
 \end_layout
 
 \begin_layout Description
@@ -8298,7 +8300,7 @@ Result
 \family typewriter
 EvolutionInterceptor
 \family default
- can be seen a crosscutting aspect of the evolution process.
+ can be seen as a crosscutting aspect of the evolution process.
  One implementation of the EvolutionInterceptor is the 
 \family typewriter
 Fitness\SpecialChar softhyphen
@@ -8366,7 +8368,7 @@ Size
 ize
 \family default
 .
- All this additional properties effectively set the
+ All these additional properties effectively set the
 \family typewriter
  offspring\SpecialChar softhyphen
 Frac\SpecialChar softhyphen
@@ -8385,7 +8387,7 @@ offspringSelector
  Selector
 \family default
  used for selecting the offspring population.
- The default values is set to
+ The default values are set to
 \family typewriter
  Tournament\SpecialChar softhyphen
 Select\SpecialChar softhyphen
@@ -8403,7 +8405,7 @@ optimize
 \family typewriter
  Function
 \family default
- should be maximized of minimized.
+ should be maximized or minimized.
  By default, the fitness
 \family typewriter
  Function
@@ -8463,7 +8465,7 @@ survivorsSelector
  Selector
 \family default
  used for selecting the survivors population.
- The default values is set to
+ The default values are set to
 \family typewriter
  Tournament\SpecialChar softhyphen
 Selec\SpecialChar softhyphen
@@ -8593,7 +8595,7 @@ Predicate
 \family typewriter
 Supplier
 \family default
- instead of the the 
+ instead of the 
 \family typewriter
 Predicate
 \family default
@@ -8602,7 +8604,7 @@ Predicate
 \family typewriter
 Predicate
 \family default
-s has to maintain internal state to work properly.
+s have to maintain internal state to work properly.
  This means, every time the 
 \family typewriter
 Engine
@@ -9407,7 +9409,7 @@ noprefix "false"
  generation
 \family default
  the result belongs to.
- This are also the two properties needed for the next evolution step.
+ These are also the two properties needed for the next evolution step.
  The
 \family typewriter
  generation
@@ -9499,7 +9501,7 @@ Stream
 \end_layout
 
 \begin_layout Standard
-The following code snippets shows how to use the different
+The following code snippets show how to use the different
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -9572,7 +9574,7 @@ Genotype<DoubleGene> result = stream
 \end_layout
 
 \begin_layout Standard
-Sometime it is useful not only to collect one 
+Sometimes it is useful not only to collect one 
 \emph on
 final
 \emph default
@@ -9671,7 +9673,7 @@ Stream
  Engine
 \family default
 .
- Besides other informations, the
+ Besides other information, the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Statistics
@@ -9781,14 +9783,16 @@ noprefix "false"
 
 \end_inset
 
- shows how to add the the
+ shows how to add the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Statistics
 \family default
  to the
 \family typewriter
- Evolution\SpecialChar softhyphen
+ Evo\SpecialChar softhyphen
+lu\SpecialChar softhyphen
+tion\SpecialChar softhyphen
 Stream
 \family default
 .
@@ -10150,7 +10154,7 @@ noprefix "false"
  Evolution\SpecialChar softhyphen
 Result
 \family default
- is has been calculated.
+ has been calculated.
  If a new best
 \family typewriter
  Pheno\SpecialChar softhyphen
@@ -10198,7 +10202,7 @@ Evaluator
  is responsible for evaluating the fitness values for a given population.
  It is the most general way for doing the fitness evaluation.
  Usually, it is not necessary to implement an own evaluation strategy.
- If you creating an evolution 
+ If you are creating an evolution 
 \family typewriter
 Engine
 \family default
@@ -10320,7 +10324,7 @@ the size of the returned, evaluated, phenotype sequence must be exactly
 
 \begin_layout Enumerate
 all phenotypes of the returned population must have a fitness value assigned.
- Than means, the expression 
+ That means, the expression 
 \family typewriter
 pop.forAll(\SpecialChar softhyphen
 Pheno\SpecialChar softhyphen
@@ -10399,8 +10403,8 @@ Evaluators
 \family typewriter
 Evaluator
 \family default
- instances from fitness functions which doesn't return the fitness value
- directly, but return 
+ instances from fitness functions which don't return the fitness value directly,
+ but return 
 \family typewriter
 Future<T>
 \family default
@@ -10409,7 +10413,7 @@ Future<T>
 CompletableFuture<T>
 \family default
  instead.
- With this methods, there is no need for waiting for the fitness value,
+ With these methods, there is no need for waiting for the fitness value,
  if the fitness function is already asynchronous.
 \begin_inset listings
 lstparams "language=Java"
@@ -10522,7 +10526,7 @@ The
 \family default
 \series default
 \shape default
- library parallelizes independent task whenever possible.
+ library parallelizes independent tasks whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
  That means that the fitness function must be thread safe and deterministic.
  The easiest way for achieving thread safety is to make the fitness function
@@ -11117,7 +11121,7 @@ Queued\SpecialChar softhyphen
 Task\SpecialChar softhyphen
 Count
 \family default
- property will create a more uniform workload for fitness function with
+ property will create a more uniform workload for the fitness function with
  heavily varying computation cost for different genotype values.
 \end_layout
 
@@ -11356,7 +11360,7 @@ name "subsec:Randomness"
 \end_layout
 
 \begin_layout Standard
-In general, GAs heavily depends on
+In general, GAs heavily depend on
 \emph on
  
 \emph default
@@ -11411,7 +11415,7 @@ Random!Registry
  Random\SpecialChar softhyphen
 Registry
 \family default
- also allows to easily change
+ also allows for easily changing the
 \family typewriter
  Random
 \family default
@@ -11604,7 +11608,7 @@ Setting the PRNG to a Random object with a defined seed has the effect,
 \emph on
  stream
 \emph default
- will produce the same result—in an single threaded environment.
+ will produce the same result—in a single threaded environment.
 \end_layout
 
 \begin_layout Plain Layout
@@ -11631,7 +11635,7 @@ The parallel nature of the GA implementation requires the creation of streams
 \end_inset
 
 , which are statistically independent.
- This streams are numbered with 
+ These streams are numbered with 
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
@@ -11715,11 +11719,11 @@ When the
 \family typewriter
  Random
 \family default
- engine is used in an multi-threaded environment, there must be a way to
+ engine is used in a multi-threaded environment, there must be a way to
  parallelize the sequential PRNG.
  Usually this is done by taking the elements of the sequence of pseudo-random
- numbers and distribute them among the threads.
- There are essentially four different parallelizations techniques used in
+ numbers and distributing them among the threads.
+ There are essentially four different parallelization techniques used in
  practice:
 \emph on
  
@@ -11860,7 +11864,7 @@ PRNG!Parameterization
 \end_layout
 
 \begin_layout Standard
-All threads uses the same kind of PRNG but with different parameters.
+All threads use the same kind of PRNG but with different parameters.
  This requires the PRNG to be parameterizable, which is not the case for
  the Random object of the JDK.
  You can use the
@@ -11870,7 +11874,7 @@ Shift\SpecialChar softhyphen
 Random
 \family default
  class if you want to use this strategy.
- The theoretical foundation for these method is weak.
+ The theoretical foundation for these methods is weak.
  In a massive parallel environment you will need a reliable set of parameters
  for every random stream, which are not trivial to find.
 \end_layout
@@ -11917,7 +11921,7 @@ lapping contiguous
  block of random numbers, which should be enough for the whole runtime of
  the process.
  If the number of threads is not known in advance, the length of each block
- should be chosen much larger then the maximal expected number of threads.
+ should be chosen much larger than the maximal expected number of threads.
  This strategy is used when using the
 \family typewriter
  LCG64\SpecialChar softhyphen
@@ -12036,7 +12040,7 @@ With the leapfrog method each thread
 \begin_inset Formula $P^{th}$
 \end_inset
 
- random number and jump ahead in the random sequence by the number of threads,
+ random number and jumps ahead in the random sequence by the number of threads,
  
 \begin_inset Formula $P$
 \end_inset
@@ -12309,7 +12313,7 @@ reference "lis:LCG64ShiftRandom-class"
 \end_inset
 
  shows the interface used for implementing the block splitting and leapfrog
- parallelizations technique.
+ parallelization techniques.
  This methods have the following meaning:
 \end_layout
 
@@ -12322,7 +12326,7 @@ split
 \family typewriter
  nextLong
 \family default
- will generated the 
+ will generate the 
 \begin_inset Formula $s^{th}$
 \end_inset
 
@@ -12561,7 +12565,7 @@ end{multicols}
 
 \begin_layout Standard
 With the serialization mechanism you can write a population to disk and
- load it into an new
+ load it into a new
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -12718,13 +12722,13 @@ some
 Geno\SpecialChar softhyphen
 type
 \family default
- implements the 
+ implement the 
 \family typewriter
 Base\SpecialChar softhyphen
 Seq
 \family default
  interface.
- This expresses the intend that the 
+ This expresses the intent that the 
 \family typewriter
 Chromosome
 \family default
@@ -12783,7 +12787,7 @@ Most notable are the
 \family typewriter
  Genotype
 \family default
- classes and holds the
+ classes and hold the
 \family typewriter
  Gene
 \family default
@@ -13486,7 +13490,7 @@ noprefix "false"
 
  contains the available statistical moments for the different numeric types.
  The following code snippet shows an example on how to collect double statistics
- from an given
+ from a given
 \family typewriter
  Double\SpecialChar softhyphen
 Gene
@@ -13575,7 +13579,7 @@ https://en.wikipedia.org/wiki/Quantile
 \end_inset
 
  of a stream of double values.
- It's implementing algorithm, which is described in 
+ Its implementing algorithm, which is described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Jain:1985:PAD:4372.4378"
@@ -13588,7 +13592,7 @@ literal "true"
 estimates
 \emph default
 —the quantile value on the fly, without storing the consumed double values.
- This allows to use the 
+ This allows for using the 
 \family typewriter
 Quantile
 \begin_inset Index idx
@@ -13608,7 +13612,7 @@ Quantile
 Double\SpecialChar softhyphen
 Stream
 \family default
- is shown in the code snipped below.
+ is shown in the code snippet below.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -13636,8 +13640,7 @@ Be aware, that the calculated quartile is
 just
 \emph default
  an estimation.
- For a sufficient accuracy, the stream size should be sufficiently large
- (
+ For sufficient accuracy, the stream size should be sufficiently large (
 \begin_inset Formula $size\gg100$
 \end_inset
 
