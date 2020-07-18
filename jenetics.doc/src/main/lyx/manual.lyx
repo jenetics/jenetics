@@ -25933,7 +25933,7 @@ The
 \family default
 \series default
 \shape default
- library has been split into several modules, which allows to keep the base
+ library has been split into several modules, which allows keeping the base
  EA module as small as possible.
  It currently consists of the modules shown in table 
 \begin_inset CommandInset ref
@@ -26291,7 +26291,7 @@ s and evolutionary operations.
 \emph on
  
 \emph default
-data structures which are used by this additional 
+data structures which are used by these additional 
 \family typewriter
 Gene
 \family default
@@ -26411,7 +26411,7 @@ noprefix "false"
 
 g.
  for node traversal and search, are implemented by default methods, which
- are derived from this four abstract tree methods.
+ are derived from these four abstract tree methods.
  A
 \emph on
  
@@ -27355,7 +27355,7 @@ Since there is no possibility to change the nodes of a
 \family typewriter
 FlatTree
 \family default
-, it can be used as immutable version of the 
+, it can be used as an immutable version of the 
 \family typewriter
 Tree
 \family default
@@ -27892,7 +27892,7 @@ noprefix "false"
 \end_inset
 
 .
- It only differs in the declaration of tree variables, which starts with
+ It only differs in the declaration of tree variables, which start with
  a '$' and must be a valid Java identifier.
  If you want to match 
 \emph on
@@ -28215,8 +28215,8 @@ The
 \family typewriter
 TRS
 \family default
- class puts all things together and allows to define a complete tree (term)
- rewriting system.
+ class puts all things together and allows for defining a complete tree
+ (term) rewriting system.
  The primary constructor will take a sequence of 
 \family typewriter
 Tree\SpecialChar softhyphen
@@ -28288,7 +28288,7 @@ The example above defines a tree rewrite system with four rewrite rules,
 TRS
 \family default
  can't be guaranteed.
- It's mainly on you to only create rewrite system which will 
+ It's mainly your responsibility to create a rewrite system which will 
 \emph on
 always
 \emph default
@@ -28353,7 +28353,7 @@ The
 \family typewriter
 ConstExprRewriter
 \family default
- class allows the evaluation of constant tree expressions.
+ class allows for the evaluation of constant tree expressions.
  In the code snippet below, it is shown how to evaluate a constant double
  expression.
 \begin_inset listings
@@ -28763,7 +28763,8 @@ i
 j
 \emph default
  randomly.
- The gene order in a chromosome will then be reversed between this two points.
+ The gene order in a chromosome will then be reversed between these two
+ points.
  This mutation operator can also be used for combinatorial problems, where
  no duplicated genes within a chromosome are allowed, e.g.
  for the TSP.
@@ -29303,7 +29304,8 @@ Stream
  is limited by the
 \family typewriter
  Limits\SpecialChar softhyphen
-.by\SpecialChar softhyphen
+.\SpecialChar softhyphen
+by\SpecialChar softhyphen
 Fitness\SpecialChar softhyphen
 Threshold
 \family default
@@ -29395,7 +29397,7 @@ The current design of
 \family typewriter
 Engine
 \family default
- allows to created multiple independent 
+ allows for creating multiple independent 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -29576,7 +29578,7 @@ Stream
 \family typewriter
 io.jenetics.ext
 \family default
- module contains additional classes which allows to concatenate evolution
+ module contains additional classes which allows for concatenating evolution
  
 \family typewriter
 Engines
@@ -29638,7 +29640,7 @@ The
 \family typewriter
 ConcatEngine
 \family default
- class allows to create more than one 
+ class allows for creating more than one 
 \family typewriter
 Engine
 \family default
@@ -30474,7 +30476,7 @@ noprefix "false"
 \end_inset
 
  shows the Pareto front of a maximization problem.
- This means we are searching for solutions tries to maximize the 
+ This means we are searching for solutions that try to maximize the 
 \begin_inset Formula $x$
 \end_inset
 
@@ -30677,7 +30679,8 @@ io.jenetics.ext.moea
 \family typewriter
 Vec
 \family default
- interface, which allows you wrap a vector of any element type into a 
+ interface, which allows you to wrap a vector of any element type into a
+ 
 \family typewriter
 Comparable
 \family default
@@ -30779,7 +30782,7 @@ noprefix "false"
 Vec
 \family default
  interface.
- This methods are sufficient to do all the optimization calculations.
+ These methods are sufficient to do all the optimization calculations.
  The 
 \family typewriter
 data()
@@ -30826,12 +30829,13 @@ dominance()
 \end_inset
 
 .
- Since it is quite a bothersome to implement all this needed methods, the
+ Since it is quite a bothersome to implement all these needed methods, the
  
 \family typewriter
 Vec
 \family default
- interface comes with a set of factory methods, which allows to create 
+ interface comes with a set of factory methods, which allows for creating
+ 
 \family typewriter
 Vec
 \family default
@@ -31034,8 +31038,7 @@ Since there exists a potential infinite number of Pareto optimal solutions,
 IntRange
 \family default
  object, where you can specify the minimal and maximal set size.
- The example above will return a Pareto size which size in the range of
- 
+ The example above will return a Pareto size with size in the range of 
 \begin_inset Formula $\left[30,50\right)$
 \end_inset
 
@@ -31472,7 +31475,7 @@ Limits
  class, presumes a total order of the fitness values.
  This assumption holds for single-objective optimization problems, but not
  for multi-objective problems.
- Only termination strategies which doesn't rely on the total order of the
+ Only termination strategies which don't rely on the total order of the
  fitness value, can be safely used.
  The following termination strategies can be used for multi-objective problems:
 \end_layout
@@ -31646,8 +31649,8 @@ Instead of creating the solution
 \family typewriter
 Vec
 \family default
- instances directly, the fitness function must create it with a proper configure
-d 
+ instances directly, the fitness function must create it with a properly
+ configured 
 \family typewriter
 Vec\SpecialChar softhyphen
 Factory
@@ -31761,7 +31764,7 @@ Vec::of(double...)
 \family typewriter
 Engine
 \family default
- will remain in its default value, 
+ will remain at its default value, 
 \family typewriter
 Opti\SpecialChar softhyphen
 mize\SpecialChar softhyphen
@@ -31931,7 +31934,7 @@ status collapsed
 \begin_layout Plain Layout
 When implementing the GP module, the emphasis was to not create a parallel
  world of genes and chromosomes.
- It was an requirement, that the existing Alterer and Selector classes could
+ It was a requirement, that the existing Alterer and Selector classes could
  also be used for the new GP classes.
  This has been achieved by flattening the AST of a genetic program to fit
  into the 1-dimensional (flat) structure of a chromosome.
@@ -31957,7 +31960,7 @@ Genetic programming!Operations
 \end_layout
 
 \begin_layout Standard
-When creating own genetic programs, it is not necessary to derive own classes
+When creating own genetic programs, it is not necessary to derive classes
  from the
 \family typewriter
  Program\SpecialChar softhyphen
@@ -32170,7 +32173,7 @@ Non-terminal
 \emph default
  operations have an arity greater than zero, which means they take at least
  one argument.
- This operations need to have child nodes, where the number of children
+ These operations need to have child nodes, where the number of children
  must be equal to the arity of the operation of the parent node.
  Non-terminal operations will be abbreviated to
 \emph on
@@ -32951,7 +32954,7 @@ somes
 Chromo\SpecialChar softhyphen
 somes
 \family default
- we will also loose possible solutions.
+ we will also lose possible solutions.
 \end_layout
 
 \begin_layout Enumerate
@@ -33018,7 +33021,7 @@ height "1pt"
 Jenetics
 \series default
 \shape default
- allows the usage of arbitrary 
+ allows for the usage of arbitrary 
 \family typewriter
 Alterer
 \family sans
@@ -33343,8 +33346,8 @@ Genotype
 Chromo\SpecialChar softhyphen
 some
 \family default
-, it is possible to create more than one program roots.
- This programs are evaluated concurrently.
+, it is possible to create more than one program root.
+ These programs are evaluated concurrently.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -33448,9 +33451,9 @@ codec = Codec.of(
 \begin_layout Standard
 The code snippet above shows how to create a codec with two independent
  program roots.
- This programs are then mapped, in the fitness function, to the combined
+ These programs are then mapped, in the fitness function, to the combined
  fitness value.
- It is also possible to used different operations and terminals for each
+ It is also possible to use different operations and terminals for each
  
 \family typewriter
 Program\SpecialChar softhyphen
@@ -33553,7 +33556,7 @@ Jenetics
 \shape default
  comes with classes and interfaces, supporting the implementation of such
  problems.
- This classes are defined in the 
+ These classes are defined in the 
 \family typewriter
 io\SpecialChar softhyphen
 .jen\SpecialChar softhyphen
@@ -33563,7 +33566,7 @@ etics\SpecialChar softhyphen
 ression
 \family default
  package.
- The following sections describes this classes and interfaces and its usage.
+ The following sections describes these classes and interfaces and its usage.
  A complete symbolic regression example is given in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -34584,7 +34587,7 @@ The
 \family typewriter
  io.jenetics.xml
 \family default
- module allows to write and read 
+ module allows for writing and reading 
 \family typewriter
 Chromosome
 \family default
@@ -34829,7 +34832,7 @@ The following writer will create the desired XML from an integer
 Chromosome
 \family default
 .
- As the example shows, the structure of the XML can easily be grasp from
+ As the example shows, the structure of the XML can easily be grasped from
  the XML writer definition and vice versa.
 \end_layout
 
@@ -35519,7 +35522,7 @@ Writer
 \end_inset
 
  the size of the JAXB serialized genotypes.
- The size of the marshaled also influences the write performance.
+ The size of the marshaled objects also influences the write performance.
  As you can see in diagram 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -35687,7 +35690,7 @@ This module is not part of the
 \series default
 \shape default
  project directly.
- Since it has no dependency to any of the
+ Since it has no dependency on any of the
 \family sans
 \series bold
 \shape smallcaps
@@ -35994,7 +35997,7 @@ XOR64ShiftRandom
 \end_layout
 
 \begin_layout Standard
-All implemented PRNGs has been tested with the 
+All implemented PRNGs have been tested with the 
 \family typewriter
 dieharder
 \family default
