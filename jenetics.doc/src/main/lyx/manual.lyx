@@ -37052,9 +37052,8 @@ This section contains internal implementation details which doesn't fit
  in one of the previous sections.
  They are not essential for using the library, but would give the user a
  deeper insight in some design decisions made when implementing the library.
- It also introduces tools and classes which where developed for testing
- purpose.
- This classes are not exported and
+ It also introduces tools and classes which were developed for testing purpose.
+ These classes are not exported and
 \series bold
  not
 \series default
