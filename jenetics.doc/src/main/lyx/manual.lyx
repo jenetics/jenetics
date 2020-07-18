@@ -39074,7 +39074,7 @@ lstinputlisting{../java/Knapsack.java}
 \end_layout
 
 \begin_layout Standard
-The console out put for the Knapsack GA will look like the listing beneath.
+The console output for the Knapsack GA will look like the listing beneath.
 \end_layout
 
 \begin_layout Standard
@@ -39246,7 +39246,7 @@ The Traveling Salesman problem is a very good example which shows you how
  For other data types you have to use one of the constructors of the permutation
  chromosome.
  As alterers, we are using a swap-mutator and a partially-matched crossover.
- These alterers guarantees that no invalid solutions are created—every city
+ These alterers guarantee that no invalid solutions are created—every city
  exists exactly once in the altered chromosomes.
 \end_layout
 
@@ -39468,7 +39468,7 @@ Population
 \begin_inset space ~
 \end_inset
 
-size The number of individual of the population.
+size The number of individual in the population.
 \end_layout
 
 \begin_layout Description
@@ -39482,7 +39482,7 @@ size The example uses a
 Selector
 \family default
  for selecting the offspring population.
- This parameter lets you set the number of individual used for the tournament
+ This parameter lets you set the number of individuals used for the tournament
  step.
 \end_layout
 
@@ -39546,7 +39546,7 @@ image
 
 size To improve the processing speed, the fitness of a given polygon set
  (individual) is not calculated with the full sized image.
- Instead an scaled reference image with the given size is used.
+ Instead a scaled reference image with the given size is used.
  A smaller reference image will speed up the calculation, but will also
  reduce the accuracy.
 \end_layout
@@ -39557,7 +39557,7 @@ It is also possible to run and configure the
  Evolving Images
 \emph default
  example from the command line.
- This allows to do long running evolution
+ This allows for performing long running evolution
 \emph on
  experiments
 \emph default
@@ -40053,7 +40053,7 @@ name "sec:Symbolic-regression-example"
 \end_layout
 
 \begin_layout Standard
-The following example shows how to setup and solve a symbolic regression
+The following example shows how to set up and solve a symbolic regression
  problem with the help of GP and
 \family sans
 \series bold
@@ -40072,12 +40072,12 @@ The following example shows how to setup and solve a symbolic regression
  Setting up a GP requires a little bit more effort then the setup of a GA.
  First, you have to define the set of atomic mathematical operations, the
  GP is working with.
- This operations influences the search space and is a kind of a 
+ These operations influence the search space and is a kind of a 
 \emph on
 priori
 \emph default
  knowledge put into the GP.
- As second step you have to define the terminal operations.
+ As a second step you have to define the terminal operations.
  Terminals are either constants or variables.
  The number of variables defines the domain dimension of the fitness function.
  
