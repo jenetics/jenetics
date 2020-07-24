@@ -21498,6 +21498,119 @@ Constraint
 \end_layout
 
 \begin_layout Standard
+Constraints delimit the feasible space of solutions of an optimization problem
+ and are considered in evolutionary algorithms.
+ These influence the desirability of each possible solution.
+ If the constraints are satisfied, the solution is accepted and it is called
+ a feasible solution; otherwise the solution is removed or modified.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ConstraintSearchSpace.svg
+	lyxscale 70
+	width 93col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Constrained-search-space"
+
+\end_inset
+
+Constrained search space
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are different approaches for handling constraints.
+ Penalty methods try to convert a constrained optimization problem into
+ an unconstrained one by incorporating its constraints into the fitness
+ function.
+ Transformation methods try to map the feasible region into a regular mapped
+ space while preserving the feasibility somehow.
+\end_layout
+
+\begin_layout Subsection
+Penalty methods
+\end_layout
+
+\begin_layout Standard
+Penalty methods try to convert a constrained optimization problem into an
+ unconstrained one by incorporating its constraints into the fitness function.
+ One commonly used penalty formulation is
+\begin_inset Formula 
+\[
+f'\left(x\right)=f\left(x\right)+P\left(x\right),
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $P\left(x\right)$
+\end_inset
+
+ is the penalty term defined by 
+\begin_inset Formula 
+\[
+P\left(x\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Transformation methods
+\end_layout
+
+\begin_layout Standard
+Transformation methods try to map the feasible region into a regular mapped
+ space while preserving the feasibility somehow.
+ For example, the homomorphous map (HM) proposed by Koziel and Michalewicz
+ [7] tries to transform the feasible region into a higher-dimensional cube.
+ Though the method was competitive, it has difficulty in practical implementatio
+ns because this method involves nontrivial transformations and a very high
+ computational cost.
+ On the other hand, other methods use special representations and operators
+ to construct feasible solutions while preserving their feasibility.
+ But such special operators methods tend to work for linear constraints
+ [7,8].
+ These transformation methods are also called decoder and special operator
+ methods in the literature [10].
+\end_layout
+
+\begin_layout Standard
+—-
+\end_layout
+
+\begin_layout Standard
 A given problem should usually be encoded in a way, that it is not possible
  for the evolution
 \family typewriter
