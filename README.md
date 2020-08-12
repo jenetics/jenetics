@@ -1,3 +1,5 @@
+<img src="https://github-readme-stats.vercel.app/api?username=jenetics&show_icons=true">
+
 # Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
