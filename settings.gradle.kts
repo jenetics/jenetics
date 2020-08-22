@@ -41,3 +41,6 @@ include("jenetics.ext")
 include("jenetics.prog")
 include("jenetics.tool")
 include("jenetics.xml")
+
+// Incubation code
+include("jenetics.incubator")
