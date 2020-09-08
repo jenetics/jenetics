@@ -33,7 +33,7 @@ plugins {
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	version = "6.6.1"
+	gradleVersion = "6.6.1"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
