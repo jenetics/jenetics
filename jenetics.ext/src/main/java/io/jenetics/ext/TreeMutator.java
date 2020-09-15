@@ -77,7 +77,7 @@ public abstract class TreeMutator<
 		final TreeNode<A> tree = TreeNode.ofTree(chromosome.gene());
 		mutate(tree);
 
-		final var flat = FlatTreeNode.of(tree);
+		final var flat = FlatTreeNode.ofTree(tree);
 		final var genes = flat.map(t -> chromosome.gene().newInstance(t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
 	}

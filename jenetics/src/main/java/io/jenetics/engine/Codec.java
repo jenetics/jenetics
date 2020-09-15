@@ -230,7 +230,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 			@Override
 			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return (Function<Genotype<G>, T>) decoder;
+				return (Function<Genotype<G>, T>)decoder;
 			}
 		};
 	}
@@ -365,7 +365,9 @@ public interface Codec<T, G extends Gene<?, G>> {
 			);
 		}
 		return codecs.size() == 1
-			? of(codecs.get(0).encoding(), gt -> {
+			? Codec.of(
+				codecs.get(0).encoding(),
+				gt -> {
 					final Object value = codecs.get(0).decoder().apply(gt);
 					return decoder.apply(new Object[]{value});
 				})

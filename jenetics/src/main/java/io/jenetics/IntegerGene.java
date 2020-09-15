@@ -55,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 6.0
+ * @version 6.1
  */
 public final class IntegerGene
 	implements
@@ -176,7 +176,10 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance(final Number allele) {
-		final int value = (int)Math.round(allele.doubleValue());
+		final int value = allele instanceof Double || allele instanceof Float
+			? (int)Math.round(allele.doubleValue())
+			: allele.intValue();
+
 		return IntegerGene.of(value, _min, _max);
 	}
 

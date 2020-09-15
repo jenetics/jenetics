@@ -96,6 +96,7 @@ public final class Arrays {
 	 *
 	 * @param array the array to shuffle
 	 * @param random the PRNG
+	 * @return the shuffled array
 	 */
 	public static double[] shuffle(final double[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {

@@ -130,6 +130,7 @@ public final class Combinatorics {
 	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
+	 * @return the subset array
 	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
@@ -145,16 +146,15 @@ public final class Combinatorics {
 	 * {@code n}. Implementation of the {@code RANKSB} algorithm described by
 	 * <em>Albert Nijenhuis</em> and <em>Herbert Wilf</em> in <b>Combinatorial
 	 * Algorithms for Computers and Calculators</b>
-	 * </p>
-	 *  Reference:</a></em>
+	 * <p>
+	 *  Reference:<em>
 	 *      Albert Nijenhuis, Herbert Wilf,
 	 *      Combinatorial Algorithms for Computers and Calculators,
 	 *      Second Edition,
 	 *      Academic Press, 1978,
 	 *      ISBN: 0-12-519260-6,
 	 *      LC: QA164.N54.
-	 *      Page: 42
-	 * </p>
+	 *      Page: 42</em>
 	 *
 	 * @param n the size of the set.
 	 * @param a the a set array.

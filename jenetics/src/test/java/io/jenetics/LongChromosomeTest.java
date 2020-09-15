@@ -130,4 +130,33 @@ public class LongChromosomeTest
 		);
 	}
 
+	@Test
+	public void map() {
+		final var ch1 = LongChromosome.of(0, 10_000, 100);
+
+		final var ch2 = ch1.map(LongChromosomeTest::half);
+
+		Assert.assertNotSame(ch2, ch1);
+		Assert.assertEquals(ch2.toArray(), half(ch1.toArray()));
+	}
+
+	static long[] half(final long[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			values[i] /= 2;
+		}
+		return values;
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void mapNull() {
+		final var ch = LongChromosome.of(0, 1);
+		ch.map(null);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void mapEmptyArray() {
+		final var ch = LongChromosome.of(0, 1);
+		ch.map(v -> new long[0]);
+	}
+
 }
