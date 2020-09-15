@@ -61,6 +61,7 @@
    <font-face font-family="OpenSymbol embedded" units-per-em="2048" font-weight="normal" font-style="normal" ascent="1419" descent="448"/>
    <missing-glyph horiz-adv-x="2048" d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"/>
    <glyph unicode="≤" horiz-adv-x="1221" d="M 221,0 L 221,98 1405,98 1405,0 221,0 Z M 1405,1184 L 1405,1077 489,711 1405,342 1405,238 221,711 1405,1184 Z"/>
+   <glyph unicode="−" horiz-adv-x="1221" d="M 221,543 L 221,641 1405,641 1405,543 221,543 Z"/>
    <glyph unicode="+" horiz-adv-x="997" d="M 512,115 L 512,516 115,516 115,684 512,684 512,1083 682,1083 682,684 1081,684 1081,516 682,516 682,115 512,115 Z"/>
   </font>
  </defs>
@@ -313,20 +314,22 @@
   </g>
   <g class="OLE2">
    <g id="id38">
-    <rect class="BoundingBox" stroke="none" fill="none" x="11287" y="3197" width="2795" height="560"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="11287" y="3197" width="3495" height="560"/>
     <defs>
      <clipPath id="clip_path_1" clipPathUnits="userSpaceOnUse">
-      <path d="M 11280,3188 L 14069,3188 14069,3761 11280,3761 11280,3188 Z"/>
+      <path d="M 11281,3188 L 14791,3188 14791,3761 11281,3761 11281,3188 Z"/>
      </clipPath>
     </defs>
     <g clip-path="url(#clip_path_1)">
      <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="11436" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">4</tspan></tspan></tspan></text>
      <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-style="italic" font-weight="400"><tspan class="TextPosition" x="11791" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">x</tspan></tspan></tspan></text>
      <text class="TextShape"><tspan class="TextParagraph" font-family="OpenSymbol" font-size="502px" font-weight="400"><tspan class="TextPosition" x="12058" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">+</tspan></tspan></tspan></text>
-     <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="12385" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">7</tspan></tspan></tspan></text>
+     <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="12384" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">7</tspan></tspan></tspan></text>
      <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-style="italic" font-weight="400"><tspan class="TextPosition" x="12771" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">y</tspan></tspan></tspan></text>
-     <text class="TextShape"><tspan class="TextParagraph" font-family="OpenSymbol" font-size="502px" font-weight="400"><tspan class="TextPosition" x="13038" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">≤</tspan></tspan></tspan></text>
-     <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="13454" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">32</tspan></tspan></tspan></text>
+     <text class="TextShape"><tspan class="TextParagraph" font-family="OpenSymbol" font-size="502px" font-weight="400"><tspan class="TextPosition" x="13037" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">−</tspan></tspan></tspan></text>
+     <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="13453" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">32</tspan></tspan></tspan></text>
+     <text class="TextShape"><tspan class="TextParagraph" font-family="OpenSymbol" font-size="502px" font-weight="400"><tspan class="TextPosition" x="13987" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">≤</tspan></tspan></tspan></text>
+     <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Serif, serif" font-size="502px" font-weight="400"><tspan class="TextPosition" x="14403" y="3642"><tspan fill="rgb(0,0,0)" stroke="none">0</tspan></tspan></tspan></text>
     </g>
    </g>
   </g>

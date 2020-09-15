@@ -434,7 +434,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://jenetics.io
+https://jenetics.io
 \end_layout
 
 \end_inset
@@ -2215,7 +2215,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
+https://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -12975,7 +12975,7 @@ How to create instances of the three
 \begin_inset CommandInset href
 LatexCommand href
 name "Javadoc"
-target "http://jenetics.io/javadoc/jenetics/index.html"
+target "https://jenetics.io/javadoc/jenetics/index.html"
 literal "false"
 
 \end_inset
@@ -21499,17 +21499,7 @@ Constraint
 
 \begin_layout Standard
 Constraints delimit the feasible space of solutions of an optimization problem
- and are considered in evolutionary algorithms.
- These influence the desirability of each possible solution.
- If the constraints are satisfied, the solution is accepted and it is called
- a feasible solution; otherwise the solution is removed or modified.
- For a fitness function, 
-\begin_inset Formula $f\left(\mathbf{x}\right)$
-\end_inset
-
-, the constraints are usually given as a list of inequality and a list of
- equality constraints.
- 
+ and are considered in evolutionary algorithms 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Datta2014,Mezura-Montes2009,Coello2002,Michalewicz1995ASO"
@@ -21517,34 +21507,31 @@ literal "false"
 
 \end_inset
 
-
-\begin_inset Formula 
-\begin{equation}
-g_{i}\left(\mathbf{x}\right)\leq0
-\end{equation}
-
-\end_inset
-
-denotes the inequality constraints where 
-\begin_inset Formula $i\in\left[1,...,n\right]$
-\end_inset
-
- and
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-h_{j}\left(\mathbf{x}\right)=0
-\end{equation}
-
-\end_inset
-
- defines the equality constraints where 
-\begin_inset Formula $j\in\left[1,...,p\right]$
-\end_inset
-
 .
+ This influence the desirability of each possible solution.
+ If the constraints are satisfied, the solution is accepted and it is called
+ a feasible solution; otherwise the solution is removed or modified.
+ For a fitness function, 
+\begin_inset Formula $f\left(\mathbf{x}\right)$
+\end_inset
+
+, the constraints are usually given as a list of inequalities, 
+\begin_inset Formula 
+\begin{equation}
+g_{i}\left(\mathbf{x}\right)\leq0,
+\end{equation}
+
+\end_inset
+
+and a list of equations, 
+\begin_inset Formula 
+\begin{equation}
+h_{j}\left(\mathbf{x}\right)=0.
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -21586,74 +21573,67 @@ Constrained 2-dimensional search space
 
 \end_inset
 
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Constrained-search-space"
+plural "false"
+caps "false"
+noprefix "false"
 
-\end_layout
+\end_inset
 
-\begin_layout Standard
-There are different approaches for handling constraints.
- Penalty methods try to convert a constrained optimization problem into
- an unconstrained one by incorporating its constraints into the fitness
- function.
- Transformation methods try to map the feasible region into a regular mapped
- space while preserving the feasibility somehow.
-\end_layout
+ shows how the inequality, 
+\begin_inset Formula $4x+7y-32\leq0$
+\end_inset
 
-\begin_layout Subsection
+, divides the search space into a feasible and an infeasible part.
+ There are different approaches for handling constraints.
+ 
+\emph on
 Penalty methods
-\end_layout
-
-\begin_layout Standard
-Penalty methods try to convert a constrained optimization problem into an
- unconstrained one by incorporating its constraints into the fitness function.
- One commonly used penalty formulation is
-\begin_inset Formula 
-\[
-f'\left(x\right)=f\left(x\right)+P\left(x\right),
-\]
-
-\end_inset
-
-where 
-\begin_inset Formula $P\left(x\right)$
-\end_inset
-
- is the penalty term defined by 
-\begin_inset Formula 
-\[
-P\left(x\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
+\emph default
+ try to convert a constrained optimization problem into an unconstrained
+ one by incorporating its constraints into the fitness function.
+ 
+\emph on
 Transformation methods
+\emph default
+ try to map the feasible region into a regular mapped space while preserving
+ the feasibility somehow.
+ The 
+\family typewriter
+Constraint
+\family default
+ interface of 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ takes the second approach and tries to preserve feasibility through a 
+\emph on
+repair
+\emph default
+ step for invalid candidate solutions.
 \end_layout
 
 \begin_layout Standard
-Transformation methods try to map the feasible region into a regular mapped
- space while preserving the feasibility somehow.
- For example, the homomorphous map (HM) proposed by Koziel and Michalewicz
- [7] tries to transform the feasible region into a higher-dimensional cube.
- Though the method was competitive, it has difficulty in practical implementatio
-ns because this method involves nontrivial transformations and a very high
- computational cost.
- On the other hand, other methods use special representations and operators
- to construct feasible solutions while preserving their feasibility.
- But such special operators methods tend to work for linear constraints
- [7,8].
- These transformation methods are also called decoder and special operator
- methods in the literature [10].
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-—-
-\end_layout
-
-\begin_layout Standard
-A given problem should usually be encoded in a way, that it is not possible
+Usually, a given problem should be encoded in a way, that it is not possible
  for the evolution
 \family typewriter
  Engine
@@ -22173,8 +22153,8 @@ type
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-x_{1}+x_{2} & \leq & 1\\
-x_{2}\cdot x_{3} & \leq & 0.5.
+x_{1}+x_{2}-1 & \leq & 0\\
+x_{2}\cdot x_{3}-0.5 & \leq & 0.
 \end{eqnarray*}
 
 \end_inset
@@ -38656,7 +38636,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
+https://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
