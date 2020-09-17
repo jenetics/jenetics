@@ -164,7 +164,8 @@ public interface Constraint<
 	 * {@code false}.
 	 *
 	 * @param individual the phenotype to repair
-	 * @param generation the actual generation used for the repaired phenotype
+	 * @param generation the actual generation, where this method is called by
+	 *        the evolution engine
 	 * @return a newly created, valid phenotype. The implementation is free to
 	 *         use the given invalid {@code individual} as a starting point for
 	 *         the created phenotype.
@@ -287,6 +288,8 @@ public interface Constraint<
 	 * repaired as template. The <em>repaired</em> phenotype might still be
 	 * invalid.
 	 *
+	 * @see RetryConstraint#of(Predicate)
+	 *
 	 * @param validator the phenotype validator used by the constraint
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
@@ -295,10 +298,7 @@ public interface Constraint<
 	 */
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
-		return of(
-			validator,
-			(pt, gen) -> Phenotype.of(pt.genotype().newInstance(), gen)
-		);
+		return RetryConstraint.of(validator);
 	}
 
 	/**
