@@ -19,14 +19,6 @@
  */
 package io.jenetics.engine;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.stream.Stream;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.LongChromosome;
@@ -35,6 +27,13 @@ import io.jenetics.Phenotype;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -171,6 +170,45 @@ public class CompositeCodecTest {
 		Assert.assertEquals(sum, codec.decoder().apply(gt), 0.000001);
 	}
 
+	@Test(invocationCount = 10)
+	public void constrainedEncoding() {
+		final Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
+			pt -> pt.genotype().gene().doubleValue() < 0.5,
+			100
+		);
+
+		ISeq<Codec<?, DoubleGene>> codecs = ISeq
+			.of(
+				Codecs.ofScalar(DoubleRange.of(0.1, 0.9)),
+				Codecs.ofScalar(DoubleRange.of(0.3, 0.7)),
+				Codecs.ofVector(DoubleRange.of(0.3, 1.7), DoubleRange.of(0.3, 0.7)))
+			.map(codec -> constraint.constrain(codec));
+
+		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
+			codecs,
+			values -> {
+				final Double v1 = (Double)values[0];
+				final Double v2 = (Double)values[1];
+				final double[] v3 = (double[])values[2];
+
+				Assert.assertTrue(v1 < 0.5, "v1: " + v1);
+				Assert.assertTrue(v2 < 0.5, "v2: " + v2);
+				Assert.assertTrue(v3[0] < 0.5, "v3[0]: " + v3[0]);
+				return v1 + v2 + v3[0] + v3[1];
+			}
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+
+		final double sum = gt.stream()
+			.mapToDouble(c -> c.stream()
+				.mapToDouble(DoubleGene::doubleValue)
+				.sum())
+			.sum();
+
+		Assert.assertEquals(sum, codec.decoder().apply(gt), 0.000001);
+	}
+
 	@Test
 	public void example() {
 		final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
@@ -235,7 +273,6 @@ public class CompositeCodecTest {
 		final Duration duration = durationCodec.decoder()
 			.apply(pt.genotype());
 		//System.out.println(duration);
-
 	}
 
 }
