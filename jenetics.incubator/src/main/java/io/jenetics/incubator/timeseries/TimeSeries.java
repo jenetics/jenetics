@@ -17,13 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.example.timeseries;
+package io.jenetics.incubator.timeseries;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Flow;
-import java.util.concurrent.Flow.Subscriber;
-import java.util.concurrent.Flow.Subscription;
-import java.util.concurrent.SubmissionPublisher;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -33,16 +28,13 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.Engine.Setup;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.FitnessNullifier;
-import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
-import io.jenetics.prog.regression.Complexity;
 import io.jenetics.prog.regression.Error;
-import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Regression;
 import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;

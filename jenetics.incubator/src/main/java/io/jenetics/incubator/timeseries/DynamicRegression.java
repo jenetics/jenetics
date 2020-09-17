@@ -17,12 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.example.timeseries;
+package io.jenetics.incubator.timeseries;
 
-import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import io.jenetics.Mutator;
@@ -43,18 +41,13 @@ import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;
 
 /**
- * Reactive version.
+ * Version using Java Streams with flatMap.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class RegressionPublisher<T>
-	implements
-		Publisher<Tree<Op<T>, ?>>,
-		Consumer<Sample<T>>,
-		AutoCloseable
-{
+public class DynamicRegression<T> implements AutoCloseable {
 
 	private final SampleBuffer<T> _samples = new SampleBuffer<>(50);
 
@@ -89,45 +82,42 @@ public class RegressionPublisher<T>
 
 	private final StreamPublisher<EvolutionResult<ProgramGene<T>, Double>> _publisher =
 		new StreamPublisher<>();
-
-	@Override
-	public void subscribe(Subscriber<? super Tree<Op<T>, ?>> subscriber) {
+	{
 		_publisher.subscribe(new Subscriber<>() {
 			@Override
 			public void onSubscribe(final Subscription subscription) {
-				subscriber.onSubscribe(subscription);
 			}
 
 			@Override
 			public void onNext(final EvolutionResult<ProgramGene<T>, Double> result) {
-				subscriber.onNext(result.bestPhenotype().genotype().gene());
 			}
 
 			@Override
 			public void onError(final Throwable throwable) {
-				subscriber.onError(throwable);
 			}
 
 			@Override
 			public void onComplete() {
-				subscriber.onComplete();
 			}
 		});
+
+		_publisher.attach(_stream);
+	}
+
+	/**
+	 * The flat map function, which maps new sample points to evolved regression
+	 * trees (programs).
+	 *
+	 * @param sample the new sample point to be added
+	 * @return a new evolved regression tree, if available.
+	 */
+	public Stream<Tree<Op<T>, ?>> regress(final Sample<T> sample) {
+		_samples.add(sample);
+		return Stream.empty();
 	}
 
 	@Override
 	public void close() {
 		_publisher.close();
 	}
-
-	/**
-	 * Add a new sample point to the regression analysis.
-	 *
-	 * @param sample the sample point to add
-	 */
-	@Override
-	public void accept(final Sample<T> sample) {
-		_samples.add(sample);
-	}
-
 }

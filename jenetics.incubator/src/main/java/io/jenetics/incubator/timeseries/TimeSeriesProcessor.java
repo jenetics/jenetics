@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.example.timeseries;
+package io.jenetics.incubator.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
