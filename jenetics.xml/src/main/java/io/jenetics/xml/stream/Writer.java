@@ -51,7 +51,7 @@ import javax.xml.stream.XMLStreamWriter;
  *         elem("max", Writer.<Integer>text().map(ch -> ch.getMax())),
  *         elem("alleles",
  *             elems("allele",  Writer.<Integer>text())
- *                 .map(ch -> ch.toSeq().map(g -> g.getAllele()))
+ *                 .map(ch -> ISeq.of(ch).map(g -> g.getAllele()))
  *         )
  *     );
  * }</pre>

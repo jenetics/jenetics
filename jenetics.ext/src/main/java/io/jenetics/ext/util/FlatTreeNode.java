@@ -276,9 +276,9 @@ public final class FlatTreeNode<V>
 		final int size = tree.size();
 		assert size >= 1;
 
-		final Object[] elements = new Object[size];
-		final int[] childOffsets = new int[size];
-		final int[] childCounts = new int[size];
+		final var elements = new Object[size];
+		final var childOffsets = new int[size];
+		final var childCounts = new int[size];
 
 		int childOffset = 1;
 		int index = 0;
@@ -291,6 +291,7 @@ public final class FlatTreeNode<V>
 			childOffset += node.childCount();
 			++index;
 		}
+		assert index == size;
 
 		return new FlatTreeNode<>(
 			0,

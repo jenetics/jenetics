@@ -630,7 +630,9 @@ public final class Engine<
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(final Problem<T, G, C> problem) {
-		return builder(problem.fitness(), problem.codec());
+		final var builder = builder(problem.fitness(), problem.codec());
+		problem.constraint().ifPresent(builder::constraint);
+		return builder;
 	}
 
 	/**
