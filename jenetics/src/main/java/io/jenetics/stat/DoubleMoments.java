@@ -33,6 +33,24 @@ import java.util.stream.Collector;
  * @implNote
  * This class is immutable and thread-safe.
  *
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+ * 	      no values have been recorded.
+ * @param max the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+ * 	      no values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been
+ * 	      recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
+ * @param variance the variance of values recorded, or {@code Double.NaN} if no
+ * 	      values have been recorded
+ * @param skewness the <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+ *        of values recorded, or {@code Double.NaN} if less than two values have
+ *        been recorded
+ * @param kurtosis the <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+ *        of values recorded, or {@code Double.NaN} if less than four values
+ *        have been recorded
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version !__version__!
@@ -50,7 +68,7 @@ public final record DoubleMoments(
 	implements Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	@Override
 	public String toString() {
