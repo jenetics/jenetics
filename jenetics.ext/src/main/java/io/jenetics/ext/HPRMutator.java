@@ -93,12 +93,12 @@ public class HPRMutator<
 				}
 			}
 
-			result = MutatorResult.of(
+			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
 				mutations
 			);
 		} else {
-			result = MutatorResult.of(chromosome);
+			result = new MutatorResult<>(chromosome, 0);
 		}
 
 		return result;

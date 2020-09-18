@@ -120,7 +120,7 @@ public class Mutator<
 		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> random.nextInt() < P
 				? mutate(pt, generation, p, random)
-				: MutatorResult.of(pt));
+				: new MutatorResult<>(pt, 0));
 
 		return new AltererResult<>(
 			result.map(MutatorResult::result).asISeq(),
@@ -171,10 +171,10 @@ public class Mutator<
 		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.stream()
 			.map(gt -> random.nextInt() < P
 				? mutate(gt, p, random)
-				: MutatorResult.of(gt))
+				: new MutatorResult<>(gt, 0))
 			.collect(ISeq.toISeq());
 
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			Genotype.of(result.map(MutatorResult::result)),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
@@ -198,11 +198,11 @@ public class Mutator<
 		final int P = Probabilities.toInt(p);
 		final ISeq<MutatorResult<G>> result = chromosome.stream()
 			.map(gene -> random.nextInt() < P
-				? MutatorResult.of(mutate(gene, random), 1)
-				: MutatorResult.of(gene))
+				? new MutatorResult<>(mutate(gene, random), 1)
+				: new MutatorResult<>(gene, 0))
 			.collect(ISeq.toISeq());
 
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			chromosome.newInstance(result.map(MutatorResult::result)),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);

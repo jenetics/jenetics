@@ -118,7 +118,7 @@ public class WeaselMutator<
 			.map(gt -> mutate(gt, p, random))
 			.collect(ISeq.toISeq());
 
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			Genotype.of(result.map(MutatorResult::result)),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
