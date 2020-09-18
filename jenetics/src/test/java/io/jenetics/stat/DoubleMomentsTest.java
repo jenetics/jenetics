@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -50,11 +48,6 @@ public class DoubleMomentsTest extends ObjectTester<DoubleMoments> {
 				random.nextDouble()
 			);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(DoubleMoments.class).verify();
 	}
 
 }
