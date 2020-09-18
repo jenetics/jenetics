@@ -19,13 +19,13 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readString;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.SerialIO.writeString;
-import static java.util.Objects.requireNonNull;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -88,6 +88,11 @@ public class CharacterChromosome
 	@Override
 	public char charAt(final int index) {
 		return get(index).charValue();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return super.isEmpty();
 	}
 
 	@Override
