@@ -96,13 +96,13 @@ gradle.projectsEvaluated {
 		tasks.withType<Javadoc> {
 			val doclet = options as StandardJavadocDocletOptions
 			doclet.addBooleanOption("-enable-preview", true)
-			doclet.addStringOption("-release", "14")
+			doclet.addStringOption("-release", "15")
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_14
-				targetCompatibility = JavaVersion.VERSION_14
+				sourceCompatibility = JavaVersion.VERSION_15
+				targetCompatibility = JavaVersion.VERSION_15
 			}
 
 			setupJava(project)
@@ -158,7 +158,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.5"
+		toolVersion = "0.8.6"
 	}
 
 	project.tasks {
