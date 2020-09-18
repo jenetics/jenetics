@@ -98,7 +98,7 @@ public class WeaselMutator<
 		final var result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
-		return AltererResult.of(
+		return new AltererResult<>(
 			result
 				.map(MutatorResult::result)
 				.asISeq(),

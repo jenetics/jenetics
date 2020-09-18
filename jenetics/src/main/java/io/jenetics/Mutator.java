@@ -122,7 +122,7 @@ public class Mutator<
 				? mutate(pt, generation, p, random)
 				: MutatorResult.of(pt));
 
-		return AltererResult.of(
+		return new AltererResult<>(
 			result.map(MutatorResult::result).asISeq(),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
