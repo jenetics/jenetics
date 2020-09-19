@@ -406,10 +406,10 @@ public final class EvolutionResult<
 	Collector<EvolutionResult<G, C>, ?, EvolutionResult<G, C>>
 	toBestEvolutionResult() {
 		return Collector.of(
-			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.max() != null
+			(MinMax<EvolutionResult<G, C>> mm) -> mm.max() != null
 				? mm.max().withTotalGenerations(mm.count())
 				: null
 		);
@@ -440,10 +440,10 @@ public final class EvolutionResult<
 	Collector<EvolutionResult<G, C>, ?, Phenotype<G, C>>
 	toBestPhenotype() {
 		return Collector.of(
-			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.max() != null
+			(MinMax<EvolutionResult<G, C>> mm) -> mm.max() != null
 				? mm.max().bestPhenotype()
 				: null
 		);
@@ -474,10 +474,10 @@ public final class EvolutionResult<
 	Collector<EvolutionResult<G, C>, ?, Genotype<G>>
 	toBestGenotype() {
 		return Collector.of(
-			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.max() != null
+			(MinMax<EvolutionResult<G, C>> mm) -> mm.max() != null
 				? mm.max().bestPhenotype() != null
 					? mm.max().bestPhenotype().genotype()
 					: null
@@ -517,10 +517,10 @@ public final class EvolutionResult<
 		requireNonNull(decoder);
 
 		return Collector.of(
-			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.max() != null
+			(MinMax<EvolutionResult<G, C>> mm) -> mm.max() != null
 				? mm.max().bestPhenotype() != null
 					? decoder.apply(mm.max().bestPhenotype().genotype())
 					: null
