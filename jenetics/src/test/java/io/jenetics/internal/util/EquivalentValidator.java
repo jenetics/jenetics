@@ -17,34 +17,48 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.internal.util;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 6.1
  */
-plugins {
-	`java-library`
-	idea
-	`maven-publish`
-	id("me.champeau.gradle.jmh")
-}
+public interface EquivalentValidator<A, B> {
 
-description = "Jenetics - Java Genetic Algorithm Library"
+	Function<A, B> from();
 
-extra["moduleName"] = "io.jenetics.base"
+	BiFunction<A, B, A> to();
 
-dependencies {
-	testImplementation(Libs.ApacheCommonsMath)
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
-	testImplementation(Libs.PRNGine)
+	default void verify(final A value) {
+		final B object = from().apply(value);
+		final A reconstructed = to().apply(value, object);
+		Assert.assertEquals(reconstructed, value);
+	}
 
-	jmh(Libs.PRNGine)
-}
+	public static <A, B> EquivalentValidator<A, B> of(
+		final Function<A, B> from,
+		final BiFunction<A, B, A> to
+	) {
+		requireNonNull(from);
+		requireNonNull(to);
 
-tasks.test { dependsOn(tasks.compileJmhJava) }
+		return new EquivalentValidator<A, B>() {
+			@Override
+			public Function<A, B> from() {
+				return from;
+			}
 
-jmh {
-	include = listOf(".*BitArrayPerf.*")
+			@Override
+			public BiFunction<A, B, A> to() {
+				return to;
+			}
+		};
+	}
+
 }
