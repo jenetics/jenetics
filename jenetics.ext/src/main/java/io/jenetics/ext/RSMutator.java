@@ -79,12 +79,12 @@ public class RSMutator<
 			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 
-			result = MutatorResult.of(
+			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
 				points[1] - points[0] - 1
 			);
 		} else {
-			result = MutatorResult.of(chromosome);
+			result = new MutatorResult<>(chromosome, 0);
 		}
 
 		return result;

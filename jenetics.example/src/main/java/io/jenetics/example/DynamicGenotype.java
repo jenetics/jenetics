@@ -94,7 +94,7 @@ public class DynamicGenotype {
 				pop.set(i, mpt);
 			});
 
-			return AltererResult.of(pop.toISeq(), alterations.value);
+			return new AltererResult<>(pop.toISeq(), alterations.value);
 		}
 
 		private Genotype<G> mutate(

@@ -66,14 +66,43 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
+		val xlint = listOf(
+			//"preview",
+			"cast",
+			"classfile",
+			"deprecation",
+			"dep-ann",
+			"divzero",
+			"empty",
+			"finally",
+			"overrides",
+			"rawtypes",
+			"serial",
+			"static",
+			"try",
+			"unchecked"
+		).joinToString(separator = ",")
+
 		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:" + xlint())
+			options.compilerArgs.add("-Xlint:$xlint")
+			options.compilerArgs.add("--enable-preview")
+		}
+
+		tasks.withType<Test> {
+			useTestNG()
+			jvmArgs("--enable-preview")
+		}
+
+		tasks.withType<Javadoc> {
+			val doclet = options as StandardJavadocDocletOptions
+			doclet.addBooleanOption("-enable-preview", true)
+			doclet.addStringOption("-release", "15")
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_11
-				targetCompatibility = JavaVersion.VERSION_11
+				sourceCompatibility = JavaVersion.VERSION_15
+				targetCompatibility = JavaVersion.VERSION_15
 			}
 
 			setupJava(project)
@@ -129,7 +158,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.5"
+		toolVersion = "0.8.6"
 	}
 
 	project.tasks {
@@ -144,7 +173,6 @@ fun setupTestReporting(project: Project) {
 		}
 
 		named<Test>("test") {
-			useTestNG()
 			finalizedBy("jacocoTestReport")
 		}
 	}
@@ -165,13 +193,13 @@ fun setupJavadoc(project: Project) {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/11/docs/api",
+				"https://docs.oracle.com/en/java/javase/15/docs/api",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+		//doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.tags = listOf(
@@ -226,28 +254,6 @@ fun setupJavadoc(project: Project) {
 			}
 		}
 	}
-}
-
-/**
- * The Java compiler XLint flags.
- */
-fun xlint(): String {
-	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
-	return listOf(
-		"cast",
-		"classfile",
-		"deprecation",
-		"dep-ann",
-		"divzero",
-		"empty",
-		"finally",
-		"overrides",
-		"rawtypes",
-		"serial",
-		"static",
-		"try",
-		"unchecked"
-	).joinToString(separator = ",")
 }
 
 val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"

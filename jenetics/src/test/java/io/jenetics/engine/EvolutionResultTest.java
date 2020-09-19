@@ -73,7 +73,7 @@ public class EvolutionResultTest
 					.collect(ISeq.toISeq()),
 				random.nextInt(1000),
 				random.nextInt(1000),
-				EvolutionDurations.of(
+				new EvolutionDurations(
 					Duration.ofMillis(random.nextInt(1_000_000)),
 					Duration.ofMillis(random.nextInt(1_000_000)),
 					Duration.ofMillis(random.nextInt(1_000_000)),
