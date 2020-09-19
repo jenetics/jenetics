@@ -19,11 +19,14 @@
  */
 package io.jenetics.gradle
 
+import Env
+import Jenetics
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.filter
+import org.gradle.kotlin.dsl.register
 
 /**
  * Plugin which adds a build task for creating a PDF file from the lyx sources.

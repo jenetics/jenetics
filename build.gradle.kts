@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.0" apply false
+	id("me.champeau.gradle.jmh") version "0.5.1" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	version = "6.5"
+	gradleVersion = "6.6.1"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -287,7 +287,7 @@ fun setupPublishing(project: Project) {
 	project.configure<PublishingExtension> {
 		publications {
 			create<MavenPublication>("mavenJava") {
-				artifactId = Jenetics.ID
+				artifactId = project.name
 				from(project.components["java"])
 				versionMapping {
 					usage("java-api") {
