@@ -22,6 +22,7 @@ package io.jenetics;
 import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -161,6 +162,36 @@ public class RouletteWheelSelectorTest
 				loops
 			);
 		});
+	}
+
+	@Test
+	public void issue713() {
+		final List<DoubleChromosome> chromosomes = new ArrayList<>();
+
+		var gene = DoubleGene.of(-6480.008430943683, -10_000, 10_000);
+		var ch = DoubleChromosome.of(gene);
+		chromosomes.add(ch);
+
+		for (int i = 1; i < 100; ++i) {
+			gene = DoubleGene.of(-6480.008430943731, -10_000, 10_000);
+			ch = DoubleChromosome.of(gene);
+			chromosomes.add(ch);
+		}
+
+		final var population = chromosomes.stream()
+			.map(Genotype::of)
+			.map(gt -> Phenotype.of(gt, 10, gt.gene().allele()))
+			.collect(ISeq.toISeq());
+
+		final var selector = new RouletteWheelSelector<DoubleGene, Double>();
+
+		final var selected = selector.select(population, 10, Optimize.MINIMUM);
+		for (var individual : selected) {
+			Assert.assertEquals(
+				individual.genotype().gene().allele().doubleValue(),
+				-6480.008430943731
+			);
+		}
 	}
 
 }

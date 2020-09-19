@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
@@ -55,7 +56,7 @@ import io.jenetics.Genotype;
  * @param <C> the result type of the fitness function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.2
+ * @version 6.1
  * @since 3.4
  */
 public interface Problem<
@@ -79,6 +80,17 @@ public interface Problem<
 	 * @return the engine codec
 	 */
 	Codec<T, G> codec();
+
+	/**
+	 * Return the constraint, associated with {@code this} problem, if available.
+	 *
+	 * @since 6.1
+	 *
+	 * @return the constraint, associated with {@code this} problem
+	 */
+	default Optional<Constraint<G, C>> constraint() {
+		return Optional.empty();
+	}
 
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
@@ -127,6 +139,73 @@ public interface Problem<
 	}
 
 	/**
+	 * Return a new optimization <i>problem</i> with the given parameters. The
+	 * given {@code constraint} is applied to the {@link Engine}, via
+	 * {@link Engine.Builder#constraint(Constraint)}, and the {@link Codec}, via
+	 * {@link Constraint#constrain(Codec)}.
+	 * <p>
+	 * <b>Note</b><br>
+	 *     When creating a new {@code Problem} instance with this factory method,
+	 *     there is no need for additionally <em>constraining</em> the given
+	 *     {@code codec} with {@link Constraint#constrain(Codec)}.
+	 *
+	 * @since 6.1
+	 *
+	 * @see Engine.Builder#constraint(Constraint)
+	 * @see Constraint#constrain(Codec)
+	 *
+	 * @param fitness the problem fitness function
+	 * @param codec the evolution engine codec
+	 * @param constraint the problem constraint, may be {@code null}
+	 * @param <T> the (<i>native</i>) argument type of the problem fitness function
+	 * @param <G> the gene type the evolution engine is working with
+	 * @param <C> the result type of the fitness function
+	 * @return a new problem object from the given parameters
+	 * @throws NullPointerException if the {@code fitness} or {@code codec} is
+	 *         {@code null}
+	 */
+	static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Problem<T, G, C> of(
+		final Function<T, C> fitness,
+		final Codec<T, G> codec,
+		final Constraint<G, C> constraint
+	) {
+		requireNonNull(fitness);
+		requireNonNull(codec);
+
+		final var constrainedCodec = wrap(constraint, codec);
+
+		return new Problem<>() {
+			@Override
+			public Codec<T, G> codec() {
+				return constrainedCodec;
+			}
+			@Override
+			public Function<T, C> fitness() {
+				return fitness;
+			}
+			@Override
+			public Optional<Constraint<G, C>> constraint() {
+				return Optional.ofNullable(constraint);
+			}
+		};
+	}
+
+	private static  <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<T, G> wrap(final Constraint<G, C> constraint, final Codec<T, G> codec) {
+		Codec<T, G> result = codec;
+		if (constraint != null) {
+			if (codec instanceof InvertibleCodec) {
+				result = constraint.constrain((InvertibleCodec<T, G>)codec);
+			} else {
+				result = constraint.constrain(codec);
+			}
+		}
+
+		return result;
+	}
+
+	/**
 	 * Return a new optimization <i>problem</i> with the given parameters.
 	 *
 	 * @param fitness the problem fitness function
@@ -142,20 +221,7 @@ public interface Problem<
 		final Function<T, C> fitness,
 		final Codec<T, G> codec
 	) {
-		requireNonNull(fitness);
-		requireNonNull(codec);
-
-		return new Problem<>() {
-			@Override
-			public Codec<T, G> codec() {
-				return codec;
-			}
-
-			@Override
-			public Function<T, C> fitness() {
-				return fitness;
-			}
-		};
+		return of(fitness, codec, null);
 	}
 
 }

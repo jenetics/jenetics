@@ -280,6 +280,8 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 */
 	public static <T> Collector<T, ?, ParetoFront<T>>
 	toParetoFront(final Comparator<? super T> dominance) {
+		requireNonNull(dominance);
+
 		return Collector.of(
 			() -> new ParetoFront<>(dominance),
 			ParetoFront::add,

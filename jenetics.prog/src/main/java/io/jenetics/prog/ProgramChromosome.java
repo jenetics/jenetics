@@ -222,7 +222,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
+		final ISeq<ProgramGene<A>> genes = FlatTreeNode.ofTree(program).stream()
 			.map(n -> new ProgramGene<>(
 				n.value(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());

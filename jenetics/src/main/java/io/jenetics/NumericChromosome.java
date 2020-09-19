@@ -49,7 +49,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default byte byteValue(int index) {
+	default byte byteValue(final int index) {
 		return get(index).allele().byteValue();
 	}
 
@@ -72,7 +72,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default short shortValue(int index) {
+	default short shortValue(final int index) {
 		return get(index).allele().shortValue();
 	}
 
@@ -95,7 +95,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default int intValue(int index) {
+	default int intValue(final int index) {
 		return get(index).allele().intValue();
 	}
 
@@ -118,7 +118,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default long longValue(int index) {
+	default long longValue(final int index) {
 		return get(index).allele().longValue();
 	}
 
@@ -141,7 +141,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default float floatValue(int index) {
+	default float floatValue(final int index) {
 		return get(index).allele().floatValue();
 	}
 
@@ -164,7 +164,7 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	default double doubleValue(int index) {
+	default double doubleValue(final int index) {
 		return get(index).allele().doubleValue();
 	}
 

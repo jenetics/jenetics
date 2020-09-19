@@ -69,7 +69,7 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 	@Test
 	public void notEqualsAlleleNull() {
 		final Object that = factory().newInstance().allele();
-		Assert.assertFalse(that.equals(null));
+		Assert.assertNotNull(that);
 	}
 
 	@Test

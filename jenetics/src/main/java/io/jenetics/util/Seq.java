@@ -950,7 +950,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given list is {@code null}
 	 */
 	static <T> Seq<T> viewOf(final BaseSeq<? extends T> seq) {
-		return seq.length() == 0
+		return seq.isEmpty()
 			? empty()
 			: new SeqView<>(new BaseSeqList<>(seq));
 	}

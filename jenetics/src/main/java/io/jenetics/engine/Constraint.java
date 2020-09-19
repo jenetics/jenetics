@@ -26,7 +26,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
+import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.util.Factory;
 
 /**
  * This interface allows you to define constraints on single phenotypes. It is a
@@ -42,6 +44,24 @@ import io.jenetics.Phenotype;
  *         population.set(i, constraint.repair(individual, generation));
  *     }
  * }
+ * }</pre>
+ *
+ * <b>Note</b><br>
+ * Keep in mind, that this interface only repairs invalid individuals, which
+ * has been destroyed by the <em>evolution</em> process. Individuals, created
+ * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
+ * This means, that it is still possible, to have invalid individuals, created
+ * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
+ * factory which obeys {@code this} constraint. The following code will show
+ * how to create such a <em>constrained</em> genotype factory and use it for
+ * creating an evolution engine.
+ * <pre>{@code
+ * final Constraint<DoubleGene, Double> constraint = ...;
+ * final Factory<Genotype<DoubleGene>> gtf = ...;
+ * final Engine<DoubleGene, Double> engine = Engine
+ *     .builder(fitness, constraint.constrain(gtf))
+ *     .constraint(constraint)
+ *     .build();
  * }</pre>
  *
  * The following example illustrates how a constraint which its repair function
@@ -106,6 +126,7 @@ import io.jenetics.Phenotype;
  *
  * @see Engine.Builder#constraint(Constraint)
  * @see RetryConstraint
+ * @see #constrain(Factory)
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
@@ -118,7 +139,7 @@ import io.jenetics.Phenotype;
  * invalid individuals after the selection and altering step.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.1
  * @since 5.0
  */
 public interface Constraint<
@@ -143,7 +164,8 @@ public interface Constraint<
 	 * {@code false}.
 	 *
 	 * @param individual the phenotype to repair
-	 * @param generation the actual generation used for the repaired phenotype
+	 * @param generation the actual generation, where this method is called by
+	 *        the evolution engine
 	 * @return a newly created, valid phenotype. The implementation is free to
 	 *         use the given invalid {@code individual} as a starting point for
 	 *         the created phenotype.
@@ -155,6 +177,75 @@ public interface Constraint<
 		final long generation
 	);
 
+	/**
+	 * Wraps the given genotype factory into a factory, which only creates
+	 * individuals obeying {@code this} constraint. The following code will
+	 * create an evolution engine, where also the genotype factory will only
+	 * create valid individuals.
+	 *
+	 * <pre>{@code
+	 * final Constraint<DoubleGene, Double> constraint = ...;
+	 * final Factory<Genotype<DoubleGene>> gtf = ...;
+	 * final Engine<DoubleGene, Double> engine = Engine
+	 *     .builder(fitness, constraint.constrain(gtf))
+	 *     .constraint(constraint)
+	 *     .build();
+	 * }</pre>
+	 *
+	 * @since 6.1
+	 *
+	 * @see #constrain(Codec)
+	 * @see #constrain(InvertibleCodec)
+	 *
+	 * @param gtf the genotype factory to wrap
+	 * @return a new constrained genotype factory.
+	 * @throws NullPointerException if the given genotype factory is {@code null}
+	 */
+	default Factory<Genotype<G>> constrain(final Factory<Genotype<G>> gtf) {
+		requireNonNull(gtf);
+		return () -> {
+			final Phenotype<G, C> result = Phenotype.of(gtf.newInstance(), 1);
+			return (test(result) ? result : repair(result, 1)).genotype();
+		};
+	}
+
+	/**
+	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
+	 *
+	 * @since 6.1
+	 *
+	 * @see #constrain(Factory)
+	 * @see #constrain(InvertibleCodec)
+	 *
+	 * @param codec the codec to wrap
+	 * @param <T> the argument type of a given problem
+	 * @return the wrapped codec, which obeys {@code this} constraint
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	default <T> Codec<T, G> constrain(final Codec<T, G> codec) {
+		return Codec.of(constrain(codec.encoding()), codec.decoder());
+	}
+
+	/**
+	 * Wraps the given codec into a codec, which obeys {@code this} constraint.
+	 *
+	 * @since 6.1
+	 *
+	 * @see #constrain(Factory)
+	 * @see #constrain(Codec)
+	 *
+	 * @param codec the codec to wrap
+	 * @param <T> the argument type of a given problem
+	 * @return the wrapped codec, which obeys {@code this} constraint
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	default <T> InvertibleCodec<T, G> constrain(final InvertibleCodec<T, G> codec) {
+		return InvertibleCodec.of(
+			constrain(codec.encoding()),
+			codec.decoder(),
+			codec.encoder()
+		);
+	}
 
 	/**
 	 * Return a new constraint object with the given {@code validator} and
@@ -197,6 +288,8 @@ public interface Constraint<
 	 * repaired as template. The <em>repaired</em> phenotype might still be
 	 * invalid.
 	 *
+	 * @see RetryConstraint#of(Predicate)
+	 *
 	 * @param validator the phenotype validator used by the constraint
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
@@ -205,10 +298,7 @@ public interface Constraint<
 	 */
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
-		return of(
-			validator,
-			(pt, gen) -> Phenotype.of(pt.genotype().newInstance(), gen)
-		);
+		return RetryConstraint.of(validator);
 	}
 
 	/**
