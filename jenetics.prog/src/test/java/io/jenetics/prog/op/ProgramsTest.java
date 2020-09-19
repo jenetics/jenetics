@@ -75,7 +75,7 @@ public class ProgramsTest {
 			TERMINALS
 		);
 
-		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).flattenedNodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.ofTree(tree).flattenedNodes();
 
 		Assert.assertEquals(
 			Program.toTree(seq, TERMINALS),
@@ -96,8 +96,8 @@ public class ProgramsTest {
 			TERMINALS
 		);
 
-		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.of(tree1).flattenedNodes();
-		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.of(tree2).flattenedNodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.ofTree(tree1).flattenedNodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.ofTree(tree2).flattenedNodes();
 
 		final ISeq<FlatTreeNode<Op<Double>>> seq3 = ISeq
 			.of(seq1.subSeq(0, seq1.length()/2))
@@ -113,7 +113,7 @@ public class ProgramsTest {
 			OPERATIONS,
 			TERMINALS
 		);
-		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).flattenedNodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.ofTree(tree).flattenedNodes();
 
 		final int[] expected = seq.stream()
 			.mapToInt(FlatTreeNode::childOffset)

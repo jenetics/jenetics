@@ -89,9 +89,10 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private int rewriting(final TreeNode<Op<T>> node) {
 		if (matches(node)) {
-			final T[] args = node.childStream()
-				.map(child -> ((Val<T>)child.value()).value())
-				.toArray(this::newArray);
+			final T[] args = newArray(node.childCount());
+			for (int i = 0, n = node.childCount(); i < n; ++i) {
+				args[i] = ((Val<T>)node.childAt(i).value()).value();
+			}
 
 			final T value = node.value().apply(args);
 			node.removeAllChildren();
