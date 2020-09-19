@@ -90,4 +90,12 @@ final class Numbers {
 			: Optional.empty();
 	}
 
+	static Double[] box(final double... values) {
+		final Double[] result = new Double[values.length];
+		for (int i = values.length; --i >= 0;) {
+			result[i] = values[i];
+		}
+		return result;
+	}
+
 }

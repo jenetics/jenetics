@@ -56,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 6.0
+ * @version 6.1
  */
 public final class LongGene
 	implements
@@ -68,7 +68,7 @@ public final class LongGene
 
 	private static final long serialVersionUID = 2L;
 
-	private final long _value;
+	private final long _allele;
 	private final long _min;
 	private final long _max;
 
@@ -78,19 +78,19 @@ public final class LongGene
 	 * no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	private LongGene(final long value, final long min, final long max) {
-		_value = value;
+	private LongGene(final long allele, final long min, final long max) {
+		_allele = allele;
 		_min = min;
 		_max = max;
 	}
 
 	@Override
 	public Long allele() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
@@ -116,68 +116,72 @@ public final class LongGene
 
 	@Override
 	public byte byteValue() {
-		return (byte)_value;
+		return (byte) _allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short)_value;
+		return (short) _allele;
 	}
 
 	@Override
 	public int intValue() {
-		return (int)_value;
+		return (int) _allele;
 	}
 
 	@Override
 	public long longValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float)_value;
+		return (float) _allele;
 	}
 
 	@Override
 	public double doubleValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public boolean isValid() {
-		return _value >= _min && _value <= _max;
+		return _allele >= _min && _allele <= _max;
 	}
 
 	@Override
 	public int compareTo(final LongGene other) {
-		return Long.compare(_value, other._value);
+		return Long.compare(_allele, other._allele);
 	}
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return LongGene.of(_value + (that._value - _value)/2, _min, _max);
+		return LongGene.of(_allele + (that._allele - _allele)/2, _min, _max);
 	}
 
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
 	 * @since 5.0
-	 * @param value the value of the new gene.
+	 * @param allele the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public LongGene newInstance(final long value) {
+	public LongGene newInstance(final long allele) {
+		return LongGene.of(allele, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Long allele) {
+		return LongGene.of(allele, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Number allele) {
+		final long value = allele instanceof Double || allele instanceof Float
+			? Math.round(allele.doubleValue())
+			: allele.longValue();
+
 		return LongGene.of(value, _min, _max);
-	}
-
-	@Override
-	public LongGene newInstance(final Long number) {
-		return LongGene.of(number, _min, _max);
-	}
-
-	@Override
-	public LongGene newInstance(final Number number) {
-		return LongGene.of(number.longValue(), _min, _max);
 	}
 
 	@Override
@@ -187,21 +191,21 @@ public final class LongGene
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
+		return hash(_allele, hash(_min, hash(_max, hash(getClass()))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof LongGene &&
-			((LongGene)obj)._value == _value &&
+			((LongGene)obj)._allele == _allele &&
 			((LongGene)obj)._min == _min &&
 			((LongGene)obj)._max == _max;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("[%s]", _value);
+		return String.format("[%s]", _allele);
 	}
 
 	/* *************************************************************************
@@ -214,13 +218,13 @@ public final class LongGene
 	 * no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
-	public static LongGene of(final long value, final long min, final long max) {
-		return new LongGene(value, min, max);
+	public static LongGene of(final long allele, final long min, final long max) {
+		return new LongGene(allele, min, max);
 	}
 
 	/**
@@ -231,13 +235,13 @@ public final class LongGene
 	 *
 	 * @since 3.2
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param range the long range to use
 	 * @return a new random {@code LongGene}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
-	public static LongGene of(final long value, final LongRange range) {
-		return LongGene.of(value, range.min(), range.max());
+	public static LongGene of(final long allele, final LongRange range) {
+		return LongGene.of(allele, range.min(), range.max());
 	}
 
 	/**
@@ -365,7 +369,7 @@ public final class LongGene
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeLong(_value, out);
+		writeLong(_allele, out);
 		writeLong(_min, out);
 		writeLong(_max, out);
 	}

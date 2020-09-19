@@ -91,9 +91,10 @@ import io.jenetics.ext.util.TreeNode;
  * tree with a given <em>pattern</em> variable to sub-tree mapping.
  * <pre>{@code
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
- * final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
- * vars.put(Var.of("x"), TreeNode.parse("sin(x)"));
- * vars.put(Var.of("y"), TreeNode.parse("sin(y)"));
+ * final Map<Var<String>, Tree<String, ?>> vars = Map.of(
+ *     Var.of("x"), TreeNode.parse("sin(x)"),
+ *     Var.of("y"), TreeNode.parse("sin(y)")
+ * );
  *
  * final Tree<String, ?> tree = pattern.expand(vars);
  * assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
@@ -234,7 +235,7 @@ public final class TreePattern<V> implements Serializable {
 
 			return tree.equals(node);
 		} else {
-			final Val<V> p = (Val<V>)pattern.value();
+			final Val<V> p = (Val<V>)decl;
 			final V v = node.value();
 
 			if (Objects.equals(v, p.value())) {

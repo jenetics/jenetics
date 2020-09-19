@@ -28,7 +28,7 @@ import static java.util.regex.Pattern.quote;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 4.3
+ * @version 6.1
  */
 public final class Version implements Comparable<Version> {
 

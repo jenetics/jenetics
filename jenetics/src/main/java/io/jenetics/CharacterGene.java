@@ -66,11 +66,11 @@ public final class CharacterGene
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
-	private final char _character;
+	private final char _allele;
 	private final CharSeq _validCharacters;
 
 	private CharacterGene(final CharSeq chars, final int index) {
-		_character = chars.get(index);
+		_allele = chars.get(index);
 		_validCharacters = chars;
 	}
 
@@ -78,23 +78,23 @@ public final class CharacterGene
 	 * Create a new character gene from the given {@code character} and the
 	 * given set of valid characters.
 	 *
-	 * @param character the char this gene represents
+	 * @param allele the char this gene represents
 	 * @param validChars the set of valid characters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	private CharacterGene(final char character, final CharSeq validChars) {
-		_character = character;
+	private CharacterGene(final char allele, final CharSeq validChars) {
+		_allele = allele;
 		_validCharacters = requireNonNull(validChars);
 	}
 
 	@Override
 	public boolean isValid() {
-		return _validCharacters.contains(_character);
+		return _validCharacters.contains(_allele);
 	}
 
 	@Override
 	public Character allele() {
-		return _character;
+		return _allele;
 	}
 
 	/**
@@ -103,17 +103,17 @@ public final class CharacterGene
 	 * @return the {@code char} value.
 	 */
 	public char charValue() {
-		return _character;
+		return _allele;
 	}
 
 	/**
 	 * Test, if the given character is valid.
 	 *
-	 * @param character The character to test.
+	 * @param allele The character to test.
 	 * @return true if the character is valid, false otherwise.
 	 */
-	public boolean isValidCharacter(final Character character) {
-		return _validCharacters.contains(character);
+	public boolean isValidCharacter(final Character allele) {
+		return _validCharacters.contains(allele);
 	}
 
 	/**
@@ -137,25 +137,25 @@ public final class CharacterGene
 	 */
 	@Override
 	public int compareTo(final CharacterGene that) {
-		return Character.compare(_character, that._character);
+		return Character.compare(_allele, that._allele);
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_character, hash(_validCharacters));
+		return hash(_allele, hash(_validCharacters));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof CharacterGene &&
-			((CharacterGene)obj)._character == _character &&
+			((CharacterGene)obj)._allele == _allele &&
 			Objects.equals(((CharacterGene)obj)._validCharacters, _validCharacters);
 	}
 
 	@Override
 	public String toString() {
-		return Character.toString(_character);
+		return Character.toString(_allele);
 	}
 
 
@@ -173,14 +173,14 @@ public final class CharacterGene
 	 * is not within the {@link #validChars()}, an invalid gene will be
 	 * created.
 	 *
-	 * @param character the character value of the created gene.
+	 * @param allele the character value of the created gene.
 	 * @return a new character gene.
 	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
 	@Override
-	public CharacterGene newInstance(final Character character) {
-		return of(character, _validCharacters);
+	public CharacterGene newInstance(final Character allele) {
+		return of(allele, _validCharacters);
 	}
 
 
@@ -209,11 +209,11 @@ public final class CharacterGene
 	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
 	 * created.
 	 *
-	 * @param character the character value of the created gene.
+	 * @param allele the character value of the created gene.
 	 * @return a new character gene.
 	 */
-	public static CharacterGene of(final char character) {
-		return new CharacterGene(character, DEFAULT_CHARACTERS);
+	public static CharacterGene of(final char allele) {
+		return new CharacterGene(allele, DEFAULT_CHARACTERS);
 	}
 
 	/**
@@ -232,17 +232,17 @@ public final class CharacterGene
 	/**
 	 * Create a new CharacterGene from the give character.
 	 *
-	 * @param character The allele.
+	 * @param allele The allele.
 	 * @param validCharacters the valid characters fo the new gene
 	 * @return a new {@code CharacterGene} with the given parameter
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
 	public static CharacterGene of(
-		final char character,
+		final char allele,
 		final CharSeq validCharacters
 	) {
-		return new CharacterGene(character, validCharacters);
+		return new CharacterGene(allele, validCharacters);
 	}
 
 	static ISeq<CharacterGene> seq(

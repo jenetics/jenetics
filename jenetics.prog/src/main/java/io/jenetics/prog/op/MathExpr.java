@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.prog.op.Numbers.box;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -35,13 +36,13 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
+import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -172,7 +173,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(TreeNode.ofTree(tree), true);
+		this(FlatTreeNode.ofTree(tree), true);
 		Program.check(tree);
 	}
 
@@ -222,24 +223,20 @@ public final class MathExpr
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		final double val = apply(
-			DoubleStream.of(args)
-				.boxed()
-				.toArray(Double[]::new)
-		);
+		final double val = apply(box(args));
 		return val == -0.0 ? 0.0 : val;
 	}
 
 	@Override
 	public int hashCode() {
-		return _tree.hashCode();
+		return Tree.hashCode(_tree);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr &&
-			Objects.equals(((MathExpr)obj)._tree, _tree);
+			Tree.equals(((MathExpr)obj)._tree, _tree);
 	}
 
 	/**
@@ -276,7 +273,7 @@ public final class MathExpr
 	) {
 		final TreeNode<Op<Double>> tree = toTree();
 		rewriter.rewrite(tree, limit);
-		return new MathExpr(tree, true);
+		return new MathExpr(FlatTreeNode.ofTree(tree), true);
 	}
 
 	/**

@@ -3,8 +3,6 @@
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
-[![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/context:java)
-[![Total Alerts](https://img.shields.io/lgtm/alerts/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/alerts)
 
 **Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
@@ -15,7 +13,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.1.0.pdf)).
 
 
 ## Requirements
@@ -46,7 +44,7 @@ The following projects/modules are also published to Maven.
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
 * **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA). 
 * **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
-* **[jenetics.xml](jenteics,xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
+* **[jenetics.xml](jenteics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
 
 **Non-published projects**
 
@@ -156,7 +154,14 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Thakur, K., Kumar, G. <a href="https://doi.org/10.1007/s11831-020-09481-7">Nature Inspired Techniques and Applications in Intrusion Detection Systems: Recent Progress and Updated Perspective.</a> <em>Archives of Computational Methods in Engineering (2020). </em></a> Aug. 2020.
+* Cicirello, V. A. <a href="https://doi.org/10.21105/joss.02448">Chips-n-Salsa: A Java Library of Customizable, Hybridizable, Iterative, Parallel, Stochastic, and Self-Adaptive Local Search Algorithms.</a> <em>Journal of Open Source Software, 5(52), 2448. </em></a> Aug. 2020.
+* Li, Yuanyuan; Carabelli, Stefano;Fadda, Edoardo; Manerba, Daniele; Tadei, Roberto; Terzo, Olivier. <a href="https://iris.polito.it/retrieve/handle/11583/2842141/388548/I40for_Advanced_Manufacturing_Technology.pdf">Machine Learning and Optimization for Production Rescheduling in Industry 4.0.</a> <em>THE INTERNATIONAL JOURNAL OF ADVANCED MANUFACTURING TECHNOLOGY. - ISSN 1433-3015. </em></a> Aug. 2020.
+* Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for GraduallySaturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
 * Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/EvoML2020.pdf">Constrained Evolutionary Piecemeal Training to Design Convolutional Neural Networks.</a> <em>IEA/AIE 2020 – Kitakyushu, Japan. </em></a> July. 2020.
+* Femi Emmanuel Ayo, Sakinat Oluwabukonla Folorunso, Adebayo A. Abayomi-Alli, Adebola Olayinka Adekunle, Joseph Bamidele   Awotunde. <a href="https://doi.org/10.1080/19393555.2020.1767240">Network intrusion detection based on deep learning model optimized with rule-based hybrid feature selection.</a> <em>Information Security Journal: A Global Perspective. </em></a> May 2020.
+* Zainol N., Fakharudin A.S., Zulaidi N.I.S. <a href="https://link.springer.com/chapter/10.1007%2F978-981-15-4821-5_11">Model Optimization Using Artificial Intelligence Algorithms for Biological Food Waste Degradation.</a> <em>Yaser A. (eds) Advances in Waste Processing Technology. Springer, Singapore. </em></a> May 2020.
+* Sonya Voneva, Manar Mazkatli, Johannes Grohmann and Anne Koziolek. <a href="https://sdqweb.ipd.kit.edu/publications/pdfs/voneva2020a.pdf">Optimizing Parametric Dependencies forIncremental Performance Model Extraction.</a> <em>Karlsruhe Institute of Technology, Karlsruhe, Germany. </em></a> April. 2020.
 * Raúl Lara-Cabrera, Ángel González-Prieto, Fernando Ortega and Jesús Bobadilla. <a href="https://www.mdpi.com/2076-3417/10/2/675">Evolving Matrix-Factorization-Based Collaborative Filtering Using Genetic Programming.</a> <em>MDPI, Applied Sciences. </em></a> Feb. 2020.
 * Humm B.G., Hutter M. <a href="https://link.springer.com/chapter/10.1007/978-3-030-41913-4_12">Learning Patterns for Complex Event Detection in Robot Sensor Data.</a> <em>Optimization and Learning. OLA 2020. Communications in Computer and Information Science, vol 1173. Springer </em></a> Feb. 2020.
 * Erich C. Teppan, Giacomo Da Col. <a href="https://link.springer.com/chapter/10.1007/978-981-15-1918-5_7">Genetic Algorithms for Creating Large Job Shop Dispatching Rules. </a> <em>Advances in Integrations of Intelligent Methods. Smart Innovation, Systems and Technologies, vol 170. Springer, Singapore. </em></a> Jan. 2020.
@@ -169,6 +174,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * Jin-wooLee, Gwangseon Jang, Hohyun Jung, Jae-Gil Lee, Uichin Lee. <a href="https://doi.org/10.1016/j.pmcj.2019.101082">Maximizing MapReduce job speed and reliability in the mobile cloud by optimizing task allocation. </a> <em>Pervasive and Mobile Computing. </em></a> Oct. 2019.
 * Krawczyk, Lukas, Mahmoud Bazzal, Ram Prasath Govindarajan and Carsten Wolff. <a href="https://ieeexplore.ieee.org/document/8904877">Model-Based Timing Analysis and Deployment Optimization for Heterogeneous Multi-core Systems using Eclipse APP4MC. </a> <em>2019 ACM/IEEE 22nd International Conference on Model Driven Engineering Languages and Systems Companion: 44-53. </em></a> Sep. 2019.
 * Junio Cezar Ribeiro da Silva, Lorena Leão, Vinicius Petrucci, Abdoulaye Gamatié, Fernando MagnoQuintao Pereira. <a href="https://hal-lirmm.ccsd.cnrs.fr/lirmm-02281112/document">Scheduling in Heterogeneous Architectures via Multivariate Linear Regression on Function Inputs. </a> <em>lirmm-02281112. </em></a> Sep. 2019.
+* Eric O. Scott, Sean Luke. <a href="https://dl.acm.org/doi/10.1145/3319619.3326865">ECJ at 20: toward a general metaheuristics toolkit. </a> <em>GECCO '19: Proceedings of the Genetic and Evolutionary Computation Conference Companion, Pages 1391–1398. </em></a> July 2019.
 * Francisco G. Montoya and Raúl Baños Navarro (Eds.). <a href="https://www.mdpi.com/books/pdfview/book/1450">Optimization Methods Applied to Power Systems, Volume 2. </a> <em>MDPI Books, ISBN 978-3-03921-156-2. </em></a> July 2019.
 * Höttger, Robert & Ki, Junhyung & Bui, Bao & Igel, Burkhard & Spinczyk, Olaf. <a href="https://www.researchgate.net/publication/335137686_CPU-GPU_Response_Time_and_Mapping_Analysis_for_High-Performance_Automotive_Systems">CPU-GPU Response Time and Mapping Analysis for High-Performance Automotive Systems. </a> <em>10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS) co-located with the 31st Euromicro Conference on Real-Time Systems (ECRTS'19). </em></a> July 2019.
 * Maxime Cordy, Steve Muller, Mike Papadakis, and Yves Le Traon. <a href="http://delivery.acm.org/10.1145/3340000/3330580/issta19main-p399-p.pdf?ip=84.114.111.7&id=3330580&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1563299816_46b771752984b933c8c119b7f7d81805">Search-based test and improvement of machine-learning-based anomaly detection systems. </a> <em>Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA 2019). ACM, New York, NY, USA, 158-168. </em></a> July 2019.
@@ -212,32 +218,28 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [5.2.0](https://github.com/jenetics/jenetics/releases/tag/v5.2.0)
+### [6.1.0](https://github.com/jenetics/jenetics/releases/tag/v6.1.0)
 
 #### Improvements
 
-* [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
+* [#323](https://github.com/jenetics/jenetics/issues/323): Fix leaky abstraction of `CompositeCodec`. 
+* [#434](https://github.com/jenetics/jenetics/issues/434): Rewrite build scripts using Kotlin.
+* [#695](https://github.com/jenetics/jenetics/issues/695): Simplify MOEA for continious optimization.
+* [#704](https://github.com/jenetics/jenetics/issues/704): Add `FlatTreeNode.ofTree` factory method, for cleaner `Tree` API.
+* [#706](https://github.com/jenetics/jenetics/issues/706): The `Constraint` is now part of the `Problem` interface. If defined, it will automatically be part of the created `Engine`.
 ```java
-public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
-    Function<T, Genotype<G>> encoder();
-    default Genotype<G> encode(final T value) {
-        return encoder().apply(value); 
-    }
+default Optional<Constraint<G, C>> constraint() {
+    return Optional.empty();
 }
 ```
-* [#543](https://github.com/jenetics/jenetics/issues/543): Simplified `Constraint` factory methods.
-* [#566](https://github.com/jenetics/jenetics/issues/566): New parameter class, `EvolutionParams`, contains all `Engine` parameters which influence the evolution performance.
-* [#607](https://github.com/jenetics/jenetics/issues/607): More flexible MOEA optimization. It is now possible to do minimization/maximization on every dimension independently.
-* [#614](https://github.com/jenetics/jenetics/issues/614): Generalize the `ConstExprRewriter` class. It can no be used with every type, not only with `Double` values.
-* [#635](https://github.com/jenetics/jenetics/issues/635): Mark the `Chromosome.toSeq()` and `Genotype.toSeq()` methods as deprecated. This methods are no longer needed, because the `Chromosome` and `Genotype` itself will implement the new `BaseSeq` interfaces and are now _sequences_ itself. 
-* [#645](https://github.com/jenetics/jenetics/issues/645): Mark all bean-like _getter_ methods as deprecated. This methods will be replaced by simple _accessor_-methods, and is a preparation step for using the new Java _records_.
-
+* [#708](https://github.com/jenetics/jenetics/issues/708): Additional `Chromosome.map(Function)` methods. This allows a more efficient mapping of chromosomes.
+* [#731](https://github.com/jenetics/jenetics/issues/731): Improve creation of _constrained_ individuals, as defined in the `Constraint` interface.
+* [#739](https://github.com/jenetics/jenetics/issues/736): Add `jenetics.incubator` module. This module will contain classes which might be part of one of the main module.
 
 #### Bugs
 
-* [#621](https://github.com/jenetics/jenetics/issues/621): `ìo.jenetics.prog.op.Program.arity()` returns the wrong value.
-
-
+* [#700](https://github.com/jenetics/jenetics/issues/700): `GaussianMutator` violates the `DoubleGene`'s upper bound.
+* [#707](https://github.com/jenetics/jenetics/issues/707): Fix conversion of `BitChromosome` <-> `BitSet`.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

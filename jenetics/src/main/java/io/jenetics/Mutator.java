@@ -81,7 +81,7 @@ public class Mutator<
 	 *         divided by the number of chromosomes of the genotype to form
 	 *         the concrete mutation probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}..
+	 *          valid range of {@code [0, 1]}.
 	 */
 	public Mutator(final double probability) {
 		super(probability);

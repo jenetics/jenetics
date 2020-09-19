@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
@@ -33,6 +34,8 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
@@ -49,7 +52,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.1
  */
 public class CharacterChromosome
 	extends VariableChromosome<CharacterGene>
@@ -88,6 +91,11 @@ public class CharacterChromosome
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return super.isEmpty();
+	}
+
+	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
 		return new CharacterChromosome(_genes.subSeq(start, end), lengthRange());
 	}
@@ -106,6 +114,43 @@ public class CharacterChromosome
 	@Override
 	public CharacterChromosome newInstance() {
 		return of(_validCharacters, lengthRange());
+	}
+
+	/**
+	 * Maps the gene alleles of this chromosome, given as {@code char[]} array,
+	 * by applying the given mapper function {@code f}. The mapped gene values
+	 * are then wrapped into a newly created chromosome.
+	 *
+	 * <pre>{@code
+	 * final CharacterChromosome chromosome = ...;
+	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
+	 *
+	 * static int[] uppercase(final int[] values) {
+	 *     for (int i = 0; i < values.length; ++i) {
+	 *         values[i] = Character.toUpperCase(values[i]);
+	 *     }
+	 *     return values;
+	 * }
+	 * }</pre>
+	 *
+	 * @since 6.1
+	 *
+	 * @param f the mapper function
+	 * @return a newly created chromosome with the mapped gene values
+	 * @throws NullPointerException if the mapper function is {@code null}.
+	 * @throws IllegalArgumentException if the length of the mapped
+	 *         {@code char[]} array is empty or doesn't match with the allowed
+	 *         length range
+	 */
+	public CharacterChromosome map(final Function<? super char[], char[]> f) {
+		requireNonNull(f);
+
+		final char[] chars = f.apply(toArray());
+		final var genes = IntStream.range(0, chars.length)
+			.mapToObj(i -> CharacterGene.of(chars[i], _validCharacters))
+			.collect(ISeq.toISeq());
+
+		return newInstance(genes);
 	}
 
 	@Override

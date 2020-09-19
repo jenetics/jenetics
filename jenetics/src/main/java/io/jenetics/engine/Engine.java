@@ -630,7 +630,9 @@ public final class Engine<
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(final Problem<T, G, C> problem) {
-		return builder(problem.fitness(), problem.codec());
+		final var builder = builder(problem.fitness(), problem.codec());
+		problem.constraint().ifPresent(builder::constraint);
+		return builder;
 	}
 
 	/**
@@ -721,6 +723,20 @@ public final class Engine<
 		) {
 			_genotypeFactory = requireNonNull(genotypeFactory);
 			_evaluator = requireNonNull(evaluator);
+		}
+
+		/**
+		 * Applies the given {@code setup} recipe to {@code this} engine builder.
+		 *
+		 * @since 6.0
+		 *
+		 * @param setup the setup recipe applying to {@code this} builder
+		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the {@code setup} is {@code null}.
+		 */
+		public Builder<G, C> setup(final Setup<G, C> setup) {
+			setup.apply(this);
+			return this;
 		}
 
 		/**
@@ -1200,6 +1216,47 @@ public final class Engine<
 
 	}
 
+
+	/* *************************************************************************
+	 * Engine setup
+	 **************************************************************************/
+
+
+	/**
+	 * This interface represents a recipe for configuring (setup) a given
+	 * {@link Builder}. It is mainly used for grouping mutually dependent
+	 * engine configurations. The following code snippet shows a possible usage
+	 * example.
+	 *
+	 * <pre>{@code
+	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
+	 *     .setup(new WeaselProgram<>())
+	 *     .build();
+	 * }</pre>
+	 *
+	 * @see Builder#setup(Setup)
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version 6.0
+	 * @since 6.0
+	 */
+	@FunctionalInterface
+	public static interface Setup<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+
+		/**
+		 * Applies {@code this} setup to the given engine {@code builder}.
+		 *
+		 * @param builder the engine builder to setup (configure)
+		 */
+		void apply(final Builder<G, C> builder);
+
+	}
 }
 
 

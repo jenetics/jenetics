@@ -44,11 +44,15 @@ public abstract class NumericGeneTester<
 
 	@Test
 	public void minMax() {
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 1000; ++i) {
 			final G gene = factory().newInstance();
 
 			Assert.assertTrue(gene.allele().compareTo(gene.min()) >= 0);
-			Assert.assertTrue(gene.allele().compareTo(gene.max()) <= 0);
+			if (gene instanceof DoubleGene) {
+				Assert.assertTrue(gene.allele().compareTo(gene.max()) < 0);
+			} else {
+				Assert.assertTrue(gene.allele().compareTo(gene.max()) <= 0);
+			}
 		}
 	}
 
