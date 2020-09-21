@@ -64,7 +64,6 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 
 	private IncreasingElementSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
-
 	private Flow.Subscription _subscription;
 
 	/**
@@ -82,7 +81,7 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	 *       implementation; method {@link SubmissionPublisher#getMaxBufferCapacity()}
 	 *       returns the actual value)
 	 */
-	TimeSeriesProcessor(
+	public TimeSeriesProcessor(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
 		final EvolutionParams<ProgramGene<T>, Double> params,
@@ -135,9 +134,19 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	}
 
 	private void publish() {
-		_samples.publish();
-		_nullifier.nullifyFitness();
-		_submitter.reset();
+		try {
+			_submitter.lock();
+			try {
+				_samples.publish();
+				_nullifier.nullifyFitness();
+				_submitter.reset();
+			} finally {
+				_submitter.unlock();
+			}
+		} catch (CancellationException e) {
+			Thread.currentThread().interrupt();
+			close();
+		}
 	}
 
 	private void start() {
@@ -185,7 +194,7 @@ final class IncreasingElementSubmitter<T extends Comparable<? super T>>
 	implements Runnable
 {
 
-	private final Stream<T> _stream;
+	private final Stream<? extends T> _stream;
 	private final Consumer<? super T> _sink;
 
 	private final AtomicBoolean _reset = new AtomicBoolean(false);
@@ -193,7 +202,7 @@ final class IncreasingElementSubmitter<T extends Comparable<? super T>>
 	private final Semaphore _semaphore = new Semaphore(1);
 
 	IncreasingElementSubmitter(
-		final Stream<T> stream,
+		final Stream<? extends T> stream,
 		final Consumer<? super T> sink
 	) {
 		_stream = requireNonNull(stream);
@@ -207,8 +216,8 @@ final class IncreasingElementSubmitter<T extends Comparable<? super T>>
 		try {
 			_stream
 				.takeWhile(e -> _proceed.get())
-				.peek(e -> lock())
 				.flatMap(e -> {
+					lock();
 					try {
 						return optimizing.apply(e);
 					} finally {
