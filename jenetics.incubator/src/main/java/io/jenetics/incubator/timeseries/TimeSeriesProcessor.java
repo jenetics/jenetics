@@ -21,9 +21,12 @@ package io.jenetics.incubator.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -51,27 +54,46 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @since !__version__!
  */
 public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
-	implements Flow.Processor<Sample<T>, Tree<Op<T>, ?>>
+	implements Flow.Processor<List<? extends Sample<T>>, Tree<Op<T>, ?>>
 {
-	private final Object _lock = new Object(){};
+	private final Object _lock = new Object() {};
 
-	private final SampleBuffer<T> _samples = new SampleBuffer<>(50);
-	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier = new FitnessNullifier<>();
+	private final SampleBuffer<T> _samples;
+	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private ElementSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
+	private IncreasingElementSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 
 	private Flow.Subscription _subscription;
 
+	/**
+	 * Create a new time series processor with the given parameters.
+	 *
+	 * @param codec the codec used for the regression analyses
+	 * @param error the error function used for the regression analyses
+	 * @param params the evolution engine parameters
+	 * @param sampleBufferSize the buffer size of the time series samples
+	 * @param executor the executor to use for async delivery, supporting
+	 *        creation of at least one independent thread
+	 * @param maxBufferCapacity the maximum capacity for each subscriber's buffer
+	 *       (the enforced capacity may be rounded up to the nearest power of
+	 *       two and/or bounded by the largest value supported by this
+	 *       implementation; method {@link SubmissionPublisher#getMaxBufferCapacity()}
+	 *       returns the actual value)
+	 */
 	TimeSeriesProcessor(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
 		final EvolutionParams<ProgramGene<T>, Double> params,
+		final int sampleBufferSize,
 		final Executor executor,
 		final int maxBufferCapacity
 	) {
 		super(executor, maxBufferCapacity);
+
+		_samples = new SampleBuffer<>(sampleBufferSize);
+		_nullifier = new FitnessNullifier<>();
 
 		_engine = Engine
 			.builder(Regression.of(codec, error, _samples))
@@ -83,14 +105,14 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 
 	@Override
 	public void onSubscribe(final Subscription subscription) {
-		(this._subscription = subscription).request(1);
+		(_subscription = subscription).request(1);
 	}
 
 	@Override
-	public void onNext(final Sample<T> item) {
+	public void onNext(final List<? extends Sample<T>> item) {
 		synchronized (_lock) {
 			if (_submitter != null) {
-				_samples.add(item);
+				_samples.addAll(item);
 				publish();
 			}
 		}
@@ -124,7 +146,7 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new ElementSubmitter<>(_engine.stream(), this::doSubmit);
+			_submitter = new IncreasingElementSubmitter<>(_engine.stream(), this::doSubmit);
 			_thread = new Thread(_submitter);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
@@ -153,7 +175,13 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 
 }
 
-final class ElementSubmitter<T extends Comparable<? super T>>
+/**
+ * This class takes a stream and submits the currently best element to the also
+ * given element sink {@code Consumer<T>}.
+ *
+ * @param <T> the element type
+ */
+final class IncreasingElementSubmitter<T extends Comparable<? super T>>
 	implements Runnable
 {
 
@@ -162,8 +190,9 @@ final class ElementSubmitter<T extends Comparable<? super T>>
 
 	private final AtomicBoolean _reset = new AtomicBoolean(false);
 	private final AtomicBoolean _proceed = new AtomicBoolean(true);
+	private final Semaphore _semaphore = new Semaphore(1);
 
-	ElementSubmitter(
+	IncreasingElementSubmitter(
 		final Stream<T> stream,
 		final Consumer<? super T> sink
 	) {
@@ -173,10 +202,23 @@ final class ElementSubmitter<T extends Comparable<? super T>>
 
 	@Override
 	public void run() {
-		_stream
-			.takeWhile(e -> _proceed.get())
-			.flatMap(Streams.<T>toStrictlyDecreasing(this::reset))
-			.forEach(_sink);
+		final var optimizing = Streams.<T>toStrictlyDecreasing(this::reset);
+
+		try {
+			_stream
+				.takeWhile(e -> _proceed.get())
+				.peek(e -> lock())
+				.flatMap(e -> {
+					try {
+						return optimizing.apply(e);
+					} finally {
+						unlock();
+					}
+				})
+				.forEach(_sink);
+		} catch (CancellationException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	private boolean reset(final T element) {
@@ -189,6 +231,18 @@ final class ElementSubmitter<T extends Comparable<? super T>>
 
 	void stop() {
 		_proceed.set(false);
+	}
+
+	void lock() {
+		try {
+			_semaphore.acquire();
+		} catch (InterruptedException e) {
+			throw new CancellationException(e.toString());
+		}
+	}
+
+	void unlock() {
+		_semaphore.release();
 	}
 
 }
