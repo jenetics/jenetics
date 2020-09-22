@@ -108,10 +108,10 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	}
 
 	@Override
-	public void onNext(final List<? extends Sample<T>> item) {
+	public void onNext(final List<? extends Sample<T>> samples) {
 		synchronized (_lock) {
 			if (_submitter != null) {
-				_samples.addAll(item);
+				_samples.addAll(samples);
 				publish();
 			}
 		}
