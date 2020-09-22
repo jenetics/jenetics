@@ -37,7 +37,7 @@ public class HPRMutatorTest {
 	@Test(invocationCount = 10)
 	public void mutate() {
 		final PermutationChromosome<Integer> original =
-			PermutationChromosome.ofInteger(100);
+			PermutationChromosome.ofInteger(1000);
 
 		final HPRMutator<EnumGene<Integer>, Integer> mutator =
 			new HPRMutator<>(1.0);
