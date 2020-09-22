@@ -53,7 +53,7 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
+public class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	implements Flow.Processor<List<? extends Sample<T>>, Tree<Op<T>, ?>>
 {
 	private final Object _lock = new Object() {};
@@ -81,7 +81,7 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	 *       implementation; method {@link SubmissionPublisher#getMaxBufferCapacity()}
 	 *       returns the actual value)
 	 */
-	public TimeSeriesProcessor(
+	public ReactiveRegression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
 		final EvolutionParams<ProgramGene<T>, Double> params,
