@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.ForkJoinPool;
@@ -34,21 +33,55 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.function.Supplier;
 
-import io.jenetics.prog.regression.Sample;
-
 /**
+ * Implementation of a {@link Flow.Publisher} which periodically submits
+ * elements of type {@code T}. The following code example shows how to use
+ * {@code this} {@link Flow.Publisher}. It will submit a random double value
+ * every second for 10 seconds.
+ *
+ * <pre>{@code
+ * final var publisher = new PeriodicPublisher<>(
+ *     () -> ThreadLocalRandom.current().nextDouble(),
+ *     Duration.ofMillis(1_000)
+ * );
+ *
+ * try (publisher) {
+ *     publisher.subscribe(new Subscriber<>() {
+ *         private Subscription _subscription;
+ *         \@Override
+ *         public void onSubscribe(final Subscription subscription) {
+ *             (_subscription = subscription).request(1);
+ *         }
+ *         \@Override
+ *         public void onNext(final Double value) {
+ *             System.out.println("Got value: " + value);
+ *             _subscription.request(1);
+ *         }
+ *         \@Override
+ *         public void onError(final Throwable throwable) {}
+ *         \@Override
+ *         public void onComplete() {}
+ *     });
+ *
+ *     publisher.start();
+ *
+ *     // Need to block, otherwise the publisher will be closed immediately.
+ *     Thread.sleep(10_000);
+ * }
+ * }</pre>
+ *
+ * @param <T> the data type which is published
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class PeriodicPublisher<T>
-	extends SubmissionPublisher<List<? extends Sample<T>>>
-{
+public final class PeriodicPublisher<T> extends SubmissionPublisher<T> {
 
 	private final Object _lock = new Object() {};
 
 	private final ScheduledExecutorService _scheduler;
-	private final Supplier<? extends List<? extends Sample<T>>> _supplier;
+	private final Supplier<? extends T> _supplier;
 	private final Duration _period;
 
 	private ScheduledFuture<?> _task;
@@ -74,7 +107,7 @@ public final class PeriodicPublisher<T>
 		final Executor executor,
 		final int maxBufferCapacity,
 		final ScheduledExecutorService scheduler,
-		final Supplier<? extends List<? extends Sample<T>>> supplier,
+		final Supplier<? extends T> supplier,
 		final Duration period
 	) {
 		super(executor, maxBufferCapacity);
@@ -102,7 +135,7 @@ public final class PeriodicPublisher<T>
 	public PeriodicPublisher(
 		final Executor executor,
 		final int maxBufferCapacity,
-		final Supplier<? extends List<? extends Sample<T>>> supplier,
+		final Supplier<? extends T> supplier,
 		final Duration period
 	) {
 		this(
@@ -125,7 +158,7 @@ public final class PeriodicPublisher<T>
 	 */
 	public PeriodicPublisher(
 		final ScheduledExecutorService scheduler,
-		final Supplier<? extends List<? extends Sample<T>>> supplier,
+		final Supplier<? extends T> supplier,
 		final Duration period
 	) {
 		this(
@@ -145,13 +178,13 @@ public final class PeriodicPublisher<T>
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public PeriodicPublisher(
-		final Supplier<? extends List<? extends Sample<T>>> supplier,
+		final Supplier<? extends T> supplier,
 		final Duration period
 	) {
 		this(
 			ForkJoinPool.commonPool(),
 			Flow.defaultBufferSize(),
-			null,
+			new ScheduledThreadPoolExecutor(1),
 			supplier,
 			period
 		);

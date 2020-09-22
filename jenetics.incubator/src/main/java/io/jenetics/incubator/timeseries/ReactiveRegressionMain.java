@@ -42,6 +42,7 @@ import io.jenetics.prog.regression.Complexity;
 import io.jenetics.prog.regression.Error;
 import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Regression;
+import io.jenetics.prog.regression.Sample;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -79,7 +80,7 @@ public class ReactiveRegressionMain {
 		);
 
 		// The sample source (time series).
-		final PeriodicPublisher<Double> samples = new PeriodicPublisher<>(
+		final PeriodicPublisher<List<Sample<Double>>> samples = new PeriodicPublisher<>(
 			() -> List.of(),
 			Duration.ofSeconds(5)
 		);
