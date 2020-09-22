@@ -26,6 +26,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,7 +54,7 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
+public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	implements Flow.Processor<List<? extends Sample<T>>, Tree<Op<T>, ?>>
 {
 	private final Object _lock = new Object() {};
@@ -100,6 +101,22 @@ public class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 			.interceptor(_nullifier)
 			.minimizing()
 			.build();
+	}
+
+	public ReactiveRegression(
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final EvolutionParams<ProgramGene<T>, Double> params,
+		final int sampleBufferSize
+	) {
+		this(
+			codec,
+			error,
+			params,
+			sampleBufferSize,
+			ForkJoinPool.commonPool(),
+			Flow.defaultBufferSize()
+		);
 	}
 
 	@Override
