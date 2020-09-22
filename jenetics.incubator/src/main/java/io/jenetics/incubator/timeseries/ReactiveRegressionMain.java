@@ -79,7 +79,7 @@ public class ReactiveRegressionMain {
 		);
 
 		// The sample source (time series).
-		final SamplePublisher<Double> samples = new SamplePublisher<>(
+		final PeriodicPublisher<Double> samples = new PeriodicPublisher<>(
 			() -> List.of(),
 			Duration.ofSeconds(5)
 		);

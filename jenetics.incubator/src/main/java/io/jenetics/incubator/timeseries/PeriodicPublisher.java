@@ -41,7 +41,7 @@ import io.jenetics.prog.regression.Sample;
  * @version !__version__!
  * @since !__version__!
  */
-public final class SamplePublisher<T>
+public final class PeriodicPublisher<T>
 	extends SubmissionPublisher<List<? extends Sample<T>>>
 {
 
@@ -70,7 +70,7 @@ public final class SamplePublisher<T>
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code maxBufferCapacity} not positive
 	 */
-	public SamplePublisher(
+	public PeriodicPublisher(
 		final Executor executor,
 		final int maxBufferCapacity,
 		final ScheduledExecutorService scheduler,
@@ -99,7 +99,7 @@ public final class SamplePublisher<T>
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code maxBufferCapacity} not positive
 	 */
-	public SamplePublisher(
+	public PeriodicPublisher(
 		final Executor executor,
 		final int maxBufferCapacity,
 		final Supplier<? extends List<? extends Sample<T>>> supplier,
@@ -123,7 +123,7 @@ public final class SamplePublisher<T>
 	 * @param period the time period between two sample data fetches
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public SamplePublisher(
+	public PeriodicPublisher(
 		final ScheduledExecutorService scheduler,
 		final Supplier<? extends List<? extends Sample<T>>> supplier,
 		final Duration period
@@ -144,7 +144,7 @@ public final class SamplePublisher<T>
 	 * @param period the time period between two sample data fetches
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public SamplePublisher(
+	public PeriodicPublisher(
 		final Supplier<? extends List<? extends Sample<T>>> supplier,
 		final Duration period
 	) {
