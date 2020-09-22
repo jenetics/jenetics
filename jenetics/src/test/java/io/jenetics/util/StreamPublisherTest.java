@@ -109,8 +109,7 @@ public class StreamPublisherTest {
 		final var stream = _engine.stream().limit(generations);
 
 		final var count = new AtomicInteger();
-		final var completed = new AtomicBoolean();
-		final var latch = new CountDownLatch(generations + 1);
+		final var latch = new CountDownLatch(generations);
 
 		try (publisher) {
 			publisher.subscribe(new Subscriber<>() {
@@ -128,8 +127,6 @@ public class StreamPublisherTest {
 				}
 				@Override
 				public void onComplete() {
-					completed.set(true);
-					latch.countDown();
 				}
 				@Override
 				public void onError(final Throwable throwable) {}
@@ -143,7 +140,6 @@ public class StreamPublisherTest {
 			count.get() >= generations,
 			format("%s < %s", count, generations)
 		);
-		Assert.assertTrue(completed.get());
 	}
 
 	@Test
@@ -153,8 +149,7 @@ public class StreamPublisherTest {
 		final var stream = _engine.stream();
 
 		final var count = new AtomicInteger();
-		final var completed = new AtomicBoolean();
-		final var latch = new CountDownLatch(generations + 1);
+		final var latch = new CountDownLatch(generations);
 
 		try (publisher) {
 			publisher.subscribe(new Subscriber<>() {
@@ -172,7 +167,6 @@ public class StreamPublisherTest {
 				}
 				@Override
 				public void onComplete() {
-					completed.set(true);
 					latch.countDown();
 				}
 				@Override
@@ -187,7 +181,6 @@ public class StreamPublisherTest {
 			count.get() >= generations,
 			format("%s < %s", count, generations)
 		);
-		Assert.assertTrue(completed.get());
 	}
 
 }
