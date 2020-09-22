@@ -62,7 +62,7 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private IncreasingElementSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
+	private Submitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 	private Flow.Subscription _subscription;
 
@@ -155,7 +155,7 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new IncreasingElementSubmitter<>(_engine.stream(), this::doSubmit);
+			_submitter = new Submitter<>(_engine.stream(), this::doSubmit);
 			_thread = new Thread(_submitter);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
@@ -182,76 +182,77 @@ public class TimeSeriesProcessor<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
 		super.close();
 	}
 
-}
 
-/**
- * This class takes a stream and submits the currently best element to the also
- * given element sink {@code Consumer<T>}.
- *
- * @param <T> the element type
- */
-final class IncreasingElementSubmitter<T extends Comparable<? super T>>
-	implements Runnable
-{
+	/**
+	 * This class takes a stream and submits the currently best element to the also
+	 * given element sink {@code Consumer<T>}.
+	 *
+	 * @param <T> the element type
+	 */
+	private static final class Submitter<T extends Comparable<? super T>>
+		implements Runnable
+	{
 
-	private final Stream<? extends T> _stream;
-	private final Consumer<? super T> _sink;
+		private final Stream<? extends T> _stream;
+		private final Consumer<? super T> _sink;
 
-	private final AtomicBoolean _reset = new AtomicBoolean(false);
-	private final AtomicBoolean _proceed = new AtomicBoolean(true);
-	private final Semaphore _semaphore = new Semaphore(1);
+		private final AtomicBoolean _reset = new AtomicBoolean(false);
+		private final AtomicBoolean _proceed = new AtomicBoolean(true);
+		private final Semaphore _semaphore = new Semaphore(1);
 
-	IncreasingElementSubmitter(
-		final Stream<? extends T> stream,
-		final Consumer<? super T> sink
-	) {
-		_stream = requireNonNull(stream);
-		_sink = requireNonNull(sink);
-	}
-
-	@Override
-	public void run() {
-		final var optimizing = Streams.<T>toStrictlyDecreasing(this::reset);
-
-		try {
-			_stream
-				.takeWhile(e -> _proceed.get())
-				.flatMap(e -> {
-					lock();
-					try {
-						return optimizing.apply(e);
-					} finally {
-						unlock();
-					}
-				})
-				.forEach(_sink);
-		} catch (CancellationException e) {
-			Thread.currentThread().interrupt();
+		Submitter(
+			final Stream<? extends T> stream,
+			final Consumer<? super T> sink
+		) {
+			_stream = requireNonNull(stream);
+			_sink = requireNonNull(sink);
 		}
-	}
 
-	private boolean reset(final T element) {
-		return _reset.getAndSet(false);
-	}
+		@Override
+		public void run() {
+			final var optimizing = Streams.<T>toStrictlyDecreasing(this::reset);
 
-	void reset() {
-		_reset.set(true);
-	}
-
-	void stop() {
-		_proceed.set(false);
-	}
-
-	void lock() {
-		try {
-			_semaphore.acquire();
-		} catch (InterruptedException e) {
-			throw new CancellationException(e.toString());
+			try {
+				_stream
+					.takeWhile(e -> _proceed.get())
+					.flatMap(e -> {
+						lock();
+						try {
+							return optimizing.apply(e);
+						} finally {
+							unlock();
+						}
+					})
+					.forEach(_sink);
+			} catch (CancellationException e) {
+				Thread.currentThread().interrupt();
+			}
 		}
-	}
 
-	void unlock() {
-		_semaphore.release();
+		private boolean reset(final T element) {
+			return _reset.getAndSet(false);
+		}
+
+		void reset() {
+			_reset.set(true);
+		}
+
+		void stop() {
+			_proceed.set(false);
+		}
+
+		void lock() {
+			try {
+				_semaphore.acquire();
+			} catch (InterruptedException e) {
+				throw new CancellationException(e.toString());
+			}
+		}
+
+		void unlock() {
+			_semaphore.release();
+		}
+
 	}
 
 }
