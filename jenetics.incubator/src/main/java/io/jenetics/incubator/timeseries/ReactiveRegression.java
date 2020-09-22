@@ -38,6 +38,7 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionParams;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.incubator.timeseries.ReactiveRegression.Result;
 import io.jenetics.util.Streams;
 
 import io.jenetics.ext.util.Tree;
@@ -54,16 +55,47 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>, ?>>
-	implements Flow.Processor<List<? extends Sample<T>>, Tree<Op<T>, ?>>
+public final class ReactiveRegression<T> extends SubmissionPublisher<Result<T>>
+	implements Flow.Processor<List<? extends Sample<T>>, Result<T>>
 {
+
+	public static final class Result<T> {
+		private final Tree<Op<T>, ?> _program;
+		private final double _error;
+		private final long _generation;
+
+		private Result(
+			final Tree<Op<T>, ?> program,
+			final double error,
+			final long generation
+		) {
+			_program = requireNonNull(program);
+			_error = error;
+			_generation = generation;
+		}
+
+		public Tree<Op<T>, ?> program() {
+			return _program;
+		}
+
+		public double error() {
+			return _error;
+		}
+
+		public long generation() {
+			return _generation;
+		}
+
+	}
+
+
 	private final Object _lock = new Object() {};
 
 	private final SampleBuffer<T> _samples;
 	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private Submitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
+	private EvolutionSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 	private Flow.Subscription _subscription;
 
@@ -136,8 +168,14 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 	}
 
 	private void doSubmit(final EvolutionResult<ProgramGene<T>, Double> result) {
-		final Tree<Op<T>, ?> item = result.bestPhenotype().genotype().gene();
-		submit(item);
+		final var bpt = result.bestPhenotype();
+		submit(
+			new Result<>(
+				bpt.genotype().gene(),
+				bpt.fitness(),
+				result.generation()
+			)
+		);
 	}
 
 	@Override
@@ -172,7 +210,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new Submitter<>(_engine.stream(), this::doSubmit);
+			_submitter = new EvolutionSubmitter<>(_engine.stream(), this::doSubmit);
 			_thread = new Thread(_submitter);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
@@ -206,7 +244,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 	 *
 	 * @param <T> the element type
 	 */
-	private static final class Submitter<T extends Comparable<? super T>>
+	private static final class EvolutionSubmitter<T extends Comparable<? super T>>
 		implements Runnable
 	{
 
@@ -217,7 +255,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 		private final AtomicBoolean _proceed = new AtomicBoolean(true);
 		private final Semaphore _semaphore = new Semaphore(1);
 
-		Submitter(
+		EvolutionSubmitter(
 			final Stream<? extends T> stream,
 			final Consumer<? super T> sink
 		) {
@@ -227,7 +265,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 
 		@Override
 		public void run() {
-			final var optimizing = Streams.<T>toStrictlyDecreasing(this::reset);
+			final var best = Streams.<T>toStrictlyDecreasing(this::reset);
 
 			try {
 				_stream
@@ -235,7 +273,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Tree<Op<T>,
 					.flatMap(e -> {
 						lock();
 						try {
-							return optimizing.apply(e);
+							return best.apply(e);
 						} finally {
 							unlock();
 						}
