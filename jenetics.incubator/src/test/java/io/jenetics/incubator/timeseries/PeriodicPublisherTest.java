@@ -81,6 +81,47 @@ public class PeriodicPublisherTest {
 		}
 	}
 
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void doubleStart() {
+		final var publisher = new PeriodicPublisher<>(
+			() -> ThreadLocalRandom.current().nextDouble(),
+			Duration.ofMillis(1_000)
+		);
+
+		try (publisher) {
+			publisher.start();
+			publisher.start();
+		}
+	}
+
+	@Test
+	public void restart() {
+		final var publisher = new PeriodicPublisher<>(
+			() -> ThreadLocalRandom.current().nextDouble(),
+			Duration.ofMillis(1_000)
+		);
+
+		try (publisher) {
+			publisher.start();
+			publisher.stop();
+			publisher.start();
+		}
+	}
+
+	@Test
+	public void doubleStop() {
+		final var publisher = new PeriodicPublisher<>(
+			() -> ThreadLocalRandom.current().nextDouble(),
+			Duration.ofMillis(1_000)
+		);
+
+		try (publisher) {
+			publisher.start();
+			publisher.stop();
+			publisher.stop();
+		}
+	}
+
 	public static void main(final String[] args) throws Exception {
 		final var publisher = new PeriodicPublisher<>(
 			() -> ThreadLocalRandom.current().nextDouble(),
