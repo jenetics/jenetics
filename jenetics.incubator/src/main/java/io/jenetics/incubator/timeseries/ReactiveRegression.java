@@ -21,6 +21,7 @@ package io.jenetics.incubator.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
@@ -30,7 +31,10 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.engine.Codec;
@@ -38,7 +42,6 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionParams;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.FitnessNullifier;
-import io.jenetics.incubator.timeseries.ReactiveRegression.Result;
 import io.jenetics.util.Streams;
 
 import io.jenetics.ext.util.Tree;
@@ -55,40 +58,9 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ReactiveRegression<T> extends SubmissionPublisher<Result<T>>
-	implements Flow.Processor<List<? extends Sample<T>>, Result<T>>
+public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionResult<T>>
+	implements Flow.Processor<List<? extends Sample<T>>, RegressionResult<T>>
 {
-
-	public static final class Result<T> {
-		private final Tree<Op<T>, ?> _program;
-		private final double _error;
-		private final long _generation;
-
-		private Result(
-			final Tree<Op<T>, ?> program,
-			final double error,
-			final long generation
-		) {
-			_program = requireNonNull(program);
-			_error = error;
-			_generation = generation;
-		}
-
-		public Tree<Op<T>, ?> program() {
-			return _program;
-		}
-
-		public double error() {
-			return _error;
-		}
-
-		public long generation() {
-			return _generation;
-		}
-
-	}
-
-
 	private final Object _lock = new Object() {};
 
 	private final SampleBuffer<T> _samples;
@@ -170,7 +142,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Result<T>>
 	private void doSubmit(final EvolutionResult<ProgramGene<T>, Double> result) {
 		final var bpt = result.bestPhenotype();
 		submit(
-			new Result<>(
+			new RegressionResult<>(
 				bpt.genotype().gene(),
 				bpt.fitness(),
 				result.generation()
@@ -282,6 +254,47 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<Result<T>>
 			} catch (CancellationException e) {
 				Thread.currentThread().interrupt();
 			}
+		}
+
+		private static <C> Function<C, Stream<C>>
+		strictlyImproving(
+			final BinaryOperator<C> comparator,
+			final Predicate<? super C> reset
+		) {
+			requireNonNull(comparator);
+
+			return new Function<>() {
+				private C _best;
+
+				@Override
+				public Stream<C> apply(final C result) {
+					if (reset.test(result)) {
+						_best = null;
+					}
+
+					final C best = comparator.apply(_best, result);
+
+					final Stream<C> stream = best == _best
+						? Stream.empty()
+						: Stream.of(best);
+
+					_best = best;
+
+					return stream;
+				}
+			};
+		}
+
+		private static <T extends Comparable<? super T>> T min(final T a, final T b) {
+			return best(Comparator.reverseOrder(), a, b);
+		}
+
+		private static <T>
+		T best(final Comparator<? super T> comparator, final T a, final T b) {
+			if (a == null && b == null) return null;
+			if (a == null) return b;
+			if (b == null) return a;
+			return comparator.compare(a, b) >= 0 ? a : b;
 		}
 
 		private boolean reset(final T element) {

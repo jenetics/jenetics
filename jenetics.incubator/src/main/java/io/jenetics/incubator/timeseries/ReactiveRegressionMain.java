@@ -26,7 +26,6 @@ import java.util.concurrent.Flow.Subscription;
 
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.EvolutionParams;
-import io.jenetics.incubator.timeseries.ReactiveRegression.Result;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -105,7 +104,7 @@ public class ReactiveRegressionMain {
 						(_subscription = subscription).request(1);
 					}
 					@Override
-					public void onNext(final Result<Double> result) {
+					public void onNext(final RegressionResult<Double> result) {
 						final TreeNode<Op<Double>> tree = TreeNode.ofTree(result.program());
 						MathExpr.REWRITER.rewrite(tree);
 						System.out.println(
