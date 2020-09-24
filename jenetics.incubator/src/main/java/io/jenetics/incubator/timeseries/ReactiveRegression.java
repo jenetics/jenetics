@@ -140,7 +140,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 		close();
 	}
 
-	private void start() {
+	public void start() {
 		synchronized (_lock) {
 			if (_thread != null) {
 				throw new IllegalStateException("Processor already started.");
@@ -171,98 +171,5 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 		}
 		super.close();
 	}
-
-
-//	/**
-//	 * This class takes a stream and submits the currently best element to the also
-//	 * given element sink {@code Consumer<T>}.
-//	 *
-//	 * @param <T> the element type
-//	 */
-//	private static final class EvolutionRunner<T extends Comparable<? super T>>
-//		implements
-//			EvolutionInterceptor<ProgramGene<T>, Double>,
-//			Runnable
-//	{
-//
-//		private final Stream<? extends T> _stream;
-//		private final Consumer<? super T> _sink;
-//
-//		private final AtomicBoolean _reset = new AtomicBoolean(false);
-//		private final AtomicBoolean _proceed = new AtomicBoolean(true);
-//		private final Lock _lock = new ReentrantLock();
-//
-//		private T _best;
-//
-//		EvolutionRunner(
-//			final Stream<? extends T> stream,
-//			final Consumer<? super T> sink
-//		) {
-//			_stream = requireNonNull(stream);
-//			_sink = requireNonNull(sink);
-//		}
-//
-//		@Override
-//		public void run() {
-//			_stream
-//				.takeWhile(e -> _proceed.get())
-//				.forEach(this::submit);
-//		}
-//
-//		private void submit(final T result) {
-//			if (_reset.getAndSet(false)) {
-//				_best = null;
-//			}
-//
-//			final T best = min(_best, result);
-//			if (best == _best) {
-//				// nicht besser
-//			} else {
-//				// besser;
-//			}
-//
-//			_best = best;
-//		}
-//
-//		private T min(final T a, final T b) {
-//			if (a == null && b == null) return null;
-//			if (a == null) return b;
-//			if (b == null) return a;
-//			return a.compareTo(b) <= 0 ? a : b;
-//		}
-//
-//		void lock() {
-//			_lock.lock();
-//		}
-//
-//		void unlock() {
-//			_lock.unlock();
-//		}
-//
-//		private boolean reset(final T element) {
-//			return _reset.getAndSet(false);
-//		}
-//
-//		void reset() {
-//			_reset.set(true);
-//		}
-//
-//		void stop() {
-//			_proceed.set(false);
-//		}
-//
-//		@Override
-//		public EvolutionStart<ProgramGene<T>, Double>
-//		before(final EvolutionStart<ProgramGene<T>, Double> start) {
-//			return start;
-//		}
-//
-//		@Override
-//		public EvolutionResult<ProgramGene<T>, Double>
-//		after(final EvolutionResult<ProgramGene<T>, Double> result) {
-//			return result;
-//		}
-//
-//	}
 
 }

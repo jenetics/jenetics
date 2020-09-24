@@ -95,6 +95,7 @@ public class ReactiveRegressionMain {
 			);
 
 			try (regression) {
+				regression.start();
 				samples.subscribe(regression);
 
 				regression.subscribe(new Subscriber<>() {
