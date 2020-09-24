@@ -2,32 +2,37 @@ package io.jenetics.incubator.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Comparator;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import io.jenetics.Phenotype;
+import io.jenetics.engine.EvolutionInterceptor;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 
 import io.jenetics.prog.ProgramGene;
 
-final class RegressionRunner<T> implements Runnable {
+final class RegressionRunner<T>
+	implements
+		EvolutionInterceptor<ProgramGene<T>, Double>,
+		Runnable
+{
 
-	private final Stream<EvolutionResult<ProgramGene<T>, Double>> _stream;
-	private final Consumer<RegressionResult<T>> _sink;
+	private Stream<EvolutionResult<ProgramGene<T>, Double>> _stream;
+	private Consumer<? super RegressionResult<T>> _sink;
 
 	private final AtomicBoolean _reset = new AtomicBoolean(false);
 	private final AtomicBoolean _proceed = new AtomicBoolean(true);
-	private final Semaphore _semaphore = new Semaphore(1);
 
-	RegressionRunner(
+	private EvolutionResult<ProgramGene<T>, Double> _best;
+
+	RegressionRunner() {
+	}
+
+	void init(
 		final Stream<EvolutionResult<ProgramGene<T>, Double>> stream,
-		final Consumer<RegressionResult<T>> sink
+		final Consumer<? super RegressionResult<T>> sink
 	) {
 		_stream = requireNonNull(stream);
 		_sink = requireNonNull(sink);
@@ -35,90 +40,58 @@ final class RegressionRunner<T> implements Runnable {
 
 	@Override
 	public void run() {
-		final var best =
-			RegressionRunner.<EvolutionResult<ProgramGene<T>, Double>>strictlyImproving(
-				RegressionRunner::min, this::reset);
+		_stream
+			.takeWhile(e -> _proceed.get())
+			.forEach(this::submit);
+	}
 
-		try {
-			_stream
-				.takeWhile(e -> _proceed.get())
-				.flatMap(e -> {
-					lock();
-					try {
-						return best.apply(e);
-					} finally {
-						unlock();
-					}
-				})
-				.forEach(null);
-		} catch (CancellationException e) {
-			Thread.currentThread().interrupt();
+	private void submit(final EvolutionResult<ProgramGene<T>, Double> result) {
+		if (_reset.getAndSet(false)) {
+			_best = null;
 		}
+
+		final var best = min(_best, result);
+		if (best == _best) {
+			// nicht besser
+		} else {
+			// besser;
+		}
+
+		_best = best;
 	}
 
-	private static <C> Function<C, Stream<C>>
-	strictlyImproving(
-		final BinaryOperator<C> comparator,
-		final Predicate<? super C> reset
-	) {
-		requireNonNull(comparator);
-
-		return new Function<>() {
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C result) {
-				if (reset.test(result)) {
-					_best = null;
-				}
-
-				final C best = comparator.apply(_best, result);
-
-				final Stream<C> stream = best == _best
-					? Stream.empty()
-					: Stream.of(best);
-
-				_best = best;
-
-				return stream;
-			}
-		};
-	}
-
-	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
-		return best(Comparator.reverseOrder(), a, b);
-	}
-
-	private static <T>
-	T best(final Comparator<? super T> comparator, final T a, final T b) {
+	private <T extends Comparable<? super T>> T min(final T a, final T b) {
 		if (a == null && b == null) return null;
 		if (a == null) return b;
 		if (b == null) return a;
-		return comparator.compare(a, b) >= 0 ? a : b;
+		return a.compareTo(b) <= 0 ? a : b;
 	}
 
-	private boolean reset(final EvolutionResult<ProgramGene<T>, Double> element) {
-		return _reset.getAndSet(false);
-	}
-
-	void reset() {
-		_reset.set(true);
+	void onNextGeneration(final Runnable action) {
 	}
 
 	void stop() {
 		_proceed.set(false);
 	}
 
-	void lock() {
-		try {
-			_semaphore.acquire();
-		} catch (InterruptedException e) {
-			throw new CancellationException(e.toString());
-		}
+	@Override
+	public EvolutionStart<ProgramGene<T>, Double>
+	before(final EvolutionStart<ProgramGene<T>, Double> start) {
+		return start;
 	}
 
-	void unlock() {
-		_semaphore.release();
+	private EvolutionStart<ProgramGene<T>, Double>
+	invalidate(final EvolutionStart<ProgramGene<T>, Double> start) {
+		return EvolutionStart.of(
+			start.population().map(Phenotype::nullifyFitness),
+			start.generation()
+		);
+	}
+
+	@Override
+	public EvolutionResult<ProgramGene<T>, Double>
+	after(final EvolutionResult<ProgramGene<T>, Double> result) {
+		return result;
 	}
 
 }

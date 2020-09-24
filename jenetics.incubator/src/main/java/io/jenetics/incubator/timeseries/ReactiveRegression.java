@@ -19,27 +19,16 @@
  */
 package io.jenetics.incubator.timeseries;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.SubmissionPublisher;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionInterceptor;
 import io.jenetics.engine.EvolutionParams;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.FitnessNullifier;
 
 import io.jenetics.ext.util.Tree;
 
@@ -60,11 +49,11 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 {
 	private final Object _lock = new Object() {};
 
+	private final RegressionRunner<T> _runner = new RegressionRunner<>();
+
 	private final SampleBuffer<T> _samples;
-	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private EvolutionRunner<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 	private Flow.Subscription _subscription;
 
@@ -94,12 +83,11 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 		super(executor, maxBufferCapacity);
 
 		_samples = new SampleBuffer<>(sampleBufferSize);
-		_nullifier = new FitnessNullifier<>();
 
 		_engine = Engine
 			.builder(Regression.of(codec, error, _samples))
 			.evolutionParams(params)
-			.interceptor(_nullifier)
+			.interceptor(_runner)
 			.minimizing()
 			.build();
 	}
@@ -128,23 +116,18 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	@Override
 	public void onNext(final List<? extends Sample<T>> samples) {
 		synchronized (_lock) {
-			if (_submitter != null) {
-				_samples.addAll(samples);
-				publish();
+			if (_thread != null) {
+				_runner.onNextGeneration(() -> {
+					_samples.addAll(samples);
+					_samples.publish();
+				});
 			}
 		}
 		_subscription.request(1);
 	}
 
-	private void doSubmit(final EvolutionResult<ProgramGene<T>, Double> result) {
-		final var bpt = result.bestPhenotype();
-		submit(
-			new RegressionResult<>(
-				bpt.genotype().gene(),
-				bpt.fitness(),
-				result.generation()
-			)
-		);
+	private void doSubmit(final RegressionResult<T> result) {
+		submit(result);
 	}
 
 	@Override
@@ -157,25 +140,14 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 		close();
 	}
 
-	private void publish() {
-		_submitter.lock();
-		try {
-			_samples.publish();
-			_nullifier.nullifyFitness();
-			_submitter.reset();
-		} finally {
-			_submitter.unlock();
-		}
-	}
-
 	private void start() {
 		synchronized (_lock) {
-			if (_submitter != null) {
+			if (_thread != null) {
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new EvolutionRunner<>(_engine.stream(), this::doSubmit);
-			_thread = new Thread(_submitter);
+			_runner.init(_engine.stream(), this::doSubmit);
+			_thread = new Thread(_runner);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
 			);
@@ -191,107 +163,106 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	@Override
 	public void close() {
 		synchronized (_lock) {
-			if (_submitter != null) {
-				_submitter.stop();
+			if (_thread != null) {
+				_runner.stop();
 				_thread.interrupt();
 			}
-			_submitter = null;
 			_thread = null;
 		}
 		super.close();
 	}
 
 
-	/**
-	 * This class takes a stream and submits the currently best element to the also
-	 * given element sink {@code Consumer<T>}.
-	 *
-	 * @param <T> the element type
-	 */
-	private static final class EvolutionRunner<T extends Comparable<? super T>>
-		implements
-			EvolutionInterceptor<ProgramGene<T>, Double>,
-			Runnable
-	{
-
-		private final Stream<? extends T> _stream;
-		private final Consumer<? super T> _sink;
-
-		private final AtomicBoolean _reset = new AtomicBoolean(false);
-		private final AtomicBoolean _proceed = new AtomicBoolean(true);
-		private final Lock _lock = new ReentrantLock();
-
-		private T _best;
-
-		EvolutionRunner(
-			final Stream<? extends T> stream,
-			final Consumer<? super T> sink
-		) {
-			_stream = requireNonNull(stream);
-			_sink = requireNonNull(sink);
-		}
-
-		@Override
-		public void run() {
-			_stream
-				.takeWhile(e -> _proceed.get())
-				.forEach(this::submit);
-		}
-
-		private void submit(final T result) {
-			if (_reset.getAndSet(false)) {
-				_best = null;
-			}
-
-			final T best = min(_best, result);
-			if (best == _best) {
-				// nicht besser
-			} else {
-				// besser;
-			}
-
-			_best = best;
-		}
-
-		private T min(final T a, final T b) {
-			if (a == null && b == null) return null;
-			if (a == null) return b;
-			if (b == null) return a;
-			return a.compareTo(b) <= 0 ? a : b;
-		}
-
-		void lock() {
-			_lock.lock();
-		}
-
-		void unlock() {
-			_lock.unlock();
-		}
-
-		private boolean reset(final T element) {
-			return _reset.getAndSet(false);
-		}
-
-		void reset() {
-			_reset.set(true);
-		}
-
-		void stop() {
-			_proceed.set(false);
-		}
-
-		@Override
-		public EvolutionStart<ProgramGene<T>, Double>
-		before(final EvolutionStart<ProgramGene<T>, Double> start) {
-			return start;
-		}
-
-		@Override
-		public EvolutionResult<ProgramGene<T>, Double>
-		after(final EvolutionResult<ProgramGene<T>, Double> result) {
-			return result;
-		}
-
-	}
+//	/**
+//	 * This class takes a stream and submits the currently best element to the also
+//	 * given element sink {@code Consumer<T>}.
+//	 *
+//	 * @param <T> the element type
+//	 */
+//	private static final class EvolutionRunner<T extends Comparable<? super T>>
+//		implements
+//			EvolutionInterceptor<ProgramGene<T>, Double>,
+//			Runnable
+//	{
+//
+//		private final Stream<? extends T> _stream;
+//		private final Consumer<? super T> _sink;
+//
+//		private final AtomicBoolean _reset = new AtomicBoolean(false);
+//		private final AtomicBoolean _proceed = new AtomicBoolean(true);
+//		private final Lock _lock = new ReentrantLock();
+//
+//		private T _best;
+//
+//		EvolutionRunner(
+//			final Stream<? extends T> stream,
+//			final Consumer<? super T> sink
+//		) {
+//			_stream = requireNonNull(stream);
+//			_sink = requireNonNull(sink);
+//		}
+//
+//		@Override
+//		public void run() {
+//			_stream
+//				.takeWhile(e -> _proceed.get())
+//				.forEach(this::submit);
+//		}
+//
+//		private void submit(final T result) {
+//			if (_reset.getAndSet(false)) {
+//				_best = null;
+//			}
+//
+//			final T best = min(_best, result);
+//			if (best == _best) {
+//				// nicht besser
+//			} else {
+//				// besser;
+//			}
+//
+//			_best = best;
+//		}
+//
+//		private T min(final T a, final T b) {
+//			if (a == null && b == null) return null;
+//			if (a == null) return b;
+//			if (b == null) return a;
+//			return a.compareTo(b) <= 0 ? a : b;
+//		}
+//
+//		void lock() {
+//			_lock.lock();
+//		}
+//
+//		void unlock() {
+//			_lock.unlock();
+//		}
+//
+//		private boolean reset(final T element) {
+//			return _reset.getAndSet(false);
+//		}
+//
+//		void reset() {
+//			_reset.set(true);
+//		}
+//
+//		void stop() {
+//			_proceed.set(false);
+//		}
+//
+//		@Override
+//		public EvolutionStart<ProgramGene<T>, Double>
+//		before(final EvolutionStart<ProgramGene<T>, Double> start) {
+//			return start;
+//		}
+//
+//		@Override
+//		public EvolutionResult<ProgramGene<T>, Double>
+//		after(final EvolutionResult<ProgramGene<T>, Double> result) {
+//			return result;
+//		}
+//
+//	}
 
 }
