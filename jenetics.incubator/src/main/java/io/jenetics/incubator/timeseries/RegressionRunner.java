@@ -16,7 +16,7 @@ import io.jenetics.engine.EvolutionResult;
 
 import io.jenetics.prog.ProgramGene;
 
-final class RegressionResultEmitter<T> implements Runnable {
+final class RegressionRunner<T> implements Runnable {
 
 	private final Stream<EvolutionResult<ProgramGene<T>, Double>> _stream;
 	private final Consumer<RegressionResult<T>> _sink;
@@ -25,7 +25,7 @@ final class RegressionResultEmitter<T> implements Runnable {
 	private final AtomicBoolean _proceed = new AtomicBoolean(true);
 	private final Semaphore _semaphore = new Semaphore(1);
 
-	RegressionResultEmitter(
+	RegressionRunner(
 		final Stream<EvolutionResult<ProgramGene<T>, Double>> stream,
 		final Consumer<RegressionResult<T>> sink
 	) {
@@ -36,8 +36,8 @@ final class RegressionResultEmitter<T> implements Runnable {
 	@Override
 	public void run() {
 		final var best =
-			RegressionResultEmitter.<EvolutionResult<ProgramGene<T>, Double>>strictlyImproving(
-				RegressionResultEmitter::min, this::reset);
+			RegressionRunner.<EvolutionResult<ProgramGene<T>, Double>>strictlyImproving(
+				RegressionRunner::min, this::reset);
 
 		try {
 			_stream
