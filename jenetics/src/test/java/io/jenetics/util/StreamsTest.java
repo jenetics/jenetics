@@ -24,6 +24,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -123,6 +126,24 @@ public class StreamsTest {
 			Assert.assertEquals(diff, 10);
 			start = values.get(i);
 		}
+	}
+
+	@Test
+	public void toStrictlyIncreasingWithReset() {
+		final var flag = new AtomicBoolean();
+		final var count = new AtomicInteger();
+		final Predicate<Integer> reset = i -> flag.getAndSet(false);
+
+		IntStream.of(1, 2, 3, 2, 1, 4, 7, 8, 6, 5, 3, 2, 1)
+			.boxed()
+			.peek(i -> {
+				if (count.incrementAndGet()%3 == 0) {
+					System.out.println(count + ": RESET: " + i);
+					flag.set(true);
+				}
+			})
+			.flatMap(Streams.toStrictlyIncreasing(reset))
+			.forEach(System.out::println);
 	}
 
 }

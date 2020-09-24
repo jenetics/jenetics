@@ -21,28 +21,25 @@ package io.jenetics.incubator.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BinaryOperator;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionInterceptor;
 import io.jenetics.engine.EvolutionParams;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.FitnessNullifier;
-import io.jenetics.util.Streams;
 
 import io.jenetics.ext.util.Tree;
 
@@ -67,7 +64,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	private final FitnessNullifier<ProgramGene<T>, Double> _nullifier;
 	private final Engine<ProgramGene<T>, Double> _engine;
 
-	private EvolutionSubmitter<EvolutionResult<ProgramGene<T>, Double>> _submitter;
+	private EvolutionRunner<EvolutionResult<ProgramGene<T>, Double>> _submitter;
 	private Thread _thread;
 	private Flow.Subscription _subscription;
 
@@ -161,18 +158,13 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	}
 
 	private void publish() {
+		_submitter.lock();
 		try {
-			_submitter.lock();
-			try {
-				_samples.publish();
-				_nullifier.nullifyFitness();
-				_submitter.reset();
-			} finally {
-				_submitter.unlock();
-			}
-		} catch (CancellationException e) {
-			Thread.currentThread().interrupt();
-			close();
+			_samples.publish();
+			_nullifier.nullifyFitness();
+			_submitter.reset();
+		} finally {
+			_submitter.unlock();
 		}
 	}
 
@@ -182,7 +174,7 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 				throw new IllegalStateException("Processor already started.");
 			}
 
-			_submitter = new EvolutionSubmitter<>(_engine.stream(), this::doSubmit);
+			_submitter = new EvolutionRunner<>(_engine.stream(), this::doSubmit);
 			_thread = new Thread(_submitter);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
@@ -216,8 +208,10 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	 *
 	 * @param <T> the element type
 	 */
-	private static final class EvolutionSubmitter<T extends Comparable<? super T>>
-		implements Runnable
+	private static final class EvolutionRunner<T extends Comparable<? super T>>
+		implements
+			EvolutionInterceptor<ProgramGene<T>, Double>,
+			Runnable
 	{
 
 		private final Stream<? extends T> _stream;
@@ -225,9 +219,11 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 
 		private final AtomicBoolean _reset = new AtomicBoolean(false);
 		private final AtomicBoolean _proceed = new AtomicBoolean(true);
-		private final Semaphore _semaphore = new Semaphore(1);
+		private final Lock _lock = new ReentrantLock();
 
-		EvolutionSubmitter(
+		private T _best;
+
+		EvolutionRunner(
 			final Stream<? extends T> stream,
 			final Consumer<? super T> sink
 		) {
@@ -237,64 +233,39 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 
 		@Override
 		public void run() {
-			final var best = Streams.<T>toStrictlyDecreasing(this::reset);
+			_stream
+				.takeWhile(e -> _proceed.get())
+				.forEach(this::submit);
+		}
 
-			try {
-				_stream
-					.takeWhile(e -> _proceed.get())
-					.flatMap(e -> {
-						lock();
-						try {
-							return best.apply(e);
-						} finally {
-							unlock();
-						}
-					})
-					.forEach(_sink);
-			} catch (CancellationException e) {
-				Thread.currentThread().interrupt();
+		private void submit(final T result) {
+			if (_reset.getAndSet(false)) {
+				_best = null;
 			}
+
+			final T best = min(_best, result);
+			if (best == _best) {
+				// nicht besser
+			} else {
+				// besser;
+			}
+
+			_best = best;
 		}
 
-		private static <C> Function<C, Stream<C>>
-		strictlyImproving(
-			final BinaryOperator<C> comparator,
-			final Predicate<? super C> reset
-		) {
-			requireNonNull(comparator);
-
-			return new Function<>() {
-				private C _best;
-
-				@Override
-				public Stream<C> apply(final C result) {
-					if (reset.test(result)) {
-						_best = null;
-					}
-
-					final C best = comparator.apply(_best, result);
-
-					final Stream<C> stream = best == _best
-						? Stream.empty()
-						: Stream.of(best);
-
-					_best = best;
-
-					return stream;
-				}
-			};
-		}
-
-		private static <T extends Comparable<? super T>> T min(final T a, final T b) {
-			return best(Comparator.reverseOrder(), a, b);
-		}
-
-		private static <T>
-		T best(final Comparator<? super T> comparator, final T a, final T b) {
+		private T min(final T a, final T b) {
 			if (a == null && b == null) return null;
 			if (a == null) return b;
 			if (b == null) return a;
-			return comparator.compare(a, b) >= 0 ? a : b;
+			return a.compareTo(b) <= 0 ? a : b;
+		}
+
+		void lock() {
+			_lock.lock();
+		}
+
+		void unlock() {
+			_lock.unlock();
 		}
 
 		private boolean reset(final T element) {
@@ -309,16 +280,16 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 			_proceed.set(false);
 		}
 
-		void lock() {
-			try {
-				_semaphore.acquire();
-			} catch (InterruptedException e) {
-				throw new CancellationException(e.toString());
-			}
+		@Override
+		public EvolutionStart<ProgramGene<T>, Double>
+		before(final EvolutionStart<ProgramGene<T>, Double> start) {
+			return start;
 		}
 
-		void unlock() {
-			_semaphore.release();
+		@Override
+		public EvolutionResult<ProgramGene<T>, Double>
+		after(final EvolutionResult<ProgramGene<T>, Double> result) {
+			return result;
 		}
 
 	}
