@@ -19,10 +19,19 @@
  */
 package io.jenetics.incubator.timeseries;
 
+import io.jenetics.prog.regression.Sample;
+
+import java.util.List;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class SamplePointGenerator {
+
+	public List<Sample<Double>> next() {
+		return List.of();
+	}
+
 }
