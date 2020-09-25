@@ -28,7 +28,7 @@ import java.util.List;
  * @version !__version__!
  * @since !__version__!
  */
-public class SamplePointGenerator {
+public class CsvSamplePoints {
 
 	public List<Sample<Double>> next() {
 		return List.of();
