@@ -40,6 +40,9 @@ import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;
 
 /**
+ * Implementation of a <em>reactive</em> regression processor. It takes a
+ * constant stream of sample points and emits regression analysis result objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -71,6 +74,9 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	 *       two and/or bounded by the largest value supported by this
 	 *       implementation; method {@link SubmissionPublisher#getMaxBufferCapacity()}
 	 *       returns the actual value)
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code maxBufferCapacity} or
+	 *         {@code sampleBufferSize} not positive
 	 */
 	public ReactiveRegression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
@@ -92,6 +98,15 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 			.build();
 	}
 
+	/**
+	 * Create a new time series processor with the given parameters.
+	 *
+	 * @param codec the codec used for the regression analyses
+	 * @param error the error function used for the regression analyses
+	 * @param params the evolution engine parameters
+	 * @param sampleBufferSize the buffer size of the time series samples
+	 * @throws IllegalArgumentException if @code sampleBufferSize} not positive
+	 */
 	public ReactiveRegression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
@@ -115,19 +130,21 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 
 	@Override
 	public void onNext(final List<? extends Sample<T>> samples) {
+		_samples.addAll(samples);
+
 		synchronized (_lock) {
 			if (_thread != null) {
-				_runner.onNextGeneration(() -> {
-					_samples.addAll(samples);
-					_samples.publish();
-				});
+				_runner.onNextGeneration(this::publish);
 			}
 		}
+
 		_subscription.request(1);
 	}
 
-	private void doSubmit(final RegressionResult<T> result) {
-		submit(result);
+	private void publish() {
+		_samples.publish();
+		_runner.samples(_samples.samples());
+		_runner.reset();
 	}
 
 	@Override
@@ -143,10 +160,12 @@ public final class ReactiveRegression<T> extends SubmissionPublisher<RegressionR
 	public void start() {
 		synchronized (_lock) {
 			if (_thread != null) {
-				throw new IllegalStateException("Processor already started.");
+				throw new IllegalStateException(
+					"Regression analysis has been already started."
+				);
 			}
 
-			_runner.init(_engine.stream(), this::doSubmit);
+			_runner.init(_engine.stream(), this::submit);
 			_thread = new Thread(_runner);
 			_thread.setUncaughtExceptionHandler((thread, throwable) ->
 				closeExceptionally(throwable)
