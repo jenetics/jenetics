@@ -232,12 +232,12 @@ fun setupJavadoc(project: Project) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
+	// See https://docs.oracle.com/en/java/javase/15/docs/specs/man/javac.html
 	return listOf(
 		"cast",
 		"classfile",
-		"deprecation",
 		"dep-ann",
+		"deprecation",
 		"divzero",
 		"empty",
 		"finally",
