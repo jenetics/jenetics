@@ -154,6 +154,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Dominik Bork and Antonio Garmendia and Manuel Wimmer. <a href="https://model-engineering.info/publications/papers/ER2020_Forum_ModulER-CR.pdf">Towards a Multi-Objective Modularization Approach for Entity-Relationship Models.</a> <em>ER 2020, 39th International Conference on Conceptual Modeling. </em></a> Nov. 2020.
 * Thakur, K., Kumar, G. <a href="https://doi.org/10.1007/s11831-020-09481-7">Nature Inspired Techniques and Applications in Intrusion Detection Systems: Recent Progress and Updated Perspective.</a> <em>Archives of Computational Methods in Engineering (2020). </em></a> Aug. 2020.
 * Cicirello, V. A. <a href="https://doi.org/10.21105/joss.02448">Chips-n-Salsa: A Java Library of Customizable, Hybridizable, Iterative, Parallel, Stochastic, and Self-Adaptive Local Search Algorithms.</a> <em>Journal of Open Source Software, 5(52), 2448. </em></a> Aug. 2020.
 * Li, Yuanyuan; Carabelli, Stefano;Fadda, Edoardo; Manerba, Daniele; Tadei, Roberto; Terzo, Olivier. <a href="https://iris.polito.it/retrieve/handle/11583/2842141/388548/I40for_Advanced_Manufacturing_Technology.pdf">Machine Learning and Optimization for Production Rescheduling in Industry 4.0.</a> <em>THE INTERNATIONAL JOURNAL OF ADVANCED MANUFACTURING TECHNOLOGY. - ISSN 1433-3015. </em></a> Aug. 2020.

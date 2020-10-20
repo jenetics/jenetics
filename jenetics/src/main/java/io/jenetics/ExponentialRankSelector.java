@@ -32,7 +32,7 @@ import io.jenetics.util.Seq;
  * function.
  * </p>
  * <p><img
- *        src="doc-files/exponential-rank-selector.gif"
+ *        src="doc-files/exponential-rank-selector.svg"
  *        alt="P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1}"
  *     >,
  * </p>
