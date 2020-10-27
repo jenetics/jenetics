@@ -1,4 +1,4 @@
-package io.jenetics.util;
+package io.jenetics.incubator.util;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

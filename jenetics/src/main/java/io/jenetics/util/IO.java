@@ -19,12 +19,8 @@
  */
 package io.jenetics.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,16 +29,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -99,109 +86,6 @@ public abstract class IO {
 			}
 		}
 	};
-
-	public static void __write(final Iterable<?> objects, final Path file)
-		throws IOException
-	{
-		final class Output extends ObjectOutputStream {
-			private final boolean _exists = Files.exists(file);
-
-			Output(final OutputStream out) throws IOException {
-				super(out);
-			}
-			@Override
-			protected void writeStreamHeader() throws IOException {
-				if (!_exists) {
-					super.writeStreamHeader();
-				}
-			}
-		}
-
-		try (var fos = new FileOutputStream(file.toFile(), true);
-			 var bos = new BufferedOutputStream(fos);
-			 var out = new Output(bos))
-		{
-			for (var obj : objects) {
-				out.writeObject(obj);
-				out.reset();
-			}
-		}
-
-	}
-
-	public static Stream<Object> __read(final Path file) throws IOException {
-		final class Resources implements Closeable {
-			private final List<Closeable> _closeables = new ArrayList<>();
-
-			public <C extends Closeable> C add(final C closeable) {
-				_closeables.add(requireNonNull(closeable));
-				return closeable;
-			}
-			@Override
-			public void close() throws IOException {
-				close(_closeables);
-			}
-			private void close(final Iterable<? extends Closeable> closeables)
-				throws IOException
-			{
-				Exception error = null;
-				for (var closeable : closeables) {
-					try {
-						closeable.close();
-					} catch (Exception e) {
-						if (error == null) {
-							error = e;
-						} else {
-							error.addSuppressed(e);
-						}
-					}
-				}
-				if (error != null) {
-					if (error instanceof IOException) {
-						throw (IOException)error;
-					} else {
-						throw new IOException(error);
-					}
-				}
-			}
-		}
-
-		final var streams = new Resources();
-		try {
-			final var fin = streams.add(new FileInputStream(file.toFile()));
-			final var bin = streams.add(new BufferedInputStream(fin));
-			final var oin = streams.add(new ObjectInputStream(bin));
-
-			final Supplier<Object> readObject = () -> {
-				try {
-					return oin.readObject();
-				} catch (EOFException|ClassNotFoundException e) {
-					return null;
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
-
-			final Runnable closeStreams = () -> {
-				try {
-					streams.close();
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
-
-			return Stream.generate(readObject)
-				.onClose(closeStreams)
-				.takeWhile(Objects::nonNull);
-		} catch (Throwable e) {
-			try {
-				streams.close();
-			} catch (Exception suppressed) {
-				e.addSuppressed(suppressed);
-			}
-			throw e;
-		}
-	}
 
 	/**
 	 * Serializes the given {@code object} to a {@code byte[]} array.
