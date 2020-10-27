@@ -281,7 +281,7 @@ public final class Lifecycle {
 	 *         invocation.
 	 */
 	public static <A, E extends Exception> void invokeAll(
-		final ExceptionMethod<A, E> method,
+		final ExceptionMethod<? super A, ? extends E> method,
 		final Iterable<? extends A> objects
 	)
 		throws E
@@ -303,6 +303,8 @@ public final class Lifecycle {
 		}
 	}
 
+	private static final int MAX_SUPPRESSED = 5;
+
 	/**
 	 * Invokes the {@code method}> on all given {@code objects}, no matter if one
 	 * of the method invocations throws an exception. The first exception thrown
@@ -314,16 +316,19 @@ public final class Lifecycle {
 	 *         if no exception has been thrown
 	 */
 	static <A, E extends Exception> Throwable invokeAll0(
-		final ExceptionMethod<A, E> method,
+		final ExceptionMethod<? super A, ? extends E> method,
 		final Iterable<? extends A> objects
 	) {
+		int suppressedCount = 0;
 		Throwable error = null;
 		for (var object : objects) {
 			if (error != null) {
 				try {
 					method.apply(object);
 				} catch (Exception suppressed) {
-					error.addSuppressed(suppressed);
+					if (suppressedCount++ < MAX_SUPPRESSED) {
+						error.addSuppressed(suppressed);
+					}
 				}
 			} else {
 				try {
@@ -370,8 +375,11 @@ public final class Lifecycle {
 	 * @throws E in the case of an error. If this exception is thrown, all
 	 *         <em>registered</em> closeable objects are closed before.
 	 */
-	public static <T, E extends Exception> T
-	withCloseables(final ExceptionFunction<Closeables, T, E> block) throws E {
+	public static <T, E extends Exception> T withCloseables(
+		final ExceptionFunction<? super Closeables, ? extends T, ? extends E> block
+	)
+		throws E
+	{
 		final var closeables = new Closeables();
 		try {
 			return block.apply(closeables);
