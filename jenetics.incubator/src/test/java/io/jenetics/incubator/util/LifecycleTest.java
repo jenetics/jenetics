@@ -1,7 +1,9 @@
 package io.jenetics.incubator.util;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import org.testng.Assert;
@@ -45,8 +47,8 @@ public class LifecycleTest {
 				Assert.assertEquals(exception.getSuppressed().length, 1);
 				Assert.assertEquals(
 					exception.getSuppressed()[0].getClass(),
-					suppressedType)
-				;
+					suppressedType
+				);
 			}
 		}
 	}
@@ -102,6 +104,46 @@ public class LifecycleTest {
 				NoSuchFieldException.class
 			}
 		};
+	}
+
+	@Test(expectedExceptions = IOException.class)
+	public void close1() throws IOException {
+		final var count = new AtomicInteger();
+
+		try {
+			Lifecycle.close(List.of(
+				count::incrementAndGet,
+				count::incrementAndGet,
+				() -> { throw new IOException(); },
+				count::incrementAndGet
+			));
+		} catch (IOException e) {
+			Assert.assertEquals(3, count.get());
+			throw e;
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void close2() throws IOException {
+		final var count = new AtomicInteger();
+
+		try {
+			Lifecycle.close(List.of(
+				count::incrementAndGet,
+				count::incrementAndGet,
+				() -> { throw new IllegalArgumentException(); },
+				count::incrementAndGet,
+				() -> { throw new IOException(); }
+			));
+		} catch (IllegalArgumentException e) {
+			Assert.assertEquals(3, count.get());
+			Assert.assertEquals(e.getSuppressed().length, 1);
+			Assert.assertEquals(
+				e.getSuppressed()[0].getClass(),
+				IOException.class
+			);
+			throw e;
+		}
 	}
 
 }

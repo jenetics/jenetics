@@ -8,11 +8,19 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper functions for handling resource- and life cycle objects.
+ */
 public final class Lifecycle {
 
 	@FunctionalInterface
 	interface Method<A, E extends Exception> {
 		void apply(final A arg) throws E;
+	}
+
+	@FunctionalInterface
+	interface LifecycleFunction<A, R, E extends Exception> {
+		R apply(final A arg) throws E;
 	}
 
 	public static final class Closeables implements Closeable {
@@ -83,7 +91,12 @@ public final class Lifecycle {
 	)
 		throws E
 	{
-		final var error = invokeAll0(method, objects);
+		raise(invokeAll0(method, objects));
+	}
+
+	private static <E extends Exception> void raise(final Throwable error)
+		throws E
+	{
 		if (error instanceof RuntimeException) {
 			throw (RuntimeException)error;
 		} else if (error instanceof Error) {
@@ -127,6 +140,18 @@ public final class Lifecycle {
 		}
 
 		return error;
+	}
+
+
+	public static <T, E extends Exception> T
+	trying(final LifecycleFunction<Closeables, T, E> block) throws E {
+		final var closeables = new Closeables();
+		try {
+			return block.apply(closeables);
+		} catch (Throwable error) {
+			closeables.silentClose(error);
+			throw error;
+		}
 	}
 
 }

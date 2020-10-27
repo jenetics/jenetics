@@ -16,8 +16,6 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.util.Lifecycle.Closeables;
-
 public class IO {
 
 	private IO() {
@@ -55,11 +53,10 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		final var streams = new Closeables();
-		try {
-			final var fin = streams.add(new FileInputStream(file.toFile()));
-			final var bin = streams.add(new BufferedInputStream(fin));
-			final var oin = streams.add(new ObjectInputStream(bin));
+		return Lifecycle.trying(resources -> {
+			final var fin = resources.add(new FileInputStream(file.toFile()));
+			final var bin = resources.add(new BufferedInputStream(fin));
+			final var oin = resources.add(new ObjectInputStream(bin));
 
 			final Supplier<Object> readObject = () -> {
 				try {
@@ -72,12 +69,9 @@ public class IO {
 			};
 
 			return Stream.generate(readObject)
-				.onClose(streams::uncheckedClose)
+				.onClose(resources::uncheckedClose)
 				.takeWhile(Objects::nonNull);
-		} catch (Throwable e) {
-			streams.silentClose(e);
-			throw e;
-		}
+		});
 	}
 
 }
