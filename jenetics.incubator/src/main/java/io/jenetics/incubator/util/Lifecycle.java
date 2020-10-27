@@ -52,13 +52,7 @@ public final class Lifecycle {
 	 *     final var oin = streams.add(new ObjectInputStream(bin));
 	 *
 	 *     final Supplier<Object> readObject = () -> {
-	 *         try {
-	 *             return oin.readObject();
-	 *         } catch (EOFException|ClassNotFoundException e) {
-	 *             return null;
-	 *         } catch (IOException e) {
-	 *             throw new UncheckedIOException(e);
-	 *         }
+	 *         ...
 	 *     };
 	 *
 	 *     return Stream.generate(readObject)
