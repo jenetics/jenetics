@@ -111,7 +111,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			Lifecycle.close(List.of(
+			Lifecycle.Closeables.close(List.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
@@ -128,7 +128,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			Lifecycle.close(List.of(
+			Lifecycle.Closeables.close(List.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
