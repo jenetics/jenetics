@@ -53,10 +53,10 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		return Lifecycle.trying(resources -> {
-			final var fin = resources.add(new FileInputStream(file.toFile()));
-			final var bin = resources.add(new BufferedInputStream(fin));
-			final var oin = resources.add(new ObjectInputStream(bin));
+		return Lifecycle.withCloseables(streams -> {
+			final var fin = streams.add(new FileInputStream(file.toFile()));
+			final var bin = streams.add(new BufferedInputStream(fin));
+			final var oin = streams.add(new ObjectInputStream(bin));
 
 			final Supplier<Object> readObject = () -> {
 				try {
@@ -69,7 +69,7 @@ public class IO {
 			};
 
 			return Stream.generate(readObject)
-				.onClose(resources::uncheckedClose)
+				.onClose(streams::uncheckedClose)
 				.takeWhile(Objects::nonNull);
 		});
 	}
