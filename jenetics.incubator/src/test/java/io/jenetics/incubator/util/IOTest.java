@@ -24,8 +24,8 @@ public class IOTest {
 		final var tempFile = Files.createTempFile("IO", "TEST");
 		System.out.println(tempFile);
 		try {
-			IO.__write(OBJECTS, tempFile);
-			try (var objects = IO.__read(tempFile)) {
+			IO.write(OBJECTS, tempFile);
+			try (var objects = IO.read(tempFile)) {
 				Assert.assertEquals(
 					OBJECTS,
 					objects.collect(Collectors.toList())
