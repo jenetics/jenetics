@@ -118,12 +118,25 @@ public final class Lifecycle {
 			return closeable;
 		}
 
+		@Override
+		public void close() throws IOException {
+			close(_closeables);
+		}
+
 		/**
 		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
 		 * is wrapped into an {@link UncheckedIOException}.
 		 */
 		public void uncheckedClose() {
 			uncheckedClose(_closeables);
+		}
+
+		/**
+		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
+		 * is ignored
+		 */
+		public void silentClose() {
+			silentClose(_closeables,null);
 		}
 
 		/**
@@ -138,18 +151,9 @@ public final class Lifecycle {
 			silentClose(_closeables, previousError);
 		}
 
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored
-		 */
-		public void silentClose() {
-			silentClose(_closeables,null);
-		}
-
-		@Override
-		public void close() throws IOException {
-			close(_closeables);
-		}
+		/* *********************************************************************
+		 * Static close methods.
+		 * ********************************************************************/
 
 		/**
 		 * Closes all given {@link Closeable} objects. It is guaranteed that all
@@ -181,6 +185,18 @@ public final class Lifecycle {
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
 			}
+		}
+
+		/**
+		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
+		 * is ignored.
+		 *
+		 * @see #silentClose(Iterable, Throwable)
+		 *
+		 * @param closeables the objects to close
+		 */
+		public static void silentClose(final Iterable<? extends Closeable> closeables) {
+			silentClose(closeables, null);
 		}
 
 		/**
@@ -222,18 +238,6 @@ public final class Lifecycle {
 					previousError.addSuppressed(ignore);
 				}
 			}
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored.
-		 *
-		 * @see #silentClose(Iterable, Throwable)
-		 *
-		 * @param closeables the objects to close
-		 */
-		public static void silentClose(final Iterable<? extends Closeable> closeables) {
-			silentClose(closeables, null);
 		}
 
 	}
