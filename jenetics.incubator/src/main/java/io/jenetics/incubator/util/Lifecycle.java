@@ -232,7 +232,7 @@ public final class Lifecycle {
 		 *
 		 * @see Closeables
 		 *
-		 * @param builder the <em>protected</em> builder method
+		 * @param builder the builder method
 		 * @param <T> the value type of the created <em>closeable</em> value
 		 * @param <E> the thrown exception type while building the value
 		 * @return the closeable built value
