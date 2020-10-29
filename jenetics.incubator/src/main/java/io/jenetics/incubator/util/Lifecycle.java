@@ -385,11 +385,14 @@ public final class Lifecycle {
 	}
 
 	/**
-	 * Opens an kind of {@code try-catch} with resources block. The difference
-	 * is, that the resources are only closed in the case of an error.
+	 * Opens a kind of {@code try-catch} with resources block. The difference
+	 * is, that the resources, registered with the {@link Closeables#add(Closeable)}
+	 * method, are only closed in the case of an error. If the <em>value</em>
+	 * could be created, the caller is responsible for closing the opened
+	 * <em>resources</em> by calling the {@link CloseableValue#close()} method.
 	 *
 	 * <pre>{@code
-	 * final CloseableValue<Stream<Object>> result = trying(resources -> {
+	 * final CloseableValue<Stream<Object>> result = trying((Closeables resources) -> {
 	 *     final var fin = resources.add(new FileInputStream(file.toFile()));
 	 *     final var bin = resources.add(new BufferedInputStream(fin));
 	 *     final var oin = resources.add(new ObjectInputStream(bin));
@@ -410,8 +413,17 @@ public final class Lifecycle {
 	 *
 	 * // If the stream has been consumed, the 'close' method of the value is
 	 * // called, via the 'uncheckedClose' method.
-	 * return result.value().onClose(result::uncheckedClose);
+	 * final Stream<Object> stream = result.value()
+	 *     .onClose(result::uncheckedClose);
+	 *
+	 * // Stream is closed after the consumption of all elements.
+	 * List<Object> objects;
+	 * try (stream) {
+	 *     objects = stream.collect(Collectors.toList());
+	 * }
 	 * }</pre>
+	 *
+	 * @see Closeables
 	 *
 	 * @param block the <em>protected</em> code block
 	 * @param <T> the return type of the <em>closeable</em> block
