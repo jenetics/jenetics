@@ -268,7 +268,7 @@ public class LifecycleTest {
 		final var resource3 = atomic();
 
 		try {
-			final var closeable = CloseableValue.build(resources -> {
+			CloseableValue.build(resources -> {
 				resources.add(resource1);
 				resources.add(resource2);
 				resources.add(resource3);
