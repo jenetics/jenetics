@@ -135,23 +135,9 @@ public final class Lifecycle {
 		private final List<Closeable> _closeables = new ArrayList<>();
 
 		/**
-		 * Create a new {@code Closeables} object with the given initial
-		 * {@code closeables} objects.
-		 *
-		 * @param closeables the initial closeables objects
+		 * Create a new {@code Closeables} object.
 		 */
-		public Closeables(final Iterable<? extends Closeable> closeables) {
-			closeables.forEach(_closeables::add);
-		}
-
-		/**
-		 * Create a new {@code Closeables} object with the given initial
-		 * {@code closeables} objects.
-		 *
-		 * @param closeables the initial closeables objects
-		 */
-		public Closeables(final Closeable... closeables) {
-			this(Arrays.asList(closeables));
+		public Closeables() {
 		}
 
 		/**
@@ -174,6 +160,40 @@ public final class Lifecycle {
 			} else if (_closeables.size() > 1) {
 				Lifecycle.invokeAll(Closeable::close, _closeables);
 			}
+		}
+
+		/**
+		 * Create a new {@code Closeables} object with the given initial
+		 * {@code closeables} objects.
+		 *
+		 * @see #of(Closeable...)
+		 *
+		 * @param closeables the initial closeables objects
+		 * @return a new closeable object which collects the given
+		 *        {@code closeables}
+		 * @throws NullPointerException if one of the {@code closeables} is
+		 *         {@code null}
+		 */
+		public static Closeables of(final Iterable<? extends Closeable> closeables) {
+			final var result = new Closeables();
+			closeables.forEach(c -> result._closeables.add(requireNonNull(c)));
+			return result;
+		}
+
+		/**
+		 * Create a new {@code Closeables} object with the given initial
+		 * {@code closeables} objects.
+		 *
+		 * @see #of(Iterable)
+		 *
+		 * @param closeables the initial closeables objects
+		 * @return a new closeable object which collects the given
+		 *        {@code closeables}
+		 * @throws NullPointerException if one of the {@code closeables} is
+		 *         {@code null}
+		 */
+		public static Closeables of(final Closeable... closeables) {
+			return of(Arrays.asList(closeables));
 		}
 
 	}

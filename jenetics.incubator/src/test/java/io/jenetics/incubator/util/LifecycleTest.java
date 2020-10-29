@@ -130,7 +130,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = new Lifecycle.Closeables(
+			final var closeables = Lifecycle.Closeables.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
@@ -148,7 +148,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = new Lifecycle.Closeables(
+			final var closeables = Lifecycle.Closeables.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
