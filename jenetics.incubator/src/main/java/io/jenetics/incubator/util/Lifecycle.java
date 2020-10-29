@@ -63,6 +63,38 @@ public final class Lifecycle {
 	}
 
 	/**
+	 * Specialisation of the {@link Closeable} interface, which throws an
+	 * {@link UncheckedIOException} instead of an {@link IOException}.
+	 */
+	public interface UncheckedCloseable extends Closeable {
+
+		@Override
+		void close() throws UncheckedIOException;
+
+		/**
+		 * Wraps a given {@code closeable} object and returns an
+		 * {@link UncheckedCloseable}.
+		 *
+		 * @param closeable the <em>normal</em> closeable object to wrap
+		 * @return a new unchecked closeable with the given underlying
+		 *         {@code closeable} object
+		 * @throws NullPointerException if the given {@code closeable} is
+		 *         {@code null}
+		 */
+		public static UncheckedCloseable of(final Closeable closeable) {
+			requireNonNull(closeable);
+
+			return () -> {
+				try {
+					closeable.close();
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			};
+		}
+	}
+
+	/**
 	 * Extends the {@link Closeable} with methods for wrapping the thrown
 	 * exception into an {@link UncheckedIOException} or ignoring them.
 	 */
@@ -106,6 +138,20 @@ public final class Lifecycle {
 					previousError.addSuppressed(ignore);
 				}
 			}
+		}
+
+		/**
+		 * Wraps a given {@code closeable} object and returns an
+		 * {@link ExtendedCloseable}.
+		 *
+		 * @param closeable the <em>normal</em> closeable object to wrap
+		 * @return a new extended closeable with the given underlying
+		 *         {@code closeable} object
+		 * @throws NullPointerException if the given {@code closeable} is
+		 *         {@code null}
+		 */
+		public static ExtendedCloseable of(final Closeable closeable) {
+			return closeable::close;
 		}
 
 	}
@@ -201,7 +247,7 @@ public final class Lifecycle {
 	/**
 	 * Wraps a {@link Path} object which will be deleted on {@link #close()}.
 	 */
-	public static class DeletablePath implements ExtendedCloseable {
+	public static final class DeletablePath implements ExtendedCloseable {
 		private final Path _path;
 
 		private DeletablePath(final Path path) {
