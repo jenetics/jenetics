@@ -29,30 +29,31 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Helper functions for handling resource- and life cycle objects.
+ * Helper functions, interfaces and classes for handling resource- and life
+ * cycle objects.
  */
 public final class Lifecycle {
 
 	/**
-	 * A method which takes an argument and throws an exception.
+	 * A method which takes an argument and can throw an exception.
 	 *
 	 * @param <A> the argument type
 	 * @param <E> the exception type
 	 */
 	@FunctionalInterface
-	public interface ExceptionMethod<A, E extends Exception> {
+	public interface ThrowingMethod<A, E extends Exception> {
 		void apply(final A arg) throws E;
 	}
 
 	/**
-	 * A function which takes an argument and throws an exception.
+	 * A function which takes an argument and can throw an exception.
 	 *
 	 * @param <A> the argument type
 	 * @param <R> the return type
 	 * @param <E> the exception type
 	 */
 	@FunctionalInterface
-	public interface ExceptionFunction<A, R, E extends Exception> {
+	public interface ThrowingFunction<A, R, E extends Exception> {
 		R apply(final A arg) throws E;
 	}
 
@@ -156,7 +157,7 @@ public final class Lifecycle {
 	 * some cleanup work to do after usage.
 	 *
 	 * <pre>{@code
-	 * final var file = CloseableValue.of(
+	 * final CloseableValue<Path> file = CloseableValue.of(
 	 *     Files.createTempFile("test-", ".txt" ),
 	 *     Files::deleteIfExists
 	 * );
@@ -191,7 +192,7 @@ public final class Lifecycle {
 		 */
 		public static <T> CloseableValue<T> of(
 			final T value,
-			final ExceptionMethod<? super T, ? extends IOException> close
+			final ThrowingMethod<? super T, ? extends IOException> close
 		) {
 			return new CloseableValue<T>() {
 				@Override
@@ -227,7 +228,7 @@ public final class Lifecycle {
 	 * });
 	 * }</pre>
 	 *
-	 * @see #trying(ExceptionFunction)
+	 * @see #trying(ThrowingFunction)
 	 */
 	public static final class Closeables implements ExtendedCloseable {
 		private final List<Closeable> _closeables = new ArrayList<>();
@@ -322,7 +323,7 @@ public final class Lifecycle {
 	 *         invocation.
 	 */
 	public static <A, E extends Exception> void invokeAll(
-		final ExceptionMethod<? super A, ? extends E> method,
+		final ThrowingMethod<? super A, ? extends E> method,
 		final Iterable<? extends A> objects
 	)
 		throws E
@@ -357,7 +358,7 @@ public final class Lifecycle {
 	 *         if no exception has been thrown
 	 */
 	static <A, E extends Exception> Throwable invokeAll0(
-		final ExceptionMethod<? super A, ? extends E> method,
+		final ThrowingMethod<? super A, ? extends E> method,
 		final Iterable<? extends A> objects
 	) {
 		int suppressedCount = 0;
@@ -420,7 +421,7 @@ public final class Lifecycle {
 	 *         <em>registered</em> closeable objects are closed before.
 	 */
 	public static <T, E extends Exception> CloseableValue<T> trying(
-		final ExceptionFunction<? super Closeables, ? extends T, ? extends E> block
+		final ThrowingFunction<? super Closeables, ? extends T, ? extends E> block
 	)
 		throws E
 	{

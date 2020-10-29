@@ -37,6 +37,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+
 public class IO {
 
 	private IO() {
@@ -74,7 +76,7 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		final var result = trying(resources -> {
+		final CloseableValue<Stream<Object>> result = trying(resources -> {
 			final var fin = resources.add(new FileInputStream(file.toFile()));
 			final var bin = resources.add(new BufferedInputStream(fin));
 			final var oin = resources.add(new ObjectInputStream(bin));
