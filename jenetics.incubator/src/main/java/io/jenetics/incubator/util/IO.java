@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
+import static io.jenetics.incubator.util.Lifecycle.trying;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
@@ -72,10 +74,10 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		return Lifecycle.withCloseables(streams -> {
-			final var fin = streams.add(new FileInputStream(file.toFile()));
-			final var bin = streams.add(new BufferedInputStream(fin));
-			final var oin = streams.add(new ObjectInputStream(bin));
+		return trying(resources -> {
+			final var fin = resources.add(new FileInputStream(file.toFile()));
+			final var bin = resources.add(new BufferedInputStream(fin));
+			final var oin = resources.add(new ObjectInputStream(bin));
 
 			final Supplier<Object> readObject = () -> {
 				try {
@@ -88,9 +90,10 @@ public class IO {
 			};
 
 			return Stream.generate(readObject)
-				.onClose(streams::uncheckedClose)
+				.onClose(resources::uncheckedClose)
 				.takeWhile(Objects::nonNull);
-		});
+
+		}).value();
 	}
 
 }

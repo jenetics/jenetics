@@ -157,6 +157,49 @@ public final class Lifecycle {
 	}
 
 	/**
+	 * This interface represents a closeable value. It is useful in cases where
+	 * the value doesn't implement the {@link Closeable} interface but needs
+	 * some cleanup work to do after usage.
+	 *
+	 * @param <T> the value type
+	 */
+	public interface CloseableValue<T> extends Closeable {
+
+		/**
+		 * Return the actual value.
+		 *
+		 * @return the actual value
+		 */
+		public T value();
+
+		/**
+		 * Create a new closeable value with the given {@code value} and the
+		 * {@code close} method.
+		 *
+		 * @param value the actual value
+		 * @param close the {@code close} method for the given {@code value}
+		 * @param <T> the value type
+		 * @return a new closeable value
+		 */
+		public static <T> CloseableValue<T> of(
+			final T value,
+			final ExceptionMethod<? super T, IOException> close
+		) {
+			return new CloseableValue<T>() {
+				@Override
+				public T value() {
+					return value;
+				}
+
+				@Override
+				public void close() throws IOException {
+					close.apply(value());
+				}
+			};
+		}
+	}
+
+	/**
 	 * This class allows to collect one or more {@link Closeable} objects into
 	 * one.
 	 * <pre>{@code
@@ -175,7 +218,7 @@ public final class Lifecycle {
 	 * });
 	 * }</pre>
 	 *
-	 * @see #withCloseables(ExceptionFunction)
+	 * @see #trying(ExceptionFunction)
 	 */
 	public static final class Closeables implements ExtendedCloseable {
 		private final List<Closeable> _closeables = new ArrayList<>();
@@ -389,10 +432,10 @@ public final class Lifecycle {
 	 * is, that the resources are only closed in the case of an error.
 	 *
 	 * <pre>{@code
-	 * return withCloseables(streams -> {
-	 *     final var fin = streams.add(new FileInputStream(file.toFile()));
-	 *     final var bin = streams.add(new BufferedInputStream(fin));
-	 *     final var oin = streams.add(new ObjectInputStream(bin));
+	 * return withCloseables(resources -> {
+	 *     final var fin = resources.add(new FileInputStream(file.toFile()));
+	 *     final var bin = resources.add(new BufferedInputStream(fin));
+	 *     final var oin = resources.add(new ObjectInputStream(bin));
 	 *
 	 *     final Supplier<Object> readObject = () -> {
 	 *         try {
@@ -405,7 +448,7 @@ public final class Lifecycle {
 	 *     };
 	 *
 	 *     return Stream.generate(readObject)
-	 *         .onClose(streams::uncheckedClose)
+	 *         .onClose(resources::uncheckedClose)
 	 *         .takeWhile(Objects::nonNull);
 	 * });
 	 * }</pre>
@@ -417,14 +460,17 @@ public final class Lifecycle {
 	 * @throws E in the case of an error. If this exception is thrown, all
 	 *         <em>registered</em> closeable objects are closed before.
 	 */
-	public static <T, E extends Exception> T withCloseables(
+	public static <T, E extends Exception> CloseableValue<T> trying(
 		final ExceptionFunction<? super Closeables, ? extends T, ? extends E> block
 	)
 		throws E
 	{
 		final var closeables = new Closeables();
 		try {
-			return block.apply(closeables);
+			return CloseableValue.of(
+				block.apply(closeables),
+				value -> closeables.close()
+			);
 		} catch (Throwable error) {
 			closeables.silentClose(error);
 			throw error;
