@@ -22,6 +22,7 @@ package io.jenetics.incubator.util;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -183,7 +184,7 @@ public final class Lifecycle {
 	public static class DeletablePath implements ExtendedCloseable {
 		private final Path _path;
 
-		public DeletablePath(final Path path) {
+		private DeletablePath(final Path path) {
 			_path = requireNonNull(path);
 		}
 
@@ -205,6 +206,29 @@ public final class Lifecycle {
 				Files.deleteIfExists(_path);
 			}
 		}
+
+		/**
+		 * Wraps the given {@code path} into a deletable path object.
+		 *
+		 * @param path the {@code path} to be wrapped
+		 * @return the wrapped path object
+		 * @throws NullPointerException if the given {@code path} is {@code null}
+		 */
+		public static DeletablePath of(final Path path) {
+			return new DeletablePath(path);
+		}
+
+		/**
+		 * Wraps the given {@code file} into a deletable file object.
+		 *
+		 * @param file the {@code file} to be wrapped
+		 * @return the wrapped file object
+		 * @throws NullPointerException if the given {@code file} is {@code null}
+		 */
+		public static DeletablePath of(final File file) {
+			return new DeletablePath(file.toPath());
+		}
+
 	}
 
 	private Lifecycle() {
