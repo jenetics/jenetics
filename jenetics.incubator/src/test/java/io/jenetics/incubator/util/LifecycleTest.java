@@ -19,10 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,7 +30,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.Lifecycle.Closeables;
+import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.incubator.util.Lifecycle.UncheckedCloseable;
 
 public class LifecycleTest {
 
@@ -172,18 +172,113 @@ public class LifecycleTest {
 		}
 	}
 
+	@Test(expectedExceptions = UncheckedIOException.class)
+	public void uncheckedCloseable() {
+		final var closeable = UncheckedCloseable.of(
+			() -> { throw new IOException(); }
+		);
+		closeable.close();
+	}
+
+	@Test(expectedExceptions = IOException.class)
+	public void extendedCloseableClose() throws IOException {
+		final var closeable = ExtendedCloseable.of(
+			() -> { throw new IOException(); }
+		);
+		closeable.close();
+	}
+
+	@Test(expectedExceptions = UncheckedIOException.class)
+	public void extendedCloseableUncheckedClose() {
+		final var closeable = ExtendedCloseable.of(
+			() -> { throw new IOException(); }
+		);
+		closeable.uncheckedClose();
+	}
+
 	@Test
-	public void closeables() throws IOException {
-		final var file = new File("foo");
+	public void extendedCloseableSilentClose() {
+		final var closeable = ExtendedCloseable.of(
+			() -> { throw new IOException(); }
+		);
+		closeable.silentClose();
+	}
 
-		try (var resources = new Closeables()) {
-			final var fin = resources.add(new FileInputStream(file));
+	@Test
+	public void extendedCloseableSilentCloseWithPrimaryError() {
+		final var closeable = ExtendedCloseable.of(
+			() -> { throw new IOException(); }
+		);
 
-			// Read and check first byte in stream.
-			if (fin.read() != -1) {
-				final var oin = resources.add(new ObjectInputStream(fin));
-				// ...
-			}
+		final var primary = new IllegalArgumentException();
+		closeable.silentClose(primary);
+
+		Assert.assertEquals(
+			primary.getSuppressed()[0].getClass(),
+			IOException.class
+		);
+	}
+
+	@Test
+	public void closeableValue() throws IOException {
+		final var closeable = CloseableValue.of(
+			new AtomicInteger(),
+			AtomicInteger::incrementAndGet
+		);
+
+		Assert.assertEquals(0, closeable.value().get());
+		closeable.close();
+		Assert.assertEquals(1, closeable.value().get());
+	}
+
+	@Test
+	public void buildCloseableValue() throws IOException {
+		final var resource1 = atomic();
+		final var resource2 = atomic();
+		final var resource3 = atomic();
+
+		final var closeable = CloseableValue.build(resources -> {
+			resources.add(resource1);
+			resources.add(resource2);
+			resources.add(resource3);
+			return 123;
+		});
+
+		Assert.assertEquals(123, closeable.value().intValue());
+		Assert.assertEquals(0, resource1.value().get());
+		Assert.assertEquals(0, resource2.value().get());
+		Assert.assertEquals(0, resource3.value().get());
+		closeable.close();
+		Assert.assertEquals(1, resource1.value().get());
+		Assert.assertEquals(1, resource2.value().get());
+		Assert.assertEquals(1, resource3.value().get());
+	}
+
+	private static CloseableValue<AtomicInteger> atomic() {
+		return CloseableValue.of(
+			new AtomicInteger(),
+			AtomicInteger::incrementAndGet
+		);
+	}
+
+	@Test(expectedExceptions = IOException.class)
+	public void buildCloseableValueWithError() throws IOException {
+		final var resource1 = atomic();
+		final var resource2 = atomic();
+		final var resource3 = atomic();
+
+		try {
+			final var closeable = CloseableValue.build(resources -> {
+				resources.add(resource1);
+				resources.add(resource2);
+				resources.add(resource3);
+				throw new IOException();
+			});
+		} catch (IOException e) {
+			Assert.assertEquals(1, resource1.value().get());
+			Assert.assertEquals(1, resource2.value().get());
+			Assert.assertEquals(1, resource3.value().get());
+			throw e;
 		}
 	}
 
