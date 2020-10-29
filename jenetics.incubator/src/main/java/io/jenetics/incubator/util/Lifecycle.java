@@ -29,8 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Helper functions, interfaces and classes for handling resource- and life
- * cycle objects.
+ * Interfaces and classes for handling resource ({@link Closeable}) objects.
  */
 public final class Lifecycle {
 
