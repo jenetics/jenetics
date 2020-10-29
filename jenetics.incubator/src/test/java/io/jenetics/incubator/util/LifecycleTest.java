@@ -130,12 +130,13 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			Lifecycle.Closeables.close(List.of(
+			final var closeables = new Lifecycle.Closeables(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
 				count::incrementAndGet
-			));
+			);
+			closeables.close();
 		} catch (IOException e) {
 			Assert.assertEquals(3, count.get());
 			throw e;
@@ -147,13 +148,14 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			Lifecycle.Closeables.close(List.of(
+			final var closeables = new Lifecycle.Closeables(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
 				count::incrementAndGet,
 				() -> { throw new IOException(); }
-			));
+			);
+			closeables.close();
 		} catch (IllegalArgumentException e) {
 			Assert.assertEquals(3, count.get());
 			Assert.assertEquals(e.getSuppressed().length, 1);

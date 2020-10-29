@@ -45,7 +45,7 @@ public final class Lifecycle {
 	 * @param <E> the exception type
 	 */
 	@FunctionalInterface
-	interface ExceptionMethod<A, E extends Exception> {
+	public interface ExceptionMethod<A, E extends Exception> {
 		void apply(final A arg) throws E;
 	}
 
@@ -57,8 +57,56 @@ public final class Lifecycle {
 	 * @param <E> the exception type
 	 */
 	@FunctionalInterface
-	interface ExceptionFunction<A, R, E extends Exception> {
+	public interface ExceptionFunction<A, R, E extends Exception> {
 		R apply(final A arg) throws E;
+	}
+
+	/**
+	 * Extends the {@link Closeable} with methods for wrapping the thrown
+	 * exception into an {@link UncheckedIOException} or ignoring them.
+	 */
+	public interface ExtendedCloseable extends Closeable {
+
+		/**
+		 * Calls the {@link #close()} method and wraps thrown {@link IOException}
+		 * into an {@link UncheckedIOException}.
+		 *
+		 * @throws UncheckedIOException if the {@link #close()} method throws
+		 *         an {@link IOException}
+		 */
+		public default void uncheckedClose() {
+			try {
+				close();
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		}
+
+		/**
+		 * Calls the {@link #close()} method and ignores every thrown exception.
+		 */
+		public default void silentClose() {
+			silentClose(null);
+		}
+
+		/**
+		 * Calls the {@link #close()} method and ignores every thrown exception.
+		 * If the given {@code previousError} is <em>non-null</em>, the thrown
+		 * exception is appended to the list of suppressed exceptions.
+		 *
+		 * @param previousError the error, which triggers the close of the given
+		 *        {@code closeables}
+		 */
+		public default void silentClose(final Throwable previousError) {
+			try {
+				close();
+			} catch (Exception ignore) {
+				if (previousError != null) {
+					previousError.addSuppressed(ignore);
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -82,7 +130,7 @@ public final class Lifecycle {
 	 *
 	 * @see #withCloseables(ExceptionFunction)
 	 */
-	public static final class Closeables implements Closeable {
+	public static final class Closeables implements ExtendedCloseable {
 		private final List<Closeable> _closeables = new ArrayList<>();
 
 		/**
@@ -120,123 +168,10 @@ public final class Lifecycle {
 
 		@Override
 		public void close() throws IOException {
-			close(_closeables);
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is wrapped into an {@link UncheckedIOException}.
-		 */
-		public void uncheckedClose() {
-			uncheckedClose(_closeables);
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored
-		 */
-		public void silentClose() {
-			silentClose(_closeables,null);
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored, or appended to the suppressed exception list of the given
-		 * {@code previousError}, if not {@code null}.
-		 *
-		 * @param previousError the error, which triggers the close of the
-		 *        registered closeables
-		 */
-		public void silentClose(final Throwable previousError) {
-			silentClose(_closeables, previousError);
-		}
-
-		/* *********************************************************************
-		 * Static close methods.
-		 * ********************************************************************/
-
-		/**
-		 * Closes all given {@link Closeable} objects. It is guaranteed that all
-		 * {@link Closeable#close()} are called, even if a closeable in between
-		 * throws an exception. In the case of an error, the first thrown exception
-		 * is thrown, the other errors are added to the <em>suppressed</em> exception
-		 * list.
-		 *
-		 * @param closeables the objects to close.
-		 * @throws IOException the exception of the first failed stop call.
-		 */
-		public static void close(final Iterable<? extends Closeable> closeables)
-			throws IOException
-		{
-			Lifecycle.invokeAll(Closeable::close, closeables);
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is wrapped into an {@link UncheckedIOException}.
-		 *
-		 * @see #close(Iterable)
-		 *
-		 * @param closeables the objects to close
-		 */
-		public static void uncheckedClose(final Iterable<? extends Closeable> closeables) {
-			try {
-				close(closeables);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored.
-		 *
-		 * @see #silentClose(Iterable, Throwable)
-		 *
-		 * @param closeables the objects to close
-		 */
-		public static void silentClose(final Iterable<? extends Closeable> closeables) {
-			silentClose(closeables, null);
-		}
-
-		/**
-		 * Closes all given {@link Closeable} objects. A thrown {@link IOException}
-		 * is ignored, or appended to the suppressed exception list of the given
-		 * {@code previousError}, if not {@code null}.
-		 *
-		 * <pre>{@code
-		 * final var closeables = new ArrayList<MyCloseable>();
-		 * try {
-		 *     closeable.add(new MyCloseable());
-		 *     closeable.add(new MyCloseable());
-		 *     closeable.add(new MyCloseable());
-		 *
-		 *     // The caller is responsible for closing resources after the
-		 *     // successful creation of the closeable resources.
-		 *     return new ResultObject(closeables);
-		 * } catch (Throwable error) {
-		 *     // Closes the already created resources, in the case of an error.
-		 *     closeables.silentClose(closeables, error);
-		 *     throw error;
-		 * }
-		 * }</pre>
-		 *
-		 * @see #silentClose(Iterable)
-		 *
-		 * @param closeables the objects to close
-		 * @param previousError the error, which triggers the close of the given
-		 *        {@code closeables}
-		 */
-		public static void silentClose(
-			final Iterable<? extends Closeable> closeables,
-			final Throwable previousError
-		) {
-			try {
-				close(closeables);
-			} catch (Exception ignore) {
-				if (previousError != null) {
-					previousError.addSuppressed(ignore);
-				}
+			if (_closeables.size() == 1) {
+				_closeables.get(0).close();
+			} else if (_closeables.size() > 1) {
+				Lifecycle.invokeAll(Closeable::close, _closeables);
 			}
 		}
 
@@ -245,7 +180,7 @@ public final class Lifecycle {
 	/**
 	 * Wraps a {@link Path} object which will be deleted on {@link #close()}.
 	 */
-	public static class DeletablePath implements Closeable {
+	public static class DeletablePath implements ExtendedCloseable {
 		private final Path _path;
 
 		public DeletablePath(final Path path) {
