@@ -74,7 +74,7 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		return trying(resources -> {
+		final var result = trying(resources -> {
 			final var fin = resources.add(new FileInputStream(file.toFile()));
 			final var bin = resources.add(new BufferedInputStream(fin));
 			final var oin = resources.add(new ObjectInputStream(bin));
@@ -90,10 +90,10 @@ public class IO {
 			};
 
 			return Stream.generate(readObject)
-				.onClose(resources::uncheckedClose)
 				.takeWhile(Objects::nonNull);
+		});
 
-		}).value();
+		return result.value().onClose(result::uncheckedClose);
 	}
 
 }

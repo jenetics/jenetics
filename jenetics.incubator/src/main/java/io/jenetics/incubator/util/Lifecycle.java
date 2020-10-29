@@ -22,17 +22,11 @@ package io.jenetics.incubator.util;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Helper functions for handling resource- and life cycle objects.
@@ -161,14 +155,27 @@ public final class Lifecycle {
 	 * the value doesn't implement the {@link Closeable} interface but needs
 	 * some cleanup work to do after usage.
 	 *
+	 * <pre>{@code
+	 * final var file = CloseableValue.of(
+	 *     Files.createTempFile("test-", ".txt" ),
+	 *     Files::deleteIfExists
+	 * );
+	 *
+	 * try (file) {
+	 *     Files.write(file.value(), "foo".getBytes());
+	 *     final var writtenText = Files.readString(file.value());
+	 *     assert "foo".equals(writtenText);
+	 * }
+	 * }</pre>
+	 *
 	 * @param <T> the value type
 	 */
-	public interface CloseableValue<T> extends Closeable {
+	public interface CloseableValue<T> extends ExtendedCloseable {
 
 		/**
-		 * Return the actual value.
+		 * Return the wrapped value.
 		 *
-		 * @return the actual value
+		 * @return the wrapped value
 		 */
 		public T value();
 
@@ -197,6 +204,7 @@ public final class Lifecycle {
 				}
 			};
 		}
+
 	}
 
 	/**
@@ -283,59 +291,6 @@ public final class Lifecycle {
 		 */
 		public static Closeables of(final Closeable... closeables) {
 			return of(Arrays.asList(closeables));
-		}
-
-	}
-
-	/**
-	 * Wraps a {@link Path} object which will be deleted on {@link #close()}.
-	 */
-	public static final class DeletablePath implements ExtendedCloseable {
-		private final Path _path;
-
-		private DeletablePath(final Path path) {
-			_path = requireNonNull(path);
-		}
-
-		public Path path() {
-			return _path;
-		}
-
-		@Override
-		public void close() throws IOException {
-			if (Files.isDirectory(_path, LinkOption.NOFOLLOW_LINKS)) {
-				final var files = Files.walk(_path)
-					.sorted(Comparator.reverseOrder())
-					.collect(Collectors.toList());
-
-				for (var file : files) {
-					Files.deleteIfExists(file);
-				}
-			} else {
-				Files.deleteIfExists(_path);
-			}
-		}
-
-		/**
-		 * Wraps the given {@code path} into a deletable path object.
-		 *
-		 * @param path the {@code path} to be wrapped
-		 * @return the wrapped path object
-		 * @throws NullPointerException if the given {@code path} is {@code null}
-		 */
-		public static DeletablePath of(final Path path) {
-			return new DeletablePath(path);
-		}
-
-		/**
-		 * Wraps the given {@code file} into a deletable file object.
-		 *
-		 * @param file the {@code file} to be wrapped
-		 * @return the wrapped file object
-		 * @throws NullPointerException if the given {@code file} is {@code null}
-		 */
-		public static DeletablePath of(final File file) {
-			return new DeletablePath(file.toPath());
 		}
 
 	}
