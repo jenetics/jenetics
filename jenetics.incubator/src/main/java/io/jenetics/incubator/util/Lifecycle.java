@@ -161,6 +161,7 @@ public final class Lifecycle {
 	 *     Files::deleteIfExists
 	 * );
 	 *
+	 * // Automatically delete the file after the test.
 	 * try (file) {
 	 *     Files.write(file.value(), "foo".getBytes());
 	 *     final var writtenText = Files.readString(file.value());
@@ -190,7 +191,7 @@ public final class Lifecycle {
 		 */
 		public static <T> CloseableValue<T> of(
 			final T value,
-			final ExceptionMethod<? super T, IOException> close
+			final ExceptionMethod<? super T, ? extends IOException> close
 		) {
 			return new CloseableValue<T>() {
 				@Override
@@ -387,7 +388,7 @@ public final class Lifecycle {
 	 * is, that the resources are only closed in the case of an error.
 	 *
 	 * <pre>{@code
-	 * return withCloseables(resources -> {
+	 * final CloseableValue<Stream<Object>> result = trying(resources -> {
 	 *     final var fin = resources.add(new FileInputStream(file.toFile()));
 	 *     final var bin = resources.add(new BufferedInputStream(fin));
 	 *     final var oin = resources.add(new ObjectInputStream(bin));
@@ -403,9 +404,12 @@ public final class Lifecycle {
 	 *     };
 	 *
 	 *     return Stream.generate(readObject)
-	 *         .onClose(resources::uncheckedClose)
 	 *         .takeWhile(Objects::nonNull);
 	 * });
+	 *
+	 * // If the stream has been consumed, the 'close' method of the value is
+	 * // called, via the 'uncheckedClose' method.
+	 * return result.value().onClose(result::uncheckedClose);
 	 * }</pre>
 	 *
 	 * @param block the <em>protected</em> code block
