@@ -79,7 +79,7 @@ public class IO {
 			objectStream(file, resources)
 		);
 
-		return result.value().onClose(result::uncheckedClose);
+		return result.get().onClose(result::uncheckedClose);
 	}
 
 	private static Stream<Object>

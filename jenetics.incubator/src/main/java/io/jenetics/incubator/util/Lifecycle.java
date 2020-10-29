@@ -27,6 +27,7 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Interfaces and classes for handling resource ({@link Closeable}) objects.
@@ -164,7 +165,7 @@ public final class Lifecycle {
 	 * // Automatically delete the file after the test.
 	 * try (file) {
 	 *     Files.write(file.value(), "foo".getBytes());
-	 *     final var writtenText = Files.readString(file.value());
+	 *     final var writtenText = Files.readString(file.get());
 	 *     assert "foo".equals(writtenText);
 	 * }
 	 * }</pre>
@@ -173,14 +174,7 @@ public final class Lifecycle {
 	 *
 	 * @param <T> the value type
 	 */
-	public interface CloseableValue<T> extends ExtendedCloseable {
-
-		/**
-		 * Return the wrapped value.
-		 *
-		 * @return the wrapped value
-		 */
-		public T value();
+	public interface CloseableValue<T> extends Supplier<T>, ExtendedCloseable {
 
 		/**
 		 * Create a new closeable value with the given {@code value} and the
@@ -197,13 +191,13 @@ public final class Lifecycle {
 		) {
 			return new CloseableValue<T>() {
 				@Override
-				public T value() {
+				public T get() {
 					return value;
 				}
 
 				@Override
 				public void close() throws IOException {
-					close.apply(value());
+					close.apply(get());
 				}
 			};
 		}
@@ -226,7 +220,7 @@ public final class Lifecycle {
 		 * });
 		 *
 		 * try (result) {
-		 *     result.value().forEach(System.out::println);
+		 *     result.get().forEach(System.out::println);
 		 * }
 		 * }</pre>
 		 *

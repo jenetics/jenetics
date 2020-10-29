@@ -226,9 +226,9 @@ public class LifecycleTest {
 			AtomicInteger::incrementAndGet
 		);
 
-		Assert.assertEquals(0, closeable.value().get());
+		Assert.assertEquals(0, closeable.get().get());
 		closeable.close();
-		Assert.assertEquals(1, closeable.value().get());
+		Assert.assertEquals(1, closeable.get().get());
 	}
 
 	@Test
@@ -244,14 +244,14 @@ public class LifecycleTest {
 			return 123;
 		});
 
-		Assert.assertEquals(123, closeable.value().intValue());
-		Assert.assertEquals(0, resource1.value().get());
-		Assert.assertEquals(0, resource2.value().get());
-		Assert.assertEquals(0, resource3.value().get());
+		Assert.assertEquals(123, closeable.get().intValue());
+		Assert.assertEquals(0, resource1.get().get());
+		Assert.assertEquals(0, resource2.get().get());
+		Assert.assertEquals(0, resource3.get().get());
 		closeable.close();
-		Assert.assertEquals(1, resource1.value().get());
-		Assert.assertEquals(1, resource2.value().get());
-		Assert.assertEquals(1, resource3.value().get());
+		Assert.assertEquals(1, resource1.get().get());
+		Assert.assertEquals(1, resource2.get().get());
+		Assert.assertEquals(1, resource3.get().get());
 	}
 
 	private static CloseableValue<AtomicInteger> atomic() {
@@ -275,9 +275,9 @@ public class LifecycleTest {
 				throw new IOException();
 			});
 		} catch (IOException e) {
-			Assert.assertEquals(1, resource1.value().get());
-			Assert.assertEquals(1, resource2.value().get());
-			Assert.assertEquals(1, resource3.value().get());
+			Assert.assertEquals(1, resource1.get().get());
+			Assert.assertEquals(1, resource2.get().get());
+			Assert.assertEquals(1, resource3.get().get());
 			throw e;
 		}
 	}
