@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.util;
 
-import static io.jenetics.incubator.util.Lifecycle.trying;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
@@ -38,6 +36,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.incubator.util.Lifecycle.Closeables;
 
 public class IO {
 
@@ -76,26 +75,31 @@ public class IO {
 	}
 
 	static Stream<Object> read(final Path file) throws IOException {
-		final CloseableValue<Stream<Object>> result = trying(resources -> {
-			final var fin = resources.add(new FileInputStream(file.toFile()));
-			final var bin = resources.add(new BufferedInputStream(fin));
-			final var oin = resources.add(new ObjectInputStream(bin));
-
-			final Supplier<Object> readObject = () -> {
-				try {
-					return oin.readObject();
-				} catch (EOFException|ClassNotFoundException e) {
-					return null;
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
-
-			return Stream.generate(readObject)
-				.takeWhile(Objects::nonNull);
-		});
+		final var result = CloseableValue.build(resources ->
+			objectStream(file, resources)
+		);
 
 		return result.value().onClose(result::uncheckedClose);
+	}
+
+	private static Stream<Object>
+	objectStream(final Path file, final Closeables resources) throws IOException {
+		final var fin = resources.add(new FileInputStream(file.toFile()));
+		final var bin = resources.add(new BufferedInputStream(fin));
+		final var oin = resources.add(new ObjectInputStream(bin));
+
+		final Supplier<Object> readObject = () -> {
+			try {
+				return oin.readObject();
+			} catch (EOFException|ClassNotFoundException e) {
+				return null;
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		};
+
+		return Stream.generate(readObject)
+			.takeWhile(Objects::nonNull);
 	}
 
 }

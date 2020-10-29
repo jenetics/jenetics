@@ -19,7 +19,10 @@
  */
 package io.jenetics.incubator.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,6 +31,8 @@ import java.util.function.Supplier;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.util.Lifecycle.Closeables;
 
 public class LifecycleTest {
 
@@ -164,6 +169,21 @@ public class LifecycleTest {
 				IOException.class
 			);
 			throw e;
+		}
+	}
+
+	@Test
+	public void closeables() throws IOException {
+		final var file = new File("foo");
+
+		try (var resources = new Closeables()) {
+			final var fin = resources.add(new FileInputStream(file));
+
+			// Read and check first byte in stream.
+			if (fin.read() != -1) {
+				final var oin = resources.add(new ObjectInputStream(fin));
+				// ...
+			}
 		}
 	}
 

@@ -170,6 +170,8 @@ public final class Lifecycle {
 	 * }
 	 * }</pre>
 	 *
+	 * @see #build(ThrowingFunction)
+	 *
 	 * @param <T> the value type
 	 */
 	public interface CloseableValue<T> extends ExtendedCloseable {
@@ -207,28 +209,83 @@ public final class Lifecycle {
 			};
 		}
 
+		/**
+		 * Opens a kind of {@code try-catch} with resources block. The difference
+		 * is, that the resources, registered with the {@link Closeables#add(Closeable)}
+		 * method, are only closed in the case of an error. If the <em>value</em>
+		 * could be created, the caller is responsible for closing the opened
+		 * <em>resources</em> by calling the {@link CloseableValue#close()} method.
+		 *
+		 * <pre>{@code
+		 * final CloseableValue<Stream<Object>> result = build(resources -> {
+		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
+		 *     final var bin = resources.add(new BufferedInputStream(fin));
+		 *     final var oin = resources.add(new ObjectInputStream(bin));
+		 *
+		 *     return Stream.generate(() -> readNextObject(oin))
+		 *         .takeWhile(Objects::nonNull);
+		 * });
+		 *
+		 * try (result) {
+		 *     result.value().forEach(System.out::println);
+		 * }
+		 * }</pre>
+		 *
+		 * @see Closeables
+		 *
+		 * @param builder the <em>protected</em> builder method
+		 * @param <T> the value type of the created <em>closeable</em> value
+		 * @param <E> the thrown exception type while building the value
+		 * @return the closeable built value
+		 * @throws E in the case of an error. If this exception is thrown, all
+		 *         <em>registered</em> resources are closed.
+		 */
+		public static <T, E extends Exception> CloseableValue<T>
+		build(
+			final ThrowingFunction<
+				? super Closeables,
+				? extends T,
+				? extends E> builder
+		)
+			throws E
+		{
+			final var closeables = new Closeables();
+			try {
+				return CloseableValue.of(
+					builder.apply(closeables),
+					value -> closeables.close()
+				);
+			} catch (Throwable error) {
+				closeables.silentClose(error);
+				throw error;
+			}
+		}
+
 	}
 
 	/**
 	 * This class allows to collect one or more {@link Closeable} objects into
-	 * one.
+	 * one. Calling the {@link #close()} method of this class will call the
+	 * close methods of all registered resources, added with the
+	 * {@link #add(Closeable)} method, even if one of this resources throws an
+	 * exception.
+	 * <p>
+	 * Using the {@code Closeables} class can simplify the the creation of
+	 * dependent input streams, where it might be otherwise necessary to create
+	 * nested {@code try-with-resources} blocks.
+	 *
 	 * <pre>{@code
-	 * return withCloseables((Closeables streams) -> {
-	 *     final var fin = streams.add(new FileInputStream(file.toFile()));
-	 *     final var bin = streams.add(new BufferedInputStream(fin));
-	 *     final var oin = streams.add(new ObjectInputStream(bin));
-	 *
-	 *     final Supplier<Object> readObject = () -> {
-	 *         ...
-	 *     };
-	 *
-	 *     return Stream.generate(readObject)
-	 *         .onClose(streams::uncheckedClose)
-	 *         .takeWhile(Objects::nonNull);
-	 * });
+	 * try (var resources = new Closeables()) {
+	 *     final var fin = resources.add(new FileInputStream(file));
+	 *     if (fin.read() != -1) {
+	 *         return;
+	 *     }
+	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     // ...
+	 * }
 	 * }</pre>
 	 *
-	 * @see #trying(ThrowingFunction)
+	 * @see CloseableValue#build(ThrowingFunction)
 	 */
 	public static final class Closeables implements ExtendedCloseable {
 		private final List<Closeable> _closeables = new ArrayList<>();
@@ -322,7 +379,7 @@ public final class Lifecycle {
 	 * @throws E the first exception thrown by the one of the method
 	 *         invocation.
 	 */
-	public static <A, E extends Exception> void invokeAll(
+	static <A, E extends Exception> void invokeAll(
 		final ThrowingMethod<? super A, ? extends E> method,
 		final Iterable<? extends A> objects
 	)
@@ -382,71 +439,6 @@ public final class Lifecycle {
 		}
 
 		return error;
-	}
-
-	/**
-	 * Opens a kind of {@code try-catch} with resources block. The difference
-	 * is, that the resources, registered with the {@link Closeables#add(Closeable)}
-	 * method, are only closed in the case of an error. If the <em>value</em>
-	 * could be created, the caller is responsible for closing the opened
-	 * <em>resources</em> by calling the {@link CloseableValue#close()} method.
-	 *
-	 * <pre>{@code
-	 * final CloseableValue<Stream<Object>> result = trying((Closeables resources) -> {
-	 *     final var fin = resources.add(new FileInputStream(file.toFile()));
-	 *     final var bin = resources.add(new BufferedInputStream(fin));
-	 *     final var oin = resources.add(new ObjectInputStream(bin));
-	 *
-	 *     final Supplier<Object> readObject = () -> {
-	 *         try {
-	 *             return oin.readObject();
-	 *         } catch (EOFException|ClassNotFoundException e) {
-	 *             return null;
-	 *         } catch (IOException e) {
-	 *             throw new UncheckedIOException(e);
-	 *         }
-	 *     };
-	 *
-	 *     return Stream.generate(readObject)
-	 *         .takeWhile(Objects::nonNull);
-	 * });
-	 *
-	 * // If the stream has been consumed, the 'close' method of the value is
-	 * // called, via the 'uncheckedClose' method.
-	 * final Stream<Object> stream = result.value()
-	 *     .onClose(result::uncheckedClose);
-	 *
-	 * // Stream is closed after the consumption of all elements.
-	 * List<Object> objects;
-	 * try (stream) {
-	 *     objects = stream.collect(Collectors.toList());
-	 * }
-	 * }</pre>
-	 *
-	 * @see Closeables
-	 *
-	 * @param block the <em>protected</em> code block
-	 * @param <T> the return type of the <em>closeable</em> block
-	 * @param <E> the thrown exception type
-	 * @return the result of the <em>protected</em> block
-	 * @throws E in the case of an error. If this exception is thrown, all
-	 *         <em>registered</em> closeable objects are closed before.
-	 */
-	public static <T, E extends Exception> CloseableValue<T> trying(
-		final ThrowingFunction<? super Closeables, ? extends T, ? extends E> block
-	)
-		throws E
-	{
-		final var closeables = new Closeables();
-		try {
-			return CloseableValue.of(
-				block.apply(closeables),
-				value -> closeables.close()
-			);
-		} catch (Throwable error) {
-			closeables.silentClose(error);
-			throw error;
-		}
 	}
 
 }
