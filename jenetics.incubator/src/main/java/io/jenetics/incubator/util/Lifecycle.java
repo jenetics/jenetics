@@ -60,98 +60,6 @@ public final class Lifecycle {
 	}
 
 	/**
-	 * This class allows to collect one or more {@link Closeable} objects into
-	 * one.
-	 * <p>
-	 * Using the {@code ResourceCollector} class can simplify the the creation of
-	 * dependent input streams, where it might be otherwise necessary to create
-	 * nested {@code try-with-resources} blocks.
-	 *
-	 * <pre>{@code
-	 * final var resources = ResourceCollector.of()
-	 * try {
-	 *     final var fin = resources.add(new FileInputStream(file));
-	 *     if (fin.read() != -1) {
-	 *         return;
-	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin));
-	 *     // ...
-	 * } finally {
-	 *     resources.toCloseable().close();
-	 * }
-	 * }</pre>
-	 *
-	 * @see CloseableValue#build(ThrowingFunction)
-	 */
-	public interface ResourceCollector {
-
-		/**
-		 * Registers the given {@code closeable} to the list of managed
-		 * closeables.
-		 *
-		 * @param closeable the new closeable to register
-		 * @param <C> the closeable type
-		 * @return the registered closeable
-		 */
-		<C extends Closeable> C add(final C closeable);
-
-		/**
-		 * Create a new closeable object from a snapshot of the currently
-		 * registered resources.
-		 *
-		 * @return a new closeable object
-		 */
-		ExtendedCloseable toCloseable();
-
-		/**
-		 * Create a new {@code ResourceCollector} object with the given initial
-		 * {@code closeables} objects.
-		 *
-		 * @see #of(Closeable...)
-		 *
-		 * @param closeables the initial closeables objects
-		 * @return a new resource collector object which collects the given
-		 *        {@code closeables}
-		 * @throws NullPointerException if one of the {@code closeables} is
-		 *         {@code null}
-		 */
-		public static ResourceCollector
-		of(final Collection<? extends Closeable> closeables) {
-			final List<Closeable> resources = new ArrayList<>();
-			closeables.forEach(c -> resources.add(requireNonNull(c)));
-
-			return new ResourceCollector() {
-				@Override
-				public <C extends Closeable> C add(final C closeable) {
-					resources.add(requireNonNull(closeable));
-					return closeable;
-				}
-				@Override
-				public ExtendedCloseable toCloseable() {
-					return ExtendedCloseable.of(resources);
-				}
-			};
-		}
-
-		/**
-		 * Create a new {@code ResourceCollector} object with the given initial
-		 * {@code closeables} objects.
-		 *
-		 * @see #of(Collection)
-		 *
-		 * @param closeables the initial closeables objects
-		 * @return a new closeable object which collects the given
-		 *        {@code closeables}
-		 * @throws NullPointerException if one of the {@code closeables} is
-		 *         {@code null}
-		 */
-		public static ResourceCollector of(final Closeable... closeables) {
-			return of(Arrays.asList(closeables));
-		}
-
-	}
-
-	/**
 	 * Specialisation of the {@link Closeable} interface, which throws an
 	 * {@link UncheckedIOException} instead of an {@link IOException}.
 	 */
@@ -390,6 +298,98 @@ public final class Lifecycle {
 				resources.toCloseable().silentClose(error);
 				throw error;
 			}
+		}
+
+	}
+
+	/**
+	 * This class allows to collect one or more {@link Closeable} objects into
+	 * one.
+	 * <p>
+	 * Using the {@code ResourceCollector} class can simplify the the creation of
+	 * dependent input streams, where it might be otherwise necessary to create
+	 * nested {@code try-with-resources} blocks.
+	 *
+	 * <pre>{@code
+	 * final var resources = ResourceCollector.of()
+	 * try {
+	 *     final var fin = resources.add(new FileInputStream(file));
+	 *     if (fin.read() != -1) {
+	 *         return;
+	 *     }
+	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     // ...
+	 * } finally {
+	 *     resources.toCloseable().close();
+	 * }
+	 * }</pre>
+	 *
+	 * @see CloseableValue#build(ThrowingFunction)
+	 */
+	public interface ResourceCollector {
+
+		/**
+		 * Registers the given {@code closeable} to the list of managed
+		 * closeables.
+		 *
+		 * @param closeable the new closeable to register
+		 * @param <C> the closeable type
+		 * @return the registered closeable
+		 */
+		<C extends Closeable> C add(final C closeable);
+
+		/**
+		 * Create a new closeable object from a snapshot of the currently
+		 * registered resources.
+		 *
+		 * @return a new closeable object
+		 */
+		ExtendedCloseable toCloseable();
+
+		/**
+		 * Create a new {@code ResourceCollector} object with the given initial
+		 * {@code closeables} objects.
+		 *
+		 * @see #of(Closeable...)
+		 *
+		 * @param closeables the initial closeables objects
+		 * @return a new resource collector object which collects the given
+		 *        {@code closeables}
+		 * @throws NullPointerException if one of the {@code closeables} is
+		 *         {@code null}
+		 */
+		public static ResourceCollector
+		of(final Collection<? extends Closeable> closeables) {
+			final List<Closeable> resources = new ArrayList<>();
+			closeables.forEach(c -> resources.add(requireNonNull(c)));
+
+			return new ResourceCollector() {
+				@Override
+				public <C extends Closeable> C add(final C closeable) {
+					resources.add(requireNonNull(closeable));
+					return closeable;
+				}
+				@Override
+				public ExtendedCloseable toCloseable() {
+					return ExtendedCloseable.of(resources);
+				}
+			};
+		}
+
+		/**
+		 * Create a new {@code ResourceCollector} object with the given initial
+		 * {@code closeables} objects.
+		 *
+		 * @see #of(Collection)
+		 *
+		 * @param closeables the initial closeables objects
+		 * @return a new closeable object which collects the given
+		 *        {@code closeables}
+		 * @throws NullPointerException if one of the {@code closeables} is
+		 *         {@code null}
+		 */
+		public static ResourceCollector of(final Closeable... closeables) {
+			return of(Arrays.asList(closeables));
 		}
 
 	}
