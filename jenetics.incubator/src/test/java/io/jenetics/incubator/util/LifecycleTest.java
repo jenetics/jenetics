@@ -135,7 +135,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = Lifecycle.Closeables.of(
+			final var closeables = ExtendedCloseable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
@@ -148,12 +148,12 @@ public class LifecycleTest {
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
+	@Test(expectedExceptions = IOException.class)
 	public void close2() throws IOException {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = Lifecycle.Closeables.of(
+			final var closeables = ExtendedCloseable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
@@ -166,7 +166,7 @@ public class LifecycleTest {
 			Assert.assertEquals(e.getSuppressed().length, 1);
 			Assert.assertEquals(
 				e.getSuppressed()[0].getClass(),
-				IOException.class
+				IllegalArgumentException.class
 			);
 			throw e;
 		}
