@@ -33,6 +33,10 @@ import java.util.function.Supplier;
 
 /**
  * Interfaces and classes for handling resource ({@link Closeable}) objects.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Lifecycle {
 
@@ -148,6 +152,7 @@ public final class Lifecycle {
 		 *         {@code null}
 		 */
 		public static ExtendedCloseable of(final Closeable closeable) {
+			requireNonNull(closeable);
 			return closeable::close;
 		}
 
@@ -209,7 +214,7 @@ public final class Lifecycle {
 	 *
 	 * // Automatically delete the file after the test.
 	 * try (file) {
-	 *     Files.write(file.value(), "foo".getBytes());
+	 *     Files.write(file.get(), "foo".getBytes());
 	 *     final var writtenText = Files.readString(file.get());
 	 *     assert "foo".equals(writtenText);
 	 * }
@@ -229,17 +234,20 @@ public final class Lifecycle {
 		 * @param close the {@code close} method for the given {@code value}
 		 * @param <T> the value type
 		 * @return a new closeable value
+		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
 		public static <T> CloseableValue<T> of(
 			final T value,
 			final ThrowingMethod<? super T, ? extends IOException> close
 		) {
+			requireNonNull(value);
+			requireNonNull(close);
+
 			return new CloseableValue<T>() {
 				@Override
 				public T get() {
 					return value;
 				}
-
 				@Override
 				public void close() throws IOException {
 					close.apply(get());
@@ -278,6 +286,8 @@ public final class Lifecycle {
 		 * @return the closeable built value
 		 * @throws E in the case of an error. If this exception is thrown, all
 		 *         <em>registered</em> resources are closed.
+		 * @throws NullPointerException if the given {@code builder} is
+		 *         {@code null}
 		 */
 		public static <T, E extends Exception> CloseableValue<T>
 		build(
@@ -288,14 +298,16 @@ public final class Lifecycle {
 		)
 			throws E
 		{
+			requireNonNull(builder);
+
 			final var resources = ResourceCollector.of();
 			try {
 				return CloseableValue.of(
 					builder.apply(resources),
-					value -> resources.toCloseable().close()
+					value -> resources.close()
 				);
 			} catch (Throwable error) {
-				resources.toCloseable().silentClose(error);
+				resources.silentClose(error);
 				throw error;
 			}
 		}
@@ -311,22 +323,19 @@ public final class Lifecycle {
 	 * nested {@code try-with-resources} blocks.
 	 *
 	 * <pre>{@code
-	 * final var resources = ResourceCollector.of()
-	 * try {
+	 * try (var resources = ResourceCollector.of()) {
 	 *     final var fin = resources.add(new FileInputStream(file));
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
 	 *     final var oin = resources.add(new ObjectInputStream(fin));
 	 *     // ...
-	 * } finally {
-	 *     resources.toCloseable().close();
 	 * }
 	 * }</pre>
 	 *
 	 * @see CloseableValue#build(ThrowingFunction)
 	 */
-	public interface ResourceCollector {
+	public interface ResourceCollector extends ExtendedCloseable {
 
 		/**
 		 * Registers the given {@code closeable} to the list of managed
@@ -345,6 +354,11 @@ public final class Lifecycle {
 		 * @return a new closeable object
 		 */
 		ExtendedCloseable toCloseable();
+
+		@Override
+		default void close() throws IOException {
+			toCloseable().close();
+		}
 
 		/**
 		 * Create a new {@code ResourceCollector} object with the given initial
@@ -365,12 +379,13 @@ public final class Lifecycle {
 
 			return new ResourceCollector() {
 				@Override
-				public <C extends Closeable> C add(final C closeable) {
+				public synchronized <C extends Closeable>
+				C add(final C closeable) {
 					resources.add(requireNonNull(closeable));
 					return closeable;
 				}
 				@Override
-				public ExtendedCloseable toCloseable() {
+				public synchronized ExtendedCloseable toCloseable() {
 					return ExtendedCloseable.of(resources);
 				}
 			};
