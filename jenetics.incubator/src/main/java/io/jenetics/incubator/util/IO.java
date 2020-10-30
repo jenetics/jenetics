@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.util.Lifecycle.ResourceAppender;
+import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
 public class IO {
@@ -83,7 +83,7 @@ public class IO {
 	}
 
 	private static Stream<Object>
-	objectStream(final Path file, final ResourceAppender resources) throws IOException {
+	objectStream(final Path file, final ResourceCollector resources) throws IOException {
 		final var fin = resources.add(new FileInputStream(file.toFile()));
 		final var bin = resources.add(new BufferedInputStream(fin));
 		final var oin = resources.add(new ObjectInputStream(bin));

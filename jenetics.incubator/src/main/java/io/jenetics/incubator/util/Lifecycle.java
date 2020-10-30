@@ -63,12 +63,12 @@ public final class Lifecycle {
 	 * This class allows to collect one or more {@link Closeable} objects into
 	 * one.
 	 * <p>
-	 * Using the {@code ResourceAppender} class can simplify the the creation of
+	 * Using the {@code ResourceCollector} class can simplify the the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
 	 * <pre>{@code
-	 * final var resources = ResourceAppender.of()
+	 * final var resources = ResourceCollector.of()
 	 * try {
 	 *     final var fin = resources.add(new FileInputStream(file));
 	 *     if (fin.read() != -1) {
@@ -83,7 +83,7 @@ public final class Lifecycle {
 	 *
 	 * @see CloseableValue#build(ThrowingFunction)
 	 */
-	public interface ResourceAppender {
+	public interface ResourceCollector {
 
 		/**
 		 * Registers the given {@code closeable} to the list of managed
@@ -104,23 +104,23 @@ public final class Lifecycle {
 		ExtendedCloseable toCloseable();
 
 		/**
-		 * Create a new {@code ResourceAppender} object with the given initial
+		 * Create a new {@code ResourceCollector} object with the given initial
 		 * {@code closeables} objects.
 		 *
 		 * @see #of(Closeable...)
 		 *
 		 * @param closeables the initial closeables objects
-		 * @return a new resource appender object which collects the given
+		 * @return a new resource collector object which collects the given
 		 *        {@code closeables}
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ResourceAppender
+		public static ResourceCollector
 		of(final Collection<? extends Closeable> closeables) {
 			final List<Closeable> resources = new ArrayList<>();
 			closeables.forEach(c -> resources.add(requireNonNull(c)));
 
-			return new ResourceAppender() {
+			return new ResourceCollector() {
 				@Override
 				public <C extends Closeable> C add(final C closeable) {
 					resources.add(requireNonNull(closeable));
@@ -134,7 +134,7 @@ public final class Lifecycle {
 		}
 
 		/**
-		 * Create a new {@code ResourceAppender} object with the given initial
+		 * Create a new {@code ResourceCollector} object with the given initial
 		 * {@code closeables} objects.
 		 *
 		 * @see #of(Collection)
@@ -145,7 +145,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ResourceAppender of(final Closeable... closeables) {
+		public static ResourceCollector of(final Closeable... closeables) {
 			return of(Arrays.asList(closeables));
 		}
 
@@ -342,7 +342,7 @@ public final class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link ResourceAppender#add(Closeable)} method, are only closed in
+		 * {@link ResourceCollector#add(Closeable)} method, are only closed in
 		 * the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link CloseableValue#close()} method.
@@ -362,7 +362,7 @@ public final class Lifecycle {
 		 * }
 		 * }</pre>
 		 *
-		 * @see ResourceAppender
+		 * @see ResourceCollector
 		 *
 		 * @param builder the builder method
 		 * @param <T> the value type of the created <em>closeable</em> value
@@ -374,13 +374,13 @@ public final class Lifecycle {
 		public static <T, E extends Exception> CloseableValue<T>
 		build(
 			final ThrowingFunction<
-				? super ResourceAppender,
+				? super ResourceCollector,
 				? extends T,
 				? extends E> builder
 		)
 			throws E
 		{
-			final var resources = ResourceAppender.of();
+			final var resources = ResourceCollector.of();
 			try {
 				return CloseableValue.of(
 					builder.apply(resources),
