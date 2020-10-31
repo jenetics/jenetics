@@ -158,7 +158,8 @@ public final class Lifecycle {
 
 		/**
 		 * Create a new {@code ExtendedCloseable} object with the given initial
-		 * {@code closeables} objects.
+		 * {@code closeables} objects. The given list of objects are closed in
+		 * reversed order.
 		 *
 		 * @see #of(Collection)
 		 *
@@ -174,7 +175,8 @@ public final class Lifecycle {
 
 		/**
 		 * Create a new {@code ExtendedCloseable} object with the given
-		 * {@code closeables} objects.
+		 * {@code closeables} objects. The given list of objects are closed in
+		 * reversed order.
 		 *
 		 * @see #of(Closeable...)
 		 *
@@ -220,6 +222,7 @@ public final class Lifecycle {
 	 * }
 	 * }</pre>
 	 *
+	 * @see #of(Object, ThrowingMethod)
 	 * @see #build(ThrowingFunction)
 	 *
 	 * @param <T> the value type
@@ -243,7 +246,7 @@ public final class Lifecycle {
 			requireNonNull(value);
 			requireNonNull(close);
 
-			return new CloseableValue<T>() {
+			return new CloseableValue<>() {
 				@Override
 				public T get() {
 					return value;
