@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Interfaces and classes for handling resource ({@link Closeable}) objects.
+ * Interfaces for handling resource ({@link Closeable}) objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -134,9 +134,9 @@ public final class Lifecycle {
 		public default void silentClose(final Throwable previousError) {
 			try {
 				close();
-			} catch (Exception ignore) {
+			} catch (Exception suppressed) {
 				if (previousError != null) {
-					previousError.addSuppressed(ignore);
+					previousError.addSuppressed(suppressed);
 				}
 			}
 		}
