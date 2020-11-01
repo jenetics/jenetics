@@ -267,7 +267,7 @@ public final class Lifecycle {
 		 * calling the {@link CloseableValue#close()} method.
 		 *
 		 * <pre>{@code
-		 * final CloseableValue<Stream<Object>> result = build(resources -> {
+		 * final CloseableValue<Stream<Object>> result = CloseableValue.build(resources -> {
 		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
 		 *     final var bin = resources.add(new BufferedInputStream(fin));
 		 *     final var oin = resources.add(new ObjectInputStream(bin));
@@ -319,7 +319,7 @@ public final class Lifecycle {
 
 	/**
 	 * This class allows to collect one or more {@link Closeable} objects into
-	 * one.
+	 * one. The registered closeable objects are closed in reverse order.
 	 * <p>
 	 * Using the {@code ResourceCollector} class can simplify the the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
@@ -353,6 +353,8 @@ public final class Lifecycle {
 		/**
 		 * Create a new closeable object from a snapshot of the currently
 		 * registered resources.
+		 *
+		 * @see ExtendedCloseable#of(Collection)
 		 *
 		 * @return a new closeable object
 		 */
