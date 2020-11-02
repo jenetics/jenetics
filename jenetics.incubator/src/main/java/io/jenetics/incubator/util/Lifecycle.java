@@ -82,7 +82,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if the given {@code closeable} is
 		 *         {@code null}
 		 */
-		public static UncheckedCloseable of(final Closeable closeable) {
+		static UncheckedCloseable of(final Closeable closeable) {
 			requireNonNull(closeable);
 
 			return () -> {
@@ -108,7 +108,7 @@ public final class Lifecycle {
 		 * @throws UncheckedIOException if the {@link #close()} method throws
 		 *         an {@link IOException}
 		 */
-		public default void uncheckedClose() {
+		default void uncheckedClose() {
 			try {
 				close();
 			} catch (IOException e) {
@@ -119,7 +119,7 @@ public final class Lifecycle {
 		/**
 		 * Calls the {@link #close()} method and ignores every thrown exception.
 		 */
-		public default void silentClose() {
+		default void silentClose() {
 			silentClose(null);
 		}
 
@@ -131,7 +131,7 @@ public final class Lifecycle {
 		 * @param previousError the error, which triggers the close of the given
 		 *        {@code closeables}
 		 */
-		public default void silentClose(final Throwable previousError) {
+		default void silentClose(final Throwable previousError) {
 			try {
 				close();
 			} catch (Exception suppressed) {
@@ -151,7 +151,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if the given {@code closeable} is
 		 *         {@code null}
 		 */
-		public static ExtendedCloseable of(final Closeable closeable) {
+		static ExtendedCloseable of(final Closeable closeable) {
 			requireNonNull(closeable);
 			return closeable::close;
 		}
@@ -169,7 +169,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ExtendedCloseable of(final Closeable... closeables) {
+		static ExtendedCloseable of(final Closeable... closeables) {
 			return of(Arrays.asList(closeables));
 		}
 
@@ -186,7 +186,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ExtendedCloseable
+		static ExtendedCloseable
 		of(final Collection<? extends Closeable> closeables) {
 			final List<Closeable> list = new ArrayList<>();
 			closeables.forEach(c -> list.add(requireNonNull(c)));
@@ -239,7 +239,7 @@ public final class Lifecycle {
 		 * @return a new closeable value
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
-		public static <T> CloseableValue<T> of(
+		static <T> CloseableValue<T> of(
 			final T value,
 			final ThrowingMethod<? super T, ? extends IOException> close
 		) {
@@ -292,7 +292,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if the given {@code builder} is
 		 *         {@code null}
 		 */
-		public static <T, E extends Exception> CloseableValue<T>
+		static <T, E extends Exception> CloseableValue<T>
 		build(
 			final ThrowingFunction<
 				? super ResourceCollector,
@@ -377,7 +377,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ResourceCollector
+		static ResourceCollector
 		of(final Collection<? extends Closeable> closeables) {
 			final List<Closeable> resources = new ArrayList<>();
 			closeables.forEach(c -> resources.add(requireNonNull(c)));
@@ -408,7 +408,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		public static ResourceCollector of(final Closeable... closeables) {
+		static ResourceCollector of(final Closeable... closeables) {
 			return of(Arrays.asList(closeables));
 		}
 
