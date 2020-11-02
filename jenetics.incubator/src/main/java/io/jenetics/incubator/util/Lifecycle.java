@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Closeable;
@@ -29,6 +30,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -230,6 +233,25 @@ public final class Lifecycle {
 	public interface CloseableValue<T> extends Supplier<T>, ExtendedCloseable {
 
 		/**
+		 * Maps {@code this} closeable value with the given {@code mapper}
+		 * function. If the mapping function throws an exception, {@code this}
+		 * value is closed.
+		 *
+		 * @param mapper the mapping function to apply to a value
+		 * @param <B> the type of the value returned from the mapping function
+		 * @return the mapped closeable value
+		 */
+		default <B> CloseableValue<B>
+		map(final Function<? super T, ? extends B> mapper) {
+			try {
+				return of(mapper.apply(get()), v -> close());
+			} catch (Throwable error) {
+				silentClose(error);
+				throw error;
+			}
+		}
+
+		/**
 		 * Create a new closeable value with the given {@code value} and the
 		 * {@code close} method.
 		 *
@@ -254,6 +276,10 @@ public final class Lifecycle {
 				@Override
 				public void close() throws IOException {
 					close.apply(get());
+				}
+				@Override
+				public String toString() {
+					return format("CloseableValue[%s]", get());
 				}
 			};
 		}

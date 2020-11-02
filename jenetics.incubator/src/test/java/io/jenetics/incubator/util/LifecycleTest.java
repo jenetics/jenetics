@@ -21,6 +21,8 @@ package io.jenetics.incubator.util;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -279,6 +281,18 @@ public class LifecycleTest {
 			Assert.assertEquals(1, resource2.get().get());
 			Assert.assertEquals(1, resource3.get().get());
 			throw e;
+		}
+	}
+
+	@Test
+	public void closeableValueMap() throws IOException {
+		final var file = CloseableValue.of(
+			Files.createTempFile("Lifecycle", "TEST"),
+			Files::deleteIfExists
+		);
+
+		try (var s = file.map(Path::getFileName)) {
+			Assert.assertEquals(s.get(), file.get().getFileName());
 		}
 	}
 
