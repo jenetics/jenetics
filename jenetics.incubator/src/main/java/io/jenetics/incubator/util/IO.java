@@ -41,6 +41,13 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
 
+/**
+ * Static methods for reading and writing Java objects.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public final class IO {
 
 	private IO() {
