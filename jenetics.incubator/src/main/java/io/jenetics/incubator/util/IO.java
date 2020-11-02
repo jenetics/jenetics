@@ -31,50 +31,133 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
-public class IO {
+public final class IO {
 
 	private IO() {
 	}
 
-	static void write(final Iterable<?> objects, final Path file)
+	/**
+	 * Writes the given {@code objects} to the given {@code file}, using the
+	 * Java serialization. If the {@code file} already exists, the objects are
+	 * appended.
+	 *
+	 * @see #read(Path)
+	 *
+	 * @param file the destination where the {@code objects} are written to
+	 * @param objects the {@code objects} to write
+	 * @throws IOException if writing the objects fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static void write(final Path file, final Collection<?> objects)
 		throws IOException
 	{
-		final class Output extends ObjectOutputStream {
-			private final boolean _append;
-			Output(final OutputStream out, final boolean append)
-				throws IOException
-			{
-				super(out);
-				_append = append;
+		if (!objects.isEmpty()) {
+			final var append = new AtomicBoolean(!isEmpty(file));
+
+			final class Output extends ObjectOutputStream {
+				Output(final OutputStream out)
+					throws IOException
+				{
+					super(out);
+				}
+				@Override
+				protected void writeStreamHeader() throws IOException {
+					if (!append.get()) {
+						super.writeStreamHeader();
+					}
+				}
 			}
-			@Override
-			protected void writeStreamHeader() throws IOException {
-				if (!_append) {
-					super.writeStreamHeader();
+
+			try (var fos = new FileOutputStream(file.toFile(), true);
+				 var bos = new BufferedOutputStream(fos);
+				 var out = new Output(bos))
+			{
+				for (var obj : objects) {
+					out.writeObject(obj);
+					out.reset();
+					append.set(true);
 				}
 			}
 		}
-
-		try (var fos = new FileOutputStream(file.toFile(), true);
-			 var bos = new BufferedOutputStream(fos);
-			 var out = new Output(bos, Files.exists(file)))
-		{
-			for (var obj : objects) {
-				out.writeObject(obj);
-				out.reset();
-			}
-		}
-
 	}
 
-	static Stream<Object> read(final Path file) throws IOException {
+	private static boolean isEmpty(final Path file) throws IOException {
+		return !Files.exists(file) || Files.size(file) == 0;
+	}
+
+	/**
+	 * Writes the given {@code objects} to the given {@code file}, using the
+	 * Java serialization. If the {@code file} already exists, the objects are
+	 * appended.
+	 *
+	 * @param file the destination where the {@code objects} are written to
+	 * @param objects the {@code objects} to write
+	 * @throws IOException if writing the objects fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static void write(final Path file, final Object... objects)
+		throws IOException
+	{
+		write(file, Arrays.asList(objects));
+	}
+
+
+
+	private static final class AppendableObjectOutputStream
+		extends ObjectOutputStream
+	{
+		AppendableObjectOutputStream(final OutputStream out) throws IOException {
+			super(out);
+		}
+		@Override
+		protected void writeStreamHeader() {
+		}
+	}
+
+	static void __write(final Path file, final List<?> objects)
+		throws IOException
+	{
+		final boolean exists = Files.exists(file);
+
+		try (var fos = new FileOutputStream(file.toFile(), true);
+			 var bos = new BufferedOutputStream(fos))
+		{
+			final ObjectOutputStream out = exists
+				? new AppendableObjectOutputStream(bos)
+				: new ObjectOutputStream(bos);
+
+			try (out) {
+				for (var obj : objects) {
+					out.writeObject(obj);
+					out.reset();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Reads the object from the given {@code file}, which were previously
+	 * written with the {@link #write(Path, Collection)} method. The caller is
+	 * responsible for closing the returned object stream
+	 *
+	 * @param file the data file
+	 * @return a stream of the read objects
+	 * @throws java.io.FileNotFoundException if the given file could not be read
+	 * @throws IOException if the object stream couldn't be created
+	 */
+	public static Stream<Object> read(final Path file) throws IOException {
 		final var result = CloseableValue.build(resources ->
 			objectStream(file, resources)
 		);
@@ -84,22 +167,45 @@ public class IO {
 
 	private static Stream<Object>
 	objectStream(final Path file, final ResourceCollector resources) throws IOException {
-		final var fin = resources.add(new FileInputStream(file.toFile()));
-		final var bin = resources.add(new BufferedInputStream(fin));
-		final var oin = resources.add(new ObjectInputStream(bin));
+		if (isEmpty(file)) {
+			return Stream.empty();
+		} else {
+			final var fin = resources.add(new FileInputStream(file.toFile()));
+			final var bin = resources.add(new BufferedInputStream(fin));
+			final var oin = resources.add(new ObjectInputStream(bin));
 
-		final Supplier<Object> readObject = () -> {
-			try {
-				return oin.readObject();
-			} catch (EOFException|ClassNotFoundException e) {
-				return null;
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
+			final Supplier<Object> readObject = () -> {
+				try {
+					return oin.readObject();
+				} catch (EOFException|ClassNotFoundException e) {
+					return null;
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			};
+
+			return Stream.generate(readObject)
+				.takeWhile(Objects::nonNull);
+		}
+	}
+
+
+	static List<Object> __read(final Path file)
+		throws IOException, ClassNotFoundException {
+		final var result = new ArrayList<>();
+
+		try (var fin = new FileInputStream(file.toFile());
+			 var bin = new BufferedInputStream(fin);
+			 var oin = new ObjectInputStream(bin))
+		{
+			Object obj = null;
+			while ((obj = oin.readObject()) != null) {
+				result.add(obj);
 			}
-		};
+		} catch (EOFException ignore) {
+		}
 
-		return Stream.generate(readObject)
-			.takeWhile(Objects::nonNull);
+		return result;
 	}
 
 }

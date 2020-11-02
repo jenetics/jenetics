@@ -19,40 +19,85 @@
  */
 package io.jenetics.incubator.util;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+
 public class IOTest {
 
-	private static final List<Object> OBJECTS = List.of(
-		"asdf",
-		"asfasdf",
-		1L,
-		3,
-		5.4,
-		5345.445F
-	);
+	@Test(dataProvider = "data")
+	public void readWrite(final List<List<Object>> data) throws IOException, ClassNotFoundException {
+		final var file = CloseableValue.of(
+			Files.createTempFile("IO", "TEST"),
+			Files::deleteIfExists
+		);
 
-	@Test
-	public void readWrite() throws IOException {
-		final var tempFile = Files.createTempFile("IO", "TEST");
-		System.out.println(tempFile);
-		try {
-			IO.write(OBJECTS, tempFile);
-			try (var objects = IO.read(tempFile)) {
-				Assert.assertEquals(
-					OBJECTS,
-					objects.collect(Collectors.toList())
-				);
+		try (file) {
+			for (var objects : data) {
+				IO.write(file.get(), objects);
 			}
-		} finally {
-			Files.deleteIfExists(tempFile);
+
+			final List<Object> expected = data.stream()
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
+
+			try (var objects = IO.read(file.get())) {
+				final var list = objects.collect(Collectors.toList());
+				Assert.assertEquals(list, expected);
+			}
+
 		}
+	}
+
+	@DataProvider
+	public Object[][] data() {
+		return new Object[][] {
+			{List.of()},
+			{List.of(
+				List.of(1)
+			)},
+			{List.of(
+				List.of(1.1)
+			)},
+			{List.of(
+				List.of("one")
+			)},
+			{List.of(
+				List.of("one"),
+				List.of(2)
+			)},
+			{List.of(
+				List.of("one"),
+				List.of(2),
+				List.of(3.0)
+			)},
+			{List.of(
+				List.of("one"),
+				List.of(1, 2, 3)
+			)},
+			{List.of(
+				List.of("one"),
+				List.of(2),
+				List.of(1, 2, 3, 4, 5),
+				List.of(1.1, 1.2, 1.3)
+			)},
+			{List.of(
+				List.of("one"),
+				List.of(2),
+				List.of(1, 2, 3, 4, 5),
+				List.of(1.1, 1.2, 1.3),
+				List.of("two"),
+				List.of(2)
+			)}
+		};
 	}
 
 }
