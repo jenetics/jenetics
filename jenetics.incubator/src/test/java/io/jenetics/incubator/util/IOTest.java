@@ -34,7 +34,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public class IOTest {
 
 	@Test(dataProvider = "data")
-	public void readWrite(final List<List<Object>> data) throws IOException, ClassNotFoundException {
+	public void readWrite(final List<List<Object>> data) throws IOException {
 		final var file = CloseableValue.of(
 			Files.createTempFile("IO", "TEST"),
 			Files::deleteIfExists
@@ -69,6 +69,9 @@ public class IOTest {
 			)},
 			{List.of(
 				List.of("one")
+			)},
+			{List.of(
+				List.of("one", 2, 3.0, "four")
 			)},
 			{List.of(
 				List.of("one"),
