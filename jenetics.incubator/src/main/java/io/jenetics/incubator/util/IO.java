@@ -128,7 +128,9 @@ public final class IO {
 	}
 
 	private static Stream<Object>
-	objectStream(final Path file, final ResourceCollector resources) throws IOException {
+	objectStream(final Path file, final ResourceCollector resources)
+		throws IOException
+	{
 		if (isEmpty(file)) {
 			return Stream.empty();
 		} else {
