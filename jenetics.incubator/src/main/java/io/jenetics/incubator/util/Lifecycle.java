@@ -30,12 +30,49 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Interfaces for handling resource ({@link Closeable}) objects.
+ * Interfaces for handling resource ({@link Closeable}) objects. The common
+ * use cases are shown as follows:
+ * <p><b>Wrapping <em>non</em>-closeable values</b></p>
+ * <pre>{@code
+ * final CloseableValue<Path> file = CloseableValue.of(
+ *     Files.createTempFile("test-", ".txt" ),
+ *     Files::deleteIfExists
+ * );
+ *
+ * // Automatically delete the file after the test.
+ * try (file) {
+ *     Files.write(file.get(), "foo".getBytes());
+ *     final var writtenText = Files.readString(file.get());
+ *     assert "foo".equals(writtenText);
+ * }
+ * }</pre>
+ *
+ * <p><b>Building complex closeable values</b></p>
+ * <pre>{@code
+ * final CloseableValue<Stream<Object>> result = CloseableValue.build(resources -> {
+ *     final var fin = resources.add(new FileInputStream(file.toFile()));
+ *     final var bin = resources.add(new BufferedInputStream(fin));
+ *     final var oin = resources.add(new ObjectInputStream(bin));
+ *
+ *     return Stream.generate(() -> readNextObject(oin))
+ *         .takeWhile(Objects::nonNull);
+ * });
+ *
+ * try (result) {
+ *     result.get().forEach(System.out::println);
+ * }
+ * }</pre>
+ *
+ * <p><b>Wrapping several closeables into one</b></p>
+ * <pre>{@code
+ * try (var c = ExtendedCloseable.of(c1, c2, c3)) {
+ *     ...
+ * }
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
