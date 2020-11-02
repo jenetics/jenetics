@@ -31,17 +31,15 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
 
 public final class IO {
 
@@ -67,9 +65,7 @@ public final class IO {
 			final var append = new AtomicBoolean(!isEmpty(file));
 
 			final class Output extends ObjectOutputStream {
-				Output(final OutputStream out)
-					throws IOException
-				{
+				Output(final OutputStream out) throws IOException {
 					super(out);
 				}
 				@Override
@@ -113,40 +109,6 @@ public final class IO {
 		write(file, Arrays.asList(objects));
 	}
 
-
-
-	private static final class AppendableObjectOutputStream
-		extends ObjectOutputStream
-	{
-		AppendableObjectOutputStream(final OutputStream out) throws IOException {
-			super(out);
-		}
-		@Override
-		protected void writeStreamHeader() {
-		}
-	}
-
-	static void __write(final Path file, final List<?> objects)
-		throws IOException
-	{
-		final boolean exists = Files.exists(file);
-
-		try (var fos = new FileOutputStream(file.toFile(), true);
-			 var bos = new BufferedOutputStream(fos))
-		{
-			final ObjectOutputStream out = exists
-				? new AppendableObjectOutputStream(bos)
-				: new ObjectOutputStream(bos);
-
-			try (out) {
-				for (var obj : objects) {
-					out.writeObject(obj);
-					out.reset();
-				}
-			}
-		}
-	}
-
 	/**
 	 * Reads the object from the given {@code file}, which were previously
 	 * written with the {@link #write(Path, Collection)} method. The caller is
@@ -187,25 +149,6 @@ public final class IO {
 			return Stream.generate(readObject)
 				.takeWhile(Objects::nonNull);
 		}
-	}
-
-
-	static List<Object> __read(final Path file)
-		throws IOException, ClassNotFoundException {
-		final var result = new ArrayList<>();
-
-		try (var fin = new FileInputStream(file.toFile());
-			 var bin = new BufferedInputStream(fin);
-			 var oin = new ObjectInputStream(bin))
-		{
-			Object obj = null;
-			while ((obj = oin.readObject()) != null) {
-				result.add(obj);
-			}
-		} catch (EOFException ignore) {
-		}
-
-		return result;
 	}
 
 }
