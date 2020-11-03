@@ -280,7 +280,7 @@ public final class Lifecycle {
 		 *     Files.createTempFile("Lifecycle", "TEST").toFile(),
 		 *     f -> Files.deleteIfExists(f.toPath())
 		 * );
-		 * file.using(File::deleteOnExit);
+		 * file.trying(File::deleteOnExit);
 		 *
 		 * try (file) {
 		 *     // Do something with temp file.
@@ -292,7 +292,7 @@ public final class Lifecycle {
 		 * @throws E if applying the {@code block} throws an exception
 		 */
 		default <E extends Exception>
-		void using(final ThrowingMethod<? super T, ? extends E> block) throws E {
+		void trying(final ThrowingMethod<? super T, ? extends E> block) throws E {
 			try {
 				block.apply(get());
 			} catch (Throwable error) {
@@ -329,6 +329,26 @@ public final class Lifecycle {
 		{
 			try {
 				return of(mapper.apply(get()), v -> close());
+			} catch (Throwable error) {
+				silentClose(error);
+				throw error;
+			}
+		}
+
+		default <B, E extends Exception> CloseableValue<B> flatMap(
+			final ThrowingFunction<
+				? super T,
+				? extends CloseableValue<? extends B>,
+				? extends E> mapper
+		)
+			throws E
+		{
+			try {
+				final var mapped = mapper.apply(get());
+				return of(
+					mapped.get(),
+					v -> ExtendedCloseable.of(this, mapped).close()
+				);
 			} catch (Throwable error) {
 				silentClose(error);
 				throw error;

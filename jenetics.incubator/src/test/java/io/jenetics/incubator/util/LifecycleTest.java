@@ -305,7 +305,7 @@ public class LifecycleTest {
 			Files.createTempFile("Lifecycle", "TEST").toFile(),
 			f -> Files.deleteIfExists(f.toPath())
 		);
-		file.using(File::deleteOnExit);
+		file.trying(File::deleteOnExit);
 
 		try (file) {
 			Assert.assertTrue(Files.exists(file.get().toPath()));
