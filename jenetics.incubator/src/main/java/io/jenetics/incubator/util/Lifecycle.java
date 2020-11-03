@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -318,14 +319,10 @@ public final class Lifecycle {
 		 *
 		 * @param mapper the mapping function to apply to a value
 		 * @param <B> the type of the value returned from the mapping function
-		 * @param <E> the thrown exception type
 		 * @return the mapped closeable value
-		 * @throws E if applying the {@code block} throws an exception
 		 */
-		default <B, E extends Exception> CloseableValue<B>
-		map(final ThrowingFunction<? super T, ? extends B, ? extends E> mapper)
-			throws E
-		{
+		default <B> CloseableValue<B>
+		map(final Function<? super T, ? extends B> mapper) {
 			try {
 				return of(mapper.apply(get()), v -> close());
 			} catch (Throwable error) {
@@ -352,6 +349,10 @@ public final class Lifecycle {
 				silentClose(error);
 				throw error;
 			}
+		}
+
+		static <C extends Closeable> CloseableValue<C> of(final C value) {
+			return of(value, Closeable::close);
 		}
 
 		/**
