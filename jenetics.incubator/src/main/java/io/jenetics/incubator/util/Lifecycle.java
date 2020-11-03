@@ -270,9 +270,52 @@ public final class Lifecycle {
 	public interface CloseableValue<T> extends Supplier<T>, ExtendedCloseable {
 
 		/**
+		 * Applies the give {@code block} to the closeable value. If the
+		 * {@code block} throws an exception, {@code this} value is closed. The
+		 * typical use case for this method is when additional initialization
+		 * of the value is needed.
+		 *
+		 * <pre>{@code
+		 * final var file = CloseableValue.of(
+		 *     Files.createTempFile("Lifecycle", "TEST").toFile(),
+		 *     f -> Files.deleteIfExists(f.toPath())
+		 * );
+		 * file.using(File::deleteOnExit);
+		 *
+		 * try (file) {
+		 *     // Do something with temp file.
+		 * }
+		 * }</pre>
+		 *
+		 * @param block the codec block which is applied to the value
+		 * @param <E> the thrown exception type
+		 * @throws E if applying the {@code block} throws an exception
+		 */
+		default <E extends Exception>
+		void using(final ThrowingMethod<? super T, ? extends E> block) throws E {
+			try {
+				block.apply(get());
+			} catch (Throwable error) {
+				silentClose(error);
+				throw error;
+			}
+		}
+
+		/**
 		 * Maps {@code this} closeable value with the given {@code mapper}
 		 * function. If the mapping function throws an exception, {@code this}
 		 * value is closed.
+		 *
+		 * <pre>{@code
+		 * final var file = CloseableValue.of(
+		 *     Files.createTempFile("Lifecycle", "TEST"),
+		 *     Files::deleteIfExists
+		 * );
+		 *
+		 * try (var name = file.map(Path::getFileName)) {
+		 *     // Do something with the file name.
+		 * }
+		 * }</pre>
 		 *
 		 * @param mapper the mapping function to apply to a value
 		 * @param <B> the type of the value returned from the mapping function
