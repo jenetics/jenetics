@@ -331,30 +331,6 @@ public final class Lifecycle {
 			}
 		}
 
-		default <B, E extends Exception> CloseableValue<B> flatMap(
-			final ThrowingFunction<
-				? super T,
-				? extends CloseableValue<? extends B>,
-				? extends E> mapper
-		)
-			throws E
-		{
-			try {
-				final var mapped = mapper.apply(get());
-				return of(
-					mapped.get(),
-					v -> ExtendedCloseable.of(this, mapped).close()
-				);
-			} catch (Throwable error) {
-				silentClose(error);
-				throw error;
-			}
-		}
-
-		static <C extends Closeable> CloseableValue<C> of(final C value) {
-			return of(value, Closeable::close);
-		}
-
 		/**
 		 * Create a new closeable value with the given {@code value} and the
 		 * {@code close} method.

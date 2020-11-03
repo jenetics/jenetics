@@ -19,12 +19,7 @@
  */
 package io.jenetics.incubator.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,7 +34,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
-import io.jenetics.incubator.util.Lifecycle.ThrowingFunction;
 import io.jenetics.incubator.util.Lifecycle.UncheckedCloseable;
 
 public class LifecycleTest {
@@ -302,28 +296,6 @@ public class LifecycleTest {
 			Assert.assertEquals(s.get(), file.get().getFileName());
 		}
 		Assert.assertFalse(Files.exists(file.get()));
-	}
-
-	@Test
-	public void closeableValueFlatMap() throws IOException {
-		final var string = cstring("v1", false).flatMap(v1 ->
-			cstring(v1 + "-v2", true).flatMap(v2 ->
-				cstring(v2 + "-v3", false)
-			)
-		);
-		try (string) {
-			System.out.println(string);
-		}
-	}
-
-	private static CloseableValue<String> cstring(final String value, final boolean error) {
-		return CloseableValue.of(
-			value,
-			v -> {
-				System.out.println(v);
-				if (error) throw new IOException(v);
-			}
-		);
 	}
 
 	private static CloseableValue<Path> tempFile() throws IOException {
