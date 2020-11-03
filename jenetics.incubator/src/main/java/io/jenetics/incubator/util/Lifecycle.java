@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -277,10 +276,10 @@ public final class Lifecycle {
 		 *
 		 * <pre>{@code
 		 * final var file = CloseableValue.of(
-		 *     Files.createTempFile("Lifecycle", "TEST").toFile(),
-		 *     f -> Files.deleteIfExists(f.toPath())
+		 *     Files.createTempFile("Lifecycle", "TEST"),
+		 *     Files::deleteIfExists
 		 * );
-		 * file.trying(File::deleteOnExit);
+		 * file.trying(f -> f.toFile().deleteOnExit());
 		 *
 		 * try (file) {
 		 *     // Do something with temp file.

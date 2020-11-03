@@ -20,6 +20,8 @@
 package io.jenetics.incubator.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -302,17 +304,17 @@ public class LifecycleTest {
 	@Test
 	public void closeableValueInit() throws IOException {
 		final var file = CloseableValue.of(
-			Files.createTempFile("Lifecycle", "TEST").toFile(),
-			f -> Files.deleteIfExists(f.toPath())
+			Files.createTempFile("Lifecycle", "TEST"),
+			Files::deleteIfExists
 		);
-		file.trying(File::deleteOnExit);
+		file.trying(f -> f.toFile().deleteOnExit());
 
 		try (file) {
-			Assert.assertTrue(Files.exists(file.get().toPath()));
-			Files.write(file.get().toPath(), "foo".getBytes());
-			Assert.assertEquals(Files.readString(file.get().toPath()), "foo");
+			Assert.assertTrue(Files.exists(file.get()));
+			Files.write(file.get(), "foo".getBytes());
+			Assert.assertEquals(Files.readString(file.get()), "foo");
 		}
-		Assert.assertFalse(Files.exists(file.get().toPath()));
+		Assert.assertFalse(Files.exists(file.get()));
 	}
 
 }
