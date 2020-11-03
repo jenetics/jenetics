@@ -319,10 +319,14 @@ public final class Lifecycle {
 		 *
 		 * @param mapper the mapping function to apply to a value
 		 * @param <B> the type of the value returned from the mapping function
+		 * @param <E> the thrown exception type
 		 * @return the mapped closeable value
+		 * @throws E if applying the {@code block} throws an exception
 		 */
-		default <B> CloseableValue<B>
-		map(final Function<? super T, ? extends B> mapper) {
+		default <B, E extends Exception> CloseableValue<B>
+		map(final ThrowingFunction<? super T, ? extends B, ? extends E> mapper)
+			throws E
+		{
 			try {
 				return of(mapper.apply(get()), v -> close());
 			} catch (Throwable error) {
