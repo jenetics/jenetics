@@ -111,9 +111,7 @@ public final class IO {
 			 var out = new Output(bos))
 		{
 			while (objects.hasNext()) {
-				final var object = objects.next();
-
-				out.writeObject(object);
+				out.writeObject(objects.next());
 				out.reset();
 				append.set(appendable);
 			}
