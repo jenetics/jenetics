@@ -288,14 +288,21 @@ public final class Lifecycle {
 		 * }</pre>
 		 *
 		 * @param block the codec block which is applied to the value
+		 * @param closeables additional {@code closeables}, which are also
+		 *        closed in the case of an error
 		 * @param <E> the thrown exception type
 		 * @throws E if applying the {@code block} throws an exception
 		 */
-		default <E extends Exception>
-		void trying(final ThrowingMethod<? super T, ? extends E> block) throws E {
+		default <E extends Exception> void trying(
+			final ThrowingMethod<? super T, ? extends E> block,
+			final Closeable... closeables
+		)
+			throws E
+		{
 			try {
 				block.apply(get());
 			} catch (Throwable error) {
+				ExtendedCloseable.of(closeables).silentClose(error);
 				silentClose(error);
 				throw error;
 			}
