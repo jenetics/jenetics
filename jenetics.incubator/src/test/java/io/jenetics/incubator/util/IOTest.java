@@ -19,10 +19,16 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.lang.String.format;
 import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+import static java.util.UUID.randomUUID;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,27 +42,46 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public class IOTest {
 
 	@Test(dataProvider = "data")
-	public void appendRead(final List<List<Object>> data) throws IOException {
-		final var file = CloseableValue.of(
-			Files.createTempFile("IO", "TEST"),
+	public void appendReadExistingFile(final List<List<Object>> data) throws IOException {
+		final var path = CloseableValue.of(
+			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
 
-		try (file) {
+		appendRead(data, path, APPEND);
+	}
+
+	private void appendRead(
+		final List<List<Object>> data,
+		final CloseableValue<Path> path,
+		final OpenOption... options
+	)
+		throws IOException
+	{
+		try (path) {
 			for (var objects : data) {
-				IO.write(file.get(), objects, APPEND);
+				IO.write(path.get(), objects, options);
 			}
 
 			final List<Object> expected = data.stream()
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
 
-			try (var objects = IO.objects(file.get())) {
-				final var list = objects.collect(Collectors.toList());
-				Assert.assertEquals(list, expected);
-			}
-
+			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
 		}
+	}
+
+	@Test(dataProvider = "data")
+	public void appendReadNonExistingFile(final List<List<Object>> data) throws IOException {
+		final var path = CloseableValue.of(
+			Path.of(
+				System.getProperty("java.io.tmpdir"),
+				format("IO-%s-TEST", randomUUID().toString().replace("-", ""))
+			),
+			Files::deleteIfExists
+		);
+
+		appendRead(data, path, APPEND, CREATE);
 	}
 
 	@DataProvider
@@ -107,24 +132,21 @@ public class IOTest {
 
 	@Test(dataProvider = "data")
 	public void writeRead(final List<List<Object>> data) throws IOException {
-		final var file = CloseableValue.of(
-			Files.createTempFile("IO", "TEST"),
+		final var path = CloseableValue.of(
+			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
 
-		try (file) {
+		try (path) {
 			for (var objects : data) {
-				IO.write(file.get(), objects);
+				IO.write(path.get(), objects, TRUNCATE_EXISTING);
 			}
 
 			final List<Object> expected = data.isEmpty()
 				? List.of()
 				: data.get(data.size() - 1);
 
-			try (var objects = IO.objects(file.get())) {
-				final var list = objects.collect(Collectors.toList());
-				Assert.assertEquals(list, expected);
-			}
+			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
 
 		}
 	}
