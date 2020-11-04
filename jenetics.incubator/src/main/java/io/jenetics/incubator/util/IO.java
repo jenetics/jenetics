@@ -22,7 +22,6 @@ package io.jenetics.incubator.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,9 +32,11 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
@@ -58,7 +59,7 @@ public final class IO {
 	 * Java serialization. If the {@code path} already exists, the objects are
 	 * appended.
 	 *
-	 * @see #read(Path)
+	 * @see #objects(Path)
 	 *
 	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to be written
@@ -133,31 +134,31 @@ public final class IO {
 	}
 
 	/**
-	 * Reads the object from the given {@code file}, which were previously
+	 * Reads the object from the given {@code path}, which were previously
 	 * written with the {@link #write(Path, Iterable, OpenOption...)} method.
 	 * The caller is responsible for closing the returned object stream
 	 *
-	 * @param file the data file
+	 * @param path the data path
 	 * @return a stream of the read objects
-	 * @throws java.io.FileNotFoundException if the given file could not be read
+	 * @throws java.io.FileNotFoundException if the given path could not be read
 	 * @throws IOException if the object stream couldn't be created
 	 */
-	public static Stream<Object> read(final Path file) throws IOException {
+	public static Stream<Object> objects(final Path path) throws IOException {
 		final var result = CloseableValue.build(resources ->
-			objectStream(file, resources)
+			objectStream(path, resources)
 		);
 
 		return result.get().onClose(result::uncheckedClose);
 	}
 
 	private static Stream<Object>
-	objectStream(final Path file, final ResourceCollector resources)
+	objectStream(final Path path, final ResourceCollector resources)
 		throws IOException
 	{
-		if (isEmpty(file)) {
+		if (isEmpty(path)) {
 			return Stream.empty();
 		} else {
-			final var fin = resources.add(new FileInputStream(file.toFile()));
+			final var fin = resources.add(Files.newInputStream(path));
 			final var bin = resources.add(new BufferedInputStream(fin));
 			final var oin = resources.add(new ObjectInputStream(bin));
 
@@ -173,6 +174,22 @@ public final class IO {
 
 			return Stream.generate(readObject)
 				.takeWhile(Objects::nonNull);
+		}
+	}
+
+	/**
+	 * Reads the object from the given {@code path}, which were previously
+	 * written with the {@link #write(Path, Iterable, OpenOption...)} method.
+	 * The caller is responsible for closing the returned object stream
+	 *
+	 * @param path the data path
+	 * @return a list of all objects
+	 * @throws java.io.FileNotFoundException if the given path could not be read
+	 * @throws IOException if the object stream couldn't be created
+	 */
+	public static List<Object> readAllObjects(final Path path) throws IOException {
+		try (var objects = objects(path)) {
+			return objects.collect(Collectors.toList());
 		}
 	}
 

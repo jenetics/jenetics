@@ -51,7 +51,7 @@ public class IOTest {
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
 
-			try (var objects = IO.read(file.get())) {
+			try (var objects = IO.objects(file.get())) {
 				final var list = objects.collect(Collectors.toList());
 				Assert.assertEquals(list, expected);
 			}
@@ -121,7 +121,7 @@ public class IOTest {
 				? List.of()
 				: data.get(data.size() - 1);
 
-			try (var objects = IO.read(file.get())) {
+			try (var objects = IO.objects(file.get())) {
 				final var list = objects.collect(Collectors.toList());
 				Assert.assertEquals(list, expected);
 			}
