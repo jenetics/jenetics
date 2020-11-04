@@ -30,7 +30,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -54,22 +56,27 @@ public final class IO {
 	}
 
 	/**
-	 * Writes the given {@code objects} to the given {@code file}, using the
-	 * Java serialization. If the {@code file} already exists, the objects are
+	 * Writes the given {@code objects} to the given {@code path}, using the
+	 * Java serialization. If the {@code path} already exists, the objects are
 	 * appended.
 	 *
 	 * @see #read(Path)
 	 *
-	 * @param file the destination where the {@code objects} are written to
+	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to write
 	 * @throws IOException if writing the objects fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static void write(final Path file, final Collection<?> objects)
+	public static void write(
+		final Path path,
+		final Collection<?> objects,
+		final OpenOption... options
+	)
 		throws IOException
 	{
 		if (!objects.isEmpty()) {
-			final var append = new AtomicBoolean(!isEmpty(file));
+			final var appendable = isAppendable(options);
+			final var append = new AtomicBoolean(appendable & !isEmpty(path));
 
 			final class Output extends ObjectOutputStream {
 				Output(final OutputStream out) throws IOException {
@@ -83,17 +90,26 @@ public final class IO {
 				}
 			}
 
-			try (var fos = new FileOutputStream(file.toFile(), true);
+			try (var fos = Files.newOutputStream(path, options);
 				 var bos = new BufferedOutputStream(fos);
 				 var out = new Output(bos))
 			{
 				for (var obj : objects) {
 					out.writeObject(obj);
 					out.reset();
-					append.set(true);
+					append.set(appendable);
 				}
 			}
 		}
+	}
+
+	private static boolean isAppendable(final OpenOption... options) {
+		for (var option : options) {
+			if (option == StandardOpenOption.APPEND) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static boolean isEmpty(final Path file) throws IOException {
@@ -118,8 +134,8 @@ public final class IO {
 
 	/**
 	 * Reads the object from the given {@code file}, which were previously
-	 * written with the {@link #write(Path, Collection)} method. The caller is
-	 * responsible for closing the returned object stream
+	 * written with the {@link #write(Path, Collection, OpenOption...)} method.
+	 * The caller is responsible for closing the returned object stream
 	 *
 	 * @param file the data file
 	 * @return a stream of the read objects

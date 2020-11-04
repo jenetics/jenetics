@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.nio.file.StandardOpenOption.APPEND;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
@@ -34,7 +36,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public class IOTest {
 
 	@Test(dataProvider = "data")
-	public void readWrite(final List<List<Object>> data) throws IOException {
+	public void appendRead(final List<List<Object>> data) throws IOException {
 		final var file = CloseableValue.of(
 			Files.createTempFile("IO", "TEST"),
 			Files::deleteIfExists
@@ -42,7 +44,7 @@ public class IOTest {
 
 		try (file) {
 			for (var objects : data) {
-				IO.write(file.get(), objects);
+				IO.write(file.get(), objects, APPEND);
 			}
 
 			final List<Object> expected = data.stream()
@@ -101,6 +103,30 @@ public class IOTest {
 				List.of(2)
 			)}
 		};
+	}
+
+	@Test(dataProvider = "data")
+	public void writeRead(final List<List<Object>> data) throws IOException {
+		final var file = CloseableValue.of(
+			Files.createTempFile("IO", "TEST"),
+			Files::deleteIfExists
+		);
+
+		try (file) {
+			for (var objects : data) {
+				IO.write(file.get(), objects);
+			}
+
+			final List<Object> expected = data.isEmpty()
+				? List.of()
+				: data.get(data.size() - 1);
+
+			try (var objects = IO.read(file.get())) {
+				final var list = objects.collect(Collectors.toList());
+				Assert.assertEquals(list, expected);
+			}
+
+		}
 	}
 
 }
