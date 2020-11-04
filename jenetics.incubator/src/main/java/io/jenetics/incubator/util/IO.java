@@ -23,7 +23,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,8 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -63,42 +61,60 @@ public final class IO {
 	 * @see #read(Path)
 	 *
 	 * @param path the destination where the {@code objects} are written to
-	 * @param objects the {@code objects} to write
+	 * @param objects the {@code objects} to be written
+	 * @param options specifying how the file is opened
 	 * @throws IOException if writing the objects fails
+	 * @throws IllegalArgumentException if options contains an invalid
+	 *         combination of options
+	 * @throws UnsupportedOperationException if an unsupported option is
+	 *         specified
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static void write(
 		final Path path,
-		final Collection<?> objects,
+		final Iterable<?> objects,
 		final OpenOption... options
 	)
 		throws IOException
 	{
-		if (!objects.isEmpty()) {
-			final var appendable = isAppendable(options);
-			final var append = new AtomicBoolean(appendable & !isEmpty(path));
+		final var it = objects.iterator();
+		if (it.hasNext()) {
+			write0(path, it, options);
+		}
+	}
 
-			final class Output extends ObjectOutputStream {
-				Output(final OutputStream out) throws IOException {
-					super(out);
-				}
-				@Override
-				protected void writeStreamHeader() throws IOException {
-					if (!append.get()) {
-						super.writeStreamHeader();
-					}
+	private static void write0(
+		final Path path,
+		final Iterator<?> objects,
+		final OpenOption... options
+	)
+		throws IOException
+	{
+		final var appendable = isAppendable(options);
+		final var append = new AtomicBoolean(appendable && !isEmpty(path));
+
+		final class Output extends ObjectOutputStream {
+			Output(final OutputStream out) throws IOException {
+				super(out);
+			}
+			@Override
+			protected void writeStreamHeader() throws IOException {
+				if (!append.get()) {
+					super.writeStreamHeader();
 				}
 			}
+		}
 
-			try (var fos = Files.newOutputStream(path, options);
-				 var bos = new BufferedOutputStream(fos);
-				 var out = new Output(bos))
-			{
-				for (var obj : objects) {
-					out.writeObject(obj);
-					out.reset();
-					append.set(appendable);
-				}
+		try (var fos = Files.newOutputStream(path, options);
+			 var bos = new BufferedOutputStream(fos);
+			 var out = new Output(bos))
+		{
+			while (objects.hasNext()) {
+				final var object = objects.next();
+
+				out.writeObject(object);
+				out.reset();
+				append.set(appendable);
 			}
 		}
 	}
@@ -117,24 +133,8 @@ public final class IO {
 	}
 
 	/**
-	 * Writes the given {@code objects} to the given {@code file}, using the
-	 * Java serialization. If the {@code file} already exists, the objects are
-	 * appended.
-	 *
-	 * @param file the destination where the {@code objects} are written to
-	 * @param objects the {@code objects} to write
-	 * @throws IOException if writing the objects fails
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static void write(final Path file, final Object... objects)
-		throws IOException
-	{
-		write(file, Arrays.asList(objects));
-	}
-
-	/**
 	 * Reads the object from the given {@code file}, which were previously
-	 * written with the {@link #write(Path, Collection, OpenOption...)} method.
+	 * written with the {@link #write(Path, Iterable, OpenOption...)} method.
 	 * The caller is responsible for closing the returned object stream
 	 *
 	 * @param file the data file
