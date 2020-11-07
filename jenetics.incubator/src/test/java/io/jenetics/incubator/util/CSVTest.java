@@ -21,6 +21,14 @@ public class CSVTest {
 				List.of("")
 			},
 			{
+				"a,b\nc,d",
+				List.of("a", "b\nc", "d")
+			},
+			{
+				"a,\"b\nc\",d",
+				List.of("a", "b\nc", "d")
+			},
+			{
 				"\"\"",
 				List.of("")
 			},
@@ -65,6 +73,14 @@ public class CSVTest {
 				List.of(" ", "   ", "")
 			},
 			{
+				"\",\"",
+				List.of(",")
+			},
+			{
+				"\",\",foo",
+				List.of(",", "foo")
+			},
+			{
 				",\"\"",
 				List.of("", "")
 			},
@@ -90,8 +106,31 @@ public class CSVTest {
 			{"\""},
 			{" \"\""},
 			{"\"\" "},
+			{"a,\"b\nc,d"},
 			{"123,2.99,AMO024,Title, \"Description, \"\"more info\", ,123987564,"},
 			{"123,2.99,AMO024,Title,\"Description, \"\"more info\" , ,123987564,"}
+		};
+	}
+
+	@Test(dataProvider = "columns")
+	public void join(final List<?> columns, final String row) {
+		Assert.assertEquals(CSV.join(columns), row);
+		Assert.assertEquals(CSV.split(CSV.join(columns)), columns);
+		Assert.assertEquals(columns, CSV.split(row));
+	}
+
+	@DataProvider
+	public Object[][] columns() {
+		return new Object[][] {
+			{List.of(""), ""},
+			{List.of("a"), "a"},
+			{List.of("a", "b"), "a,b"},
+			{List.of("a", "b,"), "a,\"b,\""},
+			{List.of("a", "\"b"), "a,\"\"\"b\""},
+			{List.of("", ""), ","},
+			{List.of("", "", "", ""), ",,,"},
+			{List.of("", "", "", ""), ",,,"},
+			{List.of("", "a", "b", ""), ",a,b,"}
 		};
 	}
 
