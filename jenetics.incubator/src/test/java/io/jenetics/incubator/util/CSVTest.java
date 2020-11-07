@@ -1,10 +1,17 @@
 package io.jenetics.incubator.util;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
 public class CSVTest {
 
@@ -132,6 +139,44 @@ public class CSVTest {
 			{List.of("", "", "", ""), ",,,"},
 			{List.of("", "a", "b", ""), ",a,b,"}
 		};
+	}
+
+	@Test
+	public void writeRead() throws IOException {
+		final var random = new Random();
+		final List<List<String>> values = Stream.generate(() -> nextRow(random))
+			.limit(200)
+			.collect(Collectors.toList());
+
+		final String csv = values.stream()
+			.map(CSV::join)
+			.collect(Collectors.joining("\n", "", "\n"));
+
+		final var path = CloseableValue.of(
+			Files.createTempFile("CSVTest-", null),
+			Files::deleteIfExists
+		);
+
+		try (path) {
+			Files.writeString(path.get(), csv);
+			try (var lines = Files.lines(path.get())) {
+				final var readValues = lines
+					.map(CSV::split)
+					.collect(Collectors.toList());
+
+				Assert.assertEquals(readValues, values);
+			}
+		}
+	}
+
+	private static List<String> nextRow(final Random random) {
+		return List.of(
+			"" + random.nextDouble(),
+			"" + random.nextBoolean(),
+			"" + random.nextFloat(),
+			"" + random.nextInt(),
+			"" + random.nextLong()
+		);
 	}
 
 }
