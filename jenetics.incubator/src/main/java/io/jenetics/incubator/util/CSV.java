@@ -1,13 +1,16 @@
 package io.jenetics.incubator.util;
 
+import static java.lang.String.format;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class CSV {
 	private static final char SEPARATOR = ',';
 	private static final char QUOTE = '"';
+
+	private static final String QUOTE_STR = "\"";
+	private static final String SEPARATOR_STR = ",";
 
 	/**
 	 * Tokenize the given CSV row.
@@ -19,7 +22,7 @@ public class CSV {
 	static List<String> tokenize(final String value) {
 		final List<String> tokens = new ArrayList<>();
 		int pos = 0;
-		final StringBuilder token = new StringBuilder();
+		final StringBuilder token = new StringBuilder(64);
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 			if (isTokenSeparator(c)) {
@@ -43,7 +46,7 @@ public class CSV {
 	}
 
 	public static List<String> split(final String row) {
-		final List<String> result = new ArrayList<>();
+		final List<String> columns = new ArrayList<>();
 
 		boolean quoted = false;
 		boolean escaped = false;
@@ -51,57 +54,72 @@ public class CSV {
 		final var col = new StringBuilder();
 
 		final var tokens = tokenize(row);
+
 		for (int i = 0; i < tokens.size(); ++i) {
-			final var token = tokens.get(i);
-			switch (token) {
-				case "\"":
+			final var previous = i > 0 ? tokens.get(i - 1) : null;
+			final var current = tokens.get(i);
+			final var next = i + 1 < tokens.size() ? tokens.get(i + 1) : null;
+
+			switch (current) {
+				case QUOTE_STR:
 					if (quoted) {
-						if (i + 1 < tokens.size() && "\"".equals(tokens.get(i + 1)) && !escaped) {
+						if (QUOTE_STR.equals(next) && !escaped) {
 							escaped = true;
 						} else {
 							if (escaped) {
-								col.append("\"");
+								col.append(QUOTE);
 								escaped = false;
 							} else {
-								result.add(col.toString());
+								if (next != null && !SEPARATOR_STR.equals(next)) {
+									throw new IllegalArgumentException(format(
+										"No other token than '%s' allowed after " +
+											"quote, but found '%s'.",
+										SEPARATOR_STR, next
+									));
+								}
+
+								columns.add(col.toString());
 								col.setLength(0);
 								quoted = false;
 							}
 						}
 					} else {
-						if (i - 1 >= 0 && !",".equals(tokens.get(i - 1))) {
-							throw new IllegalArgumentException(
-								"No other token than ',' allowed before or after quote."
-							);
+						if (previous != null && !SEPARATOR_STR.equals(previous)) {
+							throw new IllegalArgumentException(format(
+								"No other token than '%s' allowed before " +
+									"quote, but found '%s'.",
+								SEPARATOR_STR, previous
+							));
 						}
 						quoted = true;
 					}
 					break;
-				case ",":
+				case SEPARATOR_STR:
 					if (quoted) {
-						col.append(token);
-					} else if (i > 0 && ",".equals(tokens.get(i - 1))) {
-						result.add(col.toString());
-						col.setLength(0);
-					} else if (i == 0) {
-						result.add(col.toString());
+						col.append(current);
+					} else if (SEPARATOR_STR.equals(previous) || previous == null) {
+						columns.add(col.toString());
 						col.setLength(0);
 					}
 					break;
 				default:
-					col.append(token);
+					col.append(current);
 					if (!quoted) {
-						result.add(col.toString());
+						columns.add(col.toString());
 						col.setLength(0);
 					}
 					break;
 			}
 		}
 
-		if (tokens.isEmpty() || ",".equals(tokens.get(tokens.size() - 1))) {
-			result.add("");
+		if (quoted) {
+			throw new IllegalArgumentException("Unbalanced quote character.");
 		}
-		return result;
+		if (tokens.isEmpty() || ",".equals(tokens.get(tokens.size() - 1))) {
+			columns.add("");
+		}
+
+		return columns;
 	}
 
 }

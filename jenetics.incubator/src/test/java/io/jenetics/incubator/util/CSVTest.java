@@ -21,6 +21,10 @@ public class CSVTest {
 				List.of("")
 			},
 			{
+				"\"\"",
+				List.of("")
+			},
+			{
 				" ",
 				List.of(" ")
 			},
@@ -83,7 +87,11 @@ public class CSVTest {
 	@DataProvider
 	public Object[][] illegalRows() {
 		return new Object[][]{
-			{"123,2.99,AMO024,Title, \"Description, \"\"more info\", ,123987564,"}
+			{"\""},
+			{" \"\""},
+			{"\"\" "},
+			{"123,2.99,AMO024,Title, \"Description, \"\"more info\", ,123987564,"},
+			{"123,2.99,AMO024,Title,\"Description, \"\"more info\" , ,123987564,"}
 		};
 	}
 
