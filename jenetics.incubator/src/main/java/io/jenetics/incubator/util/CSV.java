@@ -13,12 +13,15 @@ import java.util.List;
  * @version !__version__!
  * @since !__version__!
  */
-public class CSV {
+public final class CSV {
 	private static final char SEPARATOR = ',';
 	private static final char QUOTE = '"';
 
 	private static final String SEPARATOR_STR = ",";
 	private static final String QUOTE_STR = "\"";
+
+	private CSV() {
+	}
 
 	/**
 	 * Splits a given CSV row into it's columns. It supports CSV records defined
