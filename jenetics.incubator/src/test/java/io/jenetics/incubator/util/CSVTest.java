@@ -1,12 +1,14 @@
 package io.jenetics.incubator.util;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.tools.ant.filters.StringInputStream;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,6 +16,78 @@ import org.testng.annotations.Test;
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
 public class CSVTest {
+
+	@Test(dataProvider = "csvs")
+	public void lines(final String csv, final List<String> lines) throws IOException {
+		try (var input = new StringInputStream(csv)) {
+			Assert.assertEquals(
+				CSV.readAllLines(input, Charset.defaultCharset()),
+				lines
+			);
+		}
+	}
+
+	@DataProvider
+	public Object[][] csvs() {
+		return new Object[][] {
+			{
+				"",
+				List.of()
+			},
+			{
+				"\n\r",
+				List.of()
+			},
+			{
+				"\n\r\n\r",
+				List.of()
+			},
+			{
+				" \n\r\n\r",
+				List.of(" ")
+			},
+			{
+				"r1\n\rr2\n\r",
+				List.of("r1", "r2")
+			},
+			{
+				"r1\n\rr2\n\rr3",
+				List.of("r1", "r2", "r3")
+			},
+			{
+				"\"r1\n\rr2\"\n\rr3",
+				List.of("r1\n\rr2", "r3")
+			},
+			{
+				"r0\n\r\"r1\n\rr2\"\n\rr3",
+				List.of("r0", "r1\n\rr2", "r3")
+			},
+			{
+				"r0\n\r\"r1\n\rr2\"\n\r",
+				List.of("r0", "r1\n\rr2")
+			},
+			{
+				"r0\n\r\"r1\"\"\n\rr2\"\n\r",
+				List.of("r0", "r1\"\n\rr2")
+			},
+			{
+				"r0\n\r\"r1\"\"\n\rr2\"\"\"",
+				List.of("r0", "r1\"\n\rr2\"")
+			},
+			{
+				"r1\n" +
+				"r2\n\r" +
+				"\"r3.1\nr3.2\"\n\r" +
+				"r4",
+				List.of(
+					"r1",
+					"r2",
+					"r3.1\nr3.2",
+					"r4"
+				)
+			}
+		};
+	}
 
 	@Test(dataProvider = "rows")
 	public void split(final String row, final List<String> result) {

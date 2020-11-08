@@ -2,10 +2,21 @@ package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
@@ -29,6 +40,161 @@ public final class CSV {
 	private static final String DOUBLE_QUOTE_STR = "\"\"";
 
 	private CSV() {
+	}
+
+/*
+	public static List<String> readAllLines(final InputStream input, final Charset cs) throws IOException {
+		final var isr = new InputStreamReader(input, cs);
+		final var reader = new BufferedReader(isr);
+
+		final List<String> lines = new ArrayList<>();
+
+		final var line = new StringBuilder();
+		boolean quoted = false;
+		boolean escaped = false;
+		boolean eol = false;
+
+		char previous = 0;
+		char current = 0;
+
+		int i = 0;
+		while ((i = reader.read()) != -1) {
+			current = (char)i;
+
+			switch (current) {
+				case '\n':
+				case '\r':
+					if (quoted) {
+						line.append(current);
+					} else {
+						eol = true;
+					}
+					break;
+				case QUOTE:
+					if (quoted) {
+						if (previous == QUOTE) {
+							line.append(QUOTE);
+						} else {
+							quoted = false;
+						}
+					} else {
+						quoted = true;
+					}
+					break;
+				default:
+					line.append(current);
+					break;
+			}
+
+			if (eol) {
+				eol = false;
+				if (line.length() > 0) {
+					lines.add(line.toString());
+					line.setLength(0);
+				}
+			}
+
+			previous = current;
+		}
+
+		if (line.length() > 0) {
+			lines.add(line.toString());
+		}
+
+		return lines;
+	}
+ */
+
+	public static List<String> readAllLines(final InputStream input, final Charset cs) {
+		try (var stream = lines(input, cs)) {
+			return stream.collect(Collectors.toList());
+		}
+	}
+
+	public static Stream<String> lines(final InputStream input, final Charset cs) {
+		final var result = CloseableValue.build(resources -> {
+			final var isr = resources.add(new InputStreamReader(input, cs));
+			final var reader = resources.add(new BufferedReader(isr));
+
+			final Supplier<String> nextLine = () -> {
+				final var line = new StringBuilder();
+				try {
+					if (nextLine(reader, line)) {
+						final var l = line.toString();
+						line.setLength(0);
+						return l;
+					} else {
+						return null;
+					}
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			};
+
+			return Stream.generate(nextLine)
+				.takeWhile(Objects::nonNull);
+		});
+
+		return result.get().onClose(result::uncheckedClose);
+	}
+
+	private static boolean nextLine(
+		final BufferedReader reader,
+		final StringBuilder line
+	)
+		throws IOException
+	{
+		boolean quoted = false;
+		boolean escaped = false;
+		boolean eol = false;
+
+		char current = 0;
+		int next = -2;
+
+		int i = 0;
+		while (next >= 0 || (i = reader.read()) != -1) {
+			current = next != -2 ? (char)next : (char)i;
+			next = -2;
+
+			switch (current) {
+				case '\n':
+				case '\r':
+					if (quoted) {
+						line.append(current);
+					} else {
+						eol = true;
+					}
+					break;
+				case QUOTE:
+					if (quoted) {
+						next = reader.read();
+						if (next == QUOTE && !escaped) {
+							escaped = true;
+						} else {
+							if (escaped) {
+								line.append(QUOTE);
+								escaped = false;
+							} else {
+								quoted = false;
+							}
+						}
+					} else {
+						quoted = true;
+					}
+					break;
+				default:
+					line.append(current);
+					break;
+			}
+
+			if (eol) {
+				eol = false;
+				if (line.length() > 0) {
+					return true;
+				}
+			}
+		}
+		return line.length() > 0;
 	}
 
 	/**
