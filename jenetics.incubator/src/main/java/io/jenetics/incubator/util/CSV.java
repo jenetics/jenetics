@@ -26,6 +26,7 @@ public final class CSV {
 
 	private static final String SEPARATOR_STR = ",";
 	private static final String QUOTE_STR = "\"";
+	private static final String DOUBLE_QUOTE_STR = "\"\"";
 
 	private CSV() {
 	}
@@ -174,13 +175,13 @@ public final class CSV {
 			return "";
 		} else {
 			var valueString = value.toString();
-			var string = valueString.replace("\"", "\"\"");
+			var string = valueString.replace(QUOTE_STR, DOUBLE_QUOTE_STR);
 
 			if (valueString.length() != string.length() ||
 				string.contains(SEPARATOR_STR) ||
 				string.contains("\n"))
 			{
-				return "\"" + string + "\"";
+				return QUOTE_STR + string + QUOTE_STR;
 			} else {
 				return valueString;
 			}
