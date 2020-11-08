@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
@@ -42,75 +45,15 @@ public final class CSV {
 	private CSV() {
 	}
 
-/*
-	public static List<String> readAllLines(final InputStream input, final Charset cs) throws IOException {
-		final var isr = new InputStreamReader(input, cs);
-		final var reader = new BufferedReader(isr);
-
-		final List<String> lines = new ArrayList<>();
-
-		final var line = new StringBuilder();
-		boolean quoted = false;
-		boolean escaped = false;
-		boolean eol = false;
-
-		char previous = 0;
-		char current = 0;
-
-		int i = 0;
-		while ((i = reader.read()) != -1) {
-			current = (char)i;
-
-			switch (current) {
-				case '\n':
-				case '\r':
-					if (quoted) {
-						line.append(current);
-					} else {
-						eol = true;
-					}
-					break;
-				case QUOTE:
-					if (quoted) {
-						if (previous == QUOTE) {
-							line.append(QUOTE);
-						} else {
-							quoted = false;
-						}
-					} else {
-						quoted = true;
-					}
-					break;
-				default:
-					line.append(current);
-					break;
-			}
-
-			if (eol) {
-				eol = false;
-				if (line.length() > 0) {
-					lines.add(line.toString());
-					line.setLength(0);
-				}
-			}
-
-			previous = current;
-		}
-
-		if (line.length() > 0) {
-			lines.add(line.toString());
-		}
-
-		return lines;
-	}
- */
-
-	public static List<String> readAllLines(final InputStream input, final Charset cs) {
-		try (var stream = lines(input, cs)) {
-			return stream.collect(Collectors.toList());
-		}
-	}
-
+	/**
+	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+	 * The rows are split at line breaks, as long as they are not part of a
+	 * quoted column.
+	 *
+	 * @param input the input stream to split into CSV lines
+	 * @param cs the charset to use for decoding
+	 * @return the stream of CSV lines
+	 */
 	public static Stream<String> lines(final InputStream input, final Charset cs) {
 		final var result = CloseableValue.build(resources -> {
 			final var isr = resources.add(new InputStreamReader(input, cs));
@@ -150,8 +93,8 @@ public final class CSV {
 
 		char current = 0;
 		int next = -2;
-
 		int i = 0;
+
 		while (next >= 0 || (i = reader.read()) != -1) {
 			current = next != -2 ? (char)next : (char)i;
 			next = -2;
@@ -195,6 +138,70 @@ public final class CSV {
 			}
 		}
 		return line.length() > 0;
+	}
+
+	/**
+	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+	 * The rows are split at line breaks, as long as they are not part of a
+	 * quoted column.
+	 *
+	 * @param input the input stream to split into CSV lines
+	 * @return the stream of CSV lines
+	 */
+	public static Stream<String> lines(final InputStream input) {
+		return lines(input, Charset.defaultCharset());
+	}
+
+	/**
+	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+	 * The rows are split at line breaks, as long as they are not part of a
+	 * quoted column.
+	 *
+	 * @param path the CSV file to split
+	 * @param cs the charset to use for decoding
+	 * @return the stream of CSV lines
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static Stream<String> lines(final Path path, final Charset cs)
+		throws IOException
+	{
+		final var fin = Files.newInputStream(path);
+		return lines(fin, cs)
+			.onClose(ExtendedCloseable.of(fin)::silentClose);
+	}
+
+	/**
+	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+	 * The rows are split at line breaks, as long as they are not part of a
+	 * quoted column.
+	 *
+	 * @param path the CSV file to split
+	 * @return the stream of CSV lines
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static Stream<String> lines(final Path path) throws IOException {
+		return lines(path, Charset.defaultCharset());
+	}
+
+	/**
+	 * Reads all CSV lines form the given {@code input} stream.
+	 *
+	 * @param input the CSV {@code input} stream
+	 * @param cs the charset to use for decoding
+	 * @return all CSV lines form the given {@code input} stream
+	 * @throws IOException if an error occurs while reading the CSV lines
+	 */
+	public static List<String> readAllLines(
+		final InputStream input,
+		final Charset cs
+	)
+		throws IOException
+	{
+		try (var stream = lines(input, cs)) {
+			return stream.collect(Collectors.toList());
+		} catch (UncheckedIOException e) {
+			throw e.getCause();
+		}
 	}
 
 	/**
