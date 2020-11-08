@@ -4,16 +4,23 @@ import static java.lang.String.format;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
  * CSV row.
+ *
+ * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public final class CSV {
+
+	private static final String LF = "\r\n";
+
 	private static final char SEPARATOR = ',';
 	private static final char QUOTE = '"';
 
@@ -36,7 +43,7 @@ public final class CSV {
 	 *         CSV row
 	 * @throws NullPointerException if the given {@code row} is {@code null}
 	 */
-	public static List<String> split(final String row) {
+	public static List<String> split(final CharSequence row) {
 		final List<String> columns = new ArrayList<>();
 
 		boolean quoted = false;
@@ -115,7 +122,7 @@ public final class CSV {
 		return columns;
 	}
 
-	private static List<String> tokenize(final String value) {
+	private static List<String> tokenize(final CharSequence value) {
 		final List<String> tokens = new ArrayList<>();
 		int pos = 0;
 		final StringBuilder token = new StringBuilder(64);
@@ -178,6 +185,48 @@ public final class CSV {
 				return valueString;
 			}
 		}
+	}
+
+	/**
+	 * Return a collector for joining a list of CSV rows into one CSV string.
+	 *
+	 * <pre>{@code
+	 * final List<List<String>> values = Stream.generate(() -> nextRow())
+	 *     .limit(200)
+	 *     .collect(Collectors.toList());
+	 *
+	 * final String csv = values.stream()
+	 *     .map(CSV::join)
+	 *     .collect(CSV.join());
+	 * }</pre>
+	 *
+	 * @return a collector for joining a list of CSV rows into one CSV string
+	 */
+	public static Collector<CharSequence, ?, String> join() {
+		return Collectors.joining(LF, "", LF);
+	}
+
+	/**
+	 * Return a collector for joining a list of CSV columns into one CSV string.
+	 *
+	 * <pre>{@code
+	 * final List<List<String>> values = Stream.generate(() -> nextRow())
+	 *     .limit(200)
+	 *     .collect(Collectors.toList());
+	 *
+	 * final String csv = values.stream()
+	 *     .collect(CSV.toCSV());
+	 * }</pre>
+	 *
+	 * @return a collector for joining a list of CSV columns into one CSV string
+	 */
+	public static Collector<Iterable<?>, ?, String> toCSV() {
+		return Collector.of(
+			ArrayList<String>::new,
+			(list, row) -> list.add(join(row)),
+			(a, b) -> { a.addAll(b); return a; },
+			list -> list.stream().collect(join())
+		);
 	}
 
 }

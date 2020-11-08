@@ -149,8 +149,7 @@ public class CSVTest {
 			.collect(Collectors.toList());
 
 		final String csv = values.stream()
-			.map(CSV::join)
-			.collect(Collectors.joining("\n", "", "\n"));
+			.collect(CSV.toCSV());
 
 		final var path = CloseableValue.of(
 			Files.createTempFile("CSVTest-", null),
@@ -159,6 +158,7 @@ public class CSVTest {
 
 		try (path) {
 			Files.writeString(path.get(), csv);
+
 			try (var lines = Files.lines(path.get())) {
 				final var readValues = lines
 					.map(CSV::split)
