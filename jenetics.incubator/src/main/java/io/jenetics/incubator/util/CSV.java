@@ -115,7 +115,6 @@ public final class CSV {
 							escaped = true;
 						} else {
 							if (escaped) {
-								line.append(QUOTE);
 								escaped = false;
 							} else {
 								quoted = false;
@@ -124,6 +123,7 @@ public final class CSV {
 					} else {
 						quoted = true;
 					}
+					line.append(QUOTE);
 					break;
 				default:
 					line.append(current);

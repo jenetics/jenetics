@@ -25,6 +25,8 @@ public class CSVTest {
 				lines
 			);
 		}
+		//lines.forEach(System.out::println);
+		//System.out.println();
 	}
 
 	@DataProvider
@@ -55,24 +57,28 @@ public class CSVTest {
 				List.of("r1", "r2", "r3")
 			},
 			{
+				"r1\n\rr2\n\r\"r3\"",
+				List.of("r1", "r2", "\"r3\"")
+			},
+			{
 				"\"r1\n\rr2\"\n\rr3",
-				List.of("r1\n\rr2", "r3")
+				List.of("\"r1\n\rr2\"", "r3")
 			},
 			{
 				"r0\n\r\"r1\n\rr2\"\n\rr3",
-				List.of("r0", "r1\n\rr2", "r3")
+				List.of("r0", "\"r1\n\rr2\"", "r3")
 			},
 			{
 				"r0\n\r\"r1\n\rr2\"\n\r",
-				List.of("r0", "r1\n\rr2")
+				List.of("r0", "\"r1\n\rr2\"")
 			},
 			{
 				"r0\n\r\"r1\"\"\n\rr2\"\n\r",
-				List.of("r0", "r1\"\n\rr2")
+				List.of("r0", "\"r1\"\"\n\rr2\"")
 			},
 			{
 				"r0\n\r\"r1\"\"\n\rr2\"\"\"",
-				List.of("r0", "r1\"\n\rr2\"")
+				List.of("r0", "\"r1\"\"\n\rr2\"\"\"")
 			},
 			{
 				"r1\n" +
@@ -82,7 +88,7 @@ public class CSVTest {
 				List.of(
 					"r1",
 					"r2",
-					"r3.1\nr3.2",
+					"\"r3.1\nr3.2\"",
 					"r4"
 				)
 			}
