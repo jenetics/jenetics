@@ -165,9 +165,12 @@ public final class CSV {
 	public static Stream<String> lines(final Path path, final Charset cs)
 		throws IOException
 	{
-		final var fin = Files.newInputStream(path);
-		return lines(fin, cs)
-			.onClose(ExtendedCloseable.of(fin)::silentClose);
+		final var result = CloseableValue.build(resources -> {
+			final var fin = resources.add(Files.newInputStream(path));
+			return lines(fin, cs);
+		});
+
+		return result.get().onClose(result::silentClose);
 	}
 
 	/**
