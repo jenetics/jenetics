@@ -208,6 +208,48 @@ public final class CSV {
 	}
 
 	/**
+	 * Reads all CSV lines form the given {@code input} stream.
+	 *
+	 * @param input the CSV {@code input} stream
+	 * @return all CSV lines form the given {@code input} stream
+	 * @throws IOException if an error occurs while reading the CSV lines
+	 */
+	public static List<String> readAllLines(final InputStream input)
+		throws IOException
+	{
+		return readAllLines(input, Charset.defaultCharset());
+	}
+
+	/**
+	 * Reads all CSV lines form the given {@code input} stream.
+	 *
+	 * @param path the CSV file to read
+	 * @param cs the charset to use for decoding
+	 * @return all CSV lines form the given {@code input} stream
+	 * @throws IOException if an error occurs while reading the CSV lines
+	 */
+	public static List<String> readAllLines(final Path path, final Charset cs)
+		throws IOException
+	{
+		try (var stream = lines(path, cs)) {
+			return stream.collect(Collectors.toList());
+		} catch (UncheckedIOException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Reads all CSV lines form the given {@code input} stream.
+	 *
+	 * @param path the CSV file to read
+	 * @return all CSV lines form the given {@code input} stream
+	 * @throws IOException if an error occurs while reading the CSV lines
+	 */
+	public static List<String> readAllLines(final Path path) throws IOException {
+		return readAllLines(path, Charset.defaultCharset());
+	}
+
+	/**
 	 * Splits a given CSV row into it's columns. It supports CSV records defined
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 *
