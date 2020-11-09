@@ -209,15 +209,15 @@ public final class CSV {
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
-	 * @see #join(Iterable)
+	 * @see #joinCols(Iterable)
 	 *
-	 * @param row the CSV {@code row} to split
+	 * @param line the CSV {@code row} to split
 	 * @return the split columns of the given CSV {@code row}
 	 * @throws IllegalArgumentException if the given {@code roes} isn't a valid
 	 *         CSV row
 	 * @throws NullPointerException if the given {@code row} is {@code null}
 	 */
-	public static List<String> split(final CharSequence row) {
+	public static List<String> splitLine(final CharSequence line) {
 		final List<String> columns = new ArrayList<>();
 
 		boolean quoted = false;
@@ -225,7 +225,7 @@ public final class CSV {
 
 		final var col = new StringBuilder();
 
-		final var tokens = tokenize(row);
+		final var tokens = tokenize(line);
 
 		for (int i = 0; i < tokens.size(); ++i) {
 			final var previous = i > 0 ? tokens.get(i - 1) : null;
@@ -325,13 +325,13 @@ public final class CSV {
 	/**
 	 * Joins the given columns to a CSV row string.
 	 *
-	 * @param columns the CSV columns to join
-	 * @return a new CSV row, joined from the given {@code columns}
+	 * @param cols the CSV columns to join
+	 * @return a new CSV row, joined from the given columns
 	 */
-	public static String join(final Iterable<?> columns) {
+	public static String joinCols(final Iterable<?> cols) {
 		final var row = new StringBuilder(64);
 
-		final var it = columns.iterator();
+		final var it = cols.iterator();
 		while (it.hasNext()) {
 			final var column = it.next();
 			row.append(escape(column));
@@ -371,12 +371,12 @@ public final class CSV {
 	 *
 	 * final String csv = values.stream()
 	 *     .map(CSV::join)
-	 *     .collect(CSV.join());
+	 *     .collect(CSV.linesToCSV());
 	 * }</pre>
 	 *
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */
-	public static Collector<CharSequence, ?, String> join() {
+	public static Collector<CharSequence, ?, String> linesToCSV() {
 		return Collectors.joining(LF, "", LF);
 	}
 
@@ -389,17 +389,17 @@ public final class CSV {
 	 *     .collect(Collectors.toList());
 	 *
 	 * final String csv = values.stream()
-	 *     .collect(CSV.toCSV());
+	 *     .collect(CSV.rowsToCSV());
 	 * }</pre>
 	 *
 	 * @return a collector for joining a list of CSV columns into one CSV string
 	 */
-	public static Collector<Iterable<?>, ?, String> toCSV() {
+	public static Collector<Iterable<?>, ?, String> rowsToCSV() {
 		return Collector.of(
 			ArrayList<String>::new,
-			(list, row) -> list.add(join(row)),
+			(list, row) -> list.add(joinCols(row)),
 			(a, b) -> { a.addAll(b); return a; },
-			list -> list.stream().collect(join())
+			list -> list.stream().collect(linesToCSV())
 		);
 	}
 
