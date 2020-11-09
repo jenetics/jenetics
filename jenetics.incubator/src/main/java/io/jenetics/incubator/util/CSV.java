@@ -48,7 +48,7 @@ public final class CSV {
 	/**
 	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column.
+	 * quoted column. <em>The returned stream must be closed by the caller.</em>
 	 *
 	 * @param input the input stream to split into CSV lines
 	 * @param cs the charset to use for decoding
@@ -143,7 +143,7 @@ public final class CSV {
 	/**
 	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column.
+	 * quoted column. <em>The returned stream must be closed by the caller.</em>
 	 *
 	 * @param input the input stream to split into CSV lines
 	 * @return the stream of CSV lines
@@ -155,7 +155,7 @@ public final class CSV {
 	/**
 	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column.
+	 * quoted column. <em>The returned stream must be closed by the caller.</em>
 	 *
 	 * @param path the CSV file to split
 	 * @param cs the charset to use for decoding
@@ -176,7 +176,7 @@ public final class CSV {
 	/**
 	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column.
+	 * quoted column. <em>The returned stream must be closed by the caller.</em>
 	 *
 	 * @param path the CSV file to split
 	 * @return the stream of CSV lines
