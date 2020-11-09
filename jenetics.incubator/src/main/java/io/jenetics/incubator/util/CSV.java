@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
-import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
@@ -33,10 +32,20 @@ import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
  */
 public final class CSV {
 
-	private static final String LF = "\r\n";
+	/**
+	 * The linefeed string used for writing the CSV file: {@code \r\n}.
+	 */
+	public static final String LF = "\r\n";
 
-	private static final char SEPARATOR = ',';
-	private static final char QUOTE = '"';
+	/**
+	 * The separator character: {@code ,}
+	 */
+	public static final char SEPARATOR = ',';
+
+	/**
+	 * The quote character: {@code "}
+	 */
+	public static final char QUOTE = '"';
 
 	private static final String SEPARATOR_STR = ",";
 	private static final String QUOTE_STR = "\"";
