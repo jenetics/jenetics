@@ -19,14 +19,23 @@ public class CSVTest {
 
 	@Test(dataProvider = "csvs")
 	public void lines(final String csv, final List<String> lines) throws IOException {
+		final List<String> readLines;
 		try (var input = new StringInputStream(csv)) {
-			Assert.assertEquals(
-				CSV.readAllLines(input, Charset.defaultCharset()),
-				lines
-			);
+			readLines = CSV.readAllLines(input, Charset.defaultCharset());
 		}
-		//lines.forEach(System.out::println);
-		//System.out.println();
+
+		Assert.assertEquals(readLines, lines);
+
+		final var rows = readLines.stream()
+			.map(CSV::split)
+			.collect(Collectors.toList());
+
+		Assert.assertEquals(
+			rows,
+			lines.stream()
+				.map(CSV::split)
+				.collect(Collectors.toList())
+		);
 	}
 
 	@DataProvider
@@ -34,56 +43,56 @@ public class CSVTest {
 		return new Object[][] {
 			{
 				"",
-				List.of()
+				List.of() // 0
 			},
 			{
-				"\n\r",
-				List.of()
+				"\r\n",
+				List.of() // 1
 			},
 			{
-				"\n\r\n\r",
-				List.of()
+				"\r\n\r\n",
+				List.of() // 2
 			},
 			{
-				" \n\r\n\r",
-				List.of(" ")
+				" \r\n\r\n",
+				List.of(" ") // 3
 			},
 			{
-				"r1\n\rr2\n\r",
-				List.of("r1", "r2")
+				"r1\r\nr2\r\n",
+				List.of("r1", "r2") // 4
 			},
 			{
 				"r1\n\rr2\n\rr3",
-				List.of("r1", "r2", "r3")
+				List.of("r1", "r2", "r3") // 5
 			},
 			{
 				"r1\n\rr2\n\r\"r3\"",
 				List.of("r1", "r2", "\"r3\"")
 			},
 			{
-				"\"r1\n\rr2\"\n\rr3",
-				List.of("\"r1\n\rr2\"", "r3")
+				"\"r1\r\nr2\"\r\nr3",
+				List.of("\"r1\r\nr2\"", "r3")
 			},
 			{
-				"r0\n\r\"r1\n\rr2\"\n\rr3",
-				List.of("r0", "\"r1\n\rr2\"", "r3")
+				"r0\r\n\"r1\r\nr2\"\r\nr3",
+				List.of("r0", "\"r1\r\nr2\"", "r3")
 			},
 			{
-				"r0\n\r\"r1\n\rr2\"\n\r",
-				List.of("r0", "\"r1\n\rr2\"")
+				"r0\r\n\"r1\r\nr2\"\r\n",
+				List.of("r0", "\"r1\r\nr2\"")
 			},
 			{
-				"r0\n\r\"r1\"\"\n\rr2\"\n\r",
-				List.of("r0", "\"r1\"\"\n\rr2\"")
+				"r0\r\n\"r1\"\"\r\nr2\"\r\n",
+				List.of("r0", "\"r1\"\"\r\nr2\"")
 			},
 			{
-				"r0\n\r\"r1\"\"\n\rr2\"\"\"",
-				List.of("r0", "\"r1\"\"\n\rr2\"\"\"")
+				"r0\r\n\"r1\"\"\r\nr2\"\"\"",
+				List.of("r0", "\"r1\"\"\r\nr2\"\"\"")
 			},
 			{
 				"r1\n" +
-				"r2\n\r" +
-				"\"r3.1\nr3.2\"\n\r" +
+				"r2\r\n" +
+				"\"r3.1\nr3.2\"\r\n" +
 				"r4",
 				List.of(
 					"r1",
