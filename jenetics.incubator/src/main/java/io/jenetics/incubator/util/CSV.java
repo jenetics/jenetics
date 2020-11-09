@@ -202,7 +202,8 @@ public final class CSV {
 
 			if (valueString.length() != string.length() ||
 				string.contains(SEPARATOR_STR) ||
-				string.contains("\n"))
+				string.contains("\n") ||
+				string.contains("\r"))
 			{
 				return QUOTE_STR + string + QUOTE_STR;
 			} else {
