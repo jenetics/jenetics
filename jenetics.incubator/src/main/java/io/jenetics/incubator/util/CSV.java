@@ -33,6 +33,9 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  */
 public final class CSV {
 
+	/**
+	 * Interface for reading CSV lines from a given input stream.
+	 */
 	public interface LineReader {
 
 		/**
@@ -43,7 +46,7 @@ public final class CSV {
 		 * @param input the input stream to split into CSV lines
 		 * @return the stream of CSV lines
 		 */
-		Stream<String> lines(final InputStream input);
+		Stream<String> read(final InputStream input);
 
 		/**
 		 * Splits the given {@code path}into a  {@code Stream} of CSV rows. The
@@ -54,10 +57,10 @@ public final class CSV {
 		 * @return the stream of CSV lines
 		 * @throws IOException if an I/O error occurs
 		 */
-		default Stream<String> lines(final Path path) throws IOException {
+		default Stream<String> read(final Path path) throws IOException {
 			final var result = CloseableValue.build(resources -> {
 				final var fin = resources.add(Files.newInputStream(path));
-				return lines(fin);
+				return read(fin);
 			});
 
 			return result.get().onClose(result::silentClose);
@@ -70,10 +73,10 @@ public final class CSV {
 		 * @return all CSV lines form the given {@code input} stream
 		 * @throws IOException if an error occurs while reading the CSV lines
 		 */
-		default List<String> readAllLines(final InputStream input)
+		default List<String> readAll(final InputStream input)
 			throws IOException
 		{
-			try (var stream = lines(input)) {
+			try (var stream = read(input)) {
 				return stream.collect(Collectors.toList());
 			} catch (UncheckedIOException e) {
 				throw e.getCause();
@@ -87,8 +90,8 @@ public final class CSV {
 		 * @return all CSV lines form the given {@code input} stream
 		 * @throws IOException if an error occurs while reading the CSV lines
 		 */
-		default List<String> readAllLines(final Path path) throws IOException {
-			try (var stream = lines(path)) {
+		default List<String> readAll(final Path path) throws IOException {
+			try (var stream = read(path)) {
 				return stream.collect(Collectors.toList());
 			} catch (UncheckedIOException e) {
 				throw e.getCause();
@@ -100,17 +103,17 @@ public final class CSV {
 	/**
 	 * The linefeed string used for writing the CSV file: {@code \r\n}.
 	 */
-	public static final String LF = "\r\n";
+	static final String LF = "\r\n";
 
 	/**
 	 * The separator character: {@code ,}
 	 */
-	public static final char SEPARATOR = ',';
+	static final char SEPARATOR = ',';
 
 	/**
 	 * The quote character: {@code "}
 	 */
-	public static final char QUOTE = '"';
+	static final char QUOTE = '"';
 
 	private static final String SEPARATOR_STR = ",";
 	private static final String QUOTE_STR = "\"";
@@ -120,7 +123,7 @@ public final class CSV {
 	}
 
 	/**
-	 * Splits a given CSV row into it's columns. It supports CSV records defined
+	 * Splits a given CSV line into it's columns. It supports CSV records defined
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
@@ -238,7 +241,7 @@ public final class CSV {
 	}
 
 	/**
-	 * Joins the given columns to a CSV row string.
+	 * Joins the given columns to a CSV line.
 	 *
 	 * @param cols the CSV columns to join
 	 * @return a new CSV row, joined from the given columns

@@ -20,7 +20,7 @@ public class CSVTest {
 	public void lines(final String csv, final List<String> lines) throws IOException {
 		final List<String> readLines;
 		try (var input = new StringInputStream(csv)) {
-			readLines = CSV.reader().readAllLines(input);
+			readLines = CSV.reader().readAll(input);
 		}
 
 		Assert.assertEquals(readLines, lines);
@@ -122,6 +122,10 @@ public class CSVTest {
 			{
 				"a,\"b\nc\",d",
 				List.of("a", "b\nc", "d")
+			},
+			{
+				"a,\"b\nc\",\"d,\"",
+				List.of("a", "b\nc", "d,")
 			},
 			{
 				"\"\"",
