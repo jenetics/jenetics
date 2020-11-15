@@ -1,12 +1,10 @@
 package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -49,73 +47,97 @@ public final class CSV {
 
 	/**
 	 * Interface for reading CSV lines from a given input stream. CSV line
-	 * reader instances can be obtained with the {@link CSV#reader()} or
-	 * {@link CSV#reader(Charset)} method.
+	 * reader instances can be obtained with the {@link CSV#reader()} method.
 	 *
 	 * @see CSV#reader()
-	 * @see CSV#reader(Charset)
 	 */
 	public interface LineReader {
 
 		/**
-		 * Splits the given {@code input} stream into a  {@code Stream} of CSV
-		 * lines. The lines are split at line breaks, as long as they are not
-		 * part of a quoted column. <em>The returned stream must be closed by
-		 * the caller.</em>
+		 * Splits the given content of the given {@code reader} into a
+		 * {@code Stream} of CSV lines. The lines are split at line breaks, as
+		 * long as they are not part of a quoted column. <em>The returned stream
+		 * must be closed by the caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.reader().read(input)) {
+		 * try (var lines = CSV.reader().read(reader)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
 		 *
 		 * @see #read(Path)
 		 *
-		 * @param input the input stream to split into CSV lines
+		 * @param reader the reader stream to split into CSV lines
 		 * @return the stream of CSV lines
 		 */
-		Stream<String> read(final InputStream input);
+		Stream<String> read(final Reader reader);
 
 		/**
-		 * Splits the given {@code path} into a  {@code Stream} of CSV lines.
+		 * Splits the given {@code path} into a {@code Stream} of CSV lines.
 		 * The lines are split at line breaks, as long as they are not part of a
 		 * quoted column. <em>The returned stream must be closed by the
 		 * caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.reader().read(path)) {
+		 * try (var lines = CSV.reader().read(path, UTF_8)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
 		 *
-		 * @see #read(InputStream)
+		 * @see #read(Reader)
 		 *
 		 * @param path the CSV file to split
+		 * @param cs the charset to use for decoding
 		 * @return the stream of CSV lines
 		 * @throws IOException if an I/O error occurs
 		 */
-		default Stream<String> read(final Path path) throws IOException {
+		default Stream<String> read(final Path path, final Charset cs)
+			throws IOException
+		{
 			final var result = CloseableValue.build(resources -> {
-				final var fin = resources.add(Files.newInputStream(path));
-				return read(fin);
+				final var reader =
+					resources.add(Files.newBufferedReader(path, cs));
+				return read(reader);
 			});
 
 			return result.get().onClose(result::silentClose);
 		}
 
 		/**
-		 * Reads all CSV lines form the given {@code input} stream.
+		 * Splits the given {@code path} into a {@code Stream} of CSV lines.
+		 * The lines are split at line breaks, as long as they are not part of a
+		 * quoted column. <em>The returned stream must be closed by the
+		 * caller.</em>
+		 *
+		 * <pre>{@code
+		 * try (var lines = CSV.reader().read(path, UTF_8)) {
+		 *     lines.forEach(System.out::println);
+		 * }
+		 * }</pre>
+		 *
+		 * @see #read(Reader)
+		 *
+		 * @param path the CSV file to split
+		 * @return the stream of CSV lines
+		 * @throws IOException if an I/O error occurs
+		 */
+		default Stream<String> read(final Path path) throws IOException {
+			return read(path, Charset.defaultCharset());
+		}
+
+		/**
+		 * Reads all CSV lines form the given {@code reader}.
 		 *
 		 * @see #readAll(Path)
 		 *
-		 * @param input the CSV {@code input} stream
-		 * @return all CSV lines form the given {@code input} stream
+		 * @param reader the CSV {@code reader} stream
+		 * @return all CSV lines form the given {@code reader} stream
 		 * @throws IOException if an error occurs while reading the CSV lines
 		 */
-		default List<String> readAll(final InputStream input)
+		default List<String> readAll(final Reader reader)
 			throws IOException
 		{
-			try (var stream = read(input)) {
+			try (var stream = read(reader)) {
 				return stream.collect(Collectors.toList());
 			} catch (UncheckedIOException e) {
 				throw e.getCause();
@@ -125,18 +147,36 @@ public final class CSV {
 		/**
 		 * Reads all CSV lines form the given input {@code path}.
 		 *
-		 * @see #read(InputStream)
+		 * @see #read(Reader)
+		 *
+		 * @param path the CSV file to read
+		 * @param cs the charset to use for decoding
+		 * @return all CSV lines form the given {@code input} stream
+		 * @throws IOException if an error occurs while reading the CSV lines
+		 */
+		default List<String> readAll(final Path path, final Charset cs)
+			throws IOException
+		{
+			try (var stream = read(path, cs)) {
+				return stream.collect(Collectors.toList());
+			} catch (UncheckedIOException e) {
+				throw e.getCause();
+			}
+		}
+
+		/**
+		 * Reads all CSV lines form the given input {@code path}.
+		 *
+		 * @see #read(Reader)
 		 *
 		 * @param path the CSV file to read
 		 * @return all CSV lines form the given {@code input} stream
 		 * @throws IOException if an error occurs while reading the CSV lines
 		 */
-		default List<String> readAll(final Path path) throws IOException {
-			try (var stream = read(path)) {
-				return stream.collect(Collectors.toList());
-			} catch (UncheckedIOException e) {
-				throw e.getCause();
-			}
+		default List<String> readAll(final Path path)
+			throws IOException
+		{
+			return readAll(path, Charset.defaultCharset());
 		}
 	}
 
@@ -368,48 +408,28 @@ public final class CSV {
 	 * }
 	 * }</pre>
 	 *
-	 * @param cs the charset to use for decoding
-	 * @return a CSV line reader
-	 * @throws NullPointerException if the given {@code cs} is {@code null}
-	 */
-	public static LineReader reader(final Charset cs) {
-		requireNonNull(cs);
-		return input -> lines(input, cs);
-	}
-
-	/**
-	 * Return a CSV line reader for CSV sources.
-	 *
-	 * <pre>{@code
-	 * try (var lines = CSV.reader().read(path)) {
-	 *     lines.forEach(System.out::println);
-	 * }
-	 * }</pre>
-	 *
 	 * @return a CSV line reader
 	 */
 	public static LineReader reader() {
-		return reader(Charset.defaultCharset());
+		return CSV::read;
 	}
 
 	/**
-	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
 	 * quoted column. <em>The returned stream must be closed by the caller.</em>
 	 *
-	 * @param input the input stream to split into CSV lines
-	 * @param cs the charset to use for decoding
+	 * @param reader the reader stream to split into CSV lines
 	 * @return the stream of CSV lines
 	 */
-	static Stream<String> lines(final InputStream input, final Charset cs) {
+	static Stream<String> read(final Reader reader) {
 		final var result = CloseableValue.build(resources -> {
-			final var isr = resources.add(new InputStreamReader(input, cs));
-			final var reader = resources.add(new BufferedReader(isr));
+			final var br = resources.add(new BufferedReader(reader));
 
 			final Supplier<String> nextLine = () -> {
 				final var line = new StringBuilder();
 				try {
-					if (nextLine(reader, line)) {
+					if (nextLine(br, line)) {
 						final var l = line.toString();
 						line.setLength(0);
 						return l;

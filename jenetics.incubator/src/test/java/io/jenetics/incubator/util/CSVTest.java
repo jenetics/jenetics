@@ -1,13 +1,13 @@
 package io.jenetics.incubator.util;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.tools.ant.filters.StringInputStream;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -19,7 +19,7 @@ public class CSVTest {
 	@Test(dataProvider = "csvs")
 	public void lines(final String csv, final List<String> lines) throws IOException {
 		final List<String> readLines;
-		try (var input = new StringInputStream(csv)) {
+		try (var input = new StringReader(csv)) {
 			readLines = CSV.reader().readAll(input);
 		}
 
