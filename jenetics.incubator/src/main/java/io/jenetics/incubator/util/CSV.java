@@ -25,6 +25,20 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
  * CSV row.
  *
+ * <pre>{@code
+ * // Read CSV.
+ * final List<String> lines = CSV.reader().readAll(Path.of("some_file.csv"));
+ * final List<List<String>> rows = lines.stream()
+ *     .map(CSV::split)
+ *     .collect(Collectors.toList());
+ *
+ * // Write CSV.
+ * final String csv = rows.stream()
+ *     .map(CSV::join)
+ *     .collect(CSV.toCSV());
+ * Files.write(Path.of("some_other_file.csv"), csv.getBytes());
+ * }</pre>
+ *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -43,6 +57,14 @@ public final class CSV {
 		 * The rows are split at line breaks, as long as they are not part of a
 		 * quoted column. <em>The returned stream must be closed by the caller.</em>
 		 *
+		 * <pre>{@code
+		 * try (var lines = CSV.reader().read(input)) {
+		 *     lines.forEach(System.out::println);
+		 * }
+		 * }</pre>
+		 *
+		 * @see #read(Path)
+		 *
 		 * @param input the input stream to split into CSV lines
 		 * @return the stream of CSV lines
 		 */
@@ -52,6 +74,14 @@ public final class CSV {
 		 * Splits the given {@code path}into a  {@code Stream} of CSV rows. The
 		 * rows are split at line breaks, as long as they are not part of a
 		 * quoted column. <em>The returned stream must be closed by the caller.</em>
+		 *
+		 * <pre>{@code
+		 * try (var lines = CSV.reader().read(path)) {
+		 *     lines.forEach(System.out::println);
+		 * }
+		 * }</pre>
+		 *
+		 * @see #read(InputStream)
 		 *
 		 * @param path the CSV file to split
 		 * @return the stream of CSV lines
@@ -68,6 +98,8 @@ public final class CSV {
 
 		/**
 		 * Reads all CSV lines form the given {@code input} stream.
+		 *
+		 * @see #readAll(Path)
 		 *
 		 * @param input the CSV {@code input} stream
 		 * @return all CSV lines form the given {@code input} stream
@@ -86,6 +118,8 @@ public final class CSV {
 		/**
 		 * Reads all CSV lines form the given input {@code path}.
 		 *
+		 * @see #read(InputStream)
+		 *
 		 * @param path the CSV file to read
 		 * @return all CSV lines form the given {@code input} stream
 		 * @throws IOException if an error occurs while reading the CSV lines
@@ -103,7 +137,7 @@ public final class CSV {
 	/**
 	 * The linefeed string used for writing the CSV file: {@code \r\n}.
 	 */
-	static final String LF = "\r\n";
+	public static final String LF = "\r\n";
 
 	/**
 	 * The separator character: {@code ,}
@@ -130,7 +164,7 @@ public final class CSV {
 	 * <pre>{@code
 	 * final var line = "a,b,c,d,e,f";
 	 * final var cols = CSV.split(line);
-	 * assert cols.equals(List.of("a", "b", "c", "d", "e", "f"))
+	 * assert List.of("a", "b", "c", "d", "e", "f").equals(cols)
 	 * }</pre>
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
@@ -248,7 +282,16 @@ public final class CSV {
 	}
 
 	/**
-	 * Joins the given columns to a CSV line.
+	 * Joins the given columns to a CSV line. This is the reverse operation of
+	 * the {@link #split(CharSequence)} method.
+	 *
+	 * <pre>{@code
+	 * final var cols = List.of("a", "b", "c", "d", "e", "f");
+	 * final var line = CSV.join(cols);
+	 * assert "a,b,c,d,e,f".equals(line);
+	 * }</pre>
+	 *
+	 * @see #split(CharSequence)
 	 *
 	 * @param cols the CSV columns to join
 	 * @return a new CSV row, joined from the given columns
@@ -314,6 +357,12 @@ public final class CSV {
 	/**
 	 * Return a CSV line reader for CSV sources with the given character set.
 	 *
+	 * <pre>{@code
+	 * try (var lines = CSV.reader(StandardCharsets.UTF_8).read(path)) {
+	 *     lines.forEach(System.out::println);
+	 * }
+	 * }</pre>
+	 *
 	 * @param cs the charset to use for decoding
 	 * @return a CSV line reader
 	 * @throws NullPointerException if the given {@code cs} is {@code null}
@@ -325,6 +374,12 @@ public final class CSV {
 
 	/**
 	 * Return a CSV line reader for CSV sources.
+	 *
+	 * <pre>{@code
+	 * try (var lines = CSV.reader().read(path)) {
+	 *     lines.forEach(System.out::println);
+	 * }
+	 * }</pre>
 	 *
 	 * @return a CSV line reader
 	 */
