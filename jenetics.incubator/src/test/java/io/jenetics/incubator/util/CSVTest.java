@@ -26,13 +26,13 @@ public class CSVTest {
 		Assert.assertEquals(readLines, lines);
 
 		final var rows = readLines.stream()
-			.map(CSV::splitLine)
+			.map(CSV::split)
 			.collect(Collectors.toList());
 
 		Assert.assertEquals(
 			rows,
 			lines.stream()
-				.map(CSV::splitLine)
+				.map(CSV::split)
 				.collect(Collectors.toList())
 		);
 	}
@@ -105,7 +105,7 @@ public class CSVTest {
 
 	@Test(dataProvider = "rows")
 	public void splitRow(final String row, final List<String> result) {
-		Assert.assertEquals(CSV.splitLine(row), result);
+		Assert.assertEquals(CSV.split(row), result);
 	}
 
 	@DataProvider
@@ -196,7 +196,7 @@ public class CSVTest {
 
 	@Test(dataProvider = "illegalRows", expectedExceptions = IllegalArgumentException.class)
 	public void illegalSplit(final String row) {
-		CSV.splitLine(row);
+		CSV.split(row);
 	}
 
 	@DataProvider
@@ -213,9 +213,9 @@ public class CSVTest {
 
 	@Test(dataProvider = "columns")
 	public void joinCols(final List<?> columns, final String row) {
-		Assert.assertEquals(CSV.joinCols(columns), row);
-		Assert.assertEquals(CSV.splitLine(CSV.joinCols(columns)), columns);
-		Assert.assertEquals(columns, CSV.splitLine(row));
+		Assert.assertEquals(CSV.join(columns), row);
+		Assert.assertEquals(CSV.split(CSV.join(columns)), columns);
+		Assert.assertEquals(columns, CSV.split(row));
 	}
 
 	@DataProvider
@@ -253,7 +253,7 @@ public class CSVTest {
 
 			try (var lines = Files.lines(path.get())) {
 				final var readValues = lines
-					.map(CSV::splitLine)
+					.map(CSV::split)
 					.collect(Collectors.toList());
 
 				Assert.assertEquals(readValues, values);

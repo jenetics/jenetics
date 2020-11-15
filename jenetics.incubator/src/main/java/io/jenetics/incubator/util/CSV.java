@@ -127,7 +127,7 @@ public final class CSV {
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
-	 * @see #joinCols(Iterable)
+	 * @see #join(Iterable)
 	 *
 	 * @param line the CSV {@code row} to split
 	 * @return the split columns of the given CSV {@code row}
@@ -135,7 +135,7 @@ public final class CSV {
 	 *         CSV row
 	 * @throws NullPointerException if the given {@code row} is {@code null}
 	 */
-	public static List<String> splitLine(final CharSequence line) {
+	public static List<String> split(final CharSequence line) {
 		final List<String> columns = new ArrayList<>();
 
 		boolean quoted = false;
@@ -246,7 +246,7 @@ public final class CSV {
 	 * @param cols the CSV columns to join
 	 * @return a new CSV row, joined from the given columns
 	 */
-	public static String joinCols(final Iterable<?> cols) {
+	public static String join(final Iterable<?> cols) {
 		final var row = new StringBuilder(64);
 
 		final var it = cols.iterator();
@@ -316,7 +316,7 @@ public final class CSV {
 	public static Collector<Iterable<?>, ?, String> rowsToCSV() {
 		return Collector.of(
 			ArrayList<String>::new,
-			(list, row) -> list.add(joinCols(row)),
+			(list, row) -> list.add(join(row)),
 			(a, b) -> { a.addAll(b); return a; },
 			list -> list.stream().collect(linesToCSV())
 		);
