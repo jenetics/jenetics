@@ -1,7 +1,6 @@
 package io.jenetics.incubator.util;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +20,7 @@ public class CSVTest {
 	public void lines(final String csv, final List<String> lines) throws IOException {
 		final List<String> readLines;
 		try (var input = new StringInputStream(csv)) {
-			readLines = CSV.readAllLines(input, Charset.defaultCharset());
+			readLines = CSV.reader().readAllLines(input);
 		}
 
 		Assert.assertEquals(readLines, lines);

@@ -1,6 +1,7 @@
 package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +32,70 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  * @since !__version__!
  */
 public final class CSV {
+
+	public interface LineReader {
+
+		/**
+		 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
+		 * The rows are split at line breaks, as long as they are not part of a
+		 * quoted column. <em>The returned stream must be closed by the caller.</em>
+		 *
+		 * @param input the input stream to split into CSV lines
+		 * @return the stream of CSV lines
+		 */
+		Stream<String> lines(final InputStream input);
+
+		/**
+		 * Splits the given {@code path}into a  {@code Stream} of CSV rows. The
+		 * rows are split at line breaks, as long as they are not part of a
+		 * quoted column. <em>The returned stream must be closed by the caller.</em>
+		 *
+		 * @param path the CSV file to split
+		 * @return the stream of CSV lines
+		 * @throws IOException if an I/O error occurs
+		 */
+		default Stream<String> lines(final Path path) throws IOException {
+			final var result = CloseableValue.build(resources -> {
+				final var fin = resources.add(Files.newInputStream(path));
+				return lines(fin);
+			});
+
+			return result.get().onClose(result::silentClose);
+		}
+
+		/**
+		 * Reads all CSV lines form the given {@code input} stream.
+		 *
+		 * @param input the CSV {@code input} stream
+		 * @return all CSV lines form the given {@code input} stream
+		 * @throws IOException if an error occurs while reading the CSV lines
+		 */
+		default List<String> readAllLines(final InputStream input)
+			throws IOException
+		{
+			try (var stream = lines(input)) {
+				return stream.collect(Collectors.toList());
+			} catch (UncheckedIOException e) {
+				throw e.getCause();
+			}
+		}
+
+		/**
+		 * Reads all CSV lines form the given input {@code path}.
+		 *
+		 * @param path the CSV file to read
+		 * @return all CSV lines form the given {@code input} stream
+		 * @throws IOException if an error occurs while reading the CSV lines
+		 */
+		default List<String> readAllLines(final Path path) throws IOException {
+			try (var stream = lines(path)) {
+				return stream.collect(Collectors.toList());
+			} catch (UncheckedIOException e) {
+				throw e.getCause();
+			}
+		}
+	}
+
 
 	/**
 	 * The linefeed string used for writing the CSV file: {@code \r\n}.
@@ -213,6 +278,74 @@ public final class CSV {
 	}
 
 	/**
+	 * Return a collector for joining a list of CSV rows into one CSV string.
+	 *
+	 * <pre>{@code
+	 * final List<List<String>> values = Stream.generate(() -> nextRow())
+	 *     .limit(200)
+	 *     .collect(Collectors.toList());
+	 *
+	 * final String csv = values.stream()
+	 *     .map(CSV::join)
+	 *     .collect(CSV.linesToCSV());
+	 * }</pre>
+	 *
+	 * @return a collector for joining a list of CSV rows into one CSV string
+	 */
+	public static Collector<CharSequence, ?, String> linesToCSV() {
+		return Collectors.joining(LF, "", LF);
+	}
+
+	/**
+	 * Return a collector for joining a list of CSV columns into one CSV string.
+	 *
+	 * <pre>{@code
+	 * final List<List<String>> values = Stream.generate(() -> nextRow())
+	 *     .limit(200)
+	 *     .collect(Collectors.toList());
+	 *
+	 * final String csv = values.stream()
+	 *     .collect(CSV.rowsToCSV());
+	 * }</pre>
+	 *
+	 * @return a collector for joining a list of CSV columns into one CSV string
+	 */
+	public static Collector<Iterable<?>, ?, String> rowsToCSV() {
+		return Collector.of(
+			ArrayList<String>::new,
+			(list, row) -> list.add(joinCols(row)),
+			(a, b) -> { a.addAll(b); return a; },
+			list -> list.stream().collect(linesToCSV())
+		);
+	}
+
+
+	/* *************************************************************************
+	 * CSV line reader methods
+	 * ************************************************************************/
+
+	/**
+	 * Return a CSV line reader for CSV sources with the given character set.
+	 *
+	 * @param cs the charset to use for decoding
+	 * @return a CSV line reader
+	 * @throws NullPointerException if the given {@code cs} is {@code null}
+	 */
+	public static LineReader reader(final Charset cs) {
+		requireNonNull(cs);
+		return input -> lines(input, cs);
+	}
+
+	/**
+	 * Return a CSV line reader for CSV sources.
+	 *
+	 * @return a CSV line reader
+	 */
+	public static LineReader reader() {
+		return reader(Charset.defaultCharset());
+	}
+
+	/**
 	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
 	 * quoted column. <em>The returned stream must be closed by the caller.</em>
@@ -221,7 +354,7 @@ public final class CSV {
 	 * @param cs the charset to use for decoding
 	 * @return the stream of CSV lines
 	 */
-	public static Stream<String> lines(final InputStream input, final Charset cs) {
+	static Stream<String> lines(final InputStream input, final Charset cs) {
 		final var result = CloseableValue.build(resources -> {
 			final var isr = resources.add(new InputStreamReader(input, cs));
 			final var reader = resources.add(new BufferedReader(isr));
@@ -305,157 +438,6 @@ public final class CSV {
 			}
 		}
 		return line.length() > 0;
-	}
-
-	/**
-	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
-	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller.</em>
-	 *
-	 * @param input the input stream to split into CSV lines
-	 * @return the stream of CSV lines
-	 */
-	public static Stream<String> lines(final InputStream input) {
-		return lines(input, Charset.defaultCharset());
-	}
-
-	/**
-	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
-	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller.</em>
-	 *
-	 * @param path the CSV file to split
-	 * @param cs the charset to use for decoding
-	 * @return the stream of CSV lines
-	 * @throws IOException if an I/O error occurs
-	 */
-	public static Stream<String> lines(final Path path, final Charset cs)
-		throws IOException
-	{
-		final var result = CloseableValue.build(resources -> {
-			final var fin = resources.add(Files.newInputStream(path));
-			return lines(fin, cs);
-		});
-
-		return result.get().onClose(result::silentClose);
-	}
-
-	/**
-	 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
-	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller.</em>
-	 *
-	 * @param path the CSV file to split
-	 * @return the stream of CSV lines
-	 * @throws IOException if an I/O error occurs
-	 */
-	public static Stream<String> lines(final Path path) throws IOException {
-		return lines(path, Charset.defaultCharset());
-	}
-
-	/**
-	 * Reads all CSV lines form the given {@code input} stream.
-	 *
-	 * @param input the CSV {@code input} stream
-	 * @param cs the charset to use for decoding
-	 * @return all CSV lines form the given {@code input} stream
-	 * @throws IOException if an error occurs while reading the CSV lines
-	 */
-	public static List<String> readAllLines(
-		final InputStream input,
-		final Charset cs
-	)
-		throws IOException
-	{
-		try (var stream = lines(input, cs)) {
-			return stream.collect(Collectors.toList());
-		} catch (UncheckedIOException e) {
-			throw e.getCause();
-		}
-	}
-
-	/**
-	 * Reads all CSV lines form the given {@code input} stream.
-	 *
-	 * @param input the CSV {@code input} stream
-	 * @return all CSV lines form the given {@code input} stream
-	 * @throws IOException if an error occurs while reading the CSV lines
-	 */
-	public static List<String> readAllLines(final InputStream input)
-		throws IOException
-	{
-		return readAllLines(input, Charset.defaultCharset());
-	}
-
-	/**
-	 * Reads all CSV lines form the given {@code input} stream.
-	 *
-	 * @param path the CSV file to read
-	 * @param cs the charset to use for decoding
-	 * @return all CSV lines form the given {@code input} stream
-	 * @throws IOException if an error occurs while reading the CSV lines
-	 */
-	public static List<String> readAllLines(final Path path, final Charset cs)
-		throws IOException
-	{
-		try (var stream = lines(path, cs)) {
-			return stream.collect(Collectors.toList());
-		} catch (UncheckedIOException e) {
-			throw e.getCause();
-		}
-	}
-
-	/**
-	 * Reads all CSV lines form the given {@code input} stream.
-	 *
-	 * @param path the CSV file to read
-	 * @return all CSV lines form the given {@code input} stream
-	 * @throws IOException if an error occurs while reading the CSV lines
-	 */
-	public static List<String> readAllLines(final Path path) throws IOException {
-		return readAllLines(path, Charset.defaultCharset());
-	}
-
-	/**
-	 * Return a collector for joining a list of CSV rows into one CSV string.
-	 *
-	 * <pre>{@code
-	 * final List<List<String>> values = Stream.generate(() -> nextRow())
-	 *     .limit(200)
-	 *     .collect(Collectors.toList());
-	 *
-	 * final String csv = values.stream()
-	 *     .map(CSV::join)
-	 *     .collect(CSV.linesToCSV());
-	 * }</pre>
-	 *
-	 * @return a collector for joining a list of CSV rows into one CSV string
-	 */
-	public static Collector<CharSequence, ?, String> linesToCSV() {
-		return Collectors.joining(LF, "", LF);
-	}
-
-	/**
-	 * Return a collector for joining a list of CSV columns into one CSV string.
-	 *
-	 * <pre>{@code
-	 * final List<List<String>> values = Stream.generate(() -> nextRow())
-	 *     .limit(200)
-	 *     .collect(Collectors.toList());
-	 *
-	 * final String csv = values.stream()
-	 *     .collect(CSV.rowsToCSV());
-	 * }</pre>
-	 *
-	 * @return a collector for joining a list of CSV columns into one CSV string
-	 */
-	public static Collector<Iterable<?>, ?, String> rowsToCSV() {
-		return Collector.of(
-			ArrayList<String>::new,
-			(list, row) -> list.add(joinCols(row)),
-			(a, b) -> { a.addAll(b); return a; },
-			list -> list.stream().collect(linesToCSV())
-		);
 	}
 
 }
