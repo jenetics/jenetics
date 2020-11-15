@@ -124,7 +124,14 @@ public final class CSV {
 
 	/**
 	 * Splits a given CSV line into it's columns. It supports CSV records defined
-	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
+	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
+	 * the reverse of the {@link #join(Iterable)} method.
+	 *
+	 * <pre>{@code
+	 * final var line = "a,b,c,d,e,f";
+	 * final var cols = CSV.split(line);
+	 * assert cols.equals(List.of("a", "b", "c", "d", "e", "f"))
+	 * }</pre>
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
 	 * @see #join(Iterable)
