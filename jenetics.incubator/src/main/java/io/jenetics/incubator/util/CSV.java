@@ -142,9 +142,9 @@ public final class CSV {
 
 
 	/**
-	 * The linefeed string used for writing the CSV file: {@code \r\n}.
+	 * The newline string used for writing the CSV file: {@code \r\n}.
 	 */
-	public static final String LF = "\r\n";
+	public static final String EOL = "\r\n";
 
 	/**
 	 * The separator character: {@code ,}
@@ -351,7 +351,7 @@ public final class CSV {
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */
 	public static Collector<CharSequence, ?, String> toCSV() {
-		return Collectors.joining(LF, "", LF);
+		return Collectors.joining(EOL, "", EOL);
 	}
 
 
