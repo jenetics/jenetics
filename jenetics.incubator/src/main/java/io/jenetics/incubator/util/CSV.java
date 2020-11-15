@@ -48,14 +48,20 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public final class CSV {
 
 	/**
-	 * Interface for reading CSV lines from a given input stream.
+	 * Interface for reading CSV lines from a given input stream. CSV line
+	 * reader instances can be obtained with the {@link CSV#reader()} or
+	 * {@link CSV#reader(Charset)} method.
+	 *
+	 * @see CSV#reader()
+	 * @see CSV#reader(Charset)
 	 */
 	public interface LineReader {
 
 		/**
-		 * Splits the given {@code input} stream into a  {@code Stream} of CSV rows.
-		 * The rows are split at line breaks, as long as they are not part of a
-		 * quoted column. <em>The returned stream must be closed by the caller.</em>
+		 * Splits the given {@code input} stream into a  {@code Stream} of CSV
+		 * lines. The lines are split at line breaks, as long as they are not
+		 * part of a quoted column. <em>The returned stream must be closed by
+		 * the caller.</em>
 		 *
 		 * <pre>{@code
 		 * try (var lines = CSV.reader().read(input)) {
@@ -71,9 +77,10 @@ public final class CSV {
 		Stream<String> read(final InputStream input);
 
 		/**
-		 * Splits the given {@code path}into a  {@code Stream} of CSV rows. The
-		 * rows are split at line breaks, as long as they are not part of a
-		 * quoted column. <em>The returned stream must be closed by the caller.</em>
+		 * Splits the given {@code path} into a  {@code Stream} of CSV lines.
+		 * The lines are split at line breaks, as long as they are not part of a
+		 * quoted column. <em>The returned stream must be closed by the
+		 * caller.</em>
 		 *
 		 * <pre>{@code
 		 * try (var lines = CSV.reader().read(path)) {
@@ -334,9 +341,7 @@ public final class CSV {
 	 * Return a collector for joining a list of CSV rows into one CSV string.
 	 *
 	 * <pre>{@code
-	 * final List<List<String>> values = Stream.generate(() -> nextRow())
-	 *     .limit(200)
-	 *     .collect(Collectors.toList());
+	 * final List<List<String>> values = ...;
 	 *
 	 * final String csv = values.stream()
 	 *     .map(CSV::join)
