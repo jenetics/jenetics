@@ -149,12 +149,12 @@ public final class CSV {
 	/**
 	 * The separator character: {@code ,}
 	 */
-	static final char SEPARATOR = ',';
+	private static final char SEPARATOR = ',';
 
 	/**
 	 * The quote character: {@code "}
 	 */
-	static final char QUOTE = '"';
+	private static final char QUOTE = '"';
 
 	private static final String SEPARATOR_STR = ",";
 	private static final String QUOTE_STR = "\"";
@@ -484,6 +484,7 @@ public final class CSV {
 				}
 			}
 		}
+
 		return line.length() > 0;
 	}
 
