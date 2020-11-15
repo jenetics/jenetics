@@ -116,6 +116,10 @@ public class CSVTest {
 				List.of("")
 			},
 			{
+				"a,b,c,d,e,f",
+				List.of("a", "b", "c", "d", "e", "f")
+			},
+			{
 				"a,b\nc,d",
 				List.of("a", "b\nc", "d")
 			},
