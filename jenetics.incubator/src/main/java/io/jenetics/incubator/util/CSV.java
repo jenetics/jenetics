@@ -384,16 +384,22 @@ public final class CSV {
 			var valueString = value.toString();
 			var string = valueString.replace(QUOTE_STR, DOUBLE_QUOTE_STR);
 
-			if (valueString.length() != string.length() ||
-				string.contains(SEPARATOR_STR) ||
-				string.contains("\n") ||
-				string.contains("\r"))
-			{
+			if (valueString.length() != string.length() || mustEscape(string)) {
 				return QUOTE_STR + string + QUOTE_STR;
 			} else {
 				return valueString;
 			}
 		}
+	}
+
+	private static boolean mustEscape(final CharSequence value) {
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+			if (c == SEPARATOR || c == '\n' || c == '\r') {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
