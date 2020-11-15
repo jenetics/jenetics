@@ -290,36 +290,13 @@ public final class CSV {
 	 *
 	 * final String csv = values.stream()
 	 *     .map(CSV::join)
-	 *     .collect(CSV.linesToCSV());
+	 *     .collect(CSV.toCSV());
 	 * }</pre>
 	 *
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */
-	public static Collector<CharSequence, ?, String> linesToCSV() {
+	public static Collector<CharSequence, ?, String> toCSV() {
 		return Collectors.joining(LF, "", LF);
-	}
-
-	/**
-	 * Return a collector for joining a list of CSV columns into one CSV string.
-	 *
-	 * <pre>{@code
-	 * final List<List<String>> values = Stream.generate(() -> nextRow())
-	 *     .limit(200)
-	 *     .collect(Collectors.toList());
-	 *
-	 * final String csv = values.stream()
-	 *     .collect(CSV.rowsToCSV());
-	 * }</pre>
-	 *
-	 * @return a collector for joining a list of CSV columns into one CSV string
-	 */
-	public static Collector<Iterable<?>, ?, String> rowsToCSV() {
-		return Collector.of(
-			ArrayList<String>::new,
-			(list, row) -> list.add(join(row)),
-			(a, b) -> { a.addAll(b); return a; },
-			list -> list.stream().collect(linesToCSV())
-		);
 	}
 
 

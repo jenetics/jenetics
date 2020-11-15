@@ -241,7 +241,8 @@ public class CSVTest {
 			.collect(Collectors.toList());
 
 		final String csv = values.stream()
-			.collect(CSV.rowsToCSV());
+			.map(CSV::join)
+			.collect(CSV.toCSV());
 
 		final var path = CloseableValue.of(
 			Files.createTempFile("CSVTest-", null),
