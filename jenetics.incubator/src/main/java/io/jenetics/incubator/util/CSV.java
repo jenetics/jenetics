@@ -333,7 +333,6 @@ public final class CSV {
 
 	private static List<String> tokenize(final CharSequence value) {
 		final List<String> tokens = new ArrayList<>();
-		int pos = 0;
 		final StringBuilder token = new StringBuilder(64);
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
