@@ -79,7 +79,7 @@ public final class CSV {
 		 * must be closed by the caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.reader().read(reader)) {
+		 * try (var lines = CSV.READER.read(reader)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
@@ -98,7 +98,7 @@ public final class CSV {
 		 * caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.reader().read(path, UTF_8)) {
+		 * try (var lines = CSV.READER.read(path, UTF_8)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
@@ -129,7 +129,7 @@ public final class CSV {
 		 * caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.reader().read(path, UTF_8)) {
+		 * try (var lines = CSV.READER.read(path, UTF_8)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
@@ -200,15 +200,13 @@ public final class CSV {
 	}
 
 	/**
-	 * The default CSV line reader for CSV sources with the given character set.
+	 * The default CSV line reader.
 	 *
 	 * <pre>{@code
 	 * try (var lines = CSV.READER.read(path)) {
 	 *     lines.forEach(System.out::println);
 	 * }
 	 * }</pre>
-	 *
-	 * @return a CSV line reader
 	 */
 	public static final LineReader READER = CSV::read;
 
