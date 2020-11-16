@@ -254,16 +254,15 @@ public final class CSV {
 	 */
 	public static List<String> split(final CharSequence line) {
 		final List<String> columns = new ArrayList<>();
+		final var column = new StringBuilder(32);
 
 		boolean quoted = false;
 		boolean escaped = false;
 
-		final var column = new StringBuilder();
-
 		for (int i = 0, n = line.length(); i < n; ++i) {
-			final var previous = i > 0 ? line.charAt(i - 1) : -1;
-			final var current = line.charAt(i);
-			final var next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
+			final int previous = i > 0 ? line.charAt(i - 1) : -1;
+			final char current = line.charAt(i);
+			final int next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
 
 			switch (current) {
 				case QUOTE:
