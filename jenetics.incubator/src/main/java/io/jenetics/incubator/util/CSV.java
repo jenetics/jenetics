@@ -378,13 +378,13 @@ public final class CSV {
 		if (value == null) {
 			return "";
 		} else {
-			var valueString = value.toString();
-			var string = valueString.replace(QUOTE_STR, DOUBLE_QUOTE_STR);
+			var stringValue = value.toString();
+			var string = stringValue.replace(QUOTE_STR, DOUBLE_QUOTE_STR);
 
-			if (valueString.length() != string.length() || mustEscape(string)) {
+			if (stringValue.length() != string.length() || mustEscape(string)) {
 				return QUOTE_STR + string + QUOTE_STR;
 			} else {
-				return valueString;
+				return stringValue;
 			}
 		}
 	}

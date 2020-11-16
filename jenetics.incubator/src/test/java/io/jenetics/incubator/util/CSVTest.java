@@ -22,8 +22,10 @@ package io.jenetics.incubator.util;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,6 +39,9 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class CSVTest {
+
+	public static final String DEFAULT_CHARACTERS =
+		"abcdefghijklmnopqrstuvwxyz !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'\n";
 
 	@Test(dataProvider = "csvs")
 	public void lines(final String csv, final List<String> lines) throws IOException {
@@ -142,6 +147,18 @@ public class CSVTest {
 				List.of("a", "b", "c", "d", "e", "f")
 			},
 			{
+				"\"\"",
+				List.of("")
+			},
+			{
+				"\"\"\"\"",
+				List.of("\"")
+			},
+			{
+				"\"\"\"a\n\"\"\"",
+				List.of("\"a\n\"")
+			},
+			{
 				"a,b\nc,d",
 				List.of("a", "b\nc", "d")
 			},
@@ -229,6 +246,7 @@ public class CSVTest {
 	public Object[][] illegalRows() {
 		return new Object[][]{
 			{"\""},
+			{"\",\"\n"},
 			{" \"\""},
 			{"\"\" "},
 			{"a,\"b\nc,d"},
@@ -259,16 +277,26 @@ public class CSVTest {
 		};
 	}
 
-	@Test
+	@Test(invocationCount = 10)
+	public void randomTest() {
+		final var row = nextRow(1000, new Random());
+		final var line = CSV.join(row);
+		final var cols = CSV.split(line);
+
+		Assert.assertEquals(cols, row);
+	}
+
+	//@Test
 	public void writeRead() throws IOException {
-		final var random = new Random();
-		final List<List<String>> values = Stream.generate(() -> nextRow(random))
-			.limit(200)
+		final var random = new Random(1);
+		final List<List<?>> values = Stream.generate(() -> nextRow(1, random))
+			.limit(1)
 			.collect(Collectors.toList());
 
 		final String csv = values.stream()
 			.map(CSV::join)
 			.collect(CSV.toCSV());
+		System.out.println("---" + csv + "---");
 
 		final var path = CloseableValue.of(
 			Files.createTempFile("CSVTest-", null),
@@ -288,14 +316,24 @@ public class CSVTest {
 		}
 	}
 
-	private static List<String> nextRow(final Random random) {
-		return List.of(
-			"" + random.nextDouble(),
-			"" + random.nextBoolean(),
-			"" + random.nextFloat(),
-			"" + random.nextInt(),
-			"" + random.nextLong()
-		);
+	private static List<String> nextRow(final int columns, final Random random) {
+		final List<String> cols = new ArrayList<>(columns);
+		for (int i = 0; i < columns; ++i) {
+			cols.add(nextString(random.nextInt(30) + 30, random));
+		}
+		return cols;
 	}
+
+	private static String nextString(final int length, final Random random) {
+		final Supplier<Character> generator = () -> DEFAULT_CHARACTERS
+			.charAt(random.nextInt(DEFAULT_CHARACTERS.length()));
+
+		return Stream.generate(generator)
+			.limit(length)
+			.map(String::valueOf)
+			.collect(Collectors.joining());
+	}
+
+
 
 }
