@@ -65,10 +65,10 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public final class CSV {
 
 	/**
-	 * Interface for reading CSV lines from a given input stream. CSV line
-	 * reader instances can be obtained with the {@link CSV#reader()} method.
+	 * Interface for reading CSV lines from a given input stream. A default CSV
+	 * line reader instances can be obtained with the {@link CSV#READER} field.
 	 *
-	 * @see CSV#reader()
+	 * @see CSV#READER
 	 */
 	public interface LineReader {
 
@@ -199,6 +199,18 @@ public final class CSV {
 		}
 	}
 
+	/**
+	 * The default CSV line reader for CSV sources with the given character set.
+	 *
+	 * <pre>{@code
+	 * try (var lines = CSV.READER.read(path)) {
+	 *     lines.forEach(System.out::println);
+	 * }
+	 * }</pre>
+	 *
+	 * @return a CSV line reader
+	 */
+	public static final LineReader READER = CSV::read;
 
 	/**
 	 * The newline string used for writing the CSV file: {@code \r\n}.
@@ -423,21 +435,6 @@ public final class CSV {
 	/* *************************************************************************
 	 * CSV line reader methods
 	 * ************************************************************************/
-
-	/**
-	 * Return a CSV line reader for CSV sources with the given character set.
-	 *
-	 * <pre>{@code
-	 * try (var lines = CSV.reader().read(path)) {
-	 *     lines.forEach(System.out::println);
-	 * }
-	 * }</pre>
-	 *
-	 * @return a CSV line reader
-	 */
-	public static LineReader reader() {
-		return CSV::read;
-	}
 
 	/**
 	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.

@@ -39,7 +39,7 @@ public class CSVTest {
 	public void lines(final String csv, final List<String> lines) throws IOException {
 		final List<String> readLines;
 		try (var input = new StringReader(csv)) {
-			readLines = CSV.reader().readAll(input);
+			readLines = CSV.READER.readAll(input);
 		}
 
 		Assert.assertEquals(readLines, lines);
