@@ -262,7 +262,7 @@ public final class CSV {
 
 		for (int i = 0, n = line.length(); i < n; ++i) {
 			final var previous = i > 0 ? line.charAt(i - 1) : -1;
-			final var current = (int)line.charAt(i);
+			final var current = line.charAt(i);
 			final var next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
 
 			switch (current) {
@@ -301,7 +301,7 @@ public final class CSV {
 					break;
 				case SEPARATOR:
 					if (quoted) {
-						column.append((char)current);
+						column.append(current);
 					} else if ((int)SEPARATOR == previous || previous == -1) {
 						columns.add(column.toString());
 						column.setLength(0);
