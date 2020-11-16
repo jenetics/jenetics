@@ -55,3 +55,9 @@ public class CSVPerf {
 
 }
 
+/*
+Benchmark             Mode  Cnt     Score     Error  Units
+CSVPerf.split         avgt   25  1363,068 ± 179,925  ns/op
+CSVPerf.splitOpenCSV  avgt   25   362,261 ±  11,799  ns/op
+ */
+
