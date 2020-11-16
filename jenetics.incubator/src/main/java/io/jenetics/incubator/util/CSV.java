@@ -302,18 +302,21 @@ public final class CSV {
 				case SEPARATOR:
 					if (quoted) {
 						column.append(current);
-					} else if ((int)SEPARATOR == previous || previous == -1) {
+					} else if (SEPARATOR == previous || previous == -1) {
 						columns.add(column.toString());
 						column.setLength(0);
 					}
 					break;
 				default:
-					char c;
 					int j = i;
+
+					// Read till the next token separator.
+					char c;
 					while (j < n && !isTokenSeparator(c = line.charAt(j))) {
 						column.append(c);
 						++j;
 					}
+
 					if (j != i) {
 						i = j - 1;
 					}

@@ -23,7 +23,7 @@ public class CSVPerf {
 
 	@State(Scope.Benchmark)
 	public static class Lines {
-		Random random = new Random();
+		Random random = new Random(1231234);
 		String line = CSV.join(nextRow(random));
 	}
 
@@ -53,6 +53,11 @@ public class CSVPerf {
 		return PARSER.parseLine(lines.line);
 	}
 
+	@Benchmark
+	public Object splitMultiLineOpenCSV(final Lines lines) throws IOException {
+		return PARSER.parseLineMulti(lines.line);
+	}
+
 }
 
 // Mac
@@ -65,6 +70,6 @@ CSVPerf.splitOpenCSV  avgt   25   362,261 ±  11,799  ns/op
 // Linux
 /*
 Benchmark             Mode  Cnt     Score     Error  Units
-CSVPerf.split         avgt   25  1673.031 ± 203.262  ns/op
-CSVPerf.splitOpenCSV  avgt   25   467.593 ±  41.007  ns/op
+CSVPerf.split         avgt   25  1141.269 ± 115.791  ns/op
+CSVPerf.splitOpenCSV  avgt   25   466.242 ±  18.458  ns/op
 */
