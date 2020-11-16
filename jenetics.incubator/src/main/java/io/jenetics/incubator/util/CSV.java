@@ -268,7 +268,7 @@ public final class CSV {
 			switch (current) {
 				case QUOTE:
 					if (quoted) {
-						if (QUOTE == next && !escaped) {
+						if (!escaped && QUOTE == next) {
 							escaped = true;
 						} else {
 							if (escaped) {
