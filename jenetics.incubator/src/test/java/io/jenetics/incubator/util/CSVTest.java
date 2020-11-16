@@ -33,6 +33,9 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class CSVTest {
 
 	@Test(dataProvider = "csvs")
