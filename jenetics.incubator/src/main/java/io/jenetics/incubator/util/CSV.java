@@ -262,7 +262,7 @@ public final class CSV {
 
 		final var tokens = tokenize(line);
 
-		for (int i = 0; i < tokens.size(); ++i) {
+		for (int i = 0, n = tokens.size(); i < n; ++i) {
 			final var previous = i > 0 ? tokens.get(i - 1) : null;
 			final var current = tokens.get(i);
 			final var next = i + 1 < tokens.size() ? tokens.get(i + 1) : null;
