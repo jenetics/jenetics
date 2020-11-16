@@ -258,62 +258,69 @@ public final class CSV {
 		boolean quoted = false;
 		boolean escaped = false;
 
-		final var col = new StringBuilder();
+		final var column = new StringBuilder();
 
-		final var tokens = tokenize(line);
-
-		for (int i = 0, n = tokens.size(); i < n; ++i) {
-			final var previous = i > 0 ? tokens.get(i - 1) : null;
-			final var current = tokens.get(i);
-			final var next = i + 1 < tokens.size() ? tokens.get(i + 1) : null;
+		for (int i = 0, n = line.length(); i < n; ++i) {
+			final var previous = i > 0 ? line.charAt(i - 1) : -1;
+			final var current = (int)line.charAt(i);
+			final var next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
 
 			switch (current) {
-				case QUOTE_STR:
+				case QUOTE:
 					if (quoted) {
-						if (QUOTE_STR.equals(next) && !escaped) {
+						if (QUOTE == next && !escaped) {
 							escaped = true;
 						} else {
 							if (escaped) {
-								col.append(QUOTE);
+								column.append(QUOTE);
 								escaped = false;
 							} else {
-								if (next != null && !SEPARATOR_STR.equals(next)) {
+								if (next != -1 && SEPARATOR != next) {
 									throw new IllegalArgumentException(format(
 										"No other token than '%s' allowed after " +
-											"quote, but found '%s'.",
-										SEPARATOR_STR, next
+										"quote, but found '%s'.",
+										SEPARATOR, next
 									));
 								}
 
-								columns.add(col.toString());
-								col.setLength(0);
+								columns.add(column.toString());
+								column.setLength(0);
 								quoted = false;
 							}
 						}
 					} else {
-						if (previous != null && !SEPARATOR_STR.equals(previous)) {
+						if (previous != -1 && SEPARATOR != previous) {
 							throw new IllegalArgumentException(format(
 								"No other token than '%s' allowed before " +
-									"quote, but found '%s'.",
-								SEPARATOR_STR, previous
+								"quote, but found '%s'.",
+								SEPARATOR, previous
 							));
 						}
 						quoted = true;
 					}
 					break;
-				case SEPARATOR_STR:
+				case SEPARATOR:
 					if (quoted) {
-						col.append(current);
-					} else if (SEPARATOR_STR.equals(previous) || previous == null) {
-						columns.add(col.toString());
-						col.setLength(0);
+						column.append((char)current);
+					} else if ((int)SEPARATOR == previous || previous == -1) {
+						columns.add(column.toString());
+						column.setLength(0);
 					}
 					break;
 				default:
-					col.append(current);
+					char c;
+					int j = i;
+					while (j < n && !isTokenSeparator(c = line.charAt(j))) {
+						column.append(c);
+						++j;
+					}
+					if (j != i) {
+						i = j - 1;
+					}
+
 					if (!quoted) {
-						columns.add(col.toString());
-						col.setLength(0);
+						columns.add(column.toString());
+						column.setLength(0);
 					}
 					break;
 			}
@@ -322,34 +329,13 @@ public final class CSV {
 		if (quoted) {
 			throw new IllegalArgumentException("Unbalanced quote character.");
 		}
-		if (tokens.isEmpty() ||
-			SEPARATOR_STR.equals(tokens.get(tokens.size() - 1)))
+		if (line.length() == 0 ||
+			SEPARATOR == line.charAt(line.length() - 1))
 		{
 			columns.add("");
 		}
 
 		return columns;
-	}
-
-	private static List<String> tokenize(final CharSequence value) {
-		final List<String> tokens = new ArrayList<>();
-		final StringBuilder token = new StringBuilder(64);
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-			if (isTokenSeparator(c)) {
-				if (token.length() > 0) {
-					tokens.add(token.toString());
-				}
-				tokens.add(Character.toString(c));
-				token.setLength(0);
-			} else {
-				token.append(c);
-			}
-		}
-		if (token.length() > 0) {
-			tokens.add(token.toString());
-		}
-		return tokens;
 	}
 
 	private static boolean isTokenSeparator(final char c) {
