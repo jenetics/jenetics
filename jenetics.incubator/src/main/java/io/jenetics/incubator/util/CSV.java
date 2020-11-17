@@ -442,8 +442,8 @@ public final class CSV {
 				? (BufferedReader)reader
 				: resources.add(new BufferedReader(reader));
 
+			final var line = new StringBuilder();
 			final Supplier<String> nextLine = () -> {
-				final var line = new StringBuilder();
 				try {
 					if (nextLine(br, line)) {
 						final var l = line.toString();
