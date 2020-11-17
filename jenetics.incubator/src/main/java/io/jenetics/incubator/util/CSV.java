@@ -43,8 +43,8 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  * CSV row.
  *
  * <pre>{@code
- * // Read CSV.
- * final List<String> lines = CSV.reader().readAll(Path.of("some_file.csv"));
+ * // Read CSV, including multiline CSV files, if quoted.
+ * final List<String> lines = CSV.READER.readAll(Path.of("some_file.csv"));
  * final List<List<String>> rows = lines.stream()
  *     .map(CSV::split)
  *     .collect(Collectors.toList());
