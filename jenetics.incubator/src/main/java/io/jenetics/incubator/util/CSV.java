@@ -44,7 +44,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  *
  * <pre>{@code
  * // Read CSV, including multiline CSV files, if quoted.
- * final List<String> lines = CSV.READER.readAll(Path.of("some_file.csv"));
+ * final List<String> lines = CSV.LINE_READER.readAll(Path.of("some_file.csv"));
  * final List<List<String>> rows = lines.stream()
  *     .map(CSV::split)
  *     .collect(Collectors.toList());
@@ -66,9 +66,9 @@ public final class CSV {
 
 	/**
 	 * Interface for reading CSV lines from a given input stream. A default CSV
-	 * line reader instances can be obtained with the {@link CSV#READER} field.
+	 * line reader instances can be obtained with the {@link CSV#LINE_READER} field.
 	 *
-	 * @see CSV#READER
+	 * @see CSV#LINE_READER
 	 */
 	public interface LineReader {
 
@@ -203,12 +203,12 @@ public final class CSV {
 	 * The default CSV line reader.
 	 *
 	 * <pre>{@code
-	 * try (var lines = CSV.READER.read(path)) {
+	 * try (var lines = CSV.LINE_READER.read(path)) {
 	 *     lines.forEach(System.out::println);
 	 * }
 	 * }</pre>
 	 */
-	public static final LineReader READER = CSV::read;
+	public static final LineReader LINE_READER = CSV::read;
 
 	/**
 	 * The newline string used for writing the CSV file: {@code \r\n}.

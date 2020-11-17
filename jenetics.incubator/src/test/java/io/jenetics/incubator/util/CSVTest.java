@@ -47,7 +47,7 @@ public class CSVTest {
 	public void lines(final String csv, final List<String> lines) throws IOException {
 		final List<String> readLines;
 		try (var input = new StringReader(csv)) {
-			readLines = CSV.READER.readAll(input);
+			readLines = CSV.LINE_READER.readAll(input);
 		}
 
 		Assert.assertEquals(readLines, lines);
@@ -305,7 +305,7 @@ public class CSVTest {
 		try (path) {
 			Files.writeString(path.get(), csv);
 
-			try (var lines = CSV.READER.read(path.get())) {
+			try (var lines = CSV.LINE_READER.read(path.get())) {
 				final var readValues = lines
 					.map(CSV::split)
 					.collect(Collectors.toList());
