@@ -119,7 +119,7 @@ public final class CSV {
 				return read(reader);
 			});
 
-			return result.get().onClose(result::silentClose);
+			return result.get().onClose(result::uncheckedClose);
 		}
 
 		/**
@@ -360,7 +360,7 @@ public final class CSV {
 	 * @return a new CSV row, joined from the given columns
 	 */
 	public static String join(final Iterable<?> cols) {
-		final var row = new StringBuilder(64);
+		final var row = new StringBuilder(32);
 
 		final var it = cols.iterator();
 		while (it.hasNext()) {
