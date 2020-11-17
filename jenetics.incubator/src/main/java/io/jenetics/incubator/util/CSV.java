@@ -474,12 +474,11 @@ public final class CSV {
 		boolean escaped = false;
 		boolean eol = false;
 
-		char current = 0;
 		int next = -2;
 		int i = 0;
 
 		while (next >= 0 || (i = reader.read()) != -1) {
-			current = next != -2 ? (char)next : (char)i;
+			final char current = next != -2 ? (char)next : (char)i;
 			next = -2;
 
 			switch (current) {
@@ -493,8 +492,7 @@ public final class CSV {
 					break;
 				case QUOTE:
 					if (quoted) {
-						next = reader.read();
-						if (next == QUOTE && !escaped) {
+						if (!escaped && (next = reader.read()) == QUOTE) {
 							escaped = true;
 						} else {
 							if (escaped) {
@@ -506,7 +504,8 @@ public final class CSV {
 					} else {
 						quoted = true;
 					}
-					line.append(QUOTE);
+
+					line.append(current);
 					break;
 				default:
 					line.append(current);

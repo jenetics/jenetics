@@ -40,7 +40,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  */
 public class CSVTest {
 
-	public static final String DEFAULT_CHARACTERS =
+	private static final String DEFAULT_CHARACTERS =
 		"abcdefghijklmnopqrstuvwxyz !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'\t\n\r";
 
 	@Test(dataProvider = "csvs")
