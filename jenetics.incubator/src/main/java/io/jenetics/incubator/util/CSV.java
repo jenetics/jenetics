@@ -43,7 +43,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
  * CSV row.
  *
  * <pre>{@code
- * // Read CSV, including multiline CSV files, if quoted.
+ * // Read CSV, including multiline CSV files, if proper quoted.
  * final List<String> lines = CSV.LINE_READER.readAll(Path.of("some_file.csv"));
  * final List<List<String>> rows = lines.stream()
  *     .map(CSV::split)
@@ -68,6 +68,13 @@ public final class CSV {
 	 * Interface for reading CSV lines from a given input stream. A default CSV
 	 * line reader instances can be obtained with the {@link CSV#LINE_READER} field.
 	 *
+	 * <pre>{@code
+	 * // The opened Stream must be closed after usage.
+	 * try (Stream<String> lines = CSV.LINE_READER.read(Path.of("file.csv"))) {
+	 *     lines.forEach(System.out::println);
+	 * }
+	 * }</pre>
+	 *
 	 * @see CSV#LINE_READER
 	 */
 	public interface LineReader {
@@ -79,7 +86,7 @@ public final class CSV {
 		 * must be closed by the caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.READER.read(reader)) {
+		 * try (var lines = CSV.LINE_READER.read(reader)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
@@ -98,7 +105,7 @@ public final class CSV {
 		 * caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.READER.read(path, UTF_8)) {
+		 * try (var lines = CSV.LINE_READER.read(path, UTF_8)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
@@ -129,7 +136,7 @@ public final class CSV {
 		 * caller.</em>
 		 *
 		 * <pre>{@code
-		 * try (var lines = CSV.READER.read(path, UTF_8)) {
+		 * try (var lines = CSV.LINE_READER.read(path, UTF_8)) {
 		 *     lines.forEach(System.out::println);
 		 * }
 		 * }</pre>
