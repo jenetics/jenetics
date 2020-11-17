@@ -41,7 +41,7 @@ import io.jenetics.incubator.util.Lifecycle.CloseableValue;
 public class CSVTest {
 
 	public static final String DEFAULT_CHARACTERS =
-		"abcdefghijklmnopqrstuvwxyz !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'\n";
+		"abcdefghijklmnopqrstuvwxyz !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'\t\n\r";
 
 	@Test(dataProvider = "csvs")
 	public void lines(final String csv, final List<String> lines) throws IOException {
@@ -278,7 +278,7 @@ public class CSVTest {
 	}
 
 	@Test(invocationCount = 10)
-	public void randomTest() {
+	public void randomJoinSplitTest() {
 		final var row = nextRow(1000, new Random());
 		final var line = CSV.join(row);
 		final var cols = CSV.split(line);
@@ -286,17 +286,16 @@ public class CSVTest {
 		Assert.assertEquals(cols, row);
 	}
 
-	//@Test
-	public void writeRead() throws IOException {
-		final var random = new Random(1);
-		final List<List<?>> values = Stream.generate(() -> nextRow(1, random))
-			.limit(1)
+	@Test(invocationCount = 10)
+	public void randomWriteRead() throws IOException {
+		final var random = new Random();
+		final List<List<?>> values = Stream.generate(() -> nextRow(25, random))
+			.limit(50)
 			.collect(Collectors.toList());
 
 		final String csv = values.stream()
 			.map(CSV::join)
 			.collect(CSV.toCSV());
-		System.out.println("---" + csv + "---");
 
 		final var path = CloseableValue.of(
 			Files.createTempFile("CSVTest-", null),
@@ -306,7 +305,7 @@ public class CSVTest {
 		try (path) {
 			Files.writeString(path.get(), csv);
 
-			try (var lines = Files.lines(path.get())) {
+			try (var lines = CSV.READER.read(path.get())) {
 				final var readValues = lines
 					.map(CSV::split)
 					.collect(Collectors.toList());
