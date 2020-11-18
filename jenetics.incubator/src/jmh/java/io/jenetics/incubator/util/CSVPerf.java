@@ -86,8 +86,10 @@ public class CSVPerf {
 // Mac
 /*
 Benchmark             Mode  Cnt     Score     Error  Units
-CSVPerf.split         avgt   25  1363,068 ± 179,925  ns/op
-CSVPerf.splitOpenCSV  avgt   25   362,261 ±  11,799  ns/op
+Benchmark                      Mode  Cnt    Score    Error  Units
+CSVPerf.split                  avgt   25  896,393 ± 45,360  ns/op
+CSVPerf.splitMultiLineOpenCSV  avgt   25  376,209 ± 24,265  ns/op
+CSVPerf.splitOpenCSV           avgt   25  363,144 ±  7,188  ns/op
 */
 
 // Linux

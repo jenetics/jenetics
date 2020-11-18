@@ -464,10 +464,7 @@ public final class CSV {
 		return result.get().onClose(result::uncheckedClose);
 	}
 
-	private static boolean nextLine(
-		final BufferedReader reader,
-		final StringBuilder line
-	)
+	private static boolean nextLine(final Reader reader, final StringBuilder line)
 		throws IOException
 	{
 		boolean quoted = false;
