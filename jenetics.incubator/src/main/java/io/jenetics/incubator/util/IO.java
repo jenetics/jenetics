@@ -46,8 +46,8 @@ import io.jenetics.internal.util.Lifecycle.ResourceCollector;
  * Static methods for reading and writing Java objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 6.2
+ * @version 6.2
  */
 public final class IO {
 
