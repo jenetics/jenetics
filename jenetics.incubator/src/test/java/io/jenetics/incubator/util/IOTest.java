@@ -37,7 +37,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.CloseableValue;
 
 public class IOTest {
 
