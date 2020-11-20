@@ -36,7 +36,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.CloseableValue;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
