@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.internal.util;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -32,9 +32,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.Lifecycle.CloseableValue;
-import io.jenetics.incubator.util.Lifecycle.ExtendedCloseable;
-import io.jenetics.incubator.util.Lifecycle.UncheckedCloseable;
+import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.UncheckedCloseable;
 
 public class LifecycleTest {
 
