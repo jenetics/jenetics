@@ -39,8 +39,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.util.Lifecycle.CloseableValue;
-import io.jenetics.incubator.util.Lifecycle.ResourceCollector;
+import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.ResourceCollector;
 
 /**
  * Static methods for reading and writing Java objects.
