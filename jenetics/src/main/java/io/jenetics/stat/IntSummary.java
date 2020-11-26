@@ -32,9 +32,6 @@ import java.util.stream.Collector;
  *
  * @see java.util.IntSummaryStatistics
  *
- * @implNote
- * This class is immutable and thread-safe.
- *
  * @param count the count of values recorded
  * @param min the minimum value recorded, or {@link Integer#MAX_VALUE} if no
  * 	      values have been recorded

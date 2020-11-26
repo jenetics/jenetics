@@ -34,9 +34,6 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @see java.util.DoubleSummaryStatistics
  *
- * @implNote
- * This class is immutable and thread-safe.
- *
  * @param count the count of values recorded
  * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
  *        no values have been recorded
