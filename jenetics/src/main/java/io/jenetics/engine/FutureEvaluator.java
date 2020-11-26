@@ -102,8 +102,8 @@ final class FutureEvaluator<
 			throw (CancellationException)
 				new CancellationException(exception.getMessage())
 					.initCause(exception);
-		} else if (exception instanceof CancellationException) {
-			throw (CancellationException)exception;
+		} else if (exception instanceof CancellationException e) {
+			throw e;
 		} else if (exception != null) {
 			throw new CompletionException(exception);
 		}
