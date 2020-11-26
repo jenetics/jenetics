@@ -93,12 +93,6 @@ gradle.projectsEvaluated {
 			jvmArgs("--enable-preview")
 		}
 
-		tasks.withType<Javadoc> {
-			val doclet = options as StandardJavadocDocletOptions
-			doclet.addBooleanOption("-enable-preview", true)
-			doclet.addStringOption("-release", "15")
-		}
-
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
 				sourceCompatibility = JavaVersion.VERSION_15
@@ -184,6 +178,9 @@ fun setupTestReporting(project: Project) {
 fun setupJavadoc(project: Project) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
+		doclet.addBooleanOption("-enable-preview", true)
+		doclet.addStringOption("-release", "15")
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 
 		exclude("**/internal/**")
 
@@ -199,7 +196,7 @@ fun setupJavadoc(project: Project) {
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		//doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.tags = listOf(
