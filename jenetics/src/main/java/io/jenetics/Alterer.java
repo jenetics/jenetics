@@ -86,7 +86,7 @@ public interface Alterer<
 	 * @return the new composed alterer
 	 */
 	default Alterer<G, C> compose(final Alterer<G, C> before) {
-		return of(before, this);
+		return of(requireNonNull(before), this);
 	}
 
 	/**

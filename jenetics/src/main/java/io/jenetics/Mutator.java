@@ -54,13 +54,13 @@ import io.jenetics.util.Seq;
  * over the whole population is mutated. The number of available genes of an
  * population is
  * <p>
- * <img src="doc-files/mutator-N_G.gif" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" >
+ * <img src="doc-files/mutator-N_G.svg" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" >
  * </p>
  * where <i>N<sub>P</sub></i>  is the population size, <i>N<sub>g</sub></i> the
  * number of genes of a genotype. So the (average) number of genes
  * mutated by the mutation is
  * <p>
- * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" >
+ * <img src="doc-files/mutator-mean_m.svg" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" >
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
