@@ -38,7 +38,7 @@ import io.jenetics.internal.util.Requires;
  * @param <T> the mutation result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 7.0
  * @since 4.0
  */
 public final record MutatorResult<T>(T result, int mutations)

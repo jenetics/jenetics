@@ -40,7 +40,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 4.0
- * @version !__version__!
+ * @version 7.0
  */
 public final record AltererResult<
 	G extends Gene<?, G>,

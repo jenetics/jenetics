@@ -59,7 +59,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 7.0
  */
 public final class BitChromosome extends Number
 	implements
@@ -91,7 +91,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Create a new bit chromosome from the given bit (byte) array.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param bits the bit values of the new chromosome gene.
 	 * @param start the initial (bit) index of the range to be copied, inclusive
@@ -508,7 +508,7 @@ public final class BitChromosome extends Number
 	 * ones probability. The {@link #oneProbability()} of the chromosome is set
 	 * to {@code 0.5}.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param value the value of the created {@code BitChromosome}
 	 * @param length length of the BitChromosome
