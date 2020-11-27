@@ -90,9 +90,9 @@ public abstract class Val<T> implements Op<T> {
 
 	private static boolean equals(final Object a, final Object b) {
 		if (a instanceof Double && b instanceof Double) {
-			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
+			return Double.compare((Double)a, (Double)b) == 0;
 		} else if (a instanceof Float && b instanceof Float) {
-			return ((Float)a).floatValue() == ((Float)b).floatValue();
+			return Float.compare((Float)a, (Float)b) == 0;
 		} else if (a instanceof BigDecimal && b instanceof BigDecimal) {
 			return ((BigDecimal)a).compareTo((BigDecimal)b) == 0;
 		}

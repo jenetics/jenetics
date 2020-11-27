@@ -30,6 +30,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
+import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+
 /**
  * This class allows to create a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
@@ -132,7 +134,8 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 
 	/**
 	 * Attaches the given stream to the publisher. This method automatically
-	 * starts the publishing of the elements read from the stream.
+	 * starts the publishing of the elements read from the stream. The attached
+	 * {@code stream} is closed, when {@code this} publisher is closed.
 	 *
 	 * @param stream the {@code stream} to attach
 	 * @throws NullPointerException if the given {@code stream} is {@code null}
@@ -173,10 +176,13 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 	@Override
 	public void close() {
 		synchronized (_lock) {
+			final var closeable = ExtendedCloseable.of(
+				() -> { if (_thread != null) _thread.interrupt(); },
+				() -> { if (_stream != null) _stream.close(); }
+			);
+
 			_proceed.set(false);
-			if (_thread != null) {
-				_thread.interrupt();
-			}
+			closeable.silentClose();
 		}
 		super.close();
 	}

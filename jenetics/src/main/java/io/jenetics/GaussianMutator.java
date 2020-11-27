@@ -32,7 +32,7 @@ import java.util.Random;
  * the allowed gene range) will be
  * <p>
  * <img
- *     src="doc-files/gaussian-mutator-var.gif"
+ *     src="doc-files/gaussian-mutator-var.svg"
  *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
  * >
  * </p>
