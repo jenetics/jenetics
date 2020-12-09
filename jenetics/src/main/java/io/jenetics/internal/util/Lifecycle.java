@@ -22,7 +22,6 @@ package io.jenetics.internal.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Interfaces for handling resource ({@link Closeable}) objects. The common
+ * Interfaces for handling resource ({@link AutoCloseable}) objects. The common
  * use cases are shown as follows:
  * <p><b>Wrapping <em>non</em>-closeable values</b></p>
  * <pre>{@code
@@ -78,7 +77,11 @@ import java.util.function.Supplier;
  * @since 6.2
  * @version 6.2
  */
+@SuppressWarnings("try")
 public final class Lifecycle {
+
+	public static final Function<Exception, UncheckedIOException>
+		IO_EXCEPTION = e -> new UncheckedIOException((IOException)e);
 
 	/**
 	 * A method which takes an argument and can throw an exception.
@@ -104,55 +107,27 @@ public final class Lifecycle {
 	}
 
 	/**
-	 * Specialisation of the {@link Closeable} interface, which throws an
-	 * {@link UncheckedIOException} instead of an {@link IOException}.
-	 */
-	public interface UncheckedCloseable extends Closeable {
-
-		@Override
-		void close() throws UncheckedIOException;
-
-		/**
-		 * Wraps a given {@code closeable} object and returns an
-		 * {@link UncheckedCloseable}.
-		 *
-		 * @param closeable the <em>normal</em> closeable object to wrap
-		 * @return a new unchecked closeable with the given underlying
-		 *         {@code closeable} object
-		 * @throws NullPointerException if the given {@code closeable} is
-		 *         {@code null}
-		 */
-		static UncheckedCloseable of(final Closeable closeable) {
-			requireNonNull(closeable);
-
-			return () -> {
-				try {
-					closeable.close();
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
-		}
-	}
-
-	/**
-	 * Extends the {@link Closeable} with methods for wrapping the thrown
+	 * Extends the {@link AutoCloseable} with methods for wrapping the thrown
 	 * exception into an {@link UncheckedIOException} or ignoring them.
 	 */
-	public interface ExtendedCloseable extends Closeable {
+	public interface ExtendedCloseable extends AutoCloseable {
 
 		/**
-		 * Calls the {@link #close()} method and wraps thrown {@link IOException}
-		 * into an {@link UncheckedIOException}.
+		 * Calls the {@link #close()} method and wraps thrown {@link Exception}
+		 * into an {@link RuntimeException}, mapped by the given {@code mapper}.
 		 *
-		 * @throws UncheckedIOException if the {@link #close()} method throws
-		 *         an {@link IOException}
+		 * @throws RuntimeException if the {@link #close()} method throws
+		 *         an {@link Exception}
 		 */
-		default void uncheckedClose() {
+		default void uncheckedClose(
+			final Function<
+				? super Exception,
+				? extends RuntimeException> mapper
+		) {
 			try {
 				close();
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
+			} catch (Exception e) {
+				throw mapper.apply(e);
 			}
 		}
 
@@ -191,7 +166,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if the given {@code closeable} is
 		 *         {@code null}
 		 */
-		static ExtendedCloseable of(final Closeable closeable) {
+		static ExtendedCloseable of(final AutoCloseable closeable) {
 			requireNonNull(closeable);
 			return closeable::close;
 		}
@@ -209,7 +184,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		static ExtendedCloseable of(final Closeable... closeables) {
+		static ExtendedCloseable of(final AutoCloseable... closeables) {
 			return of(Arrays.asList(closeables));
 		}
 
@@ -218,7 +193,7 @@ public final class Lifecycle {
 		 * {@code closeables} objects. The given list of objects are closed in
 		 * reversed order.
 		 *
-		 * @see #of(Closeable...)
+		 * @see #of(AutoCloseable...)
 		 *
 		 * @param closeables the initial closeables objects
 		 * @return a new closeable object which collects the given
@@ -227,8 +202,8 @@ public final class Lifecycle {
 		 *         {@code null}
 		 */
 		static ExtendedCloseable
-		of(final Collection<? extends Closeable> closeables) {
-			final List<Closeable> list = new ArrayList<>();
+		of(final Collection<? extends AutoCloseable> closeables) {
+			final List<AutoCloseable> list = new ArrayList<>();
 			closeables.forEach(c -> list.add(requireNonNull(c)));
 			Collections.reverse(list);
 
@@ -236,7 +211,7 @@ public final class Lifecycle {
 				if (list.size() == 1) {
 					list.get(0).close();
 				} else if (list.size() > 1) {
-					Lifecycle.invokeAll(Closeable::close, list);
+					Lifecycle.invokeAll(AutoCloseable::close, list);
 				}
 			};
 		}
@@ -245,7 +220,7 @@ public final class Lifecycle {
 
 	/**
 	 * This interface represents a closeable value. It is useful in cases where
-	 * the value doesn't implement the {@link Closeable} interface but needs
+	 * the value doesn't implement the {@link AutoCloseable} interface but needs
 	 * some cleanup work to do after usage.
 	 *
 	 * <pre>{@code
@@ -295,7 +270,7 @@ public final class Lifecycle {
 		 */
 		default <E extends Exception> void trying(
 			final ThrowingMethod<? super T, ? extends E> block,
-			final Closeable... closeables
+			final AutoCloseable... closeables
 		)
 			throws E
 		{
@@ -303,36 +278,6 @@ public final class Lifecycle {
 				block.apply(get());
 			} catch (Throwable error) {
 				ExtendedCloseable.of(closeables).silentClose(error);
-				silentClose(error);
-				throw error;
-			}
-		}
-
-		/**
-		 * Maps {@code this} closeable value with the given {@code mapper}
-		 * function. If the mapping function throws an exception, {@code this}
-		 * value is closed.
-		 *
-		 * <pre>{@code
-		 * final var file = CloseableValue.of(
-		 *     Files.createTempFile("Lifecycle", "TEST"),
-		 *     Files::deleteIfExists
-		 * );
-		 *
-		 * try (var name = file.map(Path::getFileName)) {
-		 *     // Do something with the file name.
-		 * }
-		 * }</pre>
-		 *
-		 * @param mapper the mapping function to apply to a value
-		 * @param <B> the type of the value returned from the mapping function
-		 * @return the mapped closeable value
-		 */
-		default <B> CloseableValue<B>
-		map(final Function<? super T, ? extends B> mapper) {
-			try {
-				return of(mapper.apply(get()), v -> close());
-			} catch (Throwable error) {
 				silentClose(error);
 				throw error;
 			}
@@ -350,7 +295,7 @@ public final class Lifecycle {
 		 */
 		static <T> CloseableValue<T> of(
 			final T value,
-			final ThrowingMethod<? super T, ? extends IOException> close
+			final ThrowingMethod<? super T, ? extends Exception> close
 		) {
 			requireNonNull(value);
 			requireNonNull(close);
@@ -361,7 +306,7 @@ public final class Lifecycle {
 					return value;
 				}
 				@Override
-				public void close() throws IOException {
+				public void close() throws Exception {
 					close.apply(get());
 				}
 				@Override
@@ -374,8 +319,8 @@ public final class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link ResourceCollector#add(Closeable)} method, are only closed in
-		 * the case of an error. If the <em>value</em> could be created, the
+		 * {@link ResourceCollector#add(AutoCloseable)} method, are only closed
+		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link CloseableValue#close()} method.
 		 *
@@ -431,8 +376,8 @@ public final class Lifecycle {
 	}
 
 	/**
-	 * This class allows to collect one or more {@link Closeable} objects into
-	 * one. The registered closeable objects are closed in reverse order.
+	 * This class allows to collect one or more {@link AutoCloseable} objects
+	 * into one. The registered closeable objects are closed in reverse order.
 	 * <p>
 	 * Using the {@code ResourceCollector} class can simplify the the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
@@ -461,7 +406,7 @@ public final class Lifecycle {
 		 * @param <C> the closeable type
 		 * @return the registered closeable
 		 */
-		<C extends Closeable> C add(final C closeable);
+		<C extends AutoCloseable> C add(final C closeable);
 
 		/**
 		 * Create a new closeable object from a snapshot of the currently
@@ -474,7 +419,7 @@ public final class Lifecycle {
 		ExtendedCloseable toCloseable();
 
 		@Override
-		default void close() throws IOException {
+		default void close() throws Exception {
 			toCloseable().close();
 		}
 
@@ -482,7 +427,7 @@ public final class Lifecycle {
 		 * Create a new {@code ResourceCollector} object with the given initial
 		 * {@code closeables} objects.
 		 *
-		 * @see #of(Closeable...)
+		 * @see #of(AutoCloseable...)
 		 *
 		 * @param closeables the initial closeables objects
 		 * @return a new resource collector object which collects the given
@@ -491,13 +436,13 @@ public final class Lifecycle {
 		 *         {@code null}
 		 */
 		static ResourceCollector
-		of(final Collection<? extends Closeable> closeables) {
-			final List<Closeable> resources = new ArrayList<>();
+		of(final Iterable<? extends AutoCloseable> closeables) {
+			final List<AutoCloseable> resources = new ArrayList<>();
 			closeables.forEach(c -> resources.add(requireNonNull(c)));
 
 			return new ResourceCollector() {
 				@Override
-				public synchronized <C extends Closeable>
+				public synchronized <C extends AutoCloseable>
 				C add(final C closeable) {
 					resources.add(requireNonNull(closeable));
 					return closeable;
@@ -513,7 +458,7 @@ public final class Lifecycle {
 		 * Create a new {@code ResourceCollector} object with the given initial
 		 * {@code closeables} objects.
 		 *
-		 * @see #of(Collection)
+		 * @see #of(Iterable)
 		 *
 		 * @param closeables the initial closeables objects
 		 * @return a new closeable object which collects the given
@@ -521,7 +466,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the {@code closeables} is
 		 *         {@code null}
 		 */
-		static ResourceCollector of(final Closeable... closeables) {
+		static ResourceCollector of(final AutoCloseable... closeables) {
 			return of(Arrays.asList(closeables));
 		}
 
@@ -605,6 +550,8 @@ public final class Lifecycle {
 			} else {
 				try {
 					method.apply(object);
+				} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
+					throw e;
 				} catch (Throwable e) {
 					error = e;
 				}
