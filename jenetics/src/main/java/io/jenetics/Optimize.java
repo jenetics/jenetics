@@ -28,7 +28,7 @@ import java.util.function.BinaryOperator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 6.2
  */
 public enum Optimize {
 
@@ -156,7 +156,7 @@ public enum Optimize {
 	 *
 	 * @see #best(Comparable, Comparable)
 	 *
-	 * @since !__version__!
+	 * @since 6.2
 	 *
 	 * @param <C> the comparable argument type
 	 * @return a {@code null}-friendly method which returns the best element of
@@ -199,7 +199,7 @@ public enum Optimize {
 	 *
 	 * @see #worst(Comparable, Comparable)
 	 *
-	 * @since !__version__!
+	 * @since 6.2
 	 *
 	 * @param <C> the comparable argument type
 	 * @return a {@code null}-friendly method which returns the worst element of
