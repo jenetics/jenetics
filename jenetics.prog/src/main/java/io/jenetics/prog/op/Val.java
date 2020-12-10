@@ -35,7 +35,10 @@ import java.util.Objects;
  * @version 5.0
  * @since 5.0
  */
-public abstract class Val<T> implements Op<T> {
+public abstract sealed class Val<T>
+	implements Op<T>
+	permits Const, EphemeralConst
+{
 
 	private final String _name;
 
