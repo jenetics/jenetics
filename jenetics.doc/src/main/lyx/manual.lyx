@@ -10789,17 +10789,18 @@ If no
 \family typewriter
  ForkJoinPool
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
 \family typewriter
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/F
+orkJoinPool.html
 \end_layout
 
 \end_inset
