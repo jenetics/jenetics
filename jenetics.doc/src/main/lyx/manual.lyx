@@ -10789,13 +10789,13 @@ If no
 \family typewriter
  ForkJoinPool
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 \family typewriter
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22996,7 +22996,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
+<lyxtabular version="3" rows="4" columns="2">
 <features tabularvalignment="middle" tabularwidth="90text%">
 <column alignment="left" valignment="top">
 <column alignment="left" valignment="top" width="60text%">
@@ -23065,7 +23065,7 @@ RouletteWheelSelector<>()
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23074,7 +23074,7 @@ Alterers:
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23085,26 +23085,6 @@ Mutator<>(0.03)
  and
 \family typewriter
  SinglePointCrossover<>(0.125)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Fitness scaler:
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Identity function
 \end_layout
 
 \end_inset
