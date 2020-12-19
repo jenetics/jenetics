@@ -28135,12 +28135,12 @@ status open
 
 \begin_layout Plain Layout
 
-public final class TreeRewriter<V> {
+public interface TreeRewriter<V> {
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int rewrite(final TreeNode<V> tree, final int limit);
+    int rewrite(TreeNode<V> tree, int limit);
 \end_layout
 
 \begin_layout Plain Layout
@@ -34267,17 +34267,17 @@ public interface Error<T> {
 
 \begin_layout Plain Layout
 
-        final Tree<? extends Op<T>, ?> program,
+        Tree<? extends Op<T>, ?> program,
 \end_layout
 
 \begin_layout Plain Layout
 
-        final T[] calculated,
+        T[] calculated,
 \end_layout
 
 \begin_layout Plain Layout
 
-        final T[] expected
+        T[] expected
 \end_layout
 
 \begin_layout Plain Layout
@@ -41081,7 +41081,7 @@ Version
 \series default
 :
 \emph on
- 7.1
+ 7.3
 \end_layout
 
 \begin_layout Itemize
@@ -41093,7 +41093,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -41274,7 +41274,7 @@ Version
 \series default
 :
 \emph on
- 3.1.13
+ 3.4.3
 \end_layout
 
 \begin_layout Itemize
@@ -41286,7 +41286,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -41307,7 +41307,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -41507,7 +41507,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.3
+: 6.7.1
 \end_layout
 
 \begin_layout Itemize
@@ -41540,11 +41540,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.3-bin.zip
+http://services.gradle.org/distributions/gradle-6.7.1-bin.zip
 \end_layout
 
 \end_inset
