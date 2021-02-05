@@ -57,7 +57,7 @@ public class Knapsack {
 	fitness(final double size) {
 		return items -> {
 			final Item sum = items.stream().collect(Item.toSum());
-			return sum.size <= size ? sum.value : 0;
+			return sum.size <= size ? sum.size : 0;
 		};
 	}
 
@@ -100,6 +100,9 @@ public class Knapsack {
 			.collect(toBestPhenotype());
 
 		System.out.println(statistics);
-		System.out.println(best);
+		System.out.println("\n\n");
+		System.out.println(String.format("Genotype of best item: %s", best.genotype()));
+		System.out.println(String.format("Used size of knapsack is %s of available %s.", best.fitness(), kssize));
+		System.out.println(String.format("Which is a ratio of %.2f %%. ", 100/kssize*best.fitness()));
 	}
 }
