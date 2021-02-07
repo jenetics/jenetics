@@ -158,6 +158,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * M. Šipek, D. Muharemagić, B. Mihaljević and A. Radovan. <a href="https://ieeexplore.ieee.org/abstract/document/9245290">Enhancing Performance of Cloud-based Software Applications with GraalVM and Quarkus.</a> <em>2020 43rd International Convention on Information, Communication and Electronic Technology (MIPRO), Opatija, Croatia, 2020, pp. 1746-1751. </em> Oct. 2020.
 * Vats P., Mandot M. <a href="https://link.springer.com/chapter/10.1007/978-981-15-7106-0_60">A Comprehensive Analysis for Validation of AVISAR Object-Oriented Testing Tool.</a> <em>Joshi A., Khosravy M., Gupta N. (eds) Machine Learning for Predictive Analysis. Lecture Notes in Networks and Systems, vol 141. Springer, Singapore. </em></a> Oct. 2020.
 * Thakur, K., Kumar, G. <a href="https://doi.org/10.1007/s11831-020-09481-7">Nature Inspired Techniques and Applications in Intrusion Detection Systems: Recent Progress and Updated Perspective.</a> <em>Archives of Computational Methods in Engineering (2020). </em></a> Aug. 2020.
+* Nur Hidayah Mat Yasin, Abdul Sahli Fakhrudin, Abdul Wafie Afnan Abdul Hadi, Muhammad Harith Mohd Khairuddin, Noor Raihana Abu Sepian, Farhan Mohd Said, Norazwina Zainol. <a href="http://modern-journals.com/index.php/ijma/article/view/378">Comparison of Response Surface Methodology and Artificial Neural Network for the Solvent Extraction of Fatty Acid Methyl Ester from Fish Waste. </a> <em>International Journal of Modern Agriculture, Volume 9, No.3, 2020, ISSN: 2305-7246. </em> Sep. 2020.
 * Cicirello, V. A. <a href="https://doi.org/10.21105/joss.02448">Chips-n-Salsa: A Java Library of Customizable, Hybridizable, Iterative, Parallel, Stochastic, and Self-Adaptive Local Search Algorithms.</a> <em>Journal of Open Source Software, 5(52), 2448. </em></a> Aug. 2020.
 * Li, Yuanyuan; Carabelli, Stefano;Fadda, Edoardo; Manerba, Daniele; Tadei, Roberto; Terzo, Olivier. <a href="https://iris.polito.it/retrieve/handle/11583/2842141/388548/I40for_Advanced_Manufacturing_Technology.pdf">Machine Learning and Optimization for Production Rescheduling in Industry 4.0.</a> <em>THE INTERNATIONAL JOURNAL OF ADVANCED MANUFACTURING TECHNOLOGY. - ISSN 1433-3015. </em></a> Aug. 2020.
 * Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for GraduallySaturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
@@ -250,7 +251,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2020 Franz Wilhelmstötter
+	Copyright 2007-2021 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
