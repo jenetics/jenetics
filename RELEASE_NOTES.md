@@ -1,5 +1,18 @@
 ## Release notes
 
+### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
+
+#### Improvements
+
+* [#754](https://github.com/jenetics/jenetics/issues/754): Make `Optimize.best` method `null` friendly
+
+#### Bugs
+
+* [#742](https://github.com/jenetics/jenetics/issues/742): Fix compile error with Java 15.
+* [#746](https://github.com/jenetics/jenetics/issues/746): `Const<Double>` equals doesn't conform with `Double.compare`.
+* [#748](https://github.com/jenetics/jenetics/issues/748): Fix broken formulas in Javadoc.
+* [#752](https://github.com/jenetics/jenetics/issues/752): `StreamPublisher` doesn't close underlying `Stream` on close.
+
 ### [6.1.0](https://github.com/jenetics/jenetics/releases/tag/v6.1.0)
 
 #### Improvements

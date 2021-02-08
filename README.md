@@ -222,28 +222,18 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [6.1.0](https://github.com/jenetics/jenetics/releases/tag/v6.1.0)
+### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
 
 #### Improvements
 
-* [#323](https://github.com/jenetics/jenetics/issues/323): Fix leaky abstraction of `CompositeCodec`. 
-* [#434](https://github.com/jenetics/jenetics/issues/434): Rewrite build scripts using Kotlin.
-* [#695](https://github.com/jenetics/jenetics/issues/695): Simplify MOEA for continious optimization.
-* [#704](https://github.com/jenetics/jenetics/issues/704): Add `FlatTreeNode.ofTree` factory method, for cleaner `Tree` API.
-* [#706](https://github.com/jenetics/jenetics/issues/706): The `Constraint` is now part of the `Problem` interface. If defined, it will automatically be part of the created `Engine`.
-```java
-default Optional<Constraint<G, C>> constraint() {
-    return Optional.empty();
-}
-```
-* [#708](https://github.com/jenetics/jenetics/issues/708): Additional `Chromosome.map(Function)` methods. This allows a more efficient mapping of chromosomes.
-* [#731](https://github.com/jenetics/jenetics/issues/731): Improve creation of _constrained_ individuals, as defined in the `Constraint` interface.
-* [#739](https://github.com/jenetics/jenetics/issues/736): Add `jenetics.incubator` module. This module will contain classes which might be part of one of the main module.
-
+* [#754](https://github.com/jenetics/jenetics/issues/754): Make `Optimize.best` method `null` friendly.
+  
 #### Bugs
 
-* [#700](https://github.com/jenetics/jenetics/issues/700): `GaussianMutator` violates the `DoubleGene`'s upper bound.
-* [#707](https://github.com/jenetics/jenetics/issues/707): Fix conversion of `BitChromosome` <-> `BitSet`.
+* [#742](https://github.com/jenetics/jenetics/issues/742): Fix compile error with Java 15.
+* [#746](https://github.com/jenetics/jenetics/issues/746): `Const<Double>` equals doesn't conform with `Double.compare`.
+* [#748](https://github.com/jenetics/jenetics/issues/748): Fix broken formulas in Javadoc.
+* [#752](https://github.com/jenetics/jenetics/issues/752): `StreamPublisher` doesn't close underlying `Stream` on close.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 
