@@ -72,7 +72,8 @@ public class Knapsack {
 				.collect(ISeq.toISeq());
 
 		// Defining the codec.
-		final Codec<ISeq<Item>, BitGene> codec = Codecs.ofSubSet(items);
+		final Codec<ISeq<Item>, BitGene> codec =
+			Codecs.ofSubSet(items);
 
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Double> engine = Engine
@@ -108,12 +109,15 @@ public class Knapsack {
 		System.out.println(statistics);
 		System.out.println(best);
 		System.out.println("\n\n");
-		System.out.printf("Genotype of best item: %s%n", best.genotype());
+		System.out.printf(
+			"Genotype of best item: %s%n",
+			best.genotype()
+		);
 
 		final double fillSize = knapsack.stream()
 			.mapToDouble(it -> it.size)
 			.sum();
 
-		System.out.printf("%.2f%% filled. %n", 100*fillSize/kssize);
+		System.out.printf("%.2f%% filled.%n", 100*fillSize/kssize);
 	}
 }
