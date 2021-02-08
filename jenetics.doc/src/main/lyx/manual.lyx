@@ -41507,7 +41507,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.7.1
+: 6.8.2
 \end_layout
 
 \begin_layout Itemize
@@ -41544,7 +41544,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.7.1-bin.zip
+http://services.gradle.org/distributions/gradle-6.8.2-bin.zip
 \end_layout
 
 \end_inset
