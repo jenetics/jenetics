@@ -36,6 +36,7 @@ import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -295,6 +296,16 @@ public abstract class StreamProxy<T> implements Stream<T> {
 	@Override
 	public Stream<T> unordered() {
 		return _self.unordered();
+	}
+
+	@Override
+	public Stream<T> takeWhile(final Predicate<? super T> predicate) {
+		return _self.takeWhile(predicate);
+	}
+
+	@Override
+	public Stream<T> dropWhile(final Predicate<? super T> predicate) {
+		return _self.dropWhile(predicate);
 	}
 
 }

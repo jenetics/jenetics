@@ -554,7 +554,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 				: MSeq.<T>ofLength(collection.size()).setAll(values);
 		} else if (values instanceof BaseSeq) {
 			final BaseSeq<T> seq = (BaseSeq<T>)values;
-			mseq = seq.length() == 0
+			mseq = seq.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(seq.length()).setAll(values);
 		} else {

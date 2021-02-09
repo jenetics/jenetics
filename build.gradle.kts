@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.1" apply false
+	id("me.champeau.gradle.jmh") version "0.5.2" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "6.6.1"
+	gradleVersion = "6.8.2"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -129,7 +129,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.5"
+		toolVersion = "0.8.6"
 	}
 
 	project.tasks {
@@ -232,12 +232,12 @@ fun setupJavadoc(project: Project) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/javase/9/tools/javac.htm#JSWOR627
+	// See https://docs.oracle.com/en/java/javase/15/docs/specs/man/javac.html
 	return listOf(
 		"cast",
 		"classfile",
-		"deprecation",
 		"dep-ann",
+		"deprecation",
 		"divzero",
 		"empty",
 		"finally",

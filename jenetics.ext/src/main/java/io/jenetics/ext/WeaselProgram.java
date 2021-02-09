@@ -37,6 +37,7 @@ import io.jenetics.internal.util.Requires;
  *
  * @see WeaselSelector
  * @see WeaselMutator
+ * @see io.jenetics.engine.Engine.Builder#setup(Setup)
  *
  * @param <G> the gene type
  * @param <C> the fitness result type

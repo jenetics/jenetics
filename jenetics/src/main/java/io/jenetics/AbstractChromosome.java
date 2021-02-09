@@ -24,7 +24,6 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.RandomAccess;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Verifiable;
@@ -43,7 +42,6 @@ import io.jenetics.util.Verifiable;
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
 		Chromosome<G>,
-		RandomAccess,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
