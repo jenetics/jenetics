@@ -7,7 +7,7 @@ The basic module of the _Jenetics_ library contains all classes for solving opti
 The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<G>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
 [source,java]
-----
+---- 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.Genotype;
