@@ -99,9 +99,9 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 			node.value(Const.of(value));
 
 			return 1;
+		} else {
+			return 0;
 		}
-
-		return 0;
 	}
 
 	@SuppressWarnings("unchecked")

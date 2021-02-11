@@ -19,6 +19,7 @@
  */
 package io.jenetics.prog.op;
 
+import static io.jenetics.prog.op.Numbers.box;
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
 import static java.lang.Math.asin;
@@ -47,7 +48,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -386,11 +386,7 @@ public enum MathOp implements Op<Double> {
 	 * @return the evaluated operation
 	 */
 	public double eval(final double... args) {
-		return apply(
-			DoubleStream.of(args)
-				.boxed()
-				.toArray(Double[]::new)
-		);
+		return apply(box(args));
 	}
 
 	@Override
