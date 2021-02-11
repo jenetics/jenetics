@@ -1244,7 +1244,7 @@ public final class Engine<
 	 * @since 6.0
 	 */
 	@FunctionalInterface
-	public static interface Setup<
+	public interface Setup<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	> {

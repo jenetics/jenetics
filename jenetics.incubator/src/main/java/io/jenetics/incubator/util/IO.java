@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
+import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
@@ -146,7 +148,7 @@ public final class IO {
 			objectStream(path, resources)
 		);
 
-		return result.get().onClose(result::uncheckedClose);
+		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
 	}
 
 	private static Stream<Object>
