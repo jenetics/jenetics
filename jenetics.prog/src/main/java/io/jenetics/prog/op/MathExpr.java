@@ -235,8 +235,8 @@ public final class MathExpr
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MathExpr &&
-			Tree.equals(((MathExpr)obj)._tree, _tree);
+			obj instanceof MathExpr other &&
+			Tree.equals(other._tree, _tree);
 	}
 
 	/**

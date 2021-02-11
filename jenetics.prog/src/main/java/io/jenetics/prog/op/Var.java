@@ -143,8 +143,8 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Var &&
-			Objects.equals(((Var)obj)._name, _name);
+			obj instanceof Var<?> other &&
+			Objects.equals(other._name, _name);
 	}
 
 	@Override

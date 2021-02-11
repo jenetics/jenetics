@@ -282,7 +282,7 @@ public final class BitArray implements Copyable<BitArray> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof BitArray && equals((BitArray)obj);
+		return obj instanceof BitArray other && equals(other);
 	}
 
 	private boolean equals(final BitArray array) {

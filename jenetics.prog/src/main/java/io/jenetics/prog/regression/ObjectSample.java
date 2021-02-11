@@ -88,8 +88,8 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof ObjectSample &&
-			Arrays.equals(_sample, ((ObjectSample)obj)._sample);
+			obj instanceof ObjectSample<?> other &&
+			Arrays.equals(_sample, other._sample);
 	}
 
 	@Override

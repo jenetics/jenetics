@@ -206,16 +206,16 @@ public final class SampleSummaryPoint implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof SampleSummaryPoint &&
-			compare(_mean, ((SampleSummaryPoint)obj)._mean) == 0 &&
-			compare(_variance, ((SampleSummaryPoint)obj)._variance) == 0 &&
-			compare(_skewness, ((SampleSummaryPoint)obj)._skewness) == 0 &&
-			compare(_kurtosis, ((SampleSummaryPoint)obj)._kurtosis) == 0 &&
-			compare(_median, ((SampleSummaryPoint)obj)._median) == 0 &&
-			compare(_low, ((SampleSummaryPoint)obj)._low) == 0 &&
-			compare(_high, ((SampleSummaryPoint)obj)._high) == 0 &&
-			compare(_min, ((SampleSummaryPoint)obj)._min) == 0 &&
-			compare(_max, ((SampleSummaryPoint)obj)._max) == 0;
+		return obj instanceof SampleSummaryPoint other &&
+			compare(_mean, other._mean) == 0 &&
+			compare(_variance, other._variance) == 0 &&
+			compare(_skewness, other._skewness) == 0 &&
+			compare(_kurtosis, other._kurtosis) == 0 &&
+			compare(_median, other._median) == 0 &&
+			compare(_low, other._low) == 0 &&
+			compare(_high, other._high) == 0 &&
+			compare(_min, other._min) == 0 &&
+			compare(_max, other._max) == 0;
 	}
 
 	@Override

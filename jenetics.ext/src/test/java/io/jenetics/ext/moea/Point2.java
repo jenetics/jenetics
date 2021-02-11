@@ -134,9 +134,9 @@ public final class Point2 implements Vec<Point2> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Point2 &&
-			Double.compare(((Point2)obj)._x, _x) == 0 &&
-			Double.compare(((Point2)obj)._y, _y) == 0;
+		return obj instanceof Point2 other &&
+			Double.compare(other._x, _x) == 0 &&
+			Double.compare(other._y, _y) == 0;
 	}
 
 	@Override

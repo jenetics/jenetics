@@ -91,8 +91,8 @@ final class DoubleSample implements Sample<Double>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof DoubleSample &&
-			Arrays.equals(_sample, ((DoubleSample)obj)._sample);
+			obj instanceof DoubleSample other &&
+			Arrays.equals(_sample, other._sample);
 	}
 
 	@Override

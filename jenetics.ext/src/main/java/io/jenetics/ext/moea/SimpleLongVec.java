@@ -87,8 +87,8 @@ final class SimpleLongVec implements Vec<long[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimpleLongVec &&
-			Arrays.equals(((SimpleLongVec) obj)._data, _data);
+			obj instanceof SimpleLongVec other &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override

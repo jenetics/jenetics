@@ -305,8 +305,8 @@ public final class TreePattern<V> implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TreePattern &&
-			_pattern.equals(((TreePattern)obj)._pattern);
+			obj instanceof TreePattern<?> other &&
+			_pattern.equals(other._pattern);
 	}
 
 	@Override
@@ -478,8 +478,8 @@ public final class TreePattern<V> implements Serializable {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj == this ||
-				obj instanceof Var &&
-				Objects.equals(_name, ((Var)obj)._name);
+				obj instanceof Var<?> other &&
+				Objects.equals(_name, other._name);
 		}
 
 		@Override
@@ -568,8 +568,8 @@ public final class TreePattern<V> implements Serializable {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj == this ||
-				obj instanceof TreePattern.Val &&
-				Objects.equals(_value, ((Val)obj)._value);
+				obj instanceof TreePattern.Val<?> other &&
+				Objects.equals(_value, other._value);
 		}
 
 		@Override

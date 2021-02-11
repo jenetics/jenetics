@@ -168,9 +168,9 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TreeRewriteRule &&
-			_left.equals(((TreeRewriteRule)obj)._left) &&
-			_right.equals(((TreeRewriteRule)obj)._right);
+			obj instanceof TreeRewriteRule<?> other &&
+			_left.equals(other._left) &&
+			_right.equals(other._right);
 	}
 
 	@Override

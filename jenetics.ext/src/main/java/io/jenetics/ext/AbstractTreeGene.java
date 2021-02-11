@@ -189,10 +189,10 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AbstractTreeGene &&
-			Objects.equals(((AbstractTreeGene)obj)._allele, _allele) &&
-			((AbstractTreeGene)obj)._childOffset == _childOffset &&
-			((AbstractTreeGene)obj)._childCount == _childCount;
+			obj instanceof AbstractTreeGene<?, ?> other &&
+			Objects.equals(other._allele, _allele) &&
+			other._childOffset == _childOffset &&
+			other._childCount == _childCount;
 	}
 
 	@Override

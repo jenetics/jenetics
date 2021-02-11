@@ -358,23 +358,15 @@ public final class EvolutionResult<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionResult &&
-			Objects.equals(_optimize,
-				((EvolutionResult)obj)._optimize) &&
-			Objects.equals(_population,
-				((EvolutionResult)obj)._population) &&
-			Objects.equals(_generation,
-				((EvolutionResult)obj)._generation) &&
-			Objects.equals(_totalGenerations,
-				((EvolutionResult)obj)._totalGenerations) &&
-			Objects.equals(_durations,
-				((EvolutionResult)obj)._durations) &&
-			Objects.equals(_killCount,
-				((EvolutionResult)obj)._killCount) &&
-			Objects.equals(_invalidCount,
-				((EvolutionResult)obj)._invalidCount) &&
-			Objects.equals(_alterCount,
-				((EvolutionResult)obj)._alterCount);
+			obj instanceof EvolutionResult<?, ?> other &&
+			Objects.equals(_optimize, other._optimize) &&
+			Objects.equals(_population, other._population) &&
+			Objects.equals(_generation, other._generation) &&
+			Objects.equals(_totalGenerations, other._totalGenerations) &&
+			Objects.equals(_durations, other._durations) &&
+			Objects.equals(_killCount, other._killCount) &&
+			Objects.equals(_invalidCount, other._invalidCount) &&
+			Objects.equals(_alterCount, other._alterCount);
 	}
 
 

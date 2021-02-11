@@ -440,9 +440,7 @@ public final class TreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreeNode &&
-			Tree.equals(this, (TreeNode)obj);
+		return obj instanceof Tree<?, ?> other && Tree.equals(this, other);
 	}
 
 	@Override

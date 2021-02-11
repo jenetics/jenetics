@@ -87,17 +87,17 @@ public abstract sealed class Val<T>
 	@Override
 	public final boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Val &&
-			equals(((Val)obj).value(), value());
+			obj instanceof Val<?> other &&
+			equals(other.value(), value());
 	}
 
 	private static boolean equals(final Object a, final Object b) {
-		if (a instanceof Double && b instanceof Double) {
-			return Double.compare((Double)a, (Double)b) == 0;
-		} else if (a instanceof Float && b instanceof Float) {
-			return Float.compare((Float)a, (Float)b) == 0;
-		} else if (a instanceof BigDecimal && b instanceof BigDecimal) {
-			return ((BigDecimal)a).compareTo((BigDecimal)b) == 0;
+		if (a instanceof Double aa && b instanceof Double bb) {
+			return Double.compare(aa, bb) == 0;
+		} else if (a instanceof Float aa && b instanceof Float bb) {
+			return Float.compare(aa, bb) == 0;
+		} else if (a instanceof BigDecimal aa && b instanceof BigDecimal bb) {
+			return aa.compareTo(bb) == 0;
 		}
 
 		return Objects.equals(a, b);

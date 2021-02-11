@@ -119,10 +119,10 @@ public final class BigIntegerGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof BigIntegerGene &&
-			Objects.equals(((BigIntegerGene)obj)._value, _value) &&
-			Objects.equals(((BigIntegerGene)obj)._min, _min) &&
-			Objects.equals(((BigIntegerGene)obj)._max, _max);
+			obj instanceof BigIntegerGene other &&
+			Objects.equals(other._value, _value) &&
+			Objects.equals(other._min, _min) &&
+			Objects.equals(other._max, _max);
 	}
 
 	@Override

@@ -87,8 +87,8 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimpleDoubleVec &&
-			Arrays.equals(((SimpleDoubleVec)obj)._data, _data);
+			obj instanceof SimpleDoubleVec other &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override

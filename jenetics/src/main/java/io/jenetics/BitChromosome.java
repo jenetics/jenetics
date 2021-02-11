@@ -380,8 +380,8 @@ public final class BitChromosome extends Number
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof BitChromosome &&
-			_genes.equals(((BitChromosome)obj)._genes);
+			obj instanceof BitChromosome other &&
+			_genes.equals(other._genes);
 	}
 
 	@Override

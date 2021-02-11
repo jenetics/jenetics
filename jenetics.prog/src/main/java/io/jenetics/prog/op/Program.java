@@ -128,9 +128,9 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program &&
-			Objects.equals(((Program)obj)._name, _name) &&
-			Objects.equals(((Program)obj)._tree, _tree);
+			obj instanceof Program<?> other &&
+			Objects.equals(other._name, _name) &&
+			Objects.equals(other._tree, _tree);
 	}
 
 	@Override

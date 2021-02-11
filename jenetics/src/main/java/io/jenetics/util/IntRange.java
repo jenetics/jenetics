@@ -145,9 +145,9 @@ public final /*record*/ class IntRange implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntRange &&
-			_min == ((IntRange)obj)._min &&
-			_max == ((IntRange)obj)._max;
+			obj instanceof IntRange other &&
+			_min == other._min &&
+			_max == other._max;
 	}
 
 	@Override

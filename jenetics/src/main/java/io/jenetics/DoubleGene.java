@@ -196,10 +196,10 @@ public final class DoubleGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof DoubleGene &&
-			Double.compare(((DoubleGene)obj)._allele, _allele) == 0 &&
-			Double.compare(((DoubleGene)obj)._min, _min) == 0 &&
-			Double.compare(((DoubleGene)obj)._max, _max) == 0;
+			obj instanceof DoubleGene other &&
+			Double.compare(other._allele, _allele) == 0 &&
+			Double.compare(other._min, _min) == 0 &&
+			Double.compare(other._max, _max) == 0;
 	}
 
 	@Override

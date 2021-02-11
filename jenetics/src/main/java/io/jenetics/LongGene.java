@@ -197,10 +197,10 @@ public final class LongGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LongGene &&
-			((LongGene)obj)._allele == _allele &&
-			((LongGene)obj)._min == _min &&
-			((LongGene)obj)._max == _max;
+			obj instanceof LongGene other &&
+			other._allele == _allele &&
+			other._min == _min &&
+			other._max == _max;
 	}
 
 	@Override

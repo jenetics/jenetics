@@ -51,8 +51,8 @@ final class GeneralDoubleVec extends GeneralVec<double[]> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof GeneralDoubleVec &&
-			Arrays.equals(((GeneralDoubleVec)obj)._data, _data);
+			obj instanceof GeneralDoubleVec other &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override

@@ -143,16 +143,10 @@ public abstract class ArraySeq<T>
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof Seq)) {
-			return false;
-		}
-
-		final Seq<?> seq = (Seq)object;
-		return Seq.equals(this, seq);
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Seq<?> other &&
+			Seq.equals(this, other);
 	}
 
 }

@@ -134,9 +134,9 @@ public final /*record*/ class LongRange implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LongRange &&
-			_min == ((LongRange)obj)._min &&
-			_max == ((LongRange)obj)._max;
+			obj instanceof LongRange other &&
+			_min == other._min &&
+			_max == other._max;
 	}
 
 	@Override

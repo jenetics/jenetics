@@ -25,6 +25,7 @@ import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
@@ -92,19 +93,14 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 
 		@Override
 		public int hashCode() {
-			int hash = 1;
-			long bits = Double.doubleToLongBits(_size);
-			hash = 31*hash + (int)(bits^(bits >>> 32));
-
-			bits = Double.doubleToLongBits(_value);
-			return 31*hash + (int)(bits^(bits >>> 32));
+			return Objects.hash(_size, _value);
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj instanceof Item &&
-				Double.compare(_size, ((Item)obj)._size) == 0 &&
-				Double.compare(_value, ((Item)obj)._value) == 0;
+			return obj instanceof Item other &&
+				Double.compare(_size, other._size) == 0 &&
+				Double.compare(_value, other._value) == 0;
 		}
 
 		@Override

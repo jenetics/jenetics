@@ -44,9 +44,9 @@ class Tuple2<T1, T2> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof  Tuple2 &&
-			Objects.equals(_1, ((Tuple2) obj)._1) &&
-			Objects.equals(_2, ((Tuple2) obj)._2);
+			obj instanceof Tuple2<?, ?> other &&
+			Objects.equals(_1, other._1) &&
+			Objects.equals(_2, other._2);
 	}
 
 	@Override

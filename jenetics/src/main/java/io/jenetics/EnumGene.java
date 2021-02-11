@@ -173,9 +173,9 @@ public final class EnumGene<A>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EnumGene g &&
-			_alleleIndex == g._alleleIndex &&
-			Objects.equals(_validAlleles, g._validAlleles);
+		return obj instanceof EnumGene<?> other &&
+			_alleleIndex == other._alleleIndex &&
+			Objects.equals(_validAlleles, other._validAlleles);
 	}
 
 	@Override
