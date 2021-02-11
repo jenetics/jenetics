@@ -126,7 +126,9 @@ public final class CSV {
 				return read(reader);
 			});
 
-			return result.get().onClose(result::uncheckedClose);
+			return result.get().onClose(() ->
+				result.uncheckedClose(e -> new UncheckedIOException((IOException)e))
+			);
 		}
 
 		/**
@@ -461,7 +463,9 @@ public final class CSV {
 				.takeWhile(Objects::nonNull);
 		});
 
-		return result.get().onClose(result::uncheckedClose);
+		return result.get().onClose(() ->
+			result.uncheckedClose(e -> new UncheckedIOException((IOException)e))
+		);
 	}
 
 	private static boolean nextLine(final Reader reader, final StringBuilder line)

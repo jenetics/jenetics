@@ -287,7 +287,7 @@ public class CSVTest {
 	}
 
 	@Test(invocationCount = 10)
-	public void randomWriteRead() throws IOException {
+	public void randomWriteRead() throws Exception {
 		final var random = new Random();
 		final List<List<?>> values = Stream.generate(() -> nextRow(25, random))
 			.limit(50)
