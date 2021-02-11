@@ -65,6 +65,7 @@ public final class Phenotype<
 		Verifiable,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 6L;
 
 	private final Genotype<G> _genotype;
@@ -363,10 +364,12 @@ public final class Phenotype<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.PHENOTYPE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

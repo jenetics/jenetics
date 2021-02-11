@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -69,6 +70,7 @@ public final class EnumGene<A>
 		Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<A> _validAlleles;

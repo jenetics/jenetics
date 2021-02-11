@@ -64,6 +64,7 @@ public final class DoubleGene
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final double _allele;
@@ -290,10 +291,12 @@ public final class DoubleGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.DOUBLE_GENE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

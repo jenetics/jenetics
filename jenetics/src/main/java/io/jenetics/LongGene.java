@@ -66,6 +66,7 @@ public final class LongGene
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _allele;
@@ -358,10 +359,12 @@ public final class LongGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.LONG_GENE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

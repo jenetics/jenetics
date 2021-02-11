@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import io.jenetics.internal.util.Requires;
@@ -51,6 +52,7 @@ public final record AltererResult<
 )
 	implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	/**

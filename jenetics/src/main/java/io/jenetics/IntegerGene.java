@@ -65,6 +65,7 @@ public final class IntegerGene
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int _allele;
@@ -323,10 +324,12 @@ public final class IntegerGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.INTEGER_GENE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

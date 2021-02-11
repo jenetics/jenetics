@@ -109,6 +109,7 @@ public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<T> _validAlleles;
@@ -321,10 +322,12 @@ public final class PermutationChromosome<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.PERMUTATION_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

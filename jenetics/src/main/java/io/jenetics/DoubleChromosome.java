@@ -57,6 +57,7 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -325,10 +326,12 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
