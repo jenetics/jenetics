@@ -57,6 +57,7 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	implements Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<Genotype<G>> _population;
@@ -135,10 +136,12 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.EVOLUTION_INIT, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

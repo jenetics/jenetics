@@ -61,6 +61,7 @@ public final class FlatTreeNode<V>
 		FlatTree<V, FlatTreeNode<V>>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	private final int _index;
@@ -366,10 +367,12 @@ public final class FlatTreeNode<V>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.FLAT_TREE_NODE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

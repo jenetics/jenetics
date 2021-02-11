@@ -69,6 +69,7 @@ public final record EvolutionDurations(
 		Comparable<EvolutionDurations>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -151,10 +152,12 @@ public final record EvolutionDurations(
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.EVOLUTION_DURATIONS, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

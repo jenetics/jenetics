@@ -22,6 +22,7 @@ package io.jenetics.stat;
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.IntSummaryStatistics;
 import java.util.function.ToIntFunction;
@@ -55,6 +56,7 @@ public final record IntSummary(
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	@Override

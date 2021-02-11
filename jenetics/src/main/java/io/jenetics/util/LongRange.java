@@ -44,6 +44,7 @@ import java.util.stream.LongStream;
  */
 public final /*record*/ class LongRange implements Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _min;
@@ -149,10 +150,12 @@ public final /*record*/ class LongRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.LONG_RANGE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

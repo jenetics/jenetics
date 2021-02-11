@@ -19,6 +19,7 @@
  */
 package io.jenetics.internal.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,8 @@ import java.io.Serializable;
  * @version 3.0
  */
 public final class IntRef implements Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1;
 
 	/**

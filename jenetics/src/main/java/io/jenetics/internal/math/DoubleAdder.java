@@ -24,6 +24,8 @@ import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
+
 /**
  * This class implements the the
  * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
@@ -38,6 +40,7 @@ public final class DoubleAdder
 	extends Number
 	implements Comparable<DoubleAdder>
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private double _sum = 0.0;
@@ -124,7 +127,7 @@ public final class DoubleAdder
 	private void addWithCompensation(final double value) {
 		final double y = value - _compensation;
 		final double t = _sum + y;
-		_compensation = (t - _sum) - y;
+		_compensation = t - _sum - y;
 		_sum = t;
 	}
 

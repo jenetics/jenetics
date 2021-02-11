@@ -25,6 +25,7 @@ import static io.jenetics.internal.util.SerialIO.writeInt;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -63,6 +64,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<TreeRewriteRule<V>> _rules;
@@ -156,11 +158,13 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.TRS_KEY, this);
 	}
 
-	private void readObject(final ObjectOutputStream stream)
+	@java.io.Serial
+	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
 		throw new InvalidObjectException("Serialization proxy required.");

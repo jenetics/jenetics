@@ -41,6 +41,7 @@ import java.io.Serializable;
  */
 public final /*record*/ class DoubleRange implements Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final double _min;
@@ -111,10 +112,12 @@ public final /*record*/ class DoubleRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.DOUBLE_RANGE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

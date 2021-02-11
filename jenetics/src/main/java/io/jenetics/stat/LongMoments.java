@@ -21,6 +21,7 @@ package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
@@ -64,6 +65,7 @@ public final record LongMoments(
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2;
 
 	@Override

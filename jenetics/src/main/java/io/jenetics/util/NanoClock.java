@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Clock;
 import java.time.Instant;
@@ -36,6 +37,7 @@ import java.time.ZoneOffset;
  */
 public final class NanoClock extends Clock implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;

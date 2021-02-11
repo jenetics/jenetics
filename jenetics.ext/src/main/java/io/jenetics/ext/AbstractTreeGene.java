@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	implements TreeGene<A, G>, Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**

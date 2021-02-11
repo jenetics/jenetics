@@ -82,6 +82,7 @@ public final class EvolutionResult<
 >
 	implements Comparable<EvolutionResult<G, C>>, Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Optimize _optimize;
@@ -814,10 +815,12 @@ public final class EvolutionResult<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.EVOLUTION_RESULT, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

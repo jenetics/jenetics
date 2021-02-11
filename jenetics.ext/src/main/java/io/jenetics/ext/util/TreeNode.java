@@ -56,6 +56,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private T _value;
@@ -596,10 +597,12 @@ public final class TreeNode<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.TREE_NODE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
@@ -611,7 +614,6 @@ public final class TreeNode<T>
 		FlatTreeNode.ofTree(this).write(out);
 	}
 
-	@SuppressWarnings("unchecked")
 	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{

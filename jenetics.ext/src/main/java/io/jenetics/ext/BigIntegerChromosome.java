@@ -52,6 +52,7 @@ public class BigIntegerChromosome
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	private final BigInteger _min;
@@ -168,10 +169,12 @@ public class BigIntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.BIG_INTEGER_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

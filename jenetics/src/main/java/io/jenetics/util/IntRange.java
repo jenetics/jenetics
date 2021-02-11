@@ -44,6 +44,7 @@ import java.util.stream.IntStream;
  */
 public final /*record*/ class IntRange implements Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int _min;
@@ -160,10 +161,12 @@ public final /*record*/ class IntRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.INT_RANGE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

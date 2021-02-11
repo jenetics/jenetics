@@ -66,6 +66,7 @@ public final class EvolutionParams<
 	implements Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Selector<G, C> _survivorsSelector;
@@ -463,10 +464,12 @@ public final class EvolutionParams<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.EVOLUTION_PARAMS, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

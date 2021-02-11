@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Objects;
@@ -57,6 +58,7 @@ public final class BigIntegerGene
 		Mean<BigIntegerGene>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private static final BigInteger TWO = BigInteger.valueOf(2);

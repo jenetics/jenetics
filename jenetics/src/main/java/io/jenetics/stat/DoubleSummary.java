@@ -22,6 +22,7 @@ package io.jenetics.stat;
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.DoubleSummaryStatistics;
 import java.util.function.ToDoubleFunction;
@@ -56,6 +57,7 @@ public final record DoubleSummary(
 )
 	implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	@Override

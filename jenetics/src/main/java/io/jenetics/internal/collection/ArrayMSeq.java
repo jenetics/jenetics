@@ -22,6 +22,7 @@ package io.jenetics.internal.collection;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.io.Serial;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -38,6 +39,8 @@ import io.jenetics.util.MSeq;
  * @version 3.4
  */
 public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public ArrayMSeq(final Array<T> array) {
@@ -120,7 +123,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void swap(int start, int end, MSeq<T> other, int otherStart) {
 		checkIndex(start, end, otherStart, other.length());
 

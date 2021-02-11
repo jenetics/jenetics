@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.RandomAccess;
@@ -36,6 +37,7 @@ class BaseSeqList<T>
 		RandomAccess,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public final BaseSeq<? extends T> seq;

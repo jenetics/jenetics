@@ -73,7 +73,7 @@ final class ParenthesesTreeParser {
 			pc = c;
 		}
 
-		if (token.length() > 0) {
+		if (!token.isEmpty()) {
 			tokens.add(new Token(unescape(token.toString()), pos));
 		}
 
