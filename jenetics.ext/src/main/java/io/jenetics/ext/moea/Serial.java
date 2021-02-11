@@ -32,6 +32,7 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte SIMPLE_INT_VEC = 1;
@@ -69,11 +70,10 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case SIMPLE_INT_VEC: ((SimpleIntVec)_object).write(out); break;
-			case SIMPLE_LONG_VEC: ((SimpleLongVec)_object).write(out); break;
-			case SIMPLE_DOUBLE_VEC: ((SimpleDoubleVec)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case SIMPLE_INT_VEC -> ((SimpleIntVec)_object).write(out);
+			case SIMPLE_LONG_VEC -> ((SimpleLongVec)_object).write(out);
+			case SIMPLE_DOUBLE_VEC -> ((SimpleDoubleVec)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -82,15 +82,15 @@ final class Serial implements Externalizable {
 		throws IOException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case SIMPLE_INT_VEC: _object = SimpleIntVec.read(in); break;
-			case SIMPLE_LONG_VEC: _object = SimpleLongVec.read(in); break;
-			case SIMPLE_DOUBLE_VEC: _object = SimpleDoubleVec.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case SIMPLE_INT_VEC -> SimpleIntVec.read(in);
+			case SIMPLE_LONG_VEC -> SimpleLongVec.read(in);
+			case SIMPLE_DOUBLE_VEC -> SimpleDoubleVec.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}
