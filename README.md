@@ -155,12 +155,14 @@ The previous image shows the GUI after evolving the default image for about 4,00
 ## Citations
 
 * Dominik Bork and Antonio Garmendia and Manuel Wimmer. <a href="https://model-engineering.info/publications/papers/ER2020_Forum_ModulER-CR.pdf">Towards a Multi-Objective Modularization Approach for Entity-Relationship Models.</a> <em>ER 2020, 39th International Conference on Conceptual Modeling. </em></a> Nov. 2020.
+* Sarfarazi, S.; Deissenroth-Uhrig, M.; Bertsch, V. <a href="https://doi.org/10.3390/en13195154 ">Aggregation of Households in Community Energy Systems: An Analysis from Actors’ and Market Perspectives. </a> <em>Energies 2020, 13, 5154. </em> Oct. 2020.  
 * M. Šipek, D. Muharemagić, B. Mihaljević and A. Radovan. <a href="https://ieeexplore.ieee.org/abstract/document/9245290">Enhancing Performance of Cloud-based Software Applications with GraalVM and Quarkus.</a> <em>2020 43rd International Convention on Information, Communication and Electronic Technology (MIPRO), Opatija, Croatia, 2020, pp. 1746-1751. </em> Oct. 2020.
 * Vats P., Mandot M. <a href="https://link.springer.com/chapter/10.1007/978-981-15-7106-0_60">A Comprehensive Analysis for Validation of AVISAR Object-Oriented Testing Tool.</a> <em>Joshi A., Khosravy M., Gupta N. (eds) Machine Learning for Predictive Analysis. Lecture Notes in Networks and Systems, vol 141. Springer, Singapore. </em></a> Oct. 2020.
 * Thakur, K., Kumar, G. <a href="https://doi.org/10.1007/s11831-020-09481-7">Nature Inspired Techniques and Applications in Intrusion Detection Systems: Recent Progress and Updated Perspective.</a> <em>Archives of Computational Methods in Engineering (2020). </em></a> Aug. 2020.
+* Nur Hidayah Mat Yasin, Abdul Sahli Fakhrudin, Abdul Wafie Afnan Abdul Hadi, Muhammad Harith Mohd Khairuddin, Noor Raihana Abu Sepian, Farhan Mohd Said, Norazwina Zainol. <a href="http://modern-journals.com/index.php/ijma/article/view/378">Comparison of Response Surface Methodology and Artificial Neural Network for the Solvent Extraction of Fatty Acid Methyl Ester from Fish Waste. </a> <em>International Journal of Modern Agriculture, Volume 9, No.3, 2020, ISSN: 2305-7246. </em> Sep. 2020.
 * Cicirello, V. A. <a href="https://doi.org/10.21105/joss.02448">Chips-n-Salsa: A Java Library of Customizable, Hybridizable, Iterative, Parallel, Stochastic, and Self-Adaptive Local Search Algorithms.</a> <em>Journal of Open Source Software, 5(52), 2448. </em></a> Aug. 2020.
 * Li, Yuanyuan; Carabelli, Stefano;Fadda, Edoardo; Manerba, Daniele; Tadei, Roberto; Terzo, Olivier. <a href="https://iris.polito.it/retrieve/handle/11583/2842141/388548/I40for_Advanced_Manufacturing_Technology.pdf">Machine Learning and Optimization for Production Rescheduling in Industry 4.0.</a> <em>THE INTERNATIONAL JOURNAL OF ADVANCED MANUFACTURING TECHNOLOGY. - ISSN 1433-3015. </em></a> Aug. 2020.
-* Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for GraduallySaturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
+* Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for Gradually Saturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
 * Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/EvoML2020.pdf">Constrained Evolutionary Piecemeal Training to Design Convolutional Neural Networks.</a> <em>IEA/AIE 2020 – Kitakyushu, Japan. </em></a> July. 2020.
 * Femi Emmanuel Ayo, Sakinat Oluwabukonla Folorunso, Adebayo A. Abayomi-Alli, Adebola Olayinka Adekunle, Joseph Bamidele   Awotunde. <a href="https://doi.org/10.1080/19393555.2020.1767240">Network intrusion detection based on deep learning model optimized with rule-based hybrid feature selection.</a> <em>Information Security Journal: A Global Perspective. </em></a> May 2020.
 * Zainol N., Fakharudin A.S., Zulaidi N.I.S. <a href="https://link.springer.com/chapter/10.1007%2F978-981-15-4821-5_11">Model Optimization Using Artificial Intelligence Algorithms for Biological Food Waste Degradation.</a> <em>Yaser A. (eds) Advances in Waste Processing Technology. Springer, Singapore. </em></a> May 2020.
@@ -172,7 +174,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * Sabrina Appel, Wolfgang Geithner, Stephan Reimann, Mariusz Sapinski, Rahul Singh and Dominik Vilsmeier. <a href="https://www.worldscientific.com/doi/abs/10.1142/S0217751X19420193">Application of nature-inspired optimization algorithms and machine learning for heavy-ion synchrotrons. </a> <em>International Journal of Modern Physics A. </em></a> Dec. 2019.
 * O. M. Elzeki, M. F. Alrahmawy, Samir Elmougy. <a href="http://www.mecs-press.org/ijisa/ijisa-v11-n12/IJISA-V11-N12-3.pdf">A New Hybrid Genetic and Information Gain Algorithm for Imputing Missing Values in Cancer Genes Datasets. </a> <em>PInternational Journal of Intelligent Systems and Applications (IJISA), Vol.11, No.12, pp.20-33, DOI: 10.5815/ijisa.2019.12.03. </em></a> Dec. 2019.
 * Oliver Strauß, Ahmad Almheidat and Holger Kett. <a href="https://pdfs.semanticscholar.org/0a91/c4e03a2acd8c295af398167edf7350ad0662.pdf">Applying Heuristic and Machine Learning Strategies to ProductResolution. </a> <em>Proceedings of the 15th International Conference on Web Information Systems and Technologies (WEBIST 2019), pages 242-249. </em></a> Nov. 2019.
-* Yuanyuan Li, Stefano Carabelli, Edoardo Fadda, Daniele Manerba, Roberto Tadei1 and Olivier Terzo. <a href="http://www.orgroup.polito.it/material/DAUIN-ORO-2019-06.pdf">Integration of Machine Learning and OptimizationTechniques for Flexible Job-Shop Rescheduling inIndustry 4.0. </a> <em>Politecnico di Torino, Operations Research and Optimization Group. </em></a> Oct. 2019.
+* Yuanyuan Li, Stefano Carabelli, Edoardo Fadda, Daniele Manerba, Roberto Tadei1 and Olivier Terzo. <a href="http://www.orgroup.polito.it/material/DAUIN-ORO-2019-06.pdf">Integration of Machine Learning and OptimizationTechniques for Flexible Job-Shop Rescheduling in Industry 4.0. </a> <em>Politecnico di Torino, Operations Research and Optimization Group. </em></a> Oct. 2019.
 * Höttger R., Igel B., Spinczyk O. <a href="https://link.springer.com/chapter/10.1007/978-3-030-30275-7_44">Constrained Software Distribution for Automotive Systems. </a> <em>Communications in Computer and Information Science, vol 1078. </em></a> Oct. 2019.
 * Jin-wooLee, Gwangseon Jang, Hohyun Jung, Jae-Gil Lee, Uichin Lee. <a href="https://doi.org/10.1016/j.pmcj.2019.101082">Maximizing MapReduce job speed and reliability in the mobile cloud by optimizing task allocation. </a> <em>Pervasive and Mobile Computing. </em></a> Oct. 2019.
 * Krawczyk, Lukas, Mahmoud Bazzal, Ram Prasath Govindarajan and Carsten Wolff. <a href="https://ieeexplore.ieee.org/document/8904877">Model-Based Timing Analysis and Deployment Optimization for Heterogeneous Multi-core Systems using Eclipse APP4MC. </a> <em>2019 ACM/IEEE 22nd International Conference on Model Driven Engineering Languages and Systems Companion: 44-53. </em></a> Sep. 2019.
@@ -221,28 +223,18 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [6.1.0](https://github.com/jenetics/jenetics/releases/tag/v6.1.0)
+### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
 
 #### Improvements
 
-* [#323](https://github.com/jenetics/jenetics/issues/323): Fix leaky abstraction of `CompositeCodec`. 
-* [#434](https://github.com/jenetics/jenetics/issues/434): Rewrite build scripts using Kotlin.
-* [#695](https://github.com/jenetics/jenetics/issues/695): Simplify MOEA for continious optimization.
-* [#704](https://github.com/jenetics/jenetics/issues/704): Add `FlatTreeNode.ofTree` factory method, for cleaner `Tree` API.
-* [#706](https://github.com/jenetics/jenetics/issues/706): The `Constraint` is now part of the `Problem` interface. If defined, it will automatically be part of the created `Engine`.
-```java
-default Optional<Constraint<G, C>> constraint() {
-    return Optional.empty();
-}
-```
-* [#708](https://github.com/jenetics/jenetics/issues/708): Additional `Chromosome.map(Function)` methods. This allows a more efficient mapping of chromosomes.
-* [#731](https://github.com/jenetics/jenetics/issues/731): Improve creation of _constrained_ individuals, as defined in the `Constraint` interface.
-* [#739](https://github.com/jenetics/jenetics/issues/736): Add `jenetics.incubator` module. This module will contain classes which might be part of one of the main module.
-
+* [#754](https://github.com/jenetics/jenetics/issues/754): Make `Optimize.best` method `null` friendly.
+  
 #### Bugs
 
-* [#700](https://github.com/jenetics/jenetics/issues/700): `GaussianMutator` violates the `DoubleGene`'s upper bound.
-* [#707](https://github.com/jenetics/jenetics/issues/707): Fix conversion of `BitChromosome` <-> `BitSet`.
+* [#742](https://github.com/jenetics/jenetics/issues/742): Fix compile error with Java 15.
+* [#746](https://github.com/jenetics/jenetics/issues/746): `Const<Double>` equals doesn't conform with `Double.compare`.
+* [#748](https://github.com/jenetics/jenetics/issues/748): Fix broken formulas in Javadoc.
+* [#752](https://github.com/jenetics/jenetics/issues/752): `StreamPublisher` doesn't close underlying `Stream` on close.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 
@@ -250,7 +242,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2020 Franz Wilhelmstötter
+	Copyright 2007-2021 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

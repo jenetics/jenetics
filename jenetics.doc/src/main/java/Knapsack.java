@@ -12,6 +12,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
@@ -70,9 +71,13 @@ public class Knapsack {
 				.limit(nitems)
 				.collect(ISeq.toISeq());
 
+		// Defining the codec.
+		final Codec<ISeq<Item>, BitGene> codec =
+			Codecs.ofSubSet(items);
+
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Double> engine = Engine
-			.builder(fitness(kssize), Codecs.ofSubSet(items))
+			.builder(fitness(kssize), codec)
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
@@ -99,7 +104,20 @@ public class Knapsack {
 			// its best phenotype.
 			.collect(toBestPhenotype());
 
+		final ISeq<Item> knapsack = codec.decode(best.genotype());
+
 		System.out.println(statistics);
 		System.out.println(best);
+		System.out.println("\n\n");
+		System.out.printf(
+			"Genotype of best item: %s%n",
+			best.genotype()
+		);
+
+		final double fillSize = knapsack.stream()
+			.mapToDouble(it -> it.size)
+			.sum();
+
+		System.out.printf("%.2f%% filled.%n", 100*fillSize/kssize);
 	}
 }
