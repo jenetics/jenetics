@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Objects;
@@ -47,6 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class Program<T> implements Op<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;

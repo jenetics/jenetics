@@ -73,6 +73,7 @@ public final class MathExpr
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -302,10 +303,12 @@ public final class MathExpr
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.MATH_EXPR, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

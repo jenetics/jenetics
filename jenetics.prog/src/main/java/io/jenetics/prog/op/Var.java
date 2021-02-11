@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.lang.String.format;
 import static io.jenetics.ext.internal.Names.isIdentifier;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +72,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;

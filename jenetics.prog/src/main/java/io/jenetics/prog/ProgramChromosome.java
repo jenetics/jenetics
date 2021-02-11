@@ -69,6 +69,7 @@ public class ProgramChromosome<A>
 	implements Function<A[], A>
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
@@ -406,10 +407,12 @@ public class ProgramChromosome<A>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
