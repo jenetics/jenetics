@@ -339,7 +339,7 @@ public final class CSV {
 		if (quoted) {
 			throw new IllegalArgumentException("Unbalanced quote character.");
 		}
-		if (line.isEmpty() ||
+		if (line.length() == 0 ||
 			SEPARATOR == line.charAt(line.length() - 1))
 		{
 			columns.add("");
@@ -512,13 +512,13 @@ public final class CSV {
 
 			if (eol) {
 				eol = false;
-				if (!line.isEmpty()) {
+				if (line.length() > 0) {
 					return true;
 				}
 			}
 		}
 
-		return !line.isEmpty();
+		return line.length() > 0;
 	}
 
 }
