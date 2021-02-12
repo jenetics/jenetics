@@ -20,6 +20,7 @@
 package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -126,9 +127,7 @@ public final class CSV {
 				return read(reader);
 			});
 
-			return result.get().onClose(() ->
-				result.uncheckedClose(e -> new UncheckedIOException((IOException)e))
-			);
+			return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
 		}
 
 		/**
@@ -340,7 +339,7 @@ public final class CSV {
 		if (quoted) {
 			throw new IllegalArgumentException("Unbalanced quote character.");
 		}
-		if (line.length() == 0 ||
+		if (line.isEmpty() ||
 			SEPARATOR == line.charAt(line.length() - 1))
 		{
 			columns.add("");
@@ -463,9 +462,7 @@ public final class CSV {
 				.takeWhile(Objects::nonNull);
 		});
 
-		return result.get().onClose(() ->
-			result.uncheckedClose(e -> new UncheckedIOException((IOException)e))
-		);
+		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
 	}
 
 	private static boolean nextLine(final Reader reader, final StringBuilder line)
@@ -515,13 +512,13 @@ public final class CSV {
 
 			if (eol) {
 				eol = false;
-				if (line.length() > 0) {
+				if (!line.isEmpty()) {
 					return true;
 				}
 			}
 		}
 
-		return line.length() > 0;
+		return !line.isEmpty();
 	}
 
 }
