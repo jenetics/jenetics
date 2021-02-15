@@ -37,7 +37,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle2.Value;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 public class IOTest {
 

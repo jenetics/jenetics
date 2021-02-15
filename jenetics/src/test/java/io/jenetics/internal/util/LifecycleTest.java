@@ -32,11 +32,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle2.Value;
-import io.jenetics.internal.util.Lifecycle2.ExtendedCloseable;
-import io.jenetics.internal.util.Lifecycle2.NoThrow;
+import io.jenetics.internal.util.Lifecycle.Value;
+import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.NoThrow;
 
-public class LifecycleTest2 {
+public class LifecycleTest {
 
 	final static class Invokable {
 		final AtomicBoolean called = new AtomicBoolean(false);
@@ -63,7 +63,7 @@ public class LifecycleTest2 {
 	) {
 		Assert.assertTrue(objects.stream().noneMatch(i -> i.called.get()));
 
-		final var exception = Lifecycle2.invokeAll0(Invokable::invoke, objects);
+		final var exception = Lifecycle.invokeAll0(Invokable::invoke, objects);
 
 		Assert.assertTrue(objects.stream().allMatch(i -> i.called.get()));
 		if (exception != null) {

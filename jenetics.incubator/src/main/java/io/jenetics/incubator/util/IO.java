@@ -40,8 +40,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle2.Resources;
-import io.jenetics.internal.util.Lifecycle2.Value;
+import io.jenetics.internal.util.Lifecycle.Resources;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 /**
  * Static methods for reading and writing Java objects.

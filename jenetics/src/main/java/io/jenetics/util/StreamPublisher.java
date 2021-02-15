@@ -21,7 +21,6 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Iterator;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
@@ -32,7 +31,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.internal.util.Lifecycle2.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
 
 /**
  * This class allows to create a reactive {@link Flow.Publisher} from a given

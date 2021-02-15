@@ -76,7 +76,7 @@ import java.util.function.Supplier;
  * @version 6.2
  */
 @SuppressWarnings("try")
-public class Lifecycle2 {
+public class Lifecycle {
 
 	public static final class NoThrow extends RuntimeException {
 		private static final long serialVersionUID = 1L;
@@ -245,7 +245,7 @@ public class Lifecycle2 {
 				if (list.size() == 1) {
 					list.get(0).run();
 				} else if (list.size() > 1) {
-					Lifecycle2.invokeAll(Dispose::run, list);
+					Lifecycle.invokeAll(Dispose::run, list);
 				}
 			};
 		}
@@ -480,7 +480,7 @@ public class Lifecycle2 {
 
 	}
 
-	private Lifecycle2() {
+	private Lifecycle() {
 	}
 
 	/**
