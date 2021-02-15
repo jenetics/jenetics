@@ -110,8 +110,8 @@ public class Lifecycle {
 	 * @param <E> the exception type
 	 */
 	@FunctionalInterface
-	public interface ThrowingMethod<A, E extends Exception> {
-		void apply(final A arg) throws E;
+	public interface ThrowingConsumer<A, E extends Exception> {
+		void accept(final A arg) throws E;
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class Lifecycle {
 	 * }
 	 * }</pre>
 	 *
-	 * @see #of(Object, ThrowingMethod)
+	 * @see #of(Object, ThrowingConsumer)
 	 * @see #build(ThrowingFunction)
 	 *
 	 * @param <T> the value type
@@ -281,11 +281,11 @@ public class Lifecycle {
 	{
 
 		private final T _value;
-		private final ThrowingMethod<? super T, ? extends E> _close;
+		private final ThrowingConsumer<? super T, ? extends E> _close;
 
 		private Value(
 			final T value,
-			final ThrowingMethod<? super T, ? extends E> close
+			final ThrowingConsumer<? super T, ? extends E> close
 		) {
 			_value = requireNonNull(value);
 			_close = requireNonNull(close);
@@ -298,7 +298,7 @@ public class Lifecycle {
 
 		@Override
 		public void close() throws E {
-			_close.apply(get());
+			_close.accept(get());
 		}
 
 		@Override
@@ -332,13 +332,13 @@ public class Lifecycle {
 		 */
 		@SafeVarargs
 		public final <E extends Exception> void trying(
-			final ThrowingMethod<? super T, ? extends E> block,
+			final ThrowingConsumer<? super T, ? extends E> block,
 			final Dispose<? extends E>... closeables
 		)
 			throws E
 		{
 			try {
-				block.apply(get());
+				block.accept(get());
 			} catch (Throwable error) {
 				ExtendedCloseable.of(closeables).silentClose(error);
 				silentClose(error);
@@ -358,7 +358,7 @@ public class Lifecycle {
 		 */
 		public static <T, E extends Exception> Value<T, E> of(
 			final T value,
-			final ThrowingMethod<? super T, ? extends E> close
+			final ThrowingConsumer<? super T, ? extends E> close
 		) {
 			return new Value<>(value,close);
 		}
@@ -366,7 +366,7 @@ public class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link Resources#add(Object, ThrowingMethod)} method, are only closed
+		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
@@ -467,9 +467,9 @@ public class Lifecycle {
 		 */
 		public <C> C add(
 			final C resource,
-			final ThrowingMethod<? super C, ? extends E> dispose
+			final ThrowingConsumer<? super C, ? extends E> dispose
 		) {
-			_resources.add(() -> dispose.apply(resource));
+			_resources.add(() -> dispose.accept(resource));
 			return resource;
 		}
 
@@ -506,7 +506,7 @@ public class Lifecycle {
 	 *         invocation.
 	 */
 	static <A, E extends Exception> void invokeAll(
-		final ThrowingMethod<? super A, ? extends E> method,
+		final ThrowingConsumer<? super A, ? extends E> method,
 		final Collection<? extends A> objects
 	)
 		throws E
@@ -541,7 +541,7 @@ public class Lifecycle {
 	 *         if no exception has been thrown
 	 */
 	static <A, E extends Exception> Throwable invokeAll0(
-		final ThrowingMethod<? super A, ? extends E> method,
+		final ThrowingConsumer<? super A, ? extends E> method,
 		final Collection<? extends A> objects
 	) {
 		int suppressedCount = 0;
@@ -549,7 +549,7 @@ public class Lifecycle {
 		for (var object : objects) {
 			if (error != null) {
 				try {
-					method.apply(object);
+					method.accept(object);
 				} catch (Exception suppressed) {
 					if (suppressedCount++ < MAX_SUPPRESSED) {
 						error.addSuppressed(suppressed);
@@ -557,7 +557,7 @@ public class Lifecycle {
 				}
 			} else {
 				try {
-					method.apply(object);
+					method.accept(object);
 				} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
 					throw e;
 				} catch (Throwable e) {
