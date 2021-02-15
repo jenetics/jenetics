@@ -19,10 +19,9 @@
  */
 package io.jenetics.incubator.util;
 
-import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,8 +40,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
-import io.jenetics.internal.util.Lifecycle.ResourceCollector;
+import io.jenetics.internal.util.Lifecycle2.Resources;
+import io.jenetics.internal.util.Lifecycle2.Value;
 
 /**
  * Static methods for reading and writing Java objects.
@@ -144,23 +143,34 @@ public final class IO {
 	 * @throws IOException if the object stream couldn't be created
 	 */
 	public static Stream<Object> objects(final Path path) throws IOException {
-		final var result = CloseableValue.build(resources ->
+		final Value<Stream<Object>, IOException> result = Value.build(resources ->
 			objectStream(path, resources)
 		);
 
-		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
+		return result.get().onClose(() ->
+			result.uncheckedClose(UncheckedIOException::new)
+		);
 	}
 
 	private static Stream<Object>
-	objectStream(final Path path, final ResourceCollector resources)
+	objectStream(final Path path, final Resources<IOException> resources)
 		throws IOException
 	{
 		if (isEmpty(path)) {
 			return Stream.empty();
 		} else {
-			final var fin = resources.add(Files.newInputStream(path));
-			final var bin = resources.add(new BufferedInputStream(fin));
-			final var oin = resources.add(new ObjectInputStream(bin));
+			final var fin = resources.add(
+				Files.newInputStream(path),
+				Closeable::close
+			);
+			final var bin = resources.add(
+				new BufferedInputStream(fin),
+				Closeable::close
+			);
+			final var oin = resources.add(
+				new ObjectInputStream(bin),
+				Closeable::close
+			);
 
 			final Supplier<Object> readObject = () -> {
 				try {
