@@ -63,7 +63,7 @@ public class LifecycleTest2 {
 	) {
 		Assert.assertTrue(objects.stream().noneMatch(i -> i.called.get()));
 
-		final var exception = Lifecycle.invokeAll0(Invokable::invoke, objects);
+		final var exception = Lifecycle2.invokeAll0(Invokable::invoke, objects);
 
 		Assert.assertTrue(objects.stream().allMatch(i -> i.called.get()));
 		if (exception != null) {

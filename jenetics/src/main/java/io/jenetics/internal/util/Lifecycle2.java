@@ -245,7 +245,7 @@ public class Lifecycle2 {
 				if (list.size() == 1) {
 					list.get(0).run();
 				} else if (list.size() > 1) {
-					Lifecycle.invokeAll(Dispose::run, list);
+					Lifecycle2.invokeAll(Dispose::run, list);
 				}
 			};
 		}

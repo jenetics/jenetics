@@ -25,6 +25,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.util.UUID.randomUUID;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -36,13 +37,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle2.Value;
 
 public class IOTest {
 
 	@Test(dataProvider = "data")
 	public void appendReadExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+		final var path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -52,7 +53,7 @@ public class IOTest {
 
 	private void appendRead(
 		final List<List<Object>> data,
-		final CloseableValue<Path> path,
+		final Value<Path, IOException> path,
 		final OpenOption... options
 	)
 		throws Exception
@@ -72,7 +73,7 @@ public class IOTest {
 
 	@Test(dataProvider = "data")
 	public void appendReadNonExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+		final var path = Value.of(
 			Path.of(
 				System.getProperty("java.io.tmpdir"),
 				format("IO-%s-TEST", randomUUID().toString().replace("-", ""))
@@ -131,7 +132,7 @@ public class IOTest {
 
 	@Test(dataProvider = "data")
 	public void writeRead(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+		final var path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);

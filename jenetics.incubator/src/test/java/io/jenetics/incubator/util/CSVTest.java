@@ -33,7 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle2.Value;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -297,7 +297,7 @@ public class CSVTest {
 			.map(CSV::join)
 			.collect(CSV.toCSV());
 
-		final var path = CloseableValue.of(
+		final var path = Value.of(
 			Files.createTempFile("CSVTest-", null),
 			Files::deleteIfExists
 		);
