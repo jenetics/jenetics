@@ -36,7 +36,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle2.CloseableValue;
+import io.jenetics.internal.util.Lifecycle2.Value;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
@@ -120,7 +120,7 @@ public final class CSV {
 		default Stream<String> read(final Path path, final Charset cs)
 			throws IOException
 		{
-			final CloseableValue<Stream<String>, IOException> result = CloseableValue.build(
+			final Value<Stream<String>, IOException> result = Value.build(
 				resources -> {
 					final var reader = resources.add(
 						Files.newBufferedReader(path, cs),
@@ -443,31 +443,29 @@ public final class CSV {
 	 * @return the stream of CSV lines
 	 */
 	static Stream<String> read(final Reader reader) {
-		final CloseableValue<Stream<String>, IOException> result = CloseableValue.build(
-			resources -> {
-				final var br = reader instanceof BufferedReader
-					? (BufferedReader)reader
-					: resources.add(new BufferedReader(reader), Reader::close);
+		final Value<Stream<String>, IOException> result = Value.build(resources -> {
+			final var br = reader instanceof BufferedReader
+				? (BufferedReader)reader
+				: resources.add(new BufferedReader(reader), Reader::close);
 
-				final var line = new StringBuilder();
-				final Supplier<String> nextLine = () -> {
-					try {
-						if (nextLine(br, line)) {
-							final var l = line.toString();
-							line.setLength(0);
-							return l;
-						} else {
-							return null;
-						}
-					} catch (IOException e) {
-						throw new UncheckedIOException(e);
+			final var line = new StringBuilder();
+			final Supplier<String> nextLine = () -> {
+				try {
+					if (nextLine(br, line)) {
+						final var l = line.toString();
+						line.setLength(0);
+						return l;
+					} else {
+						return null;
 					}
-				};
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			};
 
-				return Stream.generate(nextLine)
-					.takeWhile(Objects::nonNull);
-			}
-		);
+			return Stream.generate(nextLine)
+				.takeWhile(Objects::nonNull);
+		});
 
 		return result.get()
 			.onClose(() -> result.uncheckedClose(UncheckedIOException::new));

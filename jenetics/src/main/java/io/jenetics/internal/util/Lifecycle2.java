@@ -276,14 +276,14 @@ public class Lifecycle2 {
 	 *
 	 * @param <T> the value type
 	 */
-	public static final class CloseableValue<T, E extends Exception>
+	public static final class Value<T, E extends Exception>
 		implements Supplier<T>, ExtendedCloseable<E>
 	{
 
 		private final T _value;
 		private final ThrowingMethod<? super T, ? extends E> _close;
 
-		private CloseableValue(
+		private Value(
 			final T value,
 			final ThrowingMethod<? super T, ? extends E> close
 		) {
@@ -356,20 +356,20 @@ public class Lifecycle2 {
 		 * @return a new closeable value
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
-		public static <T, E extends Exception> CloseableValue<T, E> of(
+		public static <T, E extends Exception> Value<T, E> of(
 			final T value,
 			final ThrowingMethod<? super T, ? extends E> close
 		) {
-			return new CloseableValue<>(value,close);
+			return new Value<>(value,close);
 		}
 
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link ResourceCollector#add(Object, ThrowingMethod)} method, are only closed
+		 * {@link Resources#add(Object, ThrowingMethod)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
-		 * calling the {@link CloseableValue#close()} method.
+		 * calling the {@link Value#close()} method.
 		 *
 		 * <pre>{@code
 		 * final CloseableValue<Stream<Object>> result = CloseableValue.build(resources -> {
@@ -386,7 +386,7 @@ public class Lifecycle2 {
 		 * }
 		 * }</pre>
 		 *
-		 * @see ResourceCollector
+		 * @see Resources
 		 *
 		 * @param builder the builder method
 		 * @param <T> the value type of the created <em>closeable</em> value
@@ -399,10 +399,10 @@ public class Lifecycle2 {
 		 * @throws NullPointerException if the given {@code builder} is
 		 *         {@code null}
 		 */
-		public static <T, BE extends Exception, VE extends Exception> CloseableValue<T, VE>
+		public static <T, BE extends Exception, VE extends Exception> Value<T, VE>
 		build(
 			final ThrowingFunction<
-				? super ResourceCollector<VE>,
+				? super Resources<VE>,
 				? extends T,
 				? extends BE> builder
 		)
@@ -410,9 +410,9 @@ public class Lifecycle2 {
 		{
 			requireNonNull(builder);
 
-			final var resources = new ResourceCollector<VE>();
+			final var resources = new Resources<VE>();
 			try {
-				return CloseableValue.of(
+				return Value.of(
 					builder.apply(resources),
 					value -> resources.close()
 				);
@@ -443,9 +443,9 @@ public class Lifecycle2 {
 	 * }
 	 * }</pre>
 	 *
-	 * @see CloseableValue#build(ThrowingFunction)
+	 * @see Value#build(ThrowingFunction)
 	 */
-	public static final class ResourceCollector<E extends Exception>
+	public static final class Resources<E extends Exception>
 		implements ExtendedCloseable<E>
 	{
 
@@ -454,23 +454,23 @@ public class Lifecycle2 {
 		/**
 		 * Create a new resource collector.
 		 */
-		private ResourceCollector() {
+		private Resources() {
 		}
 
 		/**
-		 * Registers the given {@code object} to the list of managed
-		 * closeables.
+		 * Registers the given {@code resource} to the list of managed
+		 * resources.
 		 *
-		 * @param object the new object to register
-		 * @param <C> the object type
-		 * @return the registered object
+		 * @param resource the new resource to register
+		 * @param <C> the resource type
+		 * @return the registered resource
 		 */
 		public <C> C add(
-			final C object,
+			final C resource,
 			final ThrowingMethod<? super C, ? extends E> dispose
 		) {
-			_resources.add(() -> dispose.apply(object));
-			return object;
+			_resources.add(() -> dispose.apply(resource));
+			return resource;
 		}
 
 		@Override

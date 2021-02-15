@@ -32,7 +32,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle2.CloseableValue;
+import io.jenetics.internal.util.Lifecycle2.Value;
 import io.jenetics.internal.util.Lifecycle2.ExtendedCloseable;
 import io.jenetics.internal.util.Lifecycle2.NoThrow;
 
@@ -215,7 +215,7 @@ public class LifecycleTest2 {
 
 	@Test
 	public void closeableValue() throws Exception {
-		final var closeable = CloseableValue.of(
+		final var closeable = Value.of(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -231,10 +231,10 @@ public class LifecycleTest2 {
 		final var resource2 = atomic();
 		final var resource3 = atomic();
 
-		final var closeable = CloseableValue.build(resources -> {
-			resources.add(resource1, CloseableValue::close);
-			resources.add(resource2, CloseableValue::close);
-			resources.add(resource3, CloseableValue::close);
+		final var closeable = Value.build(resources -> {
+			resources.add(resource1, Value::close);
+			resources.add(resource2, Value::close);
+			resources.add(resource3, Value::close);
 			return 123;
 		});
 
@@ -248,8 +248,8 @@ public class LifecycleTest2 {
 		Assert.assertEquals(1, resource3.get().get());
 	}
 
-	private static CloseableValue<AtomicInteger, NoThrow> atomic() {
-		return CloseableValue.of(
+	private static Value<AtomicInteger, NoThrow> atomic() {
+		return Value.of(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -262,10 +262,10 @@ public class LifecycleTest2 {
 		final var resource3 = atomic();
 
 		try {
-			CloseableValue.build(resources -> {
-				resources.add(resource1, CloseableValue::close);
-				resources.add(resource2, CloseableValue::close);
-				resources.add(resource3, CloseableValue::close);
+			Value.build(resources -> {
+				resources.add(resource1, Value::close);
+				resources.add(resource2, Value::close);
+				resources.add(resource3, Value::close);
 				throw new IOException();
 			});
 		} catch (IOException e) {
@@ -276,8 +276,8 @@ public class LifecycleTest2 {
 		}
 	}
 
-	private static CloseableValue<Path, IOException> tempFile() throws IOException {
-		return CloseableValue.of(
+	private static Value<Path, IOException> tempFile() throws IOException {
+		return Value.of(
 			Files.createTempFile("Lifecycle", "TEST"),
 			Files::deleteIfExists
 		);
