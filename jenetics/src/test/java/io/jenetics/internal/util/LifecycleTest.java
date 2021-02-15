@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Lifecycle.Value;
 import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
-import io.jenetics.internal.util.Lifecycle.NoThrow;
 
 public class LifecycleTest {
 
@@ -248,7 +247,7 @@ public class LifecycleTest {
 		Assert.assertEquals(1, resource3.get().get());
 	}
 
-	private static Value<AtomicInteger, NoThrow> atomic() {
+	private static Value<AtomicInteger, RuntimeException> atomic() {
 		return Value.of(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet

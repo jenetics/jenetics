@@ -78,26 +78,22 @@ import java.util.function.Supplier;
 @SuppressWarnings("try")
 public class Lifecycle {
 
-	public static final class NoThrow extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-		private NoThrow() {
-		}
-	}
+	/* *************************************************************************
+	 *  General interfaces.
+	 * ************************************************************************/
 
 	/**
-	 * The <em>dispose</em> method, which releases any, previously, acquired
-	 * resources. This is similar to the {@link AutoCloseable} interface,
-	 * except that it can throw an exception {@code E}.
+	 * Runnable task/method, which might throw an exception {@code E}.
 	 *
-	 * @param <E> the exception which might be thrown when releasing the resource
+	 * @param <E> the exception which might be thrown
 	 */
 	@FunctionalInterface
-	public interface Dispose<E extends Exception> {
+	public interface ThrowingRunnable<E extends Exception> {
 
 		/**
-		 * Running the <em>dispose</em> method.
+		 * Running the task
 		 *
-		 * @throws E if an error occurs while releasing the resources
+		 * @throws E if an error occurs while running the task
 		 */
 		void run() throws E;
 
@@ -126,6 +122,9 @@ public class Lifecycle {
 		R apply(final A arg) throws E;
 	}
 
+	/* *************************************************************************
+	 *  Lifecycle interfaces/classes.
+	 * ************************************************************************/
 
 	/**
 	 * Extends the {@link AutoCloseable} with methods for wrapping the thrown
@@ -198,8 +197,7 @@ public class Lifecycle {
 		 *         {@code null}
 		 */
 		static <E extends Exception> ExtendedCloseable<E>
-		of(final Dispose<? extends E> dispose) {
-			requireNonNull(dispose);
+		of(final ThrowingRunnable<? extends E> dispose) {
 			return dispose::run;
 		}
 
@@ -218,7 +216,7 @@ public class Lifecycle {
 		 */
 		@SafeVarargs
 		static <E extends Exception> ExtendedCloseable<E>
-		of(final Dispose<? extends E>... disposables) {
+		of(final ThrowingRunnable<? extends E>... disposables) {
 			return of(Arrays.asList(disposables));
 		}
 
@@ -227,7 +225,7 @@ public class Lifecycle {
 		 * {@code closeables} objects. The given list of objects are closed in
 		 * reversed order.
 		 *
-		 * @see #of(Dispose...)
+		 * @see #of(ThrowingRunnable...)
 		 *
 		 * @param disposables the initial disposables methods
 		 * @return a new closeable object which collects the given
@@ -236,8 +234,8 @@ public class Lifecycle {
 		 *         {@code null}
 		 */
 		static <E extends Exception> ExtendedCloseable<E>
-		of(final Collection<? extends Dispose<? extends E>> disposables) {
-			final List<Dispose<? extends E>> list = new ArrayList<>();
+		of(final Collection<? extends ThrowingRunnable<? extends E>> disposables) {
+			final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
 			disposables.forEach(c -> list.add(requireNonNull(c)));
 			Collections.reverse(list);
 
@@ -245,7 +243,7 @@ public class Lifecycle {
 				if (list.size() == 1) {
 					list.get(0).run();
 				} else if (list.size() > 1) {
-					Lifecycle.invokeAll(Dispose::run, list);
+					Lifecycle.invokeAll(ThrowingRunnable::run, list);
 				}
 			};
 		}
@@ -333,7 +331,7 @@ public class Lifecycle {
 		@SafeVarargs
 		public final <E extends Exception> void trying(
 			final ThrowingConsumer<? super T, ? extends E> block,
-			final Dispose<? extends E>... closeables
+			final ThrowingRunnable<? extends E>... closeables
 		)
 			throws E
 		{
@@ -433,12 +431,12 @@ public class Lifecycle {
 	 * nested {@code try-with-resources} blocks.
 	 *
 	 * <pre>{@code
-	 * try (var resources = ResourceCollector.of()) {
-	 *     final var fin = resources.add(new FileInputStream(file));
+	 * try (var resources = new ResourceCollector<IOException>()) {
+	 *     final var fin = resources.add(new FileInputStream(file), Closeable::close);
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     final var oin = resources.add(new ObjectInputStream(fin), Closeable::close);
 	 *     // ...
 	 * }
 	 * }</pre>
@@ -449,13 +447,7 @@ public class Lifecycle {
 		implements ExtendedCloseable<E>
 	{
 
-		private final List<Dispose<? extends E>> _resources = new ArrayList<>();
-
-		/**
-		 * Create a new resource collector.
-		 */
-		private Resources() {
-		}
+		private final List<ThrowingRunnable<? extends E>> _resources = new ArrayList<>();
 
 		/**
 		 * Registers the given {@code resource} to the list of managed
@@ -479,6 +471,10 @@ public class Lifecycle {
 		}
 
 	}
+
+	/* *************************************************************************
+	 *  Helper methods.
+	 * ************************************************************************/
 
 	private Lifecycle() {
 	}
