@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -78,7 +78,64 @@ import java.util.function.Supplier;
  * @version 6.2
  */
 @SuppressWarnings("try")
-public final class Lifecycle2 {
+public class Lifecycle2<E extends Exception> {
+
+	public static final Lifecycle2<IOException> IO = new Lifecycle2<>() {
+		@Override
+		public <T> Value<T> value(
+			final T value,
+			final ThrowingMethod<? super T, ? extends IOException> close
+		) {
+			return new Value<T>() {
+				@Override
+				public void close() throws IOException {
+				}
+				@Override
+				public T get() {
+					return null;
+				}
+			};
+		}
+	};
+
+	static {
+		final Lifecycle2<IOException>.Value<String> value = IO.value();
+	}
+
+	public static final Lifecycle2<SQLException> SQL = new Lifecycle2<>();
+
+
+	public abstract class Value<T>
+		implements Supplier<T>, ExtendedCloseable<E>
+	{
+		@SuppressWarnings("unchecked")
+		public <E extends Exception> void trying(
+			final ThrowingMethod<? super T, ? extends E> block,
+			final Dispose<? extends E>... closeables
+		)
+			throws E {
+			try {
+				block.apply(get());
+			} catch (Throwable error) {
+				ExtendedCloseable.of(closeables).silentClose(error);
+				silentClose(error);
+				throw error;
+			}
+		}
+
+	}
+
+	public <T> Value<T> value(
+		final T value,
+		final ThrowingMethod<? super T, ? extends E> close
+	) {
+		return null;
+	}
+
+
+
+
+
 
 	/**
 	 * The <em>dispose</em> method, which releases any, previously, acquired
@@ -443,7 +500,10 @@ public final class Lifecycle2 {
 		 * @param <C> the object type
 		 * @return the registered object
 		 */
-		<C> C add(final C object, final ThrowingMethod<? super C, ? extends E> stop);
+		<C> C add(
+			final C object,
+			final ThrowingMethod<? super C, ? extends E> dispose
+		);
 
 		/**
 		 * Create a new closeable object from a snapshot of the currently
@@ -480,8 +540,8 @@ public final class Lifecycle2 {
 			return new ResourceCollector<>() {
 				@Override
 				public synchronized <C>
-				C add(final C closeable, final ThrowingMethod<? super C, ? extends E> stop) {
-					resources.add(() -> stop.apply(closeable));
+				C add(final C closeable, final ThrowingMethod<? super C, ? extends E> dispose) {
+					resources.add(() -> dispose.apply(closeable));
 					return closeable;
 				}
 				@Override

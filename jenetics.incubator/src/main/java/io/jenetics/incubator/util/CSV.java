@@ -20,7 +20,6 @@
 package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +36,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle2.CloseableValue;
 
 /**
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
@@ -121,13 +120,17 @@ public final class CSV {
 		default Stream<String> read(final Path path, final Charset cs)
 			throws IOException
 		{
-			final var result = CloseableValue.build(resources -> {
-				final var reader =
-					resources.add(Files.newBufferedReader(path, cs));
-				return read(reader);
-			});
+			final CloseableValue<Stream<String>, IOException> result = CloseableValue.build(
+				resources -> {
+					final var reader = resources.add(
+						Files.newBufferedReader(path, cs),
+						Reader::close
+					);
+					return read(reader);
+				}
+			);
 
-			return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
+			return result.get().onClose(() -> result.uncheckedClose(UncheckedIOException::new));
 		}
 
 		/**
@@ -438,31 +441,34 @@ public final class CSV {
 	 * @return the stream of CSV lines
 	 */
 	static Stream<String> read(final Reader reader) {
-		final var result = CloseableValue.build(resources -> {
-			final var br = reader instanceof BufferedReader
-				? (BufferedReader)reader
-				: resources.add(new BufferedReader(reader));
+		final CloseableValue<Stream<String>, IOException> result = CloseableValue.build(
+			resources -> {
+				final var br = reader instanceof BufferedReader
+					? (BufferedReader)reader
+					: resources.add(new BufferedReader(reader), Reader::close);
 
-			final var line = new StringBuilder();
-			final Supplier<String> nextLine = () -> {
-				try {
-					if (nextLine(br, line)) {
-						final var l = line.toString();
-						line.setLength(0);
-						return l;
-					} else {
-						return null;
+				final var line = new StringBuilder();
+				final Supplier<String> nextLine = () -> {
+					try {
+						if (nextLine(br, line)) {
+							final var l = line.toString();
+							line.setLength(0);
+							return l;
+						} else {
+							return null;
+						}
+					} catch (IOException e) {
+						throw new UncheckedIOException(e);
 					}
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
+				};
 
-			return Stream.generate(nextLine)
-				.takeWhile(Objects::nonNull);
-		});
+				return Stream.generate(nextLine)
+					.takeWhile(Objects::nonNull);
+			}
+		);
 
-		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
+		return result.get()
+			.onClose(() -> result.uncheckedClose(UncheckedIOException::new));
 	}
 
 	private static boolean nextLine(final Reader reader, final StringBuilder line)
