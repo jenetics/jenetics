@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle2.ExtendedCloseable;
 
 /**
  * This class allows to create a reactive {@link Flow.Publisher} from a given
