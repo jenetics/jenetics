@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Lifecycle2.CloseableValue;
 import io.jenetics.internal.util.Lifecycle2.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle2.NoThrow;
 
 public class LifecycleTest2 {
 
@@ -186,7 +187,7 @@ public class LifecycleTest2 {
 		final var closeable = ExtendedCloseable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.uncheckedClose(e -> new UncheckedIOException((IOException)e));
+		closeable.uncheckedClose(UncheckedIOException::new);
 	}
 
 	@Test
@@ -247,7 +248,7 @@ public class LifecycleTest2 {
 		Assert.assertEquals(1, resource3.get().get());
 	}
 
-	private static CloseableValue<AtomicInteger, RuntimeException> atomic() {
+	private static CloseableValue<AtomicInteger, NoThrow> atomic() {
 		return CloseableValue.of(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet

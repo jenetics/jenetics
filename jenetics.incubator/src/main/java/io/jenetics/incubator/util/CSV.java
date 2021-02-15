@@ -130,7 +130,9 @@ public final class CSV {
 				}
 			);
 
-			return result.get().onClose(() -> result.uncheckedClose(UncheckedIOException::new));
+			return result.get().onClose(() ->
+				result.uncheckedClose(UncheckedIOException::new)
+			);
 		}
 
 		/**
