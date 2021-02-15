@@ -135,9 +135,9 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	}
 
 
-	/**************************************************************************
+	/* *************************************************************************
 	 *  Java object serialization
-	 *************************************************************************/
+	 * ************************************************************************/
 
 	static final class Serial implements Externalizable  {
 		private static final long serialVersionUID = 1L;
