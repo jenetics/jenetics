@@ -276,6 +276,14 @@ public class LifecycleTest {
 	}
 
 	private static Value<Path, IOException> tempFile() throws IOException {
+		final var file = Value.of(
+			Files.createFile(Path.of("foo")),
+			Files::deleteIfExists
+		);
+		try (file) {
+			System.out.println("asdf: " + file.get());
+		}
+
 		return Value.of(
 			Files.createTempFile("Lifecycle", "TEST"),
 			Files::deleteIfExists

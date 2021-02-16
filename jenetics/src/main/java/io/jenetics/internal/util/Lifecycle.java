@@ -219,25 +219,6 @@ public class Lifecycle {
 		}
 
 		/**
-		 * Create a new {@code ExtendedCloseable} object with the given initial
-		 * {@code disposables} methods. The given list of objects are closed in
-		 * reversed order.
-		 *
-		 * @see #of(Collection)
-		 *
-		 * @param disposables the disposables methods
-		 * @return a new closeable object which collects the given
-		 *        {@code disposables}
-		 * @throws NullPointerException if one of the {@code disposables} is
-		 *         {@code null}
-		 */
-		@SafeVarargs
-		static <E extends Exception> ExtendedCloseable<E>
-		of(final ThrowingRunnable<? extends E>... disposables) {
-			return of(Arrays.asList(disposables));
-		}
-
-		/**
 		 * Create a new {@code ExtendedCloseable} object with the given
 		 * {@code closeables} objects. The given list of objects are closed in
 		 * reversed order.
@@ -247,34 +228,65 @@ public class Lifecycle {
 		 * @param disposables the initial disposables methods
 		 * @return a new closeable object which collects the given
 		 *        {@code disposables}
+		 * @throws IllegalArgumentException if the given collection of
+		 *         {@code disposables} is empty
 		 * @throws NullPointerException if one of the {@code disposables} is
 		 *         {@code null}
 		 */
 		static <E extends Exception> ExtendedCloseable<E>
 		of(final Collection<? extends ThrowingRunnable<? extends E>> disposables) {
-			final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
-			disposables.forEach(c -> list.add(requireNonNull(c)));
-			Collections.reverse(list);
+			if (disposables.isEmpty()) {
+				throw new IllegalArgumentException(
+					"List of disposables must not be empty."
+				);
+			}
 
-			return () -> {
-				if (list.size() == 1) {
-					list.get(0).run();
-				} else if (list.size() > 1) {
-					Lifecycle.invokeAll(ThrowingRunnable::run, list);
-				}
-			};
+			if (disposables.size() == 1) {
+				final var disposable = disposables.iterator().next();
+				return disposable::run;
+			} else {
+				final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
+				disposables.forEach(c -> list.add(requireNonNull(c)));
+				Collections.reverse(list);
+
+				return () -> Lifecycle.invokeAll(ThrowingRunnable::run, list);
+			}
+		}
+
+		/**
+		 * Create a new {@code ExtendedCloseable} object with the given initial
+		 * {@code disposables} methods. The given list of objects are closed in
+		 * reversed order.
+		 *
+		 * @see #of(Collection)
+		 *
+		 * @param disposables the disposables methods
+		 * @return a new closeable object which collects the given
+		 *        {@code disposables}
+		 * @throws IllegalArgumentException if the given array of
+		 *         {@code disposables} is empty
+		 * @throws NullPointerException if one of the {@code disposables} is
+		 *         {@code null}
+		 */
+		@SafeVarargs
+		static <E extends Exception> ExtendedCloseable<E>
+		of(final ThrowingRunnable<? extends E>... disposables) {
+			return of(Arrays.asList(disposables));
 		}
 
 	}
 
 	/**
-	 * This interface represents a closeable value. It is useful in cases where
-	 * the value doesn't implement the {@link AutoCloseable} interface but needs
-	 * some cleanup work to do after usage.
+	 * This class represents a <em>closeable</em> value. It is useful in cases
+	 * where the value doesn't implement the {@link AutoCloseable} interface but
+	 * needs some cleanup work to do after usage. In the following example the
+	 * create {@code file} is automatically deleted when leaving the {@code try}
+	 * block.
 	 *
 	 * <pre>{@code
-	 * final CloseableValue<Path> file = CloseableValue.of(
-	 *     Files.createTempFile("test-", ".txt" ),
+	 * // Create the closeable file.
+	 * final Value<Path, IOException> file = Value.of(
+	 *     Files.createFile(Path.of("some_file")),
 	 *     Files::deleteIfExists
 	 * );
 	 *
@@ -387,10 +399,10 @@ public class Lifecycle {
 		 * calling the {@link Value#close()} method.
 		 *
 		 * <pre>{@code
-		 * final CloseableValue<Stream<Object>> result = CloseableValue.build(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
-		 *     final var bin = resources.add(new BufferedInputStream(fin));
-		 *     final var oin = resources.add(new ObjectInputStream(bin));
+		 * final Value<Stream<Object>, IOException> result = Value.build(resources -> {
+		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
+		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
+		 *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
