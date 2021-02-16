@@ -91,7 +91,7 @@ public class Lifecycle {
 	public interface ThrowingRunnable<E extends Exception> {
 
 		/**
-		 * Running the task
+		 * Running the task.
 		 *
 		 * @throws E if an error occurs while running the task
 		 */
@@ -107,7 +107,15 @@ public class Lifecycle {
 	 */
 	@FunctionalInterface
 	public interface ThrowingConsumer<A, E extends Exception> {
+
+		/**
+		 * Performs this operation on the given argument.
+		 *
+		 * @param arg the input argument
+		 * @throws E if an error occurs while executing the operation
+		 */
 		void accept(final A arg) throws E;
+
 	}
 
 	/**
@@ -119,7 +127,16 @@ public class Lifecycle {
 	 */
 	@FunctionalInterface
 	public interface ThrowingFunction<A, R, E extends Exception> {
+
+		/**
+		 * Applies this function to the given argument.
+		 *
+		 * @param arg the function argument
+		 * @return the function result
+		 * @throws E if an error occurs while applying the function
+		 */
 		R apply(final A arg) throws E;
+
 	}
 
 	/* *************************************************************************
