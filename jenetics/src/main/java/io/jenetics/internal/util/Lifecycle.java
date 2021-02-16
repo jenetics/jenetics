@@ -466,6 +466,18 @@ public class Lifecycle {
 
 		private final List<ThrowingRunnable<? extends E>> _resources = new ArrayList<>();
 
+		public Resources(final Collection<? extends ThrowingRunnable<? extends E>> resources) {
+			_resources.addAll(resources);
+		}
+
+		@SafeVarargs
+		public Resources(final ThrowingRunnable<? extends E>... resources) {
+			this(Arrays.asList(resources));
+		}
+
+		public Resources() {
+		}
+
 		/**
 		 * Registers the given {@code resource} to the list of managed
 		 * resources.

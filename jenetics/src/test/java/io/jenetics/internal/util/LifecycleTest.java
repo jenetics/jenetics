@@ -132,7 +132,7 @@ public class LifecycleTest {
 	}
 
 	@Test(expectedExceptions = IOException.class)
-	public void close1() throws Exception {
+	public void close1() throws IOException {
 		final var count = new AtomicInteger();
 
 		try {
@@ -143,7 +143,7 @@ public class LifecycleTest {
 				count::incrementAndGet
 			);
 			closeables.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			Assert.assertEquals(3, count.get());
 			throw e;
 		}
