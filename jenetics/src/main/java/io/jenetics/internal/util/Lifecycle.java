@@ -31,8 +31,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Interfaces for handling resource ({@link AutoCloseable}) objects. The common
- * use cases are shown as follows:
+ * Interfaces and classes for handling resource ({@link AutoCloseable}) objects.
+ * The common use cases are shown as follows:
  * <p><b>Wrapping <em>non</em>-closeable values</b></p>
  * <pre>{@code
  * final Value<Path, IOException> file = Value.of(
@@ -75,7 +75,6 @@ import java.util.function.Supplier;
  * @since 6.2
  * @version !__version__!
  */
-@SuppressWarnings("try")
 public class Lifecycle {
 
 	/* *************************************************************************
@@ -319,16 +318,19 @@ public class Lifecycle {
 		}
 
 		/**
-		 * Applies the give {@code block} to the closeable value. If the
-		 * {@code block} throws an exception, {@code this} value is closed. The
-		 * typical use case for this method is when additional initialization
-		 * of the value is needed.
+		 * Applies the give {@code block} to the already created closeable value.
+		 * If the {@code block} throws an exception, the  resource value is
+		 * released, by calling the defined <em>release</em> method. The typical
+		 * use case for this method is when additional initialization of the
+		 * value is needed.
 		 *
 		 * <pre>{@code
 		 * final var file = CloseableValue.of(
-		 *     Files.createTempFile("Lifecycle", "TEST"),
+		 *     Files.createFile(Path.of("some_file")),
 		 *     Files::deleteIfExists
 		 * );
+		 * // Trying to do additional setup, e.g. setting the 'delete-on-exit'
+		 * // flag.
 		 * file.trying(f -> f.toFile().deleteOnExit());
 		 *
 		 * try (file) {
@@ -337,22 +339,22 @@ public class Lifecycle {
 		 * }</pre>
 		 *
 		 * @param block the codec block which is applied to the value
-		 * @param closeables additional {@code closeables}, which are also
-		 *        closed in the case of an error
+		 * @param releases additional release methods, which are called in the
+		 *        case of an error
 		 * @param <E> the thrown exception type
 		 * @throws E if applying the {@code block} throws an exception
 		 */
 		@SafeVarargs
 		public final <E extends Exception> void trying(
 			final ThrowingConsumer<? super T, ? extends E> block,
-			final ThrowingRunnable<? extends E>... closeables
+			final ThrowingRunnable<? extends E>... releases
 		)
 			throws E
 		{
 			try {
 				block.accept(get());
 			} catch (Throwable error) {
-				ExtendedCloseable.of(closeables).silentClose(error);
+				ExtendedCloseable.of(releases).silentClose(error);
 				silentClose(error);
 				throw error;
 			}

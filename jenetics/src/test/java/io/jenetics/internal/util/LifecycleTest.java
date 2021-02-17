@@ -291,7 +291,7 @@ public class LifecycleTest {
 	}
 
 	@Test
-	public void closeableValueTrying() throws Exception {
+	public void closeableValueTrying() throws IOException {
 		final var file = tempFile();
 		file.trying(f -> f.toFile().deleteOnExit());
 
