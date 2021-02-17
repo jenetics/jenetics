@@ -511,7 +511,7 @@ public class Lifecycle {
 			final C resource,
 			final ThrowingConsumer<? super C, ? extends E> release
 		) {
-			requireNonNull(release);
+			requireNonNull(resource);
 			requireNonNull(release);
 
 			_resources.add(() -> release.accept(resource));
