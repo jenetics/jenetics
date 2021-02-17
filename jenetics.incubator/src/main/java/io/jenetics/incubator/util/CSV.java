@@ -22,6 +22,7 @@ package io.jenetics.incubator.util;
 import static java.lang.String.format;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -43,7 +44,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * CSV row.
  *
  * <pre>{@code
- * // Read CSV, including multiline CSV files, if proper quoted.
+ * // Read CSV, including multiline CSV files, if properly quoted.
  * final List<String> lines = CSV.LINE_READER.readAll(Path.of("some_file.csv"));
  * final List<List<String>> rows = lines.stream()
  *     .map(CSV::split)
@@ -83,7 +84,7 @@ public final class CSV {
 		 * Splits the given content of the given {@code reader} into a
 		 * {@code Stream} of CSV lines. The lines are split at line breaks, as
 		 * long as they are not part of a quoted column. <em>The returned stream
-		 * must be closed by the caller.</em>
+		 * must be closed by the caller, which also closes the given reader.</em>
 		 *
 		 * <pre>{@code
 		 * try (var lines = CSV.LINE_READER.read(reader)) {
@@ -120,19 +121,7 @@ public final class CSV {
 		default Stream<String> read(final Path path, final Charset cs)
 			throws IOException
 		{
-			final Value<Stream<String>, IOException> result = Value.build(
-				resources -> {
-					final var reader = resources.add(
-						Files.newBufferedReader(path, cs),
-						Reader::close
-					);
-					return read(reader);
-				}
-			);
-
-			return result.get().onClose(() ->
-				result.uncheckedClose(UncheckedIOException::new)
-			);
+			return read(Files.newBufferedReader(path, cs));
 		}
 
 		/**
@@ -437,16 +426,18 @@ public final class CSV {
 	/**
 	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.
 	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller.</em>
+	 * quoted column. <em>The returned stream must be closed by the caller,
+	 * which also closes the given reader.</em>
 	 *
-	 * @param reader the reader stream to split into CSV lines
+	 * @param reader the reader stream to split into CSV lines. The reader is
+	 *        automatically closed when the returned line stream is closed.
 	 * @return the stream of CSV lines
 	 */
 	static Stream<String> read(final Reader reader) {
 		final Value<Stream<String>, IOException> result = Value.build(resources -> {
 			final var br = reader instanceof BufferedReader
-				? (BufferedReader)reader
-				: resources.add(new BufferedReader(reader), Reader::close);
+				? resources.add((BufferedReader)reader, Closeable::close)
+				: resources.add(new BufferedReader(reader), Closeable::close);
 
 			final var line = new StringBuilder();
 			final Supplier<String> nextLine = () -> {
@@ -467,8 +458,9 @@ public final class CSV {
 				.takeWhile(Objects::nonNull);
 		});
 
-		return result.get()
-			.onClose(() -> result.uncheckedClose(UncheckedIOException::new));
+		return result.get().onClose(() ->
+			result.uncheckedClose(UncheckedIOException::new)
+		);
 	}
 
 	private static boolean nextLine(final Reader reader, final StringBuilder line)
