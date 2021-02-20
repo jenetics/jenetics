@@ -78,6 +78,7 @@ public final class CSV {
 	 *
 	 * @see CSV#LINE_READER
 	 */
+	@FunctionalInterface
 	public interface LineReader {
 
 		/**
