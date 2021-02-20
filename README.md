@@ -154,6 +154,8 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Yiming Tang, Raffi Khatchadourian, Mehdi Bagherzadeh, Rhia Singh, Ajani Stewart, and Anita Raja. <a href="https://academicworks.cuny.edu/hc_pubs/671/">An Empirical Study of Refactorings and Technical Debt in Machine Learning Systems.</a> <em>In International Conference on Software Engineering, ICSE ’21. </em> May 2021.
+* Amine Aziz-Alaoui, Carola Doerr, Johann Dreo. <a href="https://arxiv.org/abs/2102.06435">Towards Large Scale Automated Algorithm Designby Integrating Modular Benchmarking Frameworks. </a> <em>E arXiv:2102.06435 </em> Feb. 2021.
 * Dominik Bork and Antonio Garmendia and Manuel Wimmer. <a href="https://model-engineering.info/publications/papers/ER2020_Forum_ModulER-CR.pdf">Towards a Multi-Objective Modularization Approach for Entity-Relationship Models.</a> <em>ER 2020, 39th International Conference on Conceptual Modeling. </em></a> Nov. 2020.
 * Sarfarazi, S.; Deissenroth-Uhrig, M.; Bertsch, V. <a href="https://doi.org/10.3390/en13195154 ">Aggregation of Households in Community Energy Systems: An Analysis from Actors’ and Market Perspectives. </a> <em>Energies 2020, 13, 5154. </em> Oct. 2020.  
 * M. Šipek, D. Muharemagić, B. Mihaljević and A. Radovan. <a href="https://ieeexplore.ieee.org/abstract/document/9245290">Enhancing Performance of Cloud-based Software Applications with GraalVM and Quarkus.</a> <em>2020 43rd International Convention on Information, Communication and Electronic Technology (MIPRO), Opatija, Croatia, 2020, pp. 1746-1751. </em> Oct. 2020.
