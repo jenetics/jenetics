@@ -256,7 +256,7 @@ public final class CSV {
 	 * @throws NullPointerException if the given {@code row} is {@code null}
 	 */
 	public static List<String> split(final CharSequence line) {
-		final List<String> columns = new ArrayList<>();
+		final var columns = new ArrayList<String>();
 		final var column = new StringBuilder(32);
 
 		boolean quoted = false;
