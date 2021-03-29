@@ -46,7 +46,7 @@ public class TaskCompletion {
 	private final int _taskQueueSize;
 	private final BlockingQueue<Runnable> _tasks;
 
-	private boolean taskSubmitted = false;
+	private boolean _submitted = false;
 
 	/**
 	 * Creates a new task-completion object with the given parameter.
@@ -152,12 +152,12 @@ public class TaskCompletion {
 	{
 		synchronized (_lock) {
 			if (_tasks.offer(task, timeout.toMillis(), MILLISECONDS)) {
-				if (!taskSubmitted) {
-					final var t = _tasks.poll();
+				if (!_submitted) {
+					final var runnable = _tasks.poll();
 
-					if (t != null) {
-						_executor.execute(t);
-						taskSubmitted = true;
+					if (runnable != null) {
+						_executor.execute(runnable);
+						_submitted = true;
 					}
 				}
 
@@ -170,13 +170,13 @@ public class TaskCompletion {
 
 	private void taskFinished() {
 		synchronized (_lock) {
-			final var t = _tasks.poll();
+			final var runnable = _tasks.poll();
 
-			if (t != null) {
-				_executor.execute(t);
-				taskSubmitted = true;
+			if (runnable != null) {
+				_executor.execute(runnable);
+				_submitted = true;
 			} else {
-				taskSubmitted = false;
+				_submitted = false;
 			}
 		}
 	}
