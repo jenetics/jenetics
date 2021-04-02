@@ -122,7 +122,7 @@ public class TaskCompletion {
 			try {
 				block.run();
 			} finally {
-				taskFinished();
+				nextTask();
 			}
 		};
 
@@ -168,7 +168,7 @@ public class TaskCompletion {
 		}
 	}
 
-	private void taskFinished() {
+	private void nextTask() {
 		synchronized (_lock) {
 			final var runnable = _tasks.poll();
 
