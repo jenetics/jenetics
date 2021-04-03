@@ -23,19 +23,53 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+/**
+ * Asynchronously executes <em>submitted</em> tasks in the given submission
+ * order.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 6.3
+ * @version 6.3
+ */
 public class TaskCompletion {
 
+	/**
+	 * Interface for handlers invoked when a <em>task</em> abruptly terminates
+	 * due to an uncaught exception or when the execution of a task is rejected
+	 * with a {@link RejectedExecutionException}.
+	 *
+	 * @see RejectedExecutionException
+	 */
 	@FunctionalInterface
 	public interface ExceptionHandler {
+
+		/**
+		 * Method invoked when the executed task terminates due to the given
+		 * uncaught exception or when the execution of a task is rejected with a
+		 * {@link RejectedExecutionException}.
+		 *
+		 * @param error the exception thrown
+		 * @param task the <em>task</em>, which caused the error
+		 */
 		public void handle(final Throwable error, final Runnable task);
+
 	}
 
+	/**
+	 * Wrapper class for the <em>runnable</em> to be executed.
+	 */
 	private final class Task implements Runnable {
 		private final Runnable _runnable;
 
@@ -47,9 +81,11 @@ public class TaskCompletion {
 		public void run() {
 			try {
 				_runnable.run();
+			} catch (Throwable e) {
+				handleException(e, _runnable);
 			} finally {
 				_running = false;
-				nextTask();
+				executeNextTask();
 			}
 		}
 	}
@@ -59,11 +95,14 @@ public class TaskCompletion {
 	 */
 	public static final int DEFAULT_TASK_QUEUE_SIZE = 1000;
 
-	private final Object _lock = new Object() {};
-
 	private final Executor _executor;
-	private final int _taskQueueSize;
 	private final BlockingQueue<Task> _tasks;
+	private final int _capacity;
+
+	private final ReentrantLock _lock = new ReentrantLock();
+
+	private final AtomicReference<ExceptionHandler> _exceptionHandler =
+		new AtomicReference<>((e, r) -> {});
 
 	private boolean _running = false;
 
@@ -72,16 +111,16 @@ public class TaskCompletion {
 	 *
 	 * @param executor the executor service used for the asynchronous task
 	 *        execution
-	 * @param taskQueueSize the maximum allowed number of tasks which are
+	 * @param capacity the maximum allowed number of tasks which are
 	 *        waiting for submission to the <i>executor</i>
 	 * @throws NullPointerException if the given {@code executor} is {@code null}
 	 * @throws IllegalArgumentException if the {@code taskQueueSize} is smaller
 	 *         than one
 	 */
-	public TaskCompletion(final Executor executor, final int taskQueueSize) {
+	public TaskCompletion(final Executor executor, final int capacity) {
 		_executor = requireNonNull(executor);
-		_taskQueueSize = taskQueueSize;
-		_tasks = new ArrayBlockingQueue<>(_taskQueueSize, true);
+		_capacity = capacity;
+		_tasks = new ArrayBlockingQueue<>(_capacity, true);
 	}
 
 	/**
@@ -102,7 +141,7 @@ public class TaskCompletion {
 	 * @return the maximal size of the task queue
 	 */
 	public int taskQueueSize() {
-		return _taskQueueSize;
+		return _capacity;
 	}
 
 	/**
@@ -113,6 +152,35 @@ public class TaskCompletion {
 	public int taskSize() {
 		return _tasks.size();
 	}
+
+	/**
+	 * Return the list currently queued tasks.
+	 *
+	 * @return the list of currently queued tasks
+	 */
+	public List<Runnable> queuedTasks() {
+		return Stream.of(_tasks.toArray(Task[]::new))
+			.map(t -> t._runnable)
+			.collect(Collectors.toUnmodifiableList());
+	}
+
+	public void drainTo(final Collection<? super Runnable> collection) {
+		final var tasks = new ArrayList<Task>();
+		_tasks.drainTo(tasks);
+		tasks.forEach(t -> collection.add(t._runnable));
+	}
+
+	public void clear() {
+		_tasks.clear();
+	}
+
+	public void setExceptionHandler(final ExceptionHandler handler) {
+		_exceptionHandler.set(requireNonNull(handler));
+	}
+
+	/* *************************************************************************
+	 * Task submission methods.
+	 * ************************************************************************/
 
 	/**
 	 *  Executes the given {@code runnable} asynchronously. The method will return
@@ -134,57 +202,57 @@ public class TaskCompletion {
 	public boolean submit(final Runnable runnable, final Duration timeout)
 		throws InterruptedException
 	{
-		requireNonNull(timeout);
-		requireNonNull(runnable);
-
-		return submit0(new Task(runnable), timeout);
+		final var offered = _tasks.offer(
+			new Task(runnable),
+			timeout.toMillis(), MILLISECONDS
+		);
+		if (offered) {
+			executeNextTask();
+		}
+		return offered;
 	}
 
 	/**
-	 * Executes the given <i>block</i> asynchronously. The method will return
+	 * Executes the given {@code runnable} asynchronously. The method will return
 	 * immediately without waiting in the case of an exhausted task queue. Return
 	 * {@code true} if the task has been successfully submitted, {@code false}
 	 * otherwise.
 	 *
-	 * @param block the code block to execute.
-	 * @return {@code true} if the given {@code block} where successfully
+	 * @param runnable the code block to execute.
+	 * @return {@code true} if the given {@code runnable} where successfully
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
 	 */
-	public boolean submit(final Runnable block) {
-		return submit0(new Task(block));
-	}
-
-	private boolean submit0(final Task task, final Duration timeout)
-		throws InterruptedException
-	{
-		final var offered = _tasks.offer(task, timeout.toMillis(), MILLISECONDS);
-		nextTask();
-		return offered;
-	}
-
-	private boolean submit0(final Task task) {
-		final var offered = _tasks.offer(task);
-		nextTask();
-		return offered;
-	}
-
-	private void nextTask() {
-		synchronized (_lock) {
-			if (_running) {
-				return;
-			}
-
-			final var runnable = _tasks.poll();
-			if (runnable != null) {
-				try {
-					_executor.execute(runnable);
-				} catch (RejectedExecutionException e) {
-				}
-				_running = true;
-			}
+	public boolean submit(final Runnable runnable) {
+		final var offered = _tasks.offer(new Task(runnable));
+		if (offered) {
+			executeNextTask();
 		}
+		return offered;
+	}
+
+	private void executeNextTask() {
+		_lock.lock();
+		try {
+			if (!_running) {
+				final var task = _tasks.poll();
+				if (task != null) {
+					try {
+						_executor.execute(task);
+						_running = true;
+					} catch (RejectedExecutionException e) {
+						handleException(e, task._runnable);
+					}
+				}
+			}
+		} finally {
+			_lock.unlock();
+		}
+	}
+
+	private void handleException(final Throwable e, final Runnable r) {
+		_exceptionHandler.get().handle(e, r);
 	}
 
 }
