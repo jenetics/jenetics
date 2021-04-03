@@ -26,14 +26,33 @@ import java.time.Duration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TaskCompletion {
 
-	/**
-	 * The default timeout for waiting for a free place in the task queue:
-	 * 5 min.
-	 */
-	public static final Duration DEFAULT_ASYNC_TIMEOUT = Duration.ofMinutes(5);
+	@FunctionalInterface
+	public interface ExceptionHandler {
+		public void handle(final Throwable error, final Runnable task);
+	}
+
+	private final class Task implements Runnable {
+		private final Runnable _runnable;
+
+		Task(final Runnable runnable) {
+			_runnable = requireNonNull(runnable);
+		}
+
+		@Override
+		public void run() {
+			try {
+				_runnable.run();
+			} finally {
+				_running = false;
+				nextTask();
+			}
+		}
+	}
 
 	/**
 	 * The default task queue size, set to 1000.
@@ -44,9 +63,9 @@ public class TaskCompletion {
 
 	private final Executor _executor;
 	private final int _taskQueueSize;
-	private final BlockingQueue<Runnable> _tasks;
+	private final BlockingQueue<Task> _tasks;
 
-	private boolean _submitted = false;
+	private boolean _running = false;
 
 	/**
 	 * Creates a new task-completion object with the given parameter.
@@ -96,15 +115,15 @@ public class TaskCompletion {
 	}
 
 	/**
-	 *  Executes the given <i>block</i> asynchronously. The method will return
+	 *  Executes the given {@code runnable} asynchronously. The method will return
 	 * immediately after, except the <i>executorQueueSize</i> is exhausted. Then
 	 * this call will block until an other task has finished or the specified
 	 * waiting time has expired.
 	 *
-	 * @param block the code block to execute.
+	 * @param runnable the code block to execute.
 	 * @param timeout the maximal time to wait for a place in the task queue. If
 	 *        waiting time has elapsed, and RejectedExecutionException is thrown.
-	 * @return {@code true} if the given {@code block} where successfully
+	 * @return {@code true} if the given {@code runnable} where successfully
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
@@ -112,71 +131,58 @@ public class TaskCompletion {
 	 * @throws InterruptedException if the calling thread is interrupted while
 	 *         waiting for a place in the executor queue.
 	 */
-	public boolean submit(final Runnable block, final Duration timeout)
+	public boolean submit(final Runnable runnable, final Duration timeout)
 		throws InterruptedException
 	{
 		requireNonNull(timeout);
-		requireNonNull(block);
+		requireNonNull(runnable);
 
-		final Runnable task = () -> {
-			try {
-				block.run();
-			} finally {
-				nextTask();
-			}
-		};
-
-		return submit0(task, timeout);
+		return submit0(new Task(runnable), timeout);
 	}
 
 	/**
 	 * Executes the given <i>block</i> asynchronously. The method will return
-	 * immediately after, except the <i>executorQueueSize</i> is exhausted. Then
-	 * this call will block until an other task has finished or a predefined
-	 * timeout occurred.
+	 * immediately without waiting in the case of an exhausted task queue. Return
+	 * {@code true} if the task has been successfully submitted, {@code false}
+	 * otherwise.
 	 *
 	 * @param block the code block to execute.
 	 * @return {@code true} if the given {@code block} where successfully
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
-	 * @throws InterruptedException if the calling thread is interrupted while
-	 *         waiting for a place in the executor queue.
 	 */
-	public boolean submit(final Runnable block) throws InterruptedException {
-		return submit(block, DEFAULT_ASYNC_TIMEOUT);
+	public boolean submit(final Runnable block) {
+		return submit0(new Task(block));
 	}
 
-	private boolean submit0(final Runnable task, final Duration timeout)
+	private boolean submit0(final Task task, final Duration timeout)
 		throws InterruptedException
 	{
-		synchronized (_lock) {
-			if (_tasks.offer(task, timeout.toMillis(), MILLISECONDS)) {
-				if (!_submitted) {
-					final var runnable = _tasks.poll();
+		final var offered = _tasks.offer(task, timeout.toMillis(), MILLISECONDS);
+		nextTask();
+		return offered;
+	}
 
-					if (runnable != null) {
-						_executor.execute(runnable);
-						_submitted = true;
-					}
-				}
-
-				return true;
-			} else {
-				return false;
-			}
-		}
+	private boolean submit0(final Task task) {
+		final var offered = _tasks.offer(task);
+		nextTask();
+		return offered;
 	}
 
 	private void nextTask() {
 		synchronized (_lock) {
-			final var runnable = _tasks.poll();
+			if (_running) {
+				return;
+			}
 
+			final var runnable = _tasks.poll();
 			if (runnable != null) {
-				_executor.execute(runnable);
-				_submitted = true;
-			} else {
-				_submitted = false;
+				try {
+					_executor.execute(runnable);
+				} catch (RejectedExecutionException e) {
+				}
+				_running = true;
 			}
 		}
 	}
