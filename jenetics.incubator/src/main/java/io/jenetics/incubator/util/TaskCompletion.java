@@ -20,7 +20,7 @@
 package io.jenetics.incubator.util;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class TaskCompletion {
 			} catch (Throwable e) {
 				handleException(e, _runnable);
 			} finally {
-				_running = false;
+				_running.set(false);
 				executeNextTask();
 			}
 		}
@@ -104,7 +105,7 @@ public class TaskCompletion {
 	private final AtomicReference<ExceptionHandler> _exceptionHandler =
 		new AtomicReference<>((e, r) -> {});
 
-	private boolean _running = false;
+	private final AtomicBoolean _running = new AtomicBoolean(false);
 
 	/**
 	 * Creates a new task-completion object with the given parameter.
@@ -204,7 +205,7 @@ public class TaskCompletion {
 	{
 		final var offered = _tasks.offer(
 			new Task(runnable),
-			timeout.toMillis(), MILLISECONDS
+			timeout.toNanos(), NANOSECONDS
 		);
 		if (offered) {
 			executeNextTask();
@@ -235,12 +236,12 @@ public class TaskCompletion {
 	private void executeNextTask() {
 		_lock.lock();
 		try {
-			if (!_running) {
+			if (!_running.get()) {
 				final var task = _tasks.poll();
 				if (task != null) {
 					try {
 						_executor.execute(task);
-						_running = true;
+						_running.set(true);
 					} catch (RejectedExecutionException e) {
 						handleException(e, task._runnable);
 					}
