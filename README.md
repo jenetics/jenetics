@@ -138,6 +138,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Projects using Jenetics
 
+* <a href="https://spear-project.eu/"><b>SPEAR</b>:</a> SPEAR (Smart Prognosis of Energy with Allocation of Resources) created an extendable platform for energy and efficiency optimizations of production systems.
 * <a href="https://renaissance.dev/"><b>Renaissance Suite</b>:</a> Renaissance is a modern, open, and diversified benchmark suite for the JVM, aimed at testing JIT compilers, garbage collectors, profilers, analyzers and other tools.
 * <a href="https://www.chartsy.one/"><b>Chartsy|One</b>:</a> Chartsy|One is a Netbeans based tool for stock market investors and traders.
 * <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
@@ -155,6 +156,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 ## Citations
 
 * Yiming Tang, Raffi Khatchadourian, Mehdi Bagherzadeh, Rhia Singh, Ajani Stewart, and Anita Raja. <a href="https://academicworks.cuny.edu/hc_pubs/671/">An Empirical Study of Refactorings and Technical Debt in Machine Learning Systems.</a> <em>In International Conference on Software Engineering, ICSE ’21. </em> May 2021.
+* MICHELA LORANDI, LEONARDO LUCIO CUSTODE, and GIOVANNI IACCA. <a href="https://arxiv.org/pdf/2103.07428.pdf">Genetic Improvement of Routing Protocols for DelayTolerant Networks. </a> <em>arXiv:2103.07428v1 </em> March 2021.
 * Amine Aziz-Alaoui, Carola Doerr, Johann Dreo. <a href="https://arxiv.org/abs/2102.06435">Towards Large Scale Automated Algorithm Designby Integrating Modular Benchmarking Frameworks. </a> <em>E arXiv:2102.06435 </em> Feb. 2021.
 * Dominik Bork and Antonio Garmendia and Manuel Wimmer. <a href="https://model-engineering.info/publications/papers/ER2020_Forum_ModulER-CR.pdf">Towards a Multi-Objective Modularization Approach for Entity-Relationship Models.</a> <em>ER 2020, 39th International Conference on Conceptual Modeling. </em></a> Nov. 2020.
 * Sarfarazi, S.; Deissenroth-Uhrig, M.; Bertsch, V. <a href="https://doi.org/10.3390/en13195154 ">Aggregation of Households in Community Energy Systems: An Analysis from Actors’ and Market Perspectives. </a> <em>Energies 2020, 13, 5154. </em> Oct. 2020.  
