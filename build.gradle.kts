@@ -33,7 +33,7 @@ plugins {
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "6.8.2"
+	gradleVersion = "7.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -50,7 +50,6 @@ allprojects {
 		}
 		mavenLocal()
 		mavenCentral()
-		jcenter()
 	}
 
 	configurations.all {

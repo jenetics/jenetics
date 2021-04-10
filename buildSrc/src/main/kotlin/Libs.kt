@@ -23,7 +23,7 @@
  */
 object Libs {
 	const val ApacheCommonsMath = "org.apache.commons:commons-math3:3.6.1"
-	const val EqualsVerifier = "nl.jqno.equalsverifier:equalsverifier:3.4.3"
+	const val EqualsVerifier = "nl.jqno.equalsverifier:equalsverifier:3.5.5"
 	const val TestNG = "org.testng:testng:7.3.0"
 	const val JPX = "io.jenetics:jpx:2.0.0"
 	const val PRNGine = "io.jenetics:prngine:1.0.2"
