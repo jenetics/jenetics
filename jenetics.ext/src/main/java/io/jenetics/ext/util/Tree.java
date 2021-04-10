@@ -956,7 +956,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *  </pre>
 	 * is printed as
 	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
 	 *
 	 * @since 4.3
