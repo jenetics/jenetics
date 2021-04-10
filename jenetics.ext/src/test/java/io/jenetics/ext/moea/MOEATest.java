@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.testng.Assert;
@@ -41,7 +40,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.Accumulator;
 import io.jenetics.util.DoubleRange;
