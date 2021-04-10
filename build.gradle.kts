@@ -94,8 +94,8 @@ gradle.projectsEvaluated {
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_15
-				targetCompatibility = JavaVersion.VERSION_15
+				sourceCompatibility = JavaVersion.VERSION_16
+				targetCompatibility = JavaVersion.VERSION_16
 			}
 
 			setupJava(project)
@@ -178,7 +178,7 @@ fun setupJavadoc(project: Project) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("-enable-preview", true)
-		doclet.addStringOption("-release", "15")
+		doclet.addStringOption("-release", "16")
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 
 		exclude("**/internal/**")
@@ -189,7 +189,7 @@ fun setupJavadoc(project: Project) {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/15/docs/api",
+				"https://docs.oracle.com/en/java/javase/16/docs/api",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
@@ -256,7 +256,7 @@ fun setupJavadoc(project: Project) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/en/java/javase/15/docs/specs/man/javac.html
+	// See https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html
 	return listOf(
 		"cast",
 		"classfile",
