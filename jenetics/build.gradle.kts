@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics - Java Genetic Algorithm Library"
@@ -46,5 +46,5 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*IntegerChromosomePerf.*")
+	includes.add(".*IntegerChromosomePerf.*")
 }

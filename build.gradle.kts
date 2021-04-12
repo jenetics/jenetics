@@ -27,7 +27,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.2" apply false
+	id("me.champeau.jmh") version "0.6.3" apply false
 }
 
 rootProject.version = Jenetics.VERSION
@@ -55,6 +55,7 @@ allprojects {
 	configurations.all {
 		resolutionStrategy.failOnVersionConflict()
 		resolutionStrategy.force(*Libs.All)
+		//resolutionStrategy.preferProjectModules()
 	}
 }
 
