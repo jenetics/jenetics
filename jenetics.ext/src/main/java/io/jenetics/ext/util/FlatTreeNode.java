@@ -46,7 +46,7 @@ import io.jenetics.util.ISeq;
  * the {@link Tree} interface. It can only be created from an existing tree.
  *
  * <pre>{@code
- * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
+ * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(...));
  * }</pre>
  *
  * @implNote
