@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.2" apply false
+	id("me.champeau.jmh") version "0.6.3" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "6.8.2"
+	gradleVersion = "7.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -50,7 +50,6 @@ allprojects {
 		}
 		mavenLocal()
 		mavenCentral()
-		jcenter()
 	}
 
 	configurations.all {

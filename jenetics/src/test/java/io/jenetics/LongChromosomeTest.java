@@ -68,8 +68,8 @@ public class LongChromosomeTest
 				}
 			}
 
-			Assert.assertTrue(mm.min().compareTo(0L) >= 0);
-			Assert.assertTrue(mm.max().compareTo(100L) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0L) > 0);
+			Assert.assertTrue(mm.max().compareTo(100L) > 0);
 			assertUniformDistribution(histogram);
 		});
 	}
