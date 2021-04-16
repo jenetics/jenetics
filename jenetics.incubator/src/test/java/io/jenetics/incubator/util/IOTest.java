@@ -30,7 +30,9 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -147,6 +149,36 @@ public class IOTest {
 
 			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
 
+		}
+	}
+
+	@Test
+	public void appendReadFileExample() throws Exception {
+		final var path = CloseableValue.of(
+			Files.createTempFile("IO-", "-TEST"),
+			Files::deleteIfExists
+		);
+
+		try (path) {
+			IO.write(path.get(), List.of("1", "2", "3"), CREATE);
+			List<Object> objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+			IO.write(path.get(), List.of("4", "5"), APPEND);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+			try (Stream<Object> stream = IO.objects(path.get())) {
+				final var count = new AtomicInteger(1);
+				stream.forEach(o -> {
+					final var expected = String.valueOf(count.getAndIncrement());
+					Assert.assertEquals(o, expected);
+				});
+			}
+
+			IO.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("6", "7", "8"));
 		}
 	}
 
