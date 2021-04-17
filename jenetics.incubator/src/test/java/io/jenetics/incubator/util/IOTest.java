@@ -150,7 +150,6 @@ public class IOTest {
 				: data.get(data.size() - 1);
 
 			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
-
 		}
 	}
 

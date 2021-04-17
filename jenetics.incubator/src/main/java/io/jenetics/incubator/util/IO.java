@@ -47,24 +47,33 @@ import io.jenetics.internal.util.Lifecycle.CloseableValue;
 import io.jenetics.internal.util.Lifecycle.ResourceCollector;
 
 /**
- * Static methods for reading and writing Java objects. The methods of this
- * class allows to append additional objects to an existing files.
+ * Static methods for reading and writing objects using the Java serialisation.
+ * The methods of this class allows to append additional objects to an existing
+ * files.
  *
  * <pre>{@code
  * // Write three string objects to the given path and read them again.
- * IO.write(path, List.of("1", "2", "3"), StandardOpenOption.CREATE);
- * List<Object> objects = IO.readAllObjects(path);
+ * IO.write(path, List.of("1", "2", "3"), CREATE, APPEND);
+ * var objects = IO.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
  * // Append another two string object to the same file.
- * IO.write(path, List.of("4", "5"), StandardOpenOption.APPEND);
+ * IO.write(path, List.of("4", "5"), APPEND);
  * objects = IO.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
  *
  * // Truncates the the content of an existing file.
- * IO.write(path, List.of("6", "7", "8"), StandardOpenOption.TRUNCATE_EXISTING);
+ * IO.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
  * objects = IO.readAllObjects(path);
  * assert objects.equals(List.of("6", "7", "8"));
+ * }</pre>
+ *
+ * It also allows to read object piecewise via a {@link Stream}.
+ *
+ * <pre>{@code
+ * try (Stream<Object> stream = IO.objects(Path.of("serialized-objects.bin"))) {
+ *     stream.forEach(System.out::println);
+ * }
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -115,7 +124,9 @@ public final class IO {
 	/**
 	 * This class allows to append objects to a given output stream.
 	 */
-	private static final class AppendableObjectOutput implements Closeable, Flushable {
+	private static final class AppendableObjectOutput
+		implements Closeable, Flushable
+	{
 		private final ObjectOutputStream _out;
 
 		AppendableObjectOutput(final OutputStream out, final boolean append)
@@ -154,9 +165,8 @@ public final class IO {
 
 	/**
 	 * Writes the given {@code objects} to the given {@code output} stream,
-	 * using the Java serialization mechanism. For the <em>first</em> objects
-	 * to be written to the stream, the {@code append} flag must be set to
-	 * {@code false}.
+	 * using Java serialization. For the <em>first</em> objects to be written
+	 * to the stream, the {@code append} flag must be set to {@code false}.
 	 *
 	 * <pre>{@code
 	 * final var output = new ByteArrayOutputStream();
@@ -223,9 +233,8 @@ public final class IO {
 
 	/**
 	 * Writes the given {@code objects} to the given {@code output} stream,
-	 * using the Java serialization mechanism. For the <em>first</em> objects
-	 * to be written to the stream, the {@code append} flag must be set to
-	 * {@code false}.
+	 * using Java serialization. For the <em>first</em> objects to be written
+	 * to the stream, the {@code append} flag must be set to {@code false}.
 	 *
 	 * <pre>{@code
 	 * final var output = new ByteArrayOutputStream();
@@ -275,7 +284,7 @@ public final class IO {
 	}
 
 	/**
-	 * Writes the given {@code objects} to the given {@code path}, using the
+	 * Writes the given {@code objects} to the given {@code path}, using
 	 * Java serialization. If the {@code path} already exists and the open
 	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
 	 * are appended to the existing file.
@@ -310,7 +319,17 @@ public final class IO {
 	)
 		throws IOException
 	{
-		final var it = objects.iterator();
+		write0(path, objects::iterator, options);
+	}
+
+	private static void write0(
+		final Path path,
+		final Supplier<Iterator<?>> objects,
+		final OpenOption... options
+	)
+		throws IOException
+	{
+		final var it = objects.get();
 		if (it.hasNext()) {
 			final var append = isAppendable(options) && !isEmpty(path);
 			try (var fos = Files.newOutputStream(path, options);
@@ -332,6 +351,45 @@ public final class IO {
 
 	private static boolean isEmpty(final Path file) throws IOException {
 		return !Files.exists(file) || Files.size(file) == 0;
+	}
+
+	/**
+	 * Writes the given {@code objects} to the given {@code path}, using
+	 * Java serialization. If the {@code path} already exists and the open
+	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
+	 * are appended to the existing file.
+	 *
+	 * <pre>{@code
+	 * // Write three string objects to the given file. The file is created if
+	 * // it not exists or appended if the file already exists.
+	 * IO.write(
+	 *     path,
+	 *     Stream.of("1", "2", "3"),
+	 *     StandardOpenOption.CREATE, StandardOpenOption.APPEND
+	 * );
+	 * }</pre>
+	 *
+	 * @see #write(OutputStream, Iterable, boolean)
+	 * @see #write(OutputStream, Stream, boolean)
+	 *
+	 * @param path the destination where the {@code objects} are written to
+	 * @param objects the {@code objects} to be written
+	 * @param options specifying how the file is opened
+	 * @throws IOException if writing the objects fails
+	 * @throws IllegalArgumentException if options contains an invalid
+	 *         combination of options
+	 * @throws UnsupportedOperationException if an unsupported option is
+	 *         specified
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static void write(
+		final Path path,
+		final Stream<?> objects,
+		final OpenOption... options
+	)
+		throws IOException
+	{
+		write0(path, objects::iterator, options);
 	}
 
 	/**
@@ -370,9 +428,11 @@ public final class IO {
 	objectStream(final InputStream input, final ResourceCollector resources)
 		throws IOException
 	{
-		final var fin = resources.add(input);
-		final var bin = resources.add(new BufferedInputStream(fin));
-		final var oin = resources.add(new ObjectInputStream(bin));
+		var in = resources.add(input);
+		if (!(in instanceof BufferedInputStream)) {
+			in = resources.add(new BufferedInputStream(in));
+		}
+		final var oin = resources.add(new ObjectInputStream(in));
 
 		final Supplier<Object> readObject = () -> {
 			try {
@@ -430,11 +490,6 @@ public final class IO {
 	 * Reads all objects from the given {@code input} stream, which were
 	 * previously written with one of the the {@code write} methods.
 	 *
-	 * <pre>{@code
-	 * final InputStream input = ...;
-	 * final List<Object> objects = IO.readAllObjects(input);
-	 * }</pre>
-	 *
 	 * @param input the input stream where the objects are read from
 	 * @return a list of all read objects
 	 * @throws NullPointerException if the given {@code input} stream is
@@ -452,12 +507,6 @@ public final class IO {
 	/**
 	 * Reads all objects from the given {@code path}, which were previously
 	 * written with one of the the {@code write} methods.
-	 *
-	 * <pre>{@code
-	 * IO.write(path, List.of("1", "2", "3"), CREATE);
-	 * final List<Object> objects = IO.readAllObjects(path.get());
-	 * assert  objects.equals(List.of("1", "2", "3"));
-	 * }</pre>
 	 *
 	 * @param path the data path
 	 * @return a list of all read objects
