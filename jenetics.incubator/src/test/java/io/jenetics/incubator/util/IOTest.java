@@ -25,6 +25,8 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.util.UUID.randomUUID;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -206,6 +208,32 @@ public class IOTest {
 				});
 			}
 		}
+	}
+
+	@Test
+	public void writeStreamReadStreamExample() throws Exception {
+		final var out = new ByteArrayOutputStream();
+
+		IO.write(out, List.of("1", "2", "3"), false);
+		List<Object> objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+		IO.write(out, List.of("4", "5"), true);
+		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+		try (Stream<Object> stream = IO.objects(new ByteArrayInputStream(out.toByteArray()))) {
+			final var count = new AtomicInteger(1);
+			stream.forEach(o -> {
+				final var expected = String.valueOf(count.getAndIncrement());
+				Assert.assertEquals(o, expected);
+			});
+		}
+
+		out.reset();
+		IO.write(out, List.of("6", "7", "8"), false);
+		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("6", "7", "8"));
 	}
 
 }
