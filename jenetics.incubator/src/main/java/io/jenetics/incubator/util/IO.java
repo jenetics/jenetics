@@ -71,6 +71,41 @@ import io.jenetics.internal.util.Lifecycle.ResourceCollector;
  * @version 6.2
  */
 public final class IO {
+	private IO() {}
+
+	private static final class NonCloseableOutputStream extends OutputStream {
+		private final OutputStream _out;
+
+		NonCloseableOutputStream(final OutputStream out) {
+			_out = out;
+		}
+
+		@Override
+		public void write(final int b) throws IOException {
+			_out.write(b);
+		}
+
+		@Override
+		public void write(final byte[] b) throws IOException {
+			_out.write(b);
+		}
+
+		@Override
+		public void write(final byte[] b, final int off, final int len)
+			throws IOException
+		{
+			_out.write(b, off, len);
+		}
+
+		@Override
+		public void flush() throws IOException {
+			_out.flush();
+		}
+
+		@Override
+		public void close() {
+		}
+	}
 
 	/**
 	 * This class allows to append objects to a given output stream.
@@ -112,7 +147,33 @@ public final class IO {
 		}
 	}
 
-	private IO() {
+	public static void write(
+		final OutputStream out,
+		final Iterable<?> objects,
+		final boolean append
+	)
+		throws IOException
+	{
+		final var it = objects.iterator();
+		if (it.hasNext()) {
+			write0(out, it, append);
+		}
+	}
+
+	private static void write0(
+		final OutputStream out,
+		final Iterator<?> objects,
+		final boolean append
+	)
+		throws IOException
+	{
+		final var nco = new NonCloseableOutputStream(out);
+		try (var aoo = new AppendableObjectOutput(nco, append)) {
+			while (objects.hasNext()) {
+				aoo.writeObject(objects.next());
+				aoo.reset();
+			}
+		}
 	}
 
 	/**

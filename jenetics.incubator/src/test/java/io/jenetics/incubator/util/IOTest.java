@@ -153,7 +153,7 @@ public class IOTest {
 	}
 
 	@Test
-	public void appendReadFileExample() throws Exception {
+	public void writeFiledReadFileExample() throws Exception {
 		final var path = CloseableValue.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
@@ -179,6 +179,32 @@ public class IOTest {
 			IO.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
 			objects = IO.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("6", "7", "8"));
+		}
+	}
+
+	@Test
+	public void writeStreamReadFileExample() throws Exception {
+		final var path = CloseableValue.of(
+			Files.createTempFile("IO-", "-TEST"),
+			Files::deleteIfExists
+		);
+
+		try (path; var out = Files.newOutputStream(path.get())) {
+			IO.write(out, List.of("1", "2", "3"), false);
+			List<Object> objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+			IO.write(out, List.of("4", "5"), true);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+			try (Stream<Object> stream = IO.objects(path.get())) {
+				final var count = new AtomicInteger(1);
+				stream.forEach(o -> {
+					final var expected = String.valueOf(count.getAndIncrement());
+					Assert.assertEquals(o, expected);
+				});
+			}
 		}
 	}
 
