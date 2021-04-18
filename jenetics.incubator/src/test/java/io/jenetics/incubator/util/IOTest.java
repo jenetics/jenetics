@@ -27,6 +27,7 @@ import static java.util.UUID.randomUUID;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -34,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.testng.Assert;
@@ -235,6 +237,22 @@ public class IOTest {
 		IO.write(out, List.of("6", "7", "8"), false);
 		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("6", "7", "8"));
+	}
+
+	@Test
+	public void readParallelStream() throws IOException {
+		final var objects = IntStream.range(0, 1000)
+			.mapToObj(String::valueOf)
+			.collect(Collectors.toSet());
+
+		final var out = new ByteArrayOutputStream();
+		IO.write(out, objects, false);
+
+		final var read = IO.objects(new ByteArrayInputStream(out.toByteArray()))
+			.parallel()
+			.collect(Collectors.toSet());
+
+		Assert.assertEquals(read, objects);
 	}
 
 }
