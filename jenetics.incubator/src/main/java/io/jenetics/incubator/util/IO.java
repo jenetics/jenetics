@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
 
 import java.io.BufferedInputStream;
@@ -91,7 +92,7 @@ public final class IO {
 		private final OutputStream _out;
 
 		NonCloseableOutputStream(final OutputStream out) {
-			_out = out;
+			_out = requireNonNull(out);
 		}
 
 		@Override
@@ -127,12 +128,14 @@ public final class IO {
 	private static final class AppendableObjectOutput
 		implements Closeable, Flushable
 	{
+		private final CountingOutputStream _cout;
 		private final ObjectOutputStream _out;
 
 		AppendableObjectOutput(final OutputStream out, final boolean append)
 			throws IOException
 		{
-			_out = new ObjectOutputStream(out) {
+			_cout = new CountingOutputStream(out);
+			_out = new ObjectOutputStream(_cout) {
 				private boolean _first = true;
 				@Override
 				protected void writeStreamHeader() throws IOException {
@@ -142,6 +145,10 @@ public final class IO {
 					}
 				}
 			};
+		}
+
+		long count() {
+			return _cout.count();
 		}
 
 		void writeObject(final Object object) throws IOException {
@@ -160,6 +167,43 @@ public final class IO {
 		@Override
 		public void close() throws IOException {
 			_out.close();
+		}
+	}
+
+	/**
+	 * Decorator stream for counting the written bytes.
+	 */
+	private static final class CountingOutputStream extends OutputStream {
+		private final OutputStream _out;
+
+		private long _count = 0;
+
+		CountingOutputStream(final OutputStream out) {
+			_out = requireNonNull(out);
+		}
+
+		long count() {
+			return _count;
+		}
+
+		@Override
+		public void write(final int b) throws IOException {
+			_out.write(b);
+			_count += 1;
+		}
+
+		@Override
+		public void write(final byte[] b) throws IOException {
+			_out.write(b);
+			_count += b.length;
+		}
+
+		@Override
+		public void write(final byte[] b, final int off, final int len)
+			throws IOException
+		{
+			_out.write(b, off, len);
+			_count += len;
 		}
 	}
 
@@ -199,10 +243,11 @@ public final class IO {
 	 * @param append {@code false} for the first objects written to the given
 	 *        {@code output} stream and {@code true} for additional objects
 	 *        writing to the same stream
+	 * @return the number of bytes written to the output stream
 	 * @throws IOException if writing the objects fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static void write(
+	public static long write(
 		final OutputStream output,
 		final Iterable<?> objects,
 		final boolean append
@@ -211,11 +256,13 @@ public final class IO {
 	{
 		final var it = objects.iterator();
 		if (it.hasNext()) {
-			write0(output, it, append);
+			return write0(output, it, append);
+		} else {
+			return 0;
 		}
 	}
 
-	private static void write0(
+	private static long write0(
 		final OutputStream out,
 		final Iterator<?> objects,
 		final boolean append
@@ -223,12 +270,15 @@ public final class IO {
 		throws IOException
 	{
 		final var nco = new NonCloseableOutputStream(out);
-		try (var aoo = new AppendableObjectOutput(nco, append)) {
+		final var aoo = new AppendableObjectOutput(nco, append);
+		try (aoo) {
 			while (objects.hasNext()) {
 				aoo.writeObject(objects.next());
 				aoo.reset();
 			}
 		}
+
+		return aoo.count();
 	}
 
 	/**
@@ -267,10 +317,11 @@ public final class IO {
 	 * @param append {@code false} for the first objects written to the given
 	 *        {@code output} stream and {@code true} for additional objects
 	 *        writing to the same stream
+	 * @return the number of bytes written to the output stream
 	 * @throws IOException if writing the objects fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static void write(
+	public static long write(
 		final OutputStream output,
 		final Stream<?> objects,
 		final boolean append
@@ -279,7 +330,9 @@ public final class IO {
 	{
 		final var it = objects.iterator();
 		if (it.hasNext()) {
-			write0(output, it, append);
+			return write0(output, it, append);
+		} else {
+			return 0;
 		}
 	}
 
@@ -305,6 +358,7 @@ public final class IO {
 	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to be written
 	 * @param options specifying how the file is opened
+	 * @return the number of bytes written to the file
 	 * @throws IOException if writing the objects fails
 	 * @throws IllegalArgumentException if options contains an invalid
 	 *         combination of options
@@ -312,17 +366,17 @@ public final class IO {
 	 *         specified
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static void write(
+	public static long write(
 		final Path path,
 		final Iterable<?> objects,
 		final OpenOption... options
 	)
 		throws IOException
 	{
-		write0(path, objects::iterator, options);
+		return write0(path, objects::iterator, options);
 	}
 
-	private static void write0(
+	private static long write0(
 		final Path path,
 		final Supplier<Iterator<?>> objects,
 		final OpenOption... options
@@ -335,8 +389,10 @@ public final class IO {
 			try (var fos = Files.newOutputStream(path, options);
 				 var bos = new BufferedOutputStream(fos))
 			{
-				write0(bos, it, append);
+				return write0(bos, it, append);
 			}
+		} else {
+			return 0;
 		}
 	}
 
@@ -375,6 +431,7 @@ public final class IO {
 	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to be written
 	 * @param options specifying how the file is opened
+	 * @return the number of bytes written to the file
 	 * @throws IOException if writing the objects fails
 	 * @throws IllegalArgumentException if options contains an invalid
 	 *         combination of options
@@ -382,14 +439,14 @@ public final class IO {
 	 *         specified
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static void write(
+	public static long write(
 		final Path path,
 		final Stream<?> objects,
 		final OpenOption... options
 	)
 		throws IOException
 	{
-		write0(path, objects::iterator, options);
+		return write0(path, objects::iterator, options);
 	}
 
 	/**

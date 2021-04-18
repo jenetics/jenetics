@@ -161,7 +161,9 @@ public class IOTest {
 		);
 
 		try (path) {
-			IO.write(path.get(), List.of("1", "2", "3"), CREATE);
+			final var written = IO.write(path.get(), List.of("1", "2", "3"), CREATE);
+			Assert.assertEquals(written, Files.size(path.get()));
+
 			List<Object> objects = IO.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
