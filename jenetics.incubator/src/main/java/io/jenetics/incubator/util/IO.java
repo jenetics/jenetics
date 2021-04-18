@@ -207,6 +207,10 @@ public final class IO {
 		}
 	}
 
+	/* *************************************************************************
+	 * Read/write methods.
+	 * ************************************************************************/
+
 	/**
 	 * Writes the given {@code objects} to the given {@code output} stream,
 	 * using Java serialization. For the <em>first</em> objects to be written
@@ -469,11 +473,8 @@ public final class IO {
 	 * @return a stream of the read objects
 	 * @throws NullPointerException if the given {@code input} stream is
 	 *         {@code null}
-	 * @throws IOException if the object stream couldn't be created
 	 */
-	public static Stream<Object> objects(final InputStream input)
-		throws IOException
-	{
+	public static Stream<Object> objects(final InputStream input) {
 		final var result = CloseableValue.build(resources ->
 			objectStream(input, resources)
 		);
@@ -482,22 +483,27 @@ public final class IO {
 	}
 
 	private static Stream<Object>
-	objectStream(final InputStream input, final ResourceCollector resources)
-		throws IOException
-	{
-		var in = resources.add(input);
-		if (!(in instanceof BufferedInputStream)) {
-			in = resources.add(new BufferedInputStream(in));
-		}
-		final var oin = resources.add(new ObjectInputStream(in));
+	objectStream(final InputStream input, final ResourceCollector resources) {
+		final Supplier<Object> readObject = new Supplier<>() {
+			private ObjectInputStream _oin = null;
 
-		final Supplier<Object> readObject = () -> {
-			try {
-				return oin.readObject();
-			} catch (EOFException|ClassNotFoundException e) {
-				return null;
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
+			@Override
+			public synchronized Object get() {
+				try {
+					if (_oin == null) {
+						var in = resources.add(input);
+						if (!(in instanceof BufferedInputStream)) {
+							in = resources.add(new BufferedInputStream(in));
+						}
+						_oin = resources.add(new ObjectInputStream(in));
+					}
+
+					return _oin.readObject();
+				} catch (EOFException|ClassNotFoundException e) {
+					return null;
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
 			}
 		};
 
@@ -551,13 +557,15 @@ public final class IO {
 	 * @return a list of all read objects
 	 * @throws NullPointerException if the given {@code input} stream is
 	 *         {@code null}
-	 * @throws IOException if the object stream couldn't be created
+	 * @throws IOException if an I/O error occurs
 	 */
 	public static List<Object> readAllObjects(final InputStream input)
 		throws IOException
 	{
 		try (var objects = objects(input)) {
-			return objects.collect(Collectors.toList());
+			return objects.collect(Collectors.toUnmodifiableList());
+		} catch (UncheckedIOException e) {
+			throw e.getCause();
 		}
 	}
 
@@ -569,11 +577,13 @@ public final class IO {
 	 * @return a list of all read objects
 	 * @throws NullPointerException if the given {@code path} is {@code null}
 	 * @throws java.io.FileNotFoundException if the given path could not be read
-	 * @throws IOException if the object stream couldn't be created
+	 * @throws IOException if an I/O error occurs
 	 */
 	public static List<Object> readAllObjects(final Path path) throws IOException {
 		try (var objects = objects(path)) {
-			return objects.collect(Collectors.toList());
+			return objects.collect(Collectors.toUnmodifiableList());
+		} catch (UncheckedIOException e) {
+			throw e.getCause();
 		}
 	}
 
