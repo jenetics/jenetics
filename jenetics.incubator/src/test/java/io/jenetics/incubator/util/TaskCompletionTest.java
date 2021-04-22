@@ -34,10 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-@Ignore
 public class TaskCompletionTest {
 
 	static class TestRunToCompletion {
@@ -138,8 +136,12 @@ public class TaskCompletionTest {
 	@DataProvider
 	public Object[][] parameters() {
 		return new Object[][] {
+			{1, 1, 0},
+			{2, 1, 0},
+			{1, 100, 0},
 			{10, 100, 0},
 			{10, 100, 1},
+			{1, 100, 1},
 			{10, 100, 0},
 			{10, 300, 1},
 			{3, 10, 0},

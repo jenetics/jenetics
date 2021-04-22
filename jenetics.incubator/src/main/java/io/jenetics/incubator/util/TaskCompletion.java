@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -30,9 +31,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,18 +65,25 @@ public class TaskCompletion {
 		 * @param error the exception thrown
 		 * @param task the <em>task</em>, which caused the error
 		 */
-		public void handle(final Throwable error, final Runnable task);
-
+		void handle(final Throwable error, final Runnable task);
 	}
 
 	/**
 	 * Wrapper class for the <em>runnable</em> to be executed.
 	 */
-	private final class Task implements Runnable {
+	private static final class Task implements Runnable {
 		private final Runnable _runnable;
+		private final Consumer<? super Runnable> _finished;
+		private final ExceptionHandler _error;
 
-		Task(final Runnable runnable) {
+		Task(
+			final Runnable runnable,
+			final Consumer<? super Runnable> finished,
+			final ExceptionHandler error
+		) {
 			_runnable = requireNonNull(runnable);
+			_finished = requireNonNull(finished);
+			_error = requireNonNull(error);
 		}
 
 		@Override
@@ -83,10 +91,9 @@ public class TaskCompletion {
 			try {
 				_runnable.run();
 			} catch (Throwable e) {
-				handleException(e, _runnable);
+				_error.handle(e, _runnable);
 			} finally {
-				_running.set(false);
-				executeNextTask();
+				_finished.accept(_runnable);
 			}
 		}
 	}
@@ -101,11 +108,8 @@ public class TaskCompletion {
 	private final int _capacity;
 
 	private final ReentrantLock _lock = new ReentrantLock();
-
-	private final AtomicReference<ExceptionHandler> _exceptionHandler =
-		new AtomicReference<>((e, r) -> {});
-
-	private final AtomicBoolean _running = new AtomicBoolean(false);
+	private final AtomicReference<ExceptionHandler> _errors = new AtomicReference<>();
+	private boolean _running = false;
 
 	/**
 	 * Creates a new task-completion object with the given parameter.
@@ -115,13 +119,20 @@ public class TaskCompletion {
 	 * @param capacity the maximum allowed number of tasks which are
 	 *        waiting for submission to the <i>executor</i>
 	 * @throws NullPointerException if the given {@code executor} is {@code null}
-	 * @throws IllegalArgumentException if the {@code taskQueueSize} is smaller
+	 * @throws IllegalArgumentException if the {@code capacity} is smaller
 	 *         than one
 	 */
 	public TaskCompletion(final Executor executor, final int capacity) {
+		if (capacity <= 0) {
+			throw new IllegalArgumentException(format(
+				"Capacity must be greater then 0: %s.", capacity
+			));
+		}
+
 		_executor = requireNonNull(executor);
 		_capacity = capacity;
 		_tasks = new ArrayBlockingQueue<>(_capacity, true);
+		_errors.set((e, r) -> {});
 	}
 
 	/**
@@ -176,7 +187,7 @@ public class TaskCompletion {
 	}
 
 	public void setExceptionHandler(final ExceptionHandler handler) {
-		_exceptionHandler.set(requireNonNull(handler));
+		_errors.set(requireNonNull(handler));
 	}
 
 	/* *************************************************************************
@@ -203,14 +214,10 @@ public class TaskCompletion {
 	public boolean submit(final Runnable runnable, final Duration timeout)
 		throws InterruptedException
 	{
-		final var offered = _tasks.offer(
-			new Task(runnable),
-			timeout.toNanos(), NANOSECONDS
-		);
-		if (offered) {
-			executeNextTask();
-		}
-		return offered;
+		final var task = new Task(runnable, this::finished, _errors.get());
+		final boolean submitted = _tasks.offer(task, timeout.toNanos(), NANOSECONDS);
+		execute();
+		return submitted;
 	}
 
 	/**
@@ -226,34 +233,43 @@ public class TaskCompletion {
 	 *         was full and the maximal waiting time is elapsed.
 	 */
 	public boolean submit(final Runnable runnable) {
-		final var offered = _tasks.offer(new Task(runnable));
-		if (offered) {
-			executeNextTask();
-		}
-		return offered;
+		final var task = new Task(runnable, this::finished, _errors.get());
+		final var submitted = _tasks.offer(task);
+		execute();
+		return submitted;
 	}
 
-	private void executeNextTask() {
+	private void execute() {
 		_lock.lock();
 		try {
-			if (!_running.get()) {
-				final var task = _tasks.poll();
-				if (task != null) {
-					try {
-						_executor.execute(task);
-						_running.set(true);
-					} catch (RejectedExecutionException e) {
-						handleException(e, task._runnable);
-					}
-				}
+			if (!_running) {
+				__execute();
 			}
 		} finally {
 			_lock.unlock();
 		}
 	}
 
-	private void handleException(final Throwable e, final Runnable r) {
-		_exceptionHandler.get().handle(e, r);
+	private void __execute() {
+		final var task = _tasks.poll();
+		if (task != null) {
+			try {
+				_executor.execute(task);
+				_running = true;
+			} catch (RejectedExecutionException e) {
+				_errors.get().handle(e, task._runnable);
+			}
+		}
+	}
+
+	private void finished(final Runnable runnable) {
+		_lock.lock();
+		try {
+			_running = false;
+			__execute();
+		} finally {
+			_lock.unlock();
+		}
 	}
 
 }
