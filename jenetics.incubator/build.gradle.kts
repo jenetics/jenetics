@@ -42,6 +42,7 @@ dependencies {
 	api(project(":jenetics.prog"))
 
 	testImplementation(Libs.TestNG)
+	testImplementation(Libs.AssertJ)
 	testImplementation(Libs.EqualsVerifier)
 }
 

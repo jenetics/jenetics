@@ -20,6 +20,7 @@
 package io.jenetics.incubator.util;
 
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class TaskCompletionTest {
 		}
 
 		private void println(final String msg) {
-			//System.out.println(msg);
+			System.out.println(msg);
 		}
 
 		void await() throws InterruptedException {
@@ -247,6 +248,29 @@ public class TaskCompletionTest {
 		}
 
 		throw new IllegalStateException("Tasks must have been rejected.");
+	}
+
+	@Test
+	public void rejectedSubmit() throws Exception {
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool(), 1);
+
+		var submitted = completion.submit(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isTrue();
+
+		submitted = completion.submit(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isTrue();
+
+		submitted = completion.submit(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isFalse();
 	}
 
 }
