@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  * @since 6.3
  * @version 6.3
  */
-public class TaskCompletion {
+public final class TaskCompletion {
 
 	/**
 	 * Interface for handlers invoked when a <em>task</em> abruptly terminates
@@ -152,7 +152,7 @@ public class TaskCompletion {
 	 *
 	 * @return the maximal size of the task queue
 	 */
-	public int taskQueueSize() {
+	public int capacity() {
 		return _capacity;
 	}
 
@@ -161,7 +161,7 @@ public class TaskCompletion {
 	 *
 	 * @return the number of currently <em>waiting</em> tasks in the task queue
 	 */
-	public int taskSize() {
+	public int size() {
 		return _tasks.size();
 	}
 
@@ -170,22 +170,43 @@ public class TaskCompletion {
 	 *
 	 * @return the list of currently queued tasks
 	 */
-	public List<Runnable> queuedTasks() {
+	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
 			.map(t -> t._runnable)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public void drainTo(final Collection<? super Runnable> collection) {
+	/**
+	 * Removes all pending tasks from the queue and adds them to the given
+	 * {@code collection}.
+	 *
+	 * @param collection the collection to transfer elements into
+	 * @return the number of elements transferred
+	 * @throws NullPointerException if the specified {@code collection} is
+	 *         {@code null}
+	 */
+	public int drainTo(final Collection<? super Runnable> collection) {
 		final var tasks = new ArrayList<Task>();
-		_tasks.drainTo(tasks);
+		final int drained = _tasks.drainTo(tasks);
 		tasks.forEach(t -> collection.add(t._runnable));
+		return drained;
 	}
 
+	/**
+	 * Removes all of the {@code tasks}. The task completion will be empty after
+	 * this method returns.
+	 */
 	public void clear() {
 		_tasks.clear();
 	}
 
+	/**
+	 * Sets the exception handler where task execution errors are reported to.
+	 *
+	 * @param handler the used exception handler
+	 * @throws NullPointerException if the exception {@code handler} is
+	 *         {@code null}
+	 */
 	public void setExceptionHandler(final ExceptionHandler handler) {
 		_errors.set(requireNonNull(handler));
 	}
@@ -243,14 +264,14 @@ public class TaskCompletion {
 		_lock.lock();
 		try {
 			if (!_running) {
-				__execute();
+				execute0();
 			}
 		} finally {
 			_lock.unlock();
 		}
 	}
 
-	private void __execute() {
+	private void execute0() {
 		final var task = _tasks.poll();
 		if (task != null) {
 			try {
@@ -266,7 +287,7 @@ public class TaskCompletion {
 		_lock.lock();
 		try {
 			_running = false;
-			__execute();
+			execute0();
 		} finally {
 			_lock.unlock();
 		}
