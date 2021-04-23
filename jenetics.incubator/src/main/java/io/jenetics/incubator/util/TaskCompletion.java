@@ -32,6 +32,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -137,7 +139,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 
 		_executor = requireNonNull(executor);
 		_capacity = capacity;
-		_tasks = new ArrayBlockingQueue<>(_capacity, true);
+		_tasks = new LinkedBlockingQueue<>(_capacity);
 	}
 
 	/**
