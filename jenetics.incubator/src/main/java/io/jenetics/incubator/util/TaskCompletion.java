@@ -44,11 +44,11 @@ import java.util.stream.Stream;
 /**
  * This execution service executes the the tasks in exactly the same order as
  * they where submitted. The tasks are executed <em>asynchronously</em>, but
- * <b>not</b>  <em>concurrently</em>.
+ * <b>not</b> <em>concurrently</em>.
  *
  * <pre>{@code
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
- * final var results = Collections.synchronizedList(new ArrayList<Integer>());
+ * final var results = new ArrayList<Integer>();
  *
  * for (int i = 0; i < 100; ++i) {
  *     final int index = i;
@@ -63,6 +63,9 @@ import java.util.stream.Stream;
  * }
  * }</pre>
  *
+ * Since the tasks are executed in the submitted order and the next task is
+ * executed if the previous one has been finished, it is not necessary to use
+ * <em>synchronized</em>/thread-safe objects.
  * If you run the code above with a <em>normal</em> executor service, it will
  * fail, since the order, in which the submitted tasks are executed, is not
  * defined.
