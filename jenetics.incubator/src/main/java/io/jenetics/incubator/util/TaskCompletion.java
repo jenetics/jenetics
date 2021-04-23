@@ -42,8 +42,30 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Asynchronously executes <em>submitted</em> tasks in the given submission
- * order.
+ * This execution service executes the the tasks in exactly the same order as
+ * they where submitted. The tasks are executed <em>asynchronously</em>, but
+ * <b>not</b>  <em>concurrently</em>.
+ *
+ * <pre>{@code
+ * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
+ * final var results = Collections.synchronizedList(new ArrayList<Integer>());
+ *
+ * for (int i = 0; i < 100; ++i) {
+ *     final int index = i;
+ *     executor.execute(() -> results.add(i));
+ * }
+ *
+ * executor.shutdown();
+ * executor.awaitTermination(10, SECONDS);
+ *
+ * for (int i = 0; i < results.size(); ++i) {
+ *     assert results.get(i) == i;
+ * }
+ * }</pre>
+ *
+ * If you run the code above with a <em>normal</em> executor service, it will
+ * fail, since the order, in which the submitted tasks are executed, is not
+ * defined.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.3
