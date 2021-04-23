@@ -361,7 +361,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		try {
 			_running = false;
 			execute0();
-			_terminated.signalAll();
+			_terminated.signal();
 		} finally {
 			_lock.unlock();
 		}
@@ -391,7 +391,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		_lock.lock();
 		try {
 			_shutdown = true;
-			_terminated.signalAll();
+			_terminated.signal();
 		} finally {
 			_lock.unlock();
 		}
@@ -405,7 +405,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		try {
 			drainTo(drained);
 			_shutdown = true;
-			_terminated.signalAll();
+			_terminated.signal();
 		} finally {
 			_lock.unlock();
 		}
