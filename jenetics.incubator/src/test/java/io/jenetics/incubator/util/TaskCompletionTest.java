@@ -310,7 +310,7 @@ public class TaskCompletionTest {
 
 	@Test
 	public void awaitRemainingTasks() throws Exception {
-		final int taskCount = 100;
+		final int taskCount = 1000;
 		final var indexes = new ArrayList<Integer>();
 
 		final class Task implements Runnable {
@@ -323,7 +323,7 @@ public class TaskCompletionTest {
 			public void run() {
 				try {
 					indexes.add(_index);
-					Thread.sleep(10);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 				}
