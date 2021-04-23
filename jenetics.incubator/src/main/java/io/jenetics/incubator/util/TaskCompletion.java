@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  * @since 6.3
  * @version 6.3
  */
-public final class TaskCompletion {
+public final class TaskCompletion implements Executor {
 
 	/**
 	 * Interface for handlers invoked when a <em>task</em> abruptly terminates
@@ -215,16 +215,26 @@ public final class TaskCompletion {
 	 * Task submission methods.
 	 * ************************************************************************/
 
+	@Override
+	public void execute(Runnable command) {
+		if (!submit(command)) {
+			throw new RejectedExecutionException(format(
+				"Command not accepted, capacity of %d is exhausted.",
+				capacity()
+			));
+		}
+	}
+
 	/**
-	 *  Executes the given {@code runnable} asynchronously. The method will return
+	 *  Executes the given {@code command} asynchronously. The method will return
 	 * immediately after, except the <i>executorQueueSize</i> is exhausted. Then
 	 * this call will block until an other task has finished or the specified
 	 * waiting time has expired.
 	 *
-	 * @param runnable the code block to execute.
+	 * @param command the code block to execute.
 	 * @param timeout the maximal time to wait for a place in the task queue. If
 	 *        waiting time has elapsed, and RejectedExecutionException is thrown.
-	 * @return {@code true} if the given {@code runnable} where successfully
+	 * @return {@code true} if the given {@code command} where successfully
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
@@ -232,29 +242,29 @@ public final class TaskCompletion {
 	 * @throws InterruptedException if the calling thread is interrupted while
 	 *         waiting for a place in the executor queue.
 	 */
-	public boolean submit(final Runnable runnable, final Duration timeout)
+	public boolean submit(final Runnable command, final Duration timeout)
 		throws InterruptedException
 	{
-		final var task = new Task(runnable, this::finished, _errors.get());
+		final var task = new Task(command, this::finished, _errors.get());
 		final boolean submitted = _tasks.offer(task, timeout.toNanos(), NANOSECONDS);
 		execute();
 		return submitted;
 	}
 
 	/**
-	 * Executes the given {@code runnable} asynchronously. The method will return
+	 * Executes the given {@code command} asynchronously. The method will return
 	 * immediately without waiting in the case of an exhausted task queue. Return
 	 * {@code true} if the task has been successfully submitted, {@code false}
 	 * otherwise.
 	 *
-	 * @param runnable the code block to execute.
-	 * @return {@code true} if the given {@code runnable} where successfully
+	 * @param command the code block to execute.
+	 * @return {@code true} if the given {@code command} where successfully
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
 	 */
-	public boolean submit(final Runnable runnable) {
-		final var task = new Task(runnable, this::finished, _errors.get());
+	public boolean submit(final Runnable command) {
+		final var task = new Task(command, this::finished, _errors.get());
 		final var submitted = _tasks.offer(task);
 		execute();
 		return submitted;
