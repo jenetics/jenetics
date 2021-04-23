@@ -34,7 +34,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -77,42 +76,18 @@ import java.util.stream.Stream;
 public final class TaskCompletion extends AbstractExecutorService {
 
 	/**
-	 * Interface for handlers invoked when a <em>task</em> abruptly terminates
-	 * due to an uncaught exception or when the execution of a task is rejected
-	 * with a {@link RejectedExecutionException}.
-	 *
-	 * @see RejectedExecutionException
-	 */
-	@FunctionalInterface
-	public interface ExceptionHandler {
-
-		/**
-		 * Method invoked when the executed task terminates due to the given
-		 * uncaught exception or when the execution of a task is rejected with a
-		 * {@link RejectedExecutionException}.
-		 *
-		 * @param error the exception thrown
-		 * @param task the <em>task</em>, which caused the error
-		 */
-		void handle(final Throwable error, final Runnable task);
-	}
-
-	/**
 	 * Wrapper class for the <em>runnable</em> to be executed.
 	 */
 	private static final class Task implements Runnable {
 		private final Runnable _runnable;
 		private final Consumer<? super Runnable> _finished;
-		private final ExceptionHandler _error;
 
 		Task(
 			final Runnable runnable,
-			final Consumer<? super Runnable> finished,
-			final ExceptionHandler error
+			final Consumer<? super Runnable> finished
 		) {
 			_runnable = requireNonNull(runnable);
 			_finished = requireNonNull(finished);
-			_error = requireNonNull(error);
 		}
 
 		@Override
@@ -120,7 +95,8 @@ public final class TaskCompletion extends AbstractExecutorService {
 			try {
 				_runnable.run();
 			} catch (Throwable e) {
-				_error.handle(e, _runnable);
+				final var thread = Thread.currentThread();
+				thread.getUncaughtExceptionHandler().uncaughtException(thread, e);
 			} finally {
 				_finished.accept(_runnable);
 			}
@@ -138,7 +114,6 @@ public final class TaskCompletion extends AbstractExecutorService {
 
 	private final ReentrantLock _lock = new ReentrantLock();
 	private final Condition _terminated = _lock.newCondition();
-	private final AtomicReference<ExceptionHandler> _errors = new AtomicReference<>();
 	private boolean _running = false;
 	private boolean _shutdown = false;
 
@@ -163,7 +138,6 @@ public final class TaskCompletion extends AbstractExecutorService {
 		_executor = requireNonNull(executor);
 		_capacity = capacity;
 		_tasks = new ArrayBlockingQueue<>(_capacity, true);
-		_errors.set((e, r) -> {});
 	}
 
 	/**
@@ -251,16 +225,6 @@ public final class TaskCompletion extends AbstractExecutorService {
 		_tasks.clear();
 	}
 
-	/**
-	 * Sets the exception handler where task execution errors are reported to.
-	 *
-	 * @param handler the used exception handler
-	 * @throws NullPointerException if the exception {@code handler} is
-	 *         {@code null}
-	 */
-	public void setExceptionHandler(final ExceptionHandler handler) {
-		_errors.set(requireNonNull(handler));
-	}
 
 	/* *************************************************************************
 	 * Task executor methods.
@@ -293,7 +257,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		requireNonNull(timeout);
 		checkShutdown();
 
-		final var task = new Task(command, this::finished, _errors.get());
+		final var task = new Task(command, this::finished);
 		final boolean submitted = _tasks.offer(task, timeout.toNanos(), NANOSECONDS);
 		execute();
 		return submitted;
@@ -327,7 +291,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		requireNonNull(command);
 		checkShutdown();
 
-		final var task = new Task(command, this::finished, _errors.get());
+		final var task = new Task(command, this::finished);
 		final var submitted = _tasks.offer(task);
 		execute();
 		return submitted;
@@ -347,12 +311,8 @@ public final class TaskCompletion extends AbstractExecutorService {
 	private void execute0() {
 		final var task = _tasks.poll();
 		if (task != null) {
-			try {
-				_executor.execute(task);
-				_running = true;
-			} catch (RejectedExecutionException e) {
-				_errors.get().handle(e, task._runnable);
-			}
+			_executor.execute(task);
+			_running = true;
 		}
 	}
 
