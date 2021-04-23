@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -48,7 +49,7 @@ import java.util.stream.Stream;
  * @since 6.3
  * @version 6.3
  */
-public final class TaskCompletion implements Executor {
+public final class TaskCompletion extends AbstractExecutorService {
 
 	/**
 	 * Interface for handlers invoked when a <em>task</em> abruptly terminates
@@ -237,7 +238,7 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/* *************************************************************************
-	 * Task submission and executor methods.
+	 * Task executor methods.
 	 * ************************************************************************/
 
 	/**
@@ -371,6 +372,22 @@ public final class TaskCompletion implements Executor {
 		}
 	}
 
+	@Override
+	public List<Runnable> shutdownNow() {
+		final var drained = new ArrayList<Runnable>();
+
+		_lock.lock();
+		try {
+			drainTo(drained);
+			_shutdown = true;
+			_terminated.signalAll();
+		} finally {
+			_lock.unlock();
+		}
+
+		return List.copyOf(drained);
+	}
+
 	/**
 	 * Returns {@code true} if this task completion has been shut down.
 	 *
@@ -380,6 +397,16 @@ public final class TaskCompletion implements Executor {
 		_lock.lock();
 		try {
 			return _shutdown;
+		} finally {
+			_lock.unlock();
+		}
+	}
+
+	@Override
+	public boolean isTerminated() {
+		_lock.lock();
+		try {
+			return isFinished();
 		} finally {
 			_lock.unlock();
 		}
