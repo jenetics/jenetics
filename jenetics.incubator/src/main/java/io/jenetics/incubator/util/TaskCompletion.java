@@ -31,7 +31,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -108,8 +110,10 @@ public final class TaskCompletion implements Executor {
 	private final int _capacity;
 
 	private final ReentrantLock _lock = new ReentrantLock();
+	private final Condition _terminated = _lock.newCondition();
 	private final AtomicReference<ExceptionHandler> _errors = new AtomicReference<>();
 	private boolean _running = false;
+	private boolean _shutdown = false;
 
 	/**
 	 * Creates a new task-completion object with the given parameter.
@@ -166,6 +170,17 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/**
+	 * Return {@code true} if there are no queue tasks available in {@code this}
+	 * task completion, {@code false} otherwise.
+	 *
+	 * @return {@code true} if there are no queue tasks available in {@code this}
+	 * 	       task completion, {@code false} otherwise
+	 */
+	public boolean isEmpty() {
+		return _tasks.size() == 0;
+	}
+
+	/**
 	 * Return the list currently queued tasks.
 	 *
 	 * @return the list of currently queued tasks
@@ -212,18 +227,8 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/* *************************************************************************
-	 * Task submission methods.
+	 * Task submission and executor methods.
 	 * ************************************************************************/
-
-	@Override
-	public void execute(Runnable command) {
-		if (!submit(command)) {
-			throw new RejectedExecutionException(format(
-				"Command not accepted, capacity of %d is exhausted.",
-				capacity()
-			));
-		}
-	}
 
 	/**
 	 *  Executes the given {@code command} asynchronously. The method will return
@@ -239,16 +244,31 @@ public final class TaskCompletion implements Executor {
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws RejectedExecutionException if the task cannot be scheduled for
+	 *         execution, because {@code this} task completion has been shut
+	 *         down
 	 * @throws InterruptedException if the calling thread is interrupted while
 	 *         waiting for a place in the executor queue.
 	 */
 	public boolean submit(final Runnable command, final Duration timeout)
 		throws InterruptedException
 	{
+		requireNonNull(command);
+		requireNonNull(timeout);
+		checkShutdown();
+
 		final var task = new Task(command, this::finished, _errors.get());
 		final boolean submitted = _tasks.offer(task, timeout.toNanos(), NANOSECONDS);
 		execute();
 		return submitted;
+	}
+
+	private void checkShutdown() {
+		if (isShutdown()) {
+			throw new RejectedExecutionException(
+				"TaskCompletion has been shutdown, no task submission possible."
+			);
+		}
 	}
 
 	/**
@@ -262,8 +282,15 @@ public final class TaskCompletion implements Executor {
 	 *         submitted or {@code false} otherwise. The submission is rejected
 	 *         if the <i>executor</i> has been shut down or the executor queue
 	 *         was full and the maximal waiting time is elapsed.
+	 * @throws RejectedExecutionException if the task cannot be scheduled for
+	 *         execution, because {@code this} task completion has been shut
+	 *         down
+	 * @throws NullPointerException if the given {@code command} is {@code null}
 	 */
 	public boolean submit(final Runnable command) {
+		requireNonNull(command);
+		checkShutdown();
+
 		final var task = new Task(command, this::finished, _errors.get());
 		final var submitted = _tasks.offer(task);
 		execute();
@@ -298,9 +325,89 @@ public final class TaskCompletion implements Executor {
 		try {
 			_running = false;
 			execute0();
+			_terminated.signalAll();
 		} finally {
 			_lock.unlock();
 		}
+	}
+
+	@Override
+	public void execute(Runnable command) {
+		if (!submit(command)) {
+			throw new RejectedExecutionException(format(
+				"Command not accepted, capacity of %d is exhausted.",
+				capacity()
+			));
+		}
+	}
+
+	/**
+	 * Initiates an orderly shutdown in which previously submitted tasks are
+	 * executed, but no new tasks will be accepted. Invocation has no additional
+	 * effect if already shut down. The underlying {@link Executor} is not
+	 * affected by this shutdown and is still usable after shutting down
+	 * {@code this} task completion.
+	 * <p>
+	 * This method does not wait for previously submitted tasks to complete
+	 * execution. Use {@link #awaitTermination awaitTermination} to do that.
+	 */
+	public void shutdown() {
+		_lock.lock();
+		try {
+			_shutdown = true;
+			_terminated.signalAll();
+		} finally {
+			_lock.unlock();
+		}
+	}
+
+	/**
+	 * Returns {@code true} if this task completion has been shut down.
+	 *
+	 * @return {@code true} if this task completion has been shut down
+	 */
+	public boolean isShutdown() {
+		_lock.lock();
+		try {
+			return _shutdown;
+		} finally {
+			_lock.unlock();
+		}
+	}
+
+	/**
+	 * Blocks until all tasks have completed execution after a shutdown request,
+	 * or the timeout occurs, or the current thread is interrupted, whichever
+	 * happens first.
+	 *
+	 * @param timeout the maximum time to wait
+	 * @param unit the time unit of the timeout argument
+	 * @return {@code true} if this executor terminated and
+	 *         {@code false} if the timeout elapsed before termination
+	 * @throws InterruptedException if interrupted while waiting
+	 */
+	public boolean awaitTermination(long timeout, TimeUnit unit)
+		throws InterruptedException
+	{
+		long remainingNanos = unit.toNanos(timeout);
+
+		_lock.lock();
+		try {
+			while (!isFinished()) {
+				if (remainingNanos <= 0L) {
+					return false;
+				}
+				remainingNanos = _terminated.awaitNanos(remainingNanos);
+			}
+
+			return true;
+		} finally {
+			_lock.unlock();
+		}
+	}
+
+	private boolean isFinished() {
+		return _shutdown && !_running && isEmpty();
 	}
 
 }

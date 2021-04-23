@@ -19,8 +19,9 @@
  */
 package io.jenetics.incubator.util;
 
-import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TaskCompletionTest {
 
@@ -87,7 +88,7 @@ public class TaskCompletionTest {
 		}
 
 		private void println(final String msg) {
-			System.out.println(msg);
+			//System.out.println(msg);
 		}
 
 		void await() throws InterruptedException {
@@ -271,6 +272,58 @@ public class TaskCompletionTest {
 			Duration.ofMillis(10)
 		);
 		assertThat(submitted).isFalse();
+	}
+
+	@Test
+	public void awaitRemainingWithoutSubmission() throws Exception {
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool());
+
+		var result = completion.awaitTermination(1, SECONDS);
+		assertThat(result).isFalse();
+
+		completion.shutdown();
+		result = completion.awaitTermination(1, SECONDS);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void awaitRemainingTasks() throws Exception {
+		final int taskCount = 100;
+		final var indexes = new ArrayList<Integer>();
+
+		final class Task implements Runnable {
+			private final int _index;
+
+			Task(final int index) {
+				_index = index;
+			}
+			@Override
+			public void run() {
+				try {
+					indexes.add(_index);
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool());
+		for (int i = 0; i < taskCount; ++i) {
+			completion.execute(new Task(i));
+		}
+
+		assertThat(completion.isShutdown()).isFalse();
+		completion.shutdown();
+		assertThat(completion.isShutdown()).isTrue();
+
+		var result = completion.awaitTermination(10, SECONDS);
+		assertThat(result).isTrue();
+
+		assertThat(indexes.size()).isEqualTo(taskCount);
+		for (int i = 0; i < taskCount; ++i) {
+			assertThat(indexes.get(i)).isEqualTo(i);
+		}
 	}
 
 }
