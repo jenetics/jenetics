@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -152,6 +153,15 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/**
+	 * Create a new task-completion object with the
+	 * {@link ForkJoinPool#commonPool()} as used executor service and a task
+	 * queue size of {@link #DEFAULT_TASK_QUEUE_SIZE}.
+	 */
+	public TaskCompletion() {
+		this(ForkJoinPool.commonPool(), DEFAULT_TASK_QUEUE_SIZE);
+	}
+
+	/**
 	 * Return the maximal size of the task queue.
 	 *
 	 * @return the maximal size of the task queue
@@ -161,9 +171,9 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/**
-	 * Return the number of currently <em>waiting</em> tasks in the task queue.
+	 * Return the number of currently queued tasks.
 	 *
-	 * @return the number of currently <em>waiting</em> tasks in the task queue
+	 * @return the number of currently queued tasks
 	 */
 	public int size() {
 		return _tasks.size();
@@ -181,9 +191,9 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/**
-	 * Return the list currently queued tasks.
+	 * Return the list of currently queued tasks.
 	 *
-	 * @return the list of currently queued tasks
+	 * @return the list of of currently queued tasks
 	 */
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))

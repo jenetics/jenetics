@@ -19,9 +19,10 @@
  */
 package io.jenetics.incubator.util;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -30,13 +31,14 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class TaskCompletionTest {
 
@@ -275,6 +277,26 @@ public class TaskCompletionTest {
 	}
 
 	@Test
+	public void rejectSubmitAfterShutdown() {
+		final var completion = new TaskCompletion();
+
+		var submitted = completion.submit(() -> {});
+		assertThat(submitted).isTrue();
+
+		completion.shutdown();
+		assertThat(completion.isShutdown()).isTrue();
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.execute(() -> {}));
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.submit(() -> {}));
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.submit(() -> {}, Duration.ofMillis(1000)));
+	}
+
+	@Test
 	public void awaitRemainingWithoutSubmission() throws Exception {
 		final var completion = new TaskCompletion(ForkJoinPool.commonPool());
 
@@ -319,6 +341,8 @@ public class TaskCompletionTest {
 
 		var result = completion.awaitTermination(10, SECONDS);
 		assertThat(result).isTrue();
+		assertThat(completion.isEmpty()).isTrue();
+		assertThat(completion.size()).isEqualTo(0);
 
 		assertThat(indexes.size()).isEqualTo(taskCount);
 		for (int i = 0; i < taskCount; ++i) {
