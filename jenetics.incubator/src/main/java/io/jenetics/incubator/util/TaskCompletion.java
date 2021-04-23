@@ -241,10 +241,10 @@ public final class TaskCompletion implements Executor {
 	 * ************************************************************************/
 
 	/**
-	 *  Executes the given {@code command} asynchronously. The method will return
-	 * immediately after, except the <i>executorQueueSize</i> is exhausted. Then
-	 * this call will block until an other task has finished or the specified
-	 * waiting time has expired.
+	 * Enqueues the given {@code command} to the task queue. The method will
+	 * return immediately after, except the {@link #capacity()} of the queue is
+	 * exhausted. Then this call will block until an other task has finished or
+	 * the specified waiting time has expired.
 	 *
 	 * @param command the code block to execute.
 	 * @param timeout the maximal time to wait for a place in the task queue. If
@@ -260,7 +260,7 @@ public final class TaskCompletion implements Executor {
 	 * @throws InterruptedException if the calling thread is interrupted while
 	 *         waiting for a place in the executor queue.
 	 */
-	public boolean submit(final Runnable command, final Duration timeout)
+	public boolean enqueue(final Runnable command, final Duration timeout)
 		throws InterruptedException
 	{
 		requireNonNull(command);
@@ -282,10 +282,10 @@ public final class TaskCompletion implements Executor {
 	}
 
 	/**
-	 * Executes the given {@code command} asynchronously. The method will return
-	 * immediately without waiting in the case of an exhausted task queue. Return
-	 * {@code true} if the task has been successfully submitted, {@code false}
-	 * otherwise.
+	 * Enqueues the given {@code command} to the task queue. The method will
+	 * return immediately without waiting in the case of an exhausted task queue.
+	 * Return {@code true} if the task has been successfully submitted,
+	 * {@code false} otherwise.
 	 *
 	 * @param command the code block to execute.
 	 * @return {@code true} if the given {@code command} where successfully
@@ -297,7 +297,7 @@ public final class TaskCompletion implements Executor {
 	 *         down
 	 * @throws NullPointerException if the given {@code command} is {@code null}
 	 */
-	public boolean submit(final Runnable command) {
+	public boolean enqueue(final Runnable command) {
 		requireNonNull(command);
 		checkShutdown();
 
@@ -343,7 +343,7 @@ public final class TaskCompletion implements Executor {
 
 	@Override
 	public void execute(Runnable command) {
-		if (!submit(command)) {
+		if (!enqueue(command)) {
 			throw new RejectedExecutionException(format(
 				"Command not accepted, capacity of %d is exhausted.",
 				capacity()

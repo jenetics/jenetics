@@ -74,7 +74,7 @@ public class TaskCompletionTest {
 		{
 			println("Submit: " + name);
 
-			return _completion.submit(() -> {
+			return _completion.enqueue(() -> {
 				println("Start: " + name);
 				_lock.lock();
 				try {
@@ -257,19 +257,19 @@ public class TaskCompletionTest {
 	public void rejectedSubmit() throws Exception {
 		final var completion = new TaskCompletion(ForkJoinPool.commonPool(), 1);
 
-		var submitted = completion.submit(
+		var submitted = completion.enqueue(
 			() -> TestRunToCompletion.pause(1000),
 			Duration.ofMillis(10)
 		);
 		assertThat(submitted).isTrue();
 
-		submitted = completion.submit(
+		submitted = completion.enqueue(
 			() -> TestRunToCompletion.pause(1000),
 			Duration.ofMillis(10)
 		);
 		assertThat(submitted).isTrue();
 
-		submitted = completion.submit(
+		submitted = completion.enqueue(
 			() -> TestRunToCompletion.pause(1000),
 			Duration.ofMillis(10)
 		);
@@ -280,7 +280,7 @@ public class TaskCompletionTest {
 	public void rejectSubmitAfterShutdown() {
 		final var completion = new TaskCompletion();
 
-		var submitted = completion.submit(() -> {});
+		var submitted = completion.enqueue(() -> {});
 		assertThat(submitted).isTrue();
 
 		completion.shutdown();
@@ -290,10 +290,10 @@ public class TaskCompletionTest {
 			.isThrownBy(() -> completion.execute(() -> {}));
 
 		assertThatExceptionOfType(RejectedExecutionException.class)
-			.isThrownBy(() -> completion.submit(() -> {}));
+			.isThrownBy(() -> completion.enqueue(() -> {}));
 
 		assertThatExceptionOfType(RejectedExecutionException.class)
-			.isThrownBy(() -> completion.submit(() -> {}, Duration.ofMillis(1000)));
+			.isThrownBy(() -> completion.enqueue(() -> {}, Duration.ofMillis(1000)));
 	}
 
 	@Test
