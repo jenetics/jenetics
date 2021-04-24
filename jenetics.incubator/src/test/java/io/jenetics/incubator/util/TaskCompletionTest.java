@@ -350,4 +350,19 @@ public class TaskCompletionTest {
 		}
 	}
 
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue() {
+		new TaskCompletion().enqueue(null);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue2() throws InterruptedException {
+		new TaskCompletion().enqueue(null, Duration.ZERO);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue3() throws InterruptedException {
+		new TaskCompletion().enqueue(() -> {}, null);
+	}
+
 }
