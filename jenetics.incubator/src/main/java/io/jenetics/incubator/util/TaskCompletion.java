@@ -106,7 +106,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * The default task queue size, set to 1000.
 	 */
-	public static final int DEFAULT_TASK_QUEUE_SIZE = 1000;
+	private static final int DEFAULT_TASK_QUEUE_SIZE = 1000;
 
 	private final Executor _executor;
 	private final BlockingQueue<Task> _tasks;
@@ -141,8 +141,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	}
 
 	/**
-	 * Creates a new task-completion object with the given {@code executor} and
-	 * a task queue size of {@link #DEFAULT_TASK_QUEUE_SIZE}.
+	 * Creates a new task-completion object with the given {@code executor}.
 	 *
 	 * @param executor the executor service used for the asynchronous task
 	 *        execution
@@ -154,8 +153,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 
 	/**
 	 * Create a new task-completion object with the
-	 * {@link ForkJoinPool#commonPool()} as used executor service and a task
-	 * queue size of {@link #DEFAULT_TASK_QUEUE_SIZE}.
+	 * {@link ForkJoinPool#commonPool()} as executor service.
 	 */
 	public TaskCompletion() {
 		this(ForkJoinPool.commonPool(), DEFAULT_TASK_QUEUE_SIZE);
