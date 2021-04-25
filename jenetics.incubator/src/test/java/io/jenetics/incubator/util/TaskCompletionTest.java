@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -256,6 +257,7 @@ public class TaskCompletionTest {
 	@Test
 	public void rejectedSubmit() throws Exception {
 		final var completion = new TaskCompletion(ForkJoinPool.commonPool(), 1);
+		assertThat(completion.capacity()).isEqualTo(1);
 
 		var submitted = completion.enqueue(
 			() -> TestRunToCompletion.pause(1000),
@@ -363,6 +365,41 @@ public class TaskCompletionTest {
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nullEnqueue3() throws InterruptedException {
 		new TaskCompletion().enqueue(() -> {}, null);
+	}
+
+	@Test
+	public void drainTo() {
+		final var completion = new TaskCompletion(Runnable::run);
+
+		final var length = 100;
+		final var count = new AtomicInteger();
+		for (int i = 0; i < length; ++i) {
+			completion.execute(count::incrementAndGet);
+		}
+
+		final var drained = new ArrayList<Runnable>();
+		completion.drainTo(drained);
+
+		assertThat(completion.size()).isEqualTo(0);
+		assertThat(drained.size()).isEqualTo(length -  count.get());
+	}
+
+	@Test
+	public void shutdownNow() {
+		final var completion = new TaskCompletion(Runnable::run);
+
+		final var length = 100;
+		final var count = new AtomicInteger();
+		for (int i = 0; i < length; ++i) {
+			completion.execute(count::incrementAndGet);
+		}
+
+		final var rejected = completion.shutdownNow();
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.execute(() -> {}));
+
+		assertThat(completion.size()).isEqualTo(0);
+		assertThat(rejected.size()).isEqualTo(length -  count.get());
 	}
 
 }
