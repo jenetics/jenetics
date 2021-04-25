@@ -28,11 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.AbstractExecutorService;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -349,6 +347,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * This method does not wait for previously submitted tasks to complete
 	 * execution. Use {@link #awaitTermination awaitTermination} to do that.
 	 */
+	@Override
 	public void shutdown() {
 		_lock.lock();
 		try {
@@ -380,6 +379,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 *
 	 * @return {@code true} if this task completion has been shut down
 	 */
+	@Override
 	public boolean isShutdown() {
 		_lock.lock();
 		try {
@@ -410,6 +410,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 *         {@code false} if the timeout elapsed before termination
 	 * @throws InterruptedException if interrupted while waiting
 	 */
+	@Override
 	public boolean awaitTermination(long timeout, TimeUnit unit)
 		throws InterruptedException
 	{
