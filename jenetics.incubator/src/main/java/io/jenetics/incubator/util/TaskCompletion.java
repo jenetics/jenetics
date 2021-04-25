@@ -36,7 +36,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -79,26 +78,26 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * Wrapper class for the <em>runnable</em> to be executed.
 	 */
 	private static final class Task implements Runnable {
-		private final Runnable _runnable;
-		private final Consumer<? super Runnable> _finished;
+		private final Runnable _task;
+		private final Runnable _finished;
 
 		Task(
-			final Runnable runnable,
-			final Consumer<? super Runnable> finished
+			final Runnable task,
+			final Runnable finished
 		) {
-			_runnable = requireNonNull(runnable);
+			_task = requireNonNull(task);
 			_finished = requireNonNull(finished);
 		}
 
 		@Override
 		public void run() {
 			try {
-				_runnable.run();
+				_task.run();
 			} catch (Throwable e) {
 				final var thread = Thread.currentThread();
 				thread.getUncaughtExceptionHandler().uncaughtException(thread, e);
 			} finally {
-				_finished.accept(_runnable);
+				_finished.run();
 			}
 		}
 	}
@@ -195,7 +194,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 */
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
-			.map(t -> t._runnable)
+			.map(t -> t._task)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
@@ -211,7 +210,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	public int drainTo(final Collection<? super Runnable> collection) {
 		final var tasks = new ArrayList<Task>();
 		final int drained = _tasks.drainTo(tasks);
-		tasks.forEach(t -> collection.add(t._runnable));
+		tasks.forEach(t -> collection.add(t._task));
 		return drained;
 	}
 
@@ -314,7 +313,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 		}
 	}
 
-	private void finished(final Runnable runnable) {
+	private void finished() {
 		_lock.lock();
 		try {
 			_running = false;
