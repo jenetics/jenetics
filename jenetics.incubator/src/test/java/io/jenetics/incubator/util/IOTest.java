@@ -42,13 +42,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 public class IOTest {
 
 	@Test(dataProvider = "data")
-	public void appendReadExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void appendReadExistingFile(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -58,10 +58,10 @@ public class IOTest {
 
 	private void appendRead(
 		final List<List<Object>> data,
-		final CloseableValue<Path> path,
+		final Value<Path, IOException> path,
 		final OpenOption... options
 	)
-		throws Exception
+		throws IOException
 	{
 		try (path) {
 			for (var objects : data) {
@@ -77,8 +77,8 @@ public class IOTest {
 	}
 
 	@Test(dataProvider = "data")
-	public void appendReadNonExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void appendReadNonExistingFile(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Path.of(
 				System.getProperty("java.io.tmpdir"),
 				format("IO-%s-TEST", randomUUID().toString().replace("-", ""))
@@ -136,8 +136,8 @@ public class IOTest {
 	}
 
 	@Test(dataProvider = "data")
-	public void writeRead(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void writeRead(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -156,8 +156,8 @@ public class IOTest {
 	}
 
 	@Test
-	public void writeFiledReadFileExample() throws Exception {
-		final var path = CloseableValue.of(
+	public void writeFiledReadFileExample() throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -188,8 +188,8 @@ public class IOTest {
 	}
 
 	@Test
-	public void writeStreamReadFileExample() throws Exception {
-		final var path = CloseableValue.of(
+	public void writeStreamReadFileExample() throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -214,7 +214,7 @@ public class IOTest {
 	}
 
 	@Test
-	public void writeStreamReadStreamExample() throws Exception {
+	public void writeStreamReadStreamExample() throws IOException {
 		final var out = new ByteArrayOutputStream();
 
 		IO.write(out, List.of("1", "2", "3"), false);

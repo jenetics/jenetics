@@ -20,7 +20,6 @@
 package io.jenetics.incubator.util;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Lifecycle.IO_EXCEPTION;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -44,8 +43,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
-import io.jenetics.internal.util.Lifecycle.ResourceCollector;
+import io.jenetics.internal.util.Lifecycle.Resources;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 /**
  * Static methods for reading and writing objects using the Java serialisation.
@@ -475,15 +474,17 @@ public final class IO {
 	 *         {@code null}
 	 */
 	public static Stream<Object> objects(final InputStream input) {
-		final var result = CloseableValue.build(resources ->
+		final Value<Stream<Object>, IOException> result = Value.build(resources ->
 			objectStream(input, resources)
 		);
 
-		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
+		return result.get().onClose(() ->
+			result.uncheckedClose(UncheckedIOException::new)
+		);
 	}
 
 	private static Stream<Object>
-	objectStream(final InputStream input, final ResourceCollector resources) {
+	objectStream(final InputStream input, final Resources<IOException> resources) {
 		final Supplier<Object> readObject = new Supplier<>() {
 			private ObjectInputStream _oin = null;
 
@@ -491,11 +492,11 @@ public final class IO {
 			public synchronized Object get() {
 				try {
 					if (_oin == null) {
-						var in = resources.add(input);
+						var in = resources.add(input, Closeable::close);
 						if (!(in instanceof BufferedInputStream)) {
-							in = resources.add(new BufferedInputStream(in));
+							in = resources.add(new BufferedInputStream(in), Closeable::close);
 						}
-						_oin = resources.add(new ObjectInputStream(in));
+						_oin = resources.add(new ObjectInputStream(in), Closeable::close);
 					}
 
 					return _oin.readObject();
@@ -533,15 +534,17 @@ public final class IO {
 	 * @throws IOException if the object stream couldn't be created
 	 */
 	public static Stream<Object> objects(final Path path) throws IOException {
-		final var result = CloseableValue.build(resources ->
+		final Value<Stream<Object>, IOException> result = Value.build(resources ->
 			objectStream(path, resources)
 		);
 
-		return result.get().onClose(() -> result.uncheckedClose(IO_EXCEPTION));
+		return result.get().onClose(() ->
+			result.uncheckedClose(UncheckedIOException::new)
+		);
 	}
 
 	private static Stream<Object>
-	objectStream(final Path path, final ResourceCollector resources)
+	objectStream(final Path path, final Resources<IOException> resources)
 		throws IOException
 	{
 		return isEmpty(path)
