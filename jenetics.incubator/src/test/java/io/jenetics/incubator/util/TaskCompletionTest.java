@@ -20,6 +20,9 @@
 package io.jenetics.incubator.util;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -70,7 +75,7 @@ public class TaskCompletionTest {
 		{
 			println("Submit: " + name);
 
-			return _completion.submit(() -> {
+			return _completion.enqueue(() -> {
 				println("Start: " + name);
 				_lock.lock();
 				try {
@@ -103,7 +108,9 @@ public class TaskCompletionTest {
 
 		static void pause(final long pause) {
 			try {
-				Thread.sleep(pause);
+				if (pause > 0) {
+					Thread.sleep(pause);
+				}
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				throw new CancellationException(e.getMessage());
@@ -111,7 +118,7 @@ public class TaskCompletionTest {
 		}
 	}
 
-	@Test(dataProvider = "parameters")
+	@Test(dataProvider = "parameters", timeOut = 5_000)
 	public void sequential(final int completionSize, final int submits, final int pause)
 		throws Exception
 	{
@@ -134,15 +141,20 @@ public class TaskCompletionTest {
 	@DataProvider
 	public Object[][] parameters() {
 		return new Object[][] {
+			{1, 1, 0},
+			{2, 1, 0},
+			{1, 100, 0},
+			{10, 100, 0},
 			{10, 100, 1},
-			{10, 100, 2},
+			{1, 100, 1},
+			{10, 100, 0},
 			{10, 300, 1},
-			{3, 10, 10},
+			{3, 10, 0},
 			{6, 150, 1}
 		};
 	}
 
-	@Test(dataProvider = "parameters")
+	@Test(dataProvider = "parameters", timeOut = 5_000)
 	public void asynchronous(final int completionSize, final int submits, final int pause)
 		throws Exception
 	{
@@ -180,7 +192,7 @@ public class TaskCompletionTest {
 		}
 	}
 
-	@Test(dataProvider = "parameters")
+	@Test(dataProvider = "parameters", timeOut = 5_000)
 	public void raceCondition(final int completionSize, final int submits, final int pause)
 		throws Exception
 	{
@@ -216,7 +228,7 @@ public class TaskCompletionTest {
 		}
 	}
 
-	@Test
+	@Test(timeOut = 5_000)
 	public void exceedingNumberOfTasks() throws Exception {
 		final int threadCount = 3;
 		final int completionSize = 4;
@@ -240,6 +252,154 @@ public class TaskCompletionTest {
 		}
 
 		throw new IllegalStateException("Tasks must have been rejected.");
+	}
+
+	@Test
+	public void rejectedSubmit() throws Exception {
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool(), 1);
+		assertThat(completion.capacity()).isEqualTo(1);
+
+		var submitted = completion.enqueue(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isTrue();
+
+		submitted = completion.enqueue(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isTrue();
+
+		submitted = completion.enqueue(
+			() -> TestRunToCompletion.pause(1000),
+			Duration.ofMillis(10)
+		);
+		assertThat(submitted).isFalse();
+	}
+
+	@Test
+	public void rejectSubmitAfterShutdown() {
+		final var completion = new TaskCompletion();
+
+		var submitted = completion.enqueue(() -> {});
+		assertThat(submitted).isTrue();
+
+		completion.shutdown();
+		assertThat(completion.isShutdown()).isTrue();
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.execute(() -> {}));
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.enqueue(() -> {}));
+
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.enqueue(() -> {}, Duration.ofMillis(1000)));
+	}
+
+	@Test
+	public void awaitRemainingWithoutSubmission() throws Exception {
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool());
+
+		var result = completion.awaitTermination(1, SECONDS);
+		assertThat(result).isFalse();
+
+		completion.shutdown();
+		result = completion.awaitTermination(1, SECONDS);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void awaitRemainingTasks() throws Exception {
+		final int taskCount = 1000;
+		final var indexes = new ArrayList<Integer>();
+
+		final class Task implements Runnable {
+			private final int _index;
+
+			Task(final int index) {
+				_index = index;
+			}
+			@Override
+			public void run() {
+				try {
+					indexes.add(_index);
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+			}
+		}
+
+		final var completion = new TaskCompletion(ForkJoinPool.commonPool());
+		for (int i = 0; i < taskCount; ++i) {
+			completion.execute(new Task(i));
+		}
+
+		assertThat(completion.isShutdown()).isFalse();
+		completion.shutdown();
+		assertThat(completion.isShutdown()).isTrue();
+
+		var result = completion.awaitTermination(10, SECONDS);
+		assertThat(result).isTrue();
+		assertThat(completion.isEmpty()).isTrue();
+		assertThat(completion.size()).isEqualTo(0);
+
+		assertThat(indexes.size()).isEqualTo(taskCount);
+		for (int i = 0; i < taskCount; ++i) {
+			assertThat(indexes.get(i)).isEqualTo(i);
+		}
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue() {
+		new TaskCompletion().enqueue(null);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue2() throws InterruptedException {
+		new TaskCompletion().enqueue(null, Duration.ZERO);
+	}
+
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullEnqueue3() throws InterruptedException {
+		new TaskCompletion().enqueue(() -> {}, null);
+	}
+
+	@Test
+	public void drainTo() {
+		final var completion = new TaskCompletion(Runnable::run);
+
+		final var length = 100;
+		final var count = new AtomicInteger();
+		for (int i = 0; i < length; ++i) {
+			completion.execute(count::incrementAndGet);
+		}
+
+		final var drained = new ArrayList<Runnable>();
+		completion.drainTo(drained);
+
+		assertThat(completion.size()).isEqualTo(0);
+		assertThat(drained.size()).isEqualTo(length -  count.get());
+	}
+
+	@Test
+	public void shutdownNow() {
+		final var completion = new TaskCompletion(Runnable::run);
+
+		final var length = 100;
+		final var count = new AtomicInteger();
+		for (int i = 0; i < length; ++i) {
+			completion.execute(count::incrementAndGet);
+		}
+
+		final var rejected = completion.shutdownNow();
+		assertThatExceptionOfType(RejectedExecutionException.class)
+			.isThrownBy(() -> completion.execute(() -> {}));
+
+		assertThat(completion.size()).isEqualTo(0);
+		assertThat(rejected.size()).isEqualTo(length -  count.get());
 	}
 
 }
