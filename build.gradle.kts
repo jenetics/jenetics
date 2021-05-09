@@ -56,7 +56,10 @@ allprojects {
 		resolutionStrategy.failOnVersionConflict()
 		resolutionStrategy.force(*Libs.All)
 	}
+
 }
+
+apply("./alljavadoc.gradle")
 
 /**
  * Project configuration *after* the projects has been evaluated.
@@ -77,7 +80,7 @@ gradle.projectsEvaluated {
 
 			setupJava(project)
 			setupTestReporting(project)
-			setupJavadoc(project)
+			setupJavadoc(project, "")
 		}
 
 		if (plugins.hasPlugin("maven-publish")) {
@@ -85,6 +88,7 @@ gradle.projectsEvaluated {
 		}
 	}
 
+	setupJavadoc(rootProject, "all")
 }
 
 /**
@@ -152,7 +156,7 @@ fun setupTestReporting(project: Project) {
 /**
  * Setup of the projects Javadoc.
  */
-fun setupJavadoc(project: Project) {
+fun setupJavadoc(project: Project, taskName: String) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
 
@@ -193,35 +197,16 @@ fun setupJavadoc(project: Project) {
 		}
 	}
 
-	val javadoc = project.tasks.findByName("javadoc") as Javadoc?
+	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("colorizer") {
+		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
 			directory = javadoc.destinationDir!!
 		}
 
-		project.tasks.register("java2html") {
-			doLast {
-				project.javaexec {
-					main = "de.java2html.Java2Html"
-					args = listOf(
-						"-srcdir", "src/main/java",
-						"-targetdir", "${javadoc.destinationDir}/src-html"
-					)
-					classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
-				}
-			}
-		}
-
 		javadoc.doLast {
-			val colorizer = project.tasks.findByName("colorizer")
+			val colorizer = project.tasks.findByName("${taskName}colorizer")
 			colorizer?.actions?.forEach {
 				it.execute(colorizer)
-			}
-
-
-			val java2html = project.tasks.findByName("java2html")
-			java2html?.actions?.forEach {
-				it.execute(java2html)
 			}
 		}
 	}
