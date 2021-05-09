@@ -25,24 +25,30 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.util.UUID.randomUUID;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 public class IOTest {
 
 	@Test(dataProvider = "data")
-	public void appendReadExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void appendReadExistingFile(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -52,10 +58,10 @@ public class IOTest {
 
 	private void appendRead(
 		final List<List<Object>> data,
-		final CloseableValue<Path> path,
+		final Value<Path, IOException> path,
 		final OpenOption... options
 	)
-		throws Exception
+		throws IOException
 	{
 		try (path) {
 			for (var objects : data) {
@@ -71,8 +77,8 @@ public class IOTest {
 	}
 
 	@Test(dataProvider = "data")
-	public void appendReadNonExistingFile(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void appendReadNonExistingFile(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Path.of(
 				System.getProperty("java.io.tmpdir"),
 				format("IO-%s-TEST", randomUUID().toString().replace("-", ""))
@@ -130,8 +136,8 @@ public class IOTest {
 	}
 
 	@Test(dataProvider = "data")
-	public void writeRead(final List<List<Object>> data) throws Exception {
-		final var path = CloseableValue.of(
+	public void writeRead(final List<List<Object>> data) throws IOException {
+		final Value<Path, IOException> path = Value.of(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -146,8 +152,107 @@ public class IOTest {
 				: data.get(data.size() - 1);
 
 			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
-
 		}
+	}
+
+	@Test
+	public void writeFiledReadFileExample() throws IOException {
+		final Value<Path, IOException> path = Value.of(
+			Files.createTempFile("IO-", "-TEST"),
+			Files::deleteIfExists
+		);
+
+		try (path) {
+			final var written = IO.write(path.get(), List.of("1", "2", "3"), CREATE);
+			Assert.assertEquals(written, Files.size(path.get()));
+
+			List<Object> objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+			IO.write(path.get(), List.of("4", "5"), APPEND);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+			try (Stream<Object> stream = IO.objects(path.get())) {
+				final var count = new AtomicInteger(1);
+				stream.forEach(o -> {
+					final var expected = String.valueOf(count.getAndIncrement());
+					Assert.assertEquals(o, expected);
+				});
+			}
+
+			IO.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("6", "7", "8"));
+		}
+	}
+
+	@Test
+	public void writeStreamReadFileExample() throws IOException {
+		final Value<Path, IOException> path = Value.of(
+			Files.createTempFile("IO-", "-TEST"),
+			Files::deleteIfExists
+		);
+
+		try (path; var out = Files.newOutputStream(path.get())) {
+			IO.write(out, List.of("1", "2", "3"), false);
+			List<Object> objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+			IO.write(out, List.of("4", "5"), true);
+			objects = IO.readAllObjects(path.get());
+			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+			try (Stream<Object> stream = IO.objects(path.get())) {
+				final var count = new AtomicInteger(1);
+				stream.forEach(o -> {
+					final var expected = String.valueOf(count.getAndIncrement());
+					Assert.assertEquals(o, expected);
+				});
+			}
+		}
+	}
+
+	@Test
+	public void writeStreamReadStreamExample() throws IOException {
+		final var out = new ByteArrayOutputStream();
+
+		IO.write(out, List.of("1", "2", "3"), false);
+		List<Object> objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("1", "2", "3"));
+
+		IO.write(out, List.of("4", "5"), true);
+		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
+
+		try (Stream<Object> stream = IO.objects(new ByteArrayInputStream(out.toByteArray()))) {
+			final var count = new AtomicInteger(1);
+			stream.forEach(o -> {
+				final var expected = String.valueOf(count.getAndIncrement());
+				Assert.assertEquals(o, expected);
+			});
+		}
+
+		out.reset();
+		IO.write(out, List.of("6", "7", "8"), false);
+		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Assert.assertEquals(objects, List.of("6", "7", "8"));
+	}
+
+	@Test
+	public void readParallelStream() throws IOException {
+		final var objects = IntStream.range(0, 1000)
+			.mapToObj(String::valueOf)
+			.collect(Collectors.toSet());
+
+		final var out = new ByteArrayOutputStream();
+		IO.write(out, objects, false);
+
+		final var read = IO.objects(new ByteArrayInputStream(out.toByteArray()))
+			.parallel()
+			.collect(Collectors.toSet());
+
+		Assert.assertEquals(read, objects);
 	}
 
 }

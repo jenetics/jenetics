@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics Extension"
@@ -47,7 +47,7 @@ tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*TreePerf.*")
+	includes.add(".*TreePerf.*")
 }
 
 tasks.javadoc {

@@ -27,7 +27,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.2" apply false
+	id("me.champeau.jmh") version "0.6.3" apply false
 }
 
 rootProject.version = Jenetics.VERSION
@@ -95,7 +95,7 @@ gradle.projectsEvaluated {
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
 				sourceCompatibility = JavaVersion.VERSION_16
-				targetCompatibility = JavaVersion.VERSION_16
+				targetCompatibility = JavaVersion.current()
 			}
 
 			setupJava(project)
