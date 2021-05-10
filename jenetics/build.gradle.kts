@@ -46,5 +46,5 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*BitArrayPerf.*")
+	includes.add(".*BitArrayPerf.*")
 }
