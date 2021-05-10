@@ -59,7 +59,7 @@ allprojects {
 
 }
 
-apply("./alljavadoc.gradle")
+apply("./gradle/alljavadoc.gradle")
 
 /**
  * Project configuration *after* the projects has been evaluated.
@@ -203,10 +203,32 @@ fun setupJavadoc(project: Project, taskName: String) {
 			directory = javadoc.destinationDir!!
 		}
 
+		project.tasks.register("${taskName}java2html") {
+			doLast {
+				val srcdir = file("${project.projectDir}/src/main/java")
+
+				if (srcdir.isDirectory) {
+					project.javaexec {
+						main = "de.java2html.Java2Html"
+						args = listOf(
+							"-srcdir", srcdir.toString(),
+							"-targetdir", "${javadoc.destinationDir}/src-html"
+						)
+						classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
+					}
+				}
+			}
+		}
+
 		javadoc.doLast {
 			val colorizer = project.tasks.findByName("${taskName}colorizer")
 			colorizer?.actions?.forEach {
 				it.execute(colorizer)
+			}
+
+			val java2html = project.tasks.findByName("${taskName}java2html")
+			java2html?.actions?.forEach {
+				it.execute(java2html)
 			}
 		}
 	}
