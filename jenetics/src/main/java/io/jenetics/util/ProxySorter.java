@@ -60,7 +60,7 @@ import java.util.List;
  * @see Comparator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.1
+ * @version 6.3
  * @since 5.1
  */
 public final class ProxySorter {
@@ -168,6 +168,8 @@ public final class ProxySorter {
 	 * }
 	 * }</pre>
 	 *
+	 * @since 6.3
+	 *
 	 * @param array the array which is sorted
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
@@ -224,6 +226,8 @@ public final class ProxySorter {
 	 *
 	 * @see #sort(Object, int, int, Comparator)
 	 *
+	 * @since 6.3
+	 *
 	 * @param array the array to sort
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
@@ -257,6 +261,8 @@ public final class ProxySorter {
 	 *
 	 * @see #sort(Object, int, int, Comparator)
 	 *
+	 * @since 6.3
+	 *
 	 * @param array the array to sort
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
@@ -289,6 +295,8 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array.
 	 *
 	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
 	 *
 	 * @param array the array to sort
 	 * @param from the index of the first element (inclusive) to be sorted
@@ -326,6 +334,8 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array.
 	 *
 	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -370,6 +380,8 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array.
 	 *
 	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -417,6 +429,8 @@ public final class ProxySorter {
 	 *
 	 * @see #sort(Object, int, int, Comparator)
 	 *
+	 * @since 6.3
+	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
 	 * @param from the index of the first element (inclusive) to be sorted
@@ -462,6 +476,8 @@ public final class ProxySorter {
 	 *
 	 * @see #sort(Object, int, int, Comparator)
 	 *
+	 * @since 6.3
+	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
 	 * @param from the index of the first element (inclusive) to be sorted
@@ -504,6 +520,8 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array.
 	 *
 	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -549,6 +567,8 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array.
 	 *
 	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
