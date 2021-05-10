@@ -31,8 +31,8 @@ import java.util.function.Supplier;
  * @param <T> the type of the wrapped object
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.3
+ * @since 6.3
  */
 public final class Ordered<T> implements Comparable<Ordered<T>>, Supplier<T> {
 	private final T _value;
