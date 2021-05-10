@@ -22,6 +22,7 @@ package io.jenetics.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
+import java.util.function.Supplier;
 
 /**
  * Object wrapper, which makes the wrapped value {@link Comparable}, by defining
@@ -33,7 +34,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Ordered<T> implements Comparable<Ordered<T>> {
+public final class Ordered<T> implements Comparable<Ordered<T>>, Supplier<T> {
 	private final T _value;
 	private final Comparator<? super T> _comparator;
 
@@ -47,7 +48,8 @@ public final class Ordered<T> implements Comparable<Ordered<T>> {
 	 *
 	 * @return the wrapped value
 	 */
-	public T value() {
+	@Override
+	public T get() {
 		return _value;
 	}
 
@@ -73,4 +75,5 @@ public final class Ordered<T> implements Comparable<Ordered<T>> {
 	) {
 		return new Ordered<>(value, comparator);
 	}
+
 }
