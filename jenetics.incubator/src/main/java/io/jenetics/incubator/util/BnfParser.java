@@ -23,7 +23,6 @@ import static java.lang.String.format;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Spliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,143 +40,109 @@ final class BnfParser {
 		static final int NON_TERMINAL = 3;
 	}
 
-	private static final char SEPARATOR = ',';
-	private static final char QUOTE = '"';
-
-	private static final String SEPARATOR_STR = ",";
-	private static final String QUOTE_STR = "\"";
-	private static final String DOUBLE_QUOTE_STR = "\"\"";
-
-	private static final  int QUOTED = 1;
-	private static final int ESCAPED = 2;
-
 	static List<Token> tokenize(final CharSequence value) {
 		final var tokens = new ArrayList<Token>();
-		final var token = new StringBuilder(32);
 
-		boolean quoted = false;
-		boolean escaped = false;
+		for (int i = 0, n = value.length(); i < n;) {
+			final Token token = switch (value.charAt(i)) {
+				case '"' -> readQuoted(value, i);
+				case '|' -> readOr(value, i);
+				case ':' -> readAssignment(value, i);
+				case '<' ->  readNonTerminal(value, i);
+				default -> readTerminal(value, i);
+			};
 
-		int state = 0;
-
-
-		final char[] buffer = new char[3];
-
-		for (int i = 0, n = value.length(); i < n; ++i) {
-			buffer[2] = buffer[1];       // previous
-			buffer[1] = buffer[0];       // current
-			buffer[0] = value.charAt(i); // next
-
-			Token t = null;
-			switch (buffer[0]) {
-				case '"':
-					t = readQuoted(value, i);
-					tokens.add(t);
-					i = t.end();
-					break;
-				case '|':
-					t = readOr(value, i);
-					tokens.add(t);
-					i = t.end();
-					break;
-				case ':':
-					t = readAssignment(value, i);
-					tokens.add(t);
-					i = t.end();
-					break;
-				case '<':
-					t = readNonTerminal(value, i);
-					tokens.add(t);
-					i = t.end();
-					break;
-				default:
-					t = readTerminal(value, i);
-					tokens.add(t);
-					i = t.end();
-					break;
-			}
+			tokens.add(token);
+			i = token.end();
 		}
 
 		return tokens;
 	}
 
-
 	private static Token readAssignment(final CharSequence value, final int start) {
-		if (value.charAt(start) != ':') {
-			throw new IllegalArgumentException("" + value.charAt(start));
-		}
-
 		final var token = new StringBuilder();
 
 		for (int i = start; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 
-			if (token.length() == 3 && (c == ':' || c == '=')) {
-				throw new IllegalArgumentException("" + c);
+			if (!isAssignmentChar(c)) {
+				throw new IllegalArgumentException(format(
+					"Unexpected assignment character at position %d: '%s'",
+					i, c
+				));
 			}
 
-			if (c != ':' && c != '=') {
-				throw new IllegalArgumentException("" + c + "__" + token.toString().length() + "_" + start);
-			}
-
-			if (token.length() < 3) {
-				token.append(c);
-			}
+			token.append(c);
 
 			if (token.length() == 3) {
-				return new Token(token.toString(), start, i, Token.ASSIGNMENT);
+				if (i + 1 < value.length() && isAssignmentChar(value.charAt(i + 1))) {
+					throw new IllegalArgumentException(format(
+						"Unexpected character at position %d: '%s'",
+						i + 1, c
+					));
+				}
+
+				return new Token(token.toString(), start, i + 1, Token.ASSIGNMENT);
 			}
 		}
 
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("Incomplete assignment token: " + token);
+	}
+
+	private static boolean isAssignmentChar(final char c) {
+		return c == ':' || c == '=';
 	}
 
 	private static Token readOr(final CharSequence value, final int start) {
-		if (value.charAt(start) != '|') {
-			throw new IllegalArgumentException("" + value.charAt(start));
+		final char c = value.charAt(start);
+
+		if (c != '|') {
+			throw new IllegalArgumentException(format(
+				"Unexpected 'or' character at position %d: '%s'",
+				start, c
+			));
+		}
+		if (start + 1 < value.length() && isAssignmentChar(value.charAt(start + 1))) {
+			throw new IllegalArgumentException(format(
+				"Unexpected character at position %d: '%s'",
+				start + 1, value.charAt(start + 1)
+			));
 		}
 
-		final var token = new StringBuilder();
-
-		for (int i = start; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-
-			if (token.length() == 1 && c == '|') {
-				throw new IllegalArgumentException("" + c);
-			}
-			if (token.length() == 1) {
-				return new Token(token.toString(), start, i - 1, Token.ASSIGNMENT);
-			}
-
-			if (token.length() == 0) {
-				token.append(c);
-			}
-
-		}
-
-		throw new IllegalArgumentException();
+		return new Token("|", start, start + 1, Token.OR);
 	}
 
 	private static Token readNonTerminal(final CharSequence value, final int start) {
 		if (value.charAt(start) != '<') {
-			throw new IllegalArgumentException("" + value.charAt(start));
+			throw new IllegalArgumentException(format(
+				"Non-terminals must start with a '<' character, but got '%s' at position %d.",
+				value.charAt(start), start
+			));
 		}
 
 		final var token = new StringBuilder();
+		token.append(value.charAt(start));
 
 		for (int i = start + 1; i < value.length(); ++i) {
 			final char c = value.charAt(i);
-			if (c == '|' || c == ':' || c == '=') {
-				throw new IllegalArgumentException("" + c);
+			if (!Character.isJavaIdentifierPart(c) && c != '>') {
+				throw new IllegalArgumentException(format(
+					"Illegal character for non-terminal name at position %d: '%s'.",
+					i, c
+				));
 			}
+
 			if (c == '>') {
-				return new Token(token.toString(), start, i, Token.NON_TERMINAL);
+				token.append(c);
+				return new Token(token.toString(), start, i + 1, Token.NON_TERMINAL);
 			} else {
 				token.append(c);
 			}
 		}
 
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(
+			"Non-terminals must terminated with a '>' character."
+		);
 	}
 
 	private static Token readQuoted(final CharSequence value, final int start) {
@@ -186,44 +151,55 @@ final class BnfParser {
 		}
 
 		final var token = new StringBuilder();
-		for (int i = start + 1; i < value.length(); ++i) {
+
+		boolean quoted = false;
+		boolean escaped = false;
+
+		for (int i = start; i < value.length(); ++i) {
+			final int previous = i > 0 ? value.charAt(i - 1) : -1;
+			final char current = value.charAt(i);
+			final int next = i + 1 < value.length() ? value.charAt(i + 1) : -1;
 			final char c = value.charAt(i);
 
-			if (c != '"') {
-				token.append(c);
-			} else { // c == '"'
-				if (i + 1 < value.length()) {
-					if (value.charAt(i + 1) == '"') {
-						token.append(value.charAt(i + 1));
-						++i;
-					} else {
-						return new Token(token.toString(), start, i, Token.TERMINAL);
-					}
-				} else {
-					return new Token(token.toString(), start, i, Token.TERMINAL);
-				}
-			}
+			//token.append(c);
 
+			if (c == '"') {
+				if (!escaped && '"' == next) {
+					escaped = true;
+				} else {
+					if (escaped) {
+						token.append('"');
+						escaped = false;
+					} else {
+						return new Token(token.toString(), start, i + 1, Token.TERMINAL);
+					}
+				}
+			} else {
+				token.append(c);
+			}
 		}
 
 		throw new IllegalArgumentException();
 	}
 
 	private static Token readTerminal(final CharSequence value, final int start) {
-
 		final var token = new StringBuilder();
+
 		for (int i = start; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 
-			if (c != '"' && c != '<' && c != '>' && c != '|') {
+			if (!isTokenSeparator(c)) {
 				token.append(c);
-			} else { // c == '"'
+			} else {
 				return new Token(token.toString(), start, i, Token.TERMINAL);
 			}
-
 		}
 
 		return new Token(token.toString(), start, value.length(), Token.TERMINAL);
+	}
+
+	private static boolean isTokenSeparator(final char c) {
+		return c == ':' || c == '=' || c == '<' || c == '>' || c == '|' || c == '"';
 	}
 
 	static Grammar parse(final CharSequence value) {

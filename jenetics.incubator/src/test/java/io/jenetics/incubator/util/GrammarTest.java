@@ -31,7 +31,7 @@ public class GrammarTest {
 		final var tokens = BnfParser.tokenize("""
 			<prog>::=<expr>
 			<expr> ::=  ( <expr> <op> <expr> ) | <var>
-			<op> ::= +|*|"|"
+			<op> ::= +|*|"|" | "\""
 			<var> ::= 0.5
 			""");
 
