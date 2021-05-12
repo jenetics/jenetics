@@ -19,39 +19,23 @@
  */
 package io.jenetics.incubator.util;
 
-import java.util.List;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
  */
-public class Grammar {
+public class GrammarTest {
 
-	public sealed interface Symbol {
-		String name();
-	}
+	@Test
+	public void tokenize() {
+		final var tokens = BnfParser.tokenize("""
+			<prog>::=<expr>
+			<expr> ::=  ( <expr> <op> <expr> ) | <var>
+			<op> ::= +|*|"|"
+			<var> ::= 0.5
+			""");
 
-	public static record Terminal(String name) implements Symbol {
-	}
-
-	public static record NonTerminal(String name) implements Symbol {
-	}
-
-	public static final class Rule {
-		private NonTerminal start;
-		private List<Symbol> alternatives;
-	}
-
-	private NonTerminal start;
-	private List<NonTerminal> nonTerminals;
-	private List<Terminal> terminals;
-	private List<Rule> rules;
-
-
-	public static Grammar parse(final String bnf) {
-
-		return null;
+		tokens.forEach(System.out::println);
 	}
 
 }
