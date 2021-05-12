@@ -34,7 +34,7 @@ final class BnfParser {
 	private BnfParser() {}
 
 
-	static record Token(String value, int kind) {
+	static record Token(String value, int start, int end, int kind) {
 		static final int ASSIGNMENT = 0;
 		static final int OR = 1;
 		static final int TERMINAL = 2;
@@ -64,96 +64,166 @@ final class BnfParser {
 		final char[] buffer = new char[3];
 
 		for (int i = 0, n = value.length(); i < n; ++i) {
-			buffer[2] = buffer[1];
-			buffer[1] = buffer[0];
-			buffer[0] = value.charAt(i);
+			buffer[2] = buffer[1];       // previous
+			buffer[1] = buffer[0];       // current
+			buffer[0] = value.charAt(i); // next
 
+			Token t = null;
 			switch (buffer[0]) {
 				case '"':
-
+					t = readQuoted(value, i);
+					tokens.add(t);
+					i = t.end();
+					break;
+				case '|':
+					t = readOr(value, i);
+					tokens.add(t);
+					i = t.end();
+					break;
+				case ':':
+					t = readAssignment(value, i);
+					tokens.add(t);
+					i = t.end();
+					break;
+				case '<':
+					t = readNonTerminal(value, i);
+					tokens.add(t);
+					i = t.end();
+					break;
+				default:
+					t = readTerminal(value, i);
+					tokens.add(t);
+					i = t.end();
+					break;
 			}
 		}
-
-//			final int previous = i > 0 ? value.charAt(i - 1) : -1;
-//			final char current = value.charAt(i);
-//			final int next = i + 1 < value.length() ? value.charAt(i + 1) : -1;
-//
-//			switch (current) {
-//				case QUOTE:
-//					if (quoted) {
-//						if (!escaped && QUOTE == next) {
-//							escaped = true;
-//						} else {
-//							if (escaped) {
-//								token.append(QUOTE);
-//								escaped = false;
-//							} else {
-//								tokens.add(token.toString());
-//								token.setLength(0);
-//								quoted = false;
-//							}
-//						}
-//					} else {
-//						quoted = true;
-//					}
-//					break;
-///*				case ' ', '|', ':', '=':
-//					if (quoted) {
-//						token.append(current);
-//					} else if (' ' == previous || '|' == previous || previous == -1) {
-//						tokens.add("" + current);
-//						//token.setLength(0);
-//					}
-//					break;*/
-//				default:
-//					if (quoted) {
-//						token.append(current);
-//					} else {
-//						token.append(current);
-//					}
-////					int j = i;
-////
-////					// Read till the next token separator.
-////					char c;
-////					while (j < n && !isTokenSeparator(c = value.charAt(j))) {
-////						token.append(c);
-////						++j;
-////					}
-////
-////					if (j != i) {
-////						i = j - 1;
-////					}
-////
-////					if (!quoted) {
-////						tokens.add(token.toString());
-////						token.setLength(0);
-////					}
-//					break;
-//			}
-//		}
-//
-//		if (quoted) {
-//			throw new IllegalArgumentException("Unbalanced quote character.");
-//		}
-//		if (value.length() == 0 ||
-//			SEPARATOR == value.charAt(value.length() - 1))
-//		{
-//			tokens.add("");
-//		}
 
 		return tokens;
 	}
 
-	private static boolean isQuoted(final int state) {
-		return (state & QUOTE) != 0;
+
+	private static Token readAssignment(final CharSequence value, final int start) {
+		if (value.charAt(start) != ':') {
+			throw new IllegalArgumentException("" + value.charAt(start));
+		}
+
+		final var token = new StringBuilder();
+
+		for (int i = start; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (token.length() == 3 && (c == ':' || c == '=')) {
+				throw new IllegalArgumentException("" + c);
+			}
+
+			if (c != ':' && c != '=') {
+				throw new IllegalArgumentException("" + c + "__" + token.toString().length() + "_" + start);
+			}
+
+			if (token.length() < 3) {
+				token.append(c);
+			}
+
+			if (token.length() == 3) {
+				return new Token(token.toString(), start, i, Token.ASSIGNMENT);
+			}
+		}
+
+		throw new IllegalArgumentException();
 	}
 
-	private static boolean isEscaped(final int state) {
-		return (state & ESCAPED) != 0;
+	private static Token readOr(final CharSequence value, final int start) {
+		if (value.charAt(start) != '|') {
+			throw new IllegalArgumentException("" + value.charAt(start));
+		}
+
+		final var token = new StringBuilder();
+
+		for (int i = start; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (token.length() == 1 && c == '|') {
+				throw new IllegalArgumentException("" + c);
+			}
+			if (token.length() == 1) {
+				return new Token(token.toString(), start, i - 1, Token.ASSIGNMENT);
+			}
+
+			if (token.length() == 0) {
+				token.append(c);
+			}
+
+		}
+
+		throw new IllegalArgumentException();
 	}
 
-	private static boolean isTokenSeparator(final char c) {
-		return c == ' ' || c == '|' || c == ':' || c == '=' || c == QUOTE;
+	private static Token readNonTerminal(final CharSequence value, final int start) {
+		if (value.charAt(start) != '<') {
+			throw new IllegalArgumentException("" + value.charAt(start));
+		}
+
+		final var token = new StringBuilder();
+
+		for (int i = start + 1; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+			if (c == '|' || c == ':' || c == '=') {
+				throw new IllegalArgumentException("" + c);
+			}
+			if (c == '>') {
+				return new Token(token.toString(), start, i, Token.NON_TERMINAL);
+			} else {
+				token.append(c);
+			}
+		}
+
+		throw new IllegalArgumentException();
+	}
+
+	private static Token readQuoted(final CharSequence value, final int start) {
+		if (value.charAt(start) != '"') {
+			throw new IllegalArgumentException("" + value.charAt(start));
+		}
+
+		final var token = new StringBuilder();
+		for (int i = start + 1; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (c != '"') {
+				token.append(c);
+			} else { // c == '"'
+				if (i + 1 < value.length()) {
+					if (value.charAt(i + 1) == '"') {
+						token.append(value.charAt(i + 1));
+						++i;
+					} else {
+						return new Token(token.toString(), start, i, Token.TERMINAL);
+					}
+				} else {
+					return new Token(token.toString(), start, i, Token.TERMINAL);
+				}
+			}
+
+		}
+
+		throw new IllegalArgumentException();
+	}
+
+	private static Token readTerminal(final CharSequence value, final int start) {
+
+		final var token = new StringBuilder();
+		for (int i = start; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (c != '"' && c != '<' && c != '>' && c != '|') {
+				token.append(c);
+			} else { // c == '"'
+				return new Token(token.toString(), start, i, Token.TERMINAL);
+			}
+
+		}
+
+		return new Token(token.toString(), start, value.length(), Token.TERMINAL);
 	}
 
 	static Grammar parse(final CharSequence value) {
