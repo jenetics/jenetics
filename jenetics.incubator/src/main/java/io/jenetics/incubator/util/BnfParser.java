@@ -32,7 +32,6 @@ import java.util.List;
 final class BnfParser {
 	private BnfParser() {}
 
-
 	static record Token(String value, int start, int end, int kind) {
 		static final int ASSIGNMENT = 0;
 		static final int OR = 1;
@@ -224,7 +223,14 @@ final class BnfParser {
 			c == '>' || c == '|' || c == '"';
 	}
 
-	static Grammar parse(final CharSequence value) {
+	static Grammar parse(final CharSequence bnf) {
+		final List<Token> tokens = tokenize(bnf);
+
+		final var rules = new ArrayList<Grammar.Rule>();
+
+		for (var token : tokens) {
+
+		}
 
 		return null;
 	}
