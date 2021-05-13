@@ -26,7 +26,7 @@ import java.util.List;
  * @since !__version__!
  * @version !__version__!
  */
-public class Grammar {
+public final class Grammar {
 
 	public sealed interface Symbol {
 		String name();
@@ -38,16 +38,31 @@ public class Grammar {
 	public static record NonTerminal(String name) implements Symbol {
 	}
 
-	public static final class Rule {
-		private NonTerminal start;
-		private List<Symbol> alternatives;
+	public static record Expression(List<Symbol> symbols) {
+		public Expression {
+			symbols = List.copyOf(symbols);
+		}
 	}
 
-	private NonTerminal start;
-	private List<NonTerminal> nonTerminals;
-	private List<Terminal> terminals;
-	private List<Rule> rules;
+	public static record Rule(NonTerminal start, List<Expression> alternatives) {
+		public Rule {
+			alternatives = List.copyOf(alternatives);
+		}
+	}
 
+	//private NonTerminal start;
+	//private List<NonTerminal> nonTerminals;
+	//private List<Terminal> terminals;
+
+	private final List<Rule> rules;
+
+	public Grammar(final List<Rule> rules) {
+		this.rules = List.copyOf(rules);
+	}
+
+	public List<Rule> rules() {
+		return rules;
+	}
 
 	public static Grammar parse(final String bnf) {
 
