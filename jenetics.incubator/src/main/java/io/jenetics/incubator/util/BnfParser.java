@@ -59,6 +59,50 @@ final class BnfParser {
 		return tokens;
 	}
 
+	private static Token readQuoted(final CharSequence value, final int start) {
+		assert value.charAt(start) == '"';
+
+		final var token = new StringBuilder();
+		boolean quoted = false;
+		boolean escaped = false;
+
+		for (int i = start; i < value.length(); ++i) {
+			final char current = value.charAt(i);
+			final char next = i + 1 < value.length() ? value.charAt(i + 1) : '\0';
+
+			if (current == '"') {
+				if (quoted) {
+					if (!escaped && next == '"') {
+						escaped = true;
+					} else {
+						if (escaped) {
+							token.append(current);
+							escaped = false;
+						} else {
+							token.append(current);
+							return new Token(
+								token.toString(),
+								start, i + 1,
+								Token.TERMINAL
+							);
+						}
+					}
+				} else {
+					token.append(current);
+					quoted = true;
+				}
+			} else {
+				token.append(current);
+			}
+		}
+
+		throw new IllegalArgumentException("Unbalanced quote character.");
+	}
+
+	private String errorMessage(final CharSequence value, final int index) {
+		return "";
+	}
+
 	private static Token readAssignment(final CharSequence value, final int start) {
 		final var token = new StringBuilder();
 
@@ -145,43 +189,6 @@ final class BnfParser {
 		);
 	}
 
-	private static Token readQuoted(final CharSequence value, final int start) {
-		if (value.charAt(start) != '"') {
-			throw new IllegalArgumentException("" + value.charAt(start));
-		}
-
-		final var token = new StringBuilder();
-
-		boolean quoted = false;
-		boolean escaped = false;
-
-		for (int i = start; i < value.length(); ++i) {
-			final int previous = i > 0 ? value.charAt(i - 1) : -1;
-			final char current = value.charAt(i);
-			final int next = i + 1 < value.length() ? value.charAt(i + 1) : -1;
-			final char c = value.charAt(i);
-
-			//token.append(c);
-
-			if (c == '"') {
-				if (!escaped && '"' == next) {
-					escaped = true;
-				} else {
-					if (escaped) {
-						token.append('"');
-						escaped = false;
-					} else {
-						return new Token(token.toString(), start, i + 1, Token.TERMINAL);
-					}
-				}
-			} else {
-				token.append(c);
-			}
-		}
-
-		throw new IllegalArgumentException();
-	}
-
 	private static Token readTerminal(final CharSequence value, final int start) {
 		final var token = new StringBuilder();
 
@@ -200,6 +207,10 @@ final class BnfParser {
 
 	private static boolean isTokenSeparator(final char c) {
 		return c == ':' || c == '=' || c == '<' || c == '>' || c == '|' || c == '"';
+	}
+
+	private static boolean isTokenSeparator1(final char c) {
+		return c == ':' || c == '=' || c == '<' || c == '>' || c == '|';
 	}
 
 	static Grammar parse(final CharSequence value) {
