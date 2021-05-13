@@ -19,7 +19,11 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.lang.String.format;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -33,14 +37,29 @@ public final class Grammar {
 	}
 
 	public static record Terminal(String name) implements Symbol {
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 
 	public static record NonTerminal(String name) implements Symbol {
+		@Override
+		public String toString() {
+			return format("%s", name);
+		}
 	}
 
 	public static record Expression(List<Symbol> symbols) {
 		public Expression {
 			symbols = List.copyOf(symbols);
+		}
+
+		@Override
+		public String toString() {
+			return symbols.stream()
+				.map(Object::toString)
+				.collect(Collectors.joining(" "));
 		}
 	}
 
@@ -48,11 +67,18 @@ public final class Grammar {
 		public Rule {
 			alternatives = List.copyOf(alternatives);
 		}
-	}
 
-	//private NonTerminal start;
-	//private List<NonTerminal> nonTerminals;
-	//private List<Terminal> terminals;
+		@Override
+		public String toString() {
+			return format(
+				"%s ::= %s",
+				start,
+				alternatives.stream()
+					.map(Objects::toString)
+					.collect(Collectors.joining("\n    | "))
+			);
+		}
+	}
 
 	private final List<Rule> rules;
 
@@ -65,8 +91,14 @@ public final class Grammar {
 	}
 
 	public static Grammar parse(final String bnf) {
+		return BnfParser.parse(bnf);
+	}
 
-		return null;
+	@Override
+	public String toString() {
+		return rules.stream()
+			.map(Object::toString)
+			.collect(Collectors.joining("\n"));
 	}
 
 }

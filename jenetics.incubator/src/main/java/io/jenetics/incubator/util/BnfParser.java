@@ -20,6 +20,7 @@
 package io.jenetics.incubator.util;
 
 import static java.lang.String.format;
+import static java.util.function.Predicate.not;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +75,10 @@ final class BnfParser {
 					if (!escaped && next == '"') {
 						escaped = true;
 					} else {
+						token.append(current);
 						if (escaped) {
-							token.append(current);
 							escaped = false;
 						} else {
-							token.append(current);
 							return new Token(
 								token.toString(),
 								start, i + 1,
@@ -124,7 +124,7 @@ final class BnfParser {
 
 			if (!isAssignmentChar(c)) {
 				throw new IllegalArgumentException(format(
-					"Unexpected assignment character at position %d: '%s'",
+					"Unexpected character for assignment symbol at position %d: '%s'",
 					i, c
 				));
 			}
@@ -224,15 +224,78 @@ final class BnfParser {
 	}
 
 	static Grammar parse(final CharSequence bnf) {
-		final List<Token> tokens = tokenize(bnf);
+		final List<Token> tokens = tokenize(bnf).stream()
+			.filter(not(BnfParser::isWhitespace))
+			.toList();
 
 		final var rules = new ArrayList<Grammar.Rule>();
+		final var symbols = new ArrayList<Grammar.Symbol>();
+		final var alternatives = new ArrayList<Grammar.Expression>();
 
-		for (var token : tokens) {
+		Grammar.NonTerminal start = null;
 
+		for (int i = 0; i < tokens.size(); ++i) {
+			final var token = tokens.get(i);
+
+			switch (token.kind) {
+				case Token.NON_TERMINAL:
+					if (isStart(tokens, i)) {
+						if (start != null) {
+							if (!symbols.isEmpty()) {
+								alternatives.add(new Grammar.Expression(symbols));
+								symbols.clear();
+
+								rules.add(new Grammar.Rule(start, alternatives));
+								alternatives.clear();
+							}
+						}
+
+						start = new Grammar.NonTerminal(token.value().trim());
+					} else {
+						symbols.add(new Grammar.NonTerminal(token.value().trim()));
+					}
+					break;
+				case Token.ASSIGNMENT:
+					if (i - 1 >= 0 && tokens.get(i - 1).kind() != Token.NON_TERMINAL) {
+						throw new IllegalArgumentException(format(
+							"Expected non-terminal symbol, but got '%s'.",
+							tokens.get(i - 1).value().trim()
+						));
+					}
+					break;
+				case Token.OR:
+					if (!symbols.isEmpty()) {
+						alternatives.add(new Grammar.Expression(symbols));
+						symbols.clear();
+					}
+					break;
+				case Token.TERMINAL:
+					symbols.add(new Grammar.Terminal(token.value().trim()));
+					break;
+			}
 		}
 
-		return null;
+		if (start != null) {
+			if (!symbols.isEmpty()) {
+				alternatives.add(new Grammar.Expression(symbols));
+				symbols.clear();
+
+				rules.add(new Grammar.Rule(start, alternatives));
+				alternatives.clear();
+			}
+		}
+
+		return new Grammar(rules);
+	}
+
+	private static boolean isWhitespace(final Token token) {
+		return token.kind() == Token.TERMINAL && token.value().trim().isEmpty();
+	}
+
+	private static boolean isStart(final List<Token> tokens, final int index) {
+		return tokens.get(index).kind() == Token.NON_TERMINAL &&
+			index + 1 < tokens.size() &&
+			tokens.get(index + 1).kind() == Token.ASSIGNMENT;
 	}
 
 }

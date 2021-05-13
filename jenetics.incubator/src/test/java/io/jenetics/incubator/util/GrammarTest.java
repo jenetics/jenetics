@@ -30,12 +30,27 @@ public class GrammarTest {
 	public void tokenize() {
 		final var tokens = BnfParser.tokenize("""
 			<prog>::=<expr>
-			<expr> ::=  ( <expr> <op> <expr> ) | <var>
-			<op> ::= +|*| "<asd>" | "\"\""
+			<expr> ::= (<expr> <op> <expr>)
+						| <var>
+			<op> ::= + | * | "<asd>"
 			<var> ::= 0.5
 			""");
 
 		tokens.forEach(System.out::println);
+	}
+
+	@Test
+	public void parse() {
+		final var grammar = Grammar.parse("""
+			<prog>::=<expr>
+			<expr> ::= (<expr> <op> <expr>) ":"
+						| <var>
+			<op> ::= + | * | "<asd>"
+			<var> ::= 0.5
+			"""
+		);
+
+		System.out.println(grammar);
 	}
 
 }
