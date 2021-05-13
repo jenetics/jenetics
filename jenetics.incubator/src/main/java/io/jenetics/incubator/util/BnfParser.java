@@ -250,9 +250,19 @@ final class BnfParser {
 							}
 						}
 
-						start = new Grammar.NonTerminal(token.value().trim());
+						var value = token.value().trim();
+						final var quoted = value.startsWith("<") && value.endsWith(">");
+						if (quoted) {
+							value = value.substring(1, value.length() - 1);
+						}
+						start = new Grammar.NonTerminal(value);
 					} else {
-						symbols.add(new Grammar.NonTerminal(token.value().trim()));
+						var value = token.value().trim();
+						final var quoted = value.startsWith("<") && value.endsWith(">");
+						if (quoted) {
+							value = value.substring(1, value.length() - 1);
+						}
+						symbols.add(new Grammar.NonTerminal(value));
 					}
 					break;
 				case Token.ASSIGNMENT:
@@ -270,7 +280,13 @@ final class BnfParser {
 					}
 					break;
 				case Token.TERMINAL:
-					symbols.add(new Grammar.Terminal(token.value().trim()));
+					var value = token.value().trim();
+					final var quoted = value.startsWith("\"") && value.endsWith("\"");
+					if (quoted) {
+						value = value.substring(1, value.length() - 1);
+					}
+
+					symbols.add(new Grammar.Terminal(value));
 					break;
 			}
 		}
@@ -296,6 +312,31 @@ final class BnfParser {
 		return tokens.get(index).kind() == Token.NON_TERMINAL &&
 			index + 1 < tokens.size() &&
 			tokens.get(index + 1).kind() == Token.ASSIGNMENT;
+	}
+
+	static String escape(final Object value) {
+		if (value == null) {
+			return "";
+		} else {
+			var stringValue = value.toString();
+			var string = stringValue.replace("\"", "\"\"");
+
+			if (stringValue.length() != string.length() || mustEscape(string)) {
+				return "\"" + string + "\"";
+			} else {
+				return stringValue;
+			}
+		}
+	}
+
+	private static boolean mustEscape(final CharSequence value) {
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+			if (isTokenSeparator(c)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

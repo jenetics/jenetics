@@ -39,14 +39,14 @@ public final class Grammar {
 	public static record Terminal(String name) implements Symbol {
 		@Override
 		public String toString() {
-			return name;
+			return BnfParser.escape(name);
 		}
 	}
 
 	public static record NonTerminal(String name) implements Symbol {
 		@Override
 		public String toString() {
-			return format("%s", name);
+			return format("<%s>", name);
 		}
 	}
 

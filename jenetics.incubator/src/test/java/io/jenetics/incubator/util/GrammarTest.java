@@ -43,9 +43,9 @@ public class GrammarTest {
 	public void parse() {
 		final var grammar = Grammar.parse("""
 			<prog>::=<expr>
-			<expr> ::= (<expr> <op> <expr>) ":"
+			<expr> ::= (<expr><op><expr>) ":"
 						| <var>
-			<op> ::= + | * | "<asd>"
+			<op> ::= + | * | "<asd>" | "sdf      sdf"
 			<var> ::= 0.5
 			"""
 		);
