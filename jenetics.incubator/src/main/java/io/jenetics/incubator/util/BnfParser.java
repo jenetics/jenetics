@@ -45,11 +45,11 @@ final class BnfParser {
 
 		for (int i = 0, n = value.length(); i < n;) {
 			final Token token = switch (value.charAt(i)) {
-				case '"' -> readQuoted(value, i);
-				case '|' -> readOr(value, i);
-				case ':' -> readAssignment(value, i);
-				case '<' ->  readNonTerminal(value, i);
-				default -> readTerminal(value, i);
+				case '"' -> quotedTerminal(value, i);
+				case '|' -> alternative(value, i);
+				case ':' -> assignment(value, i);
+				case '<' ->  nonTerminal(value, i);
+				default -> terminal(value, i);
 			};
 
 			tokens.add(token);
@@ -59,7 +59,7 @@ final class BnfParser {
 		return tokens;
 	}
 
-	private static Token readQuoted(final CharSequence value, final int start) {
+	private static Token quotedTerminal(final CharSequence value, final int start) {
 		assert value.charAt(start) == '"';
 
 		final var token = new StringBuilder();
@@ -99,11 +99,25 @@ final class BnfParser {
 		throw new IllegalArgumentException("Unbalanced quote character.");
 	}
 
-	private String errorMessage(final CharSequence value, final int index) {
-		return "";
+	static String errorLine(final CharSequence value, final int index) {
+		final var line = new StringBuilder();
+
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+			line.append(c);
+
+			if (c == '\n' || c == '\r') {
+				if (i >= index) {
+					break;
+				}
+				line.setLength(0);
+			}
+		}
+
+		return line.toString();
 	}
 
-	private static Token readAssignment(final CharSequence value, final int start) {
+	private static Token assignment(final CharSequence value, final int start) {
 		final var token = new StringBuilder();
 
 		for (int i = start; i < value.length(); ++i) {
@@ -137,7 +151,7 @@ final class BnfParser {
 		return c == ':' || c == '=';
 	}
 
-	private static Token readOr(final CharSequence value, final int start) {
+	private static Token alternative(final CharSequence value, final int start) {
 		final char c = value.charAt(start);
 
 		if (c != '|') {
@@ -156,7 +170,7 @@ final class BnfParser {
 		return new Token("|", start, start + 1, Token.OR);
 	}
 
-	private static Token readNonTerminal(final CharSequence value, final int start) {
+	private static Token nonTerminal(final CharSequence value, final int start) {
 		if (value.charAt(start) != '<') {
 			throw new IllegalArgumentException(format(
 				"Non-terminals must start with a '<' character, but got '%s' at position %d.",
@@ -189,7 +203,7 @@ final class BnfParser {
 		);
 	}
 
-	private static Token readTerminal(final CharSequence value, final int start) {
+	private static Token terminal(final CharSequence value, final int start) {
 		final var token = new StringBuilder();
 
 		for (int i = start; i < value.length(); ++i) {
@@ -206,11 +220,8 @@ final class BnfParser {
 	}
 
 	private static boolean isTokenSeparator(final char c) {
-		return c == ':' || c == '=' || c == '<' || c == '>' || c == '|' || c == '"';
-	}
-
-	private static boolean isTokenSeparator1(final char c) {
-		return c == ':' || c == '=' || c == '<' || c == '>' || c == '|';
+		return c == ':' || c == '=' || c == '<' ||
+			c == '>' || c == '|' || c == '"';
 	}
 
 	static Grammar parse(final CharSequence value) {
