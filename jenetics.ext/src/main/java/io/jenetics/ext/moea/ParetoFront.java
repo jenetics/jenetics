@@ -211,11 +211,11 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		requireNonNull(dimension);
 
 		if (size() > size) {
-			final double[] distances = Pareto.crowdingDistance(
+			final double[] distances = NSGA2.crowdingDistance(
 				Seq.viewOf(_population),
 				comparator,
 				distance,
-				dimension
+				dimension.applyAsInt(_population.get(0))
 			);
 			final int[] indexes = ProxySorter.sort(distances);
 			revert(indexes);

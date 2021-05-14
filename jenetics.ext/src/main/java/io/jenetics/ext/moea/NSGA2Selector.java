@@ -106,19 +106,19 @@ public class NSGA2Selector<
 		final int count,
 		final Optimize opt
 	) {
-		final CrowdedComparator<Phenotype<G, C>> cc = new CrowdedComparator<>(
+		final NSGA2Order<Phenotype<G, C>> order = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,
 			_comparator,
 			_distance,
-			_dimension
+			_dimension.applyAsInt(population.get(0))
 		);
 
 		final int[] idx = ProxySorter.sort(
 			init(new int[population.size()]),
 			population.size(),
-			(a, i, j) -> cc.compare(a[j], a[i])
+			order.reversed()
 		);
 
 		final List<Phenotype<G, C>> result = new ArrayList<>();
