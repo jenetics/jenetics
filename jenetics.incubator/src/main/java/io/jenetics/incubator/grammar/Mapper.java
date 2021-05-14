@@ -1,14 +1,12 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
-import io.jenetics.engine.Codecs;
 import io.jenetics.incubator.grammar.Grammar.Symbol;
 import io.jenetics.incubator.grammar.Grammar.Terminal;
 import io.jenetics.util.IntRange;
