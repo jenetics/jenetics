@@ -19,19 +19,17 @@
  */
 package io.jenetics.incubator.util;
 
-import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
-
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -183,26 +181,30 @@ public final class Grammar {
 	public List<Terminal> build(final Random random) {
 		Rule rule = rules.get(0);
 
-		List<Symbol> symbols = expand(rule.start(), random);
+		final var symbols = new LinkedList<>(expand(rule.start(), random));
 
 		boolean expanded = true;
 		while (expanded) {
 			expanded = false;
 
-			final List<Symbol> result = new ArrayList<>();
-			for (var symbol : symbols) {
+			final var it = symbols.listIterator();
+			while (it.hasNext()) {
+				final var symbol = it.next();
+
 				if (symbol instanceof NonTerminal) {
-					result.addAll(expand((NonTerminal)symbol, random));
+					it.remove();
+					for (var nt : expand((NonTerminal)symbol, random)) {
+						it.add(nt);
+					}
+
 					expanded = true;
-				} else {
-					result.add(symbol);
 				}
 			}
-
-			symbols = result;
 		}
 
-		return (List<Terminal>)(Object)symbols;
+		return symbols.stream()
+			.map(Terminal.class::cast)
+			.toList();
 	}
 
 	private List<Symbol> expand(final NonTerminal nt, final Random random) {
