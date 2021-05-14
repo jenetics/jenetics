@@ -19,7 +19,13 @@
  */
 package io.jenetics.incubator.util;
 
+import io.jenetics.prog.op.MathExpr;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -51,6 +57,30 @@ public class GrammarTest {
 		);
 
 		System.out.println(grammar);
+	}
+
+	@Test
+	public void build() {
+		final var grammar = Grammar.parse("""
+			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> | ( <expr> <op> <expr> )
+			<op> ::= + | - | * | /
+			<var> ::= x | y
+			<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+		//System.out.println(grammar);
+
+		final List<Grammar.Terminal> list = grammar.build(new Random(12345689013L));
+		final var string = list.stream()
+			.map(Grammar.Symbol::toString)
+			.collect(Collectors.joining());
+
+		System.out.println(string);
+		Assert.assertEquals(string, "(9*((((4+8)+3)/(y*y))/y))");
+
+		final var expr = MathExpr.parse(string);
+		System.out.println(expr);
+		System.out.println(expr.simplify());
 	}
 
 }
