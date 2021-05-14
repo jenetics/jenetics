@@ -31,23 +31,30 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Represents a context free grammar.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
 public final class Grammar {
 
+	/**
+	 * Represents the <em>symbols</em> the (context-free) grammar consists.
+	 */
 	public sealed interface Symbol {
+
+		/**
+		 * Return the name of the symbol.
+		 *
+		 * @return the name of the symbol
+		 */
 		String name();
 	}
 
-	public static record Terminal(String name) implements Symbol {
-		@Override
-		public String toString() {
-			return BnfParser.escape(name);
-		}
-	}
-
+	/**
+	 * Represents the non-terminal symbols of the grammar.
+	 */
 	public static record NonTerminal(String name) implements Symbol {
 		@Override
 		public String toString() {
@@ -55,6 +62,19 @@ public final class Grammar {
 		}
 	}
 
+	/**
+	 * Represents a terminal symbols of the grammar.
+	 */
+	public static record Terminal(String name) implements Symbol {
+		@Override
+		public String toString() {
+			return BnfParser.escape(name);
+		}
+	}
+
+	/**
+	 * Represents one <em>expression</em> a production rule consists of.
+	 */
 	public static record Expression(List<Symbol> symbols) {
 		public Expression {
 			symbols = List.copyOf(symbols);
@@ -68,6 +88,9 @@ public final class Grammar {
 		}
 	}
 
+	/**
+	 * Represents a production rule of the grammar.
+	 */
 	public static record Rule(NonTerminal start, List<Expression> alternatives) {
 		public Rule {
 			alternatives = List.copyOf(alternatives);
