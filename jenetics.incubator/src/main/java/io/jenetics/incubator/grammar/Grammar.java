@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -26,9 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a context free grammar.
@@ -54,6 +54,8 @@ public final class Grammar {
 
 	/**
 	 * Represents the non-terminal symbols of the grammar.
+	 *
+	 * @param name the name of the non-terminal symbol
 	 */
 	public static record NonTerminal(String name) implements Symbol {
 		@Override
@@ -64,6 +66,8 @@ public final class Grammar {
 
 	/**
 	 * Represents a terminal symbols of the grammar.
+	 *
+	 * @param name the name of the terminal symbol
 	 */
 	public static record Terminal(String name) implements Symbol {
 		@Override
@@ -76,7 +80,18 @@ public final class Grammar {
 	 * Represents one <em>expression</em> a production rule consists of.
 	 */
 	public static record Expression(List<Symbol> symbols) {
+
+		/**
+		 * @param symbols the list of symbols of the expression
+		 * @throws IllegalArgumentException if the list of {@code symbols} is
+		 *         empty
+		 */
 		public Expression {
+			if (symbols.isEmpty()) {
+				throw new IllegalArgumentException(
+					"The list of symbols must not be empty."
+				);
+			}
 			symbols = List.copyOf(symbols);
 		}
 
@@ -92,7 +107,18 @@ public final class Grammar {
 	 * Represents a production rule of the grammar.
 	 */
 	public static record Rule(NonTerminal start, List<Expression> alternatives) {
+
+		/**
+		 * Creates a new rule object.
+		 *
+		 * @param start the start symbol of the rule
+		 * @param alternatives the list af expressions of the rules
+		 * @throws IllegalArgumentException if the given list of
+		 *         {@code alternatives} is empty
+		 * @throws NullPointerException if one of the arguments is {@code null}
+		 */
 		public Rule {
+			requireNonNull(start);
 			alternatives = List.copyOf(alternatives);
 		}
 
@@ -177,26 +203,54 @@ public final class Grammar {
 		return List.copyOf(terminals);
 	}
 
+	/**
+	 * Return the non-terminal symbols of {@code this} grammar.
+	 *
+	 * @return the non-terminal symbols of {@code this} grammar
+	 */
 	public List<NonTerminal> nonTerminals() {
 		return nonTerminals;
 	}
 
+	/**
+	 * Return the terminal symbols of {@code this} grammar.
+	 *
+	 * @return the terminal symbols of {@code this} grammar
+	 */
 	public List<Terminal> terminals() {
 		return terminals;
 	}
 
+	/**
+	 * Return the start symbol of {@code this} grammar.
+	 *
+	 * @return the start symbol of {@code this} grammar
+	 */
 	public NonTerminal start() {
 		return start;
 	}
 
+	/**
+	 * Return the <em>production</em> rules of {@code this} grammar.
+	 *
+	 * @return the <em>production</em> rules of {@code this} grammar
+	 */
 	public List<Rule> rules() {
 		return rules;
 	}
 
-	public Optional<Rule> rule(final NonTerminal nt) {
-		requireNonNull(nt);
+	/**
+	 * Return the rule for the given {@code start} symbol.
+	 *
+	 * @param start the start symbol of the rule
+	 * @return the rule for the given {@code start} symbol
+	 * @throws NullPointerException if the given {@code start} symbol is
+	 *         {@code null}
+	 */
+	public Optional<Rule> rule(final NonTerminal start) {
+		requireNonNull(start);
 		return rules.stream()
-			.filter(rule -> rule.start().equals(nt))
+			.filter(rule -> rule.start().equals(start))
 			.findFirst();
 	}
 
