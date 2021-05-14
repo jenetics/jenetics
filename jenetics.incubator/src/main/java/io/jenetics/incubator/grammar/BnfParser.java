@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.grammar;
 
 import static java.lang.String.format;
 import static java.util.function.Predicate.not;

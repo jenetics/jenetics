@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.grammar;
 
 import java.util.ArrayList;
 import java.util.HashSet;

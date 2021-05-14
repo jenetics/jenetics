@@ -1,4 +1,4 @@
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.grammar;
 
 public interface SentenceGenerator {
 }

@@ -1,4 +1,4 @@
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.grammar;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
