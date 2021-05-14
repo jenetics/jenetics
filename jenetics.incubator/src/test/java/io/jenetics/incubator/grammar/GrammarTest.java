@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static io.jenetics.incubator.grammar.StandardGenerators.generateTree;
+
 import io.jenetics.prog.op.MathExpr;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -26,6 +28,12 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import io.jenetics.incubator.grammar.Grammar.NonTerminal;
+import io.jenetics.incubator.grammar.Grammar.Symbol;
+import io.jenetics.incubator.grammar.Grammar.Terminal;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeFormatter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -69,9 +77,9 @@ public class GrammarTest {
 			"""
 		);
 
-		final List<Grammar.Terminal> list = grammar.generate(new Random(12345689013L)::nextInt);
+		final List<Terminal> list = grammar.generate(new Random(12345689013L)::nextInt);
 		final var string = list.stream()
-			.map(Grammar.Symbol::toString)
+			.map(Symbol::toString)
 			.collect(Collectors.joining());
 
 		System.out.println(string);
@@ -80,6 +88,16 @@ public class GrammarTest {
 		final var expr = MathExpr.parse(string);
 		System.out.println(expr);
 		System.out.println(expr.simplify());
+		System.out.println();
+
+		final Tree<Symbol, ?> tree = generateTree(grammar, new Random(12345689013L)::nextInt);
+		//System.out.println(TreeFormatter.TREE.format(tree));
+		System.out.println(
+			tree.depthFirstStream()
+				.filter(Tree::isLeaf)
+				.map(node -> node.value().toString())
+				.collect(Collectors.joining())
+		);
 	}
 
 }

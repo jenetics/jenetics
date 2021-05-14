@@ -24,14 +24,13 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Represents a context free grammar.
+ * Represents a context-free grammar.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -255,41 +254,7 @@ public final class Grammar {
 	}
 
 	public List<Terminal> generate(final Index index) {
-		final var rule = rules.get(0);
-
-		final LinkedList<Symbol> symbols = new LinkedList<>(expand(rule.start(), index));
-
-		boolean expanded = true;
-		while (expanded) {
-			expanded = false;
-
-			final var it = symbols.listIterator();
-			while (it.hasNext()) {
-				final var symbol = it.next();
-
-				if (symbol instanceof NonTerminal) {
-					it.remove();
-					for (var nt : expand((NonTerminal)symbol, index)) {
-						it.add(nt);
-					}
-
-					expanded = true;
-				}
-			}
-		}
-
-		return symbols.stream()
-			.map(Terminal.class::cast)
-			.toList();
-	}
-
-	private List<Symbol> expand(final NonTerminal nt, Index index) {
-		final var rule = rule(nt);
-		return rule
-			.map(r -> r.alternatives()
-				.get(index.next(r.alternatives().size()))
-				.symbols())
-			.orElse(List.of(nt));
+		return StandardGenerators.generateList(this, index);
 	}
 
 	public static Grammar parse(final String bnf) {
