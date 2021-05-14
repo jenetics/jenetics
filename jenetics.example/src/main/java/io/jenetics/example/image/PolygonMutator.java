@@ -47,7 +47,7 @@ final class PolygonMutator<C extends Comparable<? super C>>
 		final double p,
 		final Random random
 	) {
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			chromosome.newInstance(ISeq.of(chromosome).map(this::mutate)),
 			chromosome.length()
 		);

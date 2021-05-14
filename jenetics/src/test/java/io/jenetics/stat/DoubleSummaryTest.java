@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.util.DoubleSummaryStatistics;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -49,11 +47,6 @@ public class DoubleSummaryTest extends ObjectTester<DoubleSummary> {
 
 			return DoubleSummary.of(statistics);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(DoubleSummary.class).verify();
 	}
 
 }

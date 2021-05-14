@@ -19,8 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.util.Objects.requireNonNull;
-
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
@@ -33,25 +31,10 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.0
+ * @version 7.0
  */
-final class FilterResult<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
-> {
-
-	final ISeq<Phenotype<G, C>> population;
-	final int killCount;
-	final int invalidCount;
-
-	FilterResult(
-		final ISeq<Phenotype<G, C>> population,
-		final int killCount,
-		final int invalidCount
-	) {
-		this.population = requireNonNull(population);
-		this.killCount = killCount;
-		this.invalidCount = invalidCount;
-	}
-
-}
+final record FilterResult<G extends Gene<?, G>, C extends Comparable<? super C>>(
+	ISeq<Phenotype<G, C>> population,
+	int killCount,
+	int invalidCount
+){}

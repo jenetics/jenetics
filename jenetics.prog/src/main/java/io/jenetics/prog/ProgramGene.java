@@ -22,6 +22,7 @@ package io.jenetics.prog;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -60,6 +61,7 @@ public final class ProgramGene<A>
 	implements Gene<Op<A>, ProgramGene<A>>, Function<A[], A>
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<? extends Op<A>> _operations;

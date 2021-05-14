@@ -108,9 +108,9 @@ public abstract class Recombinator<
 				.mapToInt(ind -> recombine(pop, ind, generation))
 				.sum();
 
-			result = AltererResult.of(pop.toISeq(), count);
+			result = new AltererResult<>(pop.toISeq(), count);
 		} else {
-			result = AltererResult.of(population.asISeq());
+			result = new AltererResult<>(population.asISeq(), 0);
 		}
 
 		return result;

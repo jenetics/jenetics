@@ -42,7 +42,7 @@ public class ParenthesesTreeParserTest {
 		final List<Token> tokenize = ParenthesesTreeParser.tokenize(tree);
 		Assert.assertEquals(
 			tokenize.stream()
-				.map(t -> t.seq)
+				.map(Token::seq)
 				.toArray(String[]::new),
 			tokens
 		);

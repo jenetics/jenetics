@@ -48,6 +48,7 @@ import java.util.Objects;
  */
 public final class Const<T> extends Val<T> implements Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final T _const;
@@ -97,10 +98,12 @@ public final class Const<T> extends Val<T> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.CONST, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

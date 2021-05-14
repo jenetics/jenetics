@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genotype length="5" ngenes="100">
-    <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
-    <bit-chromosome length="20" ones-probability="0.5">10000110100000100110</bit-chromosome>
-    <bit-chromosome length="20" ones-probability="0.5">00001111000010100111</bit-chromosome>
-    <bit-chromosome length="20" ones-probability="0.5">00011001111101000111</bit-chromosome>
-    <bit-chromosome length="20" ones-probability="0.5">00010100110101110111</bit-chromosome>
+    <bit-chromosome length="20" ones-probability="0.5">01010011010111000111</bit-chromosome>
+    <bit-chromosome length="20" ones-probability="0.5">01100100000101100001</bit-chromosome>
+    <bit-chromosome length="20" ones-probability="0.5">11100101000011110000</bit-chromosome>
+    <bit-chromosome length="20" ones-probability="0.5">11100010111110011000</bit-chromosome>
+    <bit-chromosome length="20" ones-probability="0.5">11101110101100101000</bit-chromosome>
 </genotype>

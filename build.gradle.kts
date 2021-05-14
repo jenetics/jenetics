@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.2" apply false
+	id("me.champeau.jmh") version "0.6.3" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "6.8.2"
+	gradleVersion = "7.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -50,7 +50,6 @@ allprojects {
 		}
 		mavenLocal()
 		mavenCentral()
-		jcenter()
 	}
 
 	configurations.all {
@@ -66,14 +65,37 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
+		val xlint = listOf(
+			//"preview",
+			"cast",
+			"classfile",
+			"deprecation",
+			"dep-ann",
+			"divzero",
+			"empty",
+			"finally",
+			"overrides",
+			"rawtypes",
+			"serial",
+			"static",
+			"try",
+			"unchecked"
+		).joinToString(separator = ",")
+
 		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:" + xlint())
+			options.compilerArgs.add("-Xlint:$xlint")
+			options.compilerArgs.add("--enable-preview")
+		}
+
+		tasks.withType<Test> {
+			useTestNG()
+			jvmArgs("--enable-preview")
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_11
-				targetCompatibility = JavaVersion.VERSION_11
+				sourceCompatibility = JavaVersion.VERSION_16
+				targetCompatibility = JavaVersion.current()
 			}
 
 			setupJava(project)
@@ -144,7 +166,6 @@ fun setupTestReporting(project: Project) {
 		}
 
 		named<Test>("test") {
-			useTestNG()
 			finalizedBy("jacocoTestReport")
 		}
 	}
@@ -156,6 +177,9 @@ fun setupTestReporting(project: Project) {
 fun setupJavadoc(project: Project) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
+		doclet.addBooleanOption("-enable-preview", true)
+		doclet.addStringOption("-release", "16")
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 
 		exclude("**/internal/**")
 
@@ -165,7 +189,7 @@ fun setupJavadoc(project: Project) {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/11/docs/api",
+				"https://docs.oracle.com/en/java/javase/16/docs/api",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
@@ -232,7 +256,7 @@ fun setupJavadoc(project: Project) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/en/java/javase/15/docs/specs/man/javac.html
+	// See https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html
 	return listOf(
 		"cast",
 		"classfile",

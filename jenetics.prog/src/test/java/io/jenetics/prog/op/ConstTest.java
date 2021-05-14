@@ -21,8 +21,6 @@ package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.io.IOException;
 import java.util.Random;
 
@@ -36,13 +34,6 @@ import io.jenetics.util.IO;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ConstTest {
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(Const.class)
-			.withIgnoredFields("_name")
-			.verify();
-	}
 
 	@Test(dataProvider = "floatEqualValues")
 	public void floatEquals(final Float a, final Float b, final boolean equals) {

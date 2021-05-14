@@ -98,7 +98,7 @@ public class WeaselMutator<
 		final var result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
-		return AltererResult.of(
+		return new AltererResult<>(
 			result
 				.map(MutatorResult::result)
 				.asISeq(),
@@ -118,7 +118,7 @@ public class WeaselMutator<
 			.map(gt -> mutate(gt, p, random))
 			.collect(ISeq.toISeq());
 
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			Genotype.of(result.map(MutatorResult::result)),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);

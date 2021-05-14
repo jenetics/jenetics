@@ -22,6 +22,7 @@ package io.jenetics.prog.regression;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -32,6 +33,7 @@ import java.util.Arrays;
  */
 final class ObjectSample<T> implements Sample<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final T[] _sample;
@@ -88,8 +90,8 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof ObjectSample &&
-			Arrays.equals(_sample, ((ObjectSample)obj)._sample);
+			obj instanceof ObjectSample<?> other &&
+			Arrays.equals(_sample, other._sample);
 	}
 
 	@Override

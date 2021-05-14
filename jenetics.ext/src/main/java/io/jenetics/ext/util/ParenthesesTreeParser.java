@@ -43,15 +43,7 @@ final class ParenthesesTreeParser {
 	/**
 	 * Represents a parentheses tree string token.
 	 */
-	final static class Token {
-		final String seq;
-		final int pos;
-
-		Token(final String seq, final int pos) {
-			this.seq = seq;
-			this.pos = pos;
-		}
-	}
+	final static record Token(String seq, int pos){}
 
 	/**
 	 * Tokenize the given parentheses string.
@@ -81,7 +73,7 @@ final class ParenthesesTreeParser {
 			pc = c;
 		}
 
-		if (token.length() > 0) {
+		if (!token.isEmpty()) {
 			tokens.add(new Token(unescape(token.toString()), pos));
 		}
 

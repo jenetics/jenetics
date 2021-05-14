@@ -24,8 +24,14 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -33,6 +39,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.EquivalentValidator;
 import io.jenetics.util.Factory;
 import io.jenetics.util.RandomRegistry;
 
@@ -41,9 +48,136 @@ import io.jenetics.util.RandomRegistry;
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
+	private static final EquivalentValidator<byte[], BitChromosome> FROM_BYTES =
+		EquivalentValidator.of(BitChromosome::new, (v, a) -> a.toByteArray());
+
+	private static final EquivalentValidator<BigInteger, BitChromosome> FROM_BIGINT =
+		EquivalentValidator.of(BitChromosome::of, (v, a) -> a.toBigInteger());
+
+	private static final EquivalentValidator<String, BitChromosome> FROM_STRING =
+		EquivalentValidator.of(BitChromosome::of, (v, a) -> a.toCanonicalString());
+
+	private static final EquivalentValidator<BitChromosome, byte[]> TO_BYTES =
+		EquivalentValidator.of(
+			BitChromosome::toByteArray,
+			(a, v) -> new BitChromosome(v, 0, a.length())
+		);
+
+	private static final EquivalentValidator<BitChromosome, BigInteger> TO_BIGINT =
+		EquivalentValidator.of(
+			BitChromosome::toBigInteger,
+			(a, v) -> BitChromosome.of(v, a.length())
+		);
+
+	private static final EquivalentValidator<BitChromosome, String> TO_STRING =
+		EquivalentValidator.of(
+			BitChromosome::toCanonicalString,
+			(a, v) -> BitChromosome.of(v)
+		);
+
 	@Override
 	protected Factory<Chromosome<BitGene>> factory() {
 		return () -> BitChromosome.of(500, 0.3);
+	}
+
+	@Test(dataProvider = "bytes")
+	public void fromBytes(final byte[] value) {
+		FROM_BYTES.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] bytes() {
+		final Random random = new Random();
+		final Supplier<byte[]> supplier = () -> {
+			final int length = random.nextInt(100) + 1;
+			final byte[] array = new byte[length];
+			random.nextBytes(array);
+			return array;
+		};
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
+	}
+
+	@Test(dataProvider = "bigIntegers")
+	public void fromBigInteger(final BigInteger value) {
+		FROM_BIGINT.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] bigIntegers() {
+		final Random random = new Random();
+		final Supplier<BigInteger> supplier = () ->
+			BigInteger.probablePrime(random.nextInt(100) + 100, random);
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
+	}
+
+	@Test(dataProvider = "strings")
+	public void fromString(final String value) {
+		FROM_STRING.verify(value);
+	}
+
+	@DataProvider
+	public Object[][] strings() {
+		final var random = new Random(1234);
+
+		final List<Object[]> values = new ArrayList<>();
+		for (int i = 0; i < 25; ++i) {
+			final int length = random.nextInt(1000) + 1;
+			final var string = IntStream.range(0, length)
+				.mapToObj(__ -> random.nextBoolean() ? "1" : "0")
+				.collect(Collectors.joining());
+
+			values.add(new Object[]{string});
+		}
+
+		return values.toArray(new Object[0][]);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toBytes(final BitChromosome chromosome) {
+		TO_BYTES.verify(chromosome);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toBigInteger(final BitChromosome chromosomes) {
+		TO_BIGINT.verify(chromosomes);
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void toString(final BitChromosome chromosomes) {
+		TO_STRING.verify(chromosomes);
+	}
+
+	@DataProvider
+	public Object[][] chromosomes() {
+		final var random = new Random();
+		final Supplier<BitChromosome> supplier = () -> {
+			final int length = random.nextInt(1000) + 10;
+			return BitChromosome.of(length);
+		};
+
+		return Stream.generate(supplier)
+			.limit(25)
+			.map(value -> new Object[]{value})
+			.toArray(Object[][]::new);
+	}
+
+	@Test
+	public void createWithStartAndBegin() {
+		final var random = new Random();
+		final var bits = new byte[100];
+		random.nextBytes(bits);
+
+		final var ch = new BitChromosome(bits, 13, 71, 0.33);
+		Assert.assertEquals(ch.length(), 71 - 13);
+		Assert.assertEquals(ch.oneProbability(), 0.33);
 	}
 
 	@Test(invocationCount = 20, successPercentage = 90)
@@ -67,7 +201,8 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(
 			c.oneProbability(),
-			(double) Bits.count(data)/(double)(data.length*8)
+			(double)Bits.count(data)/(double)(data.length*8),
+			0.15
 		);
 	}
 
@@ -75,6 +210,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void invert() {
 		final BitChromosome c1 = BitChromosome.of(100, 0.3);
 		final BitChromosome c3 = c1.invert();
+		System.out.println(c1);
 
 		for (int i = 0; i < c1.length(); ++i) {
 			Assert.assertTrue(c1.get(i).bit() != c3.get(i).bit());
@@ -112,12 +248,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void bitChromosomeBitSet() {
 		BitSet bits = new BitSet(10);
 		for (int i = 0; i < 10; ++i) {
-			bits.set(i, i % 2 == 0);
+			bits.set(i, i%2 == 0);
 		}
 
 		BitChromosome c = BitChromosome.of(bits, 10);
 		for (int i = 0; i < bits.length(); ++i) {
-			assertEquals(c.get(i).bit(), i % 2 == 0);
+			assertEquals(c.get(i).bit(), i%2 == 0);
 		}
 	}
 
@@ -146,6 +282,21 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome chromosome = BitChromosome.of(value);
 
 		assertEquals(chromosome.toBigInteger(), value);
+	}
+
+	//@Test
+	public void toFromBigInteger() {
+		final var ch1 = BitChromosome.of(100);
+		final var value = ch1.toBigInteger();
+		final var ch2 = BitChromosome.of(value, 100);
+		System.out.println(ch1);
+		System.out.println(BitChromosome.of(value, 200));
+
+		assertEquals((Object)ch2, (Object)ch1);
+		assertEquals(
+			BitChromosome.of(value, 200).toCanonicalString().substring(100),
+			ch1.toCanonicalString()
+		);
 	}
 
 	@Test
@@ -195,15 +346,17 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test
 	public void fromBitSet() {
-		final Random random = new Random(234);
-		final int size = 2343;
-		final BitSet bits = new BitSet(size);
+		final var random = new Random(234);
+		final var size = 2343;
+		final var bits = new BitSet(size);
 		for (int i = 0; i < size; ++i) {
 			bits.set(i, random.nextBoolean());
 		}
 
-		final BitChromosome c = BitChromosome.of(bits, size);
-		Assert.assertEquals(c.toByteArray(), bits.toByteArray());
+		final var ch = BitChromosome.of(bits, size);
+		for (int i = 0; i < size; ++i) {
+			Assert.assertEquals(ch.get(i).bit(), bits.get(i));
+		}
 	}
 
 	@Test
@@ -212,10 +365,11 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final byte[] bytes = new byte[234];
 		random.nextBytes(bytes);
 
-		final BitSet bits = BitSet.valueOf(bytes);
-		final BitChromosome c = BitChromosome.of(bits, bytes.length*8);
-		Assert.assertEquals(c.toByteArray(), bytes);
-		Assert.assertEquals(bits.toByteArray(), bytes);
+		final var bits = BitSet.valueOf(bytes);
+		final var ch = BitChromosome.of(bits, bytes.length*8);
+		for (int i = 0; i < bytes.length*8; ++i) {
+			Assert.assertEquals(ch.get(i).bit(), bits.get(i));
+		}
 	}
 
 	@Test(dataProvider = "bitCountProbability")

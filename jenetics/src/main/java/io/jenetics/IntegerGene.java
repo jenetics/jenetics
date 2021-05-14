@@ -65,6 +65,7 @@ public final class IntegerGene
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int _allele;
@@ -196,10 +197,10 @@ public final class IntegerGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntegerGene &&
-			((IntegerGene)obj)._allele == _allele &&
-			((IntegerGene)obj)._min == _min &&
-			((IntegerGene)obj)._max == _max;
+			obj instanceof IntegerGene other &&
+			other._allele == _allele &&
+			other._min == _min &&
+			other._max == _max;
 	}
 
 	@Override
@@ -323,10 +324,12 @@ public final class IntegerGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.INTEGER_GENE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

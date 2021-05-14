@@ -21,8 +21,10 @@ package io.jenetics.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -76,6 +78,14 @@ public interface BaseSeq<T> extends Iterable<T>, RandomAccess {
 	 */
 	default boolean nonEmpty() {
 		return !isEmpty();
+	}
+
+	@Override
+	default void forEach(final Consumer<? super T> action) {
+		Objects.requireNonNull(action);
+		for (int i = 0, n = length(); i < n; ++i) {
+			action.accept(get(i));
+		}
 	}
 
 	@Override

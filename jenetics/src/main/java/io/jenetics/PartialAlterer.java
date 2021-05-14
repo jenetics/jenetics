@@ -94,12 +94,12 @@ public final class PartialAlterer<
 			final var projectedPopulation  = _projection.project(population);
 			final var result = _alterer.alter(projectedPopulation, generation);
 
-			return AltererResult.of(
+			return new AltererResult<>(
 				_projection.merge(result.population(), population),
 				result.alterations()
 			);
 		} else {
-			return AltererResult.of(population.asISeq(), 0);
+			return new AltererResult<>(population.asISeq(), 0);
 		}
 	}
 

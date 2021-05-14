@@ -7,6 +7,7 @@ set MODULES=(^
 	%SCRIPT_DIR%jenetics^
 	%SCRIPT_DIR%jenetics.example^
 	%SCRIPT_DIR%jenetics.ext^
+	%SCRIPT_DIR%jenetics.incubator^
 	%SCRIPT_DIR%jenetics.prog^
 	%SCRIPT_DIR%jenetics.tool^
 	%SCRIPT_DIR%jenetics.xml^

@@ -19,12 +19,16 @@
  */
 package io.jenetics.util;
 
+import java.io.Serial;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.4
  * @since 3.4
  */
 final class MSeqList<T> extends BaseSeqList<T> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	MSeqList(final MSeq<T> array) {

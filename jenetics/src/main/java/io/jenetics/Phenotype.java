@@ -65,6 +65,7 @@ public final class Phenotype<
 		Verifiable,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 6L;
 
 	private final Genotype<G> _genotype;
@@ -257,11 +258,10 @@ public final class Phenotype<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Phenotype &&
-			_generation == ((Phenotype)obj)._generation &&
-			Objects.equals(_fitness, ((Phenotype)obj)._fitness) &&
-			Objects.equals(_genotype, ((Phenotype)obj)._genotype);
+		return obj instanceof Phenotype<?, ?> other &&
+			_generation == other._generation &&
+			Objects.equals(_fitness, other._fitness) &&
+			Objects.equals(_genotype, other._genotype);
 	}
 
 	@Override
@@ -364,10 +364,12 @@ public final class Phenotype<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.PHENOTYPE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

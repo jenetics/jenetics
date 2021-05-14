@@ -140,8 +140,8 @@ public class UniformDistribution<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof UniformDistribution &&
-			Objects.equals(_domain, ((UniformDistribution) obj)._domain);
+			obj instanceof UniformDistribution<?> other &&
+			Objects.equals(_domain, other._domain);
 	}
 
 	@Override

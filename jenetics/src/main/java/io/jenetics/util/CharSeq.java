@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
@@ -54,6 +55,7 @@ public final class CharSeq
 		Comparable<CharSeq>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	/**
@@ -169,8 +171,8 @@ public final class CharSeq
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof CharSeq &&
-			Arrays.equals(((CharSeq)obj).array, array);
+			obj instanceof CharSeq other &&
+			Arrays.equals(other.array, array);
 	}
 
 	@Override
@@ -322,6 +324,8 @@ public final class CharSeq
 }
 
 abstract class CharSeqBase extends ArrayISeq<Character> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	final char[] array;

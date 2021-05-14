@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -69,6 +70,7 @@ public final class EnumGene<A>
 		Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<A> _validAlleles;
@@ -173,10 +175,9 @@ public final class EnumGene<A>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof EnumGene &&
-			Objects.equals(((EnumGene)obj)._alleleIndex, _alleleIndex) &&
-			Objects.equals(((EnumGene)obj)._validAlleles, _validAlleles);
+		return obj instanceof EnumGene<?> other &&
+			_alleleIndex == other._alleleIndex &&
+			Objects.equals(_validAlleles, other._validAlleles);
 	}
 
 	@Override

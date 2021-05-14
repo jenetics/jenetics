@@ -46,8 +46,7 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  *         private Subscription subscription;
  *         \@Override
  *         public void onSubscribe(final Subscription subscription) {
- *             this.subscription = subscription;
- *             this.subscription.request(1);
+ *             (this.subscription = subscription).request(1);
  *         }
  *         \@Override
  *         public void onNext(final Long g) {

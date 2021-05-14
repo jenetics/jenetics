@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -32,6 +33,8 @@ import java.util.function.Function;
  * @since 3.9
  */
 final class Operation<T> implements Op<T>, Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
@@ -77,9 +80,9 @@ final class Operation<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Operation &&
-			Objects.equals(((Operation)obj)._name, _name) &&
-			((Operation)obj)._arity == _arity;
+			obj instanceof Operation<?> other &&
+			Objects.equals(other._name, _name) &&
+			other._arity == _arity;
 	}
 
 	@Override

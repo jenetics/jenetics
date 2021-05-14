@@ -26,6 +26,7 @@ import static io.jenetics.ext.internal.Names.isIdentifier;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -112,6 +113,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TreePattern<V> implements Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	// Primary state of the tree pattern.
@@ -305,8 +307,8 @@ public final class TreePattern<V> implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TreePattern &&
-			_pattern.equals(((TreePattern)obj)._pattern);
+			obj instanceof TreePattern<?> other &&
+			_pattern.equals(other._pattern);
 	}
 
 	@Override
@@ -478,8 +480,8 @@ public final class TreePattern<V> implements Serializable {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj == this ||
-				obj instanceof Var &&
-				Objects.equals(_name, ((Var)obj)._name);
+				obj instanceof Var<?> other &&
+				Objects.equals(_name, other._name);
 		}
 
 		@Override
@@ -568,8 +570,8 @@ public final class TreePattern<V> implements Serializable {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj == this ||
-				obj instanceof TreePattern.Val &&
-				Objects.equals(_value, ((Val)obj)._value);
+				obj instanceof TreePattern.Val<?> other &&
+				Objects.equals(_value, other._value);
 		}
 
 		@Override
@@ -593,11 +595,13 @@ public final class TreePattern<V> implements Serializable {
 		 *  Java object serialization
 		 * ********************************************************************/
 
+		@java.io.Serial
 		private Object writeReplace() {
 			return new Serial(Serial.TREE_PATTERN_VAL, this);
 		}
 
-		private void readObject(final ObjectOutputStream stream)
+		@java.io.Serial
+		private void readObject(final ObjectInputStream stream)
 			throws InvalidObjectException
 		{
 			throw new InvalidObjectException("Serialization proxy required.");

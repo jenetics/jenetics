@@ -174,14 +174,14 @@ public class LinearDistribution<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LinearDistribution &&
-			Objects.equals(_domain, ((LinearDistribution) obj)._domain) &&
-			Double.compare(_d, ((LinearDistribution) obj)._d) == 0 &&
-			Double.compare(_k, ((LinearDistribution) obj)._k) == 0 &&
-			Double.compare(_x1, ((LinearDistribution) obj)._x1) == 0 &&
-			Double.compare(_x2, ((LinearDistribution) obj)._x2) == 0 &&
-			Double.compare(_y1, ((LinearDistribution) obj)._y1) == 0 &&
-			Double.compare(_y2, ((LinearDistribution) obj)._y2) == 0;
+			obj instanceof LinearDistribution<?> other &&
+			Objects.equals(_domain, other._domain) &&
+			Double.compare(_d, other._d) == 0 &&
+			Double.compare(_k, other._k) == 0 &&
+			Double.compare(_x1, other._x1) == 0 &&
+			Double.compare(_x2, other._x2) == 0 &&
+			Double.compare(_y1, other._y1) == 0 &&
+			Double.compare(_y2, other._y2) == 0;
 	}
 
 	@Override

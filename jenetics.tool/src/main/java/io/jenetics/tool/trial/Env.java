@@ -157,15 +157,15 @@ public final class Env implements Serializable  {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Env &&
-			_osName.equals(((Env)obj)._osName) &&
-			_osVersion.equals(((Env)obj)._osVersion) &&
-			_osArch.equals(((Env)obj)._osArch) &&
-			_javaVersion.equals(((Env)obj)._javaVersion) &&
-			_javaRuntimeName.equals(((Env)obj)._javaRuntimeName) &&
-			_javaRuntimeVersion.equals(((Env)obj)._javaRuntimeVersion) &&
-			_javaVMName.equals(((Env)obj)._javaVMName) &&
-			_javaVMVersion.equals(((Env)obj)._javaVMVersion);
+			obj instanceof Env other &&
+			_osName.equals(other._osName) &&
+			_osVersion.equals(other._osVersion) &&
+			_osArch.equals(other._osArch) &&
+			_javaVersion.equals(other._javaVersion) &&
+			_javaRuntimeName.equals(other._javaRuntimeName) &&
+			_javaRuntimeVersion.equals(other._javaRuntimeVersion) &&
+			_javaVMName.equals(other._javaVMName) &&
+			_javaVMVersion.equals(other._javaVMVersion);
 	}
 
 	@Override

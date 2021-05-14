@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -44,6 +45,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		Chromosome<G>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -30,7 +30,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics Genetic Programming"
@@ -48,7 +48,7 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*MathExprPerf.*")
+	includes.add(".*MathExprPerf.*")
 }
 
 tasks.javadoc {

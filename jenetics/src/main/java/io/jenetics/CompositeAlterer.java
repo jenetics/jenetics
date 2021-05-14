@@ -73,14 +73,14 @@ final class CompositeAlterer<
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		AltererResult<G, C> result = AltererResult.of(population.asISeq());
+		AltererResult<G, C> result = new AltererResult<>(population.asISeq(), 0);
 		for (var alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
 				result.population(),
 				generation
 			);
 
-			result = AltererResult.of(
+			result = new AltererResult<>(
 				as.population(),
 				as.alterations() + result.alterations()
 			);

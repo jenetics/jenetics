@@ -21,6 +21,7 @@ package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 
+import java.io.Serial;
 import java.util.function.Function;
 
 import io.jenetics.util.ISeq;
@@ -32,6 +33,8 @@ import io.jenetics.util.MSeq;
  * @version 3.4
  */
 public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public ArrayISeq(final Array<T> array) {

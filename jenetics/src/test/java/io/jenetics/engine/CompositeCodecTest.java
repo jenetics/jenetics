@@ -19,6 +19,14 @@
  */
 package io.jenetics.engine;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.stream.Stream;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.LongChromosome;
@@ -27,13 +35,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

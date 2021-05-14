@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Objects;
@@ -47,6 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class Program<T> implements Op<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
@@ -128,9 +130,9 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program &&
-			Objects.equals(((Program)obj)._name, _name) &&
-			Objects.equals(((Program)obj)._tree, _tree);
+			obj instanceof Program<?> other &&
+			Objects.equals(other._name, _name) &&
+			Objects.equals(other._tree, _tree);
 	}
 
 	@Override

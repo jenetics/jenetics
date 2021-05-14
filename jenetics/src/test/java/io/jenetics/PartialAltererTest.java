@@ -149,7 +149,7 @@ public class PartialAltererTest {
 			.collect(ISeq.toISeq());
 
 		final Alterer<DoubleGene, Double> alterer = PartialAlterer.of(
-			(pop, gen) -> AltererResult.of(pop),
+			(pop, gen) -> new AltererResult<>(pop.asISeq(), 0),
 			1, 2
 		);
 
@@ -182,7 +182,7 @@ public class PartialAltererTest {
 			final long generation
 		) {
 			final ISeq<Phenotype<G, C>> pop = population.map(this::mapPt).asISeq();
-			return AltererResult.of(pop, pop.length());
+			return new AltererResult<>(pop, pop.length());
 		}
 
 		private Phenotype<G, C> mapPt(final Phenotype<G, C> phenotype) {

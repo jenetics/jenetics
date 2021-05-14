@@ -137,9 +137,9 @@ public final class Data implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Data &&
-			_name.equals(((Data)obj)._name) &&
-			_samples.equals(((Data)obj)._samples);
+		return obj instanceof Data other &&
+			_name.equals(other._name) &&
+			_samples.equals(other._samples);
 	}
 
 	@Override

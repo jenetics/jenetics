@@ -32,6 +32,7 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte BIG_INTEGER_CHROMOSOME = 1;
@@ -67,22 +68,21 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case BIG_INTEGER_CHROMOSOME: ((BigIntegerChromosome)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case BIG_INTEGER_CHROMOSOME -> ((BigIntegerChromosome)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
 	public void readExternal(final ObjectInput in) throws IOException {
 		_type = in.readByte();
-		switch (_type) {
-			case BIG_INTEGER_CHROMOSOME: _object = BigIntegerChromosome.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case BIG_INTEGER_CHROMOSOME -> BigIntegerChromosome.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

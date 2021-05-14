@@ -35,6 +35,7 @@ import io.jenetics.ext.rewriting.TreePattern.Var;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte TREE_PATTERN = 1;
@@ -74,13 +75,12 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case TREE_PATTERN: ((TreePattern)_object).write(out); break;
-			case TREE_PATTERN_VAR: ((Var)_object).write(out); break;
-			case TREE_PATTERN_VAL: ((Val)_object).write(out); break;
-			case TREE_REWRITE_RULE: ((TreeRewriteRule)_object).write(out); break;
-			case TRS_KEY: ((TRS)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case TREE_PATTERN -> ((TreePattern)_object).write(out);
+			case TREE_PATTERN_VAR -> ((Var)_object).write(out);
+			case TREE_PATTERN_VAL -> ((Val)_object).write(out);
+			case TREE_REWRITE_RULE -> ((TreeRewriteRule)_object).write(out);
+			case TRS_KEY -> ((TRS)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -89,17 +89,17 @@ final class Serial implements Externalizable {
 		throws IOException, ClassNotFoundException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case TREE_PATTERN: _object = TreePattern.read(in); break;
-			case TREE_PATTERN_VAR: _object = Var.read(in); break;
-			case TREE_PATTERN_VAL: _object = Val.read(in); break;
-			case TREE_REWRITE_RULE: _object = TreeRewriteRule.read(in); break;
-			case TRS_KEY: _object = TRS.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case TREE_PATTERN -> TreePattern.read(in);
+			case TREE_PATTERN_VAR -> Var.read(in);
+			case TREE_PATTERN_VAL -> Val.read(in);
+			case TREE_REWRITE_RULE -> TreeRewriteRule.read(in);
+			case TRS_KEY -> TRS.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

@@ -70,7 +70,7 @@ public abstract class TreeMutator<
 		final int P = Probabilities.toInt(p);
 		return random.nextInt() < P
 			? mutate(chromosome)
-			: MutatorResult.of(chromosome);
+			: new MutatorResult<>(chromosome, 0);
 	}
 
 	private MutatorResult<Chromosome<G>> mutate(final Chromosome<G> chromosome) {
@@ -79,7 +79,7 @@ public abstract class TreeMutator<
 
 		final var flat = FlatTreeNode.ofTree(tree);
 		final var genes = flat.map(t -> chromosome.gene().newInstance(t));
-		return MutatorResult.of(chromosome.newInstance(genes), 1);
+		return new MutatorResult<>(chromosome.newInstance(genes), 1);
 	}
 
 	/**

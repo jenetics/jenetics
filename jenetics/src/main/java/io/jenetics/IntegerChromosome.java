@@ -30,11 +30,9 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -57,6 +55,7 @@ public class IntegerChromosome
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -318,10 +317,12 @@ public class IntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.INTEGER_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
