@@ -203,7 +203,7 @@ public final class Grammar {
 	public List<Terminal> generate(final Index index) {
 		final var rule = rules.get(0);
 
-		final var symbols = new LinkedList<>(expand(rule.start(), index));
+		final LinkedList<Symbol> symbols = new LinkedList<>(expand(rule.start(), index));
 
 		boolean expanded = true;
 		while (expanded) {
