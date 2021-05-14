@@ -60,7 +60,7 @@ public class GrammarTest {
 	}
 
 	@Test
-	public void build() {
+	public void generate() {
 		final var grammar = Grammar.parse("""
 			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> | ( <expr> <op> <expr> )
 			<op> ::= + | - | * | /
@@ -68,9 +68,8 @@ public class GrammarTest {
 			<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 			"""
 		);
-		//System.out.println(grammar);
 
-		final List<Grammar.Terminal> list = grammar.build(new Random(12345689013L));
+		final List<Grammar.Terminal> list = grammar.generate(new Random(12345689013L)::nextInt);
 		final var string = list.stream()
 			.map(Grammar.Symbol::toString)
 			.collect(Collectors.joining());

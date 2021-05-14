@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -178,10 +179,10 @@ public final class Grammar {
 			.findFirst();
 	}
 
-	public List<Terminal> build(final Random random) {
-		Rule rule = rules.get(0);
+	public List<Terminal> generate(final IntUnaryOperator index) {
+		final var rule = rules.get(0);
 
-		final var symbols = new LinkedList<>(expand(rule.start(), random));
+		final var symbols = new LinkedList<>(expand(rule.start(), index));
 
 		boolean expanded = true;
 		while (expanded) {
@@ -193,7 +194,7 @@ public final class Grammar {
 
 				if (symbol instanceof NonTerminal) {
 					it.remove();
-					for (var nt : expand((NonTerminal)symbol, random)) {
+					for (var nt : expand((NonTerminal)symbol, index)) {
 						it.add(nt);
 					}
 
@@ -207,11 +208,11 @@ public final class Grammar {
 			.toList();
 	}
 
-	private List<Symbol> expand(final NonTerminal nt, final Random random) {
+	private List<Symbol> expand(final NonTerminal nt, IntUnaryOperator index) {
 		final var rule = rule(nt);
 		return rule
 			.map(r -> r.alternatives()
-				.get(random.nextInt(r.alternatives().size()))
+				.get(index.applyAsInt(r.alternatives().size()))
 				.symbols())
 			.orElse(List.of(nt));
 	}
