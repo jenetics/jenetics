@@ -44,34 +44,34 @@ public final class Grammar {
 	public sealed interface Symbol {
 
 		/**
-		 * Return the name of the symbol.
+		 * Return the value of the symbol.
 		 *
-		 * @return the name of the symbol
+		 * @return the value of the symbol
 		 */
-		String name();
+		String value();
 	}
 
 	/**
 	 * Represents the non-terminal symbols of the grammar.
 	 *
-	 * @param name the name of the non-terminal symbol
+	 * @param value the value of the non-terminal symbol
 	 */
-	public static record NonTerminal(String name) implements Symbol {
+	public static record NonTerminal(String value) implements Symbol {
 		@Override
 		public String toString() {
-			return format("<%s>", name);
+			return format("<%s>", value);
 		}
 	}
 
 	/**
 	 * Represents a terminal symbols of the grammar.
 	 *
-	 * @param name the name of the terminal symbol
+	 * @param value the value of the terminal symbol
 	 */
-	public static record Terminal(String name) implements Symbol {
+	public static record Terminal(String value) implements Symbol {
 		@Override
 		public String toString() {
-			return BnfParser.escape(name);
+			return BnfParser.escape(value);
 		}
 	}
 
