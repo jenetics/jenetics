@@ -2,13 +2,13 @@ package io.jenetics.incubator.grammar;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.IntUnaryOperator;
 
+@FunctionalInterface
 public interface SentenceGenerator {
 
 	List<Grammar.Terminal> generate(
 		final Grammar grammar,
-		final IntUnaryOperator index
+		final Index index
 	);
 
 	default List<Grammar.Terminal> generate(

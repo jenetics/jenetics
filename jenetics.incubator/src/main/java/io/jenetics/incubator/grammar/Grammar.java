@@ -25,8 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
-import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -179,7 +177,7 @@ public final class Grammar {
 			.findFirst();
 	}
 
-	public List<Terminal> generate(final IntUnaryOperator index) {
+	public List<Terminal> generate(final Index index) {
 		final var rule = rules.get(0);
 
 		final var symbols = new LinkedList<>(expand(rule.start(), index));
@@ -208,11 +206,11 @@ public final class Grammar {
 			.toList();
 	}
 
-	private List<Symbol> expand(final NonTerminal nt, IntUnaryOperator index) {
+	private List<Symbol> expand(final NonTerminal nt, Index index) {
 		final var rule = rule(nt);
 		return rule
 			.map(r -> r.alternatives()
-				.get(index.applyAsInt(r.alternatives().size()))
+				.get(index.next(r.alternatives().size()))
 				.symbols())
 			.orElse(List.of(nt));
 	}
