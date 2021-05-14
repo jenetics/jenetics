@@ -19,7 +19,7 @@ public class Mapper {
 		return Codec.of(
 			Genotype.of(IntegerChromosome.of(IntRange.of(0, 100), IntRange.of(50, 200))),
 			gt -> {
-				final var index = new Index() {
+				final var index = new SymbolIndex() {
 					int pos = 0;
 					@Override
 					public int next(final int bound) {

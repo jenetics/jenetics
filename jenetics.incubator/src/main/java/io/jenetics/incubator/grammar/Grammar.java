@@ -253,7 +253,7 @@ public final class Grammar {
 			.findFirst();
 	}
 
-	public List<Terminal> generate(final Index index) {
+	public List<Terminal> generate(final SymbolIndex index) {
 		return StandardGenerators.generateList(this, index);
 	}
 

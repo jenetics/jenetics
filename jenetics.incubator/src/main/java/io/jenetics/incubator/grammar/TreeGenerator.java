@@ -6,5 +6,5 @@ import io.jenetics.ext.util.Tree;
 
 @FunctionalInterface
 public interface TreeGenerator {
-	Tree<Terminal, ?> generate(final Grammar grammar, final Index index);
+	Tree<Terminal, ?> generate(final Grammar grammar, final SymbolIndex index);
 }

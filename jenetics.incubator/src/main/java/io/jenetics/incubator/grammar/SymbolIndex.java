@@ -1,8 +1,6 @@
 package io.jenetics.incubator.grammar;
 
 @FunctionalInterface
-public interface Index {
-
+public interface SymbolIndex {
 	int next(final int bound);
-
 }

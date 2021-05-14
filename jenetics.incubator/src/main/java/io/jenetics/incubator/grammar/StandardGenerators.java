@@ -29,7 +29,7 @@ public final class StandardGenerators {
 	 */
 	public static List<Terminal> generateList(
 		final Grammar grammar,
-		final Index index
+		final SymbolIndex index
 	) {
 		final NonTerminal start = grammar.start();
 		final LinkedList<Symbol> symbols = new LinkedList<>(expand(grammar, start, index));
@@ -58,7 +58,7 @@ public final class StandardGenerators {
 	private static List<Symbol> expand(
 		final Grammar grammar,
 		final NonTerminal symbol,
-		Index index
+		SymbolIndex index
 	) {
 		final var rule = grammar.rule(symbol);
 		return rule
@@ -70,7 +70,7 @@ public final class StandardGenerators {
 
 	public static Tree<Symbol, ?> generateTree(
 		final Grammar grammar,
-		final Index index
+		final SymbolIndex index
 	) {
 		final NonTerminal start = grammar.start();
 		final TreeNode<Symbol> symbols = TreeNode.of(start);
