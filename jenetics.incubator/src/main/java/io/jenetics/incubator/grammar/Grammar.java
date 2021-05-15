@@ -22,12 +22,11 @@ package io.jenetics.incubator.grammar;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents a context-free grammar.
@@ -53,10 +52,20 @@ public final class Grammar {
 
 	/**
 	 * Represents the non-terminal symbols of the grammar.
-	 *
-	 * @param value the value of the non-terminal symbol
 	 */
 	public static record NonTerminal(String value) implements Symbol {
+
+		/**
+		 * @param value the value of the non-terminal symbol
+		 */
+		public NonTerminal {
+			if (value.isBlank()) {
+				throw new IllegalArgumentException(
+					"Non-terminal must not be blank: '" + value + "'."
+				);
+			}
+		}
+
 		@Override
 		public String toString() {
 			return format("<%s>", value);
@@ -65,10 +74,20 @@ public final class Grammar {
 
 	/**
 	 * Represents a terminal symbols of the grammar.
-	 *
-	 * @param value the value of the terminal symbol
 	 */
 	public static record Terminal(String value) implements Symbol {
+
+		/**
+		 * @param value the value of the terminal symbol
+		 */
+		public Terminal {
+			if (value.isBlank()) {
+				throw new IllegalArgumentException(
+					"Non-terminal must not be null."
+				);
+			}
+		}
+
 		@Override
 		public String toString() {
 			return BnfParser.escape(value);
@@ -105,20 +124,25 @@ public final class Grammar {
 	/**
 	 * Represents a production rule of the grammar.
 	 */
-	public static record Rule(NonTerminal start, List<Expression> alternatives) {
+	public static record Rule(NonTerminal start, List<Expression> expressions) {
 
 		/**
 		 * Creates a new rule object.
 		 *
 		 * @param start the start symbol of the rule
-		 * @param alternatives the list af expressions of the rules
+		 * @param expressions the list af expressions of the rules
 		 * @throws IllegalArgumentException if the given list of
-		 *         {@code alternatives} is empty
+		 *         {@code expressions} is empty
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
 		public Rule {
 			requireNonNull(start);
-			alternatives = List.copyOf(alternatives);
+			if (expressions.isEmpty()) {
+				throw new IllegalArgumentException(
+					"Rule expressions must not be empty."
+				);
+			}
+			expressions = List.copyOf(expressions);
 		}
 
 		@Override
@@ -126,7 +150,7 @@ public final class Grammar {
 			return format(
 				"%s ::= %s",
 				start,
-				alternatives.stream()
+				expressions.stream()
 					.map(Objects::toString)
 					.collect(Collectors.joining("\n    | "))
 			);
@@ -152,54 +176,23 @@ public final class Grammar {
 			);
 		}
 
-		this.nonTerminals = nonTerminals(rules);
-		this.terminals = terminals(rules);
+		nonTerminals = toDistinctSymbols(rules, NonTerminal.class);
+		terminals = toDistinctSymbols(rules, Terminal.class);
 		this.start = rules.get(0).start();
 		this.rules = List.copyOf(rules);
 	}
 
-	private static List<NonTerminal> nonTerminals(final List<Rule> rules) {
-		final var nonTerminals = new ArrayList<NonTerminal>();
-		final var distinct = new HashSet<NonTerminal>();
-
-		for (var rule : rules) {
-			if (!distinct.contains(rule.start())) {
-				nonTerminals.add(rule.start());
-				distinct.add(rule.start());
-			}
-			rule.alternatives().stream()
-				.flatMap(e -> e.symbols().stream())
-				.filter(s -> s instanceof NonTerminal)
-				.map(NonTerminal.class::cast)
-				.forEach(nt -> {
-					if (!distinct.contains(nt)) {
-						nonTerminals.add(nt);
-						distinct.add(nt);
-					}
-				});
-		}
-
-		return List.copyOf(nonTerminals);
-	}
-
-	private static List<Terminal> terminals(final List<Rule> rules) {
-		final var terminals = new ArrayList<Terminal>();
-		final var distinct = new HashSet<Terminal>();
-
-		for (var rule : rules) {
-			rule.alternatives().stream()
-				.flatMap(e -> e.symbols().stream())
-				.filter(s -> s instanceof Terminal)
-				.map(Terminal.class::cast)
-				.forEach(nt -> {
-					if (!distinct.contains(nt)) {
-						terminals.add(nt);
-						distinct.add(nt);
-					}
-				});
-		}
-
-		return List.copyOf(terminals);
+	private static <S extends Symbol> List<S>
+	toDistinctSymbols(final List<Rule> rules, final Class<S> type) {
+		return rules.stream()
+			.flatMap(rule -> Stream.concat(
+					Stream.of(rule.start),
+					rule.expressions.stream().flatMap(e -> e.symbols.stream())
+				))
+			.filter(type::isInstance)
+			.map(type::cast)
+			.distinct()
+			.toList();
 	}
 
 	/**
