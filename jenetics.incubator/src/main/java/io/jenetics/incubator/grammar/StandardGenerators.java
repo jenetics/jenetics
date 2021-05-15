@@ -62,8 +62,8 @@ public final class StandardGenerators {
 	) {
 		final var rule = grammar.rule(symbol);
 		return rule
-			.map(r -> r.alternatives()
-				.get(index.next(r.alternatives().size()))
+			.map(r -> r.expressions()
+				.get(index.next(r.expressions().size()))
 				.symbols())
 			.orElse(List.of(symbol));
 	}

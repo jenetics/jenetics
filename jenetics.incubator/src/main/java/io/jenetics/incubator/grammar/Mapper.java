@@ -7,6 +7,9 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
+import io.jenetics.incubator.grammar.Grammar.Expression;
+import io.jenetics.incubator.grammar.Grammar.NonTerminal;
+import io.jenetics.incubator.grammar.Grammar.Rule;
 import io.jenetics.incubator.grammar.Grammar.Symbol;
 import io.jenetics.incubator.grammar.Grammar.Terminal;
 import io.jenetics.util.IntRange;
@@ -43,6 +46,39 @@ public class Mapper {
 	}
 
 	public static void main(final String[] args) {
+/*		Grammar.builder()
+			.rule("expr", rule -> rule
+				.expression(exp -> exp.T("(").NT("exp").NT("op").T("exp"))
+				.expression(exp -> exp.nt("num").nt("var")))
+			.build();
+
+		Grammar.builder()
+			.rule("expr", rule -> rule
+				.exp("(", "<expr>", "<op>", "<expr>", ")")
+				.exp("<num>", "<var>")
+				.exp("(", "<expr>", "<op>", "<expr>", ")"))
+			.rule("op", rule -> rule
+				.exp("+").exp("-").exp("*").exp("/"))
+			.build();
+
+		final Rule rule = new Rule(
+			new NonTerminal("expr"),
+			List.of(
+				new Expression(List.of(
+					new Terminal("("),
+					new NonTerminal("expr"),
+					new NonTerminal("op"),
+					new NonTerminal("expr"),
+					new Terminal(")")
+				)),
+				new Expression(List.of(
+					new NonTerminal("num"),
+					new NonTerminal("var")
+				))
+			)
+		);*/
+
+
 		final Grammar grammar = Grammar.parse("""
 			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> | ( <expr> <op> <expr> )
 			<op> ::= + | - | * | /
