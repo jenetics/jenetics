@@ -88,7 +88,7 @@ public class GrammarTest {
 		final var expr = MathExpr.parse(string);
 		System.out.println(expr);
 		System.out.println(expr.simplify());
-		System.out.println();
+		System.out.println(TreeFormatter.TREE.format(expr.toTree()));
 
 		final Tree<Symbol, ?> tree = generateTree(grammar, new Random(12345689013L)::nextInt);
 		//System.out.println(TreeFormatter.TREE.format(tree));
