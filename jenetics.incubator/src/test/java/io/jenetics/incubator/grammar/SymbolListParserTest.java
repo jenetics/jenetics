@@ -19,15 +19,16 @@ public class SymbolListParserTest {
 	@Test
 	public void foo() {
 		final var grammar = Grammar.parse("""
-			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <expr>, <var> )
+			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
 			<fun> ::= FUN1 | FUN2
+			<arg> ::= <expr> | <var> | <num>
 			<op> ::= + | - | * | /
 			<var> ::= x | y
 			<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 			"""
 		);
 
-		final List<Terminal> list = grammar.generate(new Random(290234568903L)::nextInt);
+		final List<Terminal> list = grammar.generate(new Random(29022156195143L)::nextInt);
 		final var string = list.stream()
 			.map(Symbol::toString)
 			.collect(Collectors.joining());
