@@ -254,144 +254,148 @@ public final class Grammar {
 		return StandardGenerators.generateList(this, index);
 	}
 
-	public TreeNode<String> parse(final Rule rule, final List<? extends Symbol> symbols) {
-		TreeNode<String> out_node = null;
-		//MutableString n_input = new MutableString(input);
-		Symbol n_input = null;
-		boolean wrong_symbol = true;
-		boolean read_epsilon = false;
-		//log("Considering input '" + input + "' with rule " + rule, level);
-		for (Expression alt : rule.expressions()) {
-			out_node = TreeNode.of();
+	public TreeNode<Terminal> parse(final Rule rule, final List<Terminal> symbols) {
+		TreeNode<Terminal> node = null;
 
-			NonTerminal left_hand_side = rule.start();
-			out_node.value(left_hand_side.toString());
+		return node;
 
-			Expression new_alt = alt;
-			Iterator<Symbol> alt_it = new_alt.symbols().iterator();
-			//n_input = new MutableString(input);
-			wrong_symbol = false;
-			while (alt_it.hasNext() && !wrong_symbol)
-			{
-				//n_input.trim();
-				Symbol alt_tok = alt_it.next();
-				if (alt_tok instanceof Terminal)
-				{
-					/*
-					if (alt_tok instanceof EpsilonTerminalToken)
-					{
-						// Epsilon always works
-						ParseNode child = new ParseNode();
-						child.setToken("");
-						out_node.addChild(child);
-						read_epsilon = true;
-						break;
-					}
-					 */
-
-					if (symbols.isEmpty()) {
-						// Rule expects a token, string has no more: NO MATCH
-						wrong_symbol = true;
-						break;
-					}
-					//int match_prefix_size = alt_tok.match(n_input.toString());
-
-					//if (match_prefix_size > 0)
-					if (((Terminal) alt_tok).value.equals(symbols.get(0).value()))
-					{
-						//ParseNode child = new ParseNode();
-						TreeNode<String> child = TreeNode.of(symbols.get(0).value());
-						/*
-						MutableString input_tok = n_input.truncateSubstring(0, match_prefix_size);
-						if (alt_tok instanceof RegexTerminalToken)
-						{
-							// In the case of a regex, create children with each capture block
-							child = appendRegexChildren(child, (RegexTerminalToken) alt_tok, input_tok);
-						}
-						child.setToken(input_tok.toString());
-
-						 */
-						out_node.attach(child);
-						symbols.remove(0);
-					}
-					else
-					{
-						System.out.println("ASDFADFASFASDF");
-						// Rule expects a token, token in string does not match: NO MATCH
-						wrong_symbol = true;
-						out_node = null;
-						break;
-					}
-				}
-				else
-				{
-					TreeNode<String> child = null;
-					// Non-terminal token: recursively try to parse it
-					String alt_tok_string = alt_tok.value();
-
-					Rule new_rule = getRule(alt_tok);
-					if (new_rule == null)
-					{
-						// No rule found for non-terminal symbol:
-						// there is an error in the grammar
-						throw new IllegalArgumentException("Cannot find rule for token " + alt_tok);
-
-					}
-					child = parse(new_rule, symbols);
-					if (child == null)
-					{
-						// Parsing failed
-						wrong_symbol = true;
-						out_node = null;
-						break;
-					}
-
-					out_node.attach(child);
-				}
-			}
-			if (!wrong_symbol)
-			{
-				if (!alt_it.hasNext())
-				{
-					// We succeeded in parsing the complete string: done
-					//if (level > 0 || (level == 0 && n_input.toString().trim().length() == 0))
-					if (symbols.isEmpty())
-					{
-						break;
-					}
-				}
-				else
-				{
-					// The rule expects more symbols, but there are none
-					// left in the input; set wrong_symbol back to true to
-					// force exploring the next alternative
-					wrong_symbol = true;
-					//n_input = new MutableString(input);
-					break;
-				}
-			}
-		}
-//		int chars_consumed = input.length() - n_input.s();
-//		if (wrong_symbol)
-//		{
-//			// We did not consume anything, and the symbol was not epsilon: fail
-//			log("FAILED: expected more symbols with rule " + rule, level);
-//			return null;
+//		TreeNode<String> out_node = null;
+//		//MutableString n_input = new MutableString(input);
+//		Symbol n_input = null;
+//		boolean wrong_symbol = true;
+//		boolean read_epsilon = false;
+//		//log("Considering input '" + input + "' with rule " + rule, level);
+//		for (Expression alt : rule.expressions()) {
+//			out_node = TreeNode.of();
+//
+//			NonTerminal left_hand_side = rule.start();
+//			out_node.value(left_hand_side.toString());
+//
+//			Expression new_alt = alt;
+//			Iterator<Symbol> alt_it = new_alt.symbols().iterator();
+//			//n_input = new MutableString(input);
+//			wrong_symbol = false;
+//			while (alt_it.hasNext() && !wrong_symbol)
+//			{
+//				//n_input.trim();
+//				Symbol alt_tok = alt_it.next();
+//				if (alt_tok instanceof Terminal)
+//				{
+//					/*
+//					if (alt_tok instanceof EpsilonTerminalToken)
+//					{
+//						// Epsilon always works
+//						ParseNode child = new ParseNode();
+//						child.setToken("");
+//						out_node.addChild(child);
+//						read_epsilon = true;
+//						break;
+//					}
+//					 */
+//
+//					if (symbols.isEmpty()) {
+//						// Rule expects a token, string has no more: NO MATCH
+//						wrong_symbol = true;
+//						break;
+//					}
+//					//int match_prefix_size = alt_tok.match(n_input.toString());
+//
+//					//if (match_prefix_size > 0)
+//					if (((Terminal) alt_tok).value.equals(symbols.get(0).value()))
+//					{
+//						//ParseNode child = new ParseNode();
+//						TreeNode<String> child = TreeNode.of(symbols.get(0).value());
+//						/*
+//						MutableString input_tok = n_input.truncateSubstring(0, match_prefix_size);
+//						if (alt_tok instanceof RegexTerminalToken)
+//						{
+//							// In the case of a regex, create children with each capture block
+//							child = appendRegexChildren(child, (RegexTerminalToken) alt_tok, input_tok);
+//						}
+//						child.setToken(input_tok.toString());
+//
+//						 */
+//						out_node.attach(child);
+//						symbols.remove(0);
+//					}
+//					else
+//					{
+//						System.out.println("ASDFADFASFASDF");
+//						// Rule expects a token, token in string does not match: NO MATCH
+//						wrong_symbol = true;
+//						out_node = null;
+//						break;
+//					}
+//				}
+//				else
+//				{
+//					TreeNode<String> child = null;
+//					// Non-terminal token: recursively try to parse it
+//					String alt_tok_string = alt_tok.value();
+//
+//					Rule new_rule = getRule(alt_tok);
+//					if (new_rule == null)
+//					{
+//						// No rule found for non-terminal symbol:
+//						// there is an error in the grammar
+//						throw new IllegalArgumentException("Cannot find rule for token " + alt_tok);
+//
+//					}
+//					child = parse(new_rule, symbols);
+//					if (child == null)
+//					{
+//						// Parsing failed
+//						wrong_symbol = true;
+//						out_node = null;
+//						break;
+//					}
+//
+//					out_node.attach(child);
+//				}
+//			}
+//			if (!wrong_symbol)
+//			{
+//				if (!alt_it.hasNext())
+//				{
+//					// We succeeded in parsing the complete string: done
+//					//if (level > 0 || (level == 0 && n_input.toString().trim().length() == 0))
+//					if (symbols.isEmpty())
+//					{
+//						break;
+//					}
+//				}
+//				else
+//				{
+//					// The rule expects more symbols, but there are none
+//					// left in the input; set wrong_symbol back to true to
+//					// force exploring the next alternative
+//					wrong_symbol = true;
+//					//n_input = new MutableString(input);
+//					break;
+//				}
+//			}
 //		}
-//		if (chars_consumed == 0 && !read_epsilon)
-//		{
-//			// We did not consume anything, and the symbol was not epsilon: fail
-//			log("FAILED: did not consume anything of " + input + " with rule " + rule, level);
-//			return null;
-//		}
-//		input.truncateSubstring(chars_consumed);
-//		if (level == 0 && !input.isEmpty())
-//		{
-//			// The top-level rule must parse the complete string
-//			log("FAILED: The top-level rule must parse the complete string", level);
-//			return null;
-//		}
-		return out_node;
+////		int chars_consumed = input.length() - n_input.s();
+////		if (wrong_symbol)
+////		{
+////			// We did not consume anything, and the symbol was not epsilon: fail
+////			log("FAILED: expected more symbols with rule " + rule, level);
+////			return null;
+////		}
+////		if (chars_consumed == 0 && !read_epsilon)
+////		{
+////			// We did not consume anything, and the symbol was not epsilon: fail
+////			log("FAILED: did not consume anything of " + input + " with rule " + rule, level);
+////			return null;
+////		}
+////		input.truncateSubstring(chars_consumed);
+////		if (level == 0 && !input.isEmpty())
+////		{
+////			// The top-level rule must parse the complete string
+////			log("FAILED: The top-level rule must parse the complete string", level);
+////			return null;
+////		}
+//		return out_node;
 	}
 
 	private Rule getRule(final Symbol symbol) {
