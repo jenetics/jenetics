@@ -1,6 +1,7 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
@@ -45,6 +46,11 @@ public class SymbolListParserTest {
 		System.out.println(TreeFormatter.TREE.format(tree));
 
 		System.out.println(tree);
+
+		final var node = StandardGenerators.generateTree(grammar, new Random(29022156195143L)::nextInt);
+
+		//final var node = grammar.parse(grammar.rules().get(0), new ArrayList<>(list));
+		System.out.println(TreeFormatter.TREE.format(node));
 	}
 
 }
