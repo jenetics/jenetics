@@ -1,39 +1,19 @@
 package io.jenetics.incubator.grammar;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import io.jenetics.incubator.grammar.Grammar.Symbol;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
 
 import io.jenetics.ext.util.TreeNode;
 
 public class SymbolListParser {
 
-	static final class Token {
-		private Token() {}
-
-		static final int EPSILON = 0;
-		static final int PLUS = 1;
-		static final int MINUS = 2;
-		static final int MUL = 3;
-		static final int DIV = 4;
-		static final int MOD = 5;
-		static final int POWER = 6;
-		static final int FUNCTION = 7;
-		static final int OPEN_BRACKET = 8;
-		static final int CLOSE_BRACKET = 9;
-		static final int NUMBER = 10;
-		static final int VARIABLE = 11;
-		static final int COMMA = 12;
+	static final class Precedence {
 	}
 
 	private static final String EPSILON = "";
@@ -60,69 +40,52 @@ public class SymbolListParser {
 		"FUN1", "FUN2", "FUN3"
 	);
 
+	private final Set<String> unary = Set.of("++", "--", "-", "!", "~");
 
-	private final Deque<String> _tokens;
-	private String _next;
 
-	private SymbolListParser(final Deque<String> tokens) {
-		_tokens = requireNonNull(tokens);
-		_next = _tokens.getFirst();
+	private final Iterator<String> tokens;
+	private String next;
+
+	private SymbolListParser(final Collection<String> tokens) {
+		this.tokens = tokens.iterator();
+		nextToken();
 	}
 
-	static TreeNode<String> parse(final Deque<String> expr) {
-		if (expr.isEmpty()) {
+	static TreeNode<String> parse(final Collection<String> tokens) {
+		if (tokens.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Expression list is empty: " + expr
+				"Collection of tokens must not be empty."
 			);
 		}
 
-
-		return new SymbolListParser(expr).parse();
-	}
-
-	private TreeNode<String> parse() {
-		final TreeNode<String> expr = expression();
-
-		/*
-		if (_next.token != Token.EPSILON) {
-			throw new IllegalArgumentException(format(
-				"Unexpected symbol %s found.", _next
-			));
-		}
-		 */
-
-		//Var.reindex(expr);
-
-		return expr;
+		return new SymbolListParser(tokens).expression();
 	}
 
 	private TreeNode<String> expression() {
-		return sumPrecedenceOp(signedTerm());
+		final TreeNode<String> term = signedTerm();
+		return sumPrecedenceOp(term);
+	}
+
+	private TreeNode<String> signedTerm() {
+		if (unary.contains(next)) {
+			nextToken();
+			return TreeNode.of(next).attach(term());
+		} else {
+			return term();
+		}
 	}
 
 	private TreeNode<String> sumPrecedenceOp(final TreeNode<String> expr) {
 		TreeNode<String> result = expr;
 
-		if (_next.equals(PLUS) || _next.equals(MINUS)) {
-			final TreeNode<String> node = TreeNode.of(_next).attach(expr);
-
+		if (next.equals(PLUS) || next.equals(MINUS)) {
+			final TreeNode<String> node = TreeNode.of(next).attach(expr);
 			nextToken();
 			node.attach(term());
 			result = sumPrecedenceOp(node);
 		}
 
 		return result;
-	}
-
-	private TreeNode<String> signedTerm() {
-		if (_next.equals(MINUS)) {
-			nextToken();
-			return TreeNode.of(MINUS).attach(term());
-		} else if (_next.equals(PLUS)) {
-			nextToken();
-		}
-
-		return term();
 	}
 
 	private TreeNode<String> term() {
@@ -132,54 +95,24 @@ public class SymbolListParser {
 	private TreeNode<String> multPrecedenceOp(final TreeNode<String> expr) {
 		TreeNode<String> result = expr;
 
-		if (_next.equals(MUL) || _next.equals(DIV) || _next.equals(MOD)) {
-			final TreeNode<String> node = TreeNode.of(_next).attach(expr);
+		if (next.equals(MUL) || next.equals(DIV) || next.equals(MOD)) {
+			final TreeNode<String> node = TreeNode.of(next).attach(expr);
 
 			nextToken();
 			node.attach(signedFactor());
 			result = multPrecedenceOp(node);
 		}
 
-		/*
-		if (_next.token == Token.MUL) {
-			final TreeNode<Op<Double>> prod = TreeNode
-				.<Op<Double>>of(MathOp.MUL)
-				.attach(expr);
-
-			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
-		} else if (_next.token == Token.DIV) {
-			final TreeNode<Op<Double>> prod = TreeNode
-				.<Op<Double>>of(MathOp.DIV)
-				.attach(expr);
-
-			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
-		} else if (_next.token == Token.MOD) {
-			final TreeNode<Op<Double>> prod = TreeNode
-				.<Op<Double>>of(MathOp.MOD)
-				.attach(expr);
-
-			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
-		}
-		 */
-
 		return result;
 	}
 
 	private TreeNode<String> signedFactor() {
-		if (_next.equals(MINUS)) {
+		if (unary.contains(next)) {
 			nextToken();
-			return TreeNode.of(_next).attach(factor());
-		} else if (_next.equals(PLUS)) {
-			nextToken();
+			return TreeNode.of(next).attach(factor());
+		} else {
+			return factor();
 		}
-
-		return factor();
 	}
 
 	private TreeNode<String> factor() {
@@ -189,10 +122,10 @@ public class SymbolListParser {
 	private TreeNode<String> factorOp(final TreeNode<String> expr) {
 		TreeNode<String> result = expr;
 
-		if (_next.equals(POWER)) {
+		if (next.equals(POWER)) {
 			nextToken();
 
-			result = TreeNode.of(_next)
+			result = TreeNode.of(next)
 				.attach(expr)
 				.attach(signedFactor());
 		}
@@ -201,18 +134,17 @@ public class SymbolListParser {
 	}
 
 	private TreeNode<String> argument() {
-
-		if (FUNCTIONS.contains(_next)) {
-			final TreeNode<String> node = TreeNode.of(_next);
+		if (FUNCTIONS.contains(next)) {
+			final TreeNode<String> node = TreeNode.of(next);
 			nextToken();
 			list(argument(), new ArrayList<>()).forEach(node::attach);
 			return node;
-		} else if (_next.equals(COMMA) ||
-			_next.equals(OPEN_BRACKET))
+		} else if (next.equals(COMMA) ||
+					next.equals(OPEN_BRACKET))
 		{
 			nextToken();
 			TreeNode<String> expr = expression();
-			if (_next.equals(COMMA)) {
+			if (next.equals(COMMA)) {
 				expr = TreeNode
 					.of(LIST_OP)
 					.attach(expr)
@@ -221,9 +153,9 @@ public class SymbolListParser {
 				return expr;
 			}
 
-			if (!_next.equals(CLOSE_BRACKET)) {
+			if (!next.equals(CLOSE_BRACKET)) {
 				throw new IllegalArgumentException(format(
-					"Closing brackets expected: %s", _next));
+					"Closing brackets expected: %s", next));
 			}
 
 			nextToken();
@@ -246,44 +178,13 @@ public class SymbolListParser {
 	}
 
 	private TreeNode<String> value() {
-		final TreeNode<String> result = TreeNode.of(_next);
+		final TreeNode<String> result = TreeNode.of(next);
 		nextToken();
 		return result;
-
-		/*
-		final String value = _next.sequence;
-
-		if (_next.token == Token.NUMBER) {
-			final TreeNode<Op<Double>> node =
-				TreeNode.of(Const.of(Double.valueOf(value)));
-
-			nextToken();
-			return node;
-		}
-
-		if (_next.token == Token.VARIABLE) {
-			final TreeNode<Op<Double>> node = CONST.containsKey(value)
-				? TreeNode.of(CONST.get(value))
-				: TreeNode.of(Var.of(value, 0));
-
-			nextToken();
-			return node;
-		}
-
-		if (_next.token == Token.EPSILON) {
-			throw new IllegalArgumentException("Unexpected end of input.");
-		} else {
-			throw new IllegalArgumentException(format(
-				"Unexpected symbol %s found.", _next
-			));
-		}
-
-		 */
 	}
 
 	private void nextToken() {
-		_tokens.pop();
-		_next = _tokens.isEmpty() ? "" : _tokens.getFirst();
+		next = tokens.hasNext() ? tokens.next() : EPSILON;
 	}
 
 
