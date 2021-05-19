@@ -155,6 +155,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
 * Yiming Tang, Raffi Khatchadourian, Mehdi Bagherzadeh, Rhia Singh, Ajani Stewart, and Anita Raja. <a href="https://academicworks.cuny.edu/hc_pubs/671/">An Empirical Study of Refactorings and Technical Debt in Machine Learning Systems.</a> <em>In International Conference on Software Engineering, ICSE ’21. </em> May 2021.
 * Arifin H.H., Robert Ong H.K., Dai J., Daphne W., Chimplee N. <a href="https://doi.org/10.1007/978-3-030-73539-5_23"> Model-Based Product Line Engineering with Genetic Algorithms for Automated Component Selection.</a> <em>In: Krob D., Li L., Yao J., Zhang H., Zhang X. (eds) Complex Systems Design & Management. Springer, Cham. </em> April 2021.
 * MICHELA LORANDI, LEONARDO LUCIO CUSTODE, and GIOVANNI IACCA. <a href="https://arxiv.org/pdf/2103.07428.pdf">Genetic Improvement of Routing Protocols for DelayTolerant Networks. </a> <em>arXiv:2103.07428v1 </em> March 2021.
