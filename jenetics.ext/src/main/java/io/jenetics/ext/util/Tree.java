@@ -712,9 +712,18 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of leaves beneath this node
 	 */
 	default int leafCount() {
-		return (int)breadthFirstStream()
-			.filter(Tree::isLeaf)
-			.count();
+		return (int)leaves().count();
+	}
+
+	/**
+	 * Return a stream of leaves that are descendants of this node.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a stream of leaves that are descendants of this node
+	 */
+	default Stream<T> leaves() {
+		return breadthFirstStream().filter(Tree::isLeaf);
 	}
 
 	/* *************************************************************************
