@@ -1,4 +1,9 @@
 package io.jenetics.incubator.parser;
 
-public class Parser {
+import java.util.List;
+
+public interface Parser<T> {
+
+	T parse(final List<String> tokens);
+
 }
