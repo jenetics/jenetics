@@ -45,7 +45,9 @@ final class BnfParser {
 
 		for (int i = 0, n = value.length(); i < n;) {
 			final Token token = switch (value.charAt(i)) {
-				case '"' -> quotedTerminal(value, i);
+				case '"' -> {
+					yield quotedTerminal(value, i);
+				}
 				case '|' -> alternative(value, i);
 				case ':' -> assignment(value, i);
 				case '<' ->  nonTerminal(value, i);
