@@ -18,7 +18,9 @@ public class BnfParserTest {
 		final Stream<Token> tokens = Stream.generate(tokenizer::next)
 			.takeWhile(t -> t.type() != Tokenizer.EOF_TYPE);
 
-		tokens.forEach(System.out::println);
+		tokens
+			.map(BnfParser.BnfTokenizer::toString)
+			.forEach(System.out::println);
 	}
 
 }

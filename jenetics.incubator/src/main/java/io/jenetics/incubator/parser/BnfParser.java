@@ -64,15 +64,15 @@ public class BnfParser {
 					case '\n':
 					case '\t': WS(); continue;
 					case ':': return ASSIGN();
-					case ')': consume(); return new Token(BnfTokenizer::tokenName, LPAREN, ")");
-					case '(': consume(); return new Token(BnfTokenizer::tokenName, RPAREN, "(");
-					case '}': consume(); return new Token(BnfTokenizer::tokenName, LBRACE, "}");
-					case '{': consume(); return new Token(BnfTokenizer::tokenName, RBRACE, "{");
-					case ']': consume(); return new Token(BnfTokenizer::tokenName, LEND, "]");
-					case '[': consume(); return new Token(BnfTokenizer::tokenName, REND, "[");
-					case '|': consume(); return new Token(BnfTokenizer::tokenName, BAR, "|");
-					case '>': consume(); return new Token(BnfTokenizer::tokenName, GT, ">");
-					case '<': consume(); return new Token(BnfTokenizer::tokenName, LT, "<");
+					case ')': consume(); return new Token(LPAREN, ")");
+					case '(': consume(); return new Token(RPAREN, "(");
+					case '}': consume(); return new Token(LBRACE, "}");
+					case '{': consume(); return new Token(RBRACE, "{");
+					case ']': consume(); return new Token(LEND, "]");
+					case '[': consume(); return new Token(REND, "[");
+					case '|': consume(); return new Token(BAR, "|");
+					case '>': consume(); return new Token(GT, ">");
+					case '<': consume(); return new Token(LT, "<");
 					case '\'': return QUOTED_STRING();
 					default:
 						if (isJavaIdentifierStart(c)) {
@@ -88,27 +88,7 @@ public class BnfParser {
 				}
 			}
 
-			return new Token(BnfTokenizer::tokenName, EOF_TYPE, "<EOF>");
-		}
-
-		private static String tokenName(final int type) {
-			switch (type) {
-				case ASSIGN: return "ASSIGN";
-				case BAR: return "BAR";
-				case GT: return "GT";
-				case LT: return "LT";
-				case ID: return "ID";
-				case LBRACE: return "LBRACE";
-				case RBRACE: return "RBRACE";
-				case LEND: return "LEND";
-				case REND: return "REND";
-				case LPAREN: return "LPAREN";
-				case RPAREN: return "RPAREN";
-				case QUOTED_STRING: return "QUOTED_STRING";
-				case STRING: return "STRING";
-				case EOF_TYPE: return "EOF_TYPE";
-				default: throw new IllegalArgumentException("Unknown token type: " + type);
-			}
+			return new Token(EOF_TYPE, "<EOF>");
 		}
 
 		private void WS() {
@@ -121,7 +101,7 @@ public class BnfParser {
 			match(':');
 			match(':');
 			match('=');
-			return new Token(BnfTokenizer::tokenName, ASSIGN, "::=");
+			return new Token(ASSIGN, "::=");
 		}
 
 		private Token QUOTED_STRING() {
@@ -134,7 +114,7 @@ public class BnfParser {
 			}
 			consume();
 
-			return new Token(BnfTokenizer::tokenName, QUOTED_STRING, value.toString());
+			return new Token(QUOTED_STRING, value.toString());
 		}
 
 		private Token ID() {
@@ -145,7 +125,7 @@ public class BnfParser {
 				consume();
 			}
 
-			return new Token(BnfTokenizer::tokenName, ID, value.toString());
+			return new Token(ID, value.toString());
 		}
 
 		private Token STRING() {
@@ -156,7 +136,32 @@ public class BnfParser {
 				consume();
 			}
 
-			return new Token(BnfTokenizer::tokenName, STRING, value.toString());
+			return new Token(STRING, value.toString());
+		}
+
+		static String toString(final Token token) {
+			final String name;
+			switch (token.type()) {
+				case ASSIGN: name = "ASSIGN"; break;
+				case BAR: name = "BAR"; break;
+				case GT: name = "GT"; break;
+				case LT: name = "LT"; break;
+				case ID: name = "ID"; break;
+				case LBRACE: name = "LBRACE"; break;
+				case RBRACE: name = "RBRACE"; break;
+				case LEND: name = "LEND"; break;
+				case REND: name = "REND"; break;
+				case LPAREN: name = "LPAREN"; break;
+				case RPAREN: name = "RPAREN"; break;
+				case QUOTED_STRING: name = "QUOTED_STRING"; break;
+				case STRING: name = "STRING"; break;
+				case EOF_TYPE: name = "EOF_TYPE"; break;
+				default: throw new IllegalArgumentException(
+					"Unknown token type: " + token.type()
+				);
+			}
+
+			return format("Token[%s, '%s']", name, token.value());
 		}
 
 	}
