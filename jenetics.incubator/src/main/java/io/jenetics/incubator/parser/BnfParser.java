@@ -47,8 +47,9 @@ public class BnfParser {
 		static final int BAR = 9;
 		static final int GT = 10;
 		static final int LT = 11;
-		static final int STRING = 12;
-		static final int ID = 13;
+		static final int QUOTED_STRING = 12;
+		static final int STRING = 13;
+		static final int ID = 14;
 
 		protected BnfTokenizer(final CharSequence input) {
 			super(input);
@@ -61,26 +62,24 @@ public class BnfParser {
 					case ' ':
 					case '\r':
 					case '\n':
-					case '\t':
-						consume();
-						WS();
-						continue;
+					case '\t': WS(); continue;
 					case ':': return ASSIGN();
-					case ')': consume(); return new Token(LPAREN, ")");
-					case '(': consume(); return new Token(RPAREN, "(");
-					case '}': consume(); return new Token(LBRACE, "}");
-					case '{': consume(); return new Token(RBRACE, "{");
-					case ']': consume(); return new Token(LEND, "]");
-					case '[': consume(); return new Token(REND, "[");
-					case '|': consume(); return new Token(BAR, "|");
-					case '>': consume(); return new Token(GT, ">");
-					case '<': consume(); return new Token(LT, "<");
-					case '\'': return STRING();
+					case ')': consume(); return new Token(BnfTokenizer::tokenName, LPAREN, ")");
+					case '(': consume(); return new Token(BnfTokenizer::tokenName, RPAREN, "(");
+					case '}': consume(); return new Token(BnfTokenizer::tokenName, LBRACE, "}");
+					case '{': consume(); return new Token(BnfTokenizer::tokenName, RBRACE, "{");
+					case ']': consume(); return new Token(BnfTokenizer::tokenName, LEND, "]");
+					case '[': consume(); return new Token(BnfTokenizer::tokenName, REND, "[");
+					case '|': consume(); return new Token(BnfTokenizer::tokenName, BAR, "|");
+					case '>': consume(); return new Token(BnfTokenizer::tokenName, GT, ">");
+					case '<': consume(); return new Token(BnfTokenizer::tokenName, LT, "<");
+					case '\'': return QUOTED_STRING();
 					default:
 						if (isJavaIdentifierStart(c)) {
 							return ID();
+						} else if (!isWhitespace(c)) {
+							return STRING();
 						} else {
-							//return STRING();
 							throw new IllegalArgumentException(format(
 								"Got invalid character '%s' at position '%d'.",
 								c, pos
@@ -89,46 +88,75 @@ public class BnfParser {
 				}
 			}
 
-			return new Token(EOF_TYPE, "<EOF>");
+			return new Token(BnfTokenizer::tokenName, EOF_TYPE, "<EOF>");
+		}
+
+		private static String tokenName(final int type) {
+			switch (type) {
+				case ASSIGN: return "ASSIGN";
+				case BAR: return "BAR";
+				case GT: return "GT";
+				case LT: return "LT";
+				case ID: return "ID";
+				case LBRACE: return "LBRACE";
+				case RBRACE: return "RBRACE";
+				case LEND: return "LEND";
+				case REND: return "REND";
+				case LPAREN: return "LPAREN";
+				case RPAREN: return "RPAREN";
+				case QUOTED_STRING: return "QUOTED_STRING";
+				case STRING: return "STRING";
+				case EOF_TYPE: return "EOF_TYPE";
+				default: throw new IllegalArgumentException("Unknown token type: " + type);
+			}
+		}
+
+		private void WS() {
+			do {
+				consume();
+			} while (c != EOF && isWhitespace(c));
 		}
 
 		private Token ASSIGN() {
 			match(':');
 			match(':');
 			match('=');
-			return new Token(ASSIGN, "::=");
+			return new Token(BnfTokenizer::tokenName, ASSIGN, "::=");
 		}
 
-		private Token STRING() {
-			final var string = new StringBuilder();
-			consume();
+		private Token QUOTED_STRING() {
+			final var value = new StringBuilder();
 
-			while (c != '\'') {
-				string.append(c);
+			consume();
+			while (c != EOF && c != '\'') {
+				value.append(c);
 				consume();
 			}
 			consume();
 
-			return new Token(STRING, string.toString());
+			return new Token(BnfTokenizer::tokenName, QUOTED_STRING, value.toString());
 		}
 
 		private Token ID() {
-			final var id = new StringBuilder();
-			id.append(c);
-			consume();
+			final var value = new StringBuilder();
 
-			do {
-				id.append(c);
-				consume();
-			} while (isJavaIdentifierPart(c));
-
-			return new Token(ID, id.toString());
-		}
-
-		private void WS() {
-			while (isWhitespace(c)) {
+			while (c != EOF && isJavaIdentifierPart(c)) {
+				value.append(c);
 				consume();
 			}
+
+			return new Token(BnfTokenizer::tokenName, ID, value.toString());
+		}
+
+		private Token STRING() {
+			final var value = new StringBuilder();
+
+			while (c != EOF && !isWhitespace(c)) {
+				value.append(c);
+				consume();
+			}
+
+			return new Token(BnfTokenizer::tokenName, STRING, value.toString());
 		}
 
 	}

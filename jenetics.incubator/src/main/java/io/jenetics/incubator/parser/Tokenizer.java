@@ -1,7 +1,6 @@
 package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 public abstract class Tokenizer {
 
@@ -12,7 +11,7 @@ public abstract class Tokenizer {
 	private final CharSequence _input;
 
 	protected int pos;
-	protected char c;
+	protected char c = EOF;
 
 	protected Tokenizer(final CharSequence input) {
 		if (input.length() > 0) {

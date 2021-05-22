@@ -4,10 +4,12 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 public final class Token {
+	private final Vocabulary _vocabulary;
 	private final int _type;
 	private final String _value;
 
-	public Token(final int type, final String value) {
+	public Token(final Vocabulary vocabulary, final int type, final String value) {
+		_vocabulary = requireNonNull(vocabulary);
 		_type = type;
 		_value = requireNonNull(value);
 	}
@@ -22,7 +24,7 @@ public final class Token {
 
 	@Override
 	public String toString() {
-		return format("Token[%d, '%s']", _type, _value);
+		return format("Token[%s, '%s']", _vocabulary.tokenTypeName(_type), _value);
 	}
 
 }
