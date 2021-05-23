@@ -158,6 +158,8 @@ The previous image shows the GUI after evolving the default image for about 4,00
 <details>
 <summary>
 Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
+
+...
 </summary>
 
 1) Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
