@@ -113,8 +113,8 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AnyGene &&
-			Objects.equals(((AnyGene)obj)._allele, _allele);
+			obj instanceof AnyGene<?> &&
+			Objects.equals(((AnyGene<?>)obj)._allele, _allele);
 	}
 
 	@Override
