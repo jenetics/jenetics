@@ -73,7 +73,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
- * @version !__version__!
+ * @version 6.3
  */
 public class Lifecycle {
 
