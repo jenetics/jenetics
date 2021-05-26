@@ -29,6 +29,7 @@ import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
 
@@ -136,6 +137,8 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 	 * starts the publishing of the elements read from the stream. The attached
 	 * {@code stream} is closed, when {@code this} publisher is closed.
 	 *
+	 * @see #attach(Iterable)
+	 *
 	 * @param stream the {@code stream} to attach
 	 * @throws NullPointerException if the given {@code stream} is {@code null}
 	 * @throws IllegalStateException if a stream is already attached to this
@@ -146,9 +149,7 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 
 		synchronized (_lock) {
 			if (_stream != null) {
-				throw new IllegalStateException(
-					"Already attached evolution stream."
-				);
+				throw new IllegalStateException("Already attached stream.");
 			}
 
 			_stream = stream.takeWhile(e -> _proceed.get());
@@ -165,6 +166,27 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 			});
 			_thread.start();
 		}
+	}
+
+	/**
+	 * Attaches the given iterable to the publisher. This method automatically
+	 * starts the publishing of the elements read from the stream.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #attach(Stream)
+	 *
+	 * @param iterable the {@code iterable} to attach
+	 * @throws NullPointerException if the given {@code iterable} is {@code null}
+	 * @throws IllegalStateException if a stream is already attached to this
+	 *         publisher
+	 */
+	public void attach(final Iterable<? extends T> iterable) {
+		final Stream<? extends T> stream = StreamSupport.stream(
+			iterable.spliterator(),
+			false
+		);
+		attach(stream);
 	}
 
 	/**

@@ -25,8 +25,10 @@ import static java.util.Objects.requireNonNull;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -39,10 +41,18 @@ import java.util.stream.Stream;
  *     .flatMap(Streams.toIntervalMax(13))
  *     .collect(ISeq.toISeq());
  * }</pre>
+ * The example above will create the following output
+ * <pre>{@code
+ *          +----3---+----3---+
+ *          |        |        |
+ *     +----9--8--3--3--5--4--2--9----|
+ *        toIntervalMax(3)
+ *     +----------9--------5----------|
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.0
- * @version 6.0
+ * @version !__version__!
  */
 public final class Streams {
 	private Streams() {}
@@ -77,7 +87,27 @@ public final class Streams {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
-		return strictlyImproving(Streams::max);
+		return strictlyImproving(Streams::max, r -> false);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly increasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toStrictlyIncreasing()
+	 *
+	 * @param <C> the comparable type
+	 * @param reset a predicate which decides when the best element found so
+	 *        far is reset. The improving element streams starts from fresh.
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyIncreasing(final Predicate<? super C> reset) {
+		return strictlyImproving(Streams::max, reset);
 	}
 
 	/**
@@ -108,7 +138,27 @@ public final class Streams {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
-		return strictlyImproving(Streams::min);
+		return strictlyImproving(Streams::min, r -> false);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly decreasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <C> the comparable type
+	 * @param reset a predicate which decides when the best element found so
+	 *        far is reset. The improving element streams starts from fresh.
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyDecreasing(final Predicate<? super C> reset) {
+		return strictlyImproving(Streams::min, reset);
 	}
 
 	/**
@@ -137,11 +187,37 @@ public final class Streams {
 	 */
 	public static <T> Function<T, Stream<T>>
 	toStrictlyImproving(final Comparator<? super T> comparator) {
-		return strictlyImproving((a, b) -> best(comparator, a, b));
+		return strictlyImproving((a, b) -> best(comparator, a, b), r -> false);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toStrictlyImproving(Comparator)
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @param reset a predicate which decides when the best element found so
+	 *        far is reset. The improving element streams starts from fresh.
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Function<T, Stream<T>> toStrictlyImproving(
+		final Comparator<? super T> comparator,
+		final Predicate<? super T> reset
+	) {
+		return strictlyImproving((a, b) -> best(comparator, a, b), reset);
 	}
 
 	private static <C> Function<C, Stream<C>>
-	strictlyImproving(final BinaryOperator<C> comparator) {
+	strictlyImproving(
+		final BinaryOperator<C> comparator,
+		final Predicate<? super C> reset
+	) {
 		requireNonNull(comparator);
 
 		return new Function<>() {
@@ -149,6 +225,10 @@ public final class Streams {
 
 			@Override
 			public Stream<C> apply(final C result) {
+				if (reset.test(result)) {
+					_best = null;
+				}
+
 				final C best = comparator.apply(_best, result);
 
 				final Stream<C> stream = best == _best
@@ -244,37 +324,26 @@ public final class Streams {
 	}
 
 	private static <C> Function<C, Stream<C>> sliceBest(
-		final BinaryOperator<C> comp,
+		final BinaryOperator<C> comparator,
 		final int rangeSize
 	) {
-		requireNonNull(comp);
+		requireNonNull(comparator);
 		if (rangeSize < 1) {
 			throw new IllegalArgumentException(
 				"Range size must be at least one: " + rangeSize
 			);
 		}
 
-		return new Function<>() {
-			private int _count = 0;
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C value) {
-				++_count;
-				_best = comp.apply(_best, value);
-
-				final Stream<C> result;
-				if (_count >= rangeSize) {
-					result = Stream.of(_best);
-					_count = 0;
-					_best = null;
-				} else {
-					result = Stream.empty();
-				}
-
-				return result;
+		final AtomicInteger count = new AtomicInteger();
+		final Predicate<C> finished = t -> {
+			if (count.incrementAndGet() < rangeSize) {
+				return true;
+			} {
+				count.set(0);
+				return false;
 			}
 		};
+		return sliceBest(comparator, finished);
 	}
 
 	/**
@@ -405,7 +474,7 @@ public final class Streams {
 	}
 
 	/**
-	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * Return a new flat-mapper function which returns (emits) the best value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
 	 * @param <C> the element type
@@ -415,7 +484,7 @@ public final class Streams {
 	 * @param clock the {@code clock} used for measuring the {@code timespan}
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
-	 @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C> Function<C, Stream<C>>
 	toIntervalBest(
@@ -428,11 +497,11 @@ public final class Streams {
 	}
 
 	private static <C> Function<C, Stream<C>> sliceBest(
-		final BinaryOperator<C> comp,
+		final BinaryOperator<C> comparator,
 		final Duration timespan,
 		final Clock clock
 	) {
-		requireNonNull(comp);
+		requireNonNull(comparator);
 		requireNonNull(timespan);
 
 		return new Function<>() {
@@ -448,7 +517,7 @@ public final class Streams {
 					_start = clock.millis();
 				}
 
-				_best = comp.apply(_best, value);
+				_best = comparator.apply(_best, value);
 				_end = clock.millis();
 
 				final Stream<C> result;
@@ -458,6 +527,123 @@ public final class Streams {
 					_best = null;
 				} else {
 					result = Stream.empty();
+				}
+
+				return result;
+			}
+		};
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * <pre>{@code
+	 *          f  t  t  f  t  t  f
+	 *          +--------+--------+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *      toIntervalMax(predicate)
+	 *     +----------9--------4----------|
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param intervalFinished the predicate which defines an interval. If it
+	 *        returns {@code true} the same <em>best</em> interval is used. If
+	 *        the predicate returns {@code false}, a new interval is started.
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>>
+	toIntervalMax(final Predicate<? super C> intervalFinished) {
+		return sliceBest(Streams::max, intervalFinished);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * <pre>{@code
+	 *          f  t  t  f  t  t  f
+	 *          +--------+--------+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *      toIntervalMin(predicate)
+	 *     +----------3--------1----------|
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param intervalFinished the predicate which defines an interval. If it
+	 *        returns {@code true} the same <em>best</em> interval is used. If
+	 *        the predicate returns {@code false}, a new interval is started.
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>>
+	toIntervalMin(final Predicate<? super C> intervalFinished) {
+		return sliceBest(Streams::max, intervalFinished);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the best value
+	 * of the elements emitted as long the given {@code intervalFinished}
+	 * predicate returns {@code true}. A new interval is started when the
+	 * predicate returns {@code false}.
+	 *
+	 * <pre>{@code
+	 *          f  t  t  f  t  t  f
+	 *          +--------+--------+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *      toIntervalBest(min, predicate)
+	 *     +----------3--------1----------|
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param <C> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @param sameInterval the predicate which defines an interval. If it
+	 *        returns {@code true} the same <em>best</em> interval is used. If
+	 *        the predicate returns {@code false}, a new interval is started.
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toIntervalBest(
+		final Comparator<? super C> comparator,
+		final Predicate<? super C> sameInterval
+	) {
+		return null;
+	}
+
+	private static <C> Function<C, Stream<C>> sliceBest(
+		final BinaryOperator<C> comparator,
+		final Predicate<? super C> intervalFinished
+	) {
+		requireNonNull(comparator);
+		requireNonNull(intervalFinished);
+
+		return new Function<>() {
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C value) {
+				_best = comparator.apply(_best, value);
+
+				final Stream<C> result;
+				if (intervalFinished.test(value)) {
+					result = Stream.empty();
+				} else {
+					result = Stream.of(_best);
+					_best = null;
 				}
 
 				return result;

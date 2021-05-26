@@ -51,6 +51,13 @@ public final class SampleBuffer<T> implements Sampling<T> {
 
 	private volatile SampleList<T> _snapshot = null;
 
+	/**
+	 * Create a new sample buffer with the given fixed size.
+	 *
+	 * @param size the size of the created sample buffer
+	 * @throws IllegalArgumentException if the given sample buffer {@code size}
+	 *         is not positive
+	 */
 	public SampleBuffer(final int size) {
 		_buffer = new RingBuffer(size);
 	}
@@ -107,11 +114,13 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	/**
 	 * Return the currently <em>published</em> sample points.
 	 *
+	 * @since !__version__!
+	 *
 	 * @see #publish()
 	 *
 	 * @return the currently <em>published</em> sample points
 	 */
-	List<Sample<T>> samples() {
+	public List<Sample<T>> samples() {
 		final SampleList<T> snapshot = _snapshot;
 		return snapshot != null ? snapshot : List.of();
 	}

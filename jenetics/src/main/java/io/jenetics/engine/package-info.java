@@ -21,10 +21,11 @@
 /**
  * This package contains classes which performs the actual evolution. The
  * {@code io.jenetics} base package contains the classes which are used by the
- * {@code engine} package.
+ * {@code engine} package. The main entry point for solving problems with GA/GP
+ * is the {@link io.jenetics.engine.Engine} class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 package io.jenetics.engine;

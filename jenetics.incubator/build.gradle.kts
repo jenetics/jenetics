@@ -44,6 +44,7 @@ dependencies {
 	testImplementation(Libs.TestNG)
 	testImplementation(Libs.AssertJ)
 	testImplementation(Libs.EqualsVerifier)
+	testImplementation("com.opencsv:opencsv:5.3")
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

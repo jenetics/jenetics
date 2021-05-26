@@ -218,6 +218,11 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes.toString();
 	}
 
+
+	/* *************************************************************************
+	 *  Static factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new {@code Genotype} from a given array of {@code Chromosomes}.
 	 *

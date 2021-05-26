@@ -17,44 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.incubator.timeseries;
 
-import java.util.Random;
+import io.jenetics.prog.regression.Sample;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.Chromosome;
-import io.jenetics.EnumGene;
-import io.jenetics.MutatorResult;
-import io.jenetics.PermutationChromosome;
+import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class HPRMutatorTest {
+public class CsvSamplePoints {
 
-	@Test(invocationCount = 10)
-	public void mutate() {
-		final PermutationChromosome<Integer> original =
-			PermutationChromosome.ofInteger(1000);
-
-		final HPRMutator<EnumGene<Integer>, Integer> mutator =
-			new HPRMutator<>(1.0);
-
-		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
-			mutator.mutate(original, 1, new Random());
-
-		final int[] a = original.stream()
-			.mapToInt(EnumGene::allele)
-			.toArray();
-
-		final int[] b = result.result().stream()
-			.mapToInt(EnumGene::allele)
-			.toArray();
-
-		Assert.assertNotEquals(a, b);
-
+	public List<Sample<Double>> next() {
+		return List.of();
 	}
 
 }

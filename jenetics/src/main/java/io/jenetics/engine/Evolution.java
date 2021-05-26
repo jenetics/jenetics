@@ -28,6 +28,10 @@ import io.jenetics.util.ISeq;
  * {@link EvolutionStart} object, evolves the population, and returns an
  * {@link EvolutionResult} object.
  *
+ * @apiNote
+ * The implementation of the evolution must be thread-safe and able to handle
+ * concurrent <em>evolution</em> requests.
+ *
  * @param <G> the gene type
  * @param <C> the fitness result type
  *

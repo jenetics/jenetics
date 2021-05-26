@@ -55,3 +55,4 @@ nbbuild/**
 build.xml
 manifest.mf
 /build/
+*.DS_Store
