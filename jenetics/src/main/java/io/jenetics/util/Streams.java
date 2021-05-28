@@ -439,7 +439,6 @@ public final class Streams {
 			private final long _timespan  = timespan.toMillis();
 
 			private long _start = 0;
-			private long _end = 0;
 			private C _best;
 
 			@Override
@@ -449,10 +448,10 @@ public final class Streams {
 				}
 
 				_best = comp.apply(_best, value);
-				_end = clock.millis();
+				long end = clock.millis();
 
 				final Stream<C> result;
-				if (_end - _start >= _timespan) {
+				if (end - _start >= _timespan) {
 					result = Stream.of(_best);
 					_start = 0;
 					_best = null;
