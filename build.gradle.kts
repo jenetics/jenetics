@@ -359,7 +359,8 @@ fun setupPublishing(project: Project) {
 
 val exportDir = file("${rootProject.buildDir}/package/${identifier}")
 
-tasks.register("assemblePkg") {
+val assemblePkg = "assemblePkg"
+tasks.register(assemblePkg) {
 	val task = this
 	subprojects { task.dependsOn(tasks.build) }
 
@@ -427,6 +428,7 @@ tasks.register("assemblePkg") {
 		}
 
 		modules.forEach { copyJavadoc(it, exportDir) }
+		copyAllJavadoc(exportDir)
 		modules.forEach { copyTestReports(it, exportDir) }
 
 		// Copy the User's Manual.
@@ -437,6 +439,10 @@ tasks.register("assemblePkg") {
 			into(exportDir)
 		}
 	}
+}
+
+tasks.named(assemblePkg) {
+	dependsOn("build", "alljavadoc")
 }
 
 fun copyJavadoc(name: String, exportDir: File) {
@@ -453,6 +459,20 @@ fun copyJavadoc(name: String, exportDir: File) {
 	}
 }
 
+fun copyAllJavadoc(exportDir: File) {
+	copy {
+		from("${rootDir}/build/docs/alljavadoc") {
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+					"__identifier__" to identifier,
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
+			)
+		}
+		into("${exportDir}/javadoc/combined")
+	}
+}
+
 fun copyTestReports(name: String, exportDir: File) {
 	copy {
 		from("${name}/build/reports") {
@@ -465,10 +485,17 @@ fun copyTestReports(name: String, exportDir: File) {
 		}
 		into("${exportDir}/reports/${name}")
 	}
+	copy {
+		from("${name}/build/reports") {
+			include("**/*.gif")
+		}
+		into("${exportDir}/reports/${name}")
+	}
 }
 
-tasks.register<Zip>("pkgZip") {
-	dependsOn("assemblePkg")
+val pkgZip = "pkgZip"
+tasks.register<Zip>(pkgZip) {
+	dependsOn(assemblePkg)
 
 	group ="archive"
 	description = "Zips the project package"
