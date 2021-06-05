@@ -476,6 +476,7 @@ fun copyAllJavadoc(exportDir: File) {
 fun copyTestReports(name: String, exportDir: File) {
 	copy {
 		from("${name}/build/reports") {
+			exclude("**/*.gif")
 			filter(
 				ReplaceTokens::class, "tokens" to mapOf(
 					"__identifier__" to identifier,
