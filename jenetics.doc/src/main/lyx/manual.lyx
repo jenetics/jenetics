@@ -4911,7 +4911,7 @@ Probability selectors are a variation of
 \shape italic
  fitness proportional
 \shape default
- selectors and selects individuals from a given population based on it's
+ selectors and selects individuals from a given population based on its
 \shape italic
  
 \emph on
@@ -5297,7 +5297,7 @@ where
 \begin_inset Formula $c$
 \end_inset
 
- must within the range 
+ must be within the range 
 \begin_inset Formula $\left[0,1\right)$
 \end_inset
 
@@ -5732,7 +5732,7 @@ where
 \begin_inset Formula $N_{P}$
 \end_inset
 
- the population size (revere to equation 
+ the population size (refer to equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:Number of genes"
@@ -29845,7 +29845,7 @@ Stream
 Evolution\SpecialChar softhyphen
 Stream
 \family default
- stops, it's final 
+ stops, its final 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Result
@@ -39154,7 +39154,7 @@ https://en.wikipedia.org/wiki/Knapsack_problem
 
 \end_inset
 
- a set of items, together with it's size and value, is given.
+ a set of items, together with its size and value, is given.
  The task is to select a disjoint subset so that the total size does not
  exceed the knapsack size.
  For solving the 0/1 knapsack problem we define a
@@ -39289,7 +39289,7 @@ https://en.wikipedia.org/wiki/Travelling_salesman_problem
 \end_inset
 
  different cities.
- Testing all possible path for 
+ Testing all possible paths for 
 \begin_inset Formula $N$
 \end_inset
 
@@ -40709,7 +40709,7 @@ gradlew
 \emph on
  sub
 \emph default
--project is located in it's own
+-project is located in its own
 \emph on
  sub
 \emph default
