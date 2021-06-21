@@ -146,6 +146,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Blogs and articles
 
+* <a href="https://craftcodecrew.com/solving-the-knapsack-problem-with-the-jenetics-library/">Solving the Knapsack Problem with the Jenetics Library</a>, by <em>Craftcode Crew</em>, May 13, 2021
 * <a href="http://www.fx361.com/page/2018/1126/4534731.shtml">一种基于Jenetics的遗传算法程序设计</a>, <em>电脑知识与技术 2018年22期 by 王康</em>, Nov. 26. 2018
 * <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
 * <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
@@ -163,6 +164,7 @@ Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://ww
 </summary>
 
 1) Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
+1) Faltaous, Sarah, Abdulmaksoud, Aya, Kempe, Markus, Alt, Florian and Schneegass, Stefan. <a href="https://doi.org/10.1515/itit-2020-0035">GeniePutt: Augmenting human motor skills through electrical muscle stimulation.</a> <em>it - Information Technology, vol. , no. , 2021. </em> May 2021.
 1) Yiming Tang, Raffi Khatchadourian, Mehdi Bagherzadeh, Rhia Singh, Ajani Stewart, and Anita Raja. <a href="https://academicworks.cuny.edu/hc_pubs/671/">An Empirical Study of Refactorings and Technical Debt in Machine Learning Systems.</a> <em>In International Conference on Software Engineering, ICSE ’21. </em> May 2021.
 1) Arifin H.H., Robert Ong H.K., Dai J., Daphne W., Chimplee N. <a href="https://doi.org/10.1007/978-3-030-73539-5_23"> Model-Based Product Line Engineering with Genetic Algorithms for Automated Component Selection.</a> <em>In: Krob D., Li L., Yao J., Zhang H., Zhang X. (eds) Complex Systems Design & Management. Springer, Cham. </em> April 2021.
 1) MICHELA LORANDI, LEONARDO LUCIO CUSTODE, and GIOVANNI IACCA. <a href="https://arxiv.org/pdf/2103.07428.pdf">Genetic Improvement of Routing Protocols for DelayTolerant Networks. </a> <em>arXiv:2103.07428v1 </em> March 2021.

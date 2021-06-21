@@ -4863,7 +4863,7 @@ The Monte Carlo selector selects the individuals from a given population
  randomly.
  Instead of a directed search, the Monte Carlo selector performs a random
  search.
- This selector can be used to measure the performance of a other selectors.
+ This selector can be used to measure the performance of other selectors.
  In general, the
 \shape italic
 \emph on
