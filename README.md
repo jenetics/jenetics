@@ -146,6 +146,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Blogs and articles
 
+* <a href="https://craftcodecrew.com/solving-the-knapsack-problem-with-the-jenetics-library/">Solving the Knapsack Problem with the Jenetics Library</a>, by <em>Craftcode Crew</em>, May 13, 2021
 * <a href="http://www.fx361.com/page/2018/1126/4534731.shtml">一种基于Jenetics的遗传算法程序设计</a>, <em>电脑知识与技术 2018年22期 by 王康</em>, Nov. 26. 2018
 * <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
 * <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
