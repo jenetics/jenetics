@@ -158,11 +158,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
+Michela Lorandi, Leonardo Lucio Custode, Giovanni Iacca. <a href="https://doi.org/10.1145/3449726.3462716">Genetic improvement of routing in delay tolerant networks.</a> <em>GECCO '21: Proceedings of the Genetic and Evolutionary Computation Conference Companion. </em> July 2021, Pages 35–36.
 
 ...
 </summary>
 
+1) Michela Lorandi, Leonardo Lucio Custode, Giovanni Iacca. <a href="https://doi.org/10.1145/3449726.3462716">Genetic improvement of routing in delay tolerant networks.</a> <em>GECCO '21: Proceedings of the Genetic and Evolutionary Computation Conference Companion. </em> July 2021, Pages 35–36.
 1) Plump, Christina and Berger, Bernhard J. and Drechsler, Rolf. <a href="http://www.informatik.uni-bremen.de/agra/doc/konf/CEC_approximative.pdf">Improving evolutionary algorithms by enhancing an approximative fitness function through prediction intervals.</a> <em>IEEE Congress on Evolutionary Computation (IEEE CEC-2021). </em> June 2021.
 1) Faltaous, Sarah, Abdulmaksoud, Aya, Kempe, Markus, Alt, Florian and Schneegass, Stefan. <a href="https://doi.org/10.1515/itit-2020-0035">GeniePutt: Augmenting human motor skills through electrical muscle stimulation.</a> <em>it - Information Technology, vol. , no. , 2021. </em> May 2021.
 1) Yiming Tang, Raffi Khatchadourian, Mehdi Bagherzadeh, Rhia Singh, Ajani Stewart, and Anita Raja. <a href="https://academicworks.cuny.edu/hc_pubs/671/">An Empirical Study of Refactorings and Technical Debt in Machine Learning Systems.</a> <em>In International Conference on Software Engineering, ICSE ’21. </em> May 2021.
