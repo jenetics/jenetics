@@ -73,7 +73,7 @@ gradle.projectsEvaluated {
 		}
 
 		plugins.withType<JavaPlugin> {
-			configure<JavaPluginConvention> {
+			configure<JavaPluginExtension> {
 				sourceCompatibility = JavaVersion.VERSION_11
 				targetCompatibility = JavaVersion.current()
 			}
@@ -140,9 +140,9 @@ fun setupTestReporting(project: Project) {
 			dependsOn("test")
 
 			reports {
-				html.isEnabled = true
-				xml.isEnabled = true
-				csv.isEnabled = true
+				html.required.set(true)
+				xml.required.set(true)
+				csv.required.set(true)
 			}
 		}
 
@@ -209,7 +209,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 
 				if (srcdir.isDirectory) {
 					project.javaexec {
-						main = "de.java2html.Java2Html"
+						mainClass.set("de.java2html.Java2Html")
 						args = listOf(
 							"-srcdir", srcdir.toString(),
 							"-targetdir", "${javadoc.destinationDir}/src-html"
