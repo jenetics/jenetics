@@ -32,7 +32,7 @@ dependencies {
 	implementation(project(":jenetics.example"))
 	implementation(project(":jenetics.ext"))
 	implementation(project(":jenetics.xml"))
-	implementation(Libs.PRNGine)
+	implementation(libs.prngine)
 
-	testImplementation(Libs.TestNG)
+	testImplementation(libs.testng)
 }
