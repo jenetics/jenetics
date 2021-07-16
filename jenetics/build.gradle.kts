@@ -35,12 +35,12 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	testImplementation(Libs.ApacheCommonsMath)
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
-	testImplementation(Libs.PRNGine)
+	testImplementation(libs.commons.math)
+	testImplementation(libs.testng)
+	testImplementation(libs.equalsverifier)
+	testImplementation(libs.prngine)
 
-	jmh(Libs.PRNGine)
+	jmh(libs.prngine)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

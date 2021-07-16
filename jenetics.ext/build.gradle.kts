@@ -37,9 +37,9 @@ extra["moduleName"] = "io.jenetics.ext"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(Libs.ApacheCommonsMath)
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.commons.math)
+	testImplementation(libs.testng)
+	testImplementation(libs.equalsverifier)
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 
