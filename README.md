@@ -23,7 +23,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6
 
 ### Build time
 *  **JDK 11**: The Java [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 6.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
+*  **Gradle 7.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.

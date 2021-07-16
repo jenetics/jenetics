@@ -617,9 +617,7 @@ public final class Codecs {
 					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
-				.map(ch -> ch.stream()
-					.mapToInt(IntegerGene::intValue)
-					.toArray())
+				.map(ch -> ch.as(IntegerChromosome.class).toArray())
 				.toArray(int[][]::new),
 			matrix -> Genotype.of(
 				Stream.of(matrix)
@@ -665,9 +663,7 @@ public final class Codecs {
 					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
-				.map(ch -> ch.stream()
-					.mapToLong(LongGene::longValue)
-					.toArray())
+				.map(ch -> ch.as(LongChromosome.class).toArray())
 				.toArray(long[][]::new),
 			matrix -> Genotype.of(
 				Stream.of(matrix)
@@ -713,9 +709,7 @@ public final class Codecs {
 					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
-				.map(ch -> ch.stream()
-					.mapToDouble(DoubleGene::doubleValue)
-					.toArray())
+				.map(ch -> ch.as(DoubleChromosome.class).toArray())
 				.toArray(double[][]::new),
 			matrix -> Genotype.of(
 				Stream.of(matrix)

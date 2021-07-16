@@ -258,10 +258,10 @@ public final class Phenotype<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Phenotype &&
-			_generation == ((Phenotype)obj)._generation &&
-			Objects.equals(_fitness, ((Phenotype)obj)._fitness) &&
-			Objects.equals(_genotype, ((Phenotype)obj)._genotype);
+			obj instanceof Phenotype<?, ?> &&
+			_generation == ((Phenotype<?, ?>)obj)._generation &&
+			Objects.equals(_fitness, ((Phenotype<?, ?>)obj)._fitness) &&
+			Objects.equals(_genotype, ((Phenotype<?, ?>)obj)._genotype);
 	}
 
 	@Override

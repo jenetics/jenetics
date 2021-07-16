@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics XML-Marshalling"
@@ -37,8 +37,8 @@ extra["moduleName"] = "io.jenetics.xml"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.PRNGine)
+	testImplementation(libs.testng)
+	testImplementation(libs.prngine)
 
 	jmh(project(":jenetics"))
 }

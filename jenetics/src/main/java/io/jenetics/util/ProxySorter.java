@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.checkFromToIndex;
+
 import java.util.List;
 
 /**
@@ -58,7 +60,7 @@ import java.util.List;
  * @see Comparator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.1
+ * @version 6.3
  * @since 5.1
  */
 public final class ProxySorter {
@@ -150,6 +152,53 @@ public final class ProxySorter {
 		return TimProxySorter.sort(array, length, comparator);
 	}
 
+	/**
+	 * Sorting the given array by creating an index lookup array. The original
+	 * array is not touched and the returned array can then be used for
+	 * iterating the array in ascending order.
+	 *
+	 * <pre>{@code
+	 * final double[] array = ...;
+	 * final int[] sorted = ProxySorter.sort(
+	 *     array, 5, array.length,
+	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
+	 * );
+	 * for (int i : sorted) {
+	 *     System.out.println(array[i]);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 6.3
+	 *
+	 * @param array the array which is sorted
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @param comparator the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 * @throws NullPointerException if one of the array or comparator is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
+	 */
+	public static <T> int[] sort(
+		final T array,
+		final int from,
+		final int to,
+		final Comparator<? super T> comparator
+	) {
+		if (from > to) {
+			throw new IllegalArgumentException(from + " > " + to);
+		}
+
+		final int[] indexes = TimProxySorter.sort(
+			array,
+			to - from,
+			(a, i, j) -> comparator.compare(a, i + from, j + from)
+		);
+
+		return add(indexes, from);
+	}
+
 
 	/* *************************************************************************
 	 * Derived sorting methods.
@@ -175,6 +224,24 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static int[] sort(final int[] array, final int from, final int to) {
+		checkFromToIndex(from, to, array.length);
+		return sort(array, from, to, ProxySorter::compare);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
 	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param array the array to sort
@@ -192,6 +259,24 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static int[] sort(final long[] array, final int from, final int to) {
+		checkFromToIndex(from, to, array.length);
+		return sort(array, from, to, ProxySorter::compare);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
 	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param array the array to sort
@@ -204,6 +289,24 @@ public final class ProxySorter {
 
 	private static int compare(final double[] a, final int i, final int j) {
 		return Double.compare(a[i], a[j]);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static int[] sort(final double[] array, final int from, final int to) {
+		checkFromToIndex(from, to, array.length);
+		return sort(array, from, to, ProxySorter::compare);
 	}
 
 	/**
@@ -230,6 +333,35 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T> int[] sort(
+		final T[] array,
+		final int from,
+		final int to,
+		final java.util.Comparator<? super T> comparator
+	) {
+		checkFromToIndex(from, to, array.length);
+		return sort(
+			array, from, to,
+			(a, i, j) -> comparator.compare(a[i], a[j])
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
 	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
@@ -240,6 +372,33 @@ public final class ProxySorter {
 	public static <T extends Comparable<? super T>> int[] sort(final T[] array) {
 		return sort(
 			array, array.length,
+			(a, i, j) -> a[i].compareTo(a[j])
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T extends Comparable<? super T>> int[] sort(
+		final T[] array,
+		final int from,
+		final int to
+	) {
+		checkFromToIndex(from, to, array.length);
+		return sort(
+			array, from, to,
 			(a, i, j) -> a[i].compareTo(a[j])
 		);
 	}
@@ -268,6 +427,35 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T> int[] sort(
+		final BaseSeq<? extends T> array,
+		final int from,
+		final int to,
+		final java.util.Comparator<? super T> comparator
+	) {
+		checkFromToIndex(from, to, array.length());
+		return sort(
+			array, from, to,
+			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
 	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
@@ -279,6 +467,30 @@ public final class ProxySorter {
 	int[] sort(final BaseSeq<? extends T> array) {
 		return sort(
 			array, array.length(),
+			(a, i, j) -> a.get(i).compareTo(a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T extends Comparable<? super T>>
+	int[] sort(final BaseSeq<? extends T> array, final int from, final int to) {
+		checkFromToIndex(from, to, array.length());
+		return sort(
+			array, from, to,
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
 	}
@@ -307,6 +519,35 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T> int[] sort(
+		final List<? extends T> array,
+		final int from,
+		final int to,
+		final java.util.Comparator<? super T> comparator
+	) {
+		checkFromToIndex(from, to, array.size());
+		return sort(
+			array, from, to,
+			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
 	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
@@ -318,6 +559,30 @@ public final class ProxySorter {
 	int[] sort(final List<? extends T> array) {
 		return sort(
 			array, array.size(),
+			(a, i, j) -> a.get(i).compareTo(a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, int, Comparator)
+	 *
+	 * @since 6.3
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param from the index of the first element (inclusive) to be sorted
+	 * @param to the index of the last element (exclusive) to be sorted
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 */
+	public static <T extends Comparable<? super T>>
+	int[] sort(final List<? extends T> array, final int from, final int to) {
+		checkFromToIndex(from, to, array.size());
+		return sort(
+			array, from, to,
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
 	}
@@ -349,6 +614,13 @@ public final class ProxySorter {
 			indexes[i] = i;
 		}
 		return indexes;
+	}
+
+	private static int[] add(final int[] array, final int b) {
+		for (int i = 0; i < array.length; ++i) {
+			array[i] += b;
+		}
+		return array;
 	}
 
 }

@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics Extension"
@@ -37,9 +37,9 @@ extra["moduleName"] = "io.jenetics.ext"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(Libs.ApacheCommonsMath)
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.commons.math)
+	testImplementation(libs.testng)
+	testImplementation(libs.equalsverifier)
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 
@@ -47,7 +47,7 @@ tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*TreePerf.*")
+	includes.add(".*TreePerf.*")
 }
 
 tasks.javadoc {

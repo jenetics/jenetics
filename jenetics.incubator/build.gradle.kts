@@ -29,7 +29,7 @@
 plugins {
 	`java-library`
 	idea
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics Genetic Incubator"
@@ -41,14 +41,15 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
+	testImplementation(libs.equalsverifier)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*MathExprPerf.*")
+	includes.add(".*MathExprPerf.*")
 }
 
 tasks.javadoc {
