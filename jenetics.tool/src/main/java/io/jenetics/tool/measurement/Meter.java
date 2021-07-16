@@ -17,26 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.tool.measurement;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 6.1
+ * @version !__version__!
+ * @since !__version__!
  */
-plugins {
-	`java-library`
-}
-
-dependencies {
-	implementation(project(":jenetics"))
-	implementation(project(":jenetics.example"))
-	implementation(project(":jenetics.ext"))
-	implementation(project(":jenetics.xml"))
-
-	implementation(Libs.FacileJDBC)
-	implementation(Libs.Gson)
-	implementation(Libs.HSQLDB)
-	implementation(Libs.PRNGine)
-
-	testImplementation(Libs.TestNG)
+@FunctionalInterface
+public interface Meter {
+	Number[] measure(final Object[] params);
 }

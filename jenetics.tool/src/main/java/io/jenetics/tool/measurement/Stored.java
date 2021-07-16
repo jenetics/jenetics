@@ -17,26 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.tool.measurement;
+
+import static java.lang.String.format;
 
 /**
+ * Represents a stored DB value with its ID.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 6.1
+ * @version !__version__!
+ * @since !__version__!
  */
-plugins {
-	`java-library`
-}
+public final class Stored<T> {
+	private final long _id;
+	private final T _value;
 
-dependencies {
-	implementation(project(":jenetics"))
-	implementation(project(":jenetics.example"))
-	implementation(project(":jenetics.ext"))
-	implementation(project(":jenetics.xml"))
+	private Stored(final long id, final T value) {
+		_id = id;
+		_value = value;
+	}
 
-	implementation(Libs.FacileJDBC)
-	implementation(Libs.Gson)
-	implementation(Libs.HSQLDB)
-	implementation(Libs.PRNGine)
+	public long id() {
+		return _id;
+	}
 
-	testImplementation(Libs.TestNG)
+	public T value() {
+		return _value;
+	}
+
+	@Override
+	public String toString() {
+		return format("Stored[id=%d, value=%s]", _id, _value);
+	}
+
+	public static <T> Stored<T> of(final long id, final T value) {
+		return new Stored<>(id, value);
+	}
+
 }
