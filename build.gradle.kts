@@ -76,6 +76,10 @@ gradle.projectsEvaluated {
 				targetCompatibility = JavaVersion.VERSION_11
 			}
 
+			configure<JavaPluginExtension> {
+				modularity.inferModulePath.set(true)
+			}
+
 			setupJava(project)
 			setupTestReporting(project)
 			setupJavadoc(project)
@@ -155,9 +159,10 @@ fun setupTestReporting(project: Project) {
  */
 fun setupJavadoc(project: Project) {
 	project.tasks.withType<Javadoc> {
-		val doclet = options as StandardJavadocDocletOptions
+		modularity.inferModulePath.set(true)
 
-		exclude("**/internal/**")
+		val doclet = options as StandardJavadocDocletOptions
+		//exclude("**/internal/**")
 
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
 		doclet.version(true)

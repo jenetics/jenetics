@@ -1,3 +1,4 @@
+module:io.jenetics.ext
 io.jenetics.ext
 io.jenetics.ext.engine
 io.jenetics.ext.moea
