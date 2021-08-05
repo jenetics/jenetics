@@ -240,18 +240,12 @@ Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/s10489-021-02679-7">D
 
 ## Release notes
 
-### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
+### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
 
 #### Improvements
 
-* [#754](https://github.com/jenetics/jenetics/issues/754): Make `Optimize.best` method `null` friendly.
-  
-#### Bugs
-
-* [#742](https://github.com/jenetics/jenetics/issues/742): Fix compile error with Java 15.
-* [#746](https://github.com/jenetics/jenetics/issues/746): `Const<Double>` equals doesn't conform with `Double.compare`.
-* [#748](https://github.com/jenetics/jenetics/issues/748): Fix broken formulas in Javadoc.
-* [#752](https://github.com/jenetics/jenetics/issues/752): `StreamPublisher` doesn't close underlying `Stream` on close.
+* [#763](https://github.com/jenetics/jenetics/issues/763): `ProxySorter` is now able to sort array slices.
+* [#768](https://github.com/jenetics/jenetics/issues/768): Implement `Ordered` class. Currently, it is required that the return value of the fitness function to be `Comparable`. But sometimes you might want to change the order of a given type or add some order to a type. The `Ordered` class makes this possible.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 
