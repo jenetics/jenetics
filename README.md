@@ -1,6 +1,7 @@
 # Jenetics
 
 [![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
+[![CodeQL](https://github.com/jenetics/jenetics/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jenetics/jenetics/actions/workflows/codeql-analysis.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
 
