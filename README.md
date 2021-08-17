@@ -16,23 +16,11 @@
 
 The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.2.0.pdf)).
 
-
-## Requirements
-
-### Runtime
-*  **JRE 11**: Java runtime version 11 is needed for using the library, respectively for running the examples.
-
-### Build time
-*  **JDK 11**: The Java [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 7.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
-
-### Test compile/execution
-*  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
-
 ## Build Jenetics
 
-Check out the master branch from Github.
+**Jenetics** requires at least **Java 11** to compile and run, but it also compiles and runs with **Java 17**.
+
+Check out the master branch from GitHub.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
