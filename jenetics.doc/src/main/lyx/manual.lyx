@@ -733,7 +733,7 @@ literal "false"
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 11 runtime.
  Although the library is written in Java 11, it is compilable with Java
- 14.
+ 17.
  
 \family sans
 \series bold
@@ -21417,7 +21417,7 @@ final Engine<BitGene, Integer> engine = Engine
 
 \begin_layout Plain Layout
 
-    .bulder(ONES_COUNTING)
+    .builder(ONES_COUNTING)
 \end_layout
 
 \begin_layout Plain Layout
@@ -29208,12 +29208,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-		final CharSequence source =
-\end_layout
-
-\begin_layout Plain Layout
-
-            (CharSequence)gt.chromosome();
+		final var src = gt.chromosome().as(CharSequence.class);
 \end_layout
 
 \begin_layout Plain Layout
@@ -29223,7 +29218,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+			.map(i -> src.charAt(i) == TARGET.charAt(i) ? 1 : 0)
 \end_layout
 
 \begin_layout Plain Layout
@@ -41274,7 +41269,7 @@ Version
 \series default
 :
 \emph on
- 3.4.3
+ 3.6
 \end_layout
 
 \begin_layout Itemize
@@ -41507,7 +41502,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.8.2
+: 7.2
 \end_layout
 
 \begin_layout Itemize
@@ -41544,7 +41539,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.8.2-bin.zip
+http://services.gradle.org/distributions/gradle-7.2-bin.zip
 \end_layout
 
 \end_inset
