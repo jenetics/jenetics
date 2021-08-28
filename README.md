@@ -16,23 +16,11 @@
 
 The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.2.0.pdf)).
 
-
-## Requirements
-
-### Runtime
-*  **JRE 11**: Java runtime version 11 is needed for using the library, respectively for running the examples.
-
-### Build time
-*  **JDK 11**: The Java [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 6.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
-
-### Test compile/execution
-*  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
-*  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
-
 ## Build Jenetics
 
-Check out the master branch from Github.
+**Jenetics** requires at least **Java 11** to compile and run, but it also compiles and runs with **Java 17**.
+
+Check out the master branch from GitHub.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
@@ -242,18 +230,12 @@ C. Plump, B. J. Berger and R. Drechsler. <a href="https://doi.org/10.1109/CEC458
 
 ## Release notes
 
-### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
+### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
 
 #### Improvements
 
-* [#754](https://github.com/jenetics/jenetics/issues/754): Make `Optimize.best` method `null` friendly.
-  
-#### Bugs
-
-* [#742](https://github.com/jenetics/jenetics/issues/742): Fix compile error with Java 15.
-* [#746](https://github.com/jenetics/jenetics/issues/746): `Const<Double>` equals doesn't conform with `Double.compare`.
-* [#748](https://github.com/jenetics/jenetics/issues/748): Fix broken formulas in Javadoc.
-* [#752](https://github.com/jenetics/jenetics/issues/752): `StreamPublisher` doesn't close underlying `Stream` on close.
+* [#763](https://github.com/jenetics/jenetics/issues/763): `ProxySorter` is now able to sort array slices.
+* [#768](https://github.com/jenetics/jenetics/issues/768): Implement `Ordered` class. Currently, it is required that the return value of the fitness function to be `Comparable`. But sometimes you might want to change the order of a given type or add some order to a type. The `Ordered` class makes this possible.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

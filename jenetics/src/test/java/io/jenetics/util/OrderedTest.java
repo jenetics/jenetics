@@ -17,24 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.util;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Defining the used external libraries.
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-object Libs {
-	const val ApacheCommonsMath = "org.apache.commons:commons-math3:3.6.1"
-	const val EqualsVerifier = "nl.jqno.equalsverifier:equalsverifier:3.4.3"
-	const val TestNG = "org.testng:testng:7.3.0"
-	const val JPX = "io.jenetics:jpx:2.0.0"
-	const val PRNGine = "io.jenetics:prngine:1.0.2"
-	const val RxJava = "io.reactivex.rxjava2:rxjava:2.2.19"
+public class OrderedTest {
 
-	val All = arrayOf(
-		ApacheCommonsMath,
-		EqualsVerifier,
-		TestNG,
-		JPX,
-		PRNGine,
-		RxJava
-	)
+	@Test
+	public void comparing() {
+		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
+			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
+			.sorted(Comparator.naturalOrder())
+			.collect(Collectors.toUnmodifiableList());
+
+		for (int i = 0; i < objects.size(); ++i) {
+			final int value = objects.get(i).get();
+			Assert.assertEquals(value, objects.size() - i - 1);
+		}
+	}
+
 }

@@ -23,17 +23,17 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 6.1
+ * @version 6.3
  */
 plugins {
 	base
-	id("me.champeau.gradle.jmh") version "0.5.2" apply false
+	id("me.champeau.jmh") version "0.6.5" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "6.8.2"
+	gradleVersion = "7.2"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -50,14 +50,15 @@ allprojects {
 		}
 		mavenLocal()
 		mavenCentral()
-		jcenter()
 	}
 
 	configurations.all {
-		resolutionStrategy.failOnVersionConflict()
-		resolutionStrategy.force(*Libs.All)
+		resolutionStrategy.preferProjectModules()
 	}
+
 }
+
+apply("./gradle/alljavadoc.gradle")
 
 /**
  * Project configuration *after* the projects has been evaluated.
@@ -71,14 +72,14 @@ gradle.projectsEvaluated {
 		}
 
 		plugins.withType<JavaPlugin> {
-			configure<JavaPluginConvention> {
+			configure<JavaPluginExtension> {
 				sourceCompatibility = JavaVersion.VERSION_11
-				targetCompatibility = JavaVersion.VERSION_11
+				targetCompatibility = JavaVersion.current()
 			}
 
 			setupJava(project)
 			setupTestReporting(project)
-			setupJavadoc(project)
+			setupJavadoc(project, "")
 		}
 
 		if (plugins.hasPlugin("maven-publish")) {
@@ -86,6 +87,7 @@ gradle.projectsEvaluated {
 		}
 	}
 
+	setupJavadoc(rootProject, "all")
 }
 
 /**
@@ -129,7 +131,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.6"
+		toolVersion = "0.8.7"
 	}
 
 	project.tasks {
@@ -137,9 +139,9 @@ fun setupTestReporting(project: Project) {
 			dependsOn("test")
 
 			reports {
-				html.isEnabled = true
-				xml.isEnabled = true
-				csv.isEnabled = true
+				html.required.set(true)
+				xml.required.set(true)
+				csv.required.set(true)
 			}
 		}
 
@@ -153,7 +155,7 @@ fun setupTestReporting(project: Project) {
 /**
  * Setup of the projects Javadoc.
  */
-fun setupJavadoc(project: Project) {
+fun setupJavadoc(project: Project, taskName: String) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
 
@@ -194,33 +196,36 @@ fun setupJavadoc(project: Project) {
 		}
 	}
 
-	val javadoc = project.tasks.findByName("javadoc") as Javadoc?
+	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("colorizer") {
+		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
 			directory = javadoc.destinationDir!!
 		}
 
-		project.tasks.register("java2html") {
+		project.tasks.register("${taskName}java2html") {
 			doLast {
-				project.javaexec {
-					main = "de.java2html.Java2Html"
-					args = listOf(
-						"-srcdir", "src/main/java",
-						"-targetdir", "${javadoc.destinationDir}/src-html"
-					)
-					classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
+				val srcdir = file("${project.projectDir}/src/main/java")
+
+				if (srcdir.isDirectory) {
+					project.javaexec {
+						mainClass.set("de.java2html.Java2Html")
+						args = listOf(
+							"-srcdir", srcdir.toString(),
+							"-targetdir", "${javadoc.destinationDir}/src-html"
+						)
+						classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
+					}
 				}
 			}
 		}
 
 		javadoc.doLast {
-			val colorizer = project.tasks.findByName("colorizer")
+			val colorizer = project.tasks.findByName("${taskName}colorizer")
 			colorizer?.actions?.forEach {
 				it.execute(colorizer)
 			}
 
-
-			val java2html = project.tasks.findByName("java2html")
+			val java2html = project.tasks.findByName("${taskName}java2html")
 			java2html?.actions?.forEach {
 				it.execute(java2html)
 			}
@@ -353,7 +358,8 @@ fun setupPublishing(project: Project) {
 
 val exportDir = file("${rootProject.buildDir}/package/${identifier}")
 
-tasks.register("assemblePkg") {
+val assemblePkg = "assemblePkg"
+tasks.register(assemblePkg) {
 	val task = this
 	subprojects { task.dependsOn(tasks.build) }
 
@@ -421,6 +427,7 @@ tasks.register("assemblePkg") {
 		}
 
 		modules.forEach { copyJavadoc(it, exportDir) }
+		copyAllJavadoc(exportDir)
 		modules.forEach { copyTestReports(it, exportDir) }
 
 		// Copy the User's Manual.
@@ -431,6 +438,10 @@ tasks.register("assemblePkg") {
 			into(exportDir)
 		}
 	}
+}
+
+tasks.named(assemblePkg) {
+	dependsOn("build", "alljavadoc")
 }
 
 fun copyJavadoc(name: String, exportDir: File) {
@@ -447,9 +458,24 @@ fun copyJavadoc(name: String, exportDir: File) {
 	}
 }
 
+fun copyAllJavadoc(exportDir: File) {
+	copy {
+		from("${rootDir}/build/docs/alljavadoc") {
+			filter(
+				ReplaceTokens::class, "tokens" to mapOf(
+					"__identifier__" to identifier,
+					"__year__" to Env.COPYRIGHT_YEAR
+				)
+			)
+		}
+		into("${exportDir}/javadoc/combined")
+	}
+}
+
 fun copyTestReports(name: String, exportDir: File) {
 	copy {
 		from("${name}/build/reports") {
+			exclude("**/*.gif")
 			filter(
 				ReplaceTokens::class, "tokens" to mapOf(
 					"__identifier__" to identifier,
@@ -459,10 +485,17 @@ fun copyTestReports(name: String, exportDir: File) {
 		}
 		into("${exportDir}/reports/${name}")
 	}
+	copy {
+		from("${name}/build/reports") {
+			include("**/*.gif")
+		}
+		into("${exportDir}/reports/${name}")
+	}
 }
 
-tasks.register<Zip>("pkgZip") {
-	dependsOn("assemblePkg")
+val pkgZip = "pkgZip"
+tasks.register<Zip>(pkgZip) {
+	dependsOn(assemblePkg)
 
 	group ="archive"
 	description = "Zips the project package"

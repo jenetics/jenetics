@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.util.Seq.toSeq;
 
 import java.util.ArrayList;
@@ -44,13 +45,13 @@ public class SeqTest {
 		}
 
 		final Seq<Double> seq = list.stream().collect(toSeq());
-		Assert.assertEquals(list, seq.asList());
+		assertThat(list).isEqualTo(seq.asList());
 	}
 
 	@Test
 	public void empty() {
-		Assert.assertNotNull(Seq.EMPTY);
-		Assert.assertNotNull(Seq.empty());
+		assertThat(Seq.EMPTY).isNotNull();
+		assertThat(Seq.empty()).isNotNull();
 		Assert.assertSame(Seq.EMPTY, Seq.empty());
 		Assert.assertEquals(Seq.EMPTY.length(), 0);
 		Assert.assertEquals(Seq.empty().asList().size(), 0);
@@ -131,7 +132,7 @@ public class SeqTest {
 		Assert.assertSame(iseq.asISeq(), iseq);
 
 		final Seq<String> mseq = MSeq.of("1");
-		Assert.assertNotSame(mseq.asISeq(), mseq);
+		assertThat(mseq.asISeq()).isNotSameAs(mseq);
 		Assert.assertEquals(mseq.asISeq(), mseq);
 	}
 
@@ -141,7 +142,7 @@ public class SeqTest {
 		Assert.assertSame(mseq.asMSeq(), mseq);
 
 		final Seq<String> iseq = ISeq.of("1");
-		Assert.assertNotSame(iseq.asMSeq(), iseq);
+		assertThat(iseq.asMSeq()).isNotSameAs(iseq);
 		Assert.assertEquals(iseq.asMSeq(), iseq);
 	}
 

@@ -226,7 +226,7 @@ public final class TreePattern<V> implements Serializable {
 	) {
 		final Decl<V> decl = pattern.value();
 
-		if (decl instanceof Var) {
+		if (decl instanceof Var<?>) {
 			final Tree<? extends V, ?> tree = vars.get(decl);
 			if (tree == null) {
 				vars.put((Var<V>)decl, node);

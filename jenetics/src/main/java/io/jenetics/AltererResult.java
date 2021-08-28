@@ -94,9 +94,9 @@ public final /*record*/ class AltererResult<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AltererResult &&
-			_alterations == ((AltererResult)obj)._alterations &&
-			_population.equals(((AltererResult)obj)._population);
+			obj instanceof AltererResult<?, ?> &&
+			_alterations == ((AltererResult<?, ?>)obj)._alterations &&
+			_population.equals(((AltererResult<?, ?>)obj)._population);
 	}
 
 	@Override

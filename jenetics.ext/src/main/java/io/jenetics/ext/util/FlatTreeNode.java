@@ -46,7 +46,7 @@ import io.jenetics.util.ISeq;
  * the {@link Tree} interface. It can only be created from an existing tree.
  *
  * <pre>{@code
- * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
+ * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(...));
  * }</pre>
  *
  * @implNote
@@ -62,6 +62,8 @@ public final class FlatTreeNode<V>
 		Serializable
 {
 	private static final long serialVersionUID = 3L;
+
+	private static final int NULL_INDEX = -1;
 
 	private final int _index;
 	private final Object[] _elements;
@@ -114,14 +116,14 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public Optional<FlatTreeNode<V>> parent() {
-		int index = -1;
-		for (int i = _index; --i >= 0 && index == -1;) {
+		int index = NULL_INDEX;
+		for (int i = _index; --i >= 0 && index == NULL_INDEX;) {
 			if (isParent(i)) {
 				index = i;
 			}
 		}
 
-		return index != -1
+		return index != NULL_INDEX
 			? Optional.of(nodeAt(index))
 			: Optional.empty();
 	}
@@ -286,7 +288,7 @@ public final class FlatTreeNode<V>
 		for (Tree<?, ?> node : tree) {
 			elements[index] = node.value();
 			childCounts[index] = node.childCount();
-			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
+			childOffsets[index] = node.isLeaf() ? NULL_INDEX : childOffset;
 
 			childOffset += node.childCount();
 			++index;
