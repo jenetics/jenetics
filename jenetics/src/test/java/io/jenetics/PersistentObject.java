@@ -113,7 +113,7 @@ public class PersistentObject<T> {
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<>(name, value, ios));
-		RandomRegistry.random(new Random(SEED));
+		RandomRegistry.random(new LCG64ShiftRandom(SEED));
 	}
 
 	private static void init() {
@@ -509,7 +509,7 @@ public class PersistentObject<T> {
 	}
 
 	static {
-		final var random = new LCG64ShiftRandom.ThreadSafe(SEED);
+		final var random = new LCG64ShiftRandom(SEED);
 		using(random, r -> init());
 	}
 
