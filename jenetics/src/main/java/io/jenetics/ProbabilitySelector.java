@@ -126,7 +126,7 @@ public abstract class ProbabilitySelector<
 
 			incremental(prob);
 
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			selection.fill(() -> pop.get(indexOf(prob, random.nextDouble())));
 		}
 

@@ -32,6 +32,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
@@ -275,7 +276,7 @@ public final class IntegerGene
 		final int max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
+		final var r = random();
 		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
@@ -296,7 +297,7 @@ public final class IntegerGene
 	 *         engine is {@code null}.
 	 */
 	static int nextInt(
-		final Random random,
+		final RandomGenerator random,
 		final int min, final int max
 	) {
 		if (min > max) {

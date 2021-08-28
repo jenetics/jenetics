@@ -95,7 +95,7 @@ public class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 		}
 
 		if (that.length() >= 2) {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int[] points = Combinatorics.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);

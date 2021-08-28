@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import io.jenetics.DoubleGene;
@@ -82,7 +83,7 @@ public class CirclePoints {
 		gnuplot.create(data, output);
 	}
 
-	private static Vec<double[]> point(final Random random) {
+	private static Vec<double[]> point(final RandomGenerator random) {
 		final double r = random.nextDouble();
 		final double a = random.nextDouble()*2*PI;
 

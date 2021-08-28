@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -271,7 +272,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		return new Program<>(name, of(depth, operations, terminals, random));
 	}
@@ -321,7 +322,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (depth < 0) {
 			throw new IllegalArgumentException(
@@ -349,7 +350,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final TreeNode<Op<A>> tree,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		final Op<A> op = level == 0
 			? terminals.get(random.nextInt(terminals.size()))
@@ -410,7 +411,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
 		final int[] offsets,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (index < nodes.size()) {
 			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);

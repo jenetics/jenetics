@@ -30,6 +30,7 @@ import static java.lang.String.format;
 import static io.jenetics.internal.util.Requires.probability;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.IntRange;
@@ -44,11 +45,11 @@ import io.jenetics.util.IntRange;
 public final class Randoms {
 	private Randoms() {}
 
-	public static byte nextByte(final Random random) {
+	public static byte nextByte(final RandomGenerator random) {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
 	}
 
-	public static char nextChar(final Random random) {
+	public static char nextChar(final RandomGenerator random) {
 		char c = '\0';
 		do {
 			c = (char)nextInt(
@@ -61,7 +62,7 @@ public final class Randoms {
 		return c;
 	}
 
-	public static short nextShort(final Random random) {
+	public static short nextShort(final RandomGenerator random) {
 		return (short) nextInt(Short.MIN_VALUE, Short.MAX_VALUE + 1, random);
 	}
 
@@ -80,7 +81,7 @@ public final class Randoms {
 	public static int nextInt(
 		final int origin,
 		final int bound,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (origin >= bound) {
 			throw new IllegalArgumentException(format(
@@ -114,7 +115,7 @@ public final class Randoms {
 	 *         less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code range.getMin() >= range.getMax()}
 	 */
-	public static int nextInt(final IntRange range, final Random random) {
+	public static int nextInt(final IntRange range, final RandomGenerator random) {
 		return range.size() == 1
 			? range.min()
 			: nextInt(range.min(), range.max(), random);
@@ -135,7 +136,7 @@ public final class Randoms {
 	public static float nextFloat(
 		final float min,
 		final float max,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
@@ -166,7 +167,7 @@ public final class Randoms {
 	public static double nextDouble(
 		final double min,
 		final double max,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
@@ -182,7 +183,10 @@ public final class Randoms {
 		return value;
 	}
 
-	public static String nextASCIIString(final int length, final Random random) {
+	public static String nextASCIIString(
+		final int length,
+		final RandomGenerator random
+	) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
 			chars[i] = (char)nextInt(32, 127, random);
@@ -191,12 +195,12 @@ public final class Randoms {
 		return new String(chars);
 	}
 
-	public static String nextASCIIString(final Random random) {
+	public static String nextASCIIString(final RandomGenerator random) {
 		return nextASCIIString(nextInt(5, 20, random), random);
 	}
 
 	/*
-	 * Conversion methods used by the 'Random' engine from the JDK.
+	 * Conversion methods used by the 'RandomGenerator' engine from the JDK.
 	 */
 
 	public static float toFloat(final int a) {
@@ -252,7 +256,7 @@ public final class Randoms {
 	 *         valid probability.
 	 */
 	public static IntStream indexes(
-		final Random random,
+		final RandomGenerator random,
 		final int start,
 		final int end,
 		final double p
@@ -290,7 +294,7 @@ public final class Randoms {
 	 *         engine is {@code null}.
 	 */
 	public static IntStream indexes(
-		final Random random,
+		final RandomGenerator random,
 		final int n,
 		final double p
 	) {

@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -46,7 +47,7 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test
 	public void indexOf() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double[] props = new double[10];
 		double divisor = props.length*(props.length + 1)/2.0;
@@ -79,7 +80,7 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test(dataProvider = "probabilitySizes")
 	public void indexOf(final Integer size) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double[] props = new double[size];
 		double divisor = props.length*(props.length + 1)/2.0;
@@ -166,7 +167,10 @@ public abstract class ProbabilitySelectorTester<
 		}
 	}
 
-	private static void randomize(final double[] array, final Random random) {
+	private static void randomize(
+		final double[] array,
+		final RandomGenerator random
+	) {
 		requireNonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));

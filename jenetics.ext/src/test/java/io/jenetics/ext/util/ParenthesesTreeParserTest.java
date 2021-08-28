@@ -24,6 +24,7 @@ import static io.jenetics.ext.util.ParenthesesTreeParser.parse;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -131,7 +132,7 @@ public class ParenthesesTreeParserTest {
 			.toArray(Object[][]::new);
 	}
 
-	public static TreeNode<String> of(final int depth, final Random random) {
+	public static TreeNode<String> of(final int depth, final RandomGenerator random) {
 		final TreeNode<String> root = TreeNode.of("R");
 		fill(depth, root, random);
 		return root;
@@ -140,7 +141,7 @@ public class ParenthesesTreeParserTest {
 	private static void fill(
 		final int level,
 		final TreeNode<String> tree,
-		final Random random
+		final RandomGenerator random
 	) {
 		tree.value(Integer.toString(random.nextInt(10)*(level+1)));
 		if (level > 1) {

@@ -20,6 +20,7 @@
 package io.jenetics.ext;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.AbstractAlterer;
 import io.jenetics.Chromosome;
@@ -76,7 +77,7 @@ public class HPRMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {

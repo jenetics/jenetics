@@ -143,7 +143,7 @@ public final class BigIntegerGene
 	) {
 		Requires.positive(length);
 
-		final Random r = random();
+		final var r = random();
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(

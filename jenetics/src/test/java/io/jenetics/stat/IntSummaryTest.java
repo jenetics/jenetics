@@ -38,7 +38,7 @@ public class IntSummaryTest extends ObjectTester<IntSummary> {
 	@Override
 	protected Factory<IntSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			final IntSummaryStatistics statistics = new IntSummaryStatistics();
 			IntStream.range(0, 100)

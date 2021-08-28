@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -31,7 +32,7 @@ public final class shuffling {
 		return shuffle(array, RandomRegistry.random());
 	}
 
-	public static <T> T[] shuffle(final T[] array, final Random random) {
+	public static <T> T[] shuffle(final T[] array, final RandomGenerator random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -42,7 +43,10 @@ public final class shuffling {
 		return shuffle(array, RandomRegistry.random());
 	}
 
-	public static <T> MSeq<T> shuffle(final MSeq<T> array, final Random random) {
+	public static <T> MSeq<T> shuffle(
+		final MSeq<T> array,
+		final RandomGenerator random
+	) {
 		for (int j = array.length() - 1; j > 0; --j) {
 			array.swap(j, random.nextInt(j + 1));
 		}

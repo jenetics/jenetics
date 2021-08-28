@@ -26,9 +26,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 
 /**
- * This class holds the {@link Random} engine used for the GA. The
+ * This class holds the {@link RandomGenerator} engine used for the GA. The
  * {@code RandomRegistry} is thread safe. The registry is initialized with the
  * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
  * than an instance of the {@code Random} class. Alternatively, you can
@@ -84,7 +85,7 @@ import java.util.function.Supplier;
  * }
  * }</pre>
  *
- * @see Random
+ * @see RandomGenerator
  * @see ThreadLocalRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -98,18 +99,18 @@ public final class RandomRegistry {
 		new Context<>(ThreadLocalRandom::current);
 
 	/**
-	 * Return the global {@link Random} object.
+	 * Return the global {@link RandomGenerator} object.
 	 *
-	 * @return the global {@link Random} object.
+	 * @return the global {@link RandomGenerator} object.
 	 */
-	public static Random random() {
+	public static RandomGenerator random() {
 		return CONTEXT.get().get();
 	}
 
 	/**
-	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} <b>must</b> be thread safe, which is the case for the
-	 * default Java {@code Random} implementation.
+	 * Set the new global {@link RandomGenerator} object for the GA. The given
+	 * {@link RandomGenerator} <b>must</b> be thread safe, which is the case for the
+	 * default Java {@code RandomGenerator} implementation.
 	 * <p>
 	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
 	 * PRN generation, because the given {@code Random} engine don't have to be
@@ -117,7 +118,7 @@ public final class RandomRegistry {
 	 *
 	 * @see #random(ThreadLocal)
 	 *
-	 * @param random the new global {@link Random} object for the GA.
+	 * @param random the new global {@link RandomGenerator} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void random(final Random random) {

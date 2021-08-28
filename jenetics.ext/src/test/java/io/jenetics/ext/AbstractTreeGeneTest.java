@@ -20,6 +20,7 @@
 package io.jenetics.ext;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
@@ -37,7 +38,7 @@ import io.jenetics.ext.util.TreeTestBase;
 public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 
 	@Override
-	public IntTreeGene newTree(int levels, Random random) {
+	public IntTreeGene newTree(int levels, RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		TreeNodeTest.fill(root, levels, random);
 

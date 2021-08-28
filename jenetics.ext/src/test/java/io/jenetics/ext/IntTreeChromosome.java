@@ -38,7 +38,7 @@ final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGen
 
 	@Override
 	public Chromosome<IntTreeGene> newInstance() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		return newInstance(
 			_genes.map(g -> g.newInstance(random.nextInt(10000)))

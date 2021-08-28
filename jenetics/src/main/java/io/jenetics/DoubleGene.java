@@ -280,7 +280,7 @@ public final class DoubleGene
 		final double max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
+		final var r = random();
 		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();

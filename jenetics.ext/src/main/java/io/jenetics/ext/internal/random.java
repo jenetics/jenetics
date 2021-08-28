@@ -22,7 +22,9 @@ package io.jenetics.ext.internal;
 import static java.lang.String.format;
 
 import java.math.BigInteger;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+
+import io.jenetics.util.RandomWrapper;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -47,7 +49,7 @@ public class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	public static long nextLong(final long n, final Random random) {
+	public static long nextLong(final long n, final RandomGenerator random) {
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
 				"n is smaller than one: %d", n
@@ -81,7 +83,7 @@ public class random {
 	 */
 	public static BigInteger nextBigInteger(
 		final BigInteger n,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (n.compareTo(BigInteger.ONE) < 0) {
 			throw new IllegalArgumentException(format(
@@ -95,8 +97,9 @@ public class random {
 		} else if (n.bitLength() <= Long.SIZE - 1) {
 			result = BigInteger.valueOf(nextLong(n.longValue(), random));
 		} else {
+			final var rnd = new RandomWrapper(random);
 			do {
-				result = new BigInteger(n.bitLength(), random).mod(n);
+				result = new BigInteger(n.bitLength(), rnd).mod(n);
 			} while (result.compareTo(n) > 0);
 		}
 
@@ -120,7 +123,7 @@ public class random {
 	public static BigInteger nextBigInteger(
 		final BigInteger min,
 		final BigInteger max,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
@@ -132,8 +135,8 @@ public class random {
 		return nextBigInteger(n, random).add(min);
 	}
 
-	public static BigInteger nextBigInteger(final Random random) {
-		return new BigInteger(100, random);
+	public static BigInteger nextBigInteger(final RandomGenerator random) {
+		return new BigInteger(100, new RandomWrapper(random));
 	}
 
 }

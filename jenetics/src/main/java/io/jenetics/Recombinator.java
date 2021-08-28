@@ -24,6 +24,7 @@ import static io.jenetics.internal.math.Combinatorics.subset;
 import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -99,7 +100,7 @@ public abstract class Recombinator<
 	) {
 		final AltererResult<G, C> result;
 		if (population.size() >= 2) {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int order = Math.min(_order, population.size());
 
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
@@ -120,7 +121,7 @@ public abstract class Recombinator<
 		final int index,
 		final int size,
 		final int order,
-		final Random random
+		final RandomGenerator random
 	) {
 		final int[] ind = subset(size, order, random);
 

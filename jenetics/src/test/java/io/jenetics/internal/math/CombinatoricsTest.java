@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -125,7 +126,11 @@ public class CombinatoricsTest {
 	}
 
 
-	private static int[] subset(final int n, final int[] sub, final Random random) {
+	private static int[] subset(
+		final int n,
+		final int[] sub,
+		final RandomGenerator random
+	) {
 		final int k = sub.length;
 
 		if (sub.length == n) {
@@ -202,7 +207,7 @@ public class CombinatoricsTest {
 		return sub;
 	}
 
-	private static int nextInt(final Random r, final int a, final int b) {
+	private static int nextInt(final RandomGenerator r, final int a, final int b) {
 		return Randoms.nextInt(a, b + 1, r);
 	}
 

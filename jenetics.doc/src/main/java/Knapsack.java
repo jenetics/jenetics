@@ -35,7 +35,7 @@ public class Knapsack {
 
 		// Create a new random knapsack item.
 		static Item random() {
-			final Random r = RandomRegistry.random();
+			final var r = RandomRegistry.random();
 			return new Item(
 				r.nextDouble()*100,
 				r.nextDouble()*100

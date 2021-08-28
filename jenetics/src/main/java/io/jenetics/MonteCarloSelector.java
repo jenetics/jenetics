@@ -67,7 +67,7 @@ public final class MonteCarloSelector<
 		final MSeq<Phenotype<G, C>> selection;
 		if (count > 0 && !population.isEmpty()) {
 			selection = MSeq.ofLength(count);
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int size = population.size();
 
 			for (int i = 0; i < count; ++i) {

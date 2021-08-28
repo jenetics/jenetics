@@ -125,7 +125,7 @@ public class MultiPointCrossover<
 		final int n = min(that.length(), other.length());
 		final int k = min(n, _n);
 
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final int[] points = k > 0 ? Combinatorics.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);

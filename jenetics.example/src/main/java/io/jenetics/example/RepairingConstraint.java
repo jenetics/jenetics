@@ -80,7 +80,7 @@ public class RepairingConstraint implements Constraint<DoubleGene, Double> {
 	}
 
 	public static void main(final String[] args) {
-		final Random random = new Random();
+		final var random = new Random();
 
 		for (int i = 0; i < 100; ++i) {
 			final double[] x = random.doubles(3).toArray();

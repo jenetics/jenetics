@@ -20,6 +20,7 @@
 package io.jenetics.ext;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.Chromosome;
 import io.jenetics.Mutator;
@@ -65,7 +66,7 @@ public abstract class TreeMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final int P = Probabilities.toInt(p);
 		return random.nextInt() < P

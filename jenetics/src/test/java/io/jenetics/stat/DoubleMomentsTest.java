@@ -36,7 +36,7 @@ public class DoubleMomentsTest extends ObjectTester<DoubleMoments> {
 	@Override
 	protected Factory<DoubleMoments> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return new DoubleMoments(
 				random.nextLong(),
 				random.nextDouble(),

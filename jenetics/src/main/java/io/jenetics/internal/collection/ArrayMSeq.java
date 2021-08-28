@@ -29,6 +29,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -108,7 +109,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	}
 
 	@Override
-	public MSeq<T> shuffle(final Random random) {
+	public MSeq<T> shuffle(final RandomGenerator random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}

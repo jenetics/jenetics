@@ -94,7 +94,7 @@ public class SingleNodeCrossover<
 		assert that != null;
 		assert other != null;
 
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final ISeq<TreeNode<A>> seq1 = that.breadthFirstStream()
 			.collect(ISeq.toISeq());

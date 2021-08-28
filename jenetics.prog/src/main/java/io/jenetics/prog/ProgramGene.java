@@ -152,7 +152,7 @@ public final class ProgramGene<A>
 
 	@Override
 	public ProgramGene<A> newInstance() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		Op<A> operation = value();
 		if (isLeaf()) {

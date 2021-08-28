@@ -34,7 +34,7 @@ public class IntRangeTest extends ObjectTester<IntRange> {
 	@Override
 	protected Factory<IntRange> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return IntRange.of(random.nextInt(10), random.nextInt(1000) + 20);
 		};
 	}

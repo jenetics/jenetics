@@ -49,7 +49,7 @@ public class RandomRegistryTest {
 	@Test
 	public void setDefault() {
 		RandomRegistry.reset();
-		final Random devault = RandomRegistry.random();
+		final var devault = RandomRegistry.random();
 		Assert.assertNotNull(devault);
 
 		RandomRegistry.random(new Random());
@@ -109,7 +109,7 @@ public class RandomRegistryTest {
 
 	@Test
 	public void localContext() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final Random random1 = new Random();
 		using(random1, r1 -> {

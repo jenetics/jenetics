@@ -95,7 +95,7 @@ public class CombineAlterer<
 		final int[] individuals,
 		final long generation
 	) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);

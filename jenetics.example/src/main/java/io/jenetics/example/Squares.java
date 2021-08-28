@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
 public class Squares {
 
 	private static Dimension nextDimension() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		return new Dimension(random.nextInt(100), random.nextInt(100));
 	}
 

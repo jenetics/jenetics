@@ -22,6 +22,7 @@ package io.jenetics.ext;
 import static java.lang.String.format;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.AltererResult;
 import io.jenetics.Gene;
@@ -112,7 +113,7 @@ public class WeaselMutator<
 	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final var result = genotype.stream()
 			.map(gt -> mutate(gt, p, random))

@@ -103,7 +103,7 @@ public class LineCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double min = v.get(0).min().doubleValue();
 		final double max = v.get(0).max().doubleValue();

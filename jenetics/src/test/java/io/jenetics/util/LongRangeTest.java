@@ -34,7 +34,7 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 	@Override
 	protected Factory<LongRange> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return LongRange.of(random.nextInt(10), random.nextInt(1000) + 20);
 		};
 	}

@@ -36,7 +36,7 @@ public class LazyTest extends ObjectTester<Lazy<Double>> {
 	@Override
 	protected Factory<Lazy<Double>> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return Lazy.of(random::nextDouble);
 		};
 	}

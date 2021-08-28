@@ -37,7 +37,7 @@ public class EvolutionDurationsTest extends ObjectTester<EvolutionDurations> {
 	@Override
 	protected Factory<EvolutionDurations> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			return new EvolutionDurations(
 				Duration.ofMillis(random.nextInt(1_000_000)),

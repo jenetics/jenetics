@@ -70,7 +70,7 @@ final class UniformCrossover<
 		assert that.length() == other.length();
 
 		int alteredGenes = 0;
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < that.length(); ++i) {
 			if (random.nextFloat() < probability()) {
 				crossover(that, other, i);
