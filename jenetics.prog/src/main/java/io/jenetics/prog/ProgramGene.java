@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serial;
-import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.Gene;

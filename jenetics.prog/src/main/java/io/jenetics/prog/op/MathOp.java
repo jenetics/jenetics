@@ -19,7 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import static io.jenetics.prog.op.Numbers.box;
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
 import static java.lang.Math.asin;
@@ -44,6 +43,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.prog.op.Numbers.box;
 
 import java.util.Objects;
 import java.util.Optional;
