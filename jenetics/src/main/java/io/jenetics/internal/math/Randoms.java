@@ -29,7 +29,6 @@ import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Requires.probability;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 

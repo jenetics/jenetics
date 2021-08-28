@@ -23,7 +23,6 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
 import java.util.function.BinaryOperator;
 
 import io.jenetics.util.BaseSeq;

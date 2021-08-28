@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.Basics.pow;
 import static io.jenetics.internal.math.Basics.ulpDistance;
 
 import java.util.Comparator;
-import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.internal.math.DoubleAdder;

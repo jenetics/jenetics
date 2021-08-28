@@ -21,8 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 
-import java.util.Random;
-
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 

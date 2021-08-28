@@ -20,7 +20,6 @@
 package io.jenetics.stat;
 
 import java.util.LongSummaryStatistics;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.Test;

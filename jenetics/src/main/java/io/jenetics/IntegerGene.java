@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.math.Randoms;

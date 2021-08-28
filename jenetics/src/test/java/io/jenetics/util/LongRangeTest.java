@@ -21,8 +21,6 @@ package io.jenetics.util;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 /**

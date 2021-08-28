@@ -22,7 +22,6 @@ package io.jenetics;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.random.RandomGenerator;
 

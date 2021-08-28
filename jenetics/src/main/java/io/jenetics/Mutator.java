@@ -22,7 +22,6 @@ package io.jenetics;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.math.Probabilities;

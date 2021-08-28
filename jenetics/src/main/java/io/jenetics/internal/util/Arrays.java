@@ -19,7 +19,6 @@
  */
 package io.jenetics.internal.util;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.RandomRegistry;

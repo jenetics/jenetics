@@ -20,14 +20,12 @@
 package io.jenetics.stat;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.util.RandomRegistry;
 
 /**

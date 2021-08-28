@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Random;
 
 import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;

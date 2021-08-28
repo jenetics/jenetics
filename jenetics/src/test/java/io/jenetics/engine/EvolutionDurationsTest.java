@@ -20,7 +20,6 @@
 package io.jenetics.engine;
 
 import java.time.Duration;
-import java.util.Random;
 
 import org.testng.annotations.Test;
 

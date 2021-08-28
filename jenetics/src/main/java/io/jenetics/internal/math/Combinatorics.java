@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.RandomRegistry;

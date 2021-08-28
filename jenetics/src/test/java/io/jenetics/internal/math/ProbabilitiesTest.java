@@ -19,8 +19,6 @@
  */
 package io.jenetics.internal.math;
 
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

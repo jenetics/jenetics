@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.MSeq;

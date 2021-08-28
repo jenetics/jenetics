@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;

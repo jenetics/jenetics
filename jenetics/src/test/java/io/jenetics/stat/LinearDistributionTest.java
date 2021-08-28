@@ -19,7 +19,6 @@
  */
 package io.jenetics.stat;
 
-import java.util.Random;
 import java.util.function.ToDoubleFunction;
 
 import org.testng.Assert;

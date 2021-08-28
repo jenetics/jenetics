@@ -23,7 +23,6 @@ import static io.jenetics.util.MSeq.toMSeq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

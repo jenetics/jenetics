@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static io.jenetics.internal.math.Combinatorics.subset;
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.MSeq;
