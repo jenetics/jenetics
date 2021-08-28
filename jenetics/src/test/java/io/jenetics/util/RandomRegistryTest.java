@@ -20,16 +20,20 @@
 package io.jenetics.util;
 
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGenerator.StreamableGenerator;
 import java.util.random.RandomGeneratorFactory;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -41,6 +45,7 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.internal.util.Concurrency;
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,6 +71,27 @@ public class RandomRegistryTest {
 		RandomRegistry.random(random);
 
 		assertSame(RandomRegistry.random(), random);
+	}
+
+	@Test
+	public void setRandomSupplier() {
+		RandomRegistry.random(RandomGeneratorFactory.of("L128X1024MixRandom"));
+
+		RandomRegistry.random(() -> new LCG64ShiftRandom());
+		assertThat(RandomRegistry.random().getClass())
+			.isEqualTo(LCG64ShiftRandom.class);
+
+		final Iterator<RandomGenerator> randoms = StreamableGenerator.of("L128X1024MixRandom")
+			.rngs()
+			.peek(System.out::println)
+			.iterator();
+
+		RandomRegistry.random(randoms::next);
+		System.out.println(RandomRegistry.random());
+		System.out.println(RandomRegistry.random());
+		try (var c = Concurrency.withCommonPool()) {
+			c.execute(() -> System.out.println(RandomRegistry.random()));
+		}
 	}
 
 	@Test
