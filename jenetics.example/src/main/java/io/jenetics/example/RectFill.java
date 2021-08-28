@@ -22,7 +22,6 @@ package io.jenetics.example;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.Limits.byFixedGeneration;
 
-import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.AnyChromosome;

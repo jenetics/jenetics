@@ -16,7 +16,6 @@
  */
 package io.jenetics.example.image;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.Chromosome;

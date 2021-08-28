@@ -25,9 +25,6 @@ import static io.jenetics.jpx.Length.Unit.METER;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import io.jenetics.jpx.WayPoint;
-import io.jenetics.jpx.geom.Geoid;
-
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
@@ -35,6 +32,9 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.ProxySorter;
+
+import io.jenetics.jpx.WayPoint;
+import io.jenetics.jpx.geom.Geoid;
 
 /**
  * Implementation of the Traveling Salesman Problem, encoded with

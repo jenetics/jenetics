@@ -24,7 +24,6 @@ import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.AbstractAlterer;

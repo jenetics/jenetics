@@ -18,8 +18,6 @@ package io.jenetics.example.image;
 
 import static java.lang.String.format;
 
-import java.util.Random;
-
 import io.jenetics.Crossover;
 import io.jenetics.Gene;
 import io.jenetics.util.MSeq;

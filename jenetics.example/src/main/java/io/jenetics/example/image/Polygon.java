@@ -22,7 +22,6 @@ import static java.lang.String.format;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.util.Requires;
