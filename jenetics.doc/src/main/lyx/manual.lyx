@@ -733,7 +733,7 @@ literal "false"
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 11 runtime.
  Although the library is written in Java 11, it is compilable with Java
- 14.
+ 17.
  
 \family sans
 \series bold
@@ -4863,7 +4863,7 @@ The Monte Carlo selector selects the individuals from a given population
  randomly.
  Instead of a directed search, the Monte Carlo selector performs a random
  search.
- This selector can be used to measure the performance of a other selectors.
+ This selector can be used to measure the performance of other selectors.
  In general, the
 \shape italic
 \emph on
@@ -4911,7 +4911,7 @@ Probability selectors are a variation of
 \shape italic
  fitness proportional
 \shape default
- selectors and selects individuals from a given population based on it's
+ selectors and selects individuals from a given population based on its
 \shape italic
  
 \emph on
@@ -5297,7 +5297,7 @@ where
 \begin_inset Formula $c$
 \end_inset
 
- must within the range 
+ must be within the range 
 \begin_inset Formula $\left[0,1\right)$
 \end_inset
 
@@ -5732,7 +5732,7 @@ where
 \begin_inset Formula $N_{P}$
 \end_inset
 
- the population size (revere to equation 
+ the population size (refer to equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:Number of genes"
@@ -21417,7 +21417,7 @@ final Engine<BitGene, Integer> engine = Engine
 
 \begin_layout Plain Layout
 
-    .bulder(ONES_COUNTING)
+    .builder(ONES_COUNTING)
 \end_layout
 
 \begin_layout Plain Layout
@@ -29208,12 +29208,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-		final CharSequence source =
-\end_layout
-
-\begin_layout Plain Layout
-
-            (CharSequence)gt.chromosome();
+		final var src = gt.chromosome().as(CharSequence.class);
 \end_layout
 
 \begin_layout Plain Layout
@@ -29223,7 +29218,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+			.map(i -> src.charAt(i) == TARGET.charAt(i) ? 1 : 0)
 \end_layout
 
 \begin_layout Plain Layout
@@ -29845,7 +29840,7 @@ Stream
 Evolution\SpecialChar softhyphen
 Stream
 \family default
- stops, it's final 
+ stops, its final 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Result
@@ -39154,7 +39149,7 @@ https://en.wikipedia.org/wiki/Knapsack_problem
 
 \end_inset
 
- a set of items, together with it's size and value, is given.
+ a set of items, together with its size and value, is given.
  The task is to select a disjoint subset so that the total size does not
  exceed the knapsack size.
  For solving the 0/1 knapsack problem we define a
@@ -39289,7 +39284,7 @@ https://en.wikipedia.org/wiki/Travelling_salesman_problem
 \end_inset
 
  different cities.
- Testing all possible path for 
+ Testing all possible paths for 
 \begin_inset Formula $N$
 \end_inset
 
@@ -40709,7 +40704,7 @@ gradlew
 \emph on
  sub
 \emph default
--project is located in it's own
+-project is located in its own
 \emph on
  sub
 \emph default
@@ -41274,7 +41269,7 @@ Version
 \series default
 :
 \emph on
- 3.4.3
+ 3.6
 \end_layout
 
 \begin_layout Itemize
@@ -41507,7 +41502,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.8.2
+: 7.2
 \end_layout
 
 \begin_layout Itemize
@@ -41544,7 +41539,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.8.2-bin.zip
+http://services.gradle.org/distributions/gradle-7.2-bin.zip
 \end_layout
 
 \end_inset

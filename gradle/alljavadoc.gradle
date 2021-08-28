@@ -1,0 +1,24 @@
+rootProject.gradle.projectsEvaluated {
+	def PROJECTS = [
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	]
+
+	final Set<Project> projects = project.subprojects
+		.findAll { prj -> PROJECTS.contains(prj.name) }
+
+	if (!projects.isEmpty()) {
+		rootProject.task('alljavadoc', type: Javadoc) {
+			description = 'Aggregates Javadoc API documentation of all subprojects.'
+			group = JavaBasePlugin.DOCUMENTATION_GROUP
+
+			source = projects.javadoc.source
+			exclude '**/internal/**'
+			destinationDir rootProject.file("$rootProject.buildDir/docs/alljavadoc")
+			classpath = rootProject.files(projects.javadoc.classpath)
+			title = "${project.name} documentation"
+		}
+	}
+}

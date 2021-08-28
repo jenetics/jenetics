@@ -74,6 +74,17 @@ public class ProxySorterTest {
 		Assert.assertEquals(sorted(array, indexes), expected(array));
 	}
 
+	@Test(dataProvider = "arrayRanges")
+	public void binaryInsertionSortRange(
+		final int size,
+		final int from,
+		final int to
+	) {
+		final int[] array = new Random().ints(size).toArray();
+
+		final int[] indexes = ProxySorter.sort(array, from, to);
+		Assert.assertEquals(sorted(array, indexes), expected(array, from, to));
+	}
 
 	@DataProvider(name = "arrays")
 	public Object[][] arrays() {
@@ -100,18 +111,46 @@ public class ProxySorterTest {
 		};
 	}
 
-	private static int[] sorted(final int[] array, final int[] indexes) {
-		final int[] result = array.clone();
-		for (int i = 0; i < array.length; ++i) {
+	@DataProvider(name = "arrayRanges")
+	public Object[][] arrayRanges() {
+		return new Object[][] {
+			{3, 1, 2},
+			{3, 1, 1},
+			{5, 0, 2},
+			{5, 1, 2},
+			{11, 0, 5},
+			{11, 5, 9},
+			{11, 5, 11},
+			{33, 0, 7},
+			{33, 7, 25},
+			{33, 0, 33},
+			{33, 7, 33},
+			{1_000, 0, 1_000},
+			{1_000, 0, 600},
+			{1_000, 500, 600},
+			{1_000, 500, 1_000}
+		};
+	}
+
+	private static int[] sorted(
+		final int[] array,
+		final int[] indexes
+	) {
+		final int[] result = new int[indexes.length];
+		for (int i = 0; i < result.length; ++i) {
 			result[i] = array[indexes[i]];
 		}
 		return result;
 	}
 
-	private static int[] expected(final int[] array) {
-		final int[] result = array.clone();
+	private static int[] expected(final int[] array, final int from, final int to) {
+		final int[] result = Arrays.copyOfRange(array, from, to);
 		Arrays.sort(result);
 		return result;
+	}
+
+	private static int[] expected(final int[] array) {
+		return expected(array,0, array.length);
 	}
 
 }

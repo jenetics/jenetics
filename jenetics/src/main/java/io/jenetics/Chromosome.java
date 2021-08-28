@@ -100,9 +100,9 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *
 	 * @param type the target type class
 	 * @param <C> the target chromosome type
-	 * @return this chromosome casted as {@code C}
+	 * @return this chromosome cast as {@code C}
 	 * @throws NullPointerException if the target type class is {@code null}
-	 * @throws ClassCastException if this chromosome can't be casted to a
+	 * @throws ClassCastException if this chromosome can't be cast to a
 	 *         chromosome of type {@code C}
 	 */
 	default <C extends Chromosome<G>> C as(final Class<C> type) {

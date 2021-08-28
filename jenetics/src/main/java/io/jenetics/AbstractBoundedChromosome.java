@@ -100,8 +100,8 @@ abstract class AbstractBoundedChromosome<
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			Objects.equals(_min, ((AbstractBoundedChromosome)obj)._min) &&
-			Objects.equals(_max, ((AbstractBoundedChromosome)obj)._max) &&
+			Objects.equals(_min, ((AbstractBoundedChromosome<?, ?>)obj)._min) &&
+			Objects.equals(_max, ((AbstractBoundedChromosome<?, ?>)obj)._max) &&
 			super.equals(obj);
 	}
 

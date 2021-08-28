@@ -110,7 +110,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			Objects.equals(_genes, ((AbstractChromosome)obj)._genes);
+			Objects.equals(_genes, ((AbstractChromosome<?>)obj)._genes);
 	}
 
 	@Override

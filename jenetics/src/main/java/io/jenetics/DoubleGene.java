@@ -115,27 +115,27 @@ public final class DoubleGene
 
 	@Override
 	public byte byteValue() {
-		return (byte) _allele;
+		return (byte)_allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short) _allele;
+		return (short)_allele;
 	}
 
 	@Override
 	public int intValue() {
-		return (int) _allele;
+		return (int)_allele;
 	}
 
 	@Override
 	public long longValue() {
-		return (long) _allele;
+		return (long)_allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float) _allele;
+		return (float)_allele;
 	}
 
 	@Override
