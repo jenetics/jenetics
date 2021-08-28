@@ -35,8 +35,9 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	testImplementation(libs.commons.math)
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
+	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.prngine)
 
