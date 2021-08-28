@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 6.1
+ * @version 6.3
  */
 plugins {
 	base
