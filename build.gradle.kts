@@ -86,17 +86,15 @@ gradle.projectsEvaluated {
 
 		tasks.withType<JavaCompile> {
 			options.compilerArgs.add("-Xlint:$xlint")
-			options.compilerArgs.add("--enable-preview")
 		}
 
 		tasks.withType<Test> {
 			useTestNG()
-			jvmArgs("--enable-preview")
 		}
 
 		plugins.withType<JavaPlugin> {
-			configure<JavaPluginConvention> {
-				sourceCompatibility = JavaVersion.VERSION_16
+			configure<JavaPluginExtension> {
+				sourceCompatibility = JavaVersion.VERSION_17
 				targetCompatibility = JavaVersion.current()
 			}
 
@@ -180,8 +178,6 @@ fun setupTestReporting(project: Project) {
 fun setupJavadoc(project: Project, taskName: String) {
 	project.tasks.withType<Javadoc> {
 		val doclet = options as StandardJavadocDocletOptions
-		doclet.addBooleanOption("-enable-preview", true)
-		doclet.addStringOption("-release", "16")
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 
 		exclude("**/internal/**")
@@ -262,7 +258,7 @@ fun setupJavadoc(project: Project, taskName: String) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html
+	// See https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html
 	return listOf(
 		"cast",
 		"classfile",
