@@ -36,6 +36,7 @@ java.util.concurrent.atomic
 java.util.concurrent.locks
 java.util.function
 java.util.jar
+java.util.random
 java.util.regex
 java.util.spi
 java.util.stream
@@ -140,7 +141,6 @@ module:java.prefs
 java.util.prefs
 module:java.rmi
 java.rmi
-java.rmi.activation
 java.rmi.dgc
 java.rmi.registry
 java.rmi.server
@@ -223,7 +223,8 @@ com.sun.net.httpserver
 com.sun.net.httpserver.spi
 module:jdk.incubator.foreign
 jdk.incubator.foreign
-module:jdk.incubator.jpackage
+module:jdk.incubator.vector
+jdk.incubator.vector
 module:jdk.jartool
 com.sun.jarsigner
 jdk.security.jarsigner
@@ -244,6 +245,7 @@ module:jdk.jfr
 jdk.jfr
 jdk.jfr.consumer
 module:jdk.jlink
+module:jdk.jpackage
 module:jdk.jshell
 jdk.jshell
 jdk.jshell.execution
