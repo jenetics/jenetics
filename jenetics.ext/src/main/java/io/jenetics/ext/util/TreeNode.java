@@ -614,6 +614,7 @@ public final class TreeNode<T>
 		FlatTreeNode.ofTree(this).write(out);
 	}
 
+	@SuppressWarnings("unchecked")
 	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{

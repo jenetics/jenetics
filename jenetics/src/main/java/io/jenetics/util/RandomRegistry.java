@@ -83,7 +83,6 @@ import java.util.function.Supplier;
  *     }
  * }
  * }</pre>
- * <p>
  *
  * @see Random
  * @see ThreadLocalRandom
