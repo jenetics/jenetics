@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;

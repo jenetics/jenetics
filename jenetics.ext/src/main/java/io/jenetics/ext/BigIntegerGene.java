@@ -27,7 +27,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Objects;
-import java.util.Random;
 
 import io.jenetics.NumericGene;
 import io.jenetics.internal.util.Requires;

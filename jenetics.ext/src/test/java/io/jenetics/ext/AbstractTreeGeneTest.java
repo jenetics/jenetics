@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;

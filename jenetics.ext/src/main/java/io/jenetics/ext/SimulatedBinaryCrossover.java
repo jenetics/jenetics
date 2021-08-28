@@ -24,8 +24,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
-import java.util.Random;
-
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
 import io.jenetics.internal.math.Randoms;

@@ -21,8 +21,6 @@ package io.jenetics.ext;
 
 import static java.lang.Math.min;
 
-import java.util.Random;
-
 import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;

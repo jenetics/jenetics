@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext;
 
-import java.util.Random;
-
 import io.jenetics.Chromosome;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;

@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.Combinatorics.subset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
