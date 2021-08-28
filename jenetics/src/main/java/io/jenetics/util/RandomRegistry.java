@@ -88,29 +88,34 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 public final class RandomRegistry {
 	private RandomRegistry() {}
 
+	/**
+	 * Thread local wrapper for a random generator supplier (factory).
+	 *
+	 * @param <R> the type of the random generator
+	 */
 	private static final class TLR<R extends RandomGenerator>
 		extends ThreadLocal<R>
 		implements Supplier<R>
 	{
-		private final RandomGeneratorFactory<R> _factory;
+		private final Supplier<? extends R> _factory;
 
-		TLR(final RandomGeneratorFactory<R> factory) {
+		TLR(final Supplier<? extends R> factory) {
 			_factory = requireNonNull(factory);
 		}
 
 		@Override
 		protected synchronized R initialValue() {
-			return _factory.create();
+			return _factory.get();
 		}
 	}
 
 	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
-		new TLR<>(RandomGeneratorFactory.getDefault());
+		new TLR<>(RandomGeneratorFactory.getDefault()::create);
 
 	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
@@ -139,7 +144,7 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void random(final RandomGenerator random) {
-		requireNonNull(random, "Random must not be null.");
+		requireNonNull(random);
 		CONTEXT.set(() -> random);
 	}
 
@@ -155,7 +160,13 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static <R extends RandomGenerator> void
-	random(final RandomGeneratorFactory<R> factory) {
+	random(final RandomGeneratorFactory<? extends R> factory) {
+		requireNonNull(factory);
+		CONTEXT.set(new TLR<>(factory::create));
+	}
+
+	public static <R extends RandomGenerator> void
+	random(final Supplier<? extends R> factory) {
 		requireNonNull(factory);
 		CONTEXT.set(new TLR<>(factory));
 	}
@@ -193,10 +204,10 @@ public final class RandomRegistry {
 		final R random,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(() -> random, r -> {
-			consumer.accept(random);
-			return null;
-		});
+		CONTEXT.with(
+			() -> random,
+			r -> { consumer.accept(random); return null; }
+		);
 	}
 
 	/**
@@ -212,7 +223,7 @@ public final class RandomRegistry {
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code LCG64ShiftRandom.ThreadLocal()} engine.
 	 *
-	 * @since 3.0
+	 * @since !__version__!
 	 *
 	 * @param factory the PRNG used within the consumer
 	 * @param consumer the consumer which is executed with the <i>scope</i> of
@@ -221,13 +232,23 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <R extends RandomGenerator> void using(
-		final RandomGeneratorFactory<R> factory,
+		final RandomGeneratorFactory<? extends R> factory,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(new TLR<>(factory), r -> {
-			consumer.accept(r.get());
-			return null;
-		});
+		CONTEXT.with(
+			new TLR<>(factory::create),
+			r -> { consumer.accept(r.get()); return null; }
+		);
+	}
+
+	public static <R extends RandomGenerator> void using(
+		final Supplier<? extends R> supplier,
+		final Consumer<? super R> consumer
+	) {
+		CONTEXT.with(
+			new TLR<>(supplier),
+			r -> { consumer.accept(r.get()); return null; }
+		);
 	}
 
 	/**
@@ -256,7 +277,10 @@ public final class RandomRegistry {
 		final R random,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(() -> random, s -> function.apply(random));
+		return CONTEXT.with(
+			() -> random,
+			s -> function.apply(random)
+		);
 	}
 
 	/**
@@ -282,10 +306,23 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <R extends RandomGenerator, T> T with(
-		final RandomGeneratorFactory<R> factory,
+		final RandomGeneratorFactory<? extends R> factory,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(new TLR<>(factory), r -> function.apply(r.get()));
+		return CONTEXT.with(
+			new TLR<>(factory::create),
+			r -> function.apply(r.get())
+		);
+	}
+
+	public static <R extends RandomGenerator, T> T with(
+		final Supplier<? extends R> supplier,
+		final Function<? super R, ? extends T> function
+	) {
+		return CONTEXT.with(
+			new TLR<>(supplier),
+			r -> function.apply(r.get())
+		);
 	}
 
 }
