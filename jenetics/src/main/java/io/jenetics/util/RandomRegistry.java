@@ -31,33 +31,77 @@ import java.util.random.RandomGeneratorFactory;
 
 /**
  * This class holds the {@link RandomGenerator} engine used for the GA. The
- * {@code RandomRegistry} is thread safe. The registry is initialized with the
+ * {@code RandomRegistry} is thread safe and is initialized with the
  * {@link RandomGeneratorFactory#getDefault()} PRNG.
+ *
+ * <h2>Setup the PRNG used for the evolution process</h2>
+ * There are several ways on how to set the {@link RandomGenerator} used during
+ * the evolution process.
  * <p>
  *
- * <b>Setup of a <i>global</i> PRNG</b>
+ * <b>Using a {@link RandomGeneratorFactory}</b><br>
+ * The following example registers the <em>L128X1024MixRandom</em> random
+ * generator. By using a factory, each threads gets its own generator instance,
+ * which ensures thread-safety without the necessity of the created random
+ * generator to be thread-safe.
+ * <pre>{@code
+ * // This is the default setup.
+ * RandomRegistry.random(RandomGeneratorFactory.getDefault());
  *
+ * // Using the "L128X1024MixRandom" random generator for the evolution.
+ * RandomRegistry.random(RandomGeneratorFactory.of("L128X1024MixRandom"));
+ * }</pre>
+ * <br>
+ *
+ * <b>Using a {@link RandomGenerator} {@link Supplier}</b><br>
+ * If you have a random engine, which is not available as
+ * {@link RandomGeneratorFactory}, it is also possible to register a
+ * {@link Supplier} of the desired random generator. This method has the same
+ * thread-safety property as the method above.
+ * <pre>{@code
+ * RandomRegistry.random(() -> new MySpecialRandomGenerator());
+ * }</pre>
+ *
+ * Register a random generator supplier is also more flexible. It allows to
+ * use the streaming and splitting capabilities of the random generators
+ * implemented in the Java library.
+ * <pre>{@code
+ * final Iterator<RandomGenerator> randoms =
+ *     StreamableGenerator.of("L128X1024MixRandom")
+ *         .rngs()
+ *         .iterator();
+ *
+ * RandomRegistry.random(randoms::next);
+ * }</pre>
+ * <br>
+ *
+ * <b>Using a {@link RandomGenerator} instance</b><br>
+ * It is also possible to set a single random generator instance for the whole
+ * evolution process. When using this setup, the used random generator must be
+ * thread safe.
+ * <pre>{@code
+ * RandomRegistry.random(new Random(123456));
+ * }</pre>
+ * <p>
+ *
+ * The following code snippet shows an almost complete example of a typical
+ * random generator setup.
  * <pre>{@code
  * public class GA {
  *     public static void main(final String[] args) {
- *         // Initialize the registry with a ThreadLocal instance of the PRGN.
- *         // This is the preferred way setting a new PRGN.
- *         RandomRegistry.random(new LCG64ShiftRandom.ThreadLocal());
+ *         // Initialize the registry with the factory of the PRGN.
+ *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
+ *         RandomRegistry.random(factory);
  *
- *         // Using a thread safe variant of the PRGN. Leads to slower PRN
- *         // generation, but gives you the possibility to set a PRNG seed.
- *         RandomRegistry.random(new LCG64ShiftRandom.ThreadSafe(1234));
- *
- *         ...
- *         final EvolutionResult<DoubleGene, Double> result = stream
+ *         final Engine<DoubleGene, Double> engine = ...;
+ *         final EvolutionResult<DoubleGene, Double> result = engine.stream()
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
  *     }
  * }
  * }</pre>
- * <p>
  *
- * <b>Setup of a <i>local</i> PRNG</b><br>
+ * <h2>Setup of a <i>local</i> PRNG</h2>
  *
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.
  * for initialize the engine stream with the same initial population.
@@ -66,8 +110,9 @@ import java.util.random.RandomGeneratorFactory;
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Create a reproducible list of genotypes.
+ *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes =
- *             with(new LCG64ShiftRandom(123), r ->
+ *             with(factory.create(123), r ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -84,7 +129,7 @@ import java.util.random.RandomGeneratorFactory;
  * }</pre>
  *
  * @see RandomGenerator
- * @see java.util.random.RandomGeneratorFactory
+ * @see RandomGeneratorFactory
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
