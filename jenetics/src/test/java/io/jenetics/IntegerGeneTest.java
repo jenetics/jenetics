@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
@@ -96,6 +97,19 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			assertEquals(c.max().longValue(), max);
 			assertEquals(c.allele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
+	}
+
+	@Test
+	public void meanOverflow() {
+		final int a = Integer.MAX_VALUE - 1;
+		final int b = Integer.MIN_VALUE;
+		final long mean = (a + b)/2;
+
+		final var g1 = IntegerGene.of(a, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		final var g2 = IntegerGene.of(b, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		final var g3 = g1.mean(g2);
+
+		assertThat(g3.allele()).isEqualTo((int)mean);
 	}
 
 	@Test
