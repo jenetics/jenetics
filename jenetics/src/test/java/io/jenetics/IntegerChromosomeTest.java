@@ -69,7 +69,7 @@ public class IntegerChromosomeTest
 			}
 
 			Assert.assertTrue(mm.min().compareTo(0) >= 0);
-			Assert.assertTrue(mm.max().compareTo(100) <= 100);
+			Assert.assertTrue(mm.max().compareTo(100) < 100);
 			assertUniformDistribution(histogram);
 		});
 	}

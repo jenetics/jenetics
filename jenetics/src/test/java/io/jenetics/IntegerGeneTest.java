@@ -51,8 +51,8 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final Integer min = 0;
-		final Integer max = Integer.MAX_VALUE;
+		final int min = 0;
+		final int max = Integer.MAX_VALUE;
 		final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 		using(new Random(12345), r ->
@@ -66,10 +66,15 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test
 	public void parameters() {
-		final IntegerGene gene = IntegerGene.of(10, 10);
+		final IntegerGene gene = IntegerGene.of(10, 11);
 		Assert.assertEquals(gene.min().intValue(), 10);
-		Assert.assertEquals(gene.max().intValue(), 10);
+		Assert.assertEquals(gene.max().intValue(), 11);
 		Assert.assertEquals(gene.allele().intValue(), 10);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void invalidParameters() {
+		IntegerGene.of(10, 10);
 	}
 
 	@Test
