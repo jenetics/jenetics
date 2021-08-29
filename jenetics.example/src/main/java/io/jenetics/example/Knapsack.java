@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -129,7 +130,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 		 * @return a new <i>random</i> knapsack item
 		 * @throws NullPointerException if the random engine is {@code null}
 		 */
-		public static Item random(final Random random) {
+		public static Item random(final RandomGenerator random) {
 			return new Item(random.nextDouble()*100, random.nextDouble()*100);
 		}
 
@@ -188,7 +189,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 *        {@code Knapsack} problems, respectively.
 	 * @return a {@code Knapsack} problem object (for testing purpose).
 	 */
-	public static Knapsack of(final int itemCount, final Random random) {
+	public static Knapsack of(final int itemCount, final RandomGenerator random) {
 		requireNonNull(random);
 
 		return new Knapsack(

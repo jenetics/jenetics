@@ -21,9 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Randoms.nextDouble;
-
-import java.util.Random;
 
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
@@ -109,7 +106,7 @@ public class IntermediateCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double min = v.get(0).min().doubleValue();
 		final double max = v.get(0).max().doubleValue();
@@ -124,8 +121,8 @@ public class IntermediateCrossover<
 
 				double t, s;
 				do {
-					final double a = nextDouble(-_p, 1 + _p, random);
-					final double b = nextDouble(-_p, 1 + _p, random);
+					final double a = random.nextDouble(-_p, 1 + _p);
+					final double b = random.nextDouble(-_p, 1 + _p);
 
 					t = a*vi + (1 - a)*wi;
 					s = b*wi + (1 - b)*vi;

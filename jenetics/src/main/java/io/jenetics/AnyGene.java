@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -211,7 +210,10 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return MSeq.<AnyGene<A>>ofLength(Randoms.nextInt(lengthRange, random()))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<AnyGene<A>>ofLength(length)
 			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}

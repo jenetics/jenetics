@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
@@ -43,7 +44,7 @@ public class CirclePointsEncoding {
 		gnuplot.create(data, output);
 	}
 
-	private static double[] point(final Random random) {
+	private static double[] point(final RandomGenerator random) {
 		final double r = 1 - random.nextDouble()*2;
 		final double a = random.nextDouble()*2*PI;
 

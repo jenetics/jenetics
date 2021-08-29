@@ -24,7 +24,6 @@ import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.AbstractAlterer;
@@ -48,7 +47,7 @@ public class DynamicGenotype {
 
 	// Explicit Genotype factory instead of Genotype templates.
 	private static final Factory<Genotype<DoubleGene>> ENCODING = () -> {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		return Genotype.of(
 			// Vary the chromosome count between 10 and 20.
 			IntStream.range(0, random.nextInt(10) + 10)
@@ -106,7 +105,7 @@ public class DynamicGenotype {
 				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final double rd = random.nextDouble();
 			if (rd < 1/3.0) {
 				chromosomes.remove(0);
@@ -134,7 +133,7 @@ public class DynamicGenotype {
 		}
 
 		private int mutate(final List<G> genes, final double p) {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return (int)indexes(random, genes.size(), p)
 				.peek(i -> genes.set(i, genes.get(i).newInstance()))
 				.count();

@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serial;
-import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
@@ -152,7 +151,7 @@ public final class ProgramGene<A>
 
 	@Override
 	public ProgramGene<A> newInstance() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		Op<A> operation = value();
 		if (isLeaf()) {

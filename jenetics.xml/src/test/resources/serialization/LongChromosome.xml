@@ -3,7 +3,6 @@
     <min>-9223372036854775808</min>
     <max>9223372036854775807</max>
     <alleles>
-        <allele>-8069223231273077030</allele>
         <allele>-4111772314810463982</allele>
         <allele>-380826747604496445</allele>
         <allele>6246972533032081786</allele>
@@ -23,5 +22,6 @@
         <allele>4374187880249812222</allele>
         <allele>-7863855656443022702</allele>
         <allele>1386882606293782618</allele>
+        <allele>-404495742865627634</allele>
     </alleles>
 </long-chromosome>

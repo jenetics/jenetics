@@ -31,9 +31,8 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -276,9 +275,11 @@ public final class LongGene
 		final long max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
-		return MSeq.<LongGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<LongGene>ofLength(length)
+			.fill(() -> LongGene.of(nextLong(random, min, max), min, max))
 			.toISeq();
 	}
 
@@ -297,7 +298,7 @@ public final class LongGene
 	 *         engine is {@code null}.
 	 */
 	static long nextLong(
-		final Random random,
+		final RandomGenerator random,
 		final long min, final long max
 	) {
 		if (min > max) {
@@ -337,7 +338,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	static long nextLong(final Random random, final long n) {
+	static long nextLong(final RandomGenerator random, final long n) {
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
 				"n is smaller than one: %d", n

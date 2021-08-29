@@ -21,8 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 
-import java.util.Random;
-
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -69,7 +67,7 @@ public abstract class Crossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final var pt1 = population.get(individuals[0]);
 		final var pt2 = population.get(individuals[1]);

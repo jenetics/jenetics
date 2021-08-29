@@ -18,8 +18,6 @@ package io.jenetics.example.image;
 
 import static java.lang.String.format;
 
-import java.util.Random;
-
 import io.jenetics.Crossover;
 import io.jenetics.Gene;
 import io.jenetics.util.MSeq;
@@ -70,7 +68,7 @@ final class UniformCrossover<
 		assert that.length() == other.length();
 
 		int alteredGenes = 0;
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < that.length(); ++i) {
 			if (random.nextFloat() < probability()) {
 				crossover(that, other, i);

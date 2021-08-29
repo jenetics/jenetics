@@ -67,7 +67,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void mean() {
-		final double min = -Double.MAX_VALUE;
+		final double min = 0;
 		final double max = Double.MAX_VALUE;
 		final DoubleGene template = DoubleGene.of(min, max);
 

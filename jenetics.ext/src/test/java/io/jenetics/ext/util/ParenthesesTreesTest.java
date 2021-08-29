@@ -21,6 +21,7 @@ package io.jenetics.ext.util;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,7 +36,7 @@ public class ParenthesesTreesTest {
 
 	private static final String CHARS = "qwertzudsa(),\\WERTZUIO";
 
-	private static String nextString(final int length, final Random random) {
+	private static String nextString(final int length, final RandomGenerator random) {
 		return IntStream.range(0, length)
 			.mapToObj(i -> CHARS.charAt(random.nextInt(CHARS.length())))
 			.map(Objects::toString)

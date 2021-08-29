@@ -22,7 +22,6 @@ package io.jenetics.example;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.Limits.byFixedGeneration;
 
-import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.AnyChromosome;
@@ -64,7 +63,7 @@ public final class RectFill
 		}
 
 		static Rect newInstance(final Rect bounds) {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return new Rect(
 				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,
 				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,

@@ -42,7 +42,7 @@ import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 64 bit integer numbers.
+ * Numeric chromosome implementation which holds 64-bit integer numbers.
  *
  * @see LongGene
  *

@@ -19,7 +19,7 @@
  */
 package io.jenetics.internal.util;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.RandomRegistry;
 
@@ -90,15 +90,19 @@ public final class Arrays {
 	}
 
 	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * Randomize the {@code array} using the given {@link RandomGenerator}
+	 * object. The used shuffling algorithm is from D. Knuth TAOCP, Seminumerical
+	 * Algorithms, Third edition, page 142, Algorithm S (Selection sampling
+	 * technique).
 	 *
 	 * @param array the array to shuffle
 	 * @param random the PRNG
 	 * @return the shuffled array
 	 */
-	public static double[] shuffle(final double[] array, final Random random) {
+	public static double[] shuffle(
+		final double[] array,
+		final RandomGenerator random
+	) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -109,7 +113,10 @@ public final class Arrays {
 		return shuffle(array, RandomRegistry.random());
 	}
 
-	public static int[] shuffle(final int[] array, final Random random) {
+	public static int[] shuffle(
+		final int[] array,
+		final RandomGenerator random
+	) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

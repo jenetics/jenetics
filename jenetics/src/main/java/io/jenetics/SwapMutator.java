@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.MSeq;
 
@@ -76,7 +76,7 @@ public class SwapMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -127,7 +128,7 @@ public class PersistentObject<T> {
 		final Reader<? extends T> reader
 	) {
 		VALUES.add(new PersistentObject<>(name, value, writer, reader));
-		RandomRegistry.random().setSeed(SEED);
+		RandomRegistry.random(new LCG64ShiftRandom(SEED));
 	}
 
 	private static void init() {
@@ -457,12 +458,12 @@ public class PersistentObject<T> {
 	}
 
 
-	private static Random random() {
+	private static RandomGenerator random() {
 		return RandomRegistry.random();
 	}
 
 	static {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(SEED);
+		final Random random = new LCG64ShiftRandom(SEED);
 		using(random, r -> init());
 	}
 

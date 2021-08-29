@@ -3,7 +3,6 @@
     <min>0.0</min>
     <max>1.0</max>
     <alleles>
-        <allele>0.27251556008507416</allele>
         <allele>0.003140816229067145</allele>
         <allele>0.43947528327497376</allele>
         <allele>0.10654807463069327</allele>
@@ -23,5 +22,6 @@
         <allele>0.2648197379297126</allele>
         <allele>0.8732775776362911</allele>
         <allele>0.9498003919007005</allele>
+        <allele>0.18390258154466066</allele>
     </alleles>
 </double-chromosome>

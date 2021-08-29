@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.RandomRegistry;
 
@@ -55,7 +55,7 @@ public final class Combinatorics {
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 *
-	 * @see #subset(int, int[], Random)
+	 * @see #subset(int, int[], RandomGenerator)
 	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
@@ -65,7 +65,11 @@ public final class Combinatorics {
 	 *         {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
-	public static int[] subset(final int n, final int k, final Random random) {
+	public static int[] subset(
+		final int n,
+		final int k,
+		final RandomGenerator random
+	) {
 		requireNonNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(format(
@@ -112,7 +116,11 @@ public final class Combinatorics {
 	 *         overflow.
 	 * @return the subset array
 	 */
-	public static int[] subset(final int[] set, final int k, final Random random) {
+	public static int[] subset(
+		final int[] set,
+		final int k,
+		final RandomGenerator random
+	) {
 		final int[] sub = subset(set.length, new int[k], random);
 		for (int i = 0; i < k; ++i) {
 			sub[i] = set[sub[i]];
@@ -126,7 +134,7 @@ public final class Combinatorics {
 	 * Selects a random subset of size {@code sub.length} from a set of size
 	 * {@code n}.
 	 *
-	 * @see #subset(int, int[], Random)
+	 * @see #subset(int, int[], RandomGenerator)
 	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
@@ -166,7 +174,11 @@ public final class Combinatorics {
 	 *         {@code a.length == 0} or {@code n*a.length} will cause an
 	 *         integer overflow.
 	 */
-	public static int[] subset(final int n, final int[] a, final Random random) {
+	public static int[] subset(
+		final int n,
+		final int[] a,
+		final RandomGenerator random
+	) {
 		requireNonNull(random, "Random");
 		requireNonNull(a, "Sub set array");
 
@@ -273,7 +285,7 @@ public final class Combinatorics {
 		}
 	}
 
-	private static int nextX(final Random random, final int m) {
+	private static int nextX(final RandomGenerator random, final int m) {
 		return random.nextInt(m + 1);
 	}
 
