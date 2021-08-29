@@ -90,9 +90,9 @@ final class Serial implements Externalizable {
 			case INTEGER_CHROMOSOME -> ((IntegerChromosome)_object).write(out);
 			case LONG_CHROMOSOME -> ((LongChromosome)_object).write(out);
 			case CHARACTER_CHROMOSOME -> ((CharacterChromosome)_object).write(out);
-			case PERMUTATION_CHROMOSOME -> ((PermutationChromosome)_object).write(out);
-			case GENOTYPE -> ((Genotype)_object).write(out);
-			case PHENOTYPE -> ((Phenotype)_object).write(out);
+			case PERMUTATION_CHROMOSOME -> ((PermutationChromosome<?>)_object).write(out);
+			case GENOTYPE -> ((Genotype<?>)_object).write(out);
+			case PHENOTYPE -> ((Phenotype<?, ?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}

@@ -54,10 +54,10 @@ final class Serial implements Externalizable {
 		out.writeByte(_type);
 		switch (_type) {
 			case EVOLUTION_DURATIONS -> ((EvolutionDurations)_object).write(out);
-			case EVOLUTION_INIT -> ((EvolutionInit)_object).write(out);
-			case EVOLUTION_PARAMS -> ((EvolutionParams)_object).write(out);
-			case EVOLUTION_RESULT -> ((EvolutionResult)_object).write(out);
-			case EVOLUTION_START -> ((EvolutionStart)_object).write(out);
+			case EVOLUTION_INIT -> ((EvolutionInit<?>)_object).write(out);
+			case EVOLUTION_PARAMS -> ((EvolutionParams<?, ?>)_object).write(out);
+			case EVOLUTION_RESULT -> ((EvolutionResult<?, ?>)_object).write(out);
+			case EVOLUTION_START -> ((EvolutionStart<?, ?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}

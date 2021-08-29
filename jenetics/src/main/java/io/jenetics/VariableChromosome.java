@@ -110,7 +110,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			Objects.equals(_lengthRange, ((VariableChromosome)obj)._lengthRange) &&
+			Objects.equals(_lengthRange, ((VariableChromosome<?>)obj)._lengthRange) &&
 			super.equals(obj);
 	}
 

@@ -70,8 +70,8 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case OBJECT_STORE -> ((ObjectStore)_object).write(out);
-			case ARRAY -> ((Array)_object).write(out);
+			case OBJECT_STORE -> ((ObjectStore<?>)_object).write(out);
+			case ARRAY -> ((Array<?>)_object).write(out);
 			case CHAR_STORE -> ((CharStore)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}

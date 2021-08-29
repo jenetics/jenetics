@@ -165,7 +165,7 @@ public final class Combinatorics {
 	 *      Page: 42</em>
 	 *
 	 * @param n the size of the set.
-	 * @param a the a set array.
+	 * @param a a set array.
 	 * @param random the random number generator used.
 	 * @return the a-set array for the given parameter
 	 * @throws NullPointerException if {@code a} or {@code random} is
