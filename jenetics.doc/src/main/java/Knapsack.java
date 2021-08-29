@@ -1,7 +1,6 @@
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;

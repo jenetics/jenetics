@@ -19,8 +19,8 @@
  */
 package io.jenetics.example;
 
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGeneratorFactory;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
@@ -47,8 +47,10 @@ public class ReproducibleGA {
 	CODEC = Codecs.ofScalar(DoubleRange.of(0, 1));
 
 	public static void main(final String[] args) {
+		final var random = RandomGeneratorFactory.getDefault();
+
 		final ISeq<Genotype<DoubleGene>> population =
-			RandomRegistry.with(new Random(123), r ->
+			RandomRegistry.with(random.create(123), r ->
 				CODEC.encoding().instances()
 					.limit(10)
 					.collect(ISeq.toISeq())
@@ -60,7 +62,7 @@ public class ReproducibleGA {
 				.build();
 
 		final EvolutionResult<DoubleGene, Double> result =
-			RandomRegistry.with(new Random(456), r ->
+			RandomRegistry.with(random.create(456), r ->
 				engine.stream(population)
 					.limit(100)
 					.collect(EvolutionResult.toBestEvolutionResult())
