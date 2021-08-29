@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
@@ -30,7 +29,6 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -185,7 +183,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance() {
-		return of(nextDouble(_min, _max, random()), _min, _max);
+		return of(random().nextDouble(_min, _max), _min, _max);
 	}
 
 	@Override
@@ -255,9 +253,12 @@ public final class DoubleGene
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code DoubleGene} with the given parameter
+	 * @throws IllegalArgumentException if {@code min} is not finite,
+	 *         or {@code max} is not finite, or {@code min}
+	 *         is greater than or equal to {@code max}
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(min, max, random()), min, max);
+		return of(random().nextDouble(min, max), min, max);
 	}
 
 	/**
@@ -269,9 +270,12 @@ public final class DoubleGene
 	 * @param range the double range to use
 	 * @return a new {@code DoubleGene} with the given parameter
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min} is not finite,
+	 *         or {@code max} is not finite, or {@code min}
+	 *         is greater than or equal to {@code max}
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.min(), range.max(), random()), range);
+		return of(range.min(), range.max());
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -279,9 +283,11 @@ public final class DoubleGene
 		final double max,
 		final IntRange lengthRange
 	) {
-		final var r = random();
-		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<DoubleGene>ofLength(length)
+			.fill(() -> new DoubleGene(random.nextDouble(min, max), min, max))
 			.toISeq();
 	}
 

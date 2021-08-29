@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Randoms.nextDouble;
 
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
@@ -106,8 +105,8 @@ public class LineCrossover<
 		final double min = v.get(0).min().doubleValue();
 		final double max = v.get(0).max().doubleValue();
 
-		final double a = nextDouble(-_p, 1 + _p, random);
-		final double b = nextDouble(-_p, 1 + _p, random);
+		final double a = random.nextDouble(-_p, 1 + _p);
+		final double b = random.nextDouble(-_p, 1 + _p);
 
 		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {

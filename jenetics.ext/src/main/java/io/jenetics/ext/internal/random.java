@@ -47,38 +47,6 @@ public class random {
 	 *         number generator's sequence
 	 * @throws IllegalArgumentException if n is smaller than 1.
 	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	public static long nextLong(final long n, final RandomGenerator random) {
-		if (n <= 0) {
-			throw new IllegalArgumentException(format(
-				"n is smaller than one: %d", n
-			));
-		}
-
-		long bits;
-		long result;
-		do {
-			bits = random.nextLong() & 0x7fffffffffffffffL;
-			result = bits%n;
-		} while (bits - result + (n - 1) < 0);
-
-		return result;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between 0
-	 * (inclusive) and the specified value (exclusive), drawn from the given
-	 * random number generator's sequence.
-	 *
-	 * @param n the bound on the random number to be returned. Must be
-	 *        positive.
-	 * @param random the random engine used for creating the random number.
-	 * @return the next pseudo-random, uniformly distributed int value
-	 *         between 0 (inclusive) and n (exclusive) from the given random
-	 *         number generator's sequence
-	 * @throws IllegalArgumentException if n is smaller than 1.
-	 * @throws NullPointerException if the given {@code random}
 	 *         engine of the maximal value {@code n} is {@code null}.
 	 */
 	public static BigInteger nextBigInteger(
@@ -95,7 +63,7 @@ public class random {
 		if (n.bitLength() <= Integer.SIZE - 1) {
 			result = BigInteger.valueOf(random.nextInt(n.intValue()));
 		} else if (n.bitLength() <= Long.SIZE - 1) {
-			result = BigInteger.valueOf(nextLong(n.longValue(), random));
+			result = BigInteger.valueOf(random.nextLong(n.longValue()));
 		} else {
 			final var rnd = RandomAdapter.of(random);
 			do {
@@ -133,10 +101,6 @@ public class random {
 
 		final BigInteger n = max.subtract(min).add(BigInteger.ONE);
 		return nextBigInteger(n, random).add(min);
-	}
-
-	public static BigInteger nextBigInteger(final RandomGenerator random) {
-		return new BigInteger(100, RandomAdapter.of(random));
 	}
 
 }

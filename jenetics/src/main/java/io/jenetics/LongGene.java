@@ -33,7 +33,6 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.random.RandomGenerator;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -276,9 +275,11 @@ public final class LongGene
 		final long max,
 		final IntRange lengthRange
 	) {
-		final var r = random();
-		return MSeq.<LongGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<LongGene>ofLength(length)
+			.fill(() -> LongGene.of(nextLong(random, min, max), min, max))
 			.toISeq();
 	}
 
