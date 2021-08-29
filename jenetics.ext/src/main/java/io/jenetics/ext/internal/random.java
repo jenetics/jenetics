@@ -97,7 +97,7 @@ public class random {
 		} else if (n.bitLength() <= Long.SIZE - 1) {
 			result = BigInteger.valueOf(nextLong(n.longValue(), random));
 		} else {
-			final var rnd = new RandomAdapter(random);
+			final var rnd = RandomAdapter.of(random);
 			do {
 				result = new BigInteger(n.bitLength(), rnd).mod(n);
 			} while (result.compareTo(n) > 0);
@@ -136,7 +136,7 @@ public class random {
 	}
 
 	public static BigInteger nextBigInteger(final RandomGenerator random) {
-		return new BigInteger(100, new RandomAdapter(random));
+		return new BigInteger(100, RandomAdapter.of(random));
 	}
 
 }

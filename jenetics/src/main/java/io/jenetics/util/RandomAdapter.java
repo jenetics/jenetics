@@ -29,6 +29,14 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 /**
+ * Some places in the Java API still require a {@link Random} object instead of
+ * the new {@link RandomGenerator}. This class can be used by using this adapter
+ * class.
+ * <pre>{@code
+ * final var random = RandomGenerator.getDefault();
+ * final var bi = new BigInteger(100, RandomAdapter.of(random)
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
@@ -40,7 +48,7 @@ public final class RandomAdapter extends Random {
 
 	private final RandomGenerator _random;
 
-	public RandomAdapter(final RandomGenerator random) {
+	private RandomAdapter(final RandomGenerator random) {
 		_random = requireNonNull(random);
 	}
 
@@ -192,5 +200,15 @@ public final class RandomAdapter extends Random {
 	@Override
 	public double nextExponential() {
 		return _random.nextExponential();
+	}
+
+	/**
+	 * Create a new {@link Random} object from the given {@code random} generator.
+	 *
+	 * @param random the random generator to adapt
+	 * @return the adapted random generator
+	 */
+	public static Random of(final RandomGenerator random) {
+		return new RandomAdapter(random);
 	}
 }
