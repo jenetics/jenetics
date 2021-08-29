@@ -66,11 +66,11 @@ import io.jenetics.prog.op.Program;
  */
 public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>
-	implements Function<A[], A>
+	implements Function<A[], A>, Serializable
 {
 
 	@java.io.Serial
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<Op<A>> _operations;

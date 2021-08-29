@@ -19,6 +19,9 @@
  */
 package io.jenetics.ext;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import io.jenetics.Chromosome;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -26,9 +29,13 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGene> {
+final class IntTreeChromosome
+	extends AbstractTreeChromosome<Integer, IntTreeGene>
+	implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	public IntTreeChromosome(final ISeq<? extends IntTreeGene> genes) {
 		super(genes);

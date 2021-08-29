@@ -21,8 +21,6 @@ package io.jenetics;
 
 import static io.jenetics.internal.util.Hashes.hash;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -41,11 +39,8 @@ abstract class AbstractBoundedChromosome<
 	G extends BoundedGene<A, G>
 >
 	extends VariableChromosome<G>
-	implements BoundedChromosome<A, G>, Serializable
+	implements BoundedChromosome<A, G>
 {
-
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The minimum value of this {@code BoundedChromosome}.

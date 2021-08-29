@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext;
 
-import java.io.Serial;
-
 import io.jenetics.AbstractChromosome;
 import io.jenetics.util.ISeq;
 
@@ -35,9 +33,6 @@ public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>
 	extends AbstractChromosome<G>
 	implements TreeChromosome<A, G>
 {
-
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
 		super(genes);
