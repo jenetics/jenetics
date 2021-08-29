@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import java.math.BigInteger;
 import java.util.random.RandomGenerator;
 
-import io.jenetics.util.RandomWrapper;
+import io.jenetics.util.RandomAdapter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -97,7 +97,7 @@ public class random {
 		} else if (n.bitLength() <= Long.SIZE - 1) {
 			result = BigInteger.valueOf(nextLong(n.longValue(), random));
 		} else {
-			final var rnd = new RandomWrapper(random);
+			final var rnd = new RandomAdapter(random);
 			do {
 				result = new BigInteger(n.bitLength(), rnd).mod(n);
 			} while (result.compareTo(n) > 0);
@@ -136,7 +136,7 @@ public class random {
 	}
 
 	public static BigInteger nextBigInteger(final RandomGenerator random) {
-		return new BigInteger(100, new RandomWrapper(random));
+		return new BigInteger(100, new RandomAdapter(random));
 	}
 
 }

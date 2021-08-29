@@ -33,14 +33,14 @@ import java.util.stream.LongStream;
  * @since 7.0
  * @version 7.0
  */
-public final class RandomWrapper extends Random {
+public final class RandomAdapter extends Random {
 
 	@Serial
 	private static final long serialVersionUID = 1;
 
 	private final RandomGenerator _random;
 
-	public RandomWrapper(final RandomGenerator random) {
+	public RandomAdapter(final RandomGenerator random) {
 		_random = requireNonNull(random);
 	}
 
