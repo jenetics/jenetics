@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serial;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -86,9 +85,6 @@ import io.jenetics.util.IntRange;
  * @since 3.3
  */
 public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
-
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
