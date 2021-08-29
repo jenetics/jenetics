@@ -35,7 +35,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
 
-import io.jenetics.ext.internal.random;
+import io.jenetics.ext.internal.Randoms;
 
 /**
  * Numeric chromosome implementation which holds an arbitrary sized integer
@@ -146,7 +146,7 @@ public final class BigIntegerGene
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(
-				random.nextBigInteger(minimum, maximum, r), minimum, maximum))
+				Randoms.nextBigInteger(minimum, maximum, r), minimum, maximum))
 			.toISeq();
 	}
 
@@ -181,7 +181,7 @@ public final class BigIntegerGene
 	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
-			random.nextBigInteger(min, max, RandomRegistry.random()),
+			Randoms.nextBigInteger(min, max, RandomRegistry.random()),
 			min,
 			max
 		);

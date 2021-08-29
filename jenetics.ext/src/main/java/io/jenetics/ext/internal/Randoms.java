@@ -31,8 +31,8 @@ import io.jenetics.util.RandomAdapter;
  * @version 3.5
  * @since 3.5
  */
-public class random {
-	private random() {}
+public class Randoms {
+	private Randoms() {}
 
 	/**
 	 * Returns a pseudo-random, uniformly distributed int value between 0
