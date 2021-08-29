@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGenerator.StreamableGenerator;
 import java.util.random.RandomGeneratorFactory;
@@ -45,7 +46,6 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.internal.util.Concurrency;
-import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -74,24 +74,61 @@ public class RandomRegistryTest {
 	}
 
 	@Test
-	public void setRandomSupplier() {
-		RandomRegistry.random(RandomGeneratorFactory.of("L128X1024MixRandom"));
+	public void setRandomFactory() throws InterruptedException {
+		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
+		RandomRegistry.random(factory);
 
-		RandomRegistry.random(() -> new LCG64ShiftRandom());
-		assertThat(RandomRegistry.random().getClass())
-			.isEqualTo(LCG64ShiftRandom.class);
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
+		}
 
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.start();
+		thread.join();
+	}
+
+	@Test
+	public void setRandomSupplier() throws InterruptedException {
+		final Supplier<RandomGenerator> supplier =
+			RandomGeneratorFactory.of("L128X1024MixRandom")::create;
+
+		RandomRegistry.random(supplier);
+
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
+		}
+
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.start();
+		thread.join();
+	}
+
+	@Test
+	public void setRandomSupplierStream() throws InterruptedException {
 		final Iterator<RandomGenerator> randoms = StreamableGenerator.of("L128X1024MixRandom")
 			.rngs()
 			.peek(System.out::println)
 			.iterator();
 
-		RandomRegistry.random(randoms::next);
-		System.out.println(RandomRegistry.random());
-		System.out.println(RandomRegistry.random());
-		try (var c = Concurrency.withCommonPool()) {
-			c.execute(() -> System.out.println(RandomRegistry.random()));
+		final Supplier<RandomGenerator> supplier = randoms::next;
+		RandomRegistry.random(supplier);
+
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
 		}
+
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.start();
+		thread.join();
 	}
 
 	@Test
