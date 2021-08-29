@@ -20,6 +20,6 @@ jobs:
               uses: actions/setup-java@v2
               with:
                   distribution: 'zulu'
-                  java-version: 17-ea+35
+                  java-version: 17.0.81
             - name: Build with Gradle
               run: ./gradlew build
