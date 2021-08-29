@@ -102,7 +102,7 @@ public abstract class Crossover<
 
 	/**
 	 * Template method which performs the crossover. The arguments given are
-	 * mutable non null arrays of the same length.
+	 * mutable non-null arrays of the same length.
 	 *
 	 * @param that the genes of the first chromosome
 	 * @param other the genes of the other chromosome
