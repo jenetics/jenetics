@@ -30,7 +30,7 @@ import java.util.stream.IntStream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 7.0
  */
 public final class Randoms {
 	private Randoms() {}

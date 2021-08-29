@@ -132,7 +132,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 7.0
  */
 public final class RandomRegistry {
 	private RandomRegistry() {}
@@ -265,7 +265,7 @@ public final class RandomRegistry {
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@link RandomGeneratorFactory#getDefault()} factory.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param factory the random generator factory used within the consumer
 	 * @param consumer the consumer which is executed within the <i>scope</i> of
@@ -294,7 +294,7 @@ public final class RandomRegistry {
 	 * });
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param supplier the random generator supplier used within the consumer
 	 * @param consumer the consumer which is executed within the <i>scope</i> of
