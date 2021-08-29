@@ -153,7 +153,11 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return IntegerGene.of(_allele + (that._allele - _allele)/2, _min, _max);
+		final int x = that._allele;
+		final int y = _allele;
+
+		// http://aggregate.org/MAGIC/#Average%20of%20Integers
+		return IntegerGene.of((x&y) + ((x^y) >> 1), _min, _max);
 	}
 
 	/**
