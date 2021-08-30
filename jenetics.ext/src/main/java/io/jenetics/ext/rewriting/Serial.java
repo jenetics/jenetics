@@ -25,12 +25,9 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StreamCorruptedException;
 
-import io.jenetics.ext.rewriting.TreePattern.Val;
-import io.jenetics.ext.rewriting.TreePattern.Var;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 5.0
  */
 final class Serial implements Externalizable {
@@ -39,8 +36,6 @@ final class Serial implements Externalizable {
 	private static final long serialVersionUID = 1;
 
 	static final byte TREE_PATTERN = 1;
-	static final byte TREE_PATTERN_VAR = 2;
-	static final byte TREE_PATTERN_VAL = 3;
 	static final byte TREE_REWRITE_RULE = 4;
 	static final byte TRS_KEY = 5;
 
@@ -75,11 +70,9 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case TREE_PATTERN -> ((TreePattern)_object).write(out);
-			case TREE_PATTERN_VAR -> ((Var)_object).write(out);
-			case TREE_PATTERN_VAL -> ((Val)_object).write(out);
-			case TREE_REWRITE_RULE -> ((TreeRewriteRule)_object).write(out);
-			case TRS_KEY -> ((TRS)_object).write(out);
+			case TREE_PATTERN -> ((TreePattern<?>)_object).write(out);
+			case TREE_REWRITE_RULE -> ((TreeRewriteRule<?>)_object).write(out);
+			case TRS_KEY -> ((TRS<?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
@@ -91,8 +84,6 @@ final class Serial implements Externalizable {
 		_type = in.readByte();
 		_object = switch (_type) {
 			case TREE_PATTERN -> TreePattern.read(in);
-			case TREE_PATTERN_VAR -> Var.read(in);
-			case TREE_PATTERN_VAL -> Val.read(in);
 			case TREE_REWRITE_RULE -> TreeRewriteRule.read(in);
 			case TRS_KEY -> TRS.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
