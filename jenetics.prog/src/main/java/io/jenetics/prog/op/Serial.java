@@ -71,8 +71,8 @@ final class Serial implements Externalizable {
 		out.writeByte(_type);
 		switch (_type) {
 			case MATH_EXPR -> ((MathExpr)_object).write(out);
-			case CONST -> ((Const)_object).write(out);
-			case EPHEMERAL_CONST -> ((EphemeralConst)_object).write(out);
+			case CONST -> ((Const<?>)_object).write(out);
+			case EPHEMERAL_CONST -> ((EphemeralConst<?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}

@@ -32,7 +32,7 @@ import java.util.Objects;
  * @param <T> the type of the constant value
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 5.0
  */
 public abstract sealed class Val<T>

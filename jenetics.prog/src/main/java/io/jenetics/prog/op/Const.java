@@ -43,7 +43,7 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class Const<T> extends Val<T> implements Serializable {

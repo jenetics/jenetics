@@ -85,7 +85,7 @@ public final class FlatTreeNode<V>
 
 	/**
 	 * Returns the root of the tree that contains this node. The root is the
-	 * ancestor with no parent. This implementation have a runtime complexity
+	 * ancestor with no parent. This implementation has a runtime complexity
 	 * of O(1).
 	 *
 	 * @return the root of the tree that contains this node
@@ -203,9 +203,9 @@ public final class FlatTreeNode<V>
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
 		return other == this ||
-			other instanceof FlatTreeNode &&
-			((FlatTreeNode)other)._index == _index &&
-			((FlatTreeNode)other)._elements == _elements;
+			other instanceof FlatTreeNode<?> node &&
+			node._index == _index &&
+			node._elements == _elements;
 	}
 
 	@Override
@@ -250,20 +250,6 @@ public final class FlatTreeNode<V>
 	/* *************************************************************************
 	 *  Static factories
 	 * ************************************************************************/
-
-	/**
-	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
-	 *
-	 * @param tree the source tree
-	 * @param <V> the tree value types
-	 * @return a new {@code FlatTreeNode} from the given {@code tree}
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
-	 * @deprecated Use {@link #ofTree(Tree)} instead
-	 */
-	@Deprecated(since = "6.1", forRemoval = true)
-	public static <V> FlatTreeNode<V> of(final Tree<? extends V, ?> tree) {
-		return ofTree(tree);
-	}
 
 	/**
 	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.

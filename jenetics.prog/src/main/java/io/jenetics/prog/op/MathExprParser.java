@@ -52,19 +52,12 @@ final class MathExprParser {
 	/**
 	 * Contains the token regex and the token kind;
 	 */
-	static final class TokenDesc {
-		final Pattern regex;
-		final int type;
-		TokenDesc(final Pattern regex, final int type) {
-			this.regex = regex;
-			this.type = type;
-		}
-	}
+	record TokenDesc(Pattern regex, int type) {}
 
 	/**
 	 * Represents expression token.
 	 */
-	static final class Token {
+	record Token(int token, String sequence, int pos) {
 		static final int EPSILON = 0;
 		static final int PLUS = 1;
 		static final int MINUS = 2;
@@ -78,16 +71,6 @@ final class MathExprParser {
 		static final int NUMBER = 10;
 		static final int VARIABLE = 11;
 		static final int COMMA = 12;
-
-		final int token;
-		final String sequence;
-		final int pos;
-
-		Token(final int token, final String sequence, final int pos) {
-			this.token = token;
-			this.sequence = sequence;
-			this.pos = pos;
-		}
 
 		@Override
 		public String toString() {

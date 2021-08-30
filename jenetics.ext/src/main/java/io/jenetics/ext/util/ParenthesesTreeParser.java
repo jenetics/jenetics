@@ -111,33 +111,31 @@ final class ParenthesesTreeParser {
 		TreeNode<B> current = root;
 		for (Token token : tokenize(value.trim())) {
 			switch (token.seq) {
-				case "(":
+				case "(" -> {
 					if (current == null) {
 						throw new IllegalArgumentException(format(
 							"Illegal parentheses tree string: '%s'.",
 							value
 						));
 					}
-
 					final TreeNode<B> tn1 = TreeNode.of();
 					current.attach(tn1);
 					parents.push(current);
 					current = tn1;
-					break;
-				case ",":
+				}
+				case "," -> {
 					if (parents.isEmpty()) {
 						throw new IllegalArgumentException(format(
 							"Expect '(' at position %d.",
 							token.pos
 						));
 					}
-
 					final TreeNode<B> tn2 = TreeNode.of();
 					assert parents.peek() != null;
 					parents.peek().attach(tn2);
 					current = tn2;
-					break;
-				case ")":
+				}
+				case ")" -> {
 					if (parents.isEmpty()) {
 						throw new IllegalArgumentException(format(
 							"Unbalanced parentheses at position %d.",
@@ -148,8 +146,8 @@ final class ParenthesesTreeParser {
 					if (parents.isEmpty()) {
 						current = null;
 					}
-					break;
-				default:
+				}
+				default -> {
 					if (current == null) {
 						throw new IllegalArgumentException(format(
 							"More than one root element at pos %d: '%s'.",
@@ -159,7 +157,7 @@ final class ParenthesesTreeParser {
 					if (current.value() == null) {
 						current.value(mapper.apply(token.seq));
 					}
-					break;
+				}
 			}
 		}
 
