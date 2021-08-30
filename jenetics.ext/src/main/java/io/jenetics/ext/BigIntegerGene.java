@@ -158,7 +158,7 @@ public final class BigIntegerGene
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new random {@code BigIntegerGene}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
@@ -175,7 +175,7 @@ public final class BigIntegerGene
 	 * value of the {@code BigIntegerGene} lies in the interval [min, max].
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new random {@code BigIntegerGene}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */

@@ -79,7 +79,7 @@ public class Randoms {
 	 * and max (min and max included).
 	 *
 	 * @param min lower bound for generated long integer (inclusively)
-	 * @param max upper bound for generated long integer (inclusively)
+	 * @param max upper bound for generated long integer (exclusively)
 	 * @param random the random engine to use for calculating the random
 	 *        long value
 	 * @return a random long integer greater than or equal to {@code min}
@@ -93,13 +93,13 @@ public class Randoms {
 		final BigInteger max,
 		final RandomGenerator random
 	) {
-		if (min.compareTo(max) >= 0) {
+		if (min.compareTo(max) > 0) {
 			throw new IllegalArgumentException(format(
-				"min >= max: %d >= %d.", min, max
+				"min >= max: %d > %d.", min, max
 			));
 		}
 
-		final BigInteger n = max.subtract(min).add(BigInteger.ONE);
+		final BigInteger n = max.subtract(min);
 		return nextBigInteger(n, random).add(min);
 	}
 

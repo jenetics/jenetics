@@ -19,13 +19,12 @@
  */
 package io.jenetics.example;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
@@ -63,64 +62,19 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * This class represents a knapsack item with the specific <i>size</i> and
 	 * <i>value</i>.
 	 */
-	public static final class Item implements Serializable {
+	public static final record Item(double size, double value)
+		implements Serializable
+	{
+		@Serial
 		private static final long serialVersionUID = 1L;
 
-		private final double _size;
-		private final double _value;
-
-		private Item(final double size, final double value) {
-			_size = Requires.nonNegative(size);
-			_value = Requires.nonNegative(value);
-		}
-
 		/**
-		 * Return the item size.
-		 *
-		 * @return the item size
-		 */
-		public double getSize() {
-			return _size;
-		}
-
-		/**
-		 * Return the item value.
-		 *
-		 * @return the item value
-		 */
-		public double getValue() {
-			return _value;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_size, _value);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof Item other &&
-				Double.compare(_size, other._size) == 0 &&
-				Double.compare(_value, other._value) == 0;
-		}
-
-		@Override
-		public String toString() {
-			return format("Item[size=%f, value=%f]", _size, _value);
-		}
-
-		/**
-		 * Return a new knapsack {@code Item} with the given {@code size} and
-		 * {@code value}.
-		 *
 		 * @param size the item size
 		 * @param value the item value
-		 * @return a new knapsack {@code Item}
-		 * @throws IllegalArgumentException if one of the parameters is smaller
-		 *         then zero
 		 */
-		public static Item of(final double size, final double value) {
-			return new Item(size, value);
+		public Item {
+			Requires.nonNegative(size);
+			Requires.nonNegative(value);
 		}
 
 		/**
@@ -143,7 +97,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 		public static Collector<Item, ?, Item> toSum() {
 			return Collector.of(
 				() -> new double[2],
-				(a, b) -> {a[0] += b._size; a[1] += b._value;},
+				(a, b) -> {a[0] += b.size; a[1] += b.value;},
 				(a, b) -> {a[0] += b[0]; a[1] += b[1]; return a;},
 				r -> new Item(r[0], r[1])
 			);
@@ -170,7 +124,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	public Function<ISeq<Item>, Double> fitness() {
 		return items -> {
 			final Item sum = items.stream().collect(Item.toSum());
-			return sum._size <= _knapsackSize ? sum._value : 0;
+			return sum.size <= _knapsackSize ? sum.value : 0;
 		};
 	}
 

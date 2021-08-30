@@ -50,10 +50,8 @@ public final class RectFill
 
 	private static final int MAX_RECT_COUNT = 100;
 
-	static final class Rect {
+	record Rect(int x1, int x2, int y1, int y2) {
 		static final Rect EMPTY = new Rect(-1, -1, -1, -1);
-
-		final int x1, x2, y1, y2;
 
 		Rect(final int x1, final int x2, final int y1, final int y2) {
 			this.x1 = Math.min(x1, x2);
