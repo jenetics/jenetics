@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -511,7 +510,7 @@ final class ElemReader<T> extends Reader<T> {
 
 		final List<ReaderResult> results = _children.stream()
 			.map(ReaderResult::of)
-			.collect(Collectors.toList());
+			.toList();
 
 		final ReaderResult text = _textReaderIndex.length == 1
 			? results.get(_textReaderIndex[0])

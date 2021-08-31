@@ -29,7 +29,6 @@ import static io.jenetics.util.RandomRegistry.using;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Random;
 import java.util.stream.IntStream;

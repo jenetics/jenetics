@@ -244,14 +244,14 @@ public class Diagram {
 
 		return Arrays.stream(Template.values())
 			.filter(t -> t.getName().equals(name))
-			.findFirst().get();
+			.findFirst().orElseThrow();
 	}
 
 	private static Map<String, String> params(final Path path) {
 		System.out.println(path.getFileName());
 		final List<String> parts = param(path.getFileName().toString())
 			.flatMap(p -> Stream.of(p.split("@")))
-			.collect(Collectors.toList());
+			.toList();
 
 		final Map<String, String> params = new HashMap<>();
 		for (int i = 0; i < parts.size(); ++i) {

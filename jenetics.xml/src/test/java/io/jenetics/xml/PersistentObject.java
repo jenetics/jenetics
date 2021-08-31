@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.random.RandomGenerator;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
@@ -424,37 +423,37 @@ public class PersistentObject<T> {
 	public static List<Genotype<BitGene>> nextPopulationBitGene() {
 		return Stream.generate(PersistentObject::nextGenotypeBitGene)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public static List<Genotype<CharacterGene>> nextPopulationCharacterGene() {
 		return Stream.generate(PersistentObject::nextGenotypeCharacterGene)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public static List<Genotype<IntegerGene>> nextPopulationIntegerGene() {
 		return Stream.generate(PersistentObject::nextGenotypeIntegerGene)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public static List<Genotype<LongGene>> nextPopulationLongGene() {
 		return Stream.generate(PersistentObject::nextGenotypeLongGene)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public static List<Genotype<DoubleGene>> nextPopulationDoubleGene() {
 		return Stream.generate(PersistentObject::nextGenotypeDoubleGene)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public static List<Genotype<EnumGene<Integer>>> nextPopulationEnumGene() {
 		return Stream.generate(PersistentObject::nextGenotypeEnumGeneInteger)
 			.limit(7)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 
