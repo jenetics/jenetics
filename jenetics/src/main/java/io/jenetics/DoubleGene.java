@@ -157,7 +157,9 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return of(_allele + (that._allele - _allele)/2.0, _min, _max);
+		// (a - a/2) + b/2
+		// https://hal.archives-ouvertes.fr/hal-00576641v1/document
+		return of((_allele - _allele/2.0) + that._allele/2.0, _min, _max);
 	}
 
 	/**
