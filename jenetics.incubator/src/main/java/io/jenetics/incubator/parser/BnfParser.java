@@ -51,7 +51,7 @@ public class BnfParser {
 		static final int STRING = 13;
 		static final int ID = 14;
 
-		protected BnfTokenizer(final CharSequence input) {
+		BnfTokenizer(final CharSequence input) {
 			super(input);
 		}
 
@@ -140,26 +140,25 @@ public class BnfParser {
 		}
 
 		static String toString(final Token token) {
-			final String name;
-			switch (token.type()) {
-				case ASSIGN: name = "ASSIGN"; break;
-				case BAR: name = "BAR"; break;
-				case GT: name = "GT"; break;
-				case LT: name = "LT"; break;
-				case ID: name = "ID"; break;
-				case LBRACE: name = "LBRACE"; break;
-				case RBRACE: name = "RBRACE"; break;
-				case LEND: name = "LEND"; break;
-				case REND: name = "REND"; break;
-				case LPAREN: name = "LPAREN"; break;
-				case RPAREN: name = "RPAREN"; break;
-				case QUOTED_STRING: name = "QUOTED_STRING"; break;
-				case STRING: name = "STRING"; break;
-				case EOF_TYPE: name = "EOF_TYPE"; break;
-				default: throw new IllegalArgumentException(
+			final String name = switch (token.type()) {
+				case ASSIGN -> "ASSIGN";
+				case BAR -> "BAR";
+				case GT -> "GT";
+				case LT -> "LT";
+				case ID -> "ID";
+				case LBRACE -> "LBRACE";
+				case RBRACE -> "RBRACE";
+				case LEND -> "LEND";
+				case REND -> "REND";
+				case LPAREN -> "LPAREN";
+				case RPAREN -> "RPAREN";
+				case QUOTED_STRING -> "QUOTED_STRING";
+				case STRING -> "STRING";
+				case EOF_TYPE -> "EOF_TYPE";
+				default -> throw new IllegalArgumentException(
 					"Unknown token type: " + token.type()
 				);
-			}
+			};
 
 			return format("Token[%s, '%s']", name, token.value());
 		}
