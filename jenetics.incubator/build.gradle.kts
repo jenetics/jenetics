@@ -29,7 +29,7 @@
 plugins {
 	`java-library`
 	idea
-	antlr
+	//antlr
 	id("me.champeau.jmh")
 }
 
