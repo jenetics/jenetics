@@ -42,11 +42,9 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 
-	antlr("org.antlr:antlr4:4.9.2")
-
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.AssertJ)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
+	testImplementation(libs.equalsverifier)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

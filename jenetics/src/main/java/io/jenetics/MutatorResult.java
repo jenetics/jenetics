@@ -19,46 +19,48 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
+
+import io.jenetics.internal.util.Requires;
 
 /**
  * Represents the result pair of one of the four {@code Mutator.mutate} calls.
  *
- * @see Mutator#mutate(Phenotype, long, double, Random)
- * @see Mutator#mutate(Genotype, double, Random)
- * @see Mutator#mutate(Chromosome, double, Random)
- * @see Mutator#mutate(Gene, Random)
+ * @see Mutator#mutate(Phenotype, long, double, RandomGenerator)
+ * @see Mutator#mutate(Genotype, double, RandomGenerator)
+ * @see Mutator#mutate(Chromosome, double, RandomGenerator)
+ * @see Mutator#mutate(Gene, RandomGenerator)
  *
- * @implSpec
- * This class is immutable and thread-safe.
+ * @param <T> the mutation result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version 7.0
  * @since 4.0
  */
-public final /*record*/ class MutatorResult<T> implements Serializable {
+public final record MutatorResult<T>(T result, int mutations)
+	implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 2L;
 
-	private final T _result;
-	private final int _mutations;
-
-	private MutatorResult(final T result, final int mutations) {
-		if (mutations < 0) {
-			throw new IllegalArgumentException(
-				"Mutations must not be negative: " + mutations
-			);
-		}
-
-		_result = requireNonNull(result);
-		_mutations = mutations;
+	/**
+	 * Create a new mutation result with the given values.
+	 *
+	 * @param result the mutation result
+	 * @param mutations the number of mutations
+	 * @throws IllegalArgumentException if the given {@code mutations} is
+	 *         negative
+	 * @throws NullPointerException if the given mutation result is {@code null}
+	 */
+	public MutatorResult {
+		requireNonNull(result);
+		Requires.nonNegative(mutations);
 	}
 
 	/**
@@ -71,71 +73,7 @@ public final /*record*/ class MutatorResult<T> implements Serializable {
 	 */
 	<B> MutatorResult<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
-		return of(mapper.apply(_result), _mutations);
-	}
-
-	/**
-	 * Return the mutation result.
-	 *
-	 * @return the mutation result
-	 */
-	public T result() {
-		return _result;
-	}
-
-	/**
-	 * Return the number of mutations for this mutation result.
-	 *
-	 * @return the number of mutations
-	 */
-	public int mutations() {
-		return _mutations;
-	}
-
-	/**
-	 * Create a new mutation result with the given values.
-	 *
-	 * @param result the mutation result
-	 * @param mutations the number of mutations
-	 * @param <T> the mutation result type
-	 * @return a new mutation result
-	 * @throws IllegalArgumentException if the given {@code mutations} is
-	 *         negative
-	 * @throws NullPointerException if the given mutation result is {@code null}
-	 */
-	public static <T> MutatorResult<T> of(final T result, final int mutations) {
-		return new MutatorResult<>(result, mutations);
-	}
-
-	/**
-	 * Create a new mutation result with the given result. The number of
-	 * mutations is set to zero.
-	 *
-	 * @param result the mutation result
-	 * @param <T> the mutation result type
-	 * @return a new mutation result
-	 * @throws NullPointerException if the given mutation result is {@code null}
-	 */
-	public static <T> MutatorResult<T> of(final T result) {
-		return new MutatorResult<>(result, 0);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_result, hash(_mutations));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof MutatorResult &&
-			Objects.equals(((MutatorResult)obj)._result, _result) &&
-			((MutatorResult)obj)._mutations == _mutations;
-	}
-
-	@Override
-	public String toString() {
-		return format("MutatorResult[%s, %s]", _result, _mutations);
+		return new MutatorResult<>(mapper.apply(result), mutations);
 	}
 
 }

@@ -19,6 +19,8 @@
  */
 package io.jenetics;
 
+import java.io.Serial;
+
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -36,19 +38,15 @@ public enum BitGene
 		Comparable<BitGene>
 {
 
-	FALSE(false),
-	TRUE(true);
+	FALSE,
+	TRUE;
 
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	public static final BitGene ZERO = FALSE;
 	public static final BitGene ONE = TRUE;
 
-	private final boolean _value;
-
-	BitGene(final boolean value) {
-		_value = value;
-	}
 
 	/**
 	 * Return the value of the BitGene.
@@ -59,7 +57,7 @@ public enum BitGene
 	 * @return The value of the BitGene.
 	 */
 	public final boolean bit() {
-		return _value;
+		return this == TRUE;
 	}
 
 	/**
@@ -71,12 +69,12 @@ public enum BitGene
 	 * @return the {@code boolean} value of this gene.
 	 */
 	public boolean booleanValue() {
-		return _value;
+		return this == TRUE;
 	}
 
 	@Override
 	public Boolean allele() {
-		return _value;
+		return this == TRUE;
 	}
 
 	/**
@@ -105,12 +103,12 @@ public enum BitGene
 	 * @return a new gene with the given value.
 	 */
 	public BitGene newInstance(final Boolean value) {
-		return of(value);
+		return value ? TRUE : FALSE;
 	}
 
 	@Override
 	public String toString() {
-		return Boolean.toString(_value);
+		return booleanValue() ? "true" : "false";
 	}
 
 	/**

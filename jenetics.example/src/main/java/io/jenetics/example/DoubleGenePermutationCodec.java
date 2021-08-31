@@ -40,13 +40,7 @@ public class DoubleGenePermutationCodec {
 	/*
 	 * Class specific for the problem domain.
 	 */
-	static final class Points {
-		final int[] permutation;
-		final double[] values;
-		Points(final int[] permutation, final double[] values) {
-			this.permutation = permutation;
-			this.values = values;
-		}
+	record Points(int[] permutation, double[] values) {
 		int length() {
 			return permutation.length;
 		}

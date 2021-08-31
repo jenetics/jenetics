@@ -24,8 +24,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
-import java.util.Random;
-
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
 import io.jenetics.internal.math.Randoms;
@@ -108,7 +106,7 @@ public class SimulatedBinaryCrossover<
 	}
 
 	private void crossover(final MSeq<G> that, final MSeq<G> other, final int i) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double u = random.nextDouble();
 		final double beta;

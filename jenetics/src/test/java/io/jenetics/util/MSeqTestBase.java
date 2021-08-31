@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,7 +39,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	@Override
 	protected abstract MSeq<Integer> newSeq(final int length);
 
-	private Supplier<Integer> RandomInt(final Random random) {
+	private Supplier<Integer> RandomInt(final RandomGenerator random) {
 		return random::nextInt;
 	}
 

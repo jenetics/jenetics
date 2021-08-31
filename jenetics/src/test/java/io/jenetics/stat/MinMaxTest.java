@@ -112,7 +112,7 @@ public class MinMaxTest {
 
 	@Test
 	public void acceptNormalMinMax() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of();
@@ -126,7 +126,7 @@ public class MinMaxTest {
 
 	@Test
 	public void acceptReverseMinMax() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of(Comparator.reverseOrder());
@@ -140,7 +140,7 @@ public class MinMaxTest {
 
 	@Test
 	public void toMinMaxNormal() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers)
@@ -153,7 +153,7 @@ public class MinMaxTest {
 
 	@Test
 	public void toMinMaxReverse() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()

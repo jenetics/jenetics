@@ -30,6 +30,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -48,7 +49,7 @@ import io.jenetics.util.ISeq;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
-	public abstract T newTree(final int levels, final Random random);
+	public abstract T newTree(final int levels, final RandomGenerator random);
 
 	private final class AccessorMethod {
 		final String _name;
@@ -94,7 +95,10 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 	}
 
-	public DefaultMutableTreeNode newSwingTree(final int levels, final Random random) {
+	public DefaultMutableTreeNode newSwingTree(
+		final int levels,
+		final RandomGenerator random
+	) {
 		final DefaultMutableTreeNode root = new DefaultMutableTreeNode(0);
 		fill(root, levels, random);
 
@@ -104,7 +108,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 	private void fill(
 		final DefaultMutableTreeNode node,
 		final int level,
-		final Random random
+		final RandomGenerator random
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final DefaultMutableTreeNode child = new DefaultMutableTreeNode();

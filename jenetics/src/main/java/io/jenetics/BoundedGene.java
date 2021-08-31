@@ -33,7 +33,7 @@ package io.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 6.0
+ * @version 7.0
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,
@@ -60,7 +60,7 @@ public interface BoundedGene<
 	default boolean isValid() {
 		return
 			allele().compareTo(min()) >= 0 &&
-			allele().compareTo(max()) <= 0;
+			allele().compareTo(max()) < 0;
 	}
 
 	@Override

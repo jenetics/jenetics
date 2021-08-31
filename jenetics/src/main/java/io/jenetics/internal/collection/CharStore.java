@@ -38,6 +38,8 @@ import java.util.Comparator;
  * @version 6.0
  */
 public final class CharStore implements Array.Store<Character>, Serializable {
+
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	public final char[] array;
@@ -106,10 +108,12 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.CHAR_STORE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

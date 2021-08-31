@@ -19,10 +19,7 @@
  */
 package io.jenetics.stat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.util.IntSummaryStatistics;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.Test;
@@ -40,7 +37,7 @@ public class IntSummaryTest extends ObjectTester<IntSummary> {
 	@Override
 	protected Factory<IntSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			final IntSummaryStatistics statistics = new IntSummaryStatistics();
 			IntStream.range(0, 100)
@@ -49,11 +46,6 @@ public class IntSummaryTest extends ObjectTester<IntSummary> {
 
 			return IntSummary.of(statistics);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(IntSummary.class).verify();
 	}
 
 }

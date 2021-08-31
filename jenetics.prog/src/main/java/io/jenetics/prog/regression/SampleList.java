@@ -21,6 +21,7 @@ package io.jenetics.prog.regression;
 
 import static java.lang.String.format;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -43,6 +44,7 @@ final class SampleList<T>
 		Sampling<T>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final List<Sample<T>> _samples;

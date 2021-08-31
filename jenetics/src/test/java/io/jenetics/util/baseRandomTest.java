@@ -41,64 +41,6 @@ import io.jenetics.stat.Histogram;
  */
 public class baseRandomTest {
 
-//	@Test(dataProvider = "nextBigIntegerIntData")
-//	public void nextBigIntegerInt(int n) {
-//		final long seed = random.seed();
-//		final Random random = new Random(seed);
-//
-//		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
-//
-//		random.setSeed(seed);
-//		Assert.assertEquals(value.intValueExact(), random.nextInt(n));
-//	}
-//
-//	@DataProvider(name = "nextBigIntegerIntData")
-//	public Object[][] nextBigIntegerIntData() {
-//		return new Object[][] {
-//			{1},
-//			{14},
-//			{100},
-//			{10_000_000},
-//			{100_000_000},
-//			{Integer.MAX_VALUE}
-//		};
-//	}
-//
-//	@Test(dataProvider = "nextBigIntegerLongData")
-//	public void nextBigIntegerLong(long n) {
-//		final long seed = random.seed();
-//		final Random random = new Random(seed);
-//
-//		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
-//
-//		random.setSeed(seed);
-//		Assert.assertEquals(value.longValueExact(), nextLong(random, n));
-//	}
-
-	@DataProvider(name = "nextBigIntegerLongData")
-	public Object[][] nextBigIntegerLongData() {
-		return new Object[][] {
-			{1L + Integer.MAX_VALUE},
-			{14L + Integer.MAX_VALUE},
-			{100L + Integer.MAX_VALUE},
-			{10_000_000L + Integer.MAX_VALUE},
-			{100_000_000L + Integer.MAX_VALUE},
-			{Long.MAX_VALUE}
-		};
-	}
-
-//	@Test(dataProvider = "nextBigIntegerData")
-//	public void nextBigIntegerTest(final String string) {
-//		final long seed = random.seed();
-//		final Random random = new Random(seed);
-//
-//		final BigInteger n = new BigInteger(string);
-//		final BigInteger value = nextBigInteger(random, n);
-//
-//		Assert.assertTrue(value.compareTo(BigInteger.ZERO) >= 0);
-//		Assert.assertTrue(value.compareTo(n) < 0);
-//	}
-
 	@DataProvider(name = "nextBigIntegerData")
 	public Object[][] nextBigIntegerData() {
 		return new Object[][] {

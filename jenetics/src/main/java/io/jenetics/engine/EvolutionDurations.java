@@ -20,7 +20,6 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeInt;
@@ -35,29 +34,48 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * This class contains timing information about one evolution step.
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param offspringSelectionDuration the duration needed for selecting the
+ *        offspring population
+ * @param survivorsSelectionDuration the duration needed for selecting the
+ *        survivors population
+ * @param offspringAlterDuration the duration needed for altering the
+ *        offspring population
+ * @param offspringFilterDuration the duration needed for removing and
+ *        replacing invalid offspring individuals
+ * @param survivorFilterDuration the duration needed for removing and
+ *        replacing old and invalid survivor individuals
+ * @param evaluationDuration the duration needed for evaluating the fitness
+ *        function of the new individuals
+ * @param evolveDuration the duration needed for the whole evolve step
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
-public final /*record*/ class EvolutionDurations
+public final record EvolutionDurations(
+	Duration offspringSelectionDuration,
+	Duration survivorsSelectionDuration,
+	Duration offspringAlterDuration,
+	Duration offspringFilterDuration,
+	Duration survivorFilterDuration,
+	Duration evaluationDuration,
+	Duration evolveDuration
+)
 	implements
 		Comparable<EvolutionDurations>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	@java.io.Serial
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Constant for zero evolution durations.
 	 */
-	public static final EvolutionDurations ZERO = EvolutionDurations.of(
+	public static final EvolutionDurations ZERO = new EvolutionDurations(
 		Duration.ZERO,
 		Duration.ZERO,
 		Duration.ZERO,
@@ -66,101 +84,6 @@ public final /*record*/ class EvolutionDurations
 		Duration.ZERO,
 		Duration.ZERO
 	);
-
-	private final Duration _offspringSelectionDuration;
-	private final Duration _survivorsSelectionDuration;
-	private final Duration _offspringAlterDuration;
-	private final Duration _offspringFilterDuration;
-	private final Duration _survivorFilterDuration;
-	private final Duration _evaluationDuration;
-	private final Duration _evolveDuration;
-
-	EvolutionDurations(
-		final Duration offspringSelectionDuration,
-		final Duration survivorsSelectionDuration,
-		final Duration offspringAlterDuration,
-		final Duration offspringFilterDuration,
-		final Duration survivorFilterDuration,
-		final Duration evaluationDuration,
-		final Duration evolveDuration
-	) {
-		_offspringSelectionDuration = requireNonNull(offspringSelectionDuration);
-		_survivorsSelectionDuration = requireNonNull(survivorsSelectionDuration);
-		_offspringAlterDuration = requireNonNull(offspringAlterDuration);
-		_offspringFilterDuration = requireNonNull(offspringFilterDuration);
-		_survivorFilterDuration = requireNonNull(survivorFilterDuration);
-		_evaluationDuration = requireNonNull(evaluationDuration);
-		_evolveDuration = requireNonNull(evolveDuration);
-	}
-
-	/**
-	 * Return the duration needed for selecting the offspring population.
-	 *
-	 * @return the duration needed for selecting the offspring population
-	 */
-	public Duration offspringSelectionDuration() {
-		return _offspringSelectionDuration;
-	}
-
-	/**
-	 * Return the duration needed for selecting the survivors population.
-	 *
-	 * @return the duration needed for selecting the survivors population
-	 */
-	public Duration survivorsSelectionDuration() {
-		return _survivorsSelectionDuration;
-	}
-
-	/**
-	 * Return the duration needed for altering the offspring population.
-	 *
-	 * @return the duration needed for altering the offspring population
-	 */
-	public Duration offspringAlterDuration() {
-		return _offspringAlterDuration;
-	}
-
-	/**
-	 * Return the duration needed for removing and replacing invalid offspring
-	 * individuals.
-	 *
-	 * @return the duration needed for removing and replacing invalid offspring
-	 *         individuals
-	 */
-	public Duration offspringFilterDuration() {
-		return _offspringFilterDuration;
-	}
-
-	/**
-	 * Return the duration needed for removing and replacing old and invalid
-	 * survivor individuals.
-	 *
-	 * @return the duration needed for removing and replacing old and invalid
-	 *         survivor individuals
-	 */
-	public Duration survivorFilterDuration() {
-		return _survivorFilterDuration;
-	}
-
-	/**
-	 * Return the duration needed for evaluating the fitness function of the new
-	 * individuals.
-	 *
-	 * @return the duration needed for evaluating the fitness function of the new
-	 *         individuals
-	 */
-	public Duration evaluationDuration() {
-		return _evaluationDuration;
-	}
-
-	/**
-	 * Return the duration needed for the whole evolve step.
-	 *
-	 * @return the duration needed for the whole evolve step
-	 */
-	public Duration evolveDuration() {
-		return _evolveDuration;
-	}
 
 	/**
 	 * Returns a copy of this duration with the specified duration added.
@@ -175,38 +98,38 @@ public final /*record*/ class EvolutionDurations
 	 */
 	public EvolutionDurations plus(final EvolutionDurations other) {
 		requireNonNull(other);
-		return of(
-			_offspringSelectionDuration.plus(other._offspringSelectionDuration),
-			_survivorsSelectionDuration.plus(other._survivorsSelectionDuration),
-			_offspringAlterDuration.plus(other._offspringAlterDuration),
-			_offspringFilterDuration.plus(other._offspringFilterDuration),
-			_survivorFilterDuration.plus(other._survivorFilterDuration),
-			_evaluationDuration.plus(other._evaluationDuration),
-			_evolveDuration.plus(other._evolveDuration)
+		return new EvolutionDurations(
+			offspringSelectionDuration.plus(other.offspringSelectionDuration),
+			survivorsSelectionDuration.plus(other.survivorsSelectionDuration),
+			offspringAlterDuration.plus(other.offspringAlterDuration),
+			offspringFilterDuration.plus(other.offspringFilterDuration),
+			survivorFilterDuration.plus(other.survivorFilterDuration),
+			evaluationDuration.plus(other.evaluationDuration),
+			evolveDuration.plus(other.evolveDuration)
 		);
 	}
 
 	EvolutionDurations plusEvaluation(final Duration duration) {
-		return of(
-			_offspringSelectionDuration,
-			_survivorsSelectionDuration,
-			_offspringAlterDuration,
-			_offspringFilterDuration,
-			_survivorFilterDuration,
-			_evaluationDuration.plus(duration),
-			_evolveDuration
+		return new EvolutionDurations(
+			offspringSelectionDuration,
+			survivorsSelectionDuration,
+			offspringAlterDuration,
+			offspringFilterDuration,
+			survivorFilterDuration,
+			evaluationDuration.plus(duration),
+			evolveDuration
 		);
 	}
 
 	EvolutionDurations plusEvolve(final Duration duration) {
-		return of(
-			_offspringSelectionDuration,
-			_survivorsSelectionDuration,
-			_offspringAlterDuration,
-			_offspringFilterDuration,
-			_survivorFilterDuration,
-			_evaluationDuration,
-			_evolveDuration.plus(duration)
+		return new EvolutionDurations(
+			offspringSelectionDuration,
+			survivorsSelectionDuration,
+			offspringAlterDuration,
+			offspringFilterDuration,
+			survivorFilterDuration,
+			evaluationDuration,
+			evolveDuration.plus(duration)
 		);
 	}
 
@@ -222,90 +145,19 @@ public final /*record*/ class EvolutionDurations
 	 */
 	@Override
 	public int compareTo(final EvolutionDurations other) {
-		return _evolveDuration.compareTo(other._evolveDuration);
+		return evolveDuration.compareTo(other.evolveDuration);
 	}
-
-	@Override
-	public int hashCode() {
-		return
-			hash(_offspringSelectionDuration,
-			hash(_survivorFilterDuration,
-			hash(_offspringAlterDuration,
-			hash(_offspringFilterDuration,
-			hash(_survivorsSelectionDuration,
-			hash(_evaluationDuration,
-			hash(_evolveDuration)))))));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof EvolutionDurations &&
-			Objects.equals(_offspringSelectionDuration,
-				((EvolutionDurations)obj)._offspringSelectionDuration) &&
-			Objects.equals(_survivorsSelectionDuration,
-				((EvolutionDurations)obj)._survivorsSelectionDuration) &&
-			Objects.equals(_offspringAlterDuration,
-				((EvolutionDurations)obj)._offspringAlterDuration) &&
-			Objects.equals(_offspringFilterDuration,
-				((EvolutionDurations)obj)._offspringFilterDuration) &&
-			Objects.equals(_survivorFilterDuration,
-				((EvolutionDurations)obj)._survivorFilterDuration) &&
-			Objects.equals(_evaluationDuration,
-				((EvolutionDurations)obj)._evaluationDuration) &&
-			Objects.equals(_evolveDuration,
-				((EvolutionDurations)obj)._evolveDuration);
-	}
-
-	/**
-	 * Return an new {@code EvolutionDurations} object with the given values.
-	 *
-	 * @param offspringSelectionDuration the duration needed for selecting the
-	 *        offspring population
-	 * @param survivorsSelectionDuration the duration needed for selecting the
-	 *        survivors population
-	 * @param offspringAlterDuration the duration needed for altering the
-	 *        offspring population
-	 * @param offspringFilterDuration the duration needed for removing and
-	 *        replacing invalid offspring individuals
-	 * @param survivorFilterDuration the duration needed for removing and
-	 *        replacing old and invalid survivor individuals
-	 * @param evaluationDuration the duration needed for evaluating the fitness
-	 *        function of the new individuals
-	 * @param evolveDuration the duration needed for the whole evolve step
-	 * @return an new durations object
-	 * @throws NullPointerException if one of the arguments is
-	 *         {@code null}
-	 */
-	public static EvolutionDurations of(
-		final Duration offspringSelectionDuration,
-		final Duration survivorsSelectionDuration,
-		final Duration offspringAlterDuration,
-		final Duration offspringFilterDuration,
-		final Duration survivorFilterDuration,
-		final Duration evaluationDuration,
-		final Duration evolveDuration
-	) {
-		return new EvolutionDurations(
-			offspringSelectionDuration,
-			survivorsSelectionDuration,
-			offspringAlterDuration,
-			offspringFilterDuration,
-			survivorFilterDuration,
-			evaluationDuration,
-			evolveDuration
-		);
-	}
-
 
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.EVOLUTION_DURATIONS, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
@@ -313,13 +165,13 @@ public final /*record*/ class EvolutionDurations
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		writeDuration(_offspringSelectionDuration, out);
-		writeDuration(_survivorsSelectionDuration, out);
-		writeDuration(_offspringAlterDuration, out);
-		writeDuration(_offspringFilterDuration, out);
-		writeDuration(_survivorFilterDuration, out);
-		writeDuration(_evaluationDuration, out);
-		writeDuration(_evolveDuration, out);
+		writeDuration(offspringSelectionDuration, out);
+		writeDuration(survivorsSelectionDuration, out);
+		writeDuration(offspringAlterDuration, out);
+		writeDuration(offspringFilterDuration, out);
+		writeDuration(survivorFilterDuration, out);
+		writeDuration(evaluationDuration, out);
+		writeDuration(evolveDuration, out);
 	}
 
 	private static void writeDuration(final Duration duration, final DataOutput out)

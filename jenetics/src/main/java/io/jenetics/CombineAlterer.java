@@ -23,7 +23,6 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
 import java.util.function.BinaryOperator;
 
 import io.jenetics.util.BaseSeq;
@@ -95,7 +94,7 @@ public class CombineAlterer<
 		final int[] individuals,
 		final long generation
 	) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);

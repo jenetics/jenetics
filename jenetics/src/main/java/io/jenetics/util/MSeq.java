@@ -29,9 +29,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -196,7 +196,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Randomize the {@code array} using the {@link Random} object currently
+	 * Randomize the {@code array} using the {@link RandomGenerator} object currently
 	 * registered in the {@link RandomRegistry} class. The used shuffling
 	 * algorithm is from D. Knuth TAOCP, Seminumerical Algorithms, Third edition,
 	 * page 142, Algorithm S (Selection sampling technique).
@@ -208,15 +208,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * Randomize the {@code array} using the given {@link RandomGenerator} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
-	 * @param random the {@link Random} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomize.
 	 * @return this shuffled sequence
 	 * @throws NullPointerException if the random object is {@code null}.
 	 */
-	default MSeq<T> shuffle(final Random random) {
+	default MSeq<T> shuffle(final RandomGenerator random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}

@@ -31,6 +31,8 @@ import java.io.StreamCorruptedException;
  * @since 4.1
  */
 final class Serial implements Externalizable {
+
+	@java.io.Serial
 	private static final long serialVersionUID = 1L;
 
 	static final byte MATH_EXPR = 1;
@@ -68,11 +70,10 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case MATH_EXPR: ((MathExpr)_object).write(out); break;
-			case CONST: ((Const)_object).write(out); break;
-			case EPHEMERAL_CONST: ((EphemeralConst)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case MATH_EXPR -> ((MathExpr)_object).write(out);
+			case CONST -> ((Const<?>)_object).write(out);
+			case EPHEMERAL_CONST -> ((EphemeralConst<?>)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -81,15 +82,15 @@ final class Serial implements Externalizable {
 		throws IOException, ClassNotFoundException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case MATH_EXPR: _object = MathExpr.read(in); break;
-			case CONST: _object = Const.read(in); break;
-			case EPHEMERAL_CONST: _object = EphemeralConst.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case MATH_EXPR -> MathExpr.read(in);
+			case CONST -> Const.read(in);
+			case EPHEMERAL_CONST -> EphemeralConst.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

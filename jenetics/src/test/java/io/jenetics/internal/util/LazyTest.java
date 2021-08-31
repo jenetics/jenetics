@@ -19,8 +19,6 @@
  */
 package io.jenetics.internal.util;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
@@ -36,7 +34,7 @@ public class LazyTest extends ObjectTester<Lazy<Double>> {
 	@Override
 	protected Factory<Lazy<Double>> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return Lazy.of(random::nextDouble);
 		};
 	}

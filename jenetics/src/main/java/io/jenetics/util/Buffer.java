@@ -58,7 +58,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * Create a new ring buffer with the given {@code capacity}.
 	 *
 	 * @param capacity the buffer capacity
-	 * @throws NegativeArraySizeException if the the given {@code capacity} is
+	 * @throws NegativeArraySizeException if the given {@code capacity} is
 	 *         negative
 	 */
 	private Buffer(final int capacity) {

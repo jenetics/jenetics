@@ -19,12 +19,14 @@
  */
 package io.jenetics.internal.math;
 
+import static java.lang.String.format;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -125,7 +127,11 @@ public class CombinatoricsTest {
 	}
 
 
-	private static int[] subset(final int n, final int[] sub, final Random random) {
+	private static int[] subset(
+		final int n,
+		final int[] sub,
+		final RandomGenerator random
+	) {
 		final int k = sub.length;
 
 		if (sub.length == n) {
@@ -202,8 +208,34 @@ public class CombinatoricsTest {
 		return sub;
 	}
 
-	private static int nextInt(final Random r, final int a, final int b) {
-		return Randoms.nextInt(a, b + 1, r);
+	private static int nextInt(final RandomGenerator r, final int a, final int b) {
+		return nextInt(a, b + 1, r);
+	}
+
+	private static int nextInt(
+		final int origin,
+		final int bound,
+		final RandomGenerator random
+	) {
+		if (origin >= bound) {
+			throw new IllegalArgumentException(format(
+				"origin >= bound: %d >= %d", origin, bound
+			));
+		}
+
+		final int value;
+		int n = bound - origin;
+		if (n > 0) {
+			value = random.nextInt(n) + origin;
+		} else {
+			int r;
+			do {
+				r = random.nextInt();
+			} while (r < origin || r >= bound);
+			value = r;
+		}
+
+		return value;
 	}
 
 }

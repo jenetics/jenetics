@@ -60,6 +60,7 @@ public class CharacterChromosome
 		CharSequence,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	private transient final CharSeq _validCharacters;
@@ -326,10 +327,12 @@ public class CharacterChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

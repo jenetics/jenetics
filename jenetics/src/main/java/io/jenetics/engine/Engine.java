@@ -240,7 +240,7 @@ public final class Engine<
 		final CompletableFuture<ISeq<Phenotype<G, C>>> nextPopulation =
 			filteredSurvivors.thenCombineAsync(
 				filteredOffspring,
-				(s, o) -> ISeq.of(s.population.append(o.population)),
+				(s, o) -> ISeq.of(s.population().append(o.population())),
 				_executor
 			);
 
@@ -251,12 +251,12 @@ public final class Engine<
 		);
 
 		final int killCount =
-			filteredOffspring.join().killCount +
-			filteredSurvivors.join().killCount;
+			filteredOffspring.join().killCount() +
+			filteredSurvivors.join().killCount();
 
 		final int invalidCount =
-			filteredOffspring.join().invalidCount +
-			filteredSurvivors.join().invalidCount;
+			filteredOffspring.join().invalidCount() +
+			filteredSurvivors.join().invalidCount();
 
 		final int alterationCount = alteredOffspring.join().alterations();
 

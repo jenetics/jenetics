@@ -40,6 +40,8 @@ import java.util.function.Supplier;
  * @version 5.0
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
+
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final transient Supplier<T> _supplier;
@@ -97,8 +99,8 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
     @Override
     public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Lazy<?> &&
-			Objects.equals(((Lazy<?>)obj).get(), get());
+			obj instanceof Lazy<?> other &&
+			Objects.equals(other.get(), get());
     }
 
     @Override
@@ -140,6 +142,8 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 *************************************************************************/
 
 	static final class Serial implements Externalizable  {
+
+		@java.io.Serial
 		private static final long serialVersionUID = 1L;
 
 		private Lazy<?> _object;
@@ -151,6 +155,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 			_object = object;
 		}
 
+		@java.io.Serial
 		private Object readResolve() {
 			return _object;
 		}
@@ -168,10 +173,12 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 		}
 	}
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -31,8 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.IO;
@@ -111,7 +111,7 @@ public class PersistentObject<T> {
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<>(name, value, ios));
-		RandomRegistry.random().setSeed(SEED);
+		RandomRegistry.random(new LCG64ShiftRandom(SEED));
 	}
 
 	private static void init() {
@@ -502,12 +502,12 @@ public class PersistentObject<T> {
 		);
 	}
 
-	private static Random random() {
+	private static RandomGenerator random() {
 		return RandomRegistry.random();
 	}
 
 	static {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(SEED);
+		final var random = new LCG64ShiftRandom(SEED);
 		using(random, r -> init());
 	}
 

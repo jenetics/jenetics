@@ -20,7 +20,6 @@
 package io.jenetics.stat;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -74,7 +73,7 @@ public class HistogramTest {
 
 	@Test
 	public void histogramIndex() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
 			parts[i] = (double)i;
@@ -130,7 +129,7 @@ public class HistogramTest {
 
 	@Test
 	public void histogram() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
 		for (int i = 0; i < 600_000; ++i) {

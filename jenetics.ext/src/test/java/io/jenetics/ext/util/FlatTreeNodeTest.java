@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -37,7 +38,7 @@ import io.jenetics.util.ISeq;
 @Test
 public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer>> {
 
-	public FlatTreeNode<Integer> newTree(final int levels, final Random random) {
+	public FlatTreeNode<Integer> newTree(final int levels, final RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		TreeNodeTest.fill(root, levels, random);
 		return FlatTreeNode.ofTree(root);

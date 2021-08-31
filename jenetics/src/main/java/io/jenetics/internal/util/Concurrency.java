@@ -21,10 +21,8 @@ package io.jenetics.internal.util;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
-import static java.security.AccessController.doPrivileged;
 import static java.util.Objects.requireNonNull;
 
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -349,10 +347,11 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		return partition;
 	}
 
+	@SuppressWarnings("removal")
 	private static final class Env {
 		private static final int maxBatchSize = max(
-			doPrivileged(
-				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+			java.security.AccessController.doPrivileged(
+				(java.security.PrivilegedAction<Integer>)() -> Integer.getInteger(
 					"io.jenetics.concurrency.maxBatchSize",
 					Integer.MAX_VALUE
 				)),

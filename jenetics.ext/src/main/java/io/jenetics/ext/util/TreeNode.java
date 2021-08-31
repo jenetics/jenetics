@@ -56,6 +56,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private T _value;
@@ -440,9 +441,7 @@ public final class TreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreeNode &&
-			Tree.equals(this, (TreeNode)obj);
+		return obj instanceof Tree<?, ?> other && Tree.equals(this, other);
 	}
 
 	@Override
@@ -598,10 +597,12 @@ public final class TreeNode<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.TREE_NODE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -131,7 +132,7 @@ public class ParetoFrontTest {
 		*/
 	}
 
-	private static Vec<double[]> circle(final Random random) {
+	private static Vec<double[]> circle(final RandomGenerator random) {
 		final double r = random.nextDouble();
 		final double a = random.nextDouble()*2*PI;
 		return Vec.of(r*sin(a), r*cos(a));
@@ -152,9 +153,9 @@ public class ParetoFrontTest {
 			@Override
 			public boolean equals(final Object obj) {
 				return obj == this ||
-					obj instanceof Entry &&
-					random == ((Entry)obj).random &&
-					Objects.equals(data, ((Entry)obj).data);
+					obj instanceof Entry other &&
+					random == other.random &&
+					Objects.equals(data, other.data);
 			}
 		}
 

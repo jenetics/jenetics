@@ -37,8 +37,8 @@ extra["moduleName"] = "io.jenetics.xml"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.PRNGine)
+	testImplementation(libs.testng)
+	testImplementation(libs.prngine)
 
 	jmh(project(":jenetics"))
 }

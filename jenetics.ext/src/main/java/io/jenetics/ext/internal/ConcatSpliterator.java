@@ -33,12 +33,14 @@ import java.util.stream.Collectors;
  * concatenated and a limiting predicate.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 6.3
  * @since 4.1
  */
 public class ConcatSpliterator<T> implements Spliterator<T> {
 
 	private final Deque<Spliterator<T>> _spliterators;
+	private final int _characteristics;
+	private final long _size;
 
 	/**
 	 * Create a new concatenating spliterator with the given arguments.
@@ -48,6 +50,21 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 	 */
 	public ConcatSpliterator(final Collection<Spliterator<T>> spliterators) {
 		_spliterators = new LinkedList<>(spliterators);
+
+
+		int characteristics = (ORDERED | SIZED | SUBSIZED);
+		long size = 0;
+		for (var spliterator : spliterators) {
+			characteristics &= spliterator.characteristics();
+			size += spliterator.estimateSize();
+		}
+		if (size < 0) {
+			size = Long.MAX_VALUE;
+			characteristics &= (~SIZED) & (~SUBSIZED);
+		}
+
+		_characteristics = characteristics;
+		_size = size;
 	}
 
 	@Override
@@ -81,24 +98,12 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public long estimateSize() {
-		final boolean maxValueSized = _spliterators.stream()
-			.mapToLong(Spliterator::estimateSize)
-			.anyMatch(l -> l == Long.MAX_VALUE);
-
-		return maxValueSized
-			? Long.MAX_VALUE
-			: _spliterators.stream()
-				.mapToLong(Spliterator::estimateSize)
-				.min()
-				.orElse(1L)*_spliterators.size();
+		return _size;
 	}
 
 	@Override
 	public int characteristics() {
-		return _spliterators.stream()
-			.mapToInt(Spliterator::characteristics)
-			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2) &
-			~Spliterator.SORTED;
+		return _characteristics;
 	}
 
 }

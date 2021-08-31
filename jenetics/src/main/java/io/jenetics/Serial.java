@@ -32,6 +32,7 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte DOUBLE_GENE = 1;
@@ -48,7 +49,7 @@ final class Serial implements Externalizable {
 	static final byte GENOTYPE = 10;
 	static final byte PHENOTYPE = 11;
 
-	static final byte BIT_GENE_STORE = 12;
+	//static final byte BIT_GENE_STORE = 12;
 
 	/**
 	 * The type being serialized.
@@ -81,20 +82,18 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case DOUBLE_GENE: ((DoubleGene)_object).write(out); break;
-			case INTEGER_GENE: ((IntegerGene)_object).write(out); break;
-			case LONG_GENE: ((LongGene)_object).write(out); break;
-			case BIT_CHROMOSOME: ((BitChromosome)_object).write(out); break;
-			case DOUBLE_CHROMOSOME: ((DoubleChromosome)_object).write(out); break;
-			case INTEGER_CHROMOSOME: ((IntegerChromosome)_object).write(out); break;
-			case LONG_CHROMOSOME: ((LongChromosome)_object).write(out); break;
-			case CHARACTER_CHROMOSOME: ((CharacterChromosome)_object).write(out); break;
-			case PERMUTATION_CHROMOSOME: ((PermutationChromosome)_object).write(out); break;
-			case GENOTYPE: ((Genotype)_object).write(out); break;
-			case PHENOTYPE: ((Phenotype)_object).write(out); break;
-			case BIT_GENE_STORE: ((BitGeneStore)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case DOUBLE_GENE -> ((DoubleGene)_object).write(out);
+			case INTEGER_GENE -> ((IntegerGene)_object).write(out);
+			case LONG_GENE -> ((LongGene)_object).write(out);
+			case BIT_CHROMOSOME -> ((BitChromosome)_object).write(out);
+			case DOUBLE_CHROMOSOME -> ((DoubleChromosome)_object).write(out);
+			case INTEGER_CHROMOSOME -> ((IntegerChromosome)_object).write(out);
+			case LONG_CHROMOSOME -> ((LongChromosome)_object).write(out);
+			case CHARACTER_CHROMOSOME -> ((CharacterChromosome)_object).write(out);
+			case PERMUTATION_CHROMOSOME -> ((PermutationChromosome<?>)_object).write(out);
+			case GENOTYPE -> ((Genotype<?>)_object).write(out);
+			case PHENOTYPE -> ((Phenotype<?, ?>)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -103,24 +102,23 @@ final class Serial implements Externalizable {
 		throws IOException, ClassNotFoundException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case DOUBLE_GENE: _object = DoubleGene.read(in); break;
-			case INTEGER_GENE: _object = IntegerGene.read(in); break;
-			case LONG_GENE: _object = LongGene.read(in); break;
-			case BIT_CHROMOSOME: _object = BitChromosome.read(in); break;
-			case DOUBLE_CHROMOSOME: _object = DoubleChromosome.read(in); break;
-			case INTEGER_CHROMOSOME: _object = IntegerChromosome.read(in); break;
-			case LONG_CHROMOSOME: _object = LongChromosome.read(in); break;
-			case CHARACTER_CHROMOSOME: _object = CharacterChromosome.read(in); break;
-			case PERMUTATION_CHROMOSOME: _object = PermutationChromosome.read(in); break;
-			case GENOTYPE: _object = Genotype.read(in); break;
-			case PHENOTYPE: _object = Phenotype.read(in); break;
-			case BIT_GENE_STORE: _object = BitGeneStore.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case DOUBLE_GENE -> DoubleGene.read(in);
+			case INTEGER_GENE -> IntegerGene.read(in);
+			case LONG_GENE -> LongGene.read(in);
+			case BIT_CHROMOSOME -> BitChromosome.read(in);
+			case DOUBLE_CHROMOSOME -> DoubleChromosome.read(in);
+			case INTEGER_CHROMOSOME -> IntegerChromosome.read(in);
+			case LONG_CHROMOSOME -> LongChromosome.read(in);
+			case CHARACTER_CHROMOSOME -> CharacterChromosome.read(in);
+			case PERMUTATION_CHROMOSOME -> PermutationChromosome.read(in);
+			case GENOTYPE -> Genotype.read(in);
+			case PHENOTYPE -> Phenotype.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

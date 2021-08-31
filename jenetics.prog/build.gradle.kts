@@ -41,8 +41,8 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.testng)
+	testImplementation(libs.equalsverifier)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

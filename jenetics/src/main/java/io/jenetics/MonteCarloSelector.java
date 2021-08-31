@@ -22,8 +22,6 @@ package io.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -67,7 +65,7 @@ public final class MonteCarloSelector<
 		final MSeq<Phenotype<G, C>> selection;
 		if (count > 0 && !population.isEmpty()) {
 			selection = MSeq.ofLength(count);
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int size = population.size();
 
 			for (int i = 0; i < count; ++i) {

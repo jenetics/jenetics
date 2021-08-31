@@ -32,6 +32,7 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte OBJECT_STORE = 1;
@@ -69,11 +70,10 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case OBJECT_STORE: ((ObjectStore)_object).write(out); break;
-			case ARRAY: ((Array)_object).write(out); break;
-			case CHAR_STORE: ((CharStore)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case OBJECT_STORE -> ((ObjectStore<?>)_object).write(out);
+			case ARRAY -> ((Array<?>)_object).write(out);
+			case CHAR_STORE -> ((CharStore)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -82,15 +82,15 @@ final class Serial implements Externalizable {
 		throws IOException, ClassNotFoundException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case OBJECT_STORE: _object = ObjectStore.read(in); break;
-			case ARRAY: _object = Array.read(in); break;
-			case CHAR_STORE: _object = CharStore.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case OBJECT_STORE -> ObjectStore.read(in);
+			case ARRAY -> Array.read(in);
+			case CHAR_STORE -> CharStore.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

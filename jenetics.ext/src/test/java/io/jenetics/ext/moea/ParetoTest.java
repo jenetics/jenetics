@@ -26,6 +26,7 @@ import static java.lang.Math.sin;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -250,7 +251,7 @@ public class ParetoTest {
 	static ISeq<Vec<double[]>> frontMax(
 		final double r,
 		final int count,
-		final Random random
+		final RandomGenerator random
 	) {
 		return random.doubles(count)
 			.map(a -> a*PI*0.5)
@@ -261,7 +262,7 @@ public class ParetoTest {
 	static ISeq<Vec<double[]>> frontMin(
 		final double r,
 		final int count,
-		final Random random
+		final RandomGenerator random
 	) {
 		return random.doubles(count)
 			.map(a -> a*PI*0.5 + PI)
@@ -269,7 +270,7 @@ public class ParetoTest {
 			.collect(ISeq.toISeq());
 	}
 
-	static ISeq<Vec<double[]>> circle(final int count, final Random random) {
+	static ISeq<Vec<double[]>> circle(final int count, final RandomGenerator random) {
 		return random.doubles(count)
 			.mapToObj(r -> {
 				final double a = random.nextDouble()*2*PI;

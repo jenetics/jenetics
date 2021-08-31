@@ -32,6 +32,7 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte DOUBLE_RANGE = 1;
@@ -69,11 +70,10 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case DOUBLE_RANGE: ((DoubleRange)_object).write(out); break;
-			case INT_RANGE: ((IntRange)_object).write(out); break;
-			case LONG_RANGE: ((LongRange)_object).write(out); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
+			case DOUBLE_RANGE -> ((DoubleRange)_object).write(out);
+			case INT_RANGE -> ((IntRange)_object).write(out);
+			case LONG_RANGE -> ((LongRange)_object).write(out);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
@@ -82,15 +82,15 @@ final class Serial implements Externalizable {
 		throws IOException
 	{
 		_type = in.readByte();
-		switch (_type) {
-			case DOUBLE_RANGE: _object = DoubleRange.read(in); break;
-			case INT_RANGE: _object = IntRange.read(in); break;
-			case LONG_RANGE: _object = LongRange.read(in); break;
-			default:
-				throw new StreamCorruptedException("Unknown serialized type.");
-		}
+		_object = switch (_type) {
+			case DOUBLE_RANGE -> DoubleRange.read(in);
+			case INT_RANGE -> IntRange.read(in);
+			case LONG_RANGE -> LongRange.read(in);
+			default -> throw new StreamCorruptedException("Unknown serialized type.");
+		};
 	}
 
+	@java.io.Serial
 	private Object readResolve() {
 		return _object;
 	}

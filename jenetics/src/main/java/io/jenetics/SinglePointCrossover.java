@@ -22,8 +22,6 @@ package io.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
-import java.util.Random;
-
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -79,7 +77,7 @@ public class SinglePointCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final int index = random.nextInt(min(that.length(), other.length()));
 		crossover(that, other, index);

@@ -78,6 +78,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Verifiable,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
@@ -208,9 +209,8 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Genotype<?> &&
-			Objects.equals(_chromosomes, ((Genotype<?>)obj)._chromosomes);
+		return obj instanceof Genotype<?> other &&
+			Objects.equals(_chromosomes, other._chromosomes);
 	}
 
 	@Override
@@ -293,10 +293,12 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.GENOTYPE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

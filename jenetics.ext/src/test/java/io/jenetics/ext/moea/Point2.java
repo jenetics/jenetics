@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 
@@ -134,9 +134,9 @@ public final class Point2 implements Vec<Point2> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Point2 &&
-			Double.compare(((Point2)obj)._x, _x) == 0 &&
-			Double.compare(((Point2)obj)._y, _y) == 0;
+		return obj instanceof Point2 other &&
+			Double.compare(other._x, _x) == 0 &&
+			Double.compare(other._y, _y) == 0;
 	}
 
 	@Override
@@ -156,13 +156,13 @@ public final class Point2 implements Vec<Point2> {
 	}
 
 
-	static ISeq<Point2> front(final int count, final Random random) {
+	static ISeq<Point2> front(final int count, final RandomGenerator random) {
 		return random.doubles(count)
 			.mapToObj(x -> Point2.of(x, sqrt(1 - x*x)))
 			.collect(ISeq.toISeq());
 	}
 
-	static ISeq<Point2> circle(final int count, final Random random) {
+	static ISeq<Point2> circle(final int count, final RandomGenerator random) {
 		return random.doubles()
 			.mapToObj(x -> Point2.of(x, random.nextDouble()))
 			.filter(p -> p.x()*p.x() + p.y()*p.y() < 0.9)

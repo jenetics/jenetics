@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.Combinatorics.subset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
@@ -115,7 +114,7 @@ public class UFTournamentSelector<
 		final int count,
 		final Optimize opt
 	) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final CrowdedComparator<Phenotype<G, C>> cc = new CrowdedComparator<>(
 			population,

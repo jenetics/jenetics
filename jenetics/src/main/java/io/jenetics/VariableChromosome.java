@@ -36,7 +36,6 @@ import io.jenetics.util.IntRange;
 abstract class VariableChromosome<G extends Gene<?, G>>
 	extends AbstractChromosome<G>
 {
-	private static final long serialVersionUID = 1L;
 
 	private final IntRange _lengthRange;
 
@@ -111,7 +110,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			Objects.equals(_lengthRange, ((VariableChromosome)obj)._lengthRange) &&
+			Objects.equals(_lengthRange, ((VariableChromosome<?>)obj)._lengthRange) &&
 			super.equals(obj);
 	}
 

@@ -21,8 +21,6 @@ package io.jenetics.util;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 /**
@@ -34,7 +32,7 @@ public class DoubleRangeTest extends ObjectTester<DoubleRange> {
 	@Override
 	protected Factory<DoubleRange> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return DoubleRange.of(random.nextDouble(), random.nextDouble() + 1.1);
 		};
 	}

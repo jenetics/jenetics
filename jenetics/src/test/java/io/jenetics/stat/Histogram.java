@@ -335,9 +335,9 @@ public class Histogram<C> implements Consumer<C> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Histogram &&
-			Arrays.equals(_separators, ((Histogram) obj)._separators) &&
-			Arrays.equals(_histogram, ((Histogram) obj)._histogram);
+			obj instanceof Histogram<?> other &&
+			Arrays.equals(_separators, other._separators) &&
+			Arrays.equals(_histogram, other._histogram);
 	}
 
 	@Override

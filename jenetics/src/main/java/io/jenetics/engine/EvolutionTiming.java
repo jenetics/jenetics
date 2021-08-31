@@ -46,9 +46,8 @@ final class EvolutionTiming {
 		evolve = Timing.of(clock);
 	}
 
-
 	EvolutionDurations toDurations() {
-		return EvolutionDurations.of(
+		return new EvolutionDurations(
 			offspringSelection.duration(),
 			survivorsSelection.duration(),
 			offspringAlter.duration(),
