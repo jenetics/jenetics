@@ -127,4 +127,21 @@ public final class Arrays {
 		return shuffle(array, RandomRegistry.random());
 	}
 
+	public static int[] add(final int[] array, final int b) {
+		for (int i = 0; i < array.length; ++i) {
+			array[i] += b;
+		}
+		return array;
+	}
+
+	public static void rangeCheck(final int from, final int to) {
+		if (from > to) {
+			throw new IllegalArgumentException(
+				"fromIndex(" + from + ") > toIndex(" + to + ")");
+		}
+		if (from < 0) {
+			throw new ArrayIndexOutOfBoundsException(from);
+		}
+	}
+
 }
