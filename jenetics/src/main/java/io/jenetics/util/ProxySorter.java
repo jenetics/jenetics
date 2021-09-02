@@ -129,37 +129,6 @@ public final class ProxySorter {
 	 * <pre>{@code
 	 * final double[] array = ...;
 	 * final int[] sorted = ProxySorter.sort(
-	 *     array, array.length,
-	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
-	 * );
-	 * for (int i : sorted) {
-	 *     System.out.println(array[i]);
-	 * }
-	 * }</pre>
-	 *
-	 * @param array the array which is sorted
-	 * @param length the array length
-	 * @param comparator the array element comparator
-	 * @param <T> the array type
-	 * @return the sorted index array
-	 * @throws NullPointerException if one of the array is {@code null}
-	 */
-	public static <T> int[] sort(
-		final T array,
-		final int length,
-		final Comparator<? super T> comparator
-	) {
-		return TimProxySorter.sort(array, length, comparator);
-	}
-
-	/**
-	 * Sorting the given array by creating an index lookup array. The original
-	 * array is not touched and the returned array can then be used for
-	 * iterating the array in ascending order.
-	 *
-	 * <pre>{@code
-	 * final double[] array = ...;
-	 * final int[] sorted = ProxySorter.sort(
 	 *     array, 5, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
 	 * );
@@ -197,6 +166,37 @@ public final class ProxySorter {
 		);
 
 		return add(indexes, from);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array. The original
+	 * array is not touched and the returned array can then be used for
+	 * iterating the array in ascending order.
+	 *
+	 * <pre>{@code
+	 * final double[] array = ...;
+	 * final int[] sorted = ProxySorter.sort(
+	 *     array, array.length,
+	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
+	 * );
+	 * for (int i : sorted) {
+	 *     System.out.println(array[i]);
+	 * }
+	 * }</pre>
+	 *
+	 * @param array the array which is sorted
+	 * @param length the array length
+	 * @param comparator the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 * @throws NullPointerException if one of the array is {@code null}
+	 */
+	public static <T> int[] sort(
+		final T array,
+		final int length,
+		final Comparator<? super T> comparator
+	) {
+		return TimProxySorter.sort(array, length, comparator);
 	}
 
 
