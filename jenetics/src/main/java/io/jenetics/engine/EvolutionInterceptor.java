@@ -105,7 +105,7 @@ public interface EvolutionInterceptor<
 	 * @return a new interceptor instance with the given interceptor functions
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C> of(
 		final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before,
 		final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after
@@ -135,7 +135,7 @@ public interface EvolutionInterceptor<
 	 * @return a new interceptor instance with the given interceptor function
 	 * @throws NullPointerException if the function is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofBefore(final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before) {
 		return EvolutionInterceptor.of(before, Function.identity());
@@ -150,7 +150,7 @@ public interface EvolutionInterceptor<
 	 * @return a new interceptor instance with the given interceptor function
 	 * @throws NullPointerException if the function is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofAfter(final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after) {
 		return EvolutionInterceptor.of(Function.identity(), after);
@@ -163,7 +163,7 @@ public interface EvolutionInterceptor<
 	 * @param <C> the fitness result type
 	 * @return a new <em>identity</em> interceptor
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C> identity() {
 		return EvolutionInterceptor.of(Function.identity(), Function.identity());
 	}
