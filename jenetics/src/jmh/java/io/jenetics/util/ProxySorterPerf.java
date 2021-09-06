@@ -22,6 +22,7 @@ package io.jenetics.util;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -33,6 +34,8 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import io.jenetics.util.ProxySorter.Comparator;
 
 /**
  * Java 8
@@ -83,25 +86,25 @@ public class ProxySorterPerf {
 
 	@State(Scope.Benchmark)
 	public static class Array {
-		int[] array_10 = new Random().ints()
-			.limit(10)
-			.toArray();
+//		int[] array_10 = new Random().ints()
+//			.limit(10)
+//			.toArray();
 
 		int[] array_100 = new Random().ints()
 			.limit(100)
 			.toArray();
 
-		int[] array_1000 = new Random().ints()
-			.limit(1000)
-			.toArray();
-
-		int[] array_10000 = new Random().ints()
-			.limit(10000)
-			.toArray();
-
-		int[] array_100000 = new Random().ints()
-			.limit(100000)
-			.toArray();
+//		int[] array_1000 = new Random().ints()
+//			.limit(1000)
+//			.toArray();
+//
+//		int[] array_10000 = new Random().ints()
+//			.limit(10000)
+//			.toArray();
+//
+//		int[] array_100000 = new Random().ints()
+//			.limit(100000)
+//			.toArray();
 	}
 
 
@@ -109,97 +112,130 @@ public class ProxySorterPerf {
 	 * ProxySorter
 	 * ************************************************************************/
 
-	@Benchmark
-	public int[] tim_sort_10(final Array array) {
-		return ProxySorter.sort(array.array_10);
-	}
+//	@Benchmark
+//	public int[] tim_sort_10(final Array array) {
+//		return ProxySorter.sort(array.array_10);
+//	}
+
+//	@Benchmark
+//	public int[] tim_sort_100(final Array array) {
+//		return ProxySorter.sort(array.array_100);
+//	}
 
 	@Benchmark
-	public int[] tim_sort_100(final Array array) {
-		return ProxySorter.sort(array.array_100);
+	public int[] naive_sort_100(final Array array) {
+		return sort(
+			array.array_100,
+			0, array.array_100.length,
+			(a, i, j) -> Integer.compare(a[i], a[j])
+		);
 	}
 
-	@Benchmark
-	public int[] tim_sort_1000(final Array array) {
-		return ProxySorter.sort(array.array_1000);
-	}
-
-	@Benchmark
-	public int[] tim_sort_10000(final Array array) {
-		return ProxySorter.sort(array.array_10000);
-	}
-
-	@Benchmark
-	public int[] tim_sort_100000(final Array array) {
-		return ProxySorter.sort(array.array_100000);
-	}
+//	@Benchmark
+//	public int[] tim_sort_1000(final Array array) {
+//		return ProxySorter.sort(array.array_1000);
+//	}
+//
+//	@Benchmark
+//	public int[] tim_sort_10000(final Array array) {
+//		return ProxySorter.sort(array.array_10000);
+//	}
+//
+//	@Benchmark
+//	public int[] tim_sort_100000(final Array array) {
+//		return ProxySorter.sort(array.array_100000);
+//	}
 
 	/* *************************************************************************
 	 * IndexSorter
 	 * ************************************************************************/
 
-	@Benchmark
-	public int[] old_index_sort_10(final Array array) {
-		return IndexSorter.sort(array.array_10);
-	}
+//	@Benchmark
+//	public int[] old_index_sort_10(final Array array) {
+//		return IndexSorter.sort(array.array_10);
+//	}
 
-	@Benchmark
-	public int[] old_index_sort_100(final Array array) {
-		return IndexSorter.sort(array.array_100);
-	}
+//	@Benchmark
+//	public int[] old_index_sort_100(final Array array) {
+//		return IndexSorter.sort(array.array_100);
+//	}
 
-	@Benchmark
-	public int[] old_index_sort_1000(final Array array) {
-		return IndexSorter.sort(array.array_1000);
-	}
-
-	@Benchmark
-	public int[] old_index_sort_10000(final Array array) {
-		return IndexSorter.sort(array.array_10000);
-	}
-
-	@Benchmark
-	public int[] old_index_sort_100000(final Array array) {
-		return IndexSorter.sort(array.array_100000);
-	}
+//	@Benchmark
+//	public int[] old_index_sort_1000(final Array array) {
+//		return IndexSorter.sort(array.array_1000);
+//	}
+//
+//	@Benchmark
+//	public int[] old_index_sort_10000(final Array array) {
+//		return IndexSorter.sort(array.array_10000);
+//	}
+//
+//	@Benchmark
+//	public int[] old_index_sort_100000(final Array array) {
+//		return IndexSorter.sort(array.array_100000);
+//	}
 
 	/* *************************************************************************
 	 * IndexSorter
 	 * ************************************************************************/
 
-	@Benchmark
-	public int[] java_index_sort_10(final Array array) {
-		int[] a = array.array_10.clone();
-		Arrays.sort(a);
-		return a;
-	}
+//	@Benchmark
+//	public int[] java_index_sort_10(final Array array) {
+//		int[] a = array.array_10.clone();
+//		Arrays.sort(a);
+//		return a;
+//	}
 
-	@Benchmark
-	public int[] java_index_sort_100(final Array array) {
-		int[] a = array.array_100.clone();
-		Arrays.sort(a);
-		return a;
-	}
+//	@Benchmark
+//	public int[] java_index_sort_100(final Array array) {
+//		int[] a = array.array_100.clone();
+//		Arrays.sort(a);
+//		return a;
+//	}
 
-	@Benchmark
-	public int[] java_index_sort_1000(final Array array) {
-		int[] a = array.array_1000.clone();
-		Arrays.sort(a);
-		return a;
-	}
+//	@Benchmark
+//	public int[] java_index_sort_1000(final Array array) {
+//		int[] a = array.array_1000.clone();
+//		Arrays.sort(a);
+//		return a;
+//	}
+//
+//	@Benchmark
+//	public int[] java_index_sort_10000(final Array array) {
+//		int[] a = array.array_10000.clone();
+//		Arrays.sort(a);
+//		return a;
+//	}
+//
+//	@Benchmark
+//	public int[] java_index_sort_100000(final Array array) {
+//		int[] a = array.array_100000.clone();
+//		Arrays.sort(a);
+//		return a;
+//	}
 
-	@Benchmark
-	public int[] java_index_sort_10000(final Array array) {
-		int[] a = array.array_10000.clone();
-		Arrays.sort(a);
-		return a;
-	}
+	static <T> int[] sort(
+		final T array,
+		final int from,
+		final int to,
+		final Comparator<? super T> comparator
+	) {
+		record Proxy<T>(int index, T array, Comparator<? super T> comparator)
+			implements Comparable<Proxy<T>>
+		{
+			@Override
+			public int compareTo(final Proxy<T> o) {
+				return comparator.compare(array, index, o.index);
+			}
+		}
 
-	@Benchmark
-	public int[] java_index_sort_100000(final Array array) {
-		int[] a = array.array_100000.clone();
-		Arrays.sort(a);
-		return a;
+		final var proxies = IntStream.range(from, to)
+			.mapToObj(i -> new Proxy<>(i, array, comparator))
+			.sorted();
+
+		return proxies
+			.mapToInt(Proxy::index)
+			.toArray();
 	}
 
 	public static void main(String[] args) throws RunnerException {
@@ -215,3 +251,17 @@ public class ProxySorterPerf {
 	}
 
 }
+
+/*
+Result "io.jenetics.util.ProxySorterPerf.naive_sort_100":
+  4748.707 ±(99.9%) 131.359 ns/op [Average]
+  (min, avg, max) = (4486.265, 4748.707, 5124.758), stdev = 175.360
+  CI (99.9%): [4617.349, 4880.066] (assumes normal distribution)
+ */
+
+/*
+Benchmark                            Mode  Cnt     Score    Error  Units
+ProxySorterPerf.java_index_sort_100  avgt   25   865.346 ± 23.843  ns/op
+ProxySorterPerf.old_index_sort_100   avgt   25  3228.841 ± 76.643  ns/op
+ProxySorterPerf.tim_sort_100         avgt   25  1778.585 ± 47.610  ns/op
+ */

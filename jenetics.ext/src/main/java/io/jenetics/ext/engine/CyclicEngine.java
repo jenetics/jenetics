@@ -24,7 +24,6 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
@@ -133,7 +132,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);
@@ -166,7 +165,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, init, other, first))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);

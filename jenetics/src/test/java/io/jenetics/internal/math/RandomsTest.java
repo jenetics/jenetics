@@ -19,15 +19,6 @@
  */
 package io.jenetics.internal.math;
 
-import static java.lang.String.format;
-
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

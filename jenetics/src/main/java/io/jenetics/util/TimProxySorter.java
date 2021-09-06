@@ -20,6 +20,10 @@
 package io.jenetics.util;
 
 import static java.lang.Math.min;
+import static io.jenetics.internal.util.Arrays.add;
+import static io.jenetics.internal.util.Arrays.rangeCheck;
+
+import io.jenetics.util.ProxySorter.Comparator;
 
 /**
  * Implementing the Tim sort algorithm.
@@ -38,35 +42,42 @@ final class TimProxySorter {
 	// Main sort method.
 	static <T> int[] sort(
 		final T array,
-		final int length,
-		final ProxySorter.Comparator<? super T> comparator
+		final int from,
+		final int to,
+		final Comparator<? super T> comparator
 	) {
+		rangeCheck(from, to);
+
+		final int length = to - from;
 		final int[] proxy = ProxySorter.indexes(length);
-		if (length < 2) {
-			return proxy;
-		}
 
-		// Sorting the sub-arrays with binary insertion sort.
-		for (int i = 0; i < length; i += RUN) {
-			BinaryInsertionSort.sort(
-				array, i,
-				min(i + RUN, length),
-				proxy,
-				comparator
-			);
-		}
+		if (length > 1) {
+			final Comparator<? super T> cmp = from > 0
+				? (a, i, j) -> comparator.compare(a, i + from, j + from)
+				: comparator;
 
-		// Merging sub-arrays.
-		for (int size = RUN; size < length; size = 2*size) {
-			for (int left = 0; left < length; left += 2*size) {
-				final int mid = min(left + size - 1, length - 1);
-				final int right = min(left + 2*size - 1, length - 1);
+			// Sorting the sub-arrays with binary insertion sort.
+			for (int i = 0; i < length; i += RUN) {
+				BinaryInsertionSort.sort(
+					array, i,
+					min(i + RUN, length),
+					proxy,
+					cmp
+				);
+			}
 
-				merge(array, proxy, left, mid, right, comparator);
+			// Merging sub-arrays.
+			for (int size = RUN; size < length; size = 2*size) {
+				for (int left = 0; left < length; left += 2*size) {
+					final int mid = min(left + size - 1, length - 1);
+					final int right = min(left + 2*size - 1, length - 1);
+
+					merge(array, proxy, left, mid, right, cmp);
+				}
 			}
 		}
 
-		return proxy;
+		return from > 0 ? add(proxy, from) : proxy;
 	}
 
 	// Merges the sorted runs.

@@ -36,7 +36,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -195,7 +194,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
 			.map(t -> t._task)
-			.collect(Collectors.toUnmodifiableList());
+			.toList();
 	}
 
 	/**

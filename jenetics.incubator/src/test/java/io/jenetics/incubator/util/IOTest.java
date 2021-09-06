@@ -70,7 +70,7 @@ public class IOTest {
 
 			final List<Object> expected = data.stream()
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 
 			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
 		}

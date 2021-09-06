@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * This {@code Spliterator} takes a list of other spliterators which are
@@ -89,7 +88,7 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 	public Spliterator<T> trySplit() {
 		final List<Spliterator<T>> split = _spliterators.stream()
 			.map(Spliterator::trySplit)
-			.collect(Collectors.toList());
+			.toList();
 
 		return split.stream().noneMatch(Objects::isNull)
 			? new ConcatSpliterator<>(split)

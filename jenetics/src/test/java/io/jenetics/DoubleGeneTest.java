@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -27,6 +28,8 @@ import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -84,6 +87,22 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			assertEquals(c.max().doubleValue(), max);
 			assertEquals(c.allele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
+	}
+
+	@Test
+	public void meanOverflow() {
+		final var a = Double.MIN_VALUE*1;
+		final var b = Double.MIN_VALUE*10;
+		final var mean = new BigDecimal(a)
+			.add(new BigDecimal(b))
+			.divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP)
+			.doubleValue();
+
+		final var g1 = DoubleGene.of(a, Double.MIN_VALUE, 0);
+		final var g2 = DoubleGene.of(b, Double.MIN_VALUE, 0);
+		final var g3 = g1.mean(g2);
+
+		assertThat(g3.allele()).isEqualTo(mean);
 	}
 
 	@Test

@@ -276,7 +276,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 		return parameters.stream()
 			.map(p -> distribution(selector.apply(p), opt, populationCount, loops))
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 

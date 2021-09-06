@@ -118,38 +118,25 @@ public final class ProxySorter {
 
 	}
 
-	private ProxySorter() {
+	@FunctionalInterface
+	interface Sorter<T> {
+		int[] sort(
+			final T array,
+			final int from,
+			final int to,
+			final Comparator<? super T> comparator
+		);
+
+		default int[] sort(
+			final T array,
+			final int length,
+			final Comparator<? super T> comparator
+		) {
+			return sort(array, 0, length, comparator);
+		}
 	}
 
-	/**
-	 * Sorting the given array by creating an index lookup array. The original
-	 * array is not touched and the returned array can then be used for
-	 * iterating the array in ascending order.
-	 *
-	 * <pre>{@code
-	 * final double[] array = ...;
-	 * final int[] sorted = ProxySorter.sort(
-	 *     array, array.length,
-	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
-	 * );
-	 * for (int i : sorted) {
-	 *     System.out.println(array[i]);
-	 * }
-	 * }</pre>
-	 *
-	 * @param array the array which is sorted
-	 * @param length the array length
-	 * @param comparator the array element comparator
-	 * @param <T> the array type
-	 * @return the sorted index array
-	 * @throws NullPointerException if one of the array is {@code null}
-	 */
-	public static <T> int[] sort(
-		final T array,
-		final int length,
-		final Comparator<? super T> comparator
-	) {
-		return TimProxySorter.sort(array, length, comparator);
+	private ProxySorter() {
 	}
 
 	/**
@@ -179,6 +166,7 @@ public final class ProxySorter {
 	 * @throws NullPointerException if one of the array or comparator is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
+	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0}
 	 */
 	public static <T> int[] sort(
 		final T array,
@@ -186,17 +174,39 @@ public final class ProxySorter {
 		final int to,
 		final Comparator<? super T> comparator
 	) {
-		if (from > to) {
-			throw new IllegalArgumentException(from + " > " + to);
-		}
+		return TimProxySorter.sort(array, from, to, comparator);
+	}
 
-		final int[] indexes = TimProxySorter.sort(
-			array,
-			to - from,
-			(a, i, j) -> comparator.compare(a, i + from, j + from)
-		);
-
-		return add(indexes, from);
+	/**
+	 * Sorting the given array by creating an index lookup array. The original
+	 * array is not touched and the returned array can then be used for
+	 * iterating the array in ascending order.
+	 *
+	 * <pre>{@code
+	 * final double[] array = ...;
+	 * final int[] sorted = ProxySorter.sort(
+	 *     array, array.length,
+	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
+	 * );
+	 * for (int i : sorted) {
+	 *     System.out.println(array[i]);
+	 * }
+	 * }</pre>
+	 *
+	 * @param array the array which is sorted
+	 * @param length the array length
+	 * @param comparator the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 * @throws NullPointerException if one of the array is {@code null}
+	 * @throws IllegalArgumentException if {@code length < 0}
+	 */
+	public static <T> int[] sort(
+		final T array,
+		final int length,
+		final Comparator<? super T> comparator
+	) {
+		return sort(array, 0, length, comparator);
 	}
 
 
@@ -232,6 +242,7 @@ public final class ProxySorter {
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static int[] sort(final int[] array, final int from, final int to) {
@@ -267,6 +278,7 @@ public final class ProxySorter {
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static int[] sort(final long[] array, final int from, final int to) {
@@ -302,6 +314,7 @@ public final class ProxySorter {
 	 * @param from the index of the first element (inclusive) to be sorted
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static int[] sort(final double[] array, final int from, final int to) {
@@ -344,6 +357,7 @@ public final class ProxySorter {
 	 * @param comparator the array element comparator
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T> int[] sort(
@@ -389,6 +403,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T extends Comparable<? super T>> int[] sort(
@@ -438,6 +453,7 @@ public final class ProxySorter {
 	 * @param comparator the array element comparator
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T> int[] sort(
@@ -484,6 +500,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T extends Comparable<? super T>>
@@ -530,6 +547,7 @@ public final class ProxySorter {
 	 * @param comparator the array element comparator
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T> int[] sort(
@@ -576,6 +594,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
+	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
 	 */
 	public static <T extends Comparable<? super T>>
@@ -614,13 +633,6 @@ public final class ProxySorter {
 			indexes[i] = i;
 		}
 		return indexes;
-	}
-
-	private static int[] add(final int[] array, final int b) {
-		for (int i = 0; i < array.length; ++i) {
-			array[i] += b;
-		}
-		return array;
 	}
 
 }

@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -77,7 +76,7 @@ public class CyclicSpliterator<T> implements Spliterator<T> {
 			_concat = new ConcatSpliterator<>(
 				_spliterators.stream()
 					.map(Supplier::get)
-					.collect(Collectors.toList())
+					.toList()
 			);
 		}
 

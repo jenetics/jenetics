@@ -36,7 +36,6 @@ import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGenerator.StreamableGenerator;
 import java.util.random.RandomGeneratorFactory;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -140,10 +139,10 @@ public class RandomRegistryTest {
 
 		final ExecutorService executor = Executors.newFixedThreadPool(10);
 		try {
-			final List<Future<?>> futures = IntStream.range(0, 500)
+			final var futures = IntStream.range(0, 500)
 				.mapToObj(i -> executor
 					.submit(() -> assertSame(RandomRegistry.random(), random)))
-				.collect(Collectors.toList());
+				.toList();
 
 			for (Future<?> future : futures) {
 				future.get();

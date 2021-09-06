@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
@@ -144,7 +143,7 @@ public class UFTournamentSelector<
 				final C fitness = population.get(p).fitness();
 				final List<Phenotype<G, C>> list = population.stream()
 					.filter(pt -> pt.fitness().equals(fitness))
-					.collect(Collectors.toList());
+					.toList();
 
 				S.add(list.get(random.nextInt(list.size())));
 			}

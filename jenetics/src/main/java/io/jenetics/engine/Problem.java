@@ -75,7 +75,7 @@ public interface Problem<
 
 	/**
 	 * Return the codec, which translates the types of the problem domain into
-	 * types, which can be understand by the evolution {@code Engine}.
+	 * types, which can be understood by the evolution {@code Engine}.
 	 *
 	 * @return the engine codec
 	 */

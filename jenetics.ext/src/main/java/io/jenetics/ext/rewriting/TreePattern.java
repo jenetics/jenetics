@@ -26,7 +26,6 @@ import static io.jenetics.ext.internal.Names.isIdentifier;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -38,7 +37,6 @@ import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import io.jenetics.ext.internal.Escaper;
 import io.jenetics.ext.util.Tree;

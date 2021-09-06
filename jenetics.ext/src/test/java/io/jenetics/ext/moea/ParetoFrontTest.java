@@ -31,7 +31,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -90,7 +89,7 @@ public class ParetoFrontTest {
 
 		final List<Vec<double[]>> elements = IntStream.range(0, 500)
 			.mapToObj(i -> circle(random))
-			.collect(Collectors.toList());
+			.toList();
 
 		set.addAll(elements);
 
@@ -107,7 +106,7 @@ public class ParetoFrontTest {
 
 		final List<Vec<double[]>> elements = IntStream.range(0, 100_000)
 			.mapToObj(i -> circle(random))
-			.collect(Collectors.toList());
+			.toList();
 
 		set.addAll(elements);
 
