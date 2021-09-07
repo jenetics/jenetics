@@ -47,7 +47,8 @@ public final class Combinatorics {
 	 * @param k the size of the subset.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
-	 * @return the subset array.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 */
 	public static int[] subset(final int n, final int k) {
 		return subset(n, k, RandomRegistry.random());
@@ -64,7 +65,8 @@ public final class Combinatorics {
 	 * @throws NullPointerException if {@code random} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *         {@code n*k} will cause an integer overflow.
-	 * @return the subset array.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 */
 	public static int[] subset(
 		final int n,
@@ -98,7 +100,8 @@ public final class Combinatorics {
 	 * @throws IllegalArgumentException if {@code set.length < k},
 	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
 	 *         overflow.
-	 * @return the subset array
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 */
 	public static int[] subset(final int[] set, final int k) {
 		return subset(set, k, RandomRegistry.random());
@@ -115,7 +118,8 @@ public final class Combinatorics {
 	 * @throws IllegalArgumentException if {@code set.length < k},
 	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
 	 *         overflow.
-	 * @return the subset array
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 */
 	public static int[] subset(
 		final int[] set,
@@ -139,7 +143,8 @@ public final class Combinatorics {
 	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
-	 * @return the subset array
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
@@ -168,7 +173,8 @@ public final class Combinatorics {
 	 * @param n the size of the set.
 	 * @param a a set array.
 	 * @param random the random number generator used.
-	 * @return the a-set array for the given parameter
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 * @throws NullPointerException if {@code a} or {@code random} is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < a.length},
