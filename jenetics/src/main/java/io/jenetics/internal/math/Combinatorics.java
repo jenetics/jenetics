@@ -25,6 +25,7 @@ import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
 import java.util.random.RandomGenerator;
 
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -197,7 +198,7 @@ public final class Combinatorics {
 		}
 
 		// (B)
-		int l = 0, x = 0;
+		int l, x;
 		for (int c = 0; c < k; ++c) {
 			do {
 				// Choose random x;
@@ -262,8 +263,7 @@ public final class Combinatorics {
 		}
 
 		// Convert to zero based indexed arrays.
-		for (int i = 0; i < a.length; ++i) a[i] -= 1;
-		return a;
+		return Arrays.add(a, -1);
 	}
 
 	public static void checkSubSet(final int n, final int k) {
