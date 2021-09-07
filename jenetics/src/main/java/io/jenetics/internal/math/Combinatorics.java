@@ -86,7 +86,7 @@ public final class Combinatorics {
 		}
 
 		final int[] sub = new int[k];
-		subset(n, sub,random);
+		subset(n, sub, random);
 		return sub;
 	}
 
