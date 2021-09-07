@@ -194,7 +194,9 @@ public final class Combinatorics {
 
 		// Early return.
 		if (a.length == n) {
-			for (int i = 0; i < k; ++i) a[i] = i;
+			for (int i = 0; i < k; ++i) {
+				a[i] = i;
+			}
 			return a;
 		}
 
@@ -208,7 +210,7 @@ public final class Combinatorics {
 		for (int c = 0; c < k; ++c) {
 			do {
 				// Choose random x;
-				x = 1 + nextX(random, n - 1);
+				x = 1 + random.nextInt(n);
 
 				// determine range Rl;
 				l = (x*k - 1)/n;
@@ -253,7 +255,7 @@ public final class Combinatorics {
 			}
 
 			// (F) Choose a random x.
-			x = m0 + nextX(random, m - 1);
+			x = m0 + random.nextInt(m);
 			int i = l + 1;
 
 			// (G) Check x against previously entered elements in bin;
@@ -289,10 +291,6 @@ public final class Combinatorics {
 				n, k, (long)n*(long)k, Integer.MAX_VALUE
 			));
 		}
-	}
-
-	private static int nextX(final RandomGenerator random, final int m) {
-		return random.nextInt(m + 1);
 	}
 
 }
