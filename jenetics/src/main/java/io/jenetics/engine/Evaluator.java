@@ -25,7 +25,7 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
- * This interface allows to define different strategies for evaluating the
+ * This interface allows defining different strategies for evaluating the
  * fitness functions of a given population. <em>Normally</em>, there is no
  * need for <em>overriding</em> the default evaluation strategy, but it might
  * be necessary if you have performance problems and a <em>batched</em>
