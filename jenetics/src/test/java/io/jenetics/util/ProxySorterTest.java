@@ -22,7 +22,6 @@ package io.jenetics.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
