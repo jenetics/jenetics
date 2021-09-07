@@ -20,6 +20,7 @@
 package io.jenetics.internal.math;
 
 import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
@@ -28,12 +29,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
+import io.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,20 +45,28 @@ public class CombinatoricsTest {
 
 	@Test
 	public void compatibility() {
-//		final String resource = "/io/jenetics/internal/math/comb/subset";
-//		final TestData data = TestData.of(resource);
-//		final int[][] sub = data.stream()
-//			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
-//			.toArray(int[][]::new);
-
 		for (int i = 1; i <= 1000; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
- 			int[] sub2 = new int[i];
-			Combinatorics.subset(1000, sub2, new Random(123));
-			//System.out.println(IntStream.of(sub1).mapToObj(Objects::toString).collect(Collectors.joining(",")));
+ 			int[] sub2 = Combinatorics.subset(1000, new int[i], new Random(123));
 
-			Assert.assertTrue(Arrays.equals(sub2, sub1), "K: " + i);
+			assertThat(sub2).isEqualTo(sub1);
 		}
+	}
+
+	@Test(dataProvider = "subsets")
+	public void compatibility(final int[] subset) {
+		assertThat(Combinatorics.subset(1000, subset.length,  new Random(123)))
+			.isEqualTo(subset);
+	}
+
+	@DataProvider
+	public Object[][] subsets() {
+		final String resource = "/io/jenetics/internal/math/subset";
+		final TestData data = TestData.of(resource);
+		return data.stream()
+			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
+			.map(s -> new Object[]{s})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "combinations")
