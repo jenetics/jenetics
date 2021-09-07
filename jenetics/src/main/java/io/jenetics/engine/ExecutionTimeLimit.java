@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.InstantSource;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
@@ -35,11 +36,11 @@ import java.util.function.Predicate;
 final class ExecutionTimeLimit implements Predicate<Object>  {
 
 	private final Duration _duration;
-	private final Clock _clock;
+	private final InstantSource _clock;
 
 	private final AtomicReference<Instant> _start = new AtomicReference<>();
 
-	ExecutionTimeLimit(final Duration duration, final Clock clock) {
+	ExecutionTimeLimit(final Duration duration, final InstantSource clock) {
 		_duration = requireNonNull(duration);
 		_clock = requireNonNull(clock);
 	}
