@@ -16,10 +16,10 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
 @Fork(value = 1, warmups = 3)
-@Warmup(iterations = 2)
+@Warmup(iterations = 3)
 @BenchmarkMode(Mode.AverageTime)
 @Measurement(iterations = 5)
-@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class CombinatoricsPerf {
 
 	@State(Scope.Benchmark)
@@ -29,15 +29,29 @@ public class CombinatoricsPerf {
 			"50/1",
 			"50/2",
 			"50/3",
-			"50/5",
+			"50/4",
+			"50/6",
+			"50/8",
 			"50/10",
-			"50/15",
+			"50/12",
+			"50/14",
+			"50/16",
+			"50/18",
 			"50/20",
-			"50/25",
+			"50/22",
+			"50/24",
+			"50/26",
+			"50/28",
 			"50/30",
-			"50/35",
+			"50/32",
+			"50/34",
+			"50/36",
+			"50/38",
 			"50/40",
-			"50/45",
+			"50/42",
+			"50/44",
+			"50/46",
+			"50/48",
 			"50/49",
 		})
 		public String nk;
@@ -59,6 +73,37 @@ public class CombinatoricsPerf {
 	}
 
 }
+
+/*
+Benchmark                  (nk)  Mode  Cnt     Score     Error  Units
+CombinatoricsPerf.subset   50/1  avgt    5    77.463 ±   1.074  ns/op
+CombinatoricsPerf.subset   50/2  avgt    5   117.074 ±   3.234  ns/op
+CombinatoricsPerf.subset   50/3  avgt    5   172.015 ±   2.781  ns/op
+CombinatoricsPerf.subset   50/4  avgt    5   238.575 ±  12.577  ns/op
+CombinatoricsPerf.subset   50/6  avgt    5   368.074 ±  11.813  ns/op
+CombinatoricsPerf.subset   50/8  avgt    5   486.440 ±   8.302  ns/op
+CombinatoricsPerf.subset  50/10  avgt    5   616.736 ±  28.068  ns/op
+CombinatoricsPerf.subset  50/12  avgt    5   735.692 ±  11.639  ns/op
+CombinatoricsPerf.subset  50/14  avgt    5   883.986 ±  21.073  ns/op
+CombinatoricsPerf.subset  50/16  avgt    5  1013.184 ±  29.040  ns/op
+CombinatoricsPerf.subset  50/18  avgt    5  1272.428 ±  37.367  ns/op
+CombinatoricsPerf.subset  50/20  avgt    5  1430.692 ±  37.085  ns/op
+CombinatoricsPerf.subset  50/22  avgt    5  1596.892 ±  68.767  ns/op
+CombinatoricsPerf.subset  50/24  avgt    5  1671.377 ±  43.393  ns/op
+CombinatoricsPerf.subset  50/26  avgt    5  1876.788 ±  45.864  ns/op
+CombinatoricsPerf.subset  50/28  avgt    5  1991.426 ±  44.862  ns/op
+CombinatoricsPerf.subset  50/30  avgt    5  2079.981 ±  42.206  ns/op
+CombinatoricsPerf.subset  50/32  avgt    5  2280.386 ±  28.103  ns/op
+CombinatoricsPerf.subset  50/34  avgt    5  2501.318 ±  37.715  ns/op
+CombinatoricsPerf.subset  50/36  avgt    5  2741.034 ±  69.267  ns/op
+CombinatoricsPerf.subset  50/38  avgt    5  3023.644 ±  70.023  ns/op
+CombinatoricsPerf.subset  50/40  avgt    5  3288.124 ± 203.196  ns/op
+CombinatoricsPerf.subset  50/42  avgt    5  3455.089 ±  94.088  ns/op
+CombinatoricsPerf.subset  50/44  avgt    5  3782.770 ± 120.549  ns/op
+CombinatoricsPerf.subset  50/46  avgt    5  4027.589 ± 286.878  ns/op
+CombinatoricsPerf.subset  50/48  avgt    5  4874.910 ± 475.295  ns/op
+CombinatoricsPerf.subset  50/49  avgt    5  5174.455 ± 319.814  ns/op
+ */
 
 /*
 Benchmark                  (nk)   Mode  Cnt   Score   Error   Units
