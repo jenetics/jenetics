@@ -68,7 +68,7 @@ gradle.projectsEvaluated {
 		val project = this
 
 		val xlint = listOf(
-			//"preview",
+			"preview",
 			"cast",
 			"classfile",
 			"deprecation",
