@@ -89,6 +89,7 @@ public class CombinatoricsTest {
 	@DataProvider
 	public Object[][] combinations() {
 		return new Object[][] {
+			{1, 1},
 			{2, 1},
 			{3, 2},
 			{4, 2},
@@ -100,6 +101,25 @@ public class CombinatoricsTest {
 			{5, 5},
 			{9, 4}
 		};
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_1_0() {
+		Combinatorics.subset(1,0);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_0_1() {
+		Combinatorics.subset(0,1);
+	}
+
+	@Test
+	public void invert() {
+		final int[] a = new int[]{2, 3, 5, 0, 0, 0, 0};
+		System.out.println(Arrays.toString(a));
+
+		Combinatorics.invert(10, 7, a);
+		System.out.println(Arrays.toString(a));
 	}
 
 	@Test

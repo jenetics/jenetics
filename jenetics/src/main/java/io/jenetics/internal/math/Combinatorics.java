@@ -73,21 +73,7 @@ public final class Combinatorics {
 		final int k,
 		final RandomGenerator random
 	) {
-		requireNonNull(random, "Random");
-		if (k <= 0) {
-			throw new IllegalArgumentException(format(
-				"Subset size smaller or equal zero: %s", k
-			));
-		}
-		if (n < k) {
-			throw new IllegalArgumentException(format(
-				"n smaller than k: %s < %s.", n, k
-			));
-		}
-
-		final int[] sub = new int[k];
-		subset(n, sub, random);
-		return sub;
+		return subset(n, new int[k], random);
 	}
 
 	/**
@@ -192,13 +178,63 @@ public final class Combinatorics {
 		final int k = a.length;
 		checkSubSet(n, k);
 
-		// Early return.
+		// Early return if k == n.
 		if (a.length == n) {
 			for (int i = 0; i < k; ++i) {
 				a[i] = i;
 			}
 			return a;
 		}
+
+		if (k > n/2) {
+			int k1 = n - k;
+			subset0(n, k1, a, random);
+			invert(n, k, a);
+		}
+
+		return subset0(n, k, a, random);
+	}
+
+	static void invert(
+		final int n,
+		final int k,
+		final int[] a
+	) {
+		assert a.length == k;
+
+		int v = n - 1;
+		int j = n - k - 1;
+
+		for (int i = k; --i >= 0;) {
+			int jj;
+			while ((jj = indexOf(a, j, v)) != -1) {
+				--v;
+				j = jj;
+			}
+
+			a[i] = v--;
+		}
+	}
+
+	private static int indexOf(final int[] a, final int index, final int v) {
+		for (int i = index; i >= 0; --i) {
+			if (a[i] < v) {
+				return -1;
+			} else if (a[i] == v) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	private static int[] subset0(
+		final int n,
+		final int k,
+		final int[] a,
+		final RandomGenerator random
+	) {
+		assert k <= a.length;
 
 		// (A): Initialize a[i] to "zero" point for bin Ri.
 		for (int i = 0; i < k; ++i) {
