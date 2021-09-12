@@ -32,7 +32,7 @@ import io.jenetics.util.RandomRegistry;
  * Implementation of combinatorial helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 7.0
  * @since 4.0
  */
 public final class Combinatorics {
@@ -186,13 +186,15 @@ public final class Combinatorics {
 			return a;
 		}
 
-		if (k > n/2) {
-			int k1 = n - k;
-			subset0(n, k1, a, random);
+		// Calculate the 'inverse' subset if k > n - k.
+		if (k > n - k) {
+			subset0(n, n - k, a, random);
 			invert(n, k, a);
+		} else {
+			subset0(n, k, a, random);
 		}
 
-		return subset0(n, k, a, random);
+		return a;
 	}
 
 	static void invert(
@@ -204,12 +206,13 @@ public final class Combinatorics {
 
 		int v = n - 1;
 		int j = n - k - 1;
+		int vi;
 
+		final int[] aa = java.util.Arrays.copyOfRange(a, 0, n - k);
 		for (int i = k; --i >= 0;) {
-			int jj;
-			while ((jj = indexOf(a, j, v)) != -1) {
+			while ((vi = indexOf(aa, j, v)) != -1) {
 				--v;
-				j = jj;
+				j = vi;
 			}
 
 			a[i] = v--;
@@ -228,7 +231,7 @@ public final class Combinatorics {
 		return -1;
 	}
 
-	private static int[] subset0(
+	private static void subset0(
 		final int n,
 		final int k,
 		final int[] a,
@@ -307,7 +310,7 @@ public final class Combinatorics {
 		}
 
 		// Convert to zero based indexed arrays.
-		return Arrays.add(a, -1);
+		Arrays.add(a, -1);
 	}
 
 	public static void checkSubSet(final int n, final int k) {

@@ -45,7 +45,7 @@ public class CombinatoricsTest {
 
 	@Test
 	public void compatibility() {
-		for (int i = 1; i <= 1000; ++i) {
+		for (int i = 1; i <= 500; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
  			int[] sub2 = Combinatorics.subset(1000, new int[i], new Random(123));
 
@@ -74,10 +74,24 @@ public class CombinatoricsTest {
 		final Random random = new Random();
 
 		final Set<String> subsets = new HashSet<>();
-		for (int i = 0; i < 3000; ++i) {
+		for (int i = 0; i < 3_000; ++i) {
 			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
 		}
+		//subsets.stream().sorted().forEach(System.out::println);
+		//System.out.println(binomial(5, 4));
+		//System.out.println(binomial(5, 3));
+		//System.out.println(binomial(5, 2));
+
 		Assert.assertEquals(subsets.size(), binomial(n, k));
+
+	}
+
+	@Test
+	public void foo() {
+		final int n = 21;
+		for (int k = 1; k < 11; ++k) {
+			System.out.println(binomial(n, k) + " - " + binomial(n, n - k));
+		}
 	}
 
 	private static long binomial(int n, int k) {
@@ -99,7 +113,8 @@ public class CombinatoricsTest {
 			{5, 3},
 			{5, 4},
 			{5, 5},
-			{9, 4}
+			{9, 4},
+			{10, 4}
 		};
 	}
 
@@ -114,24 +129,70 @@ public class CombinatoricsTest {
 	}
 
 	@Test
-	public void invert() {
-		final int[] a = new int[]{2, 3, 5, 0, 0, 0, 0};
-		System.out.println(Arrays.toString(a));
-
-		Combinatorics.invert(10, 7, a);
-		System.out.println(Arrays.toString(a));
-	}
-
-	@Test
 	public void subset() {
 		final Random random = new Random();
+		final int n = 2_500;
 
-		for (int i = 1; i <= 1000; ++i) {
-			int[] sub = new int[i];
-			Combinatorics.subset(1000, sub, random);
+		for (int k = 1; k <= n; ++k) {
+			int[] sub = new int[k];
+			Combinatorics.subset(n, sub, random);
 
-			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
+			for (int v : sub) {
+				assertThat(v).isBetween(0, n);
+			}
+			Assert.assertTrue(isSortedAndUnique(sub), "K: " + k);
 		}
+	}
+
+	//@Test
+	public void invert() {
+		/*
+[0, 1]
+[0, 2]
+[0, 3]
+[0, 4]
+[1, 2]
+[1, 3]
+[1, 4]
+[2, 3]
+[2, 4]
+[3, 4]
+5
+10
+10
+[0, 1, 2]
+[0, 1, 3]
+[0, 1, 4]
+[0, 2, 3]
+[0, 2, 4]
+[1, 2, 3]
+[1, 2, 4]
+[2, 3, 4]
+		 */
+		int[] a = new int[]{0, 1, 0};
+		System.out.print(Arrays.toString(a));
+
+		Combinatorics.invert(5, 3, a);
+		System.out.println(Arrays.toString(a));
+
+		a = new int[]{0, 2, 0};
+		System.out.print(Arrays.toString(a));
+
+		Combinatorics.invert(5, 3, a);
+		System.out.println(Arrays.toString(a));
+
+		 a = new int[]{0, 3, 0};
+		System.out.print(Arrays.toString(a));
+
+		Combinatorics.invert(5, 3, a);
+		System.out.println(Arrays.toString(a));
+
+		 a = new int[]{0, 4, 0};
+		System.out.print(Arrays.toString(a));
+
+		Combinatorics.invert(5, 3, a);
+		System.out.println(Arrays.toString(a));
+
 	}
 
 	private static boolean isSortedAndUnique(final int[] array) {

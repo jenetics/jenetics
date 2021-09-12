@@ -75,6 +75,37 @@ public class CombinatoricsPerf {
 }
 
 /*
+Benchmark                  (nk)  Mode  Cnt     Score    Error  Units
+CombinatoricsPerf.subset   50/1  avgt    5    71.078 ±  5.437  ns/op
+CombinatoricsPerf.subset   50/2  avgt    5   112.112 ±  5.298  ns/op
+CombinatoricsPerf.subset   50/3  avgt    5   159.361 ±  4.176  ns/op
+CombinatoricsPerf.subset   50/4  avgt    5   213.608 ±  5.658  ns/op
+CombinatoricsPerf.subset   50/6  avgt    5   327.797 ±  5.308  ns/op
+CombinatoricsPerf.subset   50/8  avgt    5   450.547 ±  6.201  ns/op
+CombinatoricsPerf.subset  50/10  avgt    5   565.340 ±  6.385  ns/op
+CombinatoricsPerf.subset  50/12  avgt    5   668.205 ± 10.326  ns/op
+CombinatoricsPerf.subset  50/14  avgt    5   835.440 ± 20.314  ns/op
+CombinatoricsPerf.subset  50/16  avgt    5   915.044 ± 20.749  ns/op
+CombinatoricsPerf.subset  50/18  avgt    5  1046.269 ±  8.506  ns/op
+CombinatoricsPerf.subset  50/20  avgt    5  1183.285 ± 18.118  ns/op
+CombinatoricsPerf.subset  50/22  avgt    5  1323.500 ± 31.883  ns/op
+CombinatoricsPerf.subset  50/24  avgt    5  1395.401 ± 22.897  ns/op
+CombinatoricsPerf.subset  50/26  avgt    5  1735.639 ± 24.399  ns/op
+CombinatoricsPerf.subset  50/28  avgt    5  1659.776 ± 34.502  ns/op
+CombinatoricsPerf.subset  50/30  avgt    5  1514.722 ± 19.607  ns/op
+CombinatoricsPerf.subset  50/32  avgt    5  1369.287 ± 20.932  ns/op
+CombinatoricsPerf.subset  50/34  avgt    5  1263.780 ± 16.305  ns/op
+CombinatoricsPerf.subset  50/36  avgt    5  1142.473 ± 17.030  ns/op
+CombinatoricsPerf.subset  50/38  avgt    5   975.531 ±  8.941  ns/op
+CombinatoricsPerf.subset  50/40  avgt    5   852.359 ± 12.621  ns/op
+CombinatoricsPerf.subset  50/42  avgt    5   726.852 ±  9.770  ns/op
+CombinatoricsPerf.subset  50/44  avgt    5   595.421 ± 12.033  ns/op
+CombinatoricsPerf.subset  50/46  avgt    5   458.843 ±  8.613  ns/op
+CombinatoricsPerf.subset  50/48  avgt    5   315.020 ±  6.122  ns/op
+CombinatoricsPerf.subset  50/49  avgt    5   231.994 ±  5.446  ns/op
+ */
+
+/*
 Benchmark                  (nk)  Mode  Cnt     Score     Error  Units
 CombinatoricsPerf.subset   50/1  avgt    5    77.463 ±   1.074  ns/op
 CombinatoricsPerf.subset   50/2  avgt    5   117.074 ±   3.234  ns/op
