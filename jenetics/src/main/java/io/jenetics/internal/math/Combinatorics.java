@@ -208,9 +208,9 @@ public final class Combinatorics {
 		int j = n - k - 1;
 		int vi;
 
-		final int[] aa = java.util.Arrays.copyOfRange(a, 0, n - k);
+		final int[] ac = java.util.Arrays.copyOfRange(a, 0, n - k);
 		for (int i = k; --i >= 0;) {
-			while ((vi = indexOf(aa, j, v)) != -1) {
+			while ((vi = indexOf(ac, j, v)) != -1) {
 				--v;
 				j = vi;
 			}
@@ -231,6 +231,7 @@ public final class Combinatorics {
 		return -1;
 	}
 
+	// The actual implementation of the `RANKSB` algorithm.
 	private static void subset0(
 		final int n,
 		final int k,
@@ -238,6 +239,7 @@ public final class Combinatorics {
 		final RandomGenerator random
 	) {
 		assert k <= a.length;
+		assert k <= n - k;
 
 		// (A): Initialize a[i] to "zero" point for bin Ri.
 		for (int i = 0; i < k; ++i) {

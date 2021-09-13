@@ -77,21 +77,7 @@ public class CombinatoricsTest {
 		for (int i = 0; i < 3_000; ++i) {
 			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
 		}
-		//subsets.stream().sorted().forEach(System.out::println);
-		//System.out.println(binomial(5, 4));
-		//System.out.println(binomial(5, 3));
-		//System.out.println(binomial(5, 2));
-
 		Assert.assertEquals(subsets.size(), binomial(n, k));
-
-	}
-
-	@Test
-	public void foo() {
-		final int n = 21;
-		for (int k = 1; k < 11; ++k) {
-			System.out.println(binomial(n, k) + " - " + binomial(n, n - k));
-		}
 	}
 
 	private static long binomial(int n, int k) {
@@ -114,7 +100,8 @@ public class CombinatoricsTest {
 			{5, 4},
 			{5, 5},
 			{9, 4},
-			{10, 4}
+			{10, 4},
+			{10, 8}
 		};
 	}
 
