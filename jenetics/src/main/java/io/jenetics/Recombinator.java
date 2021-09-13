@@ -20,11 +20,12 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Subset.subset;
+import static io.jenetics.internal.math.Subset.next;
 import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.random.RandomGenerator;
 
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -122,7 +123,7 @@ public abstract class Recombinator<
 		final int order,
 		final RandomGenerator random
 	) {
-		final int[] ind = subset(size, order, random);
+		final int[] ind = Subset.next(size, order, random);
 
 		// Find the correct slot for the "master" individual.
 		// This prevents duplicate index entries.

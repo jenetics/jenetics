@@ -115,7 +115,7 @@ public class PermutationChromosomeTest
 			.boxed()
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(Subset.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(Subset.next(100, 10))
 			.mapToObj(i -> EnumGene.of(i, alleles))
 			.collect(ISeq.toISeq());
 
@@ -130,7 +130,7 @@ public class PermutationChromosomeTest
 			.boxed()
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(Subset.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(Subset.next(100, 10))
 			.mapToObj(i -> EnumGene.of(i%3, alleles))
 			.collect(ISeq.toISeq());
 

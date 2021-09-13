@@ -292,7 +292,7 @@ public class MultiPointCrossoverTest extends AltererTester {
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();
-			final int[] points = Subset.subset(
+			final int[] points = Subset.next(
 				a.length() + 1,
 				min(npoints, a.length() + 1),
 				new Random(1234)

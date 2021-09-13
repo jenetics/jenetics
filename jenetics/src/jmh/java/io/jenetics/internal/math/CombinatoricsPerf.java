@@ -69,7 +69,7 @@ public class CombinatoricsPerf {
 
 	@Benchmark
 	public int[] subset(final BenchmarkState state) {
-		return Subset.subset(state.n, state.k);
+		return Subset.next(state.n, state.k);
 	}
 
 }

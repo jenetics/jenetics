@@ -81,7 +81,7 @@ public class HPRMutator<
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
 			final int P = Probabilities.toInt(p);
-			final int[] points = Subset.subset(chromosome.length(), 2);
+			final int[] points = Subset.next(chromosome.length(), 2);
 			final MSeq<G> genes = MSeq.of(chromosome);
 
 			int mutations = (points[1] - points[0] + 1)/2;

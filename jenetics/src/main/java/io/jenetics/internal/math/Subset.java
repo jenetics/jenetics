@@ -65,7 +65,7 @@ public final class Subset {
 	 *         {@code a.length == 0} or {@code n*a.length} will cause an
 	 *         integer overflow.
 	 */
-	public static int[] subset(
+	public static int[] next(
 		final int n,
 		final int[] a,
 		final RandomGenerator random
@@ -218,7 +218,7 @@ public final class Subset {
 	 * Selects a random subset of size {@code a.length} from a set of size
 	 * {@code n}.
 	 *
-	 * @see #subset(int, int[], RandomGenerator)
+	 * @see #next(int, int[], RandomGenerator)
 	 *
 	 * @param n the size of the set.
 	 * @param a the subset array where the result is written to
@@ -229,14 +229,14 @@ public final class Subset {
 	 *         {@code a.length == 0} or {@code n*a.length} will cause an
 	 *         integer overflow.
 	 */
-	public static int[] subset(final int n, final int[] a) {
-		return subset(n, a, RandomRegistry.random());
+	public static int[] next(final int n, final int[] a) {
+		return next(n, a, RandomRegistry.random());
 	}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 *
-	 * @see #subset(int, int[], RandomGenerator)
+	 * @see #next(int, int[], RandomGenerator)
 	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
@@ -247,18 +247,18 @@ public final class Subset {
 	 * @return the a-set array for the given parameter. The returned sub-set
 	 *         array is sorted in increasing order.
 	 */
-	public static int[] subset(
+	public static int[] next(
 		final int n,
 		final int k,
 		final RandomGenerator random
 	) {
-		return subset(n, new int[k], random);
+		return next(n, new int[k], random);
 	}
 
 	/**
 	 * Return a random subset of size {@code k} from a set of size {@code n}.
 	 *
-	 * @see #subset(int, int[])
+	 * @see #next(int, int[])
 	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
@@ -267,8 +267,8 @@ public final class Subset {
 	 * @return the a-set array for the given parameter. The returned sub-set
 	 *         array is sorted in increasing order.
 	 */
-	public static int[] subset(final int n, final int k) {
-		return subset(n, k, RandomRegistry.random());
+	public static int[] next(final int n, final int k) {
+		return next(n, k, RandomRegistry.random());
 	}
 
 	/**
@@ -285,12 +285,12 @@ public final class Subset {
 	 * @return the a-set array for the given parameter. The returned sub-set
 	 *         array is sorted in increasing order.
 	 */
-	public static int[] subset(
+	public static int[] next(
 		final int[] set,
 		final int k,
 		final RandomGenerator random
 	) {
-		final int[] a = subset(set.length, new int[k], random);
+		final int[] a = next(set.length, new int[k], random);
 		for (int i = 0; i < k; ++i) {
 			a[i] = set[a[i]];
 		}
@@ -311,8 +311,8 @@ public final class Subset {
 	 * @return the a-set array for the given parameter. The returned sub-set
 	 *         array is sorted in increasing order.
 	 */
-	public static int[] subset(final int[] set, final int k) {
-		return subset(set, k, RandomRegistry.random());
+	public static int[] next(final int[] set, final int k) {
+		return next(set, k, RandomRegistry.random());
 	}
 
 	public static void checkSubSet(final int n, final int k) {
