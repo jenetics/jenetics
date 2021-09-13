@@ -29,7 +29,19 @@ import io.jenetics.internal.util.Arrays;
 import io.jenetics.util.RandomRegistry;
 
 /**
- * Implementation of combinatorial helper methods.
+ * This class creates random subsets of size {@code k}  from a set of {@code n}
+ * elements. Implementation of the {@code RANKSB} algorithm described by
+ * <em>Albert Nijenhuis</em> and <em>Herbert Wilf</em> in <b>Combinatorial
+ * Algorithms for Computers and Calculators</b>
+ * <p>
+ *  Reference:<em>
+ *      Albert Nijenhuis, Herbert Wilf,
+ *      Combinatorial Algorithms for Computers and Calculators,
+ *      Second Edition,
+ *      Academic Press, 1978,
+ *      ISBN: 0-12-519260-6,
+ *      LC: QA164.N54.
+ *      Page: 42</em>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -38,129 +50,15 @@ import io.jenetics.util.RandomRegistry;
 public final class Subset {
 	private Subset() {}
 
-	/**
-	 * Selects a random subset of size {@code k} from a set of size {@code n}.
-	 *
-	 * @see #subset(int, int[])
-	 *
-	 * @param n the size of the set.
-	 * @param k the size of the subset.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 *          {@code n*k} will cause an integer overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] subset(final int n, final int k) {
-		return subset(n, k, RandomRegistry.random());
-	}
 
 	/**
-	 * Selects a random subset of size {@code k} from a set of size {@code n}.
-	 *
-	 * @see #subset(int, int[], RandomGenerator)
+	 * Creates a random subset of {@code a.length} (<em>k</em> elements from a
+	 * set of {@code n} elements.
 	 *
 	 * @param n the size of the set.
-	 * @param k the size of the subset.
+	 * @param a the subset array where the result is written to
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 *         {@code n*k} will cause an integer overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] subset(
-		final int n,
-		final int k,
-		final RandomGenerator random
-	) {
-		return subset(n, new int[k], random);
-	}
-
-	/**
-	 * Selects a random subset of size {@code k} from the given base {@code set}.
-	 *
-	 * @param set the base set
-	 * @param k the size of the subset
-	 * @throws NullPointerException if {@code set} or {@code random} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if {@code set.length < k},
-	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
-	 *         overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] subset(final int[] set, final int k) {
-		return subset(set, k, RandomRegistry.random());
-	}
-
-	/**
-	 * Selects a random subset of size {@code k} from the given base {@code set}.
-	 *
-	 * @param set the base set
-	 * @param k the size of the subset
-	 * @param random the random number generator used
-	 * @throws NullPointerException if {@code set} or {@code random} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if {@code set.length < k},
-	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
-	 *         overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] subset(
-		final int[] set,
-		final int k,
-		final RandomGenerator random
-	) {
-		final int[] sub = subset(set.length, new int[k], random);
-		for (int i = 0; i < k; ++i) {
-			sub[i] = set[sub[i]];
-		}
-
-		return sub;
-	}
-
-	/**
-	 * <p>
-	 * Selects a random subset of size {@code sub.length} from a set of size
-	 * {@code n}.
-	 *
-	 * @see #subset(int, int[], RandomGenerator)
-	 *
-	 * @param n the size of the set.
-	 * @param sub the sub set array.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 * @throws NullPointerException if {@code sub} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < sub.length},
-	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
-	 *         integer overflow.
-	 */
-	public static int[] subset(final int n, final int[] sub) {
-		return subset(n, sub, RandomRegistry.random());
-	}
-
-	/**
-	 * <p>
-	 * Selects a random subset of size {@code a.length} from a set of size
-	 * {@code n}. Implementation of the {@code RANKSB} algorithm described by
-	 * <em>Albert Nijenhuis</em> and <em>Herbert Wilf</em> in <b>Combinatorial
-	 * Algorithms for Computers and Calculators</b>
-	 * <p>
-	 *  Reference:<em>
-	 *      Albert Nijenhuis, Herbert Wilf,
-	 *      Combinatorial Algorithms for Computers and Calculators,
-	 *      Second Edition,
-	 *      Academic Press, 1978,
-	 *      ISBN: 0-12-519260-6,
-	 *      LC: QA164.N54.
-	 *      Page: 42</em>
-	 *
-	 * @param n the size of the set.
-	 * @param a a set array.
-	 * @param random the random number generator used.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
+	 * @return the input array {@code a}
 	 * @throws NullPointerException if {@code a} or {@code random} is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < a.length},
@@ -313,6 +211,108 @@ public final class Subset {
 
 		// Convert to zero based indexed arrays.
 		Arrays.add(a, -1);
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code a.length} from a set of size
+	 * {@code n}.
+	 *
+	 * @see #subset(int, int[], RandomGenerator)
+	 *
+	 * @param n the size of the set.
+	 * @param a the subset array where the result is written to
+	 * @return the a-set array for the given parameter. The returned a-set
+	 *         array is sorted in increasing order.
+	 * @throws NullPointerException if {@code a} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < a.length},
+	 *         {@code a.length == 0} or {@code n*a.length} will cause an
+	 *         integer overflow.
+	 */
+	public static int[] subset(final int n, final int[] a) {
+		return subset(n, a, RandomRegistry.random());
+	}
+
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[], RandomGenerator)
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *         {@code n*k} will cause an integer overflow.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
+	 */
+	public static int[] subset(
+		final int n,
+		final int k,
+		final RandomGenerator random
+	) {
+		return subset(n, new int[k], random);
+	}
+
+	/**
+	 * Return a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[])
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
+	 */
+	public static int[] subset(final int n, final int k) {
+		return subset(n, k, RandomRegistry.random());
+	}
+
+	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @param random the random number generator used
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
+	 */
+	public static int[] subset(
+		final int[] set,
+		final int k,
+		final RandomGenerator random
+	) {
+		final int[] a = subset(set.length, new int[k], random);
+		for (int i = 0; i < k; ++i) {
+			a[i] = set[a[i]];
+		}
+
+		return a;
+	}
+
+	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
+	 */
+	public static int[] subset(final int[] set, final int k) {
+		return subset(set, k, RandomRegistry.random());
 	}
 
 	public static void checkSubSet(final int n, final int k) {
