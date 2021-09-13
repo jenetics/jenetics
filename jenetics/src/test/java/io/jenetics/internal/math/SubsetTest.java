@@ -41,13 +41,13 @@ import io.jenetics.util.TestData;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CombinatoricsTest {
+public class SubsetTest {
 
 	@Test
 	public void compatibility() {
 		for (int i = 1; i <= 500; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
- 			int[] sub2 = Combinatorics.subset(1000, new int[i], new Random(123));
+ 			int[] sub2 = Subset.subset(1000, new int[i], new Random(123));
 
 			assertThat(sub2).isEqualTo(sub1);
 		}
@@ -55,7 +55,7 @@ public class CombinatoricsTest {
 
 	@Test(dataProvider = "subsets")
 	public void compatibility(final int[] subset) {
-		assertThat(Combinatorics.subset(1000, subset.length,  new Random(123)))
+		assertThat(Subset.subset(1000, subset.length,  new Random(123)))
 			.isEqualTo(subset);
 	}
 
@@ -75,7 +75,7 @@ public class CombinatoricsTest {
 
 		final Set<String> subsets = new HashSet<>();
 		for (int i = 0; i < 3_000; ++i) {
-			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
+			subsets.add(Arrays.toString(Subset.subset(n, new int[k], random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -107,12 +107,12 @@ public class CombinatoricsTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_1_0() {
-		Combinatorics.subset(1,0);
+		Subset.subset(1,0);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_0_1() {
-		Combinatorics.subset(0,1);
+		Subset.subset(0,1);
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class CombinatoricsTest {
 
 		for (int k = 1; k <= n; ++k) {
 			int[] sub = new int[k];
-			Combinatorics.subset(n, sub, random);
+			Subset.subset(n, sub, random);
 
 			for (int v : sub) {
 				assertThat(v).isBetween(0, n);
@@ -159,25 +159,25 @@ public class CombinatoricsTest {
 		int[] a = new int[]{0, 1, 0};
 		System.out.print(Arrays.toString(a));
 
-		Combinatorics.invert(5, 3, a);
+		Subset.invert(5, 3, a);
 		System.out.println(Arrays.toString(a));
 
 		a = new int[]{0, 2, 0};
 		System.out.print(Arrays.toString(a));
 
-		Combinatorics.invert(5, 3, a);
+		Subset.invert(5, 3, a);
 		System.out.println(Arrays.toString(a));
 
 		 a = new int[]{0, 3, 0};
 		System.out.print(Arrays.toString(a));
 
-		Combinatorics.invert(5, 3, a);
+		Subset.invert(5, 3, a);
 		System.out.println(Arrays.toString(a));
 
 		 a = new int[]{0, 4, 0};
 		System.out.print(Arrays.toString(a));
 
-		Combinatorics.invert(5, 3, a);
+		Subset.invert(5, 3, a);
 		System.out.println(Arrays.toString(a));
 
 	}
@@ -199,7 +199,7 @@ public class CombinatoricsTest {
 		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Combinatorics.subset(n, sub, random)))
+			.flatMap(i -> IntStream.of(Subset.subset(n, sub, random)))
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);

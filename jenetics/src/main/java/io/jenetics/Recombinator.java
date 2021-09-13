@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Combinatorics.subset;
+import static io.jenetics.internal.math.Subset.subset;
 import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.random.RandomGenerator;
