@@ -21,7 +21,6 @@ package io.jenetics.ext.moea;
 
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.Subset.next;
 
 import java.util.ArrayList;
 import java.util.Comparator;

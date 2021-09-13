@@ -21,7 +21,6 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.InstantSource;

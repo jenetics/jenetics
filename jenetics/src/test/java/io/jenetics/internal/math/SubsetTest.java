@@ -131,57 +131,6 @@ public class SubsetTest {
 		}
 	}
 
-	//@Test
-	public void invert() {
-		/*
-[0, 1]
-[0, 2]
-[0, 3]
-[0, 4]
-[1, 2]
-[1, 3]
-[1, 4]
-[2, 3]
-[2, 4]
-[3, 4]
-5
-10
-10
-[0, 1, 2]
-[0, 1, 3]
-[0, 1, 4]
-[0, 2, 3]
-[0, 2, 4]
-[1, 2, 3]
-[1, 2, 4]
-[2, 3, 4]
-		 */
-		int[] a = new int[]{0, 1, 0};
-		System.out.print(Arrays.toString(a));
-
-		Subset.invert(5, 3, a);
-		System.out.println(Arrays.toString(a));
-
-		a = new int[]{0, 2, 0};
-		System.out.print(Arrays.toString(a));
-
-		Subset.invert(5, 3, a);
-		System.out.println(Arrays.toString(a));
-
-		 a = new int[]{0, 3, 0};
-		System.out.print(Arrays.toString(a));
-
-		Subset.invert(5, 3, a);
-		System.out.println(Arrays.toString(a));
-
-		 a = new int[]{0, 4, 0};
-		System.out.print(Arrays.toString(a));
-
-		Subset.invert(5, 3, a);
-		System.out.println(Arrays.toString(a));
-
-	}
-
 	private static boolean isSortedAndUnique(final int[] array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length - 1 && sorted; ++i) {
