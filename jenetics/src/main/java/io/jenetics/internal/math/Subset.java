@@ -173,10 +173,9 @@ public final class Subset {
 		}
 
 		// (D) Determine l, set up space for Bl.
-		int ds = 0;
 		for (; p > 0; --p) {
 			l = 1 + (a[p - 1]*k - 1)/n;
-			ds = a[p - 1] - ((l - 1)*n)/k;
+			final int ds = a[p - 1] - ((l - 1)*n)/k;
 			a[p - 1] = 0;
 			a[s - 1] = l;
 			s -= ds;
@@ -190,7 +189,7 @@ public final class Subset {
 			if (a[l - 1] != 0) {
 				r = l;
 				m0 = 1 + ((a[l - 1] - 1)*n)/k;
-				m = (a[l-1]*n)/k - m0 + 1;
+				m = (a[l - 1]*n)/k - m0 + 1;
 			}
 
 			// (F) Choose a random x.
@@ -201,7 +200,7 @@ public final class Subset {
 			//     increment x as it jumps over elements <= x.
 			while (i <= r && x >= a[i - 1]) {
 				++x;
-				a[i- 2] = a[i - 1];
+				a[i - 2] = a[i - 1];
 				++i;
 			}
 
