@@ -20,7 +20,7 @@ import org.openjdk.jmh.annotations.Warmup;
 @BenchmarkMode(Mode.AverageTime)
 @Measurement(iterations = 5)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class CombinatoricsPerf {
+public class SubsetPerf {
 
 	@State(Scope.Benchmark)
 	public static class BenchmarkState {
