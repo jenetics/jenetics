@@ -117,11 +117,11 @@ public final class Subset {
 		}
 	}
 
-	private static int indexOf(final int[] a, final int index, final int v) {
-		for (int i = index; i >= 0; --i) {
-			if (a[i] < v) {
+	private static int indexOf(final int[] a, final int start, final int value) {
+		for (int i = start; i >= 0; --i) {
+			if (a[i] < value) {
 				return -1;
-			} else if (a[i] == v) {
+			} else if (a[i] == value) {
 				return i;
 			}
 		}

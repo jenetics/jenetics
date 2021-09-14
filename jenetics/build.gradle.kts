@@ -47,5 +47,5 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.set(listOf(".*CombinatoricsPerf.*"))
+	includes.set(listOf(".*SubsetPerf.*"))
 }

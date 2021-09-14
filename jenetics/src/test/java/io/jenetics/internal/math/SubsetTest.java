@@ -117,7 +117,7 @@ public class SubsetTest {
 
 	@Test
 	public void subset() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final int n = 2_500;
 
 		for (int k = 1; k <= n; ++k) {

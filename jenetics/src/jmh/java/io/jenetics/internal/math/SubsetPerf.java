@@ -68,7 +68,7 @@ public class SubsetPerf {
 	}
 
 	@Benchmark
-	public int[] subset(final BenchmarkState state) {
+	public int[] next(final BenchmarkState state) {
 		return Subset.next(state.n, state.k);
 	}
 
