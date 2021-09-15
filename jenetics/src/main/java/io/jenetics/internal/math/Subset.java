@@ -76,11 +76,10 @@ public final class Subset {
 		checkSubSet(n, k);
 
 		// Early return if k == n.
-		if (a.length == n) {
+		if (k == n) {
 			for (int i = 0; i < k; ++i) {
 				a[i] = i;
 			}
-			return a;
 		}
 
 		// Calculate the 'inverse' subset if k > n - k.
@@ -137,6 +136,11 @@ public final class Subset {
 	) {
 		assert k <= a.length;
 		assert k <= n - k;
+
+		// Early return if k = 1.
+		if (k == 1) {
+			a[0] = random.nextInt(n);
+		}
 
 		// (A): Initialize a[i] to "zero" point for bin Ri.
 		for (int i = 0; i < k; ++i) {

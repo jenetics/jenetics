@@ -45,7 +45,7 @@ public class SubsetTest {
 
 	@Test
 	public void compatibility() {
-		for (int i = 1; i <= 500; ++i) {
+		for (int i = 2; i <= 500; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
  			int[] sub2 = Subset.next(1000, new int[i], new Random(123));
 
