@@ -1,6 +1,7 @@
 package io.jenetics.internal.math;
 
 import java.util.concurrent.TimeUnit;
+import java.util.random.RandomGenerator;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -21,6 +22,8 @@ import org.openjdk.jmh.annotations.Warmup;
 @Measurement(iterations = 5)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class SubsetPerf {
+
+	private static final RandomGenerator RANDOM = RandomGenerator.getDefault();
 
 	@State(Scope.Benchmark)
 	public static class BenchmarkState {
@@ -69,7 +72,7 @@ public class SubsetPerf {
 
 	@Benchmark
 	public int[] next(final BenchmarkState state) {
-		return Subset.next(state.n, state.k);
+		return Subset.next(state.n, state.k, RANDOM);
 	}
 
 }

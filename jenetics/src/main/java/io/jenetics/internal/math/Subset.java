@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.util.Arrays;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * This class creates random subsets of size {@code k}  from a set of {@code n}
@@ -213,26 +212,6 @@ public final class Subset {
 	}
 
 	/**
-	 * <p>
-	 * Selects a random subset of size {@code a.length} from a set of size
-	 * {@code n}.
-	 *
-	 * @see #next(int, int[], RandomGenerator)
-	 *
-	 * @param n the size of the set.
-	 * @param a the subset array where the result is written to
-	 * @return the a-set array for the given parameter. The returned a-set
-	 *         array is sorted in increasing order.
-	 * @throws NullPointerException if {@code a} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < a.length},
-	 *         {@code a.length == 0} or {@code n*a.length} will cause an
-	 *         integer overflow.
-	 */
-	public static int[] next(final int n, final int[] a) {
-		return next(n, a, RandomRegistry.random());
-	}
-
-	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 *
 	 * @see #next(int, int[], RandomGenerator)
@@ -252,22 +231,6 @@ public final class Subset {
 		final RandomGenerator random
 	) {
 		return next(n, new int[k], random);
-	}
-
-	/**
-	 * Return a random subset of size {@code k} from a set of size {@code n}.
-	 *
-	 * @see #next(int, int[])
-	 *
-	 * @param n the size of the set.
-	 * @param k the size of the subset.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 *          {@code n*k} will cause an integer overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] next(final int n, final int k) {
-		return next(n, k, RandomRegistry.random());
 	}
 
 	/**
@@ -295,23 +258,6 @@ public final class Subset {
 		}
 
 		return a;
-	}
-
-	/**
-	 * Selects a random subset of size {@code k} from the given base {@code set}.
-	 *
-	 * @param set the base set
-	 * @param k the size of the subset
-	 * @throws NullPointerException if {@code set} or {@code random} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if {@code set.length < k},
-	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
-	 *         overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] next(final int[] set, final int k) {
-		return next(set, k, RandomRegistry.random());
 	}
 
 	public static void checkSubSet(final int n, final int k) {

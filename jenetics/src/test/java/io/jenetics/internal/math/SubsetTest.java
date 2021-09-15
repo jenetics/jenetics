@@ -107,12 +107,12 @@ public class SubsetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_1_0() {
-		Subset.next(1,0);
+		Subset.next(1,0, RandomGenerator.getDefault());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_0_1() {
-		Subset.next(0,1);
+		Subset.next(0, 1, RandomGenerator.getDefault());
 	}
 
 	@Test
