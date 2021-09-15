@@ -15,11 +15,18 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
+            - name: 'Download latest JDK 17'
+              run: |
+                wget \
+                    --no-verbose \
+                    --directory-prefix $RUNNER_TEMP \
+                    https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.tar.gz
             - uses: actions/checkout@v2
             - name: Set up JDK
               uses: actions/setup-java@v2
               with:
-                  distribution: 'zulu'
-                  java-version: 17.0.81
+                  distribution: jdkfile
+                  java-version: 17
+                  jdkFile: ${{ runner.temp }}/jdk-17_linux-x64_bin.tar.gz
             - name: Build with Gradle
               run: ./gradlew build
