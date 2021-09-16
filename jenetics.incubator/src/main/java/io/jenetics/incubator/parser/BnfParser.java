@@ -59,10 +59,7 @@ public class BnfParser {
 		public Token next() {
 			while (c != EOF) {
 				switch (c) {
-					case ' ':
-					case '\r':
-					case '\n':
-					case '\t': WS(); continue;
+					case ' ', '\r', '\n', '\t': WS(); continue;
 					case ':': return ASSIGN();
 					case ')': consume(); return new Token(LPAREN, ")");
 					case '(': consume(); return new Token(RPAREN, "(");
