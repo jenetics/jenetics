@@ -41,13 +41,13 @@ import io.jenetics.util.TestData;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CombinatoricsTest {
+public class SubsetTest {
 
 	@Test
 	public void compatibility() {
-		for (int i = 1; i <= 1000; ++i) {
+		for (int i = 2; i <= 500; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
- 			int[] sub2 = Combinatorics.subset(1000, new int[i], new Random(123));
+ 			int[] sub2 = Subset.next(1000, new int[i], new Random(123));
 
 			assertThat(sub2).isEqualTo(sub1);
 		}
@@ -55,7 +55,7 @@ public class CombinatoricsTest {
 
 	@Test(dataProvider = "subsets")
 	public void compatibility(final int[] subset) {
-		assertThat(Combinatorics.subset(1000, subset.length,  new Random(123)))
+		assertThat(Subset.next(1000, subset.length,  new Random(123)))
 			.isEqualTo(subset);
 	}
 
@@ -74,8 +74,8 @@ public class CombinatoricsTest {
 		final Random random = new Random();
 
 		final Set<String> subsets = new HashSet<>();
-		for (int i = 0; i < 3000; ++i) {
-			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
+		for (int i = 0; i < 3_000; ++i) {
+			subsets.add(Arrays.toString(Subset.next(n, new int[k], random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -89,6 +89,7 @@ public class CombinatoricsTest {
 	@DataProvider
 	public Object[][] combinations() {
 		return new Object[][] {
+			{1, 1},
 			{2, 1},
 			{3, 2},
 			{4, 2},
@@ -98,19 +99,35 @@ public class CombinatoricsTest {
 			{5, 3},
 			{5, 4},
 			{5, 5},
-			{9, 4}
+			{9, 4},
+			{10, 4},
+			{10, 8}
 		};
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_1_0() {
+		Subset.next(1,0, RandomGenerator.getDefault());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_0_1() {
+		Subset.next(0, 1, RandomGenerator.getDefault());
 	}
 
 	@Test
 	public void subset() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
+		final int n = 2_500;
 
-		for (int i = 1; i <= 1000; ++i) {
-			int[] sub = new int[i];
-			Combinatorics.subset(1000, sub, random);
+		for (int k = 1; k <= n; ++k) {
+			int[] sub = new int[k];
+			Subset.next(n, sub, random);
 
-			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
+			for (int v : sub) {
+				assertThat(v).isBetween(0, n);
+			}
+			Assert.assertTrue(isSortedAndUnique(sub), "K: " + k);
 		}
 	}
 
@@ -131,7 +148,7 @@ public class CombinatoricsTest {
 		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Combinatorics.subset(n, sub, random)))
+			.flatMap(i -> IntStream.of(Subset.next(n, sub, random)))
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);
