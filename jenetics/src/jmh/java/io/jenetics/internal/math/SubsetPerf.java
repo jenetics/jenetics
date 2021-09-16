@@ -82,80 +82,48 @@ public class SubsetPerf {
 }
 
 /*
-Benchmark                  (nk)  Mode  Cnt     Score    Error  Units
-CombinatoricsPerf.subset   50/1  avgt    5    71.078 ±  5.437  ns/op
-CombinatoricsPerf.subset   50/2  avgt    5   112.112 ±  5.298  ns/op
-CombinatoricsPerf.subset   50/3  avgt    5   159.361 ±  4.176  ns/op
-CombinatoricsPerf.subset   50/4  avgt    5   213.608 ±  5.658  ns/op
-CombinatoricsPerf.subset   50/6  avgt    5   327.797 ±  5.308  ns/op
-CombinatoricsPerf.subset   50/8  avgt    5   450.547 ±  6.201  ns/op
-CombinatoricsPerf.subset  50/10  avgt    5   565.340 ±  6.385  ns/op
-CombinatoricsPerf.subset  50/12  avgt    5   668.205 ± 10.326  ns/op
-CombinatoricsPerf.subset  50/14  avgt    5   835.440 ± 20.314  ns/op
-CombinatoricsPerf.subset  50/16  avgt    5   915.044 ± 20.749  ns/op
-CombinatoricsPerf.subset  50/18  avgt    5  1046.269 ±  8.506  ns/op
-CombinatoricsPerf.subset  50/20  avgt    5  1183.285 ± 18.118  ns/op
-CombinatoricsPerf.subset  50/22  avgt    5  1323.500 ± 31.883  ns/op
-CombinatoricsPerf.subset  50/24  avgt    5  1395.401 ± 22.897  ns/op
-CombinatoricsPerf.subset  50/26  avgt    5  1735.639 ± 24.399  ns/op
-CombinatoricsPerf.subset  50/28  avgt    5  1659.776 ± 34.502  ns/op
-CombinatoricsPerf.subset  50/30  avgt    5  1514.722 ± 19.607  ns/op
-CombinatoricsPerf.subset  50/32  avgt    5  1369.287 ± 20.932  ns/op
-CombinatoricsPerf.subset  50/34  avgt    5  1263.780 ± 16.305  ns/op
-CombinatoricsPerf.subset  50/36  avgt    5  1142.473 ± 17.030  ns/op
-CombinatoricsPerf.subset  50/38  avgt    5   975.531 ±  8.941  ns/op
-CombinatoricsPerf.subset  50/40  avgt    5   852.359 ± 12.621  ns/op
-CombinatoricsPerf.subset  50/42  avgt    5   726.852 ±  9.770  ns/op
-CombinatoricsPerf.subset  50/44  avgt    5   595.421 ± 12.033  ns/op
-CombinatoricsPerf.subset  50/46  avgt    5   458.843 ±  8.613  ns/op
-CombinatoricsPerf.subset  50/48  avgt    5   315.020 ±  6.122  ns/op
-CombinatoricsPerf.subset  50/49  avgt    5   231.994 ±  5.446  ns/op
- */
+java version "17" 2021-09-14 LTS
+Java(TM) SE Runtime Environment (build 17+35-LTS-2724)
+Java HotSpot(TM) 64-Bit Server VM (build 17+35-LTS-2724, mixed mode, sharing)
 
-/*
-Benchmark                  (nk)  Mode  Cnt     Score     Error  Units
-CombinatoricsPerf.subset   50/1  avgt    5    77.463 ±   1.074  ns/op
-CombinatoricsPerf.subset   50/2  avgt    5   117.074 ±   3.234  ns/op
-CombinatoricsPerf.subset   50/3  avgt    5   172.015 ±   2.781  ns/op
-CombinatoricsPerf.subset   50/4  avgt    5   238.575 ±  12.577  ns/op
-CombinatoricsPerf.subset   50/6  avgt    5   368.074 ±  11.813  ns/op
-CombinatoricsPerf.subset   50/8  avgt    5   486.440 ±   8.302  ns/op
-CombinatoricsPerf.subset  50/10  avgt    5   616.736 ±  28.068  ns/op
-CombinatoricsPerf.subset  50/12  avgt    5   735.692 ±  11.639  ns/op
-CombinatoricsPerf.subset  50/14  avgt    5   883.986 ±  21.073  ns/op
-CombinatoricsPerf.subset  50/16  avgt    5  1013.184 ±  29.040  ns/op
-CombinatoricsPerf.subset  50/18  avgt    5  1272.428 ±  37.367  ns/op
-CombinatoricsPerf.subset  50/20  avgt    5  1430.692 ±  37.085  ns/op
-CombinatoricsPerf.subset  50/22  avgt    5  1596.892 ±  68.767  ns/op
-CombinatoricsPerf.subset  50/24  avgt    5  1671.377 ±  43.393  ns/op
-CombinatoricsPerf.subset  50/26  avgt    5  1876.788 ±  45.864  ns/op
-CombinatoricsPerf.subset  50/28  avgt    5  1991.426 ±  44.862  ns/op
-CombinatoricsPerf.subset  50/30  avgt    5  2079.981 ±  42.206  ns/op
-CombinatoricsPerf.subset  50/32  avgt    5  2280.386 ±  28.103  ns/op
-CombinatoricsPerf.subset  50/34  avgt    5  2501.318 ±  37.715  ns/op
-CombinatoricsPerf.subset  50/36  avgt    5  2741.034 ±  69.267  ns/op
-CombinatoricsPerf.subset  50/38  avgt    5  3023.644 ±  70.023  ns/op
-CombinatoricsPerf.subset  50/40  avgt    5  3288.124 ± 203.196  ns/op
-CombinatoricsPerf.subset  50/42  avgt    5  3455.089 ±  94.088  ns/op
-CombinatoricsPerf.subset  50/44  avgt    5  3782.770 ± 120.549  ns/op
-CombinatoricsPerf.subset  50/46  avgt    5  4027.589 ± 286.878  ns/op
-CombinatoricsPerf.subset  50/48  avgt    5  4874.910 ± 475.295  ns/op
-CombinatoricsPerf.subset  50/49  avgt    5  5174.455 ± 319.814  ns/op
- */
+# Run complete. Total time: 02:45:50
 
-/*
-Benchmark                  (nk)   Mode  Cnt   Score   Error   Units
-CombinatoricsPerf.subset   50/1  thrpt    5  14.153 ± 0.088  ops/us
-CombinatoricsPerf.subset   50/2  thrpt    5   9.135 ± 0.257  ops/us
-CombinatoricsPerf.subset   50/3  thrpt    5   6.380 ± 0.131  ops/us
-CombinatoricsPerf.subset   50/5  thrpt    5   3.702 ± 0.027  ops/us
-CombinatoricsPerf.subset  50/10  thrpt    5   1.774 ± 0.032  ops/us
-CombinatoricsPerf.subset  50/15  thrpt    5   1.144 ± 0.011  ops/us
-CombinatoricsPerf.subset  50/20  thrpt    5   0.815 ± 0.013  ops/us
-CombinatoricsPerf.subset  50/25  thrpt    5   0.687 ± 0.007  ops/us
-CombinatoricsPerf.subset  50/30  thrpt    5   0.567 ± 0.007  ops/us
-CombinatoricsPerf.subset  50/35  thrpt    5   0.439 ± 0.004  ops/us
-CombinatoricsPerf.subset  50/40  thrpt    5   0.369 ± 0.008  ops/us
-CombinatoricsPerf.subset  50/45  thrpt    5   0.304 ± 0.013  ops/us
-CombinatoricsPerf.subset  50/49  thrpt    5   0.235 ± 0.003  ops/us
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+Benchmark         (nk)  Mode  Cnt     Score    Error  Units
+SubsetPerf.next   50/1  avgt    5    50.502 ±  0.687  ns/op
+SubsetPerf.next   50/2  avgt    5   106.731 ±  1.755  ns/op
+SubsetPerf.next   50/3  avgt    5   155.513 ±  3.640  ns/op
+SubsetPerf.next   50/4  avgt    5   212.522 ±  5.185  ns/op
+SubsetPerf.next   50/5  avgt    5   269.629 ±  7.994  ns/op
+SubsetPerf.next   50/6  avgt    5   327.883 ±  4.325  ns/op
+SubsetPerf.next   50/7  avgt    5   378.605 ±  6.056  ns/op
+SubsetPerf.next   50/8  avgt    5   465.662 ± 14.724  ns/op
+SubsetPerf.next  50/10  avgt    5   555.227 ± 10.723  ns/op
+SubsetPerf.next  50/12  avgt    5   663.116 ± 12.286  ns/op
+SubsetPerf.next  50/14  avgt    5   816.092 ± 23.762  ns/op
+SubsetPerf.next  50/16  avgt    5   916.325 ± 12.634  ns/op
+SubsetPerf.next  50/18  avgt    5  1069.262 ± 22.072  ns/op
+SubsetPerf.next  50/20  avgt    5  1184.548 ± 19.884  ns/op
+SubsetPerf.next  50/22  avgt    5  1334.913 ± 19.082  ns/op
+SubsetPerf.next  50/24  avgt    5  1405.646 ± 13.377  ns/op
+SubsetPerf.next  50/25  avgt    5  1471.694 ± 22.492  ns/op
+SubsetPerf.next  50/26  avgt    5  1759.169 ± 10.882  ns/op
+SubsetPerf.next  50/28  avgt    5  1710.919 ± 67.558  ns/op
+SubsetPerf.next  50/30  avgt    5  1538.644 ± 25.889  ns/op
+SubsetPerf.next  50/32  avgt    5  1400.157 ± 17.602  ns/op
+SubsetPerf.next  50/34  avgt    5  1282.592 ± 15.006  ns/op
+SubsetPerf.next  50/36  avgt    5  1159.408 ± 15.712  ns/op
+SubsetPerf.next  50/38  avgt    5   988.325 ± 23.613  ns/op
+SubsetPerf.next  50/40  avgt    5   877.788 ± 16.343  ns/op
+SubsetPerf.next  50/42  avgt    5   742.816 ± 17.206  ns/op
+SubsetPerf.next  50/44  avgt    5   578.599 ± 13.985  ns/op
+SubsetPerf.next  50/46  avgt    5   440.788 ± 17.018  ns/op
+SubsetPerf.next  50/48  avgt    5   301.153 ±  6.875  ns/op
+SubsetPerf.next  50/49  avgt    5   220.953 ±  4.837  ns/op
+SubsetPerf.next  50/50  avgt    5    58.437 ±  0.658  ns/op
  */
