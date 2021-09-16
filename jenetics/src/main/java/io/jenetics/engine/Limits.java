@@ -36,8 +36,8 @@ import io.jenetics.util.NanoClock;
 /**
  * This class contains factory methods for creating predicates, which can be
  * used for limiting the evolution stream. Some of the <em>limit</em> predicates
- * have to maintain internal state for working properly. It is therefor
- * recommended to create new instances for every stream and don't reuse it.
+ * have to maintain internal state for working properly. It is therefore
+ * recommended creating new instances for every stream and don't reuse it.
  *
  * @see EvolutionStream#limit(Predicate)
  *

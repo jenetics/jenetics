@@ -21,8 +21,6 @@ package io.jenetics.internal.util;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.util.RandomRegistry;
-
 /**
  * Helper class which contains array helper methods.
  *
@@ -109,10 +107,6 @@ public final class Arrays {
 		return array;
 	}
 
-	public static double[] shuffle(final double[] array) {
-		return shuffle(array, RandomRegistry.random());
-	}
-
 	public static int[] shuffle(
 		final int[] array,
 		final RandomGenerator random
@@ -121,10 +115,6 @@ public final class Arrays {
 			swap(array, j, random.nextInt(j + 1));
 		}
 		return array;
-	}
-
-	public static int[] shuffle(final int[] array) {
-		return shuffle(array, RandomRegistry.random());
 	}
 
 	public static int[] add(final int[] array, final int b) {

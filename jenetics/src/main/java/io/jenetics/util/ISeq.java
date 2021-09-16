@@ -289,7 +289,7 @@ public interface ISeq<T>
 	 * @param seq the sequence to cast safely
 	 * @param <A> the <i>super</i>-object type
 	 * @param <B> the <i>sub</i>-object type
-	 * @return the casted instance of the given {@code seq}
+	 * @return the cast instance of the given {@code seq}
 	 */
 	@SuppressWarnings("unchecked")
 	static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {

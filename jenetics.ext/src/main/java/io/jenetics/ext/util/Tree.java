@@ -1067,6 +1067,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.4
 	 */
 	final class Path implements Serializable {
+
+		@java.io.Serial
 		private static final long serialVersionUID = 1L;
 
 		private final int[] _path;

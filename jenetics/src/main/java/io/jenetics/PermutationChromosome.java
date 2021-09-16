@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Combinatorics.subset;
 import static io.jenetics.internal.util.Arrays.shuffle;
 import static io.jenetics.internal.util.Bits.getAndSet;
 import static io.jenetics.internal.util.SerialIO.readInt;
@@ -35,11 +34,13 @@ import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import io.jenetics.internal.math.Subset;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This chromosome can be used to model permutations of a given (sub) set of
@@ -222,7 +223,8 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final int[] subset = shuffle(subset(alleles.size(), length));
+		final var rnd = RandomRegistry.random();
+		final int[] subset = shuffle(Subset.next(alleles.size(), length, rnd), rnd);
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());

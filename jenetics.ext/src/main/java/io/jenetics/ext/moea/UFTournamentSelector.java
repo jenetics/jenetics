@@ -21,7 +21,6 @@ package io.jenetics.ext.moea;
 
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.Combinatorics.subset;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,6 +31,7 @@ import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -127,7 +127,7 @@ public class UFTournamentSelector<
 		final List<Phenotype<G, C>> S = new ArrayList<>();
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
-			final int[] G = subset(population.size(), k, random);
+			final int[] G = Subset.next(population.size(), k, random);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = cc.compare(G[j], G[j + 1]);
