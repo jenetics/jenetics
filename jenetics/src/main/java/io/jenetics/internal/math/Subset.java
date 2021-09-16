@@ -220,7 +220,9 @@ public final class Subset {
 		}
 
 		// Convert to zero based indexed arrays.
-		Arrays.add(a, -1);
+		for (int i = 0; i < k; ++i) {
+			--a[i];
+		}
 	}
 
 	/**
