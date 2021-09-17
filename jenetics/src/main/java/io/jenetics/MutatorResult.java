@@ -37,6 +37,9 @@ import io.jenetics.internal.util.Requires;
  * @see Mutator#mutate(Gene, RandomGenerator)
  *
  * @param <T> the mutation result type
+ * @param result the mutation result
+ * @param mutations the number of mutations applied while creating the mutation
+ *        result
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
