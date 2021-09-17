@@ -23,9 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
+import java.util.Arrays;
 import java.util.random.RandomGenerator;
-
-import io.jenetics.internal.util.Arrays;
 
 /**
  * This class creates random subsets of size {@code k}  from a set of {@code n}
@@ -112,7 +111,7 @@ public final class Subset {
 		int j = n - k - 1;
 		int vi;
 
-		final int[] ac = java.util.Arrays.copyOfRange(a, 0, n - k);
+		final int[] ac = Arrays.copyOfRange(a, 0, n - k);
 		for (int i = k; --i >= 0;) {
 			while ((vi = indexOf(ac, j, v)) != -1) {
 				--v;
