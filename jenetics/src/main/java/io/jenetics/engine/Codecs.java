@@ -724,7 +724,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a codec, which creates a a mapping from the elements given in the
+	 * Create a codec, which creates a mapping from the elements given in the
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.

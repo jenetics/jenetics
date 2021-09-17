@@ -424,7 +424,7 @@ public final class Limits {
 	 * A termination method that stops the evolution when a user-specified
 	 * percentage of the genes ({@code convergedGeneRage}) that make up a
 	 * {@code Genotype} are deemed as converged. A gene is deemed as converged
-	 * when the average value of that gene across all of the genotypes in the
+	 * when the average value of that gene across all the genotypes in the
 	 * current population is less than a user-specified percentage
 	 * ({@code convergenceRate}) away from the maximum gene value across the
 	 * genotypes.
