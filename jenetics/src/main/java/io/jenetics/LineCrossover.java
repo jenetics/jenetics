@@ -65,7 +65,7 @@ public class LineCrossover<
 	 *        <em>p</em> = 0 then the children will be located along the line
 	 *        within the hypercube between the two points. If <em>p</em> &gt; 0
 	 *        then the children may be located anywhere on the line, even
-	 *        somewhat outside of the hypercube.
+	 *        somewhat outside the hypercube.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */

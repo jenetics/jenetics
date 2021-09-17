@@ -71,7 +71,7 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * given range. If the {@code value} isn't within the interval [min, max),
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *

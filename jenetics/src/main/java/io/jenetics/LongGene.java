@@ -38,7 +38,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 
 /**
- * NumericGene implementation which holds a 64 bit integer number.
+ * NumericGene implementation which holds a 64-bit integer number.
  *
  * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
  * value-based</a> class; use of identity-sensitive operations (including
@@ -72,7 +72,7 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * given range. If the {@code value} isn't within the interval [min, max),
 	 * no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
@@ -193,7 +193,7 @@ public final class LongGene
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_min, hash(_max, hash(getClass()))));
+		return hash(_allele, hash(_min, hash(_max)));
 	}
 
 	@Override
