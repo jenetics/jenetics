@@ -52,7 +52,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version !__version__!
+ * @version 7.0
  */
 public final class IntegerGene
 	implements
