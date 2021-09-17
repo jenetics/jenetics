@@ -138,7 +138,7 @@ public final class Phenotype<
 	 *
 	 * @see #nonEvaluated()
 	 *
-	 * @return {@code true} is this phenotype has an fitness value assigned,
+	 * @return {@code true} is this phenotype has a fitness value assigned,
 	 *         {@code false} otherwise
 	 */
 	public boolean isEvaluated() {
