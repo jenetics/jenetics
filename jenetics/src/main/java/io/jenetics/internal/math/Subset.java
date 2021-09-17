@@ -230,7 +230,7 @@ public final class Subset {
 	}
 
 
-	public static void checkSubSet(final int n, final int k) {
+	private static void checkSubSet(final int n, final int k) {
 		if (k <= 0) {
 			throw new IllegalArgumentException(format(
 				"Subset size smaller or equal zero: %s", k
