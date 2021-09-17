@@ -60,7 +60,7 @@ public class PartialAltererTest {
 			0
 		);
 
-		final PartialAlterer.Projection projection = PartialAlterer.Projection.of(1, 3, 5);
+		final var projection = new PartialAlterer.Projection(new int[]{1, 3, 5});
 
 		final Phenotype<DoubleGene, Double> split = projection.project(pt);
 		Assert.assertEquals(split.genotype().length(), 3);
@@ -83,7 +83,7 @@ public class PartialAltererTest {
 			.map(g -> Phenotype.<DoubleGene, Double>of(g, 0))
 			.collect(ISeq.toISeq());
 
-		final Projection projection = PartialAlterer.Projection.of(1, 3);
+		final var projection = new PartialAlterer.Projection(new int[]{1, 3});
 
 		final Seq<Phenotype<DoubleGene, Double>> split = projection.project(population);
 		Assert.assertEquals(split.length(), population.length());
