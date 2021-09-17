@@ -93,6 +93,14 @@ public final class Subset {
 		return a;
 	}
 
+	/*
+	 * "Inverts" the given subset array `a`. The first n - k elements represents
+	 * the set, which must not be part of the "inverted" subset. This is done by
+	 * filling the array from the back, starting with the highest possible element,
+	 * which is not part of the "forbidden" subset elements. The result is a
+	 * subset array, filled with elements, which where not part of the original
+	 * "forbidden" subset.
+	 */
 	static void invert(
 		final int n,
 		final int k,
