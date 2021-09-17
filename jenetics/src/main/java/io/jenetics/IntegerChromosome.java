@@ -52,8 +52,8 @@ import io.jenetics.util.MSeq;
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
-			NumericChromosome<Integer, IntegerGene>,
-			Serializable
+		NumericChromosome<Integer, IntegerGene>,
+		Serializable
 {
 	@java.io.Serial
 	private static final long serialVersionUID = 3L;
