@@ -45,9 +45,11 @@ public class SubsetTest {
 
 	@Test
 	public void compatibility() {
-		for (int i = 2; i <= 500; ++i) {
-			int[] sub1 = subset(1000, new int[i], new Random(123));
- 			int[] sub2 = Subset.next(1000, new int[i], new Random(123));
+		final int n = 1000;
+
+		for (int k = 2; k <= 500; ++k) {
+			int[] sub1 = subset(n, new int[k], new Random(123));
+ 			int[] sub2 = Subset.next(n, k, new Random(123));
 
 			assertThat(sub2).isEqualTo(sub1);
 		}
@@ -75,7 +77,7 @@ public class SubsetTest {
 
 		final Set<String> subsets = new HashSet<>();
 		for (int i = 0; i < 3_000; ++i) {
-			subsets.add(Arrays.toString(Subset.next(n, new int[k], random)));
+			subsets.add(Arrays.toString(Subset.next(n, k, random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -121,8 +123,7 @@ public class SubsetTest {
 		final int n = 2_500;
 
 		for (int k = 1; k <= n; ++k) {
-			int[] sub = new int[k];
-			Subset.next(n, sub, random);
+			int[] sub = Subset.next(n, k, random);
 
 			for (int v : sub) {
 				assertThat(v).isBetween(0, n);
@@ -141,14 +142,13 @@ public class SubsetTest {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void subSetDistribution() {
-		final int[] sub = new int[3];
 		final int n = 100_000;
 
 		final Random random = new Random();
 		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Subset.next(n, sub, random)))
+			.flatMap(i -> IntStream.of(Subset.next(n, 3, random)))
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);

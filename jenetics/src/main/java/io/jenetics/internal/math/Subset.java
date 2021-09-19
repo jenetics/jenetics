@@ -23,9 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
+import java.util.Arrays;
 import java.util.random.RandomGenerator;
-
-import io.jenetics.internal.util.Arrays;
 
 /**
  * This class creates random subsets of size {@code k}  from a set of {@code n}
@@ -49,27 +48,32 @@ import io.jenetics.internal.util.Arrays;
 public final class Subset {
 	private Subset() {}
 
-
 	/**
-	 * Creates a random subset of {@code a.length} (<em>k</em> elements from a
-	 * set of {@code n} elements.
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #next(int, int[], RandomGenerator)
 	 *
 	 * @param n the size of the set.
-	 * @param a the subset array where the result is written to
-	 * @param random the random number generator used.
-	 * @return the input array {@code a}
-	 * @throws NullPointerException if {@code a} or {@code random} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if {@code n < a.length},
-	 *         {@code a.length == 0} or {@code n*a.length} will cause an
-	 *         integer overflow.
+	 * @param k the size of the subset.
+	 * @param rnd the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *         {@code n*k} will cause an integer overflow.
+	 * @return the a-set array for the given parameter. The returned sub-set
+	 *         array is sorted in increasing order.
 	 */
-	public static int[] next(
+	public static int[] next(final int n, final int k, final RandomGenerator rnd) {
+		final var subset = new int[k];
+		next(n, subset, rnd);
+		return subset;
+	}
+
+	private static void next(
 		final int n,
 		final int[] a,
-		final RandomGenerator random
+		final RandomGenerator rnd
 	) {
-		requireNonNull(random, "Random");
+		requireNonNull(rnd, "Random");
 		requireNonNull(a, "Sub set array");
 
 		final int k = a.length;
@@ -80,20 +84,27 @@ public final class Subset {
 			for (int i = 0; i < k; ++i) {
 				a[i] = i;
 			}
+			return;
 		}
 
 		// Calculate the 'inverse' subset if k > n - k.
 		if (k > n - k) {
-			subset0(n, n - k, a, random);
+			subset0(n, n - k, a, rnd);
 			invert(n, k, a);
 		} else {
-			subset0(n, k, a, random);
+			subset0(n, k, a, rnd);
 		}
-
-		return a;
 	}
 
-	static void invert(
+	/*
+	 * "Inverts" the given subset array `a`. The first n - k elements represents
+	 * the set, which must not be part of the "inverted" subset. This is done by
+	 * filling the array from the back, starting with the highest possible element,
+	 * which is not part of the "forbidden" subset elements. The result is a
+	 * subset array, filled with elements, which where not part of the original
+	 * "forbidden" subset.
+	 */
+	private static void invert(
 		final int n,
 		final int k,
 		final int[] a
@@ -104,7 +115,7 @@ public final class Subset {
 		int j = n - k - 1;
 		int vi;
 
-		final int[] ac = java.util.Arrays.copyOfRange(a, 0, n - k);
+		final int[] ac = Arrays.copyOfRange(a, 0, n - k);
 		for (int i = k; --i >= 0;) {
 			while ((vi = indexOf(ac, j, v)) != -1) {
 				--v;
@@ -140,6 +151,7 @@ public final class Subset {
 		// Early return if k = 1.
 		if (k == 1) {
 			a[0] = random.nextInt(n);
+			return;
 		}
 
 		// (A): Initialize a[i] to "zero" point for bin Ri.
@@ -212,59 +224,13 @@ public final class Subset {
 		}
 
 		// Convert to zero based indexed arrays.
-		Arrays.add(a, -1);
-	}
-
-	/**
-	 * Selects a random subset of size {@code k} from a set of size {@code n}.
-	 *
-	 * @see #next(int, int[], RandomGenerator)
-	 *
-	 * @param n the size of the set.
-	 * @param k the size of the subset.
-	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 *         {@code n*k} will cause an integer overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] next(
-		final int n,
-		final int k,
-		final RandomGenerator random
-	) {
-		return next(n, new int[k], random);
-	}
-
-	/**
-	 * Selects a random subset of size {@code k} from the given base {@code set}.
-	 *
-	 * @param set the base set
-	 * @param k the size of the subset
-	 * @param random the random number generator used
-	 * @throws NullPointerException if {@code set} or {@code random} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if {@code set.length < k},
-	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
-	 *         overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
-	 *         array is sorted in increasing order.
-	 */
-	public static int[] next(
-		final int[] set,
-		final int k,
-		final RandomGenerator random
-	) {
-		final int[] a = next(set.length, new int[k], random);
 		for (int i = 0; i < k; ++i) {
-			a[i] = set[a[i]];
+			--a[i];
 		}
-
-		return a;
 	}
 
-	public static void checkSubSet(final int n, final int k) {
+
+	private static void checkSubSet(final int n, final int k) {
 		if (k <= 0) {
 			throw new IllegalArgumentException(format(
 				"Subset size smaller or equal zero: %s", k

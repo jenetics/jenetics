@@ -47,13 +47,13 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version !__version__!W
+ * @version 7.0W
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
-			NumericChromosome<Integer, IntegerGene>,
-			Serializable
+		NumericChromosome<Integer, IntegerGene>,
+		Serializable
 {
 	@java.io.Serial
 	private static final long serialVersionUID = 3L;
@@ -139,15 +139,15 @@ public class IntegerChromosome
 	}
 
 	/**
-	 * Returns an int array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns an int array containing all the elements in this chromosome in
+	 * proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
-	 *        be stored, if it is big enough; otherwise, a new array is
+	 * @param array the array into which the elements of these chromosomes are
+	 *        to be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
@@ -162,8 +162,8 @@ public class IntegerChromosome
 	}
 
 	/**
-	 * Returns an int array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns an int array containing all the elements in this chromosome in
+	 * proper sequence.
 	 *
 	 * @since 3.0
 	 *

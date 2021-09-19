@@ -224,7 +224,9 @@ public final class PermutationChromosome<T>
 		}
 
 		final var rnd = RandomRegistry.random();
-		final int[] subset = shuffle(Subset.next(alleles.size(), length, rnd), rnd);
+		final int[] subset = Subset.next(alleles.size(), length, rnd);
+		shuffle(subset, rnd);
+
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());

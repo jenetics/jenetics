@@ -142,14 +142,14 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Returns an double array containing all of the elements in this chromosome
+	 * Returns a double array containing all the elements in this chromosome
 	 * in proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
+	 * @param array the array into which the elements of these chromosomes are to
 	 *        be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome

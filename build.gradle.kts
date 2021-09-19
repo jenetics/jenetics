@@ -188,8 +188,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://download.java.net/java/early_access/jdk17/docs/api",
-				//"https://docs.oracle.com/en/java/javase/17/docs/api",
+				"https://docs.oracle.com/en/java/javase/17/docs/api/",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
