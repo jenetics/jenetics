@@ -22,6 +22,8 @@ public abstract class Tokenizer {
 
 	public abstract Token next();
 
+	public abstract String toTokenName(final int tokenType);
+
 	public void match(final char ch) {
 		if (ch == c) {
 			consume();

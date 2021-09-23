@@ -136,8 +136,9 @@ public class BnfParser {
 			return new Token(STRING, value.toString());
 		}
 
-		static String toString(final Token token) {
-			final String name = switch (token.type()) {
+		@Override
+		public String toTokenName(final int tokenType) {
+			final String name = switch (tokenType) {
 				case ASSIGN -> "ASSIGN";
 				case BAR -> "BAR";
 				case GT -> "GT";
@@ -153,11 +154,11 @@ public class BnfParser {
 				case STRING -> "STRING";
 				case EOF_TYPE -> "EOF_TYPE";
 				default -> throw new IllegalArgumentException(
-					"Unknown token type: " + token.type()
+					"Unknown token type: " + tokenType
 				);
 			};
 
-			return format("Token[%s, '%s']", name, token.value());
+			return format("Token[%s, '%s']", name, "token.value()");
 		}
 
 	}
