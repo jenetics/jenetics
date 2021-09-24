@@ -20,7 +20,7 @@ public class BnfParserTest {
 			.takeWhile(t -> t.type() != Tokenizer.EOF_TYPE);
 
 		tokens
-			.map(tokenizer::toString)
+			//.map(tokenizer::toTokenName)
 			.forEach(System.out::println);
 	}
 
