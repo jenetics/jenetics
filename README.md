@@ -147,12 +147,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-W. Geithner, Z. Andelkovic, O. Geithner, F. Herfurth, V. Rapp, A. Németh, F. Wilhelmstötter, A. H. Van Benschoten. <a href="https://accelconf.web.cern.ch/ipac2021/">ION SOURCE OPTIMIZATION USING BI-OBJECTIVE GENETIC AND MATRIX-PROFILE ALGORITHM.</a> <em>IPAC2021 - 12th International Particle Accelerator Conference. </em> May 2021.
+W. Geithner, Z. Andelkovic, O. Geithner, F. Herfurth, V. Rapp, A. Németh, F. Wilhelmstötter, A. H. Van Benschoten. <a href="https://accelconf.web.cern.ch/ipac2021/papers/tupab300.pdf">ION SOURCE OPTIMIZATION USING BI-OBJECTIVE GENETIC AND MATRIX-PROFILE ALGORITHM.</a> <em>IPAC2021 - 12th International Particle Accelerator Conference. </em> May 2021.
 
 ...
 </summary>
 
-1) W. Geithner, Z. Andelkovic, O. Geithner, F. Herfurth, V. Rapp, A. Németh, F. Wilhelmstötter, A. H. Van Benschoten. <a href="https://accelconf.web.cern.ch/ipac2021/">ION SOURCE OPTIMIZATION USING BI-OBJECTIVE GENETIC AND MATRIX-PROFILE ALGORITHM.</a> <em>IPAC2021 - 12th International Particle Accelerator Conference. </em> May 2021.
+1) W. Geithner, Z. Andelkovic, O. Geithner, F. Herfurth, V. Rapp, A. Németh, F. Wilhelmstötter, A. H. Van Benschoten. <a href="https://accelconf.web.cern.ch/ipac2021/papers/tupab300.pdf">ION SOURCE OPTIMIZATION USING BI-OBJECTIVE GENETIC AND MATRIX-PROFILE ALGORITHM.</a> <em>IPAC2021 - 12th International Particle Accelerator Conference. </em> May 2021.
 2) C. Plump, B. J. Berger and R. Drechsler. <a href="https://doi.org/10.1109/CEC45853.2021.9504931">Domain-driven Correlation-aware Recombination and Mutation Operators for Complex Real-world Applications.</a> <em> 2021 IEEE Congress on Evolutionary Computation (CEC), pp. 540-548. </em> July 2021.
 3) Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/s10489-021-02679-7">Designing convolutional neural networks with constrained evolutionary piecemeal training.</a> <em> Appl Intell (2021). </em> July 2021.
 4) Michela Lorandi, Leonardo Lucio Custode, Giovanni Iacca. <a href="https://doi.org/10.1145/3449726.3462716">Genetic improvement of routing in delay tolerant networks.</a> <em>GECCO '21: Proceedings of the Genetic and Evolutionary Computation Conference Companion. </em> July 2021, Pages 35–36.
