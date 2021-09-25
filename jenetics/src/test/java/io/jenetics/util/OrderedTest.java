@@ -37,7 +37,7 @@ public class OrderedTest {
 		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
 			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
 			.sorted(Comparator.naturalOrder())
-			.collect(Collectors.toUnmodifiableList());
+			.toList();
 
 		for (int i = 0; i < objects.size(); ++i) {
 			final int value = objects.get(i).get();
