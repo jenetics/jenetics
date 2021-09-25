@@ -73,7 +73,7 @@ import io.jenetics.util.ISeq;
  * @see Engine
  * @see Engine.Builder
  *
- * @param <T> the argument type of a given problem
+ * @param <T> the argument type of given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -242,7 +242,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * <p>
 	 * The following example shows how to combine two codecs, which converts a
 	 * {@code LongGene} to a {@code LocalDate}, to a codec which combines the
-	 * two {@code LocalDate} object (this are the argument types of the
+	 * two {@code LocalDate} object (these are the argument types of the
 	 * component codecs) to a {@code Duration}.
 	 *
 	 * <pre>{@code
@@ -285,7 +285,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @param codec1 the first codec
 	 * @param codec2 the second codec
 	 * @param decoder the decoder which combines the two argument types from the
-	 *        given given codecs, to the argument type of the resulting codec.
+	 *        given codecs, to the argument type of the resulting codec.
 	 * @return a new codec which combines the given {@code codec1} and
 	 *        {@code codec2}
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -349,7 +349,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @param <T> the argument type of the compound codec
 	 * @param codecs the {@code Codec} sequence of the sub-problems
 	 * @param decoder the decoder which combines the argument types from the
-	 *        given given codecs, to the argument type of the resulting codec.
+	 *        given codecs, to the argument type of the resulting codec.
 	 * @return a new codec which combines the given {@code codecs}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given {@code codecs} sequence is
