@@ -39,9 +39,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
 /**
- * This execution service executes the the tasks in exactly the same order as
- * they where submitted. The tasks are executed <em>asynchronously</em>, but
- * <b>not</b> <em>concurrently</em>.
+ * This execution service executes the tasks in exactly the same order as they
+ * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
+ * <em>concurrently</em>.
  *
  * <pre>{@code
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
