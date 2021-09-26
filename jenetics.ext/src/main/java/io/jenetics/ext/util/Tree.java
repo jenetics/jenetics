@@ -57,7 +57,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/* *************************************************************************
 	 * Basic (abstract) operations. All other tree operations can be derived
-	 * from this methods.
+	 * from these methods.
 	 **************************************************************************/
 
 	/**
