@@ -38,7 +38,7 @@ import io.jenetics.ext.internal.IntList;
 
 /**
  * Low-level utility methods for doing pareto-optimal calculations. This methods
- * are mostly for users who wants to extend the existing <em>MOEA</em> classes.
+ * are mostly for users who want to extend the existing <em>MOEA</em> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
