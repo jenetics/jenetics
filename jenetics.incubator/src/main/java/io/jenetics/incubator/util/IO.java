@@ -363,7 +363,7 @@ public final class IO {
 	 * returned object stream, which also closes the given {@code input} stream.
 	 *
 	 * <pre>{@code
-	 * final var input = ...;
+	 * final InputStream input = ...;
 	 * try (Stream<Object> stream = IO.objects(input)) {
 	 *     stream.forEach(System.out::println);
 	 * }
