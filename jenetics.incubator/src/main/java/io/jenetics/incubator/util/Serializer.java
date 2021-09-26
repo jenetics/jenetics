@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
 import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedInputStream;
@@ -40,7 +42,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Lifecycle.Resources;
@@ -53,12 +54,12 @@ import io.jenetics.internal.util.Lifecycle.Value;
  *
  * <pre>{@code
  * // Write three string objects to the given path and read them again.
- * Serializer.write(path, List.of("1", "2", "3"), CREATE, APPEND);
- * var objects = Serializer.readAllObjects(path);
+ * Serializer.write(path, List.of("1", "2", "3"));
+ * List<Object> objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
  * // Append another two string object to the same file.
- * Serializer.write(path, List.of("4", "5"), APPEND);
+ * Serializer.write(path, List.of("4", "5"));
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
  *
@@ -292,10 +293,15 @@ public final class Serializer {
 	 * <pre>{@code
 	 * // Write three string objects to the given file. The file is created if
 	 * // it not exists or appended if the file already exists.
+	 * Serializer.write(path, List.of("1", "2", "3"));
+	 * }</pre>
+	 *
+	 * <pre>{@code
+	 * // Write three string objects to the given file. The file is truncated if
+	 * // it exists or created if the file doesn't exists.
 	 * Serializer.write(
-	 *     path,
-	 *     List.of("1", "2", "3"),
-	 *     StandardOpenOption.CREATE, StandardOpenOption.APPEND
+	 *     path, List.of("1", "2", "3"),
+	 *     StandardOpenOption.TRUNCATE_EXISTING
 	 * );
 	 * }</pre>
 	 *
@@ -319,7 +325,18 @@ public final class Serializer {
 	)
 		throws IOException
 	{
-		return write0(path, objects::iterator, options);
+		final OpenOption[] opts;
+		if (options.length != 0) {
+			opts = options;
+		} else {
+			if (Files.exists(path)) {
+				opts = new OpenOption[] { APPEND };
+			} else {
+				opts = new OpenOption[] { CREATE, APPEND };
+			}
+		}
+
+		return write0(path, objects::iterator, opts);
 	}
 
 	private static long write0(
@@ -344,7 +361,7 @@ public final class Serializer {
 
 	private static boolean isAppendable(final OpenOption... options) {
 		for (var option : options) {
-			if (option == StandardOpenOption.APPEND) {
+			if (option == APPEND) {
 				return true;
 			}
 		}
@@ -469,7 +486,7 @@ public final class Serializer {
 		throws IOException
 	{
 		try (var objects = objects(input)) {
-			return objects.collect(Collectors.toUnmodifiableList());
+			return objects.toList();
 		} catch (UncheckedIOException e) {
 			throw e.getCause();
 		}
@@ -487,7 +504,7 @@ public final class Serializer {
 	 */
 	public static List<Object> readAllObjects(final Path path) throws IOException {
 		try (var objects = objects(path)) {
-			return objects.collect(Collectors.toUnmodifiableList());
+			return objects.toList();
 		} catch (UncheckedIOException e) {
 			throw e.getCause();
 		}

@@ -163,13 +163,13 @@ public class SerializerTest {
 		);
 
 		try (path) {
-			final var written = Serializer.write(path.get(), List.of("1", "2", "3"), CREATE);
+			final var written = Serializer.write(path.get(), List.of("1", "2", "3"));
 			Assert.assertEquals(written, Files.size(path.get()));
 
 			List<Object> objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-			Serializer.write(path.get(), List.of("4", "5"), APPEND);
+			Serializer.write(path.get(), List.of("4", "5"));
 			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
