@@ -48,8 +48,8 @@ import io.jenetics.internal.util.Lifecycle.Value;
 
 /**
  * Static methods for reading and writing objects using the Java serialisation.
- * The methods of this class allows to append additional objects to an existing
- * files.
+ * The methods of this class allows appending additional objects to an existing
+ * file.
  *
  * <pre>{@code
  * // Write three string objects to the given path and read them again.
@@ -68,7 +68,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * assert objects.equals(List.of("6", "7", "8"));
  * }</pre>
  *
- * It also allows to read object piecewise via a {@link Stream}.
+ * It also allows reading object piecewise via a {@link Stream}.
  *
  * <pre>{@code
  * try (Stream<Object> stream = IO.objects(Path.of("serialized-objects.bin"))) {
@@ -122,7 +122,7 @@ public final class IO {
 	}
 
 	/**
-	 * This class allows to append objects to a given output stream.
+	 * This class allows appending objects to a given output stream.
 	 */
 	private static final class AppendableObjectOutput
 		implements Closeable, Flushable
@@ -237,7 +237,6 @@ public final class IO {
 	 * It is the responsibility of the caller to close the given {@code output}
 	 * stream when no longer needed.
 	 *
-	 * @see #write(OutputStream, Stream, boolean)
 	 * @see #write(Path, Iterable, OpenOption...)
 	 *
 	 * @param output the output stream where the objects are written to
@@ -285,61 +284,6 @@ public final class IO {
 	}
 
 	/**
-	 * Writes the given {@code objects} to the given {@code output} stream,
-	 * using Java serialization. For the <em>first</em> objects to be written
-	 * to the stream, the {@code append} flag must be set to {@code false}.
-	 *
-	 * <pre>{@code
-	 * final var output = new ByteArrayOutputStream();
-	 * IO.write(output, Stream.of("1", "2", "3"), false);
-	 *
-	 * var input = new ByteArrayInputStream(output.toByteArray());
-	 * final List<Object> objects = IO.readAllObjects(output);
-	 * assert objects.equals(List.of("1", "2", "3"));
-	 * }</pre>
-	 *
-	 * When writing additional objects to the same output stream, the
-	 * {@code append} must be set to {@code true}.
-	 *
-	 * <pre>{@code
-	 * IO.write(output, Stream.of("4", "5"), true);
-	 * input = new ByteArrayInputStream(output.toByteArray());
-	 * objects = IO.readAllObjects(input);
-	 * assert objects.equals(List.of("1", "2", "3", "4", "5"));
-	 * }</pre>
-	 *
-	 * It is the responsibility of the caller to close the given {@code output}
-	 * stream when no longer needed.
-	 *
-	 * @see #write(OutputStream, Stream, boolean)
-	 * @see #write(Path, Iterable, OpenOption...)
-	 *
-	 * @param output the output stream where the objects are written to
-	 * @param objects the objects to write to output stream, in the order defined
-	 *        by the given iterable
-	 * @param append {@code false} for the first objects written to the given
-	 *        {@code output} stream and {@code true} for additional objects
-	 *        writing to the same stream
-	 * @return the number of bytes written to the output stream
-	 * @throws IOException if writing the objects fails
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static long write(
-		final OutputStream output,
-		final Stream<?> objects,
-		final boolean append
-	)
-		throws IOException
-	{
-		final var it = objects.iterator();
-		if (it.hasNext()) {
-			return write0(output, it, append);
-		} else {
-			return 0;
-		}
-	}
-
-	/**
 	 * Writes the given {@code objects} to the given {@code path}, using
 	 * Java serialization. If the {@code path} already exists and the open
 	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
@@ -356,7 +300,6 @@ public final class IO {
 	 * }</pre>
 	 *
 	 * @see #write(OutputStream, Iterable, boolean)
-	 * @see #write(OutputStream, Stream, boolean)
 	 *
 	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to be written
@@ -410,46 +353,6 @@ public final class IO {
 
 	private static boolean isEmpty(final Path file) throws IOException {
 		return !Files.exists(file) || Files.size(file) == 0;
-	}
-
-	/**
-	 * Writes the given {@code objects} to the given {@code path}, using
-	 * Java serialization. If the {@code path} already exists and the open
-	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
-	 * are appended to the existing file.
-	 *
-	 * <pre>{@code
-	 * // Write three string objects to the given file. The file is created if
-	 * // it not exists or appended if the file already exists.
-	 * IO.write(
-	 *     path,
-	 *     Stream.of("1", "2", "3"),
-	 *     StandardOpenOption.CREATE, StandardOpenOption.APPEND
-	 * );
-	 * }</pre>
-	 *
-	 * @see #write(OutputStream, Iterable, boolean)
-	 * @see #write(OutputStream, Stream, boolean)
-	 *
-	 * @param path the destination where the {@code objects} are written to
-	 * @param objects the {@code objects} to be written
-	 * @param options specifying how the file is opened
-	 * @return the number of bytes written to the file
-	 * @throws IOException if writing the objects fails
-	 * @throws IllegalArgumentException if options contains an invalid
-	 *         combination of options
-	 * @throws UnsupportedOperationException if an unsupported option is
-	 *         specified
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static long write(
-		final Path path,
-		final Stream<?> objects,
-		final OpenOption... options
-	)
-		throws IOException
-	{
-		return write0(path, objects::iterator, options);
 	}
 
 	/**
