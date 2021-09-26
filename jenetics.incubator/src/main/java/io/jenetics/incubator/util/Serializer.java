@@ -296,6 +296,7 @@ public final class Serializer {
 	 * Serializer.write(path, List.of("1", "2", "3"));
 	 * }</pre>
 	 *
+	 * Truncating an existing file:
 	 * <pre>{@code
 	 * // Write three string objects to the given file. The file is truncated if
 	 * // it exists or created if the file doesn't exists.
