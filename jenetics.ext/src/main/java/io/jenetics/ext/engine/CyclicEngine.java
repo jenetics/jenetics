@@ -113,7 +113,7 @@ public final class CyclicEngine<
 	 * {@code engines}.
 	 *
 	 * @param engines the evolution engines which are part of the cycling engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	public CyclicEngine(

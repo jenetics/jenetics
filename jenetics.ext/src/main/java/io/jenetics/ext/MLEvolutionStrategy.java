@@ -68,7 +68,7 @@ public final class MLEvolutionStrategy<
 	/**
 	 * Create a new (μ, λ)-Evolution Strategy with the given parameters.
 	 *
-	 * @param mu the number of fittest individuals to be selected
+	 * @param mu the number of the fittest individuals to be selected
 	 * @param lambda the population count
 	 * @param mutationProbability the mutation probability
 	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
@@ -100,7 +100,7 @@ public final class MLEvolutionStrategy<
 	 * Create a new (μ, λ)-Evolution Strategy with the given parameters. The
 	 * mutation probability is set to {@link Mutator#DEFAULT_ALTER_PROBABILITY}.
 	 *
-	 * @param mu the number of fittest individuals to be selected
+	 * @param mu the number of the fittest individuals to be selected
 	 * @param lambda the population count
 	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}

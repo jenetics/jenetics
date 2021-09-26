@@ -50,7 +50,7 @@ public abstract class TreeCrossover<
 {
 
 	/**
-	 * Constructs an tree crossover with a given recombination probability.
+	 * Constructs a tree crossover with a given recombination probability.
 	 *
 	 * @param probability the recombination probability
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
@@ -137,7 +137,7 @@ public abstract class TreeCrossover<
 
 	/**
 	 * Template method which performs the crossover. The arguments given are
-	 * mutable non null trees.
+	 * mutable non-null trees.
 	 *
 	 * @param <A> the <em>existential</em> allele type
 	 * @param that the first (chromosome) tree

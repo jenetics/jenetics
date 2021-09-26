@@ -64,7 +64,7 @@ public interface Complexity<T> {
 	 *
 	 * @param <T> the sample type
 	 * @param maxNodeCount the maximal node count. The returned complexity will
-	 *        be one if the program node count is greater or equal the given
+	 *        be one of the program node count is greater or equal the given
 	 *        {@code count}
 	 * @return a program node count complexity measure
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
