@@ -53,25 +53,25 @@ import io.jenetics.internal.util.Lifecycle.Value;
  *
  * <pre>{@code
  * // Write three string objects to the given path and read them again.
- * IO.write(path, List.of("1", "2", "3"), CREATE, APPEND);
- * var objects = IO.readAllObjects(path);
+ * Serializer.write(path, List.of("1", "2", "3"), CREATE, APPEND);
+ * var objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
  * // Append another two string object to the same file.
- * IO.write(path, List.of("4", "5"), APPEND);
- * objects = IO.readAllObjects(path);
+ * Serializer.write(path, List.of("4", "5"), APPEND);
+ * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
  *
  * // Truncates the the content of an existing file.
- * IO.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
- * objects = IO.readAllObjects(path);
+ * Serializer.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
+ * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("6", "7", "8"));
  * }</pre>
  *
  * It also allows reading object piecewise via a {@link Stream}.
  *
  * <pre>{@code
- * try (Stream<Object> stream = IO.objects(Path.of("serialized-objects.bin"))) {
+ * try (Stream<Object> stream = Serializer.objects(Path.of("serialized-objects.bin"))) {
  *     stream.forEach(System.out::println);
  * }
  * }</pre>
@@ -80,8 +80,8 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * @since 6.2
  * @version 6.2
  */
-public final class IO {
-	private IO() {}
+public final class Serializer {
+	private Serializer() {}
 
 	/**
 	 * Wrapper for {@link OutputStream}s, which prevents the wrapped stream from
@@ -217,10 +217,10 @@ public final class IO {
 	 *
 	 * <pre>{@code
 	 * final var output = new ByteArrayOutputStream();
-	 * IO.write(output, List.of("1", "2", "3"), false);
+	 * Serializer.write(output, List.of("1", "2", "3"), false);
 	 *
 	 * var input = new ByteArrayInputStream(output.toByteArray());
-	 * final List<Object> objects = IO.readAllObjects(output);
+	 * final List<Object> objects = Serializer.readAllObjects(output);
 	 * assert objects.equals(List.of("1", "2", "3"));
 	 * }</pre>
 	 *
@@ -228,9 +228,9 @@ public final class IO {
 	 * {@code append} must be set to {@code true}.
 	 *
 	 * <pre>{@code
-	 * IO.write(output, List.of("4", "5"), true);
+	 * Serializer.write(output, List.of("4", "5"), true);
 	 * input = new ByteArrayInputStream(output.toByteArray());
-	 * objects = IO.readAllObjects(input);
+	 * objects = Serializer.readAllObjects(input);
 	 * assert objects.equals(List.of("1", "2", "3", "4", "5"));
 	 * }</pre>
 	 *
@@ -292,7 +292,7 @@ public final class IO {
 	 * <pre>{@code
 	 * // Write three string objects to the given file. The file is created if
 	 * // it not exists or appended if the file already exists.
-	 * IO.write(
+	 * Serializer.write(
 	 *     path,
 	 *     List.of("1", "2", "3"),
 	 *     StandardOpenOption.CREATE, StandardOpenOption.APPEND
@@ -364,7 +364,7 @@ public final class IO {
 	 *
 	 * <pre>{@code
 	 * final InputStream input = ...;
-	 * try (Stream<Object> stream = IO.objects(input)) {
+	 * try (Stream<Object> stream = Serializer.objects(input)) {
 	 *     stream.forEach(System.out::println);
 	 * }
 	 * }</pre>
@@ -423,7 +423,7 @@ public final class IO {
 	 * closing the returned object stream.
 	 *
 	 * <pre>{@code
-	 * try (Stream<Object> stream = IO.objects(path)) {
+	 * try (Stream<Object> stream = Serializer.objects(path)) {
 	 *     stream.forEach(System.out::println);
 	 * }
 	 * }</pre>
