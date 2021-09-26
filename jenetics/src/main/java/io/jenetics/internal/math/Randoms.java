@@ -223,7 +223,7 @@ public final class Randoms {
 	 * }
 	 * }</pre>
 	 *
-	 * This method passes all of the statistical tests of the
+	 * This method passes all the statistical tests of the
 	 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
 	 * dieharder</a> test suite&mdash;executed on a linux machine with
 	 * JDK version 1.7. <em>Since there is no prove that this will the case
