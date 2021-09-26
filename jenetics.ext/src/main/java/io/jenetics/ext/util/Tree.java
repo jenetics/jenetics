@@ -666,7 +666,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * search in the parent's child-list in order to find the current node.
 	 * <p>
 	 * That implementation makes the operation suitable for short traversals
-	 * from a known position. But to traverse all of the leaves in the tree, you
+	 * from a known position. But to traverse all the leaves in the tree, you
 	 * should use {@link #depthFirstIterator()} to iterator the nodes in the
 	 * tree and use {@link #isLeaf()} on each node to determine which are leaves.
 	 *
@@ -689,7 +689,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * node.
 	 * <p>
 	 * That implementation makes the operation suitable for short traversals
-	 * from a known position. But to traverse all of the leaves in the tree, you
+	 * from a known position. But to traverse all the leaves in the tree, you
 	 * should use {@link #depthFirstIterator()} to iterate the nodes in the tree
 	 * and use {@link #isLeaf()} on each node to determine which are leaves.
 	 *
@@ -1057,8 +1057,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 **************************************************************************/
 
 	/**
-	 * This class represents the path to child within a given tree. It allows to
-	 * point (and fetch) a tree child.
+	 * This class represents the path to child within a given tree. It allows
+	 * pointing (and fetch) a tree child.
 	 *
 	 * @see Tree#childAtPath(Path)
 	 *
@@ -1165,10 +1165,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		 *  Java object serialization
 		 * ********************************************************************/
 
+		@java.io.Serial
 		private Object writeReplace() {
 			return new Serial(Serial.TREE_PATH, this);
 		}
 
+		@java.io.Serial
 		private void readObject(final ObjectInputStream stream)
 			throws InvalidObjectException
 		{
