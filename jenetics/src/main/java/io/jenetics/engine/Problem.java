@@ -195,11 +195,9 @@ public interface Problem<
 	Codec<T, G> wrap(final Constraint<G, C> constraint, final Codec<T, G> codec) {
 		Codec<T, G> result = codec;
 		if (constraint != null) {
-			if (codec instanceof InvertibleCodec) {
-				result = constraint.constrain((InvertibleCodec<T, G>)codec);
-			} else {
-				result = constraint.constrain(codec);
-			}
+			result = codec instanceof InvertibleCodec<T, G> ic
+				? constraint.constrain(ic)
+				: constraint.constrain(codec);
 		}
 
 		return result;
