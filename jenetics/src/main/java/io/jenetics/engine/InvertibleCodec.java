@@ -51,7 +51,7 @@ import io.jenetics.util.Factory;
  * @see RetryConstraint#of(InvertibleCodec, Predicate, Function)
  * @see RetryConstraint#of(InvertibleCodec, Predicate, int)
  *
- * @param <T> the argument type of a given problem
+ * @param <T> the argument type of given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

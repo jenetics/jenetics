@@ -64,15 +64,16 @@ public final class BinaryTree<V> implements Tree<V, BinaryTree<V>> {
 	@Override
 	public BinaryTree<V> childAt(final int index) {
 		switch (index) {
-			case 0:
+			case 0 -> {
 				if (_left != null) return _left;
 				if (_right != null) return _right;
 				throw error(index);
-			case 1:
+			}
+			case 1 -> {
 				if (_right != null) return _right;
 				throw error(index);
-			default:
-				throw error(index);
+			}
+			default -> throw error(index);
 		}
 	}
 
