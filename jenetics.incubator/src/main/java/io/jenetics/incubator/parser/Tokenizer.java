@@ -80,8 +80,8 @@ public abstract class Tokenizer {
 		}
 	}
 
-	protected final boolean isEof(final char ch) {
-		return ch == EOF;
+	protected final boolean isNonEof(final char ch) {
+		return ch != EOF;
 	}
 
 }

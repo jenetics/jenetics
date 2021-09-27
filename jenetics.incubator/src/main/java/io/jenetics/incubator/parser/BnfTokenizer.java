@@ -72,7 +72,7 @@ final class BnfTokenizer extends Tokenizer {
 
 	@Override
 	public Token next() {
-		while (!isEof(c)) {
+		while (isNonEof(c)) {
 			switch (c) {
 				case ' ', '\r', '\n', '\t':
 					WS();
@@ -128,7 +128,7 @@ final class BnfTokenizer extends Tokenizer {
 	private void WS() {
 		do {
 			consume();
-		} while (!isEof(c) && isWhitespace(c));
+		} while (isNonEof(c) && isWhitespace(c));
 	}
 
 	private Token ASSIGN() {
@@ -142,7 +142,7 @@ final class BnfTokenizer extends Tokenizer {
 		final var value = new StringBuilder();
 
 		consume();
-		while (!isEof(c) && c != '\'') {
+		while (isNonEof(c) && c != '\'') {
 			value.append(c);
 			consume();
 		}
@@ -154,7 +154,7 @@ final class BnfTokenizer extends Tokenizer {
 	private Token ID() {
 		final var value = new StringBuilder();
 
-		while (!isEof(c) && isJavaIdentifierPart(c)) {
+		while (isNonEof(c) && isJavaIdentifierPart(c)) {
 			value.append(c);
 			consume();
 		}
@@ -165,7 +165,7 @@ final class BnfTokenizer extends Tokenizer {
 	private Token STRING() {
 		final var value = new StringBuilder();
 
-		while (!isEof(c) && !isWhitespace(c)) {
+		while (isNonEof(c) && !isWhitespace(c)) {
 			value.append(c);
 			consume();
 		}
