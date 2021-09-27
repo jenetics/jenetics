@@ -37,6 +37,39 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 
+/**
+ * rulelist: rule_* EOF;
+ * rule_: lhs ASSIGN rhs;
+ * lhs: id_;
+ * rhs: alternatives;
+ * alternatives: alternative (BAR alternative)*;
+ * alternative: element*;
+ * element: optional_ | zeroormore | oneormore | text_ | id_;
+ * optional_: REND alternatives LEND;
+ * zeroormore: RBRACE alternatives LBRACE;
+ * oneormore: RPAREN alternatives LPAREN;
+ * text_: STRING;
+ * id_: LT ruleid GT;
+ * ruleid: ID;
+ *
+ * ASSIGN: '::=';
+ * LPAREN: ')';
+ * RPAREN: '(';
+ * LBRACE: '}';
+ * RBRACE: '{';
+ * LEND: ']';
+ * REND: '[';
+ * BAR: '|';
+ * GT: '>';
+ * LT: '<';
+ * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
+ * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|' ')+;
+ * WS: [ \r\n\t] -> skip;
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 final class BnfTokenizer extends Tokenizer {
 
 	enum BnfTokenType implements Token.Type {

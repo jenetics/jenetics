@@ -1,7 +1,6 @@
 package io.jenetics.incubator.parser;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -18,20 +17,8 @@ public class BnfTokenizerTest {
 	public void tokenize() {
 		final var tokenizer = new BnfTokenizer(GRAMMAR_STRING);
 		final List<Token> tokens = tokenizer.tokens().toList();
-		System.out.println(tokens);
 
-		tokens
-			//.map(tokenizer::toTokenName)
-			.forEach(System.out::println);
-	}
-
-	public static void main(final String[] args) {
-		final var tokenizer = new BnfTokenizer(GRAMMAR_STRING);
-		final Stream<Token> tokens = tokenizer.tokens();
-
-		tokens
-			//.map(tokenizer::toTokenName)
-			.forEach(System.out::println);
+		tokens.forEach(System.out::println);
 	}
 
 }
