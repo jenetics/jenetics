@@ -61,6 +61,17 @@ public interface Token {
 		String name();
 
 		/**
+		 * Create a new token of the given {@code value} and {@code this} type.
+		 *
+		 * @param value the token value
+		 * @return a new toke
+		 * @throws NullPointerException if the given {@code value} is {@code null}
+		 */
+		default Token token(final String value) {
+			return Token.of(this, value);
+		}
+
+		/**
 		 * Create a new token type with the given {@code code} and {@code name}.
 		 *
 		 * @param code the code of the created token type
@@ -106,6 +117,14 @@ public interface Token {
 			public SimpleToken {
 				requireNonNull(type);
 				requireNonNull(value);
+			}
+
+			@Override
+			public String toString() {
+				return "<'%s',%s>".formatted(
+					SimpleToken.this.value,
+					SimpleToken.this.type.name()
+				);
 			}
 		}
 

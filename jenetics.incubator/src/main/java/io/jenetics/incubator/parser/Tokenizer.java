@@ -56,7 +56,7 @@ public abstract class Tokenizer {
 
 	public final Stream<Token> tokens() {
 		return Stream.generate(this::next)
-			.takeWhile(token -> token.type().code() == Token.Type.EOF.code());
+			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}
 
 	protected void match(final char ch) {

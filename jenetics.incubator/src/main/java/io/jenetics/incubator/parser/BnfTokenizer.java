@@ -81,31 +81,31 @@ final class BnfTokenizer extends Tokenizer {
 					return ASSIGN();
 				case ')':
 					consume();
-					return Token.of(LPAREN, ")");
+					return LPAREN.token(")");
 				case '(':
 					consume();
-					return Token.of(RPAREN, "(");
+					return RPAREN.token("(");
 				case '}':
 					consume();
-					return Token.of(LBRACE, "}");
+					return LBRACE.token("}");
 				case '{':
 					consume();
-					return Token.of(RBRACE, "{");
+					return RBRACE.token("{");
 				case ']':
 					consume();
-					return Token.of(LEND, "]");
+					return LEND.token("]");
 				case '[':
 					consume();
-					return Token.of(REND, "[");
+					return REND.token("[");
 				case '|':
 					consume();
-					return Token.of(BAR, "|");
+					return BAR.token("|");
 				case '>':
 					consume();
-					return Token.of(GT, ">");
+					return GT.token(">");
 				case '<':
 					consume();
-					return Token.of(LT, "<");
+					return LT.token("<");
 				case '\'':
 					return QUOTED_STRING();
 				default:
@@ -135,7 +135,7 @@ final class BnfTokenizer extends Tokenizer {
 		match(':');
 		match(':');
 		match('=');
-		return Token.of(ASSIGN, "::=");
+		return ASSIGN.token("::=");
 	}
 
 	private Token QUOTED_STRING() {
@@ -148,7 +148,7 @@ final class BnfTokenizer extends Tokenizer {
 		}
 		consume();
 
-		return Token.of(QUOTED_STRING, value.toString());
+		return QUOTED_STRING.token(value.toString());
 	}
 
 	private Token ID() {
@@ -159,7 +159,7 @@ final class BnfTokenizer extends Tokenizer {
 			consume();
 		}
 
-		return Token.of(ID, value.toString());
+		return ID.token(value.toString());
 	}
 
 	private Token STRING() {
@@ -170,7 +170,7 @@ final class BnfTokenizer extends Tokenizer {
 			consume();
 		}
 
-		return Token.of(STRING, value.toString());
+		return STRING.token(value.toString());
 	}
 
 }
