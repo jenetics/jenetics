@@ -34,7 +34,9 @@ import static java.lang.String.format;
  * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|' ')+;
  * WS: [ \r\n\t] -> skip;
  */
-public class BnfParser {
+public class BnfParser extends Parser {
 
-
+	protected BnfParser(final BnfTokenizer tokenizer) {
+		super(tokenizer);
+	}
 }
