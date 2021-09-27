@@ -54,9 +54,9 @@ public interface Sampling<T> {
 		}
 
 		/**
-		 * Return the the calculated result values.
+		 * Return the calculated result values.
 		 *
-		 * @return the the calculated result values
+		 * @return the calculated result values
 		 */
 		public T[] calculated() {
 			return _calculated;

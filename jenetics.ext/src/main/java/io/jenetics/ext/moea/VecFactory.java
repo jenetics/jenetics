@@ -25,7 +25,7 @@ import java.util.List;
 import io.jenetics.Optimize;
 
 /**
- * This interface allows to create vector object from a given array type
+ * This interface allows creating vector object from a given array type
  * {@code T}. It is useful if you need some additional parametrization of the
  * created vectors.
  * <p>
@@ -71,7 +71,7 @@ public interface VecFactory<T> {
 	Vec<T> newVec(final T array);
 
 	/**
-	 * Create a new factory for {@code int[]} vectors. Additionally you can
+	 * Create a new factory for {@code int[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -94,7 +94,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code int[]} vectors. Additionally you can
+	 * Create a new factory for {@code int[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -130,7 +130,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code long[]} vectors. Additionally you can
+	 * Create a new factory for {@code long[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -153,7 +153,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code long[]} vectors. Additionally you can
+	 * Create a new factory for {@code long[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -189,7 +189,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code double[]} vectors. Additionally you can
+	 * Create a new factory for {@code double[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -212,7 +212,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code double[]} vectors. Additionally you can
+	 * Create a new factory for {@code double[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -248,7 +248,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code T[]} vectors. Additionally you can
+	 * Create a new factory for {@code T[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -273,7 +273,7 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code T[]} vectors. Additionally you can
+	 * Create a new factory for {@code T[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
@@ -359,7 +359,7 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
 	 * given {@code optimizes}. If the lengths doesn't match, an
@@ -387,7 +387,7 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
 	 * given {@code optimizes}. If the lengths doesn't match, an
@@ -410,7 +410,7 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
 	 * given {@code optimizes}. If the lengths doesn't match, an

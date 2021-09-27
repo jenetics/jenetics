@@ -111,7 +111,7 @@ public final class Regression<T>
 	/**
 	 * Create a new <em>symbolic</em> regression problem with the given data.
 	 *
-	 * @param codec the codec used for the for the problem
+	 * @param codec the codec used for the problem
 	 * @param error the error function
 	 * @param sampling the sample values used for finding a regression.
 	 */

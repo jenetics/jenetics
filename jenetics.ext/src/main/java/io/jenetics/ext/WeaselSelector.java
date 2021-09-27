@@ -34,7 +34,7 @@ import io.jenetics.util.Seq;
 /**
  * Selector implementation which is part of the
  * <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
- * algorithm. The <i>Weasel program</i> is an thought experiment by Richard
+ * algorithm. The <i>Weasel program</i> is a thought experiment by Richard
  * Dawkins to illustrate the functioning of the evolution: random <i>mutation</i>
  * combined with non-random cumulative <i>selection</i>.
  * <p>

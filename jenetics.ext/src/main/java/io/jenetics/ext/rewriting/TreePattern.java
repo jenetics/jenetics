@@ -26,6 +26,7 @@ import static io.jenetics.ext.internal.Names.isIdentifier;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -359,11 +360,13 @@ public final class TreePattern<V> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
 		return new Serial(Serial.TREE_PATTERN, this);
 	}
 
-	private void readObject(final ObjectOutputStream stream)
+	@java.io.Serial
+	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
 		throw new InvalidObjectException("Serialization proxy required.");
