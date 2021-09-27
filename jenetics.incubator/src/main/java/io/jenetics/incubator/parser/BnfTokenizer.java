@@ -4,22 +4,50 @@ import static java.lang.Character.isJavaIdentifierPart;
 import static java.lang.Character.isJavaIdentifierStart;
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LBRACE;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LEND;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LPAREN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RBRACE;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+
+import io.jenetics.incubator.parser.Token.Type;
 
 final class BnfTokenizer extends Tokenizer {
 
-	static final int ASSIGN = 2;
-	static final int LPAREN = 3;
-	static final int RPAREN = 4;
-	static final int LBRACE = 5;
-	static final int RBRACE = 6;
-	static final int LEND = 7;
-	static final int REND = 8;
-	static final int BAR = 9;
-	static final int GT = 10;
-	static final int LT = 11;
-	static final int QUOTED_STRING = 12;
-	static final int STRING = 13;
-	static final int ID = 14;
+	enum BnfTokenType implements Token.Type {
+		ASSIGN(2),
+		LPAREN(3),
+		RPAREN(4),
+		LBRACE(5),
+		RBRACE(6),
+		LEND(7),
+		REND(8),
+		BAR(9),
+		GT(10),
+		LT(11),
+		QUOTED_STRING(12),
+		STRING(13),
+		ID(14);
+
+		private final int _code;
+
+		BnfTokenType(final int code) {
+			_code = code;
+		}
+
+		@Override
+		public int code() {
+			return _code;
+		}
+	}
 
 	BnfTokenizer(final CharSequence input) {
 		super(input);
@@ -27,7 +55,7 @@ final class BnfTokenizer extends Tokenizer {
 
 	@Override
 	public Token next() {
-		while (c != EOF) {
+		while (!isEof(c)) {
 			switch (c) {
 				case ' ', '\r', '\n', '\t':
 					WS();
@@ -36,31 +64,31 @@ final class BnfTokenizer extends Tokenizer {
 					return ASSIGN();
 				case ')':
 					consume();
-					return new Token(LPAREN, ")");
+					return Token.of(LPAREN, ")");
 				case '(':
 					consume();
-					return new Token(RPAREN, "(");
+					return Token.of(RPAREN, "(");
 				case '}':
 					consume();
-					return new Token(LBRACE, "}");
+					return Token.of(LBRACE, "}");
 				case '{':
 					consume();
-					return new Token(RBRACE, "{");
+					return Token.of(RBRACE, "{");
 				case ']':
 					consume();
-					return new Token(LEND, "]");
+					return Token.of(LEND, "]");
 				case '[':
 					consume();
-					return new Token(REND, "[");
+					return Token.of(REND, "[");
 				case '|':
 					consume();
-					return new Token(BAR, "|");
+					return Token.of(BAR, "|");
 				case '>':
 					consume();
-					return new Token(GT, ">");
+					return Token.of(GT, ">");
 				case '<':
 					consume();
-					return new Token(LT, "<");
+					return Token.of(LT, "<");
 				case '\'':
 					return QUOTED_STRING();
 				default:
@@ -77,80 +105,55 @@ final class BnfTokenizer extends Tokenizer {
 			}
 		}
 
-		return new Token(EOF_TYPE, "<EOF>");
+		return Token.of(Type.EOF, "<EOF>");
 	}
 
 	private void WS() {
 		do {
 			consume();
-		} while (c != EOF && isWhitespace(c));
+		} while (!isEof(c) && isWhitespace(c));
 	}
 
 	private Token ASSIGN() {
 		match(':');
 		match(':');
 		match('=');
-		return new Token(ASSIGN, "::=");
+		return Token.of(ASSIGN, "::=");
 	}
 
 	private Token QUOTED_STRING() {
 		final var value = new StringBuilder();
 
 		consume();
-		while (c != EOF && c != '\'') {
+		while (!isEof(c) && c != '\'') {
 			value.append(c);
 			consume();
 		}
 		consume();
 
-		return new Token(QUOTED_STRING, value.toString());
+		return Token.of(QUOTED_STRING, value.toString());
 	}
 
 	private Token ID() {
 		final var value = new StringBuilder();
 
-		while (c != EOF && isJavaIdentifierPart(c)) {
+		while (!isEof(c) && isJavaIdentifierPart(c)) {
 			value.append(c);
 			consume();
 		}
 
-		return new Token(ID, value.toString());
+		return Token.of(ID, value.toString());
 	}
 
 	private Token STRING() {
 		final var value = new StringBuilder();
 
-		while (c != EOF && !isWhitespace(c)) {
+		while (!isEof(c) && !isWhitespace(c)) {
 			value.append(c);
 			consume();
 		}
 
-		return new Token(STRING, value.toString());
-	}
-
-	@Override
-	public String toTokenName(final int tokenType) {
-		final String name = switch (tokenType) {
-			case ASSIGN -> "ASSIGN";
-			case BAR -> "BAR";
-			case GT -> "GT";
-			case LT -> "LT";
-			case ID -> "ID";
-			case LBRACE -> "LBRACE";
-			case RBRACE -> "RBRACE";
-			case LEND -> "LEND";
-			case REND -> "REND";
-			case LPAREN -> "LPAREN";
-			case RPAREN -> "RPAREN";
-			case QUOTED_STRING -> "QUOTED_STRING";
-			case STRING -> "STRING";
-			case EOF_TYPE -> "EOF_TYPE";
-			default -> throw new IllegalArgumentException(
-				"Unknown token type: " + tokenType
-			);
-		};
-
-		return format("Token[%s, '%s']", name, "token.value()");
+		return Token.of(STRING, value.toString());
 	}
 
 }

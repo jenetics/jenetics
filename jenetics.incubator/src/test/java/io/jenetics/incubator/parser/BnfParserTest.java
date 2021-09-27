@@ -16,8 +16,7 @@ public class BnfParserTest {
 	@Test
 	public void tokenize() {
 		final var tokenizer = new BnfTokenizer(GRAMMAR_STRING);
-		final Stream<Token> tokens = Stream.generate(tokenizer::next)
-			.takeWhile(t -> t.type() != Tokenizer.EOF_TYPE);
+		final Stream<Token> tokens = tokenizer.tokens();
 
 		tokens
 			//.map(tokenizer::toTokenName)

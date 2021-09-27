@@ -2,11 +2,11 @@ package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
 
+import java.util.stream.Stream;
+
 public abstract class Tokenizer {
 
-	public static final int EOF_TYPE = 1;
-
-	public static final char EOF = (char)-1;
+	private static final char EOF = (char)-1;
 
 	private final CharSequence _input;
 
@@ -22,7 +22,10 @@ public abstract class Tokenizer {
 
 	public abstract Token next();
 
-	public abstract String toTokenName(final int tokenType);
+	public final Stream<Token> tokens() {
+		return Stream.generate(this::next)
+			.takeWhile(token -> token.type().code() == StandardTokenType.EOF.code());
+	}
 
 	public void match(final char ch) {
 		if (ch == c) {
@@ -43,6 +46,10 @@ public abstract class Tokenizer {
 		} else {
 			c = _input.charAt(pos);
 		}
+	}
+
+	public final boolean isEof(final char ch) {
+		return ch == EOF;
 	}
 
 }

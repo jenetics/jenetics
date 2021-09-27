@@ -3,6 +3,10 @@ package io.jenetics.incubator.parser;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
+import io.jenetics.incubator.parser.Token.Type;
+
 public abstract class Parser {
 
 	private final Tokenizer _tokenizer;
@@ -12,8 +16,8 @@ public abstract class Parser {
 		_tokenizer = requireNonNull(tokenizer);
 	}
 
-	protected void match(final int type) {
-		if (_lookahead.type() == type) {
+	protected void match(final Type type) {
+		if (Objects.equals(_lookahead.type(), type)) {
 			consume();
 		} else {
 			throw new ParseException(format(
