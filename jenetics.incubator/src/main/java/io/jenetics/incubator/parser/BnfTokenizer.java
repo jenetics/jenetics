@@ -114,7 +114,7 @@ final class BnfTokenizer extends Tokenizer {
 					} else if (!isWhitespace(c)) {
 						return STRING();
 					} else {
-						throw new IllegalArgumentException(format(
+						throw new TokenizerException(format(
 							"Got invalid character '%s' at position '%d'.",
 							c, pos
 						));

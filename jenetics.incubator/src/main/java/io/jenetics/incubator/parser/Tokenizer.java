@@ -63,7 +63,7 @@ public abstract class Tokenizer {
 		if (ch == c) {
 			consume();
 		} else {
-			throw new IllegalArgumentException(format(
+			throw new TokenizerException(format(
 				"Got invalid character '%s' at position '%d'; expected '%s'",
 				c, pos, ch
 			));

@@ -19,8 +19,19 @@
  */
 package io.jenetics.incubator.parser;
 
+import java.io.Serial;
+
 public class ParseException extends RuntimeException {
-	public ParseException(String message) {
+	@Serial
+	private static final long serialVersionUID = 1;
+
+	public ParseException(final String message) {
 		super(message);
 	}
+
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
+
 }
