@@ -21,6 +21,11 @@ package io.jenetics.incubator.parser;
 
 import java.io.Serial;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public class ParseException extends RuntimeException {
 	@Serial
 	private static final long serialVersionUID = 1;
