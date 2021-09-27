@@ -32,9 +32,18 @@ import static java.util.Objects.requireNonNull;
 public interface Token {
 
 	/**
+	 * The common <em>end of file</em> token.
+	 */
+	Token EOF = Token.of(Type.EOF, "<EOF>");
+
+	/**
 	 * Represents the type of the token, with a given type code and type name.
 	 */
 	interface Type {
+
+		/**
+		 * The common <em>end of file</em> token type.
+		 */
 		Type EOF = Type.of(-1, "EOF");
 
 		/**

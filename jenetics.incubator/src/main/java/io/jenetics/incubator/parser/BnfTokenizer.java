@@ -37,8 +37,6 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 
-import io.jenetics.incubator.parser.Token.Type;
-
 final class BnfTokenizer extends Tokenizer {
 
 	enum BnfTokenType implements Token.Type {
@@ -124,7 +122,7 @@ final class BnfTokenizer extends Tokenizer {
 			}
 		}
 
-		return Token.of(Type.EOF, "<EOF>");
+		return Token.EOF;
 	}
 
 	private void WS() {

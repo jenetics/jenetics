@@ -23,6 +23,13 @@ import static java.lang.String.format;
 
 import java.util.stream.Stream;
 
+/**
+ * Base class for all tokenizers.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public abstract class Tokenizer {
 
 	private static final char EOF = (char)-1;
@@ -32,6 +39,12 @@ public abstract class Tokenizer {
 	protected int pos;
 	protected char c = EOF;
 
+	/**
+	 * Create a new tokenizer from the given character sequence.
+	 *
+	 * @param input the input character sequence
+	 * @throws NullPointerException if the given {@code input} is {@code null}
+	 */
 	protected Tokenizer(final CharSequence input) {
 		if (input.length() > 0) {
 			c = input.charAt(0);
@@ -43,10 +56,10 @@ public abstract class Tokenizer {
 
 	public final Stream<Token> tokens() {
 		return Stream.generate(this::next)
-			.takeWhile(token -> token.type().code() == StandardTokenType.EOF.code());
+			.takeWhile(token -> token.type().code() == Token.Type.EOF.code());
 	}
 
-	public void match(final char ch) {
+	protected void match(final char ch) {
 		if (ch == c) {
 			consume();
 		} else {
@@ -57,7 +70,7 @@ public abstract class Tokenizer {
 		}
 	}
 
-	public void consume() {
+	protected void consume() {
 		++pos;
 
 		if (pos >= _input.length()) {
@@ -67,7 +80,7 @@ public abstract class Tokenizer {
 		}
 	}
 
-	public final boolean isEof(final char ch) {
+	protected final boolean isEof(final char ch) {
 		return ch == EOF;
 	}
 
