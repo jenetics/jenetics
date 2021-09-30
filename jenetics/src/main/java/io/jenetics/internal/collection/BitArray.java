@@ -17,13 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 
 import java.math.BigInteger;
 import java.util.Objects;
 
+import io.jenetics.internal.util.Bits;
 import io.jenetics.util.Copyable;
 
 /**

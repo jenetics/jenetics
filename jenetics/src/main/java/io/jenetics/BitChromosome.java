@@ -38,7 +38,7 @@ import java.util.BitSet;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.BitArray;
+import io.jenetics.internal.collection.BitArray;
 import io.jenetics.util.ISeq;
 
 /**

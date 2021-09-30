@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.collection;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -31,6 +31,8 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.internal.util.EquivalentValidator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
