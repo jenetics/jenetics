@@ -58,31 +58,31 @@ public final class BitArray implements Copyable<BitArray> {
 	 * {@code begin} and {@code end} <em>bit</em> indexes.
 	 *
 	 * @param data the {@code byte[]} array which contains the bit data
-	 * @param starrt the start bit index (inclusively)
+	 * @param start the start bit index (inclusively)
 	 * @param end the end bit index (exclusively)
 	 * @throws NullPointerException if the given {@code data} array is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code begin} and {@code end}
 	 *         indexes are not within the valid range
 	 */
-	BitArray(final byte[] data, final int starrt, final int end) {
+	BitArray(final byte[] data, final int start, final int end) {
 		if (data.length == 0) {
 			throw new IllegalArgumentException("Byte array must not be empty.");
 		}
-		if (starrt < 0) {
+		if (start < 0) {
 			throw new IllegalArgumentException(
-				"Begin index is smaller then zero: " + starrt
+				"Begin index is smaller then zero: " + start
 			);
 		}
-		if (end < starrt || end > data.length*Byte.SIZE) {
+		if (end < start || end > data.length*Byte.SIZE) {
 			throw new IllegalArgumentException(format(
 				"End index is not within the valid range of [%d, %d]: %d",
-				starrt, data.length*Byte.SIZE, end
+				start, data.length*Byte.SIZE, end
 			));
 		}
 
 		_data = data;
-		_start = starrt;
+		_start = start;
 		_end = end;
 	}
 
