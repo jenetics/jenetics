@@ -227,14 +227,16 @@ public interface ISeq<T>
 	 * @return a new {@code ISeq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
 	static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		return values instanceof ISeq
-			? (ISeq<T>)values
-			: values instanceof MSeq
-				? ((MSeq<T>)values).toISeq()
+		@SuppressWarnings("unchecked")
+		final Iterable<T> vals = (Iterable<T>)values;
+
+		return vals instanceof ISeq<T> seq
+			? seq
+			: vals instanceof MSeq<T> mseq
+				? mseq.toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}
 

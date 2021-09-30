@@ -538,22 +538,22 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} object is
 	 *        {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
 	static <T> MSeq<T> of(final Iterable<? extends T> values) {
+		requireNonNull(values);
+
+		@SuppressWarnings("unchecked")
+		final Iterable<T> vals = (Iterable<T>)values;
+
 		final MSeq<T> mseq;
-		if (values instanceof ISeq) {
-			final ISeq<T> seq = (ISeq<T>)values;
+		if (vals instanceof ISeq<T> seq) {
 			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (values instanceof MSeq) {
-			final MSeq<T> seq = (MSeq<T>)values;
+		} else if (vals instanceof MSeq<T> seq) {
 			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (values instanceof Collection) {
-			final Collection<T> collection = (Collection<T>)values;
+		} else if (vals instanceof Collection<T> collection) {
 			mseq = collection.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(collection.size()).setAll(values);
-		} else if (values instanceof BaseSeq) {
-			final BaseSeq<T> seq = (BaseSeq<T>)values;
+		} else if (vals instanceof BaseSeq<T> seq) {
 			mseq = seq.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(seq.length()).setAll(values);
