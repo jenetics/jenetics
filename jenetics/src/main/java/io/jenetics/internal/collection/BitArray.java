@@ -22,6 +22,7 @@ package io.jenetics.internal.collection;
 import static java.lang.String.format;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Objects;
 
 import io.jenetics.internal.util.Bits;
@@ -280,7 +281,7 @@ public final class BitArray implements Copyable<BitArray> {
 		if (array.length() != length()) {
 			return false;
 		}
-		return toBigInteger().equals(array.toBigInteger());
+		return Arrays.equals(toByteArray(), array.toByteArray());
 	}
 
 	@Override
