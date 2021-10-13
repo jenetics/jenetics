@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Self;
 
 /**
  * General purpose tree structure. The interface only contains tree read methods.
@@ -53,7 +54,7 @@ import io.jenetics.util.ISeq;
  * @version 6.0
  * @since 3.9
  */
-public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
+public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/* *************************************************************************
 	 * Basic (abstract) operations. All other tree operations can be derived
@@ -104,7 +105,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return an iterator of the children of this {@code Tree} node.
 	 */
 	default Iterator<T> childIterator() {
-		return new TreeChildIterator<V, T>(Trees.self(this));
+		return new TreeChildIterator<V, T>(self());
 	}
 
 	/**
@@ -162,7 +163,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of levels above this node
 	 */
 	default int level() {
-		Optional<T> ancestor = Optional.of(Trees.self(this));
+		Optional<T> ancestor = Optional.of(self());
 		int levels = 0;
 		while ((ancestor = ancestor.flatMap(Tree::parent)).isPresent()) {
 			++levels;
@@ -225,7 +226,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         {@code null}
 	 */
 	default Optional<T> childAtPath(final Path path) {
-		T node = Trees.self(this);
+		T node = self();
 		for (int i = 0; i < path.length() && node != null; ++i) {
 			node = path.get(i) < node.childCount()
 				? node.childAt(path.get(i))
@@ -270,7 +271,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	default boolean isAncestor(final Tree<?, ?> node) {
 		requireNonNull(node);
 
-		Optional<T> ancestor = Optional.of(Trees.self(this));
+		Optional<T> ancestor = Optional.of(self());
 		boolean result;
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
@@ -308,7 +309,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 		T ancestor = null;
 		if (node.identical(this)) {
-			ancestor = Trees.self(this);
+			ancestor = self();
 		} else {
 			final int level1 = level();
 			final int level2 = node.level();
@@ -319,10 +320,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			if (level2 > level1) {
 				diff = level2 - level1;
 				node1 = node;
-				node2 = Trees.self(this);
+				node2 = self();
 			} else {
 				diff = level1 - level2;
-				node1 = Trees.self(this);
+				node1 = self();
 				node2 = node;
 			}
 
@@ -399,7 +400,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the root of the tree that contains this node
 	 */
 	default T root() {
-		T anc = Trees.self(this);
+		T anc = self();
 		T prev;
 
 		do {
@@ -513,7 +514,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		Optional<T> next = Optional.empty();
 
 		if (childCount() == 0) {
-			T node = Trees.self(this);
+			T node = self();
 			while (node != null && (next = node.nextSibling()).isEmpty()) {
 				node = node.parent().orElse(null);
 			}
@@ -632,7 +633,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the first leaf in the subtree rooted at this node
 	 */
 	default T firstLeaf() {
-		T leaf = Trees.self(this);
+		T leaf = self();
 		while (!leaf.isLeaf()) {
 			leaf = leaf.firstChild().orElseThrow(AssertionError::new);
 		}
@@ -650,7 +651,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the last leaf in this subtree
 	 */
 	default T lastLeaf() {
-		T leaf = Trees.self(this);
+		T leaf = self();
 		while (!leaf.isLeaf()) {
 			leaf = leaf.lastChild().orElseThrow(AssertionError::new);
 		}
