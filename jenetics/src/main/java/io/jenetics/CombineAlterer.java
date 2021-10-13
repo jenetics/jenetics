@@ -94,15 +94,14 @@ public class CombineAlterer<
 		final int[] individuals,
 		final long generation
 	) {
-		final var random = RandomRegistry.random();
-
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.genotype();
 		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
-		final int ci = random.nextInt(min(gt1.length(), gt2.length()));
+		final int ci = RandomRegistry.random()
+			.nextInt(min(gt1.length(), gt2.length()));
 
 		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
 
