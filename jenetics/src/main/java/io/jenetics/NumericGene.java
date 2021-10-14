@@ -42,7 +42,7 @@ public interface NumericGene<
 {
 
 	/**
-	 * Returns the value of the specified gene as an byte. This may involve
+	 * Returns the value of the specified gene as a byte. This may involve
 	 * rounding or truncation.
 	 *
 	 * @return the numeric value represented by this object after conversion to
@@ -53,7 +53,7 @@ public interface NumericGene<
 	}
 
 	/**
-	 * Returns the value of the specified gene as an short. This may involve
+	 * Returns the value of the specified gene as a short. This may involve
 	 * rounding or truncation.
 	 *
 	 * @return the numeric value represented by this object after conversion to
@@ -75,7 +75,7 @@ public interface NumericGene<
 	}
 
 	/**
-	 * Returns the value of the specified gene as an long. This may involve
+	 * Returns the value of the specified gene as a long. This may involve
 	 * rounding or truncation.
 	 *
 	 * @return the numeric value represented by this object after conversion to
@@ -86,7 +86,7 @@ public interface NumericGene<
 	}
 
 	/**
-	 * Returns the value of the specified gene as an float. This may involve
+	 * Returns the value of the specified gene as a float. This may involve
 	 * rounding or truncation.
 	 *
 	 * @return the numeric value represented by this object after conversion to
@@ -97,7 +97,7 @@ public interface NumericGene<
 	}
 
 	/**
-	 * Returns the value of the specified gene as an double. This may involve
+	 * Returns the value of the specified gene as a double. This may involve
 	 * rounding or truncation.
 	 *
 	 * @return the numeric value represented by this object after conversion to

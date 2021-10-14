@@ -23,7 +23,7 @@ package io.jenetics.util;
  * This interface defines a <em>recursive</em> generic type {@code S}, which
  * represents the type of the implementing class.
  * <pre>{@code
- * interface Foo<T extends Foo<T>> implements Self<T> {
+ * interface Foo<T extends Foo<T>> extends Self<T> {
  *     // ...
  * }
  * }</pre>
@@ -35,6 +35,8 @@ package io.jenetics.util;
  * can be implemented as a <em>default</em> method.
  * <pre>{@code
  * interface Foo<A extends Foo<A>> extends Self<A>, Comparable<A> {
+ *     // ...
+ *
  *     default A max(final A other) {
  *         return compareTo(other) > 0 ? self() : other;
  *     }
