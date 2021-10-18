@@ -51,7 +51,7 @@ import io.jenetics.util.Self;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
@@ -304,7 +304,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *         or {@link Optional#empty()} if no common ancestor exists.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	default Optional<T> sharedAncestor(final Tree<?, ?> node) {
+	default Optional<T> sharedAncestor(final T node) {
 		requireNonNull(node);
 
 		T ancestor = null;
@@ -314,8 +314,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 			final int level1 = level();
 			final int level2 = node.level();
 
-			Tree<?, ?> node1;
-			Tree<?, ?> node2;
+			T node1;
+			T node2;
 			int diff;
 			if (level2 > level1) {
 				diff = level2 - level1;
@@ -334,7 +334,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 			do {
 				if (node1 != null && node1.identical(node2)) {
-					ancestor = Trees.self(node1);
+					ancestor = node1;
 				}
 				node1 = node1 != null
 					? node1.parent().orElse(null)
@@ -371,7 +371,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *         element is this node.
 	 */
 	default ISeq<T> pathElements() {
-		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
+		return Trees.pathElementsFromRoot(self(), 0).toISeq();
 	}
 
 	/**
@@ -389,7 +389,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return the path from the root element to {@code this} node.
 	 */
 	default Path path() {
-		final int[] p = Trees.pathFromRoot(Trees.<V, T>self(this), 0);
+		final int[] p = Trees.pathFromRoot(self(), 0);
 		return Path.of(p);
 	}
 
@@ -426,7 +426,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	default boolean isChild(final Tree<?, ?> node) {
 		requireNonNull(node);
 		return childCount() != 0 &&
-			node.parent().equals(Optional.of(Trees.<V, T>self(this)));
+			node.parent().equals(Optional.of(self()));
 	}
 
 	/**
@@ -592,7 +592,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *         {@code this} node
 	 */
 	default Optional<T> nextSibling() {
-		return parent().flatMap(p -> p.childAfter(Trees.<V, T>self(this)));
+		return parent().flatMap(p -> p.childAfter(self()));
 	}
 
 	/**
@@ -605,7 +605,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *         node
 	 */
 	default Optional<T> previousSibling() {
-		return parent().flatMap(p -> p.childBefore(Trees.<V, T>self(this)));
+		return parent().flatMap(p -> p.childBefore(self()));
 	}
 
 
@@ -734,7 +734,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return an iterator for traversing the tree in breadth-first order
 	 */
 	default Iterator<T> breadthFirstIterator() {
-		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
+		return new TreeNodeBreadthFirstIterator<>(self());
 	}
 
 	/**
@@ -790,7 +790,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return an iterator for traversing the tree in pre-order
 	 */
 	default Iterator<T> preorderIterator() {
-		return new TreeNodePreorderIterator<>(Trees.<V, T>self(this));
+		return new TreeNodePreorderIterator<>(self());
 	}
 
 	/**
@@ -818,7 +818,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return an iterator for traversing the tree in post-order
 	 */
 	default Iterator<T> postorderIterator() {
-		return new TreeNodePostorderIterator<>(Trees.<V, T>self(this));
+		return new TreeNodePostorderIterator<>(self());
 	}
 
 	/**
@@ -883,7 +883,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @throws NullPointerException if the given {@code ancestor} is {@code null}
 	 */
 	default Iterator<T> pathFromAncestorIterator(final Tree<?, ?> ancestor) {
-		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
+		return new TreeNodePathIterator<>(ancestor, self());
 	}
 
 	/**
