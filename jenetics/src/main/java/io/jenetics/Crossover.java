@@ -67,7 +67,6 @@ public abstract class Crossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final var random = RandomRegistry.random();
 
 		final var pt1 = population.get(individuals[0]);
 		final var pt2 = population.get(individuals[1]);
@@ -75,7 +74,8 @@ public abstract class Crossover<
 		final var gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
-		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
+		final int chIndex = RandomRegistry.random()
+			.nextInt(min(gt1.length(), gt2.length()));
 
 		final var c1 = MSeq.of(gt1);
 		final var c2 = MSeq.of(gt2);
