@@ -72,7 +72,7 @@ public interface BoundedGene<
 	 * Return the minimum value of {@code this} and the given {@code other}
 	 * value.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param other the other value
 	 * @return the minimum value of {@code this} and the given {@code other}
@@ -86,7 +86,7 @@ public interface BoundedGene<
 	 * Return the maximum value of {@code this} and the given {@code other}
 	 * value.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param other the other value
 	 * @return the maximum value of {@code this} and the given {@code other}

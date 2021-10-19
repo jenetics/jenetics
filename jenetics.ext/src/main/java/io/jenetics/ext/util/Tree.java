@@ -51,7 +51,7 @@ import io.jenetics.util.Self;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 7.0
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
