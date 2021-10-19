@@ -70,10 +70,10 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * @return a new Concurrency object
 	 */
 	public static Concurrency with(final Executor executor) {
-		if (executor instanceof ForkJoinPool) {
-			return new ForkJoinPoolConcurrency((ForkJoinPool)executor);
-		} else if (executor instanceof ExecutorService) {
-			return new ExecutorServiceConcurrency((ExecutorService)executor);
+		if (executor instanceof ForkJoinPool e) {
+			return new ForkJoinPoolConcurrency(e);
+		} else if (executor instanceof ExecutorService e) {
+			return new ExecutorServiceConcurrency(e);
 		} else if (executor == SERIAL_EXECUTOR) {
 			return SERIAL_EXECUTOR;
 		} else {
