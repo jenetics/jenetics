@@ -55,7 +55,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	 *
 	 * @param codecs the {@code Codec} sequence of the sub-problems
 	 * @param decoder the decoder which combines the argument types from the
-	 *        given given codecs, to the argument type of the resulting codec.
+	 *        given codecs, to the argument type of the resulting codec.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	CompositeCodec(
