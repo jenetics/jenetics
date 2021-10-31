@@ -58,6 +58,7 @@ import io.jenetics.internal.collection.ObjectStore;
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
+	@Override
 	default List<T> asList() {
 		return new MSeqList<>(this);
 	}
