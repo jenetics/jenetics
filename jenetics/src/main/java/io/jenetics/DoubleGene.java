@@ -300,7 +300,7 @@ public final class DoubleGene
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_GENE, this);
+		return new SerialProxy(SerialProxy.DOUBLE_GENE, this);
 	}
 
 	@java.io.Serial

@@ -295,7 +295,7 @@ public final class IntegerGene
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INTEGER_GENE, this);
+		return new SerialProxy(SerialProxy.INTEGER_GENE, this);
 	}
 
 	@java.io.Serial

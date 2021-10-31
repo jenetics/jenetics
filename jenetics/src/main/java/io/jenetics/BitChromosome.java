@@ -601,7 +601,7 @@ public final class BitChromosome extends Number
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.BIT_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.BIT_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

@@ -366,7 +366,7 @@ public final class Phenotype<
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PHENOTYPE, this);
+		return new SerialProxy(SerialProxy.PHENOTYPE, this);
 	}
 
 	@java.io.Serial

@@ -296,7 +296,7 @@ public final class LongGene
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_GENE, this);
+		return new SerialProxy(SerialProxy.LONG_GENE, this);
 	}
 
 	@java.io.Serial

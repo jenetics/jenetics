@@ -328,7 +328,7 @@ public final class PermutationChromosome<T>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PERMUTATION_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PERMUTATION_CHROMOSOME, this);
 	}
 
 	@java.io.Serial
