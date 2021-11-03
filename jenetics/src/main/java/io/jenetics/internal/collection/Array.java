@@ -365,7 +365,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.ARRAY, this);
+		return new SerialProxy(SerialProxy.ARRAY, this);
 	}
 
 	@java.io.Serial

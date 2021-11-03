@@ -105,7 +105,7 @@ final class SimpleLongVec implements Vec<long[]>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.SIMPLE_LONG_VEC, this);
+		return new SerialProxy(SerialProxy.SIMPLE_LONG_VEC, this);
 	}
 
 	@java.io.Serial

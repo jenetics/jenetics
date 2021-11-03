@@ -17,25 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog;
+package io.jenetics.ext.moea;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
- * @since 5.0
+ * @version 5.2
+ * @since 5.2
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
-	static final byte PROGRAM_CHROMOSOME = 1;
+	static final byte SIMPLE_INT_VEC = 1;
+	static final byte SIMPLE_LONG_VEC = 2;
+	static final byte SIMPLE_DOUBLE_VEC = 3;
 
 	/**
 	 * The type being serialized.
@@ -50,7 +53,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -59,7 +62,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -68,23 +71,27 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case PROGRAM_CHROMOSOME -> ((ProgramChromosome)_object).write(out);
+			case SIMPLE_INT_VEC -> ((SimpleIntVec)_object).write(out);
+			case SIMPLE_LONG_VEC -> ((SimpleLongVec)_object).write(out);
+			case SIMPLE_DOUBLE_VEC -> ((SimpleDoubleVec)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
 	public void readExternal(final ObjectInput in)
-		throws IOException, ClassNotFoundException
+		throws IOException
 	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case PROGRAM_CHROMOSOME -> ProgramChromosome.read(in);
+			case SIMPLE_INT_VEC -> SimpleIntVec.read(in);
+			case SIMPLE_LONG_VEC -> SimpleLongVec.read(in);
+			case SIMPLE_DOUBLE_VEC -> SimpleDoubleVec.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

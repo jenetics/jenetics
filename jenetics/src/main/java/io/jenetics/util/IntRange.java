@@ -163,7 +163,7 @@ public final /*record*/ class IntRange implements Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INT_RANGE, this);
+		return new SerialProxy(SerialProxy.INT_RANGE, this);
 	}
 
 	@java.io.Serial

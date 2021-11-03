@@ -466,7 +466,7 @@ public final class EvolutionParams<
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_PARAMS, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_PARAMS, this);
 	}
 
 	@java.io.Serial

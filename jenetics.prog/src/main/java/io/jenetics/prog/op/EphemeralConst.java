@@ -179,7 +179,7 @@ public final class EphemeralConst<T>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EPHEMERAL_CONST, this);
+		return new SerialProxy(SerialProxy.EPHEMERAL_CONST, this);
 	}
 
 	@java.io.Serial

@@ -240,7 +240,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TREE_REWRITE_RULE, this);
+		return new SerialProxy(SerialProxy.TREE_REWRITE_RULE, this);
 	}
 
 	@java.io.Serial

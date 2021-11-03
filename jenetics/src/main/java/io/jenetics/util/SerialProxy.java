@@ -17,27 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
+package io.jenetics.util;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
- * @since 4.1
+ * @version 6.0
+ * @since 6.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
-	private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 1;
 
-	static final byte MATH_EXPR = 1;
-	static final byte CONST = 2;
-	static final byte EPHEMERAL_CONST = 3;
+	static final byte DOUBLE_RANGE = 1;
+	static final byte INT_RANGE = 2;
+	static final byte LONG_RANGE = 3;
 
 	/**
 	 * The type being serialized.
@@ -52,7 +53,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -61,7 +62,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -70,27 +71,27 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case MATH_EXPR -> ((MathExpr)_object).write(out);
-			case CONST -> ((Const<?>)_object).write(out);
-			case EPHEMERAL_CONST -> ((EphemeralConst<?>)_object).write(out);
+			case DOUBLE_RANGE -> ((DoubleRange)_object).write(out);
+			case INT_RANGE -> ((IntRange)_object).write(out);
+			case LONG_RANGE -> ((LongRange)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
 	public void readExternal(final ObjectInput in)
-		throws IOException, ClassNotFoundException
+		throws IOException
 	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case MATH_EXPR -> MathExpr.read(in);
-			case CONST -> Const.read(in);
-			case EPHEMERAL_CONST -> EphemeralConst.read(in);
+			case DOUBLE_RANGE -> DoubleRange.read(in);
+			case INT_RANGE -> IntRange.read(in);
+			case LONG_RANGE -> LongRange.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

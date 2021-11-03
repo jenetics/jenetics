@@ -599,7 +599,7 @@ public final class TreeNode<T>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TREE_NODE, this);
+		return new SerialProxy(SerialProxy.TREE_NODE, this);
 	}
 
 	@java.io.Serial

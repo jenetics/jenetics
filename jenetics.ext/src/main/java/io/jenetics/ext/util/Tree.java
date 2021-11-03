@@ -1168,7 +1168,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 		@java.io.Serial
 		private Object writeReplace() {
-			return new Serial(Serial.TREE_PATH, this);
+			return new SerialProxy(SerialProxy.TREE_PATH, this);
 		}
 
 		@java.io.Serial

@@ -28,7 +28,6 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -362,7 +361,7 @@ public final class TreePattern<V> implements Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TREE_PATTERN, this);
+		return new SerialProxy(SerialProxy.TREE_PATTERN, this);
 	}
 
 	@java.io.Serial

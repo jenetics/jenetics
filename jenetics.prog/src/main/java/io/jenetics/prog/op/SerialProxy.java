@@ -17,25 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.prog.op;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
- * @since 5.0
+ * @version 4.1
+ * @since 4.1
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
-	private static final long serialVersionUID = 1;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-	static final byte BIG_INTEGER_CHROMOSOME = 1;
+	static final byte MATH_EXPR = 1;
+	static final byte CONST = 2;
+	static final byte EPHEMERAL_CONST = 3;
 
 	/**
 	 * The type being serialized.
@@ -50,7 +53,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -59,7 +62,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -68,21 +71,27 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case BIG_INTEGER_CHROMOSOME -> ((BigIntegerChromosome)_object).write(out);
+			case MATH_EXPR -> ((MathExpr)_object).write(out);
+			case CONST -> ((Const<?>)_object).write(out);
+			case EPHEMERAL_CONST -> ((EphemeralConst<?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
-	public void readExternal(final ObjectInput in) throws IOException {
+	public void readExternal(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case BIG_INTEGER_CHROMOSOME -> BigIntegerChromosome.read(in);
+			case MATH_EXPR -> MathExpr.read(in);
+			case CONST -> Const.read(in);
+			case EPHEMERAL_CONST -> EphemeralConst.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}
