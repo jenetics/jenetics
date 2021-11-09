@@ -69,7 +69,7 @@ final class SampleList<T>
 		}
 
 		for (int i = 0; i < samples.size(); ++i) {
-			final Sample<T> sample = samples.get(0);
+			final var sample = samples.get(i);
 			if (arity != sample.arity()) {
 				throw new IllegalArgumentException(format(
 					"Expected arity %d, but got %d for sample index %d.",
