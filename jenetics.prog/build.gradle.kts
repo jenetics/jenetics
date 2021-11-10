@@ -42,6 +42,7 @@ dependencies {
 	api(project(":jenetics.ext"))
 
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
 }
 

@@ -38,6 +38,7 @@ dependencies {
 	api(project(":jenetics"))
 
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
 	testImplementation(libs.prngine)
 
 	jmh(project(":jenetics"))
