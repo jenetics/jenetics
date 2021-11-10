@@ -19,6 +19,12 @@
  */
 package io.jenetics.prog.regression;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.random.RandomGenerator;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -28,15 +34,57 @@ import org.testng.annotations.Test;
  */
 public class RingBufferTest {
 
-	@Test(dataProvider = "maxSizes")
-	public void snapshot(final int max) {
-		final RingBuffer ints = new RingBuffer(max);
+	@Test(dataProvider = "capacities")
+	public void addAll(final int capacity) {
+		final RingBuffer ints = new RingBuffer(capacity);
+
+		// values.length < capacity
+		int n = Math.max(1, capacity - 10);
+		Object[] values = RandomGenerator.getDefault().ints(n)
+			.boxed()
+			.toArray();
+
+		ints.addAll(Arrays.asList(values));
+
+		Object[] snapshot = ints.snapshot();
+		assertThat(snapshot).isEqualTo(values);
+		ints.clear();
+
+		// values.length == capacity
+		n = capacity;
+		values = RandomGenerator.getDefault().ints(n)
+			.boxed()
+			.toArray();
+
+		ints.addAll(Arrays.asList(values));
+
+		snapshot = ints.snapshot();
+		assertThat(snapshot).isEqualTo(values);
+		ints.clear();
+
+		// values.length > capacity
+		n = capacity + 20;
+		values = RandomGenerator.getDefault().ints(n)
+			.boxed()
+			.toArray();
+
+		ints.addAll(Arrays.asList(values));
+
+		final Object[] expected = new Object[capacity];
+		System.arraycopy(values, n - capacity, expected, 0, capacity);
+		snapshot = ints.snapshot();
+		assertThat(snapshot).isEqualTo(expected);
+	}
+
+	@Test(dataProvider = "capacities")
+	public void snapshot(final int capacity) {
+		final RingBuffer ints = new RingBuffer(capacity);
 
 		for (int i = 0; i < 33; ++i) {
 			ints.add(i);
 
 			final Object[] snapshot = ints.snapshot();
-			final int size  = Math.min(i + 1, max);
+			final int size  = Math.min(i + 1, capacity);
 			Assert.assertEquals(snapshot.length, size);
 
 			final Object[] expected = new Object[size];
@@ -45,13 +93,35 @@ public class RingBufferTest {
 			}
 			Assert.assertEquals(snapshot, expected);
 		}
+
+		for (int i = 0; i < 1000; ++i) {
+			ints.add(i);
+		}
 	}
 
 	@DataProvider
-	public Object[][] maxSizes() {
+	public Object[][] capacities() {
 		return new Object[][] {
-			{1}, {2}, {3},{5}, {7}, {11}, {33}
+			{1}, {2}, {3}, {5}, {7}, {11}, {33}, {100}, {9999}
 		};
+	}
+
+	@Test(dataProvider = "capacities")
+	public void capacity(final int capacity) {
+		final RingBuffer ints = new RingBuffer(capacity);
+		assertThat(ints.capacity()).isEqualTo(capacity);
+	}
+
+	@Test(dataProvider = "capacities")
+	public void size(final int capacity) {
+		final RingBuffer ints = new RingBuffer(capacity);
+
+		for (int i = 0; i < capacity + 10; ++i) {
+			ints.add(i);
+
+			final int size  = Math.min(i + 1, capacity);
+			assertThat(ints.size()).isEqualTo(size);
+		}
 	}
 
 }
