@@ -107,7 +107,7 @@ final class SampleList<T>
 			.map(args -> Program.eval(program, args))
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 
-		return Result.of(calculated, _results);
+		return new Result<>(calculated, _results);
 	}
 
 	@Override
