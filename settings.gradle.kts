@@ -39,7 +39,7 @@ dependencyResolutionManagement {
 			alias("testng").to("org.testng:testng:7.4.0")
 			alias("assertj").to("org.assertj:assertj-core:3.20.2")
 			alias("jpx").to("io.jenetics:jpx:2.2.0")
-			alias("prngine").to("io.jenetics:prngine:1.0.2")
+			alias("prngine").to("io.jenetics:prngine:2.0.0")
 			alias("rxjava").to("io.reactivex.rxjava2:rxjava:2.2.21")
 		}
 	}
