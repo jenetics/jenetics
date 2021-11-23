@@ -13,7 +13,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.3.0.pdf)).
 
 ## Build Jenetics
 
