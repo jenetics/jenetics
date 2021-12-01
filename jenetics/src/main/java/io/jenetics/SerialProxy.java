@@ -17,32 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.rewriting;
+package io.jenetics;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
-
-import io.jenetics.ext.rewriting.TreePattern.Val;
-import io.jenetics.ext.rewriting.TreePattern.Var;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
-	static final byte TREE_PATTERN = 1;
-	static final byte TREE_PATTERN_VAR = 2;
-	static final byte TREE_PATTERN_VAL = 3;
-	static final byte TREE_REWRITE_RULE = 4;
-	static final byte TRS_KEY = 5;
+	static final byte DOUBLE_GENE = 1;
+	static final byte INTEGER_GENE = 2;
+	static final byte LONG_GENE = 3;
+
+	static final byte BIT_CHROMOSOME = 4;
+	static final byte DOUBLE_CHROMOSOME = 5;
+	static final byte INTEGER_CHROMOSOME = 6;
+	static final byte LONG_CHROMOSOME = 7;
+	static final byte CHARACTER_CHROMOSOME = 8;
+	static final byte PERMUTATION_CHROMOSOME = 9;
+
+	static final byte GENOTYPE = 10;
+	static final byte PHENOTYPE = 11;
+
+	//static final byte BIT_GENE_STORE = 12;
 
 	/**
 	 * The type being serialized.
@@ -57,7 +65,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -66,7 +74,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -75,11 +83,17 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case TREE_PATTERN -> ((TreePattern)_object).write(out);
-			case TREE_PATTERN_VAR -> ((Var)_object).write(out);
-			case TREE_PATTERN_VAL -> ((Val)_object).write(out);
-			case TREE_REWRITE_RULE -> ((TreeRewriteRule)_object).write(out);
-			case TRS_KEY -> ((TRS)_object).write(out);
+			case DOUBLE_GENE -> ((DoubleGene)_object).write(out);
+			case INTEGER_GENE -> ((IntegerGene)_object).write(out);
+			case LONG_GENE -> ((LongGene)_object).write(out);
+			case BIT_CHROMOSOME -> ((BitChromosome)_object).write(out);
+			case DOUBLE_CHROMOSOME -> ((DoubleChromosome)_object).write(out);
+			case INTEGER_CHROMOSOME -> ((IntegerChromosome)_object).write(out);
+			case LONG_CHROMOSOME -> ((LongChromosome)_object).write(out);
+			case CHARACTER_CHROMOSOME -> ((CharacterChromosome)_object).write(out);
+			case PERMUTATION_CHROMOSOME -> ((PermutationChromosome<?>)_object).write(out);
+			case GENOTYPE -> ((Genotype<?>)_object).write(out);
+			case PHENOTYPE -> ((Phenotype<?, ?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
@@ -90,19 +104,24 @@ final class Serial implements Externalizable {
 	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case TREE_PATTERN -> TreePattern.read(in);
-			case TREE_PATTERN_VAR -> Var.read(in);
-			case TREE_PATTERN_VAL -> Val.read(in);
-			case TREE_REWRITE_RULE -> TreeRewriteRule.read(in);
-			case TRS_KEY -> TRS.read(in);
+			case DOUBLE_GENE -> DoubleGene.read(in);
+			case INTEGER_GENE -> IntegerGene.read(in);
+			case LONG_GENE -> LongGene.read(in);
+			case BIT_CHROMOSOME -> BitChromosome.read(in);
+			case DOUBLE_CHROMOSOME -> DoubleChromosome.read(in);
+			case INTEGER_CHROMOSOME -> IntegerChromosome.read(in);
+			case LONG_CHROMOSOME -> LongChromosome.read(in);
+			case CHARACTER_CHROMOSOME -> CharacterChromosome.read(in);
+			case PERMUTATION_CHROMOSOME -> PermutationChromosome.read(in);
+			case GENOTYPE -> Genotype.read(in);
+			case PHENOTYPE -> Phenotype.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}
 
 }
-

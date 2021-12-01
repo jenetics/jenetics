@@ -125,7 +125,7 @@ public final class PartialAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new PartialAlterer<>(alterer, Projection.of(indices));
+		return new PartialAlterer<>(alterer, new Projection(indices));
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class PartialAlterer<
 	Alterer<G, C> of(final Alterer<G, C> alterer, final IntRange section) {
 		return new PartialAlterer<>(
 			alterer,
-			Projection.of(section.stream().toArray())
+			new Projection(section.stream().toArray())
 		);
 	}
 
@@ -160,10 +160,8 @@ public final class PartialAlterer<
 	/**
 	 * The section class, which defines the chromosomes used by the alterer.
 	 */
-	static final class Projection {
-		final int[] indices;
-
-		private Projection(final int[] indices) {
+	record Projection(int[] indices) {
+		Projection {
 			if (indices.length == 0) {
 				throw new IllegalArgumentException(
 					"Chromosome indices must not be empty."
@@ -172,8 +170,6 @@ public final class PartialAlterer<
 			for (int index : indices) {
 				Requires.nonNegative(index);
 			}
-
-			this.indices = indices;
 		}
 
 		void checkIndices(final int length) {
@@ -232,10 +228,6 @@ public final class PartialAlterer<
 			return gt.equals(pt.genotype())
 				? pt
 				: Phenotype.of(gt, pt.generation());
-		}
-
-		static Projection of(final int... indices) {
-			return new Projection(indices);
 		}
 
 	}

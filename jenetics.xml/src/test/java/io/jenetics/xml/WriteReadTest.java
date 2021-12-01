@@ -26,7 +26,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -117,7 +116,7 @@ public class WriteReadTest {
 				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
 					.instances()
 					.limit(20)
-					.collect(Collectors.toList()),
+					.toList(),
 				(Write<Collection<Genotype<DoubleGene>>>)
 					(out, data) -> Writers.Genotypes.write(out, data, Writers.DoubleChromosome.writer()),
 				(Read<Collection<Genotype<DoubleGene>>>)

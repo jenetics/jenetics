@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
@@ -36,7 +34,7 @@ public class DoubleMomentsTest extends ObjectTester<DoubleMoments> {
 	@Override
 	protected Factory<DoubleMoments> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			return new DoubleMoments(
 				random.nextLong(),
 				random.nextDouble(),

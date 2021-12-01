@@ -21,21 +21,25 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.util.Requires;
 
 /**
  * Represents the result pair of one of the four {@code Mutator.mutate} calls.
  *
- * @see Mutator#mutate(Phenotype, long, double, Random)
- * @see Mutator#mutate(Genotype, double, Random)
- * @see Mutator#mutate(Chromosome, double, Random)
- * @see Mutator#mutate(Gene, Random)
+ * @see Mutator#mutate(Phenotype, long, double, RandomGenerator)
+ * @see Mutator#mutate(Genotype, double, RandomGenerator)
+ * @see Mutator#mutate(Chromosome, double, RandomGenerator)
+ * @see Mutator#mutate(Gene, RandomGenerator)
  *
  * @param <T> the mutation result type
+ * @param result the mutation result
+ * @param mutations the number of mutations applied while creating the mutation
+ *        result
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -45,6 +49,7 @@ public final record MutatorResult<T>(T result, int mutations)
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	/**

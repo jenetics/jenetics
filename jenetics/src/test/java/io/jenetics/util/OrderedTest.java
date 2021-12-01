@@ -17,21 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.util;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class Pair<T1, T2> {
-	public final T1 _1;
-	public final T2 _2;
+public class OrderedTest {
 
-	private Pair(final T1 a, final T2 b) {
-		_1 = a;
-		_2 = b;
+	@Test
+	public void comparing() {
+		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
+			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
+			.sorted(Comparator.naturalOrder())
+			.toList();
+
+		for (int i = 0; i < objects.size(); ++i) {
+			final int value = objects.get(i).get();
+			Assert.assertEquals(value, objects.size() - i - 1);
+		}
 	}
 
-	public static <T1, T2> Pair<T1, T2> of(final T1 a, final T2 b) {
-		return new Pair<>(a, b);
-	}
 }

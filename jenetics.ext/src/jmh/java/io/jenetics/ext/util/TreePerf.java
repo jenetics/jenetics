@@ -21,6 +21,7 @@ package io.jenetics.ext.util;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.random.RandomGenerator;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -49,7 +50,7 @@ public class TreePerf {
 		Tree<?, ?> flatTree = FlatTreeNode.ofTree(tree);
 	}
 
-	private static TreeNode<Integer> newTree(final int levels, final Random random) {
+	private static TreeNode<Integer> newTree(final int levels, final RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 		return root;
@@ -58,7 +59,7 @@ public class TreePerf {
 	public static void fill(
 		final TreeNode<Integer> node,
 		final int level,
-		final Random random
+		final RandomGenerator random
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();

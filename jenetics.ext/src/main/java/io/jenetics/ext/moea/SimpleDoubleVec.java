@@ -105,7 +105,7 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.SIMPLE_DOUBLE_VEC, this);
+		return new SerialProxy(SerialProxy.SIMPLE_DOUBLE_VEC, this);
 	}
 
 	@java.io.Serial

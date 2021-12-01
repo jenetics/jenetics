@@ -78,7 +78,7 @@ public class BigIntegerChromosome
 	 * {@code length}.
 	 *
 	 * @param min the min value of the {@link BigIntegerGene}s (inclusively).
-	 * @param max the max value of the {@link BigIntegerGene}s (inclusively).
+	 * @param max the max value of the {@link BigIntegerGene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
@@ -171,7 +171,7 @@ public class BigIntegerChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.BIG_INTEGER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.BIG_INTEGER_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

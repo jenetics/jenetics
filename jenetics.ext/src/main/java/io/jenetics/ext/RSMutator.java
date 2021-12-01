@@ -19,14 +19,14 @@
  */
 package io.jenetics.ext;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.AbstractAlterer;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.Combinatorics;
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.MSeq;
 
 /**
@@ -71,11 +71,11 @@ public class RSMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int[] points = Combinatorics.subset(chromosome.length() + 1, 2);
+			final int[] points = Subset.next(chromosome.length() + 1, 2, random);
 			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 

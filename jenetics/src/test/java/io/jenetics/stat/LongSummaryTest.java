@@ -20,7 +20,6 @@
 package io.jenetics.stat;
 
 import java.util.LongSummaryStatistics;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.Test;
@@ -38,7 +37,7 @@ public class LongSummaryTest extends ObjectTester<LongSummary> {
 	@Override
 	protected Factory<LongSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			final LongSummaryStatistics statistics = new LongSummaryStatistics();
 			IntStream.range(0, 100)

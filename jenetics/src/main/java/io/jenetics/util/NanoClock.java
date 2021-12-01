@@ -50,7 +50,7 @@ public final class NanoClock extends Clock implements Serializable {
 		new NanoClock(ZoneId.systemDefault());
 
 	/**
-	 * This constants holds the number of nano seconds of one second.
+	 * These constants hold the number of nanoseconds of one second.
 	 */
 	public static final long NANOS_PER_SECOND = 1_000_000_000;
 

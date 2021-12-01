@@ -110,7 +110,7 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CHAR_STORE, this);
+		return new SerialProxy(SerialProxy.CHAR_STORE, this);
 	}
 
 	@java.io.Serial

@@ -22,6 +22,7 @@ package io.jenetics.util.performance;
 import java.text.NumberFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 //import io.jenetics.util.XORShiftRandom;
@@ -41,7 +42,7 @@ public class RandomPerformanceTests {
 		test(new LCG64ShiftRandom(), loops);
 	}
 
-	private static void test(final Random random, final int loops) {
+	private static void test(final RandomGenerator random, final int loops) {
 		System.out.println(String.format(
 			"%-20s %s; %s; %s; %s",
 			random.getClass().getSimpleName() + ":",
@@ -52,7 +53,7 @@ public class RandomPerformanceTests {
 		));
 	}
 
-	private static String testNextInt(final Random random, final int loops) {
+	private static String testNextInt(final RandomGenerator random, final int loops) {
 		long start = System.nanoTime();
 		for (int i = loops; --i >= 0;) {
 			random.nextInt();
@@ -63,7 +64,7 @@ public class RandomPerformanceTests {
 		return String.format("%11s i/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextLong(final Random random, final int loops) {
+	private static String testNextLong(final RandomGenerator random, final int loops) {
 		long start = System.nanoTime();
 		for (int i = loops; --i >= 0;) {
 			random.nextLong();
@@ -74,7 +75,7 @@ public class RandomPerformanceTests {
 		return String.format("%11s l/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextFloat(final Random random, final int loops) {
+	private static String testNextFloat(final RandomGenerator random, final int loops) {
 		long start = System.nanoTime();
 		for (int i = loops; --i >= 0;) {
 			random.nextFloat();
@@ -85,7 +86,7 @@ public class RandomPerformanceTests {
 		return String.format("%11s f/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextDouble(final Random random, final int loops) {
+	private static String testNextDouble(final RandomGenerator random, final int loops) {
 		long start = System.nanoTime();
 		for (int i = loops; --i >= 0;) {
 			random.nextDouble();

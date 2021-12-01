@@ -21,8 +21,6 @@ package io.jenetics.ext;
 
 import static java.lang.String.format;
 
-import java.util.Random;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -94,7 +92,7 @@ public class SingleNodeCrossover<
 		assert that != null;
 		assert other != null;
 
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final ISeq<TreeNode<A>> seq1 = that.breadthFirstStream()
 			.collect(ISeq.toISeq());

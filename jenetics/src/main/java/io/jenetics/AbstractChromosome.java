@@ -22,8 +22,6 @@ package io.jenetics;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import io.jenetics.util.ISeq;
@@ -41,12 +39,8 @@ import io.jenetics.util.Verifiable;
  * @version 5.2
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
-	implements
-		Chromosome<G>,
-		Serializable
+	implements Chromosome<G>
 {
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Array of genes which forms the chromosome. This array must
@@ -110,7 +104,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		return obj == this ||
 			obj != null &&
 			getClass() == obj.getClass() &&
-			Objects.equals(_genes, ((AbstractChromosome)obj)._genes);
+			Objects.equals(_genes, ((AbstractChromosome<?>)obj)._genes);
 	}
 
 	@Override

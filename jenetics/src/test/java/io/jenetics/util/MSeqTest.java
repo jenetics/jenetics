@@ -23,7 +23,6 @@ import static io.jenetics.util.MSeq.toMSeq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -39,7 +38,7 @@ public class MSeqTest {
 	@Test
 	public void collector() {
 		final int size = 10_000;
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final List<Double> list = new ArrayList<>(size);
 		for (int i = 0; i < size; ++i) {

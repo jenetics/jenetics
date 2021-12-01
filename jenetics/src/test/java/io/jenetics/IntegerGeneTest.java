@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
@@ -51,8 +52,8 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final Integer min = 0;
-		final Integer max = Integer.MAX_VALUE;
+		final int min = 0;
+		final int max = Integer.MAX_VALUE;
 		final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 		using(new Random(12345), r ->
@@ -66,10 +67,15 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test
 	public void parameters() {
-		final IntegerGene gene = IntegerGene.of(10, 10);
+		final IntegerGene gene = IntegerGene.of(10, 11);
 		Assert.assertEquals(gene.min().intValue(), 10);
-		Assert.assertEquals(gene.max().intValue(), 10);
+		Assert.assertEquals(gene.max().intValue(), 11);
 		Assert.assertEquals(gene.allele().intValue(), 10);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void invalidParameters() {
+		IntegerGene.of(10, 10);
 	}
 
 	@Test
@@ -91,6 +97,19 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			assertEquals(c.max().longValue(), max);
 			assertEquals(c.allele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
+	}
+
+	@Test
+	public void meanOverflow() {
+		final int a = Integer.MAX_VALUE - 1;
+		final int b = Integer.MIN_VALUE;
+		final long mean = (a + b)/2;
+
+		final var g1 = IntegerGene.of(a, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		final var g2 = IntegerGene.of(b, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		final var g3 = g1.mean(g2);
+
+		assertThat(g3.allele()).isEqualTo((int)mean);
 	}
 
 	@Test

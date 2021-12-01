@@ -82,7 +82,7 @@ import io.jenetics.internal.util.Lazy;
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class EphemeralConst<T>
@@ -179,7 +179,7 @@ public final class EphemeralConst<T>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EPHEMERAL_CONST, this);
+		return new SerialProxy(SerialProxy.EPHEMERAL_CONST, this);
 	}
 
 	@java.io.Serial

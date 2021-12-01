@@ -19,41 +19,56 @@
  */
 package io.jenetics.internal.math;
 
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
+import io.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CombinatoricsTest {
+public class SubsetTest {
 
 	@Test
 	public void compatibility() {
-//		final String resource = "/io/jenetics/internal/math/comb/subset";
-//		final TestData data = TestData.of(resource);
-//		final int[][] sub = data.stream()
-//			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
-//			.toArray(int[][]::new);
+		final int n = 1000;
 
-		for (int i = 1; i <= 1000; ++i) {
-			int[] sub1 = subset(1000, new int[i], new Random(123));
- 			int[] sub2 = new int[i];
-			Combinatorics.subset(1000, sub2, new Random(123));
-			//System.out.println(IntStream.of(sub1).mapToObj(Objects::toString).collect(Collectors.joining(",")));
+		for (int k = 2; k <= 500; ++k) {
+			int[] sub1 = subset(n, new int[k], new Random(123));
+ 			int[] sub2 = Subset.next(n, k, new Random(123));
 
-			Assert.assertTrue(Arrays.equals(sub2, sub1), "K: " + i);
+			assertThat(sub2).isEqualTo(sub1);
 		}
+	}
+
+	@Test(dataProvider = "subsets")
+	public void compatibility(final int[] subset) {
+		assertThat(Subset.next(1000, subset.length,  new Random(123)))
+			.isEqualTo(subset);
+	}
+
+	@DataProvider
+	public Object[][] subsets() {
+		final String resource = "/io/jenetics/internal/math/subset";
+		final TestData data = TestData.of(resource);
+		return data.stream()
+			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
+			.map(s -> new Object[]{s})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "combinations")
@@ -61,8 +76,8 @@ public class CombinatoricsTest {
 		final Random random = new Random();
 
 		final Set<String> subsets = new HashSet<>();
-		for (int i = 0; i < 3000; ++i) {
-			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
+		for (int i = 0; i < 3_000; ++i) {
+			subsets.add(Arrays.toString(Subset.next(n, k, random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -76,6 +91,7 @@ public class CombinatoricsTest {
 	@DataProvider
 	public Object[][] combinations() {
 		return new Object[][] {
+			{1, 1},
 			{2, 1},
 			{3, 2},
 			{4, 2},
@@ -85,19 +101,34 @@ public class CombinatoricsTest {
 			{5, 3},
 			{5, 4},
 			{5, 5},
-			{9, 4}
+			{9, 4},
+			{10, 4},
+			{10, 8}
 		};
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_1_0() {
+		Subset.next(1,0, RandomGenerator.getDefault());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void subset_0_1() {
+		Subset.next(0, 1, RandomGenerator.getDefault());
 	}
 
 	@Test
 	public void subset() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
+		final int n = 2_500;
 
-		for (int i = 1; i <= 1000; ++i) {
-			int[] sub = new int[i];
-			Combinatorics.subset(1000, sub, random);
+		for (int k = 1; k <= n; ++k) {
+			int[] sub = Subset.next(n, k, random);
 
-			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
+			for (int v : sub) {
+				assertThat(v).isBetween(0, n);
+			}
+			Assert.assertTrue(isSortedAndUnique(sub), "K: " + k);
 		}
 	}
 
@@ -111,21 +142,24 @@ public class CombinatoricsTest {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void subSetDistribution() {
-		final int[] sub = new int[3];
 		final int n = 100_000;
 
 		final Random random = new Random();
 		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Combinatorics.subset(n, sub, random)))
+			.flatMap(i -> IntStream.of(Subset.next(n, 3, random)))
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);
 	}
 
 
-	private static int[] subset(final int n, final int[] sub, final Random random) {
+	private static int[] subset(
+		final int n,
+		final int[] sub,
+		final RandomGenerator random
+	) {
 		final int k = sub.length;
 
 		if (sub.length == n) {
@@ -202,8 +236,34 @@ public class CombinatoricsTest {
 		return sub;
 	}
 
-	private static int nextInt(final Random r, final int a, final int b) {
-		return Randoms.nextInt(a, b + 1, r);
+	private static int nextInt(final RandomGenerator r, final int a, final int b) {
+		return nextInt(a, b + 1, r);
+	}
+
+	private static int nextInt(
+		final int origin,
+		final int bound,
+		final RandomGenerator random
+	) {
+		if (origin >= bound) {
+			throw new IllegalArgumentException(format(
+				"origin >= bound: %d >= %d", origin, bound
+			));
+		}
+
+		final int value;
+		int n = bound - origin;
+		if (n > 0) {
+			value = random.nextInt(n) + origin;
+		} else {
+			int r;
+			do {
+				r = random.nextInt();
+			} while (r < origin || r >= bound);
+			value = r;
+		}
+
+		return value;
 	}
 
 }

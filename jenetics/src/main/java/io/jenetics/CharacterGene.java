@@ -21,12 +21,12 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -63,9 +63,9 @@ public final class CharacterGene
 	/**
 	 * The default character set used by this gene.
 	 */
-	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
-		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
+	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq("""
+		0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \
+		!"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"""
 	);
 
 	private final char _allele;
@@ -251,10 +251,11 @@ public final class CharacterGene
 		final CharSeq chars,
 		final IntRange lengthRange
 	) {
-		final var r = RandomRegistry.random();
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
 
-		return MSeq.<CharacterGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
+		return MSeq.<CharacterGene>ofLength(length)
+			.fill(() -> new CharacterGene(chars, random.nextInt(chars.length())))
 			.toISeq();
 	}
 

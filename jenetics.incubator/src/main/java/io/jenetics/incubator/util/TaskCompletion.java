@@ -36,13 +36,12 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This execution service executes the the tasks in exactly the same order as
- * they where submitted. The tasks are executed <em>asynchronously</em>, but
- * <b>not</b> <em>concurrently</em>.
+ * This execution service executes the tasks in exactly the same order as they
+ * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
+ * <em>concurrently</em>.
  *
  * <pre>{@code
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
@@ -195,7 +194,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
 			.map(t -> t._task)
-			.collect(Collectors.toUnmodifiableList());
+			.toList();
 	}
 
 	/**

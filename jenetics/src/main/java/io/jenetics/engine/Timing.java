@@ -21,9 +21,9 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.InstantSource;
 import java.util.function.LongSupplier;
 
 import io.jenetics.util.NanoClock;
@@ -33,7 +33,7 @@ import io.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 7.0
  */
 final class Timing {
 
@@ -105,26 +105,26 @@ final class Timing {
 	}
 
 	/**
-	 * Return an new timer object which uses the given clock for measuring the
+	 * Return a new timer object which uses the given clock for measuring the
 	 * execution time.
 	 *
 	 * @param clock the clock used for measuring the execution time
 	 * @return a new timer
 	 */
-	static Timing of(final Clock clock) {
+	static Timing of(final InstantSource clock) {
 		requireNonNull(clock);
 		return clock instanceof NanoClock
 			? new Timing(System::nanoTime)
 			: new Timing(() -> nanos(clock));
 	}
 
-	private static long nanos(final Clock clock) {
+	private static long nanos(final InstantSource clock) {
 		final Instant now = clock.instant();
 		return now.getEpochSecond()*NanoClock.NANOS_PER_SECOND + now.getNano();
 	}
 
 	/**
-	 * Return an new timer object with the default clock implementation.
+	 * Return a new timer object with the default clock implementation.
 	 *
 	 * @return a new timer
 	 */

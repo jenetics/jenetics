@@ -27,7 +27,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Objects;
-import java.util.Random;
 
 import io.jenetics.NumericGene;
 import io.jenetics.internal.util.Requires;
@@ -36,7 +35,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
 
-import io.jenetics.ext.internal.random;
+import io.jenetics.ext.internal.Randoms;
 
 /**
  * Numeric chromosome implementation which holds an arbitrary sized integer
@@ -143,11 +142,11 @@ public final class BigIntegerGene
 	) {
 		Requires.positive(length);
 
-		final Random r = random();
+		final var r = random();
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(
-				random.nextBigInteger(minimum, maximum, r), minimum, maximum))
+				Randoms.nextBigInteger(minimum, maximum, r), minimum, maximum))
 			.toISeq();
 	}
 
@@ -159,7 +158,7 @@ public final class BigIntegerGene
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new random {@code BigIntegerGene}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
@@ -176,13 +175,13 @@ public final class BigIntegerGene
 	 * value of the {@code BigIntegerGene} lies in the interval [min, max].
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new random {@code BigIntegerGene}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
-			random.nextBigInteger(min, max, RandomRegistry.random()),
+			Randoms.nextBigInteger(min, max, RandomRegistry.random()),
 			min,
 			max
 		);

@@ -1,26 +1,42 @@
-package io.jenetics.engine;
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.prog;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
- * @since 5.2
+ * @version 5.0
+ * @since 5.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
-	static final byte EVOLUTION_DURATIONS = 1;
-	static final byte EVOLUTION_INIT = 2;
-	static final byte EVOLUTION_PARAMS = 3;
-	static final byte EVOLUTION_RESULT = 4;
-	static final byte EVOLUTION_START = 5;
+	static final byte PROGRAM_CHROMOSOME = 1;
 
 	/**
 	 * The type being serialized.
@@ -35,7 +51,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -44,7 +60,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -53,11 +69,7 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case EVOLUTION_DURATIONS -> ((EvolutionDurations)_object).write(out);
-			case EVOLUTION_INIT -> ((EvolutionInit)_object).write(out);
-			case EVOLUTION_PARAMS -> ((EvolutionParams)_object).write(out);
-			case EVOLUTION_RESULT -> ((EvolutionResult)_object).write(out);
-			case EVOLUTION_START -> ((EvolutionStart)_object).write(out);
+			case PROGRAM_CHROMOSOME -> ((ProgramChromosome)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
@@ -68,16 +80,12 @@ final class Serial implements Externalizable {
 	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case EVOLUTION_DURATIONS -> EvolutionDurations.read(in);
-			case EVOLUTION_INIT -> EvolutionInit.read(in);
-			case EVOLUTION_PARAMS -> EvolutionParams.read(in);
-			case EVOLUTION_RESULT -> EvolutionResult.read(in);
-			case EVOLUTION_START -> EvolutionStart.read(in);
+			case PROGRAM_CHROMOSOME -> ProgramChromosome.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

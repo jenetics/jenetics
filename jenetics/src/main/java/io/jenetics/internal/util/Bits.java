@@ -203,7 +203,7 @@ public final class Bits {
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @return @return the number of one bits in the given {@code byte} array.
+	 * @return the number of one-bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] bits, final int start, final int end) {
 		final int byteStart = start/Byte.SIZE + 1;

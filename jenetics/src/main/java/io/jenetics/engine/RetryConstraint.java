@@ -50,7 +50,7 @@ import io.jenetics.util.Factory;
  * <em>1 - π/4 &asymp; 0.2146</em>. This leads to a failure probability after 10
  * tries of <em>0.2146<sup>10</sup> &asymp; 0.000000207173567</em>. Since we are
  * using an {@link InvertibleCodec}, it is much easier to implement our
- * constraint. Otherwise we would need to check the validity on the
+ * constraint. Otherwise, we would need to check the validity on the
  * {@link Phenotype} directly
  *
  * @apiNote

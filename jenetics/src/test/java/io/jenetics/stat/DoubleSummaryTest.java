@@ -20,7 +20,6 @@
 package io.jenetics.stat;
 
 import java.util.DoubleSummaryStatistics;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.Test;
@@ -38,7 +37,7 @@ public class DoubleSummaryTest extends ObjectTester<DoubleSummary> {
 	@Override
 	protected Factory<DoubleSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			final DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
 			IntStream.range(0, 100)

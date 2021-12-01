@@ -329,7 +329,7 @@ public class CharacterChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.CHARACTER_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

@@ -17,25 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.util;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 6.0
  * @since 5.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
-	static final byte BIG_INTEGER_CHROMOSOME = 1;
+	static final byte TREE_NODE = 1;
+	static final byte FLAT_TREE_NODE = 2;
+	static final byte TREE_PATH = 3;
 
 	/**
 	 * The type being serialized.
@@ -50,7 +53,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -59,7 +62,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -68,21 +71,27 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case BIG_INTEGER_CHROMOSOME -> ((BigIntegerChromosome)_object).write(out);
+			case TREE_NODE -> ((TreeNode)_object).write(out);
+			case FLAT_TREE_NODE -> ((FlatTreeNode)_object).write(out);
+			case TREE_PATH -> ((Tree.Path)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
-	public void readExternal(final ObjectInput in) throws IOException {
+	public void readExternal(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case BIG_INTEGER_CHROMOSOME -> BigIntegerChromosome.read(in);
+			case TREE_NODE -> TreeNode.read(in);
+			case FLAT_TREE_NODE -> FlatTreeNode.read(in);
+			case TREE_PATH -> Tree.Path.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

@@ -19,11 +19,11 @@
  */
 package io.jenetics.engine;
 
-import java.time.Clock;
+import java.time.InstantSource;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 5.0
  */
 final class EvolutionTiming {
@@ -36,7 +36,7 @@ final class EvolutionTiming {
 	final Timing evaluation;
 	final Timing evolve;
 
-	EvolutionTiming(final Clock clock) {
+	EvolutionTiming(final InstantSource clock) {
 		offspringSelection = Timing.of(clock);
 		survivorsSelection = Timing.of(clock);
 		offspringAlter = Timing.of(clock);
@@ -45,7 +45,6 @@ final class EvolutionTiming {
 		evaluation = Timing.of(clock);
 		evolve = Timing.of(clock);
 	}
-
 
 	EvolutionDurations toDurations() {
 		return new EvolutionDurations(

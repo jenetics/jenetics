@@ -43,8 +43,8 @@ public interface Evolution<
 
 	/**
 	 * Perform one evolution step with the given evolution {@code start} object
-	 * New phenotypes are created with the fitness function and fitness scaler
-	 * defined by this <em>engine</em>
+	 * New phenotypes are created with the fitness function defined by this
+	 * <em>engine</em>
 	 *
 	 * @apiNote
 	 * The implementation of this method must be thread-safe.

@@ -44,7 +44,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Lifecycle.Value;
 
-public class IOTest {
+public class SerializerTest {
 
 	@Test(dataProvider = "data")
 	public void appendReadExistingFile(final List<List<Object>> data) throws IOException {
@@ -65,14 +65,14 @@ public class IOTest {
 	{
 		try (path) {
 			for (var objects : data) {
-				IO.write(path.get(), objects, options);
+				Serializer.write(path.get(), objects, options);
 			}
 
 			final List<Object> expected = data.stream()
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 
-			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
+			Assert.assertEquals(Serializer.readAllObjects(path.get()), expected);
 		}
 	}
 
@@ -144,14 +144,14 @@ public class IOTest {
 
 		try (path) {
 			for (var objects : data) {
-				IO.write(path.get(), objects, TRUNCATE_EXISTING);
+				Serializer.write(path.get(), objects, TRUNCATE_EXISTING);
 			}
 
 			final List<Object> expected = data.isEmpty()
 				? List.of()
 				: data.get(data.size() - 1);
 
-			Assert.assertEquals(IO.readAllObjects(path.get()), expected);
+			Assert.assertEquals(Serializer.readAllObjects(path.get()), expected);
 		}
 	}
 
@@ -163,17 +163,17 @@ public class IOTest {
 		);
 
 		try (path) {
-			final var written = IO.write(path.get(), List.of("1", "2", "3"), CREATE);
+			final var written = Serializer.write(path.get(), List.of("1", "2", "3"));
 			Assert.assertEquals(written, Files.size(path.get()));
 
-			List<Object> objects = IO.readAllObjects(path.get());
+			List<Object> objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-			IO.write(path.get(), List.of("4", "5"), APPEND);
-			objects = IO.readAllObjects(path.get());
+			Serializer.write(path.get(), List.of("4", "5"));
+			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
-			try (Stream<Object> stream = IO.objects(path.get())) {
+			try (Stream<Object> stream = Serializer.objects(path.get())) {
 				final var count = new AtomicInteger(1);
 				stream.forEach(o -> {
 					final var expected = String.valueOf(count.getAndIncrement());
@@ -181,8 +181,8 @@ public class IOTest {
 				});
 			}
 
-			IO.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
-			objects = IO.readAllObjects(path.get());
+			Serializer.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
+			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("6", "7", "8"));
 		}
 	}
@@ -195,15 +195,15 @@ public class IOTest {
 		);
 
 		try (path; var out = Files.newOutputStream(path.get())) {
-			IO.write(out, List.of("1", "2", "3"), false);
-			List<Object> objects = IO.readAllObjects(path.get());
+			Serializer.write(out, List.of("1", "2", "3"), false);
+			List<Object> objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-			IO.write(out, List.of("4", "5"), true);
-			objects = IO.readAllObjects(path.get());
+			Serializer.write(out, List.of("4", "5"), true);
+			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
-			try (Stream<Object> stream = IO.objects(path.get())) {
+			try (Stream<Object> stream = Serializer.objects(path.get())) {
 				final var count = new AtomicInteger(1);
 				stream.forEach(o -> {
 					final var expected = String.valueOf(count.getAndIncrement());
@@ -217,15 +217,15 @@ public class IOTest {
 	public void writeStreamReadStreamExample() throws IOException {
 		final var out = new ByteArrayOutputStream();
 
-		IO.write(out, List.of("1", "2", "3"), false);
-		List<Object> objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Serializer.write(out, List.of("1", "2", "3"), false);
+		List<Object> objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-		IO.write(out, List.of("4", "5"), true);
-		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Serializer.write(out, List.of("4", "5"), true);
+		objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
-		try (Stream<Object> stream = IO.objects(new ByteArrayInputStream(out.toByteArray()))) {
+		try (Stream<Object> stream = Serializer.objects(new ByteArrayInputStream(out.toByteArray()))) {
 			final var count = new AtomicInteger(1);
 			stream.forEach(o -> {
 				final var expected = String.valueOf(count.getAndIncrement());
@@ -234,8 +234,8 @@ public class IOTest {
 		}
 
 		out.reset();
-		IO.write(out, List.of("6", "7", "8"), false);
-		objects = IO.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
+		Serializer.write(out, List.of("6", "7", "8"), false);
+		objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("6", "7", "8"));
 	}
 
@@ -246,9 +246,9 @@ public class IOTest {
 			.collect(Collectors.toSet());
 
 		final var out = new ByteArrayOutputStream();
-		IO.write(out, objects, false);
+		Serializer.write(out, objects, false);
 
-		final var read = IO.objects(new ByteArrayInputStream(out.toByteArray()))
+		final var read = Serializer.objects(new ByteArrayInputStream(out.toByteArray()))
 			.parallel()
 			.collect(Collectors.toSet());
 

@@ -17,27 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.moea;
+package io.jenetics.util;
 
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
- * @since 5.2
+ * @version 6.0
+ * @since 6.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
-	static final byte SIMPLE_INT_VEC = 1;
-	static final byte SIMPLE_LONG_VEC = 2;
-	static final byte SIMPLE_DOUBLE_VEC = 3;
+	static final byte DOUBLE_RANGE = 1;
+	static final byte INT_RANGE = 2;
+	static final byte LONG_RANGE = 3;
 
 	/**
 	 * The type being serialized.
@@ -52,7 +53,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -61,7 +62,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -70,9 +71,9 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case SIMPLE_INT_VEC -> ((SimpleIntVec)_object).write(out);
-			case SIMPLE_LONG_VEC -> ((SimpleLongVec)_object).write(out);
-			case SIMPLE_DOUBLE_VEC -> ((SimpleDoubleVec)_object).write(out);
+			case DOUBLE_RANGE -> ((DoubleRange)_object).write(out);
+			case INT_RANGE -> ((IntRange)_object).write(out);
+			case LONG_RANGE -> ((LongRange)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
@@ -83,14 +84,14 @@ final class Serial implements Externalizable {
 	{
 		_type = in.readByte();
 		_object = switch (_type) {
-			case SIMPLE_INT_VEC -> SimpleIntVec.read(in);
-			case SIMPLE_LONG_VEC -> SimpleLongVec.read(in);
-			case SIMPLE_DOUBLE_VEC -> SimpleDoubleVec.read(in);
+			case DOUBLE_RANGE -> DoubleRange.read(in);
+			case INT_RANGE -> IntRange.read(in);
+			case LONG_RANGE -> LongRange.read(in);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

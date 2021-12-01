@@ -1,5 +1,12 @@
 ## Release notes
 
+### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
+
+#### Improvements
+
+* [#763](https://github.com/jenetics/jenetics/issues/763): `ProxySorter` is now able to sort array slices.
+* [#768](https://github.com/jenetics/jenetics/issues/768): Implement `Ordered` class. Currently, it is required that the return value of the fitness function to be `Comparable`. But sometimes you might want to change the order of a given type or add some order to a type. The `Ordered` class makes this possible.
+
 ### [6.2.0](https://github.com/jenetics/jenetics/releases/tag/v6.2.0)
 
 #### Improvements

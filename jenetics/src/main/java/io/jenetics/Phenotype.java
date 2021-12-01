@@ -138,7 +138,7 @@ public final class Phenotype<
 	 *
 	 * @see #nonEvaluated()
 	 *
-	 * @return {@code true} is this phenotype has an fitness value assigned,
+	 * @return {@code true} is this phenotype has a fitness value assigned,
 	 *         {@code false} otherwise
 	 */
 	public boolean isEvaluated() {
@@ -276,7 +276,7 @@ public final class Phenotype<
 	 *
 	 * @since 4.2
 	 *
-	 * @param fitness the phenotypes fitness value
+	 * @param fitness the phenotypes' fitness value
 	 * @throws NullPointerException if the given {@code fitness} value is
 	 *         {@code null}
 	 * @return a new phenotype with the given fitness value
@@ -366,7 +366,7 @@ public final class Phenotype<
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PHENOTYPE, this);
+		return new SerialProxy(SerialProxy.PHENOTYPE, this);
 	}
 
 	@java.io.Serial

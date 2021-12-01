@@ -20,9 +20,8 @@
 package io.jenetics.internal.util;
 
 import static java.lang.Math.max;
-import static java.security.AccessController.doPrivileged;
 
-import java.security.PrivilegedAction;
+import java.io.Serial;
 import java.util.concurrent.RecursiveAction;
 
 import io.jenetics.util.BaseSeq;
@@ -33,9 +32,9 @@ import io.jenetics.util.BaseSeq;
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
-	private static final long serialVersionUID = 1;
 
-	private static final int DEFAULT_THRESHOLD = 7;
+	@Serial
+	private static final long serialVersionUID = 1;
 
 	private final BaseSeq<? extends Runnable> _runnables;
 	private final int _high;
@@ -73,23 +72,31 @@ final class RunnablesAction extends RecursiveAction {
 	}
 
 	private static final class Env {
-		private static final int splitThreshold = max(
-			doPrivileged(
-				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+
+		private static final int splitThreshold = max(splitThreshold(), 1);
+
+		private static final int maxSurplusQueuedTaskCount =
+			max(maxSurplusQueuedTaskCount(), 1);
+
+		@SuppressWarnings("removal")
+		private static int splitThreshold() {
+			return java.security.AccessController.doPrivileged(
+				(java.security.PrivilegedAction<Integer>)() -> Integer.getInteger(
 					"io.jenetics.concurrency.splitThreshold",
 					5
-				)),
-			1
-		);
+				)
+			);
+		}
 
-		private static final int maxSurplusQueuedTaskCount = max(
-			doPrivileged(
-				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+		@SuppressWarnings("removal")
+		private static int maxSurplusQueuedTaskCount() {
+			return java.security.AccessController.doPrivileged(
+				(java.security.PrivilegedAction<Integer>)() -> Integer.getInteger(
 					"io.jenetics.concurrency.maxSurplusQueuedTaskCount",
 					3
-				)),
-			1
-		);
+				)
+			);
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ import static java.lang.String.format;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.Mean;
@@ -86,7 +86,7 @@ final class Polygon implements Mean<Polygon> {
 	 * @return a new Polygon
 	 */
 	public Polygon mutate(final float rate, final float magnitude) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		final Polygon mutated = new Polygon(length());
 
 		for (int i = 0; i < _data.length; ++i) {
@@ -119,7 +119,7 @@ final class Polygon implements Mean<Polygon> {
 	/**
 	 * Creates a new random Polygon of the given length.
 	 */
-	public static Polygon newRandom(final int length, final Random random) {
+	public static Polygon newRandom(final int length, final RandomGenerator random) {
 		Requires.positive(length);
 		final Polygon p = new Polygon(length);
 

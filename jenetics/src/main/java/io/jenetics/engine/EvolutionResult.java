@@ -817,7 +817,7 @@ public final class EvolutionResult<
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_RESULT, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_RESULT, this);
 	}
 
 	@java.io.Serial

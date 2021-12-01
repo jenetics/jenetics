@@ -22,6 +22,7 @@ package io.jenetics.util;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.random.RandomGenerator;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -46,9 +47,9 @@ public class RandomEnginePerf {
 
 	@State(Scope.Benchmark)
 	public static class Rand {
-		Random java = new Random();
-		Random tlrandom = ThreadLocalRandom.current();
-		Random lcg64shift = new LCG64ShiftRandom();
+		RandomGenerator java = new Random();
+		RandomGenerator tlrandom = ThreadLocalRandom.current();
+		RandomGenerator lcg64shift = new LCG64ShiftRandom();
 	}
 
 

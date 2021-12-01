@@ -152,7 +152,7 @@ public final /*record*/ class LongRange implements Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_RANGE, this);
+		return new SerialProxy(SerialProxy.LONG_RANGE, this);
 	}
 
 	@java.io.Serial

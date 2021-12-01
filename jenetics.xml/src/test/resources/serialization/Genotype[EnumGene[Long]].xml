@@ -18,7 +18,7 @@
             <allele>-7144755673073475303</allele>
             <allele>6053786736809578435</allele>
         </valid-alleles>
-        <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+        <order>6 13 4 12 8 14 7 2 11 5 3 0 9 10 1</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Long">
@@ -38,7 +38,7 @@
             <allele>8678365594952514249</allele>
             <allele>2544335310857141719</allele>
         </valid-alleles>
-        <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
+        <order>4 2 0 5 3 1 6 10 9 7 8 11 13 14 12</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Long">
@@ -58,7 +58,7 @@
             <allele>-4564036144942635994</allele>
             <allele>6638011546783599397</allele>
         </valid-alleles>
-        <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
+        <order>11 0 9 13 10 1 8 3 7 12 5 6 2 4 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Long">
@@ -78,7 +78,7 @@
             <allele>4717837933715155635</allele>
             <allele>-1262824820614453177</allele>
         </valid-alleles>
-        <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
+        <order>14 5 3 2 1 6 8 13 7 9 4 0 11 12 10</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Long">
@@ -98,6 +98,6 @@
             <allele>-5615781286265049760</allele>
             <allele>-23047335821866945</allele>
         </valid-alleles>
-        <order>1 9 11 6 5 14 0 13 4 7 12 8 10 3 2</order>
+        <order>13 1 11 6 5 14 9 0 4 7 12 8 10 3 2</order>
     </permutation-chromosome>
 </genotype>

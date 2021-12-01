@@ -1,7 +1,6 @@
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
@@ -35,7 +34,7 @@ public class Knapsack {
 
 		// Create a new random knapsack item.
 		static Item random() {
-			final Random r = RandomRegistry.random();
+			final var r = RandomRegistry.random();
 			return new Item(
 				r.nextDouble()*100,
 				r.nextDouble()*100

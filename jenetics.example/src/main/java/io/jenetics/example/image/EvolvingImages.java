@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +63,7 @@ import io.jenetics.engine.EvolutionResult;
  */
 public class EvolvingImages extends JFrame {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	// Additional Swing components.

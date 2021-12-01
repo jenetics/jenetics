@@ -27,7 +27,6 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.BaseStream;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
@@ -142,7 +141,7 @@ public final class ConcatEngine<
 						.stream(() -> start(start, other))
 						.peek(result -> other.set(result.toEvolutionStart())))
 					.map(BaseStream::spliterator)
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);
@@ -196,7 +195,7 @@ public final class ConcatEngine<
 						.stream(other::get)
 						.peek(er -> other.set(er.toEvolutionStart())))
 					.map(BaseStream::spliterator)
-					.collect(Collectors.toList())
+					.toList()
 			);
 
 			result = concat;

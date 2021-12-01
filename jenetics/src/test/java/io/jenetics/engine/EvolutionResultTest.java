@@ -59,7 +59,7 @@ public class EvolutionResultTest
 				a -> a.gene().allele();
 
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final Genotype<DoubleGene> gtf = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
