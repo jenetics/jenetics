@@ -1,3 +1,22 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
@@ -9,8 +28,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.ext.util.TreeNode;
-
+/**
+ * Represents a BNF grammar.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public class Bnf {
 
 	/**
@@ -66,7 +90,7 @@ public class Bnf {
 
 		@Override
 		public String toString() {
-			return value; //BnfParser.escape(value);
+			return value;
 		}
 	}
 
@@ -222,156 +246,6 @@ public class Bnf {
 			.findFirst();
 	}
 
-	/*
-	public List<Terminal> generate(final SymbolIndex index) {
-		return StandardGenerators.generateList(this, index);
-	}
-	 */
-
-	public TreeNode<Terminal> parse(final Rule rule, final List<Terminal> symbols) {
-		TreeNode<Terminal> node = null;
-
-		return node;
-
-//		TreeNode<String> out_node = null;
-//		//MutableString n_input = new MutableString(input);
-//		Symbol n_input = null;
-//		boolean wrong_symbol = true;
-//		boolean read_epsilon = false;
-//		//log("Considering input '" + input + "' with rule " + rule, level);
-//		for (Expression alt : rule.expressions()) {
-//			out_node = TreeNode.of();
-//
-//			NonTerminal left_hand_side = rule.start();
-//			out_node.value(left_hand_side.toString());
-//
-//			Expression new_alt = alt;
-//			Iterator<Symbol> alt_it = new_alt.symbols().iterator();
-//			//n_input = new MutableString(input);
-//			wrong_symbol = false;
-//			while (alt_it.hasNext() && !wrong_symbol)
-//			{
-//				//n_input.trim();
-//				Symbol alt_tok = alt_it.next();
-//				if (alt_tok instanceof Terminal)
-//				{
-//					/*
-//					if (alt_tok instanceof EpsilonTerminalToken)
-//					{
-//						// Epsilon always works
-//						ParseNode child = new ParseNode();
-//						child.setToken("");
-//						out_node.addChild(child);
-//						read_epsilon = true;
-//						break;
-//					}
-//					 */
-//
-//					if (symbols.isEmpty()) {
-//						// Rule expects a token, string has no more: NO MATCH
-//						wrong_symbol = true;
-//						break;
-//					}
-//					//int match_prefix_size = alt_tok.match(n_input.toString());
-//
-//					//if (match_prefix_size > 0)
-//					if (((Terminal) alt_tok).value.equals(symbols.get(0).value()))
-//					{
-//						//ParseNode child = new ParseNode();
-//						TreeNode<String> child = TreeNode.of(symbols.get(0).value());
-//						/*
-//						MutableString input_tok = n_input.truncateSubstring(0, match_prefix_size);
-//						if (alt_tok instanceof RegexTerminalToken)
-//						{
-//							// In the case of a regex, create children with each capture block
-//							child = appendRegexChildren(child, (RegexTerminalToken) alt_tok, input_tok);
-//						}
-//						child.setToken(input_tok.toString());
-//
-//						 */
-//						out_node.attach(child);
-//						symbols.remove(0);
-//					}
-//					else
-//					{
-//						System.out.println("ASDFADFASFASDF");
-//						// Rule expects a token, token in string does not match: NO MATCH
-//						wrong_symbol = true;
-//						out_node = null;
-//						break;
-//					}
-//				}
-//				else
-//				{
-//					TreeNode<String> child = null;
-//					// Non-terminal token: recursively try to parse it
-//					String alt_tok_string = alt_tok.value();
-//
-//					Rule new_rule = getRule(alt_tok);
-//					if (new_rule == null)
-//					{
-//						// No rule found for non-terminal symbol:
-//						// there is an error in the grammar
-//						throw new IllegalArgumentException("Cannot find rule for token " + alt_tok);
-//
-//					}
-//					child = parse(new_rule, symbols);
-//					if (child == null)
-//					{
-//						// Parsing failed
-//						wrong_symbol = true;
-//						out_node = null;
-//						break;
-//					}
-//
-//					out_node.attach(child);
-//				}
-//			}
-//			if (!wrong_symbol)
-//			{
-//				if (!alt_it.hasNext())
-//				{
-//					// We succeeded in parsing the complete string: done
-//					//if (level > 0 || (level == 0 && n_input.toString().trim().length() == 0))
-//					if (symbols.isEmpty())
-//					{
-//						break;
-//					}
-//				}
-//				else
-//				{
-//					// The rule expects more symbols, but there are none
-//					// left in the input; set wrong_symbol back to true to
-//					// force exploring the next alternative
-//					wrong_symbol = true;
-//					//n_input = new MutableString(input);
-//					break;
-//				}
-//			}
-//		}
-////		int chars_consumed = input.length() - n_input.s();
-////		if (wrong_symbol)
-////		{
-////			// We did not consume anything, and the symbol was not epsilon: fail
-////			log("FAILED: expected more symbols with rule " + rule, level);
-////			return null;
-////		}
-////		if (chars_consumed == 0 && !read_epsilon)
-////		{
-////			// We did not consume anything, and the symbol was not epsilon: fail
-////			log("FAILED: did not consume anything of " + input + " with rule " + rule, level);
-////			return null;
-////		}
-////		input.truncateSubstring(chars_consumed);
-////		if (level == 0 && !input.isEmpty())
-////		{
-////			// The top-level rule must parse the complete string
-////			log("FAILED: The top-level rule must parse the complete string", level);
-////			return null;
-////		}
-//		return out_node;
-	}
-
 	private Rule getRule(final Symbol symbol) {
 		if (symbol == null) return null;
 
@@ -384,8 +258,19 @@ public class Bnf {
 		return null;
 	}
 
-	public static Bnf parse(final String bnf) {
-		return null; //BnfParser.parse(bnf);
+	@Override
+	public int hashCode() {
+		return Objects.hash(nonTerminals, terminals, start, rules);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Bnf bnf &&
+			nonTerminals.equals(bnf.nonTerminals) &&
+			terminals.equals(bnf.terminals) &&
+			start.equals(bnf.start) &&
+			rules.equals(bnf.rules);
 	}
 
 	@Override
@@ -393,36 +278,6 @@ public class Bnf {
 		return rules.stream()
 			.map(Object::toString)
 			.collect(Collectors.joining("\n"));
-	}
-
-	static String escape(final Object value) {
-		if (value == null) {
-			return "";
-		} else {
-			var stringValue = value.toString();
-			var string = stringValue.replace("\"", "\"\"");
-
-			if (stringValue.length() != string.length() || mustEscape(string)) {
-				return "\"" + string + "\"";
-			} else {
-				return stringValue;
-			}
-		}
-	}
-
-	private static boolean mustEscape(final CharSequence value) {
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-			if (isTokenSeparator(c)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean isTokenSeparator(final char c) {
-		return c == ':' || c == '=' || c == '<' ||
-			c == '>' || c == '|' || c == '"';
 	}
 
 }
