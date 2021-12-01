@@ -357,7 +357,7 @@ public final class FlatTreeNode<V>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.FLAT_TREE_NODE, this);
+		return new SerialProxy(SerialProxy.FLAT_TREE_NODE, this);
 	}
 
 	@java.io.Serial

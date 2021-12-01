@@ -69,6 +69,34 @@ public interface BoundedGene<
 	}
 
 	/**
+	 * Return the minimum value of {@code this} and the given {@code other}
+	 * value.
+	 *
+	 * @since 7.0
+	 *
+	 * @param other the other value
+	 * @return the minimum value of {@code this} and the given {@code other}
+	 * @throws NullPointerException if {@code other} is {@code null}
+	 */
+	default G min(final G other) {
+		return compareTo(other) < 0 ? self() : other;
+	}
+
+	/**
+	 * Return the maximum value of {@code this} and the given {@code other}
+	 * value.
+	 *
+	 * @since 7.0
+	 *
+	 * @param other the other value
+	 * @return the maximum value of {@code this} and the given {@code other}
+	 * @throws NullPointerException if {@code other} is {@code null}
+	 */
+	default G max(final G other) {
+		return compareTo(other) > 0 ? self() : other;
+	}
+
+	/**
 	 * Create a new gene from the given {@code value} and the current bounds.
 	 *
 	 * @param value the value of the new gene.

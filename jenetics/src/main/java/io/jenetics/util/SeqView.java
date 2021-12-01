@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * Seq view of an given list. The content is not copied on creation.
+ * Seq view of a given list. The content is not copied on creation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.2

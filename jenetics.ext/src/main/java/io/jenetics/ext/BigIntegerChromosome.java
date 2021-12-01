@@ -171,7 +171,7 @@ public class BigIntegerChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.BIG_INTEGER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.BIG_INTEGER_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

@@ -304,7 +304,7 @@ public final class MathExpr
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.MATH_EXPR, this);
+		return new SerialProxy(SerialProxy.MATH_EXPR, this);
 	}
 
 	@java.io.Serial

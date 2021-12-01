@@ -3,25 +3,25 @@
     <min>0.0</min>
     <max>1.0</max>
     <alleles>
-        <allele>0.003140816229067145</allele>
-        <allele>0.43947528327497376</allele>
-        <allele>0.10654807463069327</allele>
-        <allele>0.19696530915810317</allele>
-        <allele>0.7450003838065538</allele>
-        <allele>0.5594416969271359</allele>
-        <allele>0.02823782430152355</allele>
-        <allele>0.5741102315010789</allele>
-        <allele>0.4533651041367144</allele>
-        <allele>0.811148141800367</allele>
-        <allele>0.5710456351848858</allele>
-        <allele>0.30166768355230955</allele>
-        <allele>0.5455492865240272</allele>
-        <allele>0.21068427527733102</allele>
-        <allele>0.5265067943902246</allele>
-        <allele>0.273549098065591</allele>
-        <allele>0.2648197379297126</allele>
-        <allele>0.8732775776362911</allele>
-        <allele>0.9498003919007005</allele>
-        <allele>0.18390258154466066</allele>
+        <allele>0.7771003761758372</allele>
+        <allele>0.9793553406453307</allele>
+        <allele>0.33864905958853286</allele>
+        <allele>0.1687492591086811</allele>
+        <allele>0.3241564942343277</allele>
+        <allele>0.6219627543205388</allele>
+        <allele>0.5163643158750736</allele>
+        <allele>0.5157651636307375</allele>
+        <allele>0.3463020910898771</allele>
+        <allele>0.5319363154643066</allele>
+        <allele>0.28822535293827756</allele>
+        <allele>0.9270756024618048</allele>
+        <allele>0.6126820188687803</allele>
+        <allele>0.32817643659064377</allele>
+        <allele>0.30286291669784915</allele>
+        <allele>0.9392757688227699</allele>
+        <allele>0.23712520013133043</allele>
+        <allele>0.5736995306586026</allele>
+        <allele>0.07518305673630388</allele>
+        <allele>0.9780722418411973</allele>
     </alleles>
 </double-chromosome>

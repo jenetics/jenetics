@@ -338,7 +338,7 @@ public class LongChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.LONG_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

@@ -39,6 +39,7 @@ dependencies {
 
 	testImplementation(libs.commons.math)
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }

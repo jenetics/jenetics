@@ -17,5 +17,5 @@
         <allele>13</allele>
         <allele>14</allele>
     </valid-alleles>
-    <order>12 6 3 5 10 1 2 14 7 0 8 9 11 4 13</order>
+    <order>3 6 5 12 14 10 2 1 7 0 8 9 11 4 13</order>
 </permutation-chromosome>

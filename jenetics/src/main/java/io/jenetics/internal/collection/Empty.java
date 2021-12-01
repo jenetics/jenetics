@@ -65,7 +65,7 @@ public final class Empty {
 
 		@Override
 		public ListIterator<Object> listIterator() {
-			return asList().listIterator();
+			return Collections.emptyListIterator();
 		}
 
 		@Override
@@ -148,7 +148,7 @@ public final class Empty {
 
 		@Override
 		public Iterator<Object> iterator() {
-			return asList().iterator();
+			return Collections.emptyIterator();
 		}
 
 		@Override
@@ -164,7 +164,7 @@ public final class Empty {
 
 		@Override
 		public Iterator<Object> iterator() {
-			return asList().iterator();
+			return Collections.emptyIterator();
 		}
 
 		@Override

@@ -176,7 +176,7 @@ public final class EvolutionStart<
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_START, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_START, this);
 	}
 
 	@java.io.Serial

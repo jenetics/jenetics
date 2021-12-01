@@ -32,11 +32,6 @@ import io.jenetics.util.MSeq;
 final class Trees {
 	private Trees() {}
 
-	@SuppressWarnings("unchecked")
-	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
-		return (T)tree;
-	}
-
 	/**
 	 * Builds the parents of node up to and including the root node, where the
 	 * original node is the last element in the returned array. The length of

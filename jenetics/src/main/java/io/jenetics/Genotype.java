@@ -295,7 +295,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.GENOTYPE, this);
+		return new SerialProxy(SerialProxy.GENOTYPE, this);
 	}
 
 	@java.io.Serial

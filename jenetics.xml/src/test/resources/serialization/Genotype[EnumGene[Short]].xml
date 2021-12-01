@@ -2,102 +2,102 @@
 <genotype length="5" ngenes="75">
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Short">
-            <allele>4100</allele>
-            <allele>18160</allele>
-            <allele>31415</allele>
-            <allele>-10575</allele>
-            <allele>-21709</allele>
-            <allele>-11525</allele>
-            <allele>7992</allele>
-            <allele>1072</allele>
-            <allele>1033</allele>
-            <allele>-10073</allele>
-            <allele>2092</allele>
-            <allele>-13879</allele>
-            <allele>27988</allele>
-            <allele>7384</allele>
-            <allele>-11261</allele>
+            <allele>-9159</allele>
+            <allele>-29475</allele>
+            <allele>-30697</allele>
+            <allele>13419</allele>
+            <allele>-22843</allele>
+            <allele>27525</allele>
+            <allele>29561</allele>
+            <allele>-3159</allele>
+            <allele>-20594</allele>
+            <allele>-16133</allele>
+            <allele>31350</allele>
+            <allele>-23808</allele>
+            <allele>21409</allele>
+            <allele>14993</allele>
+            <allele>-8458</allele>
         </valid-alleles>
-        <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+        <order>6 13 4 12 8 14 7 2 11 5 3 0 9 10 1</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Short">
-            <allele>-23394</allele>
-            <allele>-12914</allele>
-            <allele>-24397</allele>
-            <allele>-7061</allele>
-            <allele>-19647</allele>
-            <allele>25521</allele>
-            <allele>-12412</allele>
-            <allele>-11056</allele>
-            <allele>21251</allele>
-            <allele>17919</allele>
-            <allele>-5071</allele>
-            <allele>-19059</allele>
-            <allele>-13664</allele>
-            <allele>-1937</allele>
-            <allele>-23729</allele>
+            <allele>23638</allele>
+            <allele>-25744</allele>
+            <allele>7212</allele>
+            <allele>-336</allele>
+            <allele>-4876</allele>
+            <allele>31435</allele>
+            <allele>18219</allele>
+            <allele>-26626</allele>
+            <allele>-16647</allele>
+            <allele>-16161</allele>
+            <allele>7153</allele>
+            <allele>5570</allele>
+            <allele>-17349</allele>
+            <allele>16263</allele>
+            <allele>-13444</allele>
         </valid-alleles>
-        <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
+        <order>4 2 0 5 3 1 6 10 9 7 8 11 13 14 12</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Short">
-            <allele>5160</allele>
-            <allele>19554</allele>
-            <allele>-9226</allele>
-            <allele>-12801</allele>
-            <allele>-11855</allele>
-            <allele>16143</allele>
-            <allele>12426</allele>
-            <allele>-19128</allele>
-            <allele>-1184</allele>
-            <allele>4892</allele>
-            <allele>11555</allele>
-            <allele>7337</allele>
-            <allele>9161</allele>
-            <allele>16553</allele>
-            <allele>-9186</allele>
+            <allele>3401</allele>
+            <allele>9903</allele>
+            <allele>16228</allele>
+            <allele>25545</allele>
+            <allele>-23002</allele>
+            <allele>-6831</allele>
+            <allele>31690</allele>
+            <allele>-29359</allele>
+            <allele>-29129</allele>
+            <allele>3709</allele>
+            <allele>-14892</allele>
+            <allele>-29098</allele>
+            <allele>-20220</allele>
+            <allele>-14002</allele>
+            <allele>29781</allele>
         </valid-alleles>
-        <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
+        <order>11 0 9 13 10 1 8 3 7 12 5 6 2 4 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Short">
-            <allele>-10329</allele>
-            <allele>5257</allele>
-            <allele>18161</allele>
-            <allele>-24781</allele>
-            <allele>14961</allele>
-            <allele>-91</allele>
-            <allele>18484</allele>
-            <allele>21390</allele>
-            <allele>20463</allele>
-            <allele>-5475</allele>
-            <allele>22654</allele>
-            <allele>5484</allele>
-            <allele>3623</allele>
-            <allele>-16007</allele>
-            <allele>28281</allele>
+            <allele>27169</allele>
+            <allele>-22515</allele>
+            <allele>-23218</allele>
+            <allele>-24524</allele>
+            <allele>3020</allele>
+            <allele>30513</allele>
+            <allele>30157</allele>
+            <allele>-7509</allele>
+            <allele>30614</allele>
+            <allele>-16892</allele>
+            <allele>17093</allele>
+            <allele>15114</allele>
+            <allele>-21647</allele>
+            <allele>-24422</allele>
+            <allele>2948</allele>
         </valid-alleles>
-        <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
+        <order>14 5 3 2 1 6 8 13 7 9 4 0 11 12 10</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Short">
-            <allele>17292</allele>
-            <allele>-27710</allele>
-            <allele>-17021</allele>
-            <allele>-31583</allele>
-            <allele>-1880</allele>
-            <allele>-24613</allele>
-            <allele>-21174</allele>
-            <allele>-19738</allele>
-            <allele>6300</allele>
-            <allele>1864</allele>
-            <allele>-29967</allele>
-            <allele>30781</allele>
-            <allele>25520</allele>
-            <allele>12816</allele>
-            <allele>32686</allele>
+            <allele>14975</allele>
+            <allele>9426</allele>
+            <allele>21889</allele>
+            <allele>4431</allele>
+            <allele>32209</allele>
+            <allele>-25287</allele>
+            <allele>-28568</allele>
+            <allele>-1629</allele>
+            <allele>8008</allele>
+            <allele>-22278</allele>
+            <allele>-9799</allele>
+            <allele>-8213</allele>
+            <allele>-291</allele>
+            <allele>15532</allele>
+            <allele>-24943</allele>
         </valid-alleles>
-        <order>1 9 11 6 5 14 0 13 4 7 12 8 10 3 2</order>
+        <order>13 1 11 6 5 14 9 0 4 7 12 8 10 3 2</order>
     </permutation-chromosome>
 </genotype>

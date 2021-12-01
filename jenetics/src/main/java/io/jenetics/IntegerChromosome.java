@@ -331,7 +331,7 @@ public class IntegerChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INTEGER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.INTEGER_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

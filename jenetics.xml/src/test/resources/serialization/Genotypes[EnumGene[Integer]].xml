@@ -19,7 +19,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>12 6 3 5 10 1 2 14 7 0 8 9 11 4 13</order>
+            <order>3 6 5 12 14 10 2 1 7 0 8 9 11 4 13</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -39,7 +39,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>1 0 7 8 10 6 14 3 2 12 9 13 4 5 11</order>
+            <order>0 7 8 1 10 6 14 3 2 12 9 13 4 5 11</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -59,7 +59,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>11 7 12 13 5 9 3 8 10 4 2 14 0 1 6</order>
+            <order>8 11 12 13 5 9 7 3 10 4 2 14 0 1 6</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -79,7 +79,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>2 10 7 1 13 9 6 3 12 5 11 14 0 4 8</order>
+            <order>10 3 1 2 13 9 7 6 12 5 11 14 0 4 8</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -99,109 +99,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>14 13 0 9 1 4 11 12 8 2 10 3 5 7 6</order>
-        </permutation-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="75">
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>11 2 12 5 7 10 0 4 14 3 1 8 13 9 6</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>0 10 6 9 14 4 1 11 5 13 2 8 7 12 3</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>3 4 8 9 13 5 10 1 14 11 7 12 6 0 2</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>3 14 9 8 10 4 5 11 7 12 2 0 1 13 6</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>1 11 6 4 13 0 5 12 2 14 3 10 8 9 7</order>
+            <order>14 9 0 12 13 4 11 1 8 2 10 3 5 7 6</order>
         </permutation-chromosome>
     </genotype>
     <genotype length="5" ngenes="75">
@@ -223,7 +121,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>1 4 2 7 8 0 14 10 6 9 3 13 5 12 11</order>
+            <order>11 2 5 12 4 10 0 7 14 3 1 8 13 9 6</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -243,7 +141,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>0 13 8 5 11 14 4 2 12 6 10 3 1 9 7</order>
+            <order>0 11 6 10 14 9 1 4 5 13 2 8 7 12 3</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -263,7 +161,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>6 7 9 14 8 13 2 3 4 0 12 1 5 10 11</order>
+            <order>3 9 8 4 13 5 10 1 14 11 7 12 6 0 2</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -283,7 +181,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>4 7 6 1 0 10 11 13 8 12 9 5 2 3 14</order>
+            <order>14 11 9 3 10 4 5 8 7 12 2 0 1 13 6</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -303,109 +201,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>6 0 2 1 8 4 3 7 12 14 13 11 9 10 5</order>
-        </permutation-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="75">
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>2 4 13 8 9 11 7 0 1 12 14 3 6 5 10</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>6 0 8 1 11 9 12 4 2 3 10 5 14 7 13</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>12 9 3 14 6 8 10 4 5 13 2 1 11 0 7</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>5 11 2 0 9 14 6 12 1 4 13 3 8 7 10</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>7 3 4 6 10 8 12 5 9 2 14 1 11 0 13</order>
+            <order>1 11 6 13 12 0 5 4 2 14 3 10 8 9 7</order>
         </permutation-chromosome>
     </genotype>
     <genotype length="5" ngenes="75">
@@ -427,7 +223,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>9 2 7 3 6 5 13 0 1 4 11 8 12 10 14</order>
+            <order>7 10 2 1 8 0 14 4 6 9 3 13 5 12 11</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -447,7 +243,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>3 4 11 5 8 14 9 0 6 13 2 10 1 7 12</order>
+            <order>5 0 13 14 11 2 4 8 12 6 10 3 1 9 7</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -467,7 +263,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>7 4 11 0 6 5 8 13 12 3 1 10 2 14 9</order>
+            <order>14 7 9 3 8 13 2 6 4 0 12 1 5 10 11</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -487,7 +283,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>4 10 9 13 14 1 8 0 3 6 11 2 12 7 5</order>
+            <order>7 1 13 6 0 10 11 4 8 12 9 5 2 3 14</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -507,109 +303,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>10 13 12 8 7 3 9 0 14 4 5 2 6 11 1</order>
-        </permutation-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="75">
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>6 2 4 12 7 13 9 8 10 5 0 14 3 1 11</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>14 0 5 10 11 2 6 7 3 12 9 1 8 4 13</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>3 7 0 2 11 6 10 14 5 9 8 4 1 13 12</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>2 14 0 8 12 13 5 10 6 1 7 3 9 11 4</order>
-        </permutation-chromosome>
-        <permutation-chromosome length="15">
-            <valid-alleles type="java.lang.Integer">
-                <allele>0</allele>
-                <allele>1</allele>
-                <allele>2</allele>
-                <allele>3</allele>
-                <allele>4</allele>
-                <allele>5</allele>
-                <allele>6</allele>
-                <allele>7</allele>
-                <allele>8</allele>
-                <allele>9</allele>
-                <allele>10</allele>
-                <allele>11</allele>
-                <allele>12</allele>
-                <allele>13</allele>
-                <allele>14</allele>
-            </valid-alleles>
-            <order>1 3 2 9 7 4 12 13 14 6 0 8 11 10 5</order>
+            <order>1 6 2 0 8 4 3 7 12 14 13 11 9 10 5</order>
         </permutation-chromosome>
     </genotype>
     <genotype length="5" ngenes="75">
@@ -631,7 +325,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>7 11 2 1 5 13 3 12 10 8 9 4 6 14 0</order>
+            <order>13 2 7 4 9 11 0 8 1 12 14 3 6 5 10</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -651,7 +345,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>14 5 12 2 8 7 1 9 11 4 13 6 10 0 3</order>
+            <order>1 0 6 12 11 9 4 8 2 3 10 5 14 7 13</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -671,7 +365,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>11 5 13 14 1 9 8 7 6 3 0 12 4 10 2</order>
+            <order>3 9 4 12 6 14 10 8 5 13 2 1 11 0 7</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -691,7 +385,7 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>4 11 12 6 2 10 5 13 7 0 9 3 8 1 14</order>
+            <order>11 0 2 5 9 12 6 14 1 4 13 3 8 7 10</order>
         </permutation-chromosome>
         <permutation-chromosome length="15">
             <valid-alleles type="java.lang.Integer">
@@ -711,7 +405,313 @@
                 <allele>13</allele>
                 <allele>14</allele>
             </valid-alleles>
-            <order>14 0 7 8 13 12 2 11 10 9 3 6 1 5 4</order>
+            <order>5 6 3 4 10 8 7 12 9 2 14 1 11 0 13</order>
+        </permutation-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="75">
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>3 2 0 9 6 7 13 5 1 4 11 8 12 10 14</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>4 5 11 3 8 14 0 9 6 13 2 10 1 7 12</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>7 0 11 13 6 5 8 4 12 3 1 10 2 14 9</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>10 4 9 0 14 13 8 1 3 6 11 2 12 7 5</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>10 8 12 13 7 3 9 0 14 4 5 2 6 11 1</order>
+        </permutation-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="75">
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>7 12 4 6 8 13 9 2 10 5 0 14 3 1 11</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>0 10 7 14 11 2 6 5 3 12 9 1 8 4 13</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>2 14 3 7 11 6 10 0 5 9 8 4 1 13 12</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>14 2 0 8 12 13 5 10 6 1 7 3 9 11 4</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>9 3 7 1 13 4 12 2 14 6 0 8 11 10 5</order>
+        </permutation-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="75">
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>7 1 2 11 5 13 3 12 10 8 9 4 6 14 0</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>14 5 12 2 8 9 1 7 11 4 13 6 10 0 3</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>5 14 13 11 1 7 8 9 6 3 0 12 4 10 2</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>4 11 13 6 2 10 12 5 7 0 9 3 8 1 14</order>
+        </permutation-chromosome>
+        <permutation-chromosome length="15">
+            <valid-alleles type="java.lang.Integer">
+                <allele>0</allele>
+                <allele>1</allele>
+                <allele>2</allele>
+                <allele>3</allele>
+                <allele>4</allele>
+                <allele>5</allele>
+                <allele>6</allele>
+                <allele>7</allele>
+                <allele>8</allele>
+                <allele>9</allele>
+                <allele>10</allele>
+                <allele>11</allele>
+                <allele>12</allele>
+                <allele>13</allele>
+                <allele>14</allele>
+            </valid-alleles>
+            <order>14 0 8 11 13 12 7 2 10 9 3 6 1 5 4</order>
         </permutation-chromosome>
     </genotype>
 </genotypes>

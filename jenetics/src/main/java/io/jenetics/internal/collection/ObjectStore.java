@@ -102,7 +102,7 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.OBJECT_STORE, this);
+		return new SerialProxy(SerialProxy.OBJECT_STORE, this);
 	}
 
 	@java.io.Serial

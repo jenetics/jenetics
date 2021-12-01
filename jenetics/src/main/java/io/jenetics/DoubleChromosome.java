@@ -328,7 +328,7 @@ public class DoubleChromosome
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.DOUBLE_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

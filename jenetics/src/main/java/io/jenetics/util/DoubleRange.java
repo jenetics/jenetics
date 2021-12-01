@@ -114,7 +114,7 @@ public final /*record*/ class DoubleRange implements Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_RANGE, this);
+		return new SerialProxy(SerialProxy.DOUBLE_RANGE, this);
 	}
 
 	@java.io.Serial

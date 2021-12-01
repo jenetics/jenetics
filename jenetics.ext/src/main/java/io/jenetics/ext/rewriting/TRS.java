@@ -159,7 +159,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TRS_KEY, this);
+		return new SerialProxy(SerialProxy.TRS_KEY, this);
 	}
 
 	@java.io.Serial

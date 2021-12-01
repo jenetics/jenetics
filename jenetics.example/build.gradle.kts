@@ -36,4 +36,5 @@ dependencies {
 	implementation(libs.rxjava)
 
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
 }

@@ -409,7 +409,7 @@ public class ProgramChromosome<A>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PROGRAM_CHROMOSOME, this);
 	}
 
 	@java.io.Serial

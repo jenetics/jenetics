@@ -19,14 +19,12 @@
  */
 package io.jenetics.util;
 
-import io.jenetics.prngine.Random64;
+import java.util.random.RandomGenerator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ContinuousRandom extends Random64 {
-
-	private static final long serialVersionUID = 1L;
+public class ContinuousRandom implements RandomGenerator {
 
 	private long _next;
 

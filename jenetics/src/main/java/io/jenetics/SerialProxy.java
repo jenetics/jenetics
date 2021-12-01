@@ -23,6 +23,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.StreamCorruptedException;
 
 /**
@@ -30,9 +31,9 @@ import java.io.StreamCorruptedException;
  * @version 5.0
  * @since 5.0
  */
-final class Serial implements Externalizable {
+final class SerialProxy implements Externalizable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1;
 
 	static final byte DOUBLE_GENE = 1;
@@ -64,7 +65,7 @@ final class Serial implements Externalizable {
 	/**
 	 * Constructor for deserialization.
 	 */
-	public Serial() {
+	public SerialProxy() {
 	}
 
 	/**
@@ -73,7 +74,7 @@ final class Serial implements Externalizable {
 	 * @param type  the type
 	 * @param object  the object
 	 */
-	Serial(final byte type, final Object object) {
+	SerialProxy(final byte type, final Object object) {
 		_type = type;
 		_object = object;
 	}
@@ -118,7 +119,7 @@ final class Serial implements Externalizable {
 		};
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object readResolve() {
 		return _object;
 	}

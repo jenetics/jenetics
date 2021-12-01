@@ -105,7 +105,7 @@ final class SimpleIntVec implements Vec<int[]>, Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.SIMPLE_INT_VEC, this);
+		return new SerialProxy(SerialProxy.SIMPLE_INT_VEC, this);
 	}
 
 	@java.io.Serial

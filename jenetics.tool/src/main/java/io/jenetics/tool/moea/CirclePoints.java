@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
@@ -63,7 +62,7 @@ public class CirclePoints {
 		final Path data = Paths.get(base, "circle_points.dat");
 		final Path output = Paths.get(base, "circle_points.svg");
 
-		final Random random = new LCG64ShiftRandom();
+		final var random = new LCG64ShiftRandom();
 
 		final ISeq<Vec<double[]>> points = Stream.generate(() -> point(random))
 			.limit(1000)

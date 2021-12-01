@@ -154,7 +154,7 @@ public final record EvolutionDurations(
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_DURATIONS, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_DURATIONS, this);
 	}
 
 	@java.io.Serial

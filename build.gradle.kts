@@ -33,7 +33,7 @@ plugins {
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "7.2"
+	gradleVersion = "7.3"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -203,7 +203,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 				"implNote:a:Implementation Note:"
 			)
 
-		doclet.group("Core API", "io.jeneics", "io.jenetics.engine")
+		doclet.group("Core API", "io.jenetics", "io.jenetics.engine")
 		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
 
 		doLast {

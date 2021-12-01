@@ -100,7 +100,7 @@ public final class Const<T> extends Val<T> implements Serializable {
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CONST, this);
+		return new SerialProxy(SerialProxy.CONST, this);
 	}
 
 	@java.io.Serial

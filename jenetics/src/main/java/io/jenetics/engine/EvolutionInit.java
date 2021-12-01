@@ -138,7 +138,7 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 
 	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_INIT, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_INIT, this);
 	}
 
 	@java.io.Serial

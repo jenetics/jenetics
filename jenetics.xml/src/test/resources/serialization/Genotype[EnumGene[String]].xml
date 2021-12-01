@@ -18,7 +18,7 @@
             <allele>mky}+P`</allele>
             <allele>hJd"a}F</allele>
         </valid-alleles>
-        <order>1 3 12 6 5 9 10 8 7 11 4 14 2 0 13</order>
+        <order>1 6 3 12 5 8 10 9 7 11 4 14 2 0 13</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.String">
@@ -38,7 +38,7 @@
             <allele>d_]058k&gt;Dc/ybL</allele>
             <allele>H|Re'Of1]&amp;JdA{@DfnO</allele>
         </valid-alleles>
-        <order>9 14 10 13 7 2 6 1 4 11 3 0 12 5 8</order>
+        <order>9 14 13 10 1 2 6 7 4 11 3 0 12 5 8</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.String">
@@ -58,7 +58,7 @@
             <allele>jW; Lq</allele>
             <allele>,|xJNwc~!40.3N&gt;</allele>
         </valid-alleles>
-        <order>7 1 12 11 13 0 9 3 6 8 4 14 10 2 5</order>
+        <order>1 11 3 12 7 0 9 13 6 8 4 14 10 2 5</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.String">
@@ -78,7 +78,7 @@
             <allele>doKeUAgG</allele>
             <allele>% }XAyn-H</allele>
         </valid-alleles>
-        <order>6 0 8 14 12 7 4 13 9 5 3 11 2 1 10</order>
+        <order>0 6 14 8 12 13 4 7 9 5 3 11 2 1 10</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.String">
@@ -98,6 +98,6 @@
             <allele>_cT9zL`73L</allele>
             <allele>:#j@&amp;8Uu`1JbTdT</allele>
         </valid-alleles>
-        <order>6 4 12 2 1 10 7 13 5 11 9 14 0 8 3</order>
+        <order>6 4 7 2 1 10 13 12 5 11 9 14 0 8 3</order>
     </permutation-chromosome>
 </genotype>
