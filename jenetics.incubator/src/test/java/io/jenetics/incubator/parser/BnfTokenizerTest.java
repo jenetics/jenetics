@@ -1,6 +1,7 @@
 package io.jenetics.incubator.parser;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
@@ -18,7 +19,11 @@ public class BnfTokenizerTest {
 		final var tokenizer = new BnfTokenizer(GRAMMAR_STRING);
 		final List<Token> tokens = tokenizer.tokens().toList();
 
-		tokens.forEach(System.out::println);
+		final var string = tokens.stream()
+			.map(t -> t.value())
+			.collect(Collectors.joining(" "));
+
+		System.out.println(string);
 	}
 
 }

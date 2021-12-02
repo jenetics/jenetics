@@ -72,6 +72,16 @@ public interface Token {
 		}
 
 		/**
+		 * Create a new token of the given character and {@code this} type.
+		 *
+		 * @param c the token value
+		 * @return a new toke
+		 */
+		default Token token(final char c) {
+			return token(Character.toString(c));
+		}
+
+		/**
 		 * Create a new token type with the given {@code code} and {@code name}.
 		 *
 		 * @param code the code of the created token type

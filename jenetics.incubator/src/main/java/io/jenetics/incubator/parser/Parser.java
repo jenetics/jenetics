@@ -22,33 +22,45 @@ package io.jenetics.incubator.parser;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
-
 import io.jenetics.incubator.parser.Token.Type;
 
 public abstract class Parser {
 
-	protected final Tokenizer _tokenizer;
-	protected Token _lookahead;
+	private final Tokenizer _tokenizer;
+	final TokenRing _lookahead;
 
-	protected Parser(final Tokenizer tokenizer) {
+	protected Parser(final Tokenizer tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
-		_lookahead = _tokenizer.next();
+		_lookahead = new TokenRing(k);
+		for (int i = 0; i < k; ++i) {
+			consume();
+		}
 	}
 
-	protected void match(final Type type) {
-		if (_lookahead.type().code() == type.code()) {
+	public Token LT(final int i) {
+		return _lookahead.LT(i);
+	}
+
+	public int LA(final int i) {
+		return _lookahead.LA(i);
+	}
+
+	public String match(final Type type) {
+		if (LA(1) == type.code()) {
+			final var value = LT(1).value();
 			consume();
+			return value;
 		} else {
+			new Exception().printStackTrace();
 			throw new ParseException(format(
-				"Expecting %s but found %s.",
-				type, _lookahead
+				"Expecting %s but found %s: %s.",
+				type, LT(1), _lookahead
 			));
 		}
 	}
 
 	protected void consume() {
-		_lookahead = _tokenizer.next();
+		_lookahead.add(_tokenizer.next());
 	}
 
 }

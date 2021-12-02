@@ -19,10 +19,13 @@
  */
 package io.jenetics.incubator.parser;
 
+import java.beans.Expression;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LBRACE;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LEND;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LPAREN;
@@ -35,6 +38,11 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.incubator.parser.Token.Type.EOF;
 import static java.lang.String.format;
 
+import io.jenetics.incubator.parser.Bnf.NonTerminal;
+import io.jenetics.incubator.parser.Bnf.Rule;
+import io.jenetics.incubator.parser.Bnf.Symbol;
+import io.jenetics.incubator.parser.Bnf.Terminal;
+
 /**
  * rulelist: rule_* EOF;
  * rule_: lhs ASSIGN rhs;
@@ -43,27 +51,36 @@ import static java.lang.String.format;
  * alternatives: alternative (BAR alternative)*;
  * alternative: element*;
  * element: optional_ | zeroormore | oneormore | text_ | id_;
- * optional_: LEND alternatives REND;
- * zeroormore: LBRACE alternatives RBRACE;
- * oneormore: LPAREN alternatives RPAREN;
+ * optional_: REND alternatives LEND;
+ * zeroormore: RBRACE alternatives LBRACE;
+ * oneormore: RPAREN alternatives LPAREN;
  * text_: STRING;
  * id_: LT ruleid GT;
  * ruleid: ID;
  */
 public class BnfParser extends Parser {
 
+	final List<Rule> rules = new ArrayList<>();
+	final List<Symbol> symbols = new ArrayList<>();
+	final List<Expression> alternatives = new ArrayList<>();
+
 	protected BnfParser(final BnfTokenizer tokenizer) {
-		super(tokenizer);
+		super(tokenizer, 10);
 	}
 
 	public void parse() {
-		rulelist();
+		try {
+			rulelist();
+		} catch (ParseException e) {
+			System.out.println(symbols);
+			throw e;
+		}
 	}
 
 	private void rulelist() {
 		do {
 			rule();
-		} while (_lookahead.type().code() == EOF.code());
+		} while (LA(1) != EOF.code());
 	}
 
 	private void rule() {
@@ -82,7 +99,7 @@ public class BnfParser extends Parser {
 
 	private void alternatives() {
 		alternative();
-		while (_lookahead.type().code() == BAR.code()) {
+		while (LA(1) == BAR.code()) {
 			match(BAR);
 			alternative();
 		}
@@ -92,62 +109,69 @@ public class BnfParser extends Parser {
 		do {
 			element();
 		} while (
-			_lookahead.type().code() == LEND.code() ||
-			_lookahead.type().code() == LBRACE.code() ||
-			_lookahead.type().code() == LPAREN.code() ||
-			_lookahead.type().code() == STRING.code() ||
-			_lookahead.type().code() == QUOTED_STRING.code() ||
-			_lookahead.type().code() == LT.code());
+			LA(4) != ASSIGN.code() &&
+			(LA(1) == REND.code() ||
+				LA(1) == RBRACE.code() ||
+				LA(1) == RPAREN.code() ||
+				LA(1) == STRING.code() ||
+				LA(1) == QUOTED_STRING.code() ||
+				LA(1) == ID.code() ||
+				LA(1) == LT.code())
+		);
 	}
 
 	private void element() {
-		if (_lookahead.type().code() == LEND.code()) {
+		if (LA(1) == REND.code()) {
 			optional();
-		} else if (_lookahead.type().code() == LBRACE.code()) {
+		} else if (LA(1) == RBRACE.code()) {
 			zeroormore();
-		} else if (_lookahead.type().code() == LPAREN.code()) {
+		} else if (LA(1) == RPAREN.code()) {
 			oneormore();
-		} else if (_lookahead.type().code() == STRING.code()) {
+		} else if (LA(1) == STRING.code()) {
 			text();
-		} else if (_lookahead.type().code() == QUOTED_STRING.code()) {
+		} else if (LA(1) == QUOTED_STRING.code()) {
 			text();
-		} else if (_lookahead.type().code() == LT.code()) {
+		} else if (LA(1) == ID.code()) {
+			text();
+		} else if (LA(1) == LT.code()) {
 			id();
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
-				List.of(LEND, LBRACE, LPAREN, STRING, QUOTED_STRING, LT), _lookahead
+				List.of(REND, RBRACE, RPAREN, STRING, QUOTED_STRING, ID, LT), LT(1)
 			));
 		}
 	}
 
 	private void optional() {
-		match(LEND);
-		alternatives();
 		match(REND);
+		alternatives();
+		match(LEND);
 	}
 
 	private void zeroormore() {
-		match(LBRACE);
-		alternatives();
 		match(RBRACE);
+		alternatives();
+		match(LBRACE);
 	}
 
 	private void oneormore() {
-		match(LPAREN);
-		alternatives();
 		match(RPAREN);
+		alternatives();
+		match(LPAREN);
 	}
 
 	private void text() {
-		if (_lookahead.type().code() == STRING.code()) {
-			match(STRING);
-		} else if (_lookahead.type().code() == QUOTED_STRING.code()) {
-			match(QUOTED_STRING);
+		if (LA(1) == STRING.code()) {
+			symbols.add(new Terminal(match(STRING)));
+		} else if (LA(1) == QUOTED_STRING.code()) {
+			symbols.add(new Terminal(match(QUOTED_STRING)));
+		} else if (LA(1) == ID.code()) {
+			symbols.add(new Terminal(match(ID)));
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
-				List.of(STRING, QUOTED_STRING), _lookahead
+				List.of(STRING, QUOTED_STRING), LT(1)
 			));
 		}
 	}
@@ -159,7 +183,7 @@ public class BnfParser extends Parser {
 	}
 
 	private void ruleid() {
-		match(BnfTokenizer.BnfTokenType.ID);
+		symbols.add(new NonTerminal(match(BnfTokenizer.BnfTokenType.ID)));
 	}
 
 }

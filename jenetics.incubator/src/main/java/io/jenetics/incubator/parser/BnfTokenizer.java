@@ -40,20 +40,6 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 /**
  * https://github.com/antlr/grammars-v4/blob/master/bnf/bnf.g4
  *
- * rulelist: rule_* EOF;
- * rule_: lhs ASSIGN rhs;
- * lhs: id_;
- * rhs: alternatives;
- * alternatives: alternative (BAR alternative)*;
- * alternative: element*;
- * element: optional_ | zeroormore | oneormore | text_ | id_;
- * optional_: REND alternatives LEND;
- * zeroormore: RBRACE alternatives LBRACE;
- * oneormore: RPAREN alternatives LPAREN;
- * text_: STRING;
- * id_: LT ruleid GT;
- * ruleid: ID;
- *
  * ASSIGN: '::=';
  * LPAREN: ')';
  * RPAREN: '(';
@@ -108,39 +94,40 @@ final class BnfTokenizer extends Tokenizer {
 	@Override
 	public Token next() {
 		while (isNonEof(c)) {
-			switch (c) {
+			final char value = c;
+			switch (value) {
 				case ' ', '\r', '\n', '\t':
 					WS();
 					continue;
 				case ':':
 					return ASSIGN();
-				case '(':
-					consume();
-					return LPAREN.token("(");
 				case ')':
 					consume();
-					return RPAREN.token(")");
-				case '{':
+					return LPAREN.token(value);
+				case '(':
 					consume();
-					return LBRACE.token("{");
+					return RPAREN.token(value);
 				case '}':
 					consume();
-					return RBRACE.token("}");
-				case '[':
+					return LBRACE.token(value);
+				case '{':
 					consume();
-					return LEND.token("[");
+					return RBRACE.token(value);
 				case ']':
 					consume();
-					return REND.token("]");
+					return LEND.token(value);
+				case '[':
+					consume();
+					return REND.token(value);
 				case '|':
 					consume();
-					return BAR.token("|");
+					return BAR.token(value);
 				case '>':
 					consume();
-					return GT.token(">");
+					return GT.token(value);
 				case '<':
 					consume();
-					return LT.token("<");
+					return LT.token(value);
 				case '\'':
 					return QUOTED_STRING();
 				default:

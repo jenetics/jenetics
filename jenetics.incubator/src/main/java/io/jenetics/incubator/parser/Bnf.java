@@ -97,7 +97,7 @@ public class Bnf {
 	/**
 	 * Represents one <em>expression</em> a production rule consists of.
 	 */
-	public static record Expression(List<Symbol> symbols) {
+	public static record Expression(List<Symbol> symbols, Repetition repetition) {
 
 		/**
 		 * @param symbols the list of symbols of the expression
@@ -119,6 +119,9 @@ public class Bnf {
 				.map(Object::toString)
 				.collect(Collectors.joining(" "));
 		}
+	}
+
+	public static record Repetition(int min, int max) {
 	}
 
 	/**
