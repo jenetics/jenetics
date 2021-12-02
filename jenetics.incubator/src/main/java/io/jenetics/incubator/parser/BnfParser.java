@@ -19,9 +19,20 @@
  */
 package io.jenetics.incubator.parser;
 
-import static java.lang.Character.isJavaIdentifierPart;
-import static java.lang.Character.isJavaIdentifierStart;
-import static java.lang.Character.isWhitespace;
+import java.util.List;
+
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LBRACE;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LEND;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LPAREN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RBRACE;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+import static io.jenetics.incubator.parser.Token.Type.EOF;
 import static java.lang.String.format;
 
 /**
@@ -32,30 +43,123 @@ import static java.lang.String.format;
  * alternatives: alternative (BAR alternative)*;
  * alternative: element*;
  * element: optional_ | zeroormore | oneormore | text_ | id_;
- * optional_: REND alternatives LEND;
- * zeroormore: RBRACE alternatives LBRACE;
- * oneormore: RPAREN alternatives LPAREN;
+ * optional_: LEND alternatives REND;
+ * zeroormore: LBRACE alternatives RBRACE;
+ * oneormore: LPAREN alternatives RPAREN;
  * text_: STRING;
  * id_: LT ruleid GT;
  * ruleid: ID;
- *
- * ASSIGN: '::=';
- * LPAREN: ')';
- * RPAREN: '(';
- * LBRACE: '}';
- * RBRACE: '{';
- * LEND: ']';
- * REND: '[';
- * BAR: '|';
- * GT: '>';
- * LT: '<';
- * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
- * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|' ')+;
- * WS: [ \r\n\t] -> skip;
  */
 public class BnfParser extends Parser {
 
 	protected BnfParser(final BnfTokenizer tokenizer) {
 		super(tokenizer);
 	}
+
+	public void parse() {
+		rulelist();
+	}
+
+	private void rulelist() {
+		do {
+			rule();
+		} while (_lookahead.type().code() == EOF.code());
+	}
+
+	private void rule() {
+		lhs();
+		match(ASSIGN);
+		rhs();
+	}
+
+	private void lhs() {
+		id();
+	}
+
+	private void rhs() {
+		alternatives();
+	}
+
+	private void alternatives() {
+		alternative();
+		while (_lookahead.type().code() == BAR.code()) {
+			match(BAR);
+			alternative();
+		}
+	}
+
+	private void alternative() {
+		do {
+			element();
+		} while (
+			_lookahead.type().code() == LEND.code() ||
+			_lookahead.type().code() == LBRACE.code() ||
+			_lookahead.type().code() == LPAREN.code() ||
+			_lookahead.type().code() == STRING.code() ||
+			_lookahead.type().code() == QUOTED_STRING.code() ||
+			_lookahead.type().code() == LT.code());
+	}
+
+	private void element() {
+		if (_lookahead.type().code() == LEND.code()) {
+			optional();
+		} else if (_lookahead.type().code() == LBRACE.code()) {
+			zeroormore();
+		} else if (_lookahead.type().code() == LPAREN.code()) {
+			oneormore();
+		} else if (_lookahead.type().code() == STRING.code()) {
+			text();
+		} else if (_lookahead.type().code() == QUOTED_STRING.code()) {
+			text();
+		} else if (_lookahead.type().code() == LT.code()) {
+			id();
+		} else {
+			throw new ParseException(format(
+				"Expecting %s but found %s.",
+				List.of(LEND, LBRACE, LPAREN, STRING, QUOTED_STRING, LT), _lookahead
+			));
+		}
+	}
+
+	private void optional() {
+		match(LEND);
+		alternatives();
+		match(REND);
+	}
+
+	private void zeroormore() {
+		match(LBRACE);
+		alternatives();
+		match(RBRACE);
+	}
+
+	private void oneormore() {
+		match(LPAREN);
+		alternatives();
+		match(RPAREN);
+	}
+
+	private void text() {
+		if (_lookahead.type().code() == STRING.code()) {
+			match(STRING);
+		} else if (_lookahead.type().code() == QUOTED_STRING.code()) {
+			match(QUOTED_STRING);
+		} else {
+			throw new ParseException(format(
+				"Expecting %s but found %s.",
+				List.of(STRING, QUOTED_STRING), _lookahead
+			));
+		}
+	}
+
+	private void id() {
+		match(BnfTokenizer.BnfTokenType.LT);
+		ruleid();
+		match(BnfTokenizer.BnfTokenType.GT);
+	}
+
+	private void ruleid() {
+		match(BnfTokenizer.BnfTokenType.ID);
+	}
+
 }

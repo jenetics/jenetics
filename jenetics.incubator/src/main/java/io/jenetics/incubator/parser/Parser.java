@@ -28,26 +28,27 @@ import io.jenetics.incubator.parser.Token.Type;
 
 public abstract class Parser {
 
-	private final Tokenizer _tokenizer;
-	private Token _lookahead;
+	protected final Tokenizer _tokenizer;
+	protected Token _lookahead;
 
 	protected Parser(final Tokenizer tokenizer) {
 		_tokenizer = requireNonNull(tokenizer);
+		_lookahead = _tokenizer.next();
 	}
 
 	protected void match(final Type type) {
-		if (Objects.equals(_lookahead.type(), type)) {
+		if (_lookahead.type().code() == type.code()) {
 			consume();
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
-				_tokenizer.toString(), _lookahead
+				type, _lookahead
 			));
 		}
 	}
 
 	protected void consume() {
-
+		_lookahead = _tokenizer.next();
 	}
 
 }

@@ -112,24 +112,24 @@ final class BnfTokenizer extends Tokenizer {
 					continue;
 				case ':':
 					return ASSIGN();
-				case ')':
-					consume();
-					return LPAREN.token(")");
 				case '(':
 					consume();
-					return RPAREN.token("(");
-				case '}':
+					return LPAREN.token("(");
+				case ')':
 					consume();
-					return LBRACE.token("}");
+					return RPAREN.token(")");
 				case '{':
 					consume();
-					return RBRACE.token("{");
-				case ']':
+					return LBRACE.token("{");
+				case '}':
 					consume();
-					return LEND.token("]");
+					return RBRACE.token("}");
 				case '[':
 					consume();
-					return REND.token("[");
+					return LEND.token("[");
+				case ']':
+					consume();
+					return REND.token("]");
 				case '|':
 					consume();
 					return BAR.token("|");
