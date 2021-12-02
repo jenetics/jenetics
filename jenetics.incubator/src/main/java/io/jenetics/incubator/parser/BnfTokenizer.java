@@ -38,6 +38,8 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 
 /**
+ * https://github.com/antlr/grammars-v4/blob/master/bnf/bnf.g4
+ *
  * rulelist: rule_* EOF;
  * rule_: lhs ASSIGN rhs;
  * lhs: id_;
