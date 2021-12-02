@@ -62,6 +62,7 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
 public class BnfParser extends Parser {
 
 	NonTerminal start = null;
+	Repetition repetition = new Repetition(1, 1);
 	final List<Rule> rules = new ArrayList<>();
 	final List<Symbol> symbols = new ArrayList<>();
 	final List<Expression> alternatives = new ArrayList<>();
@@ -102,7 +103,7 @@ public class BnfParser extends Parser {
 	private void alternatives() {
 		alternative();
 		if (!symbols.isEmpty()) {
-			alternatives.add(new Expression(symbols, new Repetition(1, 1)));
+			alternatives.add(new Expression(symbols, repetition));
 			symbols.clear();
 		}
 
@@ -111,7 +112,7 @@ public class BnfParser extends Parser {
 			alternative();
 
 			if (!symbols.isEmpty()) {
-				alternatives.add(new Expression(symbols, new Repetition(1, 1)));
+				alternatives.add(new Expression(symbols, repetition));
 				symbols.clear();
 			}
 		}
@@ -122,13 +123,15 @@ public class BnfParser extends Parser {
 			element();
 		} while (
 			LA(4) != ASSIGN.code() &&
-			(LA(1) == REND.code() ||
-			LA(1) == RBRACE.code() ||
-			LA(1) == RPAREN.code() ||
-			LA(1) == STRING.code() ||
-			LA(1) == QUOTED_STRING.code() ||
-			LA(1) == ID.code() ||
-			LA(1) == LT.code())
+			(
+				LA(1) == REND.code() ||
+				LA(1) == RBRACE.code() ||
+				LA(1) == RPAREN.code() ||
+				LA(1) == STRING.code() ||
+				LA(1) == QUOTED_STRING.code() ||
+				LA(1) == ID.code() ||
+				LA(1) == LT.code()
+			)
 		);
 	}
 
@@ -159,18 +162,21 @@ public class BnfParser extends Parser {
 		match(REND);
 		alternatives();
 		match(LEND);
+		repetition = new Repetition(0, 1);
 	}
 
 	private void zeroormore() {
 		match(RBRACE);
 		alternatives();
 		match(LBRACE);
+		repetition = new Repetition(0, Integer.MAX_VALUE);
 	}
 
 	private void oneormore() {
 		match(RPAREN);
 		alternatives();
 		match(LPAREN);
+		repetition = new Repetition(1, Integer.MAX_VALUE);
 	}
 
 	private Terminal text() {
