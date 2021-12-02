@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.parser;
 
-import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,9 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.incubator.parser.Token.Type.EOF;
 import static java.lang.String.format;
 
+import io.jenetics.incubator.parser.Bnf.Expression;
 import io.jenetics.incubator.parser.Bnf.NonTerminal;
+import io.jenetics.incubator.parser.Bnf.Repetition;
 import io.jenetics.incubator.parser.Bnf.Rule;
 import io.jenetics.incubator.parser.Bnf.Symbol;
 import io.jenetics.incubator.parser.Bnf.Terminal;
@@ -60,21 +61,18 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
  */
 public class BnfParser extends Parser {
 
+	NonTerminal start = null;
 	final List<Rule> rules = new ArrayList<>();
 	final List<Symbol> symbols = new ArrayList<>();
 	final List<Expression> alternatives = new ArrayList<>();
 
 	protected BnfParser(final BnfTokenizer tokenizer) {
-		super(tokenizer, 10);
+		super(tokenizer, 4);
 	}
 
-	public void parse() {
-		try {
-			rulelist();
-		} catch (ParseException e) {
-			System.out.println(symbols);
-			throw e;
-		}
+	public Bnf parse() {
+		rulelist();
+		return new Bnf(rules);
 	}
 
 	private void rulelist() {
@@ -84,13 +82,17 @@ public class BnfParser extends Parser {
 	}
 
 	private void rule() {
-		lhs();
+		start = lhs();
 		match(ASSIGN);
 		rhs();
+
+		rules.add(new Rule(start, alternatives));
+		start = null;
+		alternatives.clear();
 	}
 
-	private void lhs() {
-		id();
+	private NonTerminal lhs() {
+		return id();
 	}
 
 	private void rhs() {
@@ -99,9 +101,19 @@ public class BnfParser extends Parser {
 
 	private void alternatives() {
 		alternative();
+		if (!symbols.isEmpty()) {
+			alternatives.add(new Expression(symbols, new Repetition(1, 1)));
+			symbols.clear();
+		}
+
 		while (LA(1) == BAR.code()) {
 			match(BAR);
 			alternative();
+
+			if (!symbols.isEmpty()) {
+				alternatives.add(new Expression(symbols, new Repetition(1, 1)));
+				symbols.clear();
+			}
 		}
 	}
 
@@ -111,12 +123,12 @@ public class BnfParser extends Parser {
 		} while (
 			LA(4) != ASSIGN.code() &&
 			(LA(1) == REND.code() ||
-				LA(1) == RBRACE.code() ||
-				LA(1) == RPAREN.code() ||
-				LA(1) == STRING.code() ||
-				LA(1) == QUOTED_STRING.code() ||
-				LA(1) == ID.code() ||
-				LA(1) == LT.code())
+			LA(1) == RBRACE.code() ||
+			LA(1) == RPAREN.code() ||
+			LA(1) == STRING.code() ||
+			LA(1) == QUOTED_STRING.code() ||
+			LA(1) == ID.code() ||
+			LA(1) == LT.code())
 		);
 	}
 
@@ -128,13 +140,13 @@ public class BnfParser extends Parser {
 		} else if (LA(1) == RPAREN.code()) {
 			oneormore();
 		} else if (LA(1) == STRING.code()) {
-			text();
+			symbols.add(text());
 		} else if (LA(1) == QUOTED_STRING.code()) {
-			text();
+			symbols.add(text());
 		} else if (LA(1) == ID.code()) {
-			text();
+			symbols.add(text());
 		} else if (LA(1) == LT.code()) {
-			id();
+			symbols.add(id());
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
@@ -161,29 +173,30 @@ public class BnfParser extends Parser {
 		match(LPAREN);
 	}
 
-	private void text() {
+	private Terminal text() {
 		if (LA(1) == STRING.code()) {
-			symbols.add(new Terminal(match(STRING)));
+			return new Terminal(match(STRING));
 		} else if (LA(1) == QUOTED_STRING.code()) {
-			symbols.add(new Terminal(match(QUOTED_STRING)));
+			return new Terminal(match(QUOTED_STRING));
 		} else if (LA(1) == ID.code()) {
-			symbols.add(new Terminal(match(ID)));
+			return new Terminal(match(ID));
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
-				List.of(STRING, QUOTED_STRING), LT(1)
+				List.of(STRING, QUOTED_STRING, ID), LT(1)
 			));
 		}
 	}
 
-	private void id() {
+	private NonTerminal id() {
 		match(BnfTokenizer.BnfTokenType.LT);
-		ruleid();
+		final var result = ruleid();
 		match(BnfTokenizer.BnfTokenType.GT);
+		return result;
 	}
 
-	private void ruleid() {
-		symbols.add(new NonTerminal(match(BnfTokenizer.BnfTokenType.ID)));
+	private NonTerminal ruleid() {
+		return new NonTerminal(match(BnfTokenizer.BnfTokenType.ID));
 	}
 
 }
