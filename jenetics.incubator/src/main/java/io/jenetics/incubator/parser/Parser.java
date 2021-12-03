@@ -68,13 +68,13 @@ abstract class Parser<T extends Token> {
 	/**
 	 * Try to <em>match</em> and consume the next token of the given
 	 * {@code type}. If the current token is not from the given type, a
-	 * {@link ParseException} is thrown.
+	 * {@link ParsingException} is thrown.
 	 *
 	 * @param type the token type to match
 	 * @return the matched token
 	 * @throws NullPointerException if the given token {@code type} is
 	 *        {@code null}
-	 * @throws ParseException if the current token doesn't match the desired
+	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
 	protected T match(final Type type) {
@@ -83,7 +83,7 @@ abstract class Parser<T extends Token> {
 			consume();
 			return token;
 		} else {
-			throw new ParseException(format(
+			throw new ParsingException(format(
 				"Expecting %s but found %s.",
 				type, LT(1)
 			));

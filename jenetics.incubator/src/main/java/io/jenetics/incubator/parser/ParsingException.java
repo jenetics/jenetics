@@ -22,18 +22,17 @@ package io.jenetics.incubator.parser;
 import java.io.Serial;
 
 /**
- * Exception thrown in the case of a tokenizer error.
+ * Exception thrown in the case of a parse error.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-class TokenizerException extends RuntimeException {
-
+class ParsingException extends RuntimeException {
 	@Serial
 	private static final long serialVersionUID = 1;
 
-	public TokenizerException(final String message) {
+	public ParsingException(final String message) {
 		super(message);
 	}
 

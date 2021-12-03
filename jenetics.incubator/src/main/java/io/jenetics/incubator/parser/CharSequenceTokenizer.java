@@ -57,7 +57,7 @@ abstract class CharSequenceTokenizer<T extends Token> implements Tokenizer<T> {
 		if (ch == c) {
 			consume();
 		} else {
-			throw new TokenizerException(format(
+			throw new ParsingException(format(
 				"Got invalid character '%s' at position '%d'; expected '%s'",
 				c, pos, ch
 			));

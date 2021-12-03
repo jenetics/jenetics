@@ -136,7 +136,7 @@ final class BnfParser extends Parser<Token> {
 		} else if (LA(1) == LT.code()) {
 			symbols.add(id());
 		} else {
-			throw new ParseException(format(
+			throw new ParsingException(format(
 				"Expecting %s but found %s.",
 				List.of(STRING, QUOTED_STRING, ID, LT), LT(1)
 			));
@@ -151,7 +151,7 @@ final class BnfParser extends Parser<Token> {
 		} else if (LA(1) == ID.code()) {
 			return terminal(match(ID).value());
 		} else {
-			throw new ParseException(format(
+			throw new ParsingException(format(
 				"Expecting %s but found %s.",
 				List.of(STRING, QUOTED_STRING, ID), LT(1)
 			));
@@ -160,7 +160,7 @@ final class BnfParser extends Parser<Token> {
 
 	private static Terminal terminal(final String value) {
 		if (value.isEmpty()) {
-			throw new ParseException("Terminal value must not be empty.");
+			throw new ParsingException("Terminal value must not be empty.");
 		}
 		return new Terminal(value);
 	}
@@ -175,7 +175,7 @@ final class BnfParser extends Parser<Token> {
 	private NonTerminal ruleid() {
 		final var value = match(ID).value();
 		if (value.isEmpty()) {
-			throw new ParseException("Rule id must not be empty.");
+			throw new ParsingException("Rule id must not be empty.");
 		}
 		return new NonTerminal(value);
 	}

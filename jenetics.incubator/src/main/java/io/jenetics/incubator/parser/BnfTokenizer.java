@@ -103,7 +103,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 					} else if (!isWhitespace(c)) {
 						return STRING();
 					} else {
-						throw new TokenizerException(format(
+						throw new ParsingException(format(
 							"Got invalid character '%s' at position '%d'.",
 							c, pos
 						));
