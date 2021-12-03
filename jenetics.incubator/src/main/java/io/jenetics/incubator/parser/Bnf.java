@@ -98,10 +98,7 @@ public class Bnf {
 
 		@Override
 		public String toString() {
-			final var result = value.replace("\\", "\\\\").replace("'", "\\'");
-			return value.length() == result.length()
-				? result
-				: "'" + result + "'";
+			return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'";
 		}
 	}
 
