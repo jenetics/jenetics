@@ -24,12 +24,19 @@ import static java.util.Objects.requireNonNull;
 
 import io.jenetics.incubator.parser.Token.Type;
 
-public abstract class Parser {
+/**
+ * Base class for all parsers.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
+abstract class Parser {
 
-	private final CharSequenceTokenizer _tokenizer;
-	final TokenRing _lookahead;
+	private final Tokenizer _tokenizer;
+	private final TokenRing _lookahead;
 
-	protected Parser(final CharSequenceTokenizer tokenizer, final int k) {
+	protected Parser(final Tokenizer tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing(k);
 		for (int i = 0; i < k; ++i) {
@@ -37,15 +44,15 @@ public abstract class Parser {
 		}
 	}
 
-	public Token LT(final int i) {
+	protected Token LT(final int i) {
 		return _lookahead.LT(i);
 	}
 
-	public int LA(final int i) {
+	protected int LA(final int i) {
 		return _lookahead.LA(i);
 	}
 
-	public String match(final Type type) {
+	protected String match(final Type type) {
 		if (LA(1) == type.code()) {
 			final var value = LT(1).value();
 			consume();

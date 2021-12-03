@@ -19,16 +19,16 @@
  */
 package io.jenetics.incubator.parser;
 
+import static java.lang.Character.isAlphabetic;
+import static java.lang.Character.isDigit;
+import static java.lang.Character.isWhitespace;
+import static java.lang.String.format;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
-import static java.lang.Character.isJavaIdentifierPart;
-import static java.lang.Character.isJavaIdentifierStart;
-import static java.lang.Character.isWhitespace;
-import static java.lang.String.format;
 
 /**
  * https://github.com/antlr/grammars-v4/blob/master/bnf/bnf.g4
@@ -52,9 +52,9 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 		BAR(2),
 		GT(3),
 		LT(4),
-		QUOTED_STRING(5),
+		ID(5),
 		STRING(6),
-		ID(17);
+		QUOTED_STRING(7);
 
 		private final int _code;
 
@@ -94,7 +94,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 				case '\'':
 					return QUOTED_STRING();
 				default:
-					if (isJavaIdentifierStart(c)) {
+					if (isAlphabetic(c)) {
 						return ID();
 					} else if (!isWhitespace(c)) {
 						return STRING();
@@ -139,12 +139,16 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 	private Token ID() {
 		final var value = new StringBuilder();
 
-		while (isNonEof(c) && isJavaIdentifierPart(c)) {
+		while (isIdChar(c)) {
 			value.append(c);
 			consume();
 		}
 
 		return ID.token(value.toString());
+	}
+
+	private static boolean isIdChar(final char c) {
+		return isAlphabetic(c) || isDigit(c) || (c == '-');
 	}
 
 	private Token STRING() {
@@ -159,7 +163,11 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 	}
 
 	private static boolean isStringChar(final char c) {
-		return !isWhitespace(c) && c != '<' && c != '>' && c != '|' && c != ':';
+		return !isWhitespace(c) && !isSymbolChar(c);
+	}
+
+	private static boolean isSymbolChar(final int c) {
+		return c == '<' || c == '>' || c == '|' || c == ':' || c == '=';
 	}
 
 }

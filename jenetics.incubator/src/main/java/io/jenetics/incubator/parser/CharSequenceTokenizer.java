@@ -35,7 +35,7 @@ abstract class CharSequenceTokenizer implements Tokenizer {
 
 	private final CharSequence _input;
 
-	protected int pos;
+	protected int pos = 0;
 	protected char c = EOF;
 
 	/**
@@ -65,12 +65,10 @@ abstract class CharSequenceTokenizer implements Tokenizer {
 	}
 
 	protected void consume() {
-		++pos;
-
-		if (pos >= _input.length()) {
+		if (pos + 1 >= _input.length()) {
 			c = EOF;
 		} else {
-			c = _input.charAt(pos);
+			c = _input.charAt(++pos);
 		}
 	}
 
