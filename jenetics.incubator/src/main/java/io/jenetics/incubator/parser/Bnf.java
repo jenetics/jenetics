@@ -97,7 +97,7 @@ public class Bnf {
 	/**
 	 * Represents one <em>expression</em> a production rule consists of.
 	 */
-	public static record Expression(List<Symbol> symbols, Repetition repetition) {
+	public static record Expression(List<Symbol> symbols) {
 
 		/**
 		 * @param symbols the list of symbols of the expression

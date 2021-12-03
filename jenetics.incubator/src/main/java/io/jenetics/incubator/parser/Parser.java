@@ -83,7 +83,6 @@ abstract class Parser<T extends Token> {
 			consume();
 			return token;
 		} else {
-			new Exception().printStackTrace();
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
 				type, LT(1)

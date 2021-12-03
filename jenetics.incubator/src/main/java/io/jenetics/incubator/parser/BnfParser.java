@@ -19,44 +19,44 @@
  */
 package io.jenetics.incubator.parser;
 
-import io.jenetics.incubator.parser.Bnf.Expression;
-import io.jenetics.incubator.parser.Bnf.NonTerminal;
-import io.jenetics.incubator.parser.Bnf.Repetition;
-import io.jenetics.incubator.parser.Bnf.Rule;
-import io.jenetics.incubator.parser.Bnf.Symbol;
-import io.jenetics.incubator.parser.Bnf.Terminal;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static java.lang.String.format;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.incubator.parser.Token.Type.EOF;
-import static java.lang.String.format;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.jenetics.incubator.parser.Bnf.Expression;
+import io.jenetics.incubator.parser.Bnf.NonTerminal;
+import io.jenetics.incubator.parser.Bnf.Rule;
+import io.jenetics.incubator.parser.Bnf.Symbol;
+import io.jenetics.incubator.parser.Bnf.Terminal;
 
 /**
+ * Parser for BNF grammars.
+ *
+ * <pre>
  * rulelist: rule_* EOF;
- * rule_: lhs ASSIGN rhs;
- * lhs: id_;
+ * rule: lhs ASSIGN rhs;
+ * lhs: id;
  * rhs: alternatives;
  * alternatives: alternative (BAR alternative)*;
  * alternative: element*;
- * element: optional_ | zeroormore | oneormore | text_ | id_;
- * optional_: REND alternatives LEND;
- * zeroormore: RBRACE alternatives LBRACE;
- * oneormore: RPAREN alternatives LPAREN;
- * text_: STRING;
- * id_: LT ruleid GT;
+ * element:  text | id;
+ * text: STRING | QUOTED_STRING;
+ * id: LT ruleid GT;
  * ruleid: ID;
+ * </pre>
  */
-public class BnfParser extends Parser {
+public class BnfParser extends Parser<Token> {
 
 	NonTerminal start = null;
-	Repetition repetition = new Repetition(1, 1);
 	final List<Rule> rules = new ArrayList<>();
 	final List<Symbol> symbols = new ArrayList<>();
 	final List<Expression> alternatives = new ArrayList<>();
@@ -97,7 +97,7 @@ public class BnfParser extends Parser {
 	private void alternatives() {
 		alternative();
 		if (!symbols.isEmpty()) {
-			alternatives.add(new Expression(symbols, repetition));
+			alternatives.add(new Expression(symbols));
 			symbols.clear();
 		}
 
@@ -106,7 +106,7 @@ public class BnfParser extends Parser {
 			alternative();
 
 			if (!symbols.isEmpty()) {
-				alternatives.add(new Expression(symbols, repetition));
+				alternatives.add(new Expression(symbols));
 				symbols.clear();
 			}
 		}
@@ -161,12 +161,12 @@ public class BnfParser extends Parser {
 	private NonTerminal id() {
 		match(BnfTokenizer.BnfTokenType.LT);
 		final var result = ruleid();
-		match(BnfTokenizer.BnfTokenType.GT);
+		match(GT);
 		return result;
 	}
 
 	private NonTerminal ruleid() {
-		return new NonTerminal(match(BnfTokenizer.BnfTokenType.ID).value());
+		return new NonTerminal(match(ID).value());
 	}
 
 }
