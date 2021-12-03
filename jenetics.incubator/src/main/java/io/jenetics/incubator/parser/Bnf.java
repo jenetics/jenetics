@@ -21,6 +21,7 @@ package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.parser.Bnfs.isValidId;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,17 +53,23 @@ public class Bnf {
 	}
 
 	/**
-	 * Represents the non-terminal symbols of the grammar.
+	 * Represents the non-terminal symbols of the grammar. The value of a
+	 * <em>non-terminal</em> object must obey the following patter:
+	 * <pre>
+	 * VALUE: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
+	 * </pre>
 	 */
 	public static record NonTerminal(String value) implements Symbol {
 
 		/**
 		 * @param value the value of the non-terminal symbol
+		 * @throws IllegalArgumentException if the given {@code value} is not
+		 *         a valid <em>non-terminal</em> name
 		 */
 		public NonTerminal {
-			if (value.isBlank()) {
+			if (!isValidId(value)) {
 				throw new IllegalArgumentException(
-					"Non-terminal must not be blank: '" + value + "'."
+					"Non-terminal value '%s' is invalid.".formatted(value)
 				);
 			}
 		}
@@ -82,9 +89,9 @@ public class Bnf {
 		 * @param value the value of the terminal symbol
 		 */
 		public Terminal {
-			if (value.isBlank()) {
+			if (value.isEmpty()) {
 				throw new IllegalArgumentException(
-					"Non-terminal must not be null."
+					"Terminal value must not be empty."
 				);
 			}
 		}
@@ -245,6 +252,7 @@ public class Bnf {
 			.filter(rule -> rule.start().equals(start))
 			.findFirst();
 	}
+
 
 	@Override
 	public int hashCode() {

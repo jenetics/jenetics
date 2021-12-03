@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.parser;
 
-import static java.lang.Character.isAlphabetic;
-import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
@@ -30,6 +28,9 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+import static io.jenetics.incubator.parser.Bnfs.isAlphabetic;
+import static io.jenetics.incubator.parser.Bnfs.isIdChar;
+import static io.jenetics.incubator.parser.Bnfs.isStringChar;
 
 /**
  * Tokenizer for BNF grammars.
@@ -129,12 +130,12 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 	private Token QUOTED_STRING() {
 		final var value = new StringBuilder();
 
-		consume();
+		match('\'');
 		while (isNonEof(c) && c != '\'') {
 			value.append(c);
 			consume();
 		}
-		consume();
+		match('\'');
 
 		return QUOTED_STRING.token(value.toString());
 	}
@@ -150,10 +151,6 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		return ID.token(value.toString());
 	}
 
-	private static boolean isIdChar(final char c) {
-		return isAlphabetic(c) || isDigit(c) || (c == '-');
-	}
-
 	private Token STRING() {
 		final var value = new StringBuilder();
 
@@ -163,14 +160,6 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		}
 
 		return STRING.token(value.toString());
-	}
-
-	private static boolean isStringChar(final char c) {
-		return !isWhitespace(c) && !isSymbolChar(c);
-	}
-
-	private static boolean isSymbolChar(final int c) {
-		return c == '<' || c == '>' || c == '|' || c == ':' || c == '=';
 	}
 
 }
