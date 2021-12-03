@@ -127,25 +127,25 @@ public class Bnf {
 	/**
 	 * Represents a production rule of the grammar.
 	 */
-	public static record Rule(NonTerminal start, List<Expression> expressions) {
+	public static record Rule(NonTerminal start, List<Expression> alternatives) {
 
 		/**
 		 * Creates a new rule object.
 		 *
 		 * @param start the start symbol of the rule
-		 * @param expressions the list af expressions of the rules
+		 * @param alternatives the list af alternative rule expressions
 		 * @throws IllegalArgumentException if the given list of
-		 *         {@code expressions} is empty
+		 *         {@code alternatives} is empty
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
 		public Rule {
 			requireNonNull(start);
-			if (expressions.isEmpty()) {
+			if (alternatives.isEmpty()) {
 				throw new IllegalArgumentException(
-					"Rule expressions must not be empty."
+					"Rule alternatives must not be empty."
 				);
 			}
-			expressions = List.copyOf(expressions);
+			alternatives = List.copyOf(alternatives);
 		}
 
 		@Override
@@ -153,7 +153,7 @@ public class Bnf {
 			return format(
 				"%s ::= %s",
 				start,
-				expressions.stream()
+				alternatives.stream()
 					.map(Objects::toString)
 					.collect(Collectors.joining("\n    | "))
 			);
@@ -190,7 +190,7 @@ public class Bnf {
 		return rules.stream()
 			.flatMap(rule -> Stream.concat(
 				Stream.of(rule.start),
-				rule.expressions.stream().flatMap(e -> e.symbols.stream())
+				rule.alternatives.stream().flatMap(e -> e.symbols.stream())
 			))
 			.filter(type::isInstance)
 			.map(type::cast)

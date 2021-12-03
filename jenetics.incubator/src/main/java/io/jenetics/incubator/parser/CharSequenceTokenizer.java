@@ -20,9 +20,7 @@
 package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
-
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Base class for all tokenizers.
@@ -31,7 +29,7 @@ import java.util.stream.Stream;
  * @since !__version__!
  * @version !__version__!
  */
-public abstract class CharSequenceTokenizer {
+abstract class CharSequenceTokenizer implements Tokenizer {
 
 	private static final char EOF = (char)-1;
 
@@ -47,30 +45,12 @@ public abstract class CharSequenceTokenizer {
 	 * @throws NullPointerException if the given {@code input} is {@code null}
 	 */
 	protected CharSequenceTokenizer(final CharSequence input) {
+		requireNonNull(input);
+
 		if (input.length() > 0) {
 			c = input.charAt(0);
 		}
 		_input = input;
-	}
-
-	public abstract Token next();
-
-	public final CharSequenceTokenizer filter(final Predicate<? super Token> filter) {
-		return new CharSequenceTokenizer("") {
-			@Override
-			public Token next() {
-				var token = CharSequenceTokenizer.this.next();
-				while (!filter.test(token) && token != Token.EOF) {
-					token = CharSequenceTokenizer.this.next();
-				}
-				return token;
-			}
-		};
-	}
-
-	public final Stream<Token> tokens() {
-		return Stream.generate(this::next)
-			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}
 
 	protected void match(final char ch) {

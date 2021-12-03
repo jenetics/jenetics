@@ -21,7 +21,6 @@ package io.jenetics.incubator.parser;
 
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
@@ -39,7 +38,7 @@ import static java.lang.String.format;
  * GT: '>';
  * LT: '<';
  * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
- * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|' ')+;
+ * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
  * WS: [ \r\n\t] -> skip;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -88,7 +87,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 					return BAR.token(value);
 				case '>':
 					consume();
-					return GT.token(value);
+					return BnfTokenType.GT.token(value);
 				case '<':
 					consume();
 					return LT.token(value);
