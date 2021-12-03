@@ -5,8 +5,8 @@ import org.testng.annotations.Test;
 public class BnfParserTest {
 
 	private static final String BNF_STRING = """
-		<expr> ::= ( <expr> <op> <expr> ) <op> <expr> | 5
-		<op>   ::= + | - | * | / | '('
+		<expr> ::= (<expr> <op> <expr>) <op> <expr> | 5
+		<op>   ::= + | - | * | / | (
 		<var>  ::= x | y
 		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 		""";

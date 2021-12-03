@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class BnfTokenizerTest {
 
 	private static final String GRAMMAR_STRING = """
-		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> | ( <expr> <op> <expr> )
+		<expr> ::= (<expr> <op> <expr>) | <num> | <var> | ( <expr> <op> <expr> )
 		<op>   ::= '+' | - | '*' | / | '('
 		<var>  ::= x | y
 		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9

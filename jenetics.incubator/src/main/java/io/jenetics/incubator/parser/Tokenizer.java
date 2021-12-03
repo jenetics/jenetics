@@ -21,6 +21,7 @@ package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
 
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -53,6 +54,19 @@ public abstract class Tokenizer {
 	}
 
 	public abstract Token next();
+
+	public final Tokenizer filter(final Predicate<? super Token> filter) {
+		return new Tokenizer("") {
+			@Override
+			public Token next() {
+				var token = Tokenizer.this.next();
+				while (!filter.test(token) && token != Token.EOF) {
+					token = Tokenizer.this.next();
+				}
+				return token;
+			}
+		};
+	}
 
 	public final Stream<Token> tokens() {
 		return Stream.generate(this::next)

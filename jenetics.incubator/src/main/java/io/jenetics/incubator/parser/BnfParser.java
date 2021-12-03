@@ -19,30 +19,24 @@
  */
 package io.jenetics.incubator.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LBRACE;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LEND;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LPAREN;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RBRACE;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
-import static io.jenetics.incubator.parser.Token.Type.EOF;
-import static java.lang.String.format;
-
 import io.jenetics.incubator.parser.Bnf.Expression;
 import io.jenetics.incubator.parser.Bnf.NonTerminal;
 import io.jenetics.incubator.parser.Bnf.Repetition;
 import io.jenetics.incubator.parser.Bnf.Rule;
 import io.jenetics.incubator.parser.Bnf.Symbol;
 import io.jenetics.incubator.parser.Bnf.Terminal;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+import static io.jenetics.incubator.parser.Token.Type.EOF;
+import static java.lang.String.format;
 
 /**
  * rulelist: rule_* EOF;
@@ -124,9 +118,6 @@ public class BnfParser extends Parser {
 		} while (
 			LA(4) != ASSIGN.code() &&
 			(
-				LA(1) == REND.code() ||
-				LA(1) == RBRACE.code() ||
-				LA(1) == RPAREN.code() ||
 				LA(1) == STRING.code() ||
 				LA(1) == QUOTED_STRING.code() ||
 				LA(1) == ID.code() ||
@@ -136,13 +127,7 @@ public class BnfParser extends Parser {
 	}
 
 	private void element() {
-		if (LA(1) == REND.code()) {
-			optional();
-		} else if (LA(1) == RBRACE.code()) {
-			zeroormore();
-		} else if (LA(1) == RPAREN.code()) {
-			oneormore();
-		} else if (LA(1) == STRING.code()) {
+		if (LA(1) == STRING.code()) {
 			symbols.add(text());
 		} else if (LA(1) == QUOTED_STRING.code()) {
 			symbols.add(text());
@@ -153,30 +138,9 @@ public class BnfParser extends Parser {
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
-				List.of(REND, RBRACE, RPAREN, STRING, QUOTED_STRING, ID, LT), LT(1)
+				List.of(STRING, QUOTED_STRING, ID, LT), LT(1)
 			));
 		}
-	}
-
-	private void optional() {
-		match(REND);
-		alternatives();
-		match(LEND);
-		repetition = new Repetition(0, 1);
-	}
-
-	private void zeroormore() {
-		match(RBRACE);
-		alternatives();
-		match(LBRACE);
-		repetition = new Repetition(0, Integer.MAX_VALUE);
-	}
-
-	private void oneormore() {
-		match(RPAREN);
-		alternatives();
-		match(LPAREN);
-		repetition = new Repetition(1, Integer.MAX_VALUE);
 	}
 
 	private Terminal text() {

@@ -19,34 +19,22 @@
  */
 package io.jenetics.incubator.parser;
 
-import static java.lang.Character.isJavaIdentifierPart;
-import static java.lang.Character.isJavaIdentifierStart;
-import static java.lang.Character.isWhitespace;
-import static java.lang.String.format;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LBRACE;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LEND;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LPAREN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RBRACE;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.REND;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.RPAREN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+import static java.lang.Character.isJavaIdentifierPart;
+import static java.lang.Character.isJavaIdentifierStart;
+import static java.lang.Character.isWhitespace;
+import static java.lang.String.format;
 
 /**
  * https://github.com/antlr/grammars-v4/blob/master/bnf/bnf.g4
  *
  * ASSIGN: '::=';
- * LPAREN: ')';
- * RPAREN: '(';
- * LBRACE: '}';
- * RBRACE: '{';
- * LEND: ']';
- * REND: '[';
  * BAR: '|';
  * GT: '>';
  * LT: '<';
@@ -61,19 +49,13 @@ import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 final class BnfTokenizer extends Tokenizer {
 
 	enum BnfTokenType implements Token.Type {
-		ASSIGN(2),
-		LPAREN(3),
-		RPAREN(4),
-		LBRACE(5),
-		RBRACE(6),
-		LEND(7),
-		REND(8),
-		BAR(9),
-		GT(10),
-		LT(11),
-		QUOTED_STRING(12),
-		STRING(13),
-		ID(14);
+		ASSIGN(1),
+		BAR(2),
+		GT(3),
+		LT(4),
+		QUOTED_STRING(5),
+		STRING(6),
+		ID(17);
 
 		private final int _code;
 
@@ -101,24 +83,6 @@ final class BnfTokenizer extends Tokenizer {
 					continue;
 				case ':':
 					return ASSIGN();
-				case ')':
-					consume();
-					return LPAREN.token(value);
-				case '(':
-					consume();
-					return RPAREN.token(value);
-				case '}':
-					consume();
-					return LBRACE.token(value);
-				case '{':
-					consume();
-					return RBRACE.token(value);
-				case ']':
-					consume();
-					return LEND.token(value);
-				case '[':
-					consume();
-					return REND.token(value);
 				case '|':
 					consume();
 					return BAR.token(value);
@@ -187,12 +151,16 @@ final class BnfTokenizer extends Tokenizer {
 	private Token STRING() {
 		final var value = new StringBuilder();
 
-		while (isNonEof(c) && !isWhitespace(c)) {
+		while (isNonEof(c) && isStringChar(c)) {
 			value.append(c);
 			consume();
 		}
 
 		return STRING.token(value.toString());
+	}
+
+	private static boolean isStringChar(final char c) {
+		return !isWhitespace(c) && c != '<' && c != '>' && c != '|' && c != ':';
 	}
 
 }
