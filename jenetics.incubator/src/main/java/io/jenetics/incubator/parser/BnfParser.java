@@ -54,7 +54,7 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
  * ruleid: ID;
  * </pre>
  */
-public class BnfParser extends Parser<Token> {
+final class BnfParser extends Parser<Token> {
 
 	NonTerminal start = null;
 	final List<Rule> rules = new ArrayList<>();

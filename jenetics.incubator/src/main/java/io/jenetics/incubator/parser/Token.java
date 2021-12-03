@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * @since !__version__!
  * @version !__version__!
  */
-public interface Token {
+interface Token {
 
 	/**
 	 * The common <em>end of file</em> token.
