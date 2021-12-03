@@ -17,31 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.incubator.parser;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.io.Serial;
 
 /**
+ * Exception thrown in the case of a parse error.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
-public class OrderedTest {
+final class ParsingException extends RuntimeException {
+	@Serial
+	private static final long serialVersionUID = 1;
 
-	@Test
-	public void comparing() {
-		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
-			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
-			.sorted(Comparator.naturalOrder())
-			.toList();
+	ParsingException(final String message) {
+		super(message);
+	}
 
-		for (int i = 0; i < objects.size(); ++i) {
-			final int value = objects.get(i).get();
-			Assert.assertEquals(value, objects.size() - i - 1);
-		}
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
 	}
 
 }

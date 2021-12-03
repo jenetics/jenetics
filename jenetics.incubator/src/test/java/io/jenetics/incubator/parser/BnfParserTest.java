@@ -17,31 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.incubator.parser;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.IntStream;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.testng.Assert;
+import java.util.random.RandomGenerator;
+
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class OrderedTest {
+public class BnfParserTest {
+
+	private static final String BNF_STRING = """
+		<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+		<op>   ::= + | - | * | /
+		<var>  ::= x | y
+		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+		""";
 
 	@Test
-	public void comparing() {
-		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
-			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
-			.sorted(Comparator.naturalOrder())
-			.toList();
+	public void parse() {
+		final var bnf = Bnf.parse(BNF_STRING);
+		System.out.println(bnf);
+	}
 
-		for (int i = 0; i < objects.size(); ++i) {
-			final int value = objects.get(i).get();
-			Assert.assertEquals(value, objects.size() - i - 1);
-		}
+	@Test(invocationCount = 25)
+	public void randomBnfParsing() {
+		final var bnf = RandomBnf.next(RandomGenerator.getDefault());
+
+		final var tokenizer = new BnfTokenizer(bnf.toString());
+		final var parser = new BnfParser(tokenizer);
+		final var parsedBnf = parser.parse();
+
+		assertThat(parsedBnf).isEqualTo(bnf);
 	}
 
 }
