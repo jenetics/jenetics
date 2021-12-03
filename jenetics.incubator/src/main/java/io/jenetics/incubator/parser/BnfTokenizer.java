@@ -46,7 +46,7 @@ import static java.lang.String.format;
  * @since !__version__!
  * @version !__version__!
  */
-final class BnfTokenizer extends Tokenizer {
+final class BnfTokenizer extends CharSequenceTokenizer {
 
 	enum BnfTokenType implements Token.Type {
 		ASSIGN(1),

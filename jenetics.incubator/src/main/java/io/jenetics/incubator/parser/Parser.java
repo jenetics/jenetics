@@ -26,10 +26,10 @@ import io.jenetics.incubator.parser.Token.Type;
 
 public abstract class Parser {
 
-	private final Tokenizer _tokenizer;
+	private final CharSequenceTokenizer _tokenizer;
 	final TokenRing _lookahead;
 
-	protected Parser(final Tokenizer tokenizer, final int k) {
+	protected Parser(final CharSequenceTokenizer tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing(k);
 		for (int i = 0; i < k; ++i) {

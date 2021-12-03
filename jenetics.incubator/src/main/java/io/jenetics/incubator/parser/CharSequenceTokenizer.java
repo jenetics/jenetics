@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * @since !__version__!
  * @version !__version__!
  */
-public abstract class Tokenizer {
+public abstract class CharSequenceTokenizer {
 
 	private static final char EOF = (char)-1;
 
@@ -46,7 +46,7 @@ public abstract class Tokenizer {
 	 * @param input the input character sequence
 	 * @throws NullPointerException if the given {@code input} is {@code null}
 	 */
-	protected Tokenizer(final CharSequence input) {
+	protected CharSequenceTokenizer(final CharSequence input) {
 		if (input.length() > 0) {
 			c = input.charAt(0);
 		}
@@ -55,13 +55,13 @@ public abstract class Tokenizer {
 
 	public abstract Token next();
 
-	public final Tokenizer filter(final Predicate<? super Token> filter) {
-		return new Tokenizer("") {
+	public final CharSequenceTokenizer filter(final Predicate<? super Token> filter) {
+		return new CharSequenceTokenizer("") {
 			@Override
 			public Token next() {
-				var token = Tokenizer.this.next();
+				var token = CharSequenceTokenizer.this.next();
 				while (!filter.test(token) && token != Token.EOF) {
-					token = Tokenizer.this.next();
+					token = CharSequenceTokenizer.this.next();
 				}
 				return token;
 			}
