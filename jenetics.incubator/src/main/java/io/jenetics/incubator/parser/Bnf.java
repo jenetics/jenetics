@@ -29,7 +29,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Represents a BNF grammar.
+ * Represents a <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">
+ *     BNF</a> grammar.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -121,9 +122,6 @@ public class Bnf {
 		}
 	}
 
-	public static record Repetition(int min, int max) {
-	}
-
 	/**
 	 * Represents a production rule of the grammar.
 	 */
@@ -190,8 +188,7 @@ public class Bnf {
 		return rules.stream()
 			.flatMap(rule -> Stream.concat(
 				Stream.of(rule.start),
-				rule.alternatives.stream().flatMap(e -> e.symbols.stream())
-			))
+				rule.alternatives.stream().flatMap(e -> e.symbols.stream())))
 			.filter(type::isInstance)
 			.map(type::cast)
 			.distinct()
@@ -247,18 +244,6 @@ public class Bnf {
 		return rules.stream()
 			.filter(rule -> rule.start().equals(start))
 			.findFirst();
-	}
-
-	private Rule getRule(final Symbol symbol) {
-		if (symbol == null) return null;
-
-		for (Rule rule : rules) {
-			if (rule.start.value.equals(symbol.value())) {
-				return rule;
-			}
-		}
-
-		return null;
 	}
 
 	@Override
