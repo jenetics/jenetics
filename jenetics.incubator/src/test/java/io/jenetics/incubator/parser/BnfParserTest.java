@@ -31,20 +31,15 @@ import org.testng.annotations.Test;
 public class BnfParserTest {
 
 	private static final String BNF_STRING = """
-		<expr> ::= (<expr> <op> <expr>) <op> <exspr> | 5 | ' '
-		<op>   ::= + | - | * | / | '\\''
+		<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+		<op>   ::= + | - | * | /
 		<var>  ::= x | y
 		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 		""";
 
-	//@Test
+	@Test
 	public void parse() {
-		final var tokenizer = new BnfTokenizer(BNF_STRING);
-		final var parser = new BnfParser(tokenizer);
-		final var bnf = parser.parse();
-
-		parser.symbols.forEach(System.out::print);
-		System.out.println();
+		final var bnf = Bnf.parse(BNF_STRING);
 		System.out.println(bnf);
 	}
 

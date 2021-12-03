@@ -41,7 +41,7 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
 /**
  * Parser for BNF grammars.
  *
- * <pre>
+ * <pre>{@code
  * rulelist: rule_* EOF;
  * rule: lhs ASSIGN rhs;
  * lhs: id;
@@ -52,7 +52,7 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
  * text: STRING | QUOTED_STRING;
  * id: LT ruleid GT;
  * ruleid: ID;
- * </pre>
+ * }</pre>
  */
 final class BnfParser extends Parser<Token> {
 
@@ -61,7 +61,7 @@ final class BnfParser extends Parser<Token> {
 	final List<Symbol> symbols = new ArrayList<>();
 	final List<Expression> alternatives = new ArrayList<>();
 
-	protected BnfParser(final BnfTokenizer tokenizer) {
+	BnfParser(final BnfTokenizer tokenizer) {
 		super(tokenizer, 4);
 	}
 

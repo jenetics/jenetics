@@ -35,7 +35,7 @@ import static io.jenetics.incubator.parser.Bnfs.isStringChar;
 /**
  * Tokenizer for BNF grammars.
  *
- * <pre>
+ * <pre>{@code
  * ASSIGN: '::=';
  * BAR: '|';
  * GT: '>';
@@ -43,7 +43,7 @@ import static io.jenetics.incubator.parser.Bnfs.isStringChar;
  * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
  * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
  * WS: [ \r\n\t] -> skip;
- * </pre>
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
