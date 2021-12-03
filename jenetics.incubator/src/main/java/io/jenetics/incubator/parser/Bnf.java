@@ -31,7 +31,33 @@ import java.util.stream.Stream;
 
 /**
  * Represents a <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">
- *     BNF</a> grammar.
+ * BNF</a> grammar. The following example shows the BNF for a simple arithmetic
+ * expression.
+ * <pre>{@code
+ * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+ * <op>   ::= + | - | * | /
+ * <var>  ::= x | y
+ * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ * }</pre>
+ *
+ * The BNF object is build from the following classes.
+ * <ul>
+ *     <li>{@link Symbol}: A symbol is either a {@link Terminal} or
+ *     {@link NonTerminal} symbol.</li>
+ *     <li>{@link NonTerminal}: Non-terminal symbols are parenthesised in angle
+ *     brackets; {@code <expr>}, {@code num} or {@code var}. The name must start
+ *     with a letter and contain only letters and digits:
+ *     {@code ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+}</li>
+ *     <li>{@link Terminal}: Terminal symbols are simple string values, which
+ *     can also be quoted; {@code x}, {@code 1}, {@code terminal} or
+ *     {@code 'some $special value'}</li>
+ *     <li>{@link Expression}: Consists of a list of symbols; {@code [num]},
+ *     {@code [var]} or {@code [(, expr, op, expr, )]}</li>
+ *     <li>{@link Rule}: A rule has a name, a non-terminal start symbol, and a
+ *     list of <em>alternative</em> expressions;
+ *     {@code <expr> ::= [[num], [var], [(, expr, op, expr, )]]}</li>
+ *     <li>{@link Bnf}: A whole BNF grammar consists of one or more {@link Rule}s.</li>
+ * </ul>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
