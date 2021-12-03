@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  */
 @FunctionalInterface
-interface Tokenizer {
+interface Tokenizer<T extends Token> {
 
 	/**
 	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
@@ -38,9 +38,9 @@ interface Tokenizer {
 	 *
 	 * @return the next available token
 	 */
-	Token next();
+	T next();
 
-	default Tokenizer filter(final Predicate<? super Token> filter) {
+	default Tokenizer<T> filter(final Predicate<? super T> filter) {
 		return () -> {
 			var token = Tokenizer.this.next();
 			while (!filter.test(token) && token != Token.EOF) {
@@ -50,7 +50,7 @@ interface Tokenizer {
 		};
 	}
 
-	default Stream<Token> tokens() {
+	default Stream<T> tokens() {
 		return Stream.generate(this::next)
 			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}

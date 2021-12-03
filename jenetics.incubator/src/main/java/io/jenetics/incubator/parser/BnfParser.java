@@ -145,11 +145,11 @@ public class BnfParser extends Parser {
 
 	private Terminal text() {
 		if (LA(1) == STRING.code()) {
-			return new Terminal(match(STRING));
+			return new Terminal(match(STRING).value());
 		} else if (LA(1) == QUOTED_STRING.code()) {
-			return new Terminal(match(QUOTED_STRING));
+			return new Terminal(match(QUOTED_STRING).value());
 		} else if (LA(1) == ID.code()) {
-			return new Terminal(match(ID));
+			return new Terminal(match(ID).value());
 		} else {
 			throw new ParseException(format(
 				"Expecting %s but found %s.",
@@ -166,7 +166,7 @@ public class BnfParser extends Parser {
 	}
 
 	private NonTerminal ruleid() {
-		return new NonTerminal(match(BnfTokenizer.BnfTokenType.ID));
+		return new NonTerminal(match(BnfTokenizer.BnfTokenType.ID).value());
 	}
 
 }

@@ -25,27 +25,30 @@ import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
 
 /**
- * https://github.com/antlr/grammars-v4/blob/master/bnf/bnf.g4
+ * Tokenizer for BNF grammars.
  *
+ * <pre>
  * ASSIGN: '::=';
  * BAR: '|';
  * GT: '>';
  * LT: '<';
- * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
  * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
+ * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
  * WS: [ \r\n\t] -> skip;
+ * </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-final class BnfTokenizer extends CharSequenceTokenizer {
+final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 
 	enum BnfTokenType implements Token.Type {
 		ASSIGN(1),
@@ -87,7 +90,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 					return BAR.token(value);
 				case '>':
 					consume();
-					return BnfTokenType.GT.token(value);
+					return GT.token(value);
 				case '<':
 					consume();
 					return LT.token(value);

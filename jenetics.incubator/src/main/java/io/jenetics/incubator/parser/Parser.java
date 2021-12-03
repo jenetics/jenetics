@@ -31,41 +31,69 @@ import io.jenetics.incubator.parser.Token.Type;
  * @since !__version__!
  * @version !__version__!
  */
-abstract class Parser {
+abstract class Parser<T extends Token> {
 
-	private final Tokenizer _tokenizer;
-	private final TokenRing _lookahead;
+	private final Tokenizer<? extends T> _tokenizer;
+	private final TokenRing<T> _lookahead;
 
-	protected Parser(final Tokenizer tokenizer, final int k) {
+	protected Parser(final Tokenizer<? extends T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
-		_lookahead = new TokenRing(k);
+		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
 			consume();
 		}
 	}
 
-	protected Token LT(final int i) {
-		return _lookahead.LT(i);
+	/**
+	 * Return the lookahead token with the given index. The index starts at
+	 * {@code 1}.
+	 *
+	 * @param index lookahead index
+	 * @return the token at the given index
+	 */
+	protected T LT(final int index) {
+		return _lookahead.LT(index);
 	}
 
-	protected int LA(final int i) {
-		return _lookahead.LA(i);
+	/**
+	 * Return the token type code for the given lookahead index.
+	 *
+	 * @param index lookahead index
+	 * @return the token type code for the given lookahead index
+	 */
+	protected int LA(final int index) {
+		return LT(index).type().code();
 	}
 
-	protected String match(final Type type) {
+	/**
+	 * Try to <em>match</em> and consume the next token of the given
+	 * {@code type}. If the current token is not from the given type, a
+	 * {@link ParseException} is thrown.
+	 *
+	 * @param type the token type to match
+	 * @return the matched token
+	 * @throws NullPointerException if the given token {@code type} is
+	 *        {@code null}
+	 * @throws ParseException if the current token doesn't match the desired
+	 *        token {@code type}
+	 */
+	protected T match(final Type type) {
 		if (LA(1) == type.code()) {
-			final var value = LT(1).value();
+			final var token = LT(1);
 			consume();
-			return value;
+			return token;
 		} else {
 			new Exception().printStackTrace();
 			throw new ParseException(format(
-				"Expecting %s but found %s: %s.",
-				type, LT(1), _lookahead
+				"Expecting %s but found %s.",
+				type, LT(1)
 			));
 		}
 	}
 
+	/**
+	 * Consumes the next token.
+	 */
 	protected void consume() {
 		_lookahead.add(_tokenizer.next());
 	}

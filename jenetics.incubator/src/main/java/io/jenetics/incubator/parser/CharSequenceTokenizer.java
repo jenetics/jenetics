@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * @since !__version__!
  * @version !__version__!
  */
-abstract class CharSequenceTokenizer implements Tokenizer {
+abstract class CharSequenceTokenizer<T extends Token> implements Tokenizer<T> {
 
 	private static final char EOF = (char)-1;
 
