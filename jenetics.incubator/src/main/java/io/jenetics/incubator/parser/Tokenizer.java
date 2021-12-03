@@ -17,31 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.incubator.parser;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
+ * Interface for all tokenizers.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
-public class OrderedTest {
+@FunctionalInterface
+interface Tokenizer<T extends Token> {
 
-	@Test
-	public void comparing() {
-		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
-			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
-			.sorted(Comparator.naturalOrder())
-			.toList();
+	/**
+	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
+	 * further tokens are available.
+	 *
+	 * @return the next available token
+	 */
+	T next();
 
-		for (int i = 0; i < objects.size(); ++i) {
-			final int value = objects.get(i).get();
-			Assert.assertEquals(value, objects.size() - i - 1);
-		}
+	default Tokenizer<T> filter(final Predicate<? super T> filter) {
+		return () -> {
+			var token = Tokenizer.this.next();
+			while (!filter.test(token) && token != Token.EOF) {
+				token = Tokenizer.this.next();
+			}
+			return token;
+		};
+	}
+
+	default Stream<T> tokens() {
+		return Stream.generate(this::next)
+			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}
 
 }

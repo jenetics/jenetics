@@ -17,31 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.incubator.parser;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
+ * Ring-buffer for storing lookup tokens.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
-public class OrderedTest {
+final class TokenRing<T extends Token> {
+	private final Token[] _tokens;
 
-	@Test
-	public void comparing() {
-		final List<Ordered<Integer>> objects = IntStream.range(0, 100)
-			.mapToObj(i -> Ordered.of(i, Comparator.reverseOrder()))
-			.sorted(Comparator.naturalOrder())
-			.toList();
+	private int _pos = 0;
 
-		for (int i = 0; i < objects.size(); ++i) {
-			final int value = objects.get(i).get();
-			Assert.assertEquals(value, objects.size() - i - 1);
-		}
+	TokenRing(final int k) {
+		_tokens = new Token[k];
+	}
+
+	void add(final T token) {
+		_tokens[_pos] = token;
+		_pos = (_pos + 1)%_tokens.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T LT(final int i) {
+		return (T)_tokens[(_pos + i - 1)%_tokens.length];
+	}
+
+	@Override
+	public String toString() {
+		return IntStream.rangeClosed(1, _tokens.length)
+			.mapToObj(i -> i + ":'" + LT(i).value() + "'")
+			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }
