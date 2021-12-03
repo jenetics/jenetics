@@ -1,10 +1,10 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
 import java.util.List;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 
 @FunctionalInterface
 public interface Mapping<G extends Gene<?, G>> {

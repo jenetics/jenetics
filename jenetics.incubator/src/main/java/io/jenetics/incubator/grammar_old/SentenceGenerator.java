@@ -1,9 +1,9 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
 import java.util.List;
 import java.util.Random;
 
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 
 @FunctionalInterface
 public interface SentenceGenerator {

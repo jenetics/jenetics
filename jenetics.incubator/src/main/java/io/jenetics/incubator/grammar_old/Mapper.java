@@ -1,4 +1,4 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,11 +7,8 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
-import io.jenetics.incubator.grammar.Grammar.Expression;
-import io.jenetics.incubator.grammar.Grammar.NonTerminal;
-import io.jenetics.incubator.grammar.Grammar.Rule;
-import io.jenetics.incubator.grammar.Grammar.Symbol;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+import io.jenetics.incubator.grammar_old.Grammar.Symbol;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.prog.op.MathExpr;

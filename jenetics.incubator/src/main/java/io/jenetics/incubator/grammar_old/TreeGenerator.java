@@ -1,6 +1,6 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
-import io.jenetics.incubator.grammar.Grammar.Symbol;
+import io.jenetics.incubator.grammar_old.Grammar.Symbol;
 
 import io.jenetics.ext.util.Tree;
 

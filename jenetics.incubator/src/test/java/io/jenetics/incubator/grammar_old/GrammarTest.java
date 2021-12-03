@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
-import static io.jenetics.incubator.grammar.StandardGenerators.generateTree;
+import static io.jenetics.incubator.grammar_old.StandardGenerators.generateTree;
 
 import io.jenetics.prog.op.MathExpr;
-import org.testng.Assert;
+
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import io.jenetics.incubator.grammar.Grammar.NonTerminal;
-import io.jenetics.incubator.grammar.Grammar.Symbol;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+
+import io.jenetics.incubator.grammar_old.Grammar.Symbol;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeFormatter;

@@ -1,4 +1,4 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 import io.jenetics.util.Factory;
 
 import io.jenetics.ext.util.Tree;

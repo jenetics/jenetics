@@ -1,7 +1,6 @@
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar_old;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Random;
@@ -9,8 +8,8 @@ import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Grammar.Symbol;
-import io.jenetics.incubator.grammar.Grammar.Terminal;
+import io.jenetics.incubator.grammar_old.Grammar.Symbol;
+import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 
 import io.jenetics.ext.util.TreeFormatter;
 import io.jenetics.ext.util.TreeNode;
