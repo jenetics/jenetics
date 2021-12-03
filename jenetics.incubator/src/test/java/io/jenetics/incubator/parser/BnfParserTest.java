@@ -6,7 +6,7 @@ public class BnfParserTest {
 
 	private static final String BNF_STRING = """
 		<expr> ::= (<expr> <op> <expr>) <op> <exspr> | 5 | ' '
-		<op>   ::= + | - | * | / | (
+		<op>   ::= + | - | * | / | '\\''
 		<var>  ::= x | y
 		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 		""";

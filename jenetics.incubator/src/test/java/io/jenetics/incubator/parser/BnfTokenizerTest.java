@@ -19,6 +19,9 @@ public class BnfTokenizerTest {
     //   0 1 2 3 4 5 6 7 8
 	// ' a s f \ ' f d d d '
 
+	//   0 1 2 3 4 5 6 7 8
+	//   ' \ ' '
+
 	private static final String FOO = """
 		'asf\\'fddd' 'asf\\\\ad'
 		""";
@@ -64,14 +67,22 @@ public class BnfTokenizerTest {
 			{"<prog>", List.of("<", "prog", ">")},
 			{"::=", List.of("::=")},
 			{"|", List.of("|")},
+			{"|\\", List.of("|", "\\")},
 			{"<prog>::=<expr>", List.of("<", "prog", ">", "::=", "<", "expr", ">")},
 			{"<prog>::=    '<expr>'   ", List.of("<", "prog", ">", "::=", "<expr>")},
 			{"<prog>  ::=<expr>", List.of("<", "prog", ">", "::=", "<", "expr", ">")},
+			{"'\\''", List.of("'")},
+			{"'\\'\\''", List.of("''")},
+			{"'\\'\\'\\\\'", List.of("''\\")},
+			{"'\\\\\\'\\'\\\\'", List.of("\\''\\")},
 			{"'va\\'lue'", List.of("va'lue")},
 			{"'va\\'lu\"e'", List.of("va'lu\"e")},
 			{"'va\\'l\\\\ue'", List.of("va'l\\ue")},
 			{"'va\\'l\\\\u\\'\\'\\'e'", List.of("va'l\\u'''e")},
-			{"pre 'va\\'l\\\\u\\'\\'\\'e' post", List.of("pre", "va'l\\u'''e", "post")}
+			{"pre 'va\\'l\\\\u\\'\\'\\'e' post", List.of("pre", "va'l\\u'''e", "post")},
+			{"\\pre 'va\\'l\\\\u\\'\\'\\'e' post", List.of("\\pre", "va'l\\u'''e", "post")},
+			{"\\pre 'va\\'l\\\\u\\'\\'\\'e' post\\\\\\", List.of("\\pre", "va'l\\u'''e", "post", "\\\\\\")},
+			{"'post\\\\'", List.of("post\\")}
 		};
 	}
 

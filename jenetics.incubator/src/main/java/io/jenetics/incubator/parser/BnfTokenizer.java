@@ -130,20 +130,13 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 	private Token QUOTED_STRING() {
 		final var value = new StringBuilder();
 
-		boolean escaped = false;
-
 		match('\'');
-		while (isNonEof(c) && (c != '\'' || escaped)) {
-			escaped = c == '\\';
-			if (escaped) {
+		while (isNonEof(c) && c != '\'') {
+			if (c == '\\') {
 				consume();
-				value.append(c);
 			}
 
-			if (!escaped) {
-				value.append(c);
-			}
-
+			value.append(c);
 			consume();
 		}
 		match('\'');
