@@ -24,8 +24,8 @@ import static java.lang.Character.isWhitespace;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 final class Bnfs {
 	private Bnfs() {}

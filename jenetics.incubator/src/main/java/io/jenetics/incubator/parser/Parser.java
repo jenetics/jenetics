@@ -28,8 +28,8 @@ import io.jenetics.incubator.parser.Token.Type;
  * Base class for all parsers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 abstract class Parser<T extends Token> {
 

@@ -26,8 +26,8 @@ import java.util.stream.IntStream;
  * Ring-buffer for storing lookup tokens.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 final class TokenRing<T extends Token> {
 	private final Token[] _tokens;

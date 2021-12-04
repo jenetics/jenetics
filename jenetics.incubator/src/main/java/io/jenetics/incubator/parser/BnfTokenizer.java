@@ -46,8 +46,8 @@ import static io.jenetics.incubator.parser.Bnfs.isStringChar;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 
