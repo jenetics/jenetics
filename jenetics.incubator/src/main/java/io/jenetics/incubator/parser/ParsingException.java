@@ -25,8 +25,8 @@ import java.io.Serial;
  * Exception thrown in the case of a parse error.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 final class ParsingException extends RuntimeException {
 	@Serial

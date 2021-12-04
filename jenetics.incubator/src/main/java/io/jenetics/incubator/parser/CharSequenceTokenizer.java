@@ -26,8 +26,8 @@ import static java.util.Objects.requireNonNull;
  * Base class for all tokenizers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 abstract class CharSequenceTokenizer<T extends Token> implements Tokenizer<T> {
 

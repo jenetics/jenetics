@@ -26,8 +26,8 @@ import java.util.stream.Stream;
  * Interface for all tokenizers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 @FunctionalInterface
 interface Tokenizer<T extends Token> {
