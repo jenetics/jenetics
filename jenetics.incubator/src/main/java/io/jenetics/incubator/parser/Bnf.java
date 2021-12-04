@@ -63,7 +63,7 @@ import java.util.stream.Stream;
  * @since !__version__!
  * @version !__version__!
  */
-public class Bnf {
+public final class Bnf {
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
@@ -221,7 +221,8 @@ public class Bnf {
 		return rules.stream()
 			.flatMap(rule -> Stream.concat(
 				Stream.of(rule.start),
-				rule.alternatives.stream().flatMap(e -> e.symbols.stream())))
+				rule.alternatives.stream()
+					.flatMap(e -> e.symbols.stream())))
 			.filter(type::isInstance)
 			.map(type::cast)
 			.distinct()
