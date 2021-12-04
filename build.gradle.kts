@@ -67,25 +67,8 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
-		val xlint = listOf(
-			"preview",
-			"cast",
-			"classfile",
-			"deprecation",
-			"dep-ann",
-			"divzero",
-			"empty",
-			"finally",
-			"overrides",
-			"rawtypes",
-			"serial",
-			"static",
-			"try",
-			"unchecked"
-		).joinToString(separator = ",")
-
 		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:$xlint")
+			options.compilerArgs.add("-Xlint:${xlint()}")
 		}
 
 		tasks.withType<Test> {
@@ -261,6 +244,7 @@ fun xlint(): String {
 	// See https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html
 	return listOf(
 		"cast",
+		"auxiliaryclass",
 		"classfile",
 		"dep-ann",
 		"deprecation",
@@ -269,6 +253,7 @@ fun xlint(): String {
 		"finally",
 		"overrides",
 		"rawtypes",
+		"removal",
 		"serial",
 		"static",
 		"try",
