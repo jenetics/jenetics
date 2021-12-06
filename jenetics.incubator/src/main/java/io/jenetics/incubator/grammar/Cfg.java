@@ -186,19 +186,6 @@ public record Cfg(
 		requireNonNull(start);
 	}
 
-	private static <S extends Symbol> List<S>
-	toDistinctSymbols(final List<Rule> rules, final Class<S> type) {
-		return rules.stream()
-			.flatMap(rule -> Stream.concat(
-				Stream.of(rule.start),
-				rule.alternatives.stream()
-					.flatMap(e -> e.symbols.stream())))
-			.filter(type::isInstance)
-			.map(type::cast)
-			.distinct()
-			.toList();
-	}
-
 	/**
 	 * Return the rule for the given {@code start} symbol.
 	 *
@@ -234,6 +221,19 @@ public record Cfg(
 			List.copyOf(rules),
 			rules.get(0).start()
 		);
+	}
+
+	private static <S extends Symbol> List<S>
+	toDistinctSymbols(final List<Rule> rules, final Class<S> type) {
+		return rules.stream()
+			.flatMap(rule -> Stream.concat(
+				Stream.of(rule.start),
+				rule.alternatives.stream()
+					.flatMap(e -> e.symbols.stream())))
+			.filter(type::isInstance)
+			.map(type::cast)
+			.distinct()
+			.toList();
 	}
 
 }
