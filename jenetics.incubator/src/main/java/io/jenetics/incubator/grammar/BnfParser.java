@@ -52,7 +52,7 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
  * <ul>
  *     <li>{@link Symbol}: A symbol is either a {@link Terminal} or
  *     {@link NonTerminal} symbol.</li>
- *     <li>{@link NonTerminal} (<b></b>: Non-terminal symbols are parenthesised in angle
+ *     <li>{@link NonTerminal}: Non-terminal symbols are parenthesised in angle
  *     brackets; {@code <expr>}, {@code num} or {@code var}. The name must start
  *     with a letter and contain only letters and digits:
  *     {@code ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+}</li>
