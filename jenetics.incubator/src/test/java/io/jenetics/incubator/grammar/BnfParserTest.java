@@ -39,19 +39,19 @@ public class BnfParserTest {
 
 	@Test
 	public void parse() {
-		final var bnf = Cfg.parse(BNF_STRING);
+		final var bnf = Bnf.parse(BNF_STRING);
 		System.out.println(bnf);
 	}
 
 	@Test(invocationCount = 25)
 	public void randomBnfParsing() {
-		final var bnf = RandomBnf.next(RandomGenerator.getDefault());
+		final var cfg = RandomCfg.next(RandomGenerator.getDefault());
 
-		final var tokenizer = new BnfTokenizer(bnf.toString());
+		final var tokenizer = new BnfTokenizer(Bnf.format(cfg));
 		final var parser = new BnfParser(tokenizer);
 		final var parsedBnf = parser.parse();
 
-		assertThat(parsedBnf).isEqualTo(bnf);
+		assertThat(parsedBnf).isEqualTo(cfg);
 	}
 
 }

@@ -21,6 +21,9 @@ package io.jenetics.incubator.grammar;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
+import static io.jenetics.incubator.grammar.Bnf.isAlphabetic;
+import static io.jenetics.incubator.grammar.Bnf.isIdChar;
+import static io.jenetics.incubator.grammar.Bnf.isStringChar;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.BAR;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.GT;
@@ -28,9 +31,6 @@ import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType.STRING;
-import static io.jenetics.incubator.grammar.Bnfs.isAlphabetic;
-import static io.jenetics.incubator.grammar.Bnfs.isIdChar;
-import static io.jenetics.incubator.grammar.Bnfs.isStringChar;
 
 /**
  * Tokenizer for BNF grammars.

@@ -22,13 +22,25 @@ package io.jenetics.incubator.grammar;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 
+import java.util.stream.Collectors;
+
 /**
+ * Helper methods for parsing and formatting <em>context-free</em> grammars in
+ * <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a>
+ * format.
+ * <pre>{@code
+ * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+ * <op>   ::= + | - | * | /
+ * <var>  ::= x | y
+ * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-final class Bnfs {
-	private Bnfs() {}
+public final class Bnf {
+	private Bnf() {}
 
 	static final char[] SYMBOL_CHARS = {'<', '>', '|', ':', '='};
 
@@ -67,6 +79,40 @@ final class Bnfs {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Parses the given BNF {@code grammar} string to a {@link Cfg} object. The
+	 * following example show the grammar of a simple arithmetic expression.
+	 *
+	 * <pre>{@code
+	 * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+	 * <op>   ::= + | - | * | /
+	 * <var>  ::= x | y
+	 * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+	 * }</pre>
+	 *
+	 * @param grammar the BNF {@code grammar} string
+	 * @return the parsed {@code BNF} object
+	 * @throws IllegalArgumentException if the given <em>grammar</em> is invalid
+	 * @throws NullPointerException it the given {@code grammar} string is
+	 *         {@code null}
+	 */
+	public static Cfg parse(final String grammar) {
+		final var tokenizer = new BnfTokenizer(grammar);
+		final var parser = new BnfParser(tokenizer);
+
+		try {
+			return parser.parse();
+		} catch (ParsingException e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
+	}
+
+	public static String format(final Cfg grammar) {
+		return grammar.rules().stream()
+			.map(Object::toString)
+			.collect(Collectors.joining("\n"));
 	}
 
 }

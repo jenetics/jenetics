@@ -35,8 +35,8 @@ import io.jenetics.internal.math.Randoms;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class RandomBnf {
-	private RandomBnf() {
+public final class RandomCfg {
+	private RandomCfg() {
 	}
 
 	public static Cfg next(final RandomGenerator random) {

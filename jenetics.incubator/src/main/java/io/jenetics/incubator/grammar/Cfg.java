@@ -21,7 +21,6 @@ package io.jenetics.incubator.grammar;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.grammar.Bnfs.isValidId;
 
 import java.util.List;
 import java.util.Objects;
@@ -85,11 +84,7 @@ public record Cfg(
 	}
 
 	/**
-	 * Represents the non-terminal symbols of the grammar. The value of a
-	 * <em>non-terminal</em> object must obey the following patter:
-	 * <pre>
-	 * VALUE: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
-	 * </pre>
+	 * Represents the non-terminal symbols of the grammar ({@code V}).
 	 */
 	public record NonTerminal(String value) implements Symbol {
 
@@ -99,9 +94,9 @@ public record Cfg(
 		 *         a valid <em>non-terminal</em> name
 		 */
 		public NonTerminal {
-			if (!isValidId(value)) {
+			if (value.isEmpty()) {
 				throw new IllegalArgumentException(
-					"Non-terminal value '%s' is invalid.".formatted(value)
+					"Non-terminal value must not be empty."
 				);
 			}
 		}
@@ -247,13 +242,6 @@ public record Cfg(
 			.findFirst();
 	}
 
-	@Override
-	public String toString() {
-		return rules.stream()
-			.map(Object::toString)
-			.collect(Collectors.joining("\n"));
-	}
-
 	/**
 	 * Create a grammar object with the given rules.
 	 *
@@ -274,32 +262,6 @@ public record Cfg(
 			List.copyOf(rules),
 			rules.get(0).start()
 		);
-	}
-
-	/**
-	 * Parses the given BNF {@code grammar} string to a {@code BNF} object.
-	 * <pre>{@code
-	 * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-	 * <op>   ::= + | - | * | /
-	 * <var>  ::= x | y
-	 * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-	 * }</pre>
-	 *
-	 * @param grammar the BNF {@code grammar} string
-	 * @return the parsed {@code BNF} object
-	 * @throws IllegalArgumentException if the given <em>grammar</em> is invalid
-	 * @throws NullPointerException it the given {@code grammar} string is
-	 *         {@code null}
-	 */
-	public static Cfg parse(final String grammar) {
-		final var tokenizer = new BnfTokenizer(grammar);
-		final var parser = new BnfParser(tokenizer);
-
-		try {
-			return parser.parse();
-		} catch (ParsingException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
 	}
 
 }
