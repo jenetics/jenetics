@@ -30,33 +30,34 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Represents a <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">
- * BNF</a> grammar. The following example shows the BNF for a simple arithmetic
- * expression.
- * <pre>{@code
- * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
- * <op>   ::= + | - | * | /
- * <var>  ::= x | y
- * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
- * }</pre>
- *
- * The BNF object is build from the following classes.
+ * Represents a <em>context-free</em> grammar
+ * (<a href="https://en.wikipedia.org/wiki/Context-free_grammar"><b>CFG</b></a>).
+ * <p>
+ * <b>Formal definition</b>
+ * <p>
+ * A context-free grammar {@code G} is defined by the 4-tuple
+ * {@code G = (V, Σ, R, S)}, where
  * <ul>
- *     <li>{@link Symbol}: A symbol is either a {@link Terminal} or
- *     {@link NonTerminal} symbol.</li>
- *     <li>{@link NonTerminal}: Non-terminal symbols are parenthesised in angle
- *     brackets; {@code <expr>}, {@code num} or {@code var}. The name must start
- *     with a letter and contain only letters and digits:
- *     {@code ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+}</li>
- *     <li>{@link Terminal}: Terminal symbols are simple string values, which
- *     can also be quoted; {@code x}, {@code 1}, {@code terminal} or
- *     {@code 'some $special value'}</li>
- *     <li>{@link Expression}: Consists of a list of symbols; {@code [num]},
- *     {@code [var]} or {@code [(, expr, op, expr, )]}</li>
- *     <li>{@link Rule}: A rule has a name, a non-terminal start symbol, and a
- *     list of <em>alternative</em> expressions;
- *     {@code <expr> ::= [[num], [var], [(, expr, op, expr, )]]}</li>
- *     <li>{@link Cfg}: A whole BNF grammar consists of one or more {@link Rule}s.</li>
+ *     <li>{@code V} is a finite set; each element {@code v ∈ V} is called a
+ *     non-terminal ({@link NonTerminal}) character or a variable. Each
+ *     variable represents a different type of phrase or clause in the sentence.
+ *     Variables are also sometimes called syntactic categories. Each variable
+ *     defines a sub-language of the language defined by {@code G}.
+ *     </li>
+ *     <li>{@code Σ} is a finite set of terminals ({@link Terminal}) disjoint
+ *     from {@code V}, which make up the actual content of the sentence. The set
+ *     of terminals is the alphabet of the language defined by the grammar
+ *     {@code G}.
+ *     </li>
+ *     <li>{@code R} is a finite relation in {@code V × (V ∪ Σ)∗}, where the
+ *     asterisk represents the <a href="https://en.wikipedia.org/wiki/Kleene_star">
+ *     Kleene star</a> operation. The members of {@code R} are called the
+ *     (rewrite) rules ({@link Rule}) or productions of the grammar.
+ *     </li>
+ *     <li>{@code S} is the start variable (or start symbol), used to represent
+ *     the whole sentence (or program). It must be an element of {@code V}
+ *     ({@link NonTerminal})
+ *     .</li>
  * </ul>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -85,7 +86,7 @@ public final class Cfg {
 	 * VALUE: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
 	 * </pre>
 	 */
-	public static record NonTerminal(String value) implements Symbol {
+	public record NonTerminal(String value) implements Symbol {
 
 		/**
 		 * @param value the value of the non-terminal symbol
@@ -107,9 +108,9 @@ public final class Cfg {
 	}
 
 	/**
-	 * Represents a terminal symbols of the grammar.
+	 * Represents a terminal symbols of the grammar ({@code Σ}).
 	 */
-	public static record Terminal(String value) implements Symbol {
+	public record Terminal(String value) implements Symbol {
 
 		/**
 		 * @param value the value of the terminal symbol
@@ -131,7 +132,7 @@ public final class Cfg {
 	/**
 	 * Represents one <em>expression</em> a production rule consists of.
 	 */
-	public static record Expression(List<Symbol> symbols) {
+	public record Expression(List<Symbol> symbols) {
 
 		/**
 		 * @param symbols the list of symbols of the expression
@@ -156,9 +157,9 @@ public final class Cfg {
 	}
 
 	/**
-	 * Represents a production rule of the grammar.
+	 * Represents a production rule of the grammar ({@code R}).
 	 */
-	public static record Rule(NonTerminal start, List<Expression> alternatives) {
+	public record Rule(NonTerminal start, List<Expression> alternatives) {
 
 		/**
 		 * Creates a new rule object.
@@ -230,7 +231,7 @@ public final class Cfg {
 	}
 
 	/**
-	 * Return the non-terminal symbols of {@code this} grammar.
+	 * Return the non-terminal symbols of {@code this} grammar ({@code V}).
 	 *
 	 * @return the non-terminal symbols of {@code this} grammar
 	 */
