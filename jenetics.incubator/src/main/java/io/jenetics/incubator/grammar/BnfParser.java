@@ -84,7 +84,7 @@ final class BnfParser extends Parser<Token> {
 
 	public Cfg parse() {
 		rulelist();
-		return new Cfg(rules);
+		return Cfg.of(rules);
 	}
 
 	private void rulelist() {

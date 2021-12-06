@@ -77,7 +77,7 @@ public final class RandomBnf {
 			.limit(random.nextInt(5, 15))
 			.toList();
 
-		return new Cfg(rules);
+		return Cfg.of(rules);
 	}
 
 	public static NonTerminal nextNonTerminal(final RandomGenerator random) {

@@ -64,7 +64,12 @@ import java.util.stream.Stream;
  * @since 7.0
  * @version 7.0
  */
-public final class Cfg {
+public record Cfg(
+	List<NonTerminal> nonTerminals,
+	List<Terminal> terminals,
+	List<Rule> rules,
+	NonTerminal start
+) {
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
@@ -192,29 +197,26 @@ public final class Cfg {
 		}
 	}
 
-	private final List<NonTerminal> nonTerminals;
-	private final List<Terminal> terminals;
-	private final NonTerminal start;
-	private final List<Rule> rules;
-
 	/**
-	 * Create a grammar object with the given rules.
+	 * Create a new <em>context-free</em> grammar object.
 	 *
-	 * @param rules the rules the grammar consists of
-	 * @throws IllegalArgumentException if the list of rules is empty
-	 * @throws NullPointerException if the list of rules is {@code null}
+	 * @param nonTerminals the non-terminal symbols of {@code this} grammar
+	 * @param terminals the terminal symbols of {@code this} grammar
+	 * @param rules the <em>production</em> rules of {@code this} grammar
+	 * @param start the start symbol of {@code this} grammar
+	 * @throws NullPointerException if one of the argumens is {@code null}
 	 */
-	public Cfg(final List<Rule> rules) {
+	public Cfg {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The given list of rules must not be empty."
 			);
 		}
 
-		nonTerminals = toDistinctSymbols(rules, NonTerminal.class);
-		terminals = toDistinctSymbols(rules, Terminal.class);
-		this.start = rules.get(0).start();
-		this.rules = List.copyOf(rules);
+		nonTerminals = List.copyOf(nonTerminals);
+		terminals = List.copyOf(terminals);
+		rules = List.copyOf(rules);
+		requireNonNull(start);
 	}
 
 	private static <S extends Symbol> List<S>
@@ -228,42 +230,6 @@ public final class Cfg {
 			.map(type::cast)
 			.distinct()
 			.toList();
-	}
-
-	/**
-	 * Return the non-terminal symbols of {@code this} grammar ({@code V}).
-	 *
-	 * @return the non-terminal symbols of {@code this} grammar
-	 */
-	public List<NonTerminal> nonTerminals() {
-		return nonTerminals;
-	}
-
-	/**
-	 * Return the terminal symbols of {@code this} grammar.
-	 *
-	 * @return the terminal symbols of {@code this} grammar
-	 */
-	public List<Terminal> terminals() {
-		return terminals;
-	}
-
-	/**
-	 * Return the start symbol of {@code this} grammar.
-	 *
-	 * @return the start symbol of {@code this} grammar
-	 */
-	public NonTerminal start() {
-		return start;
-	}
-
-	/**
-	 * Return the <em>production</em> rules of {@code this} grammar.
-	 *
-	 * @return the <em>production</em> rules of {@code this} grammar
-	 */
-	public List<Rule> rules() {
-		return rules;
 	}
 
 	/**
@@ -281,27 +247,33 @@ public final class Cfg {
 			.findFirst();
 	}
 
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(nonTerminals, terminals, start, rules);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Cfg cfg &&
-			nonTerminals.equals(cfg.nonTerminals) &&
-			terminals.equals(cfg.terminals) &&
-			start.equals(cfg.start) &&
-			rules.equals(cfg.rules);
-	}
-
 	@Override
 	public String toString() {
 		return rules.stream()
 			.map(Object::toString)
 			.collect(Collectors.joining("\n"));
+	}
+
+	/**
+	 * Create a grammar object with the given rules.
+	 *
+	 * @param rules the rules the grammar consists of
+	 * @throws IllegalArgumentException if the list of rules is empty
+	 * @throws NullPointerException if the list of rules is {@code null}
+	 */
+	public static Cfg of(final List<Rule> rules) {
+		if (rules.isEmpty()) {
+			throw new IllegalArgumentException(
+				"The given list of rules must not be empty."
+			);
+		}
+
+		return new Cfg(
+			toDistinctSymbols(rules, NonTerminal.class),
+			toDistinctSymbols(rules, Terminal.class),
+			List.copyOf(rules),
+			rules.get(0).start()
+		);
 	}
 
 	/**
