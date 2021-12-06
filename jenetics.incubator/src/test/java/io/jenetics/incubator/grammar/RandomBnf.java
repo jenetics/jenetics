@@ -25,11 +25,11 @@ import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.grammar.Bnf.Expression;
-import io.jenetics.incubator.grammar.Bnf.NonTerminal;
-import io.jenetics.incubator.grammar.Bnf.Rule;
-import io.jenetics.incubator.grammar.Bnf.Symbol;
-import io.jenetics.incubator.grammar.Bnf.Terminal;
+import io.jenetics.incubator.grammar.Cfg.Expression;
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.internal.math.Randoms;
 
 /**
@@ -39,7 +39,7 @@ public final class RandomBnf {
 	private RandomBnf() {
 	}
 
-	public static Bnf next(final RandomGenerator random) {
+	public static Cfg next(final RandomGenerator random) {
 		final var nonTerminals = Stream.generate(() -> nextNonTerminal(random))
 			.limit(10)
 			.toList();
@@ -77,7 +77,7 @@ public final class RandomBnf {
 			.limit(random.nextInt(5, 15))
 			.toList();
 
-		return new Bnf(rules);
+		return new Cfg(rules);
 	}
 
 	public static NonTerminal nextNonTerminal(final RandomGenerator random) {

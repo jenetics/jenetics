@@ -56,14 +56,14 @@ import java.util.stream.Stream;
  *     <li>{@link Rule}: A rule has a name, a non-terminal start symbol, and a
  *     list of <em>alternative</em> expressions;
  *     {@code <expr> ::= [[num], [var], [(, expr, op, expr, )]]}</li>
- *     <li>{@link Bnf}: A whole BNF grammar consists of one or more {@link Rule}s.</li>
+ *     <li>{@link Cfg}: A whole BNF grammar consists of one or more {@link Rule}s.</li>
  * </ul>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-public final class Bnf {
+public final class Cfg {
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
@@ -203,7 +203,7 @@ public final class Bnf {
 	 * @throws IllegalArgumentException if the list of rules is empty
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
-	public Bnf(final List<Rule> rules) {
+	public Cfg(final List<Rule> rules) {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The given list of rules must not be empty."
@@ -289,11 +289,11 @@ public final class Bnf {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Bnf bnf &&
-			nonTerminals.equals(bnf.nonTerminals) &&
-			terminals.equals(bnf.terminals) &&
-			start.equals(bnf.start) &&
-			rules.equals(bnf.rules);
+			obj instanceof Cfg cfg &&
+			nonTerminals.equals(cfg.nonTerminals) &&
+			terminals.equals(cfg.terminals) &&
+			start.equals(cfg.start) &&
+			rules.equals(cfg.rules);
 	}
 
 	@Override
@@ -318,7 +318,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Bnf parse(final String grammar) {
+	public static Cfg parse(final String grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 

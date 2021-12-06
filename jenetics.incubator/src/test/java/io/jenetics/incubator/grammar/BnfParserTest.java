@@ -39,7 +39,7 @@ public class BnfParserTest {
 
 	@Test
 	public void parse() {
-		final var bnf = Bnf.parse(BNF_STRING);
+		final var bnf = Cfg.parse(BNF_STRING);
 		System.out.println(bnf);
 	}
 

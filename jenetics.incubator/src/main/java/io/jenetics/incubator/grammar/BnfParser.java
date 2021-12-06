@@ -26,11 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType;
-import io.jenetics.incubator.grammar.Bnf.Expression;
-import io.jenetics.incubator.grammar.Bnf.NonTerminal;
-import io.jenetics.incubator.grammar.Bnf.Rule;
-import io.jenetics.incubator.grammar.Bnf.Symbol;
-import io.jenetics.incubator.grammar.Bnf.Terminal;
+import io.jenetics.incubator.grammar.Cfg.Expression;
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 /**
  * Parser for BNF grammars.
@@ -59,9 +59,9 @@ final class BnfParser extends Parser<Token> {
 		super(tokenizer, 4);
 	}
 
-	public Bnf parse() {
+	public Cfg parse() {
 		rulelist();
-		return new Bnf(rules);
+		return new Cfg(rules);
 	}
 
 	private void rulelist() {
