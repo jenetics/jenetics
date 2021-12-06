@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,11 @@ import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.parser.Bnf.Expression;
-import io.jenetics.incubator.parser.Bnf.NonTerminal;
-import io.jenetics.incubator.parser.Bnf.Rule;
-import io.jenetics.incubator.parser.Bnf.Symbol;
-import io.jenetics.incubator.parser.Bnf.Terminal;
+import io.jenetics.incubator.grammar.Bnf.Expression;
+import io.jenetics.incubator.grammar.Bnf.NonTerminal;
+import io.jenetics.incubator.grammar.Bnf.Rule;
+import io.jenetics.incubator.grammar.Bnf.Symbol;
+import io.jenetics.incubator.grammar.Bnf.Terminal;
 import io.jenetics.internal.math.Randoms;
 
 /**

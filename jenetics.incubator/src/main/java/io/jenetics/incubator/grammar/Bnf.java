@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.parser.Bnfs.isValidId;
+import static io.jenetics.incubator.grammar.Bnfs.isValidId;
 
 import java.util.List;
 import java.util.Objects;
