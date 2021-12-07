@@ -89,7 +89,7 @@ public final class Bnf {
 		try {
 			return parser.parse();
 		} catch (ParsingException e) {
-			throw new IllegalArgumentException(e.getMessage());
+			throw new IllegalArgumentException(e.getMessage(), e);
 		}
 	}
 
