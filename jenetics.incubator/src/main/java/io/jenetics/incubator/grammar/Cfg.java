@@ -19,13 +19,10 @@
  */
 package io.jenetics.incubator.grammar;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -196,9 +193,12 @@ public record Cfg(
 	 */
 	public Optional<Rule> rule(final NonTerminal start) {
 		requireNonNull(start);
-		return rules.stream()
-			.filter(rule -> rule.start().equals(start))
-			.findFirst();
+		for (var rule : rules) {
+			if (rule.start().equals(start)) {
+				return Optional.of(rule);
+			}
+		}
+		return Optional.empty();
 	}
 
 	/**
@@ -211,29 +211,63 @@ public record Cfg(
 	public static Cfg of(final List<Rule> rules) {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
-				"The given list of rules must not be empty."
+				"The list of rules must not be empty."
 			);
 		}
 
+		final List<Symbol> symbols = rules.stream()
+			.flatMap(rule ->
+				Stream.concat(
+					Stream.of(rule.start),
+					rule.alternatives.stream()
+						.flatMap(e -> e.symbols.stream()))
+			)
+			.distinct()
+			.toList();
+
 		return new Cfg(
-			toDistinctSymbols(rules, NonTerminal.class),
-			toDistinctSymbols(rules, Terminal.class),
-			List.copyOf(rules),
-			rules.get(0).start()
+			symbols.stream()
+				.filter(NonTerminal.class::isInstance)
+				.map(NonTerminal.class::cast)
+				.toList(),
+			symbols.stream()
+				.filter(Terminal.class::isInstance)
+				.map(Terminal.class::cast)
+				.toList(),
+			rules.stream()
+				.map(r -> normalize(r, symbols))
+				.toList(),
+			(NonTerminal)normalize(rules.get(0).start(), symbols)
 		);
 	}
 
-	private static <S extends Symbol> List<S>
-	toDistinctSymbols(final List<Rule> rules, final Class<S> type) {
-		return rules.stream()
-			.flatMap(rule -> Stream.concat(
-				Stream.of(rule.start),
-				rule.alternatives.stream()
-					.flatMap(e -> e.symbols.stream())))
-			.filter(type::isInstance)
-			.map(type::cast)
-			.distinct()
-			.toList();
+	private static Rule
+	normalize(final Rule rule, final List<Symbol> symbols) {
+		return new Rule(
+			(NonTerminal)normalize(rule.start, symbols),
+			rule.alternatives.stream()
+				.map(e -> normalize(e, symbols))
+				.toList()
+		);
+	}
+
+	private static Expression
+	normalize(final Expression expression, final List<Symbol> symbols) {
+		return new Expression(
+			expression.symbols.stream()
+				.map(s -> normalize(s, symbols))
+				.toList()
+		);
+	}
+
+	private static Symbol
+	normalize(final Symbol symbol, final List<Symbol> symbols) {
+		for (var s : symbols) {
+			if (s.equals(symbol)) {
+				return s;
+			}
+		}
+		throw new AssertionError("Symbol not found: " + symbol);
 	}
 
 }
