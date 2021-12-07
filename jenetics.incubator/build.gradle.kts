@@ -50,7 +50,7 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*MathExprPerf.*")
+	includes.add(".*SentencesPerf.*")
 }
 
 tasks.javadoc {

@@ -24,7 +24,7 @@ public final class StandardGenerators {
 	 *
 	 * @param grammar the grammar to use for generating the list of terminals
 	 * @param index the index function used for selecting specific symbols from
-	 *        the grammar by it's index.
+	 *        the grammar by its index.
 	 * @return a list of terminal symbols
 	 */
 	public static List<Terminal> generateList(
