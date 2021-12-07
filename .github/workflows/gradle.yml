@@ -13,14 +13,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        java-version: [ 11.0.3, 11, 17.0.1, 17, 18-ea  ]
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ matrix.java-version }} on ${{ matrix.os }}
       uses: actions/setup-java@v2
       with:
-        java-version: '17'
-        distribution: 'adopt'
+        java-version: ${{ matrix.java-version }}
+        distribution: 'zulu'
     - name: Build with Gradle
       run: ./gradlew build
