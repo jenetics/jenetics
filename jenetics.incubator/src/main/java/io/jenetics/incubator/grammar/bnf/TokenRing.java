@@ -17,28 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
-import java.io.Serial;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Exception thrown in the case of a parse error.
+ * Ring-buffer for storing lookup tokens.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-final class ParsingException extends RuntimeException {
-	@Serial
-	private static final long serialVersionUID = 1;
+final class TokenRing<T extends Token> {
+	private final Token[] _tokens;
 
-	ParsingException(final String message) {
-		super(message);
+	private int _pos = 0;
+
+	TokenRing(final int k) {
+		_tokens = new Token[k];
+	}
+
+	void add(final T token) {
+		_tokens[_pos] = token;
+		_pos = (_pos + 1)%_tokens.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T LT(final int i) {
+		return (T)_tokens[(_pos + i - 1)%_tokens.length];
 	}
 
 	@Override
-	public synchronized Throwable fillInStackTrace() {
-		return this;
+	public String toString() {
+		return IntStream.rangeClosed(1, _tokens.length)
+			.mapToObj(i -> i + ":'" + LT(i).value() + "'")
+			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;

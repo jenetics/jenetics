@@ -17,41 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.random.RandomGenerator;
-
-import org.testng.annotations.Test;
+import java.io.Serial;
 
 /**
+ * Exception thrown in the case of a parse error.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 7.0
+ * @version 7.0
  */
-public class BnfParserTest {
+final class ParsingException extends RuntimeException {
+	@Serial
+	private static final long serialVersionUID = 1;
 
-	private static final String BNF_STRING = """
-		<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-		<op>   ::= + | - | * | /
-		<var>  ::= x | y
-		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-		""";
-
-	@Test
-	public void parse() {
-		final var cfg = Bnf.parse(BNF_STRING);
-		System.out.println(Bnf.format(cfg));
+	ParsingException(final String message) {
+		super(message);
 	}
 
-	@Test(invocationCount = 30)
-	public void randomBnfParsing() {
-		final var cfg = RandomCfg.next(RandomGenerator.getDefault());
-
-		final var tokenizer = new BnfTokenizer(Bnf.format(cfg));
-		final var parser = new BnfParser(tokenizer);
-		final var parsedBnf = parser.parse();
-
-		assertThat(parsedBnf).isEqualTo(cfg);
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
 	}
 
 }

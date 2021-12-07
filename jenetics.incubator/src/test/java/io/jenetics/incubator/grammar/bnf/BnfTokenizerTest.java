@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +26,9 @@ import java.util.stream.Collectors;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.grammar.bnf.BnfTokenizer;
+import io.jenetics.incubator.grammar.bnf.Token;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

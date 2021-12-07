@@ -17,12 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 
 import java.util.stream.Collectors;
+
+import io.jenetics.incubator.grammar.Cfg;
 
 /**
  * Helper methods for parsing and formatting <em>context-free</em> grammars in

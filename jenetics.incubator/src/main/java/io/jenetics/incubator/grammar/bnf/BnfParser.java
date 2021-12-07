@@ -17,15 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.grammar.Token.Type.EOF;
+import static io.jenetics.incubator.grammar.bnf.Token.Type.EOF;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.jenetics.incubator.grammar.BnfTokenizer.BnfTokenType;
+import io.jenetics.incubator.grammar.Cfg;
+import io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType;
 import io.jenetics.incubator.grammar.Cfg.Expression;
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Rule;

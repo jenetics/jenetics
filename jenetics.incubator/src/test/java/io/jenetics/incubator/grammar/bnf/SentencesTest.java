@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import java.util.List;
 import java.util.Random;
@@ -25,8 +25,10 @@ import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.grammar.Cfg;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.grammar.Sentences;
 
 
 public class SentencesTest {

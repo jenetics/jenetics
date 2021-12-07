@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.grammar.Token.Type;
+import io.jenetics.incubator.grammar.bnf.Token.Type;
 
 /**
  * Base class for all parsers.
