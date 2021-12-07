@@ -39,11 +39,11 @@ public class BnfParserTest {
 
 	@Test
 	public void parse() {
-		final var bnf = Bnf.parse(BNF_STRING);
-		System.out.println(bnf);
+		final var cfg = Bnf.parse(BNF_STRING);
+		System.out.println(Bnf.format(cfg));
 	}
 
-	@Test(invocationCount = 25)
+	@Test(invocationCount = 30)
 	public void randomBnfParsing() {
 		final var cfg = RandomCfg.next(RandomGenerator.getDefault());
 

@@ -21,9 +21,7 @@ package io.jenetics.incubator.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
-import static java.lang.String.format;
 
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -65,22 +63,6 @@ public final class Bnf {
 
 	static boolean isIdChar(final char c) {
 		return isAlphabetic(c) || isDigit(c) || (c == '-');
-	}
-
-	static boolean isValidId(final String id) {
-		if (id.isBlank()) {
-			return false;
-		}
-		if (!isAlphabetic(id.charAt(0))) {
-			return false;
-		}
-		for (int i = 1; i < id.length(); ++i) {
-			if (!isIdChar(id.charAt(i))) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -127,7 +109,7 @@ public final class Bnf {
 	private static String format(final Cfg.Rule rule) {
 		return String.format(
 			"%s ::= %s",
-			rule.start(),
+			format(rule.start()),
 			rule.alternatives().stream()
 				.map(Bnf::format)
 				.collect(Collectors.joining("\n    | "))
