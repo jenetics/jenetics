@@ -1,4 +1,4 @@
-package io.jenetics.incubator.grammar_old;
+package io.jenetics.incubator.grammar;
 
 @FunctionalInterface
 public interface SymbolIndex {
