@@ -21,7 +21,9 @@ package io.jenetics.incubator.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
+import static java.lang.String.format;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -109,10 +111,44 @@ public final class Bnf {
 		}
 	}
 
+	/**
+	 * Formats the given <em>CFG</em> as BNF grammar string.
+	 *
+	 * @param grammar the CFG to format as BNF
+	 * @return the BNF formatted grammar string
+	 * @throws NullPointerException if the give {@code grammar} is {@code null}
+	 */
 	public static String format(final Cfg grammar) {
 		return grammar.rules().stream()
-			.map(Object::toString)
+			.map(Bnf::format)
 			.collect(Collectors.joining("\n"));
+	}
+
+	private static String format(final Cfg.Rule rule) {
+		return String.format(
+			"%s ::= %s",
+			rule.start(),
+			rule.alternatives().stream()
+				.map(Bnf::format)
+				.collect(Collectors.joining("\n    | "))
+		);
+	}
+
+	private static String format(final Cfg.Expression expr) {
+		return expr.symbols().stream()
+			.map(Bnf::format)
+			.collect(Collectors.joining(" "));
+	}
+
+	private static String format(final Cfg.Symbol symbol) {
+		if (symbol instanceof Cfg.NonTerminal nt) {
+			return String.format("<%s>", nt.value());
+		} else if (symbol instanceof Cfg.Terminal t) {
+			return "'" + t.value()
+				.replace("\\", "\\\\")
+				.replace("'", "\\'") + "'";
+		}
+		throw new AssertionError();
 	}
 
 }

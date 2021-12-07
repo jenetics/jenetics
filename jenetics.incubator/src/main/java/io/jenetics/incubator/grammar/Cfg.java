@@ -100,11 +100,6 @@ public record Cfg(
 				);
 			}
 		}
-
-		@Override
-		public String toString() {
-			return format("<%s>", value);
-		}
 	}
 
 	/**
@@ -121,11 +116,6 @@ public record Cfg(
 					"Terminal value must not be empty."
 				);
 			}
-		}
-
-		@Override
-		public String toString() {
-			return "'" + value.replace("\\", "\\\\").replace("'", "\\'") + "'";
 		}
 	}
 
@@ -146,13 +136,6 @@ public record Cfg(
 				);
 			}
 			symbols = List.copyOf(symbols);
-		}
-
-		@Override
-		public String toString() {
-			return symbols.stream()
-				.map(Object::toString)
-				.collect(Collectors.joining(" "));
 		}
 	}
 
@@ -178,17 +161,6 @@ public record Cfg(
 				);
 			}
 			alternatives = List.copyOf(alternatives);
-		}
-
-		@Override
-		public String toString() {
-			return format(
-				"%s ::= %s",
-				start,
-				alternatives.stream()
-					.map(Objects::toString)
-					.collect(Collectors.joining("\n    | "))
-			);
 		}
 	}
 
