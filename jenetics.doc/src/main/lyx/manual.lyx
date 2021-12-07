@@ -27607,6 +27607,14 @@ g.
         (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
 \end_layout
 
+\begin_layout Subsubsection
+CFG
+\end_layout
+
+\begin_layout Standard
+Context free grammer
+\end_layout
+
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
@@ -31895,6 +31903,36 @@ Factory
  will be reversed.
  That means, the first objective will be maximized instead of minimized,
  and so on.
+\end_layout
+
+\begin_layout Subsection
+Grammatical evolution
+\end_layout
+
+\begin_layout Standard
+In Grammatical Evolution (GE) there is a separation between the genotype,
+ i.e., a linear string of integers, and the phenotype, i.e.
+ a program in the form of a tree expression.
+ As a consequence, a mapping process is required to map the string into
+ an executable program, using the production rules of a CFG.
+\end_layout
+
+\begin_layout Subsubsection
+Context free grammar
+\end_layout
+
+\begin_layout Standard
+A context-free grammar basically consists of a finite set of grammar rules.
+ In order to define grammar rules, we assume that we have two kinds of symbols:
+ the terminals, which are the symbols of the alphabet underlying the languages
+ under consideration, and the non-terminals, which behave like variables
+ ranging over strings of terminals.
+ A rule is of the form, where A is a single non-terminal, and the right-hand
+ side is a string of terminal and/or non-terminal symbols.
+ As usual, first we need to define what the object is (a context-free grammar),
+ and then we need to explain how it is used.
+ Unlike automata, grammars are used to generate strings, rather than recognize
+ strings.
 \end_layout
 
 \begin_layout Section
