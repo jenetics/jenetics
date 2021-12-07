@@ -20,37 +20,33 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
-import org.testng.annotations.Test;
-
-import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
+/**
+ * This interface defines the mapping strategy for mapping a <em>genotype</em>
+ * to a list of {@link Terminal}s, for a given grammar, {@link Cfg}.
+ *
+ * @param <G> the gene type of the mapped genotype
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
+@FunctionalInterface
+public interface Mapper<G extends Gene<?, G>> {
 
-public class SentencesTest {
-
-	final Cfg CFG = Bnf.parse("""
-		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
-		<fun>  ::= FUN1 | FUN2
-		<arg>  ::= <expr> | <var> | <num>
-		<op>   ::= + | - | * | /
-		<var>  ::= x | y
-		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-		"""
-	);
-
-	@Test
-	public void create() {
-		final var random = new Random(29022156195143L);
-		final List<Terminal> list = Sentences.generate(CFG, random::nextInt);
-
-		final var string = list.stream()
-			.map(Symbol::value)
-			.collect(Collectors.joining());
-
-		System.out.println(string);
-	}
+	/**
+	 * Mapping function for converting a {@code genotype} to a list of
+	 * <em>terminals</em>.
+	 *
+	 * @param gt the genotype to map
+	 * @param cfg the CFG grammar used for mapping the genotype
+	 * @return the mapped genotype
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	List<Terminal> map(final Genotype<G> gt, final Cfg cfg);
 
 }

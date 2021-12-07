@@ -20,37 +20,16 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
-import org.testng.annotations.Test;
-
-import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerGene;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
+public class StandardMapper implements Mapper<IntegerGene> {
 
-public class SentencesTest {
-
-	final Cfg CFG = Bnf.parse("""
-		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
-		<fun>  ::= FUN1 | FUN2
-		<arg>  ::= <expr> | <var> | <num>
-		<op>   ::= + | - | * | /
-		<var>  ::= x | y
-		<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-		"""
-	);
-
-	@Test
-	public void create() {
-		final var random = new Random(29022156195143L);
-		final List<Terminal> list = Sentences.generate(CFG, random::nextInt);
-
-		final var string = list.stream()
-			.map(Symbol::value)
-			.collect(Collectors.joining());
-
-		System.out.println(string);
+	@Override
+	public List<Terminal> map(final Genotype<IntegerGene> gt, final Cfg cfg) {
+		return null;
 	}
 
 }

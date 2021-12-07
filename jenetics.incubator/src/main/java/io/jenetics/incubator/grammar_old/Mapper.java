@@ -7,6 +7,7 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
+import io.jenetics.incubator.grammar.SymbolIndex;
 import io.jenetics.incubator.grammar_old.Grammar.Symbol;
 import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 import io.jenetics.util.IntRange;

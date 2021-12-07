@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import io.jenetics.incubator.grammar.SymbolIndex;
 import io.jenetics.incubator.grammar_old.Grammar.NonTerminal;
 import io.jenetics.incubator.grammar_old.Grammar.Symbol;
 import io.jenetics.incubator.grammar_old.Grammar.Terminal;

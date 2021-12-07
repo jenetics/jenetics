@@ -3,6 +3,7 @@ package io.jenetics.incubator.grammar_old;
 import java.util.List;
 import java.util.Random;
 
+import io.jenetics.incubator.grammar.SymbolIndex;
 import io.jenetics.incubator.grammar_old.Grammar.Terminal;
 
 @FunctionalInterface

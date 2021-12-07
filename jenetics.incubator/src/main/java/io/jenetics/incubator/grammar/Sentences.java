@@ -22,22 +22,33 @@ package io.jenetics.incubator.grammar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.random.RandomGenerator;
 
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
-public class Sentences {
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
+public final class Sentences {
 
-	public static List<Terminal> generate(
+	private Sentences() {
+	}
+
+	public static List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
+		return generate(cfg, index, LinkedList::new);
+	}
+
+	static List<Terminal> generate(
 		final Cfg cfg,
-		final RandomGenerator random,
+		final SymbolIndex index,
 		final Supplier<? extends List<Symbol>> listFactory
 	) {
 		final NonTerminal start = cfg.start();
 		final var symbols = listFactory.get();
-		symbols.addAll(expand(cfg, start, random));
+		symbols.addAll(expand(cfg, start, index));
 
 		//final List<Symbol> symbols = new LinkedList<>(expand(cfg, start, random));
 
@@ -51,7 +62,7 @@ public class Sentences {
 
 				if (symbol instanceof NonTerminal) {
 					it.remove();
-					expand(cfg, (NonTerminal)symbol, random).forEach(it::add);
+					expand(cfg, (NonTerminal)symbol, index).forEach(it::add);
 					expanded = true;
 				}
 			}
@@ -62,19 +73,15 @@ public class Sentences {
 			.toList();
 	}
 
-	public static List<Terminal> generate(final Cfg cfg, final RandomGenerator random) {
-		return generate(cfg, random, LinkedList::new);
-	}
-
 	private static List<Symbol> expand(
 		final Cfg grammar,
 		final NonTerminal symbol,
-		RandomGenerator random
+		final SymbolIndex index
 	) {
 		final var rule = grammar.rule(symbol);
 		return rule
 			.map(r -> r.alternatives()
-				.get(random.nextInt(r.alternatives().size()))
+				.get(index.next(r.alternatives().size()))
 				.symbols())
 			.orElse(List.of(symbol));
 	}

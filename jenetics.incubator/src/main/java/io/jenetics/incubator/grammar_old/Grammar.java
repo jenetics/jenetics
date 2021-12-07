@@ -28,6 +28,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.grammar.SymbolIndex;
+
 import io.jenetics.ext.util.TreeNode;
 
 /**

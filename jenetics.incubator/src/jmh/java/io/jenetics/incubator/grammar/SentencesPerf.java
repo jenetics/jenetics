@@ -19,14 +19,10 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Stack;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-import java.util.random.RandomGenerator;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -38,9 +34,6 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.infra.Blackhole;
-
-import io.jenetics.IntegerChromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -73,13 +66,13 @@ public class SentencesPerf {
 	@Benchmark
 	public Object linkedListSentence() {
 		//random.setSeed(29022156195143L);
-		return Sentences.generate(cfg, random, LinkedList::new);
+		return Sentences.generate(cfg, random::nextInt, LinkedList::new);
 	}
 
 	@Benchmark
 	public Object arrayListSentence() {
 		//random.setSeed(29022156195143L);
-		return Sentences.generate(cfg, random, ArrayList::new);
+		return Sentences.generate(cfg, random::nextInt, ArrayList::new);
 	}
 
 //	@Benchmark
