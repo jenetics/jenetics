@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.grammar;
 
-import static io.jenetics.incubator.grammar.Sentences.Expansion.LEFT_TO_RIGHT;
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,8 +37,8 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-public final class Sentences {
-	private Sentences() {}
+public final class Sentence {
+	private Sentence() {}
 
 	/**
 	 * Enum of the used sentence expansion strategy.

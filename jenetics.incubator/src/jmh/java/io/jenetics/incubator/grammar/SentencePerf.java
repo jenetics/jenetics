@@ -35,7 +35,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Sentences.Expansion;
+import io.jenetics.incubator.grammar.Sentence.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
@@ -47,7 +47,7 @@ import io.jenetics.incubator.grammar.bnf.Bnf;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
-public class SentencesPerf {
+public class SentencePerf {
 
 	public Random random;
 	public Cfg cfg;
@@ -71,7 +71,7 @@ public class SentencesPerf {
 		random.setSeed(29022156195143L);
 
 		final var sentence = new LinkedList<Symbol>();
-		Sentences.expand(cfg, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
 		return sentence;
 	}
 
@@ -80,7 +80,7 @@ public class SentencesPerf {
 		random.setSeed(-8564585140851778291L);
 
 		final var sentence = new LinkedList<Symbol>();
-		Sentences.expand(cfg, random::nextInt, sentence, Expansion.LEFT_FIRST);
+		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_FIRST);
 		return sentence;
 	}
 

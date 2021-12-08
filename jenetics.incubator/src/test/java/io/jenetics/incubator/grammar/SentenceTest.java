@@ -29,11 +29,11 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.grammar.Sentences.Expansion;
+import io.jenetics.incubator.grammar.Sentence.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 
-public class SentencesTest {
+public class SentenceTest {
 
 	final Cfg CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
@@ -50,7 +50,7 @@ public class SentencesTest {
 		final var random = new Random(-8564585140851778291L);
 
 		var sentence = new LinkedList<Symbol>();
-		Sentences.expand(CFG, random::nextInt, sentence, Expansion.LEFT_FIRST);
+		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_FIRST);
 
 		var list = sentence.stream()
 			.map(Terminal.class::cast)
@@ -66,7 +66,7 @@ public class SentencesTest {
 
 		random.setSeed(29022156195143L);
 		sentence.clear();
-		Sentences.expand(CFG, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
 
 		list = sentence.stream()
 			.map(Terminal.class::cast)
@@ -93,7 +93,7 @@ public class SentencesTest {
 		);
 
 		final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-		final List<Terminal> sentence = Sentences.generate(cfg, random::nextInt);
+		final List<Terminal> sentence = Sentence.generate(cfg, random::nextInt);
 		final String string = sentence.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
