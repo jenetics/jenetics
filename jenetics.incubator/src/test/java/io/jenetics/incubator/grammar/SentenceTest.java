@@ -60,11 +60,7 @@ public class SentenceTest {
 		var sentence = new LinkedList<Symbol>();
 		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_FIRST);
 
-		var list = sentence.stream()
-			.map(Terminal.class::cast)
-			.toList();
-
-		var string = list.stream()
+		var string = sentence.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
@@ -76,11 +72,7 @@ public class SentenceTest {
 		sentence.clear();
 		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
 
-		list = sentence.stream()
-			.map(Terminal.class::cast)
-			.toList();
-
-		string = list.stream()
+		string = sentence.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 

@@ -160,7 +160,7 @@ public final class Sentence {
 		}
 	}
 
-	private static List<Symbol> expand(
+	static List<Symbol> expand(
 		final Cfg cfg,
 		final NonTerminal symbol,
 		final SymbolIndex index
