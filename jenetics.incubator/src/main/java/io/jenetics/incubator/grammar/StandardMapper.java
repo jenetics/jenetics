@@ -22,14 +22,35 @@ package io.jenetics.incubator.grammar;
 import java.util.List;
 
 import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
+import io.jenetics.engine.Codec;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.util.IntRange;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public class StandardMapper implements Mapper<IntegerGene> {
 
 	@Override
 	public List<Terminal> map(final Genotype<IntegerGene> gt, final Cfg cfg) {
-		return null;
+		final var codons = Codons.ofIntegerGenes(gt.chromosome());
+		return Sentence.generate(cfg, codons);
+	}
+
+
+	public static Codec<List<Terminal>, IntegerGene> codec(
+		final Cfg cfg,
+		final IntRange domain,
+		final IntRange length
+	) {
+		return Codec.of(
+			Genotype.of(IntegerChromosome.of(domain, length)),
+			gt -> Sentence.generate(cfg, Codons.ofIntegerGenes(gt.chromosome()))
+		);
 	}
 
 }
