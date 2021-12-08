@@ -20,6 +20,8 @@
 package io.jenetics.incubator.grammar;
 
 /**
+ * Interface for selecting a symbol index.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -27,6 +29,12 @@ package io.jenetics.incubator.grammar;
 @FunctionalInterface
 public interface SymbolIndex {
 
+	/**
+	 * Selects an index with the given upper {@code bound}, exclusively.
+	 *
+	 * @param bound the upper bound of the symbol index, exclusively
+	 * @return the next symbol index
+	 */
 	int next(final int bound);
 
 }
