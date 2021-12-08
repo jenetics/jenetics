@@ -21,6 +21,8 @@ package io.jenetics.incubator.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.IntStream;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -43,6 +45,32 @@ public class CodonsTest {
 		return new Object[][] {
 			{1}, {2}, {3}, {7}, {8}, {9}, {10}, {15}, {16}, {17}, {31},
 			{32}, {33}, {100}, {1_000}, {10_000}, {100_000}
+		};
+	}
+
+	@Test(dataProvider = "codonsSizes")
+	public void nextIndex(final int size, final int bound) {
+		final int[] values = IntStream.range(0, size).toArray();
+		final SymbolIndex index = Codons.ofIntArray(values);
+
+		for (int i = 0, n = size*3; i < n; ++i) {
+			final int expectedIndex = values[i%values.length]%bound;
+			assertThat(index.next(bound)).isEqualTo(expectedIndex);
+		}
+	}
+
+	@DataProvider
+	public Object[][] codonsSizes() {
+		return new Object[][] {
+			{1, 1},
+			{2, 10},
+			{3, 2},
+			{8, 8},
+			{10, 5},
+			{16, 10},
+			{31, 15},
+			{33, 20},
+			{100, 5}
 		};
 	}
 
