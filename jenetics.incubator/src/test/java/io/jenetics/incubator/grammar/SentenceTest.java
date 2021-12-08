@@ -88,33 +88,62 @@ public class SentenceTest {
 		//System.out.println();
 	}
 
-	@Test(dataProvider = "sentences")
-	public void compatibleSentenceGeneration(final long seed, final String sentence) {
+	@Test(dataProvider = "sentencesLeftToRight")
+	public void compatibleLeftToRightSentenceGeneration(
+		final long seed,
+		final String sentence
+	) {
+		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_TO_RIGHT);
+	}
+
+	@Test(dataProvider = "sentencesLeftFirst")
+	public void compatibleLeftFirstSentenceGeneration(
+		final long seed,
+		final String sentence
+	) {
+		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_FIRST);
+	}
+
+	//@Test
+	public void generateSentences() {
+		final var random = new Random(124567);
+		for (int i = 0; i < 100; ++i) {
+			final var seed = random.nextLong();
+			final var rand = new Random(seed);
+			final List<Terminal> sentence = Sentence.generate(CFG, rand::nextInt, Expansion.LEFT_FIRST);
+			final String string = sentence.stream()
+				.map(Symbol::value)
+				.collect(Collectors.joining());
+
+			System.out.println(seed + "\t" + string);
+		}
+	}
+
+	private void compatibleSentenceGeneration(
+		final long seed,
+		final String sentence,
+		Expansion expansion
+	) {
 		final var random = new Random(seed);
-		final var terminals = Sentence.generate(CFG, random::nextInt);
+		final var terminals = Sentence.generate(CFG, random::nextInt, expansion);
 
 		final String string = terminals.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 		assertThat(string).isEqualTo(sentence);
-
-//		final RandomGenerator random = new Random(124567);
-//		for (int i = 0; i < 100; ++i) {
-//			final var seed = random.nextLong();
-//			final var rand = new Random(seed);
-//			final List<Terminal> sentence = Sentence.generate(cfg, rand::nextInt);
-//			final String string = sentence.stream()
-//				.map(Symbol::value)
-//				.collect(Collectors.joining());
-//
-//			System.out.println(seed + "\t" + string);
-//		}
 	}
 
 	@DataProvider
-	public Object[][] sentences() throws IOException {
-		final var resource = "/io/jenetics/incubator/grammar/sentences.csv";
+	public Object[][] sentencesLeftToRight() throws IOException {
+		return read("/io/jenetics/incubator/grammar/sentences-left_to_right.csv");
+	}
 
+	@DataProvider
+	public Object[][] sentencesLeftFirst() throws IOException {
+		return read("/io/jenetics/incubator/grammar/sentences-left_first.csv");
+	}
+
+	private static Object[][] read(final String resource) throws IOException {
 		final List<Object[]> values = new ArrayList<>();
 		try (var in = SentenceTest.class.getResourceAsStream(resource);
 			 var reader = new InputStreamReader(in);
