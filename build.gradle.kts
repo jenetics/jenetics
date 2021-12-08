@@ -132,6 +132,11 @@ fun setupJava(project: Project) {
  * Setup of the Java test-environment and reporting.
  */
 fun setupTestReporting(project: Project) {
+	if (JavaVersion.current() == JavaVersion.VERSION_18) {
+		logger.info("Jacoco not supported for '" + JavaVersion.VERSION_18 + "'.")
+		return;
+	}
+
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
