@@ -19,16 +19,15 @@
  */
 package io.jenetics.incubator.grammar;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.grammar.Sentences;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 
@@ -44,16 +43,26 @@ public class SentencesTest {
 		"""
 	);
 
-	@Test
+	@Test(invocationCount = 50)
 	public void create() {
-		final var random = new Random(29022156195143L);
-		final List<Terminal> list = Sentences.generate(CFG, random::nextInt);
+		final var random = new Random(-8564585140851778291L);
+		List<Terminal> list = Sentences.generate(CFG, random::nextInt);
 
-		final var string = list.stream()
+		var string = list.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
 		System.out.println(string);
+
+		final var seed = new Random().nextLong();
+		System.out.println(seed);
+		random.setSeed(29022156195143L);
+		list = Sentences.infixGenerate(CFG, random::nextInt, new LinkedList<>());
+		string = list.stream()
+			.map(Symbol::value)
+			.collect(Collectors.joining());
+		System.out.println(string);
+		System.out.println();
 	}
 
 }

@@ -21,13 +21,16 @@ package io.jenetics.incubator.grammar;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.ListIterator;
 
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 /**
+ * Standard implementation for creating sentences from a given grammar.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -37,32 +40,42 @@ public final class Sentences {
 	private Sentences() {
 	}
 
+	/**
+	 * Generates a new sentence from the given grammar, <em>cfg</em>. The
+	 * strategy, of which symbol index should be taken, is defined by the given
+	 * symbol {@code index} object. The replacement always starting from the
+	 * leftmost nonterminal as described in
+	 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+	 * Grammatical Evolution</a>.
+	 *
+	 * @param cfg the generating grammar
+	 * @param index the symbol index strategy
+	 * @return a newly created terminal list (sentence)
+	 */
 	public static List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
-		return generate(cfg, index, LinkedList::new);
+		return leftGenerate(cfg, index, new LinkedList<>());
 	}
 
-	static List<Terminal> generate(
+	static List<Terminal> leftGenerate(
 		final Cfg cfg,
 		final SymbolIndex index,
-		final Supplier<? extends List<Symbol>> listFactory
+		final List<Symbol> symbols
 	) {
 		final NonTerminal start = cfg.start();
-		final var symbols = listFactory.get();
 		symbols.addAll(expand(cfg, start, index));
-
-		//final List<Symbol> symbols = new LinkedList<>(expand(cfg, start, random));
 
 		boolean expanded = true;
 		while (expanded) {
 			expanded = false;
 
-			final var it = symbols.listIterator();
-			while (it.hasNext()) {
-				final var symbol = it.next();
+			// Always starting the replacement from the leftmost nonterminal.
+			final ListIterator<Symbol> sit = symbols.listIterator();
+			while (sit.hasNext() && !expanded) {
+				if (sit.next() instanceof NonTerminal nt) {
+					sit.remove();
+					final List<Symbol> exp = expand(cfg, nt, index);
+					exp.forEach(sit::add);
 
-				if (symbol instanceof NonTerminal) {
-					it.remove();
-					expand(cfg, (NonTerminal)symbol, index).forEach(it::add);
 					expanded = true;
 				}
 			}
@@ -74,16 +87,49 @@ public final class Sentences {
 	}
 
 	private static List<Symbol> expand(
-		final Cfg grammar,
+		final Cfg cfg,
 		final NonTerminal symbol,
 		final SymbolIndex index
 	) {
-		final var rule = grammar.rule(symbol);
-		return rule
-			.map(r -> r.alternatives()
-				.get(index.next(r.alternatives().size()))
-				.symbols())
+		return cfg.rule(symbol)
+			.map(r -> expand(r, index))
 			.orElse(List.of(symbol));
+	}
+
+	private static List<Symbol> expand(final Rule rule, final SymbolIndex index) {
+		final int size = rule.alternatives().size();
+		return rule.alternatives()
+			.get(index.next(size))
+			.symbols();
+	}
+
+	static List<Terminal> infixGenerate(
+		final Cfg cfg,
+		final SymbolIndex index,
+		final List<Symbol> symbols
+	) {
+		final NonTerminal start = cfg.start();
+		symbols.addAll(expand(cfg, start, index));
+
+		boolean expanded = true;
+		while (expanded) {
+			expanded = false;
+
+			final ListIterator<Symbol> sit = symbols.listIterator();
+			while (sit.hasNext()) {
+				if (sit.next() instanceof NonTerminal nt) {
+					sit.remove();
+					final List<Symbol> exp = expand(cfg, nt, index);
+					exp.forEach(sit::add);
+
+					expanded = true;
+				}
+			}
+		}
+
+		return symbols.stream()
+			.map(Terminal.class::cast)
+			.toList();
 	}
 
 }
