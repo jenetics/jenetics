@@ -34,6 +34,8 @@ public interface SymbolIndex {
 	 *
 	 * @param bound the upper bound of the symbol index, exclusively
 	 * @return the next symbol index
+	 * @throws IllegalArgumentException if the given {@code bound} is smaller
+	 *         than one
 	 */
 	int next(final int bound);
 
