@@ -154,7 +154,7 @@ public class TaskCompletionTest {
 		};
 	}
 
-	@Test(dataProvider = "parameters", timeOut = 5_000)
+	@Test(dataProvider = "parameters", timeOut = 30_000)
 	public void asynchronous(final int completionSize, final int submits, final int pause)
 		throws Exception
 	{
@@ -192,7 +192,7 @@ public class TaskCompletionTest {
 		}
 	}
 
-	@Test(dataProvider = "parameters", timeOut = 5_000)
+	@Test(dataProvider = "parameters", timeOut = 30_000)
 	public void raceCondition(final int completionSize, final int submits, final int pause)
 		throws Exception
 	{
@@ -228,7 +228,7 @@ public class TaskCompletionTest {
 		}
 	}
 
-	@Test(timeOut = 5_000)
+	@Test(timeOut = 30_000)
 	public void exceedingNumberOfTasks() throws Exception {
 		final int threadCount = 3;
 		final int completionSize = 4;
