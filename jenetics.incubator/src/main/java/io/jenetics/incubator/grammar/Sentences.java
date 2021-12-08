@@ -47,16 +47,49 @@ public final class Sentences {
 	 * leftmost nonterminal as described in
 	 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 	 * Grammatical Evolution</a>.
+	 * <p>
+	 * The following code snippet shows how to create a random sentence from a
+	 * given grammar:
+	 * <pre>{@code
+	 * final Cfg cfg = Bnf.parse("""
+	 *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
+	 *     <fun>  ::= FUN1 | FUN2
+	 *     <arg>  ::= <expr> | <var> | <num>
+	 *     <op>   ::= + | - | * | /
+	 *     <var>  ::= x | y
+	 *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+	 *     """
+	 * );
+	 *
+	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
+	 * final List<Terminal> sentence = Sentences.generate(cfg, random::nextInt);
+	 * final String string = sentence.stream()
+	 *     .map(Symbol::value)
+	 *     .collect(Collectors.joining());
+	 *
+	 * System.out.println(string);
+	 * }</pre>
+	 * <em>Some sample output:</em>
+	 * <pre>{@code
+	 * > ((x-FUN1(5,5))+8)
+	 * > (FUN2(y,5)-FUN2(0,x))
+	 * > x
+	 * > FUN2(x,x)
+	 * > 5
+	 * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
+	 * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
+	 * > (9-(y*(x+x)))
+	 * > }</pre>
 	 *
 	 * @param cfg the generating grammar
 	 * @param index the symbol index strategy
 	 * @return a newly created terminal list (sentence)
 	 */
 	public static List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
-		return leftGenerate(cfg, index, new LinkedList<>());
+		return leftFirstExpansion(cfg, index, new LinkedList<>());
 	}
 
-	static List<Terminal> leftGenerate(
+	static List<Terminal> leftFirstExpansion(
 		final Cfg cfg,
 		final SymbolIndex index,
 		final List<Symbol> symbols
@@ -98,9 +131,7 @@ public final class Sentences {
 
 	private static List<Symbol> expand(final Rule rule, final SymbolIndex index) {
 		final int size = rule.alternatives().size();
-		return rule.alternatives()
-			.get(index.next(size))
-			.symbols();
+		return rule.alternatives().get(index.next(size)).symbols();
 	}
 
 	static List<Terminal> infixGenerate(

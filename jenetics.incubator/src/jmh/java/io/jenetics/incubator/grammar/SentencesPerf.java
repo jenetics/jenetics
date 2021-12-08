@@ -74,13 +74,13 @@ public class SentencesPerf {
 	@Benchmark
 	public Object leftGeneratelinkedListSentence() {
 		random.setSeed(-8564585140851778291L);
-		return Sentences.leftGenerate(cfg, random::nextInt, new LinkedList<>());
+		return Sentences.leftFirstExpansion(cfg, random::nextInt, new LinkedList<>());
 	}
 
 	@Benchmark
 	public Object leftGeneratearrayListSentence() {
 		random.setSeed(-8564585140851778291L);
-		return Sentences.leftGenerate(cfg, random::nextInt, new ArrayList<>(100));
+		return Sentences.leftFirstExpansion(cfg, random::nextInt, new ArrayList<>(100));
 	}
 
 	@Benchmark

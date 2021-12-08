@@ -22,6 +22,7 @@ package io.jenetics.incubator.grammar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
@@ -63,6 +64,27 @@ public class SentencesTest {
 			.collect(Collectors.joining());
 		System.out.println(string);
 		System.out.println();
+	}
+
+	@Test(invocationCount = 1000)
+	public void foo() {
+		final Cfg cfg = Bnf.parse("""
+			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
+			<fun>  ::= FUN1 | FUN2
+			<arg>  ::= <expr> | <var> | <num>
+			<op>   ::= + | - | * | /
+			<var>  ::= x | y
+			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+
+		final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
+		final List<Terminal> sentence = Sentences.generate(cfg, random::nextInt);
+		final String string = sentence.stream()
+			.map(Symbol::value)
+			.collect(Collectors.joining());
+
+		System.out.println(string);
 	}
 
 }
