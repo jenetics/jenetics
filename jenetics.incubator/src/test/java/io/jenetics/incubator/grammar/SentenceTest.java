@@ -19,12 +19,18 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
@@ -32,10 +38,12 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.incubator.grammar.Sentence.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
-
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ */
 public class SentenceTest {
 
-	final Cfg CFG = Bnf.parse("""
+	static final Cfg CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
 		<fun>  ::= FUN1 | FUN2
 		<arg>  ::= <expr> | <var> | <num>
@@ -60,7 +68,7 @@ public class SentenceTest {
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
-		System.out.println(string);
+		//System.out.println(string);
 
 		////////////////////////////////////////////////////////////////////////
 
@@ -76,29 +84,50 @@ public class SentenceTest {
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
-		System.out.println(string);
-		System.out.println();
+		//System.out.println(string);
+		//System.out.println();
 	}
 
-	@Test(invocationCount = 1)
-	public void foo() {
-		final Cfg cfg = Bnf.parse("""
-			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
-			<fun>  ::= FUN1 | FUN2
-			<arg>  ::= <expr> | <var> | <num>
-			<op>   ::= + | - | * | /
-			<var>  ::= x | y
-			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-			"""
-		);
+	@Test(dataProvider = "sentences")
+	public void compatibleSentenceGeneration(final long seed, final String sentence) {
+		final var random = new Random(seed);
+		final var terminals = Sentence.generate(CFG, random::nextInt);
 
-		final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-		final List<Terminal> sentence = Sentence.generate(cfg, random::nextInt);
-		final String string = sentence.stream()
+		final String string = terminals.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
+		assertThat(string).isEqualTo(sentence);
 
-		System.out.println(string);
+//		final RandomGenerator random = new Random(124567);
+//		for (int i = 0; i < 100; ++i) {
+//			final var seed = random.nextLong();
+//			final var rand = new Random(seed);
+//			final List<Terminal> sentence = Sentence.generate(cfg, rand::nextInt);
+//			final String string = sentence.stream()
+//				.map(Symbol::value)
+//				.collect(Collectors.joining());
+//
+//			System.out.println(seed + "\t" + string);
+//		}
+	}
+
+	@DataProvider
+	public Object[][] sentences() throws IOException {
+		final var resource = "/io/jenetics/incubator/grammar/sentences.csv";
+
+		final List<Object[]> values = new ArrayList<>();
+		try (var in = SentenceTest.class.getResourceAsStream(resource);
+			 var reader = new InputStreamReader(in);
+			 var br = new BufferedReader(reader))
+		{
+			String line;
+			while ((line = br.readLine()) != null) {
+				final var parts = line.split("\t");
+				values.add(new Object[] {Long.parseLong(parts[0]), parts[1]});
+			}
+		}
+
+		return values.toArray(Object[][]::new);
 	}
 
 }
