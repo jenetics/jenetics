@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.grammar.Sentences.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 
@@ -44,10 +45,16 @@ public class SentencesTest {
 		"""
 	);
 
-	@Test(invocationCount = 50)
+	@Test
 	public void create() {
 		final var random = new Random(-8564585140851778291L);
-		List<Terminal> list = Sentences.generate(CFG, random::nextInt);
+
+		var sentence = new LinkedList<Symbol>();
+		Sentences.expand(CFG, random::nextInt, sentence, Expansion.LEFT_FIRST);
+
+		var list = sentence.stream()
+			.map(Terminal.class::cast)
+			.toList();
 
 		var string = list.stream()
 			.map(Symbol::value)
@@ -55,18 +62,25 @@ public class SentencesTest {
 
 		System.out.println(string);
 
-		final var seed = new Random().nextLong();
-		System.out.println(seed);
+		////////////////////////////////////////////////////////////////////////
+
 		random.setSeed(29022156195143L);
-		list = Sentences.infixGenerate(CFG, random::nextInt, new LinkedList<>());
+		sentence.clear();
+		Sentences.expand(CFG, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+
+		list = sentence.stream()
+			.map(Terminal.class::cast)
+			.toList();
+
 		string = list.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
+
 		System.out.println(string);
 		System.out.println();
 	}
 
-	@Test(invocationCount = 1000)
+	@Test(invocationCount = 1)
 	public void foo() {
 		final Cfg cfg = Bnf.parse("""
 			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )

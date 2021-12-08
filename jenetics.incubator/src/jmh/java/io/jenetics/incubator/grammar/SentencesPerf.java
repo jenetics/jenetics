@@ -19,10 +19,7 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -37,17 +34,15 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.grammar.Sentences.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 15, time = 1)
 @Fork(value = 3)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -72,73 +67,35 @@ public class SentencesPerf {
 	}
 
 	@Benchmark
-	public Object leftGeneratelinkedListSentence() {
-		random.setSeed(-8564585140851778291L);
-		return Sentences.leftFirstExpansion(cfg, random::nextInt, new LinkedList<>());
-	}
-
-	@Benchmark
-	public Object leftGeneratearrayListSentence() {
-		random.setSeed(-8564585140851778291L);
-		return Sentences.leftFirstExpansion(cfg, random::nextInt, new ArrayList<>(100));
-	}
-
-	@Benchmark
-	public Object linkedListSentence() {
+	public Object leftToRightExpansion() {
 		random.setSeed(29022156195143L);
-		return infixGenerate(cfg, random::nextInt, new LinkedList<>());
+
+		final var sentence = new LinkedList<Symbol>();
+		Sentences.expand(cfg, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+		return sentence;
 	}
 
 	@Benchmark
-	public Object arrayListSentence() {
-		random.setSeed(29022156195143L);
-		return infixGenerate(cfg, random::nextInt, new ArrayList<>(100));
+	public Object leftFirstExpansion() {
+		random.setSeed(-8564585140851778291L);
+
+		final var sentence = new LinkedList<Symbol>();
+		Sentences.expand(cfg, random::nextInt, sentence, Expansion.LEFT_FIRST);
+		return sentence;
 	}
 
-	private static List<Symbol> expand(
-		final Cfg cfg,
-		final NonTerminal symbol,
-		final SymbolIndex index
-	) {
-		return cfg.rule(symbol)
-			.map(r -> expand(r, index))
-			.orElse(List.of(symbol));
-	}
+	/*
+Benchmark                                     Mode  Cnt     Score    Error  Units
+SentencesPerf.arrayListSentence               avgt   45  6353.975 ± 53.933  ns/op
+SentencesPerf.leftGeneratearrayListSentence   avgt   45  9298.912 ± 60.637  ns/op
+SentencesPerf.leftGeneratelinkedListSentence  avgt   45  9492.518 ± 55.839  ns/op
+SentencesPerf.linkedListSentence              avgt   45  5327.885 ± 43.201  ns/op
+	 */
 
-	private static List<Symbol> expand(final Rule rule, final SymbolIndex index) {
-		final int size = rule.alternatives().size();
-		return rule.alternatives()
-			.get(index.next(size))
-			.symbols();
-	}
-
-	static List<Terminal> infixGenerate(
-		final Cfg cfg,
-		final SymbolIndex index,
-		final List<Symbol> symbols
-	) {
-		final NonTerminal start = cfg.start();
-		symbols.addAll(expand(cfg, start, index));
-
-		boolean expanded = true;
-		while (expanded) {
-			expanded = false;
-
-			final ListIterator<Symbol> sit = symbols.listIterator();
-			while (sit.hasNext()) {
-				if (sit.next() instanceof NonTerminal nt) {
-					sit.remove();
-					final List<Symbol> exp = expand(cfg, nt, index);
-					exp.forEach(sit::add);
-
-					expanded = true;
-				}
-			}
-		}
-
-		return symbols.stream()
-			.map(Terminal.class::cast)
-			.toList();
-	}
+	/*
+Benchmark                           Mode  Cnt     Score    Error  Units
+SentencesPerf.leftFirstExpansion    avgt   45  9238.491 ± 56.459  ns/op
+SentencesPerf.leftToRightExpansion  avgt   45  4973.686 ± 24.957  ns/op
+	 */
 
 }

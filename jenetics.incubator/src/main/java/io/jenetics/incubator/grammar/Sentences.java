@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static io.jenetics.incubator.grammar.Sentences.Expansion.LEFT_TO_RIGHT;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -36,17 +38,30 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
  * @version !__version__!
  */
 public final class Sentences {
+	private Sentences() {}
 
-	private Sentences() {
+	/**
+	 * Enum of the used sentence expansion strategy.
+	 */
+	public enum Expansion {
+
+		/**
+		 * The symbol replacement always starting from the leftmost nonterminal
+		 * as described in
+		 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+		 * Grammatical Evolution</a>.
+		 */
+		LEFT_FIRST,
+
+		/**
+		 * The symbol replacement is performed from left to right and is repeated
+		 * until all non-terminal symbol has been expanded.
+		 */
+		LEFT_TO_RIGHT
 	}
 
 	/**
-	 * Generates a new sentence from the given grammar, <em>cfg</em>. The
-	 * strategy, of which symbol index should be taken, is defined by the given
-	 * symbol {@code index} object. The replacement always starting from the
-	 * leftmost nonterminal as described in
-	 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
-	 * Grammatical Evolution</a>.
+	 * Generates a new sentence from the given grammar, <em>cfg</em>.
 	 * <p>
 	 * The following code snippet shows how to create a random sentence from a
 	 * given grammar:
@@ -62,7 +77,9 @@ public final class Sentences {
 	 * );
 	 *
 	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-	 * final List<Terminal> sentence = Sentences.generate(cfg, random::nextInt);
+	 * final List<Terminal> sentence = Sentences.generate(
+	 *     cfg, random::nextInt, LEFT_TO_RIGHT
+	 * );
 	 * final String string = sentence.stream()
 	 *     .map(Symbol::value)
 	 *     .collect(Collectors.joining());
@@ -81,18 +98,47 @@ public final class Sentences {
 	 * > (9-(y*(x+x)))
 	 * > }</pre>
 	 *
+	 * @see #generate(Cfg, SymbolIndex)
+	 *
+	 * @param cfg the generating grammar
+	 * @param index the symbol index strategy
+	 * @param expansion the expansion strategy to use for building the sentence
+	 * @return a newly created terminal list (sentence)
+	 */
+	public static List<Terminal> generate(
+		final Cfg cfg,
+		final SymbolIndex index,
+		final Expansion expansion
+	) {
+		final var sentence = new LinkedList<Symbol>();
+		expand(cfg, index, sentence, expansion);
+
+		return sentence.stream()
+			.map(Terminal.class::cast)
+			.toList();
+	}
+
+	/**
+	 * Generates a new sentence from the given grammar, <em>cfg</em>.
+	 *
+	 * @see #generate(Cfg, SymbolIndex, Expansion)
+	 *
 	 * @param cfg the generating grammar
 	 * @param index the symbol index strategy
 	 * @return a newly created terminal list (sentence)
 	 */
-	public static List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
-		return leftFirstExpansion(cfg, index, new LinkedList<>());
+	public static List<Terminal> generate(
+		final Cfg cfg,
+		final SymbolIndex index
+	) {
+		return generate(cfg, index, LEFT_TO_RIGHT);
 	}
 
-	static List<Terminal> leftFirstExpansion(
+	static void expand(
 		final Cfg cfg,
 		final SymbolIndex index,
-		final List<Symbol> symbols
+		final List<Symbol> symbols,
+		final Expansion expansion
 	) {
 		final NonTerminal start = cfg.start();
 		symbols.addAll(expand(cfg, start, index));
@@ -101,9 +147,8 @@ public final class Sentences {
 		while (expanded) {
 			expanded = false;
 
-			// Always starting the replacement from the leftmost nonterminal.
 			final ListIterator<Symbol> sit = symbols.listIterator();
-			while (sit.hasNext() && !expanded) {
+			while (sit.hasNext() && (expansion == LEFT_TO_RIGHT || !expanded)) {
 				if (sit.next() instanceof NonTerminal nt) {
 					sit.remove();
 					final List<Symbol> exp = expand(cfg, nt, index);
@@ -113,10 +158,6 @@ public final class Sentences {
 				}
 			}
 		}
-
-		return symbols.stream()
-			.map(Terminal.class::cast)
-			.toList();
 	}
 
 	private static List<Symbol> expand(
@@ -132,35 +173,6 @@ public final class Sentences {
 	private static List<Symbol> expand(final Rule rule, final SymbolIndex index) {
 		final int size = rule.alternatives().size();
 		return rule.alternatives().get(index.next(size)).symbols();
-	}
-
-	static List<Terminal> infixGenerate(
-		final Cfg cfg,
-		final SymbolIndex index,
-		final List<Symbol> symbols
-	) {
-		final NonTerminal start = cfg.start();
-		symbols.addAll(expand(cfg, start, index));
-
-		boolean expanded = true;
-		while (expanded) {
-			expanded = false;
-
-			final ListIterator<Symbol> sit = symbols.listIterator();
-			while (sit.hasNext()) {
-				if (sit.next() instanceof NonTerminal nt) {
-					sit.remove();
-					final List<Symbol> exp = expand(cfg, nt, index);
-					exp.forEach(sit::add);
-
-					expanded = true;
-				}
-			}
-		}
-
-		return symbols.stream()
-			.map(Terminal.class::cast)
-			.toList();
 	}
 
 }
