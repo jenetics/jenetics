@@ -259,7 +259,7 @@ fun xlint(): String {
 		"overrides",
 		"rawtypes",
 		"removal",
-		"serial",
+		// "serial" -- Creates unnecessary warnings.,
 		"static",
 		"try",
 		"unchecked"
