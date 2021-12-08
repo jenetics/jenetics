@@ -3,12 +3,12 @@ name: Jenetics Build
 on:
   push:
     branches:
-      - main
+      - master
       - releases/*
       - issues/*
   pull_request:
     branches:
-      - main
+      - master
       - releases/*
 
 jobs:
