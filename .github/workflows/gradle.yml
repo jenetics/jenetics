@@ -5,11 +5,13 @@ on:
     branches:
       - master
       - releases/*
+      - r7.0.0
       - issues/*
   pull_request:
     branches:
       - master
       - releases/*
+      - r7.0.0
 
 jobs:
   build:
@@ -17,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        java-version: [ 11.0.3, 11, 17.0.1, 17  ]
+        java-version: [ 17.0.1, 17, 18-ea  ]
     steps:
     - uses: actions/checkout@v2
 
