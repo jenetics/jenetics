@@ -57,7 +57,7 @@ public class PersistentObject<T> {
 			throws IOException
 		{
 			final File file = new File(dir, object.getName() + "." + name);
-			System.out.println(String.format("Write '%s'", file));
+			System.out.printf("Write '%s'%n", file);
 			try (FileOutputStream out = new FileOutputStream(file)) {
 				io.write(object.getValue(), out);
 			}
