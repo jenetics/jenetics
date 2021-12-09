@@ -42,7 +42,8 @@ import io.jenetics.util.Factory;
 import io.jenetics.util.IntRange;
 
 /**
- * Standard implementation for creating sentences from a given grammar.
+ * This class contains low-level methods for creating <em>sentences</em>
+ * ({@code List<Cfg.Terminal>}) from a given context-free grammar ({@link Cfg}).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -52,7 +53,7 @@ public final class Sentence {
 	private Sentence() {}
 
 	/**
-	 * Enum of the used sentence expansion strategy.
+	 * Defines the expansion strategy used when generating the sentences.
 	 */
 	public enum Expansion {
 
@@ -89,7 +90,7 @@ public final class Sentence {
 	 *
 	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
 	 * final List<Terminal> sentence = Sentences.generate(
-	 *     cfg, random::nextInt, LEFT_TO_RIGHT
+	 *     cfg, random::nextInt, LEFT_TO_RIGHT, 1_000
 	 * );
 	 * final String string = sentence.stream()
 	 *     .map(Symbol::value)
@@ -156,9 +157,10 @@ public final class Sentence {
 	 */
 	public static List<Terminal> generate(
 		final Cfg cfg,
-		final SymbolIndex index
+		final SymbolIndex index,
+		final int limit
 	) {
-		return generate(cfg, index, LEFT_FIRST, MAX_VALUE);
+		return generate(cfg, index, LEFT_FIRST, limit);
 	}
 
 	/**
@@ -168,12 +170,8 @@ public final class Sentence {
 	 * @param index the symbol index strategy
 	 * @return a newly created terminal list (sentence)
 	 */
-	public static List<Terminal> generate(
-		final Cfg cfg,
-		final SymbolIndex index,
-		final int limit
-	) {
-		return generate(cfg, index, LEFT_FIRST, limit);
+	public static List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
+		return generate(cfg, index, LEFT_TO_RIGHT, MAX_VALUE);
 	}
 
 	static void expand(
@@ -185,17 +183,15 @@ public final class Sentence {
 	) {
 		symbols.add(cfg.start());
 
-		boolean proceed = true;
-		while (proceed) {
+		boolean proceed;
+		do {
 			proceed = false;
 
 			final ListIterator<Symbol> sit = symbols.listIterator();
 			while (sit.hasNext() && (expansion == LEFT_TO_RIGHT || !proceed)) {
 				if (sit.next() instanceof NonTerminal nt) {
 					sit.remove();
-					final List<Symbol> exp = expand(cfg, nt, index);
-					exp.forEach(sit::add);
-
+					expand(cfg, nt, index).forEach(sit::add);
 					proceed = true;
 				}
 			}
@@ -204,10 +200,8 @@ public final class Sentence {
 				symbols.clear();
 				proceed = false;
 			}
-		}
+		} while (proceed);
 	}
-
-
 
 	static List<Symbol> expand(
 		final Cfg cfg,
