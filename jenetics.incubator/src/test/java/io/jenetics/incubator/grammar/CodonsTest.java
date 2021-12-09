@@ -21,8 +21,11 @@ package io.jenetics.incubator.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import io.jenetics.incubator.grammar.bnf.Bnf;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -72,6 +75,32 @@ public class CodonsTest {
 			{33, 20},
 			{100, 5}
 		};
+	}
+
+	//@Test
+	public void paper() {
+		final Cfg cfg = Bnf.parse("""
+			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
+			<op> ::= + | - | / | *
+			<pre-op> ::= sin
+			<var> ::= x | 1.0
+			"""
+		);
+		System.out.println(Bnf.format(cfg));
+
+		final var random = new Random();
+
+		final int[] values = new int[] {
+			220, 240, 220, 203, 101, 53, 202, 203, 102, 55, 220, 202,
+			241, 130, 37, 202, 203, 140, 39, 202, 203, 102
+		};
+		final Codons condons = Codons.ofIntArray(values);
+
+		final String sentence = Sentence.generate(cfg, random::nextInt, Sentence.Expansion.LEFT_FIRST).stream()
+			.map(Cfg.Symbol::value)
+			.collect(Collectors.joining());
+
+		System.out.println(sentence);
 	}
 
 }
