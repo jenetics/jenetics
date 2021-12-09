@@ -43,7 +43,7 @@ import io.jenetics.prog.regression.Sample;
  * @since !__version__!
  * @version !__version__!
  */
-public class Example {
+public class RegressionExample {
 
 	private static final Cfg CFG = Bnf.parse("""
 		<expr> ::= (<expr><op><expr>) | <var>
@@ -106,7 +106,7 @@ public class Example {
 
 	public static void main(final String[] args) {
 		final Engine<IntegerGene, Double> engine = Engine
-			.builder(Example::fitness, CODEC)
+			.builder(RegressionExample::fitness, CODEC)
 			.minimizing()
 			.build();
 
