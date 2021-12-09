@@ -19,7 +19,11 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,7 +62,7 @@ public class SentenceTest {
 		final var random = new Random(-8564585140851778291L);
 
 		var sentence = new LinkedList<Symbol>();
-		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_FIRST);
+		Sentence.expand(CFG, random::nextInt, sentence, LEFT_FIRST, MAX_VALUE);
 
 		var string = sentence.stream()
 			.map(Symbol::value)
@@ -70,7 +74,7 @@ public class SentenceTest {
 
 		random.setSeed(29022156195143L);
 		sentence.clear();
-		Sentence.expand(CFG, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+		Sentence.expand(CFG, random::nextInt, sentence, LEFT_TO_RIGHT, MAX_VALUE);
 
 		string = sentence.stream()
 			.map(Symbol::value)
@@ -85,7 +89,7 @@ public class SentenceTest {
 		final long seed,
 		final String sentence
 	) {
-		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_TO_RIGHT);
+		compatibleSentenceGeneration(seed, sentence, LEFT_TO_RIGHT);
 	}
 
 	@Test(dataProvider = "sentencesLeftFirst")
@@ -93,7 +97,7 @@ public class SentenceTest {
 		final long seed,
 		final String sentence
 	) {
-		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_FIRST);
+		compatibleSentenceGeneration(seed, sentence, LEFT_FIRST);
 	}
 
 	//@Test
@@ -102,7 +106,7 @@ public class SentenceTest {
 		for (int i = 0; i < 100; ++i) {
 			final var seed = random.nextLong();
 			final var rand = new Random(seed);
-			final List<Terminal> sentence = Sentence.generate(CFG, rand::nextInt, Expansion.LEFT_FIRST);
+			final List<Terminal> sentence = Sentence.generate(CFG, rand::nextInt, LEFT_FIRST);
 			final String string = sentence.stream()
 				.map(Symbol::value)
 				.collect(Collectors.joining());

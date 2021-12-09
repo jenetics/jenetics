@@ -21,10 +21,20 @@ package io.jenetics.incubator.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -94,13 +104,19 @@ public class CodonsTest {
 			220, 240, 220, 203, 101, 53, 202, 203, 102, 55, 220, 202,
 			241, 130, 37, 202, 203, 140, 39, 202, 203, 102
 		};
-		final Codons condons = Codons.ofIntArray(values);
+		final Codons codons = Codons.ofIntArray(values);
 
-		final String sentence = Sentence.generate(cfg, random::nextInt, Sentence.Expansion.LEFT_FIRST).stream()
+		final var cds = new TrackingCodons(random);
+
+		final String sentence = Sentence.generate(cfg, cds, LEFT_FIRST).stream()
 			.map(Cfg.Symbol::value)
 			.collect(Collectors.joining());
 
-		System.out.println(sentence);
+		if (sentence.equals("1.0-sin(x)*sin(x)-sin(x)-sin(x)")) {
+			final var val = cds.values();
+			System.out.println(sentence);
+			System.out.println(Arrays.toString(val));
+		}
 	}
 
 }

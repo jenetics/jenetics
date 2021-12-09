@@ -71,7 +71,7 @@ public class SentencePerf {
 		random.setSeed(29022156195143L);
 
 		final var sentence = new LinkedList<Symbol>();
-		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT);
+		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_TO_RIGHT, Integer.MAX_VALUE);
 		return sentence;
 	}
 
@@ -80,7 +80,7 @@ public class SentencePerf {
 		random.setSeed(-8564585140851778291L);
 
 		final var sentence = new LinkedList<Symbol>();
-		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_FIRST);
+		Sentence.expand(cfg, random::nextInt, sentence, Expansion.LEFT_FIRST, Integer.MAX_VALUE);
 		return sentence;
 	}
 
