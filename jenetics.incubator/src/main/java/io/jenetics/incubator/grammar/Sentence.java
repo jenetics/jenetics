@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
 
-import io.jenetics.BitChromosome;
-import io.jenetics.BitGene;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -37,7 +35,6 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.util.BaseSeq;
@@ -65,72 +62,13 @@ public final class Sentence {
 		 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 		 * Grammatical Evolution</a>.
 		 */
-		LEFT_FIRST {
-			@Override
-			boolean expand(List<Symbol> symbols, Cfg cfg, SymbolIndex index) {
-				boolean expanded = false;
-
-				final ListIterator<Symbol> sit = symbols.listIterator();
-				while (sit.hasNext()) {
-					if (sit.next() instanceof NonTerminal nt) {
-						sit.remove();
-						final List<Symbol> exp = Expansion.expand(cfg, nt, index);
-						exp.forEach(sit::add);
-						expanded = true;
-					}
-				}
-
-				return expanded;
-			}
-		},
+		LEFT_FIRST,
 
 		/**
 		 * The symbol replacement is performed from left to right and is repeated
 		 * until all non-terminal symbol has been expanded.
 		 */
-		LEFT_TO_RIGHT {
-			@Override
-			boolean expand(List<Symbol> symbols, Cfg cfg, SymbolIndex index) {
-				boolean expanded = false;
-
-				final ListIterator<Symbol> sit = symbols.listIterator();
-				while (sit.hasNext()) {
-					if (sit.next() instanceof NonTerminal nt) {
-						sit.remove();
-						final List<Symbol> exp = Expansion.expand(cfg, nt, index);
-						exp.forEach(sit::add);
-						expanded = true;
-					}
-				}
-
-				return expanded;
-			}
-		};
-
-
-		void expand(
-			final Cfg cfg,
-			final SymbolIndex index,
-			final List<Symbol> symbols,
-			final int limit
-		) {
-			symbols.add(cfg.start());
-			while (symbols.size() <= limit && expand(symbols, cfg, index));
-		}
-
-		abstract boolean expand(List<Symbol> symbols, Cfg cfg, SymbolIndex index);
-
-		private static List<Symbol> expand(
-			final Cfg cfg,
-			final NonTerminal symbol,
-			final SymbolIndex index
-		) {
-			return cfg.rule(symbol)
-				.map(rule -> rule.alternatives()
-					.get(index.next(rule.alternatives().size()))
-					.symbols())
-				.orElse(List.of(symbol));
-		}
+		LEFT_TO_RIGHT;
 	}
 
 	/**
