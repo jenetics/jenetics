@@ -44,7 +44,7 @@ public interface Sampling<T> {
 	 *
 	 * @param <T> the sample result  type
 	 */
-	final record Result<T>(T[] calculated, T[] expected) {
+	record Result<T>(T[] calculated, T[] expected) {
 		/**
 		 * @param calculated the calculated result values
 		 * @param expected the expected sample result values
