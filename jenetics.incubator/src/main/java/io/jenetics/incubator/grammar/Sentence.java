@@ -19,8 +19,10 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
 import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -122,7 +124,7 @@ public final class Sentence {
 		final SymbolIndex index,
 		final Expansion expansion
 	) {
-		final var sentence = new LinkedList<Symbol>();
+		final var sentence = new ArrayList<Symbol>();
 		expand(cfg, index, sentence, expansion);
 
 		return sentence.stream()
@@ -143,7 +145,7 @@ public final class Sentence {
 		final Cfg cfg,
 		final SymbolIndex index
 	) {
-		return generate(cfg, index, LEFT_TO_RIGHT);
+		return generate(cfg, index, LEFT_FIRST);
 	}
 
 	static void expand(
@@ -161,6 +163,7 @@ public final class Sentence {
 
 			final ListIterator<Symbol> sit = symbols.listIterator();
 			while (sit.hasNext() && (expansion == LEFT_TO_RIGHT || !expanded)) {
+				//System.out.println("SIZE: " + symbols.size());
 				if (sit.next() instanceof NonTerminal nt) {
 					sit.remove();
 					final List<Symbol> exp = expand(cfg, nt, index);
