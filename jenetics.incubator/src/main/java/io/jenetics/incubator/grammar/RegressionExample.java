@@ -45,6 +45,7 @@ import io.jenetics.prog.regression.Sample;
  */
 public class RegressionExample {
 
+	// Creating the context-free grammar from the BNF string.
 	private static final Cfg CFG = Bnf.parse("""
 		<expr> ::= (<expr><op><expr>) | <var>
 		<op> ::= + | - | *
@@ -52,8 +53,10 @@ public class RegressionExample {
 		"""
 	);
 
+	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
-		Sentence.codec(CFG, IntRange.of(0, 256), IntRange.of(30), 500)
+		Sentence
+			.codec(CFG, IntRange.of(0, 256), IntRange.of(30), 500)
 			.map(Sentence::toString)
 			.map(e -> e.isEmpty() ? null : MathExpr.parseTree(e));
 
