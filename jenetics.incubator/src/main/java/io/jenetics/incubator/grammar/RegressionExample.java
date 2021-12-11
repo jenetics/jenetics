@@ -61,7 +61,6 @@ public class RegressionExample {
 	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Sentence
-			//.codec(CFG, IntRange.of(0, 256), IntRange.of(30), 500)
 			.codec(CFG, size -> size*10, index -> SentenceGenerator.of(index, 500))
 			.map(s -> {
 				lengths

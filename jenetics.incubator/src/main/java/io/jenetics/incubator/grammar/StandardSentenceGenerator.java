@@ -87,8 +87,8 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	 * );
 	 *
 	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-	 * final List<Terminal> sentence = Sentences.generate(
-	 *     cfg, random::nextInt, LEFT_TO_RIGHT, 1_000
+	 * final List<Terminal> sentence = Sentence.generate(
+	 *     cfg, random::nextInt, 1_000
 	 * );
 	 * final String string = sentence.stream()
 	 *     .map(Symbol::value)
@@ -134,7 +134,9 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 			proceed = false;
 
 			final ListIterator<Symbol> sit = symbols.listIterator();
-			while (sit.hasNext() && (_expansion == Expansion.LEFT_TO_RIGHT || !proceed)) {
+			while (sit.hasNext() &&
+				(_expansion == Expansion.LEFT_TO_RIGHT || !proceed))
+			{
 				if (sit.next() instanceof NonTerminal nt) {
 					sit.remove();
 					expand(cfg, nt, index).forEach(sit::add);
