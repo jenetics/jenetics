@@ -51,6 +51,22 @@ import io.jenetics.util.IntRange;
 public final class Sentence {
 	private Sentence() {}
 
+	static String toString(final List<? extends Symbol> symbols) {
+		return symbols.stream()
+			.map(symbol -> symbol instanceof NonTerminal nt
+				? "<%s>".formatted(nt)
+				: symbol.value())
+			.collect(Collectors.joining());
+	}
+
+	public static List<Terminal> generate(
+		final Cfg cfg,
+		final SymbolIndex index,
+		final int limit
+	) {
+		return SentenceGenerator.of(index, limit).generate(cfg);
+	}
+
 	/* *************************************************************************
 	 * Codec factories
 	 * ************************************************************************/
@@ -73,10 +89,11 @@ public final class Sentence {
 	) {
 		return Codec.of(
 			Genotype.of(IntegerChromosome.of(codonRange, codonCount)),
-			gt -> new StandardSentenceGenerator(
+			gt -> generate(
+				cfg,
 				Codons.ofIntegerGenes(gt.chromosome()),
-				LEFT_TO_RIGHT,
-				maxSentenceLength).generate(cfg)
+				maxSentenceLength
+			)
 		);
 	}
 
