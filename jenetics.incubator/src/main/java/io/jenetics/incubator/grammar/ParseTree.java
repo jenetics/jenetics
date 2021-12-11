@@ -19,8 +19,7 @@
  */
 package io.jenetics.incubator.grammar;
 
-import static io.jenetics.incubator.grammar.Sentence.expand;
-
+import java.util.List;
 import java.util.Optional;
 
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
@@ -58,6 +57,18 @@ public final class ParseTree {
 		}
 
 		return symbols;
+	}
+
+	static List<Symbol> expand(
+		final Cfg cfg,
+		final NonTerminal symbol,
+		final SymbolIndex index
+	) {
+		return cfg.rule(symbol)
+			.map(rule -> rule.alternatives()
+				.get(index.next(rule))
+				.symbols())
+			.orElse(List.of());
 	}
 
 }

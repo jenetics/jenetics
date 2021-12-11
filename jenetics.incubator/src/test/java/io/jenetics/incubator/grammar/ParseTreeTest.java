@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.grammar;
 
-import static io.jenetics.incubator.grammar.SentenceTest.CFG;
+import static io.jenetics.incubator.grammar.StandardSentenceGeneratorTest.CFG;
 
 import java.util.Random;
 import java.util.stream.Collectors;

@@ -22,9 +22,6 @@ package io.jenetics.incubator.grammar;
 import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
-import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,13 +36,12 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.grammar.Sentence.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class SentenceTest {
+public class StandardSentenceGeneratorTest {
 
 	static final Cfg CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
@@ -141,7 +137,7 @@ public class SentenceTest {
 
 	private static Object[][] read(final String resource) throws IOException {
 		final List<Object[]> values = new ArrayList<>();
-		try (var in = SentenceTest.class.getResourceAsStream(resource);
+		try (var in = StandardSentenceGeneratorTest.class.getResourceAsStream(resource);
 			 var reader = new InputStreamReader(in);
 			 var br = new BufferedReader(reader))
 		{

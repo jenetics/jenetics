@@ -32,6 +32,7 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 import io.jenetics.util.IntRange;
 
@@ -65,7 +66,8 @@ public class RegressionExample {
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Sentence
 			//.codec(CFG, IntRange.of(0, 256), IntRange.of(30), 500)
-			.codec(CFG, size -> size*10, 500)
+			//.codec(CFG, size -> size*10, 500)
+			.codec(CFG, size -> size*10, index -> new StandardSentenceGenerator(index, Expansion.LEFT_TO_RIGHT, 500))
 			.map(s -> {
 				lengths
 					.computeIfAbsent(s.size(), key -> new AtomicInteger())

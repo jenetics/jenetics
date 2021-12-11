@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +30,18 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
 // https://eli.thegreenplace.net/2010/01/28/generating-random-sentences-from-a-context-free-grammar
 public class RecursiveGenerator implements SentenceGenerator {
 
+	private final SymbolIndex _index;
+	private final int _limit;
+
+	public RecursiveGenerator(final SymbolIndex index, final int limit) {
+		_index = requireNonNull(index);
+		_limit = limit;
+	}
+
 	@Override
-	public List<Terminal> generate(final Cfg cfg, final SymbolIndex index, final int limit) {
+	public List<Terminal> generate(final Cfg cfg) {
 		final var symbols = new ArrayList<Terminal>();
-		generate(cfg, cfg.start(), index, symbols);
+		generate(cfg, cfg.start(), _index, _limit, symbols);
 		return List.copyOf(symbols);
 	}
 
@@ -39,6 +49,7 @@ public class RecursiveGenerator implements SentenceGenerator {
 		final Cfg cfg,
 		final Symbol symbol,
 		final SymbolIndex index,
+		final int limit,
 		final List<Terminal> sentence
 	) {
 		if (symbol instanceof Terminal terminal) {
@@ -54,7 +65,10 @@ public class RecursiveGenerator implements SentenceGenerator {
 				if (sym instanceof Terminal terminal) {
 					sentence.add(terminal);
 				} else {
-					generate(cfg, sym, index, sentence);
+					if (symbols.size() > limit) {
+						symbols.clear();
+					}
+					generate(cfg, sym, index, limit, sentence);
 				}
 			}
 		}

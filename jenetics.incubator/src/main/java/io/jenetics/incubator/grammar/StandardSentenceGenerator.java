@@ -29,6 +29,11 @@ import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public final class StandardSentenceGenerator implements SentenceGenerator {
 
 	/**
@@ -153,7 +158,7 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 			.map(rule -> rule.alternatives()
 				.get(index.next(rule))
 				.symbols())
-			.orElse(List.of(symbol));
+			.orElse(List.of());
 	}
 
 }
