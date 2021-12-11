@@ -29,7 +29,7 @@ import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
-public final class SimpleSentenceGenerator implements SentenceGenerator {
+public final class StandardSentenceGenerator implements SentenceGenerator {
 
 	/**
 	 * Defines the expansion strategy used when generating the sentences.
@@ -55,7 +55,7 @@ public final class SimpleSentenceGenerator implements SentenceGenerator {
 	private final Expansion _expansion;
 	private final int _limit;
 
-	public SimpleSentenceGenerator(
+	public StandardSentenceGenerator(
 		final SymbolIndex index,
 		final Expansion expansion,
 		final int limit
