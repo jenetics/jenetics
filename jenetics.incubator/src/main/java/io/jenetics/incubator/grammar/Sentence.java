@@ -214,7 +214,7 @@ public final class Sentence {
 	) {
 		return cfg.rule(symbol)
 			.map(rule -> rule.alternatives()
-				.get(index.next(rule.alternatives().size()))
+				.get(index.next(rule))
 				.symbols())
 			.orElse(List.of(symbol));
 	}

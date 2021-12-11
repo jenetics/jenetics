@@ -46,7 +46,7 @@ public class RecursiveGenerator implements SentenceGenerator {
 		} else {
 			final List<Symbol> symbols =  cfg.rule((Cfg.NonTerminal)symbol)
 				.map(r -> r.alternatives()
-					.get(index.next(r.alternatives().size()))
+					.get(index.next(r))
 					.symbols())
 				.orElse(List.of());
 

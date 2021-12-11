@@ -41,14 +41,14 @@ public class ParseTreeTest {
 		final var seed = 29022156195143L;
 		final var random = new Random(seed);
 
-		final String sentence = Sentence.generate(CFG, random::nextInt).stream()
+		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random)).stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
 		System.out.println(sentence);
 
 		random.setSeed(seed);
-		final TreeNode<String> tree = ParseTree.generate(CFG, random::nextInt)
+		final TreeNode<String> tree = ParseTree.generate(CFG, SymbolIndex.of(random))
 			.map(Symbol::value);
 
 		System.out.println(TreeFormatter.TREE.format(tree));

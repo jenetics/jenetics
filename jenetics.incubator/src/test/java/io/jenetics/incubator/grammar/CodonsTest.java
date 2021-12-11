@@ -65,17 +65,6 @@ public class CodonsTest {
 		};
 	}
 
-	@Test(dataProvider = "codonsSizes")
-	public void nextIndex(final int size, final int bound) {
-		final int[] values = IntStream.range(0, size).toArray();
-		final SymbolIndex index = Codons.ofIntArray(values);
-
-		for (int i = 0, n = size*3; i < n; ++i) {
-			final int expectedIndex = values[i%values.length]%bound;
-			assertThat(index.next(bound)).isEqualTo(expectedIndex);
-		}
-	}
-
 	@DataProvider
 	public Object[][] codonsSizes() {
 		return new Object[][] {
@@ -123,7 +112,7 @@ public class CodonsTest {
 		}
 	}
 
-	@Test
+	//s@Test
 	public void statistics() {
 		final Cfg cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
@@ -142,7 +131,7 @@ public class CodonsTest {
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
 		for (int i = 0; i < 1_000_000; ++i) {
-			final var sentence = Sentence.generate(cfg, random::nextInt, LEFT_FIRST, 200);
+			final var sentence = Sentence.generate(cfg, SymbolIndex.of(random), LEFT_FIRST, 200);
 			lengths.computeIfAbsent(sentence.size(), key -> new AtomicInteger()).incrementAndGet();
 		}
 

@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.grammar;
 
+import java.util.random.RandomGenerator;
+
+import io.jenetics.incubator.grammar.Cfg.Rule;
+
 /**
  * Interface for selecting a symbol index.
  *
@@ -32,11 +36,15 @@ public interface SymbolIndex {
 	/**
 	 * Selects an index with the given upper {@code bound}, exclusively.
 	 *
-	 * @param bound the upper bound of the symbol index, exclusively
+	 * @param rule the upper bound of the symbol index, exclusively
 	 * @return the next symbol index
 	 * @throws IllegalArgumentException if the given {@code bound} is smaller
 	 *         than one
 	 */
-	int next(final int bound);
+	int next(final Rule rule);
+
+	static SymbolIndex of(final RandomGenerator random) {
+		return rule -> random.nextInt(rule.alternatives().size());
+	}
 
 }

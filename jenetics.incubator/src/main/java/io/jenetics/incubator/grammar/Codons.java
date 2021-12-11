@@ -25,6 +25,7 @@ import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
+import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.util.BaseSeq;
 
@@ -51,13 +52,8 @@ public final class Codons implements SymbolIndex {
 	}
 
 	@Override
-	public int next(final int bound) {
-		if (bound < 1) {
-			throw new IllegalArgumentException(
-				"Bound is smaller than 1: " + bound
-			);
-		}
-
+	public int next(final Rule rule) {
+		final int bound = rule.alternatives().size();
 		final int index = _pos.getAndUpdate(x -> (x + 1)%_values.length);
 		return _values[index]%bound;
 	}

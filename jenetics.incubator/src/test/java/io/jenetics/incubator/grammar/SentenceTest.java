@@ -62,7 +62,7 @@ public class SentenceTest {
 		final var random = new Random(-8564585140851778291L);
 
 		var sentence = new LinkedList<Symbol>();
-		Sentence.expand(CFG, random::nextInt, sentence, LEFT_FIRST, MAX_VALUE);
+		Sentence.expand(CFG, SymbolIndex.of(random), sentence, LEFT_FIRST, MAX_VALUE);
 
 		var string = sentence.stream()
 			.map(Symbol::value)
@@ -74,7 +74,7 @@ public class SentenceTest {
 
 		random.setSeed(29022156195143L);
 		sentence.clear();
-		Sentence.expand(CFG, random::nextInt, sentence, LEFT_TO_RIGHT, MAX_VALUE);
+		Sentence.expand(CFG, SymbolIndex.of(random), sentence, LEFT_TO_RIGHT, MAX_VALUE);
 
 		string = sentence.stream()
 			.map(Symbol::value)
@@ -106,7 +106,7 @@ public class SentenceTest {
 		for (int i = 0; i < 100; ++i) {
 			final var seed = random.nextLong();
 			final var rand = new Random(seed);
-			final List<Terminal> sentence = Sentence.generate(CFG, rand::nextInt, LEFT_FIRST);
+			final List<Terminal> sentence = Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST);
 			final String string = sentence.stream()
 				.map(Symbol::value)
 				.collect(Collectors.joining());
@@ -121,7 +121,7 @@ public class SentenceTest {
 		Expansion expansion
 	) {
 		final var random = new Random(seed);
-		final var terminals = Sentence.generate(CFG, random::nextInt, expansion);
+		final var terminals = Sentence.generate(CFG, SymbolIndex.of(random), expansion);
 
 		final String string = terminals.stream()
 			.map(Symbol::value)
@@ -164,10 +164,10 @@ public class SentenceTest {
 			final var seed = random.nextLong();
 
 			random.setSeed(seed);
-			System.out.println(Sentence.toString(generator.generate(CFG, random::nextInt)));
+			System.out.println(Sentence.toString(generator.generate(CFG, SymbolIndex.of(random))));
 
 			random.setSeed(seed);
-			System.out.println(Sentence.toString(Sentence.generate(CFG, random::nextInt, LEFT_FIRST)));
+			System.out.println(Sentence.toString(Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST)));
 			System.out.println();
 		}
 	}
