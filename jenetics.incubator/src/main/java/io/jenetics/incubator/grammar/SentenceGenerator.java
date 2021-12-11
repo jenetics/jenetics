@@ -23,9 +23,24 @@ import java.util.List;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
+/**
+ * This interface is used for creating <em>sentences</em> from a context-free
+ * grammar ({@link Cfg}). A sentence is defined as list of {@link Terminal}s,
+ * {@code List<Cfg.Terminal>}.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 @FunctionalInterface
 public interface SentenceGenerator {
 
-	List<Terminal> generate(final Cfg cfg, final SymbolIndex index);
+	/**
+	 * Generates a new sentence from the given grammar.
+	 *
+	 * @param cfg the generating grammar
+	 * @return a newly created list of terminal symbols (sentence)
+	 */
+	List<Terminal> generate(final Cfg cfg);
 
 }

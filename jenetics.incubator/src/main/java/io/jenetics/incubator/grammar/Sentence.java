@@ -307,4 +307,34 @@ public final class Sentence {
 		);
 	}
 
+	public static Codec<List<Terminal>, IntegerGene> codec(
+		final Cfg cfg,
+		final IntUnaryOperator length,
+		final Function<? super SymbolIndex, SentenceGenerator> generator
+	) {
+		final Map<Rule, Integer> ruleIndex = IntStream.range(0, cfg.rules().size())
+			.mapToObj(i -> Map.entry(cfg.rules().get(i), i))
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+		final SymbolIndex.Factor<IntegerGene> symbolIndex = gt -> {
+			final List<Codons> codons = gt.stream()
+				.map(Codons::ofIntegerGenes)
+				.toList();
+
+			return rule -> codons.get(ruleIndex.get(rule)).next(rule);
+		};
+
+		return Codec.of(
+			Genotype.of(
+				cfg.rules().stream()
+					.map(rule -> {
+						final int size = rule.alternatives().size();
+						return IntegerChromosome.of(IntRange.of(0, size), length.applyAsInt(size));
+					})
+					.collect(ISeq.toISeq())
+			),
+			gt -> generator.apply(symbolIndex.create(gt)).generate(cfg)
+		);
+	}
+
 }

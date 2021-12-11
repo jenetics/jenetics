@@ -155,21 +155,21 @@ public class SentenceTest {
 		return values.toArray(Object[][]::new);
 	}
 
-	@Test
-	public void recursiveGeneration() {
-		final var random = new Random();
-		final var generator = new RecursiveGenerator();
-
-		for (int i = 0; i < 20; ++i) {
-			final var seed = random.nextLong();
-
-			random.setSeed(seed);
-			System.out.println(Sentence.toString(generator.generate(CFG, SymbolIndex.of(random))));
-
-			random.setSeed(seed);
-			System.out.println(Sentence.toString(Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST)));
-			System.out.println();
-		}
-	}
+//	@Test
+//	public void recursiveGeneration() {
+//		final var random = new Random();
+//		final var generator = new RecursiveGenerator();
+//
+//		for (int i = 0; i < 20; ++i) {
+//			final var seed = random.nextLong();
+//
+//			random.setSeed(seed);
+//			System.out.println(Sentence.toString(generator.generate(CFG, SymbolIndex.of(random))));
+//
+//			random.setSeed(seed);
+//			System.out.println(Sentence.toString(Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST)));
+//			System.out.println();
+//		}
+//	}
 
 }

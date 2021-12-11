@@ -19,24 +19,16 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Sentence.Expansion;
-import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,40 +41,40 @@ import io.jenetics.incubator.grammar.bnf.Bnf;
 @State(Scope.Benchmark)
 public class SentencePerf {
 
-	public Random random;
-	public Cfg cfg;
-
-	@Setup
-	public void setup() {
-		random = new Random(1234);
-		cfg = Bnf.parse("""
-			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
-			<fun>  ::= FUN1 | FUN2
-			<arg>  ::= <expr> | <var> | <num>
-			<op>   ::= + | - | * | /
-			<var>  ::= x | y
-			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-			"""
-		);
-	}
-
-	@Benchmark
-	public Object leftToRightExpansion() {
-		random.setSeed(29022156195143L);
-
-		final var sentence = new LinkedList<Symbol>();
-		Sentence.expand(cfg, SymbolIndex.of(random), sentence, Expansion.LEFT_TO_RIGHT, Integer.MAX_VALUE);
-		return sentence;
-	}
-
-	@Benchmark
-	public Object leftFirstExpansion() {
-		random.setSeed(-8564585140851778291L);
-
-		final var sentence = new LinkedList<Symbol>();
-		Sentence.expand(cfg, SymbolIndex.of(random), sentence, Expansion.LEFT_FIRST, Integer.MAX_VALUE);
-		return sentence;
-	}
+//	public Random random;
+//	public Cfg cfg;
+//
+//	@Setup
+//	public void setup() {
+//		random = new Random(1234);
+//		cfg = Bnf.parse("""
+//			<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
+//			<fun>  ::= FUN1 | FUN2
+//			<arg>  ::= <expr> | <var> | <num>
+//			<op>   ::= + | - | * | /
+//			<var>  ::= x | y
+//			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+//			"""
+//		);
+//	}
+//
+//	@Benchmark
+//	public Object leftToRightExpansion() {
+//		random.setSeed(29022156195143L);
+//
+//		final var sentence = new LinkedList<Symbol>();
+//		Sentence.expand(cfg, SymbolIndex.of(random), sentence, Expansion.LEFT_TO_RIGHT, Integer.MAX_VALUE);
+//		return sentence;
+//	}
+//
+//	@Benchmark
+//	public Object leftFirstExpansion() {
+//		random.setSeed(-8564585140851778291L);
+//
+//		final var sentence = new LinkedList<Symbol>();
+//		Sentence.expand(cfg, SymbolIndex.of(random), sentence, Expansion.LEFT_FIRST, Integer.MAX_VALUE);
+//		return sentence;
+//	}
 
 	/*
 Benchmark                                     Mode  Cnt     Score    Error  Units

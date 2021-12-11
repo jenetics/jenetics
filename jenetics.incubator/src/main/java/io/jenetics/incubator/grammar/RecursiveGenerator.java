@@ -29,7 +29,7 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
 public class RecursiveGenerator implements SentenceGenerator {
 
 	@Override
-	public List<Terminal> generate(final Cfg cfg, final SymbolIndex index) {
+	public List<Terminal> generate(final Cfg cfg, final SymbolIndex index, final int limit) {
 		final var symbols = new ArrayList<Terminal>();
 		generate(cfg, cfg.start(), index, symbols);
 		return List.copyOf(symbols);
