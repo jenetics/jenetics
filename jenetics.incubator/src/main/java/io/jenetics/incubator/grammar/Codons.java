@@ -19,11 +19,13 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntUnaryOperator;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
-import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.internal.util.Bits;
@@ -34,28 +36,20 @@ import io.jenetics.util.BaseSeq;
  */
 public final class Codons implements SymbolIndex {
 
-	private final int[] _values;
+	private final IntUnaryOperator _values;
+	private final int _length;
 	private final AtomicInteger _pos = new AtomicInteger(0);
 
-	/**
-	 * Create a new codons object from the given {@code int[]} array.
-	 *
-	 * @param values int symbol index mapping array of the codons object
-	 * @throws IllegalArgumentException if the given {@code values} array is
-	 *         empty
-	 */
-	private Codons(final int[] values) {
-		if (values.length == 0) {
-			throw new IllegalArgumentException("Index mappings must not be empty.");
-		}
-		_values = values.clone();
+	private Codons(final IntUnaryOperator values, final int length) {
+		_values = requireNonNull(values);
+		_length = length;
 	}
 
 	@Override
 	public int next(final Rule rule) {
 		final int bound = rule.alternatives().size();
-		final int index = _pos.getAndUpdate(x -> (x + 1)%_values.length);
-		return _values[index]%bound;
+		final int index = _pos.getAndUpdate(x -> (x + 1)%_length);
+		return _values.applyAsInt(index)%bound;
 	}
 
 	/**
@@ -80,7 +74,7 @@ public final class Codons implements SymbolIndex {
 			values[i] = Byte.toUnsignedInt(bytes[i]);
 		}
 
-		return new Codons(values);
+		return ofIntArray(values);
 	}
 
 	static byte[] toByteArray(final BaseSeq<BitGene> genes) {
@@ -101,15 +95,7 @@ public final class Codons implements SymbolIndex {
 	 * @return a new <em>codons</em> object
 	 */
 	public static Codons ofIntegerGenes(final BaseSeq<IntegerGene> genes) {
-		if (genes instanceof IntegerChromosome ich) {
-			return new Codons(ich.toArray());
-		} else {
-			final var values = new int[genes.length()];
-			for (int i = 0; i < genes.length(); ++i) {
-				values[i] = genes.get(i).intValue();
-			}
-			return new Codons(values);
-		}
+		return new Codons(i -> genes.get(i).intValue(), genes.length());
 	}
 
 	/**
@@ -121,7 +107,7 @@ public final class Codons implements SymbolIndex {
 	 *         empty
 	 */
 	public static Codons ofIntArray(final int[] values) {
-		return new Codons(values);
+		return new Codons(i -> values[i], values.length);
 	}
 
 }

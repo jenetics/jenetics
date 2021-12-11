@@ -26,8 +26,11 @@ import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
@@ -119,17 +122,17 @@ public final class Sentence {
 	 * @param cfg the generating grammar
 	 * @param index the symbol index strategy
 	 * @param expansion the expansion strategy to use for building the sentence
-	 * @param limit the maximal number of symbols
+	 * @param maxSentenceLength the maximal number of symbols
 	 * @return a newly created terminal list (sentence)
 	 */
 	public static List<Terminal> generate(
 		final Cfg cfg,
 		final SymbolIndex index,
 		final Expansion expansion,
-		final int limit
+		final int maxSentenceLength
 	) {
 		final var sentence = new LinkedList<Symbol>();
-		expand(cfg, index, sentence, expansion, limit);
+		expand(cfg, index, sentence, expansion, maxSentenceLength);
 
 		return sentence.stream()
 			.map(Terminal.class::cast)
@@ -162,9 +165,9 @@ public final class Sentence {
 	public static List<Terminal> generate(
 		final Cfg cfg,
 		final SymbolIndex index,
-		final int limit
+		final int maxSentenceSize
 	) {
-		return generate(cfg, index, LEFT_FIRST, limit);
+		return generate(cfg, index, LEFT_FIRST, maxSentenceSize);
 	}
 
 	/**
@@ -183,7 +186,7 @@ public final class Sentence {
 		final SymbolIndex index,
 		final List<Symbol> symbols,
 		final Expansion expansion,
-		final int limit
+		final int maxSentenceLength
 	) {
 		symbols.add(cfg.start());
 
@@ -200,7 +203,7 @@ public final class Sentence {
 				}
 			}
 
-			if (symbols.size() > limit) {
+			if (symbols.size() > maxSentenceLength) {
 				symbols.clear();
 				proceed = false;
 			}
@@ -238,18 +241,18 @@ public final class Sentence {
 	 * @param cfg the creating grammar
 	 * @param factory the chromosome factory
 	 * @param codons generation functions for codons of a gene sequence
-	 * @param limit the maximal number of symbols
+	 * @param maxSentenceLength the maximal number of symbols
 	 * @return sentence codec
 	 */
 	public static <G extends Gene<?, G>> Codec<List<Terminal>, G> codec(
 		final Cfg cfg,
 		final Factory<? extends Chromosome<G>> factory,
 		final Function<? super BaseSeq<G>, ? extends SymbolIndex> codons,
-		final int limit
+		final int maxSentenceLength
 	) {
 		return Codec.of(
 			Genotype.of(factory, 1),
-			gt -> generate(cfg, codons.apply(gt.chromosome()), limit)
+			gt -> generate(cfg, codons.apply(gt.chromosome()), maxSentenceLength)
 		);
 	}
 
@@ -277,22 +280,31 @@ public final class Sentence {
 		);
 	}
 
-	/*
-	public static Codec<List<Terminal>, IntegerGene> codec(final Cfg cfg, final int length) {
+	public static Codec<List<Terminal>, IntegerGene>
+	codec(final Cfg cfg, final IntUnaryOperator length, final int limit) {
+		final Map<Rule, Integer> indexes = IntStream.range(0, cfg.rules().size())
+			.mapToObj(i -> Map.entry(cfg.rules().get(i), i))
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+		final SymbolIndex.Factor<IntegerGene> factory = gt -> {
+			final List<Codons> codons = gt.stream()
+				.map(Codons::ofIntegerGenes)
+				.toList();
+
+			return rule -> codons.get(indexes.get(rule)).next(rule);
+		};
+
 		return Codec.of(
 			Genotype.of(
 				cfg.rules().stream()
-					.map(rule -> Sentence.ch(rule, length))
+					.map(rule -> {
+						final int size = rule.alternatives().size();
+						return IntegerChromosome.of(IntRange.of(0, size), length.applyAsInt(size));
+					})
 					.collect(ISeq.toISeq())
 			),
-			gt -> generate(cfg, codons.apply(gt.chromosome()), limit)
+			gt -> generate(cfg, factory.create(gt), limit)
 		);
-	}
-	 */
-
-	private static IntegerChromosome ch(final Rule rule, final int length) {
-		final int size = rule.alternatives().size();
-		return IntegerChromosome.of(IntRange.of(0, size), size*length);
 	}
 
 }

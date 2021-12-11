@@ -19,39 +19,33 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.random.RandomGenerator;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.IntegerGene;
 import io.jenetics.incubator.grammar.Cfg.Rule;
 
-/**
- * Interface for selecting a symbol index.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
- */
-@FunctionalInterface
-public interface SymbolIndex {
+class ExactCodons implements SymbolIndex.Factor<IntegerGene> {
 
-	@FunctionalInterface
-	interface Factor<G extends Gene<?, G>> {
-		SymbolIndex create(final Genotype<G> genotype);
+	private final Map<Rule, Integer> _indexes;
+
+	ExactCodons(final Cfg cfg) {
+		record RuleIndex(Rule rule, int index){}
+
+		_indexes = IntStream.range(0, cfg.rules().size())
+			.mapToObj(i -> new RuleIndex(cfg.rules().get(i), i))
+			.collect(Collectors.toMap(RuleIndex::rule, RuleIndex::index));
 	}
 
-	/**
-	 * Selects an index with the given upper {@code bound}, exclusively.
-	 *
-	 * @param rule the upper bound of the symbol index, exclusively
-	 * @return the next symbol index
-	 * @throws IllegalArgumentException if the given {@code bound} is smaller
-	 *         than one
-	 */
-	int next(final Rule rule);
+	@Override
+	public SymbolIndex create(final Genotype<IntegerGene> genotype) {
+		final var codons = genotype.stream()
+			.map(Codons::ofIntegerGenes)
+			.toList();
 
-	static SymbolIndex of(final RandomGenerator random) {
-		return rule -> random.nextInt(rule.alternatives().size());
+		return rule -> codons.get(_indexes.get(rule)).next(rule);
 	}
 
 }
