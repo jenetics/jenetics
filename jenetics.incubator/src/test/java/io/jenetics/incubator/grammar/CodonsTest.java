@@ -25,10 +25,14 @@ import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
 import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -117,6 +121,41 @@ public class CodonsTest {
 			System.out.println(sentence);
 			System.out.println(Arrays.toString(val));
 		}
+	}
+
+	@Test
+	public void statistics() {
+		final Cfg cfg = Bnf.parse("""
+			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
+			<op> ::= + | - | / | *
+			<pre-op> ::= sin
+			<var> ::= x | 1.0
+			"""
+		);
+
+		final var condons = Codons.ofIntArray(
+			RandomGenerator.getDefault().ints(0, 256)
+				.limit(500)
+				.toArray()
+		);
+
+		final var random = RandomGenerator.getDefault();
+		final var lengths = new HashMap<Integer, AtomicInteger>();
+		for (int i = 0; i < 1_000_000; ++i) {
+			final var sentence = Sentence.generate(cfg, random::nextInt, LEFT_FIRST, 200);
+			lengths.computeIfAbsent(sentence.size(), key -> new AtomicInteger()).incrementAndGet();
+		}
+
+		final var csv = lengths.entrySet().stream()
+			.sorted(Entry.comparingByKey())
+			.toList();
+
+		for (var e : csv) {
+			System.out.println(e.getKey() + "," + e.getValue());
+		}
+
+		System.out.println(lengths);
+		// {0=5716, 1=1787, 4=1427, 7=357, 10=357, 12=356}
 	}
 
 }

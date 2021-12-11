@@ -155,4 +155,21 @@ public class SentenceTest {
 		return values.toArray(Object[][]::new);
 	}
 
+	@Test
+	public void recursiveGeneration() {
+		final var random = new Random();
+		final var generator = new RecursiveGenerator();
+
+		for (int i = 0; i < 20; ++i) {
+			final var seed = random.nextLong();
+
+			random.setSeed(seed);
+			System.out.println(Sentence.toString(generator.generate(CFG, random::nextInt)));
+
+			random.setSeed(seed);
+			System.out.println(Sentence.toString(Sentence.generate(CFG, random::nextInt, LEFT_FIRST)));
+			System.out.println();
+		}
+	}
+
 }

@@ -19,13 +19,7 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.List;
+public class Purdom {
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-@FunctionalInterface
-public interface SentenceGenerator {
-
-	List<Terminal> generate(final Cfg cfg, final SymbolIndex index);
 
 }

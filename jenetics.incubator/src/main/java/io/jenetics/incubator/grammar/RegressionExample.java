@@ -19,7 +19,13 @@
  */
 package io.jenetics.incubator.grammar;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import io.jenetics.IntegerGene;
@@ -53,10 +59,16 @@ public class RegressionExample {
 		"""
 	);
 
+	static final Map<Integer, AtomicInteger> lengths = new ConcurrentHashMap<>();
+
 	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Sentence
 			.codec(CFG, IntRange.of(0, 256), IntRange.of(30), 500)
+			.map(s -> {
+				lengths.computeIfAbsent(s.size(), key -> new AtomicInteger()).incrementAndGet();
+				return s;
+			})
 			.map(Sentence::toString)
 			.map(e -> e.isEmpty() ? null : MathExpr.parseTree(e));
 
@@ -93,8 +105,13 @@ public class RegressionExample {
 		.map(Sample::result)
 		.toArray(Double[]::new);
 
+	static final AtomicInteger zeroCount = new AtomicInteger();
+	static final AtomicInteger count = new AtomicInteger();
+
 	private static double fitness(final Tree<? extends Op<Double>, ?> prog) {
+		count.incrementAndGet();
 		if (prog == null) {
+			zeroCount.incrementAndGet();
 			return 1_000_000;
 		}
 
@@ -114,12 +131,23 @@ public class RegressionExample {
 			.build();
 
 		final EvolutionResult<IntegerGene, Double> result = engine.stream()
-			.limit(1000)
+			.limit(100_000)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final Tree<? extends Op<Double>, ?> best =
 			CODEC.decode(result.bestPhenotype().genotype());
 
+		System.out.println(lengths);
+
+		final var csv = lengths.entrySet().stream()
+			.sorted(Entry.comparingByKey())
+			.toList();
+
+		for (var e : csv) {
+			System.out.println(e.getKey() + "," + e.getValue());
+		}
+
+		System.out.println("Zeros: " + zeroCount + "/" +  count);
 		System.out.println("Generations: " + result.totalGenerations());
 		System.out.println(
 			"Codons: " + result.bestPhenotype().genotype().chromosome().stream()
@@ -128,5 +156,25 @@ public class RegressionExample {
 		);
 		System.out.println(MathExpr.format(best) + " = " + fitness(best));
 	}
+
+	/*
+{0=207737, 1=228551, 33=145778, 5=124602, 37=4595, 9=79808, 41=1468, 13=23216, 45=516, 17=18474, 49=327, 21=86365, 53=807, 57=1382, 25=30086, 29=1124253}
+0,207737
+1,228551
+5,124602
+9,79808
+13,23216
+17,18474
+21,86365
+25,30086
+29,1124253
+33,145778
+37,4595
+41,1468
+45,516
+49,327
+53,807
+57,1382
+	 */
 
 }

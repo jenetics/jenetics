@@ -36,10 +36,12 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -273,6 +275,24 @@ public final class Sentence {
 			Codons::ofIntegerGenes,
 			maxSentenceLength
 		);
+	}
+
+	/*
+	public static Codec<List<Terminal>, IntegerGene> codec(final Cfg cfg, final int length) {
+		return Codec.of(
+			Genotype.of(
+				cfg.rules().stream()
+					.map(rule -> Sentence.ch(rule, length))
+					.collect(ISeq.toISeq())
+			),
+			gt -> generate(cfg, codons.apply(gt.chromosome()), limit)
+		);
+	}
+	 */
+
+	private static IntegerChromosome ch(final Rule rule, final int length) {
+		final int size = rule.alternatives().size();
+		return IntegerChromosome.of(IntRange.of(0, size), size*length);
 	}
 
 }
