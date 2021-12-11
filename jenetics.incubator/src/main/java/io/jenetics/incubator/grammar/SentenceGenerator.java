@@ -19,8 +19,13 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.List;
+import static io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 /**
@@ -36,11 +41,24 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
 public interface SentenceGenerator {
 
 	/**
-	 * Generates a new sentence from the given grammar.
+	 * Generates a new sentence from the given grammar. If the generation of the
+	 * sentence fails, an empty list is returned.
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created list of terminal symbols (sentence)
 	 */
 	List<Terminal> generate(final Cfg cfg);
+
+	static String toString(final List<? extends Symbol> symbols) {
+		return symbols.stream()
+			.map(symbol -> symbol instanceof NonTerminal nt
+				? "<%s>".formatted(nt)
+				: symbol.value())
+			.collect(Collectors.joining());
+	}
+
+	static SentenceGenerator of(final SymbolIndex index, final int limit) {
+		return new StandardSentenceGenerator(index, LEFT_TO_RIGHT, limit);
+	}
 
 }

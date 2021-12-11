@@ -74,7 +74,7 @@ public class RegressionExample {
 					.incrementAndGet();
 				return s;
 			})
-			.map(Sentence::toString)
+			.map(SentenceGenerator::toString)
 			.map(e -> e.isEmpty() ? null : MathExpr.parseTree(e));
 
 	// Lookup table for 4*x^3 - 3*x^2 + x

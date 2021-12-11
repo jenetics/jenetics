@@ -19,31 +19,23 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_FIRST;
-import static io.jenetics.incubator.grammar.Sentence.Expansion.LEFT_TO_RIGHT;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.bnf.Bnf;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.BitChromosome;
+import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
+import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -101,7 +93,13 @@ public class CodonsTest {
 
 		final var cds = new TrackingCodons(random);
 
-		final String sentence = Sentence.generate(cfg, cds, LEFT_FIRST).stream()
+		var generator = new StandardSentenceGenerator(
+			cds,
+			Expansion.LEFT_FIRST,
+			MAX_VALUE
+		);
+
+		final String sentence = generator.generate(cfg).stream()
 			.map(Cfg.Symbol::value)
 			.collect(Collectors.joining());
 
@@ -131,7 +129,13 @@ public class CodonsTest {
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
 		for (int i = 0; i < 1_000_000; ++i) {
-			final var sentence = Sentence.generate(cfg, SymbolIndex.of(random), LEFT_FIRST, 200);
+			var generator = new StandardSentenceGenerator(
+				SymbolIndex.of(random),
+				Expansion.LEFT_FIRST,
+				200
+			);
+
+			final var sentence = generator.generate(cfg);
 			lengths.computeIfAbsent(sentence.size(), key -> new AtomicInteger()).incrementAndGet();
 		}
 

@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
@@ -57,10 +56,13 @@ public class StandardSentenceGeneratorTest {
 	public void create() {
 		final var random = new Random(-8564585140851778291L);
 
-		var sentence = new LinkedList<Symbol>();
-		Sentence.expand(CFG, SymbolIndex.of(random), sentence, LEFT_FIRST, MAX_VALUE);
+		var generator = new StandardSentenceGenerator(
+			SymbolIndex.of(random),
+			Expansion.LEFT_FIRST,
+			MAX_VALUE
+		);
 
-		var string = sentence.stream()
+		var string = generator.generate(CFG).stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
@@ -69,10 +71,13 @@ public class StandardSentenceGeneratorTest {
 		////////////////////////////////////////////////////////////////////////
 
 		random.setSeed(29022156195143L);
-		sentence.clear();
-		Sentence.expand(CFG, SymbolIndex.of(random), sentence, LEFT_TO_RIGHT, MAX_VALUE);
+		generator = new StandardSentenceGenerator(
+			SymbolIndex.of(random),
+			Expansion.LEFT_TO_RIGHT,
+			MAX_VALUE
+		);
 
-		string = sentence.stream()
+		string = generator.generate(CFG).stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
 
@@ -85,7 +90,7 @@ public class StandardSentenceGeneratorTest {
 		final long seed,
 		final String sentence
 	) {
-		compatibleSentenceGeneration(seed, sentence, LEFT_TO_RIGHT);
+		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_TO_RIGHT);
 	}
 
 	@Test(dataProvider = "sentencesLeftFirst")
@@ -93,22 +98,7 @@ public class StandardSentenceGeneratorTest {
 		final long seed,
 		final String sentence
 	) {
-		compatibleSentenceGeneration(seed, sentence, LEFT_FIRST);
-	}
-
-	//@Test
-	public void generateSentences() {
-		final var random = new Random(124567);
-		for (int i = 0; i < 100; ++i) {
-			final var seed = random.nextLong();
-			final var rand = new Random(seed);
-			final List<Terminal> sentence = Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST);
-			final String string = sentence.stream()
-				.map(Symbol::value)
-				.collect(Collectors.joining());
-
-			System.out.println(seed + "\t" + string);
-		}
+		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_FIRST);
 	}
 
 	private void compatibleSentenceGeneration(
@@ -117,7 +107,12 @@ public class StandardSentenceGeneratorTest {
 		Expansion expansion
 	) {
 		final var random = new Random(seed);
-		final var terminals = Sentence.generate(CFG, SymbolIndex.of(random), expansion);
+		final var generator = new StandardSentenceGenerator(
+			SymbolIndex.of(random),
+			expansion,
+			MAX_VALUE
+		);
+		final var terminals = generator.generate(CFG);
 
 		final String string = terminals.stream()
 			.map(Symbol::value)
@@ -150,22 +145,5 @@ public class StandardSentenceGeneratorTest {
 
 		return values.toArray(Object[][]::new);
 	}
-
-//	@Test
-//	public void recursiveGeneration() {
-//		final var random = new Random();
-//		final var generator = new RecursiveGenerator();
-//
-//		for (int i = 0; i < 20; ++i) {
-//			final var seed = random.nextLong();
-//
-//			random.setSeed(seed);
-//			System.out.println(Sentence.toString(generator.generate(CFG, SymbolIndex.of(random))));
-//
-//			random.setSeed(seed);
-//			System.out.println(Sentence.toString(Sentence.generate(CFG, SymbolIndex.of(random), LEFT_FIRST)));
-//			System.out.println();
-//		}
-//	}
 
 }
