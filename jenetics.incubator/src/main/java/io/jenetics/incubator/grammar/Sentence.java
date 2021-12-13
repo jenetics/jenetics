@@ -141,10 +141,35 @@ public final class Sentence {
 	}
 
 	/**
-	 * Extended encoding
+	 * The returned encoding uses a separate {@link IntegerChromosome} for every
+	 * rule. The length of the chromosome equal to the number of
+	 * <em>alternative</em> expressions of the rule. This means that the
+	 * following CFG,
+	 *
+	 * <pre>{@code
+	 *                       (0)            (1)
+	 * (0) <expr> ::= (<expr><op><expr>) | <var>
+	 *               (0) (1) (2) (3)
+	 * (1) <op>   ::= + | - | * | /
+	 *               (0) (1) (2) (3) (4)
+	 * (2) <var>  ::= x | 1 | 2 | 3 | 4
+	 * }</pre>
+	 *
+	 * will be represented by the following {@link Genotype}
+	 * <pre>{@code
+	 * Genotype.of(
+	 *     IntegerChromosome.of(IntRange.of(0, 2), length.applyAsInt(2)),
+	 *     IntegerChromosome.of(IntRange.of(0, 4), length.applyAsInt(4)),
+	 *     IntegerChromosome.of(IntRange.of(0, 5), length.applyAsInt(5))
+	 * )
+	 * }</pre>
+	 *
+	 * @see #codec(Cfg, IntUnaryOperator, int)
 	 *
 	 * @param cfg grammar
-	 * @param length codon length
+	 * @param length the length function which defines the length of the chromosome.
+	 *        The input parameter for this function is the number of alternatives
+	 *        of the actual rule.
 	 * @param generator sentence generator
 	 * @return codec
 	 */
