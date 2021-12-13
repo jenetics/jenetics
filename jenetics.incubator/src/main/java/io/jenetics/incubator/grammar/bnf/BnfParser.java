@@ -20,13 +20,19 @@
 package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.incubator.grammar.bnf.Token.Type.EOF;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType;
 import io.jenetics.incubator.grammar.Cfg.Expression;
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Rule;
@@ -96,7 +102,7 @@ final class BnfParser extends Parser<Token> {
 
 	private void rule() {
 		start = lhs();
-		match(BnfTokenType.ASSIGN);
+		match(ASSIGN);
 		rhs();
 
 		rules.add(new Rule(start, alternatives));
@@ -119,8 +125,8 @@ final class BnfParser extends Parser<Token> {
 			symbols.clear();
 		}
 
-		while (LA(1) == BnfTokenType.BAR.code()) {
-			match(BnfTokenType.BAR);
+		while (LA(1) == BAR.code()) {
+			match(BAR);
 			alternative();
 
 			if (!symbols.isEmpty()) {
@@ -134,44 +140,44 @@ final class BnfParser extends Parser<Token> {
 		do {
 			element();
 		} while (
-			LA(4) != BnfTokenType.ASSIGN.code() &&
+			LA(4) != ASSIGN.code() &&
 			(
-				LA(1) == BnfTokenType.STRING.code() ||
-				LA(1) == BnfTokenType.QUOTED_STRING.code() ||
-				LA(1) == BnfTokenType.ID.code() ||
-				LA(1) == BnfTokenType.LT.code()
+				LA(1) == STRING.code() ||
+				LA(1) == QUOTED_STRING.code() ||
+				LA(1) == ID.code() ||
+				LA(1) == LT.code()
 			)
 		);
 	}
 
 	private void element() {
-		if (LA(1) == BnfTokenType.STRING.code()) {
+		if (LA(1) == STRING.code()) {
 			symbols.add(text());
-		} else if (LA(1) == BnfTokenType.QUOTED_STRING.code()) {
+		} else if (LA(1) == QUOTED_STRING.code()) {
 			symbols.add(text());
-		} else if (LA(1) == BnfTokenType.ID.code()) {
+		} else if (LA(1) == ID.code()) {
 			symbols.add(text());
-		} else if (LA(1) == BnfTokenType.LT.code()) {
+		} else if (LA(1) == LT.code()) {
 			symbols.add(id());
 		} else {
 			throw new ParsingException(format(
 				"Expecting %s but found %s.",
-				List.of(BnfTokenType.STRING, BnfTokenType.QUOTED_STRING, BnfTokenType.ID, BnfTokenType.LT), LT(1)
+				List.of(STRING, QUOTED_STRING, ID, LT), LT(1)
 			));
 		}
 	}
 
 	private Terminal text() {
-		if (LA(1) == BnfTokenType.STRING.code()) {
-			return terminal(match(BnfTokenType.STRING).value());
-		} else if (LA(1) == BnfTokenType.QUOTED_STRING.code()) {
-			return terminal(match(BnfTokenType.QUOTED_STRING).value());
-		} else if (LA(1) == BnfTokenType.ID.code()) {
-			return terminal(match(BnfTokenType.ID).value());
+		if (LA(1) == STRING.code()) {
+			return terminal(match(STRING).value());
+		} else if (LA(1) == QUOTED_STRING.code()) {
+			return terminal(match(QUOTED_STRING).value());
+		} else if (LA(1) == ID.code()) {
+			return terminal(match(ID).value());
 		} else {
 			throw new ParsingException(format(
 				"Expecting %s but found %s.",
-				List.of(BnfTokenType.STRING, BnfTokenType.QUOTED_STRING, BnfTokenType.ID), LT(1)
+				List.of(STRING, QUOTED_STRING, ID), LT(1)
 			));
 		}
 	}
@@ -184,14 +190,14 @@ final class BnfParser extends Parser<Token> {
 	}
 
 	private NonTerminal id() {
-		match(BnfTokenizer.BnfTokenType.LT);
+		match(LT);
 		final var result = ruleid();
-		match(BnfTokenType.GT);
+		match(GT);
 		return result;
 	}
 
 	private NonTerminal ruleid() {
-		final var value = match(BnfTokenType.ID).value();
+		final var value = match(ID).value();
 		if (value.isEmpty()) {
 			throw new ParsingException("Rule id must not be empty.");
 		}
