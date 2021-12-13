@@ -33,10 +33,10 @@ import io.jenetics.incubator.grammar.bnf.Token.Type;
  */
 abstract class Parser<T extends Token> {
 
-	private final Tokenizer<? extends T> _tokenizer;
+	private final Tokenizer<T> _tokenizer;
 	private final TokenRing<T> _lookahead;
 
-	protected Parser(final Tokenizer<? extends T> tokenizer, final int k) {
+	protected Parser(final Tokenizer<T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
