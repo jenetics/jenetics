@@ -19,15 +19,50 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.util.List;
+import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ConvergingSentenceGenerator implements SentenceGenerator {
+import io.jenetics.incubator.grammar.Cfg.Rule;
 
-	@Override
-	public List<Terminal> generate(final Cfg cfg) {
-		return null;
+public class FairSymbolIndex implements SymbolIndex {
+
+	private static final class Counts {
+		private final int[] _counts;
+
+		private int _count = 0;
+
+		private Counts(final int size) {
+			_counts = new int[size];
+		}
+
+		int update(final int index) {
+			final int max = Math.max(_count/_counts.length*3, 3);
+
+			if (_counts[index] <= max) {
+				++_count;
+				++_counts[index];
+
+				return index;
+			} else {
+				//System.out.println(max + ":" + _counts[index] + ":" + index);
+				return update((index + 1)%_counts.length);
+			}
+		}
 	}
 
+	private final SymbolIndex _index;
+	private final Map<Rule, Counts> _counts = new HashMap<>();
+
+	public FairSymbolIndex(final SymbolIndex index) {
+		_index = requireNonNull(index);
+	}
+
+	@Override
+	public int next(final Rule rule) {
+		return _counts
+			.computeIfAbsent(rule, key -> new Counts(rule.alternatives().size()))
+			.update(_index.next(rule));
+	}
 }
