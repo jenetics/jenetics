@@ -36,22 +36,23 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class ParseTreeTest {
 
-//	@Test
-//	public void create() {
-//		final var seed = 29022156195143L;
-//		final var random = new Random(seed);
-//
-//		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random)).stream()
-//			.map(Symbol::value)
-//			.collect(Collectors.joining());
-//
-//		System.out.println(sentence);
-//
-//		random.setSeed(seed);
-//		final TreeNode<String> tree = ParseTree.generate(CFG, SymbolIndex.of(random))
-//			.map(Symbol::value);
-//
-//		System.out.println(TreeFormatter.TREE.format(tree));
-//	}
+	@Test
+	public void create() {
+		final var seed = 29022156195143L;
+		final var random = new Random(seed);
+
+		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random), 100).stream()
+			.map(Symbol::value)
+			.collect(Collectors.joining());
+
+		System.out.println(sentence);
+
+		random.setSeed(seed);
+		final TreeNode<String> tree = ParseTree.generate(CFG, SymbolIndex.of(random))
+		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
+			.map(Symbol::value);
+
+		System.out.println(TreeFormatter.TREE.format(tree));
+	}
 
 }
