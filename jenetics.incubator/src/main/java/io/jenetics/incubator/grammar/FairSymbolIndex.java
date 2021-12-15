@@ -26,6 +26,7 @@ import java.util.Map;
 
 import io.jenetics.incubator.grammar.Cfg.Rule;
 
+// Some experiments
 public class FairSymbolIndex implements SymbolIndex {
 
 	private static final class Counts {

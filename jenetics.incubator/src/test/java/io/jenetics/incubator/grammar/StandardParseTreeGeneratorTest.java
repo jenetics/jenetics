@@ -48,7 +48,8 @@ public class StandardParseTreeGeneratorTest {
 		System.out.println(sentence);
 
 		random.setSeed(seed);
-		final TreeNode<String> tree = StandardParseTreeGenerator.generate(CFG, SymbolIndex.of(random))
+		final var generator = new StandardParseTreeGenerator(SymbolIndex.of(random));
+		final TreeNode<String> tree = generator.generate(CFG)
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			.map(Symbol::value);
 
