@@ -114,17 +114,18 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	@Override
 	public List<Terminal> generate(final Cfg cfg) {
 		final var sentence = new LinkedList<Symbol>();
-		expand(cfg, _index, sentence, _limit);
+		expand(cfg, _index, sentence, _expansion, _limit);
 
 		return sentence.stream()
 			.map(Terminal.class::cast)
 			.toList();
 	}
 
-	private void expand(
+	private static void expand(
 		final Cfg cfg,
 		final SymbolIndex index,
 		final List<Symbol> symbols,
+		final Expansion expansion,
 		final int limit
 	) {
 		symbols.add(cfg.start());
@@ -135,7 +136,7 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 
 			final ListIterator<Symbol> sit = symbols.listIterator();
 			while (sit.hasNext() &&
-				(_expansion == Expansion.LEFT_TO_RIGHT || !proceed))
+				(expansion == Expansion.LEFT_TO_RIGHT || !proceed))
 			{
 				if (sit.next() instanceof NonTerminal nt) {
 					sit.remove();
