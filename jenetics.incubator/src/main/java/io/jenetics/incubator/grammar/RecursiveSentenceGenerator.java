@@ -28,12 +28,12 @@ import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 // https://eli.thegreenplace.net/2010/01/28/generating-random-sentences-from-a-context-free-grammar
-public class RecursiveGenerator implements SentenceGenerator {
+public class RecursiveSentenceGenerator implements SentenceGenerator {
 
 	private final SymbolIndex _index;
 	private final int _limit;
 
-	public RecursiveGenerator(final SymbolIndex index, final int limit) {
+	public RecursiveSentenceGenerator(final SymbolIndex index, final int limit) {
 		_index = requireNonNull(index);
 		_limit = limit;
 	}
