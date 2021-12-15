@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.grammar;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +33,8 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  * @version !__version__!
  */
-public final class ParseTree {
-	private ParseTree() {}
+public final class StandardParseTreeGenerator {
+	private StandardParseTreeGenerator() {}
 
 	public static TreeNode<Symbol> generate(
 		final Cfg cfg,
