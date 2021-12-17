@@ -24,7 +24,7 @@
  */
 @SuppressWarnings("module")
 module io.jenetics.ext {
-	requires io.jenetics.base;
+	requires transitive io.jenetics.base;
 
 	exports io.jenetics.ext;
 	exports io.jenetics.ext.engine;
