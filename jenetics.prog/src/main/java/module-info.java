@@ -23,7 +23,7 @@
  * @since 7.0
  */
 module io.jenetics.prog {
-	requires io.jenetics.ext;
+	requires transitive io.jenetics.ext;
 
 	exports io.jenetics.prog;
 	exports io.jenetics.prog.op;
