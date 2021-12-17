@@ -67,16 +67,14 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
-		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:${xlint()}")
-		}
-
 		tasks.withType<Test> {
 			useTestNG()
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginExtension> {
+				modularity.inferModulePath.set(true)
+
 				sourceCompatibility = JavaVersion.VERSION_17
 				targetCompatibility = JavaVersion.current()
 			}
@@ -84,6 +82,12 @@ gradle.projectsEvaluated {
 			setupJava(project)
 			setupTestReporting(project)
 			setupJavadoc(project, "")
+		}
+
+		tasks.withType<JavaCompile> {
+			modularity.inferModulePath.set(true)
+
+			options.compilerArgs.add("-Xlint:${xlint()}")
 		}
 
 		if (plugins.hasPlugin("maven-publish")) {
@@ -165,11 +169,10 @@ fun setupTestReporting(project: Project) {
  */
 fun setupJavadoc(project: Project, taskName: String) {
 	project.tasks.withType<Javadoc> {
+		modularity.inferModulePath.set(true)
+
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
-
-		exclude("**/internal/**")
-
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
 		doclet.version(true)
 		doclet.docEncoding = "UTF-8"
