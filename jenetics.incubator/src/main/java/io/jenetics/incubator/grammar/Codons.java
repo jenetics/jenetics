@@ -38,6 +38,7 @@ public final class Codons implements SymbolIndex {
 
 	private final IntUnaryOperator _values;
 	private final int _length;
+
 	private final AtomicInteger _pos = new AtomicInteger(0);
 
 	private Codons(final IntUnaryOperator values, final int length) {
