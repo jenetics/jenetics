@@ -35,6 +35,7 @@ src/generated
 *.so
 *.dblite
 random-x86_64
+.DS_Store
 
 ## Eclipse
 .classpath

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
@@ -23,7 +23,7 @@ public class CirclePointsEncoding {
 		final Path data = Paths.get(base, "circle_points_encoding.dat");
 		final Path output = Paths.get(base, "circle_points_encoding.svg");
 
-		final Random random = new LCG64ShiftRandom();
+		final var random = new LCG64ShiftRandom();
 
 		final ISeq<double[]> points = Stream.generate(() -> point(random))
 			.limit(2000)
@@ -43,7 +43,7 @@ public class CirclePointsEncoding {
 		gnuplot.create(data, output);
 	}
 
-	private static double[] point(final Random random) {
+	private static double[] point(final RandomGenerator random) {
 		final double r = 1 - random.nextDouble()*2;
 		final double a = random.nextDouble()*2*PI;
 

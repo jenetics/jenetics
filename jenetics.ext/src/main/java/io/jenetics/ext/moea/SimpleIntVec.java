@@ -37,6 +37,8 @@ import java.util.Comparator;
  * @since 5.2
  */
 final class SimpleIntVec implements Vec<int[]>, Serializable {
+
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int[] _data;
@@ -87,8 +89,8 @@ final class SimpleIntVec implements Vec<int[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimpleIntVec &&
-			Arrays.equals(((SimpleIntVec)obj)._data, _data);
+			obj instanceof SimpleIntVec other  &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override
@@ -101,10 +103,12 @@ final class SimpleIntVec implements Vec<int[]>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.SIMPLE_INT_VEC, this);
+		return new SerialProxy(SerialProxy.SIMPLE_INT_VEC, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

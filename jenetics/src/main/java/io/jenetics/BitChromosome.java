@@ -20,11 +20,11 @@
 package io.jenetics;
 
 import static java.lang.Math.min;
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
-import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.Requires.probability;
+import static io.jenetics.internal.util.SerialIO.readBytes;
 import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeBytes;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.DataInput;
@@ -34,14 +34,11 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.BitSet;
-import java.util.ListIterator;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.Bits;
-import io.jenetics.internal.util.Requires;
+import io.jenetics.internal.collection.BitArray;
 import io.jenetics.util.ISeq;
 
 /**
@@ -49,46 +46,72 @@ import io.jenetics.util.ISeq;
  *
  * @see BitGene
  *
- * @implSpec
- * This class is immutable and thread-safe.
+ * @implNote
+ * This class is immutable and thread-safe. The bits of the bit chromosome are
+ * backed by a {@code byte[]} array with the following layout:
+ * <pre> {@code
+ *  Byte:       3        2        1        0
+ *              |        |        |        |
+ *  Array: |11110011|10011101|01000000|00101010|
+ *          |                 |        |      |
+ *  Bit:    23                15       7      0
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.1
+ * @version 7.0
  */
-public class BitChromosome extends Number
+public final class BitChromosome extends Number
 	implements
 		Chromosome<BitGene>,
 		Comparable<BitChromosome>,
 		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 
-	/**
-	 * The ones probability of the randomly generated Chromosome.
-	 */
-	protected double _p;
-
-	/**
-	 * The length of the chromosomes (number of bits).
-	 */
-	protected final int _length;
+	private static final double DEFAULT_PROBABILITY = 0.5;
 
 	/**
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
-	protected final byte[] _genes;
+	private final BitArray _genes;
 
-	// Wraps the genes byte array into a Seq<BitGene>.
-	private final transient BitGeneISeq _seq;
+	/**
+	 * The ones probability of the randomly generated Chromosome.
+	 */
+	private final double _p;
 
 	// Private primary constructor.
-	private BitChromosome(final byte[] bits, final int length, final double p) {
-		_genes = bits;
-		_length = length;
-		_p = p;
-		_seq = BitGeneMSeq.of(_genes, length).toISeq();
+	private BitChromosome(final BitArray genes, final double p) {
+		_genes = requireNonNull(genes);
+		_p = probability(p);
+	}
+
+	/**
+	 * Create a new bit chromosome from the given bit (byte) array.
+	 *
+	 * @since 7.0
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @param p the ones probability
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
+	 *         {@code start > bits.length*8}
+	 * @throws java.lang.IllegalArgumentException if {@code start > end}
+	 * @throws java.lang.NullPointerException if the {@code bits} array is
+	 *         {@code null}.
+	 */
+	public BitChromosome(
+		final byte[] bits,
+		final int start,
+		final int end,
+		final double p
+	) {
+		this(BitArray.of(bits, start, min(end, bits.length*Byte.SIZE)), p);
 	}
 
 	/**
@@ -105,12 +128,7 @@ public class BitChromosome extends Number
 	 *         {@code null}.
 	 */
 	public BitChromosome(final byte[] bits, final int start, final int end) {
-		this(
-			Bits.copy(bits, start, end),
-			min(bits.length << 3, end) - start,
-			0.0
-		);
-		_p = (double) Bits.count(_genes)/(double)_length;
+		this(bits, start, end, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -120,44 +138,12 @@ public class BitChromosome extends Number
 	 * @param bits the {@code byte} array.
 	 */
 	public BitChromosome(final byte[] bits) {
-		this(bits, 0, bits.length << 3);
-	}
-
-	private BitChromosome(final byte[] bits, final int length) {
-		this(
-			bits,
-			length == -1 ? bits.length*8 : length,
-			(double) Bits.count(bits)/
-			(double)(length == -1 ? bits.length*8 : length)
-		);
-	}
-
-	private static byte[] toByteArray(final CharSequence value) {
-		final byte[] bytes = Bits.newArray(value.length());
-		for (int i = value.length(); --i >= 0;) {
-			final char c = value.charAt(i);
-			if (c == '1') {
-				Bits.set(bytes, i);
-			} else if (c != '0') {
-				throw new IllegalArgumentException(format(
-					"Illegal character '%s' at position %d", c, i
-				));
-			}
-		}
-
-		return bytes;
-	}
-
-	private void rangeCheck(final int index) {
-		if (index < 0 || index >= _length) {
-			throw new IndexOutOfBoundsException(
-				"Index: " + index + ", Length: " + _length
-			);
-		}
+		this(bits, 0, bits.length*Byte.SIZE);
 	}
 
 	/**
-	 * Return the one probability of this chromosome.
+	 * Return the one <em>nominal</em> probability of this chromosome. It's not
+	 * the actual one-probability of {@code this} chromosome.
 	 *
 	 * @since 5.2
 	 *
@@ -169,7 +155,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitGene gene() {
-		return BitGene.of(Bits.get(_genes, 0));
+		return BitGene.of(_genes.get(0));
 	}
 
 	/**
@@ -180,18 +166,17 @@ public class BitChromosome extends Number
 	 * @return the first value of this chromosome.
 	 */
 	public boolean booleanValue() {
-		return Bits.get(_genes, 0);
+		return _genes.get(0);
 	}
 
 	@Override
 	public BitGene get(final int index) {
-		rangeCheck(index);
-		return BitGene.of(Bits.get(_genes, index));
+		return BitGene.of(_genes.get(index));
 	}
 
 	@Override
 	public int length() {
-		return _length;
+		return _genes.length();
 	}
 
 	/**
@@ -205,8 +190,7 @@ public class BitChromosome extends Number
 	 *          (index &lt; 1 || index &gt;= length()).
 	 */
 	public boolean booleanValue(final int index) {
-		rangeCheck(index);
-		return Bits.get(_genes, index);
+		return _genes.get(index);
 	}
 
 	/**
@@ -215,16 +199,7 @@ public class BitChromosome extends Number
 	 * @return the number of bits set to true in this {@code BitChromosome}
 	 */
 	public int bitCount() {
-		return Bits.count(_genes);
-	}
-
-	/**
-	 * Return a list iterator over the bit-genes of this chromosome.
-	 *
-	 * @return a list iterator over the bit-genes of this chromosome
-	 */
-	public ListIterator<BitGene> listIterator() {
-		return _seq.listIterator();
+		return _genes.bitCount();
 	}
 
 	/**
@@ -283,44 +258,18 @@ public class BitChromosome extends Number
 	 * @return {@code BigInteger} value this {@code BitChromosome} represents.
 	 */
 	public BigInteger toBigInteger() {
-		return new BigInteger(_genes);
+		return _genes.toBigInteger();
 	}
 
 	/**
-	 * Returns the two's-complement binary representation of this
-	 * large integer. The output array is in <i>big-endian</i>
-	 * byte-order: the most significant byte is at the offset position.
+	 * Returns the byte array, which represents the bit values of {@code this}
+	 * chromosome.
 	 *
-	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
-	 *          } byte array representation and can be used for conversion
-	 *          between the two classes.</p>
-	 *
-	 * @param bytes the bytes to hold the binary representation
-	 *	       (two's-complement) of this large integer.
-	 * @return the number of bytes written.
-	 * @throws IndexOutOfBoundsException
-	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
-	 * @throws NullPointerException it the give array is {@code null}.
-	 */
-	public int toByteArray(final byte[] bytes) {
-		if (bytes.length < _genes.length) {
-			throw new IndexOutOfBoundsException();
-		}
-
-		System.arraycopy(_genes, 0, bytes, 0, _genes.length);
-		return _genes.length;
-	}
-
-	/**
 	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
-	 *
-	 * @see #toByteArray(byte[])
 	 */
 	public byte[] toByteArray() {
-		final byte[] data = new byte[_genes.length];
-		toByteArray(data);
-		return data;
+		return _genes.toByteArray();
 	}
 
 	/**
@@ -345,7 +294,7 @@ public class BitChromosome extends Number
 	 */
 	public IntStream ones() {
 		return IntStream.range(0, length())
-			.filter(index -> Bits.get(_genes, index));
+			.filter(_genes::get);
 	}
 
 	/**
@@ -357,43 +306,28 @@ public class BitChromosome extends Number
 	 */
 	public IntStream zeros() {
 		return IntStream.range(0, length())
-			.filter(index -> !Bits.get(_genes, index));
+			.filter(index -> !_genes.get(index));
 	}
 
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		requireNonNull(genes, "Genes");
 		if (genes.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The genes sequence must contain at least one gene."
 			);
 		}
 
-		final BitChromosome chromosome = new BitChromosome(
-			Bits.newArray(genes.length()), genes.length()
-		);
-		int ones = 0;
-
-		if (genes instanceof BitGeneISeq) {
-			final BitGeneISeq iseq = (BitGeneISeq)genes;
-			iseq.copyTo(chromosome._genes);
-			ones = Bits.count(chromosome._genes);
-		} else {
-			for (int i = genes.length(); --i >= 0;) {
-				if (genes.get(i).booleanValue()) {
-					Bits.set(chromosome._genes, i);
-					++ones;
-				}
-			}
+		final var array = BitArray.ofLength(genes.length());
+		for (int i = 0; i < genes.length(); ++i) {
+			array.set(i, genes.get(i).booleanValue());
 		}
 
-		chromosome._p = (double)ones/(double)genes.length();
-		return chromosome;
+		return new BitChromosome(array, _p);
 	}
 
 	@Override
 	public BitChromosome newInstance() {
-		return of(_length, _p);
+		return of(length(), _p);
 	}
 
 	/**
@@ -420,9 +354,7 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		return stream()
-			.map(g -> g.booleanValue() ? "1" : "0")
-			.collect(joining());
+		return _genes.toString();
 	}
 
 	@Override
@@ -436,13 +368,37 @@ public class BitChromosome extends Number
 	 * @return a new BitChromosome with inverted ones and zeros.
 	 */
 	public BitChromosome invert() {
-		final byte[] data = _genes.clone();
-		Bits.invert(data);
-		return new BitChromosome(data, _length, 1.0 - _p);
+		final var array = _genes.copy();
+		array.invert();
+		return new BitChromosome(array, 1.0 - _p);
 	}
 
+	@Override
+	public int hashCode() {
+		return _genes.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof BitChromosome other &&
+			_genes.equals(other._genes);
+	}
+
+	@Override
+	public String toString() {
+		return _genes.toByteString();
+	}
+
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
 	/**
-	 * Construct a new BitChromosome with the given _length.
+	 * Constructing a new BitChromosome with the given {@code length} and
+	 * randomly set bits. The TRUEs and FALSE in the {@code Chromosome} are
+	 * equally distributed with one-probability of {@code p}.
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
@@ -452,43 +408,21 @@ public class BitChromosome extends Number
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
 	public static BitChromosome of(final int length, final double p) {
-		return new BitChromosome(Bits.newArray(length, p), length, p);
+		return new BitChromosome(BitArray.ofLength(length, p), p);
 	}
 
 	/**
-	 * Constructing a new BitChromosome with the given _length. The TRUEs and
-	 * FALSE in the {@code Chromosome} are equally distributed.
+	 * Constructing a new BitChromosome with the given {@code length} and
+	 * randomly set bits. The TRUEs and FALSE in the {@code Chromosome} are
+	 * equally distributed with one-probability of 0.5.
 	 *
 	 * @param length Length of the BitChromosome.
 	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NegativeArraySizeException if the {@code _length} is smaller
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 */
 	public static BitChromosome of(final int length) {
-		return new BitChromosome(Bits.newArray(length, 0.5), length, 0.5);
-	}
-
-	/**
-	 * Create a new {@code BitChromosome} with the given parameters.
-	 *
-	 * @param length length of the BitChromosome.
-	 * @param bits the bit-set which initializes the chromosome
-	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NegativeArraySizeException if the {@code length} is smaller
-	 *         than one.
-	 * @throws NullPointerException if the {@code bitSet} is
-	 *         {@code null}.
-	 */
-	public static BitChromosome of(final BitSet bits, final int length) {
-		final byte[] bytes = Bits.newArray(length);
-		for (int i = 0; i < length; ++i) {
-			if (bits.get(i)) {
-				Bits.set(bytes, i);
-			}
-		}
-		final double p = (double) Bits.count(bytes)/(double)length;
-
-		return new BitChromosome(bytes, length, p);
+		return of(length, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -508,43 +442,46 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final byte[] bytes = Bits.newArray(length);
+		final var array = BitArray.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
-				Bits.set(bytes, i);
+				array.set(i, true);
 			}
 		}
 
-		return new BitChromosome(bytes, length, Requires.probability(p));
+		return new BitChromosome(array, probability(p));
 	}
 
 	/**
-	 * Constructing a new BitChromosome from a given BitSet.
-	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be {@code bitSet.length()} ({@link BitSet#length}).
+	 * Create a new {@code BitChromosome} with the given parameters. The
+	 * {@link #oneProbability()} of the chromosome is set to {@code 0.5}.
+	 *
+	 * @param length length of the BitChromosome.
+	 * @param bits the bit-set which initializes the chromosome
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
+	 *         than one.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
+	 */
+	public static BitChromosome of(final BitSet bits, final int length) {
+		return of(bits, length, DEFAULT_PROBABILITY);
+	}
+
+	/**
+	 * Constructing a new BitChromosome from a given BitSet. The length of the
+	 * constructed {@code BitChromosome} will be ({@link BitSet#length}).
+	 *
+	 * @see #of(BitSet, int, double)
+	 * @see #of(BitSet, int)
 	 *
 	 * @param bits the bit-set which initializes the chromosome
 	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the {@code bitSet} is
 	 *        {@code null}.
-	 * @deprecated This method doesn't let you control the actual length of the
-	 *             created {@code BitChromosome}. Use {@link #of(BitSet, int, double)}
-	 *             or {@link #of(BitSet, int)} instead.
 	 */
-	@Deprecated(since = "6.1", forRemoval = true)
 	public static BitChromosome of(final BitSet bits) {
-		return new BitChromosome(bits.toByteArray(), -1);
-	}
-
-	/**
-	 * Create a new {@code BitChromosome} from the given big integer value.
-	 *
-	 * @param value the value of the created {@code BitChromosome}
-	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NullPointerException if the given {@code value} is {@code null}.
-	 */
-	public static BitChromosome of(final BigInteger value) {
-		return new BitChromosome(value.toByteArray(), -1);
+		return of(bits, bits.length());
 	}
 
 	/**
@@ -552,47 +489,53 @@ public class BitChromosome extends Number
 	 * ones probability.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
+	 * @param length length of the BitChromosome
 	 * @param p Probability of the TRUEs in the BitChromosome.
 	 * @return a new {@code BitChromosome} with the given parameter
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
-	public static BitChromosome of(final BigInteger value, final double p) {
-		final byte[] bits = value.toByteArray();
-		return new BitChromosome(bits, bits.length*8, Requires.probability(p));
+	public static BitChromosome of(
+		final BigInteger value,
+		final int length,
+		final double p
+	) {
+		final var array = BitArray.of(value, length);
+		return new BitChromosome(array, probability(p));
 	}
 
 	/**
-	 * Create a new {@code BitChromosome} from the given character sequence
-	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
-	 * method.
+	 * Create a new {@code BitChromosome} from the given big integer value and
+	 * ones probability. The {@link #oneProbability()} of the chromosome is set
+	 * to {@code 0.5}.
 	 *
-	 * @param value the input string.
-	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NullPointerException if the {@code value} is {@code null}.
-	 * @throws IllegalArgumentException if the length of the character sequence
-	 *         is zero or contains other characters than '0' or '1'.
-	 */
-	public static BitChromosome of(final CharSequence value) {
-		return new BitChromosome(toByteArray(requireNonNull(value, "Input")), -1);
-	}
-
-	/**
-	 * Create a new {@code BitChromosome} from the given character sequence
-	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
-	 * method.
+	 * @since 7.0
 	 *
-	 * @param value the input string.
-	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @param value the value of the created {@code BitChromosome}
+	 * @param length length of the BitChromosome
 	 * @return a new {@code BitChromosome} with the given parameter
-	 * @throws NullPointerException if the {@code value} is {@code null}.
-	 * @throws IllegalArgumentException if the length of the character sequence
-	 *         is zero or contains other characters than '0' or '1'.
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
-	public static BitChromosome of(final CharSequence value, final double p) {
-		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
-		return new BitChromosome(bits, bits.length*8, Requires.probability(p));
+	public static BitChromosome of(
+		final BigInteger value,
+		final int length
+	) {
+		return of(value, length, DEFAULT_PROBABILITY);
+	}
+
+
+	/**
+	 * Create a new {@code BitChromosome} from the given big integer value. The
+	 * {@link #oneProbability()} of the chromosome is set to {@code 0.5}.
+	 *
+	 * @param value the value of the created {@code BitChromosome}
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 */
+	public static BitChromosome of(final BigInteger value) {
+		final var array = BitArray.of(value);
+		return new BitChromosome(array, DEFAULT_PROBABILITY);
 	}
 
 	/**
@@ -614,27 +557,41 @@ public class BitChromosome extends Number
 		final int length,
 		final double p
 	) {
-		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
-		return new BitChromosome(bits, length, Requires.probability(p));
+		final var array = BitArray.of(value, length);
+		return new BitChromosome(array, probability(p));
 	}
 
-	@Override
-	public int hashCode() {
-		return hash(_genes, hash(getClass()));
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method.
+	 *
+	 * @param value the input string.
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(final CharSequence value, final double p) {
+		return of(value, value.length(), p);
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			length() == ((BitChromosome)obj).length() &&
-			Arrays.equals(_genes, ((BitChromosome)obj)._genes);
-	}
-
-	@Override
-	public String toString() {
-		return Bits.toByteString(_genes);
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method. The {@link #oneProbability()} of the chromosome is set to
+	 * {@code 0.5}.
+	 *
+	 * @param value the input string.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 */
+	public static BitChromosome of(final CharSequence value) {
+		return of(value, value.length(), DEFAULT_PROBABILITY);
 	}
 
 
@@ -642,10 +599,12 @@ public class BitChromosome extends Number
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.BIT_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.BIT_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
@@ -653,19 +612,18 @@ public class BitChromosome extends Number
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(_length, out);
-		out.writeDouble(_p);
-		writeInt(_genes.length, out);
-		out.write(_genes);
+		writeBytes(toByteArray(), out);
+		writeInt(length(), out);
+		out.writeDouble(oneProbability());
 	}
 
 	static BitChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final double p = in.readDouble();
-		final byte[] genes = new byte[readInt(in)];
-		in.readFully(genes);
+		final var bytes = readBytes(in);
+		final var length  = readInt(in);
+		final var p = in.readDouble();
+		final var genes = BitArray.of(bytes,0, length);
 
-		return new BitChromosome(genes, length, p);
+		return new BitChromosome(genes, p);
 	}
 
 }

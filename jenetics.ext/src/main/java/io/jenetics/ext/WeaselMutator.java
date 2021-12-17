@@ -21,7 +21,7 @@ package io.jenetics.ext;
 
 import static java.lang.String.format;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.AltererResult;
 import io.jenetics.Gene;
@@ -98,7 +98,7 @@ public class WeaselMutator<
 		final var result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
-		return AltererResult.of(
+		return new AltererResult<>(
 			result
 				.map(MutatorResult::result)
 				.asISeq(),
@@ -112,13 +112,13 @@ public class WeaselMutator<
 	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final var result = genotype.stream()
 			.map(gt -> mutate(gt, p, random))
 			.collect(ISeq.toISeq());
 
-		return MutatorResult.of(
+		return new MutatorResult<>(
 			Genotype.of(result.map(MutatorResult::result)),
 			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);

@@ -23,6 +23,7 @@ import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -109,7 +110,7 @@ public class RandomIndexStreamTest {
 		return N*p;
 	}
 
-	long k(final int n, final double p, final Random random) {
+	long k(final int n, final double p, final RandomGenerator random) {
 		final IntRef kt = new IntRef(0);
 		indexes(random, n, p).forEach(i -> ++kt.value);
 
@@ -169,7 +170,7 @@ public class RandomIndexStreamTest {
 	public static IndexStream ReferenceRandomStream(
 		final int n,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		return new IndexStream() {
 			private final int P = Probabilities.toInt(p);

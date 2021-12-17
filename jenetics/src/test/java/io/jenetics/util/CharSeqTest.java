@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.regex.PatternSyntaxException;
 
 import org.testng.Assert;
@@ -30,7 +31,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.Randoms;
-import io.jenetics.prngine.PRNG;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -40,7 +40,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	@Override
 	protected Factory<CharSeq> factory() {
 		return () -> {
-			final Random r = RandomRegistry.random();
+			final var r = RandomRegistry.random();
 			return new CharSeq(Randoms.nextASCIIString(r.nextInt(200) + 100, r));
 		};
 	}
@@ -137,10 +137,13 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		return strings;
 	}
 
-	private static String nextString(final Random random, final int length) {
+	private static String nextString(
+		final RandomGenerator random,
+		final int length
+	) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < chars.length; ++i) {
-			chars[i] = (char)PRNG.nextInt('a', 'k', random);
+			chars[i] = (char)random.nextInt('a', 'k');
 		}
 
 		return new String(chars);

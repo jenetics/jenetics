@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import java.util.Comparator;
+import java.util.function.BinaryOperator;
 
 /**
  * This {@code enum} determines whether the GA should maximize or minimize the
@@ -27,7 +28,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 6.2
  */
 public enum Optimize {
 
@@ -37,8 +38,7 @@ public enum Optimize {
 	MINIMUM {
 		@Override
 		public <T extends Comparable<? super T>>
-		int compare(final T a, final T b)
-		{
+		int compare(final T a, final T b) {
 			return b.compareTo(a);
 		}
 	},
@@ -49,8 +49,7 @@ public enum Optimize {
 	MAXIMUM {
 		@Override
 		public <T extends Comparable<? super T>>
-		int compare(final T a, final T b)
-		{
+		int compare(final T a, final T b) {
 			return a.compareTo(b);
 		}
 	};
@@ -58,7 +57,23 @@ public enum Optimize {
 	/**
 	 * Compares two comparable objects. Returns a negative integer, zero, or a
 	 * positive integer as the first argument is better than, equal to, or worse
-	 * than the second.
+	 * than the second. This compare method is {@code null}-hostile. If you need
+	 * to make it {@code null}-friendly, you can wrap it with the
+	 * {@link Comparator#nullsFirst(Comparator)} method.
+	 *
+	 * <pre>{@code
+	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MAXIMUM::compare);
+	 * assertEquals(comparator.compare(null, null), 0);
+	 * assertEquals(comparator.compare(null, 4), -1);
+	 * assertEquals(comparator.compare(4, null), 1);
+	 * }</pre>
+	 * or
+	 * <pre>{@code
+	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MINIMUM::compare);
+	 * assertEquals(comparator.compare(null, null), 0);
+	 * assertEquals(comparator.compare(null, 4), -1);
+	 * assertEquals(comparator.compare(4, null), 1);
+	 * }</pre>
 	 *
 	 * @param <T> the comparable type
 	 * @param a the first object to be compared.
@@ -117,25 +132,100 @@ public enum Optimize {
 	/**
 	 * Return the best value, according to this optimization direction.
 	 *
+	 * @see #best()
+	 *
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
 	 * @return the best value. If both values are equal the first one is returned.
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C best(final C a, final C b) {
 		return compare(b, a) > 0 ? b : a;
 	}
 
 	/**
+	 * Return a {@code null}-friendly function which returns the best element of
+	 * two values. E.g.
+	 *
+	 * <pre>{@code
+	 * assertNull(Optimize.MAXIMUM.<Integer>best().apply(null, null));
+	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(null, 4), (Integer)4);
+	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(6, null), (Integer)6);
+	 * }</pre>
+	 *
+	 * @see #best(Comparable, Comparable)
+	 *
+	 * @since 6.2
+	 *
+	 * @param <C> the comparable argument type
+	 * @return a {@code null}-friendly method which returns the best element of
+	 * 	       two values
+	 */
+	public <C extends Comparable<? super C>> BinaryOperator<C> best() {
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> best(a, b);
+			case -1 -> b;
+			default -> a;
+		};
+	}
+
+	/**
 	 * Return the worst value, according to this optimization direction.
+	 *
+	 * @see #worst()
 	 *
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
 	 * @return the worst value. If both values are equal the first one is returned.
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C worst(final C a, final C b) {
 		return compare(b, a) < 0 ? b : a;
+	}
+
+	/**
+	 * Return a {@code null}-friendly function which returns the worst element
+	 * of two values. E.g.
+	 *
+	 * <pre>{@code
+	 * assertNull(Optimize.MAXIMUM.<Integer>worst().apply(null, null));
+	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(null, 4), (Integer)4);
+	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(6, null), (Integer)6);
+	 * }</pre>
+	 *
+	 * @see #worst(Comparable, Comparable)
+	 *
+	 * @since 6.2
+	 *
+	 * @param <C> the comparable argument type
+	 * @return a {@code null}-friendly method which returns the worst element of
+	 * 	       two values
+	 */
+	public <C extends Comparable<? super C>> BinaryOperator<C> worst() {
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> worst(a, b);
+			case -1 -> b;
+			default -> a;
+		};
+	}
+
+	private static <T extends Comparable<? super T>>
+	int cmp(final T a, final T b) {
+		if (a != null) {
+			if (b != null) {
+				return 2;
+			} else {
+				return 1;
+			}
+		} else {
+			if (b != null) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 }

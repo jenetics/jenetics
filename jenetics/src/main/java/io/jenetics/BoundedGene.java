@@ -33,7 +33,7 @@ package io.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 6.0
+ * @version 7.0
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,
@@ -60,12 +60,40 @@ public interface BoundedGene<
 	default boolean isValid() {
 		return
 			allele().compareTo(min()) >= 0 &&
-			allele().compareTo(max()) <= 0;
+			allele().compareTo(max()) < 0;
 	}
 
 	@Override
 	default int compareTo(final G other) {
 		return allele().compareTo(other.allele());
+	}
+
+	/**
+	 * Return the minimum value of {@code this} and the given {@code other}
+	 * value.
+	 *
+	 * @since 7.0
+	 *
+	 * @param other the other value
+	 * @return the minimum value of {@code this} and the given {@code other}
+	 * @throws NullPointerException if {@code other} is {@code null}
+	 */
+	default G min(final G other) {
+		return compareTo(other) < 0 ? self() : other;
+	}
+
+	/**
+	 * Return the maximum value of {@code this} and the given {@code other}
+	 * value.
+	 *
+	 * @since 7.0
+	 *
+	 * @param other the other value
+	 * @return the maximum value of {@code this} and the given {@code other}
+	 * @throws NullPointerException if {@code other} is {@code null}
+	 */
+	default G max(final G other) {
+		return compareTo(other) > 0 ? self() : other;
 	}
 
 	/**

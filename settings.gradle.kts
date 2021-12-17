@@ -21,13 +21,27 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 6.1
+ * @version 6.3
  */
 pluginManagement {
 	repositories {
 		mavenLocal()
-		jcenter()
 		gradlePluginPortal()
+	}
+}
+
+enableFeaturePreview("VERSION_CATALOGS")
+dependencyResolutionManagement {
+	versionCatalogs {
+		create("libs") {
+			alias("commons-math").to("org.apache.commons:commons-math3:3.6.1")
+			alias("equalsverifier").to("nl.jqno.equalsverifier:equalsverifier:3.7.2")
+			alias("testng").to("org.testng:testng:7.4.0")
+			alias("assertj").to("org.assertj:assertj-core:3.20.2")
+			alias("jpx").to("io.jenetics:jpx:2.3.0")
+			alias("prngine").to("io.jenetics:prngine:2.0.0")
+			alias("rxjava").to("io.reactivex.rxjava2:rxjava:2.2.21")
+		}
 	}
 }
 

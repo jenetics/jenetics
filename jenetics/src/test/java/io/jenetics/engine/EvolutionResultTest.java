@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -60,7 +59,7 @@ public class EvolutionResultTest
 				a -> a.gene().allele();
 
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final Genotype<DoubleGene> gtf = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
@@ -73,7 +72,7 @@ public class EvolutionResultTest
 					.collect(ISeq.toISeq()),
 				random.nextInt(1000),
 				random.nextInt(1000),
-				EvolutionDurations.of(
+				new EvolutionDurations(
 					Duration.ofMillis(random.nextInt(1_000_000)),
 					Duration.ofMillis(random.nextInt(1_000_000)),
 					Duration.ofMillis(random.nextInt(1_000_000)),

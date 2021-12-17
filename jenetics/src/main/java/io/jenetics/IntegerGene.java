@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
@@ -31,16 +30,14 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Random;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 
 /**
- * NumericGene implementation which holds a 32 bit integer number.
+ * NumericGene implementation which holds a 32-bit integer number.
  *
  * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
  * value-based</a> class; use of identity-sensitive operations (including
@@ -55,7 +52,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 6.1
+ * @version 7.0
  */
 public final class IntegerGene
 	implements
@@ -65,6 +62,7 @@ public final class IntegerGene
 		Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int _allele;
@@ -73,13 +71,13 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * given range. If the {@code value} isn't within the interval [min, max),
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
 	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 */
 	private IntegerGene(final int allele, final int min, final int max) {
 		_allele = allele;
@@ -145,7 +143,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean isValid() {
-		return _allele >= _min && _allele <= _max;
+		return _allele >= _min && _allele < _max;
 	}
 
 	@Override
@@ -155,7 +153,11 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return IntegerGene.of(_allele + (that._allele - _allele)/2, _min, _max);
+		final int x = that._allele;
+		final int y = _allele;
+
+		// http://aggregate.org/MAGIC/#Average%20of%20Integers
+		return IntegerGene.of((x&y) + ((x^y) >> 1), _min, _max);
 	}
 
 	/**
@@ -185,7 +187,7 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance() {
-		return IntegerGene.of(nextInt(random(), _min, _max), _min, _max);
+		return IntegerGene.of(random().nextInt(_min, _max), _min, _max);
 	}
 
 	@Override
@@ -196,10 +198,10 @@ public final class IntegerGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntegerGene &&
-			((IntegerGene)obj)._allele == _allele &&
-			((IntegerGene)obj)._min == _min &&
-			((IntegerGene)obj)._max == _max;
+			obj instanceof IntegerGene other &&
+			other._allele == _allele &&
+			other._min == _min &&
+			other._max == _max;
 	}
 
 	@Override
@@ -219,7 +221,7 @@ public final class IntegerGene
 	 *
 	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code IntegerGene} with the given {@code value}
 	 */
 	public static IntegerGene of(final int allele, final int min, final int max) {
@@ -248,25 +250,29 @@ public final class IntegerGene
 	 * the {@code IntegerGene} lies in the interval [min, max].
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new random {@code IntegerGene}
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerGene of(final int min, final int max) {
-		return of(nextInt(random(), min, max), min, max);
+		return of(random().nextInt(min, max), min, max);
 	}
 
 	/**
 	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
-	 * the {@code IntegerGene} lies in the interval [min, max].
+	 * the {@code IntegerGene} lies in the interval [min, max).
 	 *
 	 * @since 3.2
 	 *
 	 * @param range the integer range to use
 	 * @return a new random {@code IntegerGene}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(random(), range.min(), range.max()), range);
+		return of(random().nextInt(range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -274,48 +280,12 @@ public final class IntegerGene
 		final int max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
-		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<IntegerGene>ofLength(length)
+			.fill(() -> new IntegerGene(random.nextInt(min, max), min, max))
 			.toISeq();
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min and
-	 * max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random int
-	 *        value
-	 * @param min lower bound for generated integer
-	 * @param max upper bound for generated integer
-	 * @return a random integer greater than or equal to {@code min} and
-	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min > max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	static int nextInt(
-		final Random random,
-		final int min, final int max
-	) {
-		if (min > max) {
-			throw new IllegalArgumentException(format(
-				"Min >= max: %d >= %d", min, max
-			));
-		}
-
-		final int diff = max - min + 1;
-		int result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = random.nextInt();
-			} while (result < min || result > max);
-		} else {
-			result = random.nextInt(diff) + min;
-		}
-
-		return result;
 	}
 
 
@@ -323,10 +293,12 @@ public final class IntegerGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INTEGER_GENE, this);
+		return new SerialProxy(SerialProxy.INTEGER_GENE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

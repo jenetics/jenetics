@@ -41,20 +41,10 @@ import io.jenetics.util.Seq;
  */
 public class Game {
 
-	static final class Player implements Comparable<Player> {
-		final double value;
-
-		private Player(final double value) {
-			this.value = value;
-		}
-
+	record Player(double value) implements Comparable<Player> {
 		@Override
 		public int compareTo(final Player other) {
 			return Double.compare(value, other.value);
-		}
-
-		static Player of(final double value) {
-			return new Player(value);
 		}
 	}
 
@@ -62,7 +52,7 @@ public class Game {
 
 		final Codec<Player, DoubleGene> codec = Codec.of(
 			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> Player.of(gt.gene().doubleValue())
+			gt -> new Player(gt.gene().doubleValue())
 		);
 
 		final AtomicReference<ISeq<Phenotype<DoubleGene, Double>>>
@@ -79,7 +69,7 @@ public class Game {
 				final int index = RandomRegistry.random().nextInt(pop.size());
 				other = codec.decode(pop.get(index).genotype());
 			} else {
-				other = Player.of(0.5);
+				other = new Player(0.5);
 			}
 
 			return (double)player.compareTo(other);

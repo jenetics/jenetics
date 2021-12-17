@@ -64,7 +64,7 @@ public final class RepairingAlterer<
 				pop.set(i, repair(pop.get(i)));
 			}
 		}
-		return AltererResult.of(pop.toISeq(), result.alterations());
+		return new AltererResult<>(pop.toISeq(), result.alterations());
 	}
 
 	private Phenotype<G, C> repair(final Phenotype<G, C> pt) {

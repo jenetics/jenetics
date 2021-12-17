@@ -51,8 +51,8 @@ public final class SampleBuffer<T> implements Sampling<T> {
 
 	private volatile SampleList<T> _snapshot = null;
 
-	public SampleBuffer(final int size) {
-		_buffer = new RingBuffer(size);
+	public SampleBuffer(final int capacity) {
+		_buffer = new RingBuffer(capacity);
 	}
 
 	/**

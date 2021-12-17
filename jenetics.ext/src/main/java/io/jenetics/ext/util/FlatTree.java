@@ -46,10 +46,10 @@ import io.jenetics.util.ISeq;
  *     └─│─────┘ │   │
  *       └───────┴───┘
  * </pre>
- * The child nodes are always stored on the right side of the parent flattenedNodes. So
- * you have to read the tree from left to right. All children of a parent node
- * are stored continuously after the {@code childOffset} and are defined by the
- * sub-array {@code [childOffset, childOffset + childCount)}.
+ * The child nodes are always stored on the right side of the parent flattened
+ * Nodes. So you have to read the tree from left to right. All children of a
+ * parent node are stored continuously after the {@code childOffset} and are
+ * defined by the sub-array {@code [childOffset, childOffset + childCount)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9

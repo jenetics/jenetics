@@ -19,10 +19,7 @@
  */
 package io.jenetics.engine;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.time.Duration;
-import java.util.Random;
 
 import org.testng.annotations.Test;
 
@@ -39,9 +36,9 @@ public class EvolutionDurationsTest extends ObjectTester<EvolutionDurations> {
 	@Override
 	protected Factory<EvolutionDurations> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
-			return EvolutionDurations.of(
+			return new EvolutionDurations(
 				Duration.ofMillis(random.nextInt(1_000_000)),
 				Duration.ofMillis(random.nextInt(1_000_000)),
 				Duration.ofMillis(random.nextInt(1_000_000)),
@@ -51,11 +48,6 @@ public class EvolutionDurationsTest extends ObjectTester<EvolutionDurations> {
 				Duration.ofMillis(random.nextInt(1_000_000))
 			);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(EvolutionDurations.class).verify();
 	}
 
 }

@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -52,7 +52,7 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 	@Test
 	public void newInstance() {
-		final Random random = new ContinuousRandom(0);
+		final RandomGenerator random = new ContinuousRandom(0);
 		final AnyGene<Integer> gene = AnyGene.of(random::nextInt);
 
 		for (int i = 0; i < 100; ++i) {

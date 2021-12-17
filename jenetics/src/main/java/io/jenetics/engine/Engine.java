@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.concurrent.ForkJoinPool.commonPool;
 
-import java.time.Clock;
+import java.time.InstantSource;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
@@ -108,7 +108,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -131,7 +131,7 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final Executor _executor;
-	private final Clock _clock;
+	private final InstantSource _clock;
 	private final EvolutionInterceptor<G, C> _interceptor;
 
 
@@ -161,7 +161,7 @@ public final class Engine<
 		final Optimize optimize,
 		final EvolutionParams<G, C> evolutionParams,
 		final Executor executor,
-		final Clock clock,
+		final InstantSource clock,
 		final EvolutionInterceptor<G, C> interceptor
 	) {
 		_evaluator = requireNonNull(evaluator);
@@ -240,7 +240,7 @@ public final class Engine<
 		final CompletableFuture<ISeq<Phenotype<G, C>>> nextPopulation =
 			filteredSurvivors.thenCombineAsync(
 				filteredOffspring,
-				(s, o) -> ISeq.of(s.population.append(o.population)),
+				(s, o) -> ISeq.of(s.population().append(o.population())),
 				_executor
 			);
 
@@ -251,12 +251,12 @@ public final class Engine<
 		);
 
 		final int killCount =
-			filteredOffspring.join().killCount +
-			filteredSurvivors.join().killCount;
+			filteredOffspring.join().killCount() +
+			filteredSurvivors.join().killCount();
 
 		final int invalidCount =
-			filteredOffspring.join().invalidCount +
-			filteredSurvivors.join().invalidCount;
+			filteredOffspring.join().invalidCount() +
+			filteredSurvivors.join().invalidCount();
 
 		final int alterationCount = alteredOffspring.join().alterations();
 
@@ -521,12 +521,12 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the {@link Clock} the engine is using for measuring the execution
-	 * time.
+	 * Return the {@link InstantSource} the engine is using for measuring the
+	 * execution time.
 	 *
 	 * @return the clock used for measuring the execution time
 	 */
-	public Clock clock() {
+	public InstantSource clock() {
 		return _clock;
 	}
 
@@ -696,7 +696,7 @@ public final class Engine<
 
 		// Engine execution environment.
 		private Executor _executor = commonPool();
-		private Clock _clock = NanoClock.systemUTC();
+		private InstantSource _clock = NanoClock.systemUTC();
 
 		private EvolutionInterceptor<G, C> _interceptor =
 			EvolutionInterceptor.identity();
@@ -996,7 +996,7 @@ public final class Engine<
 		 * @param clock the clock used for calculating the execution durations
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> clock(final Clock clock) {
+		public Builder<G, C> clock(final InstantSource clock) {
 			_clock = requireNonNull(clock);
 			return this;
 		}
@@ -1063,14 +1063,14 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the {@link Clock} the engine is using for measuring the execution
-		 * time.
+		 * Return the {@link InstantSource} the engine is using for measuring
+		 * the execution time.
 		 *
 		 * @since 3.1
 		 *
 		 * @return the clock used for measuring the execution time
 		 */
-		public Clock clock() {
+		public InstantSource clock() {
 			return _clock;
 		}
 
@@ -1244,7 +1244,7 @@ public final class Engine<
 	 * @since 6.0
 	 */
 	@FunctionalInterface
-	public static interface Setup<
+	public interface Setup<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	> {

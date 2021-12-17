@@ -20,6 +20,7 @@
 package io.jenetics.tool.evaluation;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.BitGene;
 import io.jenetics.Mutator;
@@ -51,7 +52,7 @@ public final class engines {
 		return knapsack(populationSize, new LCG64ShiftRandom(10101));
 	}
 
-	public static Engine<BitGene, Double> knapsack(final Random random) {
+	public static Engine<BitGene, Double> knapsack(final RandomGenerator random) {
 		return knapsack(150, random);
 	}
 
@@ -68,7 +69,7 @@ public final class engines {
 	 */
 	public static Engine<BitGene, Double> knapsack(
 		final int populationSize,
-		final Random random
+		final RandomGenerator random
 	) {
 		// Search space fo 2^250 ~ 10^75.
 		final Knapsack knapsack = Knapsack.of(250, random);

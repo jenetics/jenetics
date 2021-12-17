@@ -62,6 +62,7 @@ public final class EvolutionStart<
 	implements Serializable
 {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<Phenotype<G, C>> _population;
@@ -117,9 +118,9 @@ public final class EvolutionStart<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionStart &&
-			_generation == ((EvolutionStart)obj)._generation &&
-			Objects.equals(_population, ((EvolutionStart)obj)._population);
+			obj instanceof EvolutionStart<?, ?> other &&
+			_generation == other._generation &&
+			Objects.equals(_population, other._population);
 	}
 
 	@Override
@@ -173,10 +174,12 @@ public final class EvolutionStart<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_START, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_START, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

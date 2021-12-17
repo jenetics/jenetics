@@ -86,7 +86,7 @@ public interface Alterer<
 	 * @return the new composed alterer
 	 */
 	default Alterer<G, C> compose(final Alterer<G, C> before) {
-		return of(before, this);
+		return of(requireNonNull(before), this);
 	}
 
 	/**
@@ -113,7 +113,7 @@ public interface Alterer<
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> AltererResult.of(p.asISeq())
+			? (p, g) -> new AltererResult<>(p.asISeq(), 0)
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

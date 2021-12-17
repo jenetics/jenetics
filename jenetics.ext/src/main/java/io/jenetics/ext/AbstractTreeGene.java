@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	implements TreeGene<A, G>, Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -189,10 +191,10 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AbstractTreeGene &&
-			Objects.equals(((AbstractTreeGene)obj)._allele, _allele) &&
-			((AbstractTreeGene)obj)._childOffset == _childOffset &&
-			((AbstractTreeGene)obj)._childCount == _childCount;
+			obj instanceof AbstractTreeGene<?, ?> other &&
+			Objects.equals(other._allele, _allele) &&
+			other._childOffset == _childOffset &&
+			other._childCount == _childCount;
 	}
 
 	@Override

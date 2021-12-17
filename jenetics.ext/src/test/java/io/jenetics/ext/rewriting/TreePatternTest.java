@@ -52,7 +52,7 @@ public class TreePatternTest {
 		final TreePattern<String> tp = TreePattern.compile(pattern);
 		final Map<Var<String>, Tree<String, ?>> vars = IntStream.range(0, trees.length)
 			.mapToObj(i -> new Object() {
-					final Var<String> name = Var.of(VARS[i]);
+					final Var<String> name = new Var<>(VARS[i]);
 					final Tree<String, ?> tree = TreeNode.parse(trees[i]);
 				})
 			.collect(Collectors.toMap(o -> o.name, o -> o.tree));
@@ -93,8 +93,8 @@ public class TreePatternTest {
 	public void expand() {
 		final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
 		final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
-		vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
-		vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+		vars.put(new Var<>("x"), TreeNode.parse("sin(x)"));
+		vars.put(new Var<>("y"), TreeNode.parse("sin(y)"));
 
 		final Tree<String, ?> tree = pattern.expand(vars);
 		Assert.assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
@@ -105,7 +105,7 @@ public class TreePatternTest {
 		final TreePattern<String> pattern = TreePattern.compile("3($x,$y,1)");
 		final TreePattern<Integer> ipattern = pattern.map(Integer::parseInt);
 
-		Assert.assertEquals(ipattern.pattern().root().value(), Val.of(3));
+		Assert.assertEquals(ipattern.pattern().root().value(), new Val<>(3));
 		Assert.assertEquals(ipattern.toString(), "3($x,$y,1)");
 	}
 

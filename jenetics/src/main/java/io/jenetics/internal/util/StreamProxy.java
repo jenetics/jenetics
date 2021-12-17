@@ -297,4 +297,14 @@ public abstract class StreamProxy<T> implements Stream<T> {
 		return _self.unordered();
 	}
 
+	@Override
+	public Stream<T> takeWhile(final Predicate<? super T> predicate) {
+		return _self.takeWhile(predicate);
+	}
+
+	@Override
+	public Stream<T> dropWhile(final Predicate<? super T> predicate) {
+		return _self.dropWhile(predicate);
+	}
+
 }

@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
@@ -28,10 +27,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Random;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -64,6 +62,7 @@ public final class DoubleGene
 		Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final double _allele;
@@ -114,27 +113,27 @@ public final class DoubleGene
 
 	@Override
 	public byte byteValue() {
-		return (byte) _allele;
+		return (byte)_allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short) _allele;
+		return (short)_allele;
 	}
 
 	@Override
 	public int intValue() {
-		return (int) _allele;
+		return (int)_allele;
 	}
 
 	@Override
 	public long longValue() {
-		return (long) _allele;
+		return (long)_allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float) _allele;
+		return (float)_allele;
 	}
 
 	@Override
@@ -159,7 +158,9 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return of(_allele + (that._allele - _allele)/2.0, _min, _max);
+		// (a - a/2) + b/2
+		// https://hal.archives-ouvertes.fr/hal-00576641v1/document
+		return of((_allele - _allele/2.0) + that._allele/2.0, _min, _max);
 	}
 
 	/**
@@ -185,7 +186,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance() {
-		return of(nextDouble(_min, _max, random()), _min, _max);
+		return of(random().nextDouble(_min, _max), _min, _max);
 	}
 
 	@Override
@@ -196,10 +197,10 @@ public final class DoubleGene
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof DoubleGene &&
-			Double.compare(((DoubleGene)obj)._allele, _allele) == 0 &&
-			Double.compare(((DoubleGene)obj)._min, _min) == 0 &&
-			Double.compare(((DoubleGene)obj)._max, _max) == 0;
+			obj instanceof DoubleGene other &&
+			Double.compare(other._allele, _allele) == 0 &&
+			Double.compare(other._min, _min) == 0 &&
+			Double.compare(other._max, _max) == 0;
 	}
 
 	@Override
@@ -255,9 +256,12 @@ public final class DoubleGene
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code DoubleGene} with the given parameter
+	 * @throws IllegalArgumentException if {@code min} is not finite,
+	 *         or {@code max} is not finite, or {@code min}
+	 *         is greater than or equal to {@code max}
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(min, max, random()), min, max);
+		return of(random().nextDouble(min, max), min, max);
 	}
 
 	/**
@@ -269,9 +273,12 @@ public final class DoubleGene
 	 * @param range the double range to use
 	 * @return a new {@code DoubleGene} with the given parameter
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min} is not finite,
+	 *         or {@code max} is not finite, or {@code min}
+	 *         is greater than or equal to {@code max}
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.min(), range.max(), random()), range);
+		return of(range.min(), range.max());
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -279,9 +286,11 @@ public final class DoubleGene
 		final double max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
-		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<DoubleGene>ofLength(length)
+			.fill(() -> new DoubleGene(random.nextDouble(min, max), min, max))
 			.toISeq();
 	}
 
@@ -290,10 +299,12 @@ public final class DoubleGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_GENE, this);
+		return new SerialProxy(SerialProxy.DOUBLE_GENE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

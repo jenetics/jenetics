@@ -23,10 +23,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Objects;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -37,7 +38,7 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class composes a given operation tree to a new operation. which can
- * serve as a sub <em>program</em> in an other operation tree.
+ * serve as a sub <em>program</em> in another operation tree.
  *
  * @param <T> the argument type of the operation
  *
@@ -47,6 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class Program<T> implements Op<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
@@ -128,9 +130,9 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program &&
-			Objects.equals(((Program)obj)._name, _name) &&
-			Objects.equals(((Program)obj)._tree, _tree);
+			obj instanceof Program<?> other &&
+			Objects.equals(other._name, _name) &&
+			Objects.equals(other._tree, _tree);
 	}
 
 	@Override
@@ -269,7 +271,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		return new Program<>(name, of(depth, operations, terminals, random));
 	}
@@ -319,7 +321,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (depth < 0) {
 			throw new IllegalArgumentException(
@@ -347,7 +349,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final TreeNode<Op<A>> tree,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		final Op<A> op = level == 0
 			? terminals.get(random.nextInt(terminals.size()))
@@ -408,7 +410,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
 		final int[] offsets,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (index < nodes.size()) {
 			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);

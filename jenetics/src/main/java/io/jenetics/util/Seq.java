@@ -557,7 +557,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * expects an sequence can be used as a range operation by passing an sub
 	 * sequence view instead of an whole sequence.
 	 *
-	 * @param start low end point (inclusive) of the sub array.
+	 * @param start lower end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
@@ -755,11 +755,10 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 		if (obj == seq) {
 			return true;
 		}
-		if (!(obj instanceof Seq)) {
+		if (!(obj instanceof final Seq<?> other)) {
 			return false;
 		}
 
-		final Seq<?> other = (Seq<?>)obj;
 		boolean equals = seq.length() == other.length();
 		for (int i = seq.length(); equals && --i >= 0;) {
 			final Object element = seq.get(i);

@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Clock;
 import java.time.Instant;
@@ -36,6 +37,7 @@ import java.time.ZoneOffset;
  */
 public final class NanoClock extends Clock implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
@@ -48,7 +50,7 @@ public final class NanoClock extends Clock implements Serializable {
 		new NanoClock(ZoneId.systemDefault());
 
 	/**
-	 * This constants holds the number of nano seconds of one second.
+	 * These constants hold the number of nanoseconds of one second.
 	 */
 	public static final long NANOS_PER_SECOND = 1_000_000_000;
 
@@ -98,8 +100,8 @@ public final class NanoClock extends Clock implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof NanoClock &&
-			((NanoClock)obj)._zone.equals(_zone);
+			obj instanceof NanoClock other &&
+			other._zone.equals(_zone);
 	}
 
 	@Override

@@ -53,13 +53,12 @@ final class CompletableFutureEvaluator<
 
 	@Override
 	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
-		@SuppressWarnings({"unchecked", "rawtypes"})
+		@SuppressWarnings("unchecked")
 		final CompletableFuture<C>[] evaluate =
 			(CompletableFuture<C>[])population.stream()
 				.filter(Phenotype::nonEvaluated)
 				.map(pt -> _fitness.apply(pt.genotype()))
-				.collect(ISeq.toISeq())
-				.toArray(new CompletableFuture[0]);
+				.toArray(CompletableFuture[]::new);
 
 		final ISeq<Phenotype<G, C>> evaluated = population.stream()
 			.filter(Phenotype::isEvaluated)

@@ -21,6 +21,7 @@ package io.jenetics.prog.regression;
 
 import static java.lang.String.format;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -43,6 +44,7 @@ final class SampleList<T>
 		Sampling<T>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final List<Sample<T>> _samples;
@@ -67,7 +69,7 @@ final class SampleList<T>
 		}
 
 		for (int i = 0; i < samples.size(); ++i) {
-			final Sample<T> sample = samples.get(0);
+			final var sample = samples.get(i);
 			if (arity != sample.arity()) {
 				throw new IllegalArgumentException(format(
 					"Expected arity %d, but got %d for sample index %d.",
@@ -105,7 +107,7 @@ final class SampleList<T>
 			.map(args -> Program.eval(program, args))
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 
-		return Result.of(calculated, _results);
+		return new Result<>(calculated, _results);
 	}
 
 	@Override

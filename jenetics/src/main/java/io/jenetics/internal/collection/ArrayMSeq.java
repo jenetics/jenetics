@@ -22,12 +22,13 @@ package io.jenetics.internal.collection;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.io.Serial;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -38,6 +39,8 @@ import io.jenetics.util.MSeq;
  * @version 3.4
  */
 public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public ArrayMSeq(final Array<T> array) {
@@ -105,7 +108,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	}
 
 	@Override
-	public MSeq<T> shuffle(final Random random) {
+	public MSeq<T> shuffle(final RandomGenerator random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}
@@ -120,7 +123,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void swap(int start, int end, MSeq<T> other, int otherStart) {
 		checkIndex(start, end, otherStart, other.length());
 

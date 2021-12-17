@@ -112,8 +112,8 @@ public final class Params<T> implements Iterable<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Params &&
-			_params.equals(((Params)obj)._params);
+		return obj instanceof Params<?> other &&
+			_params.equals(other._params);
 	}
 
 	@Override

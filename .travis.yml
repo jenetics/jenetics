@@ -1,8 +1,0 @@
-sudo: false
-language: java
-jdk:
-  - openjdk11
-  - openjdk15
-
-script:
-  - travis_wait 20 ./gradlew check --info --stacktrace -PexcludeGroups=statistics

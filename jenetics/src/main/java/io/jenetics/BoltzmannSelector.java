@@ -32,13 +32,13 @@ import io.jenetics.util.Seq;
  * In this {@code Selector}, the probability for selection is defined as.
  * </p>
  * <p><img
- *        src="doc-files/boltzmann-formula1.gif"
+ *        src="./doc-files/boltzmann-formula1.svg"
  *        alt="P(i)=\frac{\textup{e}^{b\cdot f_i}}{Z}"
  *     >
  * </p>
  * where <i>b</i> controls the selection intensity, and
  * <p><img
- *        src="doc-files/boltzmann-formula2.gif"
+ *        src="doc-files/boltzmann-formula2.svg"
  *        alt="Z=\sum_{j=1}^{n}\textrm{e}^{f_j}"
  *     >.
  * </p>

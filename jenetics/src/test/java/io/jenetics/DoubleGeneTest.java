@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -27,6 +28,8 @@ import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -67,7 +70,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void mean() {
-		final double min = -Double.MAX_VALUE;
+		final double min = 0;
 		final double max = Double.MAX_VALUE;
 		final DoubleGene template = DoubleGene.of(min, max);
 
@@ -84,6 +87,22 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			assertEquals(c.max().doubleValue(), max);
 			assertEquals(c.allele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
+	}
+
+	@Test
+	public void meanOverflow() {
+		final var a = Double.MIN_VALUE*1;
+		final var b = Double.MIN_VALUE*10;
+		final var mean = new BigDecimal(a)
+			.add(new BigDecimal(b))
+			.divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP)
+			.doubleValue();
+
+		final var g1 = DoubleGene.of(a, Double.MIN_VALUE, 0);
+		final var g2 = DoubleGene.of(b, Double.MIN_VALUE, 0);
+		final var g3 = g1.mean(g2);
+
+		assertThat(g3.allele()).isEqualTo(mean);
 	}
 
 	@Test
@@ -160,16 +179,13 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			{DoubleGene.of(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE), false},
 			{DoubleGene.of(Double.MAX_VALUE, -Double.MAX_VALUE, Double.MAX_VALUE), false},
 			{DoubleGene.of(0.5, 1, 0), false},
-			{DoubleGene.of(-Double.MAX_VALUE, Double.MAX_VALUE), true},
+			{DoubleGene.of(0, Double.MAX_VALUE), true},
 			{DoubleGene.of(0.5, Double.NaN, 1), false},
 			{DoubleGene.of(0.5, Double.POSITIVE_INFINITY, 1), false},
 			{DoubleGene.of(0.5, Double.NEGATIVE_INFINITY, 1), false},
 			{DoubleGene.of(0.5, 0, Double.NaN), false},
 			{DoubleGene.of(0.5, 0, Double.POSITIVE_INFINITY), false},
-			{DoubleGene.of(0.5, 0, Double.NEGATIVE_INFINITY), false},
-			{DoubleGene.of(0.5, Double.NaN), false},
-			{DoubleGene.of(0.5, Double.POSITIVE_INFINITY), false},
-			{DoubleGene.of(0.5, Double.NaN), false}
+			{DoubleGene.of(0.5, 0, Double.NEGATIVE_INFINITY), false}
 		};
 	}
 

@@ -23,7 +23,7 @@ import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
@@ -32,7 +32,7 @@ import java.util.Random;
  * the allowed gene range) will be
  * <p>
  * <img
- *     src="doc-files/gaussian-mutator-var.gif"
+ *     src="doc-files/gaussian-mutator-var.svg"
  *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
  * >
  * </p>
@@ -59,11 +59,11 @@ public class GaussianMutator<
 	}
 
 	@Override
-	protected G mutate(final G gene, final Random random) {
+	protected G mutate(final G gene, final RandomGenerator random) {
 		return gene.isValid() ? mutate0(gene, random) : gene;
 	}
 
-	private G mutate0(final G gene, final Random random) {
+	private G mutate0(final G gene, final RandomGenerator random) {
 		final double min = gene.min().doubleValue();
 		final double max = gene.max().doubleValue();
 		final double std = (max - min)*0.25;

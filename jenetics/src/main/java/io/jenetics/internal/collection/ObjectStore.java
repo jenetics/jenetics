@@ -42,6 +42,7 @@ import io.jenetics.internal.collection.Array.Store;
  */
 public final class ObjectStore<T> implements Store<T>, Serializable {
 
+	@java.io.Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Object[] _array;
@@ -99,10 +100,12 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.OBJECT_STORE, this);
+		return new SerialProxy(SerialProxy.OBJECT_STORE, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

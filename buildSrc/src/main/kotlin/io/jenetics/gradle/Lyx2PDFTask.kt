@@ -19,16 +19,15 @@
  */
 package io.jenetics.gradle
 
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskExecutionException
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.TaskExecutionException
 
 /**
  * This tasks converts a lyx document into a PDF.

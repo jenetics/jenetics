@@ -32,7 +32,7 @@ import io.jenetics.util.Seq;
  * their rank.
  * </p>
  * <p><img
- *        src="doc-files/linear-rank-selector.gif"
+ *        src="doc-files/linear-rank-selector.svg"
  *        alt="P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)"
  *     >
  * </p>

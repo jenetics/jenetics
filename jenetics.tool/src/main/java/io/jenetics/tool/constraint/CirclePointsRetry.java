@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
@@ -20,7 +20,7 @@ public class CirclePointsRetry {
 		final Path data = Paths.get(base, "circle_points_retry.dat");
 		final Path output = Paths.get(base, "circle_points_retry.svg");
 
-		final Random random = new LCG64ShiftRandom();
+		final var random = new LCG64ShiftRandom();
 
 		final ISeq<double[]> points = Stream.generate(() -> point(random))
 			.filter(CirclePointsRetry::isInCircle)
@@ -41,7 +41,7 @@ public class CirclePointsRetry {
 		gnuplot.create(data, output);
 	}
 
-	private static double[] point(final Random random) {
+	private static double[] point(final RandomGenerator random) {
 		final double x = 1 - random.nextDouble()*2;
 		final double y = 1 - random.nextDouble()*2;
 

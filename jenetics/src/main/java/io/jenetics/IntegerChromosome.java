@@ -30,17 +30,15 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 32 bit integer numbers.
+ * Numeric chromosome implementation which holds 32-bit integer numbers.
  *
  * @see IntegerGene
  *
@@ -49,14 +47,15 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 6.1
+ * @version 7.0W
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
-			NumericChromosome<Integer, IntegerGene>,
-			Serializable
+		NumericChromosome<Integer, IntegerGene>,
+		Serializable
 {
+	@java.io.Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -140,15 +139,15 @@ public class IntegerChromosome
 	}
 
 	/**
-	 * Returns an int array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns an int array containing all the elements in this chromosome in
+	 * proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
-	 *        be stored, if it is big enough; otherwise, a new array is
+	 * @param array the array into which the elements of these chromosomes are
+	 *        to be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
@@ -163,8 +162,8 @@ public class IntegerChromosome
 	}
 
 	/**
-	 * Returns an int array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns an int array containing all the elements in this chromosome in
+	 * proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -215,13 +214,15 @@ public class IntegerChromosome
 	 * @since 4.0
 	 *
 	 * @param min the min value of the {@link IntegerGene}s (inclusively).
-	 * @param max the max value of the {@link IntegerGene}s (inclusively).
+	 * @param max the max value of the {@link IntegerGene}s (exclusively).
 	 * @param lengthRange the allowed length range of the chromosome.
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
 	 *         or maximum of the range is smaller or equal zero or the given
 	 *         range size is zero.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
 	 */
@@ -238,10 +239,12 @@ public class IntegerChromosome
 	 * Create a new random {@code IntegerChromosome}.
 	 *
 	 * @param min the min value of the {@link IntegerGene}s (inclusively).
-	 * @param max the max value of the {@link IntegerGene}s (inclusively).
+	 * @param max the max value of the {@link IntegerGene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 * @return a new random {@code IntegerChromosome}
 	 * @throws IllegalArgumentException if the length is smaller than one
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerChromosome of(
 		final int min,
@@ -265,6 +268,8 @@ public class IntegerChromosome
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerChromosome of(
 		final IntRange range,
@@ -283,6 +288,8 @@ public class IntegerChromosome
 	 * @return a new random {@code IntegerChromosome}
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 * @throws IllegalArgumentException if the length is smaller than one
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerChromosome of(final IntRange range, final int length) {
 		return of(range.min(), range.max(), length);
@@ -292,8 +299,10 @@ public class IntegerChromosome
 	 * Create a new random {@code IntegerChromosome} of length one.
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
-	 * @param max the maximal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
 	 * @return a new random {@code IntegerChromosome} of length one
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return of(min, max, 1);
@@ -307,6 +316,8 @@ public class IntegerChromosome
 	 * @param range the integer range of the chromosome.
 	 * @return a new random {@code IntegerChromosome} of length one
 	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static IntegerChromosome of(final IntRange range) {
 		return of(range.min(), range.max(), 1);
@@ -318,10 +329,12 @@ public class IntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@java.io.Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INTEGER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.INTEGER_CHROMOSOME, this);
 	}
 
+	@java.io.Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

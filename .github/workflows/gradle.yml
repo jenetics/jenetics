@@ -1,0 +1,32 @@
+name: Jenetics Build
+
+on:
+  push:
+    branches:
+      - master
+      - releases/*
+      - r7.0.0
+      - issues/*
+  pull_request:
+    branches:
+      - master
+      - releases/*
+      - r7.0.0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        java-version: [ 17.0.1, 17, 18-ea  ]
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK ${{ matrix.java-version }} on ${{ matrix.os }}
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'zulu'
+    - name: Build with Gradle
+      run: ./gradlew build --stacktrace --info

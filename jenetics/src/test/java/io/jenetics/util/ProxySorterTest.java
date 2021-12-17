@@ -19,12 +19,17 @@
  */
 package io.jenetics.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.stream.IntStream;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.ProxySorter.Comparator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,7 +47,7 @@ public class ProxySorterTest {
 			(a, i, j) -> Integer.compare(a[i], a[j])
 		);
 
-		Assert.assertEquals(sorted(array, indexes), expected(array));
+		assertThat(indexes).isEqualTo(expected(array));
 	}
 
 	@Test(dataProvider = "arrayLengths")
@@ -53,7 +58,8 @@ public class ProxySorterTest {
 			array, array.length,
 			(a, i, j) -> Integer.compare(a[i], a[j])
 		);
-		Assert.assertEquals(sorted(array, indexes), expected(array));
+
+		assertThat(indexes).isEqualTo(expected(array));
 	}
 
 	/* *************************************************************************
@@ -63,7 +69,7 @@ public class ProxySorterTest {
 	@Test(dataProvider = "arrays")
 	public void timSortArrays(final int[] array) {
 		final int[] indexes = ProxySorter.sort(array);
-		Assert.assertEquals(sorted(array, indexes), expected(array));
+		assertThat(indexes).isEqualTo(expected(array));
 	}
 
 	@Test(dataProvider = "arrayLengths")
@@ -71,9 +77,38 @@ public class ProxySorterTest {
 		final int[] array = new Random().ints(size).toArray();
 
 		final int[] indexes = ProxySorter.sort(array);
-		Assert.assertEquals(sorted(array, indexes), expected(array));
+		assertThat(indexes)
+			.withFailMessage(
+				"A: %s, B: %s",
+				Arrays.toString(sorted(array, indexes)),
+				Arrays.toString(sorted(array, expected(array)))
+			)
+			.isEqualTo(expected(array));
 	}
 
+	@Test(dataProvider = "arrayRanges")
+	public void timSortInsertionSortRange(
+		final int size,
+		final int from,
+		final int to
+	) {
+		final int[] array = new Random().ints(size).toArray();
+
+		final int[] indexes = ProxySorter.sort(array, from, to);
+		assertThat(indexes).isEqualTo(expected(array, from, to));
+	}
+
+	@Test(invocationCount = 20)
+	public void randomSortData() {
+		final var random = RandomGenerator.getDefault();
+
+		final int from = random.nextInt(50);
+		final int to = random.nextInt(50, 100);
+		final int[] array = random.ints(1000, 0, 10_000).toArray();
+
+		final int[] indexes = ProxySorter.sort(array, from, to);
+		assertThat(indexes).isEqualTo(expected(array, from, to));
+	}
 
 	@DataProvider(name = "arrays")
 	public Object[][] arrays() {
@@ -91,7 +126,13 @@ public class ProxySorterTest {
 			{1},
 			{2},
 			{3},
+			{4},
 			{5},
+			{6},
+			{7},
+			{8},
+			{9},
+			{10},
 			{11},
 			{32},
 			{33},
@@ -100,17 +141,68 @@ public class ProxySorterTest {
 		};
 	}
 
-	private static int[] sorted(final int[] array, final int[] indexes) {
-		final int[] result = array.clone();
-		for (int i = 0; i < array.length; ++i) {
-			result[i] = array[indexes[i]];
+	@DataProvider(name = "arrayRanges")
+	public Object[][] arrayRanges() {
+		return new Object[][] {
+			{3, 1, 2},
+			{3, 1, 1},
+			{5, 0, 2},
+			{5, 1, 2},
+			{11, 0, 5},
+			{11, 5, 9},
+			{11, 5, 11},
+			{33, 0, 7},
+			{33, 7, 25},
+			{33, 0, 33},
+			{33, 7, 33},
+			{1_000, 0, 1_000},
+			{1_000, 0, 600},
+			{1_000, 500, 600},
+			{1_000, 500, 1_000}
+		};
+	}
+
+	// Naive proxy sort implementation.
+	private static <T> int[] sort(
+		final T array,
+		final int from,
+		final int to,
+		final Comparator<? super T> comparator
+	) {
+		record Proxy<T>(int index, T array, Comparator<? super T> comparator)
+			implements Comparable<Proxy<T>>
+		{
+			@Override
+			public int compareTo(final Proxy<T> o) {
+				return comparator.compare(array, index, o.index);
+			}
 		}
-		return result;
+
+		final var proxies = IntStream.range(from, to)
+			.mapToObj(i -> new Proxy<>(i, array, comparator))
+			.sorted();
+
+		return proxies
+			.mapToInt(Proxy::index)
+			.toArray();
+	}
+
+	private static int[] expected(final int[] array, final int from, final int to) {
+		return sort(array, from, to, (a, i, j) -> Integer.compare(a[i], a[j]));
 	}
 
 	private static int[] expected(final int[] array) {
-		final int[] result = array.clone();
-		Arrays.sort(result);
+		return expected(array,0, array.length);
+	}
+
+	private static int[] sorted(
+		final int[] array,
+		final int[] indexes
+	) {
+		final int[] result = new int[indexes.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = array[indexes[i]];
+		}
 		return result;
 	}
 

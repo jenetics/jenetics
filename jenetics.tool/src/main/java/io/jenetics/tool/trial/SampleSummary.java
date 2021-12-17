@@ -87,8 +87,8 @@ public final class SampleSummary implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof SampleSummary &&
-			_points.equals(((SampleSummary)obj)._points);
+		return obj instanceof SampleSummary other &&
+			_points.equals(other._points);
 	}
 
 	/**

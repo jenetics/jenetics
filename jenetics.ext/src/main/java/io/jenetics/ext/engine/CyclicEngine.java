@@ -24,7 +24,6 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
@@ -114,7 +113,7 @@ public final class CyclicEngine<
 	 * {@code engines}.
 	 *
 	 * @param engines the evolution engines which are part of the cycling engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	public CyclicEngine(
@@ -133,7 +132,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);
@@ -166,7 +165,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, init, other, first))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);

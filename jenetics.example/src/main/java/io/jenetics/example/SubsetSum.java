@@ -21,8 +21,8 @@ package io.jenetics.example;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.EnumGene;
 import io.jenetics.Mutator;
@@ -68,7 +68,7 @@ public class SubsetSum
 		return Codecs.ofSubSet(_basicSet, _size);
 	}
 
-	public static SubsetSum of(final int n, final int k, final Random random) {
+	public static SubsetSum of(final int n, final int k, final RandomGenerator random) {
 		return new SubsetSum(
 			random.doubles()
 				.limit(n)

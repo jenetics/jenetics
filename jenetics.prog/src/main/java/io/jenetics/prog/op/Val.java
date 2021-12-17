@@ -19,6 +19,9 @@
  */
 package io.jenetics.prog.op;
 
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Float.floatToIntBits;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -32,10 +35,13 @@ import java.util.Objects;
  * @param <T> the type of the constant value
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 5.0
  */
-public abstract class Val<T> implements Op<T> {
+public abstract sealed class Val<T>
+	implements Op<T>
+	permits Const, EphemeralConst
+{
 
 	private final String _name;
 
@@ -84,17 +90,17 @@ public abstract class Val<T> implements Op<T> {
 	@Override
 	public final boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Val &&
-			equals(((Val)obj).value(), value());
+			obj instanceof Val<?> other &&
+			equals(other.value(), value());
 	}
 
 	private static boolean equals(final Object a, final Object b) {
-		if (a instanceof Double && b instanceof Double) {
-			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
-		} else if (a instanceof Float && b instanceof Float) {
-			return ((Float)a).floatValue() == ((Float)b).floatValue();
-		} else if (a instanceof BigDecimal && b instanceof BigDecimal) {
-			return ((BigDecimal)a).compareTo((BigDecimal)b) == 0;
+		if (a instanceof Double aa && b instanceof Double bb) {
+			return doubleToLongBits(aa) == doubleToLongBits(bb);
+		} else if (a instanceof Float aa && b instanceof Float bb) {
+			return floatToIntBits(aa) == floatToIntBits(bb);
+		} else if (a instanceof BigDecimal aa && b instanceof BigDecimal bb) {
+			return aa.compareTo(bb) == 0;
 		}
 
 		return Objects.equals(a, b);

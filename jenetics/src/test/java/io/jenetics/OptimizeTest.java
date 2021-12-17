@@ -19,6 +19,8 @@
  */
 package io.jenetics;
 
+import static java.util.Comparator.nullsFirst;
+
 import java.util.Comparator;
 
 import org.testng.Assert;
@@ -67,8 +69,8 @@ public class OptimizeTest {
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
 		Assert.assertTrue(Optimize.MAXIMUM.compare(pt1, pt2) < 0);
-		Assert.assertTrue(Optimize.MINIMUM.compare(pt3, pt2) == 0);
-		Assert.assertTrue(Optimize.MAXIMUM.compare(pt3, pt2) == 0);
+		Assert.assertEquals(Optimize.MINIMUM.compare(pt3, pt2), 0);
+		Assert.assertEquals(Optimize.MAXIMUM.compare(pt3, pt2), 0);
 	}
 
 	@Test
@@ -109,6 +111,76 @@ public class OptimizeTest {
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);
 		Assert.assertSame(Optimize.MAXIMUM.worst(pt1, pt2), pt1);
 		Assert.assertSame(Optimize.MINIMUM.worst(pt2, pt3), pt2);
+	}
+
+	@Test
+	public void nullCompareMaximum() {
+		final Comparator<Integer> comparator = nullsFirst(Optimize.MAXIMUM::compare);
+
+		Assert.assertEquals(comparator.compare(null, null), 0);
+		Assert.assertEquals(comparator.compare(null, 4), -1);
+		Assert.assertEquals(comparator.compare(4, null), 1);
+
+		Assert.assertEquals(comparator.compare(4, 2), 1);
+		Assert.assertEquals(comparator.compare(4, 7), -1);
+		Assert.assertEquals(comparator.compare(4, 4), 0);
+	}
+
+	@Test
+	public void nullCompareMinimum() {
+		final Comparator<Integer> comparator = nullsFirst(Optimize.MINIMUM::compare);
+
+		Assert.assertEquals(comparator.compare(null, null), 0);
+		Assert.assertEquals(comparator.compare(null, 4), -1);
+		Assert.assertEquals(comparator.compare(4, null), 1);
+
+		Assert.assertEquals(comparator.compare(4, 2), -1);
+		Assert.assertEquals(comparator.compare(4, 7), 1);
+		Assert.assertEquals(comparator.compare(4, 4), 0);
+	}
+
+	@Test
+	public void nullBestMaximum() {
+		Assert.assertNull(Optimize.MAXIMUM.<Integer>best().apply(null, null));
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>best().apply(null, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>best().apply(6, null), (Integer)6);
+
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>best().apply(4, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>best().apply(6, 7), (Integer)7);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>best().apply(16, 7), (Integer)16);
+	}
+
+	@Test
+	public void nullBestMinimum() {
+		Assert.assertNull(Optimize.MINIMUM.<Integer>best().apply(null, null));
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>best().apply(null, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>best().apply(6, null), (Integer)6);
+
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>best().apply(4, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>best().apply(6, 7), (Integer)6);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>best().apply(16, 7), (Integer)7);
+	}
+
+	@Test
+	public void nullWorstMaximum() {
+		Assert.assertNull(Optimize.MAXIMUM.<Integer>worst().apply(null, null));
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(null, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(6, null), (Integer)6);
+
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(4, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(6, 7), (Integer)6);
+		Assert.assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(16, 7), (Integer)7);
+	}
+
+	@Test
+	public void nullWorstMinimum() {
+		Assert.assertNull(Optimize.MINIMUM.<Integer>worst().apply(null, null));
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>worst().apply(null, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>worst().apply(6, null), (Integer)6);
+
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>worst().apply(4, 4), (Integer)4);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>worst().apply(6, 7), (Integer)7);
+		Assert.assertEquals(Optimize.MINIMUM.<Integer>worst().apply(16, 7), (Integer)16);
 	}
 
 }
