@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        java-version: [ 17.0.1, 17, 18-ea  ]
+        java-version: [ 17, 18-ea  ]
     steps:
     - uses: actions/checkout@v2
 
