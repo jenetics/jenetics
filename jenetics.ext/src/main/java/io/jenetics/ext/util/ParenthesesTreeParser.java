@@ -43,7 +43,7 @@ final class ParenthesesTreeParser {
 	/**
 	 * Represents a parentheses tree string token.
 	 */
-	final static record Token(String seq, int pos){}
+	record Token(String seq, int pos){}
 
 	/**
 	 * Tokenize the given parentheses string.

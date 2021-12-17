@@ -27,6 +27,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,7 +39,7 @@ import java.util.Comparator;
  */
 final class SimpleLongVec implements Vec<long[]>, Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long[] _data;
@@ -103,12 +104,12 @@ final class SimpleLongVec implements Vec<long[]>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.SIMPLE_LONG_VEC, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
