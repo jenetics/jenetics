@@ -20,7 +20,7 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
+ * @since 7.0
  */
 @SuppressWarnings("module")
 module io.jenetics.base {
