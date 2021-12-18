@@ -32,6 +32,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.BitSet;
@@ -67,7 +68,7 @@ public final class BitChromosome extends Number
 		Comparable<BitChromosome>,
 		Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 
@@ -599,12 +600,12 @@ public final class BitChromosome extends Number
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.BIT_CHROMOSOME, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -42,7 +42,7 @@ import java.util.function.Supplier;
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final transient Supplier<T> _supplier;

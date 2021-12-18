@@ -28,10 +28,9 @@ import static io.jenetics.internal.util.SerialIO.writeLong;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Duration;
 
@@ -69,7 +68,7 @@ public final record EvolutionDurations(
 		Comparable<EvolutionDurations>,
 		Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -151,18 +150,6 @@ public final record EvolutionDurations(
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-
-	@java.io.Serial
-	private Object writeReplace() {
-		return new SerialProxy(SerialProxy.EVOLUTION_DURATIONS, this);
-	}
-
-	@java.io.Serial
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
 
 	void write(final ObjectOutput out) throws IOException {
 		writeDuration(offspringSelectionDuration, out);

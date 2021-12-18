@@ -29,6 +29,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.stream.LongStream;
 
@@ -44,7 +45,7 @@ import java.util.stream.LongStream;
  */
 public final /*record*/ class LongRange implements Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _min;
@@ -150,12 +151,12 @@ public final /*record*/ class LongRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.LONG_RANGE, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

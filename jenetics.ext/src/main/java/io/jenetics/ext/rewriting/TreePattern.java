@@ -494,7 +494,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @param value the underlying pattern value
 	 */
 	public record Val<V>(V value) implements Decl<V>, Serializable {
-		@java.io.Serial
+		@Serial
 		private static final long serialVersionUID = 2L;
 
 		@Override

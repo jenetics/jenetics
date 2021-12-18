@@ -30,6 +30,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -1069,7 +1070,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 */
 	final class Path implements Serializable {
 
-		@java.io.Serial
+		@Serial
 		private static final long serialVersionUID = 1L;
 
 		private final int[] _path;
@@ -1166,12 +1167,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		 *  Java object serialization
 		 * ********************************************************************/
 
-		@java.io.Serial
+		@Serial
 		private Object writeReplace() {
 			return new SerialProxy(SerialProxy.TREE_PATH, this);
 		}
 
-		@java.io.Serial
+		@Serial
 		private void readObject(final ObjectInputStream stream)
 			throws InvalidObjectException
 		{

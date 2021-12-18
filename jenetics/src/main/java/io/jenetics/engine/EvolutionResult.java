@@ -33,6 +33,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
@@ -82,7 +83,7 @@ public final class EvolutionResult<
 >
 	implements Comparable<EvolutionResult<G, C>>, Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Optimize _optimize;
@@ -815,12 +816,12 @@ public final class EvolutionResult<
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.EVOLUTION_RESULT, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

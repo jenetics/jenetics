@@ -29,6 +29,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -52,7 +53,7 @@ public class BigIntegerChromosome
 		Serializable
 {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final BigInteger _min;
@@ -169,12 +170,12 @@ public class BigIntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.BIG_INTEGER_CHROMOSOME, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
