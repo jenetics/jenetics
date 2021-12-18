@@ -46,7 +46,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 7.0
  */
-public final record IntSummary(
+public record IntSummary(
 	long count,
 	int min,
 	int max,

@@ -48,7 +48,7 @@ import io.jenetics.internal.math.DoubleAdder;
  * @since 3.0
  * @version 7.0
  */
-public final record DoubleSummary(
+public record DoubleSummary(
 	long count,
 	double min,
 	double max,
