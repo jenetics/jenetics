@@ -27,7 +27,7 @@ import java.util.Objects;
 
 /**
  * This is the <em>sealed</em> base class for unmodifiable values. The only
- * sub-classes of this type are {@link Const} and {@link EphemeralConst}.
+ * subclasses of this type are {@link Const} and {@link EphemeralConst}.
  *
  * @see Const
  * @see EphemeralConst
@@ -62,7 +62,7 @@ public abstract sealed class Val<T>
 	public abstract T value();
 
 	/**
-	 * The apply method will always returns the {@link #value()}.
+	 * The apply method will always return the {@link #value()}.
 	 *
 	 * @param value the input parameters will be ignored
 	 * @return always {@link #value()}
