@@ -37,7 +37,6 @@ final class IntIterator<T> implements Iterator<T> {
 	private final IntFunction<? extends T> _mapper;
 
 	private int _cursor = 0;
-	private int _lastElement = -1;
 
 	IntIterator(final int length, final IntFunction<? extends T> mapper) {
 		_length = length;
@@ -57,6 +56,6 @@ final class IntIterator<T> implements Iterator<T> {
 		}
 
 		_cursor = i + 1;
-		return _mapper.apply(_lastElement = i);
+		return _mapper.apply(i);
 	}
 }
