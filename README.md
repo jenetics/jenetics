@@ -128,8 +128,6 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 * <a href="https://spear-project.eu/"><b>SPEAR</b>:</a> SPEAR (Smart Prognosis of Energy with Allocation of Resources) created an extendable platform for energy and efficiency optimizations of production systems.
 * <a href="https://renaissance.dev/"><b>Renaissance Suite</b>:</a> Renaissance is a modern, open, and diversified benchmark suite for the JVM, aimed at testing JIT compilers, garbage collectors, profilers, analyzers and other tools.
-* <a href="https://www.chartsy.one/"><b>Chartsy|One</b>:</a> Chartsy|One is a Netbeans based tool for stock market investors and traders.
-* <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
 * <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
 
 ## Blogs and articles
