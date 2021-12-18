@@ -430,7 +430,7 @@ public final class TreeNode<T>
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
 		final TreeNode<B> target = TreeNode.of(mapper.apply(value()));
-		fill(this, target, mapper);
+		copy(this, target, mapper);
 		return target;
 	}
 
@@ -493,11 +493,11 @@ public final class TreeNode<T>
 		final Function<? super T, ? extends B> mapper
 	) {
 		final TreeNode<B> target = of(mapper.apply(tree.value()));
-		fill(tree, target, mapper);
+		copy(tree, target, mapper);
 		return target;
 	}
 
-	private static <T, B> void fill(
+	private static <T, B> void copy(
 		final Tree<? extends T, ?> source,
 		final TreeNode<B> target,
 		final Function<? super T, ? extends B> mapper
@@ -505,7 +505,7 @@ public final class TreeNode<T>
 		source.childStream().forEachOrdered(child -> {
 			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
-			fill(child, targetChild, mapper);
+			copy(child, targetChild, mapper);
 		});
 	}
 
