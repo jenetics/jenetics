@@ -55,7 +55,7 @@ import java.time.Duration;
  * @since 3.0
  * @version 7.0
  */
-public final record EvolutionDurations(
+public record EvolutionDurations(
 	Duration offspringSelectionDuration,
 	Duration survivorsSelectionDuration,
 	Duration offspringAlterDuration,
