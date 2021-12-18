@@ -80,9 +80,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private static <G extends Gene<?, G>> Genotype<G>
 	toGenotype(final Factory<Genotype<G>> factory) {
-		return factory instanceof Genotype<?>
-			? (Genotype<G>)factory
-			: factory.newInstance();
+		return factory instanceof Genotype<G> gt ? gt : factory.newInstance();
 	}
 
 	@Override
