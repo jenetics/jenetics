@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -112,7 +113,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TreePattern<V> implements Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	// Primary state of the tree pattern.
@@ -283,7 +284,7 @@ public final class TreePattern<V> implements Serializable {
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
-			n -> n instanceof Val ? ((Val<V>)n).value() : null
+			n -> n instanceof Val<V> val ? val.value() : null
 		);
 
 		paths.forEach((path, decl) -> {
@@ -359,12 +360,12 @@ public final class TreePattern<V> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.TREE_PATTERN, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
@@ -440,10 +441,10 @@ public final class TreePattern<V> implements Serializable {
 	 *
 	 @param <V> the node type the tree-pattern is working on
 	 */
-	public static final record Var<V>(String name)
+	public record Var<V>(String name)
 		implements Decl<V>, Comparable<Var<V>>, Serializable
 	{
-		@java.io.Serial
+		@Serial
 		private static final long serialVersionUID = 2L;
 
 		/**
@@ -485,15 +486,15 @@ public final class TreePattern<V> implements Serializable {
 
 	/**
 	 * This class represents a constant pattern value, which can be part of a
-	 * whole sub-tree.
+	 * whole subtree.
 	 *
 	 * @see Var
 	 *
 	 * @param <V> the node value type
 	 * @param value the underlying pattern value
 	 */
-	public static final record Val<V>(V value) implements Decl<V>, Serializable {
-		@java.io.Serial
+	public record Val<V>(V value) implements Decl<V>, Serializable {
+		@Serial
 		private static final long serialVersionUID = 2L;
 
 		@Override

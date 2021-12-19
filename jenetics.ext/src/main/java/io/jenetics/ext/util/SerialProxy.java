@@ -71,8 +71,8 @@ final class SerialProxy implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case TREE_NODE -> ((TreeNode)_object).write(out);
-			case FLAT_TREE_NODE -> ((FlatTreeNode)_object).write(out);
+			case TREE_NODE -> ((TreeNode<?>)_object).write(out);
+			case FLAT_TREE_NODE -> ((FlatTreeNode<?>)_object).write(out);
 			case TREE_PATH -> ((Tree.Path)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}

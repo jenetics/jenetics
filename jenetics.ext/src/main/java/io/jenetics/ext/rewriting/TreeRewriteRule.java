@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
@@ -67,7 +68,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final TreePattern<V> _left;
@@ -238,12 +239,12 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.TREE_REWRITE_RULE, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

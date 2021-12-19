@@ -23,11 +23,12 @@ import static java.lang.Double.doubleToLongBits;
 import static java.lang.Float.floatToIntBits;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
  * This is the <em>sealed</em> base class for unmodifiable values. The only
- * sub-classes of this type are {@link Const} and {@link EphemeralConst}.
+ * subclasses of this type are {@link Const} and {@link EphemeralConst}.
  *
  * @see Const
  * @see EphemeralConst
@@ -62,7 +63,7 @@ public abstract sealed class Val<T>
 	public abstract T value();
 
 	/**
-	 * The apply method will always returns the {@link #value()}.
+	 * The apply method will always return the {@link #value()}.
 	 *
 	 * @param value the input parameters will be ignored
 	 * @return always {@link #value()}
@@ -100,6 +101,8 @@ public abstract sealed class Val<T>
 		} else if (a instanceof Float aa && b instanceof Float bb) {
 			return floatToIntBits(aa) == floatToIntBits(bb);
 		} else if (a instanceof BigDecimal aa && b instanceof BigDecimal bb) {
+			return aa.compareTo(bb) == 0;
+		} else if (a instanceof BigInteger aa && b instanceof BigInteger bb) {
 			return aa.compareTo(bb) == 0;
 		}
 

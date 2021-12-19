@@ -17,24 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
-
-import io.jenetics.Gene;
-import io.jenetics.Phenotype;
-import io.jenetics.util.ISeq;
 
 /**
- * Represent the result of the validation/filtering step.
- *
- * @param <G> the gene type
- * @param <C> the fitness type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 7.0
+ * @since 7.0
  */
-record FilterResult<G extends Gene<?, G>, C extends Comparable<? super C>>(
-	ISeq<Phenotype<G, C>> population,
-	int killCount,
-	int invalidCount
-){}
+@SuppressWarnings("module")
+module io.jenetics.ext {
+	requires transitive io.jenetics.base;
+
+	exports io.jenetics.ext;
+	exports io.jenetics.ext.engine;
+	exports io.jenetics.ext.moea;
+	exports io.jenetics.ext.rewriting;
+	exports io.jenetics.ext.util;
+
+	exports io.jenetics.ext.internal to io.jenetics.prog;
+}

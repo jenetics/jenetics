@@ -30,6 +30,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -110,7 +111,7 @@ public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<T> _validAlleles;
@@ -326,12 +327,12 @@ public final class PermutationChromosome<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
 		return new SerialProxy(SerialProxy.PERMUTATION_CHROMOSOME, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -20,10 +20,10 @@
 package io.jenetics.engine;
 
 import static java.lang.String.format;
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -851,10 +851,6 @@ public final class Codecs {
 		return codec
 			.map(permutation -> toMapping(permutation, source, target, mapSupplier))
 			.toInvertibleCodec(mapping -> toEncoding(mapping, smap,tmap, genes));
-	}
-
-	private static <A, B> Map.Entry<A, B> entry(final A a, final B b) {
-		return new SimpleImmutableEntry<>(a, b);
 	}
 
 	private static <A, B, M extends Map<A, B>> M toMapping(
