@@ -225,7 +225,8 @@ public record Cfg(
 
 	/**
 	 * Create a grammar object with the given rules. Duplicated rules are merged
-	 * into one rule.
+	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
+	 * the start symbol of the created CFG
 	 *
 	 * @param rules the rules the grammar consists of
 	 * @throws IllegalArgumentException if the list of rules is empty
@@ -261,7 +262,7 @@ public record Cfg(
 			normalizedRules.stream()
 				.map(r -> rebuild(r, symbols))
 				.toList(),
-			(NonTerminal) select(normalizedRules.get(0).start(), symbols)
+			(NonTerminal)select(normalizedRules.get(0).start(), symbols)
 		);
 	}
 
