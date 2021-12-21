@@ -20,9 +20,15 @@
 package io.jenetics.incubator.grammar;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toCollection;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -159,6 +165,19 @@ public record Cfg(
 			}
 			alternatives = List.copyOf(alternatives);
 		}
+
+		/**
+		 * Return all symbols of this rule.
+		 *
+		 * @return all symbols of this rule
+		 */
+		public Stream<Symbol> symbols() {
+			return Stream.concat(
+				Stream.of(start),
+				alternatives.stream()
+					.flatMap(expr -> expr.symbols().stream())
+			);
+		}
 	}
 
 	/**
@@ -168,12 +187,27 @@ public record Cfg(
 	 * @param terminals the terminal symbols of {@code this} grammar
 	 * @param rules the <em>production</em> rules of {@code this} grammar
 	 * @param start the start symbol of {@code this} grammar
-	 * @throws NullPointerException if one of the argumens is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if a rule is defined more than once
 	 */
 	public Cfg {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The given list of rules must not be empty."
+			);
+		}
+
+		// Check uniqueness of the rules.
+		final var duplicatedRules = rules.stream()
+			.collect(Collectors.groupingBy(Rule::start))
+			.values().stream()
+			.filter(values -> values.size() > 1)
+			.map(rule -> rule.get(0).start.value)
+			.toList();
+
+		if (!duplicatedRules.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Found duplicate rule(s), " + duplicatedRules + "."
 			);
 		}
 
@@ -202,7 +236,8 @@ public record Cfg(
 	}
 
 	/**
-	 * Create a grammar object with the given rules.
+	 * Create a grammar object with the given rules. Duplicated rules are merged
+	 * into one rule.
 	 *
 	 * @param rules the rules the grammar consists of
 	 * @throws IllegalArgumentException if the list of rules is empty
@@ -215,53 +250,73 @@ public record Cfg(
 			);
 		}
 
-		final List<Symbol> symbols = rules.stream()
-			.flatMap(rule ->
-				Stream.concat(
-					Stream.of(rule.start),
-					rule.alternatives.stream()
-						.flatMap(e -> e.symbols.stream()))
-			)
+		final List<Rule> normalizedRules = normalize(rules);
+
+		final List<Symbol> symbols = normalizedRules.stream()
+			.flatMap(Rule::symbols)
 			.distinct()
 			.toList();
 
+		final List<NonTerminal> nonTerminals = symbols.stream()
+			.filter(NonTerminal.class::isInstance)
+			.map(NonTerminal.class::cast)
+			.toList();
+
+		final List<Terminal> terminals = symbols.stream()
+			.filter(Terminal.class::isInstance)
+			.map(Terminal.class::cast)
+			.toList();
+
 		return new Cfg(
-			symbols.stream()
-				.filter(NonTerminal.class::isInstance)
-				.map(NonTerminal.class::cast)
+			nonTerminals,
+			terminals,
+			normalizedRules.stream()
+				.map(r -> rebuild(r, symbols))
 				.toList(),
-			symbols.stream()
-				.filter(Terminal.class::isInstance)
-				.map(Terminal.class::cast)
-				.toList(),
-			rules.stream()
-				.map(r -> normalize(r, symbols))
-				.toList(),
-			(NonTerminal)normalize(rules.get(0).start(), symbols)
+			(NonTerminal) select(normalizedRules.get(0).start(), symbols)
 		);
 	}
 
-	private static Rule
-	normalize(final Rule rule, final List<Symbol> symbols) {
+	private static List<Rule> normalize(final List<Rule> rules) {
+		final Map<NonTerminal, List<Rule>> grouped = rules.stream()
+			.collect(groupingBy(
+				Rule::start,
+				LinkedHashMap::new,
+				toCollection(ArrayList::new)));
+
+		return grouped.entrySet().stream()
+			.map(entry -> merge(entry.getKey(), entry.getValue()))
+			.toList();
+	}
+
+	private static Rule merge(final NonTerminal start, final List<Rule> rules) {
 		return new Rule(
-			(NonTerminal)normalize(rule.start, symbols),
+			start,
+			rules.stream()
+				.flatMap(rule -> rule.alternatives().stream())
+				.toList()
+		);
+	}
+
+	private static Rule rebuild(final Rule rule, final List<Symbol> symbols) {
+		return new Rule(
+			(NonTerminal)select(rule.start, symbols),
 			rule.alternatives.stream()
-				.map(e -> normalize(e, symbols))
+				.map(e -> rebuild(e, symbols))
 				.toList()
 		);
 	}
 
 	private static Expression
-	normalize(final Expression expression, final List<Symbol> symbols) {
+	rebuild(final Expression expression, final List<Symbol> symbols) {
 		return new Expression(
 			expression.symbols.stream()
-				.map(s -> normalize(s, symbols))
+				.map(s -> select(s, symbols))
 				.toList()
 		);
 	}
 
-	private static Symbol
-	normalize(final Symbol symbol, final List<Symbol> symbols) {
+	private static Symbol select(final Symbol symbol, final List<Symbol> symbols) {
 		for (var s : symbols) {
 			if (s.equals(symbol)) {
 				return s;

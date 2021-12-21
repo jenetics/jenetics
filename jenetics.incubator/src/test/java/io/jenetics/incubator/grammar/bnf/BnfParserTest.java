@@ -26,9 +26,6 @@ import java.util.random.RandomGenerator;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.RandomCfg;
-import io.jenetics.incubator.grammar.bnf.Bnf;
-import io.jenetics.incubator.grammar.bnf.BnfParser;
-import io.jenetics.incubator.grammar.bnf.BnfTokenizer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -45,7 +42,41 @@ public class BnfParserTest {
 	@Test
 	public void parse() {
 		final var cfg = Bnf.parse(BNF_STRING);
-		System.out.println(Bnf.format(cfg));
+		assertThat(cfg).isNotNull();
+		//System.out.println(Bnf.format(cfg));
+	}
+
+	@Test(expectedExceptions = ParsingException.class)
+	public void parseWithParseException() {
+		Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  :r:= x | y
+			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+	}
+
+	@Test
+	public void parseWithDuplicateRules() {
+		final var cfg1 = Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= x
+			<var>  ::= y
+			<num>  ::= 0 | 1 | 2 | 3 | 4
+			<num>  ::= 5 | 6 | 7 | 8 | 9
+			"""
+		);
+		final var cfg2 = Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= x | y
+			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+
+		assertThat(cfg1).isEqualTo(cfg2);
 	}
 
 	@Test(invocationCount = 30)

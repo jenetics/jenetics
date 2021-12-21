@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.grammar.Cfg.Expression;
@@ -75,6 +76,9 @@ public final class RandomCfg {
 				return new Rule(nonTerminals.get(random.nextInt(nonTerminals.size())), expressions.get());
 			})
 			.limit(random.nextInt(5, 15))
+			.collect(Collectors.groupingBy(Rule::start))
+			.values().stream()
+			.map(list -> list.get(0))
 			.toList();
 
 		return Cfg.of(rules);
