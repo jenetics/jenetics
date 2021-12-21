@@ -166,18 +166,6 @@ public record Cfg(
 			alternatives = List.copyOf(alternatives);
 		}
 
-		/**
-		 * Return all symbols of this rule.
-		 *
-		 * @return all symbols of this rule
-		 */
-		public Stream<Symbol> symbols() {
-			return Stream.concat(
-				Stream.of(start),
-				alternatives.stream()
-					.flatMap(expr -> expr.symbols().stream())
-			);
-		}
 	}
 
 	/**
@@ -253,7 +241,7 @@ public record Cfg(
 		final List<Rule> normalizedRules = normalize(rules);
 
 		final List<Symbol> symbols = normalizedRules.stream()
-			.flatMap(Rule::symbols)
+			.flatMap(Cfg::ruleSymbols)
 			.distinct()
 			.toList();
 
@@ -295,6 +283,14 @@ public record Cfg(
 			rules.stream()
 				.flatMap(rule -> rule.alternatives().stream())
 				.toList()
+		);
+	}
+
+	private static Stream<Symbol> ruleSymbols(final Rule rule) {
+		return Stream.concat(
+			Stream.of(rule.start),
+			rule.alternatives.stream()
+				.flatMap(expr -> expr.symbols().stream())
 		);
 	}
 
