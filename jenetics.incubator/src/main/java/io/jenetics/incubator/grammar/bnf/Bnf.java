@@ -80,7 +80,7 @@ public final class Bnf {
 	 *
 	 * @param grammar the BNF {@code grammar} string
 	 * @return the parsed {@code BNF} object
-	 * @throws IllegalArgumentException if the given <em>grammar</em> is invalid
+	 * @throws ParsingException if the given <em>grammar</em> is invalid
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
@@ -88,11 +88,7 @@ public final class Bnf {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 
-		try {
-			return parser.parse();
-		} catch (ParsingException e) {
-			throw new IllegalArgumentException(e.getMessage(), e);
-		}
+		return parser.parse();
 	}
 
 	/**

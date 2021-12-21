@@ -28,7 +28,8 @@ import java.io.Serial;
  * @since 7.0
  * @version 7.0
  */
-final class ParsingException extends RuntimeException {
+public final class ParsingException extends RuntimeException {
+
 	@Serial
 	private static final long serialVersionUID = 1;
 
