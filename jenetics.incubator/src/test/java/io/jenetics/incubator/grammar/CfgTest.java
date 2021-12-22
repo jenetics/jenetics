@@ -65,4 +65,26 @@ public class CfgTest {
 		);
 	}
 
+	/*
+	public void builderSyntax() {
+		final Cfg grammar = Cfg.builder()
+			.rule(rule -> rule
+				.start("expr")
+				.expr(expr -> expr.n("num"))
+				.epxr(expr -> expr.n("var"))
+				.expr(expr -> expr.t("(").n("expr", "op", "expr").t(")")))
+			.rule(rule -> rule
+				.start("op")
+				.expr(expr -> expr.t("+"))
+				.expr(expr -> expr.t("-"))
+				.expr(expr -> expr.t("*"))
+				.expr(expr -> expr.t("/")))
+			.rule(rule -> rule
+				.start("var")
+				.expr(expr -> expr.t("x"))
+				.expr(expr -> expr.t("y")))
+			.build();
+	}
+	 */
+
 }
