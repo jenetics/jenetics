@@ -43,7 +43,6 @@ public class BnfParserTest {
 	public void parse() {
 		final var cfg = Bnf.parse(BNF_STRING);
 		assertThat(cfg).isNotNull();
-		//System.out.println(Bnf.format(cfg));
 	}
 
 	@Test(expectedExceptions = ParsingException.class)

@@ -24,10 +24,12 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -176,7 +178,10 @@ public record Cfg(
 	 * @param rules the <em>production</em> rules of {@code this} grammar
 	 * @param start the start symbol of {@code this} grammar
 	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @throws IllegalArgumentException if a rule is defined more than once
+	 * @throws IllegalArgumentException if a rule is defined more than once, the
+	 *         start symbol points to a missing rule or the rules uses symbols
+	 *         not defined in the list of {@link #nonTerminals()} or
+	 *         {@link #terminals()}
 	 */
 	public Cfg {
 		if (rules.isEmpty()) {
@@ -196,6 +201,35 @@ public record Cfg(
 		if (!duplicatedRules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"Found duplicate rule(s), " + duplicatedRules + "."
+			);
+		}
+
+		// Check if start symbol points to an existing rule.
+		final var startRule = rules.stream()
+			.filter(r -> start.equals(r.start))
+			.findFirst();
+		if (startRule.isEmpty()) {
+			throw new IllegalArgumentException(
+				"No rule found for start symbol %s.".formatted(start)
+			);
+		}
+
+		// Check that all symbols used in the given rules are also defined
+		// in the list of non-terminals and terminals.
+		final Set<Symbol> required = rules.stream()
+			.flatMap(Cfg::ruleSymbols)
+			.collect(Collectors.toUnmodifiableSet());
+
+		final Set<Symbol> available = Stream
+			.concat(nonTerminals.stream(), terminals.stream())
+			.collect(Collectors.toUnmodifiableSet());
+
+		final var missing = new HashSet<>(required);
+		missing.removeAll(available);
+
+		if (!missing.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Unknown symbols defined in rules: " + missing
 			);
 		}
 
