@@ -64,6 +64,19 @@ import java.util.stream.Stream;
  *     .</li>
  * </ul>
  *
+ * You ca easily create a <em>Cfg</em> object from a given BNF grammar.
+ * <pre>{@code
+ * final Cfg grammar = Bnf.parse("""
+ *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+ *     <op>   ::= + | - | * | /
+ *     <var>  ::= x | y
+ *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ *     """
+ * );
+ * }</pre>
+ *
+ * @see io.jenetics.incubator.grammar.bnf.Bnf#parse(String)
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
