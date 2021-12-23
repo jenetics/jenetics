@@ -20,8 +20,6 @@
 package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toCollection;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
@@ -32,9 +30,7 @@ import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING
 import static io.jenetics.incubator.grammar.bnf.Token.Type.EOF;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.jenetics.incubator.grammar.Cfg;
 import io.jenetics.incubator.grammar.Cfg.Expression;
