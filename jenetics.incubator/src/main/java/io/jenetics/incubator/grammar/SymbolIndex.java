@@ -21,8 +21,7 @@ package io.jenetics.incubator.grammar;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.Gene;
-import io.jenetics.Genotype;
+import io.jenetics.incubator.grammar.Cfg.Rule;
 
 /**
  * Interface for selecting a symbol index.
@@ -34,23 +33,26 @@ import io.jenetics.Genotype;
 @FunctionalInterface
 public interface SymbolIndex {
 
-	@FunctionalInterface
-	interface Factor<G extends Gene<?, G>> {
-		SymbolIndex create(final Genotype<G> genotype);
-	}
-
 	/**
 	 * Selects an index with the given upper {@code bound}, exclusively.
 	 *
+	 * @param rule the rule which requested the index
 	 * @param bound the upper bound of the symbol index, exclusively
 	 * @return the next symbol index
 	 * @throws IllegalArgumentException if the given {@code bound} is smaller
 	 *         than one
 	 */
-	int next(final int bound);
+	int next(final Rule rule, final int bound);
 
+	/**
+	 * Create a new symbol-index object from the given random generator. This
+	 * can be used for generating random sentences of derivation-trees.
+	 *
+	 * @param random the random generator used for generating the sentences
+	 * @return a new symbol-index object from the given random generator
+	 */
 	static SymbolIndex of(final RandomGenerator random) {
-		return random::nextInt;
+		return (rule, bound) -> random.nextInt(bound);
 	}
 
 }

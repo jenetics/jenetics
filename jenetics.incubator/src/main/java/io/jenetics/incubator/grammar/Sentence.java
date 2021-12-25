@@ -193,17 +193,19 @@ public final class Sentence {
 			.mapToObj(i -> Map.entry(cfg.rules().get(i), i))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		final SymbolIndex.Factor<IntegerGene> symbolIndex = gt -> {
+		final Function<Genotype<IntegerGene>, SymbolIndex> symbolIndex = gt -> {
 			final List<Codons> codons = gt.stream()
 				.map(Codons::ofIntegerGenes)
 				.toList();
 
-			return rule -> codons.get(ruleIndex.get(rule)).next(rule);
+			return (rule, bound) -> codons
+				.get(ruleIndex.get(rule))
+				.next(rule, bound);
 		};
 
 		return Codec.of(
 			Genotype.of(chromosomes),
-			gt -> generator.apply(symbolIndex.create(gt)).generate(cfg)
+			gt -> generator.apply(symbolIndex.apply(gt)).generate(cfg)
 		);
 	}
 

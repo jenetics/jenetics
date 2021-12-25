@@ -27,6 +27,7 @@ import java.util.function.IntUnaryOperator;
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.IntegerGene;
+import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.util.BaseSeq;
 
@@ -46,7 +47,7 @@ public final class Codons implements SymbolIndex {
 	}
 
 	@Override
-	public int next(final int bound) {
+	public int next(final Rule rule, final int bound) {
 		final int index = _pos.getAndUpdate(x -> (x + 1)%_length);
 		return _values.applyAsInt(index)%bound;
 	}

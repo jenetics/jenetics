@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
+import io.jenetics.incubator.grammar.Cfg.Rule;
+
 public class TrackingCodons implements SymbolIndex {
 
 	private final IntStream.Builder _values;
@@ -21,7 +23,7 @@ public class TrackingCodons implements SymbolIndex {
 	}
 
 	@Override
-	public int next(final int bound) {
+	public int next(final Rule rule, final int bound) {
 		final int value = _random.nextInt(256);
 		_values.accept(value);
 		return value%bound;
