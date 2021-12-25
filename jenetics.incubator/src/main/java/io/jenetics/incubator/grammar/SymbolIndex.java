@@ -23,7 +23,6 @@ import java.util.random.RandomGenerator;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 
 /**
  * Interface for selecting a symbol index.
@@ -43,15 +42,15 @@ public interface SymbolIndex {
 	/**
 	 * Selects an index with the given upper {@code bound}, exclusively.
 	 *
-	 * @param rule the upper bound of the symbol index, exclusively
+	 * @param bound the upper bound of the symbol index, exclusively
 	 * @return the next symbol index
 	 * @throws IllegalArgumentException if the given {@code bound} is smaller
 	 *         than one
 	 */
-	int next(final Rule rule);
+	int next(final int bound);
 
 	static SymbolIndex of(final RandomGenerator random) {
-		return rule -> random.nextInt(rule.alternatives().size());
+		return random::nextInt;
 	}
 
 }

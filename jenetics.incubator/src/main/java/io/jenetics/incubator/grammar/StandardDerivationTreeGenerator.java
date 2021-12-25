@@ -72,7 +72,9 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 		final SymbolIndex index
 	) {
 		return cfg.rule(symbol)
-			.map(rule -> rule.alternatives().get(index.next(rule)).symbols())
+			.map(rule -> rule.alternatives()
+				.get(index.next(rule.alternatives().size()))
+				.symbols())
 			.orElse(List.of());
 	}
 

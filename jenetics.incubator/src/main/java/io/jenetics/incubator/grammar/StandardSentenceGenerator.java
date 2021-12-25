@@ -159,7 +159,7 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	) {
 		return cfg.rule(symbol)
 			.map(rule -> rule.alternatives()
-				.get(index.next(rule))
+				.get(index.next(rule.alternatives().size()))
 				.symbols())
 			.orElse(List.of());
 	}
