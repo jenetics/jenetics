@@ -166,9 +166,11 @@ public final class Sentence {
 	 * @see #codec(Cfg, IntUnaryOperator, int)
 	 *
 	 * @param cfg grammar
-	 * @param length the length function which defines the length of the chromosome.
-	 *        The input parameter for this function is the number of alternatives
-	 *        of the actual rule.
+	 * @param length the length of the chromosome which is used for selecting
+	 *        rules and symbols. The input parameter for this function is the
+	 *        number of alternatives of the actual rule. This way it is possible
+	 *        to define the chromosome length dependent on the the selectable
+	 *        alternatives.
 	 * @param generator sentence generator
 	 * @return codec
 	 */
