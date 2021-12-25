@@ -26,6 +26,7 @@ import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
@@ -45,6 +46,10 @@ public final class Ast {
 			.collect(Collectors.joining());
 
 		return MathExpr.parseTree(expression);
+	}
+
+	public static TreeNode<Terminal> parse(final List<Terminal> tokens) {
+		return TreeNode.of(null);
 	}
 
 }
