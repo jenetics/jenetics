@@ -110,7 +110,7 @@ public class CodonsTest {
 		}
 	}
 
-	//s@Test
+	//@Test
 	public void statistics() {
 		final Cfg cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
@@ -120,7 +120,7 @@ public class CodonsTest {
 			"""
 		);
 
-		final var condons = Codons.ofIntArray(
+		final var codons = Codons.ofIntArray(
 			RandomGenerator.getDefault().ints(0, 256)
 				.limit(500)
 				.toArray()

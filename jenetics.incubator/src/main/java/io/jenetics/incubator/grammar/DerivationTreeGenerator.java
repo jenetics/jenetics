@@ -24,8 +24,8 @@ import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This interface is used for creating <em>parse-trees</em> from a context-free
- * grammar ({@link Cfg}).
+ * This interface is used for creating <em>derivatio-trees</em> from a
+ * context-free grammar ({@link Cfg}).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!

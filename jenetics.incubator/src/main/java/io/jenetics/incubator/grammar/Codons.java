@@ -33,6 +33,10 @@ import io.jenetics.util.BaseSeq;
 
 /**
  * Represents a mapping of a chromosome to a symbol index.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Codons implements SymbolIndex {
 

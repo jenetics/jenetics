@@ -33,7 +33,6 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.util.ISeq;

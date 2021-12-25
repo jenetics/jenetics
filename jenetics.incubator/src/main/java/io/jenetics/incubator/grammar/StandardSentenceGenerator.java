@@ -30,6 +30,10 @@ import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 /**
+ * Standard implementation of a sentence generator. The generator can generate
+ * sentences in a {@link Expansion#LEFT_FIRST} order or from
+ * {@link Expansion#LEFT_TO_RIGHT}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -60,6 +64,16 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	private final Expansion _expansion;
 	private final int _limit;
 
+	/**
+	 * Create a new sentence generator from the given parameters.
+	 *
+	 * @param index the symbol index function used for generating the sentences
+	 * @param expansion the sentence generation strategy to use for generating
+	 *        the sentences
+	 * @param limit the maximal allowed sentence length. If the generated
+	 *        sentence exceeds this length, the generation is interrupted and
+	 *        an empty sentence (empty list) is returned.
+	 */
 	public StandardSentenceGenerator(
 		final SymbolIndex index,
 		final Expansion expansion,
@@ -109,7 +123,8 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	 * > }</pre>
 	 *
 	 * @param cfg the generating grammar
-	 * @return a newly created terminal list (sentence)
+	 * @return a newly created terminal list (sentence), or an empty list if
+	 *         the length of the sentence exceed the defined sentence limit
 	 */
 	@Override
 	public List<Terminal> generate(final Cfg cfg) {
