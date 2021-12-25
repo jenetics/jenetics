@@ -189,8 +189,9 @@ public final class Sentence {
 			)
 			.collect(ISeq.toISeq());
 
-		final Map<Rule, Integer> ruleIndex = IntStream.range(0, cfg.rules().size())
-			.mapToObj(i -> Map.entry(cfg.rules().get(i), i))
+		final Map<NonTerminal, Integer> ruleIndex = IntStream
+			.range(0, cfg.rules().size())
+			.mapToObj(i -> Map.entry(cfg.rules().get(i).start(), i))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		final Function<Genotype<IntegerGene>, SymbolIndex> symbolIndex = gt -> {
@@ -199,7 +200,7 @@ public final class Sentence {
 				.toList();
 
 			return (rule, bound) -> codons
-				.get(ruleIndex.get(rule))
+				.get(ruleIndex.get(rule.start()))
 				.next(rule, bound);
 		};
 
