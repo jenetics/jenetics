@@ -32,7 +32,7 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  */
 @FunctionalInterface
-public interface ParseTreeGenerator {
+public interface DerivationTreeGenerator {
 
 	/**
 	 * Create a parse-tree from the given context-free grammar.

@@ -34,11 +34,11 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardParseTreeGenerator implements ParseTreeGenerator {
+public final class StandardDerivationTreeGenerator implements DerivationTreeGenerator {
 
 	private final SymbolIndex _index;
 
-	public StandardParseTreeGenerator(final SymbolIndex index) {
+	public StandardDerivationTreeGenerator(final SymbolIndex index) {
 		_index = requireNonNull(index);
 	}
 

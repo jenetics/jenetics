@@ -34,7 +34,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class StandardParseTreeGeneratorTest {
+public class StandardDerivationTreeGeneratorTest {
 
 	@Test
 	public void create() {
@@ -48,7 +48,7 @@ public class StandardParseTreeGeneratorTest {
 		System.out.println(sentence);
 
 		random.setSeed(seed);
-		final var generator = new StandardParseTreeGenerator(SymbolIndex.of(random));
+		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random));
 		final TreeNode<String> tree = generator.generate(CFG)
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			.map(Symbol::value);
