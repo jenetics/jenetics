@@ -32,7 +32,8 @@ import io.jenetics.internal.util.Bits;
 import io.jenetics.util.BaseSeq;
 
 /**
- * Represents a mapping of a chromosome to a symbol index.
+ * Represents a mapping of a finite set of integers to symbol indexes. If more
+ * indexes are needed, the values are read from the beginning again.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -94,6 +95,11 @@ public final class Codons implements SymbolIndex {
 
 	/**
 	 * Creates a new <em>codons</em> object from the given int-genes.
+	 *
+	 * <pre>{@code
+	 * final var chromosome = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+	 * final var codons = Codons.ofIntegerGenes(chromosome);
+	 * }</pre>
 	 *
 	 * @param genes the genes used for creating the codons object
 	 * @return a new <em>codons</em> object
