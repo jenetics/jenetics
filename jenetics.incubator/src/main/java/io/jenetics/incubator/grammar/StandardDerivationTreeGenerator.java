@@ -37,9 +37,14 @@ import io.jenetics.ext.util.TreeNode;
 public final class StandardDerivationTreeGenerator implements DerivationTreeGenerator {
 
 	private final SymbolIndex _index;
+	private final int _limit;
 
-	public StandardDerivationTreeGenerator(final SymbolIndex index) {
+	public StandardDerivationTreeGenerator(
+		final SymbolIndex index,
+		final int limit
+	) {
 		_index = requireNonNull(index);
+		_limit = limit;
 	}
 
 	@Override
@@ -47,6 +52,7 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 		final NonTerminal start = cfg.start();
 		final TreeNode<Symbol> symbols = TreeNode.of(start);
 
+		int count = 1;
 		boolean expanded = true;
 		while (expanded) {
 			final Optional<TreeNode<Symbol>> tree = symbols.leaves()
@@ -56,9 +62,17 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 				)
 				.findFirst();
 
-			tree.ifPresent(t ->
-				expand(cfg, (NonTerminal)t.value(), _index).forEach(t::attach)
-			);
+			if (tree.isPresent()) {
+				final var t = tree.orElseThrow();
+				final var expansion = expand(cfg, (NonTerminal)t.value(), _index);
+				count += expansion.size();
+
+				if (count > _limit) {
+					return TreeNode.of();
+				}
+
+				expansion.forEach(t::attach);
+			}
 
 			expanded = tree.isPresent();
 		}

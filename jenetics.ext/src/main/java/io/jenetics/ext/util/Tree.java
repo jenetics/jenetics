@@ -204,6 +204,25 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		return Trees.countChildren(this) + 1;
 	}
 
+	/**
+	 * A tree is considered <em>empty</em> if it's {@link #value()} is
+	 * {@code null} and has no children and parent. A newly created tree node
+	 * with no value is <em>empty</em>.
+	 *
+	 * <pre>{@code
+	 * final Tree<String, ?> tree = TreeNode.of();
+	 * assert tree.isEmpty();
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @return {@code true} if {@code this} tree is empty, {@code false}
+	 *          otherwise
+	 */
+	default boolean isEmpty() {
+		return value() == null && childCount() == 0 && parent().isEmpty();
+	}
+
 
 	/* *************************************************************************
 	 * Query operations

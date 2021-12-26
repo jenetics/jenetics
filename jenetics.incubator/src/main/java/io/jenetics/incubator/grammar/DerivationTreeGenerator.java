@@ -21,10 +21,11 @@ package io.jenetics.incubator.grammar;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This interface is used for creating <em>derivatio-trees</em> from a
+ * This interface is used for creating <em>derivation-trees</em> from a
  * context-free grammar ({@link Cfg}).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,7 +36,9 @@ import io.jenetics.ext.util.TreeNode;
 public interface DerivationTreeGenerator {
 
 	/**
-	 * Create a parse-tree from the given context-free grammar.
+	 * Create a parse-tree from the given context-free grammar. If the
+	 * generation of the derivation tree fails, an empty tree
+	 * ({@link Tree#isEmpty()}}) is returned.
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created parse-tree

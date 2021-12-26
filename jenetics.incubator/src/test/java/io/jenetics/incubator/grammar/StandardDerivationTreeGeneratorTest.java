@@ -48,7 +48,7 @@ public class StandardDerivationTreeGeneratorTest {
 		System.out.println(sentence);
 
 		random.setSeed(seed);
-		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random));
+		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random), 1000);
 		final TreeNode<String> tree = generator.generate(CFG)
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			.map(Symbol::value);
