@@ -21,13 +21,20 @@ package io.jenetics.incubator.grammar;
 
 import static io.jenetics.incubator.grammar.StandardSentenceGeneratorTest.CFG;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.incubator.grammar.Cfg.Terminal;
 
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeFormatter;
 import io.jenetics.ext.util.TreeNode;
 
@@ -37,7 +44,7 @@ import io.jenetics.ext.util.TreeNode;
 public class StandardDerivationTreeGeneratorTest {
 
 	@Test
-	public void create() {
+	public void create() throws Exception {
 		final var seed = 29022156195143L;
 		final var random = new Random(seed);
 
@@ -49,11 +56,47 @@ public class StandardDerivationTreeGeneratorTest {
 
 		random.setSeed(seed);
 		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random), 1000);
-		final TreeNode<String> tree = generator.generate(CFG)
+		final TreeNode<Symbol> tree = generator.generate(CFG);
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
-			.map(Symbol::value);
+			//.map(Symbol::value);
 
-		System.out.println(TreeFormatter.TREE.format(tree));
+
+		System.out.println(TreeFormatter.TREE.format(tree.map(Symbol::value)));
+
+		/*
+		final var bout = new ByteArrayOutputStream();
+		final var oout = new ObjectOutputStream(bout);
+		oout.writeObject(tree);
+		oout.close();
+		System.out.println(bout.toByteArray().length);
+		*/
+
+
+
+		final TreeNode<Symbol> simplified = TreeNode.of();
+		copy(tree, simplified, StandardDerivationTreeGeneratorTest::isImportant);
+
+		System.out.println(TreeFormatter.TREE.format(simplified.map(s -> s != null ? s.value() : "<null>")));
+	}
+
+	private static void copy(
+		final Tree<Symbol, ?> source,
+		final TreeNode<Symbol> target,
+		final Predicate<? super Symbol> filter
+	) {
+		target.value(source.value());
+		source.childStream().forEachOrdered(child -> {
+			if (filter.test(child.value())) {
+				final var targetChild = TreeNode.of(child.value());
+				target.attach(targetChild);
+				copy(child, targetChild, filter);
+			}
+		});
+	}
+
+	private static boolean isImportant(final Symbol symbol) {
+		final var value = symbol.value();
+		return !"(".equals(value) && !")".equals(value) && !",".equals(value);
 	}
 
 }
