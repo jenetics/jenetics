@@ -27,7 +27,7 @@ import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
-import static io.jenetics.incubator.grammar.bnf.Token.Type.EOF;
+import static io.jenetics.incubator.parser.Token.Type.EOF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,9 @@ import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.parser.Parser;
+import io.jenetics.incubator.parser.ParsingException;
+import io.jenetics.incubator.parser.Token;
 
 /**
  * Parser for BNF grammars.

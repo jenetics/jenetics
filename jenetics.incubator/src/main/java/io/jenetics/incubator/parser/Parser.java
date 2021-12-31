@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.incubator.parser;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.grammar.bnf.Token.Type;
+import io.jenetics.incubator.parser.Token.Type;
 
 /**
  * Base class for all parsers.
@@ -31,7 +31,7 @@ import io.jenetics.incubator.grammar.bnf.Token.Type;
  * @since 7.0
  * @version 7.0
  */
-abstract class Parser<T extends Token> {
+public abstract class Parser<T extends Token> {
 
 	private final Tokenizer<T> _tokenizer;
 	private final TokenRing<T> _lookahead;

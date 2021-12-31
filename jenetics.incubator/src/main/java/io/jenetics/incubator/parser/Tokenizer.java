@@ -17,29 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.incubator.parser;
 
-import java.io.Serial;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
- * Exception thrown in the case of a parse error.
+ * Interface for all tokenizers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-public final class ParsingException extends RuntimeException {
+@FunctionalInterface
+interface Tokenizer<T extends Token> {
 
-	@Serial
-	private static final long serialVersionUID = 1;
+	/**
+	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
+	 * further tokens are available.
+	 *
+	 * @return the next available token
+	 */
+	T next();
 
-	ParsingException(final String message) {
-		super(message);
+	default Tokenizer<T> filter(final Predicate<? super T> filter) {
+		return () -> {
+			var token = Tokenizer.this.next();
+			while (!filter.test(token) && token != Token.EOF) {
+				token = Tokenizer.this.next();
+			}
+			return token;
+		};
 	}
 
-	@Override
-	public synchronized Throwable fillInStackTrace() {
-		return this;
+	default Stream<T> tokens() {
+		return Stream.generate(this::next)
+			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}
 
 }

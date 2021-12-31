@@ -25,6 +25,7 @@ import static java.lang.Character.isWhitespace;
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg;
+import io.jenetics.incubator.parser.ParsingException;
 
 /**
  * Helper methods for parsing and formatting <em>context-free</em> grammars in

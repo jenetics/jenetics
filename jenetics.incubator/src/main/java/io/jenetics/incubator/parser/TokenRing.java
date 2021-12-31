@@ -17,42 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.incubator.parser;
 
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Interface for all tokenizers.
+ * Ring-buffer for storing lookup tokens.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-@FunctionalInterface
-interface Tokenizer<T extends Token> {
+final class TokenRing<T extends Token> {
+	private final Token[] _tokens;
 
-	/**
-	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
-	 * further tokens are available.
-	 *
-	 * @return the next available token
-	 */
-	T next();
+	private int _pos = 0;
 
-	default Tokenizer<T> filter(final Predicate<? super T> filter) {
-		return () -> {
-			var token = Tokenizer.this.next();
-			while (!filter.test(token) && token != Token.EOF) {
-				token = Tokenizer.this.next();
-			}
-			return token;
-		};
+	TokenRing(final int k) {
+		_tokens = new Token[k];
 	}
 
-	default Stream<T> tokens() {
-		return Stream.generate(this::next)
-			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
+	void add(final T token) {
+		_tokens[_pos] = token;
+		_pos = (_pos + 1)%_tokens.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T LT(final int i) {
+		return (T)_tokens[(_pos + i - 1)%_tokens.length];
+	}
+
+	@Override
+	public String toString() {
+		return IntStream.rangeClosed(1, _tokens.length)
+			.mapToObj(i -> i + ":'" + LT(i).value() + "'")
+			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }

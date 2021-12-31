@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.incubator.parser;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * @since 7.0
  * @version 7.0
  */
-interface Token {
+public interface Token {
 
 	/**
 	 * The common <em>end of file</em> token.
