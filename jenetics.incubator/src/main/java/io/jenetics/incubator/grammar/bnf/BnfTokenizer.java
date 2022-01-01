@@ -21,7 +21,6 @@ package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
-import static io.jenetics.incubator.grammar.bnf.Bnf.isAlphabetic;
 import static io.jenetics.incubator.grammar.bnf.Bnf.isIdChar;
 import static io.jenetics.incubator.grammar.bnf.Bnf.isStringChar;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
@@ -116,12 +115,6 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		}
 
 		return Token.EOF;
-	}
-
-	private void WS() {
-		do {
-			consume();
-		} while (isNonEof(c) && isWhitespace(c));
 	}
 
 	private Token ASSIGN() {

@@ -21,6 +21,7 @@ package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
+import static io.jenetics.incubator.parser.CharSequenceTokenizer.isAlphabetic;
 
 import java.util.stream.Collectors;
 
@@ -58,10 +59,6 @@ public final class Bnf {
 
 	static boolean isStringChar(final char c) {
 		return !isWhitespace(c) && !isSymbolChar(c);
-	}
-
-	static boolean isAlphabetic(final char c) {
-		return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z');
 	}
 
 	static boolean isIdChar(final char c) {

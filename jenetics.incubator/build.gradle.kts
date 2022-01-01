@@ -29,7 +29,7 @@
 plugins {
 	`java-library`
 	idea
-	//antlr
+	antlr
 	id("me.champeau.jmh")
 }
 
@@ -41,6 +41,8 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
+
+	antlr("org.antlr:antlr4:4.9.3")
 
 	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
