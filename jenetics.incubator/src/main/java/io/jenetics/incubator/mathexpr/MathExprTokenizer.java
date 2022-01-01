@@ -21,7 +21,15 @@ package io.jenetics.incubator.mathexpr;
 
 import static java.lang.Character.isDigit;
 import static java.lang.String.format;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.DIV;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.SCIENTIFIC_NUMBER;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
 
 import io.jenetics.incubator.parser.CharSequenceTokenizer;
 import io.jenetics.incubator.parser.ParsingException;
@@ -56,9 +64,9 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 		MINUS(4),
 		TIMES(5),
 		DIV(6),
-		POINT(7),
 		POW(8),
-		ID(9);
+		SCIENTIFIC_NUMBER(9),
+		ID(10);
 
 		private final int _code;
 
@@ -84,18 +92,42 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 				case ' ', '\r', '\n', '\t':
 					WS();
 					continue;
+				case '(':
+					consume();
+					return LPAREN.token(value);
+				case ')':
+					consume();
+					return RPAREN.token(value);
 				case '+':
 					if (isDigit(LA(2))) {
-
+						consume();
+						return SCIENTIFIC_NUMBER("+");
+					} else {
+						consume();
+						return PLUS.token(value);
 					}
 				case '-':
 					if (isDigit(LA(2))) {
-
+						consume();
+						return SCIENTIFIC_NUMBER("-");
+					} else {
+						consume();
+						return MINUS.token(value);
 					}
+				case '*':
+					consume();
+					return TIMES.token(value);
+				case '/':
+					consume();
+					return DIV.token(value);
+				case '^':
+					consume();
+					return POW.token(value);
 				default:
 					if (isAlphabetic(c)) {
 						return ID();
 					} else if (isDigit(c)) {
+						return SCIENTIFIC_NUMBER("");
 					} else {
 						throw new ParsingException(format(
 							"Got invalid character '%s' at position '%d'.",
@@ -106,6 +138,45 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 		}
 
 		return Token.EOF;
+	}
+
+	// NUMBER (E SIGN? UNSIGNED_INTEGER)?
+	private Token SCIENTIFIC_NUMBER(final String sign) {
+		final var value = new StringBuilder(sign);
+
+		NUMBER(value);
+		if ('e' == c || 'E' == c) {
+			value.append(c);
+			consume();
+
+			if ('+' == c || '-' == c) {
+				value.append(c);
+				consume();
+			}
+			if (isDigit(c)) {
+				UNSIGNED_NUMBER(value);
+			}
+		}
+
+		return SCIENTIFIC_NUMBER.token(value.toString());
+	}
+
+	// ('0' .. '9') + ('.' ('0' .. '9') +)?
+	private void NUMBER(final StringBuilder value) {
+		UNSIGNED_NUMBER(value);
+		if ('.' == c) {
+			value.append(c);
+			consume();
+			UNSIGNED_NUMBER(value);
+		}
+	}
+
+	// ('0' .. '9')+
+	private void UNSIGNED_NUMBER(final StringBuilder value) {
+		while (isDigit(c)) {
+			value.append(c);
+			consume();
+		}
 	}
 
 	private Token ID() {
