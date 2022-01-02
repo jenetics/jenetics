@@ -175,10 +175,10 @@ final class MathExprParser {
 	}
 
 	private TreeNode<Op<Double>> expression() {
-		return sumPrecedenceOp(signedTerm());
+		return term_10_op_sum(signed_term_10_sum());
 	}
 
-	private TreeNode<Op<Double>> sumPrecedenceOp(final TreeNode<Op<Double>> expr) {
+	private TreeNode<Op<Double>> term_10_op_sum(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
 		if (_next.token == Token.PLUS) {
@@ -187,39 +187,39 @@ final class MathExprParser {
 				.attach(expr);
 
 			nextToken();
-			add.attach(term());
-			result = sumPrecedenceOp(add);
+			add.attach(term_10_sum());
+			result = term_10_op_sum(add);
 		} else if (_next.token == Token.MINUS) {
 			final TreeNode<Op<Double>> sub = TreeNode
 				.<Op<Double>>of(MathOp.SUB)
 				.attach(expr);
 
 			nextToken();
-			sub.attach(term());
-			result = sumPrecedenceOp(sub);
+			sub.attach(term_10_sum());
+			result = term_10_op_sum(sub);
 		}
 
 		return result;
 	}
 
-	private TreeNode<Op<Double>> signedTerm() {
+	private TreeNode<Op<Double>> signed_term_10_sum() {
 		if (_next.token == Token.MINUS) {
 			nextToken();
 			return TreeNode
 				.<Op<Double>>of(MathOp.NEG)
-				.attach(term());
+				.attach(term_10_sum());
 		} else if (_next.token == Token.PLUS) {
 			nextToken();
 		}
 
-		return term();
+		return term_10_sum();
 	}
 
-	private TreeNode<Op<Double>> term() {
-		return multPrecedenceOp(factor());
+	private TreeNode<Op<Double>> term_10_sum() {
+		return term_11_op_mult(term_11_mult());
 	}
 
-	private TreeNode<Op<Double>> multPrecedenceOp(final TreeNode<Op<Double>> expr) {
+	private TreeNode<Op<Double>> term_11_op_mult(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
 		if (_next.token == Token.MUL) {
@@ -228,43 +228,43 @@ final class MathExprParser {
 				.attach(expr);
 
 			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
+			prod.attach(signed_term_11_mult());
+			result = term_11_op_mult(prod);
 		} else if (_next.token == Token.DIV) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.DIV)
 				.attach(expr);
 
 			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
+			prod.attach(signed_term_11_mult());
+			result = term_11_op_mult(prod);
 		} else if (_next.token == Token.MOD) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.MOD)
 				.attach(expr);
 
 			nextToken();
-			prod.attach(signedFactor());
-			result = multPrecedenceOp(prod);
+			prod.attach(signed_term_11_mult());
+			result = term_11_op_mult(prod);
 		}
 
 		return result;
 	}
 
-	private TreeNode<Op<Double>> signedFactor() {
+	private TreeNode<Op<Double>> signed_term_11_mult() {
 		if (_next.token == Token.MINUS) {
 			nextToken();
 			return TreeNode
 				.<Op<Double>>of(MathOp.NEG)
-				.attach(factor());
+				.attach(term_11_mult());
 		} else if (_next.token == Token.PLUS) {
 			nextToken();
 		}
 
-		return factor();
+		return term_11_mult();
 	}
 
-	private TreeNode<Op<Double>> factor() {
+	private TreeNode<Op<Double>> term_11_mult() {
 		return factorOp(argument());
 	}
 
@@ -276,7 +276,7 @@ final class MathExprParser {
 
 			result = TreeNode.<Op<Double>>of(MathOp.POW)
 				.attach(expr)
-				.attach(signedFactor());
+				.attach(signed_term_11_mult());
 		}
 
 		return result;
