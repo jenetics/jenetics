@@ -31,6 +31,7 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPA
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import io.jenetics.incubator.parser.Parser;
 import io.jenetics.incubator.parser.ParsingException;
@@ -80,8 +81,6 @@ public class MathExprParser extends Parser<Token>  {
 	private final Set<String> _variables;
 	private final Set<String> _functions;
 
-	private TreeNode<String> _tree = TreeNode.of();
-
 	public MathExprParser(
 		final MathExprTokenizer tokenizer,
 		final Set<String> variables,
@@ -98,23 +97,10 @@ public class MathExprParser extends Parser<Token>  {
 
 	//////////////// EXPR START
 	private TreeNode<String> expr() {
-		return term_10_op_sum(signed_term_10_sum());
+		return term_10_op_sum(term_10_sum());
 	}
 
-	///////// SUM /////////////
-
-	private TreeNode<String> signed_term_10_sum() {
-		/*
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(term_10_sum());
-		} else {
-			return term_10_sum();
-		}
-		 */
-
-		return term_10_sum();
-	}
+	///////// SUM operations /////////////
 
 	private TreeNode<String> term_10_op_sum(final TreeNode<String> expr) {
 		var result = expr;
@@ -123,7 +109,7 @@ public class MathExprParser extends Parser<Token>  {
 			final var value = match(LT(1).type()).value();
 			final var node = TreeNode.of(value)
 				.attach(expr)
-				.attach(signed_term_10_sum());
+				.attach(term_10_sum());
 
 			result = term_10_op_sum(node);
 		}
@@ -132,23 +118,10 @@ public class MathExprParser extends Parser<Token>  {
 	}
 
 	private TreeNode<String> term_10_sum() {
-		return term_11_op_mult(signed_term_11_mult());
+		return term_11_op_mult(term_11_mult());
 	}
 
-	///////////////////////////
-
-	private TreeNode<String> signed_term_11_mult() {
-		/*
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(term_11_mult());
-		} else {
-			return term_11_mult();
-		}
-		 */
-
-		return term_11_mult();
-	}
+	///////////// MULT operations //////////////
 
 	private TreeNode<String> term_11_op_mult(final TreeNode<String> expr) {
 		var result = expr;
@@ -156,7 +129,7 @@ public class MathExprParser extends Parser<Token>  {
 			final var value = match(LT(1).type()).value();
 			final var node = TreeNode.of(value)
 				.attach(expr)
-				.attach(signed_term_11_mult());
+				.attach(term_11_mult());
 
 			result = term_11_op_mult(node);
 		}
@@ -165,23 +138,10 @@ public class MathExprParser extends Parser<Token>  {
 	}
 
 	private TreeNode<String> term_11_mult() {
-		return term_12_op_pow(signed_term_12_pow());
+		return term_12_op_pow(term_12_pow());
 	}
 
-	///////////////////////////////////////////////
-
-	private TreeNode<String> signed_term_12_pow() {
-		/*
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(term_12_pow());
-		} else {
-			return term_12_pow();
-		}
-		 */
-
-		return term_12_pow();
-	}
+	//////////////////// POW operations ///////////////////////////
 
 	private TreeNode<String> term_12_op_pow(final TreeNode<String> expr) {
 		var result = expr;
@@ -189,7 +149,7 @@ public class MathExprParser extends Parser<Token>  {
 			final var value = match(LT(1).type()).value();
 			final var node = TreeNode.of(value)
 				.attach(expr)
-				.attach(signed_term_12_pow());
+				.attach(term_12_pow());
 
 			result = term_12_op_pow(node);
 		}
@@ -198,23 +158,10 @@ public class MathExprParser extends Parser<Token>  {
 	}
 
 	private TreeNode<String> term_12_pow() {
-		return term_12_op_pow(signed_function());
+		return term_12_op_pow(signed(this::function));
 	}
 
-	///////////////////////////////////////////////
-
-	private TreeNode<String> signed_function() {
-		///*
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(function());
-		} else {
-			return function();
-		}
-		 //*/
-
-		//return function();
-	}
+	/////////////////// functions ////////////////////////////
 
 	private TreeNode<String> function() {
 		if (isFun(LT(1))) {
@@ -232,25 +179,16 @@ public class MathExprParser extends Parser<Token>  {
 			return node;
 		} else if (LA(1) == LPAREN.code()) {
 			consume();
-			final var node = function();
+			final var node = signed(this::function);
 			match(RPAREN);
 			return node;
 		} else {
-			return signed_atom();
+			return signed(this::atom);
 		}
 	}
 
 
 	///////////////////////////////////////////////
-
-	private TreeNode<String> signed_atom() {
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(atom());
-		} else {
-			return atom();
-		}
-	}
 
 	private TreeNode<String> atom() {
 		final var value = LT(1).value();
@@ -264,6 +202,28 @@ public class MathExprParser extends Parser<Token>  {
 			throw new ParsingException(
 				"Unexpected symbol found: %s.".formatted(LT(1))
 			);
+		}
+	}
+
+	private TreeNode<String> signed(final Supplier<TreeNode<String>> other) {
+		if (LA(1) == MINUS.code()) {
+			final var value = match(MINUS).value();
+
+			if (LA(1) == NUMBER.code()) {
+				return TreeNode.of(value + match(NUMBER).value());
+			} else {
+				return TreeNode.of(value).attach(other.get());
+			}
+		} else if (LA(1) == PLUS.code()) {
+			final var value = match(PLUS).value();
+
+			if (LA(1) == NUMBER.code()) {
+				return TreeNode.of(match(NUMBER).value());
+			} else {
+				return TreeNode.of(value).attach(other.get());
+			}
+		} else {
+			return other.get();
 		}
 	}
 
