@@ -20,15 +20,18 @@
 package io.jenetics.incubator.mathexpr;
 
 import static java.lang.Character.isDigit;
+import static java.lang.Character.isJavaIdentifierPart;
+import static java.lang.Character.isJavaIdentifierStart;
 import static java.lang.String.format;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.COMMA;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.DIV;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.NUMBER;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.SCIENTIFIC_NUMBER;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
 
 import io.jenetics.incubator.parser.CharSequenceTokenizer;
@@ -41,13 +44,14 @@ import io.jenetics.incubator.parser.Token;
  * <pre>{@code
  * LPAREN: '(';
  * RPAREN: ')';
+ * COMMA: ',';
  * PLUS: '+';
  * MINUS: '-';
  * TIMES: '*';
  * DIV: '/';
- * POINT: '.';
  * POW: '^';
- * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
+ * NUMBER: ('0'..'9')+ ('.' ('0'..'9')+)? ((e|E) (+|-)? ('0'..'9'))?
+ * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')+;
  * WS: [ \r\n\t] + -> skip;
  * }</pre>
  *
@@ -60,12 +64,13 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 	enum MathTokenType implements Token.Type {
 		LPAREN(1),
 		RPAREN(2),
-		PLUS(3),
-		MINUS(4),
-		TIMES(5),
-		DIV(6),
+		COMMA(3),
+		PLUS(4),
+		MINUS(5),
+		TIMES(6),
+		DIV(7),
 		POW(8),
-		SCIENTIFIC_NUMBER(9),
+		NUMBER(9),
 		ID(10);
 
 		private final int _code;
@@ -98,22 +103,15 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 				case ')':
 					consume();
 					return RPAREN.token(value);
+				case ',':
+					consume();
+					return COMMA.token(value);
 				case '+':
-					if (isDigit(LA(2))) {
-						consume();
-						return SCIENTIFIC_NUMBER("+");
-					} else {
-						consume();
-						return PLUS.token(value);
-					}
+					consume();
+					return PLUS.token(value);
 				case '-':
-					if (isDigit(LA(2))) {
-						consume();
-						return SCIENTIFIC_NUMBER("-");
-					} else {
-						consume();
-						return MINUS.token(value);
-					}
+					consume();
+					return MINUS.token(value);
 				case '*':
 					consume();
 					return TIMES.token(value);
@@ -123,11 +121,11 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 				case '^':
 					consume();
 					return POW.token(value);
+				case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+					return NUMBER();
 				default:
-					if (isAlphabetic(c)) {
+					if (isJavaIdentifierStart(c)) {
 						return ID();
-					} else if (isDigit(c)) {
-						return SCIENTIFIC_NUMBER("");
 					} else {
 						throw new ParsingException(format(
 							"Got invalid character '%s' at position '%d'.",
@@ -141,10 +139,10 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 	}
 
 	// NUMBER (E SIGN? UNSIGNED_INTEGER)?
-	private Token SCIENTIFIC_NUMBER(final String sign) {
-		final var value = new StringBuilder(sign);
+	private Token NUMBER() {
+		final var value = new StringBuilder();
 
-		NUMBER(value);
+		SIGNED_NUMBER(value);
 		if ('e' == c || 'E' == c) {
 			value.append(c);
 			consume();
@@ -158,11 +156,11 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 			}
 		}
 
-		return SCIENTIFIC_NUMBER.token(value.toString());
+		return NUMBER.token(value.toString());
 	}
 
 	// ('0' .. '9') + ('.' ('0' .. '9') +)?
-	private void NUMBER(final StringBuilder value) {
+	private void SIGNED_NUMBER(final StringBuilder value) {
 		UNSIGNED_NUMBER(value);
 		if ('.' == c) {
 			value.append(c);
@@ -182,16 +180,12 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 	private Token ID() {
 		final var value = new StringBuilder();
 
-		while (isIdChar(c)) {
+		do {
 			value.append(c);
 			consume();
-		}
+		} while (isJavaIdentifierPart(c));
 
 		return ID.token(value.toString());
-	}
-
-	static boolean isIdChar(final char c) {
-		return isAlphabetic(c) || isDigit(c);
 	}
 
 }
