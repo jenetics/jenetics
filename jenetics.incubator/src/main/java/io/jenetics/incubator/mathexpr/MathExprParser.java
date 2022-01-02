@@ -201,6 +201,11 @@ public class MathExprParser extends Parser<Token>  {
 			match(RPAREN);
 
 			return node;
+		} else if (LA(1) == LPAREN.code()) {
+			consume();
+			final var node = function();
+			match(RPAREN);
+			return node;
 		} else {
 			return signed_atom();
 		}
