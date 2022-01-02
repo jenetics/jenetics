@@ -98,6 +98,44 @@ public class MathExprParser extends Parser<Token>  {
 		return expr();
 	}
 
+	@FunctionalInterface
+	interface Term {
+		TreeNode<String> get();
+	}
+
+	@FunctionalInterface
+	interface TermOp {
+		TreeNode<String> apply(final TreeNode<String> expr);
+	}
+
+	private TreeNode<String> term_op(
+		final TreeNode<String> expr,
+		final List<Token.Type> tokens,
+		final Supplier<TreeNode<String>> term
+	) {
+		var result = expr;
+
+		if (matching(tokens)) {
+			final var value = match(LT(1).type()).value();
+			final var node = TreeNode.of(value)
+				.attach(expr)
+				.attach(term.get());
+
+			result = term_op(node, tokens, term);
+		}
+
+		return result;
+	}
+
+	private boolean matching(final List<Token.Type> tokens) {
+		for (var token : tokens) {
+			if (LA(1) == token.code()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	//////////////// EXPR START
 	private TreeNode<String> expr() {
 		return term_10_op_sum(term_10_sum());
@@ -106,18 +144,7 @@ public class MathExprParser extends Parser<Token>  {
 	///////// SUM operations /////////////
 
 	private TreeNode<String> term_10_op_sum(final TreeNode<String> expr) {
-		var result = expr;
-
-		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
-			final var value = match(LT(1).type()).value();
-			final var node = TreeNode.of(value)
-				.attach(expr)
-				.attach(term_10_sum());
-
-			result = term_10_op_sum(node);
-		}
-
-		return result;
+		return term_op(expr, List.of(PLUS, MINUS), this::term_10_sum);
 	}
 
 	private TreeNode<String> term_10_sum() {
@@ -127,17 +154,7 @@ public class MathExprParser extends Parser<Token>  {
 	///////////// MULT operations //////////////
 
 	private TreeNode<String> term_11_op_mult(final TreeNode<String> expr) {
-		var result = expr;
-		if (LA(1) == TIMES.code() || LA(1) == DIV.code()) {
-			final var value = match(LT(1).type()).value();
-			final var node = TreeNode.of(value)
-				.attach(expr)
-				.attach(term_11_mult());
-
-			result = term_11_op_mult(node);
-		}
-
-		return result;
+		return term_op(expr, List.of(TIMES, DIV), this::term_11_mult);
 	}
 
 	private TreeNode<String> term_11_mult() {
@@ -147,17 +164,7 @@ public class MathExprParser extends Parser<Token>  {
 	//////////////////// POW operations ///////////////////////////
 
 	private TreeNode<String> term_12_op_pow(final TreeNode<String> expr) {
-		var result = expr;
-		if (LA(1) == POW.code()) {
-			final var value = match(LT(1).type()).value();
-			final var node = TreeNode.of(value)
-				.attach(expr)
-				.attach(term_12_pow());
-
-			result = term_12_op_pow(node);
-		}
-
-		return result;
+		return term_op(expr, List.of(POW), this::term_12_pow);
 	}
 
 	private TreeNode<String> term_12_pow() {
