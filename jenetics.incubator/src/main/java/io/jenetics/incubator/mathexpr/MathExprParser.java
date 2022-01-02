@@ -29,7 +29,6 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLU
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
-import static io.jenetics.incubator.parser.Token.Type.EOF;
 
 import java.util.Set;
 
@@ -53,6 +52,15 @@ import io.jenetics.ext.util.TreeNode;
  * atom: NUMBER | var;
  * var: ID
  * fun: ID
+ *
+ *
+ * expr:    term_11 | expr PLUS term_11 | expr MINUS term_11
+ * term_11: term_12 | term_11 TIMES term_12 | term_11 DIV term_12
+ * term_12: term_13 | term_12 POW term_13
+ * term_13: term_14 | LPAREN expr RPAREN
+ * term_14: (PLUS | MINUS)* term_16
+ * term_16: fun LPAREN expr (COMMA, expr)* RPAREN | atom
+ * atom:    NUMBER | var
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -77,90 +85,138 @@ public class MathExprParser extends Parser<Token>  {
 	}
 
 	public TreeNode<String> parse() {
-		expression();
-
-		return _tree;
+		return expr();
 	}
 
-	private void expression() {
-		System.out.println(LT(1));
+	private TreeNode<String> expr() {
+		var term = term_11();
+		if (term == null) {
+			final var a = expr();
+			if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
+				final var symbol = LT(1).value();
+				consume();
 
-		// NUMBER
-		if (LA(1) == NUMBER.code()) {
-			if (_tree.isEmpty()) {
-				_tree = TreeNode.of(LT(1).value());
-			} else {
-				_tree.attach(LT(1).value());
+				final var b = term_11();
+				term = TreeNode.of(symbol);
+				term.attach(a);
+				term.attach(b);
 			}
+		}
 
-			consume();
-			if (LA(1) != EOF.code()) {
-				expression();
+		return term;
+	}
+
+	private TreeNode<String> term_11() {
+		var term = term_12();
+		if (term == null) {
+			final var a = term_11();
+			if (LA(1) == TIMES.code() || LA(1) == DIV.code()) {
+				final var symbol = LT(1).value();
+				consume();
+
+				final var b = term_12();
+				term = TreeNode.of(symbol);
+				term.attach(a);
+				term.attach(b);
 			}
+		}
 
-		// var | fun
-		} else if (LA(1) == ID.code()) {
-			final var value = LT(1).value();
-			consume();
-			if (LA(1) != EOF.code()) {
-				expression();
+		return term;
+	}
+
+	private TreeNode<String> term_12() {
+		var term = term_13();
+		if (term == null) {
+			final var a = term_12();
+			if (LA(1) == POW.code()) {
+				final var symbol = match(POW).value();
+				final var b = term_13();
+				term = TreeNode.of(symbol);
+				term.attach(a);
+				term.attach(b);
 			}
+		}
 
-			// var
-			if (_variables.contains(value)) {
-				_tree.attach(value);
+		return term;
+	}
 
-			// fun
-			} else if (_functions.contains(value)) {
+	private TreeNode<String> term_13() {
+		var term = term_14();
+		if (term == null) {
+			if (LA(1) == LPAREN.code()) {
 				match(LPAREN);
-				expression();
-				while (LA(1) == COMMA.code()) {
-					match(COMMA);
-					expression();
-				}
+				term = expr();
 				match(RPAREN);
 			}
+		}
 
-		} else if (LA(1) == LPAREN.code()) {
-			match(LPAREN);
-			expression();
-			match(RPAREN);
-		} else {
-			//expression();
-			if (LA(1) == PLUS.code()) {
-				match(PLUS);
-				System.out.println("PLUS");
-				final var node = TreeNode.of("+");
-				_tree.detach();
-				node.attach(_tree);
-				_tree = node;
-			} else if (LA(1) == MINUS.code()) {
-				match(MINUS);
-			} else if (LA(1) == TIMES.code()) {
-				match(TIMES);
-				System.out.println("TIMES");
-				final var node = TreeNode.of("*");
-				if (_tree.childCount() > 0) {
-					final var child = _tree.childAt(_tree.childCount() - 1);
-					child.detach();
-					node.attach(child);
-					_tree.attach(node);
-				} else {
-					_tree.detach();
-					node.attach(_tree);
-					_tree = node;
-				}
-			} else if (LA(1) == DIV.code()) {
-				match (DIV);
-			} else if (LA(1) == POW.code()) {
-				match (POW);
+		return term;
+	}
+
+	private TreeNode<String> term_14() {
+		TreeNode<String> prefix = null;
+		while (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
+			final var value = match(LT(1).type()).value();
+			final var node = TreeNode.of(value);
+
+			if (prefix != null) {
+				prefix.attach(node);
 			}
-			expression();
+			prefix = node;
+		}
+
+		final var term = term_16();
+		if (prefix == null) {
+			prefix = term;
+		} else if (term != null ) {
+			prefix.attach(term);
+		}
+
+		return prefix;
+	}
+
+	private TreeNode<String> term_16() {
+		if (isFun(LT(1))) {
+			final var name = match(ID).value();
+			match(LPAREN);
+
+			final var fun = TreeNode.of(name);
+			fun.attach(expr());
+			while (LA(1) == COMMA.code()) {
+				match(COMMA);
+				fun.attach(expr());
+			}
+			match(RPAREN);
+			return fun;
+		} else if (isAtom(LT(1))) {
+			return atom();
+		} else {
+			return null;
 		}
 	}
 
-	private void atom() {
+	private TreeNode<String> atom() {
+		if (isAtom(LT(1))) {
+			final var value = match(LT(1).type()).value();
+			return TreeNode.of(value);
+		} else {
+			return null;
+		}
+	}
 
+	private boolean isVar(final Token token) {
+		return token.type().code() == ID.code() &&
+			_variables.contains(token.value());
+	}
+
+	private boolean isFun(final Token token) {
+		return token.type().code() == ID.code() &&
+			_functions.contains(token.value());
+	}
+
+	private boolean isAtom(final Token token) {
+		return token.type().code() == NUMBER.code() ||
+			_functions.contains(token.value());
 	}
 
 }
