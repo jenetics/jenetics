@@ -25,6 +25,7 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.OP;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
@@ -32,6 +33,7 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIM
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.incubator.parser.Parser;
@@ -79,10 +81,25 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class MathExprParser extends Parser<Token>  {
 
-	private record Op(int precedence, List<String> symbol) {}
+	interface Precedence {
+		TreeNode<String> termOp(final TreeNode<String> expr);
+		TreeNode<String> term();
+
+		default TreeNode<String> expr() {
+			return termOp(term());
+		}
+	}
+
+	static final List<List<Token.Type>> OPS = List.of(
+		List.of(PLUS, MINUS),
+		List.of(TIMES, DIV),
+		List.of(POW)
+	);
 
 	private final Set<String> _variables;
 	private final Set<String> _functions;
+
+	private final Precedence _precedence;
 
 	public MathExprParser(
 		final MathExprTokenizer tokenizer,
@@ -92,83 +109,77 @@ public class MathExprParser extends Parser<Token>  {
 		super(tokenizer, 1);
 		_variables = Set.copyOf(variables);
 		_functions = Set.copyOf(functions);
+
+		var ops = OPS.get(OPS.size() - 1);
+		Precedence pre = new Precedence() {
+			@Override
+			public TreeNode<String> termOp(final TreeNode<String> expr) {
+				return term_op(expr, ops, this::term);
+			}
+			@Override
+			public TreeNode<String> term() {
+				return termOp(signed(MathExprParser.this::function));
+			}
+		};
+
+		for (int i = 1; i < OPS.size(); ++i) {
+			final var currentOps = OPS.get(OPS.size() - i - 1);
+			final var lastPre = pre;
+			pre = new Precedence() {
+				@Override
+				public TreeNode<String> termOp(final TreeNode<String> expr) {
+					return term_op(expr, currentOps, this::term);
+				}
+				@Override
+				public TreeNode<String> term() {
+					return termOp(lastPre.term());
+				}
+			};
+		}
+
+		_precedence = pre;
 	}
 
 	public TreeNode<String> parse() {
-		return expr();
+		//return expr();
+		return _precedence.expr();
 	}
 
-	@FunctionalInterface
-	interface Term {
-		TreeNode<String> get();
-	}
 
-	@FunctionalInterface
-	interface TermOp {
-		TreeNode<String> apply(final TreeNode<String> expr);
-	}
-
-	private TreeNode<String> term_op(
-		final TreeNode<String> expr,
-		final List<Token.Type> tokens,
-		final Supplier<TreeNode<String>> term
-	) {
-		var result = expr;
-
-		if (matching(tokens)) {
-			final var value = match(LT(1).type()).value();
-			final var node = TreeNode.of(value)
-				.attach(expr)
-				.attach(term.get());
-
-			result = term_op(node, tokens, term);
-		}
-
-		return result;
-	}
-
-	private boolean matching(final List<Token.Type> tokens) {
-		for (var token : tokens) {
-			if (LA(1) == token.code()) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	//////////////// EXPR START
 	private TreeNode<String> expr() {
-		return term_10_op_sum(term_10_sum());
+		return term_op_10(term_10());
 	}
 
 	///////// SUM operations /////////////
 
-	private TreeNode<String> term_10_op_sum(final TreeNode<String> expr) {
-		return term_op(expr, List.of(PLUS, MINUS), this::term_10_sum);
+	private TreeNode<String> term_op_10(final TreeNode<String> expr) {
+		return term_op(expr, List.of(PLUS, MINUS), this::term_10);
 	}
 
-	private TreeNode<String> term_10_sum() {
-		return term_11_op_mult(term_11_mult());
+	private TreeNode<String> term_10() {
+		return term_op_10(term_11());
 	}
 
 	///////////// MULT operations //////////////
 
-	private TreeNode<String> term_11_op_mult(final TreeNode<String> expr) {
-		return term_op(expr, List.of(TIMES, DIV), this::term_11_mult);
+	private TreeNode<String> term_op_11(final TreeNode<String> expr) {
+		return term_op(expr, List.of(TIMES, DIV), this::term_11);
 	}
 
-	private TreeNode<String> term_11_mult() {
-		return term_12_op_pow(term_12_pow());
+	private TreeNode<String> term_11() {
+		return term_op_11(term_12());
 	}
 
 	//////////////////// POW operations ///////////////////////////
 
-	private TreeNode<String> term_12_op_pow(final TreeNode<String> expr) {
-		return term_op(expr, List.of(POW), this::term_12_pow);
+	private TreeNode<String> term_op_12(final TreeNode<String> expr) {
+		return term_op(expr, List.of(POW), this::term_12);
 	}
 
-	private TreeNode<String> term_12_pow() {
-		return term_12_op_pow(signed(this::function));
+	private TreeNode<String> term_12() {
+		return term_op_12(signed(this::function));
 	}
 
 	/////////////////// functions ////////////////////////////
@@ -250,6 +261,38 @@ public class MathExprParser extends Parser<Token>  {
 	private boolean isAtom(final Token token) {
 		return token.type().code() == NUMBER.code() ||
 			isVar(token);
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+
+	private TreeNode<String> term_op(
+		final TreeNode<String> expr,
+		final List<Token.Type> tokens,
+		final Supplier<TreeNode<String>> term
+	) {
+		var result = expr;
+
+		if (matching(tokens)) {
+			final var value = match(LT(1).type()).value();
+			final var node = TreeNode.of(value)
+				.attach(expr)
+				.attach(term.get());
+
+			result = term_op(node, tokens, term);
+		}
+
+		return result;
+	}
+
+	private boolean matching(final List<Token.Type> tokens) {
+		for (var token : tokens) {
+			if (LA(1) == token.code()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
