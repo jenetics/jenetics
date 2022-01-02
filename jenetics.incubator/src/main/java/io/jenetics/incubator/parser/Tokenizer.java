@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * @version 7.0
  */
 @FunctionalInterface
-interface Tokenizer<T extends Token> {
+public interface Tokenizer<T extends Token> {
 
 	/**
 	 * Return the next available <em>token</em>, or {@link Token#EOF} if no

@@ -39,7 +39,7 @@ import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
 
 /**
- * Tokenizer for simple arithmetic expression.
+ * Tokenizer for simple arithmetic expressions.
  *
  * <pre>{@code
  * LPAREN: '(';
