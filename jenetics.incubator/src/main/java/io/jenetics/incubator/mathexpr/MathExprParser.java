@@ -82,7 +82,7 @@ public class MathExprParser extends Parser<Token>  {
 
 	private TreeNode<String> _tree = TreeNode.of();
 
-	protected MathExprParser(
+	public MathExprParser(
 		final MathExprTokenizer tokenizer,
 		final Set<String> variables,
 		final Set<String> functions
@@ -202,12 +202,21 @@ public class MathExprParser extends Parser<Token>  {
 
 			return node;
 		} else {
-			return atom();
+			return signed_atom();
 		}
 	}
 
 
 	///////////////////////////////////////////////
+
+	private TreeNode<String> signed_atom() {
+		if (LA(1) == PLUS.code() || LA(1) == MINUS.code()) {
+			final var value = match(LT(1).type()).value();
+			return TreeNode.of(value).attach(atom());
+		} else {
+			return atom();
+		}
+	}
 
 	private TreeNode<String> atom() {
 		final var value = LT(1).value();
@@ -382,7 +391,7 @@ public class MathExprParser extends Parser<Token>  {
 
 	private boolean isAtom(final Token token) {
 		return token.type().code() == NUMBER.code() ||
-			_variables.contains(token.value());
+			isVar(token);
 	}
 
 }
