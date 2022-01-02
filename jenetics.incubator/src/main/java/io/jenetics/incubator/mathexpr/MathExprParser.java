@@ -30,6 +30,7 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
 
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -77,6 +78,8 @@ import io.jenetics.ext.util.TreeNode;
  * @version 7.0
  */
 public class MathExprParser extends Parser<Token>  {
+
+	private record Op(int precedence, List<String> symbol) {}
 
 	private final Set<String> _variables;
 	private final Set<String> _functions;

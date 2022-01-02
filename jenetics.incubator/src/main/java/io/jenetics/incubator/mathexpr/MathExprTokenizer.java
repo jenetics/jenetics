@@ -71,6 +71,7 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 		DIV(7),
 		POW(8),
 		NUMBER(9),
+		OP(11),
 		ID(10);
 
 		private final int _code;
