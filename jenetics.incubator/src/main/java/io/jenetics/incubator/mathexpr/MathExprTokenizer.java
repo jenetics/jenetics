@@ -113,8 +113,14 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 					consume();
 					return MINUS.token(value);
 				case '*':
-					consume();
-					return TIMES.token(value);
+					if (LA(2) == '*') {
+						consume();
+						consume();
+						return POW.token("**");
+					} else {
+						consume();
+						return TIMES.token(value);
+					}
 				case '/':
 					consume();
 					return DIV.token(value);
