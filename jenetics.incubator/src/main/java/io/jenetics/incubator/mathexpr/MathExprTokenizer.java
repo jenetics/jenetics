@@ -23,16 +23,16 @@ import static java.lang.Character.isDigit;
 import static java.lang.Character.isJavaIdentifierPart;
 import static java.lang.Character.isJavaIdentifierStart;
 import static java.lang.String.format;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
 import io.jenetics.incubator.parser.CharSequenceTokenizer;
 import io.jenetics.incubator.parser.ParsingException;
@@ -60,31 +60,6 @@ import io.jenetics.incubator.parser.Token;
  * @version 7.0
  */
 public final class MathExprTokenizer extends CharSequenceTokenizer {
-
-	enum MathTokenType implements Token.Type {
-		LPAREN(1),
-		RPAREN(2),
-		COMMA(3),
-		PLUS(4),
-		MINUS(5),
-		TIMES(6),
-		DIV(7),
-		POW(8),
-		NUMBER(9),
-		OP(11),
-		ID(10);
-
-		private final int _code;
-
-		MathTokenType(final int code) {
-			_code = code;
-		}
-
-		@Override
-		public int code() {
-			return _code;
-		}
-	}
 
 	public MathExprTokenizer(final CharSequence input) {
 		super(input);

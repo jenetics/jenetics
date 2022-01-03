@@ -19,16 +19,16 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIMES;
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
 import java.util.List;
 import java.util.Set;
@@ -37,6 +37,7 @@ import java.util.function.Supplier;
 import io.jenetics.incubator.parser.Parser;
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
+import io.jenetics.incubator.parser.Tokenizer;
 
 import io.jenetics.ext.util.TreeNode;
 
@@ -77,13 +78,13 @@ import io.jenetics.ext.util.TreeNode;
  * @since 7.0
  * @version 7.0
  */
-public class MathExprParser extends Parser<String>  {
+public class MathExprParser<V> extends Parser<V>  {
 
-	interface Precedence {
-		TreeNode<String> termOp(final TreeNode<String> expr);
-		TreeNode<String> term();
+	interface Precedence<V> {
+		TreeNode<V> termOp(final TreeNode<V> expr);
+		TreeNode<V> term();
 
-		default TreeNode<String> expr() {
+		default TreeNode<V> expr() {
 			return termOp(term());
 		}
 	}
@@ -94,28 +95,28 @@ public class MathExprParser extends Parser<String>  {
 		List.of(POW)
 	);
 
-	private final Set<String> _variables;
-	private final Set<String> _functions;
+	private final Set<V> _variables;
+	private final Set<V> _functions;
 
-	private final Precedence _precedence;
+	private final Precedence<V> _precedence;
 
 	public MathExprParser(
-		final MathExprTokenizer tokenizer,
-		final Set<String> variables,
-		final Set<String> functions
+		final Tokenizer<V> tokenizer,
+		final Set<V> variables,
+		final Set<V> functions
 	) {
 		super(tokenizer, 1);
 		_variables = Set.copyOf(variables);
 		_functions = Set.copyOf(functions);
 
 		var ops = OPS.get(OPS.size() - 1);
-		Precedence pre = new Precedence() {
+		Precedence<V> pre = new Precedence<V>() {
 			@Override
-			public TreeNode<String> termOp(final TreeNode<String> expr) {
+			public TreeNode<V> termOp(final TreeNode<V> expr) {
 				return term_op(expr, ops, this::term);
 			}
 			@Override
-			public TreeNode<String> term() {
+			public TreeNode<V> term() {
 				return termOp(signed(MathExprParser.this::function));
 			}
 		};
@@ -123,13 +124,13 @@ public class MathExprParser extends Parser<String>  {
 		for (int i = 1; i < OPS.size(); ++i) {
 			final var currentOps = OPS.get(OPS.size() - i - 1);
 			final var lastPre = pre;
-			pre = new Precedence() {
+			pre = new Precedence<V>() {
 				@Override
-				public TreeNode<String> termOp(final TreeNode<String> expr) {
+				public TreeNode<V> termOp(final TreeNode<V> expr) {
 					return term_op(expr, currentOps, this::term);
 				}
 				@Override
-				public TreeNode<String> term() {
+				public TreeNode<V> term() {
 					return termOp(lastPre.term());
 				}
 			};
@@ -138,7 +139,7 @@ public class MathExprParser extends Parser<String>  {
 		_precedence = pre;
 	}
 
-	public TreeNode<String> parse() {
+	public TreeNode<V> parse() {
 		//return expr();
 		return _precedence.expr();
 	}
@@ -146,43 +147,43 @@ public class MathExprParser extends Parser<String>  {
 
 
 	//////////////// EXPR START
-	private TreeNode<String> expr() {
+	private TreeNode<V> expr() {
 		return term_op_10(term_10());
 	}
 
 	///////// SUM operations /////////////
 
-	private TreeNode<String> term_op_10(final TreeNode<String> expr) {
+	private TreeNode<V> term_op_10(final TreeNode<V> expr) {
 		return term_op(expr, List.of(PLUS, MINUS), this::term_10);
 	}
 
-	private TreeNode<String> term_10() {
+	private TreeNode<V> term_10() {
 		return term_op_10(term_11());
 	}
 
 	///////////// MULT operations //////////////
 
-	private TreeNode<String> term_op_11(final TreeNode<String> expr) {
+	private TreeNode<V> term_op_11(final TreeNode<V> expr) {
 		return term_op(expr, List.of(TIMES, DIV), this::term_11);
 	}
 
-	private TreeNode<String> term_11() {
+	private TreeNode<V> term_11() {
 		return term_op_11(term_12());
 	}
 
 	//////////////////// POW operations ///////////////////////////
 
-	private TreeNode<String> term_op_12(final TreeNode<String> expr) {
+	private TreeNode<V> term_op_12(final TreeNode<V> expr) {
 		return term_op(expr, List.of(POW), this::term_12);
 	}
 
-	private TreeNode<String> term_12() {
+	private TreeNode<V> term_12() {
 		return term_op_12(signed(this::function));
 	}
 
 	/////////////////// functions ////////////////////////////
 
-	private TreeNode<String> function() {
+	private TreeNode<V> function() {
 		if (isFun(LT(1))) {
 			final var value = match(LT(1).type()).value();
 			var node = TreeNode.of(value);
@@ -209,7 +210,7 @@ public class MathExprParser extends Parser<String>  {
 
 	///////////////////////////////////////////////
 
-	private TreeNode<String> atom() {
+	private TreeNode<V> atom() {
 		final var value = LT(1).value();
 
 		if (isAtom(LT(1))) {
@@ -224,12 +225,12 @@ public class MathExprParser extends Parser<String>  {
 		}
 	}
 
-	private TreeNode<String> signed(final Supplier<TreeNode<String>> other) {
+	private TreeNode<V> signed(final Supplier<TreeNode<V>> other) {
 		if (LA(1) == MINUS.code()) {
 			final var value = match(MINUS).value();
 
 			if (LA(1) == NUMBER.code()) {
-				return TreeNode.of(value + match(NUMBER).value());
+				return TreeNode.of(value).attach( match(NUMBER).value());
 			} else {
 				return TreeNode.of(value).attach(other.get());
 			}
@@ -246,17 +247,17 @@ public class MathExprParser extends Parser<String>  {
 		}
 	}
 
-	private boolean isVar(final Token<String> token) {
+	private boolean isVar(final Token<V> token) {
 		return token.type().code() == ID.code() &&
 			_variables.contains(token.value());
 	}
 
-	private boolean isFun(final Token<String> token) {
+	private boolean isFun(final Token<V> token) {
 		return token.type().code() == ID.code() &&
 			_functions.contains(token.value());
 	}
 
-	private boolean isAtom(final Token<String> token) {
+	private boolean isAtom(final Token<V> token) {
 		return token.type().code() == NUMBER.code() ||
 			isVar(token);
 	}
@@ -265,10 +266,10 @@ public class MathExprParser extends Parser<String>  {
 	////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
 
-	private TreeNode<String> term_op(
-		final TreeNode<String> expr,
+	private TreeNode<V> term_op(
+		final TreeNode<V> expr,
 		final List<Token.Type> tokens,
-		final Supplier<TreeNode<String>> term
+		final Supplier<TreeNode<V>> term
 	) {
 		var result = expr;
 

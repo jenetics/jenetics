@@ -45,7 +45,7 @@ public class MathExprPerf {
 	@Benchmark
 	public Object newMathExpr() {
 		final var tokenizer = new MathExprTokenizer(value);
-		final var parser = new MathExprParser(tokenizer, VARS, FUN);
+		final var parser = new MathExprParser<>(tokenizer, VARS, FUN);
 
 		return parser.parse();
 	}
