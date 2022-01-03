@@ -30,6 +30,7 @@ public enum MathTokenType implements Token.Type {
 	LPAREN(1),
 	RPAREN(2),
 	COMMA(3),
+
 	PLUS(4),
 	MINUS(5),
 	TIMES(6),

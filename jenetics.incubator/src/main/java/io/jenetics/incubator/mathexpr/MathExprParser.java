@@ -80,6 +80,34 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class MathExprParser<V> extends Parser<V>  {
 
+	public record Pred(int level, Token.Type ops) {}
+
+	public record Config(
+		Token.Type lparen,
+		Token.Type rparen,
+		Token.Type comma,
+		Token.Type fun,
+		Token.Type atom,
+		Set<Pred> ops,
+		Set<Token.Type> unary
+	) {}
+
+	public static final Config DEFAULT_CONFIG = new Config(
+		LPAREN,
+		RPAREN,
+		COMMA,
+		null,
+		null,
+		Set.of(
+			new Pred(11, PLUS),
+			new Pred(11, MINUS),
+			new Pred(14, TIMES),
+			new Pred(14, DIV),
+			new Pred(15, POW)
+		),
+		Set.of()
+	);
+
 	interface Precedence<V> {
 		TreeNode<V> termOp(final TreeNode<V> expr);
 		TreeNode<V> term();
@@ -93,6 +121,10 @@ public class MathExprParser<V> extends Parser<V>  {
 		List.of(PLUS, MINUS),
 		List.of(TIMES, DIV),
 		List.of(POW)
+	);
+
+	static final List<Token.Type> UNARY_OPS = List.of(
+		PLUS, MINUS
 	);
 
 	private final Set<V> _variables;
@@ -226,22 +258,10 @@ public class MathExprParser<V> extends Parser<V>  {
 	}
 
 	private TreeNode<V> signed(final Supplier<TreeNode<V>> other) {
-		if (LA(1) == MINUS.code()) {
-			final var value = match(MINUS).value();
-
-			if (LA(1) == NUMBER.code()) {
-				return TreeNode.of(value).attach( match(NUMBER).value());
-			} else {
-				return TreeNode.of(value).attach(other.get());
-			}
-		} else if (LA(1) == PLUS.code()) {
-			final var value = match(PLUS).value();
-
-			if (LA(1) == NUMBER.code()) {
-				return TreeNode.of(match(NUMBER).value());
-			} else {
-				return TreeNode.of(value).attach(other.get());
-			}
+		if (matching(UNARY_OPS)) {
+		//if (LA(1) == MINUS.code() || LA(1) == PLUS.code()) {
+			final var value = match(LT(1).type()).value();
+			return TreeNode.of(value).attach(other.get());
 		} else {
 			return other.get();
 		}

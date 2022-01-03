@@ -20,10 +20,12 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.parser.Token;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -37,7 +39,24 @@ import io.jenetics.prog.op.Op;
  * @version !__version__!
  */
 public final class Ast {
-	private Ast() {}
+
+	public record Precedence(int level, Set<Token.Type> operators) {}
+
+	public record Config(
+		Token.Type lparen,
+		Token.Type rparen,
+		Token.Type comma,
+		Token.Type id,
+		Token.Type number,
+		Set<Precedence> operators,
+		Set<Token.Type> unaryOperators,
+		Set<Terminal> variables,
+		Set<Terminal> functions
+	){}
+
+	public Ast() {
+
+	}
 
 
 	public static Tree<Op<Double>, ?> toTree(final List<Terminal> sentence) {

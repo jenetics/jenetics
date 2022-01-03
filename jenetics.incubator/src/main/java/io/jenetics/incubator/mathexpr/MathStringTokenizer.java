@@ -34,6 +34,8 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
+import java.util.Set;
+
 import io.jenetics.incubator.parser.CharSequenceTokenizer;
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
@@ -60,6 +62,8 @@ import io.jenetics.incubator.parser.Token;
  * @version 7.0
  */
 public final class MathStringTokenizer extends CharSequenceTokenizer {
+
+	private final Set<String> _functions = Set.of("sin", "cos");
 
 	public MathStringTokenizer(final CharSequence input) {
 		super(input);
