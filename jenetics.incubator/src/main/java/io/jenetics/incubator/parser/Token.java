@@ -108,4 +108,8 @@ public record Token<V>(Type type, V value) {
 		return (Token<V>)EOF;
 	}
 
+	public boolean isEof() {
+		return this == EOF;
+	}
+
 }

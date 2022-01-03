@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 public interface Tokenizer<V> {
 
 	/**
-	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
+	 * Return the next available <em>token</em>, or {@link Token#eof()} if no
 	 * further tokens are available.
 	 *
 	 * @return the next available token
@@ -43,7 +43,7 @@ public interface Tokenizer<V> {
 	default Tokenizer<V> filter(final Predicate<? super Token<? extends V>> filter) {
 		return () -> {
 			var token = Tokenizer.this.next();
-			while (!filter.test(token) && token != Token.EOF) {
+			while (!filter.test(token) && !token.isEof()) {
 				token = Tokenizer.this.next();
 			}
 			return token;

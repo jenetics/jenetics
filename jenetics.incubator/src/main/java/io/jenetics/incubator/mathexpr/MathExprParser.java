@@ -145,41 +145,40 @@ public class MathExprParser<V> extends Parser<V>  {
 	}
 
 
-
-	//////////////// EXPR START
-	private TreeNode<V> expr() {
-		return term_op_10(term_10());
-	}
-
-	///////// SUM operations /////////////
-
-	private TreeNode<V> term_op_10(final TreeNode<V> expr) {
-		return term_op(expr, List.of(PLUS, MINUS), this::term_10);
-	}
-
-	private TreeNode<V> term_10() {
-		return term_op_10(term_11());
-	}
-
-	///////////// MULT operations //////////////
-
-	private TreeNode<V> term_op_11(final TreeNode<V> expr) {
-		return term_op(expr, List.of(TIMES, DIV), this::term_11);
-	}
-
-	private TreeNode<V> term_11() {
-		return term_op_11(term_12());
-	}
-
-	//////////////////// POW operations ///////////////////////////
-
-	private TreeNode<V> term_op_12(final TreeNode<V> expr) {
-		return term_op(expr, List.of(POW), this::term_12);
-	}
-
-	private TreeNode<V> term_12() {
-		return term_op_12(signed(this::function));
-	}
+//	//////////////// EXPR START
+//	private TreeNode<V> expr() {
+//		return term_op_10(term_10());
+//	}
+//
+//	///////// SUM operations /////////////
+//
+//	private TreeNode<V> term_op_10(final TreeNode<V> expr) {
+//		return term_op(expr, List.of(PLUS, MINUS), this::term_10);
+//	}
+//
+//	private TreeNode<V> term_10() {
+//		return term_op_10(term_11());
+//	}
+//
+//	///////////// MULT operations //////////////
+//
+//	private TreeNode<V> term_op_11(final TreeNode<V> expr) {
+//		return term_op(expr, List.of(TIMES, DIV), this::term_11);
+//	}
+//
+//	private TreeNode<V> term_11() {
+//		return term_op_11(term_12());
+//	}
+//
+//	//////////////////// POW operations ///////////////////////////
+//
+//	private TreeNode<V> term_op_12(final TreeNode<V> expr) {
+//		return term_op(expr, List.of(POW), this::term_12);
+//	}
+//
+//	private TreeNode<V> term_12() {
+//		return term_op_12(signed(this::function));
+//	}
 
 	/////////////////// functions ////////////////////////////
 
@@ -189,7 +188,8 @@ public class MathExprParser<V> extends Parser<V>  {
 			var node = TreeNode.of(value);
 
 			match(LPAREN);
-			node.attach(expr());
+			//node.attach(expr());
+			node.attach(_precedence.expr());
 			while (LA(1) == COMMA.code()) {
 				consume();
 				node.attach(function());
