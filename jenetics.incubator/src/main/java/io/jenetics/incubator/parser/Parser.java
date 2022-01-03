@@ -31,12 +31,12 @@ import io.jenetics.incubator.parser.Token.Type;
  * @since 7.0
  * @version 7.0
  */
-public abstract class Parser<T extends Token> {
+public abstract class Parser<V> {
 
-	private final Tokenizer<T> _tokenizer;
-	private final TokenRing<T> _lookahead;
+	private final Tokenizer<V> _tokenizer;
+	private final TokenRing<V> _lookahead;
 
-	protected Parser(final Tokenizer<T> tokenizer, final int k) {
+	protected Parser(final Tokenizer<V> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
@@ -51,7 +51,7 @@ public abstract class Parser<T extends Token> {
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
-	protected T LT(final int index) {
+	protected Token<V> LT(final int index) {
 		return _lookahead.LT(index);
 	}
 
@@ -77,7 +77,7 @@ public abstract class Parser<T extends Token> {
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
-	protected T match(final Type type) {
+	protected Token<V> match(final Type type) {
 		if (LA(1) == type.code()) {
 			final var token = LT(1);
 			consume();

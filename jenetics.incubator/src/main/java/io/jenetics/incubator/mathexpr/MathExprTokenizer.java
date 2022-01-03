@@ -59,7 +59,7 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
+public final class MathExprTokenizer extends CharSequenceTokenizer {
 
 	enum MathTokenType implements Token.Type {
 		LPAREN(1),
@@ -91,7 +91,7 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 	}
 
 	@Override
-	public Token next() {
+	public Token<String> next() {
 		while (isNonEof(c)) {
 			final char value = c;
 			switch (value) {
@@ -142,11 +142,11 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 			}
 		}
 
-		return Token.EOF;
+		return Token.eof();
 	}
 
 	// NUMBER (E SIGN? UNSIGNED_INTEGER)?
-	private Token NUMBER() {
+	private Token<String> NUMBER() {
 		final var value = new StringBuilder();
 
 		SIGNED_NUMBER(value);
@@ -184,7 +184,7 @@ public final class MathExprTokenizer extends CharSequenceTokenizer<Token> {
 		}
 	}
 
-	private Token ID() {
+	private Token<String> ID() {
 		final var value = new StringBuilder();
 
 		do {

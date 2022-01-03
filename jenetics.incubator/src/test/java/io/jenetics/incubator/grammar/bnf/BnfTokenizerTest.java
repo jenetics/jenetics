@@ -54,7 +54,7 @@ public class BnfTokenizerTest {
 	public void tokenize() {
 		final var tokenizer = new BnfTokenizer(FOO);
 
-		final List<Token> tokens = tokenizer.tokens().toList();
+		final List<Token<String>> tokens = tokenizer.tokens().toList();
 
 		final var string = tokens.stream()
 			.map(Object::toString)

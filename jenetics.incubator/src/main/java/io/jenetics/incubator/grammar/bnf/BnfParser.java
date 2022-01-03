@@ -40,7 +40,6 @@ import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.incubator.parser.Parser;
 import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
 
 /**
  * Parser for BNF grammars.
@@ -81,7 +80,7 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-final class BnfParser extends Parser<Token> {
+final class BnfParser extends Parser<String> {
 
 	NonTerminal start = null;
 	final List<Rule> rules = new ArrayList<>();

@@ -29,23 +29,23 @@ import java.util.stream.IntStream;
  * @since 7.0
  * @version 7.0
  */
-final class TokenRing<T extends Token> {
-	private final Token[] _tokens;
+final class TokenRing<V> {
+	private final Object[] _tokens;
 
 	private int _pos = 0;
 
 	TokenRing(final int k) {
-		_tokens = new Token[k];
+		_tokens = new Object[k];
 	}
 
-	void add(final T token) {
+	void add(final Token<V> token) {
 		_tokens[_pos] = token;
 		_pos = (_pos + 1)%_tokens.length;
 	}
 
 	@SuppressWarnings("unchecked")
-	public T LT(final int i) {
-		return (T)_tokens[(_pos + i - 1)%_tokens.length];
+	public Token<V> LT(final int i) {
+		return (Token<V>)_tokens[(_pos + i - 1)%_tokens.length];
 	}
 
 	@Override

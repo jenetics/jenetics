@@ -52,7 +52,7 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-final class BnfTokenizer extends CharSequenceTokenizer<Token> {
+final class BnfTokenizer extends CharSequenceTokenizer {
 
 	enum BnfTokenType implements Token.Type {
 		ASSIGN(1),
@@ -80,7 +80,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 	}
 
 	@Override
-	public Token next() {
+	public Token<String> next() {
 		while (isNonEof(c)) {
 			final char value = c;
 			switch (value) {
@@ -114,17 +114,17 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 			}
 		}
 
-		return Token.EOF;
+		return Token.eof();
 	}
 
-	private Token ASSIGN() {
+	private Token<String> ASSIGN() {
 		match(':');
 		match(':');
 		match('=');
 		return ASSIGN.token("::=");
 	}
 
-	private Token QUOTED_STRING() {
+	private Token<String> QUOTED_STRING() {
 		final var value = new StringBuilder();
 
 		match('\'');
@@ -141,7 +141,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		return QUOTED_STRING.token(value.toString());
 	}
 
-	private Token ID() {
+	private Token<String> ID() {
 		final var value = new StringBuilder();
 
 		while (isIdChar(c)) {
@@ -152,7 +152,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		return ID.token(value.toString());
 	}
 
-	private Token STRING() {
+	private Token<String> STRING() {
 		final var value = new StringBuilder();
 
 		while (isNonEof(c) && isStringChar(c)) {

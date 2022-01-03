@@ -25,7 +25,6 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.ID;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.OP;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.RPAREN;
@@ -33,7 +32,6 @@ import static io.jenetics.incubator.mathexpr.MathExprTokenizer.MathTokenType.TIM
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.incubator.parser.Parser;
@@ -79,7 +77,7 @@ import io.jenetics.ext.util.TreeNode;
  * @since 7.0
  * @version 7.0
  */
-public class MathExprParser extends Parser<Token>  {
+public class MathExprParser extends Parser<String>  {
 
 	interface Precedence {
 		TreeNode<String> termOp(final TreeNode<String> expr);
@@ -248,17 +246,17 @@ public class MathExprParser extends Parser<Token>  {
 		}
 	}
 
-	private boolean isVar(final Token token) {
+	private boolean isVar(final Token<String> token) {
 		return token.type().code() == ID.code() &&
 			_variables.contains(token.value());
 	}
 
-	private boolean isFun(final Token token) {
+	private boolean isFun(final Token<String> token) {
 		return token.type().code() == ID.code() &&
 			_functions.contains(token.value());
 	}
 
-	private boolean isAtom(final Token token) {
+	private boolean isAtom(final Token<String> token) {
 		return token.type().code() == NUMBER.code() ||
 			isVar(token);
 	}
