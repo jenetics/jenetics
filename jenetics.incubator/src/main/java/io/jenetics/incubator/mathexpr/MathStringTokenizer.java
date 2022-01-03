@@ -59,9 +59,9 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-public final class MathExprTokenizer extends CharSequenceTokenizer {
+public final class MathStringTokenizer extends CharSequenceTokenizer {
 
-	public MathExprTokenizer(final CharSequence input) {
+	public MathStringTokenizer(final CharSequence input) {
 		super(input);
 	}
 

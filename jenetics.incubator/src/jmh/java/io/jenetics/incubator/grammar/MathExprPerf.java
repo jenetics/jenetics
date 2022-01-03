@@ -15,7 +15,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
 import io.jenetics.incubator.mathexpr.MathExprParser;
-import io.jenetics.incubator.mathexpr.MathExprTokenizer;
+import io.jenetics.incubator.mathexpr.MathStringTokenizer;
 
 import io.jenetics.prog.op.MathExpr;
 
@@ -44,7 +44,7 @@ public class MathExprPerf {
 
 	@Benchmark
 	public Object newMathExpr() {
-		final var tokenizer = new MathExprTokenizer(value);
+		final var tokenizer = new MathStringTokenizer(value);
 		final var parser = new MathExprParser<>(tokenizer, VARS, FUN);
 
 		return parser.parse();
