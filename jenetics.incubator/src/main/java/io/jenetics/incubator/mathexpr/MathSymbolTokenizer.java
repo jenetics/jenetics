@@ -1,29 +1,28 @@
 package io.jenetics.incubator.mathexpr;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.parser.IterableTokenizer;
 import io.jenetics.incubator.parser.Token;
-import io.jenetics.incubator.parser.Tokenizer;
 
-public class MathSymbolTokenizer implements Tokenizer<Terminal> {
+public class MathSymbolTokenizer extends IterableTokenizer<Terminal, Terminal> {
 
-	private final List<Terminal> _sentence;
-	private final List<Terminal> _operations;
-
-	public MathSymbolTokenizer(
-		final List<Terminal> sentence,
-		final List<Terminal> operations
-	) {
-		_sentence = requireNonNull(sentence);
-		_operations = requireNonNull(operations);
+	public MathSymbolTokenizer(final List<Terminal> sentence) {
+		super(sentence, MathSymbolTokenizer::toToken);
 	}
 
 	@Override
 	public Token<Terminal> next() {
 		return null;
+	}
+
+	private static Token<Terminal> toToken(final Terminal terminal) {
+		return switch (terminal.value()) {
+			case "(" -> new Token<>(Token.Type.of(1, ""), terminal);
+			case ")" -> new Token<>(Token.Type.of(1, ""), terminal);
+			default -> null;
+		};
 	}
 
 }

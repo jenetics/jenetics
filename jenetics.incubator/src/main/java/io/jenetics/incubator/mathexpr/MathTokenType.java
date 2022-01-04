@@ -27,6 +27,7 @@ import io.jenetics.incubator.parser.Token;
  * @version 7.0
  */
 public enum MathTokenType implements Token.Type {
+	FUN(0),
 	LPAREN(1),
 	RPAREN(2),
 	COMMA(3),
@@ -36,8 +37,8 @@ public enum MathTokenType implements Token.Type {
 	TIMES(6),
 	DIV(7),
 	POW(8),
+
 	NUMBER(9),
-	OP(11),
 	ID(10);
 
 	private final int _code;

@@ -63,8 +63,6 @@ import io.jenetics.incubator.parser.Token;
  */
 public final class MathStringTokenizer extends CharSequenceTokenizer {
 
-	private final Set<String> _functions = Set.of("sin", "cos");
-
 	public MathStringTokenizer(final CharSequence input) {
 		super(input);
 	}
