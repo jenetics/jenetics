@@ -19,10 +19,106 @@
  */
 package io.jenetics.incubator.mathexpr;
 
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.TIMES;
+
+import java.util.List;
+import java.util.Set;
+
+import io.jenetics.incubator.parser.ParsingException;
+import io.jenetics.incubator.parser.Token;
+import io.jenetics.incubator.parser.Tokenizer;
+
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.op.Const;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Var;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-public class MathExpr {
+public final class MathExpr {
+	private MathExpr() {
+	}
+
+	/*
+		final Tokenizer<T> tokenizer,
+		final Function<? super Token<T>, ? extends V> converter,
+		final Token.Type lparen,
+		final Token.Type rparen,
+		final Token.Type comma,
+		final List<List<Token.Type>> binaries,
+		final List<Token.Type> unaries,
+		final Token.Type number,
+		final Token.Type identifier,
+		final Set<T> variables,
+		final Set<T> functions
+	 */
+
+	private static final Set<String> VAR = Set.of("x", "y", "z");
+	private static final Set<String> FUN = Set.of("sin", "cos", "pow");
+
+	public static Tree<Op<Double>, ?> parse(final String string) {
+		final Tokenizer<String> tokenizer = new MathStringTokenizer(string);
+
+		final var parser = new MathExprParser<>(
+			tokenizer,
+			MathExpr::toOp,
+			LPAREN,
+			RPAREN,
+			COMMA,
+			List.of(
+				List.of(PLUS, MINUS),
+				List.of(TIMES, DIV, MOD),
+				List.of(POW)
+			),
+			List.of(PLUS, MINUS),
+			NUMBER,
+			ID,
+			VAR,
+			FUN
+		);
+
+		final var expr = parser.parse();
+		Var.reindex(expr);
+		return expr;
+	}
+
+	private static Op<Double> toOp(final Token<String> token) {
+		if (token.type().code() == PLUS.code()) {
+			return MathOp.ADD;
+		} else if (token.type().code() == MINUS.code()) {
+			return MathOp.SUB;
+		} else if (token.type().code() == TIMES.code()) {
+			return MathOp.MUL;
+		} else if (token.type().code() == DIV.code()) {
+			return MathOp.DIV;
+		} else if (token.type().code() == MOD.code()) {
+			return MathOp.MOD;
+		} else if (token.type().code() == POW.code()) {
+			return MathOp.POW;
+		} else if (token.type().code() == NUMBER.code()) {
+			return Const.of(Double.parseDouble(token.value()));
+		} else if (FUN.contains(token.value())) {
+			return MathOp.toMathOp(token.value());
+		} else if (VAR.contains(token.value())) {
+			return Var.of(token.value());
+		}
+
+		throw new ParsingException("Unknown token: " + token);
+	}
+
 }

@@ -14,10 +14,8 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
-import io.jenetics.incubator.mathexpr.MathExprParser;
-import io.jenetics.incubator.mathexpr.MathStringTokenizer;
+import io.jenetics.incubator.mathexpr.MathExpr;
 
-import io.jenetics.prog.op.MathExpr;
 
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 15, time = 1)
@@ -39,15 +37,18 @@ public class MathExprPerf {
 
 	@Benchmark
 	public Object oldMathExpr() {
-		return MathExpr.parseTree(value);
+		return io.jenetics.prog.op.MathExpr.parseTree(value);
 	}
 
 	@Benchmark
 	public Object newMathExpr() {
-		final var tokenizer = new MathStringTokenizer(value);
-		final var parser = new MathExprParser<>(tokenizer, VARS, FUN);
-
-		return parser.parse();
+		return MathExpr.parse(value);
 	}
 
 }
+
+/*
+Benchmark                 Mode  Cnt      Score     Error  Units
+MathExprPerf.newMathExpr  avgt   45  13517.062 ± 116.603  ns/op
+MathExprPerf.oldMathExpr  avgt   45  63230.530 ± 563.707  ns/op
+ */

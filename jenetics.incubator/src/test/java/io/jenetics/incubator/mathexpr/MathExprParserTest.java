@@ -12,17 +12,17 @@ public class MathExprParserTest {
 	public void parsing() {
 		final var string = "3 + -5 * -7^43**43+98 -(+4) - -sin(x) - cos(3*y, -4, -x)";
 		final var tokenizer = new MathStringTokenizer(string);
-		final var parser = new MathExprParser<>(
-			tokenizer,
-			Set.of("x", "y"),
-			Set.of("sin", "cos")
-		);
-
-		//new MathExprTokenizer(string).tokens().forEach(System.out::println);
-
-		final var expr = parser.parse();
-		System.out.println(TreeFormatter.TREE.format(expr));
-		System.out.println(expr);
+//		final var parser = new MathExprParser<>(
+//			tokenizer,
+//			Set.of("x", "y"),
+//			Set.of("sin", "cos")
+//		);
+//
+//		//new MathExprTokenizer(string).tokens().forEach(System.out::println);
+//
+//		final var expr = parser.parse();
+//		System.out.println(TreeFormatter.TREE.format(expr));
+//		System.out.println(expr);
 	}
 
 }

@@ -23,18 +23,17 @@ import static java.lang.Character.isDigit;
 import static java.lang.Character.isJavaIdentifierPart;
 import static java.lang.Character.isJavaIdentifierStart;
 import static java.lang.String.format;
-import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
-import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
-
-import java.util.Set;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.TIMES;
 
 import io.jenetics.incubator.parser.CharSequenceTokenizer;
 import io.jenetics.incubator.parser.ParsingException;
@@ -63,6 +62,41 @@ import io.jenetics.incubator.parser.Token;
  */
 public final class MathStringTokenizer extends CharSequenceTokenizer {
 
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @since 7.0
+	 * @version 7.0
+	 */
+	enum MathTokenType implements Token.Type {
+		LPAREN(1),
+		RPAREN(2),
+		COMMA(3),
+
+		PLUS(4),
+		MINUS(5),
+		TIMES(6),
+		DIV(7),
+		MOD(8),
+		POW(9),
+
+		NUMBER(10),
+		ID(11),
+
+		UNARY_PLUS(12),
+		UNARY_MINUS(13);
+
+		private final int _code;
+
+		MathTokenType(final int code) {
+			_code = code;
+		}
+
+		@Override
+		public int code() {
+			return _code;
+		}
+	}
+
 	public MathStringTokenizer(final CharSequence input) {
 		super(input);
 	}
@@ -71,6 +105,7 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 	public Token<String> next() {
 		while (isNonEof(c)) {
 			final char value = c;
+
 			switch (value) {
 				case ' ', '\r', '\n', '\t':
 					WS();
@@ -102,6 +137,9 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 				case '/':
 					consume();
 					return DIV.token(value);
+				case '%':
+					consume();
+					return MOD.token(value);
 				case '^':
 					consume();
 					return POW.token(value);

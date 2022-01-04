@@ -19,19 +19,11 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
-import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
+import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.incubator.parser.Parser;
@@ -78,70 +70,55 @@ import io.jenetics.ext.util.TreeNode;
  * @since 7.0
  * @version 7.0
  */
-public class MathExprParser<V> extends Parser<V>  {
-
-	public record Pred(int level, Token.Type ops) {}
-
-	public record Config(
-		Token.Type lparen,
-		Token.Type rparen,
-		Token.Type comma,
-		Token.Type fun,
-		Token.Type atom,
-		Set<Pred> ops,
-		Set<Token.Type> unary
-	) {}
-
-	public static final Config DEFAULT_CONFIG = new Config(
-		LPAREN,
-		RPAREN,
-		COMMA,
-		null,
-		null,
-		Set.of(
-			new Pred(11, PLUS),
-			new Pred(11, MINUS),
-			new Pred(14, TIMES),
-			new Pred(14, DIV),
-			new Pred(15, POW)
-		),
-		Set.of()
-	);
+public class MathExprParser<T, V> extends Parser<T>  {
 
 	interface Precedence<V> {
 		TreeNode<V> termOp(final TreeNode<V> expr);
 		TreeNode<V> term();
-
 		default TreeNode<V> expr() {
 			return termOp(term());
 		}
 	}
 
-	static final List<List<Token.Type>> OPS = List.of(
-		List.of(PLUS, MINUS),
-		List.of(TIMES, DIV),
-		List.of(POW)
-	);
-
-	static final List<Token.Type> UNARY_OPS = List.of(
-		PLUS, MINUS
-	);
-
-	private final Set<V> _variables;
-	private final Set<V> _functions;
+	private final Function<Token<? super T>, V> _converter;
+	private final Token.Type _lparen;
+	private final Token.Type _rparen;
+	private final Token.Type _comma;
+	private final List<List<Token.Type>> _binaries;
+	private final List<Token.Type> _unaries;
+	private final Token.Type _number;
+	private final Token.Type _identifier;
+	private final Set<T> _variables;
+	private final Set<T> _functions;
 
 	private final Precedence<V> _precedence;
 
 	public MathExprParser(
-		final Tokenizer<V> tokenizer,
-		final Set<V> variables,
-		final Set<V> functions
+		final Tokenizer<T> tokenizer,
+		final Function<? super Token<T>, ? extends V> converter,
+		final Token.Type lparen,
+		final Token.Type rparen,
+		final Token.Type comma,
+		final List<List<Token.Type>> binaries,
+		final List<Token.Type> unaries,
+		final Token.Type number,
+		final Token.Type identifier,
+		final Set<T> variables,
+		final Set<T> functions
 	) {
 		super(tokenizer, 1);
+		_converter = (Function<Token<? super T>, V>)requireNonNull(converter);
+		_lparen = requireNonNull(lparen);
+		_rparen = requireNonNull(rparen);
+		_comma = requireNonNull(comma);
+		_binaries = List.copyOf(binaries);
+		_unaries = List.copyOf(unaries);
+		_number = requireNonNull(number);
+		_identifier = requireNonNull(identifier);
 		_variables = Set.copyOf(variables);
 		_functions = Set.copyOf(functions);
 
-		var ops = OPS.get(OPS.size() - 1);
+		var ops = _binaries.get(_binaries.size() - 1);
 		Precedence<V> pre = new Precedence<V>() {
 			@Override
 			public TreeNode<V> termOp(final TreeNode<V> expr) {
@@ -153,8 +130,8 @@ public class MathExprParser<V> extends Parser<V>  {
 			}
 		};
 
-		for (int i = 1; i < OPS.size(); ++i) {
-			final var currentOps = OPS.get(OPS.size() - i - 1);
+		for (int i = 1; i < _binaries.size(); ++i) {
+			final var currentOps = _binaries.get(_binaries.size() - i - 1);
 			final var lastPre = pre;
 			pre = new Precedence<V>() {
 				@Override
@@ -172,67 +149,29 @@ public class MathExprParser<V> extends Parser<V>  {
 	}
 
 	public TreeNode<V> parse() {
-		//return expr();
 		return _precedence.expr();
 	}
-
-
-//	//////////////// EXPR START
-//	private TreeNode<V> expr() {
-//		return term_op_10(term_10());
-//	}
-//
-//	///////// SUM operations /////////////
-//
-//	private TreeNode<V> term_op_10(final TreeNode<V> expr) {
-//		return term_op(expr, List.of(PLUS, MINUS), this::term_10);
-//	}
-//
-//	private TreeNode<V> term_10() {
-//		return term_op_10(term_11());
-//	}
-//
-//	///////////// MULT operations //////////////
-//
-//	private TreeNode<V> term_op_11(final TreeNode<V> expr) {
-//		return term_op(expr, List.of(TIMES, DIV), this::term_11);
-//	}
-//
-//	private TreeNode<V> term_11() {
-//		return term_op_11(term_12());
-//	}
-//
-//	//////////////////// POW operations ///////////////////////////
-//
-//	private TreeNode<V> term_op_12(final TreeNode<V> expr) {
-//		return term_op(expr, List.of(POW), this::term_12);
-//	}
-//
-//	private TreeNode<V> term_12() {
-//		return term_op_12(signed(this::function));
-//	}
 
 	/////////////////// functions ////////////////////////////
 
 	private TreeNode<V> function() {
 		if (isFun(LT(1))) {
-			final var value = match(LT(1).type()).value();
-			var node = TreeNode.of(value);
+			final var token = match(LT(1).type());
+			var node = TreeNode.of(_converter.apply(token));
 
-			match(LPAREN);
-			//node.attach(expr());
+			match(_lparen);
 			node.attach(_precedence.expr());
-			while (LA(1) == COMMA.code()) {
+			while (LA(1) == _comma.code()) {
 				consume();
 				node.attach(function());
 			}
-			match(RPAREN);
+			match(_rparen);
 
 			return node;
-		} else if (LA(1) == LPAREN.code()) {
+		} else if (LA(1) == _lparen.code()) {
 			consume();
-			final var node = signed(this::function);
-			match(RPAREN);
+			final var node = _precedence.expr();
+			match(_rparen);
 			return node;
 		} else {
 			return signed(this::atom);
@@ -243,11 +182,11 @@ public class MathExprParser<V> extends Parser<V>  {
 	///////////////////////////////////////////////
 
 	private TreeNode<V> atom() {
-		final var value = LT(1).value();
+		final var token = LT(1);
 
 		if (isAtom(LT(1))) {
 			consume();
-			return TreeNode.of(value);
+			return TreeNode.of(_converter.apply(token));
 		} else if (LT(1) == Token.EOF) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -258,27 +197,26 @@ public class MathExprParser<V> extends Parser<V>  {
 	}
 
 	private TreeNode<V> signed(final Supplier<TreeNode<V>> other) {
-		if (matching(UNARY_OPS)) {
-		//if (LA(1) == MINUS.code() || LA(1) == PLUS.code()) {
-			final var value = match(LT(1).type()).value();
-			return TreeNode.of(value).attach(other.get());
+		if (matching(_unaries)) {
+			final var token = match(LT(1).type());
+			return TreeNode.of(_converter.apply(token)).attach(other.get());
 		} else {
 			return other.get();
 		}
 	}
 
-	private boolean isVar(final Token<V> token) {
-		return token.type().code() == ID.code() &&
+	private boolean isVar(final Token<T> token) {
+		return token.type().code() == _identifier.code() &&
 			_variables.contains(token.value());
 	}
 
-	private boolean isFun(final Token<V> token) {
-		return token.type().code() == ID.code() &&
+	private boolean isFun(final Token<T> token) {
+		return token.type().code() == _identifier.code() &&
 			_functions.contains(token.value());
 	}
 
-	private boolean isAtom(final Token<V> token) {
-		return token.type().code() == NUMBER.code() ||
+	private boolean isAtom(final Token<T> token) {
+		return token.type().code() == _number.code() ||
 			isVar(token);
 	}
 
@@ -294,8 +232,8 @@ public class MathExprParser<V> extends Parser<V>  {
 		var result = expr;
 
 		if (matching(tokens)) {
-			final var value = match(LT(1).type()).value();
-			final var node = TreeNode.of(value)
+			final var token = match(LT(1).type());
+			final var node = TreeNode.of(_converter.apply(token))
 				.attach(expr)
 				.attach(term.get());
 

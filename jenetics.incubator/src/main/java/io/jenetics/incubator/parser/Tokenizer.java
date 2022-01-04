@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.parser;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -48,6 +49,10 @@ public interface Tokenizer<V> {
 			}
 			return token;
 		};
+	}
+
+	default <T> Tokenizer<T> map(final Function<? super Token<V>, Token<T>> f) {
+		return () -> f.apply(next());
 	}
 
 	default Stream<Token<V>> tokens() {
