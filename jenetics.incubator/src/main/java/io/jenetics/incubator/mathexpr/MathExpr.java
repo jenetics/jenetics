@@ -31,8 +31,11 @@ import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.P
 import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.TIMES;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
@@ -54,22 +57,9 @@ public final class MathExpr {
 	private MathExpr() {
 	}
 
-	/*
-		final Tokenizer<T> tokenizer,
-		final Function<? super Token<T>, ? extends V> converter,
-		final Token.Type lparen,
-		final Token.Type rparen,
-		final Token.Type comma,
-		final List<List<Token.Type>> binaries,
-		final List<Token.Type> unaries,
-		final Token.Type number,
-		final Token.Type identifier,
-		final Set<T> variables,
-		final Set<T> functions
-	 */
-
-	private static final Set<String> VAR = Set.of("x", "y", "z");
-	private static final Set<String> FUN = Set.of("sin", "cos", "pow");
+	private static final Set<String> FUNCTIONS = Stream.of(MathOp.values())
+		.map(MathOp::toString)
+		.collect(Collectors.toUnmodifiableSet());
 
 	public static Tree<Op<Double>, ?> parse(final String string) {
 		final Tokenizer<String> tokenizer = new MathStringTokenizer(string);
@@ -81,15 +71,14 @@ public final class MathExpr {
 			RPAREN,
 			COMMA,
 			List.of(
-				List.of(PLUS, MINUS),
-				List.of(TIMES, DIV, MOD),
-				List.of(POW)
+				EnumSet.of(PLUS, MINUS),
+				EnumSet.of(TIMES, DIV, MOD),
+				EnumSet.of(POW)
 			),
-			List.of(PLUS, MINUS),
+			EnumSet.of(PLUS, MINUS),
 			NUMBER,
 			ID,
-			VAR,
-			FUN
+			FUNCTIONS
 		);
 
 		final var expr = parser.parse();
@@ -112,9 +101,9 @@ public final class MathExpr {
 			return MathOp.POW;
 		} else if (token.type().code() == NUMBER.code()) {
 			return Const.of(Double.parseDouble(token.value()));
-		} else if (FUN.contains(token.value())) {
+		} else if (FUNCTIONS.contains(token.value())) {
 			return MathOp.toMathOp(token.value());
-		} else if (VAR.contains(token.value())) {
+		} else if (token.type().code() == ID.code()) {
 			return Var.of(token.value());
 		}
 

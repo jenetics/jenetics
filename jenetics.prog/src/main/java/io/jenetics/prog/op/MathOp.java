@@ -84,6 +84,11 @@ public enum MathOp implements Op<Double> {
 	NEG("neg", 1, v -> -v[0]),
 
 	/**
+	 * The identity function.
+	 */
+	ID("id", 1, v -> v[0]),
+
+	/**
 	 * Return the minimum of two values.
 	 * <em>This operation has arity 2.</em>
 	 *

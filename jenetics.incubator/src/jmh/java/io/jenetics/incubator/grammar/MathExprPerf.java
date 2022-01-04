@@ -52,3 +52,16 @@ Benchmark                 Mode  Cnt      Score     Error  Units
 MathExprPerf.newMathExpr  avgt   45  13517.062 ± 116.603  ns/op
 MathExprPerf.oldMathExpr  avgt   45  63230.530 ± 563.707  ns/op
  */
+
+/*
+Benchmark                 Mode  Cnt      Score     Error  Units
+MathExprPerf.newMathExpr  avgt   45   8474.280 ±  90.638  ns/op
+MathExprPerf.oldMathExpr  avgt   45  62734.623 ± 664.818  ns/op
+ */
+
+// EnumSet
+/*
+Benchmark                 Mode  Cnt      Score      Error  Units
+MathExprPerf.newMathExpr  avgt   45  11108.923 ±  113.284  ns/op
+MathExprPerf.oldMathExpr  avgt   45  65296.595 ± 1525.530  ns/op
+ */
