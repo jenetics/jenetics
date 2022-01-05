@@ -164,7 +164,7 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 	private Token<String> NUMBER() {
 		final var value = new StringBuilder();
 
-		SIGNED_NUMBER(value);
+		REAL_NUMBER(value);
 		if ('e' == c || 'E' == c) {
 			value.append(c);
 			consume();
@@ -182,7 +182,7 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 	}
 
 	// ('0' .. '9') + ('.' ('0' .. '9') +)?
-	private void SIGNED_NUMBER(final StringBuilder value) {
+	private void REAL_NUMBER(final StringBuilder value) {
 		UNSIGNED_NUMBER(value);
 		if ('.' == c) {
 			value.append(c);

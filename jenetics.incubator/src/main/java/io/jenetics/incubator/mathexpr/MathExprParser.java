@@ -172,7 +172,7 @@ public class MathExprParser<T, V> extends Parser<T>  {
 			node.attach(_term.expr());
 			while (LA(1) == _comma.code()) {
 				consume();
-				node.attach(function());
+				node.attach(_term.expr());
 			}
 			match(_rparen);
 
@@ -232,8 +232,8 @@ public class MathExprParser<T, V> extends Parser<T>  {
 		if (tokens.contains(LT(1).type())) {
 			final var token = match(LT(1).type());
 			final var node = TreeNode.<V>of(_converter.apply(token))
-				.attach(expr)
-				.attach(term.get());
+				.attach(term.get())
+				.attach(expr);
 
 			result = term(node, tokens, term);
 		}
