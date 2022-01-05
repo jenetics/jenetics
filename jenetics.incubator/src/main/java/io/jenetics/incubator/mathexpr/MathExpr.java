@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
-import io.jenetics.incubator.parser.Tokenizer;
 
 import io.jenetics.ext.util.Tree;
 
@@ -69,21 +68,21 @@ public final class MathExpr {
 
 	private static final Set<? extends Token.Type> UNARIES = EnumSet.of(PLUS, MINUS);
 
-	public static Tree<Op<Double>, ?> parse(final String string) {
-		final Tokenizer<String> tokenizer = new MathStringTokenizer(string);
+	private static final MathExprParsing<String, Op<Double>> PARSING = new MathExprParsing<>(
+		MathExpr::toOp,
+		LPAREN,
+		RPAREN,
+		COMMA,
+		OPERATIONS,
+		UNARIES,
+		NUMBER,
+		ID,
+		FUNCTIONS
+	);
 
-		final var parser = new MathExprParser<>(
-			tokenizer,
-			MathExpr::toOp,
-			LPAREN,
-			RPAREN,
-			COMMA,
-			OPERATIONS,
-			UNARIES,
-			NUMBER,
-			ID,
-			FUNCTIONS
-		);
+	public static Tree<Op<Double>, ?> parse(final String string) {
+		final var tokenizer = new MathStringTokenizer(string);
+		final var parser = new MathExprParser<>(tokenizer, PARSING);
 
 		final var expr = parser.parse();
 		Var.reindex(expr);
