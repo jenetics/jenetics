@@ -39,7 +39,12 @@ public enum MathTokenType implements Token.Type {
 	POW(9),
 
 	NUMBER(10),
-	ID(11);
+	IDENTIFIER(11),
+
+	UNARY_OPERATOR(12),
+	BINARY_OPERATOR(13),
+	FUN(14),
+	ATOM(15);
 
 	private final int _code;
 

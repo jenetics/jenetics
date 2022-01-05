@@ -20,6 +20,10 @@
 package io.jenetics.incubator.mathexpr;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.mathexpr.MathTokenType.ATOM;
+import static io.jenetics.incubator.mathexpr.MathTokenType.BINARY_OPERATOR;
+import static io.jenetics.incubator.mathexpr.MathTokenType.FUN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
 import java.util.List;
 import java.util.Set;
@@ -39,25 +43,6 @@ import io.jenetics.ext.util.TreeNode;
  * @version 7.0
  */
 public final class MathExprParsing<T, V> {
-
-	public enum Kind implements Token.Type {
-		UNARY(1),
-		BINARY(2),
-		FUN(3),
-		ATOM(4);
-
-		private final int _code;
-
-		Kind(final int code) {
-			_code = code;
-		}
-
-		@Override
-		public int code() {
-			return _code;
-		}
-	}
-
 
 	static abstract class Term<T, V> {
 		Term<T, V> _next;
@@ -98,7 +83,7 @@ public final class MathExprParsing<T, V> {
 			if (_tokens.contains(parser.LT(1).type())) {
 				final var token = parser.match(parser.LT(1).type());
 				final var node = TreeNode
-					.<V>of(_converter.apply(token, Kind.BINARY))
+					.<V>of(_converter.apply(token, BINARY_OPERATOR))
 					.attach(expr)
 					.attach(term(parser));
 
@@ -134,8 +119,7 @@ public final class MathExprParsing<T, V> {
 	private final Token.Type _lparen;
 	private final Token.Type _rparen;
 	private final Token.Type _comma;
-	private final List<? extends Set<? extends Token.Type>> _binaries;
-	private final Set<? extends Token.Type> _unaries;
+	private final Set<? extends Token.Type> _unaryOperators;
 	private final Set<? extends Token.Type> _identifier;
 	private final Set<? extends T> _functions;
 
@@ -146,7 +130,7 @@ public final class MathExprParsing<T, V> {
 		final Token.Type lparen,
 		final Token.Type rparen,
 		final Token.Type comma,
-		final List<? extends Set<? extends Token.Type>> binaries,
+		final List<? extends Set<? extends Token.Type>> binaryOperators,
 		final Set<? extends Token.Type> unaries,
 		final Set<? extends Token.Type> identifier,
 		final Set<? extends T> functions
@@ -155,13 +139,12 @@ public final class MathExprParsing<T, V> {
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
 		_comma = requireNonNull(comma);
-		_binaries = List.copyOf(binaries);
-		_unaries = Set.copyOf(unaries);
+		_unaryOperators = Set.copyOf(unaries);
 		_identifier = Set.copyOf(identifier);
 		_functions = Set.copyOf(functions);
 
 
-		final Term<T, V> oterm = OpTerm.build(converter, binaries);
+		final Term<T, V> oterm = OpTerm.build(converter, binaryOperators);
 		final Term<T, V> fterm = new Term<T, V>() {
 			@Override
 			TreeNode<V> term(final Parser<T> parser) {
@@ -183,7 +166,7 @@ public final class MathExprParsing<T, V> {
 	private TreeNode<V> function(final Parser<T> parser) {
 		if (isFun(parser.LT(1))) {
 			final var token = parser.match(parser.LT(1).type());
-			var node = TreeNode.<V>of(_converter.apply(token, Kind.FUN));
+			var node = TreeNode.<V>of(_converter.apply(token, FUN));
 
 			parser.match(_lparen);
 			node.attach(_term.expr(parser));
@@ -209,7 +192,7 @@ public final class MathExprParsing<T, V> {
 
 		if (isAtom(parser.LT(1))) {
 			parser.consume();
-			return TreeNode.of(_converter.apply(token, Kind.ATOM));
+			return TreeNode.of(_converter.apply(token, ATOM));
 		} else if (parser.LT(1) == Token.EOF) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -220,9 +203,9 @@ public final class MathExprParsing<T, V> {
 	}
 
 	private TreeNode<V> unary(final Supplier<TreeNode<V>> other, final Parser<T> parser) {
-		if (_unaries.contains(parser.LT(1).type())) {
+		if (_unaryOperators.contains(parser.LT(1).type())) {
 			final var token = parser.match(parser.LT(1).type());
-			return TreeNode.<V>of(_converter.apply(token, Kind.UNARY)).attach(other.get());
+			return TreeNode.<V>of(_converter.apply(token, UNARY_OPERATOR)).attach(other.get());
 		} else {
 			return other.get();
 		}

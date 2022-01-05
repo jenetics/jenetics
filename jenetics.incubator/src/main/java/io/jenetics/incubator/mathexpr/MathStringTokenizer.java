@@ -25,7 +25,7 @@ import static java.lang.Character.isJavaIdentifierStart;
 import static java.lang.String.format;
 import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
 import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
 import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
@@ -172,7 +172,7 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 			consume();
 		} while (isJavaIdentifierPart(c));
 
-		return ID.token(value.toString());
+		return IDENTIFIER.token(value.toString());
 	}
 
 }

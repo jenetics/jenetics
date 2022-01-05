@@ -84,4 +84,9 @@ public class MathExprParser<T, V> extends Parser<T>  {
 		return _parsing.parse(this);
 	}
 
+	public static <V> MathExprParser<String, V>
+	of(final String expr, final MathExprParsing<String, V> parsing) {
+		return new MathExprParser<>(new MathStringTokenizer(expr), parsing);
+	}
+
 }

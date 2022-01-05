@@ -21,7 +21,7 @@ package io.jenetics.incubator.mathexpr;
 
 import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
 import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
 import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
@@ -30,11 +30,11 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
+import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
 import java.util.EnumSet;
 import java.util.List;
 
-import io.jenetics.incubator.mathexpr.MathExprParsing.Kind;
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
 
@@ -66,15 +66,12 @@ public final class MathExpr {
 			EnumSet.of(POW)
 		),
 		EnumSet.of(PLUS, MINUS),
-		EnumSet.of(ID, NUMBER),
+		EnumSet.of(IDENTIFIER, NUMBER),
 		MathOp.NAMES
 	);
 
 	public static Tree<Op<Double>, ?> parse(final String string) {
-		final var tokenizer = new MathStringTokenizer(string);
-		final var parser = new MathExprParser<>(tokenizer, PARSING);
-
-		final var expr = parser.parse();
+		final var expr =  MathExprParser.of(string, PARSING).parse();
 		Var.reindex(expr);
 		return expr;
 	}
@@ -93,13 +90,13 @@ public final class MathExpr {
 
 	private static Op<Double> toOp(final Token<String> token, final Token.Type type) {
 		if (token.type().code() == PLUS.code()) {
-			if (type.code() == Kind.UNARY.code()) {
+			if (type.code() == UNARY_OPERATOR.code()) {
 				return MathOp.ID;
 			} else {
 				return MathOp.ADD;
 			}
 		} else if (token.type().code() == MINUS.code()) {
-			if (type.code() == Kind.UNARY.code()) {
+			if (type.code() == UNARY_OPERATOR.code()) {
 				return MathOp.NEG;
 			} else {
 				return MathOp.SUB;
@@ -116,7 +113,7 @@ public final class MathExpr {
 			return Const.of(Double.parseDouble(token.value()));
 		} else if (MathOp.NAMES.contains(token.value())) {
 			return MathOp.toMathOp(token.value());
-		} else if (token.type().code() == ID.code()) {
+		} else if (token.type().code() == IDENTIFIER.code()) {
 			return Var.of(token.value());
 		}
 
