@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.mathexpr;
 
+import javax.annotation.processing.Generated;
 import java.util.List;
 
 import static java.lang.Math.abs;
@@ -32,7 +33,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 
-
+@Generated("manually")
 public class MathExprTestData {
 
 	@FunctionalInterface

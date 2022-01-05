@@ -27,9 +27,25 @@ import java.util.stream.IntStream;
 
 import static io.jenetics.incubator.mathexpr.MathExprTestData.EXPRESSIONS;
 import static io.jenetics.incubator.mathexpr.MathExprTestData.FUNCTIONS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class MathExprTest {
+
+	@Test(dataProvider = "simpleExpressions")
+	public void parse(final String expr, final String expected) {
+		final var tree = MathExpr.parse(expr);
+		assertThat(tree.toParenthesesString()).isEqualTo(expected);
+	}
+
+	@DataProvider
+	public Object[][] simpleExpressions() {
+		return new Object[][] {
+			{"sub(sub(3.0,2.0),1.0)", "sub(sub(3.0,2.0),1.0)"},
+			{"3-2-1", "sub(sub(3.0,2.0),1.0)"},
+			{"3-2*1", "sub(3,mul(2,1)"}
+		};
+	}
 
 	@Test(dataProvider = "expressions")
 	public void eval(final String expr, final MathExprTestData.Fun3 fun) {
