@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.mathexpr;
+package io.jenetics.incubator.grammar;
 
 import java.util.List;
 
