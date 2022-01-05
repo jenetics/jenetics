@@ -28,6 +28,7 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.incubator.parser.Parser;
@@ -121,7 +122,7 @@ public final class MathExprParsing<T, V> {
 	private final Token.Type _comma;
 	private final Set<? extends Token.Type> _unaryOperators;
 	private final Set<? extends Token.Type> _identifier;
-	private final Set<? extends T> _functions;
+	private final Predicate<? super T> _functions;
 
 	private final Term<T, V> _term;
 
@@ -131,17 +132,17 @@ public final class MathExprParsing<T, V> {
 		final Token.Type rparen,
 		final Token.Type comma,
 		final List<? extends Set<? extends Token.Type>> binaryOperators,
-		final Set<? extends Token.Type> unaries,
+		final Set<? extends Token.Type> unaryOperations,
 		final Set<? extends Token.Type> identifier,
-		final Set<? extends T> functions
+		final Predicate<? super T> functions
 	) {
 		_converter = requireNonNull(converter);
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
 		_comma = requireNonNull(comma);
-		_unaryOperators = Set.copyOf(unaries);
+		_unaryOperators = Set.copyOf(unaryOperations);
 		_identifier = Set.copyOf(identifier);
-		_functions = Set.copyOf(functions);
+		_functions = requireNonNull(functions);
 
 
 		final Term<T, V> oterm = OpTerm.build(converter, binaryOperators);
@@ -213,7 +214,7 @@ public final class MathExprParsing<T, V> {
 
 	private boolean isFun(final Token<T> token) {
 		return _identifier.contains(token.type()) &&
-			_functions.contains(token.value());
+			_functions.test(token.value());
 	}
 
 	private boolean isAtom(final Token<T> token) {

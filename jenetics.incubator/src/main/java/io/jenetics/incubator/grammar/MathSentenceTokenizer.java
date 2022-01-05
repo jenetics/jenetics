@@ -19,6 +19,17 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
+
 import java.util.List;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
@@ -32,10 +43,6 @@ import io.jenetics.incubator.parser.Token;
  */
 public class MathSentenceTokenizer extends IterableTokenizer<Terminal, Terminal> {
 
-	public static final Token.Type LPAREN = Token.Type.of(1, "LPAREN");
-	public static final Token.Type RPAREN = Token.Type.of(1, "RPAREN");
-	public static final Token.Type COMMA = Token.Type.of(1, "COMMA");
-
 	public MathSentenceTokenizer(final List<Terminal> sentence) {
 		super(sentence, MathSentenceTokenizer::toToken);
 	}
@@ -45,7 +52,13 @@ public class MathSentenceTokenizer extends IterableTokenizer<Terminal, Terminal>
 			case "(" -> new Token<>(LPAREN, terminal);
 			case ")" -> new Token<>(RPAREN, terminal);
 			case "," -> new Token<>(COMMA, terminal);
-			default -> null;
+			case "+" -> new Token<>(PLUS, terminal);
+			case "-" -> new Token<>(MINUS, terminal);
+			case "*" -> new Token<>(TIMES, terminal);
+			case "/" -> new Token<>(DIV, terminal);
+			case "%" -> new Token<>(MOD, terminal);
+			case "^", "**" -> new Token<>(POW, terminal);
+			default -> new Token<>(IDENTIFIER, terminal);
 		};
 	}
 

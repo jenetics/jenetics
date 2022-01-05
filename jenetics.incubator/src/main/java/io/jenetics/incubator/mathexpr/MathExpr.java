@@ -67,7 +67,7 @@ public final class MathExpr {
 		),
 		EnumSet.of(PLUS, MINUS),
 		EnumSet.of(IDENTIFIER, NUMBER),
-		MathOp.NAMES
+		MathOp.NAMES::contains
 	);
 
 	public static Tree<Op<Double>, ?> parse(final String string) {
