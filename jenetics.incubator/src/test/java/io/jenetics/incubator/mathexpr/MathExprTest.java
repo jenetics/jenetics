@@ -30,7 +30,9 @@ import org.testng.annotations.Test;
 
 import io.jenetics.prog.op.Program;
 
-
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class MathExprTest {
 
 	@Test(dataProvider = "simpleExpressions")
