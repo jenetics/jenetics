@@ -71,8 +71,9 @@ import static java.util.Objects.requireNonNull;
  */
 public class MathExprParser<T, V> extends Parser<T>  {
 
+
 	/**
-	 * Parsing interface which obeys the operation precedence.
+	 * Operation parsing class which obeys the operation precedence.
 	 */
 	private static abstract class OpTerm<V> {
 		OpTerm<V> next;
@@ -94,6 +95,8 @@ public class MathExprParser<T, V> extends Parser<T>  {
 	private final Set<? extends T> _functions;
 
 	private final OpTerm<V> _term;
+
+	private final MathExprParsing<T, V> _parsing;
 
 	public MathExprParser(
 		final Tokenizer<T> tokenizer,
@@ -154,19 +157,47 @@ public class MathExprParser<T, V> extends Parser<T>  {
 				first = term;
 			}
 		}
-		term.next = new OpTerm<V>() {
-			@Override
-			TreeNode<V> op(TreeNode<V> expr) {
-				return expr;
-			}
 
-			@Override
-			TreeNode<V> term() {
-				return function();
-			}
-		};
+		if (term != null) {
+			term.next = new OpTerm<V>() {
+				@Override
+				TreeNode<V> op(TreeNode<V> expr) {
+					return expr;
+				}
+
+				@Override
+				TreeNode<V> term() {
+					return function();
+				}
+			};
+		} else {
+			first = new OpTerm<V>() {
+				@Override
+				TreeNode<V> op(TreeNode<V> expr) {
+					return expr;
+				}
+
+				@Override
+				TreeNode<V> term() {
+					return function();
+				}
+			};
+		}
+
 
 		_term = first;
+
+		_parsing = new MathExprParsing<>(
+			converter,
+			lparen,
+			rparen,
+			comma,
+			binaries,
+			unaries,
+			number,
+			identifier,
+			functions
+		);
 	}
 
 	/**
@@ -175,7 +206,8 @@ public class MathExprParser<T, V> extends Parser<T>  {
 	 * @return the parsed expression
 	 */
 	public TreeNode<V> parse() {
-		return _term.expr();
+		//return _term.expr();
+		return _parsing.parse(this);
 	}
 
 	private TreeNode<V> function() {

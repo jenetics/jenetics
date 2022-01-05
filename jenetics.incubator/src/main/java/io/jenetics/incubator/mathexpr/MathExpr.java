@@ -61,6 +61,14 @@ public final class MathExpr {
 		.map(MathOp::toString)
 		.collect(Collectors.toUnmodifiableSet());
 
+	private static final List<? extends Set<? extends Token.Type>> OPERATIONS = List.of(
+		EnumSet.of(PLUS, MINUS),
+		EnumSet.of(TIMES, DIV, MOD),
+		EnumSet.of(POW)
+	);
+
+	private static final Set<? extends Token.Type> UNARIES = EnumSet.of(PLUS, MINUS);
+
 	public static Tree<Op<Double>, ?> parse(final String string) {
 		final Tokenizer<String> tokenizer = new MathStringTokenizer(string);
 
@@ -70,12 +78,8 @@ public final class MathExpr {
 			LPAREN,
 			RPAREN,
 			COMMA,
-			List.of(
-				EnumSet.of(PLUS, MINUS),
-				EnumSet.of(TIMES, DIV, MOD),
-				EnumSet.of(POW)
-			),
-			EnumSet.of(PLUS, MINUS),
+			OPERATIONS,
+			UNARIES,
 			NUMBER,
 			ID,
 			FUNCTIONS

@@ -19,15 +19,16 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import io.jenetics.prog.op.Program;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.incubator.mathexpr.MathExprTestData.EXPRESSIONS;
+import static io.jenetics.incubator.mathexpr.MathExprTestData.FUNCTIONS;
 
 import java.util.stream.IntStream;
 
-import static io.jenetics.incubator.mathexpr.MathExprTestData.EXPRESSIONS;
-import static io.jenetics.incubator.mathexpr.MathExprTestData.FUNCTIONS;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.prog.op.Program;
 
 
 public class MathExprTest {
@@ -53,7 +54,18 @@ public class MathExprTest {
 		final double r2 = io.jenetics.prog.op.MathExpr.eval(expr, 1.0, 2.0, 3.0);
 		final double r3 = Program.eval(MathExpr.parse(expr), 1.0, 2.0, 3.0);
 
-		System.out.println(r1 + " = " + r2 + " = " + r3);
+		if (Double.isFinite(r3)) {
+			assertThat(r3).isEqualTo(r1);
+			assertThat(r2).isEqualTo(r1);
+		} else if (Double.isNaN(r1)) {
+			assertThat(r3).isNaN();
+			assertThat(r2).isNaN();
+		} else if (Double.isInfinite(r1)) {
+			assertThat(r3).isInfinite();
+			assertThat(r2).isInfinite();
+		} else {
+			throw new AssertionError();
+		}
 	}
 
 	@DataProvider

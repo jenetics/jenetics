@@ -51,7 +51,7 @@ public abstract class Parser<V> {
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
-	protected Token<V> LT(final int index) {
+	public Token<V> LT(final int index) {
 		return _lookahead.LT(index);
 	}
 
@@ -61,7 +61,7 @@ public abstract class Parser<V> {
 	 * @param index lookahead index
 	 * @return the token type code for the given lookahead index
 	 */
-	protected int LA(final int index) {
+	public int LA(final int index) {
 		return LT(index).type().code();
 	}
 
@@ -77,7 +77,7 @@ public abstract class Parser<V> {
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
-	protected Token<V> match(final Type type) {
+	public Token<V> match(final Type type) {
 		if (LA(1) == type.code()) {
 			final var token = LT(1);
 			consume();
@@ -93,7 +93,7 @@ public abstract class Parser<V> {
 	/**
 	 * Consumes the next token.
 	 */
-	protected void consume() {
+	public void consume() {
 		_lookahead.add(_tokenizer.next());
 	}
 
