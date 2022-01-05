@@ -19,19 +19,18 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.incubator.parser.Parser;
+import io.jenetics.incubator.parser.ParsingException;
+import io.jenetics.incubator.parser.Token;
+import io.jenetics.incubator.parser.Tokenizer;
 
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import io.jenetics.incubator.parser.Parser;
-import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
-import io.jenetics.incubator.parser.Tokenizer;
-
-import io.jenetics.ext.util.TreeNode;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Parser for simple arithmetic expressions.
@@ -75,10 +74,11 @@ public class MathExprParser<T, V> extends Parser<T>  {
 	/**
 	 * Parsing interface which obeys the operation precedence.
 	 */
-	private interface OpTerm<V> {
-		TreeNode<V> op(final TreeNode<V> expr);
-		TreeNode<V> term();
-		default TreeNode<V> expr() {
+	private static abstract class OpTerm<V> {
+		OpTerm<V> next;
+		abstract TreeNode<V> op(final TreeNode<V> expr);
+		abstract TreeNode<V> term();
+		TreeNode<V> expr() {
 			return op(term());
 		}
 	}
@@ -120,38 +120,53 @@ public class MathExprParser<T, V> extends Parser<T>  {
 		_functions = Set.copyOf(functions);
 
 		// Initialize the operation parsing, according its precedence.
-		OpTerm<V> term = new OpTerm<V>() {
-			@Override
-			public TreeNode<V> op(final TreeNode<V> expr) {
-				return MathExprParser.this.term(
-					expr,
-					_binaries.get(_binaries.size() - 1),
-					this::term
-				);
-			}
-			@Override
-			public TreeNode<V> term() {
-				return op(unary(MathExprParser.this::function));
-			}
-		};
-
-		for (int i = 1; i < _binaries.size(); ++i) {
-			final var op = _binaries.get(_binaries.size() - i - 1);
-			final var last = term;
+		OpTerm<V> term = null;
+		OpTerm<V> first = null;
+		for (var tokens : _binaries) {
+			var last = term;
 
 			term = new OpTerm<V>() {
 				@Override
-				public TreeNode<V> op(final TreeNode<V> expr) {
-					return MathExprParser.this.term(expr, op, this::term);
+				public TreeNode<V> op(TreeNode<V> expr) {
+					var result = expr;
+					if (tokens.contains(LT(1).type())) {
+						final var token = match(LT(1).type());
+						final var node = TreeNode
+							.<V>of(_converter.apply(token))
+							.attach(expr)
+							.attach(term());
+
+						result = op(node);
+					}
+					return result;
 				}
+
 				@Override
 				public TreeNode<V> term() {
-					return op(last.term());
+					return next.op(next.term());
 				}
 			};
-		}
 
-		_term = term;
+			if (last != null) {
+				last.next = term;
+			}
+			if (first == null) {
+				first = term;
+			}
+		}
+		term.next = new OpTerm<V>() {
+			@Override
+			TreeNode<V> op(TreeNode<V> expr) {
+				return expr;
+			}
+
+			@Override
+			TreeNode<V> term() {
+				return function();
+			}
+		};
+
+		_term = first;
 	}
 
 	/**
@@ -221,24 +236,5 @@ public class MathExprParser<T, V> extends Parser<T>  {
 			token.type().code() == _identifier.code();
 	}
 
-
-	private TreeNode<V> term(
-		final TreeNode<V> expr,
-		final Set<? extends Token.Type> tokens,
-		final Supplier<TreeNode<V>> term
-	) {
-		var result = expr;
-
-		if (tokens.contains(LT(1).type())) {
-			final var token = match(LT(1).type());
-			final var node = TreeNode.<V>of(_converter.apply(token))
-				.attach(term.get())
-				.attach(expr);
-
-			result = term(node, tokens, term);
-		}
-
-		return result;
-	}
 
 }

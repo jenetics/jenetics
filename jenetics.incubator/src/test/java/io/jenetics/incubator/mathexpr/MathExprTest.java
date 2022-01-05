@@ -43,7 +43,7 @@ public class MathExprTest {
 		return new Object[][] {
 			{"sub(sub(3.0,2.0),1.0)", "sub(sub(3.0,2.0),1.0)"},
 			{"3-2-1", "sub(sub(3.0,2.0),1.0)"},
-			{"3-2*1", "sub(3,mul(2,1)"}
+			{"3-2*1", "sub(3.0,mul(2.0,1.0))"}
 		};
 	}
 
