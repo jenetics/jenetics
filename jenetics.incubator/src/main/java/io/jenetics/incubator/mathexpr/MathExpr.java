@@ -45,6 +45,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.op.Const;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 import io.jenetics.prog.op.Var;
 
 /**
@@ -87,6 +88,18 @@ public final class MathExpr {
 		final var expr = parser.parse();
 		Var.reindex(expr);
 		return expr;
+	}
+
+	public static double eval(final String expr, final double... args) {
+		return Program.eval(MathExpr.parse(expr), box(args));
+	}
+
+	private static Double[] box(final double... values) {
+		final Double[] result = new Double[values.length];
+		for (int i = values.length; --i >= 0;) {
+			result[i] = values[i];
+		}
+		return result;
 	}
 
 	private static Op<Double> toOp(final Token<String> token) {

@@ -33,6 +33,11 @@ import io.jenetics.incubator.parser.Token.Type;
 
 import io.jenetics.ext.util.TreeNode;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 7.0
+ * @version 7.0
+ */
 public class MathExprParsing<T, V> {
 
 	static abstract class Term<T, V> {

@@ -28,8 +28,6 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.prog.op.Program;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -54,7 +52,7 @@ public class MathExprTest {
 	public void eval(final String expr, final MathExprTestData.Fun3 fun) {
 		final double r1 = fun.apply(1.0, 2.0, 3.0);
 		final double r2 = io.jenetics.prog.op.MathExpr.eval(expr, 1.0, 2.0, 3.0);
-		final double r3 = Program.eval(MathExpr.parse(expr), 1.0, 2.0, 3.0);
+		final double r3 = MathExpr.eval(expr, 1.0, 2.0, 3.0);
 
 		if (Double.isFinite(r3)) {
 			assertThat(r3).isEqualTo(r1);
