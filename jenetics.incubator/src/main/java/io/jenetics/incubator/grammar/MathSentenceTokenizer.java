@@ -30,10 +30,10 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-public class MathSymbolTokenizer extends IterableTokenizer<Terminal, Terminal> {
+public class MathSentenceTokenizer extends IterableTokenizer<Terminal, Terminal> {
 
-	public MathSymbolTokenizer(final List<Terminal> sentence) {
-		super(sentence, MathSymbolTokenizer::toToken);
+	public MathSentenceTokenizer(final List<Terminal> sentence) {
+		super(sentence, MathSentenceTokenizer::toToken);
 	}
 
 	private static Token<Terminal> toToken(final Terminal terminal) {
