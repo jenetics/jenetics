@@ -33,15 +33,20 @@ import org.testng.annotations.Test;
  */
 public class MathExprTest {
 
-	@Test(dataProvider = "simpleExpressions")
-	public void parse(final String expr, final String expected) {
+	@Test(dataProvider = "basicExpressions")
+	public void parseBasicExpressions(final String expr, final String expected) {
 		final var tree = MathExpr.parse(expr);
 		assertThat(tree.toParenthesesString()).isEqualTo(expected);
 	}
 
 	@DataProvider
-	public Object[][] simpleExpressions() {
+	public Object[][] basicExpressions() {
 		return new Object[][] {
+			{"3", "3.0"},
+			{"-3", "neg(3.0)"},
+			{"+3", "id(3.0)"},
+			{"x", "x"},
+			{"sin(x)", "sin(x)"},
 			{"sub(sub(3.0,2.0),1.0)", "sub(sub(3.0,2.0),1.0)"},
 			{"3-2-1", "sub(sub(3.0,2.0),1.0)"},
 			{"3-2*1", "sub(3.0,mul(2.0,1.0))"}

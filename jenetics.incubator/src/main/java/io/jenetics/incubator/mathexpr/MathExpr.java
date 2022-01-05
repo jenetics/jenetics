@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.mathexpr.MathExprParsing.Kind;
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
 
@@ -102,11 +103,19 @@ public final class MathExpr {
 		return result;
 	}
 
-	private static Op<Double> toOp(final Token<String> token) {
+	private static Op<Double> toOp(final Token<String> token, final Token.Type type) {
 		if (token.type().code() == PLUS.code()) {
-			return MathOp.ADD;
+			if (type.code() == Kind.UNARY.code()) {
+				return MathOp.ID;
+			} else {
+				return MathOp.ADD;
+			}
 		} else if (token.type().code() == MINUS.code()) {
-			return MathOp.SUB;
+			if (type.code() == Kind.UNARY.code()) {
+				return MathOp.NEG;
+			} else {
+				return MathOp.SUB;
+			}
 		} else if (token.type().code() == TIMES.code()) {
 			return MathOp.MUL;
 		} else if (token.type().code() == DIV.code()) {
