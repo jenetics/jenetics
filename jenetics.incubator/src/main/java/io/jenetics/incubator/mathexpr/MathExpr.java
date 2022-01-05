@@ -19,23 +19,20 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.ID;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.MOD;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathStringTokenizer.MathTokenType.TIMES;
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathTokenType.ID;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import io.jenetics.incubator.mathexpr.MathExprParsing.Kind;
 import io.jenetics.incubator.parser.ParsingException;
