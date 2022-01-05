@@ -136,8 +136,7 @@ public final class MathExprParsing<T, V> {
 	private final Token.Type _comma;
 	private final List<? extends Set<? extends Token.Type>> _binaries;
 	private final Set<? extends Token.Type> _unaries;
-	private final Token.Type _number;
-	private final Token.Type _identifier;
+	private final Set<? extends Token.Type> _identifier;
 	private final Set<? extends T> _functions;
 
 	private final Term<T, V> _term;
@@ -149,8 +148,7 @@ public final class MathExprParsing<T, V> {
 		final Token.Type comma,
 		final List<? extends Set<? extends Token.Type>> binaries,
 		final Set<? extends Token.Type> unaries,
-		final Token.Type number,
-		final Token.Type identifier,
+		final Set<? extends Token.Type> identifier,
 		final Set<? extends T> functions
 	) {
 		_converter = requireNonNull(converter);
@@ -159,8 +157,7 @@ public final class MathExprParsing<T, V> {
 		_comma = requireNonNull(comma);
 		_binaries = List.copyOf(binaries);
 		_unaries = Set.copyOf(unaries);
-		_number = requireNonNull(number);
-		_identifier = requireNonNull(identifier);
+		_identifier = Set.copyOf(identifier);
 		_functions = Set.copyOf(functions);
 
 
@@ -232,13 +229,12 @@ public final class MathExprParsing<T, V> {
 	}
 
 	private boolean isFun(final Token<T> token) {
-		return token.type().code() == _identifier.code() &&
+		return _identifier.contains(token.type()) &&
 			_functions.contains(token.value());
 	}
 
 	private boolean isAtom(final Token<T> token) {
-		return token.type().code() == _number.code() ||
-			token.type().code() == _identifier.code();
+		return _identifier.contains(token.type());
 	}
 
 }

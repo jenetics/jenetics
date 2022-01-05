@@ -58,28 +58,19 @@ public final class MathExpr {
 	private MathExpr() {
 	}
 
-	private static final Set<String> FUNCTIONS = Stream.of(MathOp.values())
-		.map(MathOp::toString)
-		.collect(Collectors.toUnmodifiableSet());
-
-	private static final List<? extends Set<? extends Token.Type>> OPERATIONS = List.of(
-		EnumSet.of(PLUS, MINUS),
-		EnumSet.of(TIMES, DIV, MOD),
-		EnumSet.of(POW)
-	);
-
-	private static final Set<? extends Token.Type> UNARIES = EnumSet.of(PLUS, MINUS);
-
 	private static final MathExprParsing<String, Op<Double>> PARSING = new MathExprParsing<>(
 		MathExpr::toOp,
 		LPAREN,
 		RPAREN,
 		COMMA,
-		OPERATIONS,
-		UNARIES,
-		NUMBER,
-		ID,
-		FUNCTIONS
+		List.of(
+			EnumSet.of(PLUS, MINUS),
+			EnumSet.of(TIMES, DIV, MOD),
+			EnumSet.of(POW)
+		),
+		EnumSet.of(PLUS, MINUS),
+		EnumSet.of(ID, NUMBER),
+		MathOp.NAMES
 	);
 
 	public static Tree<Op<Double>, ?> parse(final String string) {
@@ -126,7 +117,7 @@ public final class MathExpr {
 			return MathOp.POW;
 		} else if (token.type().code() == NUMBER.code()) {
 			return Const.of(Double.parseDouble(token.value()));
-		} else if (FUNCTIONS.contains(token.value())) {
+		} else if (MathOp.NAMES.contains(token.value())) {
 			return MathOp.toMathOp(token.value());
 		} else if (token.type().code() == ID.code()) {
 			return Var.of(token.value());

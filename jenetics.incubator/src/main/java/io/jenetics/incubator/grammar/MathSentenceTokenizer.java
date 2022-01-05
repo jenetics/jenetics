@@ -32,14 +32,19 @@ import io.jenetics.incubator.parser.Token;
  */
 public class MathSentenceTokenizer extends IterableTokenizer<Terminal, Terminal> {
 
+	public static final Token.Type LPAREN = Token.Type.of(1, "LPAREN");
+	public static final Token.Type RPAREN = Token.Type.of(1, "RPAREN");
+	public static final Token.Type COMMA = Token.Type.of(1, "COMMA");
+
 	public MathSentenceTokenizer(final List<Terminal> sentence) {
 		super(sentence, MathSentenceTokenizer::toToken);
 	}
 
 	private static Token<Terminal> toToken(final Terminal terminal) {
 		return switch (terminal.value()) {
-			case "(" -> new Token<>(Token.Type.of(1, ""), terminal);
-			case ")" -> new Token<>(Token.Type.of(1, ""), terminal);
+			case "(" -> new Token<>(LPAREN, terminal);
+			case ")" -> new Token<>(RPAREN, terminal);
+			case "," -> new Token<>(COMMA, terminal);
 			default -> null;
 		};
 	}

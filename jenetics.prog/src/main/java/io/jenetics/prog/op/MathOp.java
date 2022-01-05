@@ -47,7 +47,9 @@ import static io.jenetics.prog.op.Numbers.box;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -351,6 +353,14 @@ public enum MathOp implements Op<Double> {
 	 */
 	public static final Const<Double> E = Const.of("e", Math.E);
 
+	/**
+	 * The names of all defined operation names.
+	 *
+	 * @since !__version__!
+	 */
+	public static final Set<String> NAMES = Stream.of(MathOp.values())
+		.map(MathOp::toString)
+		.collect(Collectors.toUnmodifiableSet());
 
 	private final String _name;
 	private final int _arity;

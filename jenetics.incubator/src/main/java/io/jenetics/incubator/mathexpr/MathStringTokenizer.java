@@ -80,10 +80,7 @@ public final class MathStringTokenizer extends CharSequenceTokenizer {
 		POW(9),
 
 		NUMBER(10),
-		ID(11),
-
-		UNARY_PLUS(12),
-		UNARY_MINUS(13);
+		ID(11);
 
 		private final int _code;
 

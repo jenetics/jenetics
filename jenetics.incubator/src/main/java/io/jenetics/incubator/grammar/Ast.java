@@ -20,12 +20,11 @@
 package io.jenetics.incubator.grammar;
 
 import java.util.List;
-import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.parser.Token;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -40,21 +39,10 @@ import io.jenetics.prog.op.Op;
  */
 public final class Ast {
 
-	public record Precedence(int level, Set<Token.Type> operators) {}
-
-	public record Config(
-		Token.Type lparen,
-		Token.Type rparen,
-		Token.Type comma,
-		Token.Type id,
-		Token.Type number,
-		Set<Precedence> operators,
-		Set<Token.Type> unaryOperators,
-		Set<Terminal> variables,
-		Set<Terminal> functions
-	){}
-
-	public Ast() {
+	public Ast(
+		final Predicate<? super String> binary,
+		final Predicate<? super String> unary
+	) {
 
 	}
 
@@ -69,6 +57,16 @@ public final class Ast {
 
 	public static TreeNode<Terminal> parse(final List<Terminal> tokens) {
 		return TreeNode.of(null);
+	}
+
+	public static void main(final String[] args) {
+		final var ast = new Ast(
+			string -> switch(string) {
+				case "+", "-", "*", "/" -> true;
+				default -> false;
+			},
+			string -> false
+		);
 	}
 
 }
