@@ -65,7 +65,7 @@ public class MathExprPerf {
 }
 
 /*
-Benchmark                 Mode  Cnt      Score      Error  Units
-MathExprPerf.newMathExpr  avgt   45    925.347 ±    7.128  ns/op
-MathExprPerf.oldMathExpr  avgt   45  66525.644 ± 1274.260  ns/op
+Benchmark                 Mode  Cnt      Score     Error  Units
+MathExprPerf.newMathExpr  avgt   45  12757.125 ±  75.947  ns/op
+MathExprPerf.oldMathExpr  avgt   45  67691.606 ± 384.562  ns/op
  */

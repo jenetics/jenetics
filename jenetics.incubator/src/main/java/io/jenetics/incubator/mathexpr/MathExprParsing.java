@@ -75,8 +75,7 @@ public class MathExprParsing<T, V> {
 				_next = term;
 				_last = term;
 			} else {
-				_last._next = term;
-				_next._next._last = term;
+				_last.append(term);
 			}
 		}
 	}
@@ -117,17 +116,18 @@ public class MathExprParsing<T, V> {
 			final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
 			final List<? extends Set<? extends Type>> binaries
 		) {
-			OpTerm<T, V> result = null;
+			OpTerm<T, V> start = null;
 			for (var tokens : binaries) {
+				System.out.println(tokens);
 				final OpTerm<T, V> term = new OpTerm<>(converter, tokens);
-				if (result == null) {
-					result = term;
+				if (start == null) {
+					start = term;
 				} else {
-					result.append(term);
+					start.append(term);
 				}
 			}
 
-			return result;
+			return start;
 		}
 	}
 
