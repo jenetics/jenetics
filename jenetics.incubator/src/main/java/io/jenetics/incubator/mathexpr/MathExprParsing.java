@@ -38,9 +38,9 @@ import io.jenetics.ext.util.TreeNode;
  * @since 7.0
  * @version 7.0
  */
-public class MathExprParsing<T, V> {
+public final class MathExprParsing<T, V> {
 
-	enum Kind implements Token.Type {
+	public enum Kind implements Token.Type {
 		UNARY(1),
 		BINARY(2),
 		FUN(3),
@@ -164,8 +164,8 @@ public class MathExprParsing<T, V> {
 		_functions = Set.copyOf(functions);
 
 
-		Term<T, V> oterm = OpTerm.build(converter, binaries);
-		Term<T, V> fterm = new Term<T, V>() {
+		final Term<T, V> oterm = OpTerm.build(converter, binaries);
+		final Term<T, V> fterm = new Term<T, V>() {
 			@Override
 			TreeNode<V> term(final Parser<T> parser) {
 				return function(parser);
