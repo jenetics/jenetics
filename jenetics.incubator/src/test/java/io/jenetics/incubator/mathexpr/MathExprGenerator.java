@@ -19,15 +19,15 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.Sentence;
-import io.jenetics.incubator.grammar.SymbolIndex;
-import io.jenetics.incubator.grammar.bnf.Bnf;
-
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.grammar.Cfg;
+import io.jenetics.incubator.grammar.Sentence;
+import io.jenetics.incubator.grammar.SymbolIndex;
+import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,25 +37,25 @@ public final class MathExprGenerator {
 	}
 
 	private static final Cfg GRAMMAR = Bnf.parse("""
-			<expr> ::= <num>
-					| <var>
-					| <expr> <op> <expr>
-					| ( <expr> <op> <expr> )
-					| <fun1> ( <expr> )
-					| <fun2> ( <expr>, <expr> )
-			<op>   ::= + | - | * | / | %
-			<fun1> ::= sin | cos | abs | sqrt | rint
-			<fun2> ::= pow | min | max | hypot
-			<var>  ::= x | y | z
-			<num>  ::= 3.123312 | 6.345345 | 23.43e-03 | 1.4e3
-			"""
+		<expr> ::= <num>
+				| <var>
+				| <expr> <op> <expr>
+				| ( <expr> <op> <expr> )
+				| <fun1> ( <expr> )
+				| <fun2> ( <expr>, <expr> )
+		<op>   ::= + | - | * | / | %
+		<fun1> ::= sin | cos | abs | rint
+		<fun2> ::= pow | min | max
+		<var>  ::= x | y | z
+		<num>  ::= 3.123312 | 6.345345 | 23.43e-03 | 1.4e3
+		"""
 	);
 
 
 	public static void main(final String[] args) {
 		final var random = RandomGenerator.getDefault();
 		final var sentences = Stream.generate(() -> sentence(random))
-			.limit(100)
+			.limit(150)
 			.toList();
 
 		System.out.println("public static final List<String> EXPRESSIONS = List.of(");
@@ -94,7 +94,7 @@ public final class MathExprGenerator {
 			expr = Sentence.generate(GRAMMAR, SymbolIndex.of(random), 1000).stream()
 				.map(Cfg.Symbol::value)
 				.collect(Collectors.joining());
-		} while (expr.length() < 200);
+		} while (expr.length() < 250);
 
 		return expr;
 	}

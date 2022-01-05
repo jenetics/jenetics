@@ -118,7 +118,6 @@ public class MathExprParsing<T, V> {
 		) {
 			OpTerm<T, V> start = null;
 			for (var tokens : binaries) {
-				System.out.println(tokens);
 				final OpTerm<T, V> term = new OpTerm<>(converter, tokens);
 				if (start == null) {
 					start = term;

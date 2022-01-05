@@ -49,7 +49,11 @@ public class MathExprPerf {
 
 	@Setup
 	public void setup() {
-		value =  "x*x/4^cos(z) * x*32 + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))";
+		value =  "min(sin(z+max((23.43e-03+min(y%pow(z,6.345345),1.4e3)-" +
+			"(abs(3.123312)%(min(pow(6.345345*1.4e3,(x*y)*pow(23.43e-03,1.4e3))," +
+			"(23.43e-03-y))+(x%min(sin((3.123312*min(23.43e-03,z-3.123312-min(z,x))))," +
+			"3.123312))))),(rint(3.123312)-max((x-y),z/abs(max(max(cos(1.4e3),23.43e-03)," +
+			"y-sin(x)))))))%x,1.4e3)";
 	}
 
 	@Benchmark
@@ -65,7 +69,7 @@ public class MathExprPerf {
 }
 
 /*
-Benchmark                 Mode  Cnt      Score     Error  Units
-MathExprPerf.newMathExpr  avgt   45  12757.125 ±  75.947  ns/op
-MathExprPerf.oldMathExpr  avgt   45  67691.606 ± 384.562  ns/op
+Benchmark                 Mode  Cnt       Score      Error  Units
+MathExprPerf.newMathExpr  avgt   45   26900.373 ±  166.900  ns/op
+MathExprPerf.oldMathExpr  avgt   45  159904.490 ± 2214.192  ns/op
  */
