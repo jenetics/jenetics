@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.prog;
 
 import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
 import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;

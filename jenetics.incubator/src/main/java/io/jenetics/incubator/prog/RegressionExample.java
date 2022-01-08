@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.incubator.prog;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,8 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.incubator.grammar.Cfg;
+import io.jenetics.incubator.grammar.Sentence;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 import io.jenetics.ext.util.Tree;
