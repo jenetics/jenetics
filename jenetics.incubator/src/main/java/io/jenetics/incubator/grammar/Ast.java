@@ -19,17 +19,32 @@
  */
 package io.jenetics.incubator.grammar;
 
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
+import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
+
+import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.mathexpr.MathExprParsing;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.op.MathExpr;
+import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 
 /**
@@ -39,6 +54,21 @@ import io.jenetics.prog.op.Op;
  */
 public final class Ast {
 
+	private static final MathExprParsing<Terminal, Op<Double>> PARSING = new MathExprParsing<>(
+		null,
+		LPAREN,
+		RPAREN,
+		COMMA,
+		List.of(
+			EnumSet.of(PLUS, MINUS),
+			EnumSet.of(TIMES, DIV, MOD),
+			EnumSet.of(POW)
+		),
+		EnumSet.of(PLUS, MINUS),
+		EnumSet.of(IDENTIFIER, NUMBER),
+		fun -> MathOp.NAMES.contains(fun.value())
+	);
+
 	public Ast(
 		final Predicate<? super String> binary,
 		final Predicate<? super String> unary
@@ -47,7 +77,7 @@ public final class Ast {
 	}
 
 
-	public static Tree<Op<Double>, ?> toTree(final List<Terminal> sentence) {
+	public Tree<Op<Double>, ?> toTree(final List<Terminal> sentence) {
 		final String expression = sentence.stream()
 			.map(Symbol::value)
 			.collect(Collectors.joining());
