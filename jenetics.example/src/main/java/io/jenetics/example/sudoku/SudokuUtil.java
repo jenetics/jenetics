@@ -25,8 +25,7 @@ package io.jenetics.example.sudoku;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class SudokuUtil
-{
+public class SudokuUtil {
 
 	public static final int SIZE = 9;
 

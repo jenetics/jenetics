@@ -33,16 +33,13 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class RowCrossover extends Recombinator<IntegerGene, Integer>
-{
-	protected RowCrossover(double probability)
-	{
+public class RowCrossover extends Recombinator<IntegerGene, Integer> {
+	protected RowCrossover(double probability) {
 		super(probability, 2);
 	}
 
 	@Override
-	protected int recombine(MSeq<Phenotype<IntegerGene, Integer>> population, int[] individuals, long generation)
-	{
+	protected int recombine(MSeq<Phenotype<IntegerGene, Integer>> population, int[] individuals, long generation) {
 
 		assert individuals.length == 2 : "Required order of 2";
 
@@ -66,8 +63,7 @@ public class RowCrossover extends Recombinator<IntegerGene, Integer>
 		return this.order();
 	}
 
-	private void crossover(MSeq<Chromosome<IntegerGene>> individual1, MSeq<Chromosome<IntegerGene>> individual2, int chIndex)
-	{
+	private void crossover(MSeq<Chromosome<IntegerGene>> individual1, MSeq<Chromosome<IntegerGene>> individual2, int chIndex) {
 		var ch = individual1.get(chIndex);
 		individual1.set(chIndex, individual2.get(chIndex));
 		individual2.set(chIndex, ch);

@@ -34,14 +34,12 @@ import java.util.*;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class Generator
-{
+public class Generator {
 	/**
 	 * @param board the board of sudoku
 	 * @return a random individual for the given board
 	 */
-	public static MSeq<Chromosome<IntegerGene>> createIndividual(int[][] board)
-	{
+	public static MSeq<Chromosome<IntegerGene>> createIndividual(int[][] board) {
 		int size = board.length;
 		MSeq<Chromosome<IntegerGene>> sudoku = MSeq.ofLength(size);
 		for (int i = 0; i < size; i++) {
@@ -50,8 +48,7 @@ public class Generator
 		return sudoku;
 	}
 
-	private static IntegerChromosome createChromosome(int[][] board, int iChromosome)
-	{
+	private static IntegerChromosome createChromosome(int[][] board, int iChromosome) {
 		LinkedList<Integer> changes = new LinkedList<>();
 		LinkedList<Integer> inputs = new LinkedList<>();
 

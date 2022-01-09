@@ -38,13 +38,11 @@ import static java.lang.System.out;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, IntegerGene, Integer>
-{
+public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, IntegerGene, Integer> {
 
 	private final int[][] board;
 
-	public SudokuProblem(int[][] board)
-	{
+	public SudokuProblem(int[][] board) {
 		this.board = board;
 	}
 
@@ -54,8 +52,7 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 	 * It is one of the simplest fitness function for sudoku.
 	 */
 	@Override
-	public Function<ISeq<Chromosome<IntegerGene>>, Integer> fitness()
-	{
+	public Function<ISeq<Chromosome<IntegerGene>>, Integer> fitness() {
 		return board -> {
 			int penaltiesInRows = penaltiesInRows(board);
 			int penaltiesInCols = penaltiesInCols(board);
@@ -64,8 +61,7 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 		};
 	}
 
-	private int penaltiesInCols(ISeq<Chromosome<IntegerGene>> ind)
-	{
+	private int penaltiesInCols(ISeq<Chromosome<IntegerGene>> ind) {
 		int penalties = 0;
 		int[] set = null;
 
@@ -92,8 +88,7 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 		return penalties;
 	}
 
-	private int penaltiesInRows(ISeq<Chromosome<IntegerGene>> ind)
-	{
+	private int penaltiesInRows(ISeq<Chromosome<IntegerGene>> ind) {
 		int penalties = 0;
 		int[] set = null;
 		int[] skips = new int[board.length];
@@ -116,8 +111,7 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 		return penalties;
 	}
 
-	private int penaltiesInGrid(ISeq<Chromosome<IntegerGene>> ind)
-	{
+	private int penaltiesInGrid(ISeq<Chromosome<IntegerGene>> ind) {
 		int[] skips = new int[board.length];
 		int penalties = 0;
 		for (int i = 0; i < board.length; i += 3) {
@@ -128,8 +122,7 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 		return penalties;
 	}
 
-	public int penaltiesInSubBoard(ISeq<Chromosome<IntegerGene>> ind, int i, int j, int scope, int[] skips)
-	{
+	public int penaltiesInSubBoard(ISeq<Chromosome<IntegerGene>> ind, int i, int j, int scope, int[] skips) {
 
 		int penalties = 0;
 		int[] set = new int[ind.length()];
@@ -154,13 +147,11 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 	}
 
 	@Override
-	public Codec<ISeq<Chromosome<IntegerGene>>, IntegerGene> codec()
-	{
+	public Codec<ISeq<Chromosome<IntegerGene>>, IntegerGene> codec() {
 		return Codec.of(() -> Genotype.of(Generator.createIndividual(board)), ISeq::of);
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		final int[][] board = SudokuUtil.BOARD2;
 
 		// Crossovers like SinglePoint can be used
