@@ -33,10 +33,10 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.incubator.grammar.Cfg;
 import io.jenetics.incubator.grammar.Sentence;
 import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.incubator.mathexpr.MathExpr;
 
 import io.jenetics.ext.util.Tree;
 
-import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 import io.jenetics.prog.regression.Error;
@@ -70,8 +70,7 @@ public class RegressionExample {
 					.incrementAndGet();
 				return s;
 			})
-			.map(Sentence::toString)
-			.map(e -> e.isEmpty() ? null : MathExpr.parseTree(e));
+			.map(e -> e.isEmpty() ? null : MathExpr.parse(new MathSentenceTokenizer(e)));
 
 	// Lookup table for 4*x^3 - 3*x^2 + x
 	private static final List<Sample<Double>> SAMPLES = List.of(
@@ -155,7 +154,7 @@ public class RegressionExample {
 				.map(IntegerGene::allele)
 				.toList()
 		);
-		System.out.println(MathExpr.format(best) + " = " + fitness(best));
+		System.out.println(io.jenetics.prog.op.MathExpr.format(best) + " = " + fitness(best));
 	}
 
 	/*
