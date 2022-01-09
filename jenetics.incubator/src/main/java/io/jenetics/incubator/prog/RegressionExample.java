@@ -33,7 +33,6 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.incubator.grammar.Cfg;
 import io.jenetics.incubator.grammar.Sentence;
 import io.jenetics.incubator.grammar.bnf.Bnf;
-import io.jenetics.incubator.mathexpr.MathExpr;
 
 import io.jenetics.ext.util.Tree;
 
@@ -70,7 +69,7 @@ public class RegressionExample {
 					.incrementAndGet();
 				return s;
 			})
-			.map(e -> e.isEmpty() ? null : MathExpr.parse(new MathSentenceTokenizer(e)));
+			.map(e -> e.isEmpty() ? null : MathSentence.parse(e));
 
 	// Lookup table for 4*x^3 - 3*x^2 + x
 	private static final List<Sample<Double>> SAMPLES = List.of(

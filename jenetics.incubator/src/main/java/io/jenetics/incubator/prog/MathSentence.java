@@ -33,12 +33,12 @@ import io.jenetics.prog.op.Op;
  * @since !__version__!
  * @version !__version__!
  */
-public final class Ast {
+public final class MathSentence {
 
-	private Ast() {
+	private MathSentence() {
 	}
 
-	public static Tree<Op<Double>, ?> toTree(final List<Terminal> sentence) {
+	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
 		return MathExpr.parse(new MathSentenceTokenizer(sentence));
 	}
 
