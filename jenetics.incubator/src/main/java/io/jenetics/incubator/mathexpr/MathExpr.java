@@ -19,24 +19,21 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
 import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
 import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
-import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
 import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
 import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
-import java.util.EnumSet;
 import java.util.List;
 
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
+import io.jenetics.incubator.parser.Tokenizer;
 
 import io.jenetics.ext.util.Tree;
 
@@ -55,25 +52,19 @@ public final class MathExpr {
 	private MathExpr() {
 	}
 
-	private static final MathExprParsing<String, Op<Double>> PARSING = new MathExprParsing<>(
-		MathExpr::toOp,
-		LPAREN,
-		RPAREN,
-		COMMA,
-		List.of(
-			EnumSet.of(PLUS, MINUS),
-			EnumSet.of(TIMES, DIV, MOD),
-			EnumSet.of(POW)
-		),
-		EnumSet.of(PLUS, MINUS),
-		EnumSet.of(IDENTIFIER, NUMBER),
-		MathOp.NAMES::contains
-	);
+	public static final MathExprParsing<String, Op<Double>> PARSING =
+		MathExprParsing.of(MathExpr::toOp, MathOp.NAMES::contains);
 
-	public static Tree<Op<Double>, ?> parse(final String string) {
-		final var expr =  MathExprParser.of(string, PARSING).parse();
+
+	public static <V> Tree<Op<Double>, ?>
+	parse(final Tokenizer<String> tokenizer) {
+		final var expr = new MathExprParser<>(tokenizer, PARSING).parse();
 		Var.reindex(expr);
 		return expr;
+	}
+
+	public static Tree<Op<Double>, ?> parse(final String string) {
+		return parse(new MathStringTokenizer(string));
 	}
 
 	public static double eval(final String expr, final double... args) {
@@ -88,7 +79,7 @@ public final class MathExpr {
 		return result;
 	}
 
-	private static Op<Double> toOp(final Token<String> token, final Token.Type type) {
+	public static Op<Double> toOp(final Token<String> token, final Token.Type type) {
 		if (token.type().code() == PLUS.code()) {
 			if (type.code() == UNARY_OPERATOR.code()) {
 				return MathOp.ID;

@@ -25,12 +25,14 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
 import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
 import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
 import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
 import java.util.List;
+import java.util.Optional;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.incubator.parser.IterableTokenizer;
@@ -41,25 +43,35 @@ import io.jenetics.incubator.parser.Token;
  * @since 7.0
  * @version 7.0
  */
-public class MathSentenceTokenizer extends IterableTokenizer<Terminal, Terminal> {
+final class MathSentenceTokenizer extends IterableTokenizer<Terminal, String> {
 
 	public MathSentenceTokenizer(final List<Terminal> sentence) {
 		super(sentence, MathSentenceTokenizer::toToken);
 	}
 
-	private static Token<Terminal> toToken(final Terminal terminal) {
+	private static Token<String> toToken(final Terminal terminal) {
 		return switch (terminal.value()) {
-			case "(" -> new Token<>(LPAREN, terminal);
-			case ")" -> new Token<>(RPAREN, terminal);
-			case "," -> new Token<>(COMMA, terminal);
-			case "+" -> new Token<>(PLUS, terminal);
-			case "-" -> new Token<>(MINUS, terminal);
-			case "*" -> new Token<>(TIMES, terminal);
-			case "/" -> new Token<>(DIV, terminal);
-			case "%" -> new Token<>(MOD, terminal);
-			case "^", "**" -> new Token<>(POW, terminal);
-			default -> new Token<>(IDENTIFIER, terminal);
+			case "(" -> new Token<>(LPAREN, terminal.value());
+			case ")" -> new Token<>(RPAREN, terminal.value());
+			case "," -> new Token<>(COMMA, terminal.value());
+			case "+" -> new Token<>(PLUS, terminal.value());
+			case "-" -> new Token<>(MINUS, terminal.value());
+			case "*" -> new Token<>(TIMES, terminal.value());
+			case "/" -> new Token<>(DIV, terminal.value());
+			case "%" -> new Token<>(MOD, terminal.value());
+			case "^", "**" -> new Token<>(POW, terminal.value());
+			default -> toNumber(terminal.value()).isPresent()
+				? new Token<>(NUMBER, terminal.value())
+				: new Token<>(IDENTIFIER, terminal.value());
 		};
+	}
+
+	private static Optional<Double> toNumber(final String value) {
+		try {
+			return Optional.of(Double.parseDouble(value));
+		} catch (NumberFormatException e) {
+			return Optional.empty();
+		}
 	}
 
 }

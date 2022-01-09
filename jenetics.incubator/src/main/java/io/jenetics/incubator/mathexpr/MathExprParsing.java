@@ -22,9 +22,21 @@ package io.jenetics.incubator.mathexpr;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.mathexpr.MathTokenType.ATOM;
 import static io.jenetics.incubator.mathexpr.MathTokenType.BINARY_OPERATOR;
+import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
+import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
 import static io.jenetics.incubator.mathexpr.MathTokenType.FUN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
+import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
+import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
+import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
+import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
+import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -37,6 +49,8 @@ import io.jenetics.incubator.parser.Token;
 import io.jenetics.incubator.parser.Token.Type;
 
 import io.jenetics.ext.util.TreeNode;
+
+import io.jenetics.prog.op.MathOp;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -219,6 +233,26 @@ public final class MathExprParsing<T, V> {
 
 	private boolean isAtom(final Token<T> token) {
 		return _identifier.contains(token.type());
+	}
+
+	public static <T, V> MathExprParsing<T, V> of(
+		final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
+		final Predicate<? super T> functions
+	) {
+		return new MathExprParsing<>(
+			converter,
+			LPAREN,
+			RPAREN,
+			COMMA,
+			List.of(
+				EnumSet.of(PLUS, MINUS),
+				EnumSet.of(TIMES, DIV, MOD),
+				EnumSet.of(POW)
+			),
+			EnumSet.of(PLUS, MINUS),
+			EnumSet.of(IDENTIFIER, NUMBER),
+			functions
+		);
 	}
 
 }
