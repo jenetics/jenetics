@@ -20,6 +20,7 @@
 package io.jenetics.example.sudoku;
 
 import io.jenetics.Chromosome;
+import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.util.MSeq;
@@ -39,16 +40,16 @@ public class Generator {
 	 * @param board the board of sudoku
 	 * @return a random individual for the given board
 	 */
-	public static MSeq<Chromosome<IntegerGene>> createIndividual(int[][] board) {
+	public static Genotype<IntegerGene> createIndividual(final int[][] board) {
 		int size = board.length;
-		MSeq<Chromosome<IntegerGene>> sudoku = MSeq.ofLength(size);
+		MSeq<Chromosome<IntegerGene>> sudokuChromosomes = MSeq.ofLength(size);
 		for (int i = 0; i < size; i++) {
-			sudoku.set(i, createChromosome(board, i));
+			sudokuChromosomes.set(i, createChromosome(board, i));
 		}
-		return sudoku;
+		return Genotype.of(sudokuChromosomes);
 	}
 
-	private static IntegerChromosome createChromosome(int[][] board, int iChromosome) {
+	private static IntegerChromosome createChromosome(final int[][] board, int iChromosome) {
 		LinkedList<Integer> changes = new LinkedList<>();
 		LinkedList<Integer> inputs = new LinkedList<>();
 

@@ -58,7 +58,7 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 
 	@Override
 	public Codec<SudokuGrid, IntegerGene> codec() {
-		return Codec.of(() -> Genotype.of(Generator.createIndividual(board)), chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes)));
+		return Codec.of(() -> Generator.createIndividual(board), chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes)));
 	}
 
 	public static void main(String[] args) {
