@@ -38,7 +38,7 @@ import static java.lang.System.out;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, IntegerGene, Integer> {
+public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> {
 
 	private final int[][] board;
 
@@ -52,103 +52,13 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 	 * It is one of the simplest fitness function for sudoku.
 	 */
 	@Override
-	public Function<ISeq<Chromosome<IntegerGene>>, Integer> fitness() {
-		return board -> {
-			int penaltiesInRows = penaltiesInRows(board);
-			int penaltiesInCols = penaltiesInCols(board);
-			int penaltiesInGrid = penaltiesInGrid(board);
-			return penaltiesInRows + penaltiesInCols + penaltiesInGrid;
-		};
-	}
-
-	private int penaltiesInCols(ISeq<Chromosome<IntegerGene>> ind) {
-		int penalties = 0;
-		int[] set = null;
-
-		// skips array aims tracking of fixed cells in the board
-		int[] skips = new int[board.length];
-
-		for (int j = 0; j < board.length; j++) {
-			set = new int[board.length];
-			for (int i = 0; i < board.length; i++) {
-				int value = -1;
-				if (board[i][j] == 0) {
-					value = ind.get(i).get(j - skips[i]).allele();
-				} else {
-					value = board[i][j];
-					skips[i]++;
-
-				}
-				if (set[value - 1] >= 1) {
-					penalties++;
-				}
-				set[value - 1]++;
-			}
-		}
-		return penalties;
-	}
-
-	private int penaltiesInRows(ISeq<Chromosome<IntegerGene>> ind) {
-		int penalties = 0;
-		int[] set = null;
-		int[] skips = new int[board.length];
-		for (int i = 0; i < board.length; i++) {
-			set = new int[board.length];
-			for (int j = 0; j < board.length; j++) {
-				int value = -1;
-				if (board[i][j] == 0) {
-					value = ind.get(i).get(j - skips[i]).allele();
-				} else {
-					value = board[i][j];
-					skips[i]++;
-				}
-				if (set[value - 1] >= 1) {
-					penalties++;
-				}
-				set[value - 1]++;
-			}
-		}
-		return penalties;
-	}
-
-	private int penaltiesInGrid(ISeq<Chromosome<IntegerGene>> ind) {
-		int[] skips = new int[board.length];
-		int penalties = 0;
-		for (int i = 0; i < board.length; i += 3) {
-			for (int j = 0; j < board.length; j += 3) {
-				penalties += penaltiesInSubBoard(ind, i, j, 3, skips);
-			}
-		}
-		return penalties;
-	}
-
-	public int penaltiesInSubBoard(ISeq<Chromosome<IntegerGene>> ind, int i, int j, int scope, int[] skips) {
-
-		int penalties = 0;
-		int[] set = new int[ind.length()];
-		for (int y = i; y < i + scope; y++) {
-			for (int x = j; x < j + scope; x++) {
-
-				int value = -1;
-				if (board[y][x] == 0) {
-					value = ind.get(y).get(x - skips[y]).allele();
-				} else {
-					value = board[y][x];
-					skips[y]++;
-				}
-
-				if (set[value - 1] >= 1) {
-					penalties++;
-				}
-				set[value - 1]++;
-			}
-		}
-		return penalties;
+	public Function<SudokuGrid, Integer> fitness() {
+		return SudokuGrid::penalties;
 	}
 
 	@Override
-	public Codec<ISeq<Chromosome<IntegerGene>>, IntegerGene> codec() {
-		return Codec.of(() -> Genotype.of(Generator.createIndividual(board)), ISeq::of);
+	public Codec<SudokuGrid, IntegerGene> codec() {
+		return Codec.of(() -> Genotype.of(Generator.createIndividual(board)), chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes)));
 	}
 
 	public static void main(String[] args) {
@@ -170,21 +80,6 @@ public class SudokuProblem implements Problem<ISeq<Chromosome<IntegerGene>>, Int
 			.peek(r -> bestPhenotypes.add(r.bestPhenotype()))
 			.collect(toBestPhenotype());
 		out.println("Issues: " + best.fitness());
-
-		// print board
-		int[] skips = new int[board.length];
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				int value = -1;
-				if (board[i][j] == 0) {
-					value = best.genotype().get(i).get(j - skips[i]).allele();
-				} else {
-					value = board[i][j];
-					skips[i]++;
-				}
-				out.printf("%d, ", value);
-			}
-			out.println();
-		}
+		out.println(new SudokuGrid(board, ISeq.of(best.genotype())));
 	}
 }
