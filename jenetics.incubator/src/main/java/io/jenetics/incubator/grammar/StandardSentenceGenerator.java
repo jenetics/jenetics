@@ -35,8 +35,8 @@ import io.jenetics.incubator.grammar.Cfg.Terminal;
  * {@link Expansion#LEFT_TO_RIGHT}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 public final class StandardSentenceGenerator implements SentenceGenerator {
 

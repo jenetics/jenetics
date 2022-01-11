@@ -211,7 +211,7 @@ public final class Codecs {
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
 	 * values are restricted by the same domain.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length range
@@ -262,7 +262,7 @@ public final class Codecs {
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
 	 * values are restricted by the same domain.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length range
@@ -313,7 +313,7 @@ public final class Codecs {
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
 	 * values are restricted by the same domain.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length range

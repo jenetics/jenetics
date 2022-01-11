@@ -356,7 +356,7 @@ public enum MathOp implements Op<Double> {
 	/**
 	 * The names of all defined operation names.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 */
 	public static final Set<String> NAMES = Stream.of(MathOp.values())
 		.map(MathOp::toString)

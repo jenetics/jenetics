@@ -36,8 +36,8 @@ import io.jenetics.util.BaseSeq;
  * indexes are needed, the values are read from the beginning again.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 public final class Codons implements SymbolIndex {
 

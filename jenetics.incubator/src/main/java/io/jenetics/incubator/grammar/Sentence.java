@@ -44,8 +44,8 @@ import io.jenetics.util.IntRange;
  * {@link Terminal}s, {@code List<Cfg.Terminal>}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.0
+ * @version 7.0
  */
 public final class Sentence {
 	private Sentence() {}

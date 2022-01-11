@@ -214,7 +214,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * assert tree.isEmpty();
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @return {@code true} if {@code this} tree is empty, {@code false}
 	 *          otherwise
@@ -739,7 +739,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	/**
 	 * Return a stream of leaves that are descendants of this node.
 	 *
-	 * @since !__version__!
+	 * @since 7.0
 	 *
 	 * @return a stream of leaves that are descendants of this node
 	 */

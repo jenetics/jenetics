@@ -32,7 +32,7 @@ import io.jenetics.incubator.grammar.bnf.Bnf;
 /**
  * This class generates valid math expressions for testing purpose.
  *
- * @since !__version__!
+ * @since 7.0
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
