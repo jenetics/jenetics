@@ -27,16 +27,18 @@ import io.jenetics.incubator.parser.Token.Type;
 /**
  * Base class for all parsers.
  *
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-abstract class Parser<T extends Token> {
+public abstract class Parser<V> {
 
-	private final Tokenizer<? extends T> _tokenizer;
-	private final TokenRing<T> _lookahead;
+	private final Tokenizer<V> _tokenizer;
+	private final TokenRing<V> _lookahead;
 
-	protected Parser(final Tokenizer<? extends T> tokenizer, final int k) {
+	protected Parser(final Tokenizer<V> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
@@ -51,7 +53,7 @@ abstract class Parser<T extends Token> {
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
-	protected T LT(final int index) {
+	public Token<V> LT(final int index) {
 		return _lookahead.LT(index);
 	}
 
@@ -61,7 +63,7 @@ abstract class Parser<T extends Token> {
 	 * @param index lookahead index
 	 * @return the token type code for the given lookahead index
 	 */
-	protected int LA(final int index) {
+	public int LA(final int index) {
 		return LT(index).type().code();
 	}
 
@@ -77,7 +79,7 @@ abstract class Parser<T extends Token> {
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
-	protected T match(final Type type) {
+	public Token<V> match(final Type type) {
 		if (LA(1) == type.code()) {
 			final var token = LT(1);
 			consume();
@@ -93,7 +95,7 @@ abstract class Parser<T extends Token> {
 	/**
 	 * Consumes the next token.
 	 */
-	protected void consume() {
+	public void consume() {
 		_lookahead.add(_tokenizer.next());
 	}
 

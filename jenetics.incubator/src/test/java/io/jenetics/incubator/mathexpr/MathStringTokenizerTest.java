@@ -17,29 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.mathexpr;
 
-import java.io.Serial;
+import org.testng.annotations.Test;
 
 /**
- * Exception thrown in the case of a parse error.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class ParsingException extends RuntimeException {
+public class MathStringTokenizerTest {
 
-	@Serial
-	private static final long serialVersionUID = 1;
+	@Test
+	public void number() {
+		final var value = "x*x + sin(z) - cos(x)*y*pow(z*x + y, pow((z*x + y)**pow(z*x + y, x), x))";
+		final var tokenizer = new MathStringTokenizer(value);
 
-	public ParsingException(final String message) {
-		super(message);
+		tokenizer.tokens().forEach(System.out::println);
 	}
-
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
 
 }

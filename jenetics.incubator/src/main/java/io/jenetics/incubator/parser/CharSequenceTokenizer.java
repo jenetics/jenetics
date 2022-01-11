@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.parser;
 
+import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  * @since 7.0
  * @version 7.0
  */
-abstract class CharSequenceTokenizer<T extends Token> implements Tokenizer<T> {
+public abstract class CharSequenceTokenizer implements Tokenizer<String> {
 
 	private static final char EOF = (char)-1;
 
@@ -72,8 +73,23 @@ abstract class CharSequenceTokenizer<T extends Token> implements Tokenizer<T> {
 		}
 	}
 
-	protected final boolean isNonEof(final char ch) {
+	protected char LA(final int index) {
+		final int i = pos + index - 1;
+		return i < _input.length() && i >= 0 ? _input.charAt(i) : EOF;
+	}
+
+	public static boolean isNonEof(final char ch) {
 		return ch != EOF;
+	}
+
+	public static boolean isAlphabetic(final char c) {
+		return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z');
+	}
+
+	protected void WS() {
+		do {
+			consume();
+		} while (isNonEof(c) && isWhitespace(c));
 	}
 
 }

@@ -204,8 +204,28 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<int[], IntegerGene> ofVector(
+		final IntRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
@@ -235,8 +255,28 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<long[], LongGene> ofVector(
+		final LongRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
@@ -266,8 +306,28 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<double[], DoubleGene> ofVector(
+		final DoubleRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),

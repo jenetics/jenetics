@@ -19,38 +19,45 @@
  */
 package io.jenetics.incubator.parser;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
  * Interface for all tokenizers.
  *
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
 @FunctionalInterface
-interface Tokenizer<T extends Token> {
+public interface Tokenizer<V> {
 
 	/**
-	 * Return the next available <em>token</em>, or {@link Token#EOF} if no
+	 * Return the next available <em>token</em>, or {@link Token#eof()} if no
 	 * further tokens are available.
 	 *
 	 * @return the next available token
 	 */
-	T next();
+	Token<V> next();
 
-	default Tokenizer<T> filter(final Predicate<? super T> filter) {
+	default Tokenizer<V> filter(final Predicate<? super Token<? extends V>> filter) {
 		return () -> {
 			var token = Tokenizer.this.next();
-			while (!filter.test(token) && token != Token.EOF) {
+			while (!filter.test(token) && !token.isEof()) {
 				token = Tokenizer.this.next();
 			}
 			return token;
 		};
 	}
 
-	default Stream<T> tokens() {
+	default <T> Tokenizer<T> map(final Function<? super Token<V>, Token<T>> f) {
+		return () -> f.apply(next());
+	}
+
+	default Stream<Token<V>> tokens() {
 		return Stream.generate(this::next)
 			.takeWhile(token -> token.type().code() != Token.Type.EOF.code());
 	}

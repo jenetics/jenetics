@@ -17,26 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.incubator.parser.Token.Type.EOF;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.jenetics.incubator.parser.Bnf.Expression;
-import io.jenetics.incubator.parser.Bnf.NonTerminal;
-import io.jenetics.incubator.parser.Bnf.Rule;
-import io.jenetics.incubator.parser.Bnf.Symbol;
-import io.jenetics.incubator.parser.Bnf.Terminal;
+import io.jenetics.incubator.grammar.Cfg;
+import io.jenetics.incubator.grammar.Cfg.Expression;
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.parser.Parser;
+import io.jenetics.incubator.parser.ParsingException;
 
 /**
  * Parser for BNF grammars.
@@ -53,8 +56,31 @@ import io.jenetics.incubator.parser.Bnf.Terminal;
  * id: LT ruleid GT;
  * ruleid: ID;
  * }</pre>
+ *
+ * The BNF object is build from the following classes.
+ * <ul>
+ *     <li>{@link Symbol}: A symbol is either a {@link Terminal} or
+ *     {@link NonTerminal} symbol.</li>
+ *     <li>{@link NonTerminal}: Non-terminal symbols are parenthesised in angle
+ *     brackets; {@code <expr>}, {@code num} or {@code var}. The name must start
+ *     with a letter and contain only letters and digits:
+ *     {@code ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+}</li>
+ *     <li>{@link Terminal}: Terminal symbols are simple string values, which
+ *     can also be quoted; {@code x}, {@code 1}, {@code terminal} or
+ *     {@code 'some $special value'}</li>
+ *     <li>{@link Expression}: Consists of a list of symbols; {@code [num]},
+ *     {@code [var]} or {@code [(, expr, op, expr, )]}</li>
+ *     <li>{@link Rule}: A rule has a name, a non-terminal start symbol, and a
+ *     list of <em>alternative</em> expressions;
+ *     {@code <expr> ::= [[num], [var], [(, expr, op, expr, )]]}</li>
+ *     <li>{@link Cfg}: A whole BNF grammar consists of one or more {@link Rule}s.</li>
+ * </ul>
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 7.0
+ * @version 7.0
  */
-final class BnfParser extends Parser<Token> {
+final class BnfParser extends Parser<String> {
 
 	NonTerminal start = null;
 	final List<Rule> rules = new ArrayList<>();
@@ -65,9 +91,10 @@ final class BnfParser extends Parser<Token> {
 		super(tokenizer, 4);
 	}
 
-	public Bnf parse() {
+	public Cfg parse() {
 		rulelist();
-		return new Bnf(rules);
+
+		return Cfg.of(rules);
 	}
 
 	private void rulelist() {
@@ -166,7 +193,7 @@ final class BnfParser extends Parser<Token> {
 	}
 
 	private NonTerminal id() {
-		match(BnfTokenizer.BnfTokenType.LT);
+		match(LT);
 		final var result = ruleid();
 		match(GT);
 		return result;

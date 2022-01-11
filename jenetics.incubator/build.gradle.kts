@@ -42,6 +42,8 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 
+	//antlr("org.antlr:antlr4:4.9.3")
+
 	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)

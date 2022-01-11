@@ -17,20 +17,23 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ASSIGN;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.GT;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.LT;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.parser.BnfTokenizer.BnfTokenType.STRING;
-import static io.jenetics.incubator.parser.Bnfs.isAlphabetic;
-import static io.jenetics.incubator.parser.Bnfs.isIdChar;
-import static io.jenetics.incubator.parser.Bnfs.isStringChar;
+import static io.jenetics.incubator.grammar.bnf.Bnf.isIdChar;
+import static io.jenetics.incubator.grammar.bnf.Bnf.isStringChar;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
+
+import io.jenetics.incubator.parser.CharSequenceTokenizer;
+import io.jenetics.incubator.parser.ParsingException;
+import io.jenetics.incubator.parser.Token;
 
 /**
  * Tokenizer for BNF grammars.
@@ -49,7 +52,7 @@ import static io.jenetics.incubator.parser.Bnfs.isStringChar;
  * @since 7.0
  * @version 7.0
  */
-final class BnfTokenizer extends CharSequenceTokenizer<Token> {
+final class BnfTokenizer extends CharSequenceTokenizer {
 
 	enum BnfTokenType implements Token.Type {
 		ASSIGN(1),
@@ -77,7 +80,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 	}
 
 	@Override
-	public Token next() {
+	public Token<String> next() {
 		while (isNonEof(c)) {
 			final char value = c;
 			switch (value) {
@@ -111,23 +114,17 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 			}
 		}
 
-		return Token.EOF;
+		return Token.eof();
 	}
 
-	private void WS() {
-		do {
-			consume();
-		} while (isNonEof(c) && isWhitespace(c));
-	}
-
-	private Token ASSIGN() {
+	private Token<String> ASSIGN() {
 		match(':');
 		match(':');
 		match('=');
 		return ASSIGN.token("::=");
 	}
 
-	private Token QUOTED_STRING() {
+	private Token<String> QUOTED_STRING() {
 		final var value = new StringBuilder();
 
 		match('\'');
@@ -144,7 +141,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		return QUOTED_STRING.token(value.toString());
 	}
 
-	private Token ID() {
+	private Token<String> ID() {
 		final var value = new StringBuilder();
 
 		while (isIdChar(c)) {
@@ -155,7 +152,7 @@ final class BnfTokenizer extends CharSequenceTokenizer<Token> {
 		return ID.token(value.toString());
 	}
 
-	private Token STRING() {
+	private Token<String> STRING() {
 		final var value = new StringBuilder();
 
 		while (isNonEof(c) && isStringChar(c)) {

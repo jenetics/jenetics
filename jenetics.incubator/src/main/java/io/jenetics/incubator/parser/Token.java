@@ -25,21 +25,20 @@ import static java.util.Objects.requireNonNull;
  * This interface represents a parsed token. A token is a <em>pair</em> of a
  * token type and a token value.
  *
+ * @param type the type of {@code this} token
+ * @param value the actual token value
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
-interface Token {
-
-	/**
-	 * The common <em>end of file</em> token.
-	 */
-	Token EOF = Token.of(Type.EOF, "<EOF>");
+public record Token<V>(Type type, V value) {
 
 	/**
 	 * Represents the type of the token, with a given type code and type name.
 	 */
-	interface Type {
+	public interface Type {
 
 		/**
 		 * The common <em>end of file</em> token type.
@@ -67,8 +66,8 @@ interface Token {
 		 * @return a new toke
 		 * @throws NullPointerException if the given {@code value} is {@code null}
 		 */
-		default Token token(final String value) {
-			return Token.of(this, value);
+		default <V> Token<V> token(final V value) {
+			return new Token<>(this, value);
 		}
 
 		/**
@@ -77,7 +76,7 @@ interface Token {
 		 * @param c the token value
 		 * @return a new toke
 		 */
-		default Token token(final char c) {
+		default Token<String> token(final char c) {
 			return token(Character.toString(c));
 		}
 
@@ -89,7 +88,7 @@ interface Token {
 		 * @return a new token type
 		 * @throws NullPointerException if the given {@code name} is {@code null}
 		 */
-		static Type of(final int code, final String name) {
+		static <V> Type of(final int code, final String name) {
 			record SimpleType(int code, String name) implements Type {
 				SimpleType {
 					requireNonNull(name);
@@ -101,44 +100,17 @@ interface Token {
 	}
 
 	/**
-	 * Return the type of {@code this} token.
-	 *
-	 * @return the type of {@code this} token
+	 * The common <em>end of file</em> token.
 	 */
-	Type type();
+	public static final Token<?> EOF = new Token<>(Type.EOF, null);
 
-	/**
-	 * Return the actual token value.
-	 *
-	 * @return the actual token value
-	 */
-	String value();
+	@SuppressWarnings("unchecked")
+	public static <V> Token<V> eof() {
+		return (Token<V>)EOF;
+	}
 
-	/**
-	 * Create a new token with the given {@code type} and {@code value}.
-	 *
-	 * @param type the token type
-	 * @param value the token value
-	 * @return a new token with the given {@code type} and {@code value}
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	static Token of(final Type type, final String value) {
-		record SimpleToken(Type type, String value) implements Token {
-			public SimpleToken {
-				requireNonNull(type);
-				requireNonNull(value);
-			}
-
-			@Override
-			public String toString() {
-				return "<'%s',%s>".formatted(
-					SimpleToken.this.value,
-					SimpleToken.this.type.name()
-				);
-			}
-		}
-
-		return new SimpleToken(type, value);
+	public boolean isEof() {
+		return this == EOF;
 	}
 
 }

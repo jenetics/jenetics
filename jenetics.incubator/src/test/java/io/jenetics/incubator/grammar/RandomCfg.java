@@ -17,29 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.parser.Bnf.Expression;
-import io.jenetics.incubator.parser.Bnf.NonTerminal;
-import io.jenetics.incubator.parser.Bnf.Rule;
-import io.jenetics.incubator.parser.Bnf.Symbol;
-import io.jenetics.incubator.parser.Bnf.Terminal;
+import io.jenetics.incubator.grammar.Cfg.Expression;
+import io.jenetics.incubator.grammar.Cfg.NonTerminal;
+import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
+import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class RandomBnf {
-	private RandomBnf() {
+public final class RandomCfg {
+	private RandomCfg() {
 	}
 
-	public static Bnf next(final RandomGenerator random) {
+	public static Cfg next(final RandomGenerator random) {
 		final var nonTerminals = Stream.generate(() -> nextNonTerminal(random))
 			.limit(10)
 			.toList();
@@ -75,9 +76,12 @@ public final class RandomBnf {
 				return new Rule(nonTerminals.get(random.nextInt(nonTerminals.size())), expressions.get());
 			})
 			.limit(random.nextInt(5, 15))
+			.collect(Collectors.groupingBy(Rule::start))
+			.values().stream()
+			.map(list -> list.get(0))
 			.toList();
 
-		return new Bnf(rules);
+		return Cfg.of(rules);
 	}
 
 	public static NonTerminal nextNonTerminal(final RandomGenerator random) {

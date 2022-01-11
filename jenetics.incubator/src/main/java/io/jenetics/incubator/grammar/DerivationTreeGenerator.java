@@ -17,29 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar;
 
-import java.io.Serial;
+import io.jenetics.incubator.grammar.Cfg.Symbol;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
- * Exception thrown in the case of a parse error.
+ * This interface is used for creating <em>derivation-trees</em> from a
+ * context-free grammar ({@link Cfg}).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class ParsingException extends RuntimeException {
+@FunctionalInterface
+public interface DerivationTreeGenerator {
 
-	@Serial
-	private static final long serialVersionUID = 1;
-
-	public ParsingException(final String message) {
-		super(message);
-	}
-
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
+	/**
+	 * Create a parse-tree from the given context-free grammar. If the
+	 * generation of the derivation tree fails, an empty tree
+	 * ({@link Tree#isEmpty()}}) is returned.
+	 *
+	 * @param cfg the generating grammar
+	 * @return a newly created parse-tree
+	 */
+	TreeNode<Symbol> generate(final Cfg cfg);
 
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar.bnf;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.parser.Token;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -52,7 +54,7 @@ public class BnfTokenizerTest {
 	public void tokenize() {
 		final var tokenizer = new BnfTokenizer(FOO);
 
-		final List<Token> tokens = tokenizer.tokens().toList();
+		final List<Token<String>> tokens = tokenizer.tokens().toList();
 
 		final var string = tokens.stream()
 			.map(Object::toString)

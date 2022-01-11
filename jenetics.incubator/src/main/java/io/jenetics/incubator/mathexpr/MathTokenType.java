@@ -17,29 +17,46 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.mathexpr;
 
-import java.io.Serial;
+import io.jenetics.incubator.parser.Token;
 
 /**
- * Exception thrown in the case of a parse error.
+ * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
  * @version 7.0
+ * @since 7.0
  */
-public final class ParsingException extends RuntimeException {
+public enum MathTokenType implements Token.Type {
+	LPAREN(1),
+	RPAREN(2),
+	COMMA(3),
 
-	@Serial
-	private static final long serialVersionUID = 1;
+	PLUS(4),
+	MINUS(5),
+	TIMES(6),
+	DIV(7),
+	MOD(8),
+	POW(9),
 
-	public ParsingException(final String message) {
-		super(message);
+	NUMBER(10),
+	IDENTIFIER(11),
+
+	UNARY_OPERATOR(12),
+	BINARY_OPERATOR(13),
+	FUN(14),
+	ATOM(15);
+
+	private final int _code;
+
+	MathTokenType(final int code) {
+		_code = code;
 	}
 
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
+	@Override
+	public int code() {
+		return _code;
+	}
 
 }

@@ -17,29 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.grammar;
 
-import java.io.Serial;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
+import java.util.stream.IntStream;
+
+import io.jenetics.incubator.grammar.Cfg.Rule;
 
 /**
- * Exception thrown in the case of a parse error.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class ParsingException extends RuntimeException {
+public class TrackingCodons implements SymbolIndex {
 
-	@Serial
-	private static final long serialVersionUID = 1;
+	private final IntStream.Builder _values;
 
-	public ParsingException(final String message) {
-		super(message);
+	private final RandomGenerator _random;
+	private final AtomicInteger _pos = new AtomicInteger(0);
+
+	public TrackingCodons(final RandomGenerator random) {
+		_random = random;
+		_values = IntStream.builder();
 	}
 
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
+	public int[] values() {
+		return _values.build().toArray();
+	}
+
+	@Override
+	public int next(final Rule rule, final int bound) {
+		final int value = _random.nextInt(256);
+		_values.accept(value);
+		return value%bound;
+	}
 
 }

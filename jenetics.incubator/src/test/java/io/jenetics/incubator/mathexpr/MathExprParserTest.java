@@ -17,29 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.incubator.mathexpr;
 
-import java.io.Serial;
+import java.util.Set;
+
+import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.TreeFormatter;
 
 /**
- * Exception thrown in the case of a parse error.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class ParsingException extends RuntimeException {
+public class MathExprParserTest {
 
-	@Serial
-	private static final long serialVersionUID = 1;
-
-	public ParsingException(final String message) {
-		super(message);
+	@Test
+	public void parsing() {
+		final var string = "3 + -5 * -7^43**43+98 -(+4) - -sin(x) - cos(3*y, -4, -x)";
+		final var tokenizer = new MathStringTokenizer(string);
+//		final var parser = new MathExprParser<>(
+//			tokenizer,
+//			Set.of("x", "y"),
+//			Set.of("sin", "cos")
+//		);
+//
+//		//new MathExprTokenizer(string).tokens().forEach(System.out::println);
+//
+//		final var expr = parser.parse();
+//		System.out.println(TreeFormatter.TREE.format(expr));
+//		System.out.println(expr);
 	}
-
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
 
 }
