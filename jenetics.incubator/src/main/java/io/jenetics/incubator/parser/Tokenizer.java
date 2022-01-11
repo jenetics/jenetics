@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 /**
  * Interface for all tokenizers.
  *
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0

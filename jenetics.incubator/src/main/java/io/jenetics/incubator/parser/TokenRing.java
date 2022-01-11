@@ -25,6 +25,8 @@ import java.util.stream.IntStream;
 /**
  * Ring-buffer for storing lookup tokens.
  *
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0

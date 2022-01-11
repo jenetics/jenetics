@@ -59,6 +59,9 @@ import io.jenetics.ext.util.TreeNode;
  * atom:    NUMBER | var
  * }</pre>
  *
+ * @param <T> the token value type used as input for the parser
+ * @param <V> the type of the parsed AST
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
@@ -67,6 +70,12 @@ public class MathExprParser<T, V> extends Parser<T>  {
 
 	private final MathExprParsing<T, V> _parsing;
 
+	/**
+	 * Creates a new parser of mathematical expressions.
+	 *
+	 * @param tokenizer the tokenizer used by the parser
+	 * @param parsing the parsing <em>configuration</em>
+	 */
 	public MathExprParser(
 		final Tokenizer<T> tokenizer,
 		final MathExprParsing<T, V> parsing
@@ -84,6 +93,14 @@ public class MathExprParser<T, V> extends Parser<T>  {
 		return _parsing.parse(this);
 	}
 
+	/**
+	 * Create a new parser for a mathematical expression string.
+	 *
+	 * @param expr the expression string
+	 * @param parsing the parsing <em>configuration</em>
+	 * @param <V> the type of the parsed AST
+	 * @return a new parser for a mathematical expression string
+	 */
 	public static <V> MathExprParser<String, V>
 	of(final String expr, final MathExprParsing<String, V> parsing) {
 		return new MathExprParser<>(new MathStringTokenizer(expr), parsing);

@@ -43,6 +43,8 @@ import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Sample;
 
 /**
+ * Usage example for solving regression problems.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!

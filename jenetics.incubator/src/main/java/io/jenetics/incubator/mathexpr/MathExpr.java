@@ -29,8 +29,6 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
-import java.util.List;
-
 import io.jenetics.incubator.parser.ParsingException;
 import io.jenetics.incubator.parser.Token;
 import io.jenetics.incubator.parser.Tokenizer;
@@ -44,6 +42,8 @@ import io.jenetics.prog.op.Program;
 import io.jenetics.prog.op.Var;
 
 /**
+ * Contains methods for parsing mathematical expression.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
@@ -52,7 +52,7 @@ public final class MathExpr {
 	private MathExpr() {
 	}
 
-	public static final MathExprParsing<String, Op<Double>> PARSING =
+	private static final MathExprParsing<String, Op<Double>> PARSING =
 		MathExprParsing.of(MathExpr::toOp, MathOp.NAMES::contains);
 
 

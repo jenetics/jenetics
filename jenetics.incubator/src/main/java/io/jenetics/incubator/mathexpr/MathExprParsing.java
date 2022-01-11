@@ -53,23 +53,42 @@ import io.jenetics.ext.util.TreeNode;
 import io.jenetics.prog.op.MathOp;
 
 /**
+ * General parser <em>configuration</em> of mathematical expressions. This class
+ * defines the actual parsing behaviour, which can be shared across different
+ * parser instances.
+ *
+ * @param <T> the token value type used as input for the parser
+ * @param <V> the type of the parsed AST
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
 public final class MathExprParsing<T, V> {
 
-	static abstract class Term<T, V> {
+	/**
+	 * General term object to be parsed.
+	 *
+	 * @param <T> the token value type used as input for the parser
+	 * @param <V> the type of the parsed AST.
+	 */
+	private static abstract class Term<T, V> {
 		Term<T, V> _next;
 		Term<T, V> _last;
 
 		TreeNode<V> op(final TreeNode<V> expr, final Parser<T> parser) {
 			return expr;
 		}
+
 		abstract TreeNode<V> term(final Parser<T> parser);
+
 		TreeNode<V> expr(final Parser<T> parser) {
 			return op(term(parser), parser);
 		}
+
 		void append(final Term<T, V> term) {
 			if (_next == null) {
 				_next = term;
@@ -80,7 +99,13 @@ public final class MathExprParsing<T, V> {
 		}
 	}
 
-	static class OpTerm<T, V> extends Term<T, V> {
+	/**
+	 * Represents a binary (mathematical) operation.
+	 *
+	 * @param <T> the token value type used as input for the parser
+	 * @param <V> the type of the parsed AST.
+	 */
+	private static class OpTerm<T, V> extends Term<T, V> {
 		private final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> _converter;
 		private final Set<? extends Type> _tokens;
 
@@ -93,7 +118,7 @@ public final class MathExprParsing<T, V> {
 		}
 
 		@Override
-		public TreeNode<V> op(final TreeNode<V> expr, final Parser<T> parser) {
+		TreeNode<V> op(final TreeNode<V> expr, final Parser<T> parser) {
 			var result = expr;
 			if (_tokens.contains(parser.LT(1).type())) {
 				final var token = parser.match(parser.LT(1).type());
@@ -108,10 +133,23 @@ public final class MathExprParsing<T, V> {
 		}
 
 		@Override
-		public TreeNode<V> term(final Parser<T> parser) {
+		TreeNode<V> term(final Parser<T> parser) {
 			return _next.op(_next.term(parser), parser);
 		}
 
+		/**
+		 * Builds a linked chain of binary operations. Operations with lower
+		 * <em>precedence</em> are at the beginning of the chain and operations
+		 * with higher <em>precedence</em> are appended to the end of the linked
+		 * operation term chain.
+		 *
+		 * @param converter converter function, which converts a token to the
+		 *        resulting object of type {@code V}.
+		 * @param binaries the list of binary operations with a given precedence
+		 * @param <T> the token value type used as input for the parser
+		 * @param <V> the type of the parsed AST.
+		 * @return the linked operation term
+		 */
 		static <T, V> OpTerm<T, V> build(
 			final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
 			final List<? extends Set<? extends Type>> binaries
@@ -140,6 +178,25 @@ public final class MathExprParsing<T, V> {
 
 	private final Term<T, V> _term;
 
+	/**
+	 * Creates a new general expression parser object. The parser is not bound
+	 * to a specific source and target type or concrete token types.
+	 *
+	 * @param converter the token value conversion function
+	 * @param lparen the token type specifying the left parentheses, '('
+	 * @param rparen the token type specifying the right parentheses, ')'
+	 * @param comma the token type specifying the function parameter separator,
+	 *        ','
+	 * @param binaryOperators the list of binary operators, according its
+	 *        precedence. The first list element contains the operations with
+	 *        the lowest precedence and the last list element contains the
+	 *        operations with the highest precedence.
+	 * @param unaryOperations the token types representing the unary operations
+	 * @param identifier the token type representing identifier, like variable
+	 *        names, constants or numbers
+	 * @param functions predicate which tests whether a given identifier value
+	 *        represents a known function name
+	 */
 	public MathExprParsing(
 		final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
 		final Token.Type lparen,
@@ -235,6 +292,17 @@ public final class MathExprParsing<T, V> {
 		return _identifier.contains(token.type());
 	}
 
+	/**
+	 * Create a new parser with the typical token types, defined in the
+	 * {@link MathTokenType} class
+	 *
+	 * @param converter the token value conversion function
+	 * @param functions predicate which tests whether a given identifier value
+	 *        represents a known function name
+	 * @param <T> the token value type used as input for the parser
+	 * @param <V> the type of the parsed AST.
+	 * @return a new parser with the typical token types
+	 */
 	public static <T, V> MathExprParsing<T, V> of(
 		final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
 		final Predicate<? super T> functions

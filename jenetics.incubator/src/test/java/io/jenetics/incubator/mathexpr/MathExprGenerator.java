@@ -30,6 +30,10 @@ import io.jenetics.incubator.grammar.SymbolIndex;
 import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
+ * This class generates valid math expressions for testing purpose.
+ *
+ * @since !__version__!
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class MathExprGenerator {

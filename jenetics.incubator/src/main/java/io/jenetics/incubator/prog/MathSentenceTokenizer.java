@@ -39,6 +39,9 @@ import io.jenetics.incubator.parser.IterableTokenizer;
 import io.jenetics.incubator.parser.Token;
 
 /**
+ * Wraps a generated list of terminals into a tokenizer. This is than used as
+ * input for the parsing part.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
@@ -66,6 +69,7 @@ final class MathSentenceTokenizer extends IterableTokenizer<Terminal, String> {
 		};
 	}
 
+	// TODO: improve implementation
 	private static Optional<Double> toNumber(final String value) {
 		try {
 			return Optional.of(Double.parseDouble(value));

@@ -27,6 +27,8 @@ import io.jenetics.incubator.parser.Token.Type;
 /**
  * Base class for all parsers.
  *
+ * @param <V> the token value type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0

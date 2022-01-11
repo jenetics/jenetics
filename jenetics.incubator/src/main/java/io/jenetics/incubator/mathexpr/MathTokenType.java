@@ -22,6 +22,8 @@ package io.jenetics.incubator.mathexpr;
 import io.jenetics.incubator.parser.Token;
 
 /**
+ * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
  * @since 7.0
@@ -56,4 +58,5 @@ public enum MathTokenType implements Token.Type {
 	public int code() {
 		return _code;
 	}
+
 }

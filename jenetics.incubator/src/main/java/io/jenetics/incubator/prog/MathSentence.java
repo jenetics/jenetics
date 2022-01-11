@@ -29,6 +29,10 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.op.Op;
 
 /**
+ * Helper method for converting a <em>generated</em> mathematical expression,
+ * which is given in the form a list of terminal symbols, into an AST of
+ * mathematical operations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -38,6 +42,13 @@ public final class MathSentence {
 	private MathSentence() {
 	}
 
+	/**
+	 * Converts the given <em>sentence</em> into an AST of mathematical
+	 * operations.
+	 *
+	 * @param sentence the sentence to parse
+	 * @return the parsed sentence
+	 */
 	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
 		return MathExpr.parse(new MathSentenceTokenizer(sentence));
 	}

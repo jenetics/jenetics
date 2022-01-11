@@ -27,6 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param type the type of {@code this} token
  * @param value the actual token value
+ * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
