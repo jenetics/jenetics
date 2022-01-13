@@ -44,9 +44,10 @@ dependencies {
 
 	//antlr("org.antlr:antlr4:4.9.3")
 
-	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.guava)
+	testImplementation(libs.testng)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
