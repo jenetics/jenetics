@@ -23,6 +23,8 @@ import io.jenetics.Chromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.util.ISeq;
 
+import java.util.Arrays;
+
 /**
  * Immutable class that represents an individual of a Sudoku grid.
  *
@@ -70,21 +72,18 @@ public class SudokuGrid {
 	 * "Issues" mean repeated numbers.
 	 */
 	public int penalties() {
-		int penaltiesInRows = penaltiesInRows();
-		int penaltiesInCols = penaltiesInCols();
-		int penaltiesInGrid = penaltiesInGrid();
-		return penaltiesInRows + penaltiesInCols + penaltiesInGrid;
+		return penaltiesInRows() + penaltiesInCols() + penaltiesInGrid();
 	}
 
 	private int penaltiesInCols() {
 		int penalties = 0;
-		int[] set = null;
+		final int[] set = new int[board.length];;
 
 		// skips array aims tracking of fixed cells in the board
 		int[] skips = new int[board.length];
 
 		for (int j = 0; j < board.length; j++) {
-			set = new int[board.length];
+			Arrays.fill(set, 0);
 			for (int i = 0; i < board.length; i++) {
 				int value = -1;
 				if (board[i][j] == 0) {
@@ -105,10 +104,10 @@ public class SudokuGrid {
 
 	private int penaltiesInRows() {
 		int penalties = 0;
-		int[] set = null;
+		final int[] set = new int[board.length];
 		int[] skips = new int[board.length];
 		for (int i = 0; i < board.length; i++) {
-			set = new int[board.length];
+			Arrays.fill(set, 0);
 			for (int j = 0; j < board.length; j++) {
 				int value = -1;
 				if (board[i][j] == 0) {
@@ -137,7 +136,7 @@ public class SudokuGrid {
 		return penalties;
 	}
 
-	public int penaltiesInSubBoard(int i, int j, int scope, int[] skips) {
+	private int penaltiesInSubBoard(int i, int j, int scope, int[] skips) {
 
 		int penalties = 0;
 		int[] set = new int[chromosomes.length()];

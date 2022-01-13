@@ -34,7 +34,7 @@ import io.jenetics.util.RandomRegistry;
  * @author José Alejandro Cornejo Acosta
  */
 public class RowCrossover extends Recombinator<IntegerGene, Integer> {
-	protected RowCrossover(double probability) {
+	public RowCrossover(double probability) {
 		super(probability, 2);
 	}
 

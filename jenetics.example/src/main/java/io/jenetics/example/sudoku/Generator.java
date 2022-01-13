@@ -24,6 +24,8 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomAdapter;
+import io.jenetics.util.RandomRegistry;
 
 import java.util.*;
 
@@ -35,7 +37,11 @@ import java.util.*;
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class Generator {
+final public class Generator {
+
+	private Generator() {
+	}
+
 	/**
 	 * @param board the board of sudoku
 	 * @return a random individual for the given board
@@ -50,6 +56,9 @@ public class Generator {
 	}
 
 	private static IntegerChromosome createChromosome(final int[][] board, int iChromosome) {
+
+		final var random = RandomAdapter.of(RandomRegistry.random());
+
 		LinkedList<Integer> changes = new LinkedList<>();
 		LinkedList<Integer> inputs = new LinkedList<>();
 
@@ -60,7 +69,7 @@ public class Generator {
 			}
 		}
 		changes.removeAll(inputs);
-		Collections.shuffle(changes);
+		Collections.shuffle(changes, random);
 
 		List<IntegerGene> genes = new ArrayList<>();
 		for (int j = 0; j < board.length; j++) {
