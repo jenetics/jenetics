@@ -52,7 +52,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 7.0
  */
-public final record IntMoments(
+public record IntMoments(
 	long count,
 	int min,
 	int max,

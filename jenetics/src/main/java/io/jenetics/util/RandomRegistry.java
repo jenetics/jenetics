@@ -159,7 +159,7 @@ public final class RandomRegistry {
 	}
 
 	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
-		new TLR<>(RandomGeneratorFactory.getDefault()::create);
+		new TLR<>(RandomGeneratorFactory.of("L64X256MixRandom")::create);
 
 	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);

@@ -155,8 +155,7 @@ public class ParenthesesTreeParserTest {
 
 	@Test(dataProvider = "invalidTrees", expectedExceptions = IllegalArgumentException.class)
 	public void parseInvalid(final String invalid) {
-		final Object obj = parse(invalid, Function.identity());
-		System.out.println(obj);
+		parse(invalid, Function.identity());
 	}
 
 	@DataProvider(name = "invalidTrees")

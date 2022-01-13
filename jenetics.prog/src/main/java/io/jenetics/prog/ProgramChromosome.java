@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -69,7 +70,7 @@ public class ProgramChromosome<A>
 	implements Function<A[], A>, Serializable
 {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
@@ -407,12 +408,12 @@ public class ProgramChromosome<A>
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PROGRAM_CHROMOSOME, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

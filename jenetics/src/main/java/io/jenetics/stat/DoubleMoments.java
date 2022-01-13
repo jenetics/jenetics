@@ -53,7 +53,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 7.0
  */
-public final record DoubleMoments(
+public record DoubleMoments(
 	long count,
 	double min,
 	double max,

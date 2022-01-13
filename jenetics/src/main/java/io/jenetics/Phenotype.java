@@ -30,6 +30,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -65,7 +66,7 @@ public final class Phenotype<
 		Verifiable,
 		Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 6L;
 
 	private final Genotype<G> _genotype;
@@ -364,12 +365,12 @@ public final class Phenotype<
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PHENOTYPE, this);
+		return new SerialProxy(SerialProxy.PHENOTYPE, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

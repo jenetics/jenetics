@@ -30,6 +30,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -201,6 +202,25 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 */
 	default int size() {
 		return Trees.countChildren(this) + 1;
+	}
+
+	/**
+	 * A tree is considered <em>empty</em> if it's {@link #value()} is
+	 * {@code null} and has no children and parent. A newly created tree node
+	 * with no value is <em>empty</em>.
+	 *
+	 * <pre>{@code
+	 * final Tree<String, ?> tree = TreeNode.of();
+	 * assert tree.isEmpty();
+	 * }</pre>
+	 *
+	 * @since 7.0
+	 *
+	 * @return {@code true} if {@code this} tree is empty, {@code false}
+	 *          otherwise
+	 */
+	default boolean isEmpty() {
+		return value() == null && childCount() == 0 && parent().isEmpty();
 	}
 
 
@@ -713,9 +733,18 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return the number of leaves beneath this node
 	 */
 	default int leafCount() {
-		return (int)breadthFirstStream()
-			.filter(Tree::isLeaf)
-			.count();
+		return (int)leaves().count();
+	}
+
+	/**
+	 * Return a stream of leaves that are descendants of this node.
+	 *
+	 * @since 7.0
+	 *
+	 * @return a stream of leaves that are descendants of this node
+	 */
+	default Stream<T> leaves() {
+		return breadthFirstStream().filter(Tree::isLeaf);
 	}
 
 	/* *************************************************************************
@@ -1069,7 +1098,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 */
 	final class Path implements Serializable {
 
-		@java.io.Serial
+		@Serial
 		private static final long serialVersionUID = 1L;
 
 		private final int[] _path;
@@ -1166,12 +1195,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		 *  Java object serialization
 		 * ********************************************************************/
 
-		@java.io.Serial
+		@Serial
 		private Object writeReplace() {
-			return new Serial(Serial.TREE_PATH, this);
+			return new SerialProxy(SerialProxy.TREE_PATH, this);
 		}
 
-		@java.io.Serial
+		@Serial
 		private void readObject(final ObjectInputStream stream)
 			throws InvalidObjectException
 		{

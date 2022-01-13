@@ -34,7 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
@@ -462,7 +461,7 @@ public class PersistentObject<T> {
 	}
 
 	static {
-		final Random random = new LCG64ShiftRandom(SEED);
+		final var random = new LCG64ShiftRandom(SEED);
 		using(random, r -> init());
 	}
 

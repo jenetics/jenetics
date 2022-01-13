@@ -29,6 +29,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 
 import io.jenetics.util.ISeq;
@@ -63,7 +64,7 @@ public final class LongGene
 		Serializable
 {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _allele;
@@ -294,12 +295,12 @@ public final class LongGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_GENE, this);
+		return new SerialProxy(SerialProxy.LONG_GENE, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

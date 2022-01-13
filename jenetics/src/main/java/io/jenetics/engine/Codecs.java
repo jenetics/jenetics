@@ -20,10 +20,10 @@
 package io.jenetics.engine;
 
 import static java.lang.String.format;
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -204,8 +204,28 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<int[], IntegerGene> ofVector(
+		final IntRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
@@ -235,8 +255,28 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<long[], LongGene> ofVector(
+		final LongRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
@@ -266,8 +306,28 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<double[], DoubleGene> ofVector(
+		final DoubleRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
@@ -791,10 +851,6 @@ public final class Codecs {
 		return codec
 			.map(permutation -> toMapping(permutation, source, target, mapSupplier))
 			.toInvertibleCodec(mapping -> toEncoding(mapping, smap,tmap, genes));
-	}
-
-	private static <A, B> Map.Entry<A, B> entry(final A a, final B b) {
-		return new SimpleImmutableEntry<>(a, b);
 	}
 
 	private static <A, B, M extends Map<A, B>> M toMapping(

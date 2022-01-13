@@ -223,7 +223,8 @@ public class MathExprTest {
 
 	@Test
 	public void evalSimplifiedFromString() {
-		final MathExpr expr = MathExpr.parse("x + 0 - y*1");
+		final MathExpr expr = MathExpr.parse("x + 0 - (-y)*1");
+		System.out.println(expr);
 		System.out.println(expr.eval(10, 1));
 		System.out.println(expr.simplify().eval(10, 1));
 	}

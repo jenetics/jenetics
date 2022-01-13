@@ -63,9 +63,9 @@ public final class CharacterGene
 	/**
 	 * The default character set used by this gene.
 	 */
-	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
-		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
+	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq("""
+		0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ \
+		!"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"""
 	);
 
 	private final char _allele;

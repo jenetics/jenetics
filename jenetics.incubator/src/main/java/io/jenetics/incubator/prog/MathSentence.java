@@ -17,21 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.incubator.prog;
+
+import java.util.List;
+
+import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.incubator.mathexpr.MathExpr;
+
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.op.Op;
 
 /**
+ * Helper method for converting a <em>generated</em> mathematical expression,
+ * which is given in the form a list of terminal symbols, into an AST of
+ * mathematical operations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 7.0
+ * @version 7.0
  */
-public final class Pair<T1, T2> {
-	public final T1 _1;
-	public final T2 _2;
+public final class MathSentence {
 
-	private Pair(final T1 a, final T2 b) {
-		_1 = a;
-		_2 = b;
+	private MathSentence() {
 	}
 
-	public static <T1, T2> Pair<T1, T2> of(final T1 a, final T2 b) {
-		return new Pair<>(a, b);
+	/**
+	 * Converts the given <em>sentence</em> into an AST of mathematical
+	 * operations.
+	 *
+	 * @param sentence the sentence to parse
+	 * @return the parsed sentence
+	 */
+	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
+		return MathExpr.parse(new MathSentenceTokenizer(sentence));
 	}
+
 }

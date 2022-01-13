@@ -44,44 +44,15 @@ public interface Sampling<T> {
 	 *
 	 * @param <T> the sample result  type
 	 */
-	final class Result<T> {
-		private final T[] _calculated;
-		private final T[] _expected;
-
-		private Result(final T[] calculated, final T[] expected) {
-			_calculated = requireNonNull(calculated);
-			_expected = requireNonNull(expected);
-		}
-
+	record Result<T>(T[] calculated, T[] expected) {
 		/**
-		 * Return the calculated result values.
-		 *
-		 * @return the calculated result values
-		 */
-		public T[] calculated() {
-			return _calculated;
-		}
-
-		/**
-		 * Return the expected sample result values.
-		 *
-		 * @return the expected sample result values
-		 */
-		public T[] expected() {
-			return _expected;
-		}
-
-		/**
-		 * Create a new sampling result object.
-		 *
-		 * @param calculated the calculated values
-		 * @param expected the expected sample values
-		 * @param <T> the sample type
-		 * @return a new sampling result object
+		 * @param calculated the calculated result values
+		 * @param expected the expected sample result values
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
-		public static <T> Result<T> of(final T[] calculated, final T[] expected) {
-			return new Result<>(calculated.clone(), expected.clone());
+		public Result {
+			calculated = calculated.clone();
+			expected = expected.clone();
 		}
 	}
 

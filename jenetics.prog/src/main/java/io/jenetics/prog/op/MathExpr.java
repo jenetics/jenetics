@@ -32,6 +32,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -72,7 +73,7 @@ public final class MathExpr
 		Serializable
 {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -302,12 +303,12 @@ public final class MathExpr
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.MATH_EXPR, this);
+		return new SerialProxy(SerialProxy.MATH_EXPR, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

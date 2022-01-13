@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -41,7 +42,7 @@ import java.util.function.Supplier;
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final transient Supplier<T> _supplier;
@@ -141,21 +142,21 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 *  Java object serialization
 	 *************************************************************************/
 
-	static final class Serial implements Externalizable  {
+	static final class SerialProxy implements Externalizable  {
 
-		@java.io.Serial
+		@Serial
 		private static final long serialVersionUID = 1L;
 
 		private Lazy<?> _object;
 
-		public Serial() {
+		public SerialProxy() {
 		}
 
-		Serial(final Lazy<?> object) {
+		SerialProxy(final Lazy<?> object) {
 			_object = object;
 		}
 
-		@java.io.Serial
+		@Serial
 		private Object readResolve() {
 			return _object;
 		}
@@ -173,12 +174,12 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 		}
 	}
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(this);
+		return new SerialProxy(this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

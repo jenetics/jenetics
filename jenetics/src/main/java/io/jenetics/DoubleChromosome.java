@@ -28,6 +28,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.stream.DoubleStream;
@@ -57,7 +58,7 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
-	@java.io.Serial
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -326,12 +327,12 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	@java.io.Serial
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.DOUBLE_CHROMOSOME, this);
 	}
 
-	@java.io.Serial
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
