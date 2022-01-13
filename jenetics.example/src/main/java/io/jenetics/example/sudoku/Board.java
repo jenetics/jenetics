@@ -19,6 +19,8 @@
  */
 package io.jenetics.example.sudoku;
 
+import java.util.Arrays;
+
 /**
  * Immutable class to represent an initial board of Sudoku.
  * Provides examples of boards for 9x9 sudoku.
@@ -30,6 +32,7 @@ public final class Board {
 	private final int[][] cells;
 
 	public Board(final int[][] cells) {
+		checkBoard(cells);
 		this.cells = clone(cells);
 	}
 
@@ -39,6 +42,95 @@ public final class Board {
 			result[i] = cells[i].clone();
 		}
 		return result;
+	}
+
+	private void checkBoard(int[][] cells) {
+		if (cells == null || cells.length != Board.SIZE)
+			throw new IllegalArgumentException("Board is not valid");
+
+		checkRowIssues(cells);
+		checkColsIssues(cells);
+		checkSubboardIssues(cells);
+	}
+
+	/**
+	 * Checks if board has issues in each row of the board.
+	 *
+	 * @param cells the board
+	 * @throws IllegalArgumentException if board contains initial issues
+	 * @throws IllegalArgumentException if board contains numbers out of range
+	 */
+	private void checkRowIssues(int[][] cells) {
+		final int[] set = new int[Board.SIZE];
+		for (int i = 0; i < Board.SIZE; i++) {
+			if (cells[i].length != Board.SIZE)
+				throw new IllegalArgumentException("Board is not valid");
+			Arrays.fill(set, 0);
+			for (int j = 0; j < Board.SIZE; j++) {
+				if (cells[i][j] >= 0 && cells[i][j] <= Board.SIZE) {
+					int value = cells[i][j];
+					if (value != 0) {
+						if (set[value - 1] >= 1) {
+							throw new IllegalArgumentException("Board is not valid");
+						}
+						set[value - 1]++;
+					}
+				} else {
+					throw new IllegalArgumentException("Board is not valid");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks if board has issues in each column of the board.
+	 *
+	 * @param cells the board
+	 * @throws IllegalArgumentException if board contains initial issues
+	 */
+	private void checkColsIssues(int[][] cells) {
+		final int[] set = new int[Board.SIZE];
+		for (int j = 0; j < Board.SIZE; j++) {
+			Arrays.fill(set, 0);
+			for (int i = 0; i < Board.SIZE; i++) {
+				if (cells[i][j] > 0) {
+					int value = cells[i][j];
+					if (set[value - 1] >= 1) {
+						throw new IllegalArgumentException("Board is not valid");
+					}
+					set[value - 1]++;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks if board has issues in each sub-board of the board.
+	 *
+	 * @param cells the board
+	 * @throws IllegalArgumentException if board contains initial issues
+	 */
+	private void checkSubboardIssues(int[][] cells) {
+		final int[] set = new int[Board.SIZE];
+		for (int i = 0; i < Board.SIZE; i += Board.SUB_BOARD_SIZE) {
+			for (int j = 0; j < Board.SIZE; j += Board.SUB_BOARD_SIZE) {
+
+				// check each subboard
+				Arrays.fill(set, 0);
+				for (int y = i; y < i + Board.SUB_BOARD_SIZE; y++) {
+					for (int x = j; x < j + Board.SUB_BOARD_SIZE; x++) {
+						if (cells[y][x] > 0) {
+							int value = cells[y][x];
+							if (set[value - 1] >= 1) {
+								throw new IllegalArgumentException("Board is not valid");
+							}
+							set[value - 1]++;
+						}
+					}
+				}
+
+			}
+		}
 	}
 
 	public int get(final int i, final int j) {

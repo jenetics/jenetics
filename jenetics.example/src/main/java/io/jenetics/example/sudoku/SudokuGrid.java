@@ -101,7 +101,6 @@ public record SudokuGrid(Board board, ISeq<Chromosome<IntegerGene>> chromosomes)
 				} else {
 					value = board.get(i, j);
 					skips[i]++;
-
 				}
 				if (set[value - 1] >= 1) {
 					penalties++;
