@@ -20,14 +20,34 @@
 package io.jenetics.example.sudoku;
 
 /**
- * Provides grids (boards) examples for sudoku.
+ * Immutable class to represent an initial board of Sudoku.
+ * Provides examples of boards for 9x9 sudoku.
  * Zeros represent empty cells that must be filled.
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class SudokuUtil {
+public final class Board {
+	private final int[][] cells;
 
+	public Board(final int[][] cells) {
+		this.cells = clone(cells);
+	}
+
+	private static int[][] clone(final int[][] cells) {
+		final int[][] result = new int[cells.length][];
+		for (int i = 0; i < cells.length; i++) {
+			result[i] = cells[i].clone();
+		}
+		return result;
+	}
+
+	public int get(final int i, final int j) {
+		return cells[i][j];
+	}
+
+	// constants
 	public static final int SIZE = 9;
+	public static final int SUB_BOARD_SIZE = 3;
 
 	public static final int[][] BOARD1 = {
 		{0, 0, 4, 0, 0, 0, 0, 9, 0},

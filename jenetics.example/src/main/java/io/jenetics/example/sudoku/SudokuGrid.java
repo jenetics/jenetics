@@ -25,20 +25,18 @@ import io.jenetics.util.ISeq;
 
 import java.util.Arrays;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * Immutable class that represents an individual of a Sudoku grid.
+ * Record that represents an individual of a Sudoku grid.
  *
  * @author José Alejandro Cornejo Acosta
  */
-public class SudokuGrid {
+public record SudokuGrid(Board board, ISeq<Chromosome<IntegerGene>> chromosomes) {
 
-	private final int[][] board;
-
-	private final ISeq<Chromosome<IntegerGene>> chromosomes;
-
-	public SudokuGrid(int[][] board, ISeq<Chromosome<IntegerGene>> chromosomes) {
-		this.board = board;
-		this.chromosomes = chromosomes;
+	public SudokuGrid {
+		requireNonNull(board);
+		requireNonNull(chromosomes);
 	}
 
 	public ISeq<Chromosome<IntegerGene>> getChromosomes() {
@@ -47,22 +45,34 @@ public class SudokuGrid {
 
 	@Override
 	public String toString() {
-		StringBuilder tos = new StringBuilder();
 
+		String fiLaLine = "+---------+---------+---------+\n";
+
+		StringBuilder tos = new StringBuilder(fiLaLine);
 		// print board
-		int[] skips = new int[board.length];
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
+		int[] skips = new int[Board.SIZE];
+		for (int i = 0; i < Board.SIZE; i++) {
+			for (int j = 0; j < Board.SIZE; j++) {
+
 				int value = -1;
-				if (board[i][j] == 0) {
+				if (board.get(i, j) == 0) {
 					value = chromosomes.get(i).get(j - skips[i]).allele();
 				} else {
-					value = board[i][j];
+					value = board.get(i, j);
 					skips[i]++;
 				}
-				tos.append(String.format("%d, ", value));
+				if (j == 0) {
+					tos.append(String.format("| %d  ", value));
+				} else if ((j + 1) % Board.SUB_BOARD_SIZE == 0) {
+					tos.append(String.format("%d | ", value));
+				} else {
+					tos.append(String.format("%d  ", value));
+				}
 			}
 			tos.append("\n");
+			if ((i + 1) % Board.SUB_BOARD_SIZE == 0) {
+				tos.append(fiLaLine);
+			}
 		}
 		return tos.toString();
 	}
@@ -77,19 +87,19 @@ public class SudokuGrid {
 
 	private int penaltiesInCols() {
 		int penalties = 0;
-		final int[] set = new int[board.length];;
+		final int[] set = new int[Board.SIZE];
 
 		// skips array aims tracking of fixed cells in the board
-		int[] skips = new int[board.length];
+		int[] skips = new int[Board.SIZE];
 
-		for (int j = 0; j < board.length; j++) {
+		for (int j = 0; j < Board.SIZE; j++) {
 			Arrays.fill(set, 0);
-			for (int i = 0; i < board.length; i++) {
+			for (int i = 0; i < Board.SIZE; i++) {
 				int value = -1;
-				if (board[i][j] == 0) {
+				if (board.get(i, j) == 0) {
 					value = chromosomes.get(i).get(j - skips[i]).allele();
 				} else {
-					value = board[i][j];
+					value = board.get(i, j);
 					skips[i]++;
 
 				}
@@ -104,16 +114,16 @@ public class SudokuGrid {
 
 	private int penaltiesInRows() {
 		int penalties = 0;
-		final int[] set = new int[board.length];
-		int[] skips = new int[board.length];
-		for (int i = 0; i < board.length; i++) {
+		final int[] set = new int[Board.SIZE];
+		int[] skips = new int[Board.SIZE];
+		for (int i = 0; i < Board.SIZE; i++) {
 			Arrays.fill(set, 0);
-			for (int j = 0; j < board.length; j++) {
+			for (int j = 0; j < Board.SIZE; j++) {
 				int value = -1;
-				if (board[i][j] == 0) {
+				if (board.get(i, j) == 0) {
 					value = chromosomes.get(i).get(j - skips[i]).allele();
 				} else {
-					value = board[i][j];
+					value = board.get(i, j);
 					skips[i]++;
 				}
 				if (set[value - 1] >= 1) {
@@ -126,11 +136,11 @@ public class SudokuGrid {
 	}
 
 	private int penaltiesInGrid() {
-		int[] skips = new int[board.length];
+		int[] skips = new int[Board.SIZE];
 		int penalties = 0;
-		for (int i = 0; i < board.length; i += 3) {
-			for (int j = 0; j < board.length; j += 3) {
-				penalties += penaltiesInSubBoard(i, j, 3, skips);
+		for (int i = 0; i < Board.SIZE; i += Board.SUB_BOARD_SIZE) {
+			for (int j = 0; j < Board.SIZE; j += Board.SUB_BOARD_SIZE) {
+				penalties += penaltiesInSubBoard(i, j, Board.SUB_BOARD_SIZE, skips);
 			}
 		}
 		return penalties;
@@ -144,10 +154,10 @@ public class SudokuGrid {
 			for (int x = j; x < j + scope; x++) {
 
 				int value = -1;
-				if (board[y][x] == 0) {
+				if (board.get(y, x) == 0) {
 					value = chromosomes.get(y).get(x - skips[y]).allele();
 				} else {
-					value = board[y][x];
+					value = board.get(y, x);
 					skips[y]++;
 				}
 

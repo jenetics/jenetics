@@ -40,9 +40,9 @@ import static java.lang.System.out;
  */
 public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> {
 
-	private final int[][] board;
+	private final Board board;
 
-	public SudokuProblem(int[][] board) {
+	public SudokuProblem(Board board) {
 		this.board = board;
 	}
 
@@ -62,17 +62,21 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 	}
 
 	public static void main(String[] args) {
-		final int[][] board = SudokuUtil.BOARD2;
+
+		final var board = new Board(Board.BOARD2);
+		final var problem = new SudokuProblem(board);
 
 		// Crossovers like SinglePoint can be used
-		var engine = Engine.builder(new SudokuProblem(board)).optimize(Optimize.MINIMUM)
+		var engine = Engine.builder(problem)
+			.optimize(Optimize.MINIMUM)
 			.alterers(
 				new SwapMutator<>(0.05),
 				new RowCrossover(0.6)
 //				new SinglePointCrossover<>(0.3)
 			)
 			.selector(new TournamentSelector<>(2))
-			.populationSize(300).build();
+			.populationSize(300)
+			.build();
 
 		final var bestPhenotypes = new ArrayList<Phenotype<IntegerGene, Integer>>();
 		final var best = engine.stream()
@@ -80,6 +84,7 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 			.peek(r -> bestPhenotypes.add(r.bestPhenotype()))
 			.collect(toBestPhenotype());
 		out.println("Issues: " + best.fitness());
-		out.println(new SudokuGrid(board, ISeq.of(best.genotype())));
+		final SudokuGrid grid = problem.decode(best.genotype());
+		System.out.println(grid);
 	}
 }

@@ -46,36 +46,35 @@ final public class Generator {
 	 * @param board the board of sudoku
 	 * @return a random individual for the given board
 	 */
-	public static Genotype<IntegerGene> createIndividual(final int[][] board) {
-		int size = board.length;
-		MSeq<Chromosome<IntegerGene>> sudokuChromosomes = MSeq.ofLength(size);
-		for (int i = 0; i < size; i++) {
+	public static Genotype<IntegerGene> createIndividual(final Board board) {
+		MSeq<Chromosome<IntegerGene>> sudokuChromosomes = MSeq.ofLength(Board.SIZE);
+		for (int i = 0; i < Board.SIZE; i++) {
 			sudokuChromosomes.set(i, createChromosome(board, i));
 		}
 		return Genotype.of(sudokuChromosomes);
 	}
 
-	private static IntegerChromosome createChromosome(final int[][] board, int iChromosome) {
+	private static IntegerChromosome createChromosome(final Board board, int iChromosome) {
 
 		final var random = RandomAdapter.of(RandomRegistry.random());
 
-		LinkedList<Integer> changes = new LinkedList<>();
-		LinkedList<Integer> inputs = new LinkedList<>();
+		List<Integer> changes = new ArrayList<>();
+		List<Integer> inputs = new ArrayList<>();
 
-		for (int i = 0; i < board.length; i++) {
+		for (int i = 0; i < Board.SIZE; i++) {
 			changes.add(i + 1);
-			if (board[iChromosome][i] != 0) {
-				inputs.add(board[iChromosome][i]);
+			if (board.get(iChromosome, i) != 0) {
+				inputs.add(board.get(iChromosome, i));
 			}
 		}
 		changes.removeAll(inputs);
 		Collections.shuffle(changes, random);
 
 		List<IntegerGene> genes = new ArrayList<>();
-		for (int j = 0; j < board.length; j++) {
-			if (board[iChromosome][j] == 0) {
-				int value = changes.removeLast();
-				IntegerGene gene = IntegerGene.of(value, 1, SudokuUtil.SIZE + 1);
+		for (int j = 0; j < Board.SIZE; j++) {
+			if (board.get(iChromosome, j) == 0) {
+				int value = changes.remove(changes.size() - 1);
+				IntegerGene gene = IntegerGene.of(value, 1, Board.SIZE + 1);
 				genes.add(gene);
 			}
 		}
