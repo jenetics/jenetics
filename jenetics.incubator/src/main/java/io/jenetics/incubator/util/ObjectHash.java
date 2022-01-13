@@ -11,10 +11,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public final class ObjectHash {
-
-	record Foo(String a, int b, long c, double d) {}
 
 	@FunctionalInterface
 	interface Digester {
@@ -191,79 +190,20 @@ public final class ObjectHash {
 		}
 	}
 
-	private static long hash64(final byte[] data, final int length, int seed) {
-		final long m = 0xc6a4a7935bd1e995L;
-		final int r = 47;
-
-		long h = (seed & 0xffffffffL)^(length*m);
-
-		int length8 = length/8;
-
-		for (int i=0; i < length8; i++) {
-			final int i8 = i*8;
-			long k =  ((long)data[i8+0]&0xff)      +(((long)data[i8+1]&0xff)<<8)
-				+(((long)data[i8+2]&0xff)<<16) +(((long)data[i8+3]&0xff)<<24)
-				+(((long)data[i8+4]&0xff)<<32) +(((long)data[i8+5]&0xff)<<40)
-				+(((long)data[i8+6]&0xff)<<48) +(((long)data[i8+7]&0xff)<<56);
-
-			k *= m;
-			k ^= k >>> r;
-			k *= m;
-
-			h ^= k;
-			h *= m;
-		}
-
-		switch (length%8) {
-			case 7: h ^= (long)(data[(length&~7)+6]&0xff) << 48;
-			case 6: h ^= (long)(data[(length&~7)+5]&0xff) << 40;
-			case 5: h ^= (long)(data[(length&~7)+4]&0xff) << 32;
-			case 4: h ^= (long)(data[(length&~7)+3]&0xff) << 24;
-			case 3: h ^= (long)(data[(length&~7)+2]&0xff) << 16;
-			case 2: h ^= (long)(data[(length&~7)+1]&0xff) << 8;
-			case 1: h ^= (long)(data[length&~7]&0xff);
-				h *= m;
-		};
-
-		h ^= h >>> r;
-		h *= m;
-		h ^= h >>> r;
-
-		return h;
-	}
-
-	static class MurmurDigester implements Digester {
-		private int pos = 0;
-		private long h = 0xe17a1465;
-		private long k = 0;
-
-		@Override
-		public void update(final byte value) {
-			k += ((long)value&0xff) << (pos*8);
-
-			pos += 1;
-			if (pos == 8) {
-				long m = 0xc6a4a7935bd1e995L;
-				k *= m;
-				int r = 47;
-				k ^= k >>> r;
-				k *= m;
-
-				h ^= k;
-				h *= m;
-
-				pos = 0;
-			}
-		}
-
-		long hash() {
-			return h;
-		}
-	}
-
 	/* *************************************************************************
 	 * Reflection methods.
 	 * ************************************************************************/
+
+	private static final class FieldWalker {
+
+	}
+
+	public record Property(String path, Object source, Field field) {}
+
+	static Stream<Property> list(final Object root) {
+
+		return null;
+	}
 
 	private static Object value(final Field field, final Object object) {
 		try {
@@ -305,6 +245,8 @@ public final class ObjectHash {
 	/* *************************************************************************
 	 * Main test function.
 	 * ************************************************************************/
+
+	record Foo(String a, int b, long c, double d) {}
 
 	public static void main(final String[] args) {
 		final var foo = new Foo("asdf", 1, 2, 4);
