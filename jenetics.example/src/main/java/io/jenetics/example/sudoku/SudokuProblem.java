@@ -68,7 +68,7 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 
 	public static void main(String[] args) {
 
-		final var board = new Board(Board.BOARD1);
+		final var board = Board.BOARD1;
 		final var problem = new SudokuProblem(board);
 
 		// Crossovers like SinglePoint can be used
