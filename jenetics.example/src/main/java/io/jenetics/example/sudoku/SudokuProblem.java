@@ -58,12 +58,17 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 
 	@Override
 	public Codec<SudokuGrid, IntegerGene> codec() {
+		// Encoder: Given a board, Generator.createIndividual(board) creates new genotypes
+		// by filling empty cells with random numbers.
+		//
+		// Decoder: given a board and sequence of chromosomes, a SudokuGrid object es created.
+		//
 		return Codec.of(() -> Generator.createIndividual(board), chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes)));
 	}
 
 	public static void main(String[] args) {
 
-		final var board = new Board(Board.BOARD2);
+		final var board = new Board(Board.BOARD1);
 		final var problem = new SudokuProblem(board);
 
 		// Crossovers like SinglePoint can be used

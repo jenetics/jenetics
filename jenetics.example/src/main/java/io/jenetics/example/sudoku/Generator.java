@@ -44,7 +44,8 @@ final public class Generator {
 
 	/**
 	 * @param board the board of sudoku
-	 * @return a random individual for the given board
+	 * @return a random individual (genotype) for the given board.
+	 * Fixed cells in the board are not included in the chromosomes.
 	 */
 	public static Genotype<IntegerGene> createIndividual(final Board board) {
 		MSeq<Chromosome<IntegerGene>> sudokuChromosomes = MSeq.ofLength(Board.SIZE);
