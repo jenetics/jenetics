@@ -25,6 +25,6 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java-version }}
-        distribution: 'zulu'
+        distribution: 'temurin'
     - name: Build with Gradle
       run: ./gradlew build
