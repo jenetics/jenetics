@@ -678,13 +678,13 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 11: 
+The library is build with and depends on Java SE 17: 
 \begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
 
-https://adoptopenjdk.net/
+https://adoptium.net/
 \end_layout
 
 \end_inset
@@ -922,7 +922,11 @@ Hello World
 \end_inset
 
  program.
- This first example implements the well known bit-counting problem.
+ This first example implements the well known 
+\emph on
+bit counting
+\emph default
+ problem.
 \end_layout
 
 \begin_layout Standard
@@ -1269,7 +1273,7 @@ Geno\SpecialChar softhyphen
 type
 \family default
  we defined and calculate its fitness value.
- If we want to use the optimized bit-counting method,
+ If we want to use the optimized bit counting method,
 \family typewriter
  bitCount()
 \family default
@@ -1446,7 +1450,7 @@ noprefix "false"
 
 \end_inset
 
- shows the (imperative) pseudo-code of the
+ shows the (imperative) pseudocode of the
 \family sans
 \series bold
 \shape smallcaps
@@ -1633,7 +1637,11 @@ Stream
  
 \emph default
 evolution steps for each generation; the steps are described in the body
- of the while-loop of listing 
+ of the 
+\emph on
+while
+\emph default
+ loop of listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Genetic-algorithm"
@@ -1749,7 +1757,7 @@ s which can be safely used in different execution threads.
 \family typewriter
  Engine
 \family default
- doesn't have any mutable global state and is therefore thread-safe.
+ doesn't have any mutable global state and is therefore thread safe.
  It is practically a stateless function, 
 \begin_inset Formula $f_{E}:\,\mathrm{P}\rightarrow\mathrm{P}$
 \end_inset
@@ -1771,7 +1779,7 @@ s which can be safely used in different execution threads.
 \emph on
  non
 \emph default
--deterministic.
+deterministic.
  Calling it twice with the same start population will lead to different
  result populations.
 \end_layout
@@ -10528,9 +10536,9 @@ The
 \shape default
  library parallelizes independent tasks whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
- That means that the fitness function must be thread safe and deterministic.
+ That means that the fitness function must be thread-safe and deterministic.
  The easiest way for achieving thread safety is to make the fitness function
- immutable and re-entrant.
+ immutable and reentrant.
  Since the number of individuals of one population, which determines the
  number of fitness functions to be evaluated, is usually much higher then
  the number of available CPU cores, the fitness evaluation is done in batches.
@@ -10951,14 +10959,14 @@ Pool
 \family default
 \series default
 , the fitness evaluation of the population is done by recursively dividing
- it into sub-populations using the abstract
+ it into subpopulations using the abstract
 \family typewriter
  Recursive\SpecialChar softhyphen
 Action
 \family default
  class.
- If a minimal sub-population size is reached, the fitness values for this
- sub-population are directly evaluated.
+ If a minimal subpopulation size is reached, the fitness values for this
+ subpopulation are directly evaluated.
  The default value of this threshold is five and can be controlled via the
 \family typewriter
  io\SpecialChar softhyphen
@@ -10996,8 +11004,7 @@ Thre\SpecialChar softhyphen
 sh\SpecialChar softhyphen
 old
 \family default
-, the size of the evaluated sub-population is dynamically determined by
- the
+, the size of the evaluated subpopulation is dynamically determined by the
 \family typewriter
  Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
@@ -11035,7 +11042,7 @@ Tasks
 \end_inset
 
  If this value is greater than three, the fitness values of the current
- sub-population are also evaluated immediately.
+ subpopulation are also evaluated immediately.
  The default value can be overridden by the
 \family typewriter
  io\SpecialChar softhyphen
@@ -11096,13 +11103,13 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \begin_layout Standard
 You may want to tweak this parameters, if you realize a low CPU utilization
  during the fitness value evaluation.
- Long running fitness functions could lead to CPU under-utilization while
- evaluating the last sub-population.
+ Long running fitness functions could lead to CPU under utilization while
+ evaluating the last subpopulation.
  In this case, only one core is busy, while the other cores are idle, because
  they already finished the fitness evaluation.
  Since the workload has been already distributed, no
 \emph on
- work-stealing
+ work stealing
 \emph default
  is possible.
  Reducing the
@@ -11227,10 +11234,10 @@ cessors()
 
 \end_inset
 
- of sub-populations, and the fitness values of each sub-population are evaluated
+ of subpopulations, and the fitness values of each subpopulation are evaluated
  by one thread.
- For long running fitness functions, it is better to have smaller sub-population
-s for a better CPU utilization.
+ For long running fitness functions, it is better to have smaller subpopulations
+ for a better CPU utilization.
  With the
 \family typewriter
  io\SpecialChar softhyphen
@@ -11260,7 +11267,7 @@ Concurrency!maxBatchSize
 
 \end_inset
 
- system property, it is possible to reduce the sub-population size.
+ system property, it is possible to reduce the subpopulation size.
  The default value is set to
 \family typewriter
  Inte\SpecialChar softhyphen
@@ -11293,7 +11300,7 @@ $ java -Dio.jenetics.concurrency.maxBatchSize=3
 \end_layout
 
 \begin_layout Standard
-Another source of under-utilized CPUs are lock contentions.
+Another source of underutilized CPUs are lock contentions.
  It is therefore strongly recommended to avoid locking and blocking calls
  in your fitness function at all.
  If blocking calls are unavoidable, consider using the
@@ -11388,7 +11395,7 @@ PRNG
 \family typewriter
  Random
 \family default
- class, respectively sub-types from it, for generating random numbers.
+ class, respectively subtypes from it, for generating random numbers.
  To make the random engine pluggable, the
 \family typewriter
  Random
@@ -11492,7 +11499,7 @@ List<Genotype<DoubleGene>> genotypes =
 
 \begin_layout Plain Layout
 
-            .collect(Collectors.toList())
+            .toList()
 \end_layout
 
 \begin_layout Plain Layout
@@ -11567,7 +11574,7 @@ Stream
 .
  Each created stream uses the same starting population, but will, most likely,
  create a different result.
- This is because the stream evaluation is still non-deterministic.
+ This is because the stream evaluation is still nondeterministic.
 \end_layout
 
 \begin_layout Standard
@@ -11722,7 +11729,7 @@ When the
 \family default
  engine is used in a multi-threaded environment, there must be a way to
  parallelize the sequential PRNG.
- Usually this is done by taking the elements of the sequence of pseudo-random
+ Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
  practice:
@@ -11833,7 +11840,7 @@ Random number generators should not be chosen at random.
 \emph on
  non
 \emph default
--reproducible results, consider using the
+–reproducible results, consider using the
 \family typewriter
  LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
@@ -13958,7 +13965,7 @@ class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.random();
+        final var random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14399,7 +14406,7 @@ public class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.random();
+        final var random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14782,7 +14789,7 @@ Selector
 \end_inset
 
 .
- Another way for re-using existing
+ Another way for reusing existing
 \family typewriter
  Selector
 \family default
@@ -16756,7 +16763,7 @@ A function,
 \begin_inset Formula $m$
 \end_inset
 
--dimensional, is encoded by 
+-dimeööööööööööööööööööööööööööööööööönsional, is encoded by 
 \begin_inset Formula $m$
 \end_inset
 
@@ -18416,7 +18423,7 @@ engine.\SpecialChar softhyphen
 Codecs
 \family default
  class.
- The following sub-sections describe the most important predefined 
+ The following subsections describe the most important predefined 
 \family typewriter
 Codec
 \family default
@@ -22980,7 +22987,7 @@ noprefix "false"
 \end_inset
 
  items.
- This makes it a real problem with a search-space size of 
+ This makes it a real problem with a search space size of 
 \begin_inset Formula $2^{250}\thickapprox10^{75}$
 \end_inset
 
@@ -23146,7 +23153,7 @@ noprefix "false"
 \begin_layout Standard
 Some of the implemented termination strategies need to maintain an internal
  state.
- These strategies can't be re-used in different evolution streams.
+ These strategies can't be reused in different evolution streams.
  To be on the safe side, it is recommended to always create a
 \family typewriter
  Predicate
@@ -23351,7 +23358,7 @@ noprefix "false"
 \end_inset
 
  shows the best fitness values of the used Knapsack problem after a given
- number of generations, whereas the candle-stick points represents the
+ number of generations, whereas the candlestick points represents the
 \emph on
  min
 \emph default
@@ -23740,8 +23747,8 @@ noprefix "false"
 
  shows the actual total executed generation depending on the desired number
  of steady fitness generations.
- The variation of the total generation is quite big, as shown by the candle-stic
-ks.
+ The variation of the total generation is quite big, as shown by the candlestick
+s.
  Though the variation can be quite big—the termination test has been repeated
  
 \begin_inset Formula $250$
@@ -23787,7 +23794,7 @@ Evolution time
 
 \begin_layout Standard
 This termination strategy stops the evolution when the elapsed evolution
- time exceeds an user-specified maximal value.
+ time exceeds an user specified maximal value.
  The 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -23800,7 +23807,7 @@ Stream
 ms
 \emph default
  will at least evaluate one generation.
- In a time-critical environment, where a solution must be found within a
+ In a time critical environment, where a solution must be found within a
  maximal time period, this terminator lets you define the desired guarantees.
 \begin_inset listings
 lstparams "language=Java"
@@ -24121,7 +24128,7 @@ In this termination strategy, the evolution stops when the fitness is deemed
 \family default
 \series default
 \shape default
- offers a generic version fitness-convergence predicate and a version where
+ offers a generic version fitness convergence predicate and a version where
  the smoothed fitness is the moving average of the used filters.
 \end_layout
 
@@ -24537,7 +24544,7 @@ Population convergence
 This termination method stops the evolution when the population is deemed
  as converged.
  A population is deemed as converged when the average fitness across the
- current population is less than a user-specified percentage away from the
+ current population is less than a user specified percentage away from the
  best fitness of the current population.
  The population is deemed as converged and the 
 \family typewriter
@@ -24908,7 +24915,7 @@ RandomRegistry
 .
  This is also required for every initialization code used in your problem
  implementation.
- Also check your code for hidden non-deterministic parts, e.
+ Also check your code for hidden nondeterministic parts, e.
 \begin_inset space ~
 \end_inset
 
@@ -26398,7 +26405,7 @@ The
 \emph on
  non
 \emph default
--standard 
+standard 
 \family typewriter
 Gene
 \family default
@@ -28557,7 +28564,7 @@ Gene
  Big\SpecialChar softhyphen
 Integer
 \family default
-, which can store arbitrary-precision integers.
+, which can store arbitrary precision integers.
  There also exists a corresponding
 \family typewriter
  Big\SpecialChar softhyphen
@@ -29414,7 +29421,7 @@ Mutator
 Weasel\SpecialChar softhyphen
 Selector
 \family default
- together with the configured offspring-fraction of one.
+ together with the configured offspring fraction of one.
  The 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -31169,7 +31176,7 @@ IntRange
  less, evenly distributed over the whole Pareto front.
  The 
 \emph on
-crowding-distance
+crowding distance
 \begin_inset Foot
 status collapsed
 
@@ -31476,9 +31483,9 @@ Unique fitness tournament selector
 \end_layout
 
 \begin_layout Standard
-The selection of unique fitnesses lifts the selection bias towards over-represen
-ted fitnesses by reducing multiple solutions sharing the same fitness to
- a single point in the objective space.
+The selection of unique fitnesses lifts the selection bias towards over
+ represented fitnesses by reducing multiple solutions sharing the same fitness
+ to a single point in the objective space.
  It is therefore no longer required to assign a crowding distance of zero
  to individual of equal fitness as the selection operator correctly enforces
  diversity preservation by picking unique points in the objective space.
@@ -38581,7 +38588,7 @@ Ones counting
 \end_layout
 
 \begin_layout Standard
-Ones counting is one of the simplest model-problem.
+Ones counting is one of the simplest model problem.
  It uses a binary chromosome and forms a classic genetic algorithm
 \begin_inset Foot
 status collapsed
@@ -38969,7 +38976,7 @@ noprefix "false"
 \end_inset
 
  shows, the Rastrigin function has many local minima, which makes it difficult
- for standard, gradient-based methods to find the global minimum.
+ for standard, gradient based methods to find the global minimum.
  If 
 \begin_inset Formula $A=10$
 \end_inset
@@ -40891,7 +40898,7 @@ jenetics.doc
 \emph on
  
 \emph default
-code of the web-site and
+code of the website and
 \emph on
  
 \emph default
