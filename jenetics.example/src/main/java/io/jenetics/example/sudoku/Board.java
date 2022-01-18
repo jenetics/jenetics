@@ -1,6 +1,5 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.example.sudoku;
 
 import java.util.Arrays;
 
 /**
- * Immutable class to represent an initial board of Sudoku.
- * Provides examples of boards for 9x9 sudoku.
- * Zeros represent empty cells that must be filled.
+ * Immutable class to represent an initial board of Sudoku. Provides examples of
+ * boards for 9x9 sudoku. Zeros represent empty cells that must be filled.
  *
  * @author José Alejandro Cornejo Acosta
  */
@@ -45,8 +40,9 @@ public final class Board {
 	}
 
 	private void checkBoard(int[][] cells) {
-		if (cells == null || cells.length != Board.SIZE)
-			throw new IllegalArgumentException("Board is not valid");
+		if (cells == null || cells.length != Board.SIZE) {
+			throw new IllegalArgumentException("Board is not valid.");
+		}
 
 		checkRowIssues(cells);
 		checkColsIssues(cells);
@@ -63,8 +59,10 @@ public final class Board {
 	private void checkRowIssues(int[][] cells) {
 		final int[] set = new int[Board.SIZE];
 		for (int i = 0; i < Board.SIZE; i++) {
-			if (cells[i].length != Board.SIZE)
-				throw new IllegalArgumentException("Board is not valid");
+			if (cells[i].length != Board.SIZE) {
+				throw new IllegalArgumentException("Board is not valid.");
+			}
+
 			Arrays.fill(set, 0);
 			for (int j = 0; j < Board.SIZE; j++) {
 				if (cells[i][j] >= 0 && cells[i][j] <= Board.SIZE) {
@@ -141,7 +139,7 @@ public final class Board {
 	public static final int SIZE = 9;
 	public static final int SUB_BOARD_SIZE = 3;
 
-	public static final Board BOARD1 = new Board(new int[][]{
+	public static final Board BOARD1 = new Board(new int[][] {
 		{0, 0, 4, 0, 0, 0, 0, 9, 0},
 		{7, 0, 0, 0, 6, 0, 0, 0, 5},
 		{0, 9, 0, 5, 4, 1, 8, 7, 2},
@@ -150,9 +148,10 @@ public final class Board {
 		{0, 8, 0, 3, 2, 4, 0, 0, 0},
 		{9, 2, 1, 8, 7, 6, 0, 5, 0},
 		{6, 0, 0, 0, 1, 0, 0, 0, 8},
-		{0, 3, 0, 0, 0, 0, 7, 0, 0}});
+		{0, 3, 0, 0, 0, 0, 7, 0, 0}}
+	);
 
-	public static final Board BOARD2 = new Board(new int[][]{
+	public static final Board BOARD2 = new Board(new int[][] {
 		{0, 9, 0, 0, 0, 0, 4, 6, 8},
 		{0, 6, 8, 4, 0, 0, 0, 0, 3},
 		{0, 5, 0, 8, 0, 0, 7, 2, 0},
@@ -161,9 +160,10 @@ public final class Board {
 		{0, 4, 0, 0, 6, 8, 0, 0, 0},
 		{2, 8, 0, 6, 4, 0, 3, 0, 0},
 		{0, 0, 0, 0, 7, 0, 0, 8, 0},
-		{0, 7, 0, 0, 0, 3, 2, 0, 0}});
+		{0, 7, 0, 0, 0, 3, 2, 0, 0}}
+	);
 
-	public static final Board BOARD3 = new Board(new int[][]{
+	public static final Board BOARD3 = new Board(new int[][] {
 		{0, 7, 9, 2, 0, 5, 0, 3, 0},
 		{0, 8, 0, 6, 7, 0, 5, 2, 0},
 		{0, 5, 0, 0, 0, 0, 7, 8, 6},
@@ -172,9 +172,10 @@ public final class Board {
 		{8, 9, 5, 4, 6, 0, 3, 0, 0},
 		{9, 0, 7, 1, 2, 0, 8, 5, 0},
 		{0, 0, 0, 7, 5, 0, 9, 6, 2},
-		{0, 0, 0, 3, 9, 8, 4, 7, 0}});
+		{0, 0, 0, 3, 9, 8, 4, 7, 0}}
+	);
 
-	public static final Board BOARD4 = new Board(new int[][]{
+	public static final Board BOARD4 = new Board(new int[][] {
 		{0, 0, 8, 0, 3, 0, 0, 0, 0},
 		{0, 3, 0, 6, 7, 5, 0, 0, 0},
 		{5, 0, 0, 8, 0, 0, 0, 7, 0},
@@ -183,5 +184,6 @@ public final class Board {
 		{0, 6, 0, 0, 0, 4, 0, 8, 3},
 		{0, 8, 0, 0, 5, 0, 7, 2, 9},
 		{7, 0, 0, 0, 0, 8, 4, 0, 6},
-		{0, 2, 4, 3, 0, 0, 5, 1, 0}});
+		{0, 2, 4, 3, 0, 0, 5, 1, 0}}
+	);
 }

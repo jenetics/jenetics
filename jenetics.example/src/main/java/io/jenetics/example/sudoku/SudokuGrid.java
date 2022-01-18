@@ -1,6 +1,5 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.example.sudoku;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Arrays;
 
 import io.jenetics.Chromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.util.ISeq;
-
-import java.util.Arrays;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Record that represents an individual of a Sudoku grid.
@@ -146,7 +142,6 @@ public record SudokuGrid(Board board, ISeq<Chromosome<IntegerGene>> chromosomes)
 	}
 
 	private int penaltiesInSubBoard(int i, int j, int scope, int[] skips) {
-
 		int penalties = 0;
 		int[] set = new int[chromosomes.length()];
 		for (int y = i; y < i + scope; y++) {

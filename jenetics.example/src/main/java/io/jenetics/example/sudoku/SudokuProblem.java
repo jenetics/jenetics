@@ -1,6 +1,5 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +12,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.example.sudoku;
 
-import io.jenetics.*;
+import static java.lang.System.out;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+
+import java.util.ArrayList;
+import java.util.function.Function;
+
+import io.jenetics.IntegerGene;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.SwapMutator;
+import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 
-import java.util.ArrayList;
-import java.util.function.Function;
-
-import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static java.lang.System.out;
-
 /**
- * Implementation  of a simple Genetic Algorithms for solving sudokus.
- * Sudokus are puzzles where missing numbers in [1, 9] must be filled into a 9x9 grid.
- * There must be no repeating numbers neither in rows, nor columns, nor sub-grids of 3x3.
+ * Implementation  of a simple Genetic Algorithms for solving sudokus. Sudokus
+ * are puzzles where missing numbers in [1, 9] must be filled into a 9x9 grid.
+ * There must be no repeating numbers neither in rows, nor columns,
+ * nor sub-grids of 3x3.
  *
  * @author José Alejandro Cornejo Acosta
  */
@@ -58,16 +59,18 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 
 	@Override
 	public Codec<SudokuGrid, IntegerGene> codec() {
-		// Encoder: Given a board, Generator.createIndividual(board) creates new genotypes
-		// by filling empty cells with random numbers.
+		// Encoder: Given a board, Generator.createIndividual(board) creates new
+		// genotypes by filling empty cells with random numbers.
 		//
-		// Decoder: given a board and sequence of chromosomes, a SudokuGrid object es created.
-		//
-		return Codec.of(() -> Generator.createIndividual(board), chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes)));
+		// Decoder: given a board and sequence of chromosomes, a SudokuGrid
+		// object es created.
+		return Codec.of(
+			() -> Generator.createIndividual(board),
+			chromosomes -> new SudokuGrid(board, ISeq.of(chromosomes))
+		);
 	}
 
 	public static void main(String[] args) {
-
 		final var board = Board.BOARD1;
 		final var problem = new SudokuProblem(board);
 

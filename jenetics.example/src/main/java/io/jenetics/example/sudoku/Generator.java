@@ -1,6 +1,5 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.example.sudoku;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
@@ -27,13 +27,10 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomAdapter;
 import io.jenetics.util.RandomRegistry;
 
-import java.util.*;
-
 /**
- * Generates individuals for sudoku
- * Each row in a sudoku board is represented through a chromosome
- * (So an individual for a 9x9 sudoku board, contains 9 chromosomes)
- * Each chromosome is composed only with the non-fixed cells
+ * Generates individuals for sudoku, Each row in a sudoku board is represented
+ * through a chromosome (So an individual for a 9x9 sudoku board, contains 9
+ * chromosomes.) Each chromosome is composed only with the non-fixed cells.
  *
  * @author José Alejandro Cornejo Acosta
  */
@@ -56,7 +53,6 @@ final public class Generator {
 	}
 
 	private static IntegerChromosome createChromosome(final Board board, int iChromosome) {
-
 		final var random = RandomAdapter.of(RandomRegistry.random());
 
 		List<Integer> changes = new ArrayList<>();
