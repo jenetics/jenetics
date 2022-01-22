@@ -99,6 +99,7 @@ final class FutureEvaluator<
 		}
 
 		if (exception instanceof InterruptedException) {
+			Thread.currentThread().interrupt();
 			throw (CancellationException)
 				new CancellationException(exception.getMessage())
 					.initCause(exception);
