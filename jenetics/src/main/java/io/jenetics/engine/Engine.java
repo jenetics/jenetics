@@ -1038,8 +1038,8 @@ public final class Engine<
 		}
 
 		private Evaluator<G, C> __evaluator() {
-			return _evaluator instanceof ConcurrentEvaluator
-				? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
+			return _evaluator instanceof ConcurrentEvaluator<G, C> ce
+				? ce.with(_executor)
 				: _evaluator;
 		}
 
