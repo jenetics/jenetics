@@ -104,7 +104,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * The default task queue size, set to 1000.
 	 */
-	private static final int DEFAULT_TASK_QUEUE_SIZE = 1000;
+	private static final int DEFAULT_TASK_QUEUE_SIZE = 1_000;
 
 	private final Executor _executor;
 	private final BlockingQueue<Task> _tasks;
@@ -189,7 +189,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * Return the list of currently queued tasks.
 	 *
-	 * @return the list of of currently queued tasks
+	 * @return the list of currently queued tasks
 	 */
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
@@ -324,7 +324,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	}
 
 	@Override
-	public void execute(Runnable command) {
+	public void execute(final Runnable command) {
 		if (!enqueue(command)) {
 			throw new RejectedExecutionException(format(
 				"Command not accepted, capacity of %d is exhausted.",
@@ -407,7 +407,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * @throws InterruptedException if interrupted while waiting
 	 */
 	@Override
-	public boolean awaitTermination(long timeout, TimeUnit unit)
+	public boolean awaitTermination(final long timeout, final TimeUnit unit)
 		throws InterruptedException
 	{
 		long remainingNanos = unit.toNanos(timeout);
