@@ -238,11 +238,11 @@ public final class Serializer {
 	 * It is the responsibility of the caller to close the given {@code output}
 	 * stream when no longer needed.
 	 *
-	 * @see #write(Path, Iterable, OpenOption...)
+	 * @see #write(Iterable, Path, OpenOption...)
 	 *
-	 * @param output the output stream where the objects are written to
 	 * @param objects the objects to write to output stream, in the order defined
 	 *        by the given iterable
+	 * @param output the output stream where the objects are written to
 	 * @param append {@code false} for the first objects written to the given
 	 *        {@code output} stream and {@code true} for additional objects
 	 *        writing to the same stream
@@ -251,23 +251,23 @@ public final class Serializer {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static long write(
-		final OutputStream output,
 		final Iterable<?> objects,
+		final OutputStream output,
 		final boolean append
 	)
 		throws IOException
 	{
 		final var it = objects.iterator();
 		if (it.hasNext()) {
-			return write0(output, it, append);
+			return write0(it, output, append);
 		} else {
 			return 0;
 		}
 	}
 
 	private static long write0(
-		final OutputStream out,
 		final Iterator<?> objects,
+		final OutputStream out,
 		final boolean append
 	)
 		throws IOException
@@ -306,10 +306,10 @@ public final class Serializer {
 	 * );
 	 * }</pre>
 	 *
-	 * @see #write(OutputStream, Iterable, boolean)
+	 * @see #write(Iterable, OutputStream, boolean)
 	 *
-	 * @param path the destination where the {@code objects} are written to
 	 * @param objects the {@code objects} to be written
+	 * @param path the destination where the {@code objects} are written to
 	 * @param options specifying how the file is opened
 	 * @return the number of bytes written to the file
 	 * @throws IOException if writing the objects fails
@@ -320,8 +320,8 @@ public final class Serializer {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static long write(
-		final Path path,
 		final Iterable<?> objects,
+		final Path path,
 		final OpenOption... options
 	)
 		throws IOException
@@ -337,12 +337,12 @@ public final class Serializer {
 			}
 		}
 
-		return write0(path, objects::iterator, opts);
+		return write0(objects::iterator, path, opts);
 	}
 
 	private static long write0(
-		final Path path,
 		final Supplier<Iterator<?>> objects,
+		final Path path,
 		final OpenOption... options
 	)
 		throws IOException
@@ -353,7 +353,7 @@ public final class Serializer {
 			try (var fos = Files.newOutputStream(path, options);
 				 var bos = new BufferedOutputStream(fos))
 			{
-				return write0(bos, it, append);
+				return write0(it, bos, append);
 			}
 		} else {
 			return 0;
@@ -435,7 +435,7 @@ public final class Serializer {
 
 	/**
 	 * Reads the objects from the given {@code path}, which were previously
-	 * written with the {@link #write(Path, Iterable, OpenOption...)} method.
+	 * written with the {@link #write(Iterable, Path, OpenOption...)} method.
 	 * The file content is read lazily, object after object, and allows to
 	 * read huge files efficiently. Note that the caller is responsible for
 	 * closing the returned object stream.

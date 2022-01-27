@@ -65,7 +65,7 @@ public class SerializerTest {
 	{
 		try (path) {
 			for (var objects : data) {
-				Serializer.write(path.get(), objects, options);
+				Serializer.write(objects, path.get(), options);
 			}
 
 			final List<Object> expected = data.stream()
@@ -144,7 +144,7 @@ public class SerializerTest {
 
 		try (path) {
 			for (var objects : data) {
-				Serializer.write(path.get(), objects, TRUNCATE_EXISTING);
+				Serializer.write(objects, path.get(), TRUNCATE_EXISTING);
 			}
 
 			final List<Object> expected = data.isEmpty()
@@ -163,13 +163,13 @@ public class SerializerTest {
 		);
 
 		try (path) {
-			final var written = Serializer.write(path.get(), List.of("1", "2", "3"));
+			final var written = Serializer.write(List.of("1", "2", "3"), path.get());
 			Assert.assertEquals(written, Files.size(path.get()));
 
 			List<Object> objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-			Serializer.write(path.get(), List.of("4", "5"));
+			Serializer.write(List.of("4", "5"), path.get());
 			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
@@ -181,7 +181,7 @@ public class SerializerTest {
 				});
 			}
 
-			Serializer.write(path.get(), List.of("6", "7", "8"), TRUNCATE_EXISTING);
+			Serializer.write(List.of("6", "7", "8"), path.get(), TRUNCATE_EXISTING);
 			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("6", "7", "8"));
 		}
@@ -195,11 +195,11 @@ public class SerializerTest {
 		);
 
 		try (path; var out = Files.newOutputStream(path.get())) {
-			Serializer.write(out, List.of("1", "2", "3"), false);
+			Serializer.write(List.of("1", "2", "3"), out, false);
 			List<Object> objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-			Serializer.write(out, List.of("4", "5"), true);
+			Serializer.write(List.of("4", "5"), out, true);
 			objects = Serializer.readAllObjects(path.get());
 			Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
@@ -217,11 +217,11 @@ public class SerializerTest {
 	public void writeStreamReadStreamExample() throws IOException {
 		final var out = new ByteArrayOutputStream();
 
-		Serializer.write(out, List.of("1", "2", "3"), false);
+		Serializer.write(List.of("1", "2", "3"), out, false);
 		List<Object> objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("1", "2", "3"));
 
-		Serializer.write(out, List.of("4", "5"), true);
+		Serializer.write(List.of("4", "5"), out, true);
 		objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("1", "2", "3", "4", "5"));
 
@@ -234,7 +234,7 @@ public class SerializerTest {
 		}
 
 		out.reset();
-		Serializer.write(out, List.of("6", "7", "8"), false);
+		Serializer.write(List.of("6", "7", "8"), out, false);
 		objects = Serializer.readAllObjects(new ByteArrayInputStream(out.toByteArray()));
 		Assert.assertEquals(objects, List.of("6", "7", "8"));
 	}
@@ -246,7 +246,7 @@ public class SerializerTest {
 			.collect(Collectors.toSet());
 
 		final var out = new ByteArrayOutputStream();
-		Serializer.write(out, objects, false);
+		Serializer.write(objects, out, false);
 
 		final var read = Serializer.objects(new ByteArrayInputStream(out.toByteArray()))
 			.parallel()
