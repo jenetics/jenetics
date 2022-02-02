@@ -32,13 +32,13 @@ import java.util.function.IntFunction;
  * @version 6.0
  * @since 6.0
  */
-final class IntIterator<T> implements Iterator<T> {
+final class IntFunctionIterator<T> implements Iterator<T> {
 	private final int _length;
 	private final IntFunction<? extends T> _mapper;
 
 	private int _cursor = 0;
 
-	IntIterator(final int length, final IntFunction<? extends T> mapper) {
+	IntFunctionIterator(final int length, final IntFunction<? extends T> mapper) {
 		_length = length;
 		_mapper = mapper;
 	}
