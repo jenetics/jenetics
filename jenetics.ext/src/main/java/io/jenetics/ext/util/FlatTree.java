@@ -40,11 +40,11 @@ import io.jenetics.util.ISeq;
  * </pre>
  * will be stored in breadth-first order and will look like this:
  * <pre>
- * ┌─┬───┐       ┌──────┬──┐
+ * ┌─┬─┬─┐       ┌──────┬──┐
  * 0 1 2 3 4 5 6 7 8 9 10 11
- *   └─│─│─┴─┘ │ │   │
- *     └─│─────┘ │   │
- *       └───────┴───┘
+ *   └─│─│─┴─┘ │ │ │ │
+ *     └─│─────┘ │ │ │
+ *       └───────┴─┴─┘
  * </pre>
  * The child nodes are always stored on the right side of the parent flattened
  * Nodes. So you have to read the tree from left to right. All children of a
