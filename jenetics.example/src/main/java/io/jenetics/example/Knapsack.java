@@ -62,7 +62,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * This class represents a knapsack item with the specific <i>size</i> and
 	 * <i>value</i>.
 	 */
-	public static final record Item(double size, double value)
+	public record Item(double size, double value)
 		implements Serializable
 	{
 		@Serial
