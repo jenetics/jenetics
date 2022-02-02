@@ -38,7 +38,7 @@ final class IntFunctionIterator<T> implements Iterator<T> {
 
 	private int _cursor = 0;
 
-	IntFunctionIterator(final int length, final IntFunction<? extends T> mapper) {
+	IntFunctionIterator(final IntFunction<? extends T> mapper, final int length) {
 		_length = length;
 		_mapper = mapper;
 	}

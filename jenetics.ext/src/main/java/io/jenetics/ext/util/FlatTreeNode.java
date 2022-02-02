@@ -170,7 +170,7 @@ public final class FlatTreeNode<V>
 	@Override
 	public Iterator<FlatTreeNode<V>> breadthFirstIterator() {
 		return _index == 0
-			? new IntFunctionIterator<>(_elements.length, this::nodeAt)
+			? new IntFunctionIterator<>(this::nodeAt, _elements.length)
 			: FlatTree.super.breadthFirstIterator();
 	}
 
