@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.IntFunction;
@@ -33,14 +35,14 @@ import java.util.function.IntFunction;
  * @since 6.0
  */
 final class IntFunctionIterator<T> implements Iterator<T> {
-	private final int _length;
 	private final IntFunction<? extends T> _mapper;
+	private final int _length;
 
 	private int _cursor = 0;
 
 	IntFunctionIterator(final IntFunction<? extends T> mapper, final int length) {
+		_mapper = requireNonNull(mapper);
 		_length = length;
-		_mapper = mapper;
 	}
 
 	@Override
