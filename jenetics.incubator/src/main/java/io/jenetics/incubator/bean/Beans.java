@@ -1,18 +1,68 @@
 package io.jenetics.incubator.bean;
 
+import static java.util.Objects.requireNonNull;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 final class Beans {
 
+	final static class BeanPropertyIterator extends PropertyIterator {
+		BeanPropertyIterator(
+			final String basePath,
+			final Object root,
+			final Predicate<? super Class<?>> filter
+		) {
+			super(basePath, root, filter);
+		}
+		@Override
+		Iterator<Property> next(String basePath, Object parent) {
+			return Beans.properties(basePath, parent).iterator();
+		}
+	}
+
+	private record BeanProperty(
+		PropertyDescriptor descriptor,
+		String path,
+		Object parent,
+		Object value
+	)
+		implements Property
+	{
+		BeanProperty {
+			requireNonNull(descriptor);
+			requireNonNull(path);
+			requireNonNull(parent);
+		}
+
+		@Override
+		public Class<?> type() {
+			return descriptor.getPropertyType();
+		}
+		@Override
+		public String name() {
+			return descriptor.getName();
+		}
+		@Override
+		public Object read() {
+			return Beans.readValue(descriptor, parent);
+		}
+		@Override
+		public boolean write(final Object value) {
+			return Beans.writeValue(descriptor, parent, value);
+		}
+	}
+
     private Beans() {
     }
 
-    static Stream<Property> properties(
+    private static Stream<Property> properties(
         final String basePath,
         final Object parent
     ) {
@@ -22,7 +72,7 @@ final class Beans {
             : Stream.empty();
     }
 
-    private static Prop toProperty(
+    private static BeanProperty toProperty(
         final String basePath,
         final PropertyDescriptor descriptor,
         final Object parent
@@ -31,7 +81,7 @@ final class Beans {
             ? basePath + "." + descriptor.getName()
             : descriptor.getName();
 
-		return new Prop(
+		return new BeanProperty(
 			descriptor,
 			path,
 			parent,
@@ -39,7 +89,7 @@ final class Beans {
 		);
     }
 
-	static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
+	private static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
 		try {
 			return descriptor.getReadMethod().invoke(parent);
 		} catch (IllegalAccessException | InvocationTargetException e) {
@@ -47,7 +97,7 @@ final class Beans {
 		}
 	}
 
-	static boolean writeValue(
+	private static boolean writeValue(
 		final PropertyDescriptor descriptor,
 		final Object parent,
 		final Object value
@@ -70,7 +120,7 @@ final class Beans {
 		return false;
 	}
 
-    static Stream<PropertyDescriptor> descriptors(final Class<?> type) {
+    private static Stream<PropertyDescriptor> descriptors(final Class<?> type) {
         return descriptors0(type)
             .filter(desc -> desc.getReadMethod() != null);
     }

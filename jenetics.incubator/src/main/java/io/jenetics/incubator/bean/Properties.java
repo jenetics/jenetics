@@ -1,8 +1,9 @@
 package io.jenetics.incubator.bean;
 
+import static java.util.Spliterators.spliteratorUnknownSize;
+
 import java.util.Collection;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static java.util.Spliterators.spliteratorUnknownSize;
+import io.jenetics.incubator.bean.Beans.BeanPropertyIterator;
 
 /**
  * Contains helper method for getting all properties of a given root bean.
@@ -19,29 +20,35 @@ public final class Properties {
     private Properties() {
     }
 
+	/**
+	 * Return a Stream that is lazily populated with bean properties by walking
+	 * the object graph rooted at a given starting object. The object tree is
+	 * traversed in pre-order.
+	 *
+	 * @param root the root of the object tree
+	 * @param filter the <em>bean</em> class filter
+	 * @param options the visit options
+	 * @return the property stream, containing all transitive properties of the
+	 *         given root object
+	 */
 	public static Stream<Property> walk(
 		final Object root,
 		final Predicate<? super Class<?>> filter,
 		final VisitOption... options
 	) {
-		return walk(null, root, filter, options);
+		final Map<Object, Object> visited = new IdentityHashMap<>();
+		return walk(null, root, filter, visited, options);
 	}
 
     private static Stream<Property> walk(
         final String basePath,
         final Object root,
 		final Predicate<? super Class<?>> filter,
+		final Map<Object, Object> visited,
         final VisitOption... options
     ) {
-        final Map<Object, Object> visited = new IdentityHashMap<>();
-
         if (root != null && filter.test(root.getClass())) {
-            final var it = new PropertyIterator(basePath, root, filter) {
-				@Override
-				Iterator<Property> next(final String basePath, final Object parent) {
-					return Beans.properties(basePath, parent).iterator();
-				}
-			};
+            final var it = new BeanPropertyIterator(basePath, root, filter);
             final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
 
             final var result = StreamSupport.stream(sp, false)
@@ -55,7 +62,7 @@ public final class Properties {
                 });
 
             return shouldFlatten(options)
-                ? result.flatMap(p -> Properties.flatten(p, filter, options))
+                ? result.flatMap(p -> Properties.flatten(p, filter, visited, options))
                 : result.map(Property.class::cast);
         } else {
             return Stream.empty();
@@ -75,16 +82,20 @@ public final class Properties {
     private static Stream<Property> flatten(
 		final Property property,
 		final Predicate<? super Class<?>> filter,
+		final Map<Object, Object> visited,
 		final VisitOption... options
 	) {
         if (property.value() instanceof final Collection<?> coll) {
 			final var index = new AtomicInteger();
             final var flattened = coll.stream()
-                .flatMap(ele -> walk(
-					indexed(property.path(), index),
-					ele,
-					filter,
-					options)
+                .flatMap(ele ->
+					walk(
+						indexed(property.path(), index),
+						ele,
+						filter,
+						visited,
+						options
+					)
 				);
 
             return Stream.concat(
@@ -99,6 +110,5 @@ public final class Properties {
     private static String indexed(final String basePath, final AtomicInteger index) {
         return String.format("%s[%s]", basePath, index.getAndIncrement());
     }
-
 
 }

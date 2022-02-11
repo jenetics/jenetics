@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
+/**
+ * Preorder property iterator.
+ */
 abstract class PropertyIterator implements Iterator<Property> {
 
     private final Predicate<? super Class<?>> filter;
