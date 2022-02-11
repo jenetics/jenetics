@@ -37,7 +37,7 @@ public final class Properties {
 
             return shouldFlatten(options)
                 ? result.flatMap(p -> Properties.flatten(p, options))
-                : result;
+                : result.map(Property.class::cast);
         } else {
             return Stream.empty();
         }

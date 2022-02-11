@@ -1,18 +1,50 @@
 package io.jenetics.incubator.bean;
 
-import java.util.List;
-import java.util.stream.Stream;
+import java.beans.PropertyDescriptor;
 
-public interface Prop {
+record Prop(
+	PropertyDescriptor descriptor,
+	String path,
+	Object parent,
+    Object value
+)
+	implements Property
+{
 
-	Root root();
+	@Override
+	public Class<?> type() {
+		return descriptor.getPropertyType();
+	}
 
-	List<String> path();
+	@Override
+	public String name() {
+		return descriptor.getName();
+	}
 
-	String name();
+	/*
+    public boolean set(final Object value) {
+        final var paths = path.split(Pattern.quote("."));
+        final var name = paths[paths.length - 1];
 
-	Object value();
+        final var setter = Beans.descriptors(parent.getClass())
+            .peek(System.out::println)
+            .filter(d -> name.equals(d.getName()))
+            .flatMap(d -> Optional.ofNullable(d.getWriteMethod()).stream())
+            .findFirst();
 
-	Stream<Prop> props();
+        final var result = setter.map(set -> {
+            try {
+                set.invoke(parent, value);
+                //this.value = value;
+                return true;
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                return false;
+            }
+        });
+
+        return result.orElse(false);
+    }
+	 */
 
 }

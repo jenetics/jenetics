@@ -12,7 +12,7 @@ final class Beans {
     private Beans() {
     }
 
-    static Stream<Property> properties(
+    static Stream<Prop> properties(
         final String basePath,
         final Object parent
     ) {
@@ -22,7 +22,7 @@ final class Beans {
             : Stream.empty();
     }
 
-    private static Property toProperty(
+    private static Prop toProperty(
         final String basePath,
         final PropertyDescriptor descriptor,
         final Object parent
@@ -32,7 +32,7 @@ final class Beans {
             : descriptor.getName();
 
         try {
-            return new Property(
+            return new Prop(
 				descriptor,
 				path,
                 parent,

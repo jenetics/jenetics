@@ -1,5 +1,7 @@
 package io.jenetics.incubator.bean;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +10,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-import static java.util.Objects.requireNonNull;
-
-final class PropertyIterator implements Iterator<Property> {
+final class PropertyIterator implements Iterator<Prop> {
 
     private final Predicate<? super Class<?>> filter;
 
-    private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
+    private final Deque<Iterator<Prop>> deque = new ArrayDeque<>();
 
     private PropertyIterator(
         final String basePath,
@@ -37,23 +37,23 @@ final class PropertyIterator implements Iterator<Property> {
 
     @Override
     public boolean hasNext() {
-        final Iterator<Property> peek = deque.peek();
+        final Iterator<Prop> peek = deque.peek();
         return peek != null && peek.hasNext();
     }
 
     @Override
-    public Property next() {
-        final Iterator<Property> it = deque.peek();
+    public Prop next() {
+        final Iterator<Prop> it = deque.peek();
         if (it == null) {
             throw new NoSuchElementException("No next element.");
         }
 
-        final Property node = it.next();
+        final Prop node = it.next();
         if (!it.hasNext()) {
             deque.pop();
         }
 
-        final Iterator<Property> children = properties(node.path(), node.value());
+        final Iterator<Prop> children = properties(node.path(), node.value());
         if (children.hasNext()) {
             deque.push(children);
         }
@@ -61,13 +61,13 @@ final class PropertyIterator implements Iterator<Property> {
         return node;
     }
 
-    private Iterator<Property> properties(
+    private Iterator<Prop> properties(
 		final String basePath,
 		final Object parent
 	) {
         if (parent != null) {
             if (filter.test(parent.getClass())) {
-                final var properties = new ArrayList<Property>();
+                final var properties = new ArrayList<Prop>();
                 Beans.properties(basePath, parent).forEach(properties::add);
                 return properties.iterator();
             }
