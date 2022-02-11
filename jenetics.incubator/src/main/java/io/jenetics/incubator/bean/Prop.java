@@ -21,30 +21,14 @@ record Prop(
 		return descriptor.getName();
 	}
 
-	/*
-    public boolean set(final Object value) {
-        final var paths = path.split(Pattern.quote("."));
-        final var name = paths[paths.length - 1];
+	@Override
+	public Object read() {
+		return Beans.readValue(descriptor, parent);
+	}
 
-        final var setter = Beans.descriptors(parent.getClass())
-            .peek(System.out::println)
-            .filter(d -> name.equals(d.getName()))
-            .flatMap(d -> Optional.ofNullable(d.getWriteMethod()).stream())
-            .findFirst();
-
-        final var result = setter.map(set -> {
-            try {
-                set.invoke(parent, value);
-                //this.value = value;
-                return true;
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                return false;
-            }
-        });
-
-        return result.orElse(false);
-    }
-	 */
+	@Override
+	public boolean write(final Object value) {
+		return Beans.writeValue(descriptor, parent, value);
+	}
 
 }

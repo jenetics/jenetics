@@ -12,7 +12,7 @@ final class Beans {
     private Beans() {
     }
 
-    static Stream<Prop> properties(
+    static Stream<Property> properties(
         final String basePath,
         final Object parent
     ) {
@@ -31,17 +31,44 @@ final class Beans {
             ? basePath + "." + descriptor.getName()
             : descriptor.getName();
 
-        try {
-            return new Prop(
-				descriptor,
-				path,
-                parent,
-                descriptor.getReadMethod().invoke(parent)
-            );
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(e);
-        }
+		return new Prop(
+			descriptor,
+			path,
+			parent,
+			readValue(descriptor, parent)
+		);
     }
+
+	static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
+		try {
+			return descriptor.getReadMethod().invoke(parent);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	static boolean writeValue(
+		final PropertyDescriptor descriptor,
+		final Object parent,
+		final Object value
+	) {
+		try {
+			final var wm = descriptor.getWriteMethod();
+			if (wm != null) {
+				wm.invoke(parent, value);
+				return true;
+			}
+		} catch (IllegalAccessException ignore) {
+		} catch (InvocationTargetException e) {
+			if (e.getTargetException() instanceof RuntimeException re) {
+				throw re;
+			} else {
+				throw new IllegalStateException(e.getTargetException());
+			}
+		}
+
+		return false;
+	}
 
     static Stream<PropertyDescriptor> descriptors(final Class<?> type) {
         return descriptors0(type)
@@ -56,7 +83,6 @@ final class Beans {
 
             return Stream.of(descriptors)
                 .sorted(Comparator.comparing(PropertyDescriptor::getName));
-
         } catch (IntrospectionException e) {
             throw new IllegalArgumentException("Can't introspect Object.");
         }
