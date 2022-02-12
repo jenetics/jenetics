@@ -10,13 +10,13 @@ import java.util.NoSuchElementException;
 /**
  * Preorder property iterator.
  */
-final class PropertyIterator implements Iterator<Property> {
+final class PreOrderPropertyIterator implements Iterator<Property> {
 
     private final Property.Reader reader;
 
     private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
 
-	PropertyIterator(
+	PreOrderPropertyIterator(
 		final String basePath,
 		final Object root,
         final Property.Reader reader

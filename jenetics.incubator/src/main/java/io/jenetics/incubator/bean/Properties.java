@@ -46,7 +46,7 @@ public final class Properties {
         final VisitOption... options
     ) {
         if (root != null && filter.test(root.getClass())) {
-            final var it = new PropertyIterator(basePath, root, Beans::properties);
+            final var it = new PreOrderPropertyIterator(basePath, root, Beans::properties);
             final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
 
             final var result = StreamSupport.stream(sp, false)
