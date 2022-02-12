@@ -11,8 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.incubator.bean.Beans.BeanPropertyIterator;
-
 /**
  * Contains helper method for getting all properties of a given root bean.
  */
@@ -48,15 +46,15 @@ public final class Properties {
         final VisitOption... options
     ) {
         if (root != null && filter.test(root.getClass())) {
-            final var it = new BeanPropertyIterator(basePath, root, filter);
+            final var it = new PropertyIterator(basePath, root, Beans::properties);
             final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
 
             final var result = StreamSupport.stream(sp, false)
                 .filter(p -> p.type() != Class.class)
                 .filter(p -> {
                     synchronized (visited) {
-                        final var visit = visited.containsKey(p.parent());
-                        visited.put(p.parent(), "");
+                        final var visit = visited.containsKey(p.object());
+                        visited.put(p.object(), "");
                         return visit;
                     }
                 });

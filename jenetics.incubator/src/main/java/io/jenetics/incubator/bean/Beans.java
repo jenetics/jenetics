@@ -7,30 +7,14 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 final class Beans {
 
-	final static class BeanPropertyIterator extends PropertyIterator {
-		BeanPropertyIterator(
-			final String basePath,
-			final Object root,
-			final Predicate<? super Class<?>> filter
-		) {
-			super(basePath, root, filter);
-		}
-		@Override
-		Iterator<Property> next(String basePath, Object parent) {
-			return Beans.properties(basePath, parent).iterator();
-		}
-	}
-
 	private record BeanProperty(
 		PropertyDescriptor descriptor,
 		String path,
-		Object parent,
+		Object object,
 		Object value
 	)
 		implements Property
@@ -38,7 +22,7 @@ final class Beans {
 		BeanProperty {
 			requireNonNull(descriptor);
 			requireNonNull(path);
-			requireNonNull(parent);
+			requireNonNull(object);
 		}
 
 		@Override
@@ -51,18 +35,18 @@ final class Beans {
 		}
 		@Override
 		public Object read() {
-			return Beans.readValue(descriptor, parent);
+			return Beans.readValue(descriptor, object);
 		}
 		@Override
 		public boolean write(final Object value) {
-			return Beans.writeValue(descriptor, parent, value);
+			return Beans.writeValue(descriptor, object, value);
 		}
 	}
 
     private Beans() {
     }
 
-    private static Stream<Property> properties(
+	static Stream<Property> properties(
         final String basePath,
         final Object parent
     ) {

@@ -1,16 +1,50 @@
 package io.jenetics.incubator.bean;
 
+import java.util.stream.Stream;
+
 /**
- * Represents a <em>bean</em> property.
+ * Represents an object's property. A property might be defined as usual
+ * <em>bean</em> property, with getter and setter, or as record component.
  */
 public interface Property {
+
+	/**
+	 * This interface is responsible for reading the properties of a given
+	 * {@code object}.
+	 */
+	@FunctionalInterface
+	interface Reader {
+
+		/**
+		 * Reads the properties from the given {@code object}. The
+		 * {@code basePath} is needed for building the <em>full</em> path of
+		 * the read properties. Both arguments may be {@code null}.
+		 *
+		 * @param basePath the base path of the read properties
+		 * @param object the object from where to read its properties
+		 * @return the object's properties
+		 */
+		Stream<Property> read(final String basePath, final Object object);
+	}
+
+	@FunctionalInterface
+	interface Flattener {
+		Stream<Property> flatten(final Property property);
+	}
+
+	record Path() {
+		public boolean matches(final String pattern) {
+			return false;
+		}
+	}
+
 
 	/**
 	 * Returns the object which contains {@code this} property.
 	 *
 	 * @return the object which contains {@code this} property
 	 */
-	Object parent();
+	Object object();
 
 	/**
 	 * The full path, separated with dots '.', of {@code this} property from
@@ -57,5 +91,11 @@ public interface Property {
 	 *         {@code false} if the property is not mutable
 	 */
 	boolean write(final Object value);
+
+
+
+	/* *************************************************************************
+	 * Helper implementations
+	 * ************************************************************************/
 
 }

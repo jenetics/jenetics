@@ -3,30 +3,27 @@ package io.jenetics.incubator.bean;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 
 /**
  * Preorder property iterator.
  */
-abstract class PropertyIterator implements Iterator<Property> {
+final class PropertyIterator implements Iterator<Property> {
 
-    private final Predicate<? super Class<?>> filter;
+    private final Property.Reader reader;
 
     private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
 
 	PropertyIterator(
 		final String basePath,
 		final Object root,
-        final Predicate<? super Class<?>> filter
+        final Property.Reader reader
     ) {
-        requireNonNull(root);
-        this.filter = requireNonNull(filter);
+        this.reader = requireNonNull(reader);
 
-        deque.push(properties(basePath, root));
+        deque.push(reader.read(basePath, root).iterator());
     }
 
     @Override
@@ -47,27 +44,15 @@ abstract class PropertyIterator implements Iterator<Property> {
             deque.pop();
         }
 
-        final Iterator<Property> children = properties(node.path(), node.value());
-        if (children.hasNext()) {
+        final Iterator<Property> children = reader
+			.read(node.path(), node.value())
+			.iterator();
+
+		if (children.hasNext()) {
             deque.push(children);
         }
 
         return node;
     }
-
-    private Iterator<Property> properties(
-		final String basePath,
-		final Object parent
-	) {
-        if (parent != null) {
-            if (filter.test(parent.getClass())) {
-				return next(basePath, parent);
-            }
-        }
-
-        return Collections.emptyIterator();
-    }
-
-	abstract Iterator<Property> next(final String basePath, final Object parent);
 
 }
