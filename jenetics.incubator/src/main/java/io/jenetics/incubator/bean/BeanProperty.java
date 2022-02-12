@@ -9,6 +9,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
+/**
+ * Bean <em>property</em> implementation.
+ */
 record BeanProperty(
 	PropertyDescriptor descriptor,
 	String path,
@@ -43,14 +46,20 @@ record BeanProperty(
 		return writeValue(descriptor, object, value);
 	}
 
-
-	static Stream<Property> properties(
+	/**
+	 * Read the bean properties from a given {@code object}.
+	 *
+	 * @param basePath the base path of the read properties
+	 * @param object the object from where to read its properties
+	 * @return the object's bean properties
+	 */
+	static Stream<Property> read(
 		final String basePath,
-		final Object parent
+		final Object object
 	) {
-		return parent != null
-			? descriptors(parent.getClass())
-			.map(desc -> toProperty(basePath, desc, parent))
+		return object != null
+			? descriptors(object.getClass())
+				.map(desc -> toProperty(basePath, desc, object))
 			: Stream.empty();
 	}
 
@@ -71,7 +80,7 @@ record BeanProperty(
 		);
 	}
 
-	static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
+	private static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
 		try {
 			return descriptor.getReadMethod().invoke(parent);
 		} catch (IllegalAccessException | InvocationTargetException e) {
@@ -79,7 +88,7 @@ record BeanProperty(
 		}
 	}
 
-	static boolean writeValue(
+	private static boolean writeValue(
 		final PropertyDescriptor descriptor,
 		final Object parent,
 		final Object value

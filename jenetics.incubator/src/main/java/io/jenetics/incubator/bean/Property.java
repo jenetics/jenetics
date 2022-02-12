@@ -2,6 +2,7 @@ package io.jenetics.incubator.bean;
 
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Spliterator;
@@ -23,6 +24,8 @@ public interface Property {
 	@FunctionalInterface
 	interface Reader {
 
+		Reader BEANS = BeanProperty::read;
+
 		/**
 		 * Reads the properties from the given {@code object}. The
 		 * {@code basePath} is needed for building the <em>full</em> path of
@@ -33,6 +36,7 @@ public interface Property {
 		 * @return the object's properties
 		 */
 		Stream<Property> read(final String basePath, final Object object);
+
 	}
 
 	record Path() {
@@ -41,6 +45,14 @@ public interface Property {
 		}
 	}
 
+	/**
+	 * Default flattener for flattening {@link Collection} properties. The
+	 * flattened collection will be still part of the flattened result.
+	 */
+	Function<? super Property, ? extends Stream<?>> COLLECTION_FLATTENER =
+	property -> property.value() instanceof Collection<?> coll
+		? Stream.concat(Stream.of(property.value()), coll.stream())
+		: Stream.of(property.value());
 
 	/**
 	 * Returns the object which contains {@code this} property.
