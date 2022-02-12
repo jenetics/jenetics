@@ -1,6 +1,14 @@
 package io.jenetics.incubator.bean;
 
+import static java.util.Spliterators.spliteratorUnknownSize;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -25,11 +33,6 @@ public interface Property {
 		 * @return the object's properties
 		 */
 		Stream<Property> read(final String basePath, final Object object);
-	}
-
-	@FunctionalInterface
-	interface Flattener {
-		Stream<Property> flatten(final Property property);
 	}
 
 	record Path() {
@@ -93,9 +96,77 @@ public interface Property {
 	boolean write(final Object value);
 
 
+	/**
+	 * Return a Stream that is lazily populated with bean properties by walking
+	 * the object graph rooted at a given starting {@code object}. The object
+	 * tree is traversed in pre-order.
+	 *
+	 * @param object the root of the object tree
+	 * @param reader the property reader for the given object kind
+	 * @param flattener function which allows flattening (unroll) properties.
+	 *        This might be useful when a property is a collection and contains
+	 *        itself objects for which you are interested in its properties.
+	 * @return the property stream, containing all transitive properties of the
+	 *         given root {@code object}. The object tree is traversed in
+	 *         pre-order.
+	 */
+	static Stream<Property> walk(
+		final Object object,
+		final Reader reader,
+		final Function<? super Property, ? extends Stream<?>> flattener
+	) {
+		final Map<Object, Object> visited = new IdentityHashMap<>();
+		return walk(null, object, reader, flattener, visited);
+	}
 
-	/* *************************************************************************
-	 * Helper implementations
-	 * ************************************************************************/
+	private static Stream<Property> walk(
+		final String basePath,
+		final Object object,
+		final Reader reader,
+		final Function<? super Property, ? extends Stream<?>> flattener,
+		final Map<Object, Object> visited
+	) {
+		if (visited.containsKey(object)) {
+			return Stream.empty();
+		}
+
+		final var it = new PreOrderPropertyIterator(basePath, object, reader);
+		final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
+
+		return StreamSupport.stream(sp, false)
+			.filter(p -> {
+				synchronized (visited) {
+					final var visit = visited.containsKey(p.object());
+					visited.put(p.object(), "");
+					return visit;
+				}
+			})
+			.flatMap(prop -> flatten(prop, reader, flattener, visited));
+	}
+
+	private static Stream<Property> flatten(
+		final Property property,
+		final Reader reader,
+		final Function<? super Property, ? extends Stream<?>> flattener,
+		final Map<Object, Object> visited
+	) {
+		final var index = new AtomicInteger();
+		return flattener.apply(property).flatMap(ele ->
+			walk(
+				indexedPath(property.path(), index),
+				ele,
+				reader,
+				flattener,
+				visited
+			)
+		);
+	}
+
+	private static String indexedPath(
+		final String basePath,
+		final AtomicInteger index
+	) {
+		return String.format("%s[%s]", basePath, index.getAndIncrement());
+	}
 
 }
