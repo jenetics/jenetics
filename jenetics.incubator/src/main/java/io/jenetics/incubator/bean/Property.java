@@ -205,6 +205,17 @@ public interface Property {
 		);
 	}
 
+	static String toString(final Property property) {
+		return format(
+			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
+			property.path(),
+			property.name(),
+			property.value(),
+			property.type() != null ? property.type().getName() : null,
+			property.object()
+		);
+	}
+
 
 	/**
 	 * This interface is responsible for reading the properties of a given
@@ -407,18 +418,7 @@ record SimpleProperty(
 
 	@Override
 	public String toString() {
-		return toString(this);
-	}
-
-	static String toString(final Property property) {
-		return format(
-			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
-			property.path(),
-			property.name(),
-			property.value(),
-			property.type() != null ? property.type().getName() : null,
-			property.object()
-		);
+		return Property.toString(this);
 	}
 }
 
@@ -426,13 +426,13 @@ record SimpleProperty(
  * Bean <em>property</em> implementation.
  */
 final class BeanProperty implements Property {
-	private final Descriptor descriptor;
+	private final PropertyDesc descriptor;
 	private final Object object;
 	private final Path path;
 	private final Object value;
 
 	BeanProperty(
-		final Descriptor descriptor,
+		final PropertyDesc descriptor,
 		final Object object,
 		final Path path,
 		final Object value
@@ -480,7 +480,7 @@ final class BeanProperty implements Property {
 
 	@Override
 	public String toString() {
-		return SimpleProperty.toString(this);
+		return Property.toString(this);
 	}
 
 	/**
@@ -492,7 +492,7 @@ final class BeanProperty implements Property {
 	 */
 	static Stream<Property> read(final Path basePath, final Object object) {
 		if (object != null) {
-			return descriptors(object.getClass())
+			return PropertyDesc.stream(object.getClass())
 				.map(desc ->
 					new BeanProperty(
 						desc,
@@ -506,78 +506,93 @@ final class BeanProperty implements Property {
 		}
 	}
 
-	private static Stream<Descriptor> descriptors(final Class<?> type) {
-		try {
-			final PropertyDescriptor[] descriptors = Introspector
-				.getBeanInfo(type)
-				.getPropertyDescriptors();
+}
 
-			return Stream.of(descriptors)
-				.filter(desc -> desc.getPropertyType() != Class.class)
-				.filter(desc -> desc.getReadMethod() != null)
-				.map(desc ->
-					new Descriptor(
-						desc.getPropertyType(),
-						desc.getName(),
-						desc.getReadMethod(),
-						desc.getWriteMethod()
-					)
-				)
-				.sorted();
-		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("Can't introspect Object.", e);
+final class PropertyDesc implements Comparable<PropertyDesc> {
+	final Class<?> type;
+	final String name;
+	final Method getter;
+	final Method setter;
+
+	private PropertyDesc(
+		final Class<?> type,
+		final String name,
+		final Method getter,
+		final Method setter
+	) {
+		this.type = requireNonNull(type);
+		this.name = requireNonNull(name);
+		this.getter = requireNonNull(getter);
+		this.setter = setter;
+	}
+
+	Object read(final Object object) {
+		try {
+			return object != null ? getter.invoke(object) : null;
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
-	private static final class Descriptor implements Comparable<Descriptor> {
-		private final Class<?> type;
-		private final String name;
-		private final Method getter;
-		private final Method setter;
-
-		private Descriptor(
-			final Class<?> type,
-			final String name,
-			final Method getter,
-			final Method setter
-		) {
-			this.type = requireNonNull(type);
-			this.name = requireNonNull(name);
-			this.getter = requireNonNull(getter);
-			this.setter = setter;
-		}
-
-		Object read(final Object object) {
-			try {
-				return object != null ? getter.invoke(object) : null;
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				throw new IllegalStateException(e);
+	boolean write(final Object object, final Object value) {
+		try {
+			if (setter != null && object != null) {
+				setter.invoke(object, value);
+				return true;
+			}
+		} catch (IllegalAccessException ignore) {
+		} catch (InvocationTargetException e) {
+			if (e.getTargetException() instanceof RuntimeException re) {
+				throw re;
+			} else {
+				throw new IllegalStateException(e.getTargetException());
 			}
 		}
 
-		boolean write(final Object object, final Object value) {
+		return false;
+	}
+
+	@Override
+	public int compareTo(final PropertyDesc o) {
+		return name.compareTo(o.name);
+	}
+
+	static Stream<PropertyDesc> stream(final Class<?> type) {
+		final Stream<PropertyDesc> result;
+
+		if (type.isRecord()) {
+			result = Stream.of(type.getRecordComponents())
+				.map(cmp ->
+					new PropertyDesc(
+						cmp.getType(),
+						cmp.getName(),
+						cmp.getAccessor(),
+						null
+					)
+				);
+		} else {
 			try {
-				if (setter != null && object != null) {
-					setter.invoke(object, value);
-					return true;
-				}
-			} catch (IllegalAccessException ignore) {
-			} catch (InvocationTargetException e) {
-				if (e.getTargetException() instanceof RuntimeException re) {
-					throw re;
-				} else {
-					throw new IllegalStateException(e.getTargetException());
-				}
+				final PropertyDescriptor[] descriptors = Introspector
+					.getBeanInfo(type)
+					.getPropertyDescriptors();
+
+				result = Stream.of(descriptors)
+					.filter(desc -> desc.getPropertyType() != Class.class)
+					.filter(desc -> desc.getReadMethod() != null)
+					.map(desc ->
+						new PropertyDesc(
+							desc.getPropertyType(),
+							desc.getName(),
+							desc.getReadMethod(),
+							desc.getWriteMethod()
+						)
+					);
+			} catch (IntrospectionException e) {
+				throw new IllegalArgumentException("Can't introspect Object.", e);
 			}
-
-			return false;
 		}
 
-		@Override
-		public int compareTo(final Descriptor o) {
-			return name.compareTo(o.name);
-		}
-
+		return result.sorted();
 	}
 
 }
