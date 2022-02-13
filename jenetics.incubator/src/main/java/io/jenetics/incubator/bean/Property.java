@@ -162,7 +162,7 @@ public interface Property {
 				final Path path = property.path()
 					.indexed(index.getAndIncrement());
 
-				final var parent = new SimpleProperty(
+				final var parent = new ImmutableProperty(
 					property.value(),
 					path,
 					ele != null ? ele.getClass() : Object.class,
@@ -205,6 +205,39 @@ public interface Property {
 		);
 	}
 
+	/**
+	 * Read the bean properties from a given {@code object}.
+	 *
+	 * @param basePath the base path of the read properties
+	 * @param object the object from where to read its properties
+	 * @return the object's bean properties
+	 */
+	static Stream<Property> read(final Path basePath, final Object object) {
+		if (object != null) {
+			return PropertyDesc.stream(object.getClass())
+				.map(desc -> {
+					if (desc.setter != null) {
+						return new MutableProperty(
+							desc,
+							object,
+							basePath.append(desc.name),
+							desc.read(object)
+						);
+					} else {
+						return new ImmutableProperty(
+							object,
+							basePath.append(desc.name),
+							desc.type,
+							new Path(desc.name),
+							desc.read(object)
+						);
+					}
+				});
+		} else {
+			return Stream.empty();
+		}
+	}
+
 	static String toString(final Property property) {
 		return format(
 			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
@@ -227,7 +260,7 @@ public interface Property {
 		/**
 		 * The default property reader, using the bean introspector class.
 		 */
-		Reader DEFAULT = BeanProperty::read;
+		Reader DEFAULT = Property::read;
 
 		/**
 		 * Reads the properties from the given {@code object}. The
@@ -397,9 +430,9 @@ public interface Property {
 }
 
 /**
- * Simple (static) property implementation.
+ * Immutable property implementation.
  */
-record SimpleProperty(
+record ImmutableProperty(
 	Object object,
 	Path path,
 	Class<?> type,
@@ -409,7 +442,7 @@ record SimpleProperty(
 	implements Property
 {
 
-	SimpleProperty {
+	ImmutableProperty {
 		requireNonNull(object);
 		requireNonNull(path);
 		requireNonNull(type);
@@ -425,19 +458,19 @@ record SimpleProperty(
 /**
  * Bean <em>property</em> implementation.
  */
-final class BeanProperty implements Property {
-	private final PropertyDesc descriptor;
+final class MutableProperty implements Property {
+	private final PropertyDesc desc;
 	private final Object object;
 	private final Path path;
 	private final Object value;
 
-	BeanProperty(
-		final PropertyDesc descriptor,
+	MutableProperty(
+		final PropertyDesc desc,
 		final Object object,
 		final Path path,
 		final Object value
 	) {
-		this.descriptor = requireNonNull(descriptor);
+		this.desc = requireNonNull(desc);
 		this.object = requireNonNull(object);
 		this.path = requireNonNull(path);
 		this.value = value;
@@ -455,12 +488,12 @@ final class BeanProperty implements Property {
 
 	@Override
 	public Class<?> type() {
-		return descriptor.type;
+		return desc.type;
 	}
 
 	@Override
 	public Path name() {
-		return new Path(descriptor.name);
+		return new Path(desc.name);
 	}
 
 	@Override
@@ -470,12 +503,12 @@ final class BeanProperty implements Property {
 
 	@Override
 	public Object read() {
-		return descriptor.read(object);
+		return desc.read(object);
 	}
 
 	@Override
 	public boolean write(final Object value) {
-		return descriptor.write(object, value);
+		return desc.write(object, value);
 	}
 
 	@Override
@@ -483,31 +516,12 @@ final class BeanProperty implements Property {
 		return Property.toString(this);
 	}
 
-	/**
-	 * Read the bean properties from a given {@code object}.
-	 *
-	 * @param basePath the base path of the read properties
-	 * @param object the object from where to read its properties
-	 * @return the object's bean properties
-	 */
-	static Stream<Property> read(final Path basePath, final Object object) {
-		if (object != null) {
-			return PropertyDesc.stream(object.getClass())
-				.map(desc ->
-					new BeanProperty(
-						desc,
-						object,
-						basePath.append(desc.name),
-						desc.read(object)
-					)
-				);
-		} else {
-			return Stream.empty();
-		}
-	}
-
 }
 
+/**
+ * A {@code PropertyDesc} describes one property that a Java Bean exports or a
+ * {@link java.lang.reflect.RecordComponent} in the case of a record class.
+ */
 final class PropertyDesc implements Comparable<PropertyDesc> {
 	final Class<?> type;
 	final String name;
@@ -526,17 +540,31 @@ final class PropertyDesc implements Comparable<PropertyDesc> {
 		this.setter = setter;
 	}
 
+	/**
+	 * Read the property value of the given {@code object}.
+	 *
+	 * @param object the object where the property is declared
+	 * @return the property value of the given {@code object}
+	 */
 	Object read(final Object object) {
 		try {
-			return object != null ? getter.invoke(object) : null;
+			return getter.invoke(object);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
+	/**
+	 * Tries to write a new value to {@code this} property.
+	 *
+	 * @param object the object where the property is declared
+	 * @param value the new property value
+	 * @return {@code true} if the new property value has been written
+	 *         successfully, {@code false} if the property is immutable
+	 */
 	boolean write(final Object object, final Object value) {
 		try {
-			if (setter != null && object != null) {
+			if (setter != null) {
 				setter.invoke(object, value);
 				return true;
 			}
@@ -557,6 +585,12 @@ final class PropertyDesc implements Comparable<PropertyDesc> {
 		return name.compareTo(o.name);
 	}
 
+	/**
+	 * Return a stream of property descriptions for the given {@code type}.
+	 *
+	 * @param type the type to be analyzed
+	 * @return a stream of property descriptions for the given {@code type}
+	 */
 	static Stream<PropertyDesc> stream(final Class<?> type) {
 		final Stream<PropertyDesc> result;
 
