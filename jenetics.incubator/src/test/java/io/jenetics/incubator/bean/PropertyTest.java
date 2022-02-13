@@ -2,8 +2,11 @@ package io.jenetics.incubator.bean;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.bean.Property.Path;
 
 public class PropertyTest {
 
@@ -26,7 +29,7 @@ public class PropertyTest {
 		));
 
 		final List<Property> properties = Property
-			.walk(foo,"io.jenetics")
+			.walk(foo, /*p -> Stream.empty(),*/ "io.jenetics")
 			.toList();
 
 		properties.forEach(System.out::println);
@@ -34,6 +37,23 @@ public class PropertyTest {
 		properties.stream()
 			.filter(Property.Path.matcher("*.foos[*].fooIndex"))
 			.forEach(System.out::println);
+
+		Property.walk(null);
+	}
+
+	@Test
+	public void path() {
+		final var path = new Path("a")
+			.append("b")
+			.append("c", 0)
+			.append("d", 2)
+			.append("e");
+
+		System.out.println(path);
+
+		for (Path value : path) {
+			System.out.println(value);
+		}
 	}
 
 }

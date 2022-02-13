@@ -115,6 +115,9 @@ public interface Property {
 		final Reader reader,
 		final Function<? super Property, ? extends Stream<?>> flattener
 	) {
+		requireNonNull(reader);
+		requireNonNull(flattener);
+
 		final Map<Object, Object> visited = new IdentityHashMap<>();
 		return walk(new Path(), object, reader, flattener, visited);
 	}
@@ -126,6 +129,10 @@ public interface Property {
 		final Function<? super Property, ? extends Stream<?>> flattener,
 		final Map<Object, Object> visited
 	) {
+		if (object == null) {
+			return Stream.empty();
+		}
+
 		final boolean exists;
 		synchronized(visited) {
 			if (!(exists = visited.containsKey(object))) {
@@ -183,6 +190,18 @@ public interface Property {
 			});
 	}
 
+	static Stream<Property> walk(
+		final Object object,
+		final Function<? super Property, ? extends Stream<?>> flattener,
+		final String... packages
+	) {
+		return walk(
+			object,
+			Reader.DEFAULT.filterPackages(packages),
+			flattener
+		);
+	}
+
 	/**
 	 * Return a Stream that is lazily populated with bean properties by walking
 	 * the object graph rooted at a given starting {@code object}. The object
@@ -198,15 +217,15 @@ public interface Property {
 	static Stream<Property> walk(final Object object, final String... packages) {
 		return walk(
 			object,
-			Reader.DEFAULT.filterPackages(packages),
 			property -> property.value() instanceof Collection<?> coll
 				? coll.stream()
-				: Stream.empty()
+				: Stream.empty(),
+			packages
 		);
 	}
 
 	/**
-	 * Read the bean properties from a given {@code object}.
+	 * Read the direct (first level) bean properties from a given {@code object}.
 	 *
 	 * @param basePath the base path of the read properties
 	 * @param object the object from where to read its properties
@@ -320,7 +339,7 @@ public interface Property {
 	}
 
 	/**
-	 * Represents the absolute property path.
+	 * Represents the property path.
 	 */
 	final class Path implements Iterable<Path> {
 		private final String name;
@@ -382,6 +401,10 @@ public interface Property {
 		 */
 		public Path append(final String element) {
 			return new Path(element, -1, elements);
+		}
+
+		public Path append(final String element, final int index) {
+			return new Path(element, index, elements);
 		}
 
 		/**
@@ -641,11 +664,11 @@ final class PropertyPreOrderIterator implements Iterator<Property> {
 
 	PropertyPreOrderIterator(
 		final Path basePath,
-		final Object root,
+		final Object object,
 		final Property.Reader reader
 	) {
 		this.reader = requireNonNull(reader);
-		deque.push(reader.read(basePath, root).iterator());
+		deque.push(reader.read(basePath, object).iterator());
 	}
 
 	@Override
