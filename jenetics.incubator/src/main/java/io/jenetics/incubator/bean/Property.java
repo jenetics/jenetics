@@ -4,6 +4,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -57,7 +61,7 @@ public interface Property {
 	 *
 	 * @return the property name
 	 */
-	String name();
+	Path name();
 
 	/**
 	 * The initial, cached property value, might be {@code null}.
@@ -72,7 +76,9 @@ public interface Property {
 	 *
 	 * @return the current property value
 	 */
-	Object read();
+	default Object read() {
+		return value();
+	}
 
 	/**
 	 * Changes the property value.
@@ -81,7 +87,9 @@ public interface Property {
 	 * @return {@code true} if the value has been changed successfully,
 	 *         {@code false} if the property is not mutable
 	 */
-	boolean write(final Object value);
+	default boolean write(final Object value) {
+		return false;
+	}
 
 
 	/**
@@ -146,15 +154,29 @@ public interface Property {
 		final var index = new AtomicInteger();
 
 		return flattener.apply(property)
-			.flatMap(ele ->
-				walk(
-					property.path().indexed(index.getAndIncrement()),
-					ele,
-					reader,
-					flattener,
-					visited
-				)
-			);
+			.flatMap(ele -> {
+				final Path path = property.path()
+					.indexed(index.getAndIncrement());
+
+				final var parent = new SimpleProperty(
+					property.value(),
+					path,
+					ele != null ? ele.getClass() : Object.class,
+					path.head(),
+					ele
+				);
+
+				return Stream.concat(
+					Stream.of(parent),
+					walk(
+						path,
+						ele,
+						reader,
+						flattener,
+						visited
+					)
+				);
+			});
 	}
 
 	/**
@@ -178,7 +200,6 @@ public interface Property {
 				: Stream.empty()
 		);
 	}
-
 
 
 	/**
@@ -253,35 +274,56 @@ public interface Property {
 	/**
 	 * Represents the absolute property path.
 	 */
-	record Path(List<Element> elements) {
+	final class Path implements Iterable<Path> {
+		private final String name;
+		private final int index;
+		private final List<Path> elements;
 
-		/**
-		 * Represents a path element.
-		 */
-		public record Element(String name, int index) {
-			public Element indexed(final int index) {
-				return new Element(name, index);
-			}
-			@Override
-			public String toString() {
-				return index < 0 ? name : format("%s[%d]", name, index);
-			}
+		private Path(final String name, final int index, final List<Path> head) {
+			this.name = requireNonNull(name);
+			this.index = index;
+			this.elements = append(head, this);
 		}
 
-		/**
-		 * Create a new path instance with the given path elements.
-		 *
-		 * @param elements the path elements
-		 */
-		public Path {
-			elements = List.copyOf(elements);
+		private static List<Path> append(final List<Path> head, final Path path) {
+			final var result = new ArrayList<Path>(head.size() + 1);
+			result.addAll(head);
+			result.add(path);
+			return List.copyOf(result);
 		}
 
-		/**
-		 * Creates a new empty path.
-		 */
-		public Path() {
-			this(List.of());
+		public Path(final String name, final int index) {
+			this(name, index, List.of());
+		}
+
+		public Path(final String name) {
+			this(name, -1, List.of());
+		}
+
+		private Path() {
+			this.name = null;
+			this.index = -1;
+			this.elements = List.of();
+		}
+
+		public String name() {
+			return name;
+		}
+
+		public int index() {
+			return index;
+		}
+
+		public int count() {
+			return elements.size();
+		}
+
+		public Path get(final int index) {
+			return elements.get(index);
+		}
+
+		public Path head() {
+			return new Path(name(), index());
 		}
 
 		/**
@@ -291,10 +333,7 @@ public interface Property {
 		 * @return a new path object with the given element appended
 		 */
 		public Path append(final String element) {
-			final var result = new ArrayList<Element>(elements.size() + 1);
-			result.addAll(elements);
-			result.add(new Element(element, -1));
-			return new Path(result);
+			return new Path(element, -1, elements);
 		}
 
 		/**
@@ -304,18 +343,26 @@ public interface Property {
 		 * @param index the index of the last path element
 		 * @return a new path object
 		 */
-		public Path indexed(final int index) {
-			final var result = new ArrayList<>(elements);
-			final var last = result.remove(result.size() - 1);
-			result.add(last.indexed(index));
-			return new Path(result);
+		Path indexed(final int index) {
+			return new Path(name, index, elements.subList(0, elements.size() - 1));
+		}
+
+		@Override
+		public Iterator<Path> iterator() {
+			return elements.iterator();
 		}
 
 		@Override
 		public String toString() {
 			return elements.stream()
-				.map(Objects::toString)
+				.map(Path::toSimpleString)
 				.collect(Collectors.joining("."));
+		}
+
+		private String toSimpleString() {
+			return index < 0
+				? name
+				: String.format("%s[%d]", name, index);
 		}
 
 		/**
@@ -328,6 +375,203 @@ public interface Property {
 		 */
 		public static Predicate<Property> matcher(final String pattern) {
 			return property -> false;
+		}
+
+	}
+
+}
+
+/**
+ * Simple (static) property implementation.
+ */
+record SimpleProperty(
+	Object object,
+	Path path,
+	Class<?> type,
+	Path name,
+	Object value
+)
+	implements Property
+{
+
+	SimpleProperty {
+		requireNonNull(object);
+		requireNonNull(path);
+		requireNonNull(type);
+		requireNonNull(name);
+	}
+
+	@Override
+	public String toString() {
+		return toString(this);
+	}
+
+	static String toString(final Property property) {
+		return format(
+			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
+			property.path(),
+			property.name(),
+			property.value(),
+			property.type() != null ? property.type().getName() : null,
+			property.object()
+		);
+	}
+}
+
+/**
+ * Bean <em>property</em> implementation.
+ */
+final class BeanProperty implements Property {
+	private final Descriptor descriptor;
+	private final Object object;
+	private final Path path;
+	private final Object value;
+
+	BeanProperty(
+		final Descriptor descriptor,
+		final Object object,
+		final Path path,
+		final Object value
+	) {
+		this.descriptor = requireNonNull(descriptor);
+		this.object = requireNonNull(object);
+		this.path = requireNonNull(path);
+		this.value = value;
+	}
+
+	@Override
+	public Object object() {
+		return object;
+	}
+
+	@Override
+	public Path path() {
+		return path;
+	}
+
+	@Override
+	public Class<?> type() {
+		return descriptor.type;
+	}
+
+	@Override
+	public Path name() {
+		return new Path(descriptor.name);
+	}
+
+	@Override
+	public Object value() {
+		return value;
+	}
+
+	@Override
+	public Object read() {
+		return descriptor.read(object);
+	}
+
+	@Override
+	public boolean write(final Object value) {
+		return descriptor.write(object, value);
+	}
+
+	@Override
+	public String toString() {
+		return SimpleProperty.toString(this);
+	}
+
+	/**
+	 * Read the bean properties from a given {@code object}.
+	 *
+	 * @param basePath the base path of the read properties
+	 * @param object the object from where to read its properties
+	 * @return the object's bean properties
+	 */
+	static Stream<Property> read(final Path basePath, final Object object) {
+		if (object != null) {
+			return descriptors(object.getClass())
+				.map(desc ->
+					new BeanProperty(
+						desc,
+						object,
+						basePath.append(desc.name),
+						desc.read(object)
+					)
+				);
+		} else {
+			return Stream.empty();
+		}
+	}
+
+	private static Stream<Descriptor> descriptors(final Class<?> type) {
+		try {
+			final PropertyDescriptor[] descriptors = Introspector
+				.getBeanInfo(type)
+				.getPropertyDescriptors();
+
+			return Stream.of(descriptors)
+				.filter(desc -> desc.getPropertyType() != Class.class)
+				.filter(desc -> desc.getReadMethod() != null)
+				.map(desc ->
+					new Descriptor(
+						desc.getPropertyType(),
+						desc.getName(),
+						desc.getReadMethod(),
+						desc.getWriteMethod()
+					)
+				)
+				.sorted();
+		} catch (IntrospectionException e) {
+			throw new IllegalArgumentException("Can't introspect Object.", e);
+		}
+	}
+
+	private static final class Descriptor implements Comparable<Descriptor> {
+		private final Class<?> type;
+		private final String name;
+		private final Method getter;
+		private final Method setter;
+
+		private Descriptor(
+			final Class<?> type,
+			final String name,
+			final Method getter,
+			final Method setter
+		) {
+			this.type = requireNonNull(type);
+			this.name = requireNonNull(name);
+			this.getter = requireNonNull(getter);
+			this.setter = setter;
+		}
+
+		Object read(final Object object) {
+			try {
+				return object != null ? getter.invoke(object) : null;
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		boolean write(final Object object, final Object value) {
+			try {
+				if (setter != null && object != null) {
+					setter.invoke(object, value);
+					return true;
+				}
+			} catch (IllegalAccessException ignore) {
+			} catch (InvocationTargetException e) {
+				if (e.getTargetException() instanceof RuntimeException re) {
+					throw re;
+				} else {
+					throw new IllegalStateException(e.getTargetException());
+				}
+			}
+
+			return false;
+		}
+
+		@Override
+		public int compareTo(final Descriptor o) {
+			return name.compareTo(o.name);
 		}
 
 	}
