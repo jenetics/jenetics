@@ -1,13 +1,18 @@
 package io.jenetics.incubator.bean;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,138 +22,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import io.jenetics.incubator.bean.Property.Path;
+
 /**
  * Represents an object's property. A property might be defined as usual
  * <em>bean</em> property, with getter and setter, or as record component.
  */
 public interface Property {
-
-	/**
-	 * This interface is responsible for reading the properties of a given
-	 * {@code object}.
-	 */
-	@FunctionalInterface
-	interface Reader {
-
-		/**
-		 * The default property reader, using the bean introspector class.
-		 */
-		Reader DEFAULT = BeanProperty::read;
-
-		/**
-		 * Reads the properties from the given {@code object}. The
-		 * {@code basePath} is needed for building the <em>full</em> path of
-		 * the read properties. Both arguments may be {@code null}.
-		 *
-		 * @param basePath the base path of the read properties
-		 * @param object the object from where to read its properties
-		 * @return the object's properties
-		 */
-		Stream<Property> read(final Path basePath, final Object object);
-
-		/**
-		 * Create a new reader which filters specific object from the property
-		 * read.
-		 *
-		 * @param filter the object filter applied to the reader
-		 * @return a new reader with the applied filter
-		 */
-		default Reader filter(final Predicate<? super Object> filter) {
-			return (basePath, object) -> {
-				if (filter.test(object)) {
-					return this.read(basePath, object);
-				} else {
-					return Stream.empty();
-				}
-			};
-		}
-
-		/**
-		 * Create a new reader which reads the properties only from the given
-		 * packages.
-		 *
-		 * @param packages the base packages of the object where the properties
-		 *        are read from
-		 * @return a new reader which reads the properties only from the given
-		 * 		   packages
-		 */
-		default Reader filterPackages(final String... packages) {
-			return filter(object -> {
-				if (object != null) {
-					final var pkg = object.getClass().getPackage().getName();
-					for (var p : packages) {
-						if (pkg.startsWith(p)) {
-							return true;
-						}
-					}
-				}
-
-				return false;
-			});
-		}
-
-	}
-
-	/**
-	 * Represents the absolute property path.
-	 */
-	record Path(List<Element> elements) {
-
-		/**
-		 * Represents a path element.
-		 */
-		public record Element(String name, int index) {
-			public Element indexed(final int index) {
-				return new Element(name, index);
-			}
-			@Override
-			public String toString() {
-				return index < 0 ? name : format("%s[%d]", name, index);
-			}
-		}
-
-		public Path {
-			elements = List.copyOf(elements);
-		}
-
-		public Path() {
-			this(List.of());
-		}
-
-		public boolean matches(final String pattern) {
-			return false;
-		}
-
-		public Path append(final String element) {
-			final var result = new ArrayList<Element>(elements.size() + 1);
-			result.addAll(elements);
-			result.add(new Element(element, -1));
-			return new Path(result);
-		}
-
-		public Path indexed(final int index) {
-			final var result = new ArrayList<>(elements);
-			final var last = result.remove(result.size() - 1);
-			result.add(last.indexed(index));
-			return new Path(result);
-		}
-
-		@Override
-		public String toString() {
-			return elements.stream()
-				.map(Objects::toString)
-				.collect(Collectors.joining("."));
-		}
-	}
-
-	/**
-	 * Default flattener for flattening {@link Collection} properties. The
-	 * flattened collection will be still part of the flattened result.
-	 */
-	Function<? super Property, ? extends Stream<?>> COLLECTION_FLATTENER =
-	property -> property.value() instanceof Collection<?> coll
-		? coll.stream()
-		: Stream.empty();
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -234,28 +114,27 @@ public interface Property {
 		final Function<? super Property, ? extends Stream<?>> flattener,
 		final Map<Object, Object> visited
 	) {
-		if (visited.containsKey(object)) {
-			return Stream.empty();
+		final boolean exists;
+		synchronized(visited) {
+			if (!(exists = visited.containsKey(object))) {
+				visited.put(object, "");
+			}
 		}
 
-		final var it = new PreOrderPropertyIterator(basePath, object, reader);
-		//final var it = new BreathFirstPropertyIterator(basePath, object, reader);
-		final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
+		if (exists) {
+			return Stream.empty();
+		} else {
+			final var it = new PropertyPreOrderIterator(basePath, object, reader);
+			final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
 
-		return StreamSupport.stream(sp, false)
-			.filter(p -> {
-				synchronized (visited) {
-					final var visit = visited.containsKey(p.value());
-					visited.put(p.value(), "");
-					return !visit;
-				}
-			})
-			.flatMap(prop ->
-				Stream.concat(
-					Stream.of(prop),
-					flatten(prop, reader, flattener, visited)
-				)
-			);
+			return StreamSupport.stream(sp, false)
+				.flatMap(prop ->
+					Stream.concat(
+						Stream.of(prop),
+						flatten(prop, reader, flattener, visited)
+					)
+				);
+		}
 	}
 
 	private static Stream<Property> flatten(
@@ -300,4 +179,205 @@ public interface Property {
 		);
 	}
 
+
+
+	/**
+	 * This interface is responsible for reading the properties of a given
+	 * {@code object}.
+	 */
+	@FunctionalInterface
+	interface Reader {
+
+		/**
+		 * The default property reader, using the bean introspector class.
+		 */
+		Reader DEFAULT = BeanProperty::read;
+
+		/**
+		 * Reads the properties from the given {@code object}. The
+		 * {@code basePath} is needed for building the <em>full</em> path of
+		 * the read properties. Both arguments may be {@code null}.
+		 *
+		 * @param basePath the base path of the read properties
+		 * @param object the object from where to read its properties
+		 * @return the object's properties
+		 */
+		Stream<Property> read(final Path basePath, final Object object);
+
+		/**
+		 * Create a new reader which filters specific object from the property
+		 * read.
+		 *
+		 * @param filter the object filter applied to the reader
+		 * @return a new reader with the applied filter
+		 */
+		default Reader filter(final Predicate<? super Object> filter) {
+			return (basePath, object) -> {
+				if (filter.test(object)) {
+					return this.read(basePath, object);
+				} else {
+					return Stream.empty();
+				}
+			};
+		}
+
+		/**
+		 * Create a new reader which reads the properties only from the given
+		 * packages.
+		 *
+		 * @param packages the base packages of the object where the properties
+		 *        are read from
+		 * @return a new reader which reads the properties only from the given
+		 * 		   packages
+		 */
+		default Reader filterPackages(final String... packages) {
+			return filter(object -> {
+				if (object != null) {
+					if (packages.length == 0) {
+						return true;
+					}
+
+					final var pkg = object.getClass().getPackage().getName();
+					for (var p : packages) {
+						if (pkg.startsWith(p)) {
+							return true;
+						}
+					}
+				}
+
+				return false;
+			});
+		}
+	}
+
+	/**
+	 * Represents the absolute property path.
+	 */
+	record Path(List<Element> elements) {
+
+		/**
+		 * Represents a path element.
+		 */
+		public record Element(String name, int index) {
+			public Element indexed(final int index) {
+				return new Element(name, index);
+			}
+			@Override
+			public String toString() {
+				return index < 0 ? name : format("%s[%d]", name, index);
+			}
+		}
+
+		/**
+		 * Create a new path instance with the given path elements.
+		 *
+		 * @param elements the path elements
+		 */
+		public Path {
+			elements = List.copyOf(elements);
+		}
+
+		/**
+		 * Creates a new empty path.
+		 */
+		public Path() {
+			this(List.of());
+		}
+
+		/**
+		 * Create a new path object with the given element appended.
+		 *
+		 * @param element the path element to append
+		 * @return a new path object with the given element appended
+		 */
+		public Path append(final String element) {
+			final var result = new ArrayList<Element>(elements.size() + 1);
+			result.addAll(elements);
+			result.add(new Element(element, -1));
+			return new Path(result);
+		}
+
+		/**
+		 * Create a new path object by converting the last element of
+		 * {@code this} path to an <em>indexed</em> path element.
+		 *
+		 * @param index the index of the last path element
+		 * @return a new path object
+		 */
+		public Path indexed(final int index) {
+			final var result = new ArrayList<>(elements);
+			final var last = result.remove(result.size() - 1);
+			result.add(last.indexed(index));
+			return new Path(result);
+		}
+
+		@Override
+		public String toString() {
+			return elements.stream()
+				.map(Objects::toString)
+				.collect(Collectors.joining("."));
+		}
+
+		/**
+		 * Tests whether the given <em>glob</em> pattern matches {@code this}
+		 * path.
+		 *
+		 * @param pattern the pattern to match
+		 * @return {@code true} if the given {@code pattern} matches {@code this}
+		 *         path, {@code false} otherwise
+		 */
+		public static Predicate<Property> matcher(final String pattern) {
+			return property -> false;
+		}
+
+	}
+
 }
+
+/**
+ * Preorder property iterator.
+ */
+final class PropertyPreOrderIterator implements Iterator<Property> {
+
+	private final Property.Reader reader;
+	private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
+
+	PropertyPreOrderIterator(
+		final Path basePath,
+		final Object root,
+		final Property.Reader reader
+	) {
+		this.reader = requireNonNull(reader);
+		deque.push(reader.read(basePath, root).iterator());
+	}
+
+	@Override
+	public boolean hasNext() {
+		final Iterator<Property> peek = deque.peek();
+		return peek != null && peek.hasNext();
+	}
+
+	@Override
+	public Property next() {
+		final Iterator<Property> it = deque.peek();
+		if (it == null) {
+			throw new NoSuchElementException("No next element.");
+		}
+
+		final Property node = it.next();
+		if (!it.hasNext()) {
+			deque.pop();
+		}
+
+		final Iterator<Property> children = reader
+			.read(node.path(), node.value())
+			.iterator();
+		if (children.hasNext()) {
+			deque.push(children);
+		}
+
+		return node;
+	}
+
+}
+
