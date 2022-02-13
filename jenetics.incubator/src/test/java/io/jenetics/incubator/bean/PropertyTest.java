@@ -35,7 +35,7 @@ public class PropertyTest {
 		properties.forEach(System.out::println);
 
 		properties.stream()
-			.filter(Property.Path.matcher("*.foos[*].fooIndex"))
+			.filter(Property.Path.matcher("foos[2].foos[*].**.fooValue"))
 			.forEach(System.out::println);
 
 		Property.walk(null);
@@ -54,6 +54,26 @@ public class PropertyTest {
 		for (Path value : path) {
 			System.out.println(value);
 		}
+	}
+
+	@Test
+	public void matcher() {
+		// a.b.c[0].d[2].e
+		final var path = new Path("a")
+			.append("b")
+			.append("c", 0)
+			.append("d", 2)
+			.append("e");
+
+		System.out.println(path);
+		var pattern = PathPattern.compile("a.b.c[0].d[2].e");
+		System.out.println(pattern.matches(path));
+
+		pattern = PathPattern.compile("a.b.c[0].d[*].e");
+		System.out.println(pattern.matches(path));
+
+		pattern = PathPattern.compile("a.**.d[*].e");
+		System.out.println(pattern.matches(path));
 	}
 
 }

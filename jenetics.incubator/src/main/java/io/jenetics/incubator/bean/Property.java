@@ -22,6 +22,7 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -697,6 +698,149 @@ final class PropertyPreOrderIterator implements Iterator<Property> {
 		}
 
 		return node;
+	}
+
+}
+
+final class PathPattern {
+
+	private interface Matcher {
+		boolean match(final Iterator<Path> path);
+	}
+
+	private static final class SingleMatch implements Matcher {
+		private final String name;
+		private final Integer index;
+
+		SingleMatch(final String name, final Integer index) {
+			this.name = name;
+			this.index = index;
+		}
+
+		@Override
+		public boolean match(final Iterator<Path> path) {
+			if (path.hasNext()) {
+				final var element = path.next();
+				return
+					(name ==  null || name.equals(element.name())) &&
+					(index == null || index.equals(element.index()));
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public String toString() {
+			return (name != null ? name : "*") +
+				(index != null ? "[" + index + "]" : "*");
+		}
+	}
+
+	private static final class MultiMatch implements Matcher {
+		private final Matcher next;
+
+		MultiMatch(final Matcher next) {
+			this.next = next;
+		}
+
+		@Override
+		public boolean match(final Iterator<Path> path) {
+			if (next == null || !path.hasNext()) {
+				while (path.hasNext()) {
+					path.next();
+				}
+				return true;
+			} else {
+				boolean matches;
+				while ((matches = !next.match(path)) && path.hasNext()) {
+					path.next();
+				}
+				return matches;
+			}
+		}
+	}
+
+	private final List<Matcher> matchers;
+
+	PathPattern(final List<Matcher> matchers) {
+		this.matchers = List.copyOf(matchers);
+	}
+
+	public boolean matches(final Path path) {
+		final var paths = path.iterator();
+		final var matchers = this.matchers.iterator();
+
+		while (matchers.hasNext()) {
+			final var matcher = matchers.next();
+
+			final var matches = matcher.match(paths);
+			if (!matches) {
+				return false;
+			}
+		}
+
+		return !paths.hasNext() && !matchers.hasNext();
+	}
+
+	private record PreMatcher(String name, Integer index) {}
+
+	static PathPattern compile(final String pattern) {
+		final String[] parts = pattern.split(Pattern.quote("."));
+
+
+
+		final var pre = Stream.of(parts)
+			.map(part -> new PreMatcher(name(part), index(part)))
+			.toList();
+
+		final var matchers = new ArrayList<Matcher>();
+		for (int i = 0; i < pre.size(); ++i) {
+			final var p = pre.get(i);
+			matchers.add(matcher(pre.get(i), i < pre.size() - 1 ? pre.get(i + 1) : null));
+		}
+
+		return new PathPattern(matchers);
+	}
+
+	private static Matcher matcher(final PreMatcher matcher, final PreMatcher next) {
+		if (matcher == null) {
+			return null;
+		}
+
+		if ("**".equals(matcher.name)) {
+			return new MultiMatch(matcher(next, null));
+		} else {
+			return new SingleMatch(matcher.name, matcher.index);
+		}
+	}
+
+	private static String name(final String pattern) {
+		if ("*".equals(pattern)) {
+			return null;
+		}
+
+		final int begin = pattern.indexOf('[');
+		if (begin != -1) {
+			return pattern.substring(0, begin);
+		} else {
+			return pattern;
+		}
+	}
+
+	private static Integer index(final String pattern) {
+		final int begin = pattern.indexOf('[');
+		final int end = pattern.indexOf(']');
+
+		if (begin != -1 && end != -1) {
+			final String index = pattern.substring(begin + 1, end);
+			try {
+				return Integer.parseInt(index);
+			} catch (NumberFormatException ignore) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 }
