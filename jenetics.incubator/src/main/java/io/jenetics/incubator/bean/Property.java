@@ -91,6 +91,10 @@ public interface Property {
 		return false;
 	}
 
+	default <T> T as(final Class<? extends T> type) {
+		return type.cast(value());
+	}
+
 
 	/**
 	 * Return a Stream that is lazily populated with bean properties by walking
