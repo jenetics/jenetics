@@ -7,44 +7,63 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Comparator;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 /**
  * Bean <em>property</em> implementation.
  */
-record BeanProperty(
-	PropertyDescriptor descriptor,
-	Path path,
-	Object object,
-	Object value
-)
-	implements Property
-{
-	BeanProperty {
-		requireNonNull(descriptor);
-		requireNonNull(path);
-		requireNonNull(object);
+final class BeanProperty implements Property {
+	private final Descriptor descriptor;
+	private final Object object;
+	private final Path path;
+	private final Object value;
+
+	BeanProperty(
+		final Descriptor descriptor,
+		final Object object,
+		final Path path,
+		final Object value
+	) {
+		this.descriptor = requireNonNull(descriptor);
+		this.object = requireNonNull(object);
+		this.path = requireNonNull(path);
+		this.value = value;
+	}
+
+	@Override
+	public Object object() {
+		return object;
+	}
+
+	@Override
+	public Path path() {
+		return path;
 	}
 
 	@Override
 	public Class<?> type() {
-		return descriptor.getPropertyType();
+		return descriptor.type;
 	}
 
 	@Override
 	public String name() {
-		return descriptor.getName();
+		return descriptor.name;
+	}
+
+	@Override
+	public Object value() {
+		return value;
 	}
 
 	@Override
 	public Object read() {
-		return readValue(descriptor, object);
+		return descriptor.read(object);
 	}
 
 	@Override
 	public boolean write(final Object value) {
-		return writeValue(descriptor, object, value);
+		return descriptor.write(object, value);
 	}
 
 	@Override
@@ -62,56 +81,23 @@ record BeanProperty(
 	 * @param object the object from where to read its properties
 	 * @return the object's bean properties
 	 */
-	static Stream<Property> read(
-		final Path basePath,
-		final Object object
-	) {
+	static Stream<Property> read(final Path basePath, final Object object) {
 		if (object != null) {
-			return descriptors(object.getClass()).map(desc ->
-				new BeanProperty(
-					desc,
-					basePath.append(desc.getName()),
-					object,
-					readValue(desc, object)
-				)
-			);
+			return descriptors(object.getClass())
+				.map(desc ->
+					new BeanProperty(
+						desc,
+						object,
+						basePath.append(desc.name),
+						desc.read(object)
+					)
+				);
 		} else {
 			return Stream.empty();
 		}
 	}
 
-	private static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
-		try {
-			return descriptor.getReadMethod().invoke(parent);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	private static boolean writeValue(
-		final PropertyDescriptor descriptor,
-		final Object parent,
-		final Object value
-	) {
-		try {
-			final var wm = descriptor.getWriteMethod();
-			if (wm != null) {
-				wm.invoke(parent, value);
-				return true;
-			}
-		} catch (IllegalAccessException ignore) {
-		} catch (InvocationTargetException e) {
-			if (e.getTargetException() instanceof RuntimeException re) {
-				throw re;
-			} else {
-				throw new IllegalStateException(e.getTargetException());
-			}
-		}
-
-		return false;
-	}
-
-	private static Stream<PropertyDescriptor> descriptors(final Class<?> type) {
+	private static Stream<Descriptor> descriptors(final Class<?> type) {
 		try {
 			final PropertyDescriptor[] descriptors = Introspector
 				.getBeanInfo(type)
@@ -120,10 +106,69 @@ record BeanProperty(
 			return Stream.of(descriptors)
 				.filter(desc -> desc.getPropertyType() != Class.class)
 				.filter(desc -> desc.getReadMethod() != null)
-				.sorted(Comparator.comparing(PropertyDescriptor::getName));
+				.map(desc ->
+					new Descriptor(
+						desc.getPropertyType(),
+						desc.getName(),
+						desc.getReadMethod(),
+						desc.getWriteMethod()
+					)
+				)
+				.sorted();
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("Can't introspect Object.");
+			throw new IllegalArgumentException("Can't introspect Object.", e);
 		}
+	}
+
+	private static final class Descriptor implements Comparable<Descriptor> {
+		private final Class<?> type;
+		private final String name;
+		private final Method getter;
+		private final Method setter;
+
+		private Descriptor(
+			final Class<?> type,
+			final String name,
+			final Method getter,
+			final Method setter
+		) {
+			this.type = requireNonNull(type);
+			this.name = requireNonNull(name);
+			this.getter = requireNonNull(getter);
+			this.setter = setter;
+		}
+
+		Object read(final Object object) {
+			try {
+				return object != null ? getter.invoke(object) : null;
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		boolean write(final Object object, final Object value) {
+			try {
+				if (setter != null && object != null) {
+					setter.invoke(object, value);
+					return true;
+				}
+			} catch (IllegalAccessException ignore) {
+			} catch (InvocationTargetException e) {
+				if (e.getTargetException() instanceof RuntimeException re) {
+					throw re;
+				} else {
+					throw new IllegalStateException(e.getTargetException());
+				}
+			}
+
+			return false;
+		}
+
+		@Override
+		public int compareTo(final Descriptor o) {
+			return name.compareTo(o.name);
+		}
+
 	}
 
 }

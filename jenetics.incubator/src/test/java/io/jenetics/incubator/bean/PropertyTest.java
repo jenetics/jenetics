@@ -28,12 +28,7 @@ public class PropertyTest {
 			))
 		));
 
-		final var properties = Property.walk(
-			foo,
-			Reader.BEANS.filterPackage("io.jenetics"),
-			p -> p.value() instanceof Collection<?> coll ? coll.stream() : Stream.empty()
-			//Property.COLLECTION_FLATTENER
-		);
+		final Stream<Property> properties = Property.walk(foo,"io.jenetics");
 
 		System.out.println("ASDFASDFASDF");
 		properties.forEach(System.out::println);

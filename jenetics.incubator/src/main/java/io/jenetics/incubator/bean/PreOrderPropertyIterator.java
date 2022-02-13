@@ -15,7 +15,6 @@ import io.jenetics.incubator.bean.Property.Path;
 final class PreOrderPropertyIterator implements Iterator<Property> {
 
     private final Property.Reader reader;
-
     private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
 
 	PreOrderPropertyIterator(
@@ -24,7 +23,6 @@ final class PreOrderPropertyIterator implements Iterator<Property> {
         final Property.Reader reader
     ) {
         this.reader = requireNonNull(reader);
-
         deque.push(reader.read(basePath, root).iterator());
     }
 
@@ -49,7 +47,6 @@ final class PreOrderPropertyIterator implements Iterator<Property> {
         final Iterator<Property> children = reader
 			.read(node.path(), node.value())
 			.iterator();
-
 		if (children.hasNext()) {
             deque.push(children);
         }

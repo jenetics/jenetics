@@ -30,7 +30,10 @@ public interface Property {
 	@FunctionalInterface
 	interface Reader {
 
-		Reader BEANS = BeanProperty::read;
+		/**
+		 * The default property reader, using the bean introspector class.
+		 */
+		Reader DEFAULT = BeanProperty::read;
 
 		/**
 		 * Reads the properties from the given {@code object}. The
@@ -43,6 +46,13 @@ public interface Property {
 		 */
 		Stream<Property> read(final Path basePath, final Object object);
 
+		/**
+		 * Create a new reader which filters specific object from the property
+		 * read.
+		 *
+		 * @param filter the object filter applied to the reader
+		 * @return a new reader with the applied filter
+		 */
 		default Reader filter(final Predicate<? super Object> filter) {
 			return (basePath, object) -> {
 				if (filter.test(object)) {
@@ -53,11 +63,28 @@ public interface Property {
 			};
 		}
 
-		default Reader filterPackage(final String pkg) {
-			return filter(o ->
-				o != null &&
-					o.getClass().getPackage().getName().startsWith(pkg)
-			);
+		/**
+		 * Create a new reader which reads the properties only from the given
+		 * packages.
+		 *
+		 * @param packages the base packages of the object where the properties
+		 *        are read from
+		 * @return a new reader which reads the properties only from the given
+		 * 		   packages
+		 */
+		default Reader filterPackages(final String... packages) {
+			return filter(object -> {
+				if (object != null) {
+					final var pkg = object.getClass().getPackage().getName();
+					for (var p : packages) {
+						if (pkg.startsWith(p)) {
+							return true;
+						}
+					}
+				}
+
+				return false;
+			});
 		}
 
 	}
@@ -218,16 +245,17 @@ public interface Property {
 		return StreamSupport.stream(sp, false)
 			.filter(p -> {
 				synchronized (visited) {
-					if (p.value() instanceof Collection<?>) {
-						return true;
-					} else {
-						final var visit = visited.containsKey(p.value());
-						visited.put(p.value(), "");
-						return !visit;
-					}
+					final var visit = visited.containsKey(p.value());
+					visited.put(p.value(), "");
+					return !visit;
 				}
 			})
-			.flatMap(prop -> flatten(prop, reader, flattener, visited));
+			.flatMap(prop ->
+				Stream.concat(
+					Stream.of(prop),
+					flatten(prop, reader, flattener, visited)
+				)
+			);
 	}
 
 	private static Stream<Property> flatten(
@@ -238,18 +266,37 @@ public interface Property {
 	) {
 		final var index = new AtomicInteger();
 
-		return Stream.concat(
-			Stream.of(property),
-			flattener.apply(property)
-				.flatMap(ele ->
-					walk(
-						property.path().indexed(index.getAndIncrement()),
-						ele,
-						reader,
-						flattener,
-						visited
-					)
+		return flattener.apply(property)
+			.flatMap(ele ->
+				walk(
+					property.path().indexed(index.getAndIncrement()),
+					ele,
+					reader,
+					flattener,
+					visited
 				)
+			);
+	}
+
+	/**
+	 * Return a Stream that is lazily populated with bean properties by walking
+	 * the object graph rooted at a given starting {@code object}. The object
+	 * tree is traversed in pre-order.
+	 *
+	 * @param object the root of the object tree
+	 * @param packages the base packages of the object where the properties
+	 *        are read from
+	 * @return the property stream, containing all transitive properties of the
+	 *         given root {@code object}. The object tree is traversed in
+	 *         pre-order.
+	 */
+	static Stream<Property> walk(final Object object, final String... packages) {
+		return walk(
+			object,
+			Reader.DEFAULT.filterPackages(packages),
+			property -> property.value() instanceof Collection<?> coll
+				? coll.stream()
+				: Stream.empty()
 		);
 	}
 
