@@ -1,13 +1,19 @@
 package io.jenetics.incubator.bean;
 
+import static java.lang.String.format;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -35,13 +41,76 @@ public interface Property {
 		 * @param object the object from where to read its properties
 		 * @return the object's properties
 		 */
-		Stream<Property> read(final String basePath, final Object object);
+		Stream<Property> read(final Path basePath, final Object object);
+
+		default Reader filter(final Predicate<? super Object> filter) {
+			return (basePath, object) -> {
+				if (filter.test(object)) {
+					return this.read(basePath, object);
+				} else {
+					return Stream.empty();
+				}
+			};
+		}
+
+		default Reader filterPackage(final String pkg) {
+			return filter(o ->
+				o != null &&
+					o.getClass().getPackage().getName().startsWith(pkg)
+			);
+		}
 
 	}
 
-	record Path() {
+	/**
+	 * Represents the absolute property path.
+	 */
+	record Path(List<Element> elements) {
+
+		/**
+		 * Represents a path element.
+		 */
+		public record Element(String name, int index) {
+			public Element indexed(final int index) {
+				return new Element(name, index);
+			}
+			@Override
+			public String toString() {
+				return index < 0 ? name : format("%s[%d]", name, index);
+			}
+		}
+
+		public Path {
+			elements = List.copyOf(elements);
+		}
+
+		public Path() {
+			this(List.of());
+		}
+
 		public boolean matches(final String pattern) {
 			return false;
+		}
+
+		public Path append(final String element) {
+			final var result = new ArrayList<Element>(elements.size() + 1);
+			result.addAll(elements);
+			result.add(new Element(element, -1));
+			return new Path(result);
+		}
+
+		public Path indexed(final int index) {
+			final var result = new ArrayList<>(elements);
+			final var last = result.remove(result.size() - 1);
+			result.add(last.indexed(index));
+			return new Path(result);
+		}
+
+		@Override
+		public String toString() {
+			return elements.stream()
+				.map(Objects::toString)
+				.collect(Collectors.joining("."));
 		}
 	}
 
@@ -51,8 +120,8 @@ public interface Property {
 	 */
 	Function<? super Property, ? extends Stream<?>> COLLECTION_FLATTENER =
 	property -> property.value() instanceof Collection<?> coll
-		? Stream.concat(Stream.of(property.value()), coll.stream())
-		: Stream.of(property.value());
+		? coll.stream()
+		: Stream.empty();
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -67,7 +136,7 @@ public interface Property {
 	 *
 	 * @return the full property path
 	 */
-	String path();
+	Path path();
 
 	/**
 	 * The property type.
@@ -128,11 +197,11 @@ public interface Property {
 		final Function<? super Property, ? extends Stream<?>> flattener
 	) {
 		final Map<Object, Object> visited = new IdentityHashMap<>();
-		return walk(null, object, reader, flattener, visited);
+		return walk(new Path(), object, reader, flattener, visited);
 	}
 
 	private static Stream<Property> walk(
-		final String basePath,
+		final Path basePath,
 		final Object object,
 		final Reader reader,
 		final Function<? super Property, ? extends Stream<?>> flattener,
@@ -143,14 +212,19 @@ public interface Property {
 		}
 
 		final var it = new PreOrderPropertyIterator(basePath, object, reader);
+		//final var it = new BreathFirstPropertyIterator(basePath, object, reader);
 		final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
 
 		return StreamSupport.stream(sp, false)
 			.filter(p -> {
 				synchronized (visited) {
-					final var visit = visited.containsKey(p.object());
-					visited.put(p.object(), "");
-					return visit;
+					if (p.value() instanceof Collection<?>) {
+						return true;
+					} else {
+						final var visit = visited.containsKey(p.value());
+						visited.put(p.value(), "");
+						return !visit;
+					}
 				}
 			})
 			.flatMap(prop -> flatten(prop, reader, flattener, visited));
@@ -163,22 +237,20 @@ public interface Property {
 		final Map<Object, Object> visited
 	) {
 		final var index = new AtomicInteger();
-		return flattener.apply(property).flatMap(ele ->
-			walk(
-				indexedPath(property.path(), index),
-				ele,
-				reader,
-				flattener,
-				visited
-			)
-		);
-	}
 
-	private static String indexedPath(
-		final String basePath,
-		final AtomicInteger index
-	) {
-		return String.format("%s[%s]", basePath, index.getAndIncrement());
+		return Stream.concat(
+			Stream.of(property),
+			flattener.apply(property)
+				.flatMap(ele ->
+					walk(
+						property.path().indexed(index.getAndIncrement()),
+						ele,
+						reader,
+						flattener,
+						visited
+					)
+				)
+		);
 	}
 
 }

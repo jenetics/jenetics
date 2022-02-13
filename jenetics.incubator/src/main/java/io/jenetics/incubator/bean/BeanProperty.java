@@ -1,5 +1,6 @@
 package io.jenetics.incubator.bean;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.beans.IntrospectionException;
@@ -14,7 +15,7 @@ import java.util.stream.Stream;
  */
 record BeanProperty(
 	PropertyDescriptor descriptor,
-	String path,
+	Path path,
 	Object object,
 	Object value
 )
@@ -46,6 +47,14 @@ record BeanProperty(
 		return writeValue(descriptor, object, value);
 	}
 
+	@Override
+	public String toString() {
+		return format(
+			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
+			path(), name(), value(), type().getName(), object()
+		);
+	}
+
 	/**
 	 * Read the bean properties from a given {@code object}.
 	 *
@@ -54,30 +63,21 @@ record BeanProperty(
 	 * @return the object's bean properties
 	 */
 	static Stream<Property> read(
-		final String basePath,
+		final Path basePath,
 		final Object object
 	) {
-		return object != null
-			? descriptors(object.getClass())
-				.map(desc -> toProperty(basePath, desc, object))
-			: Stream.empty();
-	}
-
-	private static BeanProperty toProperty(
-		final String basePath,
-		final PropertyDescriptor descriptor,
-		final Object parent
-	) {
-		final var path = basePath != null
-			? basePath + "." + descriptor.getName()
-			: descriptor.getName();
-
-		return new BeanProperty(
-			descriptor,
-			path,
-			parent,
-			readValue(descriptor, parent)
-		);
+		if (object != null) {
+			return descriptors(object.getClass()).map(desc ->
+				new BeanProperty(
+					desc,
+					basePath.append(desc.getName()),
+					object,
+					readValue(desc, object)
+				)
+			);
+		} else {
+			return Stream.empty();
+		}
 	}
 
 	private static Object readValue(final PropertyDescriptor descriptor, final Object parent) {
@@ -112,17 +112,14 @@ record BeanProperty(
 	}
 
 	private static Stream<PropertyDescriptor> descriptors(final Class<?> type) {
-		return descriptors0(type)
-			.filter(desc -> desc.getReadMethod() != null);
-	}
-
-	private static Stream<PropertyDescriptor> descriptors0(final Class<?> type) {
 		try {
 			final PropertyDescriptor[] descriptors = Introspector
 				.getBeanInfo(type)
 				.getPropertyDescriptors();
 
 			return Stream.of(descriptors)
+				.filter(desc -> desc.getPropertyType() != Class.class)
+				.filter(desc -> desc.getReadMethod() != null)
 				.sorted(Comparator.comparing(PropertyDescriptor::getName));
 		} catch (IntrospectionException e) {
 			throw new IllegalArgumentException("Can't introspect Object.");

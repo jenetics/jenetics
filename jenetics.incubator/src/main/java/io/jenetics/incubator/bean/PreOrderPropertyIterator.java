@@ -7,6 +7,8 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import io.jenetics.incubator.bean.Property.Path;
+
 /**
  * Preorder property iterator.
  */
@@ -17,7 +19,7 @@ final class PreOrderPropertyIterator implements Iterator<Property> {
     private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
 
 	PreOrderPropertyIterator(
-		final String basePath,
+		final Path basePath,
 		final Object root,
         final Property.Reader reader
     ) {
