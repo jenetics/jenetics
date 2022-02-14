@@ -343,14 +343,76 @@ public interface Property {
 	 * Represents the property path.
 	 */
 	final class Path implements Iterable<Path> {
-		private final String name;
-		private final int index;
+
+		record Name(String value, Integer index) {
+			Name {
+				requireNonNull(value);
+				if (index != null && index < 0) {
+					throw new IllegalArgumentException(
+						"Index must not be negative: " + index
+					);
+				}
+			}
+
+			@Override
+			public String toString() {
+				return index != null
+					? String.format("%s[%d]", value, index)
+					: value;
+			}
+
+			static Name of(final String value) {
+				if (value.isEmpty()) {
+					throw iae(value);
+				}
+
+				final int begin = value.indexOf('[');
+				final int end = value.indexOf(']');
+				if (begin != -1 && end != -1) {
+					final int index = parse(
+						value,
+						value.substring(begin + 1, end)
+					);
+					final String name = value.substring(0, begin);
+
+					return new Name(value, index);
+				} else {
+					
+				}
+
+				return null;
+			}
+
+			private static IllegalArgumentException iae(final String value) {
+				return new IllegalArgumentException(
+					"Illegal path name: '" + value + "'"
+				);
+			}
+
+			private static int parse(final String value, final String index) {
+				try {
+					return Integer.parseInt(index);
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException(format(
+						"Invalid path index '%s' for path '%s'.",
+						index, value
+					));
+				}
+			}
+
+		}
+
+		private final Name name;
 		private final List<Path> elements;
 
-		private Path(final String name, final int index, final List<Path> head) {
-			this.name = requireNonNull(name);
-			this.index = index;
+		private Path(final String name, final Integer index, final List<Path> head) {
+			this.name = new Name(name, index);
 			this.elements = append(head, this);
+		}
+
+		private Path() {
+			this.name = null;
+			this.elements = List.of();
 		}
 
 		private static List<Path> append(final List<Path> head, final Path path) {
@@ -365,21 +427,15 @@ public interface Property {
 		}
 
 		public Path(final String name) {
-			this(name, -1, List.of());
-		}
-
-		private Path() {
-			this.name = null;
-			this.index = -1;
-			this.elements = List.of();
+			this(name, null, List.of());
 		}
 
 		public String name() {
-			return name;
+			return name.value;
 		}
 
-		public int index() {
-			return index;
+		public Integer index() {
+			return name.index;
 		}
 
 		public int count() {
@@ -401,7 +457,7 @@ public interface Property {
 		 * @return a new path object with the given element appended
 		 */
 		public Path append(final String element) {
-			return new Path(element, -1, elements);
+			return new Path(element, null, elements);
 		}
 
 		public Path append(final String element, final int index) {
@@ -416,7 +472,7 @@ public interface Property {
 		 * @return a new path object
 		 */
 		Path indexed(final int index) {
-			return new Path(name, index, elements.subList(0, elements.size() - 1));
+			return new Path(name.value, index, elements.subList(0, elements.size() - 1));
 		}
 
 		@Override
@@ -427,14 +483,8 @@ public interface Property {
 		@Override
 		public String toString() {
 			return elements.stream()
-				.map(Path::toSimpleString)
+				.map(ele -> ele.name.toString())
 				.collect(Collectors.joining("."));
-		}
-
-		private String toSimpleString() {
-			return index < 0
-				? name
-				: String.format("%s[%d]", name, index);
 		}
 
 		/**
@@ -702,10 +752,46 @@ final class PropertyPreOrderIterator implements Iterator<Property> {
 
 }
 
+/**
+ * Represents a pattern, which can match a {@link Path}.
+ *
+ */
 final class PathPattern {
 
 	private interface Matcher {
 		boolean match(final Iterator<Path> path);
+	}
+
+	private static abstract class SinglePathMatcher implements Matcher {
+
+	}
+
+	private static final class MultiPathMatcher implements Matcher {
+		private Matcher next;
+
+		MultiPathMatcher() {
+		}
+
+		void next(final Matcher matcher) {
+			next = matcher;
+		}
+
+		@Override
+		public boolean match(final Iterator<Path> path) {
+			if (next == null) {
+				while (path.hasNext()) {
+					path.next();
+				}
+				return true;
+			}
+
+			boolean matching;
+			do {
+				matching = next.match(path);
+			} while (!matching && path.hasNext());
+
+			return matching;
+		}
 	}
 
 	private static final class SingleMatch implements Matcher {
@@ -736,30 +822,6 @@ final class PathPattern {
 		}
 	}
 
-	private static final class MultiMatch implements Matcher {
-		private final Matcher next;
-
-		MultiMatch(final Matcher next) {
-			this.next = next;
-		}
-
-		@Override
-		public boolean match(final Iterator<Path> path) {
-			if (next == null || !path.hasNext()) {
-				while (path.hasNext()) {
-					path.next();
-				}
-				return true;
-			} else {
-				boolean matches;
-				while ((matches = !next.match(path)) && path.hasNext()) {
-					path.next();
-				}
-				return matches;
-			}
-		}
-	}
-
 	private final List<Matcher> matchers;
 
 	PathPattern(final List<Matcher> matchers) {
@@ -784,8 +846,37 @@ final class PathPattern {
 
 	private record PreMatcher(String name, Integer index) {}
 
+	/**
+	 * Compiles a expression into a path pattern.
+	 *
+	 * * foos[2].bar.foos[1].value.index
+	 * * foos*.*.foos[*].value.*
+	 *
+	 * foos*, foos[*], value, *
+	 *
+	 * <b>Single path matcher</b>
+	 *     foos*[1]
+	 *     foos[*]
+	 *     foos[1]
+	 *     foos*
+	 *     foos
+	 *     foos*[*]
+	 *     *[0]
+	 *     *
+	 *
+	 * <b>Multi path matcher</b>
+	 *     ** // Not valid in single path matcher
+	 *
+	 * <li>
+	 *     <ul>'<b>*</b>': matches an arbitrary path element</ul>
+	 *     <ul>'<b>**</b>': matches an arbitrary path elements</ul>
+	 * </li>
+	 *
+	 * @param pattern
+	 * @return
+	 */
 	static PathPattern compile(final String pattern) {
-		final String[] parts = pattern.split(Pattern.quote("."));
+		final String[] parts = pattern.split(Pattern.quote("."), -1);
 
 
 
@@ -807,11 +898,15 @@ final class PathPattern {
 			return null;
 		}
 
+		/*
 		if ("**".equals(matcher.name)) {
-			return new MultiMatch(matcher(next, null));
+			return new MultiPathMatcher(matcher(next, null));
 		} else {
 			return new SingleMatch(matcher.name, matcher.index);
 		}
+		 */
+
+		return null;
 	}
 
 	private static String name(final String pattern) {
