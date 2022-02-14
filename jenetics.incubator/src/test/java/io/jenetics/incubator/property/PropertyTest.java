@@ -1,12 +1,11 @@
-package io.jenetics.incubator.bean;
+package io.jenetics.incubator.property;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.bean.Property.Path;
+import io.jenetics.incubator.property.Property.Path;
 
 public class PropertyTest {
 

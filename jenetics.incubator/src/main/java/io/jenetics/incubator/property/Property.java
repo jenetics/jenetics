@@ -1,4 +1,4 @@
-package io.jenetics.incubator.bean;
+package io.jenetics.incubator.property;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.incubator.bean.Property.Path;
+import io.jenetics.incubator.property.Property.Path;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -377,7 +377,7 @@ public interface Property {
 
 					return new Name(value, index);
 				} else {
-					
+
 				}
 
 				return null;
