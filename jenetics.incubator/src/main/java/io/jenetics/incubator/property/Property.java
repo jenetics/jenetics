@@ -23,11 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +36,6 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -607,119 +601,6 @@ final class MutableProperty implements Property {
 	@Override
 	public String toString() {
 		return Property.toString(this);
-	}
-
-}
-
-/**
- * A {@code PropertyDesc} describes one property that a Java Bean exports or a
- * {@link java.lang.reflect.RecordComponent} in the case of a record class.
- */
-final class PropertyDesc implements Comparable<PropertyDesc> {
-	final Class<?> type;
-	final String name;
-	final Method getter;
-	final Method setter;
-
-	private PropertyDesc(
-		final Class<?> type,
-		final String name,
-		final Method getter,
-		final Method setter
-	) {
-		this.type = requireNonNull(type);
-		this.name = requireNonNull(name);
-		this.getter = requireNonNull(getter);
-		this.setter = setter;
-	}
-
-	/**
-	 * Read the property value of the given {@code object}.
-	 *
-	 * @param object the object where the property is declared
-	 * @return the property value of the given {@code object}
-	 */
-	Object read(final Object object) {
-		try {
-			return getter.invoke(object);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	/**
-	 * Tries to write a new value to {@code this} property.
-	 *
-	 * @param object the object where the property is declared
-	 * @param value the new property value
-	 * @return {@code true} if the new property value has been written
-	 *         successfully, {@code false} if the property is immutable
-	 */
-	boolean write(final Object object, final Object value) {
-		try {
-			if (setter != null) {
-				setter.invoke(object, value);
-				return true;
-			}
-		} catch (IllegalAccessException ignore) {
-		} catch (InvocationTargetException e) {
-			if (e.getTargetException() instanceof RuntimeException re) {
-				throw re;
-			} else {
-				throw new IllegalStateException(e.getTargetException());
-			}
-		}
-
-		return false;
-	}
-
-	@Override
-	public int compareTo(final PropertyDesc o) {
-		return name.compareTo(o.name);
-	}
-
-	/**
-	 * Return a stream of property descriptions for the given {@code type}.
-	 *
-	 * @param type the type to be analyzed
-	 * @return a stream of property descriptions for the given {@code type}
-	 */
-	static Stream<PropertyDesc> stream(final Class<?> type) {
-		final Stream<PropertyDesc> result;
-
-		if (type.isRecord()) {
-			result = Stream.of(type.getRecordComponents())
-				.map(cmp ->
-					new PropertyDesc(
-						cmp.getType(),
-						cmp.getName(),
-						cmp.getAccessor(),
-						null
-					)
-				);
-		} else {
-			try {
-				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(type)
-					.getPropertyDescriptors();
-
-				result = Stream.of(descriptors)
-					.filter(desc -> desc.getPropertyType() != Class.class)
-					.filter(desc -> desc.getReadMethod() != null)
-					.map(desc ->
-						new PropertyDesc(
-							desc.getPropertyType(),
-							desc.getName(),
-							desc.getReadMethod(),
-							desc.getWriteMethod()
-						)
-					);
-			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException("Can't introspect Object.", e);
-			}
-		}
-
-		return result.sorted();
 	}
 
 }
