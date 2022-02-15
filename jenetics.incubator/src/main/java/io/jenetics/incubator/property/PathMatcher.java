@@ -128,7 +128,7 @@ class PathMatcher {
 	 * @param pattern
 	 * @return
 	 */
-	static PathPattern compile(final String pattern) {
+	static PathNamePattern compile(final String pattern) {
 		final String[] parts = pattern.split(Pattern.quote("."), -1);
 
 
