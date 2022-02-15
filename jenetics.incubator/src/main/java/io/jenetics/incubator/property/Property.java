@@ -516,32 +516,6 @@ public interface Property {
 }
 
 /**
- * Immutable property implementation.
- */
-record ImmutableProperty(
-	Object object,
-	Path path,
-	Class<?> type,
-	Path name,
-	Object value
-)
-	implements Property
-{
-
-	ImmutableProperty {
-		requireNonNull(object);
-		requireNonNull(path);
-		requireNonNull(type);
-		requireNonNull(name);
-	}
-
-	@Override
-	public String toString() {
-		return Property.toString(this);
-	}
-}
-
-/**
  * Bean <em>property</em> implementation.
  */
 final class MutableProperty implements Property {
