@@ -351,74 +351,17 @@ public interface Property {
 		}
 	}
 
+
 	/**
 	 * Represents the property path.
 	 */
 	final class Path implements Iterable<Path> {
 
-		record Name(String value, Integer index) {
-			Name {
-				requireNonNull(value);
-				if (index != null && index < 0) {
-					throw new IllegalArgumentException(
-						"Index must not be negative: " + index
-					);
-				}
-			}
-
-			@Override
-			public String toString() {
-				return index != null
-					? String.format("%s[%d]", value, index)
-					: value;
-			}
-
-			static Name of(final String value) {
-				if (value.isEmpty()) {
-					throw iae(value);
-				}
-
-				final int begin = value.indexOf('[');
-				final int end = value.indexOf(']');
-				if (begin != -1 && end != -1) {
-					final int index = parse(
-						value,
-						value.substring(begin + 1, end)
-					);
-					final String name = value.substring(0, begin);
-
-					return new Name(value, index);
-				} else {
-
-				}
-
-				return null;
-			}
-
-			private static IllegalArgumentException iae(final String value) {
-				return new IllegalArgumentException(
-					"Illegal path name: '" + value + "'"
-				);
-			}
-
-			private static int parse(final String value, final String index) {
-				try {
-					return Integer.parseInt(index);
-				} catch (NumberFormatException e) {
-					throw new IllegalArgumentException(format(
-						"Invalid path index '%s' for path '%s'.",
-						index, value
-					));
-				}
-			}
-
-		}
-
-		private final Name name;
+		private final PathName name;
 		private final List<Path> elements;
 
 		private Path(final String name, final Integer index, final List<Path> head) {
-			this.name = new Name(name, index);
+			this.name = new PathName(name, index);
 			this.elements = append(head, this);
 		}
 
@@ -443,11 +386,11 @@ public interface Property {
 		}
 
 		public String name() {
-			return name.value;
+			return name.value();
 		}
 
 		public Integer index() {
-			return name.index;
+			return name.index();
 		}
 
 		public int count() {
@@ -484,7 +427,7 @@ public interface Property {
 		 * @return a new path object
 		 */
 		Path indexed(final int index) {
-			return new Path(name.value, index, elements.subList(0, elements.size() - 1));
+			return new Path(name.value(), index, elements.subList(0, elements.size() - 1));
 		}
 
 		@Override
