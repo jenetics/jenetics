@@ -28,7 +28,7 @@ public class PropertyTest {
 		));
 
 		final List<Property> properties = Property
-			.walk(foo, /*p -> Stream.empty(),*/ "io.jenetics")
+			.walk(foo, "io.jenetics")
 			.toList();
 
 		properties.forEach(System.out::println);
