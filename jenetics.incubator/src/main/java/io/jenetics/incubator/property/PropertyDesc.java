@@ -31,23 +31,23 @@ import java.util.stream.Stream;
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
  * {@link java.lang.reflect.RecordComponent} in the case of a record class.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-final class PropertyDesc implements Comparable<PropertyDesc> {
-	final Class<?> type;
-	final String name;
-	final Method getter;
-	final Method setter;
-
-	private PropertyDesc(
-		final Class<?> type,
-		final String name,
-		final Method getter,
-		final Method setter
-	) {
-		this.type = requireNonNull(type);
-		this.name = requireNonNull(name);
-		this.getter = requireNonNull(getter);
-		this.setter = setter;
+record PropertyDesc(
+	Class<?> type,
+	String name,
+	Method getter,
+	Method setter
+)
+	implements Comparable<PropertyDesc>
+{
+	PropertyDesc {
+		requireNonNull(type);
+		requireNonNull(name);
+		requireNonNull(getter);
 	}
 
 	/**

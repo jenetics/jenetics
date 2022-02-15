@@ -45,6 +45,10 @@ import io.jenetics.incubator.property.Property.Path;
 /**
  * Represents an object's property. A property might be defined as usual
  * <em>bean</em> property, with getter and setter, or as record component.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public interface Property {
 
@@ -249,19 +253,19 @@ public interface Property {
 		if (object != null) {
 			return PropertyDesc.stream(object.getClass())
 				.map(desc -> {
-					if (desc.setter != null) {
+					if (desc.setter() != null) {
 						return new MutableProperty(
 							desc,
 							object,
-							basePath.append(desc.name),
+							basePath.append(desc.name()),
 							desc.read(object)
 						);
 					} else {
 						return new ImmutableProperty(
 							object,
-							basePath.append(desc.name),
-							desc.type,
-							new Path(desc.name),
+							basePath.append(desc.name()),
+							desc.type(),
+							new Path(desc.name()),
 							desc.read(object)
 						);
 					}
@@ -575,12 +579,12 @@ final class MutableProperty implements Property {
 
 	@Override
 	public Class<?> type() {
-		return desc.type;
+		return desc.type();
 	}
 
 	@Override
 	public Path name() {
-		return new Path(desc.name);
+		return new Path(desc.name());
 	}
 
 	@Override
