@@ -39,9 +39,8 @@ record PathNamePattern(String name, String index) {
 	private static final String INDEX_PATTERN =
 		"((\\[([0-9*]*)\\])?)";
 
-	private static final Pattern PATH_NAME_PATTERN = Pattern.compile(
-		NAME_PATTERN + INDEX_PATTERN
-	);
+	private static final Pattern PATH_NAME_PATTERN = Pattern
+		.compile(NAME_PATTERN + INDEX_PATTERN);
 
 
 	boolean matches(final Path path) {
