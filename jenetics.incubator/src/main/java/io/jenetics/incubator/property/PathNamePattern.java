@@ -26,6 +26,10 @@ import io.jenetics.incubator.property.Property.Path;
 
 /**
  * Represents a pattern, which can match a {@link Path}.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 record PathNamePattern(String name, String index) {
 

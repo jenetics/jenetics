@@ -22,12 +22,24 @@ package io.jenetics.incubator.property;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.regex.Pattern;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 record PathName(String value, Integer index) {
+
+	private static final String NAME_PATTERN =
+		"((?:\\b[_a-zA-Z]|\\B\\$)[_$a-zA-Z0-9]*+)";
+
+	private static final String INDEX_PATTERN =
+		"((\\[([0-9]*)\\])?)";
+
+	private static final Pattern PATH_NAME_PATTERN = Pattern.compile(
+		NAME_PATTERN + INDEX_PATTERN
+	);
 
 	PathName {
 		requireNonNull(value);
@@ -46,40 +58,21 @@ record PathName(String value, Integer index) {
 	}
 
 	static PathName of(final String value) {
-		if (value.isEmpty()) {
-			throw iae(value);
-		}
+		final var matcher = PATH_NAME_PATTERN.matcher(value);
 
-		final int begin = value.indexOf('[');
-		final int end = value.indexOf(']');
-		if (begin != -1 && end != -1) {
-			final int index = parse(
-				value,
-				value.substring(begin + 1, end)
+		if (matcher.matches()) {
+			final var name = matcher.group(1);
+			final var index = matcher.group(3);
+
+			return new PathName(
+				name,
+				index != null
+					? Integer.parseInt(index.substring(1, index.length() - 1))
+					: null
 			);
-			final String name = value.substring(0, begin);
-
-			return new PathName(value, index);
 		} else {
-
-		}
-
-		return null;
-	}
-
-	private static IllegalArgumentException iae(final String value) {
-		return new IllegalArgumentException(
-			"Illegal path name: '" + value + "'"
-		);
-	}
-
-	private static int parse(final String value, final String index) {
-		try {
-			return Integer.parseInt(index);
-		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException(format(
-				"Invalid path index '%s' for path '%s'.",
-				index, value
+				"Invalid path name '%s'.", value
 			));
 		}
 	}
