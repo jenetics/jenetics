@@ -28,32 +28,19 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-final class MutableProperty implements Property {
-	private final PropertyDesc desc;
-	private final Object object;
-	private final Path path;
-	private final Object value;
+record MutableProperty(
+	PropertyDesc desc,
+	Object object,
+	Path path,
+	Object value
+)
+	implements Property
+{
 
-	MutableProperty(
-		final PropertyDesc desc,
-		final Object object,
-		final Path path,
-		final Object value
-	) {
-		this.desc = requireNonNull(desc);
-		this.object = requireNonNull(object);
-		this.path = requireNonNull(path);
-		this.value = value;
-	}
-
-	@Override
-	public Object object() {
-		return object;
-	}
-
-	@Override
-	public Path path() {
-		return path;
+	MutableProperty {
+		requireNonNull(desc);
+		requireNonNull(object);
+		requireNonNull(path);
 	}
 
 	@Override
@@ -64,11 +51,6 @@ final class MutableProperty implements Property {
 	@Override
 	public Path name() {
 		return new Path(desc.name());
-	}
-
-	@Override
-	public Object value() {
-		return value;
 	}
 
 	@Override
