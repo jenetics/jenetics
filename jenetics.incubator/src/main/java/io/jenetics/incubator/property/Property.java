@@ -355,7 +355,8 @@ public interface Property {
 
 
 	/**
-	 * Represents the property path, which uniquely identifies a property.
+	 * Represents the property path, which uniquely identifies a property. A
+	 * path can be created with the {@link Path#of(String)} method.
 	 */
 	final class Path implements Iterable<Path> {
 
@@ -428,7 +429,8 @@ public interface Property {
 		 * @return the path element
 		 */
 		public Path get(final int index) {
-			return elements.get(index);
+			final var ele = elements.get(index);
+			return new Path(ele.name(), ele.index(), List.of());
 		}
 
 		/**
@@ -514,9 +516,9 @@ public interface Property {
 		 * valid path consists of a names, which must be a valid Java identifier,
 		 * and indexes, separated by a dot, '.'. A valid path with three elements
 		 * will look like this:
-		 * <pre>
-		 * prop1.prop2[9].prop2
-		 * </pre>
+		 * <pre>{@code
+		 * final var path = Path.of("name1.name2[9].value");
+		 * }</pre>
 		 *
 		 * @param value the path value
 		 * @return a new property path
