@@ -379,30 +379,63 @@ public interface Property {
 			return List.copyOf(result);
 		}
 
-		public Path(final String name, final int index) {
+		Path(final String name, final int index) {
 			this(name, index, List.of());
 		}
 
-		public Path(final String name) {
+		Path(final String name) {
 			this(name, null, List.of());
 		}
 
+		/**
+		 * Return the property name, without index, from {@code this} path.
+		 * This is the path element <em>farthest</em> away from the root.
+		 *
+		 * @return the property name
+		 */
 		public String name() {
 			return name.value();
 		}
 
+		/**
+		 * Return the index, from {@code this} path, or {@code null} if the
+		 * property is not part of a collection.
+		 *
+		 * @return the property index, or {@code null} if {@code this} path has
+		 *         no index defined
+		 */
 		public Integer index() {
 			return name.index();
 		}
 
+		/**
+		 * Returns the number of elements in the path.
+		 *
+		 * @return the number of elements in the path, or 0 if this path only
+		 *         represents a root component
+		 */
 		public int count() {
 			return elements.size();
 		}
 
+		/**
+		 * Returns an element of this path. The index parameter is the index of
+		 * the path element to return. The element that is closest to the root
+		 * in the property hierarchy has index 0. The element that is farthest
+		 * from the root has index count - 1.
+		 *
+		 * @param index the path index
+		 * @return the path element
+		 */
 		public Path get(final int index) {
 			return elements.get(index);
 		}
 
+		/**
+		 * Return the path element which is farthest away from the root property.
+		 *
+		 * @return the path element which is farthest away from the root property
+		 */
 		public Path head() {
 			return new Path(name(), index());
 		}
@@ -417,6 +450,13 @@ public interface Property {
 			return new Path(element, null, elements);
 		}
 
+		/**
+		 * Create a new path object with the given element and index appended.
+		 *
+		 * @param element the path element to append
+		 * @param index the property index
+		 * @return a new path object with the given element appended
+		 */
 		Path append(final String element, final int index) {
 			return new Path(element, index, elements);
 		}
@@ -444,6 +484,19 @@ public interface Property {
 				.collect(Collectors.joining("."));
 		}
 
+		/**
+		 * Create a new property path form the given string {@code value}. A
+		 * valid path consists of a names, which must be a valid Java identifier,
+		 * and indexes, separated by a dot, '.'. A valid path with three elements
+		 * will look like this:
+		 * <pre>
+		 * prop1.prop2[9].prop2
+		 * </pre>
+		 *
+		 * @param value the path value
+		 * @return a new property path
+		 * @throws IllegalArgumentException if the given path is invalid
+		 */
 		public static Path of(final String value) {
 			final var parts = java.nio.file.Path.of(value.replace('.', '/'))
 				.normalize()
