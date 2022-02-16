@@ -106,11 +106,6 @@ public interface Property {
 		return false;
 	}
 
-	default <T> T as(final Class<? extends T> type) {
-		return type.cast(value());
-	}
-
-
 	/**
 	 * Return a Stream that is lazily populated with bean properties by walking
 	 * the object graph rooted at a given starting {@code object}. The object
@@ -272,6 +267,19 @@ public interface Property {
 		}
 	}
 
+	/**
+	 * Return a matcher for the {@link Property.Path} of a property.
+	 *
+	 * @see Property.Path#matcher(String)
+	 *
+	 * @param pattern the path pattern
+	 * @return a new property path matcher
+	 */
+	static Predicate<Property> pathMatcher(final String pattern) {
+		final var matcher = Path.matcher(pattern);
+		return property -> matcher.test(property.path());
+	}
+
 	static String toString(final Property property) {
 		return format(
 			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
@@ -328,20 +336,20 @@ public interface Property {
 		 * Create a new reader which reads the properties only from the given
 		 * packages.
 		 *
-		 * @param packages the base packages of the object where the properties
+		 * @param includes the base packages of the object where the properties
 		 *        are read from
 		 * @return a new reader which reads the properties only from the given
 		 * 		   packages
 		 */
-		default Reader filterPackages(final String... packages) {
+		default Reader filterPackages(final String... includes) {
 			return filter(object -> {
 				if (object != null) {
-					if (packages.length == 0) {
+					if (includes.length == 0) {
 						return true;
 					}
 
 					final var pkg = object.getClass().getPackage().getName();
-					for (var p : packages) {
+					for (var p : includes) {
 						if (pkg.startsWith(p)) {
 							return true;
 						}

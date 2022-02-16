@@ -19,80 +19,68 @@
  */
 package io.jenetics.incubator.property;
 
-import java.util.Arrays;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.property.Property.Path;
-
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class PropertyTest {
 
+	private final RootObject root = new RootObject(
+		"root", 0,
+		List.of(
+			new SubObject(
+				"sub_1", 1,
+				new SubObject("sub2", 2, null)
+			),
+			new SubObject(
+				"sub_3", 3,
+				new SubObject("sub4", 4, null)
+			),
+			new SubObject(
+				"sub_5", 5,
+				new SubObject("sub6", 6, null)
+			)
+		)
+	);
 
-//	record Foo(String fooValue, int fooIndex, List<Foo> foos) {
-//		@Override
-//		public String toString() {
-//			return "Foo@" + Integer.toHexString(System.identityHashCode(this));
-//		}
-//	}
-//
-//	@Test
-//	public void walk() {
-//		final var foo = new Foo("A", 1, List.of(
-//			new Foo("B", 2, List.of()),
-//			new Foo("C", 3, List.of()),
-//			new Foo("D", 4, List.of(
-//				new Foo(null, 5, Arrays.asList(null, null)),
-//				new Foo("D", 6, Arrays.asList())
-//			))
-//		));
-//
-//		final List<Property> properties = Property
-//			.walk(foo, "io.jenetics")
-//			.toList();
-//
-//		properties.forEach(System.out::println);
-//
-//		properties.stream()
-//			.filter(Property.Path.matcher("foos[2].foos[*].**.fooValue"))
-//			.forEach(System.out::println);
-//
-//		Property.walk(null);
-//	}
-//
-//	@Test
-//	public void path() {
-//		final var path = new Path("a")
-//			.append("b")
-//			.append("c", 0)
-//			.append("d", 2)
-//			.append("e");
-//
-//		System.out.println(path);
-//
-//		for (Path value : path) {
-//			System.out.println(value);
-//		}
-//	}
-//
-//	@Test
-//	public void matcher() {
-//		// a.b.c[0].d[2].e
-//		final var path = new Path("a")
-//			.append("b")
-//			.append("c", 0)
-//			.append("d", 2)
-//			.append("e");
-//
-//		System.out.println(path);
-//		var pattern = PathPattern.compile("a.b.c[0].d[2].e");
-//		System.out.println(pattern.matches(path));
-//
-//		pattern = PathPattern.compile("a.b.c[0].d[*].e");
-//		System.out.println(pattern.matches(path));
-//
-//		pattern = PathPattern.compile("a.**.d[*].e");
-//		System.out.println(pattern.matches(path));
-//	}
+	@Test
+	public void walk() {
+		final List<Property> properties = Property
+			.walk(root, "io.jenetics")
+			.toList();
+
+		assertThat(properties.size()).isEqualTo(24);
+	}
+
+	@Test
+	public void filter() {
+		final var properties = Property
+			.walk(root, "io.jenetics")
+			.filter(Property.pathMatcher("**index"))
+			.map(Property::value)
+			.toList();
+
+		assertThat(properties).isEqualTo(List.of(0, 1, 2, 3, 4, 5, 6));
+	}
+
+	@Test
+	public void propertyWrite() {
+		final var root = new MutableObject();
+		root.setIndex(0);
+		root.setName("name");
+
+		final List<Property> properties = Property
+			.walk(root, "io.jenetics")
+			.toList();
+
+		properties.get(0).write(10);
+		assertThat(properties.get(0).value()).isEqualTo(0);
+		assertThat(properties.get(0).read()).isEqualTo(10);
+	}
 
 }

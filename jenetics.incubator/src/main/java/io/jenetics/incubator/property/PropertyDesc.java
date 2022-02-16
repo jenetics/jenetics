@@ -85,6 +85,8 @@ record PropertyDesc(
 			} else {
 				throw new IllegalStateException(e.getTargetException());
 			}
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid argument: " + value, e);
 		}
 
 		return false;
