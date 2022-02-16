@@ -54,4 +54,15 @@ public class PropertyPathTest {
 		};
 	}
 
+	@Test
+	public void head() {
+		final var path = Path.of("path1.path2[1].path3.path4[0]");
+		final var head = path.head();
+
+		assertThat(path).isNotEqualTo(head);
+		assertThat(path.count()).isEqualTo(4);
+		assertThat(head.count()).isEqualTo(1);
+		assertThat(path.head()).isEqualTo(Path.of("path4[0]"));
+	}
+
 }

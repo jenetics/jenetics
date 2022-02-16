@@ -478,6 +478,31 @@ public interface Property {
 		}
 
 		@Override
+		public int hashCode() {
+			int hashCode = 1;
+			for (var path : this) {
+				hashCode = 31*path.name.hashCode();
+			}
+			return hashCode;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			} else if (obj instanceof Path path && count() == path.count()) {
+				for (int i = 0; i < count(); ++i) {
+					if (!get(i).name.equals(path.get(i).name)) {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
 		public String toString() {
 			return elements.stream()
 				.map(ele -> ele.name.toString())
