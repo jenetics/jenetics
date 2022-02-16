@@ -41,7 +41,50 @@ import java.util.stream.StreamSupport;
 
 /**
  * Represents an object's property. A property might be defined as usual
- * <em>bean</em> property, with getter and setter, or as record component.
+ * <em>bean</em> property, with getter and setter, or as record component. The
+ * following code shows how to create (a transitive) list of all properties from
+ * a given root object.
+ * <pre>{@code
+ * final var root = ...;
+ * final List<Property> properties = Property
+ *     // Wall all properties from the 'root' object which are defined
+ *     // in the 'io.jenetics' package.
+ *     .walk(root, "io.jenetics")
+ *     .toList();
+ * }</pre>
+ * Only get string properties.
+ * <pre>{@code
+ * final List<Property> properties = Property
+ *     .walk(root, "io.jenetics")
+ *     .filter(property -> property.type() == String.class)
+ *     .toList();
+ * }</pre>
+ * Only get the properties declared in the {@code MyBeanObject} class.
+ * <pre>{@code
+ * final List<Property> properties = Property
+ *     .walk(root, "io.jenetics")
+ *     .filter(property -> property.object().getClass() == MyBeanObject.class)
+ *     .toList();
+ * }</pre>
+ * Only get properties with the name {@code index}. No matter where they defined
+ * in the object hierarchy.
+ * <pre>{@code
+ * final List<Property> properties = Property
+ *     .walk(root, "io.jenetics")
+ *     .filter(Property.pathMatcher("**index"))
+ *     .toList();
+ * }</pre>
+ * Updates all "index" properties with value {@code -1} to zero and returns all
+ * properties, which couldn't be updated, because the property was immutable.
+ * <pre>{@code
+ * final List<Property> notUpdated = Property
+ *     .walk(root, "io.jenetics")
+ *     .filter(Property.pathMatcher("**index"))
+ *     .filter(property -> Objects.equals(property.value(), -1))
+ *     .filter(property -> !property.write(0))
+ *     .toList();
+ * assert notUpdated.isEmpty();
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -50,7 +93,8 @@ import java.util.stream.StreamSupport;
 public interface Property {
 
 	/**
-	 * Returns the object which contains {@code this} property.
+	 * Returns the object which contains {@code this} property; always
+	 * non-{@code null}.
 	 *
 	 * @return the object which contains {@code this} property
 	 */
@@ -58,28 +102,28 @@ public interface Property {
 
 	/**
 	 * The full path, separated with dots '.', of {@code this} property from
-	 * the <em>root</em> object.
+	 * the <em>root</em> object; always non-{@code null}.
 	 *
 	 * @return the full property path
 	 */
 	Path path();
 
 	/**
-	 * The property type.
+	 * The property type; always non-{@code null}.
 	 *
 	 * @return the property type
 	 */
 	Class<?> type();
 
 	/**
-	 * The name of {@code this} property
+	 * The name of {@code this} property; always non-{@code null}.
 	 *
 	 * @return the property name
 	 */
 	Path name();
 
 	/**
-	 * The initial, cached property value, might be {@code null}.
+	 * The initial, cached property value; might be {@code null}.
 	 *
 	 * @return the initial, cached property value
 	 */
