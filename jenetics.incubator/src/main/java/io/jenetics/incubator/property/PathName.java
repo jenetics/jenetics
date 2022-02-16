@@ -63,12 +63,19 @@ record PathName(String value, Integer index) {
 			final var name = matcher.group(1);
 			final var index = matcher.group(3);
 
-			return new PathName(
-				name,
-				index != null
-					? Integer.parseInt(index.substring(1, index.length() - 1))
-					: null
-			);
+			try {
+				return new PathName(
+					name,
+					index != null
+						? Integer.parseInt(index.substring(1, index.length() - 1))
+						: null
+				);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(format(
+					"Invalid path name '%s'. '%s' is not an positive integer.",
+					value, index.substring(1, index.length() - 1)
+				));
+			}
 		} else {
 			throw new IllegalArgumentException(format(
 				"Invalid path name '%s'.", value

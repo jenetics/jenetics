@@ -28,6 +28,7 @@ import io.jenetics.incubator.property.Property.Path;
 
 public class PropertyTest {
 
+
 //	record Foo(String fooValue, int fooIndex, List<Foo> foos) {
 //		@Override
 //		public String toString() {

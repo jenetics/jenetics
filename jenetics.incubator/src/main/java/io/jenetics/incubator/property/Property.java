@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.nio.file.FileSystems;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
@@ -353,7 +355,7 @@ public interface Property {
 
 
 	/**
-	 * Represents the property path.
+	 * Represents the property path, which uniquely identifies a property.
 	 */
 	final class Path implements Iterable<Path> {
 
@@ -411,11 +413,11 @@ public interface Property {
 		 * @param element the path element to append
 		 * @return a new path object with the given element appended
 		 */
-		public Path append(final String element) {
+		Path append(final String element) {
 			return new Path(element, null, elements);
 		}
 
-		public Path append(final String element, final int index) {
+		Path append(final String element, final int index) {
 			return new Path(element, index, elements);
 		}
 
@@ -442,16 +444,45 @@ public interface Property {
 				.collect(Collectors.joining("."));
 		}
 
+		public static Path of(final String value) {
+			final var parts = java.nio.file.Path.of(value.replace('.', '/'))
+				.normalize()
+				.iterator();
+
+			var path = new Path();
+			while (parts.hasNext()) {
+				final var part = parts.next();
+				final var element = PathName.of(part.toString());
+				path = element.index() != null
+					? path.append(element.value(), element.index())
+					: path.append(element.value());
+			}
+
+			return path;
+		}
+
 		/**
-		 * Tests whether the given <em>glob</em> pattern matches {@code this}
-		 * path.
+		 * Return a path matcher with the given pattern.
 		 *
 		 * @param pattern the pattern to match
 		 * @return {@code true} if the given {@code pattern} matches {@code this}
 		 *         path, {@code false} otherwise
 		 */
-		public static Predicate<Property> matcher(final String pattern) {
-			return property -> false;
+		public static Predicate<Path> matcher(final String pattern) {
+			final PathMatcher matcher = FileSystems.getDefault()
+				.getPathMatcher(toGlobPattern(pattern));
+
+			return path -> matcher.matches(
+				java.nio.file.Path.of(
+					path.toString().replace('.', '/')
+				)
+			);
+		}
+
+		private static String toGlobPattern(final String pattern) {
+			return "glob:" + pattern.replace('.', '/')
+				.replace("[", "\\[")
+				.replace("]", "\\]");
 		}
 
 	}
