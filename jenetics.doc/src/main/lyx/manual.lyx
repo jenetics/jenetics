@@ -5990,7 +5990,7 @@ void recombine(final MSeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Random random = RandomRegistry.random();
+    final var random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7013,7 +7013,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Random random = RandomRegistry.random();
+final RandomGenerator random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -11358,6 +11358,16 @@ Random
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+RandomGenerator
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Randomness"
@@ -11393,12 +11403,14 @@ PRNG
 \shape default
  uses the Java
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- class, respectively subtypes from it, for generating random numbers.
+ interface for generating random numbers.
  To make the random engine pluggable, the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object is always fetched from the
 \family typewriter
@@ -11416,7 +11428,7 @@ Random!Registry
 \end_inset
 
 .
- This makes it possible to change the implementation of the random engine
+ This makes it possible to change the implementation of the random generator
  without changing the client code.
  The central
 \family typewriter
@@ -11425,14 +11437,15 @@ Registry
 \family default
  also allows for easily changing the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine
+ 
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Random!Engine
+Random!Generator
 \end_layout
 
 \end_inset
@@ -11443,7 +11456,8 @@ Random!Engine
 \begin_layout Standard
 The following example shows how to change and restore the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object.
  When opening the
@@ -11452,7 +11466,8 @@ The following example shows how to change and restore the
 \family default
  scope, changes to the
 \family typewriter
- RandomRegistry
+ Random\SpecialChar softhyphen
+Registry
 \family default
  are only visible within this scope.
  Once the
@@ -11461,7 +11476,8 @@ The following example shows how to change and restore the
 \family default
  scope is left, the original
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object is restored.
 \end_layout
@@ -11611,8 +11627,12 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Setting the PRNG to a Random object with a defined seed has the effect,
- that every evolution
+Setting the PRNG to a 
+\family typewriter
+Random\SpecialChar softhyphen
+Generator
+\family sans
+ object with a defined seed has the effect, that every evolution
 \emph on
  stream
 \emph default
@@ -11725,10 +11745,11 @@ height "1pt"
 \begin_layout Standard
 When the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine is used in a multi-threaded environment, there must be a way to
- parallelize the sequential PRNG.
+ is used in a multi-threaded environment, there must be a way to parallelize
+ the sequential PRNG.
  Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
@@ -11797,26 +11818,6 @@ Every thread uses the same kind of PRNG but with a different seed.
 \series default
 \shape default
  library.
- The
-\family typewriter
- Random\SpecialChar softhyphen
-Registry
-\family default
- is initialized with the
-\family typewriter
- Thread\SpecialChar softhyphen
-Local\SpecialChar softhyphen
-Random
-\family default
- class from the
-\family typewriter
- ja\SpecialChar softhyphen
-va\SpecialChar softhyphen
-.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
-concurrent
-\family default
- package.
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
@@ -11836,21 +11837,31 @@ Random number generators should not be chosen at random.
 
 \end_inset
 
- If you assume that this strategy is responsible for some
-\emph on
- non
-\emph default
-–reproducible results, consider using the
+ The
 \family typewriter
- LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
+Registry
+\family default
+ is initialized with the Java 
+\family typewriter
+L64X\SpecialChar softhyphen
+256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
 Random
 \family default
- PRNG instead, which uses
-\emph on
- 
-\emph default
-block splitting as parallelization strategy.
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+RandomRegistry.random(RandomGeneratorFactory.of("L64X256MixRandom"))
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -11934,9 +11945,7 @@ lapping contiguous
 \family typewriter
  LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
-Random.\SpecialChar softhyphen
-Thread\SpecialChar softhyphen
-Local
+Random
 \family default
  class
 \emph on
@@ -12256,22 +12265,27 @@ status open
 
 \begin_layout Plain Layout
 
-public class LCG64ShiftRandom extends Random {
+public class LCG64ShiftRandom
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void split(final int p, final int s);
+    implements RandomGenerator.ArbitrarilyJumpableGenerator 
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void jump(final long step);
+{
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void jump2(final int s);
+    public void jump(final double step);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void jumpPowerOfTwo(final int s);
 \end_layout
 
 \begin_layout Plain Layout
@@ -13055,7 +13069,17 @@ status open
 
 \begin_layout Plain Layout
 
-final double[] array = new Random().doubles(100).toArray();
+final double[] array = RandomGenerator.getDefault()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .doubles(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -13633,7 +13657,12 @@ final Quantile quartile = new Quantile(0.25);
 
 \begin_layout Plain Layout
 
-new Random().doubles(10_000).forEach(quartile);
+RandomGenerator.getDefault()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .doubles(10_000).forEach(quartile);
 \end_layout
 
 \begin_layout Plain Layout
@@ -13863,9 +13892,10 @@ s and
 \family sans
 s implementations must use the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family sans
- engine available via the
+ available via the
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
@@ -13874,15 +13904,16 @@ Registry\SpecialChar softhyphen
  method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family sans
- engine by using the
+ by using the
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
 .random(\SpecialChar softhyphen
 Random\SpecialChar softhyphen
-)
+Generator)
 \family sans
  method.
 \end_layout
@@ -14083,9 +14114,10 @@ noprefix "false"
  allele types.
  By convention, the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine, used for creating the new
+, used for creating the new
 \family typewriter
  Local\SpecialChar softhyphen
 Date
@@ -24906,7 +24938,8 @@ Chromosome
 \family sans
  interface, make sure to obtain the 
 \family typewriter
-Random
+Random\SpecialChar softhyphen
+Generator
 \family sans
  object from the 
 \family typewriter
@@ -35901,8 +35934,12 @@ https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
 \series default
 \shape default
  GA library, but it has no dependency to it.
- All PRNG implementations of this library extends the Java Random class,
- which makes it easily usable in other projects.
+ All PRNG implementations of this library implements the Java 
+\family typewriter
+Random\SpecialChar softhyphen
+Generator
+\family default
+ interface, which makes it easily usable in other projects.
 
 \emph on
  
@@ -36171,21 +36208,12 @@ noprefix "false"
  shows the statistical performance of the implemented PRNGs, including the
  Java
 \family typewriter
- Random
-\family default
- implementation.
- Beside the
-\family typewriter
- XOR32\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
+Generator, L64X256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
 Random
 \family default
- class, the
-\family typewriter
- j.u.Random
-\family default
- implementation has the poorest performance, concerning its statistical
- performance.
+, which is the default generator used by the library.
 \end_layout
 
 \begin_layout Standard
@@ -36257,7 +36285,7 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-108
+113
 \end_layout
 
 \end_inset
@@ -36266,7 +36294,7 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-6
+1
 \end_layout
 
 \end_inset
@@ -36337,7 +36365,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-110
+111
 \end_layout
 
 \end_inset
@@ -36346,7 +36374,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -36369,46 +36397,6 @@ LCG64ShiftRandom
 
 \family typewriter
 MT19937_32Random
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-113
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-MT19937_64Random
 \end_layout
 
 \end_inset
@@ -36448,6 +36436,46 @@ MT19937_64Random
 \begin_layout Plain Layout
 
 \family typewriter
+MT19937_64Random
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+108
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
 XOR32ShiftRandom
 \end_layout
 
@@ -36457,7 +36485,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-101
+103
 \end_layout
 
 \end_inset
@@ -36466,7 +36494,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+6
 \end_layout
 
 \end_inset
@@ -36475,7 +36503,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-9
+5
 \end_layout
 
 \end_inset
@@ -36497,7 +36525,7 @@ XOR64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-107
+113
 \end_layout
 
 \end_inset
@@ -36506,7 +36534,7 @@ XOR64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-7
+1
 \end_layout
 
 \end_inset
@@ -36528,7 +36556,7 @@ XOR64ShiftRandom
 \begin_layout Plain Layout
 
 \family typewriter
-j.u.Random
+L64X256MixRandom
 \end_layout
 
 \end_inset
@@ -36537,7 +36565,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-106
+111
 \end_layout
 
 \end_inset
@@ -36546,7 +36574,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -36555,7 +36583,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+0
 \end_layout
 
 \end_inset
@@ -36620,19 +36648,7 @@ noprefix "false"
 \end_inset
 
  shows the PRN creation speed for all implemented generators.
- The slowest random engine is the
-\family typewriter
- j.u.Random
-\family default
- class, which is caused by the synchronized implementations.
- When the only the creation speed counts, the
-\family typewriter
- j.u.c.\SpecialChar softhyphen
-Thread\SpecialChar softhyphen
-Local\SpecialChar softhyphen
-Random
-\family default
- is the random engine to use.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -36644,7 +36660,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="10" columns="5">
+<lyxtabular version="3" rows="9" columns="5">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="decimal" decimal_point="." valignment="top">
@@ -37054,102 +37070,49 @@ XOR64ShiftRandom
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 
 \family typewriter
-j.u.Random
+L64X256MixRandom
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-91
+162
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-89
+136
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-46
+121
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-46
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-j.u.c.
-\shape italic
-TL
-\shape default
-Random
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-264
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-224
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-268
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-216
+166
 \end_layout
 
 \end_inset
@@ -37348,7 +37311,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37447,7 +37410,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.LCG64ShiftRandom -a
+      LCG64ShiftRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -37478,7 +37441,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -37544,7 +37507,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-110
+111
 \end_layout
 
 \end_inset
@@ -37553,7 +37516,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -37665,7 +37628,7 @@ status open
 
 \begin_layout Plain Layout
 
-public static long seed() {
+public static long nanoSeed() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -37732,7 +37695,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.NanoTimeRandom -a
+      NanoTimeRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -37935,17 +37898,51 @@ status open
 
 \begin_layout Plain Layout
 
-public static long seed() {
+public static long objectSeed() {
 \end_layout
 
 \begin_layout Plain Layout
 
-    return ((long)new Object().hashCode() << 32) |
+    final long a = new Object().hashCode();
 \end_layout
 
 \begin_layout Plain Layout
 
-        new Object().hashCode();
+    final long b = new Object().hashCode();
+\end_layout
+
+\begin_layout Plain Layout
+
+    return mixStafford13(a << 32 | b);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long mixStafford13(final long z) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    long v = (z^(z >>> 30))*0xbf58476d1ce4e5b9L;
+\end_layout
+
+\begin_layout Plain Layout
+
+    v = (v^(v >>> 27))*0x94d049bb133111ebL;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return v^(v >>> 31);
 \end_layout
 
 \begin_layout Plain Layout
@@ -37977,7 +37974,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.ObjectHashRandom -a
+      ObjectHashRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -38002,7 +37999,7 @@ status collapsed
 \begin_layout Plain Layout
 Full report: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -38017,8 +38014,7 @@ https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetic
 
 \end_inset
 
-, which looks better than the nano time seeding, but 86 failing tests was
- still not very satisfying.
+, which is already excellent.
 \end_layout
 
 \begin_layout Standard
@@ -38069,7 +38065,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-28
+113
 \end_layout
 
 \end_inset
@@ -38078,7 +38074,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-0
+1
 \end_layout
 
 \end_inset
@@ -38087,7 +38083,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-86
+0
 \end_layout
 
 \end_inset
@@ -38150,7 +38146,36 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return mix(System.nanoType(), objectHashSeed());
+    final long a = mixStafford13(System.currentTimeMillis());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final long b = mixStafford13(System.nanoTime());
+\end_layout
+
+\begin_layout Plain Layout
+
+    return seed(mix(a, b));
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long seed(final long base) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return mix(base, objectSeed());
 \end_layout
 
 \begin_layout Plain Layout
@@ -38199,26 +38224,6 @@ private static long mix(final long a, final long b) {
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-private static long objectHashSeed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ((long)new Object().hashCode() << 32) |
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Object().hashCode();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -38310,7 +38315,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.SeedRandom -a
+      SeedRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -38397,7 +38402,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-112
+110
 \end_layout
 
 \end_inset
@@ -38406,7 +38411,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-2
+4
 \end_layout
 
 \end_inset
@@ -40852,7 +40857,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -40885,6 +40890,21 @@ jenetics.example
  base
 \emph default
 -module.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+jenetics.incubator
+\family default
+\series default
+: This project contains experimental code which might find its way into
+ one of the 
+\emph on
+official
+\emph default
+ modules.
 \end_layout
 
 \begin_layout Itemize
@@ -40996,7 +41016,7 @@ test
 \family default
 \series default
 : Compiles and executes the unit tests.
- The test results are printed onto the console and a test-report, created
+ The test results are printed onto the console and a test report, created
  by
 \emph on
  TestNG
@@ -41073,555 +41093,6 @@ if you don't have the the Gradle build system installed—calling the the
  task afterwards.
 \end_layout
 
-\begin_layout Paragraph
-External library dependencies
-\end_layout
-
-\begin_layout Standard
-The following external projects are used for running and/or building the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library.
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-\emph on
-TestNG
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-TestNG
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 7.3
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://testng.org/doc/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Apache Commons Math
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Apache Commons Math
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 3.6.1
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://commons.apache.org/proper/commons-math/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-EqualsVerifier
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Apache Commons Math
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 3.6
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://jqno.nl/equalsverifier/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/jqno/equalsverifier/releases
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Java2Html
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Java2Html
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 5.0
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.java2html.de/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.java2html.de/java2html_50.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "GPL"
-target "https://www.gnu.org/licenses/gpl.html"
-literal "false"
-
-\end_inset
-
- or
-\begin_inset CommandInset href
-LatexCommand href
-name "CPL1.0"
-target "http://www.eclipse.org/legal/cpl-v10.html"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- javadoc
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Gradle
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Gradle
-\end_layout
-
-\end_inset
-
-
-\series bold
-\emph on
-
-\begin_inset CommandInset label
-LatexCommand label
-name "Gradle"
-
-\end_inset
-
-
-\series default
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-: 7.2
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://gradle.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://services.gradle.org/distributions/gradle-7.2-bin.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://gradle.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- build
-\end_layout
-
-\end_deeper
 \begin_layout Paragraph
 Maven Central
 \end_layout
