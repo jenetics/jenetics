@@ -3107,7 +3107,7 @@ Chromo\SpecialChar softhyphen
 some
 \family default
  is allowed to have different lengths and constraints.
- The allowed minimal- and maximal values of a
+ The allowed minimal and maximal values of a
 \family typewriter
  Numeric\SpecialChar softhyphen
 Chromosome
@@ -3117,7 +3117,7 @@ Chromosome
 \family typewriter
 Chromosome
 \family default
-, all alleles must lay within the defined minimal- and maximal values.
+, all alleles must lay within the defined minimal and maximal values.
 \end_layout
 
 \begin_layout Standard
@@ -3268,7 +3268,7 @@ s within a
 \end_inset
 
 g.
- the same minimal- and maximal values for numerical
+ the same minimal and maximal values for numerical
 \family typewriter
  Gene
 \family default
@@ -3391,7 +3391,7 @@ s, there are two possibilities to do so:
 \begin_layout Enumerate
 creating a
 \emph on
- row-major
+ row major
 \emph default
  or
 \end_layout
@@ -3399,7 +3399,7 @@ creating a
 \begin_layout Enumerate
 creating a
 \emph on
- column-major
+ column major
 \end_layout
 
 \begin_layout Standard
@@ -3435,7 +3435,7 @@ name "fig:Row-major-genotype-vector"
 
 \end_inset
 
-Row-major
+Row major
 \family typewriter
  Genotype
 \family default
@@ -3467,7 +3467,7 @@ noprefix "false"
 \family typewriter
  Genotype
 \family default
- vector in row-major layout.
+ vector in row major layout.
  A
 \family typewriter
  Genotype
@@ -3509,7 +3509,7 @@ s, all
 \family default
 s must have the same minimum and maximum values.
  If the problem space doesn't need to have different minimum and maximum
- values, the row-major
+ values, the row major
 \family typewriter
  Genotype
 \family default
@@ -3568,7 +3568,7 @@ If the problem space allows equal
 \family typewriter
  Gene
 \family sans
- constraint, the row-major
+ constraint, the row major
 \family typewriter
  Genotype
 \family sans
@@ -3598,7 +3598,7 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The following code snippet shows the creation of a row-major
+The following code snippet shows the creation of a row major
 \family typewriter
  Genotype
 \family default
@@ -3611,7 +3611,7 @@ s derived from the
 \family typewriter
  Recombinator
 \family default
- do a fairly good job in exploring the problem space for a row-major
+ do a fairly good job in exploring the problem space for a row major
 \family typewriter
  Genotype
 \family default
@@ -3648,7 +3648,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \begin_inset VSpace bigskip
 \end_inset
 
-The column-major
+The column major
 \family typewriter
  Genotype
 \family default
@@ -3661,7 +3661,7 @@ s with different constraints.
 \emph on
  
 \emph default
-only reason for choosing the column-major layout.
+only reason for choosing the column major layout.
  The layout of this
 \family typewriter
  Genotype
@@ -3720,7 +3720,7 @@ name "fig:Column-major-genotype-vector"
 
 \end_inset
 
-Column-major
+Column major
 \family typewriter
  Genotype
 \family default
@@ -3742,7 +3742,7 @@ The code snippet below shows how to create a
 \family typewriter
  Genotype
 \family default
- vector in column-major layout.
+ vector in column major layout.
  It's a little bit more effort to create such a vector, since every
 \family typewriter
  Gene
@@ -3803,7 +3803,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The greater flexibility of a column-major
+The greater flexibility of a column major
 \family typewriter
  Genotype
 \family default
@@ -3821,7 +3821,7 @@ The greater flexibility of a column-major
  Swap\SpecialChar softhyphen
 Mutator
 \family default
-, when used with row-major
+, when used with row major
 \family typewriter
  Genotype
 \family default
@@ -4030,7 +4030,7 @@ How to create a
 \family typewriter
  Alterer
 \family default
-s are the same as for column-major
+s are the same as for column major
 \family typewriter
  Genotype
 \family default
@@ -4539,7 +4539,7 @@ s.
 \family typewriter
  Gene
 \family sans
-- or population selection is not supported by the library.
+ or population selection is not supported by the library.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5538,7 +5538,7 @@ EliteSelector
  copies a small proportion of the fittest candidates, without changes, into
  the next generation.
  This may have a dramatic impact on performance by ensuring that the GA
- doesn't waste time re-discovering previously refused partial solutions.
+ doesn't waste time rediscovering previously refused partial solutions.
  Individuals that are preserved through elitism remain eligible for selection
  as parents of the next generation.
  Elitism is also related with memory: 
@@ -5840,7 +5840,7 @@ The needed
 \emph on
  sub
 \emph default
--selection probabilities are set to
+ selection probabilities are set to
 \begin_inset Formula 
 \begin{equation}
 P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
@@ -6396,12 +6396,12 @@ noprefix "false"
  SinglePointCrossover
 \family default
  class is performing the crossover for different crossover points.
- Sub-figure 
+ Sub figure 
 \emph on
 a)
 \emph default
  shows the two chromosomes chosen for crossover.
- The examples in sub-figures 
+ The examples in sub figures 
 \emph on
 b)
 \emph default
@@ -7350,7 +7350,7 @@ The crossover parameter,
 
 , it is likely that some genes must be created more than once, because they
  are not in the valid range.
- The probability for gene re-creation rises sharply with the value of 
+ The probability for gene recreation rises sharply with the value of 
 \begin_inset Formula $p$
 \end_inset
 
@@ -7695,7 +7695,7 @@ Function
 Genotype
 \family sans
 , it must return the same fitness value.
- Non-deterministic fitness 
+ Nondeterministic fitness 
 \family typewriter
 function
 \family sans
@@ -8146,7 +8146,8 @@ Clock
 \family typewriter
  java\SpecialChar softhyphen
 .time\SpecialChar softhyphen
-.Clock
+.Instant\SpecialChar softhyphen
+Source
 \family default
  used for calculating the execution durations.
  A
@@ -8316,7 +8317,7 @@ Nullifier
 \family default
 , which allows you to enforce the reevaluation of the fitness values of
  all individuals.
- This might be handy, if the fitness function is not time-invariant and
+ This might be handy, if the fitness function is not time invariant and
  can change during the evolution process.
 \end_layout
 
@@ -11392,7 +11393,7 @@ PRNG
 
 \end_inset
 
- for creating new individuals and for the selection- and mutation algorithms.
+ for creating new individuals and for the selection and mutation algorithms.
 
 \family sans
 \series bold
@@ -11934,9 +11935,7 @@ name "par:Block-splitting"
 \end_layout
 
 \begin_layout Standard
-With this method each thread will be assigned a non-\SpecialChar softhyphen
-over\SpecialChar softhyphen
-lapping contiguous
+With this method each thread will be assigned a non overlapping contiguous
  block of random numbers, which should be enough for the whole runtime of
  the process.
  If the number of threads is not known in advance, the length of each block
@@ -12823,11 +12822,11 @@ s, respectively.
  Seq
 \family default
  interface itself represents a fixed-sized, ordered sequence of elements.
- It is an abstraction over the Java build-in
+ It is an abstraction over the Java build in
 \emph on
  array
 \emph default
--type, but much safer to use for
+ type, but much safer to use for
 \emph on
  generic
 \emph default
@@ -14251,7 +14250,7 @@ Chromo\SpecialChar softhyphen
 some
 \family default
  may have a different length than the original one.
- The other methods should be self-explanatory.
+ The other methods should be self explanatory.
  The 
 \family typewriter
 Chromo\SpecialChar softhyphen
@@ -16795,7 +16794,7 @@ A function,
 \begin_inset Formula $m$
 \end_inset
 
--dimeööööööööööööööööööööööööööööööööönsional, is encoded by 
+-dimensional, is encoded by 
 \begin_inset Formula $m$
 \end_inset
 
@@ -19186,7 +19185,7 @@ fixed size.
 \end_layout
 
 \begin_layout Paragraph
-Variable-sized subsets
+Variable sized subsets
 \end_layout
 
 \begin_layout Standard
@@ -19198,7 +19197,7 @@ Codec
 \emph on
  
 \emph default
-variable-sized subsets can be easily implemented with the use of a 
+variable sized subsets can be easily implemented with the use of a 
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -19435,7 +19434,7 @@ class Main {
 \end_layout
 
 \begin_layout Paragraph
-Fixed-size subsets
+Fixed sized subsets
 \end_layout
 
 \begin_layout Standard
@@ -20044,7 +20043,7 @@ Codec
 \family typewriter
 Codecs
 \family default
- class, which creates a mapping codec from a given source- and target set.
+ class, which creates a mapping codec from a given source and target set.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -20164,7 +20163,7 @@ assignment problem
 .
  The problem is defined by a number of workers and a number of jobs.
  Every worker can be assigned to perform any job.
- The cost for a worker may vary depending on the worker-job assignment.
+ The cost for a worker may vary depending on the worker job assignment.
  It is required to perform all jobs by assigning exactly one worker to each
  job and exactly one job to each worker in such a way which optimizes the
  total assignment costs.
@@ -20187,7 +20186,7 @@ https://en.wikipedia.org/wiki/Assignment_problem
 
 \end_inset
 
- The costs for such worker-job assignments are usually given by a matrix.
+ The costs for such worker job assignments are usually given by a matrix.
  Such an example matrix is shown in table 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -20485,7 +20484,7 @@ name "tab:Worker-task-cost"
 
 \end_inset
 
-Worker-job cost
+Worker job cost
 \end_layout
 
 \end_inset
@@ -20495,7 +20494,7 @@ Worker-job cost
 
 \end_inset
 
-If your worker-job cost can be expressed by a matrix, the Hungarian algorithm
+If your worker job cost can be expressed by a matrix, the Hungarian algorithm
 \begin_inset Foot
 status collapsed
 
@@ -21687,7 +21686,7 @@ invalid individuals (
 Genotypes
 \family default
 ).
- Some possible encodings for common data-structures are described in section
+ Some possible encodings for common data structures are described in section
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -22080,7 +22079,7 @@ Domain points with retry-constraint
 
 \end_inset
 
-Trying to create only valid domain points can sometimes lead to a non-uniform
+Trying to create only valid domain points can sometimes lead to a nonuniform
  distribution.
  This can be seen in figure 
 \begin_inset CommandInset ref
@@ -23878,13 +23877,16 @@ Duration\SpecialChar softhyphen
 Execution\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 (Du\SpecialChar softhyphen
-ration, Clock)
+ration, Instant\SpecialChar softhyphen
+Source)
 \family default
 , lets you define the
 \family typewriter
  java.\SpecialChar softhyphen
 time.\SpecialChar softhyphen
-Clock
+In\SpecialChar softhyphen
+stant\SpecialChar softhyphen
+Source
 \family default
 , which is used for measure the execution time.
 
@@ -23905,7 +23907,8 @@ Clock
  for measuring the time.
  To have the possibility to define a different 
 \family typewriter
-Clock
+Instant\SpecialChar softhyphen
+Source
 \family default
  implementation is especially useful for testing purposes.
 \end_layout
@@ -24233,7 +24236,7 @@ noprefix "false"
 \emph default
  fitness convergence predicate.
  This method allows to define the evolution termination according to the
- statistical moments of the short- and long fitness filter.
+ statistical moments of the short and long fitness filter.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -26281,7 +26284,7 @@ io.jenetics.prngine
 \begin_layout Plain Layout
 
 \family typewriter
-io.jenetics:prngine:1.0.2
+io.jenetics:prngine:2.0.0
 \end_layout
 
 \end_inset
@@ -27647,14 +27650,6 @@ g.
         (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
 \end_layout
 
-\begin_layout Subsubsection
-CFG
-\end_layout
-
-\begin_layout Standard
-Context free grammer
-\end_layout
-
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
@@ -27748,7 +27743,7 @@ Rewrite rule
 
 \end_inset
 
- A tree rewrite rule is a pair of terms (sub-trees), 
+ A tree rewrite rule is a pair of terms (sub trees), 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
@@ -27781,12 +27776,12 @@ A rule,
 \begin_inset Formula $t$
 \end_inset
 
-, if the left tree (pattern) matches a sub-tree of 
+, if the left tree (pattern) matches a sub tree of 
 \begin_inset Formula $t$
 \end_inset
 
 .
- The matching sub-tree is then replaced by the right tree (pattern) 
+ The matching sub tree is then replaced by the right tree (pattern) 
 \begin_inset Formula $r$
 \end_inset
 
@@ -28022,7 +28017,7 @@ You can see that the variable
 \family typewriter
 x
 \family default
- will match for arbitrary sub-trees.
+ will match for arbitrary sub trees.
  For more complicated patterns it is quite cumbersome to create it via a
  
 \family typewriter
@@ -28062,7 +28057,7 @@ noprefix "false"
 \emph on
 non
 \emph default
--string trees you must specify an additional mapper function with the 
+ string trees you must specify an additional mapper function with the 
 \family typewriter
 compile
 \family default
@@ -28094,7 +28089,7 @@ The right-hand side functionality of the rewrite rule is used to expand
 \family typewriter
 Var
 \family default
- to sub-tree mapping.
+ to sub tree mapping.
  
 \begin_inset listings
 lstparams "language=Java"
@@ -32305,7 +32300,7 @@ noprefix "false"
 
 \end_inset
 
-) enforces the data-type constraints for the created program tree and makes
+) enforces the data type constraints for the created program tree and makes
  the implementation a
 \emph on
  strongly typed
@@ -32834,7 +32829,7 @@ jenetics\SpecialChar softhyphen
 .ext
 \family default
  module is responsible for this change in the program size.
- When a smaller sub-tree is exchanged with a bigger sub-tree, the size of
+ When a smaller sub tree is exchanged with a bigger sub tree, the size of
  the first tree will grow and the size of the second tree will shrink.
  This can lead to undesirable large programs.
  Because of this reason, it is possible to create a 
