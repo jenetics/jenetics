@@ -37393,7 +37393,7 @@ prngine
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37678,7 +37678,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37957,7 +37957,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -38298,7 +38298,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
