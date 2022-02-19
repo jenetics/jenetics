@@ -87,7 +87,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends,assert}
+  morekeywords={*,...,public,extends,assert,var}
 }
 \end_preamble
 \options utf8
@@ -1264,8 +1264,7 @@ noprefix "false"
 \begin_layout Enumerate
 Once this is done, the fitness function, which we are trying to maximize,
  can be defined.
- Utilizing language features introduced in Java 8, we simply write a private
- static method, which takes the 
+ We can simply write a private static method, which takes the 
 \family typewriter
 Geno\SpecialChar softhyphen
 type
@@ -2524,7 +2523,7 @@ s, which contain the allowed minimum and maximum values.
  Gene
 \family default
  implementations are final and immutable.
- In fact, they are all value-based classes and fulfill the properties which
+ In fact, they are all value based classes and fulfill the properties which
  are described in the Java API documentation
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -6318,8 +6317,8 @@ The single-point crossover changes two children chromosomes by taking two
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem, single-point crossover can lead to smaller disruption than multiple-po
-int or uniform crossover.
+ problem, single-point crossover can lead to smaller disruption than multi-point
+ or uniform crossover.
 \end_layout
 
 \begin_layout Standard
@@ -6898,7 +6897,7 @@ In uniform crossover, the genes at index
 \begin_inset Formula $i$
 \end_inset
 
- of two chromosomes are swapped with the swap-probability, 
+ of two chromosomes are swapped with the swap probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -6994,7 +6993,7 @@ noprefix "false"
 \begin_inset Formula $r\in\left[0,1\right]$
 \end_inset
 
-, is smaller than the swap-probability, 
+, is smaller than the swap probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -8150,7 +8149,8 @@ Source
  used for calculating the execution durations.
  A
 \family typewriter
- Clock
+ Instant\SpecialChar softhyphen
+Source
 \family default
  with nanosecond precision (
 \family typewriter
@@ -11489,12 +11489,17 @@ status open
 
 \begin_layout Plain Layout
 
+var rgf = RandomGeneratorFactory.getDefault();
+\end_layout
+
+\begin_layout Plain Layout
+
 List<Genotype<DoubleGene>> genotypes =
 \end_layout
 
 \begin_layout Plain Layout
 
-    RandomRegistry.with(new Random(123), r -> {
+    RandomRegistry.with(rgf.create(123), r -> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -12391,7 +12396,7 @@ jump
 \begin_layout Description
 
 \family typewriter
-jump2
+jumpPowerOfTwo
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
  
@@ -13654,12 +13659,12 @@ final Quantile quartile = new Quantile(0.25);
 
 \begin_layout Plain Layout
 
-RandomGenerator.getDefault()
+RandomGenerator.getDefault().doubles(10_000)
 \end_layout
 
 \begin_layout Plain Layout
 
-    .doubles(10_000).forEach(quartile);
+    .forEach(quartile);
 \end_layout
 
 \begin_layout Plain Layout
@@ -22023,7 +22028,7 @@ noprefix "false"
 
  shows the distribution of the domain points in our 
 \emph on
-unit-circle
+unit circle
 \emph default
  example.
  Rejecting invalid points and recreating new ones leads to an uniform point
@@ -25047,7 +25052,7 @@ name "fig:Selector-performance-Knapsack"
 
 \end_inset
 
-Selector-performance (Knapsack)
+Selector performance (Knapsack)
 \end_layout
 
 \end_inset
@@ -26403,11 +26408,7 @@ Module graph
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.ext
-\family default
-
 \begin_inset Index idx
 status collapsed
 
@@ -29763,9 +29764,9 @@ CyclicEngine.
 \end_layout
 
 \begin_layout Subsubsection
-
-\family typewriter
 ConcatEngine
+\family typewriter
+
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:ConcatEngine"
@@ -30075,9 +30076,9 @@ Engine
 \end_layout
 
 \begin_layout Subsubsection
-
-\family typewriter
 CyclicEngine
+\family typewriter
+
 \begin_inset Index idx
 status collapsed
 
@@ -31936,36 +31937,6 @@ Factory
  will be reversed.
  That means, the first objective will be maximized instead of minimized,
  and so on.
-\end_layout
-
-\begin_layout Subsection
-Grammatical evolution
-\end_layout
-
-\begin_layout Standard
-In Grammatical Evolution (GE) there is a separation between the genotype,
- i.e., a linear string of integers, and the phenotype, i.e.
- a program in the form of a tree expression.
- As a consequence, a mapping process is required to map the string into
- an executable program, using the production rules of a CFG.
-\end_layout
-
-\begin_layout Subsubsection
-Context free grammar
-\end_layout
-
-\begin_layout Standard
-A context-free grammar basically consists of a finite set of grammar rules.
- In order to define grammar rules, we assume that we have two kinds of symbols:
- the terminals, which are the symbols of the alphabet underlying the languages
- under consideration, and the non-terminals, which behave like variables
- ranging over strings of terminals.
- A rule is of the form, where A is a single non-terminal, and the right-hand
- side is a string of terminal and/or non-terminal symbols.
- As usual, first we need to define what the object is (a context-free grammar),
- and then we need to explain how it is used.
- Unlike automata, grammars are used to generate strings, rather than recognize
- strings.
 \end_layout
 
 \begin_layout Section
@@ -39038,7 +39009,7 @@ The following listing shows the
  Engine
 \family default
  setup for solving the Rastrigin function, which is very similar to the
- setup for the real-function in section 
+ setup for the real function in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Real-function-example"
