@@ -731,9 +731,7 @@ literal "false"
 \end_inset
 
  (GP) implementation.
- It has no runtime dependencies to other libraries, except the Java 11 runtime.
- Although the library is written in Java 11, it is compilable with Java
- 17.
+ It has no runtime dependencies to other libraries, except the Java 17 runtime.
  
 \family sans
 \series bold
