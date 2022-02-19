@@ -17,13 +17,13 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 11** to compile and run, but it also compiles and runs with **Java 17**.
+**Jenetics** requires at least **Java 17** to compile and run.
 
 Check out the master branch from GitHub.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
-Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each subproject is located in its own subdirectory:
 
 **Published projects**
 
@@ -121,7 +121,7 @@ you can start the example by calling
 
 ![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
-The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
+The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows storing polygonized images in PNG format to disk. At the button of the UI, you can change some GA parameters of the example.
 
 
 ## Projects using Jenetics
