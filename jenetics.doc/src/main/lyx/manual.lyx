@@ -1301,7 +1301,7 @@ Chromosome
  method is then used as a fitness function and passed to the
 \family typewriter
  Engine\SpecialChar softhyphen
-.build
+::build
 \family default
  method.
 \end_layout
@@ -5987,7 +5987,7 @@ void recombine(final MSeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final var random = RandomRegistry.random();
+    final RandomGenerator random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -9005,12 +9005,12 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -9529,7 +9529,7 @@ status open
 
 \begin_layout Plain Layout
 
-EvolutionResult<DoubleGene, Double> result = stream
+final EvolutionResult<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9548,7 +9548,7 @@ EvolutionResult<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-Phenotype<DoubleGene, Double> result = stream
+final Phenotype<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9567,7 +9567,7 @@ Phenotype<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-Genotype<DoubleGene> result = stream
+final Genotype<DoubleGene> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9614,7 +9614,12 @@ status open
 
 \begin_layout Plain Layout
 
-ISeq<EvolutionResult<DoubleGene, Double>> results = engine.stream()
+final ISeq<EvolutionResult<DoubleGene, Double>> results = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -9721,12 +9726,12 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = ...
+final Engine<DoubleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStatistics<?, Double> statistics =
+final EvolutionStatistics<?, Double> statistics =
 \end_layout
 
 \begin_layout Plain Layout
@@ -11489,12 +11494,12 @@ status open
 
 \begin_layout Plain Layout
 
-var rgf = RandomGeneratorFactory.getDefault();
+final var rgf = RandomGeneratorFactory.getDefault();
 \end_layout
 
 \begin_layout Plain Layout
 
-List<Genotype<DoubleGene>> genotypes =
+final List<Genotype<DoubleGene>> genotypes =
 \end_layout
 
 \begin_layout Plain Layout
@@ -11552,7 +11557,7 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = ...;
+final Engine<DoubleGene, Double> engine = ...;
 \end_layout
 
 \begin_layout Plain Layout
@@ -11567,7 +11572,7 @@ Engine<DoubleGene, Double> engine = ...;
 
 \begin_layout Plain Layout
 
-Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
+final Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
 \end_layout
 
 \begin_layout Plain Layout
@@ -12621,7 +12626,7 @@ status open
 
 \begin_layout Plain Layout
 
-EvolutionResult<DoubleGene, Double> result = stream
+final EvolutionResult<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -12664,7 +12669,7 @@ IO.object.write(result.population(), file);
 
 \begin_layout Plain Layout
 
-ISeq<Phenotype<G, C>> population =
+final ISeq<Phenotype<G, C>> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -12674,7 +12679,7 @@ ISeq<Phenotype<G, C>> population =
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = Engine
+final EvolutionStream<DoubleGene, Double> stream = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -13545,12 +13550,12 @@ status open
 
 \begin_layout Plain Layout
 
-DoubleChromosome chromosome = ...
+final DoubleChromosome chromosome = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-DoubleMomentStatistics statistics = chromosome.stream()
+final DoubleMomentStatistics statistics = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -13574,7 +13579,7 @@ DoubleMomentStatistics statistics = chromosome.stream()
 
 \begin_layout Plain Layout
 
-DoubleMoments moments = chromosome.stream()
+final DoubleMoments moments = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -13659,7 +13664,12 @@ final Quantile quartile = new Quantile(0.25);
 
 \begin_layout Plain Layout
 
-RandomGenerator.getDefault().doubles(10_000)
+RandomGenerator.getDefault()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .doubles(10_000)
 \end_layout
 
 \begin_layout Plain Layout
@@ -13901,7 +13911,7 @@ Generator
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.random()
+::random
 \family sans
  method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the
@@ -13913,7 +13923,7 @@ Generator
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.random(\SpecialChar softhyphen
+::random(\SpecialChar softhyphen
 Random\SpecialChar softhyphen
 Generator)
 \family sans
@@ -17813,7 +17823,7 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Plain Layout
 
-        .mapToInt(BitGene::ordinal)
+        .mapToInt(gene -> gene.bit() ? 1 : 0)
 \end_layout
 
 \begin_layout Plain Layout
@@ -23198,7 +23208,7 @@ Some of the implemented termination strategies need to maintain an internal
  Stream\SpecialChar softhyphen
 .limit\SpecialChar softhyphen
 (Limits\SpecialChar softhyphen
-.by
+::by
 \emph on
 \SpecialChar softhyphen
 Termination\SpecialChar softhyphen
@@ -23265,7 +23275,12 @@ final long MAX_GENERATIONS = 100;
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23695,12 +23710,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23850,12 +23870,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23902,7 +23927,9 @@ Source
 \shape default
  uses the nano precision clock
 \family typewriter
- io.jenetics.\SpecialChar softhyphen
+ io.je\SpecialChar softhyphen
+ne\SpecialChar softhyphen
+tics.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Clock
@@ -24020,12 +24047,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24388,12 +24420,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24642,12 +24679,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24961,7 +25003,7 @@ RandomRegistry
 g.
  
 \family typewriter
-Collections.shuffle
+Collections::shuffle
 \family sans
  method.
 \end_layout
@@ -25843,7 +25885,7 @@ sult
  It is not possible to alter the results, although it is tempting to use
  the 
 \family typewriter
-Stream.map
+Streams::map
 \family default
  method for this purpose.
  The problem with the 
@@ -26062,7 +26104,7 @@ Genotype
  creation retries using the 
 \family typewriter
 EvolutionResult\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Unique\SpecialChar softhyphen
 Population(\SpecialChar softhyphen
 int\SpecialChar softhyphen
@@ -27100,7 +27142,7 @@ final Tree<Integer, ?> tree = TreeNode.parse(
 
 The 
 \family typewriter
-TreeNode.parse
+TreeNode::parse
 \family default
  method will throw an 
 \family typewriter
@@ -27987,22 +28029,22 @@ status open
 
 \begin_layout Plain Layout
 
-Tree<Decl<String>, ?> t = TreeNode
+final Tree<Decl<String>, ?> t = TreeNode
 \end_layout
 
 \begin_layout Plain Layout
 
-    .<Decl<String>>of(Val.of("add"))
+    .<Decl<String>>of(new Val<>("add"))
 \end_layout
 
 \begin_layout Plain Layout
 
-    .attach(Var.of("x"), Val.of("1"));
+    .attach(new Var<>("x"), new Val<>("1"));
 \end_layout
 
 \begin_layout Plain Layout
 
-TreePattern<String> p = new TreePattern<>(t);
+final TreePattern<String> p = new TreePattern<>(t);
 \end_layout
 
 \begin_layout Plain Layout
@@ -28068,7 +28110,7 @@ status open
 
 \begin_layout Plain Layout
 
-TreePattern<Integer> pattern = TreePattern 	
+final TreePattern<Integer> pattern = TreePattern 	
 \end_layout
 
 \begin_layout Plain Layout
@@ -28097,22 +28139,27 @@ status open
 
 \begin_layout Plain Layout
 
-TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+final TreePattern<String> pattern = TreePattern
 \end_layout
 
 \begin_layout Plain Layout
 
-Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+    .compile("add($x,$y,1)");
 \end_layout
 
 \begin_layout Plain Layout
 
-vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
+final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
 \end_layout
 
 \begin_layout Plain Layout
 
-vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+vars.put(new TreePattern.Var<>("x"), TreeNode.parse("sin(x)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(new TreePattern.Var<>("y"), TreeNode.parse("sin(y)"));
 \end_layout
 
 \begin_layout Plain Layout
@@ -28313,12 +28360,12 @@ status open
 
 \begin_layout Plain Layout
 
-final TreeRewriteRule<String> rule = 
+final TreeRewriteRule<String> rule = TreeRewriteRule
 \end_layout
 
 \begin_layout Plain Layout
 
-    TreeRewriteRule.compile("add($x,0) -> $x");
+    .compile("add($x,0) -> $x");
 \end_layout
 
 \begin_layout Plain Layout
@@ -28521,7 +28568,17 @@ status open
 
 \begin_layout Plain Layout
 
-TreeNode<Op<Double>> tree = MathExpr.parse("1+2+3+4").toTree();
+final TreeNode<Op<Double>> tree = MathExpr
+\end_layout
+
+\begin_layout Plain Layout
+
+    .parse("1+2+3+4")
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toTree();
 \end_layout
 
 \begin_layout Plain Layout
@@ -29950,7 +30007,7 @@ height "1pt"
 \family sans
 The concatenated evolution Engines must be limited (by calling 
 \family typewriter
-Engine.limit
+Engine::limit
 \family sans
 ), otherwise only the first 
 \family typewriter
@@ -31940,11 +31997,7 @@ Factory
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.prog
-\family default
-
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Genetic-programming"
@@ -34039,6 +34092,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface LossFunction<T> {
 \end_layout
 
@@ -34217,6 +34275,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface Complexity<T> {
 \end_layout
 
@@ -34291,6 +34354,11 @@ The error function combines the loss function and the complexity function
 lstparams "language=Java"
 inline false
 status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -34708,11 +34776,7 @@ Op
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.xml
-\family default
-
 \begin_inset Index idx
 status collapsed
 
@@ -35790,8 +35854,6 @@ Genotype read performance
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.prngine
 \begin_inset CommandInset label
 LatexCommand label
@@ -35799,8 +35861,6 @@ name "sec:io.jenetics.prngine"
 
 \end_inset
 
-
-\family default
 
 \begin_inset Index idx
 status collapsed
@@ -37263,10 +37323,14 @@ internal
  package, it is easily possible to test PRNGs extending the
 \family typewriter
  java.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
-Random
+util.ran\SpecialChar softhyphen
+dom.\SpecialChar softhyphen
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gen\SpecialChar softhyphen
+erator
 \family default
- class.
+ interface.
  The only requirement is, that the PRNG must be
 \emph on
  default
@@ -37625,7 +37689,7 @@ Harder class
 .
  The
 \family typewriter
- seed
+ nanoSeed
 \family default
  method has been wrapped into the
 \family typewriter
