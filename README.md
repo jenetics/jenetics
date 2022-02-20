@@ -245,7 +245,7 @@ Quoc Nhat Han Tran, Nhan Quy Nguyen, Hicham Chehade, Lionel Amodeo, Farouk Yalao
 * [#632](https://github.com/jenetics/jenetics/issues/632): Convert data classes to `records`.
 * [#696](https://github.com/jenetics/jenetics/issues/693): Convert libraries to JPMS modules.
 * [#715](https://github.com/jenetics/jenetics/issues/715): Improve `BitChromosome`.
-* [#762](https://github.com/jenetics/jenetics/issues/762): Apply new Java17 construct where useful.
+* [#762](https://github.com/jenetics/jenetics/issues/762): **Breaking change** Update to Java 17.
 * [#767](https://github.com/jenetics/jenetics/issues/767): **Incubator** - Grammar-based evolution.
 * [#773](https://github.com/jenetics/jenetics/issues/773): **Incubator** - Simplify and unify parsing code for `MathExpr` class.
 * [#785](https://github.com/jenetics/jenetics/issues/785): Using `RandomGenerator` instead of `Random` class.
