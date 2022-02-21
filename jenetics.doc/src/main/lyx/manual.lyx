@@ -7432,7 +7432,7 @@ final Genotype<DoubleGene> gtf = Genotype.of(
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
+final Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
 \end_layout
 
 \begin_layout Plain Layout
