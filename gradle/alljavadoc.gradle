@@ -1,29 +1,28 @@
-def PROJECTS = [
-	":jenetics",
-	":jenetics.ext",
-	":jenetics.prog",
-	":jenetics.xml"
-]
-
 rootProject.gradle.projectsEvaluated {
 	rootProject.task('alljavadoc', type: Javadoc) {
 		description = "Aggregates Javadoc API documentation of all subprojects."
 		group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-		source PROJECTS.collect { project(it).sourceSets.main.allJava }
-		classpath = files(PROJECTS.collect { project(it).sourceSets.main.compileClasspath })
+		source Jenetics.PROJECT_TO_MODULE.collect {
+			project(":${it.key}").sourceSets.main.allJava
+		}
+		classpath = files(
+			Jenetics.PROJECT_TO_MODULE.collect {
+				project(":${it.key}").sourceSets.main.compileClasspath
+			}
+		)
 
-		options {
-			addMultilineStringsOption("-module-source-path ").setValue([
-				"io.jenetics.base=${rootProject.projectDir}/jenetics/src/main/java",
-				"io.jenetics.ext=${rootProject.projectDir}/jenetics.ext/src/main/java",
-				"io.jenetics.prog=${rootProject.projectDir}/jenetics.prog/src/main/java",
-				"io.jenetics.xml=${rootProject.projectDir}/jenetics.xml/src/main/java"
-			])
+		def moduleSourcePaths = Jenetics.PROJECT_TO_MODULE.collect {
+			"${it.value}=${rootProject.projectDir}/${it.key}/src/main/java".toString()
 		}
 
-		exclude '**/internal/**'
+		options {
+			addMultilineStringsOption("-module-source-path")
+				.setValue(moduleSourcePaths)
+		}
+
 		destinationDir rootProject.file("$rootProject.buildDir/docs/alljavadoc")
 	}
+
 }
 
