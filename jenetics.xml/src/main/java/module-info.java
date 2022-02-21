@@ -25,4 +25,7 @@
 module io.jenetics.xml {
 	requires java.xml;
 	requires io.jenetics.base;
+
+	exports io.jenetics.xml;
+	exports io.jenetics.xml.stream;
 }
