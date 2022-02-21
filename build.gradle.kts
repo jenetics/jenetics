@@ -381,13 +381,6 @@ tasks.register(assemblePkg) {
 	description = "Create the project package"
 
 	doLast {
-		val modules = arrayOf(
-			"jenetics",
-			"jenetics.ext",
-			"jenetics.prog",
-			"jenetics.xml"
-		)
-
 		exportDir.deleteRecursively()
 
 		// Copy the project code.
@@ -429,7 +422,7 @@ tasks.register(assemblePkg) {
 
 		// Copy the JAR files.
 		copy {
-			from(*modules)
+			from(*Jenetics.PROJECT_TO_MODULE.keys.toTypedArray())
 			into("${exportDir}/libs")
 			include("**/build/libs/*.jar")
 
@@ -440,9 +433,9 @@ tasks.register(assemblePkg) {
 			}
 		}
 
-		modules.forEach { copyJavadoc(it, exportDir) }
+		Jenetics.PROJECT_TO_MODULE.keys.forEach { copyJavadoc(it, exportDir) }
 		copyAllJavadoc(exportDir)
-		modules.forEach { copyTestReports(it, exportDir) }
+		Jenetics.PROJECT_TO_MODULE.keys.forEach { copyTestReports(it, exportDir) }
 
 		// Copy the User's Manual.
 		copy {
