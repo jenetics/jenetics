@@ -133,8 +133,8 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	/**
 	 * Create a new {@code Codec} with the mapped result type. The following
-	 * example creates a double codec who's values are not uniformly distributed
-	 * between {@code [0..1)}. Instead the values now follow an exponential
+	 * example creates a double codec whose values are not uniformly distributed
+	 * between {@code [0..1)}. Instead, the values now follow an exponential
 	 * function.
 	 *
 	 * <pre>{@code
@@ -164,6 +164,43 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *             }
 	 *             return v;
 	 *         });
+	 * }</pre>
+	 *
+	 * An additional use case is to use this method to overcome the restriction,
+	 * that a {@link Genotype} can only consists of {@link io.jenetics.Chromosome}s
+	 * with the same {@link Gene}. The following code doesn't compile.
+	 * <pre>{@code
+	 * final Genotype<?> genotype = Genotype.of(
+	 *     DoubleChromosome.of(DoubleRange.of(0, 100), 10),
+	 *     IntegerChromosome.of(IntRange.of(0, 100), 10)
+	 * ):
+	 * }</pre>
+	 * To overcome this restriction, you can define a separate codec for each
+	 * chromosome, do the necessary mapping, and combine it into a codec which
+	 * creates object of your desired problem domain objects.
+	 * <pre>{@code
+	 * // Problem domain object.
+	 * record DomainObject(double[] doubles, int[] ints){}
+	 *
+	 * // Codec of the first 'dimension' of your problem domain.
+	 * final Codec<double[], DoubleGene> codec1 = Codecs
+	 *     .ofVector(DoubleRange.of(0, 1), 10);
+	 *
+	 * // Codec of the second 'dimension' of your problem domain.
+	 * final Codec<int[], DoubleGene> codec2 = Codecs
+	 *     .ofVector(DoubleRange.of(0, 1), 10)
+	 *     .map(values -> DoubleStream.of(values)
+	 *         .mapToInt(value -> (int)value)
+	 *         .toArray());
+	 *
+	 * // Combined codec of your problem domain.
+	 * final Codec<DomainObject, DoubleGene> codec =
+	 *     Codec.of(codec1, codec2, DomainObject::new);
+	 *
+	 * // Fitness function and evolution engine.
+	 * final Function<DomainObject, Double> ff = d -> 0.0;
+	 * final Engine<DoubleGene, Double> engine = Engine.builder(ff, codec)
+	 *     .build();
 	 * }</pre>
 	 *
 	 * @since 4.0
