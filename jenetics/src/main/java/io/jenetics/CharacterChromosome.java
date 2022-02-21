@@ -32,6 +32,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -60,6 +61,7 @@ public class CharacterChromosome
 		CharSequence,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	private transient final CharSeq _validCharacters;
@@ -326,10 +328,12 @@ public class CharacterChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.CHARACTER_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

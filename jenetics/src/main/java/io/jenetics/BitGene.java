@@ -19,6 +19,8 @@
  */
 package io.jenetics;
 
+import java.io.Serial;
+
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -39,6 +41,7 @@ public enum BitGene
 	FALSE,
 	TRUE;
 
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	public static final BitGene ZERO = FALSE;

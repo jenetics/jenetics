@@ -51,8 +51,8 @@ final class GeneralObjectVec<T> extends GeneralVec<T[]> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof GeneralObjectVec &&
-			Arrays.equals((Object[])((GeneralObjectVec)obj)._data, _data);
+			obj instanceof GeneralObjectVec<?> other &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override

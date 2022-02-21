@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.6.5" apply false
+	id("me.champeau.jmh") version "0.6.6" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "7.2"
+	gradleVersion = "7.4"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -67,19 +67,27 @@ gradle.projectsEvaluated {
 	subprojects {
 		val project = this
 
-		tasks.withType<JavaCompile> {
-			options.compilerArgs.add("-Xlint:" + xlint())
+		tasks.withType<Test> {
+			useTestNG()
 		}
 
 		plugins.withType<JavaPlugin> {
 			configure<JavaPluginExtension> {
-				sourceCompatibility = JavaVersion.VERSION_11
+				modularity.inferModulePath.set(true)
+
+				sourceCompatibility = JavaVersion.VERSION_17
 				targetCompatibility = JavaVersion.current()
 			}
 
 			setupJava(project)
 			setupTestReporting(project)
 			setupJavadoc(project, "")
+		}
+
+		tasks.withType<JavaCompile> {
+			modularity.inferModulePath.set(true)
+
+			options.compilerArgs.add("-Xlint:${xlint()}")
 		}
 
 		if (plugins.hasPlugin("maven-publish")) {
@@ -128,6 +136,11 @@ fun setupJava(project: Project) {
  * Setup of the Java test-environment and reporting.
  */
 fun setupTestReporting(project: Project) {
+	if (JavaVersion.current() == JavaVersion.VERSION_18) {
+		logger.info("Jacoco not supported for '" + JavaVersion.VERSION_18 + "'.")
+		return;
+	}
+
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
@@ -146,7 +159,6 @@ fun setupTestReporting(project: Project) {
 		}
 
 		named<Test>("test") {
-			useTestNG()
 			finalizedBy("jacocoTestReport")
 		}
 	}
@@ -157,17 +169,17 @@ fun setupTestReporting(project: Project) {
  */
 fun setupJavadoc(project: Project, taskName: String) {
 	project.tasks.withType<Javadoc> {
+		modularity.inferModulePath.set(true)
+
 		val doclet = options as StandardJavadocDocletOptions
-
-		exclude("**/internal/**")
-
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
 		doclet.version(true)
 		doclet.docEncoding = "UTF-8"
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/11/docs/api",
+				"https://docs.oracle.com/en/java/javase/17/docs/api/",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
@@ -182,7 +194,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 				"implNote:a:Implementation Note:"
 			)
 
-		doclet.group("Core API", "io.jeneics", "io.jenetics.engine")
+		doclet.group("Core API", "io.jenetics", "io.jenetics.engine")
 		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
 
 		doLast {
@@ -237,9 +249,10 @@ fun setupJavadoc(project: Project, taskName: String) {
  * The Java compiler XLint flags.
  */
 fun xlint(): String {
-	// See https://docs.oracle.com/en/java/javase/15/docs/specs/man/javac.html
+	// See https://docs.oracle.com/en/java/javase/17/docs/specs/man/javac.html
 	return listOf(
 		"cast",
+		"auxiliaryclass",
 		"classfile",
 		"dep-ann",
 		"deprecation",
@@ -248,7 +261,8 @@ fun xlint(): String {
 		"finally",
 		"overrides",
 		"rawtypes",
-		"serial",
+		"removal",
+		// "serial" -- Creates unnecessary warnings.,
 		"static",
 		"try",
 		"unchecked"
@@ -367,13 +381,6 @@ tasks.register(assemblePkg) {
 	description = "Create the project package"
 
 	doLast {
-		val modules = arrayOf(
-			"jenetics",
-			"jenetics.ext",
-			"jenetics.prog",
-			"jenetics.xml"
-		)
-
 		exportDir.deleteRecursively()
 
 		// Copy the project code.
@@ -415,7 +422,7 @@ tasks.register(assemblePkg) {
 
 		// Copy the JAR files.
 		copy {
-			from(*modules)
+			from(*Jenetics.PROJECT_TO_MODULE.keys.toTypedArray())
 			into("${exportDir}/libs")
 			include("**/build/libs/*.jar")
 
@@ -426,9 +433,9 @@ tasks.register(assemblePkg) {
 			}
 		}
 
-		modules.forEach { copyJavadoc(it, exportDir) }
+		Jenetics.PROJECT_TO_MODULE.keys.forEach { copyJavadoc(it, exportDir) }
 		copyAllJavadoc(exportDir)
-		modules.forEach { copyTestReports(it, exportDir) }
+		Jenetics.PROJECT_TO_MODULE.keys.forEach { copyTestReports(it, exportDir) }
 
 		// Copy the User's Manual.
 		copy {

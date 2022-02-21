@@ -32,8 +32,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
 
@@ -73,6 +73,7 @@ public final class MathExpr
 		Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -235,8 +236,8 @@ public final class MathExpr
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MathExpr &&
-			Tree.equals(((MathExpr)obj)._tree, _tree);
+			obj instanceof MathExpr other &&
+			Tree.equals(other._tree, _tree);
 	}
 
 	/**
@@ -302,10 +303,12 @@ public final class MathExpr
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.MATH_EXPR, this);
+		return new SerialProxy(SerialProxy.MATH_EXPR, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

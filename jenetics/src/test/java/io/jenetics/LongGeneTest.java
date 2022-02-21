@@ -19,12 +19,14 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.math.BigInteger;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -83,6 +85,22 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 			assertEquals(c.max().longValue(), max);
 			assertEquals(c.allele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
+	}
+
+	@Test
+	public void meanOverflow() {
+		final long a = Long.MAX_VALUE - 1;
+		final long b = Long.MIN_VALUE;
+		final long mean = BigInteger.valueOf(a)
+			.add(BigInteger.valueOf(b))
+			.divide(BigInteger.valueOf(2))
+			.longValue();
+
+		final var g1 = LongGene.of(a, Long.MIN_VALUE, Long.MAX_VALUE);
+		final var g2 = LongGene.of(b, Long.MIN_VALUE, Long.MAX_VALUE);
+		final var g3 = g1.mean(g2);
+
+		assertThat(g3.allele()).isEqualTo(mean);
 	}
 
 	@Test

@@ -77,7 +77,7 @@ final class ParenthesesTrees {
 		}
 	}
 
-	private static  <V> void toString(
+	private static <V> void toString(
 		final StringBuilder out,
 		final Tree<V, ?> tree,
 		final Function<? super V, ? extends CharSequence> mapper

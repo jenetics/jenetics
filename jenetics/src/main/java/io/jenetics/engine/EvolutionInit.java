@@ -30,6 +30,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -57,6 +58,7 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<Genotype<G>> _population;
@@ -96,9 +98,9 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionInit &&
-			_generation == ((EvolutionInit)obj)._generation &&
-			Objects.equals(_population, ((EvolutionInit)obj)._population);
+			obj instanceof EvolutionInit<?> other &&
+			_generation == other._generation &&
+			Objects.equals(_population, other._population);
 	}
 
 	@Override
@@ -135,10 +137,12 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_INIT, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_INIT, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

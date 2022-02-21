@@ -31,7 +31,7 @@ public class TreeFormatterTest {
 
 	@Test
 	public void toTreeString() {
-		System.out.println(TreeFormatter.TREE.format(TREE));
+		TreeFormatter.TREE.format(TREE);
 	}
 
 	@Test

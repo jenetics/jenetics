@@ -87,7 +87,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends,assert}
+  morekeywords={*,...,public,extends,assert,var}
 }
 \end_preamble
 \options utf8
@@ -678,13 +678,13 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 11: 
+The library is build with and depends on Java SE 17: 
 \begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
 
-https://adoptopenjdk.net/
+https://adoptium.net/
 \end_layout
 
 \end_inset
@@ -731,9 +731,7 @@ literal "false"
 \end_inset
 
  (GP) implementation.
- It has no runtime dependencies to other libraries, except the Java 11 runtime.
- Although the library is written in Java 11, it is compilable with Java
- 17.
+ It has no runtime dependencies to other libraries, except the Java 17 runtime.
  
 \family sans
 \series bold
@@ -922,7 +920,11 @@ Hello World
 \end_inset
 
  program.
- This first example implements the well known bit-counting problem.
+ This first example implements the well known 
+\emph on
+bit counting
+\emph default
+ problem.
 \end_layout
 
 \begin_layout Standard
@@ -1262,14 +1264,13 @@ noprefix "false"
 \begin_layout Enumerate
 Once this is done, the fitness function, which we are trying to maximize,
  can be defined.
- Utilizing language features introduced in Java 8, we simply write a private
- static method, which takes the 
+ We can simply write a private static method, which takes the 
 \family typewriter
 Geno\SpecialChar softhyphen
 type
 \family default
  we defined and calculate its fitness value.
- If we want to use the optimized bit-counting method,
+ If we want to use the optimized bit counting method,
 \family typewriter
  bitCount()
 \family default
@@ -1300,7 +1301,7 @@ Chromosome
  method is then used as a fitness function and passed to the
 \family typewriter
  Engine\SpecialChar softhyphen
-.build
+::build
 \family default
  method.
 \end_layout
@@ -1446,7 +1447,7 @@ noprefix "false"
 
 \end_inset
 
- shows the (imperative) pseudo-code of the
+ shows the (imperative) pseudocode of the
 \family sans
 \series bold
 \shape smallcaps
@@ -1633,7 +1634,11 @@ Stream
  
 \emph default
 evolution steps for each generation; the steps are described in the body
- of the while-loop of listing 
+ of the 
+\emph on
+while
+\emph default
+ loop of listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Genetic-algorithm"
@@ -1749,7 +1754,7 @@ s which can be safely used in different execution threads.
 \family typewriter
  Engine
 \family default
- doesn't have any mutable global state and is therefore thread-safe.
+ doesn't have any mutable global state and is therefore thread safe.
  It is practically a stateless function, 
 \begin_inset Formula $f_{E}:\,\mathrm{P}\rightarrow\mathrm{P}$
 \end_inset
@@ -1771,7 +1776,7 @@ s which can be safely used in different execution threads.
 \emph on
  non
 \emph default
--deterministic.
+deterministic.
  Calling it twice with the same start population will lead to different
  result populations.
 \end_layout
@@ -2518,7 +2523,7 @@ s, which contain the allowed minimum and maximum values.
  Gene
 \family default
  implementations are final and immutable.
- In fact, they are all value-based classes and fulfill the properties which
+ In fact, they are all value based classes and fulfill the properties which
  are described in the Java API documentation
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -3099,7 +3104,7 @@ Chromo\SpecialChar softhyphen
 some
 \family default
  is allowed to have different lengths and constraints.
- The allowed minimal- and maximal values of a
+ The allowed minimal and maximal values of a
 \family typewriter
  Numeric\SpecialChar softhyphen
 Chromosome
@@ -3109,7 +3114,7 @@ Chromosome
 \family typewriter
 Chromosome
 \family default
-, all alleles must lay within the defined minimal- and maximal values.
+, all alleles must lay within the defined minimal and maximal values.
 \end_layout
 
 \begin_layout Standard
@@ -3260,7 +3265,7 @@ s within a
 \end_inset
 
 g.
- the same minimal- and maximal values for numerical
+ the same minimal and maximal values for numerical
 \family typewriter
  Gene
 \family default
@@ -3383,7 +3388,7 @@ s, there are two possibilities to do so:
 \begin_layout Enumerate
 creating a
 \emph on
- row-major
+ row major
 \emph default
  or
 \end_layout
@@ -3391,7 +3396,7 @@ creating a
 \begin_layout Enumerate
 creating a
 \emph on
- column-major
+ column major
 \end_layout
 
 \begin_layout Standard
@@ -3427,7 +3432,7 @@ name "fig:Row-major-genotype-vector"
 
 \end_inset
 
-Row-major
+Row major
 \family typewriter
  Genotype
 \family default
@@ -3459,7 +3464,7 @@ noprefix "false"
 \family typewriter
  Genotype
 \family default
- vector in row-major layout.
+ vector in row major layout.
  A
 \family typewriter
  Genotype
@@ -3501,7 +3506,7 @@ s, all
 \family default
 s must have the same minimum and maximum values.
  If the problem space doesn't need to have different minimum and maximum
- values, the row-major
+ values, the row major
 \family typewriter
  Genotype
 \family default
@@ -3560,7 +3565,7 @@ If the problem space allows equal
 \family typewriter
  Gene
 \family sans
- constraint, the row-major
+ constraint, the row major
 \family typewriter
  Genotype
 \family sans
@@ -3590,7 +3595,7 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The following code snippet shows the creation of a row-major
+The following code snippet shows the creation of a row major
 \family typewriter
  Genotype
 \family default
@@ -3603,7 +3608,7 @@ s derived from the
 \family typewriter
  Recombinator
 \family default
- do a fairly good job in exploring the problem space for a row-major
+ do a fairly good job in exploring the problem space for a row major
 \family typewriter
  Genotype
 \family default
@@ -3640,7 +3645,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \begin_inset VSpace bigskip
 \end_inset
 
-The column-major
+The column major
 \family typewriter
  Genotype
 \family default
@@ -3653,7 +3658,7 @@ s with different constraints.
 \emph on
  
 \emph default
-only reason for choosing the column-major layout.
+only reason for choosing the column major layout.
  The layout of this
 \family typewriter
  Genotype
@@ -3712,7 +3717,7 @@ name "fig:Column-major-genotype-vector"
 
 \end_inset
 
-Column-major
+Column major
 \family typewriter
  Genotype
 \family default
@@ -3734,7 +3739,7 @@ The code snippet below shows how to create a
 \family typewriter
  Genotype
 \family default
- vector in column-major layout.
+ vector in column major layout.
  It's a little bit more effort to create such a vector, since every
 \family typewriter
  Gene
@@ -3795,7 +3800,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The greater flexibility of a column-major
+The greater flexibility of a column major
 \family typewriter
  Genotype
 \family default
@@ -3813,7 +3818,7 @@ The greater flexibility of a column-major
  Swap\SpecialChar softhyphen
 Mutator
 \family default
-, when used with row-major
+, when used with row major
 \family typewriter
  Genotype
 \family default
@@ -4022,7 +4027,7 @@ How to create a
 \family typewriter
  Alterer
 \family default
-s are the same as for column-major
+s are the same as for column major
 \family typewriter
  Genotype
 \family default
@@ -4531,7 +4536,7 @@ s.
 \family typewriter
  Gene
 \family sans
-- or population selection is not supported by the library.
+ or population selection is not supported by the library.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5530,7 +5535,7 @@ EliteSelector
  copies a small proportion of the fittest candidates, without changes, into
  the next generation.
  This may have a dramatic impact on performance by ensuring that the GA
- doesn't waste time re-discovering previously refused partial solutions.
+ doesn't waste time rediscovering previously refused partial solutions.
  Individuals that are preserved through elitism remain eligible for selection
  as parents of the next generation.
  Elitism is also related with memory: 
@@ -5832,7 +5837,7 @@ The needed
 \emph on
  sub
 \emph default
--selection probabilities are set to
+ selection probabilities are set to
 \begin_inset Formula 
 \begin{equation}
 P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
@@ -5982,7 +5987,7 @@ void recombine(final MSeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Random random = RandomRegistry.random();
+    final RandomGenerator random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6312,8 +6317,8 @@ The single-point crossover changes two children chromosomes by taking two
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem, single-point crossover can lead to smaller disruption than multiple-po
-int or uniform crossover.
+ problem, single-point crossover can lead to smaller disruption than multi-point
+ or uniform crossover.
 \end_layout
 
 \begin_layout Standard
@@ -6388,12 +6393,12 @@ noprefix "false"
  SinglePointCrossover
 \family default
  class is performing the crossover for different crossover points.
- Sub-figure 
+ Sub figure 
 \emph on
 a)
 \emph default
  shows the two chromosomes chosen for crossover.
- The examples in sub-figures 
+ The examples in sub figures 
 \emph on
 b)
 \emph default
@@ -6892,7 +6897,7 @@ In uniform crossover, the genes at index
 \begin_inset Formula $i$
 \end_inset
 
- of two chromosomes are swapped with the swap-probability, 
+ of two chromosomes are swapped with the swap probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -6988,7 +6993,7 @@ noprefix "false"
 \begin_inset Formula $r\in\left[0,1\right]$
 \end_inset
 
-, is smaller than the swap-probability, 
+, is smaller than the swap probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -7005,7 +7010,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Random random = RandomRegistry.random();
+final RandomGenerator random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7342,7 +7347,7 @@ The crossover parameter,
 
 , it is likely that some genes must be created more than once, because they
  are not in the valid range.
- The probability for gene re-creation rises sharply with the value of 
+ The probability for gene recreation rises sharply with the value of 
 \begin_inset Formula $p$
 \end_inset
 
@@ -7427,7 +7432,7 @@ final Genotype<DoubleGene> gtf = Genotype.of(
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
+final Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
 \end_layout
 
 \begin_layout Plain Layout
@@ -7687,7 +7692,7 @@ Function
 Genotype
 \family sans
 , it must return the same fitness value.
- Non-deterministic fitness 
+ Nondeterministic fitness 
 \family typewriter
 function
 \family sans
@@ -8138,12 +8143,14 @@ Clock
 \family typewriter
  java\SpecialChar softhyphen
 .time\SpecialChar softhyphen
-.Clock
+.Instant\SpecialChar softhyphen
+Source
 \family default
  used for calculating the execution durations.
  A
 \family typewriter
- Clock
+ Instant\SpecialChar softhyphen
+Source
 \family default
  with nanosecond precision (
 \family typewriter
@@ -8308,7 +8315,7 @@ Nullifier
 \family default
 , which allows you to enforce the reevaluation of the fitness values of
  all individuals.
- This might be handy, if the fitness function is not time-invariant and
+ This might be handy, if the fitness function is not time invariant and
  can change during the evolution process.
 \end_layout
 
@@ -8998,12 +9005,12 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -9522,7 +9529,7 @@ status open
 
 \begin_layout Plain Layout
 
-EvolutionResult<DoubleGene, Double> result = stream
+final EvolutionResult<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9541,7 +9548,7 @@ EvolutionResult<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-Phenotype<DoubleGene, Double> result = stream
+final Phenotype<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9560,7 +9567,7 @@ Phenotype<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-Genotype<DoubleGene> result = stream
+final Genotype<DoubleGene> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -9607,7 +9614,12 @@ status open
 
 \begin_layout Plain Layout
 
-ISeq<EvolutionResult<DoubleGene, Double>> results = engine.stream()
+final ISeq<EvolutionResult<DoubleGene, Double>> results = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -9714,12 +9726,12 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = ...
+final Engine<DoubleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStatistics<?, Double> statistics =
+final EvolutionStatistics<?, Double> statistics =
 \end_layout
 
 \begin_layout Plain Layout
@@ -10528,9 +10540,9 @@ The
 \shape default
  library parallelizes independent tasks whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
- That means that the fitness function must be thread safe and deterministic.
+ That means that the fitness function must be thread-safe and deterministic.
  The easiest way for achieving thread safety is to make the fitness function
- immutable and re-entrant.
+ immutable and reentrant.
  Since the number of individuals of one population, which determines the
  number of fitness functions to be evaluated, is usually much higher then
  the number of available CPU cores, the fitness evaluation is done in batches.
@@ -10951,14 +10963,14 @@ Pool
 \family default
 \series default
 , the fitness evaluation of the population is done by recursively dividing
- it into sub-populations using the abstract
+ it into subpopulations using the abstract
 \family typewriter
  Recursive\SpecialChar softhyphen
 Action
 \family default
  class.
- If a minimal sub-population size is reached, the fitness values for this
- sub-population are directly evaluated.
+ If a minimal subpopulation size is reached, the fitness values for this
+ subpopulation are directly evaluated.
  The default value of this threshold is five and can be controlled via the
 \family typewriter
  io\SpecialChar softhyphen
@@ -10996,8 +11008,7 @@ Thre\SpecialChar softhyphen
 sh\SpecialChar softhyphen
 old
 \family default
-, the size of the evaluated sub-population is dynamically determined by
- the
+, the size of the evaluated subpopulation is dynamically determined by the
 \family typewriter
  Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
@@ -11035,7 +11046,7 @@ Tasks
 \end_inset
 
  If this value is greater than three, the fitness values of the current
- sub-population are also evaluated immediately.
+ subpopulation are also evaluated immediately.
  The default value can be overridden by the
 \family typewriter
  io\SpecialChar softhyphen
@@ -11096,13 +11107,13 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \begin_layout Standard
 You may want to tweak this parameters, if you realize a low CPU utilization
  during the fitness value evaluation.
- Long running fitness functions could lead to CPU under-utilization while
- evaluating the last sub-population.
+ Long running fitness functions could lead to CPU under utilization while
+ evaluating the last subpopulation.
  In this case, only one core is busy, while the other cores are idle, because
  they already finished the fitness evaluation.
  Since the workload has been already distributed, no
 \emph on
- work-stealing
+ work stealing
 \emph default
  is possible.
  Reducing the
@@ -11227,10 +11238,10 @@ cessors()
 
 \end_inset
 
- of sub-populations, and the fitness values of each sub-population are evaluated
+ of subpopulations, and the fitness values of each subpopulation are evaluated
  by one thread.
- For long running fitness functions, it is better to have smaller sub-population
-s for a better CPU utilization.
+ For long running fitness functions, it is better to have smaller subpopulations
+ for a better CPU utilization.
  With the
 \family typewriter
  io\SpecialChar softhyphen
@@ -11260,7 +11271,7 @@ Concurrency!maxBatchSize
 
 \end_inset
 
- system property, it is possible to reduce the sub-population size.
+ system property, it is possible to reduce the subpopulation size.
  The default value is set to
 \family typewriter
  Inte\SpecialChar softhyphen
@@ -11293,7 +11304,7 @@ $ java -Dio.jenetics.concurrency.maxBatchSize=3
 \end_layout
 
 \begin_layout Standard
-Another source of under-utilized CPUs are lock contentions.
+Another source of underutilized CPUs are lock contentions.
  It is therefore strongly recommended to avoid locking and blocking calls
  in your fitness function at all.
  If blocking calls are unavoidable, consider using the
@@ -11351,6 +11362,16 @@ Random
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+RandomGenerator
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Randomness"
@@ -11375,7 +11396,7 @@ PRNG
 
 \end_inset
 
- for creating new individuals and for the selection- and mutation algorithms.
+ for creating new individuals and for the selection and mutation algorithms.
 
 \family sans
 \series bold
@@ -11386,12 +11407,14 @@ PRNG
 \shape default
  uses the Java
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- class, respectively sub-types from it, for generating random numbers.
+ interface for generating random numbers.
  To make the random engine pluggable, the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object is always fetched from the
 \family typewriter
@@ -11409,7 +11432,7 @@ Random!Registry
 \end_inset
 
 .
- This makes it possible to change the implementation of the random engine
+ This makes it possible to change the implementation of the random generator
  without changing the client code.
  The central
 \family typewriter
@@ -11418,14 +11441,15 @@ Registry
 \family default
  also allows for easily changing the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine
+ 
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Random!Engine
+Random!Generator
 \end_layout
 
 \end_inset
@@ -11436,7 +11460,8 @@ Random!Engine
 \begin_layout Standard
 The following example shows how to change and restore the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object.
  When opening the
@@ -11445,7 +11470,8 @@ The following example shows how to change and restore the
 \family default
  scope, changes to the
 \family typewriter
- RandomRegistry
+ Random\SpecialChar softhyphen
+Registry
 \family default
  are only visible within this scope.
  Once the
@@ -11454,7 +11480,8 @@ The following example shows how to change and restore the
 \family default
  scope is left, the original
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
  object is restored.
 \end_layout
@@ -11467,12 +11494,17 @@ status open
 
 \begin_layout Plain Layout
 
-List<Genotype<DoubleGene>> genotypes =
+final var rgf = RandomGeneratorFactory.getDefault();
 \end_layout
 
 \begin_layout Plain Layout
 
-    RandomRegistry.with(new Random(123), r -> {
+final List<Genotype<DoubleGene>> genotypes =
+\end_layout
+
+\begin_layout Plain Layout
+
+    RandomRegistry.with(rgf.create(123), r -> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11492,7 +11524,7 @@ List<Genotype<DoubleGene>> genotypes =
 
 \begin_layout Plain Layout
 
-            .collect(Collectors.toList())
+            .toList()
 \end_layout
 
 \begin_layout Plain Layout
@@ -11525,7 +11557,7 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DoubleGene, Double> engine = ...;
+final Engine<DoubleGene, Double> engine = ...;
 \end_layout
 
 \begin_layout Plain Layout
@@ -11540,7 +11572,7 @@ Engine<DoubleGene, Double> engine = ...;
 
 \begin_layout Plain Layout
 
-Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
+final Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
 \end_layout
 
 \begin_layout Plain Layout
@@ -11567,7 +11599,7 @@ Stream
 .
  Each created stream uses the same starting population, but will, most likely,
  create a different result.
- This is because the stream evaluation is still non-deterministic.
+ This is because the stream evaluation is still nondeterministic.
 \end_layout
 
 \begin_layout Standard
@@ -11604,8 +11636,12 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Setting the PRNG to a Random object with a defined seed has the effect,
- that every evolution
+Setting the PRNG to a 
+\family typewriter
+Random\SpecialChar softhyphen
+Generator
+\family sans
+ object with a defined seed has the effect, that every evolution
 \emph on
  stream
 \emph default
@@ -11718,11 +11754,12 @@ height "1pt"
 \begin_layout Standard
 When the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine is used in a multi-threaded environment, there must be a way to
- parallelize the sequential PRNG.
- Usually this is done by taking the elements of the sequence of pseudo-random
+ is used in a multi-threaded environment, there must be a way to parallelize
+ the sequential PRNG.
+ Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
  practice:
@@ -11790,26 +11827,6 @@ Every thread uses the same kind of PRNG but with a different seed.
 \series default
 \shape default
  library.
- The
-\family typewriter
- Random\SpecialChar softhyphen
-Registry
-\family default
- is initialized with the
-\family typewriter
- Thread\SpecialChar softhyphen
-Local\SpecialChar softhyphen
-Random
-\family default
- class from the
-\family typewriter
- ja\SpecialChar softhyphen
-va\SpecialChar softhyphen
-.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
-concurrent
-\family default
- package.
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
@@ -11829,21 +11846,31 @@ Random number generators should not be chosen at random.
 
 \end_inset
 
- If you assume that this strategy is responsible for some
-\emph on
- non
-\emph default
--reproducible results, consider using the
+ The
 \family typewriter
- LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
+Registry
+\family default
+ is initialized with the Java 
+\family typewriter
+L64X\SpecialChar softhyphen
+256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
 Random
 \family default
- PRNG instead, which uses
-\emph on
- 
-\emph default
-block splitting as parallelization strategy.
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+RandomRegistry.random(RandomGeneratorFactory.of("L64X256MixRandom"))
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -11916,9 +11943,7 @@ name "par:Block-splitting"
 \end_layout
 
 \begin_layout Standard
-With this method each thread will be assigned a non-\SpecialChar softhyphen
-over\SpecialChar softhyphen
-lapping contiguous
+With this method each thread will be assigned a non overlapping contiguous
  block of random numbers, which should be enough for the whole runtime of
  the process.
  If the number of threads is not known in advance, the length of each block
@@ -11927,9 +11952,7 @@ lapping contiguous
 \family typewriter
  LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
-Random.\SpecialChar softhyphen
-Thread\SpecialChar softhyphen
-Local
+Random
 \family default
  class
 \emph on
@@ -12249,22 +12272,27 @@ status open
 
 \begin_layout Plain Layout
 
-public class LCG64ShiftRandom extends Random {
+public class LCG64ShiftRandom
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void split(final int p, final int s);
+    implements RandomGenerator.ArbitrarilyJumpableGenerator 
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void jump(final long step);
+{
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void jump2(final int s);
+    public void jump(final double step);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void jumpPowerOfTwo(final int s);
 \end_layout
 
 \begin_layout Plain Layout
@@ -12373,7 +12401,7 @@ jump
 \begin_layout Description
 
 \family typewriter
-jump2
+jumpPowerOfTwo
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
  
@@ -12598,7 +12626,7 @@ status open
 
 \begin_layout Plain Layout
 
-EvolutionResult<DoubleGene, Double> result = stream
+final EvolutionResult<DoubleGene, Double> result = stream
 \end_layout
 
 \begin_layout Plain Layout
@@ -12641,7 +12669,7 @@ IO.object.write(result.population(), file);
 
 \begin_layout Plain Layout
 
-ISeq<Phenotype<G, C>> population =
+final ISeq<Phenotype<G, C>> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -12651,7 +12679,7 @@ ISeq<Phenotype<G, C>> population =
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = Engine
+final EvolutionStream<DoubleGene, Double> stream = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -12802,11 +12830,11 @@ s, respectively.
  Seq
 \family default
  interface itself represents a fixed-sized, ordered sequence of elements.
- It is an abstraction over the Java build-in
+ It is an abstraction over the Java build in
 \emph on
  array
 \emph default
--type, but much safer to use for
+ type, but much safer to use for
 \emph on
  generic
 \emph default
@@ -13048,7 +13076,17 @@ status open
 
 \begin_layout Plain Layout
 
-final double[] array = new Random().doubles(100).toArray();
+final double[] array = RandomGenerator.getDefault()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .doubles(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -13512,12 +13550,12 @@ status open
 
 \begin_layout Plain Layout
 
-DoubleChromosome chromosome = ...
+final DoubleChromosome chromosome = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-DoubleMomentStatistics statistics = chromosome.stream()
+final DoubleMomentStatistics statistics = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -13541,7 +13579,7 @@ DoubleMomentStatistics statistics = chromosome.stream()
 
 \begin_layout Plain Layout
 
-DoubleMoments moments = chromosome.stream()
+final DoubleMoments moments = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -13626,7 +13664,17 @@ final Quantile quartile = new Quantile(0.25);
 
 \begin_layout Plain Layout
 
-new Random().doubles(10_000).forEach(quartile);
+RandomGenerator.getDefault()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .doubles(10_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .forEach(quartile);
 \end_layout
 
 \begin_layout Plain Layout
@@ -13856,26 +13904,28 @@ s and
 \family sans
 s implementations must use the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family sans
- engine available via the
+ available via the
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.random()
+::random
 \family sans
  method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family sans
- engine by using the
+ by using the
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.random(\SpecialChar softhyphen
+::random(\SpecialChar softhyphen
 Random\SpecialChar softhyphen
-)
+Generator)
 \family sans
  method.
 \end_layout
@@ -13958,7 +14008,7 @@ class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.random();
+        final var random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14076,9 +14126,10 @@ noprefix "false"
  allele types.
  By convention, the
 \family typewriter
- Random
+ Random\SpecialChar softhyphen
+Generator
 \family default
- engine, used for creating the new
+, used for creating the new
 \family typewriter
  Local\SpecialChar softhyphen
 Date
@@ -14212,7 +14263,7 @@ Chromo\SpecialChar softhyphen
 some
 \family default
  may have a different length than the original one.
- The other methods should be self-explanatory.
+ The other methods should be self explanatory.
  The 
 \family typewriter
 Chromo\SpecialChar softhyphen
@@ -14399,7 +14450,7 @@ public class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.random();
+        final var random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14782,7 +14833,7 @@ Selector
 \end_inset
 
 .
- Another way for re-using existing
+ Another way for reusing existing
 \family typewriter
  Selector
 \family default
@@ -17772,7 +17823,7 @@ final int[][] array = gt.toSeq().stream()
 
 \begin_layout Plain Layout
 
-        .mapToInt(BitGene::ordinal)
+        .mapToInt(gene -> gene.bit() ? 1 : 0)
 \end_layout
 
 \begin_layout Plain Layout
@@ -18416,7 +18467,7 @@ engine.\SpecialChar softhyphen
 Codecs
 \family default
  class.
- The following sub-sections describe the most important predefined 
+ The following subsections describe the most important predefined 
 \family typewriter
 Codec
 \family default
@@ -19147,7 +19198,7 @@ fixed size.
 \end_layout
 
 \begin_layout Paragraph
-Variable-sized subsets
+Variable sized subsets
 \end_layout
 
 \begin_layout Standard
@@ -19159,7 +19210,7 @@ Codec
 \emph on
  
 \emph default
-variable-sized subsets can be easily implemented with the use of a 
+variable sized subsets can be easily implemented with the use of a 
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -19396,7 +19447,7 @@ class Main {
 \end_layout
 
 \begin_layout Paragraph
-Fixed-size subsets
+Fixed sized subsets
 \end_layout
 
 \begin_layout Standard
@@ -20005,7 +20056,7 @@ Codec
 \family typewriter
 Codecs
 \family default
- class, which creates a mapping codec from a given source- and target set.
+ class, which creates a mapping codec from a given source and target set.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -20125,7 +20176,7 @@ assignment problem
 .
  The problem is defined by a number of workers and a number of jobs.
  Every worker can be assigned to perform any job.
- The cost for a worker may vary depending on the worker-job assignment.
+ The cost for a worker may vary depending on the worker job assignment.
  It is required to perform all jobs by assigning exactly one worker to each
  job and exactly one job to each worker in such a way which optimizes the
  total assignment costs.
@@ -20148,7 +20199,7 @@ https://en.wikipedia.org/wiki/Assignment_problem
 
 \end_inset
 
- The costs for such worker-job assignments are usually given by a matrix.
+ The costs for such worker job assignments are usually given by a matrix.
  Such an example matrix is shown in table 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -20446,7 +20497,7 @@ name "tab:Worker-task-cost"
 
 \end_inset
 
-Worker-job cost
+Worker job cost
 \end_layout
 
 \end_inset
@@ -20456,7 +20507,7 @@ Worker-job cost
 
 \end_inset
 
-If your worker-job cost can be expressed by a matrix, the Hungarian algorithm
+If your worker job cost can be expressed by a matrix, the Hungarian algorithm
 \begin_inset Foot
 status collapsed
 
@@ -21648,7 +21699,7 @@ invalid individuals (
 Genotypes
 \family default
 ).
- Some possible encodings for common data-structures are described in section
+ Some possible encodings for common data structures are described in section
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -21987,7 +22038,7 @@ noprefix "false"
 
  shows the distribution of the domain points in our 
 \emph on
-unit-circle
+unit circle
 \emph default
  example.
  Rejecting invalid points and recreating new ones leads to an uniform point
@@ -22041,7 +22092,7 @@ Domain points with retry-constraint
 
 \end_inset
 
-Trying to create only valid domain points can sometimes lead to a non-uniform
+Trying to create only valid domain points can sometimes lead to a nonuniform
  distribution.
  This can be seen in figure 
 \begin_inset CommandInset ref
@@ -22980,7 +23031,7 @@ noprefix "false"
 \end_inset
 
  items.
- This makes it a real problem with a search-space size of 
+ This makes it a real problem with a search space size of 
 \begin_inset Formula $2^{250}\thickapprox10^{75}$
 \end_inset
 
@@ -23146,7 +23197,7 @@ noprefix "false"
 \begin_layout Standard
 Some of the implemented termination strategies need to maintain an internal
  state.
- These strategies can't be re-used in different evolution streams.
+ These strategies can't be reused in different evolution streams.
  To be on the safe side, it is recommended to always create a
 \family typewriter
  Predicate
@@ -23157,7 +23208,7 @@ Some of the implemented termination strategies need to maintain an internal
  Stream\SpecialChar softhyphen
 .limit\SpecialChar softhyphen
 (Limits\SpecialChar softhyphen
-.by
+::by
 \emph on
 \SpecialChar softhyphen
 Termination\SpecialChar softhyphen
@@ -23224,7 +23275,12 @@ final long MAX_GENERATIONS = 100;
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23351,7 +23407,7 @@ noprefix "false"
 \end_inset
 
  shows the best fitness values of the used Knapsack problem after a given
- number of generations, whereas the candle-stick points represents the
+ number of generations, whereas the candlestick points represents the
 \emph on
  min
 \emph default
@@ -23654,12 +23710,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23740,8 +23801,8 @@ noprefix "false"
 
  shows the actual total executed generation depending on the desired number
  of steady fitness generations.
- The variation of the total generation is quite big, as shown by the candle-stic
-ks.
+ The variation of the total generation is quite big, as shown by the candlestick
+s.
  Though the variation can be quite big—the termination test has been repeated
  
 \begin_inset Formula $250$
@@ -23787,7 +23848,7 @@ Evolution time
 
 \begin_layout Standard
 This termination strategy stops the evolution when the elapsed evolution
- time exceeds an user-specified maximal value.
+ time exceeds an user specified maximal value.
  The 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -23800,7 +23861,7 @@ Stream
 ms
 \emph default
  will at least evaluate one generation.
- In a time-critical environment, where a solution must be found within a
+ In a time critical environment, where a solution must be found within a
  maximal time period, this terminator lets you define the desired guarantees.
 \begin_inset listings
 lstparams "language=Java"
@@ -23809,12 +23870,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -23839,13 +23905,16 @@ Duration\SpecialChar softhyphen
 Execution\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 (Du\SpecialChar softhyphen
-ration, Clock)
+ration, Instant\SpecialChar softhyphen
+Source)
 \family default
 , lets you define the
 \family typewriter
  java.\SpecialChar softhyphen
 time.\SpecialChar softhyphen
-Clock
+In\SpecialChar softhyphen
+stant\SpecialChar softhyphen
+Source
 \family default
 , which is used for measure the execution time.
 
@@ -23858,7 +23927,9 @@ Clock
 \shape default
  uses the nano precision clock
 \family typewriter
- io.jenetics.\SpecialChar softhyphen
+ io.je\SpecialChar softhyphen
+ne\SpecialChar softhyphen
+tics.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Clock
@@ -23866,7 +23937,8 @@ Clock
  for measuring the time.
  To have the possibility to define a different 
 \family typewriter
-Clock
+Instant\SpecialChar softhyphen
+Source
 \family default
  implementation is especially useful for testing purposes.
 \end_layout
@@ -23975,12 +24047,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24121,7 +24198,7 @@ In this termination strategy, the evolution stops when the fitness is deemed
 \family default
 \series default
 \shape default
- offers a generic version fitness-convergence predicate and a version where
+ offers a generic version fitness convergence predicate and a version where
  the smoothed fitness is the moving average of the used filters.
 \end_layout
 
@@ -24194,7 +24271,7 @@ noprefix "false"
 \emph default
  fitness convergence predicate.
  This method allows to define the evolution termination according to the
- statistical moments of the short- and long fitness filter.
+ statistical moments of the short and long fitness filter.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -24343,12 +24420,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24537,7 +24619,7 @@ Population convergence
 This termination method stops the evolution when the population is deemed
  as converged.
  A population is deemed as converged when the average fitness across the
- current population is less than a user-specified percentage away from the
+ current population is less than a user specified percentage away from the
  best fitness of the current population.
  The population is deemed as converged and the 
 \family typewriter
@@ -24597,12 +24679,17 @@ status open
 
 \begin_layout Plain Layout
 
-Engine<DobuleGene, Double> engine = ...
+final Engine<DobuleGene, Double> engine = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-EvolutionStream<DoubleGene, Double> stream = engine.stream()
+final EvolutionStream<DoubleGene, Double> stream = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -24899,7 +24986,8 @@ Chromosome
 \family sans
  interface, make sure to obtain the 
 \family typewriter
-Random
+Random\SpecialChar softhyphen
+Generator
 \family sans
  object from the 
 \family typewriter
@@ -24908,14 +24996,14 @@ RandomRegistry
 .
  This is also required for every initialization code used in your problem
  implementation.
- Also check your code for hidden non-deterministic parts, e.
+ Also check your code for hidden nondeterministic parts, e.
 \begin_inset space ~
 \end_inset
 
 g.
  
 \family typewriter
-Collections.shuffle
+Collections::shuffle
 \family sans
  method.
 \end_layout
@@ -25006,7 +25094,7 @@ name "fig:Selector-performance-Knapsack"
 
 \end_inset
 
-Selector-performance (Knapsack)
+Selector performance (Knapsack)
 \end_layout
 
 \end_inset
@@ -25797,7 +25885,7 @@ sult
  It is not possible to alter the results, although it is tempting to use
  the 
 \family typewriter
-Stream.map
+Streams::map
 \family default
  method for this purpose.
  The problem with the 
@@ -26016,7 +26104,7 @@ Genotype
  creation retries using the 
 \family typewriter
 EvolutionResult\SpecialChar softhyphen
-.to\SpecialChar softhyphen
+::to\SpecialChar softhyphen
 Unique\SpecialChar softhyphen
 Population(\SpecialChar softhyphen
 int\SpecialChar softhyphen
@@ -26241,7 +26329,7 @@ io.jenetics.prngine
 \begin_layout Plain Layout
 
 \family typewriter
-io.jenetics:prngine:1.0.2
+io.jenetics:prngine:2.0.0
 \end_layout
 
 \end_inset
@@ -26362,11 +26450,7 @@ Module graph
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.ext
-\family default
-
 \begin_inset Index idx
 status collapsed
 
@@ -26398,7 +26482,7 @@ The
 \emph on
  non
 \emph default
--standard 
+standard 
 \family typewriter
 Gene
 \family default
@@ -27058,7 +27142,7 @@ final Tree<Integer, ?> tree = TreeNode.parse(
 
 The 
 \family typewriter
-TreeNode.parse
+TreeNode::parse
 \family default
  method will throw an 
 \family typewriter
@@ -27700,7 +27784,7 @@ Rewrite rule
 
 \end_inset
 
- A tree rewrite rule is a pair of terms (sub-trees), 
+ A tree rewrite rule is a pair of terms (sub trees), 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
@@ -27733,12 +27817,12 @@ A rule,
 \begin_inset Formula $t$
 \end_inset
 
-, if the left tree (pattern) matches a sub-tree of 
+, if the left tree (pattern) matches a sub tree of 
 \begin_inset Formula $t$
 \end_inset
 
 .
- The matching sub-tree is then replaced by the right tree (pattern) 
+ The matching sub tree is then replaced by the right tree (pattern) 
 \begin_inset Formula $r$
 \end_inset
 
@@ -27945,22 +28029,22 @@ status open
 
 \begin_layout Plain Layout
 
-Tree<Decl<String>, ?> t = TreeNode
+final Tree<Decl<String>, ?> t = TreeNode
 \end_layout
 
 \begin_layout Plain Layout
 
-    .<Decl<String>>of(Val.of("add"))
+    .<Decl<String>>of(new Val<>("add"))
 \end_layout
 
 \begin_layout Plain Layout
 
-    .attach(Var.of("x"), Val.of("1"));
+    .attach(new Var<>("x"), new Val<>("1"));
 \end_layout
 
 \begin_layout Plain Layout
 
-TreePattern<String> p = new TreePattern<>(t);
+final TreePattern<String> p = new TreePattern<>(t);
 \end_layout
 
 \begin_layout Plain Layout
@@ -27974,7 +28058,7 @@ You can see that the variable
 \family typewriter
 x
 \family default
- will match for arbitrary sub-trees.
+ will match for arbitrary sub trees.
  For more complicated patterns it is quite cumbersome to create it via a
  
 \family typewriter
@@ -28014,7 +28098,7 @@ noprefix "false"
 \emph on
 non
 \emph default
--string trees you must specify an additional mapper function with the 
+ string trees you must specify an additional mapper function with the 
 \family typewriter
 compile
 \family default
@@ -28026,7 +28110,7 @@ status open
 
 \begin_layout Plain Layout
 
-TreePattern<Integer> pattern = TreePattern 	
+final TreePattern<Integer> pattern = TreePattern 	
 \end_layout
 
 \begin_layout Plain Layout
@@ -28046,7 +28130,7 @@ The right-hand side functionality of the rewrite rule is used to expand
 \family typewriter
 Var
 \family default
- to sub-tree mapping.
+ to sub tree mapping.
  
 \begin_inset listings
 lstparams "language=Java"
@@ -28055,22 +28139,27 @@ status open
 
 \begin_layout Plain Layout
 
-TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+final TreePattern<String> pattern = TreePattern
 \end_layout
 
 \begin_layout Plain Layout
 
-Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+    .compile("add($x,$y,1)");
 \end_layout
 
 \begin_layout Plain Layout
 
-vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
+final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
 \end_layout
 
 \begin_layout Plain Layout
 
-vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+vars.put(new TreePattern.Var<>("x"), TreeNode.parse("sin(x)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(new TreePattern.Var<>("y"), TreeNode.parse("sin(y)"));
 \end_layout
 
 \begin_layout Plain Layout
@@ -28271,12 +28360,12 @@ status open
 
 \begin_layout Plain Layout
 
-final TreeRewriteRule<String> rule = 
+final TreeRewriteRule<String> rule = TreeRewriteRule
 \end_layout
 
 \begin_layout Plain Layout
 
-    TreeRewriteRule.compile("add($x,0) -> $x");
+    .compile("add($x,0) -> $x");
 \end_layout
 
 \begin_layout Plain Layout
@@ -28479,7 +28568,17 @@ status open
 
 \begin_layout Plain Layout
 
-TreeNode<Op<Double>> tree = MathExpr.parse("1+2+3+4").toTree();
+final TreeNode<Op<Double>> tree = MathExpr
+\end_layout
+
+\begin_layout Plain Layout
+
+    .parse("1+2+3+4")
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toTree();
 \end_layout
 
 \begin_layout Plain Layout
@@ -28549,7 +28648,7 @@ Gene
  Big\SpecialChar softhyphen
 Integer
 \family default
-, which can store arbitrary-precision integers.
+, which can store arbitrary precision integers.
  There also exists a corresponding
 \family typewriter
  Big\SpecialChar softhyphen
@@ -29406,7 +29505,7 @@ Mutator
 Weasel\SpecialChar softhyphen
 Selector
 \family default
- together with the configured offspring-fraction of one.
+ together with the configured offspring fraction of one.
  The 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -29722,9 +29821,9 @@ CyclicEngine.
 \end_layout
 
 \begin_layout Subsubsection
-
-\family typewriter
 ConcatEngine
+\family typewriter
+
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:ConcatEngine"
@@ -29908,7 +30007,7 @@ height "1pt"
 \family sans
 The concatenated evolution Engines must be limited (by calling 
 \family typewriter
-Engine.limit
+Engine::limit
 \family sans
 ), otherwise only the first 
 \family typewriter
@@ -30034,9 +30133,9 @@ Engine
 \end_layout
 
 \begin_layout Subsubsection
-
-\family typewriter
 CyclicEngine
+\family typewriter
+
 \begin_inset Index idx
 status collapsed
 
@@ -31161,7 +31260,7 @@ IntRange
  less, evenly distributed over the whole Pareto front.
  The 
 \emph on
-crowding-distance
+crowding distance
 \begin_inset Foot
 status collapsed
 
@@ -31468,9 +31567,9 @@ Unique fitness tournament selector
 \end_layout
 
 \begin_layout Standard
-The selection of unique fitnesses lifts the selection bias towards over-represen
-ted fitnesses by reducing multiple solutions sharing the same fitness to
- a single point in the objective space.
+The selection of unique fitnesses lifts the selection bias towards over
+ represented fitnesses by reducing multiple solutions sharing the same fitness
+ to a single point in the objective space.
  It is therefore no longer required to assign a crowding distance of zero
  to individual of equal fitness as the selection operator correctly enforces
  diversity preservation by picking unique points in the objective space.
@@ -31898,11 +31997,7 @@ Factory
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.prog
-\family default
-
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Genetic-programming"
@@ -32227,7 +32322,7 @@ noprefix "false"
 
 \end_inset
 
-) enforces the data-type constraints for the created program tree and makes
+) enforces the data type constraints for the created program tree and makes
  the implementation a
 \emph on
  strongly typed
@@ -32756,7 +32851,7 @@ jenetics\SpecialChar softhyphen
 .ext
 \family default
  module is responsible for this change in the program size.
- When a smaller sub-tree is exchanged with a bigger sub-tree, the size of
+ When a smaller sub tree is exchanged with a bigger sub tree, the size of
  the first tree will grow and the size of the second tree will shrink.
  This can lead to undesirable large programs.
  Because of this reason, it is possible to create a 
@@ -33997,6 +34092,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface LossFunction<T> {
 \end_layout
 
@@ -34175,6 +34275,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface Complexity<T> {
 \end_layout
 
@@ -34249,6 +34354,11 @@ The error function combines the loss function and the complexity function
 lstparams "language=Java"
 inline false
 status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -34666,11 +34776,7 @@ Op
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.xml
-\family default
-
 \begin_inset Index idx
 status collapsed
 
@@ -35748,8 +35854,6 @@ Genotype read performance
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
 io.jenetics.prngine
 \begin_inset CommandInset label
 LatexCommand label
@@ -35757,8 +35861,6 @@ name "sec:io.jenetics.prngine"
 
 \end_inset
 
-
-\family default
 
 \begin_inset Index idx
 status collapsed
@@ -35856,8 +35958,12 @@ https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
 \series default
 \shape default
  GA library, but it has no dependency to it.
- All PRNG implementations of this library extends the Java Random class,
- which makes it easily usable in other projects.
+ All PRNG implementations of this library implements the Java 
+\family typewriter
+Random\SpecialChar softhyphen
+Generator
+\family default
+ interface, which makes it easily usable in other projects.
 
 \emph on
  
@@ -36126,21 +36232,12 @@ noprefix "false"
  shows the statistical performance of the implemented PRNGs, including the
  Java
 \family typewriter
- Random
-\family default
- implementation.
- Beside the
-\family typewriter
- XOR32\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
+Generator, L64X256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
 Random
 \family default
- class, the
-\family typewriter
- j.u.Random
-\family default
- implementation has the poorest performance, concerning its statistical
- performance.
+, which is the default generator used by the library.
 \end_layout
 
 \begin_layout Standard
@@ -36212,7 +36309,7 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-108
+113
 \end_layout
 
 \end_inset
@@ -36221,7 +36318,7 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-6
+1
 \end_layout
 
 \end_inset
@@ -36292,7 +36389,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-110
+111
 \end_layout
 
 \end_inset
@@ -36301,7 +36398,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -36324,46 +36421,6 @@ LCG64ShiftRandom
 
 \family typewriter
 MT19937_32Random
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-113
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-MT19937_64Random
 \end_layout
 
 \end_inset
@@ -36403,6 +36460,46 @@ MT19937_64Random
 \begin_layout Plain Layout
 
 \family typewriter
+MT19937_64Random
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+108
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
 XOR32ShiftRandom
 \end_layout
 
@@ -36412,7 +36509,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-101
+103
 \end_layout
 
 \end_inset
@@ -36421,7 +36518,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+6
 \end_layout
 
 \end_inset
@@ -36430,7 +36527,7 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-9
+5
 \end_layout
 
 \end_inset
@@ -36452,7 +36549,7 @@ XOR64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-107
+113
 \end_layout
 
 \end_inset
@@ -36461,7 +36558,7 @@ XOR64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-7
+1
 \end_layout
 
 \end_inset
@@ -36483,7 +36580,7 @@ XOR64ShiftRandom
 \begin_layout Plain Layout
 
 \family typewriter
-j.u.Random
+L64X256MixRandom
 \end_layout
 
 \end_inset
@@ -36492,7 +36589,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-106
+111
 \end_layout
 
 \end_inset
@@ -36501,7 +36598,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -36510,7 +36607,7 @@ j.u.Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+0
 \end_layout
 
 \end_inset
@@ -36575,19 +36672,7 @@ noprefix "false"
 \end_inset
 
  shows the PRN creation speed for all implemented generators.
- The slowest random engine is the
-\family typewriter
- j.u.Random
-\family default
- class, which is caused by the synchronized implementations.
- When the only the creation speed counts, the
-\family typewriter
- j.u.c.\SpecialChar softhyphen
-Thread\SpecialChar softhyphen
-Local\SpecialChar softhyphen
-Random
-\family default
- is the random engine to use.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -36599,7 +36684,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="10" columns="5">
+<lyxtabular version="3" rows="9" columns="5">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="decimal" decimal_point="." valignment="top">
@@ -37009,102 +37094,49 @@ XOR64ShiftRandom
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 
 \family typewriter
-j.u.Random
+L64X256MixRandom
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-91
+162
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-89
+136
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-46
+121
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-46
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-j.u.c.
-\shape italic
-TL
-\shape default
-Random
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-264
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-224
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-268
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-216
+166
 \end_layout
 
 \end_inset
@@ -37291,10 +37323,14 @@ internal
  package, it is easily possible to test PRNGs extending the
 \family typewriter
  java.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
-Random
+util.ran\SpecialChar softhyphen
+dom.\SpecialChar softhyphen
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gen\SpecialChar softhyphen
+erator
 \family default
- class.
+ interface.
  The only requirement is, that the PRNG must be
 \emph on
  default
@@ -37303,7 +37339,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37390,7 +37426,7 @@ prngine
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37402,7 +37438,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.LCG64ShiftRandom -a
+      LCG64ShiftRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -37433,7 +37469,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -37499,7 +37535,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-110
+111
 \end_layout
 
 \end_inset
@@ -37508,7 +37544,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-4
+3
 \end_layout
 
 \end_inset
@@ -37620,7 +37656,7 @@ status open
 
 \begin_layout Plain Layout
 
-public static long seed() {
+public static long nanoSeed() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -37653,7 +37689,7 @@ Harder class
 .
  The
 \family typewriter
- seed
+ nanoSeed
 \family default
  method has been wrapped into the
 \family typewriter
@@ -37675,7 +37711,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37687,7 +37723,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.NanoTimeRandom -a
+      NanoTimeRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -37890,17 +37926,51 @@ status open
 
 \begin_layout Plain Layout
 
-public static long seed() {
+public static long objectSeed() {
 \end_layout
 
 \begin_layout Plain Layout
 
-    return ((long)new Object().hashCode() << 32) |
+    final long a = new Object().hashCode();
 \end_layout
 
 \begin_layout Plain Layout
 
-        new Object().hashCode();
+    final long b = new Object().hashCode();
+\end_layout
+
+\begin_layout Plain Layout
+
+    return mixStafford13(a << 32 | b);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long mixStafford13(final long z) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    long v = (z^(z >>> 30))*0xbf58476d1ce4e5b9L;
+\end_layout
+
+\begin_layout Plain Layout
+
+    v = (v^(v >>> 27))*0x94d049bb133111ebL;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return v^(v >>> 31);
 \end_layout
 
 \begin_layout Plain Layout
@@ -37920,7 +37990,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -37932,7 +38002,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.ObjectHashRandom -a
+      ObjectHashRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -37957,7 +38027,7 @@ status collapsed
 \begin_layout Plain Layout
 Full report: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -37972,8 +38042,7 @@ https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetic
 
 \end_inset
 
-, which looks better than the nano time seeding, but 86 failing tests was
- still not very satisfying.
+, which is already excellent.
 \end_layout
 
 \begin_layout Standard
@@ -38024,7 +38093,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-28
+113
 \end_layout
 
 \end_inset
@@ -38033,7 +38102,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-0
+1
 \end_layout
 
 \end_inset
@@ -38042,7 +38111,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-86
+0
 \end_layout
 
 \end_inset
@@ -38105,7 +38174,36 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return mix(System.nanoType(), objectHashSeed());
+    final long a = mixStafford13(System.currentTimeMillis());
+\end_layout
+
+\begin_layout Plain Layout
+
+    final long b = mixStafford13(System.nanoTime());
+\end_layout
+
+\begin_layout Plain Layout
+
+    return seed(mix(a, b));
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long seed(final long base) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return mix(base, objectSeed());
 \end_layout
 
 \begin_layout Plain Layout
@@ -38154,26 +38252,6 @@ private static long mix(final long a, final long b) {
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-private static long objectHashSeed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ((long)new Object().hashCode() << 32) |
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Object().hashCode();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -38253,7 +38331,7 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
+$ java -cp prngine-2.0.0.jar 
 \backslash
 
 \end_layout
@@ -38265,7 +38343,7 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.prngine.internal.SeedRandom -a
+      SeedRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -38352,7 +38430,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-112
+110
 \end_layout
 
 \end_inset
@@ -38361,7 +38439,7 @@ Failed tests
 \begin_inset Text
 
 \begin_layout Plain Layout
-2
+4
 \end_layout
 
 \end_inset
@@ -38543,7 +38621,7 @@ Ones counting
 \end_layout
 
 \begin_layout Standard
-Ones counting is one of the simplest model-problem.
+Ones counting is one of the simplest model problem.
  It uses a binary chromosome and forms a classic genetic algorithm
 \begin_inset Foot
 status collapsed
@@ -38931,7 +39009,7 @@ noprefix "false"
 \end_inset
 
  shows, the Rastrigin function has many local minima, which makes it difficult
- for standard, gradient-based methods to find the global minimum.
+ for standard, gradient based methods to find the global minimum.
  If 
 \begin_inset Formula $A=10$
 \end_inset
@@ -38995,7 +39073,7 @@ The following listing shows the
  Engine
 \family default
  setup for solving the Rastrigin function, which is very similar to the
- setup for the real-function in section 
+ setup for the real function in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Real-function-example"
@@ -40807,7 +40885,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -40846,6 +40924,21 @@ jenetics.example
 
 \family typewriter
 \series bold
+jenetics.incubator
+\family default
+\series default
+: This project contains experimental code which might find its way into
+ one of the 
+\emph on
+official
+\emph default
+ modules.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
 jenetics.doc
 \family default
 \series default
@@ -40853,7 +40946,7 @@ jenetics.doc
 \emph on
  
 \emph default
-code of the web-site and
+code of the website and
 \emph on
  
 \emph default
@@ -40951,7 +41044,7 @@ test
 \family default
 \series default
 : Compiles and executes the unit tests.
- The test results are printed onto the console and a test-report, created
+ The test results are printed onto the console and a test report, created
  by
 \emph on
  TestNG
@@ -41028,555 +41121,6 @@ if you don't have the the Gradle build system installed—calling the the
  task afterwards.
 \end_layout
 
-\begin_layout Paragraph
-External library dependencies
-\end_layout
-
-\begin_layout Standard
-The following external projects are used for running and/or building the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library.
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-\emph on
-TestNG
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-TestNG
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 7.3
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://testng.org/doc/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Apache Commons Math
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Apache Commons Math
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 3.6.1
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://commons.apache.org/proper/commons-math/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-EqualsVerifier
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Apache Commons Math
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 3.6
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://jqno.nl/equalsverifier/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/jqno/equalsverifier/releases
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://testng.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- test
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Java2Html
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Java2Html
-\end_layout
-
-\end_inset
-
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-:
-\emph on
- 5.0
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.java2html.de/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.java2html.de/java2html_50.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "GPL"
-target "https://www.gnu.org/licenses/gpl.html"
-literal "false"
-
-\end_inset
-
- or
-\begin_inset CommandInset href
-LatexCommand href
-name "CPL1.0"
-target "http://www.eclipse.org/legal/cpl-v10.html"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- javadoc
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\series bold
-\emph on
-Gradle
-\series default
-\emph default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Gradle
-\end_layout
-
-\end_inset
-
-
-\series bold
-\emph on
-
-\begin_inset CommandInset label
-LatexCommand label
-name "Gradle"
-
-\end_inset
-
-
-\series default
-
-\begin_inset Separator latexpar
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\series bold
-Version
-\series default
-: 7.2
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Homepage
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://gradle.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Download
-\series default
-:
-\emph on
-
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://services.gradle.org/distributions/gradle-7.2-bin.zip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-License
-\series default
-:
-\emph on
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Apache License, Version 2.0"
-target "http://gradle.org/license"
-literal "false"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
-Scope
-\series default
-:
-\emph on
- build
-\end_layout
-
-\end_deeper
 \begin_layout Paragraph
 Maven Central
 \end_layout

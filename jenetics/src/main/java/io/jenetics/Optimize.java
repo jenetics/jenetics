@@ -163,12 +163,10 @@ public enum Optimize {
 	 * 	       two values
 	 */
 	public <C extends Comparable<? super C>> BinaryOperator<C> best() {
-		return (a, b) -> {
-			switch (cmp(a, b)) {
-				case 2: return best(a, b);
-				case -1: return b;
-				default: return a;
-			}
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> best(a, b);
+			case -1 -> b;
+			default -> a;
 		};
 	}
 
@@ -206,12 +204,10 @@ public enum Optimize {
 	 * 	       two values
 	 */
 	public <C extends Comparable<? super C>> BinaryOperator<C> worst() {
-		return (a, b) -> {
-			switch (cmp(a, b)) {
-				case 2: return worst(a, b);
-				case -1: return b;
-				default: return a;
-			}
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> worst(a, b);
+			case -1 -> b;
+			default -> a;
 		};
 	}
 

@@ -19,7 +19,6 @@
  */
 package io.jenetics.stat;
 
-import java.util.Random;
 import java.util.function.ToDoubleFunction;
 
 import org.testng.Assert;
@@ -33,12 +32,14 @@ import io.jenetics.util.Range;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class LinearDistributionTest extends ObjectTester<LinearDistribution<Double>> {
+public class LinearDistributionTest
+	extends ObjectTester<LinearDistribution<Double>>
+{
 
 	@Override
 	protected Factory<LinearDistribution<Double>> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 
 			final double min = random.nextInt(100) + 100;
 			final double max = random.nextInt(100) + 100 + min;

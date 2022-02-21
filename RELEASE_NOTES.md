@@ -1,5 +1,29 @@
 ## Release notes
 
+### [7.0.0](https://github.com/jenetics/jenetics/releases/tag/v7.0.0)
+
+#### Improvements
+
+* [#632](https://github.com/jenetics/jenetics/issues/632): Convert data classes to `records`.
+* [#696](https://github.com/jenetics/jenetics/issues/693): Convert libraries to JPMS modules.
+* [#715](https://github.com/jenetics/jenetics/issues/715): Improve `BitChromosome`.
+* [#762](https://github.com/jenetics/jenetics/issues/762): Apply new Java17 construct where useful.
+* [#767](https://github.com/jenetics/jenetics/issues/767): **Incubator** - Grammar-based evolution.
+* [#773](https://github.com/jenetics/jenetics/issues/773): **Incubator** - Simplify and unify parsing code for `MathExpr` class.
+* [#785](https://github.com/jenetics/jenetics/issues/785): Using `RandomGenerator` instead of `Random` class.
+* [#787](https://github.com/jenetics/jenetics/issues/787): **Breaking change** - Change upper limit of `Integer`/`LongeGenes` from _inclusively_ to _exclusively_.
+* [#789](https://github.com/jenetics/jenetics/issues/789): Make `AbstractChromosome` non-`Serializable`.
+* [#796](https://github.com/jenetics/jenetics/issues/796): Use `InstantSource` instead of `Clock` for measuring evolution durations.
+* [#798](https://github.com/jenetics/jenetics/issues/798): Performance improve of _subset_ creation method.
+* [#801](https://github.com/jenetics/jenetics/issues/801): Introduce `Self` interface.
+* [#816](https://github.com/jenetics/jenetics/issues/816): Add Sudoku example (by [alex-cornejo](https://github.com/alex-cornejo)).
+
+#### Bugs
+
+* [#791](https://github.com/jenetics/jenetics/issues/791): Fix possible overflow in Integer/LongGene mean method.
+* [#794](https://github.com/jenetics/jenetics/issues/794): Fix possible underflow in DoubleGene mean method.
+* [#803](https://github.com/jenetics/jenetics/issues/803): Bug checking Sample arity in class SampleList.
+
 ### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
 
 #### Improvements

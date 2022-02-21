@@ -32,6 +32,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -66,6 +67,7 @@ public final class EvolutionParams<
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Selector<G, C> _survivorsSelector;
@@ -463,10 +465,12 @@ public final class EvolutionParams<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_PARAMS, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_PARAMS, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

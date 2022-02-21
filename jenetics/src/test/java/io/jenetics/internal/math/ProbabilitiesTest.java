@@ -19,8 +19,6 @@
  */
 package io.jenetics.internal.math;
 
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -33,7 +31,7 @@ public class ProbabilitiesTest {
 
 	@Test
 	public void toIntToFloat() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		for (int i = 0; i < 100000; ++i) {
 			final float p = random.nextFloat();

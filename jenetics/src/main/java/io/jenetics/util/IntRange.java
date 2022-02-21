@@ -29,6 +29,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.stream.IntStream;
 
@@ -44,6 +45,7 @@ import java.util.stream.IntStream;
  */
 public final /*record*/ class IntRange implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final int _min;
@@ -145,9 +147,9 @@ public final /*record*/ class IntRange implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntRange &&
-			_min == ((IntRange)obj)._min &&
-			_max == ((IntRange)obj)._max;
+			obj instanceof IntRange other &&
+			_min == other._min &&
+			_max == other._max;
 	}
 
 	@Override
@@ -160,10 +162,12 @@ public final /*record*/ class IntRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.INT_RANGE, this);
+		return new SerialProxy(SerialProxy.INT_RANGE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

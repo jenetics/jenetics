@@ -24,6 +24,7 @@ import static io.jenetics.internal.util.Arrays.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -34,7 +35,7 @@ import org.testng.annotations.Test;
  */
 public class ProbabilitySelectorTest {
 
-	private static double[] array(final int size, final Random random) {
+	private static double[] array(final int size, final RandomGenerator random) {
 		final double[] array = new double[size];
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;

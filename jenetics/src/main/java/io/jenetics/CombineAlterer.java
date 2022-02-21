@@ -23,7 +23,6 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
 import java.util.function.BinaryOperator;
 
 import io.jenetics.util.BaseSeq;
@@ -95,15 +94,14 @@ public class CombineAlterer<
 		final int[] individuals,
 		final long generation
 	) {
-		final Random random = RandomRegistry.random();
-
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.genotype();
 		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
-		final int ci = random.nextInt(min(gt1.length(), gt2.length()));
+		final int ci = RandomRegistry.random()
+			.nextInt(min(gt1.length(), gt2.length()));
 
 		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
 

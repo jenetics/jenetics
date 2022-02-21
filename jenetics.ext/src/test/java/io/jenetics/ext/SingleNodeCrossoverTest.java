@@ -22,6 +22,7 @@ package io.jenetics.ext;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -34,7 +35,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class SingleNodeCrossoverTest {
 
-	public TreeNode<Integer> newTree(final int levels, final Random random) {
+	public TreeNode<Integer> newTree(final int levels, final RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(random.nextInt(1000));
 		fill(root, levels, random);
 		return root;
@@ -43,7 +44,7 @@ public class SingleNodeCrossoverTest {
 	private static void fill(
 		final TreeNode<Integer> node,
 		final int level,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (level > 0) {
 			for (int i = 0, n = random.nextInt(5); i < n; ++i) {

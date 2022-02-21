@@ -264,7 +264,7 @@ public class Lifecycle {
 	 * This class represents a <em>closeable</em> value. It is useful in cases
 	 * where the object value doesn't implement the {@link AutoCloseable}
 	 * interface but needs some cleanup work to do after usage. In the following
-	 * example the create {@code file} is automatically deleted when leaving the
+	 * example the created {@code file} is automatically deleted when leaving the
 	 * {@code try} block.
 	 *
 	 * <pre>{@code
@@ -568,10 +568,10 @@ public class Lifecycle {
 	private static <E extends Exception> void raise(final Throwable error)
 		throws E
 	{
-		if (error instanceof RuntimeException) {
-			throw (RuntimeException)error;
-		} else if (error instanceof Error) {
-			throw (Error)error;
+		if (error instanceof RuntimeException e) {
+			throw e;
+		} else if (error instanceof Error e) {
+			throw e;
 		} else if (error != null) {
 			@SuppressWarnings("unchecked")
 			final var e = (E)error;

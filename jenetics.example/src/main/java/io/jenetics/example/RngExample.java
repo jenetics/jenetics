@@ -24,7 +24,6 @@ import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
@@ -62,7 +61,7 @@ public class RngExample {
 				return Genotype.of(BitChromosome.of(20, 0.15))
 					.instances()
 					.limit(50)
-					.collect(Collectors.toList());
+					.toList();
 			});
 		assert RandomRegistry.random() == random;
 

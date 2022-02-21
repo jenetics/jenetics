@@ -22,43 +22,85 @@ package io.jenetics.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 /**
- * This class holds the {@link Random} engine used for the GA. The
- * {@code RandomRegistry} is thread safe. The registry is initialized with the
- * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
- * than an instance of the {@code Random} class. Alternatively, you can
- * initialize the registry with one of the PRNG, which are being part of the
- * library.
+ * This class holds the {@link RandomGenerator} engine used for the GA. The
+ * {@code RandomRegistry} is thread safe and is initialized with the
+ * {@link RandomGeneratorFactory#getDefault()} PRNG.
+ *
+ * <h2>Setup the PRNG used for the evolution process</h2>
+ * There are several ways on how to set the {@link RandomGenerator} used during
+ * the evolution process.
  * <p>
  *
- * <b>Setup of a <i>global</i> PRNG</b>
+ * <b>Using a {@link RandomGeneratorFactory}</b><br>
+ * The following example registers the <em>L128X1024MixRandom</em> random
+ * generator. By using a factory, each threads gets its own generator instance,
+ * which ensures thread-safety without the necessity of the created random
+ * generator to be thread-safe.
+ * <pre>{@code
+ * // This is the default setup.
+ * RandomRegistry.random(RandomGeneratorFactory.getDefault());
  *
+ * // Using the "L128X1024MixRandom" random generator for the evolution.
+ * RandomRegistry.random(RandomGeneratorFactory.of("L128X1024MixRandom"));
+ * }</pre>
+ * <br>
+ *
+ * <b>Using a {@link RandomGenerator} {@link Supplier}</b><br>
+ * If you have a random engine, which is not available as
+ * {@link RandomGeneratorFactory}, it is also possible to register a
+ * {@link Supplier} of the desired random generator. This method has the same
+ * thread-safety property as the method above.
+ * <pre>{@code
+ * RandomRegistry.random(() -> new MySpecialRandomGenerator());
+ * }</pre>
+ *
+ * Register a random generator supplier is also more flexible. It allows to
+ * use the streaming and splitting capabilities of the random generators
+ * implemented in the Java library.
+ * <pre>{@code
+ * final Iterator<RandomGenerator> randoms =
+ *     StreamableGenerator.of("L128X1024MixRandom")
+ *         .rngs()
+ *         .iterator();
+ *
+ * RandomRegistry.random(randoms::next);
+ * }</pre>
+ * <br>
+ *
+ * <b>Using a {@link RandomGenerator} instance</b><br>
+ * It is also possible to set a single random generator instance for the whole
+ * evolution process. When using this setup, the used random generator must be
+ * thread safe.
+ * <pre>{@code
+ * RandomRegistry.random(new Random(123456));
+ * }</pre>
+ * <p>
+ *
+ * The following code snippet shows an almost complete example of a typical
+ * random generator setup.
  * <pre>{@code
  * public class GA {
  *     public static void main(final String[] args) {
- *         // Initialize the registry with a ThreadLocal instance of the PRGN.
- *         // This is the preferred way setting a new PRGN.
- *         RandomRegistry.random(new LCG64ShiftRandom.ThreadLocal());
+ *         // Initialize the registry with the factory of the PRGN.
+ *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
+ *         RandomRegistry.random(factory);
  *
- *         // Using a thread safe variant of the PRGN. Leads to slower PRN
- *         // generation, but gives you the possibility to set a PRNG seed.
- *         RandomRegistry.random(new LCG64ShiftRandom.ThreadSafe(1234));
- *
- *         ...
- *         final EvolutionResult<DoubleGene, Double> result = stream
+ *         final Engine<DoubleGene, Double> engine = ...;
+ *         final EvolutionResult<DoubleGene, Double> result = engine.stream()
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
  *     }
  * }
  * }</pre>
- * <p>
  *
- * <b>Setup of a <i>local</i> PRNG</b><br>
+ * <h2>Setup of a <i>local</i> PRNG</h2>
  *
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.
  * for initialize the engine stream with the same initial population.
@@ -67,8 +109,9 @@ import java.util.function.Supplier;
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Create a reproducible list of genotypes.
+ *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes =
- *             with(new LCG64ShiftRandom(123), r ->
+ *             with(factory.create(123), r ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -83,75 +126,103 @@ import java.util.function.Supplier;
  *     }
  * }
  * }</pre>
- * <p>
  *
- * @see Random
- * @see ThreadLocalRandom
+ * @see RandomGenerator
+ * @see RandomGeneratorFactory
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 7.0
  */
 public final class RandomRegistry {
 	private RandomRegistry() {}
 
-	private static final Context<Supplier<Random>> CONTEXT =
-		new Context<>(ThreadLocalRandom::current);
+	/**
+	 * Thread local wrapper for a random generator supplier (factory).
+	 *
+	 * @param <R> the type of the random generator
+	 */
+	private static final class TLR<R extends RandomGenerator>
+		extends ThreadLocal<R>
+		implements Supplier<R>
+	{
+		private final Supplier<? extends R> _factory;
+
+		TLR(final Supplier<? extends R> factory) {
+			_factory = requireNonNull(factory);
+		}
+
+		@Override
+		protected synchronized R initialValue() {
+			return _factory.get();
+		}
+	}
+
+	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+		new TLR<>(RandomGeneratorFactory.of("L64X256MixRandom")::create);
+
+	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
+		new Context<>(DEFAULT_RANDOM_FACTORY);
 
 	/**
-	 * Return the global {@link Random} object.
+	 * Return the {@link RandomGenerator} of the current scope.
 	 *
-	 * @return the global {@link Random} object.
+	 * @return the {@link RandomGenerator} of the current scope
 	 */
-	public static Random random() {
+	public static RandomGenerator random() {
 		return CONTEXT.get().get();
 	}
 
 	/**
-	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} <b>must</b> be thread safe, which is the case for the
-	 * default Java {@code Random} implementation.
-	 * <p>
-	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation, because the given {@code Random} engine don't have to be
-	 * thread-safe.
+	 * Set a new {@link RandomGenerator} for the <em>global</em> scope. The given
+	 * {@link RandomGenerator} <b>must</b> be thread safe, which is the case for
+	 * the Java {@link Random} class.
 	 *
-	 * @see #random(ThreadLocal)
+	 * @see #random(RandomGeneratorFactory)
 	 *
-	 * @param random the new global {@link Random} object for the GA.
-	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 * @param random the new {@link RandomGenerator} for the <em>global</em>
+	 *        scope
+	 * @throws NullPointerException if the {@code random} object is {@code null}
 	 */
-	public static void random(final Random random) {
-		requireNonNull(random, "Random must not be null.");
+	public static void random(final RandomGenerator random) {
+		requireNonNull(random);
 		CONTEXT.set(() -> random);
 	}
 
 	/**
-	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} don't have be thread safe, because the given
-	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
-	 * <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation, when using a non-blocking PRNG. This is the preferred
-	 * way for changing the PRNG.
+	 * Set a new {@link RandomGeneratorFactory} for the <em>global</em> scope.
 	 *
-	 * @param random the thread-local random engine to use.
-	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 * @param factory the random generator factory
+	 * @throws NullPointerException if the {@code factory} object is {@code null}.
 	 */
-	public static void random(final ThreadLocal<? extends Random> random) {
-		requireNonNull(random, "Random must not be null.");
-		CONTEXT.set(random::get);
+	public static <R extends RandomGenerator> void
+	random(final RandomGeneratorFactory<? extends R> factory) {
+		requireNonNull(factory);
+		CONTEXT.set(new TLR<>(factory::create));
 	}
 
 	/**
-	 * Set the random object to it's default value. The <i>default</i> used PRNG
-	 * is the {@link ThreadLocalRandom} PRNG.
+	 * Set a new {@link Supplier} of {@link RandomGenerator} for the
+	 * <em>global</em> scope.
+	 *
+	 * @param supplier the random generator supplier
+	 * @throws NullPointerException if the {@code supplier} object is {@code null}.
+	 */
+	public static <R extends RandomGenerator> void
+	random(final Supplier<? extends R> supplier) {
+		requireNonNull(supplier);
+		CONTEXT.set(new TLR<>(supplier));
+	}
+
+	/**
+	 * Set the random object to its default value.
 	 */
 	public static void reset() {
 		CONTEXT.reset();
 	}
 
 	/**
-	 * Executes the consumer code using the given {@code random} engine.
+	 * Executes the consumer code using the given {@code random} generator.
 	 *
 	 * <pre>{@code
 	 * final MSeq<Integer> seq = ...
@@ -171,50 +242,79 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <R extends Random> void using(
+	public static <R extends RandomGenerator> void using(
 		final R random,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(() -> random, r -> {
-			consumer.accept(random);
-			return null;
-		});
+		CONTEXT.with(
+			() -> random,
+			r -> { consumer.accept(random); return null; }
+		);
 	}
 
 	/**
-	 * Executes the consumer code using the given {@code random} engine.
+	 * Executes the consumer code using the given {@code random} generator.
 	 *
 	 * <pre>{@code
 	 * final MSeq<Integer> seq = ...
-	 * using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+	 * using(RandomGeneratorFactory.getDefault(), r -> {
 	 *     seq.shuffle();
 	 * });
 	 * }</pre>
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
-	 * given {@code LCG64ShiftRandom.ThreadLocal()} engine.
+	 * given {@link RandomGeneratorFactory#getDefault()} factory.
 	 *
-	 * @since 3.0
+	 * @since 7.0
 	 *
-	 * @param random the PRNG used within the consumer
-	 * @param consumer the consumer which is executed with the <i>scope</i> of
-	 *        the given {@code random} engine.
+	 * @param factory the random generator factory used within the consumer
+	 * @param consumer the consumer which is executed within the <i>scope</i> of
+	 *        the given random generator.
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <R extends Random> void using(
-		final ThreadLocal<R> random,
+	public static <R extends RandomGenerator> void using(
+		final RandomGeneratorFactory<? extends R> factory,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(random::get, r -> {
-			consumer.accept(random.get());
-			return null;
-		});
+		CONTEXT.with(
+			new TLR<>(factory::create),
+			r -> { consumer.accept(r.get()); return null; }
+		);
 	}
 
 	/**
-	 * Opens a new {@code Scope} with the given random engine and executes the
-	 * given function within it. The following example shows how to create a
+	 * Executes the consumer code using the given {@code random} generator
+	 * supplier.
+	 *
+	 * <pre>{@code
+	 * final MSeq<Integer> seq = ...
+	 * using(() -> new MyRandomGenerator(), r -> {
+	 *     seq.shuffle();
+	 * });
+	 * }</pre>
+	 *
+	 * @since 7.0
+	 *
+	 * @param supplier the random generator supplier used within the consumer
+	 * @param consumer the consumer which is executed within the <i>scope</i> of
+	 *        the given random generator.
+	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <R extends RandomGenerator> void using(
+		final Supplier<? extends R> supplier,
+		final Consumer<? super R> consumer
+	) {
+		CONTEXT.with(
+			new TLR<>(supplier),
+			r -> { consumer.accept(r.get()); return null; }
+		);
+	}
+
+	/**
+	 * Opens a new <em>scope</em> with the given random generator and executes
+	 * the given function within it. The following example shows how to create a
 	 * reproducible list of genotypes:
 	 * <pre>{@code
 	 * final List<Genotype<DoubleGene>> genotypes =
@@ -234,20 +334,22 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <R extends Random, T> T with(
+	public static <R extends RandomGenerator, T> T with(
 		final R random,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(() -> random, s -> function.apply(random));
+		return CONTEXT.with(
+			() -> random,
+			s -> function.apply(random)
+		);
 	}
 
 	/**
-	 * Opens a new {@code Scope} with the given random engine and executes the
-	 * given function within it. The following example shows how to create a
-	 * reproducible list of genotypes:
+	 * Opens a new <em>scope</em> with the given random generator factory and
+	 * executes the given function within it.
 	 * <pre>{@code
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(new LCG64ShiftRandom.ThreadLocal(), random ->
+	 *     with(RandomGeneratorFactory.getDefault(), random ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -258,16 +360,50 @@ public final class RandomRegistry {
 	 *
 	 * @param <R> the type of the random engine
 	 * @param <T> the function return type
-	 * @param random the PRNG used for the opened scope
+	 * @param factory the PRNG used for the opened scope
 	 * @param function the function to apply within the random scope
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <R extends Random, T> T with(
-		final ThreadLocal<R> random,
+	public static <R extends RandomGenerator, T> T with(
+		final RandomGeneratorFactory<? extends R> factory,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(random::get, s -> function.apply(random.get()));
+		return CONTEXT.with(
+			new TLR<>(factory::create),
+			r -> function.apply(r.get())
+		);
+	}
+	/**
+	 * Opens a new <em>scope</em> with the given random generator supplier and
+	 * executes the given function within it.
+	 * <pre>{@code
+	 * final List<Genotype<DoubleGene>> genotypes =
+	 *     with(() -> new MyRandomGenerator(), random ->
+	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
+	 *            .limit(50)
+	 *            .collect(toList())
+	 *     );
+	 * }</pre>
+	 *
+	 * @since 3.0
+	 *
+	 * @param <R> the type of the random engine
+	 * @param <T> the function return type
+	 * @param supplier the PRNG used for the opened scope
+	 * @param function the function to apply within the random scope
+	 * @return the object returned by the given function
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+
+	public static <R extends RandomGenerator, T> T with(
+		final Supplier<? extends R> supplier,
+		final Function<? super R, ? extends T> function
+	) {
+		return CONTEXT.with(
+			new TLR<>(supplier),
+			r -> function.apply(r.get())
+		);
 	}
 
 }

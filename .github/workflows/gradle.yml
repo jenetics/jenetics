@@ -5,19 +5,21 @@ on:
     branches:
       - master
       - releases/*
+      - r7.0.0
       - issues/*
   pull_request:
     branches:
       - master
       - releases/*
+      - r7.0.0
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
-        java-version: [ 11, 17  ]
+        os: [ ubuntu-latest, macos-latest ]
+        java-version: [ 17, 18-ea  ]
     steps:
     - uses: actions/checkout@v2
 
@@ -25,6 +27,6 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java-version }}
-        distribution: 'temurin'
+        distribution: 'zulu'
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --stacktrace --info

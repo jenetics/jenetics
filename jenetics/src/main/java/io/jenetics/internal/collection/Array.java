@@ -27,6 +27,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -45,6 +46,7 @@ import io.jenetics.internal.collection.Array.Store.Ref;
  */
 public final class Array<T> implements BaseMSeq<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Store.Ref<T> _store;
@@ -125,7 +127,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	 *
 	 * @return a new sealed array
 	 */
-	public final Array<T> seal() {
+	public Array<T> seal() {
 		return new Array<>(_store.seal(), _start, _length + _start);
 	}
 
@@ -305,7 +307,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	 * @throws ArrayIndexOutOfBoundsException if the given index is not in the
 	 *         valid range.
 	 */
-	public final void checkIndex(final int from, final int until) {
+	public void checkIndex(final int from, final int until) {
 		checkIndex(from, until, length());
 	}
 
@@ -362,10 +364,12 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.ARRAY, this);
+		return new SerialProxy(SerialProxy.ARRAY, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

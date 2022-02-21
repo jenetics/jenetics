@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -78,6 +79,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Verifiable,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
@@ -208,9 +210,8 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Genotype<?> &&
-			Objects.equals(_chromosomes, ((Genotype<?>)obj)._chromosomes);
+		return obj instanceof Genotype<?> other &&
+			Objects.equals(_chromosomes, other._chromosomes);
 	}
 
 	@Override
@@ -293,10 +294,12 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.GENOTYPE, this);
+		return new SerialProxy(SerialProxy.GENOTYPE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

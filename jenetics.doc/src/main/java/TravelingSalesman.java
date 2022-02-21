@@ -7,7 +7,6 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -65,7 +64,7 @@ public class TravelingSalesman
 		}
 
 		// Shuffling of the created points.
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int j = points.length() - 1; j > 0; --j) {
 			final int i = random.nextInt(j + 1);
 			final double[] tmp = points.get(i);

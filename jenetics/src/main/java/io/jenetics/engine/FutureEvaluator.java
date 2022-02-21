@@ -98,12 +98,13 @@ final class FutureEvaluator<
 			}
 		}
 
-		if (exception instanceof InterruptedException) {
-			throw (CancellationException)
-				new CancellationException(exception.getMessage())
-					.initCause(exception);
-		} else if (exception instanceof CancellationException) {
-			throw (CancellationException)exception;
+		if (exception instanceof InterruptedException ie) {
+			Thread.currentThread().interrupt();
+			final var ce = new CancellationException(ie.getMessage());
+			ce.initCause(ie);
+			throw ce;
+		} else if (exception instanceof CancellationException e) {
+			throw e;
 		} else if (exception != null) {
 			throw new CompletionException(exception);
 		}

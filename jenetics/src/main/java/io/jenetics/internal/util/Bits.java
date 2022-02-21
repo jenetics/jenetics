@@ -186,17 +186,45 @@ public final class Bits {
 	}
 
 	/**
-	 * Returns the number of one-bits in the given {@code byte} array.
+	 * Returns the number of one-bits in the given {@code byte[]} array.
 	 *
 	 * @param data the {@code byte} array for which the one bits should be
 	 *        counted.
 	 * @return the number of one bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] data) {
+		return count(data, 0, data.length*Byte.SIZE);
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte[]} array.
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @return the number of one-bits in the given {@code byte} array.
+	 */
+	public static int count(final byte[] bits, final int start, final int end) {
+		final int byteStart = start/Byte.SIZE + 1;
+		final int byteEnd = end/Byte.SIZE;
+
 		int count = 0;
-		for (int i = data.length; --i >= 0;) {
-			count += count(data[i]);
+		for (int i = byteStart; i < byteEnd; ++i) {
+			count += count(bits[i]);
 		}
+
+		for (int i = start, n = byteStart*Byte.SIZE; i < n; ++i) {
+			if (get(bits, i)) {
+				++count;
+			}
+		}
+		for (int i = byteEnd*8; i < end; ++i) {
+			if (get(bits, i)) {
+				++count;
+			}
+		}
+
 		return count;
 	}
 
@@ -523,6 +551,11 @@ public final class Bits {
 	 * @return the number of bytes needed to store the given number of bits.
 	 */
 	public static int toByteLength(final int bitLength) {
+		if (bitLength < 0) {
+			throw new IllegalArgumentException(
+				"Bit length must not smaller then zero: " + bitLength
+			);
+		}
 		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
 	}
 

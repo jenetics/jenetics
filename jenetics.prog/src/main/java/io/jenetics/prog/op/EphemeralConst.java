@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -82,7 +83,7 @@ import io.jenetics.internal.util.Lazy;
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class EphemeralConst<T>
@@ -90,6 +91,7 @@ public final class EphemeralConst<T>
 	implements Op<T>, Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Lazy<T> _value;
@@ -176,10 +178,12 @@ public final class EphemeralConst<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EPHEMERAL_CONST, this);
+		return new SerialProxy(SerialProxy.EPHEMERAL_CONST, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

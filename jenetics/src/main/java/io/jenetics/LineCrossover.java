@@ -21,9 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Randoms.nextDouble;
-
-import java.util.Random;
 
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
@@ -68,7 +65,7 @@ public class LineCrossover<
 	 *        <em>p</em> = 0 then the children will be located along the line
 	 *        within the hypercube between the two points. If <em>p</em> &gt; 0
 	 *        then the children may be located anywhere on the line, even
-	 *        somewhat outside of the hypercube.
+	 *        somewhat outside the hypercube.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */
@@ -103,13 +100,13 @@ public class LineCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double min = v.get(0).min().doubleValue();
 		final double max = v.get(0).max().doubleValue();
 
-		final double a = nextDouble(-_p, 1 + _p, random);
-		final double b = nextDouble(-_p, 1 + _p, random);
+		final double a = random.nextDouble(-_p, 1 + _p);
+		final double b = random.nextDouble(-_p, 1 + _p);
 
 		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {

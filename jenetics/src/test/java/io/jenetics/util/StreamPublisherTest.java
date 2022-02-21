@@ -20,7 +20,9 @@
 package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -190,6 +192,12 @@ public class StreamPublisherTest {
 			}
 			@Override
 			public void onNext(final EvolutionResult<IntegerGene, Integer> er) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					throw new CancellationException();
+				}
+
 				count.incrementAndGet();
 				lock.lock();
 				try {
@@ -236,7 +244,7 @@ public class StreamPublisherTest {
 			lock.unlock();
 		}
 
-		Assert.assertEquals(count.get(), generations);
+		assertThat(count.get()).isGreaterThanOrEqualTo(generations);
 		Assert.assertTrue(completed.get());
 	}
 

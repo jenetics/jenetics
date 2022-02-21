@@ -20,7 +20,6 @@
 package io.jenetics.prog.regression;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -51,7 +50,7 @@ public class SampleBufferTest {
 		Assert.assertEquals(
 			buffer.samples().stream()
 				.map(p -> p.argAt(0).intValue())
-				.collect(Collectors.toList()),
+				.toList(),
 			List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 		);
 	}

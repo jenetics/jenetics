@@ -21,8 +21,8 @@ package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LongSummaryStatistics;
 import java.util.function.ToLongFunction;
@@ -33,147 +33,37 @@ import java.util.stream.Collector;
  *
  * @see java.util.LongSummaryStatistics
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Long#MAX_VALUE} if no
+ * 	      values have been recorded
+ * @param max the maximum value recorded, or {@link Long#MIN_VALUE} if no
+ * 	      values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
-public final /*record*/ class LongSummary implements Serializable {
+public record LongSummary(
+	long count,
+	long min,
+	long max,
+	long sum,
+	double mean
+)
+	implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
-
-	private final long _count;
-	private final long _min;
-	private final long _max;
-	private final long _sum;
-	private final double _mean;
-
-	/**
-	 * Create an immutable object which contains statistical summary values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 */
-	private LongSummary(
-		final long count,
-		final long min,
-		final long max,
-		final long sum,
-		final double mean
-	) {
-		_count = count;
-		_min = min;
-		_max = max;
-		_sum = sum;
-		_mean = mean;
-	}
-
-	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 */
-	public long count() {
-		return _count;
-	}
-
-	/**
-	 * Return the minimum value recorded, or {@code Long.MAX_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Long.MAX_VALUE} if none
-	 */
-	public long min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value recorded, or {@code Long.MIN_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Long.MIN_VALUE} if none
-	 */
-	public long max() {
-		return _max;
-	}
-
-	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 */
-	public long sum() {
-		return _sum;
-	}
-
-	/**
-	 * Return the arithmetic mean of values recorded, or zero if no values have
-	 * been recorded.
-	 *
-	 * @return the arithmetic mean of values, or zero if none
-	 */
-	public double mean() {
-		return _mean;
-	}
-
-	@Override
-	public int hashCode() {
-		return
-			hash(_count,
-			hash(_sum,
-			hash(_min,
-			hash(_max,
-			hash(_mean)))));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof LongSummary &&
-			_count == ((LongSummary)obj)._count &&
-			_sum == ((LongSummary)obj)._sum &&
-			_min == ((LongSummary)obj)._min &&
-			_max == ((LongSummary)obj)._max &&
-			Double.compare(_mean, ((LongSummary)obj)._mean) == 0;
-	}
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	@Override
 	public String toString() {
 		return String.format(
 			"LongSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
 			count(), min(), max(), sum(), mean()
-		);
-	}
-
-	/**
-	 * Create an immutable object which contains statistical summary values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 * @return an immutable object which contains statistical values
-	 */
-	public static LongSummary of(
-		final long count,
-		final long min,
-		final long max,
-		final long sum,
-		final double mean
-	) {
-		return new LongSummary(
-			count,
-			min,
-			max,
-			sum,
-			mean
 		);
 	}
 

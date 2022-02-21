@@ -331,7 +331,6 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			"throws",
 			"transient",
 			"try",
-			"var",
 			"void",
 			"volatile",
 			"while"

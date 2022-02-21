@@ -21,6 +21,7 @@ package io.jenetics.internal.util;
 
 import static java.lang.Math.max;
 
+import java.io.Serial;
 import java.util.concurrent.RecursiveAction;
 
 import io.jenetics.util.BaseSeq;
@@ -31,6 +32,8 @@ import io.jenetics.util.BaseSeq;
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
+
+	@Serial
 	private static final long serialVersionUID = 1;
 
 	private final BaseSeq<? extends Runnable> _runnables;

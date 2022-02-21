@@ -13,17 +13,17 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/6.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-6.3.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/7.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.0.0.pdf)).
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 11** to compile and run, but it also compiles and runs with **Java 17**.
+**Jenetics** requires at least **Java 17** to compile and run.
 
 Check out the master branch from GitHub.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
-Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each subproject is located in its own subdirectory:
 
 **Published projects**
 
@@ -121,15 +121,13 @@ you can start the example by calling
 
 ![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
-The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
+The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows storing polygonized images in PNG format to disk. At the button of the UI, you can change some GA parameters of the example.
 
 
 ## Projects using Jenetics
 
 * <a href="https://spear-project.eu/"><b>SPEAR</b>:</a> SPEAR (Smart Prognosis of Energy with Allocation of Resources) created an extendable platform for energy and efficiency optimizations of production systems.
 * <a href="https://renaissance.dev/"><b>Renaissance Suite</b>:</a> Renaissance is a modern, open, and diversified benchmark suite for the JVM, aimed at testing JIT compilers, garbage collectors, profilers, analyzers and other tools.
-* <a href="https://www.chartsy.one/"><b>Chartsy|One</b>:</a> Chartsy|One is a Netbeans based tool for stock market investors and traders.
-* <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
 * <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
 
 ## Blogs and articles
@@ -240,12 +238,29 @@ Quoc Nhat Han Tran, Nhan Quy Nguyen, Hicham Chehade, Lionel Amodeo, Farouk Yalao
 
 ## Release notes
 
-### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
+### [7.0.0](https://github.com/jenetics/jenetics/releases/tag/v7.0.0)
 
 #### Improvements
 
-* [#763](https://github.com/jenetics/jenetics/issues/763): `ProxySorter` is now able to sort array slices.
-* [#768](https://github.com/jenetics/jenetics/issues/768): Implement `Ordered` class. Currently, it is required that the return value of the fitness function to be `Comparable`. But sometimes you might want to change the order of a given type or add some order to a type. The `Ordered` class makes this possible.
+* [#632](https://github.com/jenetics/jenetics/issues/632): Convert data classes to `records`.
+* [#696](https://github.com/jenetics/jenetics/issues/693): Convert libraries to JPMS modules.
+* [#715](https://github.com/jenetics/jenetics/issues/715): Improve `BitChromosome`.
+* [#762](https://github.com/jenetics/jenetics/issues/762): **Breaking change** Update to Java 17.
+* [#767](https://github.com/jenetics/jenetics/issues/767): **Incubator** - Grammar-based evolution.
+* [#773](https://github.com/jenetics/jenetics/issues/773): **Incubator** - Simplify and unify parsing code for `MathExpr` class.
+* [#785](https://github.com/jenetics/jenetics/issues/785): Using `RandomGenerator` instead of `Random` class.
+* [#787](https://github.com/jenetics/jenetics/issues/787): **Breaking change** - Change upper limit of `Integer`/`LongeGenes` from _inclusively_ to _exclusively_.
+* [#789](https://github.com/jenetics/jenetics/issues/789): Make `AbstractChromosome` non-`Serializable`.
+* [#796](https://github.com/jenetics/jenetics/issues/796): Use `InstantSource` instead of `Clock` for measuring evolution durations.
+* [#798](https://github.com/jenetics/jenetics/issues/798): Performance improve of _subset_ creation method.
+* [#801](https://github.com/jenetics/jenetics/issues/801): Introduce `Self` interface.
+* [#816](https://github.com/jenetics/jenetics/issues/816): Add Sudoku example (by [alex-cornejo](https://github.com/alex-cornejo)).
+
+#### Bugs
+
+* [#791](https://github.com/jenetics/jenetics/issues/791): Fix possible overflow in Integer/LongGene mean method.
+* [#794](https://github.com/jenetics/jenetics/issues/794): Fix possible underflow in DoubleGene mean method.
+* [#803](https://github.com/jenetics/jenetics/issues/803): Bug checking Sample arity in class SampleList.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

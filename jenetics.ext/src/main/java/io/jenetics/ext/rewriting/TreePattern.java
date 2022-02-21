@@ -26,8 +26,9 @@ import static io.jenetics.ext.internal.Names.isIdentifier;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ import io.jenetics.ext.util.TreeNode;
  * specified as a parentheses string, must first be compiled into an instance of
  * this class. The resulting pattern can then be used to create a
  * {@link TreeMatcher} object that can match arbitrary trees against the tree
- * pattern. All of the state involved in performing a match resides in the
+ * pattern. All the states involved in performing a match resides in the
  * matcher, so many matchers can share the same pattern.
  * <p>
  * The string representation of a tree pattern is a parenthesis tree string,
@@ -107,11 +108,12 @@ import io.jenetics.ext.util.TreeNode;
  * @param <V> the value type of the tree than can be matched by this pattern
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 5.0
  */
 public final class TreePattern<V> implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	// Primary state of the tree pattern.
@@ -138,7 +140,7 @@ public final class TreePattern<V> implements Serializable {
 	extractVars(final TreeNode<Decl<V>> pattern) {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
 		for (Tree<Decl<V>, ?> n : pattern) {
-			if (n.value() instanceof Var) {
+			if (n.value() instanceof Var<V> var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
 						"Variable node '%s' is not a leaf: %s",
@@ -146,7 +148,7 @@ public final class TreePattern<V> implements Serializable {
 					));
 				}
 
-				variables.add((Var<V>)n.value());
+				variables.add(var);
 			}
 		}
 
@@ -226,10 +228,10 @@ public final class TreePattern<V> implements Serializable {
 	) {
 		final Decl<V> decl = pattern.value();
 
-		if (decl instanceof Var<?>) {
+		if (decl instanceof Var<V> var) {
 			final Tree<? extends V, ?> tree = vars.get(decl);
 			if (tree == null) {
-				vars.put((Var<V>)decl, node);
+				vars.put(var, node);
 				return true;
 			}
 
@@ -282,7 +284,7 @@ public final class TreePattern<V> implements Serializable {
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
-			n -> n instanceof Val ? ((Val<V>)n).value() : null
+			n -> n instanceof Val<V> val ? val.value() : null
 		);
 
 		paths.forEach((path, decl) -> {
@@ -305,8 +307,8 @@ public final class TreePattern<V> implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TreePattern &&
-			_pattern.equals(((TreePattern)obj)._pattern);
+			obj instanceof TreePattern<?> other &&
+			_pattern.equals(other._pattern);
 	}
 
 	@Override
@@ -358,11 +360,13 @@ public final class TreePattern<V> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TREE_PATTERN, this);
+		return new SerialProxy(SerialProxy.TREE_PATTERN, this);
 	}
 
-	private void readObject(final ObjectOutputStream stream)
+	@Serial
+	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
 		throw new InvalidObjectException("Serialization proxy required.");
@@ -385,8 +389,13 @@ public final class TreePattern<V> implements Serializable {
 	 * Pattern node classes.
 	 * ************************************************************************/
 
+	private static final char VAR_PREFIX = '$';
+	private static final char ESC_CHAR = '\\';
+
+	private static final Escaper ESCAPER = new Escaper(ESC_CHAR, VAR_PREFIX);
+
 	/**
-	 * A <em>sealed</em> class, which constitutes the nodes of a pattern tree.
+	 * A sealed interface, which constitutes the nodes of a pattern tree.
 	 * The only two implementations of this class are the {@link Var} and the
 	 * {@link Val} class. The {@link Var} class represents a placeholder for an
 	 * arbitrary sub-tree and the {@link Val} class stands for an arbitrary
@@ -397,24 +406,25 @@ public final class TreePattern<V> implements Serializable {
 	 *
 	 * @param <V> the node type the tree-pattern is working on
 	 */
-	public abstract static class Decl<V> {
-		private static final char VAR_PREFIX = '$';
-		private static final char ESC_CHAR = '\\';
+	public sealed interface Decl<V> {
 
-		private static final Escaper ESCAPER = new Escaper(ESC_CHAR, VAR_PREFIX);
-
-		private Decl() {
-		}
-
-		abstract <B> Decl<B> map(final Function<? super V, ? extends B> mapper);
+		/**
+		 * Returns a new {@link Decl} object with the mapped type {@code B}.
+		 *
+		 * @param mapper the mapping function
+		 * @param <B> the mapped type
+		 * @return the mapped declaration
+		 * @throws NullPointerException if the mapping function is {@code null}
+		 */
+		<B> Decl<B> map(final Function<? super V, ? extends B> mapper);
 
 		static <V> Decl<V> of(
 			final String value,
 			final Function<? super String, ? extends V> mapper
 		) {
 			return Var.isVar(value)
-				? Var.of(value.substring(1))
-				: Val.of(mapper.apply(ESCAPER.unescape(value)));
+				? new Var<>(value.substring(1))
+				: new Val<>(mapper.apply(ESCAPER.unescape(value)));
 		}
 	}
 
@@ -422,197 +432,81 @@ public final class TreePattern<V> implements Serializable {
 	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
 	 * <em>pattern</em> variable is identified by its name. The pattern DSL
 	 * denotes variable names with a leading '$' character, e.g. {@code $x},
-	 * {@code $y} or {@code $my_var}. It is one of two implementations of the
-	 * <em>sealed</em> {@link Decl} class.
+	 * {@code $y} or {@code $my_var}.
 	 *
 	 * @see Val
 	 *
 	 * @implNote
-	 * This class is comparable by it's name.
+	 * This class is comparable by its name.
 	 *
-	 * @param <V> the node type the tree-pattern is working
+	 @param <V> the node type the tree-pattern is working on
 	 */
-	public static final class Var<V>
-		extends Decl<V>
-		implements Comparable<Var<V>>, Serializable
+	public record Var<V>(String name)
+		implements Decl<V>, Comparable<Var<V>>, Serializable
 	{
-		private static final long serialVersionUID = 1L;
+		@Serial
+		private static final long serialVersionUID = 2L;
 
-		private final String _name;
-
-		private Var(final String name) {
+		/**
+		 * @param name the name of the variable
+		 * @throws NullPointerException if the given {@code name} is {@code null}
+		 * @throws IllegalArgumentException if the given {@code name} is not a
+		 *         valid Java identifier
+		 */
+		public Var {
 			if (!isIdentifier(name)) {
 				throw new IllegalArgumentException(format(
 					"Variable is not valid identifier: '%s'",
 					name
 				));
 			}
-			_name = name;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
-		<B> Var<B> map(final Function<? super V, ? extends B> mapper) {
+		public <B> Var<B> map(final Function<? super V, ? extends B> mapper) {
 			return (Var<B>)this;
-		}
-
-		/**
-		 * Return the name of the variable.
-		 *
-		 * @return the variable name
-		 */
-		public String name() {
-			return _name;
 		}
 
 		@Override
 		public int compareTo(final Var<V> var) {
-			return _name.compareTo(var._name);
-		}
-
-		@Override
-		public int hashCode() {
-			return _name.hashCode();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof Var &&
-				Objects.equals(_name, ((Var)obj)._name);
+			return name.compareTo(var.name);
 		}
 
 		@Override
 		public String toString() {
-			return format("%s%s", Decl.VAR_PREFIX, _name);
-		}
-
-		/**
-		 * Return a new variable with the given name.
-		 *
-		 * @param name the name of the variable
-		 * @param <V> the node type the tree-pattern is working on
-		 * @return a new variable with the given name
-		 * @throws NullPointerException if the given {@code name} is {@code null}
-		 * @throws IllegalArgumentException if the given {@code name} is not a
-		 *         valid Java identifier
-		 */
-		public static <V> Var<V> of(final String name) {
-			return new Var<>(name);
+			return format("%s%s", VAR_PREFIX, name);
 		}
 
 		static boolean isVar(final String name) {
-			return !name.isEmpty() && name.charAt(0) == Decl.VAR_PREFIX;
-		}
-
-		/* *********************************************************************
-		 *  Java object serialization
-		 * ********************************************************************/
-
-		private Object writeReplace() {
-			return new Serial(Serial.TREE_PATTERN_VAR, this);
-		}
-
-		private void readObject(final ObjectOutputStream stream)
-			throws InvalidObjectException
-		{
-			throw new InvalidObjectException("Serialization proxy required.");
-		}
-
-		void write(final ObjectOutput out) throws IOException {
-			out.writeObject(_name);
-		}
-
-		@SuppressWarnings("rawtypes")
-		static Object read(final ObjectInput in)
-			throws IOException, ClassNotFoundException
-		{
-			final String name = (String)in.readObject();
-			return new Var(name);
+			return !name.isEmpty() && name.charAt(0) == VAR_PREFIX;
 		}
 
 	}
 
 	/**
 	 * This class represents a constant pattern value, which can be part of a
-	 * whole sub-tree. It is one of two implementations of the <em>sealed</em>
-	 * {@link Decl} class.
+	 * whole subtree.
 	 *
 	 * @see Var
 	 *
 	 * @param <V> the node value type
+	 * @param value the underlying pattern value
 	 */
-	public static final class Val<V> extends Decl<V> implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		private final V _value;
-
-		private Val(final V value) {
-			_value = value;
-		}
-
-		public V value() {
-			return _value;
-		}
+	public record Val<V>(V value) implements Decl<V>, Serializable {
+		@Serial
+		private static final long serialVersionUID = 2L;
 
 		@Override
-		<B> Val<B> map(final Function<? super V, ? extends B> mapper) {
-			return Val.of(mapper.apply(_value));
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hashCode(_value);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof TreePattern.Val &&
-				Objects.equals(_value, ((Val)obj)._value);
+		public <B> Val<B> map(final Function<? super V, ? extends B> mapper) {
+			return new Val<>(mapper.apply(value));
 		}
 
 		@Override
 		public String toString() {
-			return Objects.toString(_value);
+			return Objects.toString(value);
 		}
 
-		/**
-		 * Create a new <em>value</em> object.
-		 *
-		 * @param value the underlying pattern value
-		 * @param <V> the node type
-		 * @return a new <em>value</em> object
-		 */
-		public static <V> Val<V> of(final V value) {
-			return new Val<>(value);
-		}
-
-
-		/* *********************************************************************
-		 *  Java object serialization
-		 * ********************************************************************/
-
-		private Object writeReplace() {
-			return new Serial(Serial.TREE_PATTERN_VAL, this);
-		}
-
-		private void readObject(final ObjectOutputStream stream)
-			throws InvalidObjectException
-		{
-			throw new InvalidObjectException("Serialization proxy required.");
-		}
-
-		void write(final ObjectOutput out) throws IOException {
-			out.writeObject(_value);
-		}
-
-		@SuppressWarnings({"unchecked", "rawtypes"})
-		static Object read(final ObjectInput in)
-			throws IOException, ClassNotFoundException
-		{
-			return new Val(in.readObject());
-		}
 	}
 
 }

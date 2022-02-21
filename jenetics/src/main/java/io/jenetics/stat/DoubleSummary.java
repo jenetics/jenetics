@@ -21,8 +21,8 @@ package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.DoubleSummaryStatistics;
 import java.util.function.ToDoubleFunction;
@@ -35,147 +35,36 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @see java.util.DoubleSummaryStatistics
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
+ *        no values have been recorded
+ * @param max the maximum value recorded, or {@link Double#NEGATIVE_INFINITY} if
+ * 	      no values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
-public final /*record*/ class DoubleSummary implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	private final long _count;
-	private final double _min;
-	private final double _max;
-	private final double _sum;
-	private final double _mean;
-
-	/**
-	 * Create an immutable object which contains statistical summary values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 */
-	private DoubleSummary(
-		final long count,
-		final double min,
-		final double max,
-		final double sum,
-		final double mean
-	) {
-		_count = count;
-		_min = min;
-		_max = max;
-		_sum = sum;
-		_mean = mean;
-	}
-
-	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 */
-	public long count() {
-		return _count;
-	}
-
-	/**
-	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
-	 * no values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
-	 */
-	public double min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
-	 * no values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
-	 */
-	public double max() {
-		return _max;
-	}
-
-	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 */
-	public double sum() {
-		return _sum;
-	}
-
-	/**
-	 * Return the arithmetic mean of values recorded, or zero if no values have
-	 * been recorded.
-	 *
-	 * @return the arithmetic mean of values, or zero if none
-	 */
-	public double mean() {
-		return _mean;
-	}
-
-	@Override
-	public int hashCode() {
-		return
-			hash(_count,
-			hash(_sum,
-			hash(_min,
-			hash(_max,
-			hash(_mean)))));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleSummary &&
-			_count == ((DoubleSummary)obj)._count &&
-			Double.compare(_sum, ((DoubleSummary)obj)._sum) == 0 &&
-			Double.compare(_min, ((DoubleSummary)obj)._min) == 0 &&
-			Double.compare(_max, ((DoubleSummary)obj)._max) == 0 &&
-			Double.compare(_mean, ((DoubleSummary)obj)._mean) == 0;
-	}
+public record DoubleSummary(
+	long count,
+	double min,
+	double max,
+	double sum,
+	double mean
+)
+	implements Serializable
+{
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	@Override
 	public String toString() {
 		return String.format(
 			"DoubleSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
 			count(), min(), max(), sum(), mean()
-		);
-	}
-
-	/**
-	 * Create an immutable object which contains statistical summary values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 * @return an immutable object which contains statistical summary values
-	 */
-	public static DoubleSummary of(
-		final long count,
-		final double min,
-		final double max,
-		final double sum,
-		final double mean
-	) {
-		return new DoubleSummary(
-			count,
-			min,
-			max,
-			sum,
-			mean
 		);
 	}
 

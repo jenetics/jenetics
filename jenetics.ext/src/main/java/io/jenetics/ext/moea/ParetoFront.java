@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.ISeq;
@@ -223,7 +222,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 			final List<T> list = IntStream.of(indexes)
 				.limit(size)
 				.mapToObj(_population::get)
-				.collect(Collectors.toList());
+				.toList();
 
 			_population.clear();
 			_population.addAll(list);

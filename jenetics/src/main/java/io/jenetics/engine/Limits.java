@@ -23,8 +23,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 
-import java.time.Clock;
 import java.time.Duration;
+import java.time.InstantSource;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -36,8 +36,8 @@ import io.jenetics.util.NanoClock;
 /**
  * This class contains factory methods for creating predicates, which can be
  * used for limiting the evolution stream. Some of the <em>limit</em> predicates
- * have to maintain internal state for working properly. It is therefor
- * recommended to create new instances for every stream and don't reuse it.
+ * have to maintain internal state for working properly. It is therefore
+ * recommended creating new instances for every stream and don't reuse it.
  *
  * @see EvolutionStream#limit(Predicate)
  *
@@ -153,7 +153,7 @@ public final class Limits {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static Predicate<Object>
-	byExecutionTime(final Duration duration, final Clock clock) {
+	byExecutionTime(final Duration duration, final InstantSource clock) {
 		return new ExecutionTimeLimit(duration, clock);
 	}
 
@@ -424,7 +424,7 @@ public final class Limits {
 	 * A termination method that stops the evolution when a user-specified
 	 * percentage of the genes ({@code convergedGeneRage}) that make up a
 	 * {@code Genotype} are deemed as converged. A gene is deemed as converged
-	 * when the average value of that gene across all of the genotypes in the
+	 * when the average value of that gene across all the genotypes in the
 	 * current population is less than a user-specified percentage
 	 * ({@code convergenceRate}) away from the maximum gene value across the
 	 * genotypes.

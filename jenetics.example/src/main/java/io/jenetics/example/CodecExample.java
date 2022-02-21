@@ -101,27 +101,12 @@ public class CodecExample {
 	}
 
 	// The domain class
-	final static class Tuple {
-		final int _1;
-		final long _2;
-		final double _3;
+	final static record Tuple(int a, long b, double c) {}
 
-		Tuple(final int v1, final long v2, final double v3) {
-			_1 = v1;
-			_2 = v2;
-			_3 = v3;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("_1: %d - _2: %d - _3: %f", _1, _2, _3);
-		}
-	}
-
-	// The fitness function. No need to know anything about GAs. Decoupling of
+	// The fitness functions. No need to know anything about GAs. Decoupling of
 	// the problem function from the GA usage.
 	static double f(final Tuple param) {
-		return param._1 + param._2 + param._3;
+		return param.a + param.b + param.c;
 	}
 
 	// The encoding/decoding of the problem domain is defined at ONE place.

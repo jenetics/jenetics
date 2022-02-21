@@ -20,17 +20,15 @@
 package io.jenetics.engine;
 
 import static java.lang.String.format;
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -53,7 +51,6 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.Requires;
@@ -207,8 +204,28 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<int[], IntegerGene> ofVector(
+		final IntRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
@@ -238,8 +255,28 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<long[], LongGene> ofVector(
+		final LongRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
@@ -269,8 +306,28 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
+		return ofVector(domain, IntRange.of(length));
+	}
+
+	/**
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
+	 *
+	 * @since 7.0
+	 *
+	 * @param domain the domain of the vector values
+	 * @param length the vector length range
+	 * @return a new vector {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static InvertibleCodec<double[], DoubleGene> ofVector(
+		final DoubleRange domain,
+		final IntRange length
+	) {
 		requireNonNull(domain);
-		Requires.positive(length);
+		Requires.positive(length.min());
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
@@ -725,7 +782,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a codec, which creates a a mapping from the elements given in the
+	 * Create a codec, which creates a mapping from the elements given in the
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
@@ -796,10 +853,6 @@ public final class Codecs {
 			.toInvertibleCodec(mapping -> toEncoding(mapping, smap,tmap, genes));
 	}
 
-	private static <A, B> Map.Entry<A, B> entry(final A a, final B b) {
-		return new SimpleImmutableEntry<>(a, b);
-	}
-
 	private static <A, B, M extends Map<A, B>> M toMapping(
 		final int[] perm,
 		final ISeq<? extends A> source,
@@ -827,22 +880,32 @@ public final class Codecs {
 			perm[i%perm.length] = j;
 		});
 
-		// Fill the rest of the 'perm' array, without duplicates.
-		// TODO: can be done more efficiently
+		// If the target size is greater the source size, only the first
+		// elements (source size) are filled. The rest of the 'perm' array
+		// has to be filled with unique elements.
 		if (target.size() > source.size()) {
-			final Set<Integer> indexes = new HashSet<>();
+			final int[] indexes = new int[target.size()];
+
+			// Initialize the index set with all target indexes: O(|t|)
 			for (int i = 0; i < target.size(); ++i) {
-				indexes.add(i);
+				indexes[i] = i;
 			}
 
+			// Mark existing permutations in the index array: O(|s|*log(|t|))
 			for (int i = 0; i < source.size(); ++i) {
-				indexes.remove(perm[i]);
+				final int si = Arrays.binarySearch(indexes, perm[i]);
+				if (si >= 0) {
+					indexes[si] = -1;
+				}
 			}
 
-			final Iterator<Integer> it = indexes.iterator();
+			// Fill the 'perm' array with the remaining, non-duplicate indexes:
+			// O(|t|)
+			int j = 0;
+			int next;
 			for (int i = source.size(); i < target.size(); ++i) {
-				perm[i] = it.next();
-				it.remove();
+				while ((next = indexes[j++]) == -1);
+				perm[i] = next;
 			}
 		}
 
@@ -987,7 +1050,6 @@ public final class Codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		Combinatorics.checkSubSet(basicSet.size(), size);
 
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, basicSet.length())

@@ -19,7 +19,9 @@
  */
 package io.jenetics.prog.regression;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,14 +37,14 @@ final class RingBuffer {
 
 	private Object[] _snapshot = null;
 
-	RingBuffer(final int size) {
-		if (size < 1) {
+	RingBuffer(final int capacity) {
+		if (capacity < 1) {
 			throw new IllegalArgumentException(
-				"Buffer size must be a positive: " + size
+				"Buffer size must be a positive: " + capacity
 			);
 		}
 
-		_buffer = new Object[size];
+		_buffer = new Object[capacity];
 	}
 
 	synchronized void add(final Object element) {
@@ -51,13 +53,22 @@ final class RingBuffer {
 	}
 
 	private int next() {
-		if (_size < _buffer.length) ++_size;
+		if (_size < _buffer.length) {
+			++_size;
+		}
 		return _cursor = (_cursor + 1 < _buffer.length) ? _cursor + 1 : 0;
 	}
 
 	synchronized void addAll(final Collection<?> elements) {
-		for (Object element : elements) {
-			_buffer[next()] = element;
+		final Iterator<?> it = elements.iterator();
+		if (elements.size() > capacity()) {
+			for (int i = capacity(); i < elements.size(); ++i) {
+				it.next();
+			}
+		}
+
+		while (it.hasNext()) {
+			_buffer[next()] = it.next();
 		}
 		_snapshot = null;
 	}
@@ -84,7 +95,33 @@ final class RingBuffer {
 		return _snapshot = result;
 	}
 
-	int size () {
+	/**
+	 * Removes all the elements from {@code this} ring-buffer. The buffer
+	 * will be empty after this method returns.
+	 */
+	void clear() {
+		Arrays.fill(_buffer, null);
+		_cursor = -1;
+		_size = 0;
+		_snapshot = null;
+	}
+
+	/**
+	 * Return the capacity of {@code this} ring-buffer.
+	 *
+	 * @return the capacity of {@code this} ring-buffers
+	 */
+	int capacity() {
 		return _buffer.length;
+	}
+
+	/**
+	 * Return the size of {@code this} ring-buffer, where {@code size <= capacity}
+	 * is always true.
+	 *
+	 * @return the capacity of {@code this} ring-buffers
+	 */
+	int size() {
+		return _size;
 	}
 }

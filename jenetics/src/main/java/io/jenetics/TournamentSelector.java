@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
@@ -127,7 +127,7 @@ public class TournamentSelector<
 			));
 		}
 
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		return population.isEmpty()
 			? ISeq.empty()
 			: MSeq.<Phenotype<G, C>>ofLength(count)
@@ -138,7 +138,7 @@ public class TournamentSelector<
 	private Phenotype<G, C> select(
 		final Seq<Phenotype<G, C>> population,
 		final Optimize opt,
-		final Random random
+		final RandomGenerator random
 	) {
 		final int N = population.size();
 

@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -66,10 +67,11 @@ import io.jenetics.prog.op.Program;
  */
 public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>
-	implements Function<A[], A>
+	implements Function<A[], A>, Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<Op<A>> _operations;
@@ -406,10 +408,12 @@ public class ProgramChromosome<A>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PROGRAM_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

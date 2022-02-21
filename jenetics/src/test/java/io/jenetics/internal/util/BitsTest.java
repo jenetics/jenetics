@@ -20,8 +20,10 @@
 package io.jenetics.internal.util;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -110,7 +112,7 @@ public class BitsTest {
 
 	@Test
 	public void toStringFromString() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final byte[] bytes = new byte[625];
 			random.nextBytes(bytes);
@@ -124,7 +126,7 @@ public class BitsTest {
 
 	@Test
 	public void longToStringFromString() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final long value = random.nextLong();
 			final byte[] bytes = Bits.toBytes(value);
@@ -155,6 +157,37 @@ public class BitsTest {
 			}
 		}
 		return count;
+	}
+
+	@Test(dataProvider = "bitsCountRanges")
+	public void countBitsOfRange(final int length, final int start, final int end) {
+		final byte[] data = new byte[length];
+		new Random().nextBytes(data);
+
+		int expected = 0;
+		for (int i = start; i < end; ++i) {
+			if (Bits.get(data, i)) {
+				++expected;
+			}
+		}
+
+		Assert.assertEquals(Bits.count(data, start, end), expected);
+	}
+
+	@DataProvider
+	public Object[][] bitsCountRanges() {
+		final var random = new Random(1234);
+
+		final List<Object[]> values = new ArrayList<>();
+		for (int i = 0; i < 20; ++i) {
+			final int length = random.nextInt(100) + 50;
+			final int start = random.nextInt(10);
+			final int end = length*Byte.SIZE - random.nextInt(10);
+
+			values.add(new Object[]{length, start, end});
+		}
+
+		return values.toArray(new Object[0][]);
 	}
 
 	@Test
@@ -345,11 +378,12 @@ public class BitsTest {
 
 	@Test
 	public void setGetBit1() {
-		final byte[] data = new byte[625];
+		final byte[] data = new byte[3];
 		Arrays.fill(data, (byte)0);
 
 		for (int i = 0; i < data.length*8; ++i) {
 			Bits.set(data, i);
+			System.out.println(Bits.toByteString(data));
 			Assert.assertTrue(Bits.get(data, i));
 		}
 	}

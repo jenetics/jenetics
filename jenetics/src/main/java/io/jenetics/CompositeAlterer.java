@@ -59,8 +59,8 @@ final class CompositeAlterer<
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
 		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
-			a -> a instanceof CompositeAlterer
-				? ((CompositeAlterer<G, C>)a).alterers().stream()
+			a -> a instanceof CompositeAlterer<G, C> ca
+				? ca.alterers().stream()
 				: Stream.of(a);
 
 		return alterers.stream()
@@ -73,14 +73,14 @@ final class CompositeAlterer<
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		AltererResult<G, C> result = AltererResult.of(population.asISeq());
+		AltererResult<G, C> result = new AltererResult<>(population.asISeq(), 0);
 		for (var alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
 				result.population(),
 				generation
 			);
 
-			result = AltererResult.of(
+			result = new AltererResult<>(
 				as.population(),
 				as.alterations() + result.alterations()
 			);

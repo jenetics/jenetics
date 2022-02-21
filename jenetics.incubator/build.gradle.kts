@@ -29,6 +29,7 @@
 plugins {
 	`java-library`
 	idea
+	//antlr
 	id("me.champeau.jmh")
 }
 
@@ -41,9 +42,12 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 
-	testImplementation(libs.testng)
+	//antlr("org.antlr:antlr4:4.9.3")
+
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.guava)
+	testImplementation(libs.testng)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

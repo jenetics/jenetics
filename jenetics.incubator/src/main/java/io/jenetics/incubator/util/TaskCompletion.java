@@ -36,13 +36,12 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This execution service executes the the tasks in exactly the same order as
- * they where submitted. The tasks are executed <em>asynchronously</em>, but
- * <b>not</b> <em>concurrently</em>.
+ * This execution service executes the tasks in exactly the same order as they
+ * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
+ * <em>concurrently</em>.
  *
  * <pre>{@code
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
@@ -105,7 +104,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * The default task queue size, set to 1000.
 	 */
-	private static final int DEFAULT_TASK_QUEUE_SIZE = 1000;
+	private static final int DEFAULT_TASK_QUEUE_SIZE = 1_000;
 
 	private final Executor _executor;
 	private final BlockingQueue<Task> _tasks;
@@ -190,12 +189,12 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * Return the list of currently queued tasks.
 	 *
-	 * @return the list of of currently queued tasks
+	 * @return the list of currently queued tasks
 	 */
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
 			.map(t -> t._task)
-			.collect(Collectors.toUnmodifiableList());
+			.toList();
 	}
 
 	/**
@@ -325,7 +324,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	}
 
 	@Override
-	public void execute(Runnable command) {
+	public void execute(final Runnable command) {
 		if (!enqueue(command)) {
 			throw new RejectedExecutionException(format(
 				"Command not accepted, capacity of %d is exhausted.",
@@ -408,7 +407,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * @throws InterruptedException if interrupted while waiting
 	 */
 	@Override
-	public boolean awaitTermination(long timeout, TimeUnit unit)
+	public boolean awaitTermination(final long timeout, final TimeUnit unit)
 		throws InterruptedException
 	{
 		long remainingNanos = unit.toNanos(timeout);

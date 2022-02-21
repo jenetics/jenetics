@@ -35,4 +35,5 @@ dependencies {
 	implementation(libs.prngine)
 
 	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
 }

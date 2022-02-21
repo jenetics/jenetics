@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -43,11 +44,12 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class Const<T> extends Val<T> implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final T _const;
@@ -97,10 +99,12 @@ public final class Const<T> extends Val<T> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CONST, this);
+		return new SerialProxy(SerialProxy.CONST, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

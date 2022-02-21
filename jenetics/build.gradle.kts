@@ -47,5 +47,5 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*IntegerChromosomePerf.*")
+	includes.add(".*BitArrayPerf.*")
 }

@@ -34,8 +34,6 @@ public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>
 	implements TreeChromosome<A, G>
 {
 
-	private static final long serialVersionUID = 1L;
-
 	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
 		super(genes);
 		genes.forEach(g -> g.bind(this));

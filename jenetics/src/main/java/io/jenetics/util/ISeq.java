@@ -227,14 +227,16 @@ public interface ISeq<T>
 	 * @return a new {@code ISeq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
 	static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		return values instanceof ISeq
-			? (ISeq<T>)values
-			: values instanceof MSeq
-				? ((MSeq<T>)values).toISeq()
+		@SuppressWarnings("unchecked")
+		final Iterable<T> vals = (Iterable<T>)values;
+
+		return vals instanceof ISeq<T> seq
+			? seq
+			: vals instanceof MSeq<T> mseq
+				? mseq.toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}
 
@@ -289,7 +291,7 @@ public interface ISeq<T>
 	 * @param seq the sequence to cast safely
 	 * @param <A> the <i>super</i>-object type
 	 * @param <B> the <i>sub</i>-object type
-	 * @return the casted instance of the given {@code seq}
+	 * @return the cast instance of the given {@code seq}
 	 */
 	@SuppressWarnings("unchecked")
 	static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {

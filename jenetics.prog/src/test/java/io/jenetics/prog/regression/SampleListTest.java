@@ -47,4 +47,21 @@ public class SampleListTest {
 		}
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void emptySamples() {
+		new SampleList<>(List.of());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void arityCheck() {
+		new SampleList<>(
+			List.of(
+				Sample.ofDouble(1, 2, 3, 4),
+				Sample.ofDouble(1, 2, 3, 4),
+				Sample.ofDouble(1, 2, 3),
+				Sample.ofDouble(1, 2, 3, 4)
+			)
+		);
+	}
+
 }
