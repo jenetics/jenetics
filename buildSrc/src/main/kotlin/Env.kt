@@ -60,6 +60,13 @@ object Jenetics {
 	const val AUTHOR = "Franz Wilhelmstötter"
 	const val EMAIL = "franz.wilhelmstoetter@gmail.com"
 	const val URL = "https://jenetics.io"
+
+	val PROJECT_TO_MODULE = mapOf(
+		"jenetics" to "io.jenetics.base",
+		"jenetics.ext" to "io.jenetics.ext",
+		"jenetics.prog" to "io.jenetics.prog",
+		"jenetics.xml" to "io.jenetics.xml"
+	)
 }
 
 /**
