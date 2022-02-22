@@ -5,13 +5,11 @@ on:
     branches:
       - master
       - releases/*
-      - r7.0.0
       - issues/*
   pull_request:
     branches:
       - master
       - releases/*
-      - r7.0.0
 
 jobs:
   build:
