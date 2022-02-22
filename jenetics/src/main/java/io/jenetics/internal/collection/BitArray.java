@@ -175,6 +175,10 @@ public final class BitArray implements Copyable<BitArray> {
 		Bits.invert(_data);
 	}
 
+	public void shiftLeft(final int n) {
+
+	}
+
 	/**
 	 * Return the signum of the number, represented by this bit-array (-1 for
 	 * negative, 0 for zero, 1 for positive).

@@ -374,6 +374,20 @@ public final class BitChromosome extends Number
 		return new BitChromosome(array, 1.0 - _p);
 	}
 
+	/**
+	 * Returns a new {@code BitChromosome} whose value is (this << n). The shift
+	 * distance, n, may be negative, in which case this method performs a right
+	 * shift.
+	 *
+	 * @param n shift distance, in bits
+	 * @return this << n
+	 */
+	public BitChromosome shiftLeft(final int n) {
+		final var genes = _genes.copy();
+		genes.shiftLeft(n);
+		return new BitChromosome(genes, _p);
+	}
+
 	@Override
 	public int hashCode() {
 		return _genes.hashCode();
