@@ -53,7 +53,7 @@ object Env {
  * Information about the library and author.
  */
 object Jenetics {
-	const val VERSION = "7.1.0-SNAPSHOT"
+	const val VERSION = "8.0.0-SNAPSHOT"
 	const val ID = "jenetics"
 	const val NAME = "Jenetics"
 	const val GROUP = "io.jenetics"
