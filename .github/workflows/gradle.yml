@@ -26,5 +26,6 @@ jobs:
       with:
         java-version: ${{ matrix.java-version }}
         distribution: 'zulu'
+        cache: 'gradle'
     - name: Build with Gradle
       run: ./gradlew build --stacktrace --info
