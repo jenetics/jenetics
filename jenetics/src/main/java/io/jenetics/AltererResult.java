@@ -69,4 +69,14 @@ public final record AltererResult<
 		requireNonNull(population);
 	}
 
+	/**
+	 * Create a new alter result for the given population with zero alterations.
+	 *
+	 * @param population the altered population
+	 * @throws NullPointerException if the given population is {@code null}
+	 */
+	public AltererResult(ISeq<Phenotype<G, C>> population) {
+		this(population, 0);
+	}
+
 }

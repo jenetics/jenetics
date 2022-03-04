@@ -110,7 +110,7 @@ public abstract class Recombinator<
 
 			result = new AltererResult<>(pop.toISeq(), count);
 		} else {
-			result = new AltererResult<>(population.asISeq(), 0);
+			result = new AltererResult<>(population.asISeq());
 		}
 
 		return result;
