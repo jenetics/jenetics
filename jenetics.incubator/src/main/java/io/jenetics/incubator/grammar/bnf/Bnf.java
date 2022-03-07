@@ -26,6 +26,7 @@ import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg;
+
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**

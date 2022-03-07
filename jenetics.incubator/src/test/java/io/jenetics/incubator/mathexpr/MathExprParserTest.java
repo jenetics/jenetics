@@ -19,11 +19,7 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import java.util.Set;
-
 import org.testng.annotations.Test;
-
-import io.jenetics.ext.util.TreeFormatter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

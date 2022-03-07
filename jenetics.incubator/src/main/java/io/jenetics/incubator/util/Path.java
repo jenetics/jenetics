@@ -19,20 +19,13 @@
  */
 package io.jenetics.incubator.util;
 
-import static java.lang.System.arraycopy;
-import static java.util.Arrays.copyOf;
-import static java.util.Objects.checkFromToIndex;
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @param <T> the path element type

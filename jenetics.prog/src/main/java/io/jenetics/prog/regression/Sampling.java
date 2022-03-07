@@ -19,8 +19,6 @@
  */
 package io.jenetics.prog.regression;
 
-import static java.util.Objects.requireNonNull;
-
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;

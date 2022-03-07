@@ -32,7 +32,6 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
 import io.jenetics.ext.internal.parser.Tokenizer;
-
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Const;

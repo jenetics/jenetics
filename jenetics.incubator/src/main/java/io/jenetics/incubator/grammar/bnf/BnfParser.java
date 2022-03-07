@@ -20,6 +20,7 @@
 package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.String.format;
+import static io.jenetics.ext.internal.parser.Token.Type.EOF;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
@@ -27,7 +28,6 @@ import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
-import static io.jenetics.ext.internal.parser.Token.Type.EOF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,7 @@ import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
 import io.jenetics.incubator.grammar.Cfg.Terminal;
+
 import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.ParsingException;
 

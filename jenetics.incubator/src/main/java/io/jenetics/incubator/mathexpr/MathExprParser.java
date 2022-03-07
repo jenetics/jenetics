@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.Tokenizer;
-
 import io.jenetics.ext.util.TreeNode;
 
 /**

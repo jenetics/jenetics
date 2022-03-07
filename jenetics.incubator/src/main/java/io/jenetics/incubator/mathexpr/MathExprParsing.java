@@ -47,7 +47,6 @@ import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
 import io.jenetics.ext.internal.parser.Token.Type;
-
 import io.jenetics.ext.util.TreeNode;
 
 /**
