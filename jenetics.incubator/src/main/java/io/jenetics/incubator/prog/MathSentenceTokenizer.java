@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Optional;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.parser.IterableTokenizer;
-import io.jenetics.incubator.parser.Token;
+import io.jenetics.ext.internal.parser.IterableTokenizer;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
  * Wraps a generated list of terminals into a tokenizer. This is than used as

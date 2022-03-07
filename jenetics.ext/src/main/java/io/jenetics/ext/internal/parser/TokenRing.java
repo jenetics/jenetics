@@ -17,29 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.ext.internal.parser;
 
-import java.io.Serial;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Exception thrown in the case of a parse error.
+ * Ring-buffer for storing lookup tokens.
+ *
+ * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class ParsingException extends RuntimeException {
+final class TokenRing<V> {
+	private final Object[] _tokens;
 
-	@Serial
-	private static final long serialVersionUID = 1;
+	private int _pos = 0;
 
-	public ParsingException(final String message) {
-		super(message);
+	TokenRing(final int k) {
+		_tokens = new Object[k];
 	}
 
-//	@Override
-//	public synchronized Throwable fillInStackTrace() {
-//		return this;
-//	}
+	void add(final Token<V> token) {
+		_tokens[_pos] = token;
+		_pos = (_pos + 1)%_tokens.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Token<V> LT(final int i) {
+		return (Token<V>)_tokens[(_pos + i - 1)%_tokens.length];
+	}
+
+	@Override
+	public String toString() {
+		return IntStream.rangeClosed(1, _tokens.length)
+			.mapToObj(i -> i + ":'" + LT(i).value() + "'")
+			.collect(Collectors.joining(", ", "[", "]"));
+	}
 
 }

@@ -31,9 +31,9 @@ import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
 import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
 
-import io.jenetics.incubator.parser.CharSequenceTokenizer;
-import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
+import io.jenetics.ext.internal.parser.CharSequenceTokenizer;
+import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
  * Tokenizer for BNF grammars.

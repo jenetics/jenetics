@@ -33,4 +33,5 @@ module io.jenetics.ext {
 	exports io.jenetics.ext.util;
 
 	exports io.jenetics.ext.internal to io.jenetics.prog;
+	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
 }

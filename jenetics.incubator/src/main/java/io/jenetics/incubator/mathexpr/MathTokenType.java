@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.mathexpr;
 
-import io.jenetics.incubator.parser.Token;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
  * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.

@@ -35,9 +35,9 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 
-import io.jenetics.incubator.parser.CharSequenceTokenizer;
-import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
+import io.jenetics.ext.internal.parser.CharSequenceTokenizer;
+import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
  * Tokenizer for simple arithmetic expressions.

@@ -21,8 +21,8 @@ package io.jenetics.incubator.mathexpr;
 
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.parser.Parser;
-import io.jenetics.incubator.parser.Tokenizer;
+import io.jenetics.ext.internal.parser.Parser;
+import io.jenetics.ext.internal.parser.Tokenizer;
 
 import io.jenetics.ext.util.TreeNode;
 

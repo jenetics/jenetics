@@ -43,14 +43,12 @@ import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.incubator.parser.Parser;
-import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
-import io.jenetics.incubator.parser.Token.Type;
+import io.jenetics.ext.internal.parser.Parser;
+import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.Token;
+import io.jenetics.ext.internal.parser.Token.Type;
 
 import io.jenetics.ext.util.TreeNode;
-
-import io.jenetics.prog.op.MathOp;
 
 /**
  * General parser <em>configuration</em> of mathematical expressions. This class

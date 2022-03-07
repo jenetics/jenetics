@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.ext.internal.parser;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
@@ -27,8 +27,8 @@ import static java.util.Objects.requireNonNull;
  * Base class for all tokenizers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public abstract class CharSequenceTokenizer implements Tokenizer<String> {
 

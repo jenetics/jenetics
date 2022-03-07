@@ -29,9 +29,9 @@ import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
 import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
 import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
 
-import io.jenetics.incubator.parser.ParsingException;
-import io.jenetics.incubator.parser.Token;
-import io.jenetics.incubator.parser.Tokenizer;
+import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.Token;
+import io.jenetics.ext.internal.parser.Tokenizer;
 
 import io.jenetics.ext.util.Tree;
 

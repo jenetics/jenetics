@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.ext.internal.parser;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.parser.Token.Type;
+import io.jenetics.ext.internal.parser.Token.Type;
 
 /**
  * Base class for all parsers.
@@ -30,8 +30,8 @@ import io.jenetics.incubator.parser.Token.Type;
  * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public abstract class Parser<V> {
 

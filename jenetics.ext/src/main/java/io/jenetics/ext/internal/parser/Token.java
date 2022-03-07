@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.parser;
+package io.jenetics.ext.internal.parser;
 
 import static java.util.Objects.requireNonNull;
 
@@ -30,8 +30,8 @@ import static java.util.Objects.requireNonNull;
  * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public record Token<V>(Type type, V value) {
 
