@@ -17,51 +17,48 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal;
+package io.jenetics.ext.internal.util;
 
-import static java.util.Objects.requireNonNull;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1
  */
-public class GeneratorSpliterator<T> implements Spliterator<T> {
+public class CyclicSpliterator<T> implements Spliterator<T> {
 
-	private final Function<? super T, ? extends Spliterator<T>> _generator;
+	private final List<Supplier<Spliterator<T>>> _spliterators;
 
-	private Spliterator<T> _current;
-	private T _element;
+	private ConcatSpliterator<T> _concat = null;
 
-	public GeneratorSpliterator(
-		final Function<? super T, ? extends Spliterator<T>> generator
-	) {
-		_generator = requireNonNull(generator);
+	public CyclicSpliterator(final List<Supplier<Spliterator<T>>> spliterators) {
+		spliterators.forEach(Objects::requireNonNull);
+		_spliterators = new ArrayList<>(spliterators);
 	}
 
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
-		requireNonNull(action);
-
-		final boolean advance = spliterator().tryAdvance(element -> {
-			action.accept(element);
-			_element = element;
-		});
-
-		if (!advance) {
-			_current = null;
+		boolean advance = true;
+		if (_spliterators.isEmpty()) {
+			advance = false;
+		} else {
+			if (!spliterator().tryAdvance(action)) {
+				_concat = null;
+			}
 		}
 
-		return true;
+		return advance;
 	}
 
 	@Override
 	public Spliterator<T> trySplit() {
-		return new GeneratorSpliterator<>(_generator);
+		return new CyclicSpliterator<>(_spliterators);
 	}
 
 	@Override
@@ -74,12 +71,16 @@ public class GeneratorSpliterator<T> implements Spliterator<T> {
 		return Spliterator.ORDERED;
 	}
 
-	private Spliterator<T> spliterator() {
-		if (_current == null) {
-			_current = _generator.apply(_element);
+	private ConcatSpliterator<T> spliterator() {
+		if (_concat == null) {
+			_concat = new ConcatSpliterator<>(
+				_spliterators.stream()
+					.map(Supplier::get)
+					.toList()
+			);
 		}
 
-		return _current;
+		return _concat;
 	}
 
 }

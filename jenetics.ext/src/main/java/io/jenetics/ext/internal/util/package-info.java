@@ -17,36 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal;
-
-import java.util.Spliterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 4.1
+ * @since 4.1
  */
-public class GeneratorSpliteratorTest {
-
-	@Test
-	public void generator1() {
-		final Spliterator<Integer> spliterator =
-			new GeneratorSpliterator<>(
-				i -> {
-					final int s = i == null ? 0 : i;
-					return Stream.of(s + 1, s + 2, s + 3).spliterator();
-				}
-			);
-
-		final int[] array = StreamSupport.stream(spliterator, false)
-			.limit(10)
-			.mapToInt(Integer::intValue)
-			.toArray();
-
-		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-	}
-
-}
+package io.jenetics.ext.internal.util;

@@ -17,42 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal;
+package io.jenetics.ext.internal.util;
+
+import java.util.Spliterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.jenetics.ext.internal.util.GeneratorSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
- * @since 5.0
  */
-public final class Names {
-	private Names() {
-	}
+public class GeneratorSpliteratorTest {
 
-	/**
-	 * Checks whether the given {@code name} is a valid (Java) identifier.
-	 *
-	 * @param name the name to check
-	 * @return {@code true} if the given {@code name} is a valid identifier,
-	 *         {@code false} otherwise
-	 */
-	public static boolean isIdentifier(final String name) {
-		if (name.isEmpty()) {
-			return false;
-		}
-		int cp = name.codePointAt(0);
-		if (!Character.isJavaIdentifierStart(cp)) {
-			return false;
-		}
-		for (int i = Character.charCount(cp);
-			 i < name.length();
-			 i += Character.charCount(cp))
-		{
-			cp = name.codePointAt(i);
-			if (!Character.isJavaIdentifierPart(cp)) {
-				return false;
-			}
-		}
-		return true;
+	@Test
+	public void generator1() {
+		final Spliterator<Integer> spliterator =
+			new GeneratorSpliterator<>(
+				i -> {
+					final int s = i == null ? 0 : i;
+					return Stream.of(s + 1, s + 2, s + 3).spliterator();
+				}
+			);
+
+		final int[] array = StreamSupport.stream(spliterator, false)
+			.limit(10)
+			.mapToInt(Integer::intValue)
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	}
 
 }

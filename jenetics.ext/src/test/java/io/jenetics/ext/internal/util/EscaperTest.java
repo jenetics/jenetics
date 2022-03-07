@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal;
+package io.jenetics.ext.internal.util;
 
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 
@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.internal.util.Escaper;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

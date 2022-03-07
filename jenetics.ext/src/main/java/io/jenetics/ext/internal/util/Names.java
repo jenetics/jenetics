@@ -17,10 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
- * @since 4.1
+ * @version 5.0
+ * @since 5.0
  */
-package io.jenetics.ext.internal;
+public final class Names {
+	private Names() {
+	}
+
+	/**
+	 * Checks whether the given {@code name} is a valid (Java) identifier.
+	 *
+	 * @param name the name to check
+	 * @return {@code true} if the given {@code name} is a valid identifier,
+	 *         {@code false} otherwise
+	 */
+	public static boolean isIdentifier(final String name) {
+		if (name.isEmpty()) {
+			return false;
+		}
+		int cp = name.codePointAt(0);
+		if (!Character.isJavaIdentifierStart(cp)) {
+			return false;
+		}
+		for (int i = Character.charCount(cp);
+			 i < name.length();
+			 i += Character.charCount(cp))
+		{
+			cp = name.codePointAt(i);
+			if (!Character.isJavaIdentifierPart(cp)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+}
