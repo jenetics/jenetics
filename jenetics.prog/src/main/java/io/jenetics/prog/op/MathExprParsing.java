@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.mathexpr;
+package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.mathexpr.MathTokenType.ATOM;
-import static io.jenetics.incubator.mathexpr.MathTokenType.BINARY_OPERATOR;
-import static io.jenetics.incubator.mathexpr.MathTokenType.COMMA;
-import static io.jenetics.incubator.mathexpr.MathTokenType.DIV;
-import static io.jenetics.incubator.mathexpr.MathTokenType.FUN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.IDENTIFIER;
-import static io.jenetics.incubator.mathexpr.MathTokenType.LPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.MINUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.MOD;
-import static io.jenetics.incubator.mathexpr.MathTokenType.NUMBER;
-import static io.jenetics.incubator.mathexpr.MathTokenType.PLUS;
-import static io.jenetics.incubator.mathexpr.MathTokenType.POW;
-import static io.jenetics.incubator.mathexpr.MathTokenType.RPAREN;
-import static io.jenetics.incubator.mathexpr.MathTokenType.TIMES;
-import static io.jenetics.incubator.mathexpr.MathTokenType.UNARY_OPERATOR;
+import static io.jenetics.prog.op.MathTokenType.ATOM;
+import static io.jenetics.prog.op.MathTokenType.BINARY_OPERATOR;
+import static io.jenetics.prog.op.MathTokenType.COMMA;
+import static io.jenetics.prog.op.MathTokenType.DIV;
+import static io.jenetics.prog.op.MathTokenType.FUN;
+import static io.jenetics.prog.op.MathTokenType.IDENTIFIER;
+import static io.jenetics.prog.op.MathTokenType.LPAREN;
+import static io.jenetics.prog.op.MathTokenType.MINUS;
+import static io.jenetics.prog.op.MathTokenType.MOD;
+import static io.jenetics.prog.op.MathTokenType.NUMBER;
+import static io.jenetics.prog.op.MathTokenType.PLUS;
+import static io.jenetics.prog.op.MathTokenType.POW;
+import static io.jenetics.prog.op.MathTokenType.RPAREN;
+import static io.jenetics.prog.op.MathTokenType.TIMES;
+import static io.jenetics.prog.op.MathTokenType.UNARY_OPERATOR;
 
 import java.util.EnumSet;
 import java.util.List;

@@ -21,6 +21,8 @@ package io.jenetics.incubator.mathexpr;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.prog.op.MathStringTokenizer;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
