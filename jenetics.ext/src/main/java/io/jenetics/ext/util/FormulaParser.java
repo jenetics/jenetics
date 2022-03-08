@@ -47,7 +47,7 @@ import io.jenetics.ext.internal.parser.Token.Type;
  * @since !__version__!
  * @version !__version__!
  */
-public final class MathExprParsing<T, V> {
+public final class FormulaParser<T, V> {
 
 	/**
 	 * General term object to be parsed.
@@ -177,7 +177,7 @@ public final class MathExprParsing<T, V> {
 	 * @param functions predicate which tests whether a given identifier value
 	 *        represents a known function name
 	 */
-	public MathExprParsing(
+	public FormulaParser(
 		final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
 		final Token.Type lparen,
 		final Token.Type rparen,
