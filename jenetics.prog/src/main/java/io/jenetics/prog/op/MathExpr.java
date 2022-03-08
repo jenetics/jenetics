@@ -38,8 +38,8 @@ import io.jenetics.ext.util.Tree;
  * Contains methods for parsing mathematical expression.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since 4.1
+ * @version !__version__!
  */
 public final class MathExpr {
 	private MathExpr() {

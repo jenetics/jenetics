@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.mathexpr;
+package io.jenetics.prog.op;
 
 import org.testng.annotations.Test;
 

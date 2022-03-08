@@ -61,10 +61,10 @@ import io.jenetics.ext.util.TreeNode;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class MathExprParsing<T, V> {
+final class MathExprParsing<T, V> {
 
 	/**
 	 * General term object to be parsed.
