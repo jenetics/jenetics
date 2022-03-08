@@ -28,7 +28,7 @@ import java.io.Serial;
  * @since !__version__!
  * @version !__version__!
  */
-public final class ParsingException extends RuntimeException {
+public final class ParsingException extends IllegalArgumentException {
 
 	@Serial
 	private static final long serialVersionUID = 1;

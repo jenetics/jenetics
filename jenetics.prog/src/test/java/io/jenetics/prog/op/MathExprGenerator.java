@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.mathexpr;
+package io.jenetics.prog.op;
 
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.Sentence;
-import io.jenetics.incubator.grammar.SymbolIndex;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+//import io.jenetics.incubator.grammar.Cfg;
+//import io.jenetics.incubator.grammar.Sentence;
+//import io.jenetics.incubator.grammar.SymbolIndex;
+//import io.jenetics.incubator.grammar.bnf.Bnf;
 
 /**
  * This class generates valid math expressions for testing purpose.
@@ -40,6 +40,7 @@ public final class MathExprGenerator {
 	private MathExprGenerator() {
 	}
 
+	/*
 	private static final Cfg GRAMMAR = Bnf.parse("""
 		<expr> ::= <num>
 				| <var>
@@ -54,6 +55,7 @@ public final class MathExprGenerator {
 		<num>  ::= 3.123312 | 6.345345 | 23.43e-03 | 1.4e3
 		"""
 	);
+	 */
 
 
 	public static void main(final String[] args) {
@@ -94,11 +96,13 @@ public final class MathExprGenerator {
 
 	private static String sentence(final RandomGenerator random) {
 		String expr = "";
+		/*
 		do {
 			expr = Sentence.generate(GRAMMAR, SymbolIndex.of(random), 1000).stream()
 				.map(Cfg.Symbol::value)
 				.collect(Collectors.joining());
 		} while (expr.length() < 250);
+		 */
 
 		return expr;
 	}
