@@ -17,11 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -32,7 +31,6 @@ import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
 import io.jenetics.ext.internal.parser.Token.Type;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * General parser <em>configuration</em> of mathematical expressions. This class
@@ -49,7 +47,7 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  * @version !__version__!
  */
-final class MathExprParsing<T, V> {
+public final class MathExprParsing<T, V> {
 
 	/**
 	 * General term object to be parsed.
@@ -105,7 +103,7 @@ final class MathExprParsing<T, V> {
 			if (_tokens.contains(parser.LT(1).type())) {
 				final var token = parser.match(parser.LT(1).type());
 				final var node = TreeNode
-					.<V>of(_converter.apply(token, MathTokenType.BINARY_OPERATOR))
+					.<V>of(_converter.apply(token, /*MathTokenType.BINARY_OPERATOR*/ null))
 					.attach(expr)
 					.attach(term(parser));
 
@@ -220,7 +218,7 @@ final class MathExprParsing<T, V> {
 	private TreeNode<V> function(final Parser<T> parser) {
 		if (isFun(parser.LT(1))) {
 			final var token = parser.match(parser.LT(1).type());
-			var node = TreeNode.<V>of(_converter.apply(token, MathTokenType.FUN));
+			var node = TreeNode.<V>of(_converter.apply(token, /*MathTokenType.FUN*/null));
 
 			parser.match(_lparen);
 			node.attach(_term.expr(parser));
@@ -246,7 +244,7 @@ final class MathExprParsing<T, V> {
 
 		if (isAtom(parser.LT(1))) {
 			parser.consume();
-			return TreeNode.of(_converter.apply(token, MathTokenType.ATOM));
+			return TreeNode.of(_converter.apply(token, /*MathTokenType.ATOM*/null));
 		} else if (parser.LT(1) == Token.EOF) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -259,7 +257,7 @@ final class MathExprParsing<T, V> {
 	private TreeNode<V> unary(final Supplier<TreeNode<V>> other, final Parser<T> parser) {
 		if (_unaryOperators.contains(parser.LT(1).type())) {
 			final var token = parser.match(parser.LT(1).type());
-			return TreeNode.<V>of(_converter.apply(token, MathTokenType.UNARY_OPERATOR)).attach(other.get());
+			return TreeNode.<V>of(_converter.apply(token, /*MathTokenType.UNARY_OPERATOR*/null)).attach(other.get());
 		} else {
 			return other.get();
 		}
@@ -272,37 +270,6 @@ final class MathExprParsing<T, V> {
 
 	private boolean isAtom(final Token<T> token) {
 		return _identifier.contains(token.type());
-	}
-
-	/**
-	 * Create a new parser with the typical token types, defined in the
-	 * {@link MathTokenType} class
-	 *
-	 * @param converter the token value conversion function
-	 * @param functions predicate which tests whether a given identifier value
-	 *        represents a known function name
-	 * @param <T> the token value type used as input for the parser
-	 * @param <V> the type of the parsed AST.
-	 * @return a new parser with the typical token types
-	 */
-	public static <T, V> MathExprParsing<T, V> of(
-		final BiFunction<? super Token<T>, ? super Token.Type, ? extends V> converter,
-		final Predicate<? super T> functions
-	) {
-		return new MathExprParsing<>(
-			converter,
-			MathTokenType.LPAREN,
-			MathTokenType.RPAREN,
-			MathTokenType.COMMA,
-			List.of(
-				EnumSet.of(MathTokenType.PLUS, MathTokenType.MINUS),
-				EnumSet.of(MathTokenType.TIMES, MathTokenType.DIV, MathTokenType.MOD),
-				EnumSet.of(MathTokenType.POW)
-			),
-			EnumSet.of(MathTokenType.PLUS, MathTokenType.MINUS),
-			EnumSet.of(MathTokenType.IDENTIFIER, MathTokenType.NUMBER),
-			functions
-		);
 	}
 
 }
