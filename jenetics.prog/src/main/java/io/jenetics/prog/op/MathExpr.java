@@ -305,7 +305,8 @@ public final class MathExpr
 		return result;
 	}
 
-	public static Op<Double> toOp(final Token<String> token, final Token.Type type) {
+	private static Op<Double>
+	toOp(final Token<String> token, final Token.Type type) {
 		if (token.type().code() == PLUS.code()) {
 			if (type.code() == UNARY_OPERATOR.code()) {
 				return MathOp.ID;
