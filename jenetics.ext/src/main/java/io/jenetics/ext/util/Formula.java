@@ -23,16 +23,22 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.ext.internal.parser.BaseParser;
 import io.jenetics.ext.internal.parser.ParsingException;
-import io.jenetics.ext.internal.parser.Token;
-import io.jenetics.ext.internal.parser.Tokenizer;
 
 /**
+ * General parser <em>configuration</em> of mathematical expressions, aka
+ * formulas, parser. The input for the parser is a sequence of tokens.
+ *
+ * @param <T> the token value type used as input for the parser
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -47,29 +53,47 @@ public class Formula<T> {
 	private final T _rparen;
 	private final T _comma;
 	private final Set<? extends T> _uops;
-	private final Set<T> _identifier;
-	private final Set<T> _functions;
+	private final Predicate<? super T> _identifier;
+	private final Predicate<? super T> _functions;
 
 	private final Term<T> _term;
 
+	/**
+	 * Creates a new general expression parser object. The parser is not bound
+	 * to a specific source and target type or concrete token types.
+	 *
+	 * @param lparen the token type specifying the left parentheses, '('
+	 * @param rparen the token type specifying the right parentheses, ')'
+	 * @param comma the token type specifying the function parameter separator,
+	 *        ','
+	 * @param bops the list of binary operators, according its
+	 *        precedence. The first list element contains the operations with
+	 *        the lowest precedence and the last list element contains the
+	 *        operations with the highest precedence.
+	 * @param uops the token types representing the unary operations
+	 * @param identifier the token type representing identifier, like variable
+	 *        names, constants or numbers
+	 * @param functions predicate which tests whether a given identifier value
+	 *        represents a known function name
+	 */
 	public Formula(
 		final T lparen,
 		final T rparen,
 		final T comma,
 		final List<? extends Set<? extends T>> bops,
 		final Set<? extends T> uops,
-		final Set<? extends T> identifier,
-		final Set<? extends T> functions
+		final Predicate<? super T> identifier,
+		final Predicate<? super T> functions
 	) {
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
 		_comma = requireNonNull(comma);
 		_uops = Set.copyOf(uops);
-		_identifier = Set.copyOf(identifier);
-		_functions = Set.copyOf(functions);
+		_identifier = requireNonNull(identifier);
+		_functions = requireNonNull(functions);
 
-		final Term<T> oterm = OpTerm.build(bops);
-		final Term<T> fterm = new Term<T>() {
+		final Term<T> oterm = BopTerm.build(bops);
+		final Term<T> fterm = new Term<>() {
 			@Override
 			TreeNode<T> term(final BaseParser<T> parser) {
 				return function(parser);
@@ -83,21 +107,56 @@ public class Formula<T> {
 		}
 	}
 
+	/**
+	 * Creates a new general expression parser object. The parser is not bound
+	 * to a specific source and target type or concrete token types.
+	 *
+	 * @param lparen the token type specifying the left parentheses, '('
+	 * @param rparen the token type specifying the right parentheses, ')'
+	 * @param comma the token type specifying the function parameter separator,
+	 *        ','
+	 * @param bops the list of binary operators, according its
+	 *        precedence. The first list element contains the operations with
+	 *        the lowest precedence and the last list element contains the
+	 *        operations with the highest precedence.
+	 * @param uops the token types representing the unary operations
+	 * @param identifier the set of identifier, like variable names, constants
+	 *        or numbers
+	 * @param functions predicate which tests whether a given identifier value
+	 *        represents a known function name
+	 */
+	public Formula(
+		final T lparen,
+		final T rparen,
+		final T comma,
+		final List<? extends Set<? extends T>> bops,
+		final Set<? extends T> uops,
+		final Set<? extends T> identifier,
+		final Set<? extends T> functions
+	) {
+		this(
+			lparen, rparen, comma, bops, uops,
+			Set.copyOf(identifier)::contains,
+			Set.copyOf(functions)::contains
+		);
+	}
+
 	private TreeNode<T> function(final BaseParser<T> parser) {
-		if (isFun(parser.LT(1))) {
-			final var token = parser.match(parser.LT(1));
-			var node = TreeNode.of(token);
+		final var token = parser.LT(1);
+		if (isFun(token)) {
+			parser.consume();
+			final var node = TreeNode.of(token);
 
 			parser.match(_lparen);
 			node.attach(_term.expr(parser));
-			while (Objects.equals(parser.LT(1), _comma)) {
+			while (_comma.equals(parser.LT(1))) {
 				parser.consume();
 				node.attach(_term.expr(parser));
 			}
 			parser.match(_rparen);
 
 			return node;
-		} else if (Objects.equals(parser.LT(1), _lparen)) {
+		} else if (_lparen.equals(token)) {
 			parser.consume();
 			final var node = _term.expr(parser);
 			parser.match(_rparen);
@@ -110,10 +169,10 @@ public class Formula<T> {
 	private TreeNode<T> atom(final BaseParser<T> parser) {
 		final var token = parser.LT(1);
 
-		if (isAtom(parser.LT(1))) {
+		if (isAtom(token)) {
 			parser.consume();
 			return TreeNode.of(token);
-		} else if (parser.LT(1) == Token.EOF) {
+		} else if (token == null) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
 			throw new ParsingException(
@@ -126,8 +185,9 @@ public class Formula<T> {
 		final Supplier<TreeNode<T>> other,
 		final BaseParser<T> parser
 	) {
-		if (_uops.contains(parser.LT(1))) {
-			final var token = parser.match(parser.LT(1));
+		final var token = parser.LT(1);
+		if (token != null && _uops.contains(token)) {
+			parser.consume();
 			return TreeNode.of(token).attach(other.get());
 		} else {
 			return other.get();
@@ -135,44 +195,33 @@ public class Formula<T> {
 	}
 
 	private boolean isFun(final T token) {
-		return _functions.contains(token);
+		return token != null && _functions.test(token);
 	}
 
 	private boolean isAtom(final T token) {
-		return _identifier.contains(token) || _functions.contains(token);
+		return token != null &&
+			(_identifier.test(token) || _functions.test(token));
 	}
 
+	/**
+	 * Parses the given token sequence according {@code this} formula definition.
+	 *
+	 * @param tokens the tokens which forms the formula
+	 * @return the parsed formula as tree
+	 */
 	public Tree<T, ?> parse(final Iterable<? extends T> tokens) {
-		final var tokenizer = new IterableTokenizer<T>(tokens);
-		final var parser = new BaseParser<>(tokenizer, 1);
+		final Iterator<? extends T> it = tokens.iterator();
+		final var parser = new BaseParser<T>(
+			() -> it.hasNext() ? it.next() : null,
+			1
+		);
 		return _term.expr(parser);
 	}
+
 
 	/* *************************************************************************
 	 * Formula helper classes
 	 * ************************************************************************/
-
-	private static class IterableTokenizer<T> implements Tokenizer<T> {
-
-		private final Iterator<? extends T> _values;
-
-		/**
-		 * Creates a new tokenizer adapter
-		 *
-		 * @param values the source values to adapt
-		 * @throws NullPointerException if one of the arguments is {@code null}
-		 */
-		public IterableTokenizer(final Iterable<? extends T> values) {
-			_values = values.iterator();
-		}
-
-		@Override
-		public T next() {
-			return _values.hasNext() ? _values.next() : null;
-		}
-
-	}
-
 
 	/**
 	 * General term object to be parsed.
@@ -208,18 +257,20 @@ public class Formula<T> {
 	 *
 	 * @param <T> the token value type used as input for the parser
 	 */
-	private static class OpTerm<T> extends Term<T> {
+	private static class BopTerm<T> extends Term<T> {
 		private final Set<? extends T> _tokens;
 
-		OpTerm(final Set<? extends T> tokens) {
+		BopTerm(final Set<? extends T> tokens) {
 			_tokens = requireNonNull(tokens);
 		}
 
 		@Override
 		TreeNode<T> op(final TreeNode<T> expr, final BaseParser<T> parser) {
 			var result = expr;
-			if (_tokens.contains(parser.LT(1))) {
-				final T token = parser.match(parser.LT(1));
+
+			final var token = parser.LT(1);
+			if (token != null && _tokens.contains(token)) {
+				parser.consume();
 
 				final TreeNode<T> node = TreeNode.of(token)
 					.attach(expr)
@@ -241,14 +292,14 @@ public class Formula<T> {
 		 * with higher <em>precedence</em> are appended to the end of the linked
 		 * operation term chain.
 		 *
-		 * @param ops the list of binary operations with a given precedence
+		 * @param bops the list of binary operations with a given precedence
 		 * @param <T> the token value type used as input for the parser
 		 * @return the linked operation term
 		 */
-		static <T> OpTerm<T> build(final List<? extends Set<? extends T>> ops) {
-			OpTerm<T> start = null;
-			for (var tokens : ops) {
-				final OpTerm<T> term = new OpTerm<>(tokens);
+		static <T> BopTerm<T> build(final List<? extends Set<? extends T>> bops) {
+			BopTerm<T> start = null;
+			for (var tokens : bops) {
+				final BopTerm<T> term = new BopTerm<>(tokens);
 				if (start == null) {
 					start = term;
 				} else {
