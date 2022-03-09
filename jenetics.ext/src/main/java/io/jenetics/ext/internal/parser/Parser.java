@@ -33,17 +33,10 @@ import io.jenetics.ext.internal.parser.Token.Type;
  * @since !__version__!
  * @version !__version__!
  */
-public class Parser<V> {
-
-	private final Tokenizer<Token<V>> _tokenizer;
-	private final TokenRing<Token<V>> _lookahead;
+public class Parser<V> extends BaseParser<Token<V>> {
 
 	public Parser(final Tokenizer<Token<V>> tokenizer, final int k) {
-		_tokenizer = requireNonNull(tokenizer);
-		_lookahead = new TokenRing<>(k);
-		for (int i = 0; i < k; ++i) {
-			consume();
-		}
+		super(tokenizer, k);
 	}
 
 	/**
@@ -53,6 +46,7 @@ public class Parser<V> {
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
+	@Override
 	public Token<V> LT(final int index) {
 		final var token = _lookahead.LT(index);
 		return token != null ? token : Token.eof();
@@ -65,8 +59,7 @@ public class Parser<V> {
 	 * @return the token type code for the given lookahead index
 	 */
 	public int LA(final int index) {
-		final var token = LT(index);
-		return token != null ? token.type().code() : Type.EOF.code();
+		return LT(index).type().code();
 	}
 
 	/**

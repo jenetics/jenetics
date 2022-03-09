@@ -26,10 +26,10 @@ import java.util.Objects;
 
 public class BaseParser<T> {
 
-	private final BaseTokenizer<T> _tokenizer;
-	private final TokenRing<T> _lookahead;
+	protected final Tokenizer<T> _tokenizer;
+	protected final TokenRing<T> _lookahead;
 
-	public BaseParser(final BaseTokenizer<T> tokenizer, final int k) {
+	public BaseParser(final Tokenizer<T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
@@ -53,22 +53,21 @@ public class BaseParser<T> {
 	 * {@code type}. If the current token is not from the given type, a
 	 * {@link ParsingException} is thrown.
 	 *
-	 * @param type the token type to match
+	 * @param token the token type to match
 	 * @return the matched token
 	 * @throws NullPointerException if the given token {@code type} is
 	 *        {@code null}
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
-	public T match(final T type) {
-		if (Objects.equals(LT(1), type)) {
-			final var token = LT(1);
+	public T match(final T token) {
+		if (Objects.equals(LT(1), token)) {
 			consume();
 			return token;
 		} else {
 			throw new ParsingException(format(
 				"Expecting %s but found %s.",
-				type, LT(1)
+				token, LT(1)
 			));
 		}
 	}

@@ -28,9 +28,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import io.jenetics.ext.internal.parser.BaseParser;
-import io.jenetics.ext.internal.parser.BaseTokenizer;
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
+import io.jenetics.ext.internal.parser.Tokenizer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -122,7 +122,10 @@ public class Formula<T> {
 		}
 	}
 
-	private TreeNode<T> unary(final Supplier<TreeNode<T>> other, final BaseParser<T> parser) {
+	private TreeNode<T> unary(
+		final Supplier<TreeNode<T>> other,
+		final BaseParser<T> parser
+	) {
 		if (_uops.contains(parser.LT(1))) {
 			final var token = parser.match(parser.LT(1));
 			return TreeNode.of(token).attach(other.get());
@@ -149,7 +152,7 @@ public class Formula<T> {
 	 * Formula helper classes
 	 * ************************************************************************/
 
-	private static class IterableTokenizer<T> implements BaseTokenizer<T> {
+	private static class IterableTokenizer<T> implements Tokenizer<T> {
 
 		private final Iterator<? extends T> _values;
 
