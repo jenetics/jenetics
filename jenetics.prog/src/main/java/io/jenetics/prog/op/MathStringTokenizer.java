@@ -122,7 +122,7 @@ final class MathStringTokenizer extends CharSequenceTokenizer {
 			}
 		}
 
-		return Token.eof();
+		return null;
 	}
 
 	// NUMBER (E SIGN? UNSIGNED_INTEGER)?

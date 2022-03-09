@@ -35,9 +35,9 @@ import java.util.function.Function;
  * @since !__version__!
  * @version !__version__!
  */
-public class IterableTokenizer<A, V> implements Tokenizer<V> {
+public class IterableTokenizer<A, V> implements Tokenizer<Token<V>> {
 
-	private final Iterator<A> _values;
+	private final Iterator<? extends A> _values;
 	private final Function<? super A, Token<V>> _converter;
 
 	/**
@@ -49,7 +49,7 @@ public class IterableTokenizer<A, V> implements Tokenizer<V> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public IterableTokenizer(
-		final Iterable<A> values,
+		final Iterable<? extends A> values,
 		final Function<? super A, Token<V>> converter
 	) {
 		_values = values.iterator();

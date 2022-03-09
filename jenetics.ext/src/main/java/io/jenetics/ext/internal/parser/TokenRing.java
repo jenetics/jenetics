@@ -40,20 +40,20 @@ final class TokenRing<V> {
 		_tokens = new Object[k];
 	}
 
-	void add(final Token<V> token) {
+	void add(final V token) {
 		_tokens[_pos] = token;
 		_pos = (_pos + 1)%_tokens.length;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Token<V> LT(final int i) {
-		return (Token<V>)_tokens[(_pos + i - 1)%_tokens.length];
+	public V LT(final int i) {
+		return (V)_tokens[(_pos + i - 1)%_tokens.length];
 	}
 
 	@Override
 	public String toString() {
 		return IntStream.rangeClosed(1, _tokens.length)
-			.mapToObj(i -> i + ":'" + LT(i).value() + "'")
+			.mapToObj(i -> i + ":'" + LT(i) + "'")
 			.collect(Collectors.joining(", ", "[", "]"));
 	}
 

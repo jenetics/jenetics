@@ -144,6 +144,8 @@ public final class FormulaParser<T, V> {
 				}
 			}
 
+			int i = 1;
+
 			return start;
 		}
 	}
@@ -152,7 +154,7 @@ public final class FormulaParser<T, V> {
 	private final Token.Type _lparen;
 	private final Token.Type _rparen;
 	private final Token.Type _comma;
-	private final Set<? extends Token.Type> _unaryOperators;
+	private final Set<? extends Token.Type> _uops;
 	private final Set<? extends Token.Type> _identifier;
 	private final Predicate<? super T> _functions;
 
@@ -167,11 +169,11 @@ public final class FormulaParser<T, V> {
 	 * @param rparen the token type specifying the right parentheses, ')'
 	 * @param comma the token type specifying the function parameter separator,
 	 *        ','
-	 * @param binaryOperators the list of binary operators, according its
+	 * @param bops the list of binary operators, according its
 	 *        precedence. The first list element contains the operations with
 	 *        the lowest precedence and the last list element contains the
 	 *        operations with the highest precedence.
-	 * @param unaryOperations the token types representing the unary operations
+	 * @param uops the token types representing the unary operations
 	 * @param identifier the token type representing identifier, like variable
 	 *        names, constants or numbers
 	 * @param functions predicate which tests whether a given identifier value
@@ -182,8 +184,8 @@ public final class FormulaParser<T, V> {
 		final Token.Type lparen,
 		final Token.Type rparen,
 		final Token.Type comma,
-		final List<? extends Set<? extends Token.Type>> binaryOperators,
-		final Set<? extends Token.Type> unaryOperations,
+		final List<? extends Set<? extends Token.Type>> bops,
+		final Set<? extends Token.Type> uops,
 		final Set<? extends Token.Type> identifier,
 		final Predicate<? super T> functions
 	) {
@@ -191,12 +193,12 @@ public final class FormulaParser<T, V> {
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
 		_comma = requireNonNull(comma);
-		_unaryOperators = Set.copyOf(unaryOperations);
+		_uops = Set.copyOf(uops);
 		_identifier = Set.copyOf(identifier);
 		_functions = requireNonNull(functions);
 
 
-		final Term<T, V> oterm = OpTerm.build(converter, binaryOperators);
+		final Term<T, V> oterm = OpTerm.build(converter, bops);
 		final Term<T, V> fterm = new Term<T, V>() {
 			@Override
 			TreeNode<V> term(final Parser<T> parser) {
@@ -255,7 +257,7 @@ public final class FormulaParser<T, V> {
 	}
 
 	private TreeNode<V> unary(final Supplier<TreeNode<V>> other, final Parser<T> parser) {
-		if (_unaryOperators.contains(parser.LT(1).type())) {
+		if (_uops.contains(parser.LT(1).type())) {
 			final var token = parser.match(parser.LT(1).type());
 			return TreeNode.<V>of(_converter.apply(token, /*MathTokenType.UNARY_OPERATOR*/null)).attach(other.get());
 		} else {
@@ -270,6 +272,19 @@ public final class FormulaParser<T, V> {
 
 	private boolean isAtom(final Token<T> token) {
 		return _identifier.contains(token.type());
+	}
+
+
+	public static final class Builder<T> {
+		private T lparen;
+		private T rparen;
+		private T comma;
+		private Set<? extends T> unaryOperators;
+		private Set<? extends T> identifier;
+		private Set<? extends T> functions;
+
+
+
 	}
 
 }

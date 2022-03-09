@@ -22,23 +22,14 @@ package io.jenetics.ext.internal.parser;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.ext.internal.parser.Token.Type;
+import java.util.Objects;
 
-/**
- * Base class for all parsers.
- *
- * @param <V> the token value type
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
- */
-public class Parser<V> {
+public class BaseParser<T> {
 
-	private final Tokenizer<Token<V>> _tokenizer;
-	private final TokenRing<Token<V>> _lookahead;
+	private final BaseTokenizer<T> _tokenizer;
+	private final TokenRing<T> _lookahead;
 
-	public Parser(final Tokenizer<Token<V>> tokenizer, final int k) {
+	public BaseParser(final BaseTokenizer<T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
@@ -53,20 +44,8 @@ public class Parser<V> {
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
-	public Token<V> LT(final int index) {
-		final var token = _lookahead.LT(index);
-		return token != null ? token : Token.eof();
-	}
-
-	/**
-	 * Return the token type code for the given lookahead index.
-	 *
-	 * @param index lookahead index
-	 * @return the token type code for the given lookahead index
-	 */
-	public int LA(final int index) {
-		final var token = LT(index);
-		return token != null ? token.type().code() : Type.EOF.code();
+	public T LT(final int index) {
+		return _lookahead.LT(index);
 	}
 
 	/**
@@ -81,8 +60,8 @@ public class Parser<V> {
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *        token {@code type}
 	 */
-	public Token<V> match(final Type type) {
-		if (LA(1) == type.code()) {
+	public T match(final T type) {
+		if (Objects.equals(LT(1), type)) {
 			final var token = LT(1);
 			consume();
 			return token;

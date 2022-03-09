@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  * @since !__version__!
  * @version !__version__!
  */
-public abstract class CharSequenceTokenizer implements Tokenizer<String> {
+public abstract class CharSequenceTokenizer implements Tokenizer<Token<String>> {
 
 	private static final char EOF = (char)-1;
 

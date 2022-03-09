@@ -22,6 +22,7 @@ package  io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.ext.internal.parser.Parser;
+import io.jenetics.ext.internal.parser.Token;
 import io.jenetics.ext.internal.parser.Tokenizer;
 import io.jenetics.ext.util.TreeNode;
 
@@ -76,7 +77,7 @@ final class MathExprParser<T, V> extends Parser<T>  {
 	 * @param parsing the parsing <em>configuration</em>
 	 */
 	public MathExprParser(
-		final Tokenizer<T> tokenizer,
+		final Tokenizer<Token<T>> tokenizer,
 		final MathExprParsing<T, V> parsing
 	) {
 		super(tokenizer, 1);

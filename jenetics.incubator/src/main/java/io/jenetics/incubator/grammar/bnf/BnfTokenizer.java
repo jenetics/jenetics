@@ -114,7 +114,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 			}
 		}
 
-		return Token.eof();
+		return null;
 	}
 
 	private Token<String> ASSIGN() {

@@ -408,7 +408,7 @@ public final class MathExpr
 
 	// TODO: check visibility
 	public static <V> TreeNode<Op<Double>>
-	parseTree(final Tokenizer<String> tokenizer) {
+	parseTree(final Tokenizer<Token<String>> tokenizer) {
 		final var expr = new MathExprParser<>(tokenizer, PARSING).parse();
 		Var.reindex(expr);
 		return expr;
