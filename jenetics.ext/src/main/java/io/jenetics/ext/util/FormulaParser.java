@@ -44,13 +44,13 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * @since !__version__!
  * @version !__version__!
  */
-public class FormulaParser<T> {
+public final class FormulaParser<T> {
 
 	private final T _lparen;
 	private final T _rparen;
 	private final T _comma;
-	private final Set<? extends T> _uops;
-	private final Predicate<? super T> _identifier;
+	private final Predicate<? super T> _uops;
+	private final Predicate<? super T> _identifiers;
 	private final Predicate<? super T> _functions;
 
 	private final Term<T> _term;
@@ -68,7 +68,7 @@ public class FormulaParser<T> {
 	 *        the lowest precedence and the last list element contains the
 	 *        operations with the highest precedence.
 	 * @param uops the token types representing the unary operations
-	 * @param identifier the token type representing identifier, like variable
+	 * @param identifiers the token type representing identifier, like variable
 	 *        names, constants or numbers
 	 * @param functions predicate which tests whether a given identifier value
 	 *        represents a known function name
@@ -78,15 +78,15 @@ public class FormulaParser<T> {
 		final T rparen,
 		final T comma,
 		final List<? extends Set<? extends T>> bops,
-		final Set<? extends T> uops,
-		final Predicate<? super T> identifier,
+		final Predicate<? super T> uops,
+		final Predicate<? super T> identifiers,
 		final Predicate<? super T> functions
 	) {
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
 		_comma = requireNonNull(comma);
-		_uops = Set.copyOf(uops);
-		_identifier = requireNonNull(identifier);
+		_uops = requireNonNull(uops);
+		_identifiers = requireNonNull(identifiers);
 		_functions = requireNonNull(functions);
 
 		final Term<T> oterm = BopTerm.build(bops);
@@ -120,7 +120,7 @@ public class FormulaParser<T> {
 	 *        the lowest precedence and the last list element contains the
 	 *        operations with the highest precedence.
 	 * @param uops the token types representing the unary operations
-	 * @param identifier the set of identifier, like variable names, constants
+	 * @param identifiers the set of identifier, like variable names, constants
 	 *        or numbers
 	 * @param functions predicate which tests whether a given identifier value
 	 *        represents a known function name
@@ -131,12 +131,13 @@ public class FormulaParser<T> {
 		final T comma,
 		final List<? extends Set<? extends T>> bops,
 		final Set<? extends T> uops,
-		final Set<? extends T> identifier,
+		final Set<? extends T> identifiers,
 		final Set<? extends T> functions
 	) {
 		this(
-			lparen, rparen, comma, bops, uops,
-			Set.copyOf(identifier)::contains,
+			lparen, rparen, comma, bops,
+			Set.copyOf(uops)::contains,
+			Set.copyOf(identifiers)::contains,
 			Set.copyOf(functions)::contains
 		);
 	}
@@ -193,7 +194,7 @@ public class FormulaParser<T> {
 		final Function<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
-		if (token != null && _uops.contains(token)) {
+		if (token != null && _uops.test(token)) {
 			parser.consume();
 			return TreeNode.<V>of(mapper.apply(token)).attach(other.get());
 		} else {
@@ -207,7 +208,7 @@ public class FormulaParser<T> {
 
 	private boolean isAtom(final T token) {
 		return token != null &&
-			(_identifier.test(token) || _functions.test(token));
+			(_identifiers.test(token) || _functions.test(token));
 	}
 
 	/**
@@ -273,7 +274,7 @@ public class FormulaParser<T> {
 
 
 	/* *************************************************************************
-	 * Formula helper classes
+	 * FormulaParser helper classes
 	 * ************************************************************************/
 
 	/**
