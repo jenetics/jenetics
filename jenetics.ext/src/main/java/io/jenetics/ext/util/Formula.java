@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -95,8 +96,11 @@ public class Formula<T> {
 		final Term<T> oterm = BopTerm.build(bops);
 		final Term<T> fterm = new Term<>() {
 			@Override
-			TreeNode<T> term(final BaseParser<T> parser) {
-				return function(parser);
+			<V> TreeNode<V> term(
+				final BaseParser<T> parser,
+				final Function<? super T, ? extends V> mapper
+			) {
+				return function(parser, mapper);
 			}
 		};
 		if (oterm != null) {
@@ -141,37 +145,43 @@ public class Formula<T> {
 		);
 	}
 
-	private TreeNode<T> function(final BaseParser<T> parser) {
+	private <V> TreeNode<V> function(
+		final BaseParser<T> parser,
+		final Function<? super T, ? extends V> mapper
+	) {
 		final var token = parser.LT(1);
 		if (isFun(token)) {
 			parser.consume();
-			final var node = TreeNode.of(token);
+			final var node = TreeNode.<V>of(mapper.apply(token));
 
 			parser.match(_lparen);
-			node.attach(_term.expr(parser));
+			node.attach(_term.expr(parser, mapper));
 			while (_comma.equals(parser.LT(1))) {
 				parser.consume();
-				node.attach(_term.expr(parser));
+				node.attach(_term.expr(parser, mapper));
 			}
 			parser.match(_rparen);
 
 			return node;
 		} else if (_lparen.equals(token)) {
 			parser.consume();
-			final var node = _term.expr(parser);
+			final TreeNode<V> node = _term.expr(parser, mapper);
 			parser.match(_rparen);
 			return node;
 		} else {
-			return unary(() -> atom(parser), parser);
+			return unary(() -> atom(parser, mapper), parser, mapper);
 		}
 	}
 
-	private TreeNode<T> atom(final BaseParser<T> parser) {
+	private <V> TreeNode<V> atom(
+		final BaseParser<T> parser,
+		final Function<? super T, ? extends V> mapper
+	) {
 		final var token = parser.LT(1);
 
 		if (isAtom(token)) {
 			parser.consume();
-			return TreeNode.of(token);
+			return TreeNode.of(mapper.apply(token));
 		} else if (token == null) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -181,14 +191,15 @@ public class Formula<T> {
 		}
 	}
 
-	private TreeNode<T> unary(
-		final Supplier<TreeNode<T>> other,
-		final BaseParser<T> parser
+	private <V> TreeNode<V> unary(
+		final Supplier<TreeNode<V>> other,
+		final BaseParser<T> parser,
+		final Function<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
 		if (token != null && _uops.contains(token)) {
 			parser.consume();
-			return TreeNode.of(token).attach(other.get());
+			return TreeNode.<V>of(mapper.apply(token)).attach(other.get());
 		} else {
 			return other.get();
 		}
@@ -207,15 +218,61 @@ public class Formula<T> {
 	 * Parses the given token sequence according {@code this} formula definition.
 	 *
 	 * @param tokens the tokens which forms the formula
+	 * @param mapper the mapper function which maps the token type to the parse
+	 *        tree value type
 	 * @return the parsed formula as tree
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public Tree<T, ?> parse(final Iterable<? extends T> tokens) {
-		final Iterator<? extends T> it = tokens.iterator();
+	public <V> Tree<V, ?> parse(
+		final Iterator<? extends T> tokens,
+		final Function<? super T, ? extends V> mapper
+	) {
+		requireNonNull(tokens);
+		requireNonNull(mapper);
+
 		final var parser = new BaseParser<T>(
-			() -> it.hasNext() ? it.next() : null,
+			() -> tokens.hasNext() ? tokens.next() : null,
 			1
 		);
-		return _term.expr(parser);
+		return _term.expr(parser, mapper);
+	}
+
+	/**
+	 * Parses the given token sequence according {@code this} formula definition.
+	 *
+	 * @param tokens the tokens which forms the formula
+	 * @return the parsed formula as tree
+	 * @throws NullPointerException if the arguments is {@code null}
+	 */
+	public Tree<T, ?> parse(final Iterator<? extends T> tokens) {
+		return parse(tokens, Function.identity());
+	}
+
+	/**
+	 * Parses the given token sequence according {@code this} formula definition.
+	 *
+	 * @param tokens the tokens which forms the formula
+	 * @param mapper the mapper function which maps the token type to the parse
+	 *        tree value type
+	 * @return the parsed formula as tree
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public <V> Tree<V, ?> parse(
+		final Iterable<? extends T> tokens,
+		final Function<? super T, ? extends V> mapper
+	) {
+		return parse(tokens.iterator(), mapper);
+	}
+
+	/**
+	 * Parses the given token sequence according {@code this} formula definition.
+	 *
+	 * @param tokens the tokens which forms the formula
+	 * @return the parsed formula as tree
+	 * @throws NullPointerException if the arguments is {@code null}
+	 */
+	public Tree<T, ?> parse(final Iterable<? extends T> tokens) {
+		return parse(tokens, Function.identity());
 	}
 
 
@@ -232,14 +289,24 @@ public class Formula<T> {
 		Term<T> _next;
 		Term<T> _last;
 
-		TreeNode<T> op(final TreeNode<T> expr, final BaseParser<T> parser) {
+		<V> TreeNode<V> op(
+			final TreeNode<V> expr,
+			final BaseParser<T> parser,
+			final Function<? super T, ? extends V> mapper
+		) {
 			return expr;
 		}
 
-		abstract TreeNode<T> term(final BaseParser<T> parser);
+		abstract <V> TreeNode<V> term(
+			final BaseParser<T> parser,
+			final Function<? super T, ? extends V> mapper
+		);
 
-		TreeNode<T> expr(final BaseParser<T> parser) {
-			return op(term(parser), parser);
+		<V> TreeNode<V> expr(
+			final BaseParser<T> parser,
+			final Function<? super T, ? extends V> mapper
+		) {
+			return op(term(parser, mapper), parser, mapper);
 		}
 
 		void append(final Term<T> term) {
@@ -265,25 +332,32 @@ public class Formula<T> {
 		}
 
 		@Override
-		TreeNode<T> op(final TreeNode<T> expr, final BaseParser<T> parser) {
+		<V> TreeNode<V> op(
+			final TreeNode<V> expr,
+			final BaseParser<T> parser,
+			final Function<? super T, ? extends V> mapper
+		) {
 			var result = expr;
 
 			final var token = parser.LT(1);
 			if (token != null && _tokens.contains(token)) {
 				parser.consume();
 
-				final TreeNode<T> node = TreeNode.of(token)
+				final TreeNode<V> node = TreeNode.<V>of(mapper.apply(token))
 					.attach(expr)
-					.attach(term(parser));
+					.attach(term(parser, mapper));
 
-				result = op(node, parser);
+				result = op(node, parser, mapper);
 			}
 			return result;
 		}
 
 		@Override
-		TreeNode<T> term(final BaseParser<T> parser) {
-			return _next.op(_next.term(parser), parser);
+		<V> TreeNode<V> term(
+			final BaseParser<T> parser,
+			final Function<? super T, ? extends V> mapper
+		) {
+			return _next.op(_next.term(parser, mapper), parser, mapper);
 		}
 
 		/**
