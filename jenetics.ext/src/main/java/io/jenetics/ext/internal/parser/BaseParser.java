@@ -24,11 +24,27 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
+/**
+ * Parser implementation for parsing a given token sequences.
+ *
+ * @param <T> the token type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public class BaseParser<T> {
 
-	protected final Tokenizer<T> _tokenizer;
-	protected final TokenRing<T> _lookahead;
+	private final Tokenizer<T> _tokenizer;
+	private final TokenRing<T> _lookahead;
 
+	/**
+	 * Create a new parser object with the given {@code tokenizer} and lookahead
+	 * count {@code k}.
+	 *
+	 * @param tokenizer the token source {@code this} parser uses
+	 * @param k the lookahead count
+	 */
 	public BaseParser(final Tokenizer<T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
@@ -58,9 +74,11 @@ public class BaseParser<T> {
 	 * @throws NullPointerException if the given token {@code type} is
 	 *        {@code null}
 	 * @throws ParsingException if the current token doesn't match the desired
-	 *        token {@code type}
+	 *         {@code token}
 	 */
 	public T match(final T token) {
+		requireNonNull(token);
+
 		if (Objects.equals(LT(1), token)) {
 			consume();
 			return token;

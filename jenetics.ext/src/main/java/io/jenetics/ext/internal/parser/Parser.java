@@ -20,12 +20,11 @@
 package io.jenetics.ext.internal.parser;
 
 import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
 
 import io.jenetics.ext.internal.parser.Token.Type;
 
 /**
- * Base class for all parsers.
+ * Parser implementation for parsing explicit {@link Token} sequences.
  *
  * @param <V> the token value type
  *
@@ -35,6 +34,13 @@ import io.jenetics.ext.internal.parser.Token.Type;
  */
 public class Parser<V> extends BaseParser<Token<V>> {
 
+	/**
+	 * Create a new parser object with the given {@code tokenizer} and lookahead
+	 * count {@code k}.
+	 *
+	 * @param tokenizer the token source {@code this} parser uses
+	 * @param k the lookahead count
+	 */
 	public Parser(final Tokenizer<Token<V>> tokenizer, final int k) {
 		super(tokenizer, k);
 	}
@@ -48,7 +54,7 @@ public class Parser<V> extends BaseParser<Token<V>> {
 	 */
 	@Override
 	public Token<V> LT(final int index) {
-		final var token = _lookahead.LT(index);
+		final var token = super.LT(index);
 		return token != null ? token : Token.eof();
 	}
 
@@ -85,13 +91,6 @@ public class Parser<V> extends BaseParser<Token<V>> {
 				type, LT(1)
 			));
 		}
-	}
-
-	/**
-	 * Consumes the next token.
-	 */
-	public void consume() {
-		_lookahead.add(_tokenizer.next());
 	}
 
 }
