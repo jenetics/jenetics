@@ -1,7 +1,6 @@
 package io.jenetics.ext.util;
 
 import java.util.List;
-import java.util.Set;
 
 import org.testng.annotations.Test;
 
@@ -9,24 +8,29 @@ public class FormulaParserTest {
 
 	@Test
 	public void parse() {
-		final var formula = new FormulaParser<>(
-			"(",
-			")",
-			",",
-			List.of(
-				Set.of("+", "-"),  // Operations with the lowest precedence.
-				Set.of("*", "/", "%"),
-				Set.of("^", "**")  // Operations with the highest precedence.
-			),
-			Set.of("+", "-"), // Unary operations
-			Set.of("x", "y", "z"), // Identifiers
-			Set.of("pow", "sin", "cos") // Functions
-		);
+		final FormulaParser<String> formula = FormulaParser.<String>builder()
+			.lparen("(")
+			.rparen(")")
+			.comma(",")
+			.unaryOperators("+", "-", "!")
+			.binaryOperators(ops -> ops
+				.add(11, "+", "-")
+				.add(12, "*", "/", "%")
+				.add(14, "^", "**"))
+			.identifiers("x", "y", "z")
+			.functions("pow", "sin", "cos")
+			.build();
 
 		final var expr = List.of(
 			"x", "*", "x", "+", "sin", "(", "z", ")");
 		final var tree = formula.parse(expr);
 		System.out.println(tree);
+
+		/*
+				new BinaryOperators<>(11, "+", "-"),
+				new BinaryOperators<>(12, "*", "/", "%"),
+				new BinaryOperators<>(14, "^", "**")
+		 */
 	}
 
 }

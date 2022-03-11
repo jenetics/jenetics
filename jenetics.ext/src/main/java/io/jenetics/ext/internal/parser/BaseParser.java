@@ -71,14 +71,10 @@ public class BaseParser<T> {
 	 *
 	 * @param token the token type to match
 	 * @return the matched token
-	 * @throws NullPointerException if the given token {@code type} is
-	 *        {@code null}
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *         {@code token}
 	 */
 	public T match(final T token) {
-		requireNonNull(token);
-
 		if (Objects.equals(LT(1), token)) {
 			consume();
 			return token;
