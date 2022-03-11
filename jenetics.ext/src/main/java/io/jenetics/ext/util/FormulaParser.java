@@ -46,10 +46,6 @@ import io.jenetics.ext.internal.parser.ParsingException;
  */
 public class FormulaParser<T> {
 
-	/* *************************************************************************
-	 * Main class implementation.
-	 * ************************************************************************/
-
 	private final T _lparen;
 	private final T _rparen;
 	private final T _comma;
