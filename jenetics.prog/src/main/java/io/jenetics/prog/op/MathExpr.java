@@ -25,15 +25,17 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.prog.op.MathTokenType.COMMA;
 import static io.jenetics.prog.op.MathTokenType.DIV;
 import static io.jenetics.prog.op.MathTokenType.IDENTIFIER;
+import static io.jenetics.prog.op.MathTokenType.LPAREN;
 import static io.jenetics.prog.op.MathTokenType.MINUS;
 import static io.jenetics.prog.op.MathTokenType.MOD;
 import static io.jenetics.prog.op.MathTokenType.NUMBER;
 import static io.jenetics.prog.op.MathTokenType.PLUS;
 import static io.jenetics.prog.op.MathTokenType.POW;
+import static io.jenetics.prog.op.MathTokenType.RPAREN;
 import static io.jenetics.prog.op.MathTokenType.TIMES;
-import static io.jenetics.prog.op.MathTokenType.UNARY_OPERATOR;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -44,16 +46,18 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
-import io.jenetics.ext.internal.parser.Tokenizer;
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.FormulaParser;
+import io.jenetics.ext.util.FormulaParser.TokenType;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -71,9 +75,24 @@ public final class MathExpr
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private static final MathExprParsing<String, Op<Double>> PARSING =
-		MathExprParsing.of(MathExpr::toOp, MathOp.NAMES::contains);
+	//private static final MathExprParsing<String, Op<Double>> PARSING =
+	// MathExprParsing.of(MathExpr::toOp, MathOp.NAMES::contains);
 
+
+	private static final FormulaParser<Token<String>> FORMULA_PARSER =
+		FormulaParser.<Token<String>>builder()
+			.lparen(t -> t.type() == LPAREN)
+			.rparen(t -> t.type() == RPAREN)
+			.comma(t -> t.type() == COMMA)
+			.binaryOperators(ops -> ops
+				.add(11, t -> t.type() == PLUS || t.type() == MINUS)
+				.add(12, t -> t.type() == TIMES || t.type() == DIV || t.type() == MOD)
+				.add(13, t -> t.type() == POW)
+			)
+			.unaryOperators(t -> t.type() == PLUS || t.type() == MINUS)
+			.identifiers(t -> t.type() == IDENTIFIER || t.type() == NUMBER)
+			.functions(t -> MathOp.NAMES.contains(t.value()))
+			.build();
 
 	/**
 	 * This tree-rewriter rewrites constant expressions to its single value.
@@ -236,7 +255,7 @@ public final class MathExpr
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr other &&
-				Tree.equals(other._tree, _tree);
+			Tree.equals(other._tree, _tree);
 	}
 
 	/**
@@ -305,16 +324,18 @@ public final class MathExpr
 		return result;
 	}
 
-	private static Op<Double>
-	toOp(final Token<String> token, final Token.Type type) {
+	private static Op<Double> toOp(
+		final Token<String> token,
+		final TokenType type
+	) {
 		if (token.type().code() == PLUS.code()) {
-			if (type.code() == UNARY_OPERATOR.code()) {
+			if (type == TokenType.UNARY_OPERATOR) {
 				return MathOp.ID;
 			} else {
 				return MathOp.ADD;
 			}
 		} else if (token.type().code() == MINUS.code()) {
-			if (type.code() == UNARY_OPERATOR.code()) {
+			if (type == TokenType.UNARY_OPERATOR) {
 				return MathOp.NEG;
 			} else {
 				return MathOp.SUB;
@@ -406,12 +427,15 @@ public final class MathExpr
 		return new MathExpr(tree, true);
 	}
 
-	// TODO: check visibility
 	public static <V> TreeNode<Op<Double>>
-	parseTree(final Tokenizer<Token<String>> tokenizer) {
-		final var expr = new MathExprParser<>(tokenizer, PARSING).parse();
-		Var.reindex(expr);
-		return expr;
+	parseTree(final Supplier<Token<String>> tokens) {
+		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
+		Var.reindex(tree);
+		return tree;
+
+		//final var expr = new MathExprParser<>(tokenizer, PARSING).parse();
+		//Var.reindex(expr);
+		//return expr;
 	}
 
 	/**
@@ -454,7 +478,11 @@ public final class MathExpr
 	 *         can't be parsed.
 	 */
 	public static Tree<Op<Double>, ?> parseTree(final String expression) {
-		return parseTree(new MathStringTokenizer(expression));
+		final var tokenizer = new MathStringTokenizer(expression);
+		return parseTree(() -> {
+			var next = tokenizer.next();
+			return next == null || next.isEof() ? null : next;
+		});
 	}
 
 	/**

@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Parser implementation for parsing a given token sequences.
@@ -74,10 +75,11 @@ public class BaseParser<T> {
 	 * @throws ParsingException if the current token doesn't match the desired
 	 *         {@code token}
 	 */
-	public T match(final T token) {
-		if (Objects.equals(LT(1), token)) {
+	public T match(final Predicate<? super T> token) {
+		final var next = LT(1);
+		if (token.test(next)) {
 			consume();
-			return token;
+			return next;
 		} else {
 			throw new ParsingException(format(
 				"Expecting %s but found %s.",

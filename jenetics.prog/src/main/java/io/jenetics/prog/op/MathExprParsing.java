@@ -259,7 +259,9 @@ final class MathExprParsing<T, V> {
 	private TreeNode<V> unary(final Supplier<TreeNode<V>> other, final Parser<T> parser) {
 		if (_unaryOperators.contains(parser.LT(1).type())) {
 			final var token = parser.match(parser.LT(1).type());
-			return TreeNode.<V>of(_converter.apply(token, MathTokenType.UNARY_OPERATOR)).attach(other.get());
+			return TreeNode
+				.<V>of(_converter.apply(token, MathTokenType.UNARY_OPERATOR))
+				.attach(other.get());
 		} else {
 			return other.get();
 		}
