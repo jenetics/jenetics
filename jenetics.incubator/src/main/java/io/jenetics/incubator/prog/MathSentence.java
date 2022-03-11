@@ -23,11 +23,8 @@ import java.util.List;
 
 import io.jenetics.incubator.grammar.Cfg.Terminal;
 
-import io.jenetics.ext.internal.parser.Token;
-import io.jenetics.ext.internal.parser.Tokenizer;
 import io.jenetics.ext.util.Tree;
 
-import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
 
 /**
@@ -52,8 +49,9 @@ public final class MathSentence {
 	 * @return the parsed sentence
 	 */
 	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		return MathExpr.parseTree(tokenizer::next);
+		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
+		//return MathExpr.parseTree(tokenizer::next);
+		return null;
 	}
 
 }

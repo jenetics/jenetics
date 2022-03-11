@@ -23,6 +23,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
+import static io.jenetics.ext.util.FormulaParser.TokenType.FUNCTION;
+import static io.jenetics.ext.util.FormulaParser.TokenType.UNARY_OPERATOR;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.prog.op.MathTokenType.COMMA;
@@ -75,21 +77,17 @@ public final class MathExpr
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	//private static final MathExprParsing<String, Op<Double>> PARSING =
-	// MathExprParsing.of(MathExpr::toOp, MathOp.NAMES::contains);
-
-
 	private static final FormulaParser<Token<String>> FORMULA_PARSER =
 		FormulaParser.<Token<String>>builder()
 			.lparen(t -> t.type() == LPAREN)
 			.rparen(t -> t.type() == RPAREN)
 			.comma(t -> t.type() == COMMA)
+			.unaryOperators(t -> t.type() == PLUS || t.type() == MINUS)
 			.binaryOperators(ops -> ops
 				.add(11, t -> t.type() == PLUS || t.type() == MINUS)
 				.add(12, t -> t.type() == TIMES || t.type() == DIV || t.type() == MOD)
 				.add(13, t -> t.type() == POW)
 			)
-			.unaryOperators(t -> t.type() == PLUS || t.type() == MINUS)
 			.identifiers(t -> t.type() == IDENTIFIER || t.type() == NUMBER)
 			.functions(t -> MathOp.NAMES.contains(t.value()))
 			.build();
@@ -328,35 +326,19 @@ public final class MathExpr
 		final Token<String> token,
 		final TokenType type
 	) {
-		if (token.type().code() == PLUS.code()) {
-			if (type == TokenType.UNARY_OPERATOR) {
-				return MathOp.ID;
-			} else {
-				return MathOp.ADD;
-			}
-		} else if (token.type().code() == MINUS.code()) {
-			if (type == TokenType.UNARY_OPERATOR) {
-				return MathOp.NEG;
-			} else {
-				return MathOp.SUB;
-			}
-		} else if (token.type().code() == TIMES.code()) {
-			return MathOp.MUL;
-		} else if (token.type().code() == DIV.code()) {
-			return MathOp.DIV;
-		} else if (token.type().code() == MOD.code()) {
-			return MathOp.MOD;
-		} else if (token.type().code() == POW.code()) {
-			return MathOp.POW;
-		} else if (token.type().code() == NUMBER.code()) {
-			return Const.of(Double.parseDouble(token.value()));
-		} else if (MathOp.NAMES.contains(token.value())) {
-			return MathOp.toMathOp(token.value());
-		} else if (token.type().code() == IDENTIFIER.code()) {
-			return Var.of(token.value());
-		}
-
-		throw new ParsingException("Unknown token: " + token);
+		return switch ((MathTokenType)token.type()) {
+			case PLUS -> type == UNARY_OPERATOR ? MathOp.ID : MathOp.ADD;
+			case MINUS -> type == UNARY_OPERATOR ? MathOp.NEG : MathOp.SUB;
+			case TIMES -> MathOp.MUL;
+			case DIV -> MathOp.DIV;
+			case MOD -> MathOp.MOD;
+			case POW -> MathOp.POW;
+			case NUMBER -> Const.of(Double.parseDouble(token.value()));
+			case IDENTIFIER -> type == FUNCTION
+				? MathOp.toMathOp(token.value())
+				: Var.of(token.value());
+			default -> throw new ParsingException("Unknown token: " + token);
+		};
 	}
 
 
@@ -427,15 +409,11 @@ public final class MathExpr
 		return new MathExpr(tree, true);
 	}
 
-	public static <V> TreeNode<Op<Double>>
+	private static <V> Tree<Op<Double>, ?>
 	parseTree(final Supplier<Token<String>> tokens) {
 		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
 		Var.reindex(tree);
 		return tree;
-
-		//final var expr = new MathExprParser<>(tokenizer, PARSING).parse();
-		//Var.reindex(expr);
-		//return expr;
 	}
 
 	/**

@@ -50,11 +50,30 @@ import io.jenetics.ext.internal.parser.ParsingException;
  */
 public final class FormulaParser<T> {
 
+	/**
+	 * The token types the parser recognizes during the parsing process.
+	 */
 	public enum TokenType {
-		FUNCTION,
+
+		/**
+		 * Indicates an unary operator.
+		 */
 		UNARY_OPERATOR,
+
+		/**
+		 * Indicates a binary operator.
+		 */
 		BINARY_OPERATOR,
-		ATOM
+
+		/**
+		 * Indicates a function token.
+		 */
+		FUNCTION,
+
+		/**
+		 * Indicates an identifier token.
+		 */
+		IDENTIFIER
 	}
 
 	private final Predicate<? super T> _lparen;
@@ -123,9 +142,8 @@ public final class FormulaParser<T> {
 		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
-		//System.out.println(token);
 
-		if (isFun(token)) {
+		if (_functions.test(token)) {
 			parser.consume();
 			final TreeNode<V> node = TreeNode
 				.of(mapper.apply(token, TokenType.FUNCTION));
@@ -155,9 +173,9 @@ public final class FormulaParser<T> {
 	) {
 		final var token = parser.LT(1);
 
-		if (isAtom(token)) {
+		if (_identifiers.test(token)) {
 			parser.consume();
-			return TreeNode.of(mapper.apply(token, TokenType.ATOM));
+			return TreeNode.of(mapper.apply(token, TokenType.IDENTIFIER));
 		} else if (token == null) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -182,14 +200,6 @@ public final class FormulaParser<T> {
 		} else {
 			return other.get();
 		}
-	}
-
-	private boolean isFun(final T token) {
-		return _functions.test(token);
-	}
-
-	private boolean isAtom(final T token) {
-		return _identifiers.test(token) || _functions.test(token);
 	}
 
 	/**
@@ -509,7 +519,7 @@ public final class FormulaParser<T> {
 				return add(precedence, Set.of(operators)::contains);
 			}
 
-			List<? extends Predicate<? super T>> build() {
+			private List<? extends Predicate<? super T>> build() {
 				return _operations.entrySet().stream()
 					.sorted(Entry.comparingByKey())
 					.map(Entry::getValue)

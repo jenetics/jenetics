@@ -25,10 +25,10 @@ import io.jenetics.ext.internal.parser.Token;
  * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.0
- * @since 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-public enum MathTokenType implements Token.Type {
+enum MathTokenType implements Token.Type {
 	LPAREN(1),
 	RPAREN(2),
 	COMMA(3),
@@ -41,12 +41,7 @@ public enum MathTokenType implements Token.Type {
 	POW(9),
 
 	NUMBER(10),
-	IDENTIFIER(11),
-
-	UNARY_OPERATOR(12),
-	BINARY_OPERATOR(13),
-	FUN(14),
-	ATOM(15);
+	IDENTIFIER(11);
 
 	private final int _code;
 
