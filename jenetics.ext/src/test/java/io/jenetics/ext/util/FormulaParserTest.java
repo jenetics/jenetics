@@ -5,11 +5,11 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-public class FormulaTest {
+public class FormulaParserTest {
 
 	@Test
 	public void parse() {
-		final var formula = new Formula<>(
+		final var formula = new FormulaParser<>(
 			"(",
 			")",
 			",",

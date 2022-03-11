@@ -44,7 +44,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * @since !__version__!
  * @version !__version__!
  */
-public class Formula<T> {
+public class FormulaParser<T> {
 
 	/* *************************************************************************
 	 * Main class implementation.
@@ -77,7 +77,7 @@ public class Formula<T> {
 	 * @param functions predicate which tests whether a given identifier value
 	 *        represents a known function name
 	 */
-	public Formula(
+	public FormulaParser(
 		final T lparen,
 		final T rparen,
 		final T comma,
@@ -129,7 +129,7 @@ public class Formula<T> {
 	 * @param functions predicate which tests whether a given identifier value
 	 *        represents a known function name
 	 */
-	public Formula(
+	public FormulaParser(
 		final T lparen,
 		final T rparen,
 		final T comma,
