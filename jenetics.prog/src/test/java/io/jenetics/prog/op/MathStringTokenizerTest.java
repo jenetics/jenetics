@@ -19,21 +19,51 @@
  */
 package io.jenetics.prog.op;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.prog.op.MathExprTestData.EXPRESSIONS;
+import static io.jenetics.prog.op.MathExprTestData.EXPRESSIONS_TOKENS;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.prog.op.MathStringTokenizer;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathStringTokenizerTest {
 
-	@Test
-	public void number() {
-		final var value = "x*x + sin(z) - cos(x)*y*pow(z*x + y, pow((z*x + y)**pow(z*x + y, x), x))";
-		final var tokenizer = new MathStringTokenizer(value);
+	@Test(dataProvider = "expressions")
+	public void tokenize(final String expression, final List<String> tokens) {
+		final var tokenizer = new MathStringTokenizer(expression);
 
-		tokenizer.tokens().forEach(System.out::println);
+		assertThat(
+			tokenizer.tokens()
+				.map(Token::value)
+				.toList()
+		).isEqualTo(tokens);
+	}
+
+	@DataProvider
+	public Object[][] expressions() {
+		return IntStream.range(0, EXPRESSIONS.size())
+			.mapToObj(i -> new Object[] { EXPRESSIONS.get(i), EXPRESSIONS_TOKENS.get(i) })
+			.toArray(Object[][]::new);
+	}
+
+	public static void main(final String[] args) {
+		MathExprTestData.EXPRESSIONS.forEach(expr -> {
+			final var tokenizer = new MathStringTokenizer(expr);
+			final var tokens = tokenizer.tokens()
+				.map(t -> t.value() )
+				.collect(Collectors.joining("|"));
+
+			System.out.println(tokens);
+		});
 	}
 
 }
