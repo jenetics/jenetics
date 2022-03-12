@@ -77,9 +77,11 @@ import io.jenetics.ext.internal.parser.ParsingException;
  *
  * <pre>{@code
  * final FormulaParser<String> parser = FormulaParser.<String>builder()
+ *     // Structural tokens.
  *     .lparen("(")
  *     .rparen(")")
  *     .comma(",")
+ *     // Operational tokens.
  *     .unaryOperators("+", "-")
  *     .binaryOperators(ops -> ops
  *         .add(11, "+", "-")
@@ -118,8 +120,32 @@ import io.jenetics.ext.internal.parser.ParsingException;
  *     └── "x"
  * }</pre>
  * Note that the generated (parsed) tree is of type {@code Tree<String, ?>}. To
- * <em>evaluate</em> this tree, additional steps are necessary, which is also
- * beyond the scope of this parser class.
+ * <em>evaluate</em> this tree, additional steps are necessary. If you want to
+ * create an <em>executable</em> tree, you have to use the
+ * {@link #parse(Iterable, TokenConverter)} function for parsing the tokens.
+ * <p>
+ * The following code snippet shows how to create an <em>executable</em> AST
+ * from a token list. The {@code MathExpr} class in the {@code io.jenetics.prog}
+ * module uses a similar {@link TokenConverter}.
+ * <pre>{@code
+ * final Tree<Op<Double>, ?> tree = formula.parse(
+ *     tokens,
+ *     (token, type) -> switch (token) {
+ *         case "+" -> type == TokenType.UNARY_OPERATOR ? MathOp.ID : MathOp.ADD;
+ *         case "-" -> type == TokenType.UNARY_OPERATOR ? MathOp.NEG : MathOp.SUB;
+ *         case "*" -> MathOp.MUL;
+ *         case "/" -> MathOp.DIV;
+ *         case "^", "**", "pow" -> MathOp.POW;
+ *         case "sin" -> MathOp.SIN;
+ *         case "cos" -> MathOp.COS;
+ *         default -> type == TokenType.IDENTIFIER
+ *             ? Var.of(token);
+ *             : throw new IllegalArgumentException("Unknown token: " + token);
+ *     }
+ * );
+ * }</pre>
+ *
+ *
  *
  * @param <T> the token type used as input for the parser
  *
@@ -179,6 +205,7 @@ public final class FormulaParser<T> {
 		V convert(final T token, final TokenType type);
 	}
 
+
 	private final Predicate<? super T> _lparen;
 	private final Predicate<? super T> _rparen;
 	private final Predicate<? super T> _comma;
@@ -186,6 +213,7 @@ public final class FormulaParser<T> {
 	private final Predicate<? super T> _identifiers;
 	private final Predicate<? super T> _functions;
 
+	// The processed binary operators.
 	private final Term<T> _term;
 
 	/**
@@ -307,12 +335,16 @@ public final class FormulaParser<T> {
 
 	/**
 	 * Parses the given token sequence according {@code this} formula definition.
+	 * If the given {@code tokens} supplier returns null, no further token is
+	 * available.
 	 *
 	 * @param tokens the tokens which forms the formula
 	 * @param mapper the mapper function which maps the token type to the parse
 	 *        tree value type
 	 * @return the parsed formula as tree
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given {@code tokens} can't be
+	 *         parsed
 	 */
 	public <V> TreeNode<V> parse(
 		final Supplier<? extends T> tokens,
@@ -326,10 +358,14 @@ public final class FormulaParser<T> {
 
 	/**
 	 * Parses the given token sequence according {@code this} formula definition.
+	 * If the given {@code tokens} supplier returns null, no further token is
+	 * available.
 	 *
 	 * @param tokens the tokens which forms the formula
 	 * @return the parsed formula as tree
 	 * @throws NullPointerException if the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given {@code tokens} can't be
+	 *         parsed
 	 */
 	public TreeNode<T> parse(final Supplier<? extends T> tokens) {
 		return parse(tokens, (token, type) -> token);
@@ -343,6 +379,8 @@ public final class FormulaParser<T> {
 	 *        tree value type
 	 * @return the parsed formula as tree
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given {@code tokens} can't be
+	 *         parsed
 	 */
 	public <V> TreeNode<V> parse(
 		final Iterable<? extends T> tokens,
@@ -358,6 +396,8 @@ public final class FormulaParser<T> {
 	 * @param tokens the tokens which forms the formula
 	 * @return the parsed formula as tree
 	 * @throws NullPointerException if the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given {@code tokens} can't be
+	 *         parsed
 	 */
 	public TreeNode<T> parse(final Iterable<? extends T> tokens) {
 		return parse(tokens, (token, type) -> token);
