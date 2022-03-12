@@ -30,8 +30,8 @@ import static java.util.Objects.requireNonNull;
  * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 public record Token<V>(Type type, V value) {
 

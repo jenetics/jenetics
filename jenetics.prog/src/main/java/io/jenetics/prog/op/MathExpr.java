@@ -68,7 +68,7 @@ import io.jenetics.ext.util.TreeNode;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 4.1
- * @version !__version__!
+ * @version 7.1
  */
 public final class MathExpr
 	implements Function<Double[], Double>, Serializable

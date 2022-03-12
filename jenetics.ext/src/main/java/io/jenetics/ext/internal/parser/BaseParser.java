@@ -31,8 +31,8 @@ import java.util.function.Predicate;
  * @param <T> the token type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 public class BaseParser<T> {
 

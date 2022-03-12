@@ -153,8 +153,8 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 public final class FormulaParser<T> {
 

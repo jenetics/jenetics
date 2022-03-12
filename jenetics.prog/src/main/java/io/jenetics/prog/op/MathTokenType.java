@@ -25,8 +25,8 @@ import io.jenetics.ext.internal.parser.Token;
  * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.1
+ * @since 7.1
  */
 enum MathTokenType implements Token.Type {
 	LPAREN(1),
