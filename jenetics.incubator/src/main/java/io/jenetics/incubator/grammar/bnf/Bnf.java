@@ -21,12 +21,13 @@ package io.jenetics.incubator.grammar.bnf;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
-import static io.jenetics.incubator.parser.CharSequenceTokenizer.isAlphabetic;
+import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic;
 
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.parser.ParsingException;
+
+import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
  * Helper methods for parsing and formatting <em>context-free</em> grammars in

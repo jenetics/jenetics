@@ -26,7 +26,8 @@ import java.util.random.RandomGenerator;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.grammar.RandomCfg;
-import io.jenetics.incubator.parser.ParsingException;
+
+import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

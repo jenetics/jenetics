@@ -17,41 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.ext.internal.parser;
 
-import java.util.List;
-
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+import java.io.Serial;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
+ * Exception thrown in the case of a parse error.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class MathSentence {
+public final class ParsingException extends IllegalArgumentException {
 
-	private MathSentence() {
+	@Serial
+	private static final long serialVersionUID = 1;
+
+	public ParsingException(final String message) {
+		super(message);
 	}
 
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
+	/*
+	@Override
+	public synchronized Throwable fillInStackTrace() {
+		return this;
+	}
 	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
-	}
 
 }

@@ -17,41 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.prog.op;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.List;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
-
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class MathSentence {
-
-	private MathSentence() {
+public final class CSV {
+	private CSV() {
 	}
 
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
-	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+	public static List<String> read(final InputStream in) {
+		try (in) {
+			final var value = new String(in.readAllBytes());
+			return Arrays.asList(value.split("\n"));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
 	}
 
 }

@@ -35,7 +35,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
 
-import io.jenetics.ext.internal.Randoms;
+import io.jenetics.ext.internal.util.Randoms;
 
 /**
  * Numeric chromosome implementation which holds an arbitrary sized integer

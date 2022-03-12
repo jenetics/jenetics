@@ -17,15 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
+package  io.jenetics.prog.op;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
+import static io.jenetics.ext.util.FormulaParser.TokenType.FUNCTION;
+import static io.jenetics.ext.util.FormulaParser.TokenType.UNARY_OPERATOR;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.prog.op.Numbers.box;
+import static io.jenetics.prog.op.MathTokenType.COMMA;
+import static io.jenetics.prog.op.MathTokenType.DIV;
+import static io.jenetics.prog.op.MathTokenType.IDENTIFIER;
+import static io.jenetics.prog.op.MathTokenType.LPAREN;
+import static io.jenetics.prog.op.MathTokenType.MINUS;
+import static io.jenetics.prog.op.MathTokenType.MOD;
+import static io.jenetics.prog.op.MathTokenType.NUMBER;
+import static io.jenetics.prog.op.MathTokenType.PLUS;
+import static io.jenetics.prog.op.MathTokenType.POW;
+import static io.jenetics.prog.op.MathTokenType.RPAREN;
+import static io.jenetics.prog.op.MathTokenType.TIMES;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -36,45 +48,49 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.Token;
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.FormulaParser;
+import io.jenetics.ext.util.FormulaParser.TokenType;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class allows you to create a math operation tree from an expression
- * string. The expression string may only contain functions/operations defined
- * in {@link MathOp}.
- *
- * <pre>{@code
- * final MathExpr expr = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
- * final double result = expr.eval(4.32);
- * assert result == 31.170600453465315;
- *
- * assert 12.0 == MathExpr.eval("3*4");
- * assert 24.0 == MathExpr.eval("3*4*x", 2);
- * assert 28.0 == MathExpr.eval("3*4*x + y", 2, 4);
- * }</pre>
- *
- * @see MathOp
+ * Contains methods for parsing mathematical expression.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
  * @since 4.1
+ * @version !__version__!
  */
 public final class MathExpr
-	implements
-		Function<Double[], Double>,
-		Serializable
+	implements Function<Double[], Double>, Serializable
 {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
+
+	private static final FormulaParser<Token<String>> FORMULA_PARSER =
+		FormulaParser.<Token<String>>builder()
+			.lparen(t -> t.type() == LPAREN)
+			.rparen(t -> t.type() == RPAREN)
+			.comma(t -> t.type() == COMMA)
+			.unaryOperators(t -> t.type() == PLUS || t.type() == MINUS)
+			.binaryOperators(ops -> ops
+				.add(11, t -> t.type() == PLUS || t.type() == MINUS)
+				.add(12, t -> t.type() == TIMES || t.type() == DIV || t.type() == MOD)
+				.add(13, t -> t.type() == POW)
+			)
+			.identifiers(t -> t.type() == IDENTIFIER || t.type() == NUMBER)
+			.functions(t -> MathOp.NAMES.contains(t.value()))
+			.build();
 
 	/**
 	 * This tree-rewriter rewrites constant expressions to its single value.
@@ -298,6 +314,40 @@ public final class MathExpr
 		return simplify(REWRITER);
 	}
 
+	private static Double[] box(final double... values) {
+		final Double[] result = new Double[values.length];
+		for (int i = values.length; --i >= 0;) {
+			result[i] = values[i];
+		}
+		return result;
+	}
+
+	private static Op<Double> toOp(
+		final Token<String> token,
+		final TokenType type
+	) {
+		return switch ((MathTokenType)token.type()) {
+			case PLUS -> type == UNARY_OPERATOR ? MathOp.ID : MathOp.ADD;
+			case MINUS -> type == UNARY_OPERATOR ? MathOp.NEG : MathOp.SUB;
+			case TIMES -> MathOp.MUL;
+			case DIV -> MathOp.DIV;
+			case MOD -> MathOp.MOD;
+			case POW -> MathOp.POW;
+			case NUMBER -> Const.of(Double.parseDouble(token.value()));
+			case IDENTIFIER -> {
+				if (type == FUNCTION) {
+					yield MathOp.toMathOp(token.value());
+				} else {
+					yield switch (token.value()) {
+						case "π", "PI" -> MathOp.PI;
+						default -> Var.of(token.value());
+					};
+				}
+			}
+			default -> throw new ParsingException("Unknown token: " + token);
+		};
+	}
+
 
 	/* *************************************************************************
 	 *  Java object serialization
@@ -326,7 +376,6 @@ public final class MathExpr
 		in.readFully(data);
 		return parse(new String(data, UTF_8));
 	}
-
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -365,6 +414,13 @@ public final class MathExpr
 		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
 		return new MathExpr(tree, true);
+	}
+
+	private static <V> Tree<Op<Double>, ?>
+	parseTree(final Supplier<Token<String>> tokens) {
+		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
+		Var.reindex(tree);
+		return tree;
 	}
 
 	/**
@@ -406,8 +462,12 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static TreeNode<Op<Double>> parseTree(final String expression) {
-		return MathExprParser.parse(expression);
+	public static Tree<Op<Double>, ?> parseTree(final String expression) {
+		final var tokenizer = new MathStringTokenizer(expression);
+		return parseTree(() -> {
+			var next = tokenizer.next();
+			return next == null || next.isEof() ? null : next;
+		});
 	}
 
 	/**

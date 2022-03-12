@@ -17,41 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.ext.internal.util;
 
-import java.util.List;
+import java.util.Spliterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class MathSentence {
+public class GeneratorSpliteratorTest {
 
-	private MathSentence() {
-	}
+	@Test
+	public void generator1() {
+		final Spliterator<Integer> spliterator =
+			new GeneratorSpliterator<>(
+				i -> {
+					final int s = i == null ? 0 : i;
+					return Stream.of(s + 1, s + 2, s + 3).spliterator();
+				}
+			);
 
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
-	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+		final int[] array = StreamSupport.stream(spliterator, false)
+			.limit(10)
+			.mapToInt(Integer::intValue)
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	}
 
 }

@@ -17,41 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
-
-import java.util.List;
-
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+package io.jenetics.ext.internal.util;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @version 5.0
+ * @since 5.0
  */
-public final class MathSentence {
-
-	private MathSentence() {
+public final class Names {
+	private Names() {
 	}
 
 	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
+	 * Checks whether the given {@code name} is a valid (Java) identifier.
 	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
+	 * @param name the name to check
+	 * @return {@code true} if the given {@code name} is a valid identifier,
+	 *         {@code false} otherwise
 	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+	public static boolean isIdentifier(final String name) {
+		if (name.isEmpty()) {
+			return false;
+		}
+		int cp = name.codePointAt(0);
+		if (!Character.isJavaIdentifierStart(cp)) {
+			return false;
+		}
+		for (int i = Character.charCount(cp);
+			 i < name.length();
+			 i += Character.charCount(cp))
+		{
+			cp = name.codePointAt(i);
+			if (!Character.isJavaIdentifierPart(cp)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

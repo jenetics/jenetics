@@ -17,41 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.prog.op;
 
-import java.util.List;
+import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.MathStringTokenizer;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-public final class MathSentence {
+public class MathExprParserTest {
 
-	private MathSentence() {
-	}
-
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
-	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+	@Test
+	public void parsing() {
+		final var string = "3 + -5 * -7^43**43+98 -(+4) - -sin(x) - cos(3*y, -4, -x)";
+		final var tokenizer = new MathStringTokenizer(string);
+//		final var parser = new MathExprParser<>(
+//			tokenizer,
+//			Set.of("x", "y"),
+//			Set.of("sin", "cos")
+//		);
+//
+//		//new MathExprTokenizer(string).tokens().forEach(System.out::println);
+//
+//		final var expr = parser.parse();
+//		System.out.println(TreeFormatter.TREE.format(expr));
+//		System.out.println(expr);
 	}
 
 }

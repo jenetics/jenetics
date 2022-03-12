@@ -17,41 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.prog.op;
 
-import java.util.List;
-
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+import io.jenetics.ext.internal.parser.Token;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
+ * Token types as they are used in <em>mathematical</em> (arithmetic) expressions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-public final class MathSentence {
+enum MathTokenType implements Token.Type {
+	LPAREN(1),
+	RPAREN(2),
+	COMMA(3),
 
-	private MathSentence() {
+	PLUS(4),
+	MINUS(5),
+	TIMES(6),
+	DIV(7),
+	MOD(8),
+	POW(9),
+
+	NUMBER(10),
+	IDENTIFIER(11);
+
+	private final int _code;
+
+	MathTokenType(final int code) {
+		_code = code;
 	}
 
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
-	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+	@Override
+	public int code() {
+		return _code;
 	}
 
 }

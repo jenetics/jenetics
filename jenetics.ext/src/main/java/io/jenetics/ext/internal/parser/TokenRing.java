@@ -17,41 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.prog;
+package io.jenetics.ext.internal.parser;
 
-import java.util.List;
-
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.Op;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
- * Helper method for converting a <em>generated</em> mathematical expression,
- * which is given in the form a list of terminal symbols, into an AST of
- * mathematical operations.
+ * Ring-buffer for storing lookup tokens.
+ *
+ * @param <V> the token value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-public final class MathSentence {
+final class TokenRing<V> {
+	private final Object[] _tokens;
 
-	private MathSentence() {
+	private int _pos = 0;
+
+	TokenRing(final int k) {
+		_tokens = new Object[k];
 	}
 
-	/**
-	 * Converts the given <em>sentence</em> into an AST of mathematical
-	 * operations.
-	 *
-	 * @param sentence the sentence to parse
-	 * @return the parsed sentence
-	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
-		//return MathExpr.parseTree(tokenizer::next);
-		return null;
+	void add(final V token) {
+		_tokens[_pos] = token;
+		_pos = (_pos + 1)%_tokens.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public V LT(final int i) {
+		return (V)_tokens[(_pos + i - 1)%_tokens.length];
+	}
+
+	@Override
+	public String toString() {
+		return IntStream.rangeClosed(1, _tokens.length)
+			.mapToObj(i -> i + ":'" + LT(i) + "'")
+			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }
