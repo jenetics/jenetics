@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -159,6 +158,27 @@ public final class FormulaParser<T> {
 		IDENTIFIER
 	}
 
+	/**
+	 * Conversion function which is used for converting tokens into another
+	 * type.
+	 *
+	 * @param <T> the token type
+	 * @param <V> the converted value type
+	 */
+	@FunctionalInterface
+	public interface TokenConverter<T, V> {
+
+		/**
+		 * Convert the given {@code token} into another value. The conversion
+		 * can use the token type, recognized during the parsing process.
+		 *
+		 * @param token the token value to convert
+		 * @param type the token type, recognized during the parsing process
+		 * @return the converted value
+		 */
+		V convert(final T token, final TokenType type);
+	}
+
 	private final Predicate<? super T> _lparen;
 	private final Predicate<? super T> _rparen;
 	private final Predicate<? super T> _comma;
@@ -207,7 +227,7 @@ public final class FormulaParser<T> {
 			@Override
 			<V> TreeNode<V> term(
 				final BaseParser<T> parser,
-				final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+				final TokenConverter<? super T, ? extends V> mapper
 			) {
 				return function(parser, mapper);
 			}
@@ -222,14 +242,14 @@ public final class FormulaParser<T> {
 
 	private <V> TreeNode<V> function(
 		final BaseParser<T> parser,
-		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
 
 		if (_functions.test(token)) {
 			parser.consume();
 			final TreeNode<V> node = TreeNode
-				.of(mapper.apply(token, TokenType.FUNCTION));
+				.of(mapper.convert(token, TokenType.FUNCTION));
 
 			parser.match(_lparen);
 			node.attach(_term.expr(parser, mapper));
@@ -252,13 +272,13 @@ public final class FormulaParser<T> {
 
 	private <V> TreeNode<V> atom(
 		final BaseParser<T> parser,
-		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
 
 		if (_identifiers.test(token)) {
 			parser.consume();
-			return TreeNode.of(mapper.apply(token, TokenType.IDENTIFIER));
+			return TreeNode.of(mapper.convert(token, TokenType.IDENTIFIER));
 		} else if (token == null) {
 			throw new ParsingException("Unexpected end of input.");
 		} else {
@@ -271,14 +291,14 @@ public final class FormulaParser<T> {
 	private <V> TreeNode<V> unary(
 		final Supplier<TreeNode<V>> other,
 		final BaseParser<T> parser,
-		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
 
 		if (_uops.test(token)) {
 			parser.consume();
 			return TreeNode
-				.<V>of(mapper.apply(token, TokenType.UNARY_OPERATOR))
+				.<V>of(mapper.convert(token, TokenType.UNARY_OPERATOR))
 				.attach(other.get());
 		} else {
 			return other.get();
@@ -296,7 +316,7 @@ public final class FormulaParser<T> {
 	 */
 	public <V> TreeNode<V> parse(
 		final Supplier<? extends T> tokens,
-		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		requireNonNull(tokens);
 		requireNonNull(mapper);
@@ -326,7 +346,7 @@ public final class FormulaParser<T> {
 	 */
 	public <V> TreeNode<V> parse(
 		final Iterable<? extends T> tokens,
-		final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var it = tokens.iterator();
 		return parse(() -> it.hasNext() ? it.next() : null, mapper);
@@ -370,19 +390,19 @@ public final class FormulaParser<T> {
 		<V> TreeNode<V> op(
 			final TreeNode<V> expr,
 			final BaseParser<T> parser,
-			final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return expr;
 		}
 
 		abstract <V> TreeNode<V> term(
 			final BaseParser<T> parser,
-			final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+			final TokenConverter<? super T, ? extends V> mapper
 		);
 
 		<V> TreeNode<V> expr(
 			final BaseParser<T> parser,
-			final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return op(term(parser, mapper), parser, mapper);
 		}
@@ -413,7 +433,7 @@ public final class FormulaParser<T> {
 		<V> TreeNode<V> op(
 			final TreeNode<V> expr,
 			final BaseParser<T> parser,
-			final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			var result = expr;
 
@@ -422,7 +442,7 @@ public final class FormulaParser<T> {
 				parser.consume();
 
 				final TreeNode<V> node = TreeNode
-					.<V>of(mapper.apply(token, TokenType.BINARY_OPERATOR))
+					.<V>of(mapper.convert(token, TokenType.BINARY_OPERATOR))
 					.attach(expr)
 					.attach(term(parser, mapper));
 
@@ -434,7 +454,7 @@ public final class FormulaParser<T> {
 		@Override
 		<V> TreeNode<V> term(
 			final BaseParser<T> parser,
-			final BiFunction<? super T, ? super TokenType, ? extends V> mapper
+			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return _next.op(_next.term(parser, mapper), parser, mapper);
 		}
