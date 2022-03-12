@@ -36,10 +36,93 @@ import io.jenetics.ext.internal.parser.BaseParser;
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
- * General parser <em>configuration</em> of mathematical expressions, aka
- * formulas, parser. The input for the parser is a sequence of tokens.
+ * This class allows you to convert a sequence of <em>tokens</em>, which
+ * represents some kind of (mathematical) formula, into a tree structure. To do
+ * this, it is assumed that the given tokens can be categorised. The two main
+ * categories are <em>structural</em> tokens and <em>operational</em> tokens.
  *
- * @param <T> the token value type used as input for the parser
+ * <p><b>Structural tokens</b></p>
+ * Structural tokens are used to influence the hierarchy of the parsed tokens
+ * and are also part of function definitions. This kind of tokens will not be
+ * part of the generated tree representation.
+ * <ol>
+ *     <li><em>lparen</em>: Represents left parentheses, which starts
+ *     sub-trees or opens function argument lists.</li>
+ *     <li><em>rparen</em>: Represents right parentheses, which closes
+ *     sub-trees or function argument lists. <em>lparen</em> and
+ *     <em>rparen</em> must be balanced.</li>
+ *     <li><em>comma</em>: Separator token for function arguments.</li>
+ * </ol>
+ *
+ * <p><b>Operational tokens</b></p>
+ * Operational tokens define the actual <em>behaviour</em> of the created tree.
+ * <ol>
+ *     <li><em>identifier</em>: This kind of tokens usually represents variable
+ *     names or numbers.</li>
+ *     <li><em>function</em>: Function tokens represents identifiers for
+ *     functions. Valid functions have the following form: {@code 'fun' 'lparen'
+ *     arg ['comma' args]* 'rparen'}</li>
+ *     <li><em>binary operator</em>: Binary operators are defined in infix
+ *     order and have a precedence. Typical examples are the arithmetic
+ *     operators '+' and '*', where the '*' have a higher precedence than '+'.</li>
+ *     <li><em>unary operator</em>: Unary operators are prefix operators. A
+ *     typical example is the arithmetic negation operator '-'. Unary
+ *     operators have all the same precedence, which is higher than the
+ *     precedence of all binary operators.</li>
+ * </ol>
+ *
+ * This class is only responsible for the parsing step. The tokenization must
+ * be implemented separately. Another possible token source would be a generating
+ * grammar, where the output is already a list of tokens (aka sentence). The
+ * following example parser can be used to parse arithmetic expressions.
+ *
+ * <pre>{@code
+ * final FormulaParser<String> parser = FormulaParser.<String>builder()
+ *     .lparen("(")
+ *     .rparen(")")
+ *     .comma(",")
+ *     .unaryOperators("+", "-")
+ *     .binaryOperators(ops -> ops
+ *         .add(11, "+", "-")
+ *         .add(12, "*", "/")
+ *         .add(14, "^", "**"))
+ *     .identifiers("x", "y", "z")
+ *     .functions("pow", "sin", "cos")
+ *     .build();
+ * }</pre>
+ * This parser allows you to parse the following token list
+ * <pre>{@code
+ * final List<String> tokens = List.of(
+ *     "x", "*", "x", "+", "sin", "(", "z", ")", "-", "cos", "(", "x",
+ *     ")", "+", "y", "/", "z", "-", "pow", "(", "z", ",", "x", ")"
+ * );
+ * final Tree<String, ?> tree = parser.parse(tokens);
+ * }</pre>
+ * which will result in the following parsed tree:
+ * <pre>{@code
+ * "-"
+ * ├── "+"
+ * │   ├── "-"
+ * │   │   ├── "+"
+ * │   │   │   ├── "*"
+ * │   │   │   │   ├── "x"
+ * │   │   │   │   └── "x"
+ * │   │   │   └── "sin"
+ * │   │   │       └── "z"
+ * │   │   └── "cos"
+ * │   │       └── "x"
+ * │   └── "/"
+ * │       ├── "y"
+ * │       └── "z"
+ * └── "pow"
+ *     ├── "z"
+ *     └── "x"
+ * }</pre>
+ * Note that the generated (parsed) tree is of type {@code Tree<String, ?>}. To
+ * <em>evaluate</em> this tree, additional steps are necessary, which is also
+ * beyond the scope of this parser class.
+ *
+ * @param <T> the token type used as input for the parser
  *
  * @implNote
  * This class is immutable and thread-safe.
@@ -260,6 +343,12 @@ public final class FormulaParser<T> {
 		return parse(tokens, (token, type) -> token);
 	}
 
+	/**
+	 * Return a new builder class for building new formula parsers.
+	 *
+	 * @param <T> the token type
+	 * @return a new formula parser builder
+	 */
 	public static <T> Builder<T> builder() {
 		return new Builder<>();
 	}
@@ -380,6 +469,11 @@ public final class FormulaParser<T> {
 	 * ************************************************************************/
 
 
+	/**
+	 * Builder for building new {@link FormulaParser} instances.
+	 *
+	 * @param <T> the token type
+	 */
 	public static final class Builder<T> {
 
 		private Predicate<? super T> _lparen = token -> false;
@@ -394,89 +488,240 @@ public final class FormulaParser<T> {
 		private Builder() {
 		}
 
+		/**
+		 * Set the predicate which defines {@code lparen} tokens. If the given
+		 * predicate returns {@code true} for a token, it is treated as
+		 * <em>lparen</em>.
+		 *
+		 * @param lparen the {@code lparen} token
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code lparen} is {@code null}
+		 */
 		public Builder<T> lparen(final Predicate<? super T> lparen) {
 			_lparen = requireNonNull(lparen);
 			return this;
 		}
 
+		/**
+		 * Set the <em>prototype</em> for the {@code lparen} token. A given
+		 * token is treated as  {@code lparen} if {@code Objects.equals(token, lparen)}
+		 * returns {@code true}.
+		 *
+		 * @param lparen the {@code lparen} prototype
+		 * @return {@code this} builder, for method chaining
+		 */
 		public Builder<T> lparen(final T lparen) {
 			return lparen(token -> Objects.equals(token, lparen));
 		}
 
+		/**
+		 * Set the predicate which defines {@code rparen} tokens. If the given
+		 * predicate returns {@code true} for a token, it is treated as
+		 * <em>rparen</em>.
+		 *
+		 * @param rparen the {@code rparen} token
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code rparen} is {@code null}
+		 */
 		public Builder<T> rparen(final Predicate<? super T> rparen) {
 			_rparen = requireNonNull(rparen);
 			return this;
 		}
 
+		/**
+		 * Set the <em>prototype</em> for the {@code rparen} token. A given
+		 * token is treated as  {@code rparen} if {@code Objects.equals(token, rparen)}
+		 * returns {@code true}.
+		 *
+		 * @param rparen the {@code rparen} prototype
+		 * @return {@code this} builder, for method chaining
+		 */
 		public Builder<T> rparen(final T rparen) {
 			return rparen(token -> Objects.equals(token, rparen));
 		}
 
+		/**
+		 * Set the predicate which defines {@code comma} tokens. If the given
+		 * predicate returns {@code true} for a token, it is treated as
+		 * <em>comma</em>.
+		 *
+		 * @param comma the {@code comma} token
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code comma} is {@code null}
+		 */
 		public Builder<T> comma(final Predicate<? super T> comma) {
 			_comma = requireNonNull(comma);
 			return this;
 		}
 
+		/**
+		 * Set the <em>prototype</em> for the {@code comma} token. A given
+		 * token is treated as  {@code comma} if {@code Objects.equals(token, comma)}
+		 * returns {@code true}.
+		 *
+		 * @param comma the {@code comma} prototype
+		 * @return {@code this} builder, for method chaining
+		 */
 		public Builder<T> comma(final T comma) {
 			return comma(token -> Objects.equals(token, comma));
 		}
 
-		public Builder<T> unaryOperators(final Predicate<? super T> operators) {
-			_uops = requireNonNull(operators);
+		/**
+		 * Set the predicate which defines the unary operator tokens. If the
+		 * given predicate returns {@code true} for a token, it is treated as
+		 * unary operator.
+		 *
+		 * @param ops the {@code comma} token
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code ops} is {@code null}
+		 */
+		public Builder<T> unaryOperators(final Predicate<? super T> ops) {
+			_uops = requireNonNull(ops);
 			return this;
 		}
 
-		public Builder<T> unaryOperators(final Set<? extends T> operators) {
-			return unaryOperators(Set.copyOf(operators)::contains);
+		/**
+		 * Set all unary operator tokens.
+		 *
+		 * @param ops the unary operator tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code ops} is {@code null}
+		 */
+		public Builder<T> unaryOperators(final Set<? extends T> ops) {
+			return unaryOperators(Set.copyOf(ops)::contains);
 		}
 
+		/**
+		 * Set all unary operator tokens.
+		 *
+		 * @param ops the unary operator tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code ops} is {@code null}
+		 */
 		@SafeVarargs
-		public final Builder<T> unaryOperators(final T... operators) {
-			return unaryOperators(Set.of(operators));
+		public final Builder<T> unaryOperators(final T... ops) {
+			return unaryOperators(Set.of(ops));
 		}
 
-		public Builder<T>
-		binaryOperators(final List<? extends Predicate<? super T>> operators) {
-			_bops = List.copyOf(operators);
+		/**
+		 * Set the list of predicates which defines the binary ops. The
+		 * predicate indexes of the list represents the precedence of the binary
+		 * ops. {@code ops.get(0)} has the lowest precedence and
+		 * {@code ops.get(ops.size() - 1)} has the highest precedence
+		 *
+		 * @param ops the predicates defining the binary operator tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code ops} is {@code null}
+		 */
+		public Builder<T> binaryOperators(final List<? extends Predicate<? super T>> ops) {
+			_bops = List.copyOf(ops);
 			return this;
 		}
 
-		public Builder<T>
-		binaryOperators(final Consumer<? super BinaryOperators<T>> operators) {
-			final var builder = new BinaryOperators<T>();
-			operators.accept(builder);
+		/**
+		 * Set the list of predicates which defines the binary ops. The
+		 * predicate indexes of the list represents the precedence of the binary
+		 * ops. {@code ops.get(0)} has the lowest precedence and
+		 * {@code ops.get(ops.size() - 1)} has the highest precedence
+		 *
+		 * @param ops the predicates defining the binary operator tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code ops} is {@code null}
+		 */
+		@SafeVarargs
+		public final Builder<T> binaryOperators(final Predicate<? super T>... ops) {
+			_bops = List.of(ops);
+			return this;
+		}
+
+		/**
+		 * Method for defining the binary operators and its precedence.
+		 *
+		 * @param ops the predicates defining the binary operator tokens
+		 * @return {@code this} builder, for method chaining
+		 */
+		public Builder<T> binaryOperators(final Consumer<? super Bops<T>> ops) {
+			final var builder = new Bops<T>();
+			ops.accept(builder);
 			_bops = builder.build();
 			return this;
 		}
 
+		/**
+		 * Set the predicate which defines identifier tokens.
+		 *
+		 * @param identifiers the identifier predicate
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code identifiers} is {@code null}
+		 */
 		public Builder<T> identifiers(final Predicate<? super T> identifiers) {
 			_identifiers = requireNonNull(identifiers);
 			return this;
 		}
 
+		/**
+		 * Set all identifier tokens.
+		 *
+		 * @param identifiers the identifier tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code identifiers} is {@code null}
+		 */
 		public Builder<T> identifiers(final Set<? extends T> identifiers) {
 			return identifiers(Set.copyOf(identifiers)::contains);
 		}
 
+		/**
+		 * Set all identifier tokens.
+		 *
+		 * @param identifiers the identifier tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code identifiers} is {@code null}
+		 */
 		@SafeVarargs
 		public final Builder<T> identifiers(final T... identifiers) {
 			return identifiers(Set.of(identifiers));
 		}
 
+		/**
+		 * Set the predicate which defines function tokens.
+		 *
+		 * @param functions the function predicate
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code functions} is {@code null}
+		 */
 		public Builder<T> functions(final Predicate<? super T> functions) {
 			_functions = requireNonNull(functions);
 			return this;
 		}
 
+		/**
+		 * Set all functions tokens.
+		 *
+		 * @param functions the functions tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code functions} is {@code null}
+		 */
 		public Builder<T> functions(final Set<? extends T> functions) {
 			return functions(Set.copyOf(functions)::contains);
 		}
 
+		/**
+		 * Set all functions tokens.
+		 *
+		 * @param functions the functions tokens
+		 * @return {@code this} builder, for method chaining
+		 * @throws NullPointerException if the {@code functions} is {@code null}
+		 */
 		@SafeVarargs
 		public final Builder<T> functions(final T... functions) {
 			return functions(Set.of(functions));
 		}
 
+		/**
+		 * Create a new formula parser with the defined values.
+		 *
+		 * @return a new formula parser
+		 */
 		public FormulaParser<T> build() {
 			return new FormulaParser<>(
 				_lparen,
@@ -489,13 +734,25 @@ public final class FormulaParser<T> {
 			);
 		}
 
-		public static final class BinaryOperators<T> {
+		/**
+		 * Builder class for building binary operators with its precedence.
+		 *
+		 * @param <T> the token type
+		 */
+		public static final class Bops<T> {
 			private final Map<Integer, Predicate<? super T>> _operations = new HashMap<>();
 
-			private BinaryOperators() {
+			private Bops() {
 			}
 
-			public BinaryOperators<T> add(
+			/**
+			 * Add a new operator predicate with its precedence.
+			 *
+			 * @param precedence the precedence of the operators
+			 * @param operators the operators predicate
+			 * @return {@code this} builder, for method chaining
+			 */
+			public Bops<T> add(
 				final int precedence,
 				final Predicate<? super T> operators
 			) {
@@ -511,8 +768,15 @@ public final class FormulaParser<T> {
 				return this;
 			}
 
+			/**
+			 * Add a new operator tokens with its precedence.
+			 *
+			 * @param precedence the precedence of the operators
+			 * @param operators the operators
+			 * @return {@code this} builder, for method chaining
+			 */
 			@SafeVarargs
-			public final BinaryOperators<T> add(
+			public final Bops<T> add(
 				final int precedence,
 				final T... operators
 			) {
