@@ -334,9 +334,16 @@ public final class MathExpr
 			case MOD -> MathOp.MOD;
 			case POW -> MathOp.POW;
 			case NUMBER -> Const.of(Double.parseDouble(token.value()));
-			case IDENTIFIER -> type == FUNCTION
-				? MathOp.toMathOp(token.value())
-				: Var.of(token.value());
+			case IDENTIFIER -> {
+				if (type == FUNCTION) {
+					yield MathOp.toMathOp(token.value());
+				} else {
+					yield switch (token.value()) {
+						case "π", "PI" -> MathOp.PI;
+						default -> Var.of(token.value());
+					};
+				}
+			}
 			default -> throw new ParsingException("Unknown token: " + token);
 		};
 	}
