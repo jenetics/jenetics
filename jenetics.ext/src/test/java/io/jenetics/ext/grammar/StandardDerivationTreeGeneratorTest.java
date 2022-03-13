@@ -43,7 +43,7 @@ public class StandardDerivationTreeGeneratorTest {
 		final var random = new Random(seed);
 
 		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random), 100).stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 
 		System.out.println(sentence);
@@ -55,7 +55,7 @@ public class StandardDerivationTreeGeneratorTest {
 			//.map(Symbol::value);
 
 
-		System.out.println(TreeFormatter.TREE.format(tree.map(Symbol::value)));
+		System.out.println(TreeFormatter.TREE.format(tree.map(Symbol::name)));
 
 		/*
 		final var bout = new ByteArrayOutputStream();
@@ -70,7 +70,7 @@ public class StandardDerivationTreeGeneratorTest {
 		final TreeNode<Symbol> simplified = TreeNode.of();
 		copy(tree, simplified, StandardDerivationTreeGeneratorTest::isImportant);
 
-		System.out.println(TreeFormatter.TREE.format(simplified.map(s -> s != null ? s.value() : "<null>")));
+		System.out.println(TreeFormatter.TREE.format(simplified.map(s -> s != null ? s.name() : "<null>")));
 	}
 
 	private static void copy(
@@ -89,7 +89,7 @@ public class StandardDerivationTreeGeneratorTest {
 	}
 
 	private static boolean isImportant(final Symbol symbol) {
-		final var value = symbol.value();
+		final var value = symbol.name();
 		return !"(".equals(value) && !")".equals(value) && !",".equals(value);
 	}
 

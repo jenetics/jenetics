@@ -94,25 +94,25 @@ public record Cfg(
 	public sealed interface Symbol {
 
 		/**
-		 * Return the value of the symbol.
+		 * Return the name of the symbol.
 		 *
-		 * @return the value of the symbol
+		 * @return the name of the symbol
 		 */
-		String value();
+		String name();
 	}
 
 	/**
 	 * Represents the non-terminal symbols of the grammar ({@code V}).
 	 */
-	public record NonTerminal(String value) implements Symbol {
+	public record NonTerminal(String name) implements Symbol {
 
 		/**
-		 * @param value the value of the non-terminal symbol
-		 * @throws IllegalArgumentException if the given {@code value} is not
+		 * @param name the name of the non-terminal symbol
+		 * @throws IllegalArgumentException if the given {@code name} is not
 		 *         a valid <em>non-terminal</em> name
 		 */
 		public NonTerminal {
-			if (value.isEmpty()) {
+			if (name.isEmpty()) {
 				throw new IllegalArgumentException(
 					"Non-terminal value must not be empty."
 				);
@@ -123,13 +123,13 @@ public record Cfg(
 	/**
 	 * Represents a terminal symbols of the grammar ({@code Σ}).
 	 */
-	public record Terminal(String value) implements Symbol {
+	public record Terminal(String name) implements Symbol {
 
 		/**
-		 * @param value the value of the terminal symbol
+		 * @param name the name of the terminal symbol
 		 */
 		public Terminal {
-			if (value.isEmpty()) {
+			if (name.isEmpty()) {
 				throw new IllegalArgumentException(
 					"Terminal value must not be empty."
 				);
@@ -209,7 +209,7 @@ public record Cfg(
 			.collect(Collectors.groupingBy(Rule::start))
 			.values().stream()
 			.filter(values -> values.size() > 1)
-			.map(rule -> rule.get(0).start.value)
+			.map(rule -> rule.get(0).start.name)
 			.toList();
 
 		if (!duplicatedRules.isEmpty()) {

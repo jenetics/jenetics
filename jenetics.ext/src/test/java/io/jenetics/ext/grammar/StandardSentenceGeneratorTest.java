@@ -62,7 +62,7 @@ public class StandardSentenceGeneratorTest {
 		);
 
 		var string = generator.generate(CFG).stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 
 		//System.out.println(string);
@@ -77,7 +77,7 @@ public class StandardSentenceGeneratorTest {
 		);
 
 		string = generator.generate(CFG).stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 
 		//System.out.println(string);
@@ -114,7 +114,7 @@ public class StandardSentenceGeneratorTest {
 		final var terminals = generator.generate(CFG);
 
 		final String string = terminals.stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 		assertThat(string).isEqualTo(sentence);
 	}

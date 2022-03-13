@@ -55,7 +55,7 @@ public final class Sentence {
 		return symbols.stream()
 			.map(symbol -> symbol instanceof NonTerminal nt
 				? "<%s>".formatted(nt)
-				: symbol.value())
+				: symbol.name())
 			.collect(Collectors.joining());
 	}
 

@@ -100,7 +100,7 @@ public class CodonsTest {
 		);
 
 		final String sentence = generator.generate(cfg).stream()
-			.map(Cfg.Symbol::value)
+			.map(Cfg.Symbol::name)
 			.collect(Collectors.joining());
 
 		if (sentence.equals("1.0-sin(x)*sin(x)-sin(x)-sin(x)")) {

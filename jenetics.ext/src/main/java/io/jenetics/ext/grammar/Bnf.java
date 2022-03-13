@@ -119,9 +119,9 @@ public final class Bnf {
 
 	private static String format(final Cfg.Symbol symbol) {
 		if (symbol instanceof Cfg.NonTerminal nt) {
-			return String.format("<%s>", nt.value());
+			return String.format("<%s>", nt.name());
 		} else if (symbol instanceof Cfg.Terminal t) {
-			return "'" + t.value()
+			return "'" + t.name()
 				.replace("\\", "\\\\")
 				.replace("'", "\\'") + "'";
 		}
