@@ -31,8 +31,8 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * {@code List<Cfg.Terminal>}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 @FunctionalInterface
 public interface SentenceGenerator {

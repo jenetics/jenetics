@@ -78,8 +78,8 @@ import java.util.stream.Stream;
  * @see Bnf#parse(String)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public record Cfg(
 	List<NonTerminal> nonTerminals,

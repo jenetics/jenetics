@@ -30,8 +30,8 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class StandardDerivationTreeGenerator implements DerivationTreeGenerator {
 

@@ -49,8 +49,8 @@ import io.jenetics.ext.internal.parser.Token;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 final class BnfTokenizer extends CharSequenceTokenizer {
 

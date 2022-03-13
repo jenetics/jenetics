@@ -19,10 +19,10 @@
  */
 
 /**
- * This package contains additional genes/chromosomes and GA operators.
+ * This package contains classes for doing Grammatical Evolution.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.5
- * @since 3.5
+ * @version !__version__!
+ * @since !__version__!
  */
-package io.jenetics.ext;
+package io.jenetics.ext.grammar;

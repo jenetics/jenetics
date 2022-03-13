@@ -37,8 +37,8 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * indexes are needed, the values are read from the beginning again.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Codons implements SymbolIndex {
 
