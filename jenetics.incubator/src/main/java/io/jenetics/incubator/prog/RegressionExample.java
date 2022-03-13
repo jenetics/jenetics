@@ -30,9 +30,9 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.Sentence;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.ext.grammar.Cfg;
+import io.jenetics.ext.grammar.Sentence;
+import io.jenetics.ext.grammar.Bnf;
 
 import io.jenetics.ext.util.Tree;
 

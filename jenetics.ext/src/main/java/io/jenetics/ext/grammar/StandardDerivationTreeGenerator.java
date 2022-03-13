@@ -17,16 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.Optional;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.util.TreeNode;
 
 /**

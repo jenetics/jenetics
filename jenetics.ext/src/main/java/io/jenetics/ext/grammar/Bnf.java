@@ -17,15 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
 import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic;
 
 import java.util.stream.Collectors;
-
-import io.jenetics.incubator.grammar.Cfg;
 
 import io.jenetics.ext.internal.parser.ParsingException;
 

@@ -17,15 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.ext.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.grammar.RandomCfg;
 
 import io.jenetics.ext.internal.parser.ParsingException;
 

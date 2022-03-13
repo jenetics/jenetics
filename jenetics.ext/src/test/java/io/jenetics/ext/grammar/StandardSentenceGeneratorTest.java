@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,9 +33,8 @@ import java.util.stream.Collectors;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

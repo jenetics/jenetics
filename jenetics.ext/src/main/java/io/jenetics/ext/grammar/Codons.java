@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,9 +27,10 @@ import java.util.function.IntUnaryOperator;
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.IntegerGene;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.util.BaseSeq;
+
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * Represents a mapping of a finite set of integers to symbol indexes. If more

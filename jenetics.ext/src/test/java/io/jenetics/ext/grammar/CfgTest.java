@@ -17,12 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,13 @@ import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.grammar.Cfg.Expression;
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.internal.math.Randoms;
+
+import io.jenetics.ext.grammar.Cfg.Expression;
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Rule;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

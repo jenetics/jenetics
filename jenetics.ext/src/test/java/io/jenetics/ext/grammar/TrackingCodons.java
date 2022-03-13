@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
-import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

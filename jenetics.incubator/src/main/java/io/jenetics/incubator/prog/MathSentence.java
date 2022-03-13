@@ -21,7 +21,7 @@ package io.jenetics.incubator.prog;
 
 import java.util.List;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 
 import io.jenetics.ext.util.Tree;
 

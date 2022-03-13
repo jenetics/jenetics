@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import java.util.List;
 import java.util.Map;
@@ -32,11 +32,12 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * This class contains low-level methods for creating <em>sentences</em> from a

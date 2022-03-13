@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * Interface for selecting a symbol index.

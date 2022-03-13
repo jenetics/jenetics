@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Character.isWhitespace;
 import static java.lang.String.format;
-import static io.jenetics.incubator.grammar.bnf.Bnf.isIdChar;
-import static io.jenetics.incubator.grammar.bnf.Bnf.isStringChar;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
+import static io.jenetics.ext.grammar.Bnf.isIdChar;
+import static io.jenetics.ext.grammar.Bnf.isStringChar;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.STRING;
 
 import io.jenetics.ext.internal.parser.CharSequenceTokenizer;
 import io.jenetics.ext.internal.parser.ParsingException;

@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
-import static io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
+import static io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
 
 import java.util.List;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * This interface is used for creating <em>sentences</em> from a context-free

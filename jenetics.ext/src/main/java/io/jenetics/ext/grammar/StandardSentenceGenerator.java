@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,9 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * Standard implementation of a sentence generator. The generator can generate

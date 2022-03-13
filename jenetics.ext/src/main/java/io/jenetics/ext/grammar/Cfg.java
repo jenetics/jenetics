@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.groupingBy;
@@ -75,7 +75,7 @@ import java.util.stream.Stream;
  * );
  * }</pre>
  *
- * @see io.jenetics.incubator.grammar.bnf.Bnf#parse(String)
+ * @see Bnf#parse(String)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
