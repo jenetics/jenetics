@@ -47,23 +47,23 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 	}
 
 	@Override
-	public TreeNode<Symbol> generate(final Cfg cfg) {
-		final NonTerminal start = cfg.start();
-		final TreeNode<Symbol> symbols = TreeNode.of(start);
+	public TreeNode<Symbol<String>> generate(final Cfg<String> cfg) {
+		final NonTerminal<String> start = cfg.start();
+		final TreeNode<Symbol<String>> symbols = TreeNode.of(start);
 
 		int count = 1;
 		boolean expanded = true;
 		while (expanded) {
-			final Optional<TreeNode<Symbol>> tree = symbols.leaves()
+			final Optional<TreeNode<Symbol<String>>> tree = symbols.leaves()
 				.filter(leave ->
-					leave.value() instanceof NonTerminal nt &&
+					leave.value() instanceof NonTerminal<String> nt &&
 					cfg.rule(nt).isPresent()
 				)
 				.findFirst();
 
 			if (tree.isPresent()) {
 				final var t = tree.orElseThrow();
-				final var expansion = expand(cfg, (NonTerminal)t.value(), _index);
+				final var expansion = expand(cfg, (NonTerminal<String>)t.value(), _index);
 				count += expansion.size();
 
 				if (count > _limit) {
@@ -79,9 +79,9 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 		return symbols;
 	}
 
-	static List<Symbol> expand(
-		final Cfg cfg,
-		final NonTerminal symbol,
+	static List<Symbol<String>> expand(
+		final Cfg<String> cfg,
+		final NonTerminal<String> symbol,
 		final SymbolIndex index
 	) {
 		return cfg.rule(symbol)

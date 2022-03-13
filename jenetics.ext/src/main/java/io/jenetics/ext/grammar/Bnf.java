@@ -81,7 +81,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Cfg parse(final String grammar) {
+	public static Cfg<String> parse(final String grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 
@@ -95,13 +95,13 @@ public final class Bnf {
 	 * @return the BNF formatted grammar string
 	 * @throws NullPointerException if the give {@code grammar} is {@code null}
 	 */
-	public static String format(final Cfg grammar) {
+	public static String format(final Cfg<String> grammar) {
 		return grammar.rules().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static String format(final Cfg.Rule rule) {
+	private static String format(final Cfg.Rule<String> rule) {
 		return String.format(
 			"%s ::= %s",
 			format(rule.start()),
@@ -111,16 +111,16 @@ public final class Bnf {
 		);
 	}
 
-	private static String format(final Cfg.Expression expr) {
+	private static String format(final Cfg.Expression<String> expr) {
 		return expr.symbols().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining(" "));
 	}
 
-	private static String format(final Cfg.Symbol symbol) {
-		if (symbol instanceof Cfg.NonTerminal nt) {
+	private static String format(final Cfg.Symbol<String> symbol) {
+		if (symbol instanceof Cfg.NonTerminal<String> nt) {
 			return String.format("<%s>", nt.name());
-		} else if (symbol instanceof Cfg.Terminal t) {
+		} else if (symbol instanceof Cfg.Terminal<String> t) {
 			return "'" + t.name()
 				.replace("\\", "\\\\")
 				.replace("'", "\\'") + "'";

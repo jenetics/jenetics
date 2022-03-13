@@ -42,7 +42,7 @@ public interface SymbolIndex {
 	 * @throws IllegalArgumentException if the given {@code bound} is smaller
 	 *         than one
 	 */
-	int next(final Rule rule, final int bound);
+	int next(final Rule<?> rule, final int bound);
 
 	/**
 	 * Create a new symbol-index object from the given random generator. This

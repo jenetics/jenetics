@@ -53,7 +53,7 @@ public final class Codons implements SymbolIndex {
 	}
 
 	@Override
-	public int next(final Rule rule, final int bound) {
+	public int next(final Rule<?> rule, final int bound) {
 		final int index = _pos.getAndUpdate(x -> (x + 1)%_length);
 		return _values.applyAsInt(index)%bound;
 	}

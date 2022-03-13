@@ -74,7 +74,7 @@ public class CodonsTest {
 
 	//@Test
 	public void paper() {
-		final Cfg cfg = Bnf.parse("""
+		final Cfg<String> cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
 			<op> ::= + | - | / | *
 			<pre-op> ::= sin
@@ -112,7 +112,7 @@ public class CodonsTest {
 
 	//@Test
 	public void statistics() {
-		final Cfg cfg = Bnf.parse("""
+		final Cfg<String> cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
 			<op> ::= + | - | / | *
 			<pre-op> ::= sin

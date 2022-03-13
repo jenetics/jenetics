@@ -51,16 +51,16 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
 public final class Sentence {
 	private Sentence() {}
 
-	public static String toString(final List<? extends Symbol> symbols) {
+	public static String toString(final List<? extends Symbol<String>> symbols) {
 		return symbols.stream()
-			.map(symbol -> symbol instanceof NonTerminal nt
+			.map(symbol -> symbol instanceof NonTerminal<?> nt
 				? "<%s>".formatted(nt)
 				: symbol.name())
 			.collect(Collectors.joining());
 	}
 
-	public static List<Terminal> generate(
-		final Cfg cfg,
+	public static List<Terminal<String>> generate(
+		final Cfg<String> cfg,
 		final SymbolIndex index,
 		final int limit
 	) {
@@ -82,8 +82,8 @@ public final class Sentence {
 	 * @param maxSentenceLength the maximal number of symbols
 	 * @return sentence codec
 	 */
-	public static Codec<List<Terminal>, IntegerGene> codec(
-		final Cfg cfg,
+	public static Codec<List<Terminal<String>>, IntegerGene> codec(
+		final Cfg<String> cfg,
 		final IntRange codonRange,
 		final IntRange codonCount,
 		final int maxSentenceLength
@@ -109,8 +109,8 @@ public final class Sentence {
 	 * @param maxSentenceLength the maximal number of symbols
 	 * @return sentence codec
 	 */
-	public static Codec<List<Terminal>, IntegerGene> codec(
-		final Cfg cfg,
+	public static Codec<List<Terminal<String>>, IntegerGene> codec(
+		final Cfg<String> cfg,
 		final IntRange codonRange,
 		final int codonCount,
 		final int maxSentenceLength
@@ -125,8 +125,8 @@ public final class Sentence {
 		);
 	}
 
-	public static Codec<List<Terminal>, BitGene> codec(
-		final Cfg cfg,
+	public static Codec<List<Terminal<String>>, BitGene> codec(
+		final Cfg<String> cfg,
 		final int codonCount,
 		final int maxSentenceLength
 	) {
@@ -175,8 +175,8 @@ public final class Sentence {
 	 * @param generator sentence generator
 	 * @return codec
 	 */
-	public static Codec<List<Terminal>, IntegerGene> codec(
-		final Cfg cfg,
+	public static Codec<List<Terminal<String>>, IntegerGene> codec(
+		final Cfg<String> cfg,
 		final IntUnaryOperator length,
 		final Function<? super SymbolIndex, SentenceGenerator> generator
 	) {
@@ -191,7 +191,7 @@ public final class Sentence {
 			)
 			.collect(ISeq.toISeq());
 
-		final Map<NonTerminal, Integer> ruleIndex = IntStream
+		final Map<NonTerminal<String>, Integer> ruleIndex = IntStream
 			.range(0, cfg.rules().size())
 			.mapToObj(i -> Map.entry(cfg.rules().get(i).start(), i))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -212,8 +212,8 @@ public final class Sentence {
 		);
 	}
 
-	public static Codec<List<Terminal>, IntegerGene> codec(
-		final Cfg cfg,
+	public static Codec<List<Terminal<String>>, IntegerGene> codec(
+		final Cfg<String> cfg,
 		final IntUnaryOperator length,
 		final int maxSentenceLength
 	) {

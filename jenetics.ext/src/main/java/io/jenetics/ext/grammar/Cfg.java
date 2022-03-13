@@ -81,17 +81,17 @@ import java.util.stream.Stream;
  * @since !__version__!
  * @version !__version__!
  */
-public record Cfg(
-	List<NonTerminal> nonTerminals,
-	List<Terminal> terminals,
-	List<Rule> rules,
-	NonTerminal start
+public record Cfg<T>(
+	List<NonTerminal<T>> nonTerminals,
+	List<Terminal<T>> terminals,
+	List<Rule<T>> rules,
+	NonTerminal<T> start
 ) {
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
 	 */
-	public sealed interface Symbol {
+	public sealed interface Symbol<T> {
 
 		/**
 		 * Return the name of the symbol.
@@ -104,12 +104,13 @@ public record Cfg(
 	/**
 	 * Represents the non-terminal symbols of the grammar ({@code V}).
 	 */
-	public record NonTerminal(String name) implements Symbol {
+	public record NonTerminal<T>(String name) implements Symbol<T> {
 
 		/**
 		 * @param name the name of the non-terminal symbol
 		 * @throws IllegalArgumentException if the given {@code name} is not
 		 *         a valid <em>non-terminal</em> name
+		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
 		public NonTerminal {
 			if (name.isEmpty()) {
@@ -123,10 +124,13 @@ public record Cfg(
 	/**
 	 * Represents a terminal symbols of the grammar ({@code Σ}).
 	 */
-	public record Terminal(String name) implements Symbol {
+	public record Terminal<T>(String name, T value) implements Symbol<T> {
 
 		/**
 		 * @param name the name of the terminal symbol
+		 * @param value the value of the terminal symbol
+		 * @throws IllegalArgumentException if the given terminal {@code name}
+		 *         is empty
 		 */
 		public Terminal {
 			if (name.isEmpty()) {
@@ -135,12 +139,37 @@ public record Cfg(
 				);
 			}
 		}
+
+		/**
+		 * Return a new terminal symbol where the name of the symbol is equal
+		 * to its value.
+		 *
+		 * @param name the name (and value) of the terminal symbol
+		 * @return a new terminal symbol with the given {@code name}
+		 * @throws IllegalArgumentException if the given terminal {@code name}
+		 *         is empty
+		 */
+		public static Terminal<String> of(final String name) {
+			return new Terminal<>(name, name);
+		}
+
+		@Override
+		public int hashCode() {
+			return name.hashCode();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Cfg.Terminal<?> terminal &&
+				name.equals(terminal.name);
+		}
 	}
 
 	/**
 	 * Represents one <em>expression</em> a production rule consists of.
 	 */
-	public record Expression(List<Symbol> symbols) {
+	public record Expression<T>(List<Symbol<T>> symbols) {
 
 		/**
 		 * @param symbols the list of symbols of the expression
@@ -161,7 +190,7 @@ public record Cfg(
 	/**
 	 * Represents a production rule of the grammar ({@code R}).
 	 */
-	public record Rule(NonTerminal start, List<Expression> alternatives) {
+	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives) {
 
 		/**
 		 * Creates a new rule object.
@@ -230,11 +259,11 @@ public record Cfg(
 
 		// Check that all symbols used in the given rules are also defined
 		// in the list of non-terminals and terminals.
-		final Set<Symbol> required = rules.stream()
+		final Set<Symbol<T>> required = rules.stream()
 			.flatMap(Cfg::ruleSymbols)
 			.collect(Collectors.toUnmodifiableSet());
 
-		final Set<Symbol> available = Stream
+		final Set<Symbol<T>> available = Stream
 			.concat(nonTerminals.stream(), terminals.stream())
 			.collect(Collectors.toUnmodifiableSet());
 
@@ -261,7 +290,7 @@ public record Cfg(
 	 * @throws NullPointerException if the given {@code start} symbol is
 	 *         {@code null}
 	 */
-	public Optional<Rule> rule(final NonTerminal start) {
+	public Optional<Rule<T>> rule(final NonTerminal<T> start) {
 		requireNonNull(start);
 		for (var rule : rules) {
 			if (rule.start().equals(start)) {
@@ -280,42 +309,42 @@ public record Cfg(
 	 * @throws IllegalArgumentException if the list of rules is empty
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
-	public static Cfg of(final List<Rule> rules) {
+	public static <T> Cfg<T> of(final List<Rule<T>> rules) {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The list of rules must not be empty."
 			);
 		}
 
-		final List<Rule> normalizedRules = normalize(rules);
+		final List<Rule<T>> normalizedRules = normalize(rules);
 
-		final List<Symbol> symbols = normalizedRules.stream()
+		final List<Symbol<T>> symbols = normalizedRules.stream()
 			.flatMap(Cfg::ruleSymbols)
 			.distinct()
 			.toList();
 
-		final List<NonTerminal> nonTerminals = symbols.stream()
+		final List<NonTerminal<T>> nonTerminals = symbols.stream()
 			.filter(NonTerminal.class::isInstance)
-			.map(NonTerminal.class::cast)
+			.map(nt -> (NonTerminal<T>)nt)
 			.toList();
 
-		final List<Terminal> terminals = symbols.stream()
+		final List<Terminal<T>> terminals = symbols.stream()
 			.filter(Terminal.class::isInstance)
-			.map(Terminal.class::cast)
+			.map(nt -> (Terminal<T>)nt)
 			.toList();
 
-		return new Cfg(
+		return new Cfg<>(
 			nonTerminals,
 			terminals,
 			normalizedRules.stream()
 				.map(r -> rebuild(r, symbols))
 				.toList(),
-			(NonTerminal)select(normalizedRules.get(0).start(), symbols)
+			(NonTerminal<T>)select(normalizedRules.get(0).start(), symbols)
 		);
 	}
 
-	private static List<Rule> normalize(final List<Rule> rules) {
-		final Map<NonTerminal, List<Rule>> grouped = rules.stream()
+	private static <T> List<Rule<T>> normalize(final List<Rule<T>> rules) {
+		final Map<NonTerminal<T>, List<Rule<T>>> grouped = rules.stream()
 			.collect(groupingBy(
 				Rule::start,
 				LinkedHashMap::new,
@@ -326,8 +355,8 @@ public record Cfg(
 			.toList();
 	}
 
-	private static Rule merge(final NonTerminal start, final List<Rule> rules) {
-		return new Rule(
+	private static <T> Rule<T> merge(final NonTerminal<T> start, final List<Rule<T>> rules) {
+		return new Rule<>(
 			start,
 			rules.stream()
 				.flatMap(rule -> rule.alternatives().stream())
@@ -335,7 +364,7 @@ public record Cfg(
 		);
 	}
 
-	private static Stream<Symbol> ruleSymbols(final Rule rule) {
+	private static <T> Stream<Symbol<T>> ruleSymbols(final Rule<T> rule) {
 		return Stream.concat(
 			Stream.of(rule.start),
 			rule.alternatives.stream()
@@ -343,27 +372,30 @@ public record Cfg(
 		);
 	}
 
-	private static Rule rebuild(final Rule rule, final List<Symbol> symbols) {
-		return new Rule(
-			(NonTerminal)select(rule.start, symbols),
+	private static <T> Rule<T> rebuild(final Rule<T> rule, final List<Symbol<T>> symbols) {
+		return new Rule<>(
+			(NonTerminal<T>)select(rule.start, symbols),
 			rule.alternatives.stream()
 				.map(e -> rebuild(e, symbols))
 				.toList()
 		);
 	}
 
-	private static Expression
-	rebuild(final Expression expression, final List<Symbol> symbols) {
-		return new Expression(
+	private static <T> Expression<T>
+	rebuild(final Expression<T> expression, final List<Symbol<T>> symbols) {
+		return new Expression<>(
 			expression.symbols.stream()
 				.map(s -> select(s, symbols))
 				.toList()
 		);
 	}
 
-	private static Symbol select(final Symbol symbol, final List<Symbol> symbols) {
+	private static <T> Symbol<T> select(
+		final Symbol<T> symbol,
+		final List<Symbol<T>> symbols
+	) {
 		for (var s : symbols) {
-			if (s.equals(symbol)) {
+			if (s.name().equals(symbol.name())) {
 				return s;
 			}
 		}

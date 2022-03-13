@@ -81,16 +81,16 @@ import io.jenetics.ext.internal.parser.ParsingException;
  */
 final class BnfParser extends Parser<String> {
 
-	NonTerminal start = null;
-	final List<Rule> rules = new ArrayList<>();
-	final List<Symbol> symbols = new ArrayList<>();
-	final List<Expression> alternatives = new ArrayList<>();
+	NonTerminal<String> start = null;
+	final List<Rule<String>> rules = new ArrayList<>();
+	final List<Symbol<String>> symbols = new ArrayList<>();
+	final List<Expression<String>> alternatives = new ArrayList<>();
 
 	BnfParser(final BnfTokenizer tokenizer) {
 		super(tokenizer, 4);
 	}
 
-	public Cfg parse() {
+	public Cfg<String> parse() {
 		rulelist();
 
 		return Cfg.of(rules);
@@ -107,12 +107,12 @@ final class BnfParser extends Parser<String> {
 		match(ASSIGN);
 		rhs();
 
-		rules.add(new Rule(start, alternatives));
+		rules.add(new Rule<>(start, alternatives));
 		start = null;
 		alternatives.clear();
 	}
 
-	private NonTerminal lhs() {
+	private NonTerminal<String> lhs() {
 		return id();
 	}
 
@@ -123,7 +123,7 @@ final class BnfParser extends Parser<String> {
 	private void alternatives() {
 		alternative();
 		if (!symbols.isEmpty()) {
-			alternatives.add(new Expression(symbols));
+			alternatives.add(new Expression<>(symbols));
 			symbols.clear();
 		}
 
@@ -132,7 +132,7 @@ final class BnfParser extends Parser<String> {
 			alternative();
 
 			if (!symbols.isEmpty()) {
-				alternatives.add(new Expression(symbols));
+				alternatives.add(new Expression<>(symbols));
 				symbols.clear();
 			}
 		}
@@ -169,7 +169,7 @@ final class BnfParser extends Parser<String> {
 		}
 	}
 
-	private Terminal text() {
+	private Terminal<String> text() {
 		if (LA(1) == STRING.code()) {
 			return terminal(match(STRING).value());
 		} else if (LA(1) == QUOTED_STRING.code()) {
@@ -184,26 +184,26 @@ final class BnfParser extends Parser<String> {
 		}
 	}
 
-	private static Terminal terminal(final String value) {
+	private static Terminal<String> terminal(final String value) {
 		if (value.isEmpty()) {
 			throw new ParsingException("Terminal value must not be empty.");
 		}
-		return new Terminal(value);
+		return new Terminal<>(value, value);
 	}
 
-	private NonTerminal id() {
+	private NonTerminal<String> id() {
 		match(LT);
 		final var result = ruleid();
 		match(GT);
 		return result;
 	}
 
-	private NonTerminal ruleid() {
-		final var value = match(ID).value();
-		if (value.isEmpty()) {
+	private NonTerminal<String> ruleid() {
+		final var name = match(ID).value();
+		if (name.isEmpty()) {
 			throw new ParsingException("Rule id must not be empty.");
 		}
-		return new NonTerminal(value);
+		return new NonTerminal<>(name);
 	}
 
 }

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeFormatter;
 import io.jenetics.ext.util.TreeNode;
@@ -43,14 +44,14 @@ public class StandardDerivationTreeGeneratorTest {
 		final var random = new Random(seed);
 
 		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random), 100).stream()
-			.map(Symbol::name)
+			.map(Terminal::name)
 			.collect(Collectors.joining());
 
 		System.out.println(sentence);
 
 		random.setSeed(seed);
 		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random), 1000);
-		final TreeNode<Symbol> tree = generator.generate(CFG);
+		final TreeNode<Symbol<String>> tree = generator.generate(CFG);
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			//.map(Symbol::value);
 
@@ -67,16 +68,16 @@ public class StandardDerivationTreeGeneratorTest {
 
 
 
-		final TreeNode<Symbol> simplified = TreeNode.of();
+		final TreeNode<Symbol<String>> simplified = TreeNode.of();
 		copy(tree, simplified, StandardDerivationTreeGeneratorTest::isImportant);
 
 		System.out.println(TreeFormatter.TREE.format(simplified.map(s -> s != null ? s.name() : "<null>")));
 	}
 
 	private static void copy(
-		final Tree<Symbol, ?> source,
-		final TreeNode<Symbol> target,
-		final Predicate<? super Symbol> filter
+		final Tree<Symbol<String>, ?> source,
+		final TreeNode<Symbol<String>> target,
+		final Predicate<? super Symbol<String>> filter
 	) {
 		target.value(source.value());
 		source.childStream().forEachOrdered(child -> {
@@ -88,7 +89,7 @@ public class StandardDerivationTreeGeneratorTest {
 		});
 	}
 
-	private static boolean isImportant(final Symbol symbol) {
+	private static boolean isImportant(final Symbol<String> symbol) {
 		final var value = symbol.name();
 		return !"(".equals(value) && !")".equals(value) && !",".equals(value);
 	}

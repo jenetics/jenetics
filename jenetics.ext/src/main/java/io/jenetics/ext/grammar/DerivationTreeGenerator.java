@@ -42,6 +42,6 @@ public interface DerivationTreeGenerator {
 	 * @param cfg the generating grammar
 	 * @return a newly created parse-tree
 	 */
-	TreeNode<Symbol> generate(final Cfg cfg);
+	TreeNode<Symbol<String>> generate(final Cfg<String> cfg);
 
 }

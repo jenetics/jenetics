@@ -41,7 +41,7 @@ import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
  */
 public class StandardSentenceGeneratorTest {
 
-	static final Cfg CFG = Bnf.parse("""
+	static final Cfg<String> CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
 		<fun>  ::= FUN1 | FUN2
 		<arg>  ::= <expr> | <var> | <num>

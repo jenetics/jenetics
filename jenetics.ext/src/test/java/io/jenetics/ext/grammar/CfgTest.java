@@ -38,7 +38,7 @@ public class CfgTest {
 			"""
 		);
 
-		new Cfg(
+		new Cfg<>(
 			template.nonTerminals(),
 			template.terminals().subList(1, 10),
 			template.rules(),
@@ -56,11 +56,11 @@ public class CfgTest {
 			"""
 		);
 
-		new Cfg(
+		new Cfg<>(
 			template.nonTerminals(),
 			template.terminals(),
 			template.rules(),
-			new NonTerminal("foo_bar")
+			new NonTerminal<>("foo_bar")
 		);
 	}
 

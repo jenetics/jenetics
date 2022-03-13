@@ -52,7 +52,7 @@ import io.jenetics.prog.regression.Sample;
 public class RegressionExample {
 
 	// Creating the context-free grammar from the BNF string.
-	private static final Cfg CFG = Bnf.parse("""
+	private static final Cfg<String> CFG = Bnf.parse("""
 		<expr> ::= (<expr><op><expr>) | <var>
 		<op> ::= + | - | *
 		<var> ::= x | 1 | 2 | 3 | 4

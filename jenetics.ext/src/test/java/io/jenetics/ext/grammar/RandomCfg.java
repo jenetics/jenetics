@@ -41,7 +41,7 @@ public final class RandomCfg {
 	private RandomCfg() {
 	}
 
-	public static Cfg next(final RandomGenerator random) {
+	public static Cfg<String> next(final RandomGenerator random) {
 		final var nonTerminals = Stream.generate(() -> nextNonTerminal(random))
 			.limit(10)
 			.toList();
@@ -50,7 +50,7 @@ public final class RandomCfg {
 			.limit(15)
 			.toList();
 
-		final Supplier<List<Expression>> expressions = () -> Stream.generate(() -> {
+		final Supplier<List<Expression<String>>> expressions = () -> Stream.generate(() -> {
 				final var nterms = Stream.generate(() -> {
 						final var index = random.nextInt(nonTerminals.size());
 						return nonTerminals.get(index);
@@ -64,17 +64,17 @@ public final class RandomCfg {
 					.limit(random.nextInt(3, 13))
 					.toList();
 
-				final var symbols = new ArrayList<Symbol>();
+				final var symbols = new ArrayList<Symbol<String>>();
 				symbols.addAll(nterms);
 				symbols.addAll(terms);
-				return new Expression(symbols);
+				return new Expression<>(symbols);
 			})
 			.limit(random.nextInt(3, 7))
 			.toList();
 
 		final var rules = Stream.generate(() -> {
 				final var start = nonTerminals.get(random.nextInt(nonTerminals.size()));
-				return new Rule(nonTerminals.get(random.nextInt(nonTerminals.size())), expressions.get());
+				return new Rule<>(nonTerminals.get(random.nextInt(nonTerminals.size())), expressions.get());
 			})
 			.limit(random.nextInt(5, 15))
 			.collect(Collectors.groupingBy(Rule::start))
@@ -85,12 +85,13 @@ public final class RandomCfg {
 		return Cfg.of(rules);
 	}
 
-	public static NonTerminal nextNonTerminal(final RandomGenerator random) {
-		return new NonTerminal(ruleid(random));
+	public static NonTerminal<String> nextNonTerminal(final RandomGenerator random) {
+		return new NonTerminal<>(ruleid(random));
 	}
 
-	public static Terminal nextTerminal(final RandomGenerator random) {
-		return new Terminal(Randoms.nextASCIIString(random));
+	public static Terminal<String> nextTerminal(final RandomGenerator random) {
+		final var name = Randoms.nextASCIIString(random);
+		return new Terminal<>(name, name);
 	}
 
 	private static String ruleid(final RandomGenerator random) {

@@ -44,7 +44,7 @@ public interface SentenceGenerator {
 	 * @param cfg the generating grammar
 	 * @return a newly created list of terminal symbols (sentence)
 	 */
-	List<Terminal> generate(final Cfg cfg);
+	List<Terminal<String>> generate(final Cfg<String> cfg);
 
 	/**
 	 * Return a <em>standard</em> sentence generator from the given symbol

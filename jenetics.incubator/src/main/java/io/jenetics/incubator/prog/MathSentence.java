@@ -48,7 +48,7 @@ public final class MathSentence {
 	 * @param sentence the sentence to parse
 	 * @return the parsed sentence
 	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
+	public static Tree<Op<Double>, ?> parse(final List<Terminal<String>> sentence) {
 		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
 		//return MathExpr.parseTree(tokenizer::next);
 		return null;

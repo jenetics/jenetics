@@ -45,7 +45,7 @@ public class TrackingCodons implements SymbolIndex {
 	}
 
 	@Override
-	public int next(final Rule rule, final int bound) {
+	public int next(final Rule<?> rule, final int bound) {
 		final int value = _random.nextInt(256);
 		_values.accept(value);
 		return value%bound;
