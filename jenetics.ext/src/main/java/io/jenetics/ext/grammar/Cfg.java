@@ -432,4 +432,9 @@ public record Cfg<T>(
 		throw new AssertionError("Symbol not found: " + symbol);
 	}
 
+	@SuppressWarnings("unchecked")
+	static <A, B extends A> Cfg<A> upcast(final Cfg<B> seq) {
+		return (Cfg<A>)seq;
+	}
+
 }

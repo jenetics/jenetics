@@ -46,7 +46,7 @@ public interface SentenceGenerator<T> {
 	 * @param cfg the generating grammar
 	 * @return a newly created list of terminal symbols (sentence)
 	 */
-	List<Terminal<T>> generate(final Cfg<T> cfg);
+	List<Terminal<T>> generate(final Cfg<? extends T> cfg);
 
 	/**
 	 * Generates a new sentence from the given grammar and symbol {@code index}
@@ -62,7 +62,7 @@ public interface SentenceGenerator<T> {
 	 * @throws NullPointerException if {@code cfg} of {@code index} is {@code null}
 	 */
 	static <T> List<Terminal<T>> generate(
-		final Cfg<T> cfg,
+		final Cfg<? extends T> cfg,
 		final SymbolIndex index,
 		final int limit
 	) {

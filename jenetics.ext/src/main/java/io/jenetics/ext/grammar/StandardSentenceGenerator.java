@@ -127,9 +127,9 @@ public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> 
 	 *         the length of the sentence exceed the defined sentence limit
 	 */
 	@Override
-	public List<Terminal<T>> generate(final Cfg<T> cfg) {
+	public List<Terminal<T>> generate(final Cfg<? extends T> cfg) {
 		final var sentence = new LinkedList<Symbol<T>>();
-		expand(cfg, _index, sentence, _expansion, _limit);
+		expand(Cfg.upcast(cfg), _index, sentence, _expansion, _limit);
 
 		return sentence.stream()
 			.map(t -> (Terminal<T>)t)
