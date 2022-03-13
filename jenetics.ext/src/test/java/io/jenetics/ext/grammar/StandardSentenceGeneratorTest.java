@@ -55,7 +55,7 @@ public class StandardSentenceGeneratorTest {
 	public void create() {
 		final var random = new Random(-8564585140851778291L);
 
-		var generator = new StandardSentenceGenerator(
+		var generator = new StandardSentenceGenerator<String>(
 			SymbolIndex.of(random),
 			Expansion.LEFT_FIRST,
 			MAX_VALUE
@@ -70,7 +70,7 @@ public class StandardSentenceGeneratorTest {
 		////////////////////////////////////////////////////////////////////////
 
 		random.setSeed(29022156195143L);
-		generator = new StandardSentenceGenerator(
+		generator = new StandardSentenceGenerator<>(
 			SymbolIndex.of(random),
 			Expansion.LEFT_TO_RIGHT,
 			MAX_VALUE
@@ -106,7 +106,7 @@ public class StandardSentenceGeneratorTest {
 		Expansion expansion
 	) {
 		final var random = new Random(seed);
-		final var generator = new StandardSentenceGenerator(
+		final var generator = new StandardSentenceGenerator<String>(
 			SymbolIndex.of(random),
 			expansion,
 			MAX_VALUE

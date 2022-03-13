@@ -93,7 +93,7 @@ public class CodonsTest {
 
 		final var cds = new TrackingCodons(random);
 
-		var generator = new StandardSentenceGenerator(
+		var generator = new StandardSentenceGenerator<String>(
 			cds,
 			Expansion.LEFT_FIRST,
 			MAX_VALUE
@@ -129,7 +129,7 @@ public class CodonsTest {
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
 		for (int i = 0; i < 1_000_000; ++i) {
-			var generator = new StandardSentenceGenerator(
+			var generator = new StandardSentenceGenerator<String>(
 				SymbolIndex.of(random),
 				Expansion.LEFT_FIRST,
 				200

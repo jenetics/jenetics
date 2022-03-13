@@ -64,6 +64,17 @@ public class CfgTest {
 		);
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void duplicateSymbolName() {
+		Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | / | op | var
+			<var>  ::= x | y
+			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+	}
+
 	/*
 	public void builderSyntax() {
 		final Cfg grammar = Cfg.builder()

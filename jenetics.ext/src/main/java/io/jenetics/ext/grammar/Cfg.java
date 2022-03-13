@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.grammar;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toCollection;
@@ -64,9 +65,9 @@ import java.util.stream.Stream;
  *     .</li>
  * </ul>
  *
- * You ca easily create a <em>Cfg</em> object from a given BNF grammar.
+ * You can easily create a <em>Cfg</em> object from a given BNF grammar.
  * <pre>{@code
- * final Cfg grammar = Bnf.parse("""
+ * final Cfg<String> grammar = Bnf.parse("""
  *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
  *     <op>   ::= + | - | * | /
  *     <var>  ::= x | y
@@ -76,6 +77,8 @@ import java.util.stream.Stream;
  * }</pre>
  *
  * @see Bnf#parse(String)
+ *
+ * @param <T> the terminal symbol value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -90,6 +93,8 @@ public record Cfg<T>(
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
+	 *
+	 * @param <T> the terminal symbol value type
 	 */
 	public sealed interface Symbol<T> {
 
@@ -103,6 +108,8 @@ public record Cfg<T>(
 
 	/**
 	 * Represents the non-terminal symbols of the grammar ({@code V}).
+	 *
+	 * @param <T> the terminal symbol value type
 	 */
 	public record NonTerminal<T>(String name) implements Symbol<T> {
 
@@ -123,6 +130,8 @@ public record Cfg<T>(
 
 	/**
 	 * Represents a terminal symbols of the grammar ({@code Σ}).
+	 *
+	 * @param <T> the terminal symbol value type
 	 */
 	public record Terminal<T>(String name, T value) implements Symbol<T> {
 
@@ -168,6 +177,8 @@ public record Cfg<T>(
 
 	/**
 	 * Represents one <em>expression</em> a production rule consists of.
+	 *
+	 * @param <T> the terminal symbol value type
 	 */
 	public record Expression<T>(List<Symbol<T>> symbols) {
 
@@ -189,6 +200,8 @@ public record Cfg<T>(
 
 	/**
 	 * Represents a production rule of the grammar ({@code R}).
+	 *
+	 * @param <T> the terminal symbol value type
 	 */
 	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives) {
 
@@ -276,6 +289,23 @@ public record Cfg<T>(
 			);
 		}
 
+		// Check if the name of terminals and non-terminals are distinct.
+		final var terminalNames = terminals.stream()
+			.map(Symbol::name)
+			.collect(Collectors.toSet());
+
+		final var nonTerminalNames = nonTerminals.stream()
+			.map(Symbol::name)
+			.collect(Collectors.toSet());
+
+		terminalNames.retainAll(nonTerminalNames);
+		if (!terminalNames.isEmpty()) {
+			throw new IllegalArgumentException(format(
+				"Terminal and non-terminal symbols with same name: %s",
+				terminalNames.stream().sorted().toList()
+			));
+		}
+
 		nonTerminals = List.copyOf(nonTerminals);
 		terminals = List.copyOf(terminals);
 		rules = List.copyOf(rules);
@@ -290,10 +320,10 @@ public record Cfg<T>(
 	 * @throws NullPointerException if the given {@code start} symbol is
 	 *         {@code null}
 	 */
-	public Optional<Rule<T>> rule(final NonTerminal<T> start) {
+	public Optional<Rule<T>> rule(final NonTerminal<?> start) {
 		requireNonNull(start);
 		for (var rule : rules) {
-			if (rule.start().equals(start)) {
+			if (rule.start().name().equals(start.name())) {
 				return Optional.of(rule);
 			}
 		}

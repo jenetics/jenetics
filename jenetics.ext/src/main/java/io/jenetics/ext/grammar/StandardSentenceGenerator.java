@@ -31,14 +31,14 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * Standard implementation of a sentence generator. The generator can generate
- * sentences in a {@link Expansion#LEFT_FIRST} order or from
- * {@link Expansion#LEFT_TO_RIGHT}.
+ * sentences by expanding the grammar in a {@link Expansion#LEFT_FIRST} or
+ * {@link Expansion#LEFT_TO_RIGHT} order.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardSentenceGenerator implements SentenceGenerator {
+public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> {
 
 	/**
 	 * Defines the expansion strategy used when generating the sentences.
@@ -90,7 +90,7 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	 * The following code snippet shows how to create a random sentence from a
 	 * given grammar:
 	 * <pre>{@code
-	 * final Cfg cfg = Bnf.parse("""
+	 * final Cfg<String> cfg = Bnf.parse("""
 	 *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
 	 *     <fun>  ::= FUN1 | FUN2
 	 *     <arg>  ::= <expr> | <var> | <num>
@@ -101,7 +101,7 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	 * );
 	 *
 	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-	 * final List<Terminal> sentence = Sentence.generate(
+	 * final List<Terminal<String>> sentence = Sentence.generate(
 	 *     cfg, random::nextInt, 1_000
 	 * );
 	 * final String string = sentence.stream()
@@ -127,19 +127,19 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 	 *         the length of the sentence exceed the defined sentence limit
 	 */
 	@Override
-	public List<Terminal<String>> generate(final Cfg<String> cfg) {
-		final var sentence = new LinkedList<Symbol<String>>();
+	public List<Terminal<T>> generate(final Cfg<T> cfg) {
+		final var sentence = new LinkedList<Symbol<T>>();
 		expand(cfg, _index, sentence, _expansion, _limit);
 
 		return sentence.stream()
-			.map(t -> (Terminal<String>)t)
+			.map(t -> (Terminal<T>)t)
 			.toList();
 	}
 
-	private static void expand(
-		final Cfg<String> cfg,
+	private static <T> void expand(
+		final Cfg<T> cfg,
 		final SymbolIndex index,
-		final List<Symbol<String>> symbols,
+		final List<Symbol<T>> symbols,
 		final Expansion expansion,
 		final int limit
 	) {
@@ -149,11 +149,11 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 		do {
 			proceed = false;
 
-			final ListIterator<Symbol<String>> sit = symbols.listIterator();
+			final ListIterator<Symbol<T>> sit = symbols.listIterator();
 			while (sit.hasNext() &&
 				(expansion == Expansion.LEFT_TO_RIGHT || !proceed))
 			{
-				if (sit.next() instanceof NonTerminal<String> nt) {
+				if (sit.next() instanceof NonTerminal<T> nt) {
 					sit.remove();
 					expand(cfg, nt, index).forEach(sit::add);
 					proceed = true;
@@ -167,9 +167,9 @@ public final class StandardSentenceGenerator implements SentenceGenerator {
 		} while (proceed);
 	}
 
-	private static List<Symbol<String>> expand(
-		final Cfg<String> cfg,
-		final NonTerminal<String> symbol,
+	private static <T> List<Symbol<T>> expand(
+		final Cfg<T> cfg,
+		final NonTerminal<T> symbol,
 		final SymbolIndex index
 	) {
 		return cfg.rule(symbol)

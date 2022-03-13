@@ -59,12 +59,12 @@ public final class Sentence {
 			.collect(Collectors.joining());
 	}
 
-	public static List<Terminal<String>> generate(
-		final Cfg<String> cfg,
+	public static <T> List<Terminal<T>> generate(
+		final Cfg<T> cfg,
 		final SymbolIndex index,
 		final int limit
 	) {
-		return SentenceGenerator.of(index, limit).generate(cfg);
+		return SentenceGenerator.<T>of(index, limit).generate(cfg);
 	}
 
 	/* *************************************************************************
@@ -175,10 +175,10 @@ public final class Sentence {
 	 * @param generator sentence generator
 	 * @return codec
 	 */
-	public static Codec<List<Terminal<String>>, IntegerGene> codec(
-		final Cfg<String> cfg,
+	public static <T> Codec<List<Terminal<T>>, IntegerGene> codec(
+		final Cfg<T> cfg,
 		final IntUnaryOperator length,
-		final Function<? super SymbolIndex, SentenceGenerator> generator
+		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
 	) {
 		// Every rule gets its own codons. The ranges of the chromosomes will
 		// fit exactly the number of rule alternatives.
@@ -191,7 +191,7 @@ public final class Sentence {
 			)
 			.collect(ISeq.toISeq());
 
-		final Map<NonTerminal<String>, Integer> ruleIndex = IntStream
+		final Map<NonTerminal<T>, Integer> ruleIndex = IntStream
 			.range(0, cfg.rules().size())
 			.mapToObj(i -> Map.entry(cfg.rules().get(i).start(), i))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -212,8 +212,8 @@ public final class Sentence {
 		);
 	}
 
-	public static Codec<List<Terminal<String>>, IntegerGene> codec(
-		final Cfg<String> cfg,
+	public static <T> Codec<List<Terminal<T>>, IntegerGene> codec(
+		final Cfg<T> cfg,
 		final IntUnaryOperator length,
 		final int maxSentenceLength
 	) {

@@ -28,14 +28,18 @@ import java.util.stream.Collectors;
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
- * Helper methods for parsing and formatting <em>context-free</em> grammars in
+ * This class contains methods for parsing and formatting <em>context-free</em>
+ * grammars in
  * <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a>
  * format.
  * <pre>{@code
- * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
- * <op>   ::= + | - | * | /
- * <var>  ::= x | y
- * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ * final Cfg<String> grammar = Bnf.parse("""
+ *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+ *     <op>   ::= + | - | * | /
+ *     <var>  ::= x | y
+ *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ *     """
+ * );
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -95,13 +99,13 @@ public final class Bnf {
 	 * @return the BNF formatted grammar string
 	 * @throws NullPointerException if the give {@code grammar} is {@code null}
 	 */
-	public static String format(final Cfg<String> grammar) {
+	public static String format(final Cfg<?> grammar) {
 		return grammar.rules().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static String format(final Cfg.Rule<String> rule) {
+	private static String format(final Cfg.Rule<?> rule) {
 		return String.format(
 			"%s ::= %s",
 			format(rule.start()),
@@ -111,16 +115,16 @@ public final class Bnf {
 		);
 	}
 
-	private static String format(final Cfg.Expression<String> expr) {
+	private static String format(final Cfg.Expression<?> expr) {
 		return expr.symbols().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining(" "));
 	}
 
-	private static String format(final Cfg.Symbol<String> symbol) {
-		if (symbol instanceof Cfg.NonTerminal<String> nt) {
+	private static String format(final Cfg.Symbol<?> symbol) {
+		if (symbol instanceof Cfg.NonTerminal<?> nt) {
 			return String.format("<%s>", nt.name());
-		} else if (symbol instanceof Cfg.Terminal<String> t) {
+		} else if (symbol instanceof Cfg.Terminal<?> t) {
 			return "'" + t.name()
 				.replace("\\", "\\\\")
 				.replace("'", "\\'") + "'";
