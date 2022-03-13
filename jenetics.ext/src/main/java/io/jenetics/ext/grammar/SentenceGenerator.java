@@ -49,27 +49,6 @@ public interface SentenceGenerator<T> {
 	List<Terminal<T>> generate(final Cfg<? extends T> cfg);
 
 	/**
-	 * Generates a new sentence from the given grammar and symbol {@code index}
-	 * function. If the generation doesn't terminate (the generated number of
-	 * symbols exceeds the given {@code limit}), an empty list is returned.
-	 *
-	 * @see StandardSentenceGenerator#generate(Cfg)
-	 *
-	 * @param cfg the generating grammar
-	 * @param index the symbol selection strategy
-	 * @param limit the maximal allowed symbols
-	 * @return a newly created list of terminal symbols (sentence)
-	 * @throws NullPointerException if {@code cfg} of {@code index} is {@code null}
-	 */
-	static <T> List<Terminal<T>> generate(
-		final Cfg<? extends T> cfg,
-		final SymbolIndex index,
-		final int limit
-	) {
-		return SentenceGenerator.<T>of(index, limit).generate(cfg);
-	}
-
-	/**
 	 * Return a <em>standard</em> sentence generator from the given symbol
 	 * {@code index} and sentence length {@code limit}.
 	 *

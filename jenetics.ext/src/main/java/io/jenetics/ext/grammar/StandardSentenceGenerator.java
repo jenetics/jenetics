@@ -129,20 +129,14 @@ public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> 
 	@Override
 	public List<Terminal<T>> generate(final Cfg<? extends T> cfg) {
 		final var sentence = new LinkedList<Symbol<T>>();
-		expand(Cfg.upcast(cfg), _index, sentence, _expansion, _limit);
+		generate(Cfg.upcast(cfg), sentence);
 
 		return sentence.stream()
 			.map(t -> (Terminal<T>)t)
 			.toList();
 	}
 
-	private static <T> void expand(
-		final Cfg<T> cfg,
-		final SymbolIndex index,
-		final List<Symbol<T>> symbols,
-		final Expansion expansion,
-		final int limit
-	) {
+	private void generate(final Cfg<T> cfg, final List<Symbol<T>> symbols) {
 		symbols.add(cfg.start());
 
 		boolean proceed;
@@ -151,30 +145,26 @@ public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> 
 
 			final ListIterator<Symbol<T>> sit = symbols.listIterator();
 			while (sit.hasNext() &&
-				(expansion == Expansion.LEFT_TO_RIGHT || !proceed))
+				(_expansion == Expansion.LEFT_TO_RIGHT || !proceed))
 			{
 				if (sit.next() instanceof NonTerminal<T> nt) {
 					sit.remove();
-					expand(cfg, nt, index).forEach(sit::add);
+					expand(cfg, nt).forEach(sit::add);
 					proceed = true;
 				}
 			}
 
-			if (symbols.size() > limit) {
+			if (symbols.size() > _limit) {
 				symbols.clear();
 				proceed = false;
 			}
 		} while (proceed);
 	}
 
-	private static <T> List<Symbol<T>> expand(
-		final Cfg<T> cfg,
-		final NonTerminal<T> symbol,
-		final SymbolIndex index
-	) {
+	private List<Symbol<T>> expand(final Cfg<T> cfg, final NonTerminal<T> symbol) {
 		return cfg.rule(symbol)
 			.map(rule -> rule.alternatives()
-				.get(index.next(rule, rule.alternatives().size()))
+				.get(_index.next(rule, rule.alternatives().size()))
 				.symbols())
 			.orElse(List.of());
 	}

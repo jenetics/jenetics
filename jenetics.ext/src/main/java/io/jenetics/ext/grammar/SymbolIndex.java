@@ -19,12 +19,14 @@
  */
 package io.jenetics.ext.grammar;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.random.RandomGenerator;
 
 import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * Interface for selecting a symbol index.
+ * Functional interface for selecting a symbol index.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -52,6 +54,7 @@ public interface SymbolIndex {
 	 * @return a new symbol-index object from the given random generator
 	 */
 	static SymbolIndex of(final RandomGenerator random) {
+		requireNonNull(random);
 		return (rule, bound) -> random.nextInt(bound);
 	}
 
