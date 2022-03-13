@@ -145,8 +145,6 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * );
  * }</pre>
  *
- *
- *
  * @param <T> the token type used as input for the parser
  *
  * @implNote
