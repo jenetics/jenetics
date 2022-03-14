@@ -26,7 +26,9 @@ import java.util.random.RandomGenerator;
 import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * Functional interface for selecting a symbol index.
+ * Functional interface for selecting a symbol index. It is an abstraction of
+ * the <em>codon</em> values used for selecting the alternatives from a rule
+ * during the sentence generation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
