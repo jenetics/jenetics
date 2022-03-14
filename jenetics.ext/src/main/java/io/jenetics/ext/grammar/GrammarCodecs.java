@@ -20,11 +20,9 @@
 package io.jenetics.ext.grammar;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
@@ -32,7 +30,6 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
