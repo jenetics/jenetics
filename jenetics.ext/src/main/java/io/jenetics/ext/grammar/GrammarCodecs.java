@@ -122,7 +122,7 @@ public final class GrammarCodecs {
 	 * @return a new sentence codec
 	 */
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
-		final Cfg<T> cfg,
+		final Cfg<? extends T> cfg,
 		final IntUnaryOperator length,
 		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
 	) {
@@ -133,11 +133,10 @@ public final class GrammarCodecs {
 				IntegerChromosome.of(
 					IntRange.of(0, rule.alternatives().size()),
 					length.applyAsInt(rule.alternatives().size())
-				)
-			)
+				))
 			.collect(ISeq.toISeq());
 
-		final Map<NonTerminal<T>, Integer> ruleIndex = IntStream
+		final Map<NonTerminal<? extends T>, Integer> ruleIndex = IntStream
 			.range(0, cfg.rules().size())
 			.mapToObj(i -> Map.entry(cfg.rules().get(i).start(), i))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
