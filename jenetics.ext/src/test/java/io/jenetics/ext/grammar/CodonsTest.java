@@ -46,6 +46,8 @@ public class CodonsTest {
 	public void toByteArray(final int size) {
 		final var ch = BitChromosome.of(size);
 
+		final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
+
 		assertThat(Codons.toByteArray(ch)).isEqualTo(ch.toByteArray());
 	}
 
@@ -89,7 +91,7 @@ public class CodonsTest {
 			220, 240, 220, 203, 101, 53, 202, 203, 102, 55, 220, 202,
 			241, 130, 37, 202, 203, 140, 39, 202, 203, 102
 		};
-		final Codons codons = Codons.ofIntArray(values);
+		final Codons codons = new Codons(i -> values[i], values.length);
 
 		final var cds = new TrackingCodons(random);
 
@@ -120,11 +122,13 @@ public class CodonsTest {
 			"""
 		);
 
+		/*
 		final var codons = Codons.ofIntArray(
 			RandomGenerator.getDefault().ints(0, 256)
 				.limit(500)
 				.toArray()
 		);
+		 */
 
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
