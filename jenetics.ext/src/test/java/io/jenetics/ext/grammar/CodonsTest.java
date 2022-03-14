@@ -42,12 +42,19 @@ import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
  */
 public class CodonsTest {
 
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullCodonsSource() {
+		new Codons(null, 2);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void illegalCodonsLength() {
+		new Codons(i -> i, 0);
+	}
+
 	@Test(dataProvider = "chromosomeSizes")
 	public void toByteArray(final int size) {
 		final var ch = BitChromosome.of(size);
-
-		final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
-
 		assertThat(Codons.toByteArray(ch)).isEqualTo(ch.toByteArray());
 	}
 
@@ -57,6 +64,16 @@ public class CodonsTest {
 			{1}, {2}, {3}, {7}, {8}, {9}, {10}, {15}, {16}, {17}, {31},
 			{32}, {33}, {100}, {1_000}, {10_000}, {100_000}
 		};
+	}
+
+	@Test
+	public void nextIndex() {
+		final int length = 100;
+		final var codons = new Codons(i -> 3*i, length);
+		for (int i = 0; i < 1000; ++i) {
+			assertThat(codons.next(null, length))
+				.isEqualTo(3*i%length);
+		}
 	}
 
 	@DataProvider
