@@ -40,7 +40,45 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * Codec for creating sentences (list of terminal symbols) from a given grammar.
- * The creation of the sentences is controlled by a given genotype.
+ * The creation of the sentences is controlled by a given genotype. This
+ * encoding uses separate <em>codons</em>, backed up by a
+ * {@link IntegerChromosome}, for every rule. The length of the chromosome
+ * equal to the number of <em>alternative</em> expressions of the rule. This
+ * means that the following CFG,
+ *
+ * <pre>{@code
+ *                       (0)            (1)
+ * (0) <expr> ::= (<expr><op><expr>) | <var>
+ *               (0) (1) (2) (3)
+ * (1) <op>   ::= + | - | * | /
+ *               (0) (1) (2) (3) (4)
+ * (2) <var>  ::= x | 1 | 2 | 3 | 4
+ * }</pre>
+ *
+ * will be represented by the following {@link Genotype}
+ * <pre>{@code
+ * Genotype.of(
+ *     IntegerChromosome.of(IntRange.of(0, 2), length.applyAsInt(2)),
+ *     IntegerChromosome.of(IntRange.of(0, 4), length.applyAsInt(4)),
+ *     IntegerChromosome.of(IntRange.of(0, 5), length.applyAsInt(5))
+ * )
+ * }</pre>
+ *
+ * The {@code length} function lets you defining the number of codons as
+ * function of the number of alternatives for a given rule.
+ *
+ * <pre>{@code
+ * final Cfg<String> cfg = Bnf.parse(...);
+ * final Codec<List<Terminal<String>>, IntegerGene> codec = new SentenceCodec<>(
+ *     cfg,
+ *     // The chromosome length is 10 times the
+ *     // number of rule alternatives.
+ *     alternatives -> alternatives*10,
+ *     // Using the standard sentence generator
+ *     // with a maximal sentence length of 1,000.
+ *     index -> new StandardSentenceGenerator(index, 1_000)
+ * );
+ * }</pre>
  *
  * @param <T> the terminal value type
  *
@@ -48,12 +86,26 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-final class SentenceCodec<T> implements Codec<List<Terminal<T>>, IntegerGene> {
+public final class SentenceCodec<T>
+	implements Codec<List<Terminal<T>>, IntegerGene>
+{
 
 	private final Factory<Genotype<IntegerGene>> _encoding;
 	private final Function<Genotype<IntegerGene>, List<Terminal<T>>> _decoder;
 
-	SentenceCodec(
+	/**
+	 * Create a new sentence (list of terminal symbols) codec.
+	 *
+	 * @param cfg grammar
+	 * @param length the length of the chromosome which is used for selecting
+	 *        rules and symbols. The input parameter for this function is the
+	 *        number of alternatives of the actual rule. This way it is possible
+	 *        to define the chromosome length dependent on the selectable
+	 *        alternatives.
+	 * @param generator sentence generator function from a given
+	 *        {@link SymbolIndex}
+	 */
+	public SentenceCodec(
 		final Cfg<? extends T> cfg,
 		final IntUnaryOperator length,
 		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
