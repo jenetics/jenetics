@@ -126,35 +126,7 @@ public final class GrammarCodecs {
 		final IntUnaryOperator length,
 		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
 	) {
-		// Every rule gets its own codons. The ranges of the chromosomes will
-		// fit exactly the number of rule alternatives.
-		final ISeq<IntegerChromosome> chromosomes = cfg.rules().stream()
-			.map(rule ->
-				IntegerChromosome.of(
-					IntRange.of(0, rule.alternatives().size()),
-					length.applyAsInt(rule.alternatives().size())
-				))
-			.collect(ISeq.toISeq());
-
-		final Map<NonTerminal<? extends T>, Integer> ruleIndex = IntStream
-			.range(0, cfg.rules().size())
-			.mapToObj(i -> Map.entry(cfg.rules().get(i).start(), i))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		final Function<Genotype<IntegerGene>, SymbolIndex> symbolIndex = gt -> {
-			final List<Codons> codons = gt.stream()
-				.map(Codons::ofIntegerGenes)
-				.toList();
-
-			return (rule, bound) -> codons
-				.get(ruleIndex.get(rule.start()))
-				.next(rule, bound);
-		};
-
-		return Codec.of(
-			Genotype.of(chromosomes),
-			gt -> generator.apply(symbolIndex.apply(gt)).generate(cfg)
-		);
+		return new SentenceCodec<>(cfg, length, generator);
 	}
 
 
