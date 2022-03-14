@@ -48,8 +48,8 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-public final class Sentence {
-	private Sentence() {}
+public final class GrammarCodecs {
+	private GrammarCodecs() {}
 
 	public static String toString(final List<? extends Symbol<String>> symbols) {
 		return symbols.stream()
@@ -163,14 +163,26 @@ public final class Sentence {
 	 *     IntegerChromosome.of(IntRange.of(0, 5), length.applyAsInt(5))
 	 * )
 	 * }</pre>
+	 * The length function allows defining the number of codons as function of
+	 * the number of alternatives of a given rule.
 	 *
-	 * @see #codec(Cfg, IntUnaryOperator, int)
+	 * <pre>{@code
+	 * final Cfg<String> cfg = Bnf.parse(...);
+	 * final Codec<List<Terminal<String>> codec = GrammarCodecs.of(
+	 *     cfg,
+	 *     // The chromosome length is 10 times the number of rule alternatives.
+	 *     alternatives -> alternatives*10,
+	 *     // Using the standard sentence generator with a maximal
+	 *     // sentence length of 1,000.
+	 *     index -> new StandardSentenceGenerator(index, 1_000)
+	 * );
+	 * }</pre>
 	 *
 	 * @param cfg grammar
 	 * @param length the length of the chromosome which is used for selecting
 	 *        rules and symbols. The input parameter for this function is the
 	 *        number of alternatives of the actual rule. This way it is possible
-	 *        to define the chromosome length dependent on the the selectable
+	 *        to define the chromosome length dependent on the selectable
 	 *        alternatives.
 	 * @param generator sentence generator
 	 * @return codec

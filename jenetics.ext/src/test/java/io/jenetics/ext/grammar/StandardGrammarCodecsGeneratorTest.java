@@ -39,7 +39,7 @@ import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class StandardSentenceGeneratorTest {
+public class StandardGrammarCodecsGeneratorTest {
 
 	static final Cfg<String> CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
@@ -131,7 +131,7 @@ public class StandardSentenceGeneratorTest {
 
 	private static Object[][] read(final String resource) throws IOException {
 		final List<Object[]> values = new ArrayList<>();
-		try (var in = StandardSentenceGeneratorTest.class.getResourceAsStream(resource);
+		try (var in = StandardGrammarCodecsGeneratorTest.class.getResourceAsStream(resource);
 			 var reader = new InputStreamReader(in);
 			 var br = new BufferedReader(reader))
 		{

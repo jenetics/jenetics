@@ -61,7 +61,7 @@ public interface SentenceGenerator<T> {
 	 * @return a new <em>standard</em> sentence generator
 	 */
 	static <T> SentenceGenerator<T> of(final SymbolIndex index, final int limit) {
-		return new StandardSentenceGenerator<>(index, LEFT_TO_RIGHT, limit);
+		return new StandardSentenceGenerator<>(index, limit);
 	}
 
 }

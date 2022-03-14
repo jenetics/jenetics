@@ -21,6 +21,8 @@ package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
+import static io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -82,6 +84,21 @@ public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> 
 		_index = requireNonNull(index);
 		_expansion = requireNonNull(expansion);
 		_limit = limit;
+	}
+
+	/**
+	 * Create a new sentence generator from the given parameters.
+	 *
+	 * @param index the symbol index function used for generating the sentences
+	 * @param limit the maximal allowed sentence length. If the generated
+	 *        sentence exceeds this length, the generation is interrupted and
+	 *        an empty sentence (empty list) is returned.
+	 */
+	public StandardSentenceGenerator(
+		final SymbolIndex index,
+		final int limit
+	) {
+		this(index, LEFT_TO_RIGHT, limit);
 	}
 
 	/**

@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.grammar;
 
-import static io.jenetics.ext.grammar.StandardSentenceGeneratorTest.CFG;
+import static io.jenetics.ext.grammar.StandardGrammarCodecsGeneratorTest.CFG;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -43,7 +43,7 @@ public class StandardDerivationTreeGeneratorTest {
 		final var seed = 29022156195143L;
 		final var random = new Random(seed);
 
-		final String sentence = Sentence.generate(CFG, SymbolIndex.of(random), 100).stream()
+		final String sentence = GrammarCodecs.generate(CFG, SymbolIndex.of(random), 100).stream()
 			.map(Terminal::name)
 			.collect(Collectors.joining());
 
