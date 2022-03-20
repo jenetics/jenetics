@@ -19,31 +19,81 @@
  */
 package io.jenetics.ext.grammar;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
- * This interface is used for creating <em>derivation-trees</em> from a
- * context-free grammar ({@link Cfg}).
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-@FunctionalInterface
-public interface DerivationTreeGenerator<T>
-	extends Generator<T, Tree<Symbol<T>, ?>>
+public final class StandardDerivationTreeGenerator<T>
+	implements Generator<T, Tree<Symbol<T>, ?>>
 {
 
-	/**
-	 * Create a parse-tree from the given context-free grammar. If the
-	 * generation of the derivation tree fails, an empty tree
-	 * ({@link Tree#isEmpty()}}) is returned.
-	 *
-	 * @param cfg the generating grammar
-	 * @return a newly created parse-tree
-	 */
+	private final SymbolIndex _index;
+	private final int _limit;
+
+	public StandardDerivationTreeGenerator(
+		final SymbolIndex index,
+		final int limit
+	) {
+		_index = requireNonNull(index);
+		_limit = limit;
+	}
+
 	@Override
-	Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg);
+	public Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg) {
+		final Cfg<T> grammar = Cfg.upcast(cfg);
+		final NonTerminal<T> start = grammar.start();
+		final TreeNode<Symbol<T>> symbols = TreeNode.of(start);
+
+		int count = 1;
+		boolean expanded = true;
+		while (expanded) {
+			final Optional<TreeNode<Symbol<T>>> tree = symbols.leaves()
+				.filter(leave ->
+					leave.value() instanceof NonTerminal<T> nt &&
+					cfg.rule(nt).isPresent()
+				)
+				.findFirst();
+
+			if (tree.isPresent()) {
+				final var t = tree.orElseThrow();
+				final var expansion = expand(grammar, (NonTerminal<T>)t.value(), _index);
+				count += expansion.size();
+
+				if (count > _limit) {
+					return TreeNode.of();
+				}
+
+				expansion.forEach(t::attach);
+			}
+
+			expanded = tree.isPresent();
+		}
+
+		return symbols;
+	}
+
+	static <T> List<Symbol<T>> expand(
+		final Cfg<T> cfg,
+		final NonTerminal<T> symbol,
+		final SymbolIndex index
+	) {
+		return cfg.rule(symbol)
+			.map(rule -> rule.alternatives()
+				.get(index.next(rule, rule.alternatives().size()))
+				.symbols())
+			.orElse(List.of());
+	}
 
 }
