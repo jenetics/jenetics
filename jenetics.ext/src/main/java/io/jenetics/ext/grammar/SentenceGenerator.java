@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.grammar;
 
-import static io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
-
 import java.util.List;
 
 import io.jenetics.ext.grammar.Cfg.Terminal;
@@ -37,7 +35,9 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @version !__version__!
  */
 @FunctionalInterface
-public interface SentenceGenerator<T> {
+public non-sealed interface SentenceGenerator<T>
+	extends Generator<T, List<Terminal<T>>>
+{
 
 	/**
 	 * Generates a new sentence from the given grammar. If the generation of the
@@ -46,6 +46,7 @@ public interface SentenceGenerator<T> {
 	 * @param cfg the generating grammar
 	 * @return a newly created list of terminal symbols (sentence)
 	 */
+	@Override
 	List<Terminal<T>> generate(final Cfg<? extends T> cfg);
 
 	/**

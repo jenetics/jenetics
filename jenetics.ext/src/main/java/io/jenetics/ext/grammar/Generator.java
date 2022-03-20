@@ -19,31 +19,28 @@
  */
 package io.jenetics.ext.grammar;
 
-import io.jenetics.ext.grammar.Cfg.Symbol;
-import io.jenetics.ext.util.Tree;
-
 /**
- * This interface is used for creating <em>derivation-trees</em> from a
- * context-free grammar ({@link Cfg}).
+ * Generator interface for generating <em>sentences</em>/<em>derivation trees</em>
+ * from a given grammar.
+ *
+ * @param <T> the terminal token type of the grammar
+ * @param <R> the result type of the generator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-@FunctionalInterface
-public non-sealed interface DerivationTreeGenerator<T>
-	extends Generator<T, Tree<Symbol<T>, ?>>
+public sealed interface Generator<T, R>
+	permits SentenceGenerator, DerivationTreeGenerator
 {
 
 	/**
-	 * Create a parse-tree from the given context-free grammar. If the
-	 * generation of the derivation tree fails, an empty tree
-	 * ({@link Tree#isEmpty()}}) is returned.
+	 * Generates a new sentence from the given grammar. If the generation of the
+	 * sentence fails, an empty list is returned.
 	 *
 	 * @param cfg the generating grammar
-	 * @return a newly created parse-tree
+	 * @return a newly created result
 	 */
-	@Override
-	Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg);
+	R generate(final Cfg<? extends T> cfg);
 
 }

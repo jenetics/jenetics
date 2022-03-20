@@ -87,12 +87,10 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-public final class SentenceCodec<T>
-	implements Codec<List<Terminal<T>>, IntegerGene>
-{
+public final class SentenceCodec<T, R> implements Codec<R, IntegerGene> {
 
 	private final Factory<Genotype<IntegerGene>> _encoding;
-	private final Function<Genotype<IntegerGene>, List<Terminal<T>>> _decoder;
+	private final Function<Genotype<IntegerGene>, R> _decoder;
 
 	/**
 	 * Create a new sentence (list of terminal symbols) codec.
@@ -109,7 +107,7 @@ public final class SentenceCodec<T>
 	public SentenceCodec(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
 		// Every rule gets its own codons. The ranges of the chromosomes
 		// will fit exactly the number of rule alternatives.
@@ -133,7 +131,7 @@ public final class SentenceCodec<T>
 	}
 
 	@Override
-	public Function<Genotype<IntegerGene>, List<Terminal<T>>> decoder() {
+	public Function<Genotype<IntegerGene>, R> decoder() {
 		return _decoder;
 	}
 

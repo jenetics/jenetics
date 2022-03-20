@@ -22,10 +22,12 @@ package io.jenetics.ext.grammar;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -33,7 +35,9 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardDerivationTreeGenerator implements DerivationTreeGenerator {
+public final class StandardDerivationTreeGenerator<T>
+	implements DerivationTreeGenerator<T>
+{
 
 	private final SymbolIndex _index;
 	private final int _limit;
@@ -47,23 +51,24 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 	}
 
 	@Override
-	public TreeNode<Symbol<String>> generate(final Cfg<String> cfg) {
-		final NonTerminal<String> start = cfg.start();
-		final TreeNode<Symbol<String>> symbols = TreeNode.of(start);
+	public TreeNode<Symbol<T>> generate(final Cfg<? extends T> cfg) {
+		final Cfg<T> grammar = Cfg.upcast(cfg);
+		final NonTerminal<T> start = grammar.start();
+		final TreeNode<Symbol<T>> symbols = TreeNode.of(start);
 
 		int count = 1;
 		boolean expanded = true;
 		while (expanded) {
-			final Optional<TreeNode<Symbol<String>>> tree = symbols.leaves()
+			final Optional<TreeNode<Symbol<T>>> tree = symbols.leaves()
 				.filter(leave ->
-					leave.value() instanceof NonTerminal<String> nt &&
+					leave.value() instanceof NonTerminal<T> nt &&
 					cfg.rule(nt).isPresent()
 				)
 				.findFirst();
 
 			if (tree.isPresent()) {
 				final var t = tree.orElseThrow();
-				final var expansion = expand(cfg, (NonTerminal<String>)t.value(), _index);
+				final var expansion = expand(grammar, (NonTerminal<T>)t.value(), _index);
 				count += expansion.size();
 
 				if (count > _limit) {
@@ -79,9 +84,9 @@ public final class StandardDerivationTreeGenerator implements DerivationTreeGene
 		return symbols;
 	}
 
-	static List<Symbol<String>> expand(
-		final Cfg<String> cfg,
-		final NonTerminal<String> symbol,
+	static <T> List<Symbol<T>> expand(
+		final Cfg<T> cfg,
+		final NonTerminal<T> symbol,
 		final SymbolIndex index
 	) {
 		return cfg.rule(symbol)
