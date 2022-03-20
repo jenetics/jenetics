@@ -22,7 +22,6 @@ package io.jenetics.ext.grammar;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
@@ -35,14 +34,14 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardDerivationTreeGenerator<T>
+public final class DerivationTreeGenerator<T>
 	implements Generator<T, Tree<Symbol<T>, ?>>
 {
 
 	private final SymbolIndex _index;
 	private final int _limit;
 
-	public StandardDerivationTreeGenerator(
+	public DerivationTreeGenerator(
 		final SymbolIndex index,
 		final int limit
 	) {

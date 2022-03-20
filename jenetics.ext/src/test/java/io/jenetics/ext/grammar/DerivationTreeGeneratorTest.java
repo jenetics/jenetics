@@ -36,7 +36,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class StandardDerivationTreeGeneratorTest {
+public class DerivationTreeGeneratorTest {
 
 	@Test
 	public void create() throws Exception {
@@ -50,7 +50,7 @@ public class StandardDerivationTreeGeneratorTest {
 		System.out.println(sentence);
 
 		random.setSeed(seed);
-		final var generator = new StandardDerivationTreeGenerator(SymbolIndex.of(random), 1000);
+		final var generator = new DerivationTreeGenerator(SymbolIndex.of(random), 1000);
 		final TreeNode<Symbol<String>> tree = generator.generate(CFG);
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			//.map(Symbol::value);
@@ -69,7 +69,7 @@ public class StandardDerivationTreeGeneratorTest {
 
 
 		final TreeNode<Symbol<String>> simplified = TreeNode.of();
-		copy(tree, simplified, StandardDerivationTreeGeneratorTest::isImportant);
+		copy(tree, simplified, DerivationTreeGeneratorTest::isImportant);
 
 		System.out.println(TreeFormatter.TREE.format(simplified.map(s -> s != null ? s.name() : "<null>")));
 	}
