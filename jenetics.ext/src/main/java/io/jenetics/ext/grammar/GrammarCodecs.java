@@ -22,6 +22,7 @@ package io.jenetics.ext.grammar;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 import io.jenetics.BitChromosome;
@@ -33,6 +34,7 @@ import io.jenetics.engine.Codec;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Rule;
 import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 
@@ -120,7 +122,7 @@ public final class GrammarCodecs {
 	 */
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
 		final Cfg<? extends T> cfg,
-		final IntUnaryOperator length,
+		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
 	) {
 		return new SentenceCodec<>(cfg, length, generator);
@@ -209,7 +211,7 @@ public final class GrammarCodecs {
 
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> codec(
 		final Cfg<T> cfg,
-		final IntUnaryOperator length,
+		final Function<? super Rule<?>, IntRange> length,
 		final int maxSentenceLength
 	) {
 		return of(

@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.IntUnaryOperator;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,6 +36,7 @@ import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
+import io.jenetics.ext.grammar.Cfg.Rule;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
@@ -107,8 +108,8 @@ public final class SentenceCodec<T>
 	 */
 	public SentenceCodec(
 		final Cfg<? extends T> cfg,
-		final IntUnaryOperator length,
-		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
+		final Function<? super Rule<?>, IntRange> length,
+		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
 	) {
 		// Every rule gets its own codons. The ranges of the chromosomes
 		// will fit exactly the number of rule alternatives.
@@ -117,7 +118,7 @@ public final class SentenceCodec<T>
 				.map(rule ->
 					IntegerChromosome.of(
 						IntRange.of(0, rule.alternatives().size()),
-						length.applyAsInt(rule.alternatives().size())
+						length.apply(rule)
 					))
 				.collect(ISeq.toISeq())
 		);
