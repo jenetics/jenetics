@@ -34,15 +34,8 @@ public final class Mappers {
 	private Mappers() {
 	}
 
-	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
-		final Cfg<? extends T> cfg,
-		final Function<? super Rule<?>, IntRange> length,
-		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
-	) {
-		return new Mapper<>(cfg, length, generator);
-	}
-
-	public static <T> Codec<List<Terminal<T>>, BitGene> of(
+	public static <T> Codec<List<Terminal<T>>, BitGene>
+	singleBitChromosomeMapperOf(
 		final Cfg<? extends T> cfg,
 		final int length,
 		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
@@ -50,7 +43,8 @@ public final class Mappers {
 		return new BitGeneSentenceCodec<>(cfg, length, generator);
 	}
 
-	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
+	public static <T> Codec<List<Terminal<T>>, IntegerGene>
+	singleIntegerChromosomeMapperOf(
 		final Cfg<? extends T> cfg,
 		final IntRange range,
 		final IntRange length,
@@ -58,5 +52,15 @@ public final class Mappers {
 	) {
 		return new IntegerGeneSentenceCodec<>(cfg, range, length, generator);
 	}
+
+	public static <T> Codec<List<Terminal<T>>, IntegerGene>
+	multiIntegerChromosomeMapperOf(
+		final Cfg<? extends T> cfg,
+		final Function<? super Rule<?>, IntRange> length,
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
+	) {
+		return new Mapper<>(cfg, length, generator);
+	}
+
 
 }
