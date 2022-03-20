@@ -30,8 +30,8 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.grammar.Cfg.Rule;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 
-public final class SentenceCodecs {
-	private SentenceCodecs() {
+public final class Mappings {
+	private Mappings() {
 	}
 
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
