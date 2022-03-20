@@ -42,7 +42,7 @@ public class IntegerGeneSentenceCodec<T>
 		final Cfg<? extends T> cfg,
 		final IntRange range,
 		final IntRange length,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
 	) {
 		_encoding = Genotype.of(IntegerChromosome.of(range, length));
 

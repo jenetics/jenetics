@@ -40,7 +40,7 @@ public final class BitGeneSentenceCodec<T>
 	public BitGeneSentenceCodec(
 		final Cfg<? extends T> cfg,
 		final int bits,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
 	) {
 		_encoding = Genotype.of(BitChromosome.of(bits));
 

@@ -31,7 +31,7 @@ import io.jenetics.ext.util.Tree;
  * @version !__version__!
  */
 @FunctionalInterface
-public non-sealed interface DerivationTreeGenerator<T>
+public interface DerivationTreeGenerator<T>
 	extends Generator<T, Tree<Symbol<T>, ?>>
 {
 

@@ -61,7 +61,7 @@ public final class GrammarCodecs {
 		final SymbolIndex index,
 		final int limit
 	) {
-		return SentenceGenerator.<T>of(index, limit).generate(cfg);
+		return new StandardSentenceGenerator<T>(index, limit).generate(cfg);
 	}
 
 	/* *************************************************************************
@@ -121,7 +121,7 @@ public final class GrammarCodecs {
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
-		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, Generator<T, List<Terminal<T>>>> generator
 	) {
 		return new Mapper<>(cfg, length, generator);
 	}
@@ -213,7 +213,7 @@ public final class GrammarCodecs {
 		final int maxSentenceLength
 	) {
 		return of(
-			cfg, length, index -> SentenceGenerator.of(index, maxSentenceLength)
+			cfg, length, index -> new StandardSentenceGenerator<T>(index, maxSentenceLength)
 		);
 	}
 

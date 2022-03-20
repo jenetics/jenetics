@@ -40,7 +40,9 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardSentenceGenerator<T> implements SentenceGenerator<T> {
+public final class StandardSentenceGenerator<T>
+	implements Generator<T, List<Terminal<T>>>
+{
 
 	/**
 	 * Defines the expansion strategy used when generating the sentences.

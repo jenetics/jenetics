@@ -37,7 +37,7 @@ public final class SentenceCodecs {
 	public static <T> Codec<List<Terminal<T>>, IntegerGene> of(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
 	) {
 		return new Mapper<>(cfg, length, generator);
 	}
@@ -45,7 +45,7 @@ public final class SentenceCodecs {
 	public static <T> Codec<List<Terminal<T>>, BitGene> of(
 		final Cfg<? extends T> cfg,
 		final int length,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
 	) {
 		return new BitGeneSentenceCodec<>(cfg, length, generator);
 	}
@@ -54,7 +54,7 @@ public final class SentenceCodecs {
 		final Cfg<? extends T> cfg,
 		final IntRange range,
 		final IntRange length,
-		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
 	) {
 		return new IntegerGeneSentenceCodec<>(cfg, range, length, generator);
 	}

@@ -30,9 +30,8 @@ package io.jenetics.ext.grammar;
  * @since !__version__!
  * @version !__version__!
  */
-public sealed interface Generator<T, R>
-	permits SentenceGenerator, DerivationTreeGenerator
-{
+@FunctionalInterface
+public interface Generator<T, R> {
 
 	/**
 	 * Generates a new sentence from the given grammar. If the generation of the
