@@ -13,6 +13,6 @@ public class SentenceCodecTest {
 	public void create() {
 		final Cfg<String> cfg = null;
 		Codec<List<Terminal<String>>, IntegerGene> codec =
-			new Mapper<>(cfg, null, null);
+			new MultiIntegerChromosomeMapper<>(cfg, null, null);
 	}
 }

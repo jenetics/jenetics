@@ -70,7 +70,7 @@ public final class Mappers {
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
-		return new Mapper<>(cfg, length, generator);
+		return new MultiIntegerChromosomeMapper<>(cfg, length, generator);
 	}
 
 

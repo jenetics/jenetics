@@ -85,7 +85,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * @since !__version__!
  * @version !__version__!
  */
-public final class Mapper<T, R> implements Codec<R, IntegerGene> {
+final class MultiIntegerChromosomeMapper<T, R> implements Codec<R, IntegerGene> {
 
 	private final Factory<Genotype<IntegerGene>> _encoding;
 	private final Function<Genotype<IntegerGene>, R> _decoder;
@@ -102,7 +102,7 @@ public final class Mapper<T, R> implements Codec<R, IntegerGene> {
 	 * @param generator sentence generator function from a given
 	 *        {@link SymbolIndex}
 	 */
-	public Mapper(
+	public MultiIntegerChromosomeMapper(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator

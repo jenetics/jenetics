@@ -123,7 +123,7 @@ public final class GrammarCodecs {
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, Generator<T, List<Terminal<T>>>> generator
 	) {
-		return new Mapper<>(cfg, length, generator);
+		return new MultiIntegerChromosomeMapper<>(cfg, length, generator);
 	}
 
 
