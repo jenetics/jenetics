@@ -61,7 +61,7 @@ public final class GrammarCodecs {
 		final SymbolIndex index,
 		final int limit
 	) {
-		return new StandardSentenceGenerator<T>(index, limit).generate(cfg);
+		return new SentenceGenerator<T>(index, limit).generate(cfg);
 	}
 
 	/* *************************************************************************
@@ -213,7 +213,7 @@ public final class GrammarCodecs {
 		final int maxSentenceLength
 	) {
 		return of(
-			cfg, length, index -> new StandardSentenceGenerator<T>(index, maxSentenceLength)
+			cfg, length, index -> new SentenceGenerator<T>(index, maxSentenceLength)
 		);
 	}
 

@@ -21,7 +21,7 @@ package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
-import static io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion.LEFT_TO_RIGHT;
+import static io.jenetics.ext.grammar.SentenceGenerator.Expansion.LEFT_TO_RIGHT;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +40,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * @since !__version__!
  * @version !__version__!
  */
-public final class StandardSentenceGenerator<T>
+public final class SentenceGenerator<T>
 	implements Generator<T, List<Terminal<T>>>
 {
 
@@ -78,7 +78,7 @@ public final class StandardSentenceGenerator<T>
 	 *        sentence exceeds this length, the generation is interrupted and
 	 *        an empty sentence (empty list) is returned.
 	 */
-	public StandardSentenceGenerator(
+	public SentenceGenerator(
 		final SymbolIndex index,
 		final Expansion expansion,
 		final int limit
@@ -96,7 +96,7 @@ public final class StandardSentenceGenerator<T>
 	 *        sentence exceeds this length, the generation is interrupted and
 	 *        an empty sentence (empty list) is returned.
 	 */
-	public StandardSentenceGenerator(
+	public SentenceGenerator(
 		final SymbolIndex index,
 		final int limit
 	) {

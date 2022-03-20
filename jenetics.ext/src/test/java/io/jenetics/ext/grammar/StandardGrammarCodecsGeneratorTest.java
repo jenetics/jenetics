@@ -34,7 +34,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.grammar.Cfg.Symbol;
-import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
+import io.jenetics.ext.grammar.SentenceGenerator.Expansion;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -55,7 +55,7 @@ public class StandardGrammarCodecsGeneratorTest {
 	public void create() {
 		final var random = new Random(-8564585140851778291L);
 
-		var generator = new StandardSentenceGenerator<String>(
+		var generator = new SentenceGenerator<String>(
 			SymbolIndex.of(random),
 			Expansion.LEFT_FIRST,
 			MAX_VALUE
@@ -70,7 +70,7 @@ public class StandardGrammarCodecsGeneratorTest {
 		////////////////////////////////////////////////////////////////////////
 
 		random.setSeed(29022156195143L);
-		generator = new StandardSentenceGenerator<>(
+		generator = new SentenceGenerator<>(
 			SymbolIndex.of(random),
 			Expansion.LEFT_TO_RIGHT,
 			MAX_VALUE
@@ -106,7 +106,7 @@ public class StandardGrammarCodecsGeneratorTest {
 		Expansion expansion
 	) {
 		final var random = new Random(seed);
-		final var generator = new StandardSentenceGenerator<String>(
+		final var generator = new SentenceGenerator<String>(
 			SymbolIndex.of(random),
 			expansion,
 			MAX_VALUE

@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.BitChromosome;
 
-import io.jenetics.ext.grammar.StandardSentenceGenerator.Expansion;
+import io.jenetics.ext.grammar.SentenceGenerator.Expansion;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -112,7 +112,7 @@ public class CodonsTest {
 
 		final var cds = new TrackingCodons(random);
 
-		var generator = new StandardSentenceGenerator<String>(
+		var generator = new SentenceGenerator<String>(
 			cds,
 			Expansion.LEFT_FIRST,
 			MAX_VALUE
@@ -150,7 +150,7 @@ public class CodonsTest {
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
 		for (int i = 0; i < 1_000_000; ++i) {
-			var generator = new StandardSentenceGenerator<String>(
+			var generator = new SentenceGenerator<String>(
 				SymbolIndex.of(random),
 				Expansion.LEFT_FIRST,
 				200
