@@ -21,8 +21,6 @@ package io.jenetics.ext.grammar;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.IntUnaryOperator;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 import io.jenetics.BitChromosome;
@@ -125,7 +123,7 @@ public final class GrammarCodecs {
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, SentenceGenerator<T>> generator
 	) {
-		return new SentenceCodec<>(cfg, length, generator);
+		return new Mapper<>(cfg, length, generator);
 	}
 
 

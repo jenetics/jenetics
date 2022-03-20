@@ -21,7 +21,6 @@ package io.jenetics.ext.grammar;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 
 import io.jenetics.BitGene;
 import io.jenetics.IntegerGene;
@@ -40,7 +39,7 @@ public final class SentenceCodecs {
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, ? extends SentenceGenerator<T>> generator
 	) {
-		return new SentenceCodec<>(cfg, length, generator);
+		return new Mapper<>(cfg, length, generator);
 	}
 
 	public static <T> Codec<List<Terminal<T>>, BitGene> of(

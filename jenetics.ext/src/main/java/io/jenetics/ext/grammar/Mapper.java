@@ -21,10 +21,8 @@ package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,7 +35,6 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg.Rule;
-import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * Codec for creating sentences (list of terminal symbols) from a given grammar.
@@ -70,7 +67,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  *
  * <pre>{@code
  * final Cfg<String> cfg = Bnf.parse(...);
- * final Codec<List<Terminal<String>>, IntegerGene> codec = new SentenceCodec<>(
+ * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
  *     cfg,
  *     // The chromosome length is 10 times the
  *     // number of rule alternatives.
@@ -81,13 +78,14 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * );
  * }</pre>
  *
- * @param <T> the terminal value type
+ * @param <T> the terminal token type of the grammar
+ * @param <R> the result type of the mapper
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-public final class SentenceCodec<T, R> implements Codec<R, IntegerGene> {
+public final class Mapper<T, R> implements Codec<R, IntegerGene> {
 
 	private final Factory<Genotype<IntegerGene>> _encoding;
 	private final Function<Genotype<IntegerGene>, R> _decoder;
@@ -104,7 +102,7 @@ public final class SentenceCodec<T, R> implements Codec<R, IntegerGene> {
 	 * @param generator sentence generator function from a given
 	 *        {@link SymbolIndex}
 	 */
-	public SentenceCodec(
+	public Mapper(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
