@@ -19,45 +19,56 @@
  */
 package io.jenetics.ext.grammar;
 
-import java.util.List;
 import java.util.function.Function;
 
+import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg.Rule;
-import io.jenetics.ext.grammar.Cfg.Terminal;
 
 public final class Mappers {
 	private Mappers() {
 	}
 
-	public static <T> Codec<List<Terminal<T>>, BitGene>
+	public static <T, R> Codec<R, BitGene>
 	singleBitChromosomeMapperOf(
 		final Cfg<? extends T> cfg,
 		final int length,
-		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
-		return new BitGeneSentenceCodec<>(cfg, length, generator);
+		return Codec.of(
+			Genotype.of(BitChromosome.of(length)),
+			gt -> generator
+				.apply(Codons.ofBitGenes(gt.chromosome()))
+				.generate(cfg)
+		);
 	}
 
-	public static <T> Codec<List<Terminal<T>>, IntegerGene>
+	public static <T, R> Codec<R, IntegerGene>
 	singleIntegerChromosomeMapperOf(
 		final Cfg<? extends T> cfg,
 		final IntRange range,
 		final IntRange length,
-		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
-		return new IntegerGeneSentenceCodec<>(cfg, range, length, generator);
+		return Codec.of(
+			Genotype.of(IntegerChromosome.of(range, length)),
+			gt -> generator
+				.apply(Codons.ofIntegerGenes(gt.chromosome()))
+				.generate(cfg)
+		);
 	}
 
-	public static <T> Codec<List<Terminal<T>>, IntegerGene>
+	public static <T, R> Codec<R, IntegerGene>
 	multiIntegerChromosomeMapperOf(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
-		final Function<? super SymbolIndex, ? extends Generator<T, List<Terminal<T>>>> generator
+		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
 		return new Mapper<>(cfg, length, generator);
 	}
