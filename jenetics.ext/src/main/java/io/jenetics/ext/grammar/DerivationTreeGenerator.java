@@ -67,7 +67,11 @@ public final class DerivationTreeGenerator<T>
 
 			if (tree.isPresent()) {
 				final var t = tree.orElseThrow();
-				final var expansion = expand(grammar, (NonTerminal<T>)t.value(), _index);
+				final var expansion = expand(
+					grammar,
+					(NonTerminal<T>)t.value(),
+					_index
+				);
 				count += expansion.size();
 
 				if (count > _limit) {
