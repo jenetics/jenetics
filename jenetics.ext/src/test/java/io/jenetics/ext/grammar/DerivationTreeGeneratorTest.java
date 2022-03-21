@@ -43,20 +43,21 @@ public class DerivationTreeGeneratorTest {
 		final var seed = 29022156195143L;
 		final var random = new Random(seed);
 
+		/*
 		final String sentence = GrammarCodecs.generate(CFG, SymbolIndex.of(random), 100).stream()
 			.map(Terminal::name)
 			.collect(Collectors.joining());
 
-		System.out.println(sentence);
+		 */
+
+		//System.out.println(sentence);
 
 		random.setSeed(seed);
-		final var generator = new DerivationTreeGenerator(SymbolIndex.of(random), 1000);
-		final TreeNode<Symbol<String>> tree = generator.generate(CFG);
+		final var generator = new DerivationTreeGenerator<String>(SymbolIndex.of(random), 1000);
+		final Tree<Symbol<String>, ?> tree = generator.generate(CFG);
 		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
 			//.map(Symbol::value);
 
-
-		System.out.println(TreeFormatter.TREE.format(tree.map(Symbol::name)));
 
 		/*
 		final var bout = new ByteArrayOutputStream();

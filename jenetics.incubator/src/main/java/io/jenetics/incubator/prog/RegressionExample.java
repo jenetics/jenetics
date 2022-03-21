@@ -33,9 +33,10 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg;
-import io.jenetics.ext.grammar.GrammarCodecs;
 import io.jenetics.ext.grammar.Bnf;
 
+import io.jenetics.ext.grammar.Mappers;
+import io.jenetics.ext.grammar.SentenceGenerator;
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -65,8 +66,11 @@ public class RegressionExample {
 
 	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
-		GrammarCodecs
-			.codec(CFG, size -> IntRange.of(size.alternatives().size()*10), 500)
+		Mappers.multiIntegerChromosomeMapperOf(
+				CFG,
+				rule -> IntRange.of(rule.alternatives().size()*10),
+				index -> new SentenceGenerator<>(index, 1000 )
+			)
 			.map(s -> {
 				lengths
 					.computeIfAbsent(s.size(), key -> new AtomicInteger())
