@@ -25,12 +25,15 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -328,6 +331,35 @@ public record Cfg<T>(
 			}
 		}
 		return Optional.empty();
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public <A> Cfg<A> map(final Function<? super T, ? extends A> mapper) {
+		final var visited = new HashMap<Terminal<T>, Terminal<A>>();
+
+		final Function<Terminal<T>, Terminal<A>> map = t -> visited.computeIfAbsent(
+			t, tt -> new Terminal<A>(t.name(), mapper.apply(tt.value()))
+		);
+
+		final List<NonTerminal<A>> nonTerminals = nonTerminals().stream()
+			.map(nt -> (NonTerminal<A>)nt)
+			.toList();
+
+
+		final var normalized = Cfg.of(rules());
+
+		final List<Terminal<A>> terminals = normalized.terminals().stream()
+			.map(t -> new Terminal<A>(t.name(), mapper.apply(t.value())))
+			.toList();
+
+		final Cfg cfg = new Cfg(
+			normalized.nonTerminals(),
+			terminals,
+			normalized.rules(),
+			normalized.start()
+		);
+
+		return (Cfg<A>)cfg;
 	}
 
 	/**
