@@ -35,6 +35,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Bnf;
 
+import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.grammar.Mappers;
 import io.jenetics.ext.grammar.SentenceGenerator;
 import io.jenetics.ext.util.Tree;
@@ -66,10 +67,10 @@ public class RegressionExample {
 
 	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
-		Mappers.multiIntegerChromosomeMapperOf(
+		Mappers.multiIntegerChromosomeMapper(
 				CFG,
 				rule -> IntRange.of(rule.alternatives().size()*10),
-				index -> new SentenceGenerator<>(index, 1000 )
+				index -> new SentenceGenerator<>(index, 1000)
 			)
 			.map(s -> {
 				lengths
@@ -132,6 +133,12 @@ public class RegressionExample {
 	}
 
 	public static void main(final String[] args) {
+		Codec<List<Terminal<String>>, IntegerGene> foo = Mappers.multiIntegerChromosomeMapper(
+			CFG,
+			rule -> IntRange.of(rule.alternatives().size()*10),
+			index -> new SentenceGenerator<>(index, 1000)
+		);
+
 		final Engine<IntegerGene, Double> engine = Engine
 			.builder(RegressionExample::fitness, CODEC)
 			.minimizing()

@@ -31,12 +31,36 @@ import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Cfg.Rule;
 
+/**
+ * This class defines factories for different CFG {@code <->} Chromosome mappings
+ * (encodings).
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
 public final class Mappers {
 	private Mappers() {
 	}
 
+	/**
+	 * Return a classic mapping codec. It uses a bit-chromosome for creating the
+	 * grammar results. The codons are created by dividing the chromosome in
+	 * 8-bit junks, as described in <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
+	 *
+	 * @see #singleIntegerChromosomeMapper(Cfg, IntRange, IntRange, Function)
+	 *
+	 * @param cfg the encoding grammar
+	 * @param length the length of the bit-chromosome
+	 * @param generator sentence generator function from a given
+	 *        {@link SymbolIndex}
+	 * @param <T> the terminal token type of the grammar
+	 * @param <R> the result type of the mapper
+	 * @return a new mapping codec for the given {@code cfg}
+	 */
 	public static <T, R> Codec<R, BitGene>
-	singleBitChromosomeMapperOf(
+	singleBitChromosomeMapper(
 		final Cfg<? extends T> cfg,
 		final int length,
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
@@ -49,8 +73,22 @@ public final class Mappers {
 		);
 	}
 
+	/**
+	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
+	 * The only difference is that the codons are encoded directly, via an
+	 * integer-chromosome, so that no gene split is necessary.
+	 *
+	 * @param cfg the encoding grammar
+	 * @param range the value range of the integer genes
+	 * @param length the length range of the integer-chromosome
+	 * @param generator sentence generator function from a given
+	 *        {@link SymbolIndex}
+	 * @param <T> the terminal token type of the grammar
+	 * @param <R> the result type of the mapper
+	 * @return a new mapping codec for the given {@code cfg}
+	 */
 	public static <T, R> Codec<R, IntegerGene>
-	singleIntegerChromosomeMapperOf(
+	singleIntegerChromosomeMapper(
 		final Cfg<? extends T> cfg,
 		final IntRange range,
 		final IntRange length,
@@ -64,8 +102,61 @@ public final class Mappers {
 		);
 	}
 
+	/**
+	 * Codec for creating <em>results</em> from a given grammar. The creation of
+	 * the grammar result is controlled by a given genotype. This encoding uses
+	 * separate <em>codons</em>, backed up by a {@link IntegerChromosome}, for
+	 * every rule. The length of the chromosome is defined as a function of the
+	 * encoded rules. This means that the following CFG,
+	 *
+	 * <pre>{@code
+	 *                       (0)            (1)
+	 * (0) <expr> ::= (<expr><op><expr>) | <var>
+	 *               (0) (1) (2) (3)
+	 * (1) <op>   ::= + | - | * | /
+	 *               (0) (1) (2) (3) (4)
+	 * (2) <var>  ::= x | 1 | 2 | 3 | 4
+	 * }</pre>
+	 *
+	 * will be represented by the following {@link Genotype}
+	 * <pre>{@code
+	 * Genotype.of(
+	 *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
+	 *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
+	 *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
+	 * )
+	 * }</pre>
+	 *
+	 * The {@code length} function lets you defining the number of codons as
+	 * function of the rule the chromosome is encoding.
+	 *
+	 * <pre>{@code
+	 * final Cfg<String> cfg = Bnf.parse(...);
+	 * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
+	 *     cfg,
+	 *     // The chromosome length is 10 times the
+	 *     // number of rule alternatives.
+	 *     rule -> IntRange.of(rule.alternatives().size()*10),
+	 *     // Using the standard sentence generator
+	 *     // with a maximal sentence length of 5,000.
+	 *     index -> new SentenceGenerator<>(index, 5_000)
+	 * );
+	 * }</pre>
+	 *
+	 *
+	 * @param cfg the encoding grammar
+	 * @param length the length of the chromosome which is used for selecting
+	 *        rules and symbols. The input parameter for this function is the
+	 *        actual rule. This way it is possible to define the chromosome
+	 *        length dependent on the selectable alternatives.
+	 * @param generator sentence generator function from a given
+	 *        {@link SymbolIndex}
+	 * @param <T> the terminal token type of the grammar
+	 * @param <R> the result type of the mapper
+	 * @return a new mapping codec for the given {@code cfg}
+	 */
 	public static <T, R> Codec<R, IntegerGene>
-	multiIntegerChromosomeMapperOf(
+	multiIntegerChromosomeMapper(
 		final Cfg<? extends T> cfg,
 		final Function<? super Rule<?>, IntRange> length,
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator

@@ -37,12 +37,11 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * Codec for creating sentences (list of terminal symbols) from a given grammar.
- * The creation of the sentences is controlled by a given genotype. This
- * encoding uses separate <em>codons</em>, backed up by a
- * {@link IntegerChromosome}, for every rule. The length of the chromosome
- * equal to the number of <em>alternative</em> expressions of the rule. This
- * means that the following CFG,
+ * Codec for creating <em>results</em> from a given grammar. The creation of
+ * the grammar result is controlled by a given genotype. This encoding uses
+ * separate <em>codons</em>, backed up by a {@link IntegerChromosome}, for
+ * every rule. The length of the chromosome is defined as a function of the
+ * encoded rules. This means that the following CFG,
  *
  * <pre>{@code
  *                       (0)            (1)
@@ -56,14 +55,14 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * will be represented by the following {@link Genotype}
  * <pre>{@code
  * Genotype.of(
- *     IntegerChromosome.of(IntRange.of(0, 2), length.applyAsInt(2)),
- *     IntegerChromosome.of(IntRange.of(0, 4), length.applyAsInt(4)),
- *     IntegerChromosome.of(IntRange.of(0, 5), length.applyAsInt(5))
+ *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
+ *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
+ *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
  * )
  * }</pre>
  *
  * The {@code length} function lets you defining the number of codons as
- * function of the number of alternatives for a given rule.
+ * function of the rule the chromosome is encoding.
  *
  * <pre>{@code
  * final Cfg<String> cfg = Bnf.parse(...);
@@ -71,10 +70,10 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  *     cfg,
  *     // The chromosome length is 10 times the
  *     // number of rule alternatives.
- *     alternatives -> alternatives*10,
+ *     rule -> IntRange.of(rule.alternatives().size()*10),
  *     // Using the standard sentence generator
- *     // with a maximal sentence length of 1,000.
- *     index -> new StandardSentenceGenerator(index, 1_000)
+ *     // with a maximal sentence length of 5,000.
+ *     index -> new SentenceGenerator<>(index, 5_000)
  * );
  * }</pre>
  *
@@ -93,12 +92,11 @@ final class MultiIntegerChromosomeMapper<T, R> implements Codec<R, IntegerGene> 
 	/**
 	 * Create a new sentence (list of terminal symbols) codec.
 	 *
-	 * @param cfg grammar
+	 * @param cfg the encoding grammar
 	 * @param length the length of the chromosome which is used for selecting
 	 *        rules and symbols. The input parameter for this function is the
-	 *        number of alternatives of the actual rule. This way it is possible
-	 *        to define the chromosome length dependent on the selectable
-	 *        alternatives.
+	 *        actual rule. This way it is possible to define the chromosome
+	 *        length dependent on the selectable alternatives.
 	 * @param generator sentence generator function from a given
 	 *        {@link SymbolIndex}
 	 */
