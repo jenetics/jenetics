@@ -312,4 +312,24 @@ public class CfgTest {
 		assertThat(cfg2).isEqualTo(cfg);
 	}
 
+	@Test
+	public void map() {
+		final var cfg = Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= x | x | y
+			<num>  ::= 0 | 1 | 2
+			"""
+		);
+
+		final Cfg<String> cfg2 = cfg.map(t ->"__" + t.value());
+
+		for (var t : cfg2.terminals()) {
+			assertThat(t.value()).startsWith("__");
+		}
+		for (var t : cfg2.nonTerminals()) {
+			assertThat(t.name()).doesNotContain("__");
+		}
+	}
+
 }

@@ -63,7 +63,7 @@ import java.util.stream.Stream;
  *     (rewrite) rules ({@link Rule}) or productions of the grammar.
  *     </li>
  *     <li>{@code S} is the start variable (or start symbol), used to represent
- *     the whole sentence (or program). It must be an element of {@code V}
+ *     the whole sentence (or program). It must be an element of {@code NT}
  *     ({@link NonTerminal})
  *     .</li>
  * </ul>
@@ -352,33 +352,42 @@ public record Cfg<T>(
 		return Optional.empty();
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public <A> Cfg<A> map(final Function<? super T, ? extends A> mapper) {
-		final var visited = new HashMap<Terminal<T>, Terminal<A>>();
+	/**
+	 * Maps the values of the terminal symbols from type {@code T} to type
+	 * {@code A}.
+	 *
+	 * @param mapper the mapper function
+	 * @param <A> the new value type of the terminal symbols
+	 * @return the mapped grammar
+	 * @throws NullPointerException if the given mapper is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public <A> Cfg<A> map(final Function<? super Terminal<T>, ? extends A> mapper) {
+		requireNonNull(mapper);
 
-		final Function<Terminal<T>, Terminal<A>> map = t -> visited.computeIfAbsent(
-			t, tt -> new Terminal<A>(t.name(), mapper.apply(tt.value()))
-		);
+		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
+		final Function<Terminal<T>, Terminal<A>> mapping = t -> cache
+			.computeIfAbsent(t, t2 -> new Terminal<>(t2.name(), mapper.apply(t2)));
 
-		final List<NonTerminal<A>> nonTerminals = nonTerminals().stream()
-			.map(nt -> (NonTerminal<A>)nt)
+		final List<Rule<A>> rules = rules().stream()
+			.map(rule -> new Rule<>(
+				(NonTerminal<A>)rule.start(),
+				rule.alternatives().stream()
+					.map(expr -> new Expression<A>(
+						expr.symbols().stream()
+							.map(sym -> sym instanceof Cfg.Terminal<T> t
+								? mapping.apply(t)
+								: (NonTerminal<A>)sym
+							)
+							.collect(Collectors.toList())
+						)
+					)
+					.toList()
+				)
+			)
 			.toList();
 
-
-		final var normalized = Cfg.of(rules());
-
-		final List<Terminal<A>> terminals = normalized.terminals().stream()
-			.map(t -> new Terminal<A>(t.name(), mapper.apply(t.value())))
-			.toList();
-
-		final Cfg cfg = new Cfg(
-			normalized.nonTerminals(),
-			terminals,
-			normalized.rules(),
-			normalized.start()
-		);
-
-		return (Cfg<A>)cfg;
+		return Cfg.of(rules);
 	}
 
 	/**
@@ -504,7 +513,7 @@ public record Cfg<T>(
 
 
 	/* *************************************************************************
-	 *
+	 * Static factory methods for rule creation.
 	 * ************************************************************************/
 
 	/**
