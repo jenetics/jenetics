@@ -25,9 +25,9 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,20 +44,20 @@ import java.util.stream.Stream;
  * <b>Formal definition</b>
  * <p>
  * A context-free grammar {@code G} is defined by the 4-tuple
- * {@code G = (V, Σ, R, S)}, where
+ * {@code G = (NT, T, R, S)}, where
  * <ul>
- *     <li>{@code V} is a finite set; each element {@code v ∈ V} is called a
+ *     <li>{@code NT} is a finite set; each element {@code nt ∈ NT} is called a
  *     non-terminal ({@link NonTerminal}) character or a variable. Each
  *     variable represents a different type of phrase or clause in the sentence.
  *     Variables are also sometimes called syntactic categories. Each variable
  *     defines a sub-language of the language defined by {@code G}.
  *     </li>
- *     <li>{@code Σ} is a finite set of terminals ({@link Terminal}) disjoint
- *     from {@code V}, which make up the actual content of the sentence. The set
+ *     <li>{@code T} is a finite set of terminals ({@link Terminal}) disjoint
+ *     from {@code NT}, which make up the actual content of the sentence. The set
  *     of terminals is the alphabet of the language defined by the grammar
  *     {@code G}.
  *     </li>
- *     <li>{@code R} is a finite relation in {@code V × (V ∪ Σ)∗}, where the
+ *     <li>{@code R} is a finite relation in {@code NT × (NT ∪ T)∗}, where the
  *     asterisk represents the <a href="https://en.wikipedia.org/wiki/Kleene_star">
  *     Kleene star</a> operation. The members of {@code R} are called the
  *     (rewrite) rules ({@link Rule}) or productions of the grammar.
@@ -76,6 +76,24 @@ import java.util.stream.Stream;
  *     <var>  ::= x | y
  *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
  *     """
+ * );
+ * }</pre>
+ *
+ * It is also possible to create the grammar above programmatically.
+ * <pre>{@code
+ * final Cfg<String> grammar = Cfg.of(
+ *     R("expr",
+ *         E(NT("num")),
+ *         E(NT("var")),
+ *         E(T("("), NT("expr"), NT("op"), NT("expr"), T(")"))
+ *     ),
+ *     R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
+ *     R("var", E(T("x")), E(T("y"))),
+ *     R("num",
+ *         E(T("0")), E(T("1")), E(T("2")), E(T("3")),
+ *         E(T("4")), E(T("5")), E(T("6")), E(T("7")),
+ *         E(T("8")), E(T("9"))
+ *     )
  * );
  * }</pre>
  *
@@ -107,6 +125,7 @@ public record Cfg<T>(
 		 * @return the name of the symbol
 		 */
 		String name();
+
 	}
 
 	/**
@@ -405,6 +424,20 @@ public record Cfg<T>(
 		);
 	}
 
+	/**
+	 * Create a grammar object with the given rules. Duplicated rules are merged
+	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
+	 * the start symbol of the created CFG
+	 *
+	 * @param rules the rules the grammar consists of
+	 * @throws IllegalArgumentException if the list of rules is empty
+	 * @throws NullPointerException if the list of rules is {@code null}
+	 */
+	@SafeVarargs
+	public static <T> Cfg<T> of(final Rule<T>... rules) {
+		return Cfg.of(Arrays.asList(rules));
+	}
+
 	private static <T> List<Rule<T>> normalize(final List<Rule<T>> rules) {
 		final Map<NonTerminal<T>, List<Rule<T>>> grouped = rules.stream()
 			.collect(groupingBy(
@@ -467,6 +500,80 @@ public record Cfg<T>(
 	@SuppressWarnings("unchecked")
 	static <A, B extends A> Cfg<A> upcast(final Cfg<B> seq) {
 		return (Cfg<A>)seq;
+	}
+
+
+	/* *************************************************************************
+	 *
+	 * ************************************************************************/
+
+	/**
+	 * Factory method for creating a terminal symbol with the given
+	 * {@code name} and {@code value}.
+	 *
+	 * @param name the name of the terminal symbol
+	 * @param value the value of the terminal symbol
+	 * @param <T> the terminal symbol value type
+	 * @return a new terminal symbol
+	 */
+	public static <T> Terminal<T> T(final String name, final T value) {
+		return new Terminal<>(name, value);
+	}
+
+	/**
+	 * Factory method for creating a terminal symbol with the given
+	 * {@code name}.
+	 *
+	 * @param name the name of the terminal symbol
+	 * @return a new terminal symbol
+	 */
+	public static Terminal<String> T(final String name) {
+		return new Terminal<>(name, name);
+	}
+
+	/**
+	 * Factory method for creating non-terminal symbols.
+	 *
+	 * @param name the name of the symbol.
+	 * @param <T> the terminal symbol value type
+	 * @return a new non-terminal symbol
+	 */
+	public static <T> NonTerminal<T> NT(final String name) {
+		return new NonTerminal<>(name);
+	}
+
+	/**
+	 * Factory method for creating an expression with the given
+	 * {@code symbols}.
+	 *
+	 * @param symbols the list of symbols of the expression
+	 * @throws IllegalArgumentException if the list of {@code symbols} is
+	 *         empty
+	 * @param <T> the terminal symbol value type
+	 * @return a new expression
+	 */
+	@SafeVarargs
+	public static <T> Expression<T> E(final Symbol<T>... symbols) {
+		return new Expression<>(Arrays.asList(symbols));
+	}
+
+	/**
+	 * Factory method for creating a new rule.
+	 *
+	 * @param name the name of start symbol of the rule
+	 * @param alternatives the list af alternative rule expressions
+	 * @throws IllegalArgumentException if the given list of
+	 *         {@code alternatives} is empty
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param <T> the terminal symbol value type
+	 * @return a new rule
+	 */
+	@SafeVarargs
+	public static <T> Rule<T> R(
+		final String name,
+		final Expression<T>... alternatives
+	) {
+		return new Rule<>(new NonTerminal<>(name), Arrays.asList(alternatives));
 	}
 
 }

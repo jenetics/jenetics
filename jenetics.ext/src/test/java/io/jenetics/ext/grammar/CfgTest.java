@@ -20,6 +20,10 @@
 package io.jenetics.ext.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.ext.grammar.Cfg.E;
+import static io.jenetics.ext.grammar.Cfg.NT;
+import static io.jenetics.ext.grammar.Cfg.R;
+import static io.jenetics.ext.grammar.Cfg.T;
 
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -278,26 +282,34 @@ public class CfgTest {
 		return new HashSet<>(getSymbolInstances(cfg));
 	}
 
-	/*
-	public void builderSyntax() {
-		final Cfg grammar = Cfg.builder()
-			.rule(rule -> rule
-				.start("expr")
-				.expr(expr -> expr.n("num"))
-				.epxr(expr -> expr.n("var"))
-				.expr(expr -> expr.t("(").n("expr", "op", "expr").t(")")))
-			.rule(rule -> rule
-				.start("op")
-				.expr(expr -> expr.t("+"))
-				.expr(expr -> expr.t("-"))
-				.expr(expr -> expr.t("*"))
-				.expr(expr -> expr.t("/")))
-			.rule(rule -> rule
-				.start("var")
-				.expr(expr -> expr.t("x"))
-				.expr(expr -> expr.t("y")))
-			.build();
+	@Test
+	public void building() {
+		final var cfg = Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= x | y
+			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+			"""
+		);
+		assertThat(getSymbolInstances(cfg).size()).isEqualTo(22);
+
+		final Cfg<String> cfg2 = Cfg.of(
+			R("expr",
+				E(NT("num")),
+				E(NT("var")),
+				E(T("("), NT("expr"), NT("op"), NT("expr"), T(")"))
+			),
+			R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
+			R("var", E(T("x")), E(T("y"))),
+			R("num",
+				E(T("0")), E(T("1")), E(T("2")), E(T("3")),
+				E(T("4")), E(T("5")), E(T("6")), E(T("7")),
+				E(T("8")), E(T("9"))
+			)
+		);
+
+		assertThat(getSymbolInstances(cfg2).size()).isEqualTo(22);
+		assertThat(cfg2).isEqualTo(cfg);
 	}
-	 */
 
 }
