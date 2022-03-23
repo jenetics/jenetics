@@ -184,17 +184,6 @@ public record Cfg<T>(
 			return new Terminal<>(name, name);
 		}
 
-		@Override
-		public int hashCode() {
-			return name.hashCode();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof Cfg.Terminal<?> terminal &&
-				name.equals(terminal.name);
-		}
 	}
 
 	/**
