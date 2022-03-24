@@ -57,7 +57,6 @@ public class SentenceGeneratorTest {
 
 		var generator = new SentenceGenerator<String>(
 			SymbolIndex.of(random),
-			Expansion.LEFT_FIRST,
 			MAX_VALUE
 		);
 
@@ -65,9 +64,8 @@ public class SentenceGeneratorTest {
 			.map(Symbol::name)
 			.collect(Collectors.joining());
 
-		//System.out.println(string);
-
-		////////////////////////////////////////////////////////////////////////
+		assertThat(string)
+			.isEqualTo("FUN1(8,FUN1((5-FUN1(((6/FUN2(y,y))*FUN2(FUN1(y,y),y)),FUN1(3,y))),5))");
 
 		random.setSeed(29022156195143L);
 		generator = new SentenceGenerator<>(
@@ -80,8 +78,8 @@ public class SentenceGeneratorTest {
 			.map(Symbol::name)
 			.collect(Collectors.joining());
 
-		//System.out.println(string);
-		//System.out.println();
+		assertThat(string)
+			.isEqualTo("FUN1(y,FUN1(x,FUN1((3/y),(((FUN1(FUN1(y,9),y)+(4/x))-FUN2(y,x))*y))))");
 	}
 
 	@Test(dataProvider = "sentencesLeftToRight")
