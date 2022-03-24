@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.util.ParenthesesTreeParser.parse;
 
 import java.util.List;
@@ -177,6 +178,16 @@ public class ParenthesesTreeParserTest {
 			{"a(b,c)d(e,f)"},
 			{"a(b,c),d(e,f)"}
 		};
+	}
+
+	@Test
+	public void parsingError_831() {
+		final var tree = TreeNode.of("fun")
+			.attach("(", "x", ",", "y", ")");
+
+		System.out.println(TreeFormatter.TREE.format(tree));
+
+		assertThat(TreeNode.parse(tree.toParenthesesString())).isEqualTo(tree);
 	}
 
 }
