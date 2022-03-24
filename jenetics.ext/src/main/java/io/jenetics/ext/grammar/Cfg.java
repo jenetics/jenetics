@@ -129,7 +129,7 @@ public record Cfg<T>(
 	}
 
 	/**
-	 * Represents the non-terminal symbols of the grammar ({@code V}).
+	 * Represents the non-terminal symbols of the grammar ({@code NT}).
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
@@ -151,7 +151,7 @@ public record Cfg<T>(
 	}
 
 	/**
-	 * Represents a terminal symbols of the grammar ({@code Σ}).
+	 * Represents a terminal symbols of the grammar ({@code T}).
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
