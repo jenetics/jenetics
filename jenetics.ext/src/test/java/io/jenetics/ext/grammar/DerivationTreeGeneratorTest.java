@@ -19,16 +19,14 @@
  */
 package io.jenetics.ext.grammar;
 
-import static io.jenetics.ext.grammar.StandardGrammarCodecsGeneratorTest.CFG;
+import static io.jenetics.ext.grammar.SentenceGeneratorTest.CFG;
 
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.grammar.Cfg.Symbol;
-import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeFormatter;
 import io.jenetics.ext.util.TreeNode;
