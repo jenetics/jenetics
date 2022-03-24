@@ -24,13 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.grammar.SentenceGeneratorTest.CFG;
 
 import java.util.Random;
-import java.util.function.Predicate;
 
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeFormatter;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -48,57 +46,20 @@ public class DerivationTreeGeneratorTest {
 			MAX_VALUE
 		);
 
-		Tree<String, ?> tree = TreeNode.ofTree(generator.generate(CFG))
+		final Tree<String, ?> tree = TreeNode.ofTree(generator.generate(CFG))
 			.map(Symbol::name);
 
-		System.out.println(tree.toParenthesesString());
-		System.out.println(TreeFormatter.TREE.format(tree));
-
-		var t = TreeNode.parse("expr(fun(FUN1),\\(,arg(var(y)),\\,,arg(expr(fun(FUN1),\\(,arg(var(x)),\\,,arg(expr(fun(FUN1),\\(,arg(expr(\\(,expr(num(3)),op(/),expr(var(y)),\\))),\\,,arg(expr(\\(,expr(\\(,expr(\\(,expr(fun(FUN1),\\(,arg(expr(fun(FUN1),\\(,arg(var(y)),\\,,arg(num(9)),\\))),\\,,arg(var(y)),\\)),op(+),expr(\\(,expr(num(4)),op(/),expr(var(x)),\\)),\\)),op(-),expr(fun(FUN2),\\(,arg(var(y)),\\,,arg(var(x)),\\)),\\)),op(*),expr(var(y)),\\))),\\))),\\))),\\))");
-
-		System.out.println(TreeFormatter.TREE.format(t));
-
 		assertThat(tree).isEqualTo(
-			TreeNode.parse("expr(fun(FUN1),\\(,arg(var(y)),\\,,arg(expr(fun(FUN1),\\(,arg(var(x)),\\,,arg(expr(fun(FUN1),\\(,arg(expr(\\(,expr(num(3)),op(/),expr(var(y)),\\))),\\,,arg(expr(\\(,expr(\\(,expr(\\(,expr(fun(FUN1),\\(,arg(expr(fun(FUN1),\\(,arg(var(y)),\\,,arg(num(9)),\\))),\\,,arg(var(y)),\\)),op(+),expr(\\(,expr(num(4)),op(/),expr(var(x)),\\)),\\)),op(-),expr(fun(FUN2),\\(,arg(var(y)),\\,,arg(var(x)),\\)),\\)),op(*),expr(var(y)),\\))),\\))),\\))),\\))")
+			TreeNode.parse(
+				"expr(fun(FUN1),\\(,arg(var(y)),\\,,arg(expr(fun(FUN1),\\(,arg" +
+					"(var(x)),\\,,arg(expr(fun(FUN1),\\(,arg(expr(\\(,expr(num(3))," +
+					"op(/),expr(var(y)),\\))),\\,,arg(expr(\\(,expr(\\(,expr(\\(" +
+					",expr(fun(FUN1),\\(,arg(expr(fun(FUN1),\\(,arg(var(y)),\\,," +
+					"arg(num(9)),\\))),\\,,arg(var(y)),\\)),op(+),expr(\\(,expr" +
+					"(num(4)),op(/),expr(var(x)),\\)),\\)),op(-),expr(fun(FUN2)," +
+					"\\(,arg(var(y)),\\,,arg(var(x)),\\)),\\)),op(*),expr(var(y))," +
+					"\\))),\\))),\\))),\\))")
 		);
-
-		/*
-		random.setSeed(seed);
-		generator = new DerivationTreeGenerator<String>(SymbolIndex.of(random), 1000);
-		final Tree<Symbol<String>, ?> tree = generator.generate(CFG);
-
-		 */
-		//final TreeNode<String> tree = ParseTree.apply(CFG, SymbolIndex.of(random))
-			//.map(Symbol::value);
-
-
-		/*
-		final var bout = new ByteArrayOutputStream();
-		final var oout = new ObjectOutputStream(bout);
-		oout.writeObject(tree);
-		oout.close();
-		System.out.println(bout.toByteArray().length);
-		*/
-	}
-
-	private static void copy(
-		final Tree<Symbol<String>, ?> source,
-		final TreeNode<Symbol<String>> target,
-		final Predicate<? super Symbol<String>> filter
-	) {
-		target.value(source.value());
-		source.childStream().forEachOrdered(child -> {
-			if (filter.test(child.value())) {
-				final var targetChild = TreeNode.of(child.value());
-				target.attach(targetChild);
-				copy(child, targetChild, filter);
-			}
-		});
-	}
-
-	private static boolean isImportant(final Symbol<String> symbol) {
-		final var value = symbol.name();
-		return !"(".equals(value) && !")".equals(value) && !",".equals(value);
 	}
 
 }

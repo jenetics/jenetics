@@ -30,7 +30,28 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * Standard implementation of a derivation-tree generator.
+ * Standard implementation of a derivation-tree generator. The following code
+ * snippet lets you generate a derivation tree from a given grammar.
+ * <pre>{@code
+ * final Cfg<String> cfg = Bnf.parse("""
+ *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
+ *     <fun>  ::= FUN1 | FUN2
+ *     <arg>  ::= <expr> | <var> | <num>
+ *     <op>   ::= + | - | * | /
+ *     <var>  ::= x | y
+ *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ *     """
+ * );
+ *
+ * final var random = RandomGenerator.of("L64X256MixRandom");
+ * final var generator = new DerivationTreeGenerator<String>(
+ *     SymbolIndex.of(random),
+ *     1_000
+ * );
+ * final Tree<Symbol<String>, ?> tree = generator.generate(cfg);
+ * }</pre>
+ *
+ * @see SentenceGenerator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -43,6 +64,16 @@ public final class DerivationTreeGenerator<T>
 	private final SymbolIndex _index;
 	private final int _limit;
 
+	/**
+	 * Create a new derivation tree generator from the given parameters.
+	 *
+	 * @param index the symbol index function used for generating the derivation
+	 *        tree
+	 * @param limit the maximal allowed nodes of the tree. If the generated
+	 *        tree exceeds this length, the generation is interrupted and
+	 *        an empty tree is returned. If a tree is empty can be checked with
+	 *        {@link Tree#isEmpty()}.
+	 */
 	public DerivationTreeGenerator(
 		final SymbolIndex index,
 		final int limit
@@ -51,8 +82,17 @@ public final class DerivationTreeGenerator<T>
 		_limit = limit;
 	}
 
+	/**
+	 * Generates a new derivation tree from the given grammar, <em>cfg</em>.
+	 *
+	 * @see Tree#isEmpty()
+	 *
+	 * @param cfg the generating grammar
+	 * @return a newly created derivation tree, or an empty tree if
+	 *         the number of nodes exceed the defined node limit
+	 */
 	@Override
-	public Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg) {
+	public TreeNode<Symbol<T>> generate(final Cfg<? extends T> cfg) {
 		final Cfg<T> grammar = Cfg.upcast(cfg);
 		final NonTerminal<T> start = grammar.start();
 		final TreeNode<Symbol<T>> symbols = TreeNode.of(start);
