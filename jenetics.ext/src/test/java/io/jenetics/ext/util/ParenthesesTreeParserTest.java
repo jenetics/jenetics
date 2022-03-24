@@ -42,12 +42,9 @@ public class ParenthesesTreeParserTest {
 	@Test(dataProvider = "tokens")
 	public void tokenize(final String tree, final String[] tokens) {
 		final List<Token> tokenize = ParenthesesTreeParser.tokenize(tree);
-		Assert.assertEquals(
-			tokenize.stream()
-				.map(Token::seq)
-				.toArray(String[]::new),
-			tokens
-		);
+
+		assertThat(tokenize.stream().map(Token::seq).toList())
+			.isEqualTo(List.of(tokens));
 	}
 
 	@DataProvider(name = "tokens")
@@ -58,8 +55,8 @@ public class ParenthesesTreeParserTest {
 			{"a\\\\", new String[]{"a\\\\"}},
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
-			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
-			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}}
+			{"a(b\\))", new String[]{"a", "(", "b\\)", ")"}},
+			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "\\(b\\)", ",", "c\\,", ")"}}
 		};
 	}
 
@@ -184,8 +181,6 @@ public class ParenthesesTreeParserTest {
 	public void parsingError_831() {
 		final var tree = TreeNode.of("fun")
 			.attach("(", "x", ",", "y", ")");
-
-		System.out.println(TreeFormatter.TREE.format(tree));
 
 		assertThat(TreeNode.parse(tree.toParenthesesString())).isEqualTo(tree);
 	}
