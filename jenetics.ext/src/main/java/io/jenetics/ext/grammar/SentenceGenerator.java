@@ -34,6 +34,43 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * Standard implementation of a sentence generator. The generator can generate
  * sentences by expanding the grammar in a {@link Expansion#LEFT_FIRST} or
  * {@link Expansion#LEFT_TO_RIGHT} order.
+ * <p>
+ * The following code snippet shows how to create a random sentence from a
+ * given grammar:
+ * <pre>{@code
+ * final Cfg<String> cfg = Bnf.parse("""
+ *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
+ *     <fun>  ::= FUN1 | FUN2
+ *     <arg>  ::= <expr> | <var> | <num>
+ *     <op>   ::= + | - | * | /
+ *     <var>  ::= x | y
+ *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ *     """
+ * );
+ *
+ * final var random = RandomGenerator.of("L64X256MixRandom");
+ * final var generator = new SentenceGenerator<String>(
+ *     SymbolIndex.of(random),
+ *     1_000
+ * );
+ * final List<Terminal<String>> sentence = generator.generate(cfg);
+ * final String string = sentence.stream()
+ *     .map(Symbol::name)
+ *     .collect(Collectors.joining());
+ *
+ * System.out.println(string);
+ * }</pre>
+ * <em>Some sample output:</em>
+ * <pre>{@code
+ * > ((x-FUN1(5,5))+8)
+ * > (FUN2(y,5)-FUN2(0,x))
+ * > x
+ * > FUN2(x,x)
+ * > 5
+ * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
+ * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
+ * > (9-(y*(x+x)))
+ * > }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -104,41 +141,6 @@ public final class SentenceGenerator<T>
 
 	/**
 	 * Generates a new sentence from the given grammar, <em>cfg</em>.
-	 * <p>
-	 * The following code snippet shows how to create a random sentence from a
-	 * given grammar:
-	 * <pre>{@code
-	 * final Cfg<String> cfg = Bnf.parse("""
-	 *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
-	 *     <fun>  ::= FUN1 | FUN2
-	 *     <arg>  ::= <expr> | <var> | <num>
-	 *     <op>   ::= + | - | * | /
-	 *     <var>  ::= x | y
-	 *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-	 *     """
-	 * );
-	 *
-	 * final RandomGenerator random = RandomGenerator.of("L64X256MixRandom");
-	 * final List<Terminal<String>> sentence = Sentence.generate(
-	 *     cfg, random::nextInt, 1_000
-	 * );
-	 * final String string = sentence.stream()
-	 *     .map(Symbol::value)
-	 *     .collect(Collectors.joining());
-	 *
-	 * System.out.println(string);
-	 * }</pre>
-	 * <em>Some sample output:</em>
-	 * <pre>{@code
-	 * > ((x-FUN1(5,5))+8)
-	 * > (FUN2(y,5)-FUN2(0,x))
-	 * > x
-	 * > FUN2(x,x)
-	 * > 5
-	 * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
-	 * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
-	 * > (9-(y*(x+x)))
-	 * > }</pre>
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created terminal list (sentence), or an empty list if
