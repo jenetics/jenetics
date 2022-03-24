@@ -52,7 +52,7 @@ public class SentenceGeneratorTest {
 	);
 
 	@Test
-	public void create() {
+	public void generate() {
 		final var random = new Random(-8564585140851778291L);
 
 		var generator = new SentenceGenerator<String>(
