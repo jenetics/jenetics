@@ -49,6 +49,15 @@ public final class Mappers {
 	 * 8-bit junks, as described in <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
 	 *
+	 * <pre>{@code
+	 * final Cfg<String> cfg = ...;
+	 * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
+	 *     cfg,
+	 *     1000,
+	 *     index -> new SentenceGenerator<>(index, 1000)
+	 * );
+	 * }</pre>
+	 *
 	 * @see #singleIntegerChromosomeMapper(Cfg, IntRange, IntRange, Function)
 	 *
 	 * @param cfg the encoding grammar
@@ -78,6 +87,16 @@ public final class Mappers {
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
 	 *
+	 * <pre>{@code
+	 * final Cfg<String> cfg = ...;
+	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
+	 *     cfg,
+	 *     IntRange.of(0, 256), // Value range of chromosomes.
+	 *     IntRange.of(100),   // Length (range) ot the chromosome.
+	 *     index -> new SentenceGenerator<>(index, 1000)
+	 * );
+	 * }</pre>
+	 *
 	 * @param cfg the encoding grammar
 	 * @param range the value range of the integer genes
 	 * @param length the length range of the integer-chromosome
@@ -99,6 +118,42 @@ public final class Mappers {
 			gt -> generator
 				.apply(Codons.ofIntegerGenes(gt.chromosome()))
 				.generate(cfg)
+		);
+	}
+
+	/**
+	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
+	 * The only difference is that the codons are encoded directly, via an
+	 * integer-chromosome, so that no gene split is necessary.
+	 *
+	 * <pre>{@code
+	 * final Cfg<String> cfg = ...;
+	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
+	 *     cfg,
+	 *     IntRange.of(0, 256), // Value range of chromosomes.
+	 *     100,                 // Length (range) ot the chromosome.
+	 *     index -> new SentenceGenerator<>(index, 1000)
+	 * );
+	 * }</pre>
+	 *
+	 * @param cfg the encoding grammar
+	 * @param range the value range of the integer genes
+	 * @param length the length range of the integer-chromosome
+	 * @param generator sentence generator function from a given
+	 *        {@link SymbolIndex}
+	 * @param <T> the terminal token type of the grammar
+	 * @param <R> the result type of the mapper
+	 * @return a new mapping codec for the given {@code cfg}
+	 */
+	public static <T, R> Codec<R, IntegerGene>
+	singleIntegerChromosomeMapper(
+		final Cfg<? extends T> cfg,
+		final IntRange range,
+		final int length,
+		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
+	) {
+		return singleIntegerChromosomeMapper(
+			cfg, range, IntRange.of(length), generator
 		);
 	}
 
@@ -132,7 +187,7 @@ public final class Mappers {
 	 *
 	 * <pre>{@code
 	 * final Cfg<String> cfg = Bnf.parse(...);
-	 * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
+	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(
 	 *     cfg,
 	 *     // The chromosome length is 10 times the
 	 *     // number of rule alternatives.
