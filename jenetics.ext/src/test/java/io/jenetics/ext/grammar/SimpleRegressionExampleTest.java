@@ -19,20 +19,22 @@
  */
 package io.jenetics.ext.grammar;
 
-import io.jenetics.ext.util.FormulaParser;
-import io.jenetics.ext.util.TreeFormatter;
-import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import static java.lang.Integer.MAX_VALUE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.grammar.Cfg.E;
 import static io.jenetics.ext.grammar.Cfg.NT;
 import static io.jenetics.ext.grammar.Cfg.R;
 import static io.jenetics.ext.grammar.Cfg.T;
-import static java.lang.Integer.MAX_VALUE;
+
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import org.testng.annotations.Test;
+
+import io.jenetics.util.Seq;
+
+import io.jenetics.ext.util.FormulaParser;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -82,7 +84,8 @@ public class SimpleRegressionExampleTest {
 		.identifiers(s -> NUMS.contains(s.name()))
 		.build();
 
-	public static void main(final String[] args) {
+	@Test
+	public void generation() {
 		final var random = new Random(-8564585140851778291L);
 
 		final var generator = new SentenceGenerator<Op>(
@@ -90,18 +93,22 @@ public class SimpleRegressionExampleTest {
 			MAX_VALUE
 		);
 
+		// (8-((5+5)-(3+7)))
 		final List<Cfg.Terminal<Op>> sentence = generator.generate(CFG);
+		final double result = FORMULA_PARSER
+			.parse(sentence, (token, type) -> token.value())
+			.reduce((op, values) -> op.apply(toArray(values)));
 
-		System.out.println(
-			sentence.stream()
-				.map(Cfg.Terminal::name)
-				.collect(Collectors.joining())
-		);
-
-		final var tree = FORMULA_PARSER.parse(sentence);
-		System.out.println(
-			TreeFormatter.TREE.format(tree.map(Cfg.Terminal::name))
-		);
+		assertThat(result).isEqualTo(8.0);
 	}
+
+	private static double[] toArray(final Seq<? extends Double> values) {
+		final var result = new double[values.size()];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = values.get(i);
+		}
+		return result;
+	}
+
 
 }
