@@ -32,8 +32,26 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * This class defines factories for different CFG {@code <->} Chromosome mappings
- * (encodings).
+ * This class defines factories for different CFG &harr; Chromosome mappings
+ * (encodings). The classical mapping codec, with a bit-chromosome can be created
+ * in the following way.
+ * <pre>{@code
+ * final Cfg<String> cfg = ...;
+ * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
+ *     cfg,
+ *     1000,
+ *     index -> new SentenceGenerator<>(index, 1000)
+ * );
+ * }</pre>
+ * This codec creates a mapping for the given grammar {@code cfg} and uses
+ * bit-chromosomes with length {@code 1000}. The result of the mapping will be a
+ * list of terminal symbols which has been created by the given
+ * {@link SentenceGenerator}. The sentence generator creates sentences with a
+ * maximal length of {@code 1000}. If no sentence could be created within this
+ * limit, an empty list of terminal symbols is returned.
+ *
+ * @see <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+ * 	 Grammatical Evolution</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
