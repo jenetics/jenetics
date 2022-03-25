@@ -39,7 +39,7 @@ import io.jenetics.ext.util.FormulaParser;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SimpleRegressionExampleTest {
+public class CreationAndParsingTest {
 
 	interface Op {
 		double apply(final double... args);
