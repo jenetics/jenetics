@@ -987,7 +987,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * assert result == 13.0;
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param reducer the reduce function
 	 * @param <U> the result type
