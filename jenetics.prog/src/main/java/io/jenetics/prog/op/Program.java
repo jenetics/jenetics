@@ -172,7 +172,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@SafeVarargs
 	private static <T> T evalOp(final Op<T> op, final T... variables) {
-		if (op instanceof Var && ((Var)op).index() >= variables.length) {
+		if (op instanceof Var<?> var && var.index() >= variables.length) {
 			throw new IllegalArgumentException(format(
 				"No value for variable '%s' given.", op
 			));
