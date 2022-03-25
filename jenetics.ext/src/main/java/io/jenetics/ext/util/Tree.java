@@ -38,12 +38,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 import io.jenetics.util.Self;
+import io.jenetics.util.Seq;
 
 /**
  * General purpose tree structure. The interface only contains tree read methods.
@@ -964,6 +967,54 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 */
 	default boolean identical(final Tree<?, ?> other) {
 		return this == other;
+	}
+
+	/**
+	 * Performs a reduction on the elements of {@code this} tree, using an
+	 * associative reduction function. This can be used for evaluating a given
+	 * expression tree.
+	 * <pre>{@code
+	 * final Tree<String, ?> expression = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
+	 * final double result = expression.reduce((value, children) ->
+	 *     switch (value) {
+	 *         case "add" -> children.get(0).doubleValue() + children.get(1).doubleValue();
+	 *         case "sub" -> children.get(0).doubleValue() - children.get(1).doubleValue();
+	 *         case "mul" -> children.get(0).doubleValue() * children.get(1).doubleValue();
+	 *         case "div" -> children.get(0).doubleValue() / children.get(1).doubleValue();
+	 *         default -> Double.parseDouble(value);
+	 *     }
+	 * );
+	 * assert result == 13.0;
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param reducer the reduce function
+	 * @param <U> the result type
+	 * @return the result of the reduction
+	 */
+	default <U> U reduce(
+		final BiFunction<? super V, ? super Seq<? extends U>, ? extends U> reducer
+	) {
+		requireNonNull(reducer);
+		if (isEmpty()) {
+			return null;
+		} else {
+			return isLeaf()
+				? reducer.apply(value(), ISeq.empty())
+				: reducer.apply(value(), reduce(this, reducer));
+		}
+	}
+
+	private static <U, V> Seq<U> reduce(
+		final Tree<V, ?> node,
+		final BiFunction<? super V, ? super Seq<? extends U>, ? extends U> reducer
+	) {
+		final var values = MSeq.<U>ofLength(node.childCount());
+		for (int i = 0; i < node.childCount(); ++i) {
+			values.set(i, node.childAt(i).reduce(reducer));
+		}
+		return values;
 	}
 
 	/* *************************************************************************

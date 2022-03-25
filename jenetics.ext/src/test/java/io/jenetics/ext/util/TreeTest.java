@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Optional;
 
 import org.testng.Assert;
@@ -138,6 +140,22 @@ public class TreeTest {
 		} else {
 			Assert.assertSame(TREE.childAtPath(child.path()).get(), child);
 		}
+	}
+
+	@Test
+	public void reduce() {
+		final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
+		final double result = formula.reduce((value, chd) ->
+			switch (value) {
+				case "add" -> chd.get(0).doubleValue() + chd.get(1).doubleValue();
+				case "sub" -> chd.get(0).doubleValue() - chd.get(1).doubleValue();
+				case "mul" -> chd.get(0).doubleValue() * chd.get(1).doubleValue();
+				case "div" -> chd.get(0).doubleValue() / chd.get(1).doubleValue();
+				default -> Double.parseDouble(value);
+			}
+		);
+
+		assertThat(result).isEqualTo(13.0);
 	}
 
 }
