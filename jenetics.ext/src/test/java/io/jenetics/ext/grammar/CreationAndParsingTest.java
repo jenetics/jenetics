@@ -85,7 +85,7 @@ public class CreationAndParsingTest {
 		.build();
 
 	@Test
-	public void generation() {
+	public void generateAndParse() {
 		final var random = new Random(-8564585140851778291L);
 
 		final var generator = new SentenceGenerator<Op>(
