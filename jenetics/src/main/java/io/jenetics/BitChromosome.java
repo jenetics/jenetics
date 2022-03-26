@@ -384,7 +384,29 @@ public final class BitChromosome extends Number
 	 */
 	public BitChromosome shiftLeft(final int n) {
 		final var genes = _genes.copy();
-		genes.shiftLeft(n);
+		if (n >= 0) {
+			genes.shiftLeft(n);
+		} else {
+			genes.shiftRight(Math.abs(n));
+		}
+		return new BitChromosome(genes, _p);
+	}
+
+	/**
+	 * Returns a new {@code BitChromosome} whose value is (this >>> n). The shift
+	 * distance, n, may be negative, in which case this method performs a left
+	 * shift.
+	 *
+	 * @param n shift distance, in bits
+	 * @return this >>> n
+	 */
+	public BitChromosome shiftRight(final int n) {
+		final var genes = _genes.copy();
+		if (n >= 0) {
+			genes.shiftRight(n);
+		} else {
+			genes.shiftLeft(Math.abs(n));
+		}
 		return new BitChromosome(genes, _p);
 	}
 

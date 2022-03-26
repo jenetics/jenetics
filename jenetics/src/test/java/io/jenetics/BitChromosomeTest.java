@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -284,15 +285,13 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		assertEquals(chromosome.toBigInteger(), value);
 	}
 
-	//@Test
+	@Test
 	public void toFromBigInteger() {
 		final var ch1 = BitChromosome.of(100);
 		final var value = ch1.toBigInteger();
 		final var ch2 = BitChromosome.of(value, 100);
-		System.out.println(ch1);
-		System.out.println(BitChromosome.of(value, 200));
 
-		assertEquals((Object)ch2, (Object)ch1);
+		assertEquals(ch2, ch1);
 		assertEquals(
 			BitChromosome.of(value, 200).toCanonicalString().substring(100),
 			ch1.toCanonicalString()
@@ -445,6 +444,78 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public Object[][] bitSetLength() {
 		return new Object[][] {
 			{1}, {2}, {3}, {5}, {7}, {11}, {16}, {17}, {23}, {55}, {101}, {1111}
+		};
+	}
+
+	@Test(dataProvider = "shifts")
+	public void shiftLeft(final int shift) {
+		final var chromosome = BitChromosome.of(1000);
+
+		final var shifted = chromosome.shiftLeft(shift);
+		assertThat(shifted.length()).isEqualTo(chromosome.length());
+
+		if (shift >= 0) {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < shift; ++i) {
+				assertThat(shifted.get(i)).isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = shift; i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(chromosome.get(i - shift));
+			}
+		} else {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < Math.abs(shift); ++i) {
+				assertThat(shifted.get(shifted.length() - i - 1))
+					.isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = Math.abs(shift); i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i - Math.abs(shift)))
+					.isEqualTo(chromosome.get(i));
+			}
+		}
+	}
+
+	@Test(dataProvider = "shifts")
+	public void shiftRight(final int shift) {
+		final var chromosome = BitChromosome.of(1000);
+
+		final var shifted = chromosome.shiftRight(shift);
+		assertThat(shifted.length()).isEqualTo(chromosome.length());
+
+		if (shift >= 0) {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < shift; ++i) {
+				assertThat(shifted.get(shifted.length() - i - 1))
+					.isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = shift; i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i - shift))
+					.isEqualTo(chromosome.get(i));
+			}
+		} else {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < Math.abs(shift); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = Math.abs(shift); i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(chromosome.get(i - Math.abs(shift)));
+			}
+		}
+	}
+
+	@DataProvider
+	public Object[][] shifts() {
+		return new Object[][] {
+			{0}, {1}, {3}, {5}, {7}, {11}, {33}, {98}, {232},
+			{-1}, {-3}, {-5}, {-7}, {-11}, {-33}, {-98}, {-232},
 		};
 	}
 

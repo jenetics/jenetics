@@ -175,8 +175,34 @@ public final class BitArray implements Copyable<BitArray> {
 		Bits.invert(_data);
 	}
 
+	/**
+	 * Shifting all bits in {@code this} bit array the given {@code n} bits to
+	 * the left. The bits on the right side are filled with zeros.
+	 *
+	 * @param n the number of bits to shift.
+	 */
 	public void shiftLeft(final int n) {
+		if (_start != 0) {
+			throw new IllegalStateException(format(
+				"BitArray start is != 0:%s ", _start
+			));
+		}
+		Bits.shiftLeft(_data, n);
+	}
 
+	/**
+	 * Shifting all bits in {@code this} bit array the given {@code n} bits to
+	 * the right. The bits on the right side are filled with zeros.
+	 *
+	 * @param n the number of bits to shift.
+	 */
+	public void shiftRight(final int n) {
+		if (_start != 0) {
+			throw new IllegalStateException(format(
+				"BitArray start is != 0:%s ", _start
+			));
+		}
+		Bits.shiftRight(_data, n);
 	}
 
 	/**
