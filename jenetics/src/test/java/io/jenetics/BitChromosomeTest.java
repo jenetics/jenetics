@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -210,7 +211,6 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void invert() {
 		final BitChromosome c1 = BitChromosome.of(100, 0.3);
 		final BitChromosome c3 = c1.invert();
-		System.out.println(c1);
 
 		for (int i = 0; i < c1.length(); ++i) {
 			Assert.assertTrue(c1.get(i).bit() != c3.get(i).bit());
@@ -277,26 +277,24 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test(invocationCount = 5)
 	public void toBigInteger() {
-		final Random random = new Random();
-		final BigInteger value = new BigInteger(1056, random);
+		final var random = new Random();
+		final var bytes = new byte[random.nextInt(50, 1000)];
+		random.nextBytes(bytes);
+
+		final BigInteger value = new BigInteger(bytes);
 		final BitChromosome chromosome = BitChromosome.of(value);
 
-		assertEquals(chromosome.toBigInteger(), value);
+		assertThat(chromosome.toBigInteger()).isEqualTo(value);
 	}
 
-	//@Test
+	@Test(invocationCount = 5)
 	public void toFromBigInteger() {
-		final var ch1 = BitChromosome.of(100);
+		final var ch1 = BitChromosome.of(100, 0.9);
 		final var value = ch1.toBigInteger();
-		final var ch2 = BitChromosome.of(value, 100);
-		System.out.println(ch1);
-		System.out.println(BitChromosome.of(value, 200));
+		final var ch2 = BitChromosome.of(value);
 
-		assertEquals((Object)ch2, (Object)ch1);
-		assertEquals(
-			BitChromosome.of(value, 200).toCanonicalString().substring(100),
-			ch1.toCanonicalString()
-		);
+		assertThat(ch2.toBigInteger()).isEqualTo(value);
+		assertThat(ch2.toBigInteger()).isEqualTo(ch1.toBigInteger());
 	}
 
 	@Test
@@ -445,6 +443,147 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public Object[][] bitSetLength() {
 		return new Object[][] {
 			{1}, {2}, {3}, {5}, {7}, {11}, {16}, {17}, {23}, {55}, {101}, {1111}
+		};
+	}
+
+	@Test
+	public void and() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.and(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() && ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.and(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() && ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
+	}
+
+	@Test
+	public void or() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.or(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() || ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.or(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() || ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
+	}
+
+	@Test
+	public void xor() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.xor(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() ^ ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.xor(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() ^ ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
+	}
+
+	@Test(dataProvider = "shifts")
+	public void shiftLeft(final int shift) {
+		final var chromosome = BitChromosome.of(1000);
+
+		final var shifted = chromosome.shiftLeft(shift);
+		assertThat(shifted.length()).isEqualTo(chromosome.length());
+
+		if (shift >= 0) {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < shift; ++i) {
+				assertThat(shifted.get(i)).isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = shift; i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(chromosome.get(i - shift));
+			}
+		} else {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < Math.abs(shift); ++i) {
+				assertThat(shifted.get(shifted.length() - i - 1))
+					.isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = Math.abs(shift); i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i - Math.abs(shift)))
+					.isEqualTo(chromosome.get(i));
+			}
+		}
+	}
+
+	@Test(dataProvider = "shifts")
+	public void shiftRight(final int shift) {
+		final var chromosome = BitChromosome.of(1000);
+
+		final var shifted = chromosome.shiftRight(shift);
+		assertThat(shifted.length()).isEqualTo(chromosome.length());
+
+		if (shift >= 0) {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < shift; ++i) {
+				assertThat(shifted.get(shifted.length() - i - 1))
+					.isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = shift; i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i - shift))
+					.isEqualTo(chromosome.get(i));
+			}
+		} else {
+			// Check the 0 bits after shift.
+			for (int i = 0; i < Math.abs(shift); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(BitGene.ZERO);
+			}
+
+			// Check the shifted bits.
+			for (int i = Math.abs(shift); i < chromosome.length(); ++i) {
+				assertThat(shifted.get(i)).isEqualTo(chromosome.get(i - Math.abs(shift)));
+			}
+		}
+	}
+
+	@DataProvider
+	public Object[][] shifts() {
+		return new Object[][] {
+			{0}, {1}, {3}, {5}, {7}, {11}, {33}, {98}, {232},
+			{-1}, {-3}, {-5}, {-7}, {-11}, {-33}, {-98}, {-232},
 		};
 	}
 
