@@ -975,13 +975,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * expression tree.
 	 * <pre>{@code
 	 * final Tree<String, ?> expression = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
-	 * final double result = expression.reduce((value, children) ->
-	 *     switch (value) {
-	 *         case "add" -> children.get(0).doubleValue() + children.get(1).doubleValue();
-	 *         case "sub" -> children.get(0).doubleValue() - children.get(1).doubleValue();
-	 *         case "mul" -> children.get(0).doubleValue() * children.get(1).doubleValue();
-	 *         case "div" -> children.get(0).doubleValue() / children.get(1).doubleValue();
-	 *         default -> Double.parseDouble(value);
+	 * final double result = expression.reduce((op, args) ->
+	 *     switch (op) {
+	 *         case "add" -> args.get(0) + args.get(1);
+	 *         case "sub" -> args.get(0) - args.get(1);
+	 *         case "mul" -> args.get(0) * args.get(1);
+	 *         case "div" -> args.get(0) / args.get(1);
+	 *         default -> Double.parseDouble(op);
 	 *     }
 	 * );
 	 * assert result == 13.0;
@@ -994,7 +994,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @return the result of the reduction
 	 */
 	default <U> U reduce(
-		final BiFunction<? super V, ? super Seq<? extends U>, ? extends U> reducer
+		final BiFunction<? super V, ? super Seq<U>, ? extends U> reducer
 	) {
 		requireNonNull(reducer);
 		if (isEmpty()) {
@@ -1008,7 +1008,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	private static <U, V> Seq<U> reduce(
 		final Tree<V, ?> node,
-		final BiFunction<? super V, ? super Seq<? extends U>, ? extends U> reducer
+		final BiFunction<? super V, ? super Seq<U>, ? extends U> reducer
 	) {
 		final var values = MSeq.<U>ofLength(node.childCount());
 		for (int i = 0; i < node.childCount(); ++i) {
