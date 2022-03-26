@@ -277,24 +277,24 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 	@Test(invocationCount = 5)
 	public void toBigInteger() {
-		final Random random = new Random();
-		final BigInteger value = new BigInteger(1056, random);
+		final var random = new Random();
+		final var bytes = new byte[random.nextInt(50, 1000)];
+		random.nextBytes(bytes);
+
+		final BigInteger value = new BigInteger(bytes);
 		final BitChromosome chromosome = BitChromosome.of(value);
 
-		assertEquals(chromosome.toBigInteger(), value);
+		assertThat(chromosome.toBigInteger()).isEqualTo(value);
 	}
 
-	@Test
+	@Test(invocationCount = 5)
 	public void toFromBigInteger() {
-		final var ch1 = BitChromosome.of(100);
+		final var ch1 = BitChromosome.of(100, 0.9);
 		final var value = ch1.toBigInteger();
-		final var ch2 = BitChromosome.of(value, 100);
+		final var ch2 = BitChromosome.of(value);
 
-		assertEquals(ch2, ch1);
-		assertEquals(
-			BitChromosome.of(value, 200).toCanonicalString().substring(100),
-			ch1.toCanonicalString()
-		);
+		assertThat(ch2.toBigInteger()).isEqualTo(value);
+		assertThat(ch2.toBigInteger()).isEqualTo(ch1.toBigInteger());
 	}
 
 	@Test
