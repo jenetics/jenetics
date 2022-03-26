@@ -33,7 +33,7 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 
-import io.jenetics.ext.internal.CyclicSpliterator;
+import io.jenetics.ext.internal.util.CyclicSpliterator;
 
 /**
  * The {@code CyclicEngine} lets you concatenate two (or more) evolution

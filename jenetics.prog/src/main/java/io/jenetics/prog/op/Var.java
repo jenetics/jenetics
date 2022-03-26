@@ -20,7 +20,7 @@
 package io.jenetics.prog.op;
 
 import static java.lang.String.format;
-import static io.jenetics.ext.internal.Names.isIdentifier;
+import static io.jenetics.ext.internal.util.Names.isIdentifier;
 
 import java.io.Serial;
 import java.io.Serializable;

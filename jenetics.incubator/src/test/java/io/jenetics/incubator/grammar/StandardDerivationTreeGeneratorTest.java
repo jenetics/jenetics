@@ -21,18 +21,13 @@ package io.jenetics.incubator.grammar;
 
 import static io.jenetics.incubator.grammar.StandardSentenceGeneratorTest.CFG;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.Random;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
 import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeFormatter;
