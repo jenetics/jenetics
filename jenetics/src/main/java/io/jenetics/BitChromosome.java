@@ -366,7 +366,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Returns a {@code BitChromosome} whose value is ({@code this & other}).
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param other value to be AND'ed with this {@code BitChromosome}.
 	 * @return {@code this & other}
@@ -383,7 +383,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Returns a {@code BitChromosome} whose value is ({@code this | other}).
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param other value to be OR'ed with this {@code BitChromosome}.
 	 * @return {@code this | other}
@@ -400,7 +400,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Returns a {@code BitChromosome} whose value is ({@code this ^ other}).
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param other value to be XOR'ed with this {@code BitChromosome}.
 	 * @return {@code this ^ other}
