@@ -364,6 +364,57 @@ public final class BitChromosome extends Number
 	}
 
 	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this} & {@code other}).
+	 *
+	 * @since !__version__!
+	 *
+	 * @param other value to be AND'ed with this {@code BitChromosome}.
+	 * @return {@code this} & {@code other}
+	 */
+	public BitChromosome and(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) && other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this} | {@code other}).
+	 *
+	 * @since !__version__!
+	 *
+	 * @param other value to be OR'ed with this {@code BitChromosome}.
+	 * @return {@code this} & {@code other}
+	 */
+	public BitChromosome or(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) || other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this} ^ {@code other}).
+	 *
+	 * @since !__version__!
+	 *
+	 * @param other value to be XOR'ed with this {@code BitChromosome}.
+	 * @return {@code this} & {@code other}
+	 */
+	public BitChromosome xor(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) ^ other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
 	 * Invert the ones and zeros of this bit chromosome.
 	 *
 	 * @return a new BitChromosome with inverted ones and zeros.

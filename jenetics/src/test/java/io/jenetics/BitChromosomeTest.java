@@ -211,7 +211,6 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void invert() {
 		final BitChromosome c1 = BitChromosome.of(100, 0.3);
 		final BitChromosome c3 = c1.invert();
-		System.out.println(c1);
 
 		for (int i = 0; i < c1.length(); ++i) {
 			Assert.assertTrue(c1.get(i).bit() != c3.get(i).bit());
@@ -445,6 +444,75 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		return new Object[][] {
 			{1}, {2}, {3}, {5}, {7}, {11}, {16}, {17}, {23}, {55}, {101}, {1111}
 		};
+	}
+
+	@Test
+	public void and() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.and(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() && ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.and(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() && ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
+	}
+
+	@Test
+	public void or() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.or(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() || ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.or(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() || ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
+	}
+
+	@Test
+	public void xor() {
+		final var ch1 = BitChromosome.of(100);
+		final var ch2 = BitChromosome.of(129);
+
+		final var ch3 = ch1.xor(ch2);
+		assertThat(ch3.length()).isEqualTo(ch1.length());
+		for (int i = 0; i < ch3.length(); ++i) {
+			assertThat(ch3.get(i).bit())
+				.isEqualTo(ch1.get(i).bit() ^ ch2.get(i).bit());
+		}
+
+		final var ch4 = ch2.xor(ch1);
+		assertThat(ch4.length()).isEqualTo(ch2.length());
+		for (int i = 0; i < ch1.length(); ++i) {
+			assertThat(ch4.get(i).bit())
+				.isEqualTo(ch2.get(i).bit() ^ ch1.get(i).bit());
+		}
+		for (int i = ch1.length(); i < ch2.length(); ++i) {
+			assertThat(ch4.get(i)).isEqualTo(ch2.get(i));
+		}
 	}
 
 	@Test(dataProvider = "shifts")

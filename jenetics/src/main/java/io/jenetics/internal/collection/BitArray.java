@@ -179,6 +179,8 @@ public final class BitArray implements Copyable<BitArray> {
 	 * Shifting all bits in {@code this} bit array the given {@code n} bits to
 	 * the left. The bits on the right side are filled with zeros.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param n the number of bits to shift.
 	 */
 	public void shiftLeft(final int n) {
@@ -193,6 +195,8 @@ public final class BitArray implements Copyable<BitArray> {
 	/**
 	 * Shifting all bits in {@code this} bit array the given {@code n} bits to
 	 * the right. The bits on the right side are filled with zeros.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param n the number of bits to shift.
 	 */
