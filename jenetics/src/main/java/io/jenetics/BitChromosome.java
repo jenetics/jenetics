@@ -364,12 +364,12 @@ public final class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns a {@code BitChromosome} whose value is ({@code this} & {@code other}).
+	 * Returns a {@code BitChromosome} whose value is ({@code this & other}).
 	 *
 	 * @since !__version__!
 	 *
 	 * @param other value to be AND'ed with this {@code BitChromosome}.
-	 * @return {@code this} & {@code other}
+	 * @return {@code this & other}
 	 */
 	public BitChromosome and(final BitChromosome other) {
 		final var array = _genes.copy();
@@ -381,12 +381,12 @@ public final class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns a {@code BitChromosome} whose value is ({@code this} | {@code other}).
+	 * Returns a {@code BitChromosome} whose value is ({@code this | other}).
 	 *
 	 * @since !__version__!
 	 *
 	 * @param other value to be OR'ed with this {@code BitChromosome}.
-	 * @return {@code this} & {@code other}
+	 * @return {@code this | other}
 	 */
 	public BitChromosome or(final BitChromosome other) {
 		final var array = _genes.copy();
@@ -398,12 +398,12 @@ public final class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns a {@code BitChromosome} whose value is ({@code this} ^ {@code other}).
+	 * Returns a {@code BitChromosome} whose value is ({@code this ^ other}).
 	 *
 	 * @since !__version__!
 	 *
 	 * @param other value to be XOR'ed with this {@code BitChromosome}.
-	 * @return {@code this} & {@code other}
+	 * @return {@code this ^ other}
 	 */
 	public BitChromosome xor(final BitChromosome other) {
 		final var array = _genes.copy();
@@ -426,12 +426,12 @@ public final class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns a new {@code BitChromosome} whose value is (this << n). The shift
-	 * distance, n, may be negative, in which case this method performs a right
-	 * shift.
+	 * Returns a new {@code BitChromosome} whose value is ({@code this << n}).
+	 * The shift distance, n, may be negative, in which case this method performs
+	 * a right shift.
 	 *
 	 * @param n shift distance, in bits
-	 * @return this << n
+	 * @return {@code this << n}
 	 */
 	public BitChromosome shiftLeft(final int n) {
 		final var genes = _genes.copy();
@@ -444,12 +444,12 @@ public final class BitChromosome extends Number
 	}
 
 	/**
-	 * Returns a new {@code BitChromosome} whose value is (this >>> n). The shift
+	 * Returns a new {@code BitChromosome} whose value is ({@code this >> n}). The shift
 	 * distance, n, may be negative, in which case this method performs a left
 	 * shift.
 	 *
 	 * @param n shift distance, in bits
-	 * @return this >>> n
+	 * @return {@code this >> n}
 	 */
 	public BitChromosome shiftRight(final int n) {
 		final var genes = _genes.copy();
