@@ -25,7 +25,6 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.random.RandomGenerator;
 
@@ -164,38 +163,20 @@ public class Program<T> implements Op<T>, Serializable {
 		requireNonNull(tree);
 		requireNonNull(variables);
 
-		final Op<T> op = tree.value();
-		return op.isTerminal()
-			? evalOp(op, variables)
-			: evalOp(op, evalChildren(tree, variables));
+		return tree.reduce((op, values) ->
+			op.isTerminal()
+				? applyTerminal(op, variables)
+				: op.apply(values.toArray(variables.clone()))
+		);
 	}
 
-	@SafeVarargs
-	private static <T> T evalOp(final Op<T> op, final T... variables) {
-		if (op instanceof Var && ((Var)op).index() >= variables.length) {
+	private static <T> T applyTerminal(final Op<T> op, final T[] variables) {
+		if (op instanceof Var<?> var && var.index() >= variables.length) {
 			throw new IllegalArgumentException(format(
 				"No value for variable '%s' given.", op
 			));
 		}
-
 		return op.apply(variables);
-	}
-
-	@SafeVarargs
-	private static <T> T[] evalChildren(
-		final Tree<? extends Op<T>, ?> node,
-		final T... variables
-	) {
-		final T[] result = newArray(variables.getClass(), node.childCount());
-		for (int i = 0; i < node.childCount(); ++i) {
-			result[i] = eval(node.childAt(i), variables);
-		}
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] newArray(final Class<?> arrayType, final int size) {
-		return (T[])Array.newInstance(arrayType.getComponentType(), size);
 	}
 
 	/**
