@@ -26,6 +26,8 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
@@ -145,7 +147,14 @@ public class Program<T> implements Op<T>, Serializable {
 	 * ************************************************************************/
 
 	/**
-	 * Evaluates the given operation tree with the given variables.
+	 * Evaluates the given operation tree with the given variables. This method
+	 * is equivalent to
+	 * <pre>{@code
+	 * final T result = tree.reduce(variables, Op::apply);
+	 * }</pre>
+	 * but handles the variable sized {@code variables} array more conveniently.
+	 *
+	 * @see Tree#reduce(Object[], BiFunction)
 	 *
 	 * @param <T> the argument type
 	 * @param tree the operation tree
@@ -160,23 +169,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		requireNonNull(tree);
-		requireNonNull(variables);
-
-		return tree.reduce((op, values) ->
-			op.isTerminal()
-				? applyTerminal(op, variables)
-				: op.apply(values.toArray(variables.clone()))
-		);
-	}
-
-	private static <T> T applyTerminal(final Op<T> op, final T[] variables) {
-		if (op instanceof Var<?> var && var.index() >= variables.length) {
-			throw new IllegalArgumentException(format(
-				"No value for variable '%s' given.", op
-			));
-		}
-		return op.apply(variables);
+		return tree.reduce(variables, Op::apply);
 	}
 
 	/**
