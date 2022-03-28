@@ -32,6 +32,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -975,12 +976,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * expression tree.
 	 * <pre>{@code
 	 * final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
-	 * final double result = formula.reduce((op, args) ->
+	 * final double result = formula.reduce(new Double[0], (op, args) ->
 	 *     switch (op) {
-	 *         case "add" -> args.get(0) + args.get(1);
-	 *         case "sub" -> args.get(0) - args.get(1);
-	 *         case "mul" -> args.get(0) * args.get(1);
-	 *         case "div" -> args.get(0) / args.get(1);
+	 *         case "add" -> args[0] + args[1];
+	 *         case "sub" -> args[0] - args[1];
+	 *         case "mul" -> args[0] * args[1];
+	 *         case "div" -> args[0] / args[1];
 	 *         default -> Double.parseDouble(op);
 	 *     }
 	 * );
@@ -989,30 +990,42 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *
 	 * @since 7.1
 	 *
+	 * @param neutral the neutral element of the reduction. In most cases this will
+	 *        be {@code new U[0]}.
 	 * @param reducer the reduce function
 	 * @param <U> the result type
-	 * @return the result of the reduction
+	 * @return the result of the reduction, or {@code null} if {@code this} tree
+	 *         is empty ({@code isEmpty() == true})
 	 */
 	default <U> U reduce(
-		final BiFunction<? super V, ? super Seq<U>, ? extends U> reducer
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
 	) {
+		requireNonNull(neutral);
 		requireNonNull(reducer);
+
 		if (isEmpty()) {
 			return null;
 		} else {
 			return isLeaf()
-				? reducer.apply(value(), ISeq.empty())
-				: reducer.apply(value(), reduce(this, reducer));
+				? reducer.apply(value(), neutral)
+				: reducer.apply(value(), reduce(this, neutral, reducer));
 		}
 	}
 
-	private static <U, V> Seq<U> reduce(
+	private static <U, V> U[] reduce(
 		final Tree<V, ?> node,
-		final BiFunction<? super V, ? super Seq<U>, ? extends U> reducer
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
 	) {
-		final var values = MSeq.<U>ofLength(node.childCount());
+		@SuppressWarnings("unchecked")
+		final U[] values = (U[])Array.newInstance(
+			neutral.getClass().getComponentType(),
+			node.childCount()
+		);
+
 		for (int i = 0; i < node.childCount(); ++i) {
-			values.set(i, node.childAt(i).reduce(reducer));
+			values[i] = node.childAt(i).reduce(neutral, reducer);
 		}
 		return values;
 	}
