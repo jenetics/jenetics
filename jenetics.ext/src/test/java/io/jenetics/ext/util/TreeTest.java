@@ -19,14 +19,15 @@
  */
 package io.jenetics.ext.util;
 
-import io.jenetics.ext.util.Tree.Path;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.jenetics.ext.util.Tree.Path;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -45,9 +45,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
 import io.jenetics.util.Self;
-import io.jenetics.util.Seq;
 
 /**
  * General purpose tree structure. The interface only contains tree read methods.

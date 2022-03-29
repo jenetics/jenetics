@@ -27,7 +27,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
