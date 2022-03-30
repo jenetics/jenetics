@@ -144,13 +144,15 @@ public class TreeTest {
 
 	@Test
 	public void reduce() {
-		final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
-		final double result = formula.reduce((op, args) ->
+		final Tree<String, ?> formula = TreeNode.parse(
+			"add(sub(6,div(230,10)),mul(5,6))"
+		);
+		final double result = formula.reduce(new Double[0], (op, args) ->
 			switch (op) {
-				case "add" -> args.get(0) + args.get(1);
-				case "sub" -> args.get(0) - args.get(1);
-				case "mul" -> args.get(0) * args.get(1);
-				case "div" -> args.get(0) / args.get(1);
+				case "add" -> args[0] + args[1];
+				case "sub" -> args[0] - args[1];
+				case "mul" -> args[0] * args[1];
+				case "div" -> args[0] / args[1];
 				default -> Double.parseDouble(op);
 			}
 		);

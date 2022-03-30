@@ -22,7 +22,6 @@ package io.jenetics.ext.internal.parser;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
 import java.util.function.Predicate;
 
 /**

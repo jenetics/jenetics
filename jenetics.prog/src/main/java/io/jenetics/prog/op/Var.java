@@ -129,6 +129,11 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	@Override
 	public T apply(final T[] variables) {
+		if (_index >= variables.length) {
+			throw new IllegalArgumentException(format(
+				"No value for variable '%s' given.", this
+			));
+		}
 		return variables[_index];
 	}
 
