@@ -32,8 +32,6 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.util.Seq;
-
 import io.jenetics.ext.util.FormulaParser;
 
 /**
@@ -42,7 +40,7 @@ import io.jenetics.ext.util.FormulaParser;
 public class CreationAndParsingTest {
 
 	interface Op {
-		double apply(final double... args);
+		double apply(final Double... args);
 	}
 
 	static final Cfg<Op> CFG = Cfg.of(
@@ -97,18 +95,9 @@ public class CreationAndParsingTest {
 		final List<Cfg.Terminal<Op>> sentence = generator.generate(CFG);
 		final double result = FORMULA_PARSER
 			.parse(sentence, (token, type) -> token.value())
-			.reduce((op, values) -> op.apply(toArray(values)));
+			.reduce(new Double[0], Op::apply);
 
 		assertThat(result).isEqualTo(8.0);
 	}
-
-	private static double[] toArray(final Seq<? extends Double> values) {
-		final var result = new double[values.size()];
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = values.get(i);
-		}
-		return result;
-	}
-
 
 }
