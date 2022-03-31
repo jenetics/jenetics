@@ -502,11 +502,12 @@ public final class TreeNode<T>
 		final TreeNode<B> target,
 		final Function<? super T, ? extends B> mapper
 	) {
-		source.childStream().forEachOrdered(child -> {
+		for (int i = 0; i < source.childCount(); ++i) {
+			final var child = source.childAt(i);
 			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
 			copy(child, targetChild, mapper);
-		});
+		}
 	}
 
 	/**

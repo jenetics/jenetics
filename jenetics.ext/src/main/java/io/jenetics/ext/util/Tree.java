@@ -1003,16 +1003,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		requireNonNull(reducer);
 
 		@SuppressWarnings("unchecked")
-		record Reducing<U, V>(
-			U[] neutral,
-			BiFunction<? super V, ? super U[], ? extends U> reducer
-		) {
+		final class Reducing {
 			private U reduce(final Tree<V, ?> node) {
 				return node.isLeaf()
 					? reducer.apply(node.value(), neutral)
-					: reducer.apply(node.value(), reduce1(node));
+					: reducer.apply(node.value(), children(node));
 			}
-			private U[] reduce1(final Tree<V, ?> node) {
+			private U[] children(final Tree<V, ?> node) {
 				final U[] values = (U[])Array.newInstance(
 					neutral.getClass().getComponentType(),
 					node.childCount()
@@ -1024,9 +1021,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 			}
 		}
 
-		return isEmpty()
-			? null
-			: new Reducing<U, V>(neutral, reducer).reduce(this);
+		return isEmpty() ? null : new Reducing().reduce(this);
 	}
 
 
