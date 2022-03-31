@@ -216,48 +216,32 @@ public final class FlatTreeNode<V>
 		requireNonNull(neutral);
 		requireNonNull(reducer);
 
-		if (isEmpty()) {
-			return null;
-		} else {
-			return __reduce(_index, neutral, reducer);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private <U> U __reduce(
-		final int index,
-		final U[] neutral,
-		final BiFunction<? super V, ? super U[], ? extends U> reducer
-	) {
-		if (_nodes.childCounts[index] == 0) {
-			return reducer.apply((V)_nodes.values[index], neutral);
-		} else {
-			return reducer.apply(
-				(V)_nodes.values[index],
-				__reduce0(index, neutral, reducer)
-			);
-		}
-	}
-
-	private <U> U[] __reduce0(
-		final int index,
-		final U[] neutral,
-		final BiFunction<? super V, ? super U[], ? extends U> reducer
-	) {
 		@SuppressWarnings("unchecked")
-		final U[] values = (U[])Array.newInstance(
-			neutral.getClass().getComponentType(),
-			_nodes.childCounts[index]
-		);
-
-		for (int i = 0; i < _nodes.childCounts[index]; ++i) {
-			values[i] = __reduce(
-				_nodes.childOffsets[index] + i,
-				neutral,
-				reducer
-			);
+		record Reducing<U, V>(
+			Nodes nodes,
+			U[] neutral,
+			BiFunction<? super V, ? super U[], ? extends U> reducer
+		) {
+			private U reduce(final int index) {
+				return nodes.childCounts[index] == 0
+					? reducer.apply((V)nodes.values[index], neutral)
+					: reducer.apply((V)nodes.values[index], reduce1(index));
+			}
+			private U[] reduce1(final int index) {
+				final U[] values = (U[])Array.newInstance(
+					neutral.getClass().getComponentType(),
+					nodes.childCounts[index]
+				);
+				for (int i = 0; i < nodes.childCounts[index]; ++i) {
+					values[i] = reduce(nodes.childOffsets[index] + i);
+				}
+				return values;
+			}
 		}
-		return values;
+
+		return isEmpty()
+			? null
+			: new Reducing<>(_nodes, neutral, reducer).reduce(_index);
 	}
 
 	@Override

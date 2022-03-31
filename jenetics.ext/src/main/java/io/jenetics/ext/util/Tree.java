@@ -1002,31 +1002,33 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		requireNonNull(neutral);
 		requireNonNull(reducer);
 
-		if (isEmpty()) {
-			return null;
-		} else {
-			return isLeaf()
-				? reducer.apply(value(), neutral)
-				: reducer.apply(value(), reduce(this, neutral, reducer));
-		}
-	}
-
-	private static <U, V> U[] reduce(
-		final Tree<V, ?> node,
-		final U[] neutral,
-		final BiFunction<? super V, ? super U[], ? extends U> reducer
-	) {
 		@SuppressWarnings("unchecked")
-		final U[] values = (U[])Array.newInstance(
-			neutral.getClass().getComponentType(),
-			node.childCount()
-		);
-
-		for (int i = 0; i < node.childCount(); ++i) {
-			values[i] = node.childAt(i).reduce(neutral, reducer);
+		record Reducing<U, V>(
+			U[] neutral,
+			BiFunction<? super V, ? super U[], ? extends U> reducer
+		) {
+			private U reduce(final Tree<V, ?> node) {
+				return node.isLeaf()
+					? reducer.apply(node.value(), neutral)
+					: reducer.apply(node.value(), reduce1(node));
+			}
+			private U[] reduce1(final Tree<V, ?> node) {
+				final U[] values = (U[])Array.newInstance(
+					neutral.getClass().getComponentType(),
+					node.childCount()
+				);
+				for (int i = 0; i < node.childCount(); ++i) {
+					values[i] = reduce(node.childAt(i));
+				}
+				return values;
+			}
 		}
-		return values;
+
+		return isEmpty()
+			? null
+			: new Reducing<U, V>(neutral, reducer).reduce(this);
 	}
+
 
 	/* *************************************************************************
 	 * 'toString' methods
