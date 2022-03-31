@@ -398,8 +398,8 @@ public final class TreePattern<V> implements Serializable {
 	 * A sealed interface, which constitutes the nodes of a pattern tree.
 	 * The only two implementations of this class are the {@link Var} and the
 	 * {@link Val} class. The {@link Var} class represents a placeholder for an
-	 * arbitrary sub-tree and the {@link Val} class stands for an arbitrary
-	 * concrete sub-tree.
+	 * arbitrary subtree and the {@link Val} class stands for an arbitrary
+	 * concrete subtree.
 	 *
 	 * @see Var
 	 * @see Val
