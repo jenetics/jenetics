@@ -413,7 +413,7 @@ public final class MathExpr
 	public static MathExpr parse(final String expression) {
 		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
-		return new MathExpr(tree, true);
+		return new MathExpr(tree);
 	}
 
 	private static <V> Tree<Op<Double>, ?>

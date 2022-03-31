@@ -32,9 +32,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -204,6 +206,58 @@ public final class FlatTreeNode<V>
 			other instanceof FlatTreeNode<?> node &&
 			node._index == _index &&
 			node._nodes == _nodes;
+	}
+
+	@Override
+	public <U> U reduce(
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
+	) {
+		requireNonNull(neutral);
+		requireNonNull(reducer);
+
+		if (isEmpty()) {
+			return null;
+		} else {
+			return __reduce(_index, neutral, reducer);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <U> U __reduce(
+		final int index,
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
+	) {
+		if (_nodes.childCounts[index] == 0) {
+			return reducer.apply((V)_nodes.values[index], neutral);
+		} else {
+			return reducer.apply(
+				(V)_nodes.values[index],
+				__reduce0(index, neutral, reducer)
+			);
+		}
+	}
+
+	private <U> U[] __reduce0(
+		final int index,
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
+	) {
+		@SuppressWarnings("unchecked")
+		final U[] values = (U[])Array.newInstance(
+			neutral.getClass().getComponentType(),
+			_nodes.childCounts[index]
+		);
+
+		for (int i = 0; i < _nodes.childCounts[index]; ++i) {
+			values[i] = __reduce(
+				_nodes.childOffsets[index] + i,
+				neutral,
+				reducer
+			);
+		}
+		return values;
 	}
 
 	@Override
