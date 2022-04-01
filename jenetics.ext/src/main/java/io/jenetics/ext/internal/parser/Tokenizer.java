@@ -19,11 +19,7 @@
  */
 package io.jenetics.ext.internal.parser;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -46,53 +42,8 @@ public interface Tokenizer<T> {
 	 */
 	T next();
 
-	default Tokenizer<T> filter(final Predicate<? super T> filter) {
-		return () -> {
-			var token = Tokenizer.this.next();
-			while (token != null && !filter.test(token)) {
-				token = Tokenizer.this.next();
-			}
-			return token;
-		};
-	}
-
-	default <A> Tokenizer<A> map(final Function<? super T, ? extends A> f) {
-		return () -> f.apply(next());
-	}
-
 	default Stream<T> tokens() {
 		return Stream.generate(this::next).takeWhile(Objects::nonNull);
-	}
-
-
-	static <T> Iterator<T> toIterator(final Tokenizer<? extends T> tokenizer) {
-		return new Iterator<T>() {
-			private T next;
-			private boolean hasNext = false;
-			private boolean finished = false;
-
-			@Override
-			public boolean hasNext() {
-				if (finished) return false;
-				if (hasNext) return true;
-
-				try {
-					return (hasNext = (next = tokenizer.next()) != null);
-				} finally {
-					if (!hasNext) finished = true;
-				}
-			}
-
-			@Override
-			public T next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException();
-				}
-
-				hasNext = false;
-				return next;
-			}
-		};
 	}
 
 }
