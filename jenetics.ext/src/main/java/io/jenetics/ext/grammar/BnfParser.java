@@ -37,8 +37,8 @@ import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Rule;
 import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.grammar.Cfg.Terminal;
-import io.jenetics.ext.internal.parser.TokenParser;
 import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.TokenParser;
 
 /**
  * Parser for BNF grammars.
