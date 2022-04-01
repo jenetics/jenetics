@@ -55,7 +55,7 @@ public class Parser<T> {
 
 	/**
 	 * Return the lookahead token with the given index. The index starts at
-	 * {@code 1}.
+	 * {@code 1}. The returned token might be {@code null}.
 	 *
 	 * @param index lookahead index
 	 * @return the token at the given index
