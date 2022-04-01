@@ -81,8 +81,7 @@ public class BaseParser<T> {
 			return next;
 		} else {
 			throw new ParsingException(format(
-				"Expecting %s but found %s.",
-				token, LT(1)
+				"Found unexpected token: %s.", LT(1)
 			));
 		}
 	}

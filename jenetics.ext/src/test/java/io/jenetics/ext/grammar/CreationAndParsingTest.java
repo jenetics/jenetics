@@ -75,7 +75,7 @@ public class CreationAndParsingTest {
 	static final FormulaParser<Cfg.Terminal<Op>> FORMULA_PARSER = FormulaParser.<Cfg.Terminal<Op>>builder()
 		.lparen(s -> s.name().equals("("))
 		.rparen(s -> s.name().equals(")"))
-		.comma(s -> s.name().equals(","))
+		.separator(s -> s.name().equals(","))
 		.binaryOperators(ops -> ops
 			.add(11, s -> s.name().equals("+") || s.name().equals("-"))
 			.add(12, s -> s.name().equals("*") || s.name().equals("/")))

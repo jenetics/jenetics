@@ -46,26 +46,14 @@ public class Parser<V> extends BaseParser<Token<V>> {
 	}
 
 	/**
-	 * Return the lookahead token with the given index. The index starts at
-	 * {@code 1}.
-	 *
-	 * @param index lookahead index
-	 * @return the token at the given index
-	 */
-	@Override
-	public Token<V> LT(final int index) {
-		final var token = super.LT(index);
-		return token != null ? token : Token.eof();
-	}
-
-	/**
 	 * Return the token type code for the given lookahead index.
 	 *
 	 * @param index lookahead index
 	 * @return the token type code for the given lookahead index
 	 */
 	public int LA(final int index) {
-		return LT(index).type().code();
+		final var token = LT(index);
+		return token != null ? token.type().code() : Type.EOF.code();
 	}
 
 	/**

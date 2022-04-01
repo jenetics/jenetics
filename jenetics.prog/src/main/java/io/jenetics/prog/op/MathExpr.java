@@ -464,10 +464,7 @@ public final class MathExpr
 	 */
 	public static Tree<Op<Double>, ?> parseTree(final String expression) {
 		final var tokenizer = new MathStringTokenizer(expression);
-		return parseTree(() -> {
-			var next = tokenizer.next();
-			return next == null || next.isEof() ? null : next;
-		});
+		return parseTree(tokenizer::next);
 	}
 
 	/**

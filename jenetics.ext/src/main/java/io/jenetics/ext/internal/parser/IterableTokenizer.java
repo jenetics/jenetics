@@ -60,7 +60,7 @@ public class IterableTokenizer<A, V> implements Tokenizer<Token<V>> {
 	public Token<V> next() {
 		return _values.hasNext()
 			? _converter.apply(_values.next())
-			: Token.eof();
+			: null;
 	}
 
 }
