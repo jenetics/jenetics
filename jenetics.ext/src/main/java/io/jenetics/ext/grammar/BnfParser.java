@@ -37,7 +37,7 @@ import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Rule;
 import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.grammar.Cfg.Terminal;
-import io.jenetics.ext.internal.parser.Parser;
+import io.jenetics.ext.internal.parser.TokenParser;
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
@@ -79,7 +79,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * @since !__version__!
  * @version !__version__!
  */
-final class BnfParser extends Parser<String> {
+final class BnfParser extends TokenParser<String> {
 
 	NonTerminal<String> start = null;
 	final List<Rule<String>> rules = new ArrayList<>();

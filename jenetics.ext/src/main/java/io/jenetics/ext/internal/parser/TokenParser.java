@@ -32,7 +32,7 @@ import io.jenetics.ext.internal.parser.Token.Type;
  * @since 7.1
  * @version 7.1
  */
-public class Parser<V> extends BaseParser<Token<V>> {
+public class TokenParser<V> extends BaseParser<Token<V>> {
 
 	/**
 	 * Create a new parser object with the given {@code tokenizer} and lookahead
@@ -41,7 +41,7 @@ public class Parser<V> extends BaseParser<Token<V>> {
 	 * @param tokenizer the token source {@code this} parser uses
 	 * @param k the lookahead count
 	 */
-	public Parser(final Tokenizer<Token<V>> tokenizer, final int k) {
+	public TokenParser(final Tokenizer<Token<V>> tokenizer, final int k) {
 		super(tokenizer, k);
 	}
 
