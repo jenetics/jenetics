@@ -95,7 +95,7 @@ public interface LossFunction<T> {
 	}
 
 	/**
-	 * Root mean square error is measured as the average of squared difference
+	 * Root-mean-square error is measured as the average of squared difference
 	 * between predictions and actual observations.
 	 *
 	 * @see #mse(Double[], Double[])

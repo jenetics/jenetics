@@ -19,6 +19,8 @@
  */
 package io.jenetics.prog.regression;
 
+import java.util.List;
+
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -64,5 +66,16 @@ public interface Sampling<T> {
 	 *         is empty and contains no sample points.
 	 */
 	Result<T> eval(final Tree<? extends Op<T>, ?> program);
+
+	/**
+	 * Create a new sampling object from the given sample points.
+	 *
+	 * @param samples the sample points
+	 * @param <T> the sample type
+	 * @return a new sampling object
+	 */
+	static <T> Sampling<T> of(final List<? extends Sample<T>> samples) {
+		return new SampleList<>(samples);
+	}
 
 }
