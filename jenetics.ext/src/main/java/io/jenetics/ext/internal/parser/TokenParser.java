@@ -32,7 +32,7 @@ import io.jenetics.ext.internal.parser.Token.Type;
  * @since 7.1
  * @version 7.1
  */
-public class TokenParser<V> extends BaseParser<Token<V>> {
+public class TokenParser<V> extends Parser<Token<V>> {
 
 	/**
 	 * Create a new parser object with the given {@code tokenizer} and lookahead

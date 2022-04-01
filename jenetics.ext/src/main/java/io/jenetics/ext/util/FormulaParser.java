@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.ext.internal.parser.BaseParser;
+import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
@@ -252,7 +252,7 @@ public final class FormulaParser<T> {
 		final Term<T> fterm = new Term<>() {
 			@Override
 			<V> TreeNode<V> term(
-				final BaseParser<T> parser,
+				final Parser<T> parser,
 				final TokenConverter<? super T, ? extends V> mapper
 			) {
 				return function(parser, mapper);
@@ -267,7 +267,7 @@ public final class FormulaParser<T> {
 	}
 
 	private <V> TreeNode<V> function(
-		final BaseParser<T> parser,
+		final Parser<T> parser,
 		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
@@ -297,7 +297,7 @@ public final class FormulaParser<T> {
 	}
 
 	private <V> TreeNode<V> atom(
-		final BaseParser<T> parser,
+		final Parser<T> parser,
 		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
@@ -316,7 +316,7 @@ public final class FormulaParser<T> {
 
 	private <V> TreeNode<V> unary(
 		final Supplier<TreeNode<V>> other,
-		final BaseParser<T> parser,
+		final Parser<T> parser,
 		final TokenConverter<? super T, ? extends V> mapper
 	) {
 		final var token = parser.LT(1);
@@ -351,7 +351,7 @@ public final class FormulaParser<T> {
 		requireNonNull(tokens);
 		requireNonNull(mapper);
 
-		return _term.expr(new BaseParser<T>(tokens::get, 1), mapper);
+		return _term.expr(new Parser<T>(tokens::get, 1), mapper);
 	}
 
 	/**
@@ -427,19 +427,19 @@ public final class FormulaParser<T> {
 
 		<V> TreeNode<V> op(
 			final TreeNode<V> expr,
-			final BaseParser<T> parser,
+			final Parser<T> parser,
 			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return expr;
 		}
 
 		abstract <V> TreeNode<V> term(
-			final BaseParser<T> parser,
+			final Parser<T> parser,
 			final TokenConverter<? super T, ? extends V> mapper
 		);
 
 		<V> TreeNode<V> expr(
-			final BaseParser<T> parser,
+			final Parser<T> parser,
 			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return op(term(parser, mapper), parser, mapper);
@@ -470,7 +470,7 @@ public final class FormulaParser<T> {
 		@Override
 		<V> TreeNode<V> op(
 			final TreeNode<V> expr,
-			final BaseParser<T> parser,
+			final Parser<T> parser,
 			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			var result = expr;
@@ -491,7 +491,7 @@ public final class FormulaParser<T> {
 
 		@Override
 		<V> TreeNode<V> term(
-			final BaseParser<T> parser,
+			final Parser<T> parser,
 			final TokenConverter<? super T, ? extends V> mapper
 		) {
 			return _next.op(_next.term(parser, mapper), parser, mapper);

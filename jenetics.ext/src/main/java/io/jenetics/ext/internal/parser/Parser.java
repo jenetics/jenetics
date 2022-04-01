@@ -33,7 +33,7 @@ import java.util.function.Predicate;
  * @since 7.1
  * @version 7.1
  */
-public class BaseParser<T> {
+public class Parser<T> {
 
 	private final Tokenizer<T> _tokenizer;
 	private final TokenRing<T> _lookahead;
@@ -45,7 +45,7 @@ public class BaseParser<T> {
 	 * @param tokenizer the token source {@code this} parser uses
 	 * @param k the lookahead count
 	 */
-	public BaseParser(final Tokenizer<T> tokenizer, final int k) {
+	public Parser(final Tokenizer<T> tokenizer, final int k) {
 		_tokenizer = requireNonNull(tokenizer);
 		_lookahead = new TokenRing<>(k);
 		for (int i = 0; i < k; ++i) {
