@@ -21,6 +21,9 @@
 /**
  * This package contains classes for doing Grammatical Evolution.
  *
+ * @see <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+ * 	 Grammatical Evolution</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

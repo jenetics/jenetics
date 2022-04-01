@@ -92,7 +92,7 @@ public final class DerivationTreeGenerator<T>
 	 *         the number of nodes exceed the defined node limit
 	 */
 	@Override
-	public TreeNode<Symbol<T>> generate(final Cfg<? extends T> cfg) {
+	public Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg) {
 		final Cfg<T> grammar = Cfg.upcast(cfg);
 		final NonTerminal<T> start = grammar.start();
 		final TreeNode<Symbol<T>> symbols = TreeNode.of(start);
