@@ -171,14 +171,14 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public Iterator<FlatTreeNode<V>> breadthFirstIterator() {
-		return _index == 0
+		return isRoot()
 			? new IntFunctionIterator<>(this::nodeAt, _nodes.values.length)
 			: FlatTree.super.breadthFirstIterator();
 	}
 
 	@Override
 	public Stream<FlatTreeNode<V>> breadthFirstStream() {
-		return _index == 0
+		return isRoot()
 			? IntStream.range(0, _nodes.values.length).mapToObj(this::nodeAt)
 			: FlatTree.super.breadthFirstStream();
 	}
