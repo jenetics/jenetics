@@ -59,7 +59,7 @@ public class MathStringTokenizerTest {
 		MathExprTestData.EXPRESSIONS.forEach(expr -> {
 			final var tokenizer = new MathStringTokenizer(expr);
 			final var tokens = tokenizer.tokens()
-				.map(t -> t.value() )
+				.map(Token::value)
 				.collect(Collectors.joining("|"));
 
 			System.out.println(tokens);
