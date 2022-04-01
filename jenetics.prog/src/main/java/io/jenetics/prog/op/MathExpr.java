@@ -81,7 +81,7 @@ public final class MathExpr
 		FormulaParser.<Token<String>>builder()
 			.lparen(t -> t.type() == LPAREN)
 			.rparen(t -> t.type() == RPAREN)
-			.comma(t -> t.type() == COMMA)
+			.separator(t -> t.type() == COMMA)
 			.unaryOperators(t -> t.type() == PLUS || t.type() == MINUS)
 			.binaryOperators(ops -> ops
 				.add(11, t -> t.type() == PLUS || t.type() == MINUS)

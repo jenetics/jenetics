@@ -160,8 +160,8 @@ public final class IntList {
 	}
 
 	/**
-	 * Inserts all of the elements in the specified array into this list,
-	 * starting at the specified position.
+	 * Inserts all the elements in the specified array into this list, starting
+	 * at the specified position.
 	 *
 	 * @param index index at which to insert the first element from the
 	 *              specified collection

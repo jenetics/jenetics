@@ -35,7 +35,7 @@ public class FormulaParserTest {
 		final FormulaParser<String> formula = FormulaParser.<String>builder()
 			.lparen("(")
 			.rparen(")")
-			.comma(",")
+			.separator(",")
 			.unaryOperators("+", "-", "!")
 			.binaryOperators(ops -> ops
 				.add(11, "+", "-")

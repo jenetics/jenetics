@@ -80,7 +80,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  *     // Structural tokens.
  *     .lparen("(")
  *     .rparen(")")
- *     .comma(",")
+ *     .separator(",")
  *     // Operational tokens.
  *     .unaryOperators("+", "-")
  *     .binaryOperators(ops -> ops
@@ -206,7 +206,7 @@ public final class FormulaParser<T> {
 
 	private final Predicate<? super T> _lparen;
 	private final Predicate<? super T> _rparen;
-	private final Predicate<? super T> _comma;
+	private final Predicate<? super T> _separator;
 	private final Predicate<? super T> _uops;
 	private final Predicate<? super T> _identifiers;
 	private final Predicate<? super T> _functions;
@@ -220,8 +220,8 @@ public final class FormulaParser<T> {
 	 *
 	 * @param lparen the token type specifying the left parentheses, '('
 	 * @param rparen the token type specifying the right parentheses, ')'
-	 * @param comma the token type specifying the function parameter separator,
-	 *        ','
+	 * @param separator the token type specifying the function parameter
+	 *        separator, ','
 	 * @param bops the list of binary operators, according its
 	 *        precedence. The first list element contains the operations with
 	 *        the lowest precedence and the last list element contains the
@@ -235,7 +235,7 @@ public final class FormulaParser<T> {
 	private FormulaParser(
 		final Predicate<? super T> lparen,
 		final Predicate<? super T> rparen,
-		final Predicate<? super T> comma,
+		final Predicate<? super T> separator,
 		final List<? extends Predicate<? super T>> bops,
 		final Predicate<? super T> uops,
 		final Predicate<? super T> identifiers,
@@ -243,7 +243,7 @@ public final class FormulaParser<T> {
 	) {
 		_lparen = requireNonNull(lparen);
 		_rparen = requireNonNull(rparen);
-		_comma = requireNonNull(comma);
+		_separator = requireNonNull(separator);
 		_uops = requireNonNull(uops);
 		_identifiers = requireNonNull(identifiers);
 		_functions = requireNonNull(functions);
@@ -279,7 +279,7 @@ public final class FormulaParser<T> {
 
 			parser.match(_lparen);
 			node.attach(_term.expr(parser, mapper));
-			while (_comma.test(parser.LT(1))) {
+			while (_separator.test(parser.LT(1))) {
 				parser.consume();
 				node.attach(_term.expr(parser, mapper));
 			}
@@ -536,7 +536,7 @@ public final class FormulaParser<T> {
 
 		private Predicate<? super T> _lparen = token -> false;
 		private Predicate<? super T> _rparen = token -> false;
-		private Predicate<? super T> _comma = token -> false;
+		private Predicate<? super T> _separator = token -> false;
 		private List<? extends Predicate<? super T>> _bops = List.of();
 		private Predicate<? super T> _uops = token -> false;
 		private Predicate<? super T> _identifiers = token -> false;
@@ -599,29 +599,29 @@ public final class FormulaParser<T> {
 		}
 
 		/**
-		 * Set the predicate which defines {@code comma} tokens. If the given
+		 * Set the predicate which defines {@code separator} tokens. If the given
 		 * predicate returns {@code true} for a token, it is treated as
-		 * <em>comma</em>.
+		 * <em>separator</em>.
 		 *
-		 * @param comma the {@code comma} token
+		 * @param separator the {@code separator} token
 		 * @return {@code this} builder, for method chaining
-		 * @throws NullPointerException if the {@code comma} is {@code null}
+		 * @throws NullPointerException if the {@code separator} is {@code null}
 		 */
-		public Builder<T> comma(final Predicate<? super T> comma) {
-			_comma = requireNonNull(comma);
+		public Builder<T> separator(final Predicate<? super T> separator) {
+			_separator = requireNonNull(separator);
 			return this;
 		}
 
 		/**
-		 * Set the <em>prototype</em> for the {@code comma} token. A given
-		 * token is treated as  {@code comma} if {@code Objects.equals(token, comma)}
+		 * Set the <em>prototype</em> for the {@code separator} token. A given
+		 * token is treated as  {@code separator} if {@code Objects.equals(token, separator)}
 		 * returns {@code true}.
 		 *
-		 * @param comma the {@code comma} prototype
+		 * @param separator the {@code separator} prototype
 		 * @return {@code this} builder, for method chaining
 		 */
-		public Builder<T> comma(final T comma) {
-			return comma(token -> Objects.equals(token, comma));
+		public Builder<T> separator(final T separator) {
+			return separator(token -> Objects.equals(token, separator));
 		}
 
 		/**
@@ -784,7 +784,7 @@ public final class FormulaParser<T> {
 			return new FormulaParser<>(
 				_lparen,
 				_rparen,
-				_comma,
+				_separator,
 				_bops,
 				_uops,
 				_identifiers,

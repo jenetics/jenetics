@@ -295,20 +295,20 @@ public final class TreeNode<T>
 		final Optional<TreeNode<T>> old = childAtPath(path);
 		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::parent);
 
-		if (parent.isPresent()) {
-			parent.orElseThrow(AssertionError::new)
-				.replace(path.get(path.length() - 1), child);
-		} else {
-			removeAllChildren();
-			value(child.value());
+		parent.ifPresentOrElse(
+			p -> p.replace(path.get(path.length() - 1), child),
+			() -> {
+				removeAllChildren();
+				value(child.value());
 
-			final ISeq<TreeNode<T>> nodes = child.childStream()
-				.collect(ISeq.toISeq());
+				// Need to create a copy of the children, before attaching it.
+				final List<TreeNode<T>> nodes = child._children != null
+					? List.copyOf(child._children)
+					: List.of();
 
-			for (TreeNode<T> node : nodes) {
-				attach(node);
+				nodes.forEach(this::attach);
 			}
-		}
+		);
 
 		return old.isPresent();
 	}
@@ -502,11 +502,12 @@ public final class TreeNode<T>
 		final TreeNode<B> target,
 		final Function<? super T, ? extends B> mapper
 	) {
-		source.childStream().forEachOrdered(child -> {
+		for (int i = 0; i < source.childCount(); ++i) {
+			final var child = source.childAt(i);
 			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
 			copy(child, targetChild, mapper);
-		});
+		}
 	}
 
 	/**
