@@ -78,4 +78,16 @@ public interface Sampling<T> {
 		return new SampleList<>(samples);
 	}
 
+	/**
+	 * Create a new sampling object from the given sample points.
+	 *
+	 * @param samples the sample points
+	 * @param <T> the sample type
+	 * @return a new sampling object
+	 */
+	@SafeVarargs
+	static <T> Sampling<T> of(final Sample<T>... samples) {
+		return Sampling.of(List.of(samples));
+	}
+
 }

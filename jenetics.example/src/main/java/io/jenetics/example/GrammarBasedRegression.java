@@ -20,8 +20,7 @@
 package io.jenetics.example;
 
 import static java.util.stream.Collectors.joining;
-
-import java.util.List;
+import static io.jenetics.prog.op.MathExpr.parseTree;
 
 import io.jenetics.IntegerGene;
 import io.jenetics.Phenotype;
@@ -62,7 +61,7 @@ public class GrammarBasedRegression {
 	private GrammarBasedRegression() {
 	}
 
-	private static final Cfg<String> CFG = Bnf.parse("""
+	private static final Cfg<String> GRAMMAR = Bnf.parse("""
 		<expr> ::= x | <num> | <expr> <op> <expr>
 		<op>   ::= + | - | * | /
 		<num>  ::= 2 | 3 | 4
@@ -71,19 +70,17 @@ public class GrammarBasedRegression {
 
 	private static final Codec<Tree<Op<Double>, ?>, IntegerGene> CODEC = Mappers
 		.multiIntegerChromosomeMapper(
-			CFG,
+			GRAMMAR,
 			rule -> IntRange.of(rule.alternatives().size()*100),
 			index -> new SentenceGenerator<>(index, 50)
 		)
 		.map(sentence -> sentence.stream().map(Terminal::value).collect(joining()))
-		.map(expr -> expr.isEmpty()
-			? TreeNode.of(Const.of(0.0))
-			: MathExpr.parseTree(expr));
+		.map(expr -> expr.isEmpty() ? TreeNode.of(Const.of(0.0)) : parseTree(expr));
 
 	private static final Error<Double> ERROR = Error.of(LossFunction::mse);
 
 	// Lookup table for 4*x^3 - 3*x^2 + x
-	private static final Sampling<Double> SAMPLES = Sampling.of(List.of(
+	private static final Sampling<Double> SAMPLES = Sampling.of(
 		Sample.ofDouble(-1.0, -8.0000),
 		Sample.ofDouble(-0.9, -6.2460),
 		Sample.ofDouble(-0.8, -4.7680),
@@ -105,7 +102,7 @@ public class GrammarBasedRegression {
 		Sample.ofDouble(0.8, 0.9280),
 		Sample.ofDouble(0.9, 1.3860),
 		Sample.ofDouble(1.0, 2.0000)
-	));
+	);
 
 	private static double error(final Tree<? extends Op<Double>, ?> program) {
 		final Result<Double> result = SAMPLES.eval(program);

@@ -53,6 +53,8 @@ import io.jenetics.prog.regression.Sample;
  * @since 3.9
  */
 public class SymbolicRegression {
+	private SymbolicRegression() {
+	}
 
 	// Definition of the allowed operations.
 	private static final ISeq<Op<Double>> OPS =
