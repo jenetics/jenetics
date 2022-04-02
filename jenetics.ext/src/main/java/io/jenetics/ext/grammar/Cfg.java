@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -363,7 +362,7 @@ public record Cfg<T>(
 			.map(rule -> new Rule<>(
 				(NonTerminal<A>)rule.start(),
 				rule.alternatives().stream()
-					.map(expr -> new Expression<A>(
+					.map(expr -> new Expression<>(
 						expr.symbols().stream()
 							.map(sym -> sym instanceof Cfg.Terminal<T> t
 								? mapping.apply(t)
@@ -434,7 +433,7 @@ public record Cfg<T>(
 	 */
 	@SafeVarargs
 	public static <T> Cfg<T> of(final Rule<T>... rules) {
-		return Cfg.of(Arrays.asList(rules));
+		return Cfg.of(List.of(rules));
 	}
 
 	private static <T> List<Rule<T>> normalize(final List<Rule<T>> rules) {
@@ -553,7 +552,7 @@ public record Cfg<T>(
 	 */
 	@SafeVarargs
 	public static <T> Expression<T> E(final Symbol<T>... symbols) {
-		return new Expression<>(Arrays.asList(symbols));
+		return new Expression<>(List.of(symbols));
 	}
 
 	/**
@@ -572,7 +571,7 @@ public record Cfg<T>(
 		final String name,
 		final Expression<T>... alternatives
 	) {
-		return new Rule<>(new NonTerminal<>(name), Arrays.asList(alternatives));
+		return new Rule<>(new NonTerminal<>(name), List.of(alternatives));
 	}
 
 }
