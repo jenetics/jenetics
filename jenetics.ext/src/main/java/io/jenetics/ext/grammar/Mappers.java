@@ -207,15 +207,14 @@ public final class Mappers {
 	 * final Cfg<String> cfg = Bnf.parse(...);
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(
 	 *     cfg,
-	 *     // The chromosome length is 10 times the
+	 *     // The chromosome length is 25 times the
 	 *     // number of rule alternatives.
-	 *     rule -> IntRange.of(rule.alternatives().size()*10),
+	 *     rule -> IntRange.of(rule.alternatives().size()*25),
 	 *     // Using the standard sentence generator
-	 *     // with a maximal sentence length of 5,000.
-	 *     index -> new SentenceGenerator<>(index, 5_000)
+	 *     // with a maximal sentence length of 500.
+	 *     index -> new SentenceGenerator<>(index, 500)
 	 * );
 	 * }</pre>
-	 *
 	 *
 	 * @param cfg the encoding grammar
 	 * @param length the length of the chromosome which is used for selecting
