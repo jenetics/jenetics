@@ -71,7 +71,7 @@ public class GrammarBasedRegression {
 	private static final Codec<Tree<Op<Double>, ?>, IntegerGene> CODEC = Mappers
 		.multiIntegerChromosomeMapper(
 			GRAMMAR,
-			rule -> IntRange.of(rule.alternatives().size()*100),
+			rule -> IntRange.of(rule.alternatives().size()*25),
 			index -> new SentenceGenerator<>(index, 50)
 		)
 		.map(sentence -> sentence.stream().map(Terminal::value).collect(joining()))
@@ -104,7 +104,7 @@ public class GrammarBasedRegression {
 		Sample.ofDouble(1.0, 2.0000)
 	);
 
-	private static double error(final Tree<? extends Op<Double>, ?> program) {
+	private static double error(final Tree<Op<Double>, ?> program) {
 		final Result<Double> result = SAMPLES.eval(program);
 		return ERROR.apply(program, result.calculated(), result.expected());
 	}
@@ -117,8 +117,7 @@ public class GrammarBasedRegression {
 			.build();
 
 		final EvolutionResult<IntegerGene, Double> result = engine.stream()
-			.limit(Limits.byFitnessThreshold(0.01))
-			.limit(5000)
+			.limit(Limits.byFitnessThreshold(0.05))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final Phenotype<IntegerGene, Double> best = result.bestPhenotype();
