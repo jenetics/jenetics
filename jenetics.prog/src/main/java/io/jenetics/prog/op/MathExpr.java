@@ -265,8 +265,8 @@ public final class MathExpr
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MathExpr other &&
-			Tree.equals(other._tree, _tree);
+			obj instanceof MathExpr expr &&
+			_tree.equals(expr._tree);
 	}
 
 	/**
@@ -424,16 +424,7 @@ public final class MathExpr
 	 *         can't be parsed.
 	 */
 	public static MathExpr parse(final String expression) {
-		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
-		Program.check(tree);
-		return new MathExpr(tree);
-	}
-
-	private static <V> Tree<Op<Double>, ?>
-	parseTree(final Supplier<Token<String>> tokens) {
-		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
-		Var.reindex(tree);
-		return tree;
+		return new MathExpr(FlatTreeNode.ofTree(parseTree(expression)));
 	}
 
 	/**
@@ -478,6 +469,13 @@ public final class MathExpr
 	public static Tree<Op<Double>, ?> parseTree(final String expression) {
 		final var tokenizer = new MathStringTokenizer(expression);
 		return parseTree(tokenizer::next);
+	}
+
+	private static <V> Tree<Op<Double>, ?>
+	parseTree(final Supplier<Token<String>> tokens) {
+		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
+		Var.reindex(tree);
+		return tree;
 	}
 
 	/**
