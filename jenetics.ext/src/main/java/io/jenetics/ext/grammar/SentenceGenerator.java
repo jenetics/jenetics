@@ -171,7 +171,7 @@ public final class SentenceGenerator<T>
 			{
 				if (sit.next() instanceof NonTerminal<T> nt) {
 					sit.remove();
-					expand(cfg, nt).forEach(sit::add);
+					Generator.select(nt, cfg, _index).forEach(sit::add);
 					proceed = true;
 				}
 			}
@@ -181,14 +181,6 @@ public final class SentenceGenerator<T>
 				proceed = false;
 			}
 		} while (proceed);
-	}
-
-	private List<Symbol<T>> expand(final Cfg<T> cfg, final NonTerminal<T> symbol) {
-		return cfg.rule(symbol)
-			.map(rule -> rule.alternatives()
-				.get(_index.next(rule, rule.alternatives().size()))
-				.symbols())
-			.orElse(List.of());
 	}
 
 }

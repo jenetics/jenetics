@@ -21,7 +21,6 @@ package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.Optional;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
@@ -109,36 +108,24 @@ public final class DerivationTreeGenerator<T>
 
 			if (tree.isPresent()) {
 				final var t = tree.orElseThrow();
-				final var expansion = expand(
-					grammar,
+				final var selection = Generator.select(
 					(NonTerminal<T>)t.value(),
+					grammar,
 					_index
 				);
-				count += expansion.size();
+				count += selection.size();
 
 				if (count > _limit) {
 					return TreeNode.of();
 				}
 
-				expansion.forEach(t::attach);
+				selection.forEach(t::attach);
 			}
 
 			expanded = tree.isPresent();
 		}
 
 		return symbols;
-	}
-
-	static <T> List<Symbol<T>> expand(
-		final Cfg<T> cfg,
-		final NonTerminal<T> symbol,
-		final SymbolIndex index
-	) {
-		return cfg.rule(symbol)
-			.map(rule -> rule.alternatives()
-				.get(index.next(rule, rule.alternatives().size()))
-				.symbols())
-			.orElse(List.of());
 	}
 
 }

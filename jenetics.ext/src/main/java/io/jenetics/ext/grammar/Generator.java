@@ -19,6 +19,11 @@
  */
 package io.jenetics.ext.grammar;
 
+import java.util.List;
+
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+
 /**
  * Generator interface for generating <em>sentences</em>/<em>derivation trees</em>
  * from a given grammar.
@@ -41,5 +46,28 @@ public interface Generator<T, R> {
 	 * @return a newly created result
 	 */
 	R generate(final Cfg<? extends T> cfg);
+
+	/**
+	 * Standard algorithm for selecting a list of alternative symbols from the
+	 * given {@code rule}.
+	 *
+	 * @param rule the rule to select the alternative from
+	 * @param cfg the grammar to select the alternative from
+	 * @param index the symbol selection strategy
+	 * @param <T> the terminal type
+	 * @return the selected symbols
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	static <T> List<Symbol<T>> select(
+		final NonTerminal<T> rule,
+		final Cfg<T> cfg,
+		final SymbolIndex index
+	) {
+		return cfg.rule(rule)
+			.map(r -> r.alternatives()
+				.get(index.next(r, r.alternatives().size()))
+				.symbols())
+			.orElse(List.of());
+	}
 
 }
