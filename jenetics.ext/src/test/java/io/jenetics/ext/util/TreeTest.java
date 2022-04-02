@@ -46,6 +46,20 @@ public class TreeTest {
 		.attach(TreeNode.of("10"));
 
 	@Test
+	public void streamOrderEqualIteratorOrder() {
+		final Tree<String, ?> tree = TreeNode.parse(
+			"FUN1(0,((FUN1(2,FUN1((FUN1(5,(FUN2(y,x)*x))/(FUN2(y,FUN1(8,4))*" +
+			"FUN1(x,6))),4))/1)+((8-(FUN1(x,y)/y))-FUN2(((FUN1(y,(y+(FUN1(2,x)+" +
+			"FUN1(3,2))))+FUN2(8,x))+9),FUN2(x,9)))))"
+		);
+
+		assertThat(tree.size()).isEqualTo(43);
+		assertThat(tree.stream().count()).isEqualTo(43);
+		final var it = tree.iterator();
+		tree.stream().forEach(v -> assertThat(v).isEqualTo(it.next()));
+	}
+
+	@Test
 	public void toParenthesesTree1() {
 		final TreeNode<Integer> tree = TreeNode.of(0)
 			.attach(TreeNode.of(1)
