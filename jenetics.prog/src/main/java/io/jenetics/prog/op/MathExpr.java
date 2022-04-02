@@ -475,7 +475,7 @@ public final class MathExpr
 	parseTree(final Supplier<Token<String>> tokens) {
 		final TreeNode<Op<Double>> tree = FORMULA_PARSER.parse(tokens, MathExpr::toOp);
 		Var.reindex(tree);
-		return tree;
+		return FlatTreeNode.ofTree(tree);
 	}
 
 	/**
