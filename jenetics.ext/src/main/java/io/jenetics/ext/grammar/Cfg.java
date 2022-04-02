@@ -187,7 +187,8 @@ public record Cfg<T>(
 	}
 
 	/**
-	 * Represents one <em>expression</em> a production rule consists of.
+	 * Represents one <em>expression</em> (list of alternative symbols) a
+	 * production rule consists of.
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
