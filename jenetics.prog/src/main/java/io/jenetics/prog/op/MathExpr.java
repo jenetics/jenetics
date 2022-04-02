@@ -165,12 +165,12 @@ public final class MathExpr
 		CONST_REWRITER
 	);
 
-	private final Tree<? extends Op<Double>, ?> _tree;
+	private final FlatTreeNode<Op<Double>> _tree;
 
 	private final Lazy<ISeq<Var<Double>>> _vars;
 
 	// Primary constructor.
-	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
+	private MathExpr(final FlatTreeNode<Op<Double>> tree) {
 		_tree = requireNonNull(tree);
 		_vars = Lazy.of(() -> ISeq.of(
 			_tree.stream()
@@ -190,7 +190,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(FlatTreeNode.ofTree(tree), true);
+		this(FlatTreeNode.ofTree(tree));
 		Program.check(tree);
 	}
 
@@ -204,10 +204,23 @@ public final class MathExpr
 	}
 
 	/**
+	 * Return the operation tree underlying {@code this} math expression.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the operation tree s
+	 */
+	public Tree<Op<Double>, ?> tree() {
+		return _tree;
+	}
+
+	/**
 	 * Return the math expression as operation tree.
 	 *
 	 * @return a new expression tree
+	 * @deprecated Will be removed, use {@link #tree()} instead
 	 */
+	@Deprecated(forRemoval = true)
 	public TreeNode<Op<Double>> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
@@ -288,9 +301,9 @@ public final class MathExpr
 		final TreeRewriter<Op<Double>> rewriter,
 		final int limit
 	) {
-		final TreeNode<Op<Double>> tree = toTree();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(tree());
 		rewriter.rewrite(tree, limit);
-		return new MathExpr(FlatTreeNode.ofTree(tree), true);
+		return new MathExpr(FlatTreeNode.ofTree(tree));
 	}
 
 	/**
@@ -413,7 +426,7 @@ public final class MathExpr
 	public static MathExpr parse(final String expression) {
 		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
-		return new MathExpr(tree, true);
+		return new MathExpr(tree);
 	}
 
 	private static <V> Tree<Op<Double>, ?>
@@ -510,7 +523,7 @@ public final class MathExpr
 		final Tree<? extends Op<Double>, ?> expression,
 		final double... args
 	) {
-		return new MathExpr(expression, true).eval(args);
+		return Program.eval(expression, box(args));
 	}
 
 	/**

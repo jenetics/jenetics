@@ -70,13 +70,13 @@ public class MathExprTest {
 	@Test
 	public void format() {
 		final String expr = "(((5.0 - 6.0*x) - (3.0 + 4.0)) + sin(x)^34.0) + (1.0 + sin(x*5.0)/4.0)/6.0";
-		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).tree()), expr);
 	}
 
 	@Test
 	public void format1() {
 		final String expr = "(asin(z)*x)/1.0";
-		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).tree()), expr);
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class MathExprTest {
 		final String expression = new MathExpr(tree).toString();
 		final MathExpr expr = MathExpr.parse(expression);
 
-		Assert.assertEquals(expr.toTree(), tree);
+		Assert.assertEquals(expr.tree(), tree);
 		Assert.assertEquals(expr.toString(), expression);
 	}
 
@@ -216,7 +216,6 @@ public class MathExprTest {
 		final MathExpr expr = new MathExpr(tree);
 		final Seq<Var<Double>> vars = expr.vars();
 		final double[] args = new Random().doubles(vars.size()).toArray();
-		final double value = expr.eval(args);
 
 		final MathExpr simplified = expr.simplify();
 
@@ -264,7 +263,7 @@ public class MathExprTest {
 	@Test(dataProvider = "basicExpressions")
 	public void parseBasicExpressions(final String expr, final String expected) {
 		final var tree = MathExpr.parse(expr);
-		assertThat(tree.toTree().toParenthesesString()).isEqualTo(expected);
+		assertThat(tree.tree().toParenthesesString()).isEqualTo(expected);
 	}
 
 	@DataProvider

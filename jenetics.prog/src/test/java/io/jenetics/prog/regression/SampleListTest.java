@@ -41,7 +41,7 @@ public class SampleListTest {
 		);
 
 		final SampleList<Double> samples = new SampleList<>(points);
-		final var result = samples.eval(MathExpr.parse("x + y + z - y").toTree());
+		final var result = samples.eval(MathExpr.parse("x + y + z - y").tree());
 		for (var y : result.calculated()) {
 			Assert.assertEquals(y.doubleValue(), 4.0);
 		}
