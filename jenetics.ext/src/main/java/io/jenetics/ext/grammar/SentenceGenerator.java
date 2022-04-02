@@ -153,9 +153,11 @@ public final class SentenceGenerator<T>
 		final var sentence = new LinkedList<Symbol<T>>();
 		generate(Cfg.upcast(cfg), sentence);
 
-		return sentence.stream()
-			.map(t -> (Terminal<T>)t)
-			.toList();
+		// The 'generate' step guarantees that the list only
+		// contains terminal symbols. So this cast is safe.
+		@SuppressWarnings("unchecked")
+		final var result = (List<Terminal<T>>)(Object)sentence;
+		return List.copyOf(result);
 	}
 
 	private void generate(final Cfg<T> cfg, final List<Symbol<T>> symbols) {
