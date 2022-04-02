@@ -19,7 +19,10 @@
  */
 package io.jenetics.ext.grammar;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
+import java.util.function.Function;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Symbol;
@@ -46,6 +49,19 @@ public interface Generator<T, R> {
 	 * @return a newly created result
 	 */
 	R generate(final Cfg<? extends T> cfg);
+
+	/**
+	 * Maps the generated result from type {@code R} to type {@code R1}.
+	 *
+	 * @param f the mapping function
+	 * @param <R1> the target type
+	 * @return a new generator with target type {@code R1}
+	 * @throws NullPointerException if the mapping function is {@code null}
+	 */
+	default <R1> Generator<T, R1> map(final Function<? super R, ? extends R1> f) {
+		requireNonNull(f);
+		return cfg -> f.apply(generate(cfg));
+	}
 
 	/**
 	 * Standard algorithm for selecting a list of alternative symbols from the
