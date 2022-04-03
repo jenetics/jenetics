@@ -31,8 +31,8 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * the alternatives from a rule during the sentence generation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 @FunctionalInterface
 public interface SymbolIndex {

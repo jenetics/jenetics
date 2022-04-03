@@ -101,8 +101,8 @@ import java.util.stream.Stream;
  * @param <T> the terminal symbol value type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 public record Cfg<T>(
 	List<NonTerminal<T>> nonTerminals,

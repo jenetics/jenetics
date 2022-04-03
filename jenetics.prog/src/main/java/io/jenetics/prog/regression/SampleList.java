@@ -35,7 +35,7 @@ import io.jenetics.prog.op.Program;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 7.1
  * @since 5.0
  */
 final class SampleList<T>

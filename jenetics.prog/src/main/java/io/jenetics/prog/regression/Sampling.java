@@ -70,7 +70,7 @@ public interface Sampling<T> {
 	/**
 	 * Create a new sampling object from the given sample points.
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param samples the sample points
 	 * @param <T> the sample type
@@ -83,7 +83,7 @@ public interface Sampling<T> {
 	/**
 	 * Create a new sampling object from the given sample points.
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @param samples the sample points
 	 * @param <T> the sample type

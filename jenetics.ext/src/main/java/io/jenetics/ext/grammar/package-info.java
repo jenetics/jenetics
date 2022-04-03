@@ -25,7 +25,7 @@
  * 	 Grammatical Evolution</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.1
+ * @since 7.1
  */
 package io.jenetics.ext.grammar;

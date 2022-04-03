@@ -61,8 +61,8 @@ import io.jenetics.prog.regression.Sampling.Result;
  * @see SymbolicRegression
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.1
+ * @since 7.1
  */
 public class GrammarBasedRegression
 	implements Problem<Tree<Op<Double>, ?>, IntegerGene, Double>

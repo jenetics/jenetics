@@ -206,7 +206,7 @@ public final class MathExpr
 	/**
 	 * Return the operation tree underlying {@code this} math expression.
 	 *
-	 * @since !__version__!
+	 * @since 7.1
 	 *
 	 * @return the operation tree s
 	 */

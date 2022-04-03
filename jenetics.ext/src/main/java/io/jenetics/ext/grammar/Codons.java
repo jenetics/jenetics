@@ -50,8 +50,8 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 7.1
+ * @version 7.1
  */
 public final class Codons implements SymbolIndex {
 
