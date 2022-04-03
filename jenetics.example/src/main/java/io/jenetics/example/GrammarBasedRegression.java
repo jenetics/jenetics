@@ -74,8 +74,8 @@ public class GrammarBasedRegression {
 			rule -> IntRange.of(rule.alternatives().size()*25),
 			index -> new SentenceGenerator<>(index, 50)
 		)
-		.map(terms -> terms.stream().map(Terminal::name).collect(joining()))
-		.map(expr -> expr.isEmpty() ? TreeNode.of(Const.of(0.0)) : parseTree(expr));
+		.map(s -> s.stream().map(Terminal::name).collect(joining()))
+		.map(e -> e.isEmpty() ? TreeNode.of(Const.of(0.0)) : parseTree(e));
 
 	private static final Error<Double> ERROR = Error.of(LossFunction::mse);
 
