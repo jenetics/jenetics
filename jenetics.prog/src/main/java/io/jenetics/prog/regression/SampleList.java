@@ -35,7 +35,7 @@ import io.jenetics.prog.op.Program;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 final class SampleList<T>
@@ -47,14 +47,14 @@ final class SampleList<T>
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private final List<Sample<T>> _samples;
+	private final List<? extends Sample<T>> _samples;
 
 	private final Class<T> _type;
 	private final T[][] _arguments;
 	private final T[] _results;
 
 	@SuppressWarnings("unchecked")
-	SampleList(final List<Sample<T>> samples) {
+	SampleList(final List<? extends Sample<T>> samples) {
 		if (samples.isEmpty()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}

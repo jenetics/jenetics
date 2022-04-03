@@ -17,18 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
+
+import static java.util.Objects.requireNonNull;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.incubator.grammar.Cfg.Rule;
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * Interface for selecting a symbol index.
+ * Functional interface for selecting a {@link Cfg.Symbol} by its index within a
+ * rule. It is an abstraction of the <em>codon</em> values used for selecting
+ * the alternatives from a rule during the sentence generation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 @FunctionalInterface
 public interface SymbolIndex {
@@ -42,7 +46,7 @@ public interface SymbolIndex {
 	 * @throws IllegalArgumentException if the given {@code bound} is smaller
 	 *         than one
 	 */
-	int next(final Rule rule, final int bound);
+	int next(final Rule<?> rule, final int bound);
 
 	/**
 	 * Create a new symbol-index object from the given random generator. This
@@ -50,8 +54,11 @@ public interface SymbolIndex {
 	 *
 	 * @param random the random generator used for generating the sentences
 	 * @return a new symbol-index object from the given random generator
+	 * @throws NullPointerException if the given {@code random} generator is
+	 *         {@code null}
 	 */
 	static SymbolIndex of(final RandomGenerator random) {
+		requireNonNull(random);
 		return (rule, bound) -> random.nextInt(bound);
 	}
 

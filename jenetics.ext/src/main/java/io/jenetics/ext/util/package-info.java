@@ -19,6 +19,8 @@
  */
 
 /**
+ * This package contains data-structures needed by the GA specific implementations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1

@@ -17,38 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.random.RandomGenerator;
-import java.util.stream.IntStream;
-
-import io.jenetics.incubator.grammar.Cfg.Rule;
 
 /**
+ * This package contains classes for doing Grammatical Evolution.
+ *
+ * @see <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
+ * 	 Grammatical Evolution</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class TrackingCodons implements SymbolIndex {
-
-	private final IntStream.Builder _values;
-
-	private final RandomGenerator _random;
-	private final AtomicInteger _pos = new AtomicInteger(0);
-
-	public TrackingCodons(final RandomGenerator random) {
-		_random = random;
-		_values = IntStream.builder();
-	}
-
-	public int[] values() {
-		return _values.build().toArray();
-	}
-
-	@Override
-	public int next(final Rule rule, final int bound) {
-		final int value = _random.nextInt(256);
-		_values.accept(value);
-		return value%bound;
-	}
-
-}
+package io.jenetics.ext.grammar;

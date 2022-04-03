@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,18 +34,27 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.BitChromosome;
-import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+
+import io.jenetics.ext.grammar.SentenceGenerator.Expansion;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class CodonsTest {
 
+	@Test(expectedExceptions = NullPointerException.class)
+	public void nullCodonsSource() {
+		new Codons(null, 2);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void illegalCodonsLength() {
+		new Codons(i -> i, 0);
+	}
+
 	@Test(dataProvider = "chromosomeSizes")
 	public void toByteArray(final int size) {
 		final var ch = BitChromosome.of(size);
-
 		assertThat(Codons.toByteArray(ch)).isEqualTo(ch.toByteArray());
 	}
 
@@ -55,6 +64,16 @@ public class CodonsTest {
 			{1}, {2}, {3}, {7}, {8}, {9}, {10}, {15}, {16}, {17}, {31},
 			{32}, {33}, {100}, {1_000}, {10_000}, {100_000}
 		};
+	}
+
+	@Test
+	public void nextIndex() {
+		final int length = 100;
+		final var codons = new Codons(i -> 3*i, length);
+		for (int i = 0; i < 1000; ++i) {
+			assertThat(codons.next(null, length))
+				.isEqualTo(3*i%length);
+		}
 	}
 
 	@DataProvider
@@ -74,7 +93,7 @@ public class CodonsTest {
 
 	//@Test
 	public void paper() {
-		final Cfg cfg = Bnf.parse("""
+		final Cfg<String> cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
 			<op> ::= + | - | / | *
 			<pre-op> ::= sin
@@ -89,18 +108,18 @@ public class CodonsTest {
 			220, 240, 220, 203, 101, 53, 202, 203, 102, 55, 220, 202,
 			241, 130, 37, 202, 203, 140, 39, 202, 203, 102
 		};
-		final Codons codons = Codons.ofIntArray(values);
+		final Codons codons = new Codons(i -> values[i], values.length);
 
 		final var cds = new TrackingCodons(random);
 
-		var generator = new StandardSentenceGenerator(
+		var generator = new SentenceGenerator<String>(
 			cds,
 			Expansion.LEFT_FIRST,
 			MAX_VALUE
 		);
 
 		final String sentence = generator.generate(cfg).stream()
-			.map(Cfg.Symbol::value)
+			.map(Cfg.Symbol::name)
 			.collect(Collectors.joining());
 
 		if (sentence.equals("1.0-sin(x)*sin(x)-sin(x)-sin(x)")) {
@@ -112,7 +131,7 @@ public class CodonsTest {
 
 	//@Test
 	public void statistics() {
-		final Cfg cfg = Bnf.parse("""
+		final Cfg<String> cfg = Bnf.parse("""
 			<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre-op>(<expr>) | <var>
 			<op> ::= + | - | / | *
 			<pre-op> ::= sin
@@ -120,16 +139,18 @@ public class CodonsTest {
 			"""
 		);
 
+		/*
 		final var codons = Codons.ofIntArray(
 			RandomGenerator.getDefault().ints(0, 256)
 				.limit(500)
 				.toArray()
 		);
+		 */
 
 		final var random = RandomGenerator.getDefault();
 		final var lengths = new HashMap<Integer, AtomicInteger>();
 		for (int i = 0; i < 1_000_000; ++i) {
-			var generator = new StandardSentenceGenerator(
+			var generator = new SentenceGenerator<String>(
 				SymbolIndex.of(random),
 				Expansion.LEFT_FIRST,
 				200

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,17 +27,31 @@ import java.util.function.IntUnaryOperator;
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.IntegerGene;
-import io.jenetics.incubator.grammar.Cfg.Rule;
 import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.BaseSeq;
+
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * Represents a mapping of a finite set of integers to symbol indexes. If more
- * indexes are needed, the values are read from the beginning again.
+ * indexes are needed, the values are read from the beginning again. You have
+ * the possibility to create a {@code Codons} object from different chromosome
+ * types.
+ * <pre>{@code
+ * // Create 'classic' codons from a bit-chromosome, where
+ * // the genes are split into 8-bit junks and converted
+ * // into unsigned int values.
+ * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
+ *
+ * // Creating a codons object from an integer chromosome.
+ * final var ich = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+ * final var codons = Codons.ofIntegerGenes(ich);
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Codons implements SymbolIndex {
 
@@ -46,21 +60,34 @@ public final class Codons implements SymbolIndex {
 
 	private final AtomicInteger _pos = new AtomicInteger(0);
 
-	private Codons(final IntUnaryOperator values, final int length) {
-		_values = requireNonNull(values);
-		_length = length;
+	/**
+	 * Create a new {@code Codons} object from a given {@code codons} source and
+	 * its {@code length}.
+	 *
+	 * @param codons the codons source
+	 * @param length the length of the codons source
+	 * @throws NullPointerException if the {@code codons} source is {@code null}
+	 * @throws IllegalArgumentException if the given {@code length} is smaller
+	 *         than one
+	 */
+	public Codons(final IntUnaryOperator codons, final int length) {
+		_values = requireNonNull(codons);
+		_length = Requires.positive(length);
 	}
 
 	@Override
-	public int next(final Rule rule, final int bound) {
+	public int next(final Rule<?> rule, final int bound) {
 		final int index = _pos.getAndUpdate(x -> (x + 1)%_length);
 		return _values.applyAsInt(index)%bound;
 	}
 
 	/**
-	 * Creates a new <em>codons</em> object from the given bit-genes. The
-	 * genes is split into 8-bit chunks and converted into an unsigned
+	 * Creates a new, classical <em>codons</em> object from the given bit-genes.
+	 * The genes is split into 8-bit chunks and converted into an unsigned
 	 * {@code int[]} array.
+	 * <pre>{@code
+	 * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
+	 * }</pre>
 	 *
 	 * @param genes the genes used for creating the codons object
 	 * @return a new <em>codons</em> object
@@ -79,7 +106,7 @@ public final class Codons implements SymbolIndex {
 			values[i] = Byte.toUnsignedInt(bytes[i]);
 		}
 
-		return ofIntArray(values);
+		return new Codons(i -> values[i], values.length);
 	}
 
 	static byte[] toByteArray(final BaseSeq<BitGene> genes) {
@@ -106,18 +133,6 @@ public final class Codons implements SymbolIndex {
 	 */
 	public static Codons ofIntegerGenes(final BaseSeq<IntegerGene> genes) {
 		return new Codons(i -> genes.get(i).intValue(), genes.length());
-	}
-
-	/**
-	 * Create a new codons object from the given {@code int[]} array.
-	 *
-	 * @param values int symbol index mapping array of the codons object
-	 * @return a new codons object from the given {@code int[]} array
-	 * @throws IllegalArgumentException if the given {@code values} array is
-	 *         empty
-	 */
-	public static Codons ofIntArray(final int[] values) {
-		return new Codons(i -> values[i], values.length);
 	}
 
 }

@@ -17,32 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
-import io.jenetics.incubator.grammar.Cfg.Symbol;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
+import java.util.stream.IntStream;
 
-import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
- * This interface is used for creating <em>derivation-trees</em> from a
- * context-free grammar ({@link Cfg}).
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
  */
-@FunctionalInterface
-public interface DerivationTreeGenerator {
+public class TrackingCodons implements SymbolIndex {
 
-	/**
-	 * Create a parse-tree from the given context-free grammar. If the
-	 * generation of the derivation tree fails, an empty tree
-	 * ({@link Tree#isEmpty()}}) is returned.
-	 *
-	 * @param cfg the generating grammar
-	 * @return a newly created parse-tree
-	 */
-	TreeNode<Symbol> generate(final Cfg cfg);
+	private final IntStream.Builder _values;
+
+	private final RandomGenerator _random;
+	private final AtomicInteger _pos = new AtomicInteger(0);
+
+	public TrackingCodons(final RandomGenerator random) {
+		_random = random;
+		_values = IntStream.builder();
+	}
+
+	public int[] values() {
+		return _values.build().toArray();
+	}
+
+	@Override
+	public int next(final Rule<?> rule, final int bound) {
+		final int value = _random.nextInt(256);
+		_values.accept(value);
+		return value%bound;
+	}
 
 }

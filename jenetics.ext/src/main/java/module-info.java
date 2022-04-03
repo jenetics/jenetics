@@ -28,6 +28,7 @@ module io.jenetics.ext {
 
 	exports io.jenetics.ext;
 	exports io.jenetics.ext.engine;
+	exports io.jenetics.ext.grammar;
 	exports io.jenetics.ext.moea;
 	exports io.jenetics.ext.rewriting;
 	exports io.jenetics.ext.util;

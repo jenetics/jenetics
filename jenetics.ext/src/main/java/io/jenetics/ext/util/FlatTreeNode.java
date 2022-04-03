@@ -249,8 +249,8 @@ public final class FlatTreeNode<V>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof FlatTreeNode<?> other &&
-			(equals(other) || Tree.equals(other, this));
+			(obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
+			(obj instanceof Tree<?, ?> tree && Tree.equals(tree, this));
 	}
 
 	private boolean equals(final FlatTreeNode<?> tree) {

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
@@ -25,24 +25,26 @@ import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic
 
 import java.util.stream.Collectors;
 
-import io.jenetics.incubator.grammar.Cfg;
-
 import io.jenetics.ext.internal.parser.ParsingException;
 
 /**
- * Helper methods for parsing and formatting <em>context-free</em> grammars in
+ * This class contains methods for parsing and formatting <em>context-free</em>
+ * grammars in
  * <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a>
  * format.
  * <pre>{@code
- * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
- * <op>   ::= + | - | * | /
- * <var>  ::= x | y
- * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ * final Cfg<String> grammar = Bnf.parse("""
+ *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+ *     <op>   ::= + | - | * | /
+ *     <var>  ::= x | y
+ *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ *     """
+ * );
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Bnf {
 	private Bnf() {}
@@ -83,7 +85,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Cfg parse(final String grammar) {
+	public static Cfg<String> parse(final String grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 
@@ -97,13 +99,13 @@ public final class Bnf {
 	 * @return the BNF formatted grammar string
 	 * @throws NullPointerException if the give {@code grammar} is {@code null}
 	 */
-	public static String format(final Cfg grammar) {
+	public static String format(final Cfg<?> grammar) {
 		return grammar.rules().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static String format(final Cfg.Rule rule) {
+	private static String format(final Cfg.Rule<?> rule) {
 		return String.format(
 			"%s ::= %s",
 			format(rule.start()),
@@ -113,17 +115,17 @@ public final class Bnf {
 		);
 	}
 
-	private static String format(final Cfg.Expression expr) {
+	private static String format(final Cfg.Expression<?> expr) {
 		return expr.symbols().stream()
 			.map(Bnf::format)
 			.collect(Collectors.joining(" "));
 	}
 
-	private static String format(final Cfg.Symbol symbol) {
-		if (symbol instanceof Cfg.NonTerminal nt) {
-			return String.format("<%s>", nt.value());
-		} else if (symbol instanceof Cfg.Terminal t) {
-			return "'" + t.value()
+	private static String format(final Cfg.Symbol<?> symbol) {
+		if (symbol instanceof Cfg.NonTerminal<?> nt) {
+			return String.format("<%s>", nt.name());
+		} else if (symbol instanceof Cfg.Terminal<?> t) {
+			return "'" + t.name()
 				.replace("\\", "\\\\")
 				.replace("'", "\\'") + "'";
 		}

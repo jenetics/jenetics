@@ -17,30 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar.bnf;
+package io.jenetics.ext.grammar;
 
 import static java.lang.String.format;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.ASSIGN;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.BAR;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.GT;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.ID;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.LT;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.QUOTED_STRING;
+import static io.jenetics.ext.grammar.BnfTokenizer.BnfTokenType.STRING;
 import static io.jenetics.ext.internal.parser.Token.Type.EOF;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ASSIGN;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.BAR;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.GT;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.ID;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.LT;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.QUOTED_STRING;
-import static io.jenetics.incubator.grammar.bnf.BnfTokenizer.BnfTokenType.STRING;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.Cfg.Expression;
-import io.jenetics.incubator.grammar.Cfg.NonTerminal;
-import io.jenetics.incubator.grammar.Cfg.Rule;
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-
-import io.jenetics.ext.internal.parser.Parser;
+import io.jenetics.ext.grammar.Cfg.Expression;
+import io.jenetics.ext.grammar.Cfg.NonTerminal;
+import io.jenetics.ext.grammar.Cfg.Rule;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.internal.parser.TokenParser;
 
 /**
  * Parser for BNF grammars.
@@ -78,21 +76,21 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * </ul>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- * @version 7.0
+ * @since !__version__!
+ * @version !__version__!
  */
-final class BnfParser extends Parser<String> {
+final class BnfParser extends TokenParser<String> {
 
-	NonTerminal start = null;
-	final List<Rule> rules = new ArrayList<>();
-	final List<Symbol> symbols = new ArrayList<>();
-	final List<Expression> alternatives = new ArrayList<>();
+	NonTerminal<String> start = null;
+	final List<Rule<String>> rules = new ArrayList<>();
+	final List<Symbol<String>> symbols = new ArrayList<>();
+	final List<Expression<String>> alternatives = new ArrayList<>();
 
 	BnfParser(final BnfTokenizer tokenizer) {
 		super(tokenizer, 4);
 	}
 
-	public Cfg parse() {
+	public Cfg<String> parse() {
 		rulelist();
 
 		return Cfg.of(rules);
@@ -109,12 +107,12 @@ final class BnfParser extends Parser<String> {
 		match(ASSIGN);
 		rhs();
 
-		rules.add(new Rule(start, alternatives));
+		rules.add(new Rule<>(start, alternatives));
 		start = null;
 		alternatives.clear();
 	}
 
-	private NonTerminal lhs() {
+	private NonTerminal<String> lhs() {
 		return id();
 	}
 
@@ -125,7 +123,7 @@ final class BnfParser extends Parser<String> {
 	private void alternatives() {
 		alternative();
 		if (!symbols.isEmpty()) {
-			alternatives.add(new Expression(symbols));
+			alternatives.add(new Expression<>(symbols));
 			symbols.clear();
 		}
 
@@ -134,7 +132,7 @@ final class BnfParser extends Parser<String> {
 			alternative();
 
 			if (!symbols.isEmpty()) {
-				alternatives.add(new Expression(symbols));
+				alternatives.add(new Expression<>(symbols));
 				symbols.clear();
 			}
 		}
@@ -171,7 +169,7 @@ final class BnfParser extends Parser<String> {
 		}
 	}
 
-	private Terminal text() {
+	private Terminal<String> text() {
 		if (LA(1) == STRING.code()) {
 			return terminal(match(STRING).value());
 		} else if (LA(1) == QUOTED_STRING.code()) {
@@ -186,26 +184,26 @@ final class BnfParser extends Parser<String> {
 		}
 	}
 
-	private static Terminal terminal(final String value) {
+	private static Terminal<String> terminal(final String value) {
 		if (value.isEmpty()) {
 			throw new ParsingException("Terminal value must not be empty.");
 		}
-		return new Terminal(value);
+		return new Terminal<>(value, value);
 	}
 
-	private NonTerminal id() {
+	private NonTerminal<String> id() {
 		match(LT);
 		final var result = ruleid();
 		match(GT);
 		return result;
 	}
 
-	private NonTerminal ruleid() {
-		final var value = match(ID).value();
-		if (value.isEmpty()) {
+	private NonTerminal<String> ruleid() {
+		final var name = match(ID).value();
+		if (name.isEmpty()) {
 			throw new ParsingException("Rule id must not be empty.");
 		}
-		return new NonTerminal(value);
+		return new NonTerminal<>(name);
 	}
 
 }

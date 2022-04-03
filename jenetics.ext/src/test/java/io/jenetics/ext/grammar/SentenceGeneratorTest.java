@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.grammar;
+package io.jenetics.ext.grammar;
 
 import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,16 +33,15 @@ import java.util.stream.Collectors;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.grammar.Cfg.Symbol;
-import io.jenetics.incubator.grammar.StandardSentenceGenerator.Expansion;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.SentenceGenerator.Expansion;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class StandardSentenceGeneratorTest {
+public class SentenceGeneratorTest {
 
-	static final Cfg CFG = Bnf.parse("""
+	static final Cfg<String> CFG = Bnf.parse("""
 		<expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
 		<fun>  ::= FUN1 | FUN2
 		<arg>  ::= <expr> | <var> | <num>
@@ -53,36 +52,34 @@ public class StandardSentenceGeneratorTest {
 	);
 
 	@Test
-	public void create() {
+	public void generate() {
 		final var random = new Random(-8564585140851778291L);
 
-		var generator = new StandardSentenceGenerator(
+		var generator = new SentenceGenerator<String>(
 			SymbolIndex.of(random),
-			Expansion.LEFT_FIRST,
 			MAX_VALUE
 		);
 
 		var string = generator.generate(CFG).stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 
-		//System.out.println(string);
-
-		////////////////////////////////////////////////////////////////////////
+		assertThat(string)
+			.isEqualTo("FUN1(8,FUN1((5-FUN1(((6/FUN2(y,y))*FUN2(FUN1(y,y),y)),FUN1(3,y))),5))");
 
 		random.setSeed(29022156195143L);
-		generator = new StandardSentenceGenerator(
+		generator = new SentenceGenerator<>(
 			SymbolIndex.of(random),
 			Expansion.LEFT_TO_RIGHT,
 			MAX_VALUE
 		);
 
 		string = generator.generate(CFG).stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 
-		//System.out.println(string);
-		//System.out.println();
+		assertThat(string)
+			.isEqualTo("FUN1(y,FUN1(x,FUN1((3/y),(((FUN1(FUN1(y,9),y)+(4/x))-FUN2(y,x))*y))))");
 	}
 
 	@Test(dataProvider = "sentencesLeftToRight")
@@ -107,7 +104,7 @@ public class StandardSentenceGeneratorTest {
 		Expansion expansion
 	) {
 		final var random = new Random(seed);
-		final var generator = new StandardSentenceGenerator(
+		final var generator = new SentenceGenerator<String>(
 			SymbolIndex.of(random),
 			expansion,
 			MAX_VALUE
@@ -115,7 +112,7 @@ public class StandardSentenceGeneratorTest {
 		final var terminals = generator.generate(CFG);
 
 		final String string = terminals.stream()
-			.map(Symbol::value)
+			.map(Symbol::name)
 			.collect(Collectors.joining());
 		assertThat(string).isEqualTo(sentence);
 	}
@@ -132,7 +129,7 @@ public class StandardSentenceGeneratorTest {
 
 	private static Object[][] read(final String resource) throws IOException {
 		final List<Object[]> values = new ArrayList<>();
-		try (var in = StandardSentenceGeneratorTest.class.getResourceAsStream(resource);
+		try (var in = SentenceGeneratorTest.class.getResourceAsStream(resource);
 			 var reader = new InputStreamReader(in);
 			 var br = new BufferedReader(reader))
 		{

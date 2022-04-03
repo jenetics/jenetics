@@ -20,19 +20,23 @@
 package io.jenetics.ext.internal.parser;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
-import io.jenetics.ext.internal.parser.Token.Type;
+import java.util.function.Predicate;
 
 /**
- * Parser implementation for parsing explicit {@link Token} sequences.
+ * Parser implementation for parsing a given token sequences.
  *
- * @param <V> the token value type
+ * @param <T> the token type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
  * @version 7.1
  */
-public class Parser<V> extends BaseParser<Token<V>> {
+public class Parser<T> {
+
+	private final Tokenizer<T> _tokenizer;
+	private final TokenRing<T> _lookahead;
 
 	/**
 	 * Create a new parser object with the given {@code tokenizer} and lookahead
@@ -41,31 +45,23 @@ public class Parser<V> extends BaseParser<Token<V>> {
 	 * @param tokenizer the token source {@code this} parser uses
 	 * @param k the lookahead count
 	 */
-	public Parser(final Tokenizer<Token<V>> tokenizer, final int k) {
-		super(tokenizer, k);
+	public Parser(final Tokenizer<T> tokenizer, final int k) {
+		_tokenizer = requireNonNull(tokenizer);
+		_lookahead = new TokenRing<>(k);
+		for (int i = 0; i < k; ++i) {
+			consume();
+		}
 	}
 
 	/**
 	 * Return the lookahead token with the given index. The index starts at
-	 * {@code 1}.
+	 * {@code 1}. The returned token might be {@code null}.
 	 *
 	 * @param index lookahead index
 	 * @return the token at the given index
 	 */
-	@Override
-	public Token<V> LT(final int index) {
-		final var token = super.LT(index);
-		return token != null ? token : Token.eof();
-	}
-
-	/**
-	 * Return the token type code for the given lookahead index.
-	 *
-	 * @param index lookahead index
-	 * @return the token type code for the given lookahead index
-	 */
-	public int LA(final int index) {
-		return LT(index).type().code();
+	public T LT(final int index) {
+		return _lookahead.LT(index);
 	}
 
 	/**
@@ -73,24 +69,28 @@ public class Parser<V> extends BaseParser<Token<V>> {
 	 * {@code type}. If the current token is not from the given type, a
 	 * {@link ParsingException} is thrown.
 	 *
-	 * @param type the token type to match
+	 * @param token the token type to match
 	 * @return the matched token
-	 * @throws NullPointerException if the given token {@code type} is
-	 *        {@code null}
 	 * @throws ParsingException if the current token doesn't match the desired
-	 *        token {@code type}
+	 *         {@code token}
 	 */
-	public Token<V> match(final Type type) {
-		if (LA(1) == type.code()) {
-			final var token = LT(1);
+	public T match(final Predicate<? super T> token) {
+		final var next = LT(1);
+		if (token.test(next)) {
 			consume();
-			return token;
+			return next;
 		} else {
 			throw new ParsingException(format(
-				"Expecting %s but found %s.",
-				type, LT(1)
+				"Found unexpected token: %s.", LT(1)
 			));
 		}
+	}
+
+	/**
+	 * Consumes the next token.
+	 */
+	public void consume() {
+		_lookahead.add(_tokenizer.next());
 	}
 
 }

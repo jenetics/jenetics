@@ -99,18 +99,4 @@ public record Token<V>(Type type, V value) {
 		}
 	}
 
-	/**
-	 * The common <em>end of file</em> token.
-	 */
-	public static final Token<?> EOF = new Token<>(Type.EOF, null);
-
-	@SuppressWarnings("unchecked")
-	public static <V> Token<V> eof() {
-		return (Token<V>)EOF;
-	}
-
-	public boolean isEof() {
-		return this == EOF;
-	}
-
 }

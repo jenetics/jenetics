@@ -38,7 +38,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Copyable;
-import io.jenetics.util.ISeq;
 
 /**
  * A general purpose node in a tree data-structure. The {@code TreeNode} is a
