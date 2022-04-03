@@ -31996,6 +31996,310 @@ Factory
  and so on.
 \end_layout
 
+\begin_layout Subsection
+Grammatical evolution
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Grammatical-evolution"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammatical evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Grammatical evolution (GE), introduced by Michael O’Neill and Conor Ryan
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ryan1998grammatical,ONeil2003"
+literal "false"
+
+\end_inset
+
+, is an approach to genetic programming
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ (GP) that allows the generation of computer programs in an arbitrary language.
+ The difference to classical GP is that the evolutionary process is not
+ performed on the actual programs, but rather on an integer-, or binary
+ chromosome.
+ A mapping process is used to generate programs, in arbitrary languages,
+ from a given context-free grammar (CFG).
+ The grammar is usually given in Backus-Naur form (BNF).
+ The result is the construction of a syntactically correct program from
+ a binary string which can then be evaluated by a fitness function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/GrammaticalEvolution.svg
+	lyxscale 80
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Grammatical-evolution"
+
+\end_inset
+
+Grammatical evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Grammatical-evolution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the principal process of grammatical evolution.
+ An IntegerChromosome or BitChromosome determines the selection of the rules
+ which form the final program.
+\end_layout
+
+\begin_layout Subsubsection
+Context-free grammar
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Context-free-grammar"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Context-free grammar
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CFG
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Context-free grammars (CFG) can be used to describe the syntax of programming
+ languages.
+ A context-free grammar, 
+\begin_inset Formula $G$
+\end_inset
+
+, is defined as a set of rules that describe how to generate 
+\emph on
+sentences
+\emph default
+.
+ All sentences which can be generated from 
+\begin_inset Formula $G$
+\end_inset
+
+ is called the language defined by 
+\begin_inset Formula $G$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(CFG):
+\series default
+ A context-free grammar, 
+\begin_inset Formula $G$
+\end_inset
+
+, is defined by the tuple 
+\begin_inset Formula $G=\left(NT,T,R,S\right)$
+\end_inset
+
+, where
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $NT$
+\end_inset
+
+ is a finite set of 
+\emph on
+non-terminal
+\emph default
+ symbols or 
+\emph on
+variables
+\emph default
+.
+ Each symbol represents a different type of phrase in the sentence.
+ Variables are also called syntactic categories and form a sub-language
+ of the language defined by 
+\begin_inset Formula $G$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $T$
+\end_inset
+
+ is a finite set of 
+\emph on
+terminal
+\emph default
+ symbols, not element of 
+\begin_inset Formula $NT$
+\end_inset
+
+.
+ Terminals make up the actual content of the sentences defined by 
+\begin_inset Formula $G$
+\end_inset
+
+.
+ The set of terminals is the alphabet of the language.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $R$
+\end_inset
+
+ is a finite relation in 
+\begin_inset Formula $NT\times\left(NT\cup T\right)^{*}$
+\end_inset
+
+.
+ Members of 
+\begin_inset Formula $R$
+\end_inset
+
+ are the rewrite rules of the grammar.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $S\in NT$
+\end_inset
+
+ is the start symbol and represents the whole sentence.
+\end_layout
+
+\begin_layout Subsubsection
+Backus-Naur form
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Backus-Naur-form"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Backus-Naur form
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+BNF
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Backus-Naur form (BNF) is a traditional form to represent a context-free
+ grammar.
+\end_layout
+
+\begin_layout Standard
+In computer science, Backus–Naur form or Backus normal form (BNF) is a metasynta
+x notation for context-free grammars, often used to describe the syntax
+ of languages used in computing, such as computer programming languages,
+ document formats, instruction sets and communication protocols.
+ They are applied wherever exact descriptions of languages are needed: for
+ instance, in official language specifications, in manuals, and in textbooks
+ on programming language theory.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Sentence generation
+\end_layout
+
+\begin_layout Subsubsection
+Implementing classes
+\end_layout
+
 \begin_layout Section
 io.jenetics.prog
 \begin_inset CommandInset label
