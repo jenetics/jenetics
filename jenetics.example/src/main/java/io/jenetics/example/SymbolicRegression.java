@@ -19,6 +19,8 @@
  */
 package io.jenetics.example;
 
+import java.util.List;
+
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -56,20 +58,10 @@ public class SymbolicRegression {
 	private SymbolicRegression() {
 	}
 
-	// Definition of the allowed operations.
-	private static final ISeq<Op<Double>> OPS =
-		ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
-
-	// Definition of the terminals.
-	private static final ISeq<Op<Double>> TMS = ISeq.of(
-		Var.of("x", 0),
-		EphemeralConst.of(() -> (double)RandomRegistry.random().nextInt(10))
-	);
-
-	private static final Regression<Double> REGRESSION = Regression.of(
-		Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30),
-		Error.of(LossFunction::mse),
-		// Lookup table for 4*x^3 - 3*x^2 + x
+	/**
+	 * Lookup table for {@code 4*x^3 - 3*x^2 + x}
+	 */
+	public static final List<Sample<Double>> SAMPLES = List.of(
 		Sample.ofDouble(-1.0, -8.0000),
 		Sample.ofDouble(-0.9, -6.2460),
 		Sample.ofDouble(-0.8, -4.7680),
@@ -91,6 +83,22 @@ public class SymbolicRegression {
 		Sample.ofDouble(0.8, 0.9280),
 		Sample.ofDouble(0.9, 1.3860),
 		Sample.ofDouble(1.0, 2.0000)
+	);
+
+	// Definition of the allowed operations.
+	private static final ISeq<Op<Double>> OPS =
+		ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
+
+	// Definition of the terminals.
+	private static final ISeq<Op<Double>> TMS = ISeq.of(
+		Var.of("x", 0),
+		EphemeralConst.of(() -> (double)RandomRegistry.random().nextInt(10))
+	);
+
+	private static final Regression<Double> REGRESSION = Regression.of(
+		Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30),
+		Error.of(LossFunction::mse),
+		SAMPLES
 	);
 
 	public static void main(final String[] args) {

@@ -19,16 +19,23 @@
  */
 package io.jenetics.example;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.example.SymbolicRegression.SAMPLES;
 import static io.jenetics.prog.op.MathExpr.parseTree;
+
+import java.util.List;
+import java.util.function.Function;
 
 import io.jenetics.IntegerGene;
 import io.jenetics.Phenotype;
+import io.jenetics.SinglePointCrossover;
 import io.jenetics.SwapMutator;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Limits;
+import io.jenetics.engine.Problem;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Bnf;
@@ -57,9 +64,9 @@ import io.jenetics.prog.regression.Sampling.Result;
  * @version !__version__!
  * @since !__version__!
  */
-public class GrammarBasedRegression {
-	private GrammarBasedRegression() {
-	}
+public class GrammarBasedRegression
+	implements Problem<Tree<Op<Double>, ?>, IntegerGene, Double>
+{
 
 	private static final Cfg<String> GRAMMAR = Bnf.parse("""
 		<expr> ::= x | <num> | <expr> <op> <expr>
@@ -71,48 +78,51 @@ public class GrammarBasedRegression {
 	private static final Codec<Tree<Op<Double>, ?>, IntegerGene> CODEC = Mappers
 		.multiIntegerChromosomeMapper(
 			GRAMMAR,
+			// The length of the chromosome is 25 times the length of the
+			// alternatives of a given rule. Every rule gets its own chromosome.
+			// It would also be possible to define variable chromosome length
+			// with the returned integer range.
 			rule -> IntRange.of(rule.alternatives().size()*25),
+			// The used generator defines the generated data type, which is
+			// `List<Terminal<String>>`.
 			index -> new SentenceGenerator<>(index, 50)
 		)
-		.map(s -> s.stream().map(Terminal::name).collect(joining()))
+		// Map the type of the codec from `List<Terminal<String>>` to `String`
+		.map(s -> s.stream().map(Terminal::value).collect(joining()))
+		// Map the type of the codec from `String` to `Tree<Op<Double>, ?>`
 		.map(e -> e.isEmpty() ? TreeNode.of(Const.of(0.0)) : parseTree(e));
 
 	private static final Error<Double> ERROR = Error.of(LossFunction::mse);
 
-	// Lookup table for 4*x^3 - 3*x^2 + x
-	private static final Sampling<Double> SAMPLES = Sampling.of(
-		Sample.ofDouble(-1.0, -8.0000),
-		Sample.ofDouble(-0.9, -6.2460),
-		Sample.ofDouble(-0.8, -4.7680),
-		Sample.ofDouble(-0.7, -3.5420),
-		Sample.ofDouble(-0.6, -2.5440),
-		Sample.ofDouble(-0.5, -1.7500),
-		Sample.ofDouble(-0.4, -1.1360),
-		Sample.ofDouble(-0.3, -0.6780),
-		Sample.ofDouble(-0.2, -0.3520),
-		Sample.ofDouble(-0.1, -0.1340),
-		Sample.ofDouble(0.0, 0.0000),
-		Sample.ofDouble(0.1, 0.0740),
-		Sample.ofDouble(0.2, 0.1120),
-		Sample.ofDouble(0.3, 0.1380),
-		Sample.ofDouble(0.4, 0.1760),
-		Sample.ofDouble(0.5, 0.2500),
-		Sample.ofDouble(0.6, 0.3840),
-		Sample.ofDouble(0.7, 0.6020),
-		Sample.ofDouble(0.8, 0.9280),
-		Sample.ofDouble(0.9, 1.3860),
-		Sample.ofDouble(1.0, 2.0000)
-	);
+	private final Sampling<Double> _sampling;
 
-	private static double error(final Tree<Op<Double>, ?> program) {
-		final Result<Double> result = SAMPLES.eval(program);
-		return ERROR.apply(program, result.calculated(), result.expected());
+	public GrammarBasedRegression(final Sampling<Double> sampling) {
+		_sampling = requireNonNull(sampling);
+	}
+
+	public GrammarBasedRegression(final List<Sample<Double>> samples) {
+		this(Sampling.of(samples));
+	}
+
+	@Override
+	public Codec<Tree<Op<Double>, ?>, IntegerGene> codec() {
+		return CODEC;
+	}
+
+	@Override
+	public Function<Tree<Op<Double>, ?>, Double> fitness() {
+		return program -> {
+			final Result<Double> result = _sampling.eval(program);
+			return ERROR.apply(program, result.calculated(), result.expected());
+		};
 	}
 
 	public static void main(final String[] args) {
-		final Engine<IntegerGene, Double> engine = Engine
-			.builder(GrammarBasedRegression::error, CODEC)
-			.alterers(new SwapMutator<>())
+		// 4*x^3 - 3*x^2 + x
+		final var regression = new GrammarBasedRegression(SAMPLES);
+
+		final Engine<IntegerGene, Double> engine = Engine.builder(regression)
+			.alterers(new SwapMutator<>(), new SinglePointCrossover<>())
 			.minimizing()
 			.build();
 
@@ -125,7 +135,7 @@ public class GrammarBasedRegression {
 
 		System.out.println("Generations: " + result.totalGenerations());
 		System.out.println("Function:    " + new MathExpr(program).simplify());
-		System.out.println("Error:       " + error(program));
+		System.out.println("Error:       " + regression.fitness().apply(program));
 	}
 
 }
