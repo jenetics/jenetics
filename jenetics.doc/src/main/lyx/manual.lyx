@@ -32018,6 +32018,112 @@ Grammatical evolution
 \end_layout
 
 \begin_layout Standard
+One of the difficulties, when defining a codec
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for a given problem, is the creation of invalid solution candidates or
+ individuals.
+ Using constraints is one way of handling this problem, which is described
+ in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Another possibility is to assign bad fitness values to invalid individuals.
+ This might work to some degree, but at the cost of additional CPU and evolution
+ time.
+ In the best case, your codec is creating no invalid solutions at all.
+ Grammatical evolution (GE) can help you to achieve this.
+\end_layout
+
+\begin_layout Standard
+GE was introduced by Michael O’Neill and Conor Ryan 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ryan1998grammatical,ONeil2003"
+literal "false"
+
+\end_inset
+
+ for solving to genetic programming
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ (GP) problems.
+\end_layout
+
+\begin_layout Standard
+———
+\end_layout
+
+\begin_layout Standard
+The best way would be, of course, if you can avoid the creation of invalid
+ individuals.
+ if your created individuals are all part of the problem domain.
+\end_layout
+
+\begin_layout Standard
+Usually, invalid solutions are assigned bad fitness values.
+ The drawback of this solution is that you have to create the solution and
+ evaluate it.
+ This uses resources and makes the evolution process slower.
+ In the ideal case, only valid solutions are created.
+ This can only be guaranteed for simple cases and when your problem domain
+ is continuous with with no island of invalid solutions.
+ For complex problem domain, this is not the case.
+ One possible solution to this problem is grammatical evolution (GE).
+ When your problem domain can be expressed with a grammar, this grammar
+ can be used for only creating valid solutions.
+ If your problem domain is a language, which can be represented via a grammar.
+ Although GE was introduced as an approach for genetic programming, it is
+ not restricted to GP or programs.
+\end_layout
+
+\begin_layout Standard
+GE can be used in cases, where your problem domain forms a language which
+ can be expressed by a context-free grammar.
+\end_layout
+
+\begin_layout Standard
 Grammatical evolution (GE), introduced by Michael O’Neill and Conor Ryan
  
 \begin_inset CommandInset citation
@@ -32140,6 +32246,24 @@ CFG
 \end_layout
 
 \begin_layout Standard
+A context-free grammar basically consists of a finite set of grammar rules.
+ In order to define grammar rules, we assume that we have two kinds of symbols:
+ the terminals, which are the symbols of the alphabet underlying the languages
+ under consideration, and the nonterminals, which behave like variables
+ ranging over strings of terminals.
+ A rule is of the form A -> alpha, where A is a single nonterminal, and
+ the right-hand side alpha is a string of terminal and/or nonterminal symbols.
+ As usual, first we need to define what the object is (a context-free grammar),
+ and then we need to explain how it is used.
+ Unlike automata, grammars are used to generate strings, rather than recognize
+ strings.
+\end_layout
+
+\begin_layout Standard
+—-
+\end_layout
+
+\begin_layout Standard
 Context-free grammars (CFG) can be used to describe the syntax of programming
  languages.
  A context-free grammar, 
@@ -32173,21 +32297,21 @@ sentences
 \end_inset
 
 , is defined by the tuple 
-\begin_inset Formula $G=\left(NT,T,R,S\right)$
+\begin_inset Formula $G=\left(N,T,R,S\right)$
 \end_inset
 
 , where
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $NT$
+\begin_inset Formula $N$
 \end_inset
 
  is a finite set of 
 \emph on
 non-terminal
 \emph default
- symbols or 
+ symbols called the 
 \emph on
 variables
 \emph default
@@ -32210,7 +32334,7 @@ variables
 terminal
 \emph default
  symbols, not element of 
-\begin_inset Formula $NT$
+\begin_inset Formula $N$
 \end_inset
 
 .
@@ -32227,7 +32351,7 @@ terminal
 \end_inset
 
  is a finite relation in 
-\begin_inset Formula $NT\times\left(NT\cup T\right)^{*}$
+\begin_inset Formula $N\times\left(N\cup T\right)^{*}$
 \end_inset
 
 .
@@ -32239,7 +32363,7 @@ terminal
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $S\in NT$
+\begin_inset Formula $S\in N$
 \end_inset
 
  is the start symbol and represents the whole sentence.
@@ -32294,6 +32418,96 @@ x notation for context-free grammars, often used to describe the syntax
 
 \begin_layout Subsubsection
 Sentence generation
+\end_layout
+
+\begin_layout Standard
+Deriving a sentence from a grammar.
+\end_layout
+
+\begin_layout Standard
+Leftmost and rightmost derivations
+\end_layout
+
+\begin_layout Standard
+The definition/procedure given above for deriving a string from a grammar
+ gives us a lot of flexibility in choosing which variable to expand and
+ which production to apply.
+ Sometimes we will want to discuss a more restricted form:
+\end_layout
+
+\begin_layout Paragraph
+Leftmost derivation
+\end_layout
+
+\begin_layout Enumerate
+Begin with a string consisting only of the start symbol.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Pick the leftmost variable occurrence in the current string.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Pick any production that has that variable on the left of the 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Replace the chosen occurrence of that variable by the right-hand side of
+ the chosen production.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Repeat steps 2-4 until the string contains only terminals.
+\end_layout
+
+\begin_layout Paragraph*
+Rightmost derivation
+\end_layout
+
+\begin_layout Enumerate
+Begin with a string consisting only of the start symbol.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Pick the rightmost variable occurrence in the current string.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Pick any production that has that variable on the left of the 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Replace the chosen occurrence of that variable by the right-hand side of
+ the chosen production.
+\end_layout
+
+\begin_layout Enumerate
+Repeat steps 2-4 until the string contains only terminals.
+\end_layout
+
+\begin_layout Subsubsection
+Derivation trees
+\end_layout
+
+\begin_layout Standard
+Parse trees are a way of recording derivations that focus less upon the
+ order in which derivation steps were applied and more on which productions
+ were employed.
 \end_layout
 
 \begin_layout Subsubsection
@@ -32402,7 +32616,7 @@ Gene
  Program\SpecialChar softhyphen
 Chromosome
 \family default
- pair, which serves as the main data-structure for genetic programs.
+ pair, which serves as the main data structure for genetic programs.
  A
 \family typewriter
  Program\SpecialChar softhyphen
