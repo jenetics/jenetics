@@ -32201,44 +32201,26 @@ CFG
 
 \begin_layout Standard
 A context-free grammar basically consists of a finite set of grammar rules.
- In order to define grammar rules, we assume that we have two kinds of symbols:
- the terminals, which are the symbols of the alphabet underlying the languages
- under consideration, and the non-terminals, which behave like variables
- ranging over strings of terminals.
- A rule is of the form A -> alpha, where A is a single non-terminal, and
- the right-hand side alpha is a string of terminal and/or non-terminal symbols.
- As usual, first we need to define what the object is (a context-free grammar),
- and then we need to explain how it is used.
- Unlike automata, grammars are used to generate strings, rather than recognize
- strings.
-\end_layout
-
-\begin_layout Standard
-—-
-\end_layout
-
-\begin_layout Standard
-Context-free grammars (CFG) can be used to describe the syntax of programming
- languages.
- A context-free grammar, 
-\begin_inset Formula $G$
-\end_inset
-
-, is defined as a set of rules that describe how to generate 
+ The grammar rules consists of two kind of symbols: 1) the terminals, which
+ are the symbols of the alphabet underlying the languages, and 2) the 
 \emph on
-sentences
+non
 \emph default
-.
- All sentences which can be generated from 
-\begin_inset Formula $G$
+-terminals, which behave like variables ranging over strings of terminals.
+ A rule is of the form 
+\begin_inset Formula $A\rightarrow\alpha$
 \end_inset
 
- is called the language defined by 
-\begin_inset Formula $G$
+, where 
+\begin_inset Formula $A$
 \end_inset
 
-.
- 
+ is a non-terminal, and 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is a terminal or non-terminal symbol.
+ CFGs are used to generate strings (sentences), rather than recognize strings.
 \end_layout
 
 \begin_layout Definition*
@@ -32251,14 +32233,14 @@ sentences
 \end_inset
 
 , is defined by the tuple 
-\begin_inset Formula $G=\left(N,T,R,S\right)$
+\begin_inset Formula $G=\left(\mathcal{N},\mathcal{T},\mathcal{R},\mathcal{S}\right)$
 \end_inset
 
 , where
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $N$
+\begin_inset Formula $\mathcal{N}$
 \end_inset
 
  is a finite set of 
@@ -32270,17 +32252,12 @@ non-terminal
 variables
 \emph default
 .
- Each symbol represents a different type of phrase in the sentence.
- Variables are also called syntactic categories and form a sub-language
- of the language defined by 
-\begin_inset Formula $G$
-\end_inset
-
-.
+ Every symbol represents a different type of phrase in the sentence.
+ 
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $T$
+\begin_inset Formula $\mathcal{T}$
 \end_inset
 
  is a finite set of 
@@ -32288,7 +32265,7 @@ variables
 terminal
 \emph default
  symbols, not element of 
-\begin_inset Formula $N$
+\begin_inset Formula $\mathcal{N}$
 \end_inset
 
 .
@@ -32297,27 +32274,27 @@ terminal
 \end_inset
 
 .
- The set of terminals is the alphabet of the language.
+ The terminals is the alphabet of the language.
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $R$
+\begin_inset Formula $\mathcal{R}$
 \end_inset
 
  is a finite relation in 
-\begin_inset Formula $N\times\left(N\cup T\right)^{*}$
+\begin_inset Formula $\mathcal{N}\times\left(\mathcal{N}\cup\mathcal{T}\right)^{*}$
 \end_inset
 
 .
  Members of 
-\begin_inset Formula $R$
+\begin_inset Formula $\mathcal{R}$
 \end_inset
 
  are the rewrite rules of the grammar.
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset Formula $S\in N$
+\begin_inset Formula $\mathcal{S}\in\mathcal{N}$
 \end_inset
 
  is the start symbol and represents the whole sentence.
@@ -32355,19 +32332,133 @@ BNF
 \end_layout
 
 \begin_layout Standard
-The Backus-Naur form (BNF) is a traditional form to represent a context-free
- grammar.
+The Backus-Naur form (BNF) is a traditional form to represent a CFG.
+ It is often used to describe the syntax of programming languages.
+ They are applied wherever exact descriptions of languages are needed.
+ BNF uses a range of symbols and expressions to create production rules.
+ The names of the production rules are put within angle brackets, 
+\family typewriter
+<...>
+\family default
+, and the alternatives are separated by vertical bars, 
+\family typewriter
+|
+\family default
+.
+ A simple BNF production rule might look like this:
+\end_layout
+
+\begin_layout LyX-Code
+<num> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 \end_layout
 
 \begin_layout Standard
-In computer science, Backus–Naur form or Backus normal form (BNF) is a metasynta
-x notation for context-free grammars, often used to describe the syntax
- of languages used in computing, such as computer programming languages,
- document formats, instruction sets and communication protocols.
- They are applied wherever exact descriptions of languages are needed: for
- instance, in official language specifications, in manuals, and in textbooks
- on programming language theory.
- 
+In this example, 
+\family typewriter
+num
+\family default
+ is the name of the production rule and the values 
+\family typewriter
+0..9
+\family default
+ represent the terminal symbols, associated with the rule.
+ If a non-terminal symbol appears on the right hand side, it means that
+ there will be another production rule (or set of rules) to define its replaceme
+nt.
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout Standard
+This shows that 
+\family typewriter
+exp
+\family default
+ is either a 
+\family typewriter
+num
+\family default
+ or 
+\family typewriter
+var
+\family default
+ or two 
+\family typewriter
+expr
+\family default
+, concatenated by an 
+\family typewriter
+op
+\family default
+.
+ All components are non-terminal, therefore further production rules are
+ required.
+\end_layout
+
+\begin_layout LyX-Code
+<op>  ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+<var> ::= x | y
+\end_layout
+
+\begin_layout Standard
+This two rules defines four 
+\family typewriter
+op
+\family default
+ symbols, 
+\begin_inset Formula $\left\{ \mathsf{\mathtt{x,-,*,/}}\right\} $
+\end_inset
+
+, and two 
+\family typewriter
+var
+\family default
+ terminals, 
+\begin_inset Formula $\left\{ \mathtt{x,y}\right\} $
+\end_inset
+
+.
+ Production rules for the syntax of a language might come as a large set
+ of BNF statements that specify how every aspect of the language is defined.
+ Every non-terminal symbol on the right hand side of a production rule,
+ must have a rule that has the symbol on the left side.
+ This continues until everything can be specified in relation to terminal
+ symbols.
+ Here is the whole grammar, which will define a language for simple arithmetic
+ expressions:
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr> 
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y 
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+The symbol of the first rule, 
+\family typewriter
+expr
+\family default
+, will automatically serve as start symbol of the grammar, 
+\begin_inset Formula $G$
+\end_inset
+
+, defined by the given BNF.
 \end_layout
 
 \begin_layout Subsubsection
