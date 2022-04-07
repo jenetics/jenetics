@@ -32057,10 +32057,7 @@ noprefix "false"
  time.
  In the best case, your codec is creating no invalid solutions at all.
  Grammatical evolution (GE) can help you to achieve this.
-\end_layout
-
-\begin_layout Standard
-GE was introduced by Michael O’Neill and Conor Ryan 
+ GE was introduced by Michael O’Neill and Conor Ryan 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ryan1998grammatical,ONeil2003"
@@ -32089,79 +32086,14 @@ noprefix "false"
 \end_inset
 
  (GP) problems.
-\end_layout
-
-\begin_layout Standard
-———
-\end_layout
-
-\begin_layout Standard
-The best way would be, of course, if you can avoid the creation of invalid
- individuals.
- if your created individuals are all part of the problem domain.
-\end_layout
-
-\begin_layout Standard
-Usually, invalid solutions are assigned bad fitness values.
- The drawback of this solution is that you have to create the solution and
- evaluate it.
- This uses resources and makes the evolution process slower.
- In the ideal case, only valid solutions are created.
- This can only be guaranteed for simple cases and when your problem domain
- is continuous with with no island of invalid solutions.
- For complex problem domain, this is not the case.
- One possible solution to this problem is grammatical evolution (GE).
- When your problem domain can be expressed with a grammar, this grammar
- can be used for only creating valid solutions.
- If your problem domain is a language, which can be represented via a grammar.
- Although GE was introduced as an approach for genetic programming, it is
- not restricted to GP or programs.
-\end_layout
-
-\begin_layout Standard
-GE can be used in cases, where your problem domain forms a language which
- can be expressed by a context-free grammar.
-\end_layout
-
-\begin_layout Standard
-Grammatical evolution (GE), introduced by Michael O’Neill and Conor Ryan
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "ryan1998grammatical,ONeil2003"
-literal "false"
-
-\end_inset
-
-, is an approach to genetic programming
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:Genetic-programming"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
- (GP) that allows the generation of computer programs in an arbitrary language.
- The difference to classical GP is that the evolutionary process is not
- performed on the actual programs, but rather on an integer-, or binary
- chromosome.
- A mapping process is used to generate programs, in arbitrary languages,
- from a given context-free grammar (CFG).
- The grammar is usually given in Backus-Naur form (BNF).
- The result is the construction of a syntactically correct program from
- a binary string which can then be evaluated by a fitness function.
+ Although the initial realm for GE was creating/evolving programs in arbitrary
+ languages, it is not restricted to this area.
+ GE can be used for every problems, where the problem domain can be expressed
+ as 
+\emph on
+sentences
+\emph default
+ of a context-free grammar (CFG).
 \end_layout
 
 \begin_layout Standard
@@ -32199,7 +32131,12 @@ Grammatical evolution
 
 \end_inset
 
-Diagram 
+GE requires an additional 
+\emph on
+mapping
+\emph default
+ step for creating a sentence (program) from a given CFG.
+ Diagram 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Grammatical-evolution"
@@ -32209,9 +32146,26 @@ noprefix "false"
 
 \end_inset
 
- shows the principal process of grammatical evolution.
- An IntegerChromosome or BitChromosome determines the selection of the rules
- which form the final program.
+ shows the principal decoding process of GE.
+ A 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ or 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ determines the rules which are used for creating the program.
+ The grammar is usually given in Backus-Naur form (BNF).
+ The result is the construction of a syntactically correct program from
+ a binary string which can then be evaluated by a fitness function.
+ In the following sections, the building blocks of GE are described in a
+ greater detail.
 \end_layout
 
 \begin_layout Subsubsection
@@ -32249,10 +32203,10 @@ CFG
 A context-free grammar basically consists of a finite set of grammar rules.
  In order to define grammar rules, we assume that we have two kinds of symbols:
  the terminals, which are the symbols of the alphabet underlying the languages
- under consideration, and the nonterminals, which behave like variables
+ under consideration, and the non-terminals, which behave like variables
  ranging over strings of terminals.
- A rule is of the form A -> alpha, where A is a single nonterminal, and
- the right-hand side alpha is a string of terminal and/or nonterminal symbols.
+ A rule is of the form A -> alpha, where A is a single non-terminal, and
+ the right-hand side alpha is a string of terminal and/or non-terminal symbols.
  As usual, first we need to define what the object is (a context-free grammar),
  and then we need to explain how it is used.
  Unlike automata, grammars are used to generate strings, rather than recognize
