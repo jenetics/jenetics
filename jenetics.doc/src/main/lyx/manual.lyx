@@ -32522,87 +32522,451 @@ Sentence generation
 \end_layout
 
 \begin_layout Standard
-This section describes how to derive a sentence from a given CFG.
+After we have defined the CFG, we want to create a valid, random sentences.
+ To do so, we will introduce a numbering schema for the alternative expressions
+ for every rule.
+ Such a schema for our simple arithmetic grammar is shown below:
+\end_layout
+
+\begin_layout LyX-Code
+            
+\emph on
+[0]     [1]           [2]
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3]
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1]
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3] [4] [5] [6] [7] [8]
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 \end_layout
 
 \begin_layout Standard
-Deriving a sentence from a grammar.
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Enumerate
+\begin_inset Formula $L\leftarrow\left[\mathcal{S}\right]$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Initialize the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, with the start symbol, 
+\begin_inset Formula $\mathcal{S}$
+\end_inset
+
+.
 \end_layout
 
-\begin_layout Standard
-Leftmost and rightmost derivations
+\begin_layout Enumerate
+\begin_inset Formula $n\leftarrow L\left[\min\left\{ i\right\} \right]\in\mathcal{N}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Pick the leftmost non-terminal symbol, 
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]$
+\end_inset
+
+, from the current sentence list, 
+\begin_inset Formula $L$
+\end_inset
+
+.
 \end_layout
 
-\begin_layout Standard
-The definition/procedure given above for deriving a string from a grammar
- gives us a lot of flexibility in choosing which variable to expand and
- which production to apply.
- Sometimes we will want to discuss a more restricted form:
+\begin_layout Enumerate
+\begin_inset Formula $E\leftarrow R\left(n\right)\left[\textrm{rand}\right]$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Get the rule, 
+\begin_inset Formula $R\left(n\right)$
+\end_inset
+
+, for the chosen non-terminal, 
+\begin_inset Formula $n$
+\end_inset
+
+, and select a random rule alternative, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+ 
+\begin_inset Formula $E$
+\end_inset
+
+ will contain one of more terminal and/or non-terminal symbols.
+ 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Enumerate
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]\leftarrow E$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Replace the chosen variable, 
+\begin_inset Formula $n$
+\end_inset
+
+, with the selected symbols, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Repeat steps 
+\begin_inset Formula $2..4$
+\end_inset
+
+ until the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, contains only terminals.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Leftmost-derivation"
+
+\end_inset
+
 Leftmost derivation
 \end_layout
 
-\begin_layout Enumerate
-Begin with a string consisting only of the start symbol.
- 
-\end_layout
-
-\begin_layout Enumerate
-Pick the leftmost variable occurrence in the current string.
- 
-\end_layout
-
-\begin_layout Enumerate
-Pick any production that has that variable on the left of the 
-\begin_inset Formula $\rightarrow$
 \end_inset
 
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following example shows snapshots of the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, for a possible sentence creation run, according to the described leftmost
+ derivation algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [<expr>]
+\family default
+.
+ Initialize the sentence list with the start symbol.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [<expr>, <op>, <expr>]
+\family default
+.
+ Select the first non-terminal symbol in the list, 
+\family typewriter
+<expr>
+\family default
+, and replace it with an randomly chosen rule alternative.
+ Alternative 
+\family typewriter
+[2]
+\family default
+, 
+\family typewriter
+<expr> <op> <expr>
+\family default
+, is chosen and replaces the variable 
+\family typewriter
+<expr>
+\family default
 .
  
 \end_layout
 
 \begin_layout Enumerate
-Replace the chosen occurrence of that variable by the right-hand side of
- the chosen production.
- 
+
+\family typewriter
+L = [<num>, <op>, <expr>]
+\family default
+.
+ Replacing the first 
+\family typewriter
+<expr>
+\family default
+ with alternative 
+\family typewriter
+[0]
+\family default
+, 
+\family typewriter
+<num>
+\family default
+.
 \end_layout
 
 \begin_layout Enumerate
-Repeat steps 2-4 until the string contains only terminals.
+
+\family typewriter
+L = [5, <op>, <expr>]
+\family default
+.
+ Replacing 
+\family typewriter
+<num>
+\family default
+ with 5.
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, <expr>]
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, <var>]
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, x]
+\end_layout
+
+\begin_layout Standard
+After the 7th iteration the symbol list contains only terminal symbols and
+ the generation process stops.
+ If we convert the symbol list into a string, we get an algebraic expression,
+ 
+\begin_inset Formula $5-x$
+\end_inset
+
+, which is an element of the CFL, defined by our simple CFG.
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Enumerate
+\begin_inset Formula $L\leftarrow\left[\mathcal{S}\right]$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Initialize the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, with the start symbol, 
+\begin_inset Formula $\mathcal{S}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $n\leftarrow L\left[\max\left\{ i\right\} \right]\in\mathcal{N}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Pick the rightmost non-terminal symbol, 
+\begin_inset Formula $L\left[\max\left\{ i\right\} \right]$
+\end_inset
+
+, from the current sentence list, 
+\begin_inset Formula $L$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $E\leftarrow R\left(n\right)\left[\textrm{rand}\right]$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Get the rule, 
+\begin_inset Formula $R\left(n\right)$
+\end_inset
+
+, for the chosen non-terminal, 
+\begin_inset Formula $n$
+\end_inset
+
+, and select a random rule alternative, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+ 
+\begin_inset Formula $E$
+\end_inset
+
+ will contain one of more terminal and/or non-terminal symbols.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]\leftarrow E$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Replace the chosen variable, 
+\begin_inset Formula $n$
+\end_inset
+
+, with the selected symbols, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Repeat steps 
+\begin_inset Formula $2..4$
+\end_inset
+
+ until the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, contains only terminals.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Rightmost-derivation"
+
+\end_inset
+
 Rightmost derivation
 \end_layout
 
-\begin_layout Enumerate
-Begin with a string consisting only of the start symbol.
- 
-\end_layout
-
-\begin_layout Enumerate
-Pick the rightmost variable occurrence in the current string.
- 
-\end_layout
-
-\begin_layout Enumerate
-Pick any production that has that variable on the left of the 
-\begin_inset Formula $\rightarrow$
 \end_inset
 
-.
- 
+
 \end_layout
 
-\begin_layout Enumerate
-Replace the chosen occurrence of that variable by the right-hand side of
- the chosen production.
-\end_layout
+\end_inset
 
-\begin_layout Enumerate
-Repeat steps 2-4 until the string contains only terminals.
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the rightmost derivation method, which is a variation of the leftmost
+ derivation algorithm.
+ The only difference is, that instead of the processing the symbol list
+ from left to right, it is processed from right to left.
 \end_layout
 
 \begin_layout Subsubsection
