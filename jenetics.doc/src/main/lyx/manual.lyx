@@ -32970,7 +32970,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Subsubsection
-Mapping process
+Mapping
 \end_layout
 
 \begin_layout Standard
@@ -33006,6 +33006,41 @@ noprefix "false"
  Instead of selecting a random alternative, the selected index is determined
  by the chromosome.
  
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/GrammaticalEvolutionMapping.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GE-mapping"
+
+\end_inset
+
+GE mapping
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
