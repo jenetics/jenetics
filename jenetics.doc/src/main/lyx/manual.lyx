@@ -32970,13 +32970,51 @@ noprefix "false"
 \end_layout
 
 \begin_layout Subsubsection
-Derivation trees
+Mapping process
 \end_layout
 
 \begin_layout Standard
-Parse trees are a way of recording derivations that focus less upon the
- order in which derivation steps were applied and more on which productions
- were employed.
+Now we have everything in place to do the last step.
+ How to create a sentence from a given grammar.
+ The original paper uses a bit string for creating a sentence from a given
+ chromosome.
+ Since we have already described how to create a sentence from a grammar,
+ we must define the slot, where we can put in the chromosome data.
+ The interception point is the selection of the rule alternatives which
+ replaces a non-terminal symbol in the symbol list.
+ This is step 3 in the described algorithms 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Instead of selecting a random alternative, the selected index is determined
+ by the chromosome.
+ 
+\end_layout
+
+\begin_layout Standard
+The binary string is split into 8-bit junks and interpreted as unsigned
+ bytes, with vales from 0 to 255.
+ This 8-bit junks are called codons.
+ Whenever a new rule alternative must be selected, a new codon is read from
+ the chromosome.
+ A simple modulo operation is used to get an index within the desired range.
 \end_layout
 
 \begin_layout Subsubsection
