@@ -21,7 +21,7 @@ package io.jenetics.ext.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.grammar.Cfg.E;
-import static io.jenetics.ext.grammar.Cfg.NT;
+import static io.jenetics.ext.grammar.Cfg.N;
 import static io.jenetics.ext.grammar.Cfg.R;
 import static io.jenetics.ext.grammar.Cfg.T;
 
@@ -295,9 +295,9 @@ public class CfgTest {
 
 		final Cfg<String> cfg2 = Cfg.of(
 			R("expr",
-				E(NT("num")),
-				E(NT("var")),
-				E(T("("), NT("expr"), NT("op"), NT("expr"), T(")"))
+				E(N("num")),
+				E(N("var")),
+				E(T("("), N("expr"), N("op"), N("expr"), T(")"))
 			),
 			R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
 			R("var", E(T("x")), E(T("y"))),

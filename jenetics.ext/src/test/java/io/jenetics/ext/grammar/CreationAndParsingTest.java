@@ -22,7 +22,7 @@ package io.jenetics.ext.grammar;
 import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.grammar.Cfg.E;
-import static io.jenetics.ext.grammar.Cfg.NT;
+import static io.jenetics.ext.grammar.Cfg.N;
 import static io.jenetics.ext.grammar.Cfg.R;
 import static io.jenetics.ext.grammar.Cfg.T;
 
@@ -45,8 +45,8 @@ public class CreationAndParsingTest {
 
 	static final Cfg<Op> CFG = Cfg.of(
 		R("expr",
-			E(NT("num")),
-			E(T("(", null), NT("expr"), NT("op"), NT("expr"), T(")", null))
+			E(N("num")),
+			E(T("(", null), N("expr"), N("op"), N("expr"), T(")", null))
 		),
 		R("op",
 			E(T("+", v -> v[0] + v[1])),

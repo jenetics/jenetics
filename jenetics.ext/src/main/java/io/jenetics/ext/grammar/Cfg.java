@@ -43,26 +43,26 @@ import java.util.stream.Stream;
  * <b>Formal definition</b>
  * <p>
  * A context-free grammar {@code G} is defined by the 4-tuple
- * {@code G = (NT, T, R, S)}, where
+ * {@code G = (N, T, R, S)}, where
  * <ul>
- *     <li>{@code NT} is a finite set; each element {@code nt ∈ NT} is called a
+ *     <li>{@code N} is a finite set; each element {@code n ∈ N} is called a
  *     non-terminal ({@link NonTerminal}) character or a variable. Each
  *     variable represents a different type of phrase or clause in the sentence.
  *     Variables are also sometimes called syntactic categories. Each variable
  *     defines a sub-language of the language defined by {@code G}.
  *     </li>
  *     <li>{@code T} is a finite set of terminals ({@link Terminal}) disjoint
- *     from {@code NT}, which make up the actual content of the sentence. The set
+ *     from {@code N}, which make up the actual content of the sentence. The set
  *     of terminals is the alphabet of the language defined by the grammar
  *     {@code G}.
  *     </li>
- *     <li>{@code R} is a finite relation in {@code NT × (NT ∪ T)∗}, where the
+ *     <li>{@code R} is a finite relation in {@code N × (N ∪ T)∗}, where the
  *     asterisk represents the <a href="https://en.wikipedia.org/wiki/Kleene_star">
  *     Kleene star</a> operation. The members of {@code R} are called the
  *     (rewrite) rules ({@link Rule}) or productions of the grammar.
  *     </li>
  *     <li>{@code S} is the start variable (or start symbol), used to represent
- *     the whole sentence (or program). It must be an element of {@code NT}
+ *     the whole sentence (or program). It must be an element of {@code N}
  *     ({@link NonTerminal})
  *     .</li>
  * </ul>
@@ -536,7 +536,7 @@ public record Cfg<T>(
 	 * @param <T> the terminal symbol value type
 	 * @return a new non-terminal symbol
 	 */
-	public static <T> NonTerminal<T> NT(final String name) {
+	public static <T> NonTerminal<T> N(final String name) {
 		return new NonTerminal<>(name);
 	}
 
