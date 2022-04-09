@@ -32380,11 +32380,23 @@ BNF
 \end_layout
 
 \begin_layout Standard
-The Backus-Naur form (BNF) 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Backus58thesyntax"
-literal "false"
+The Backus-Naur form (BNF)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Backus-Naur_form
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -32813,8 +32825,17 @@ L = [5, -, x]
 \end_layout
 
 \begin_layout Standard
-After the 7th iteration the symbol list contains only terminal symbols and
- the generation process stops.
+After the 6
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+th
+\end_layout
+
+\end_inset
+
+ iteration the symbol list contains only terminal symbols and the generation
+ process stops.
  If we convert the symbol list into a string, we get an algebraic expression,
  
 \begin_inset Formula $5-x$
@@ -32976,13 +32997,28 @@ Mapping
 \begin_layout Standard
 Now we have everything in place to do the last step.
  How to create a sentence from a given grammar.
- The original paper uses a bit string for creating a sentence from a given
- chromosome.
+ The original paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ryan1998grammatical"
+literal "false"
+
+\end_inset
+
+ uses a bit string for creating a sentence from a given chromosome and called
+ this process 
+\emph on
+mapping
+\emph default
+.
  Since we have already described how to create a sentence from a grammar,
- we must define the slot, where we can put in the chromosome data.
- The interception point is the selection of the rule alternatives which
- replaces a non-terminal symbol in the symbol list.
- This is step 3 in the described algorithms 
+ we must describe the last missing part of the process, and this missing
+ part is the selection of alternative symbols from a given rule.
+ This is step 
+\begin_inset Formula $3$
+\end_inset
+
+ in the described algorithms 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Leftmost-derivation"
@@ -33003,8 +33039,12 @@ noprefix "false"
 \end_inset
 
 .
- Instead of selecting a random alternative, the selected index is determined
- by the chromosome.
+ Instead of selecting a 
+\emph on
+random
+\emph default
+ alternative, the index of the selected alternative must be determined by
+ a chromosome.
  
 \begin_inset Float figure
 wide false
@@ -33044,12 +33084,34 @@ GE mapping
 \end_layout
 
 \begin_layout Standard
-The binary string is split into 8-bit junks and interpreted as unsigned
- bytes, with vales from 0 to 255.
- This 8-bit junks are called codons.
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:GE-mapping"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows he GE mapping process.
+ The binary string is split into 8-bit junks and interpreted as unsigned
+ bytes, with vales in the range of 
+\begin_inset Formula $\left[0,256\right)$
+\end_inset
+
+.
+ This 8-bit junks are called 
+\emph on
+codons
+\emph default
+.
  Whenever a new rule alternative must be selected, a new codon is read from
  the chromosome.
  A simple modulo operation is used to get an index within the desired range.
+ If more codons are needed during the mapping process than available in
+ the input chromosome, the read of the codons is wrapped over and starts
+ at the beginning of the chromosome again.
 \end_layout
 
 \begin_layout Subsubsection
@@ -33057,69 +33119,201 @@ Implementing classes
 \end_layout
 
 \begin_layout Standard
-This section describes the classes which forms the implementation of the
- GE.
-\end_layout
-
-\begin_layout Standard
-The 
+This section describes the main classes which are part of the implementation
+ of the GE.
+ All the described classes are part of the 
 \family typewriter
-Cfg
+io\SpecialChar softhyphen
+.jene\SpecialChar softhyphen
+tics\SpecialChar softhyphen
+.ext
 \family default
- class represents the context-free grammar with all its rules, terminal
- and non-terminal symbols.
- It is quite easy to create new 
+ module and reside in the 
 \family typewriter
-Cfg
+io\SpecialChar softhyphen
+.jene\SpecialChar softhyphen
+tics\SpecialChar softhyphen
+.ext.grammar
 \family default
- object by a given BNF string, which is parsed by the 
+ package.
+\end_layout
+
+\begin_layout Description
+
 \family typewriter
-Bnf
+CFG
 \family default
- class.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Cfg<String> cfg = Bnf.parse("""
-\end_layout
-
-\begin_layout Plain Layout
-
-    <expr> ::= <num> | <var> | <expr> <op> <expr>
-\end_layout
-
-\begin_layout Plain Layout
-
-    <op>   ::= + | - | * | /
-\end_layout
-
-\begin_layout Plain Layout
-
-    <var>  ::= x | y
-\end_layout
-
-\begin_layout Plain Layout
-
-    <num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-\end_layout
-
-\begin_layout Plain Layout
-
-    """
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
+ This class represents a context-free grammar as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Context-free-grammar"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-Alternatively, the same Cfg can also be created programatically.
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+BNF
+\family default
+ Although it is possible to create instances of the 
+\family typewriter
+CFG
+\family default
+ class manually, it is in most cases easier to define it as BNF strings.
+ This class contains methods for parsing and formatting CFGs from and to
+ BNF strings.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+SymbolIndex
+\family default
+ The 
+\family typewriter
+SymbolIndex
+\family default
+ interface defines the strategy which alternative symbols of a given rule
+ are selected during the sentence generation process.
+ The classical algorithm uses codons, encoded in an binary string.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Codons
+\family default
+ This class is an implementation of the classical symbol selection algorithms
+ as described in the original paper and implements the 
+\family typewriter
+Sym\SpecialChar softhyphen
+bol\SpecialChar softhyphen
+In\SpecialChar softhyphen
+dex
+\family default
+ interface.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Generator
+\family default
+ The 
+\family typewriter
+Generator
+\family default
+ interface is an abstraction of the sentence generation algorithm as such
+ as algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Mappings
+\family default
+ The 
+\family typewriter
+Mappings
+\family default
+ class contains factory methods for creating different mapping strategies.
+ Since the mapping process, as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:GE-mapping"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, is implemented as 
+\family typewriter
+Codec
+\family default
+, the factory methods will return 
+\family typewriter
+Codec
+\family default
+ instances for the 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ and 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mosome
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Let's start with the 
+\family typewriter
+Cfg
+\family default
+ class and how to create grammars.
+ The 
+\family typewriter
+Cfg
+\family default
+ class comes with a set of factory methods, which lets you create 
+\family typewriter
+Cfg
+\family default
+ objects quite easily.
+ Our already known algebraic expression grammar can be created with the
+ following code.
+ The used factory methods, 
+\family typewriter
+N
+\family default
+, 
+\family typewriter
+T
+\family default
+, 
+\family typewriter
+E
+\family default
+, 
+\family typewriter
+R
+\family default
+, were statically imported.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -33192,18 +33386,91 @@ final Cfg<String> cfg = Cfg.of(
 
 \end_inset
 
-The example above uses static factory methods, which are part of the Cfg
- class.
- The programmatic version of the Cfg creation is useful, when you want to
- attach a payload to the terminal symbols.
- This payload can be directly used in the created sentence.
+As alternative, the above CFG can also been creating via a string in BNF
+ form, as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Backus-Naur-form"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The code snippet below shows how to do this.
 \end_layout
 
 \begin_layout Standard
-The Generator interface is responsible for creating sentences from a given
- grammar.
- The symbol selection strategy is the job of the SymbolIndex interface.
- 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Cfg<String> cfg = Bnf.parse("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    <expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <op>   ::= + | - | * | /
+\end_layout
+
+\begin_layout Plain Layout
+
+    <var>  ::= x | y
+\end_layout
+
+\begin_layout Plain Layout
+
+    <num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ interface is responsible for selecting the index of the rule alternative
+ to choose.
+ The reason for this interface is to decouple the selection algorithm from
+ the data structure, which determines the selection.
+ It shouldn't be coupled to the used 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ or 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -33264,11 +33531,184 @@ SymbolIndex
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:SymbolIndex-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
+\end_inset
+
+ shows the single method of the 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ interface.
+ It takes the rule, for which to select the alternatives and the desired
+ index bounds and returns the selected symbol index.
+ The 
+\family typewriter
+rule
+\family default
+ parameter of the next function allows to use different selection strategies,
+ or different index sources, for the different rules.
+ This interface makes it possible to let the sentence creation to be controlled
+ by an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ instead the classical bit string.
 \end_layout
 
 \begin_layout Standard
-Generator interface
+The 
+\family typewriter
+Codons
+\family default
+ class implements the 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ and can be created from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ and 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+ Codons created from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ gives you an implementation of the classic symbol selection algorithm.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Create codons backed up by binary string.
+\end_layout
+
+\begin_layout Plain Layout
+
+var bch = BitChromosome.of(100*8);
+\end_layout
+
+\begin_layout Plain Layout
+
+var bcodons = Codons.ofBitGenes(bch);
+\end_layout
+
+\begin_layout Plain Layout
+
+// Creadte codons backed up by integer string.
+\end_layout
+
+\begin_layout Plain Layout
+
+var ich = IntegerChromosome.of(IntRange.of(0, 256), 100);
+\end_layout
+
+\begin_layout Plain Layout
+
+var icodons = Codons.ofIntegerGenes(ich);
+\end_layout
+
+\end_inset
+
+The code snipped above shows two ways for creating essentially the same
+ codons.
+ In the first variant, the codons are read from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ with the length of 800, which results in 100 different indexes readable
+ from the created 
+\family typewriter
+Cod\SpecialChar softhyphen
+ons
+\family default
+ object.
+ In the second variant an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+, with a value range of 
+\begin_inset Formula $\left[0,256\right)$
+\end_inset
+
+ and a length of 100, is used for the 
+\family typewriter
+Cod\SpecialChar softhyphen
+ons
+\family default
+ object.
+ Both codons are essentially the same.
+ But using an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ instead of a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ gives you a greater flexibility, as it allows you to specify an explicit
+ range for the codon values.
+\end_layout
+
+\begin_layout Standard
+Implementations of the functional 
+\family typewriter
+Generator
+\family default
+ interface are responsible for creating sentences from a given grammar.
+ It takes a 
+\family typewriter
+Cfg
+\family default
+ object as input and creates a generic result object of type 
+\family typewriter
+T
+\family default
+.
+ This genericity lets you use the same interface for different result type,
+ like 
+\family typewriter
+List<Symbol<String>>
+\family default
+ or 
+\family typewriter
+Tree<Symbol<String>, ?>
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -33332,7 +33772,132 @@ Generator
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Generator-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
+\end_inset
+
+ shows the definition of the 
+\family typewriter
+Gene\SpecialChar softhyphen
+rator
+\family default
+ interface.
+ It takes a 
+\family typewriter
+Cfg
+\family default
+ object as input and returns the created result sentence of type 
+\family typewriter
+R
+\family default
+.
+ If the created result is a random instance of the input grammar, a reproducible
+, deterministic result, or even always the same result, is not by the interface
+ itself.
+ It is the responsibility of the implementations to determine which kind
+ of result to return.
+ The reason for this was, not make assumptions about the sentence creation
+ and bake this assumptions into the API; in other words, avoid leaky abstraction.
+ 
+\end_layout
+
+\begin_layout Standard
+There are currently two implementation of the 
+\family typewriter
+Gene\SpecialChar softhyphen
+rator
+\family default
+ interface: 1) the 
+\family typewriter
+Sen\SpecialChar softhyphen
+tence\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+, which generates a list of terminal symbols (sentences) from a given grammar,
+ and 2) the 
+\family typewriter
+Deri\SpecialChar softhyphen
+vat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+, generating a derivation tree, or parse tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Define sentence generator for creating random sentences.
+\end_layout
+
+\begin_layout Plain Layout
+
+var generator = new SentenceGenerator<String>(
+\end_layout
+
+\begin_layout Plain Layout
+
+    SymbolIndex.of(RandomGenerator.getDefault()),
+\end_layout
+
+\begin_layout Plain Layout
+
+    1_000
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+// Create random sentence for given CFG.
+\end_layout
+
+\begin_layout Plain Layout
+
+List<Cfg.Terminal<String>> sentence = generator.generate(cfg);
+\end_layout
+
+\begin_layout Plain Layout
+
+String string = sentence.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Cfg.Symbol::name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(Collectors.joining());
+\end_layout
+
+\end_inset
+
+In the code snippet above you can see how to create a 
+\family typewriter
+Sen\SpecialChar softhyphen
+tence\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+ which will create random sentences with a maximal length of 1000.
+ The generated sentence will be a list of terminal symbols.
+ But it is quite easy to convert it to a string.
 \end_layout
 
 \begin_layout Subsubsection
