@@ -33898,6 +33898,129 @@ rator
  which will create random sentences with a maximal length of 1000.
  The generated sentence will be a list of terminal symbols.
  But it is quite easy to convert it to a string.
+ The DerivationTreeGenerator work can be used similarly.
+ Instead of a list of terminals, it creates a 
+\family typewriter
+Tree<Symbol<String>, ?>
+\family default
+ instead.
+\end_layout
+
+\begin_layout Standard
+The factory methods of the 
+\family typewriter
+Mappings
+\family default
+ class puts it all together and lets you easily specify the needed parts
+ for the mapping process.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ already has an interface for expressing such a mapping process, the 
+\family typewriter
+Codec
+\family default
+ interface.
+ So no additional interface or class is introduce and the 
+\family typewriter
+Mappings
+\family default
+ factories will return 
+\family typewriter
+Codec
+\family default
+ instances instead.
+ In the code snippet below you can see how to create the classical mapping,
+ with a single 
+\family typewriter
+BitChromosome
+\family default
+ used for the rule symbol selection.
+ It is created via the 
+\family typewriter
+Map\SpecialChar softhyphen
+pers\SpecialChar softhyphen
+::sin\SpecialChar softhyphen
+gle\SpecialChar softhyphen
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some\SpecialChar softhyphen
+Map\SpecialChar softhyphen
+per
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, BitGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.singleBitChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Length of the used BitChromosome.
+\end_layout
+
+\begin_layout Plain Layout
+
+        100*8,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // The used generator, created from SymbolIndex.
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+For creating this codec you must specify the CFG, the length of the chromosome
+ and the sentence 
+\family typewriter
+Generator
+\family default
+.
+ The 
+\family typewriter
+Gen\SpecialChar softhyphen
+era\SpecialChar softhyphen
+tor
+\family default
+ is given as factory function, which takes an 
+\family typewriter
+Sym\SpecialChar softhyphen
+bol\SpecialChar softhyphen
+In\SpecialChar softhyphen
+dex
+\family default
+ at input.
 \end_layout
 
 \begin_layout Subsubsection
