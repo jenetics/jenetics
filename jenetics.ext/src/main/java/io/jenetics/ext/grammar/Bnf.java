@@ -49,15 +49,11 @@ import io.jenetics.ext.internal.parser.ParsingException;
 public final class Bnf {
 	private Bnf() {}
 
-	static final char[] SYMBOL_CHARS = {'<', '>', '|', ':', '='};
-
 	static boolean isSymbolChar(final int ch) {
-		for (char symbolChar : SYMBOL_CHARS) {
-			if (ch == symbolChar) {
-				return true;
-			}
-		}
-		return false;
+		return switch (ch) {
+			case '<', '>', '|', ':', '=' -> true;
+			default -> false;
+		};
 	}
 
 	static boolean isStringChar(final char c) {
