@@ -34021,6 +34021,260 @@ In\SpecialChar softhyphen
 dex
 \family default
  at input.
+ The codec, created in the code snippet below, is essentially the same as
+ created with the 
+\family typewriter
+Map\SpecialChar softhyphen
+pers\SpecialChar softhyphen
+::sin\SpecialChar softhyphen
+gle\SpecialChar softhyphen
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some\SpecialChar softhyphen
+Map\SpecialChar softhyphen
+per
+\family default
+ method.
+ It only differs in the way the codons are created.
+ Using an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ as codons source gives you a greater flexibility and allows to change the
+ value range of the created codons.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, IntegerGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.singleIntegerChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Value range of created codons.
+\end_layout
+
+\begin_layout Plain Layout
+
+        IntRange.of(0, 256),
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Length of the used IntegerChromosome.
+\end_layout
+
+\begin_layout Plain Layout
+
+        100,
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Beside the classical mapping algorithms, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ contains also a novel method for genotype to sentence mapping.
+ This new approach uses a separate 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ for every 
+\family typewriter
+Cfg.\SpecialChar softhyphen
+Rule
+\family default
+.
+ This allows to align the range of the chromosome with the number of alternative
+s of the rule.
+ With this property, no modulo operation is needed for creating codons with
+ the correct bounds.
+ No additional modulo operation means, that all alternatives have the same
+ probability for being selected, for randomly created chromosomes.
+ All rule alternatives have the same changes of being selected.
+ There is no accidental bias towards a given rule alternative or symbol.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, IntegerGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.multiIntegerChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Chromosome length depends of number of alternatives.
+\end_layout
+
+\begin_layout Plain Layout
+
+        rule -> IntRange.of(rule.alternatives().size()*25),
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+The codes snippet above shows how to create a mapping, which uses a genotype
+ with one chromosome for every rule in the given CFG.
+ Our example CFG
+\end_layout
+
+\begin_layout LyX-Code
+            
+\emph on
+[0]     [1]           [2]
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3]
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1]
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3] [4] [5] [6] [7] [8]
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+will use a 
+\family typewriter
+Genotype
+\family default
+ with the following structure for the encoding of the codons.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 3), 3*25), // <expr>
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 4), 4*25), // <op>
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 2), 2*25), // var
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 9), 9*25)  // <num>
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+As you can see, the number range for each rule chromosome reflects the number
+ of available rule alternatives and the chromosome length can be expressed
+ as a multiple of the number of alternatives of the corresponding rule.
+ If you don't need this flexibility, it is of course also possible to use
+ constant chromosome lengths.
+ Just use a length function like this: 
+\family typewriter
+rule -> IntRange.of(1_000)
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
