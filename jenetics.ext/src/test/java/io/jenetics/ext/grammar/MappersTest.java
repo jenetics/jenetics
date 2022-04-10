@@ -99,4 +99,13 @@ public class MappersTest {
 		assertThat(sentence).isEqualTo("((1-7)*x)");
 	}
 
+	@Test
+	public void multiIntegerChromosomeMapper() {
+		final Codec<List<Terminal<String>>, IntegerGene> codec = Mappers
+			.multiIntegerChromosomeMapper(
+				CFG,
+				rule -> IntRange.of(rule.alternatives().size()*25),
+				index -> new SentenceGenerator<>(index, 1_000)
+			);
+	}
 }
