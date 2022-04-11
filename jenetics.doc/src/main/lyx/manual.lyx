@@ -127,7 +127,7 @@ tabs-within-sections
 \pdf_title "Jenetics"
 \pdf_author "Franz Wilhelmstötter"
 \pdf_subject "Genetic Algorithm"
-\pdf_keywords "research, artificial Intelligence, AI, bio-informatics, evolutionary algorithm, optimization, genetic algorithm, genetic programming, parallelized, algorithms, evolutionary, metaheuristics, stream, evolutionstream, evolution, machine learning"
+\pdf_keywords "research, artificial Intelligence, AI, bio-informatics, evolutionary algorithm, optimization, genetic algorithm, genetic programming, parallelized, algorithms, evolutionary, metaheuristics, stream, evolutionstream, evolution, machine learning, grammatical evolution, moo, multi-objective optimization"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
