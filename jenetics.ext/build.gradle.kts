@@ -48,7 +48,8 @@ tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*TreePerf.*")
+	//includes.add(".*TreePerf.*")
+	includes.add(".*SentenceGeneratorPerf.*")
 }
 
 tasks.javadoc {
