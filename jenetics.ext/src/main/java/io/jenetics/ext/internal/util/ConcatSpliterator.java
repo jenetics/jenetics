@@ -19,9 +19,9 @@
  */
 package io.jenetics.ext.internal.util;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Spliterator;
@@ -48,7 +48,7 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 	 * @throws NullPointerException if one of the arguments are {@code null}
 	 */
 	public ConcatSpliterator(final Collection<Spliterator<T>> spliterators) {
-		_spliterators = new LinkedList<>(spliterators);
+		_spliterators = new ArrayDeque<>(spliterators);
 
 
 		int characteristics = (ORDERED | SIZED | SUBSIZED);
