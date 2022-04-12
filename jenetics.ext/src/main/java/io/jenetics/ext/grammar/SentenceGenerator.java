@@ -22,7 +22,7 @@ package io.jenetics.ext.grammar;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.ext.grammar.SentenceGenerator.Expansion.LEFT_FIRST;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -150,7 +150,7 @@ public final class SentenceGenerator<T>
 	 */
 	@Override
 	public List<Terminal<T>> generate(final Cfg<? extends T> cfg) {
-		final var sentence = new LinkedList<Symbol<T>>();
+		final var sentence = new ArrayList<Symbol<T>>();
 		generate(Cfg.upcast(cfg), sentence);
 
 		// The 'generate' step guarantees that the list only
@@ -160,7 +160,7 @@ public final class SentenceGenerator<T>
 		return List.copyOf(result);
 	}
 
-	private void generate(final Cfg<T> cfg, final List<Symbol<T>> symbols) {
+	void generate(final Cfg<T> cfg, final List<Symbol<T>> symbols) {
 		symbols.add(cfg.start());
 
 		boolean proceed;
