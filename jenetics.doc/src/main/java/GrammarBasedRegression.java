@@ -45,8 +45,7 @@ public class GrammarBasedRegression
 	);
 
 	private static final Codec<Tree<Op<Double>, ?>, IntegerGene>
-		CODEC = Mappers
-		.multiIntegerChromosomeMapper(
+		CODEC = Mappers.multiIntegerChromosomeMapper(
 			GRAMMAR,
 			// The length of the chromosome is 25 times the length
 			// of the alternatives of a given rule. Every rule
