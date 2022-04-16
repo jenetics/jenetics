@@ -971,7 +971,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	/**
 	 * Performs a reduction on the elements of {@code this} tree, using an
 	 * associative reduction function. This can be used for evaluating a given
-	 * expression tree.
+	 * expression tree in pre-order.
 	 * <pre>{@code
 	 * final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
 	 * final double result = formula.reduce(new Double[0], (op, args) ->
