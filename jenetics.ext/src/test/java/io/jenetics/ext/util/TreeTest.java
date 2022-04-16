@@ -159,7 +159,8 @@ public class TreeTest {
 	@Test
 	public void reduce() {
 		final Tree<String, ?> formula = TreeNode.parse(
-			"add(sub(6,div(230,10)),mul(5,6))"
+			"add(sub(6, div(230, 10)), mul(5, 6))",
+			String::trim
 		);
 		final double result = formula.reduce(new Double[0], (op, args) ->
 			switch (op) {
