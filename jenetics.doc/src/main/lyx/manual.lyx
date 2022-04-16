@@ -27790,7 +27790,11 @@ noprefix "false"
 
 \end_inset
 
- shows the signature of the reduce method.
+ shows the signature of the 
+\family typewriter
+reduce
+\family default
+ method.
  The 
 \family typewriter
 neutral
@@ -27877,7 +27881,7 @@ final double result = formula.reduce(new Double[0], (op, args) ->
 
 \end_inset
 
-The result of the reduces arithmetic tree will be 
+The result of the reduced arithmetic tree will be 
 \begin_inset Formula $13.0$
 \end_inset
 
@@ -32241,7 +32245,7 @@ Grammatical evolution
 \end_layout
 
 \begin_layout Standard
-One of the difficulties, when defining a codec
+One of the difficulties when defining a codec
 \begin_inset Foot
 status collapsed
 
@@ -32283,12 +32287,12 @@ noprefix "false"
  GE was introduced by Michael O’Neill and Conor Ryan 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "ryan1998grammatical,ONeil2003"
+key "ryan1998grammatical,ONeil2003,Ryan2018"
 literal "false"
 
 \end_inset
 
- for solving to genetic programming
+ for solving genetic programming (GP)
 \begin_inset Foot
 status collapsed
 
@@ -32308,7 +32312,7 @@ noprefix "false"
 
 \end_inset
 
- (GP) problems.
+ problems.
  Although the initial realm for GE was creating/evolving programs in arbitrary
  languages, it is not restricted to this area.
  GE can be used for every problems, where the problem domain can be expressed
@@ -32403,7 +32407,7 @@ eger\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
 some
 \family default
- determines the rules which are used for creating the program.
+ determines the rules which are used for creating the sentences.
  The grammar is usually given in Backus-Naur form (BNF).
  The result is the construction of a syntactically correct program from
  a binary string which can then be evaluated by a fitness function.
@@ -32491,7 +32495,15 @@ non
 \end_inset
 
  is a terminal or non-terminal symbol.
- CFGs are used to generate strings (sentences), rather than recognize strings.
+ CFGs are used to 
+\emph on
+generate
+\emph default
+ strings (sentences), rather than 
+\emph on
+recognize
+\emph default
+ strings.
 \end_layout
 
 \begin_layout Definition*
@@ -32545,7 +32557,7 @@ terminal
 \end_inset
 
 .
- The terminals is the alphabet of the language.
+ The terminals are the alphabet of the language.
 \end_layout
 
 \begin_layout Enumerate
@@ -32644,7 +32656,7 @@ https://en.wikipedia.org/wiki/Backus-Naur_form
 \end_layout
 
 \begin_layout Standard
-In this example, 
+In this example 
 \family typewriter
 num
 \family default
@@ -32654,8 +32666,8 @@ num
 \family default
  represent the terminal symbols, associated with the rule.
  If a non-terminal symbol appears on the right hand side, it means that
- there will be another production rule (or set of rules) to define its replaceme
-nt.
+ there will be another production rule (or a set of rules) to define its
+ replacement.
 \end_layout
 
 \begin_layout LyX-Code
@@ -32757,10 +32769,11 @@ Sentence generation
 \end_layout
 
 \begin_layout Standard
-After we have defined the CFG, we want to create a valid, random sentences.
+After we have defined the CFG, we want to create a valid (random) sentences
+ from our grammar.
  To do so, we will introduce a numbering schema for the alternative expressions
  for every rule.
- Such a schema for our simple arithmetic grammar is shown below:
+ Such a schema, for our simple arithmetic grammar is shown below:
 \end_layout
 
 \begin_layout LyX-Code
@@ -33219,8 +33232,7 @@ Mapping
 
 \begin_layout Standard
 Now we have everything in place to do the last step.
- How to create a sentence from a given grammar.
- The original paper 
+ How to create a sentence from a given grammar? The original paper 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ryan1998grammatical"
@@ -33237,11 +33249,7 @@ mapping
  Since we have already described how to create a sentence from a grammar,
  we must describe the last missing part of the process, and this missing
  part is the selection of alternative symbols from a given rule.
- This is step 
-\begin_inset Formula $3$
-\end_inset
-
- in the described algorithms 
+ This is step three in the described algorithms 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Leftmost-derivation"
@@ -33267,7 +33275,7 @@ noprefix "false"
 random
 \emph default
  alternative, the index of the selected alternative must be determined by
- a chromosome.
+ the given chromosome.
  
 \begin_inset Float figure
 wide false
@@ -33319,7 +33327,7 @@ noprefix "false"
 
  shows he GE mapping process.
  The binary string is split into 8-bit junks and interpreted as unsigned
- bytes, with vales in the range of 
+ integers, with vales in the range of 
 \begin_inset Formula $\left[0,256\right)$
 \end_inset
 
@@ -33333,7 +33341,7 @@ codons
  the chromosome.
  A simple modulo operation is used to get an index within the desired range.
  If more codons are needed during the mapping process than available in
- the input chromosome, the read of the codons is wrapped over and starts
+ the input chromosome, the reading of the codons is wrapped over and starts
  at the beginning of the chromosome again.
 \end_layout
 
@@ -33364,7 +33372,7 @@ tics\SpecialChar softhyphen
 \begin_layout Description
 
 \family typewriter
-CFG
+Cfg
 \family default
  This class represents a context-free grammar as described in section 
 \begin_inset CommandInset ref
@@ -33382,13 +33390,13 @@ noprefix "false"
 \begin_layout Description
 
 \family typewriter
-BNF
+Bnf
 \family default
  Although it is possible to create instances of the 
 \family typewriter
-CFG
+Cfg
 \family default
- class manually, it is in most cases easier to define it as BNF strings.
+ class manually, it is in most cases easier to define it as BNF string.
  This class contains methods for parsing and formatting CFGs from and to
  BNF strings.
  
@@ -33403,7 +33411,7 @@ SymbolIndex
 \family typewriter
 SymbolIndex
 \family default
- interface defines the strategy which alternative symbols of a given rule
+ interface defines the strategy, which alternative symbols of a given rule
  are selected during the sentence generation process.
  The classical algorithm uses codons, encoded in an binary string.
 \end_layout
@@ -33414,7 +33422,8 @@ SymbolIndex
 Codons
 \family default
  This class is an implementation of the classical symbol selection algorithms
- as described in the original paper and implements the 
+ as described in the original paper.
+ It implements the 
 \family typewriter
 Sym\SpecialChar softhyphen
 bol\SpecialChar softhyphen
@@ -33481,6 +33490,26 @@ noprefix "false"
 \family typewriter
 Codec
 \family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
 , the factory methods will return 
 \family typewriter
 Codec
@@ -33518,7 +33547,7 @@ Cfg
 Cfg
 \family default
  objects quite easily.
- Our already known algebraic expression grammar can be created with the
+ Our already known arithmetic expression grammar can be created with the
  following code.
  The used factory methods, 
 \family typewriter
@@ -33679,8 +33708,8 @@ Index
  interface is responsible for selecting the index of the rule alternative
  to choose.
  The reason for this interface is to decouple the selection algorithm from
- the data structure, which determines the selection.
- It shouldn't be coupled to the used 
+ the data structure, which determines the selection; it should decouple
+ the algorithm from the underlying 
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -33776,8 +33805,8 @@ Index
 \family typewriter
 rule
 \family default
- parameter of the next function allows to use different selection strategies,
- or different index sources, for the different rules.
+ parameter of the next function allows to use different index selection
+ strategies, or different index sources, for the different rules.
  This interface makes it possible to let the sentence creation to be controlled
  by an 
 \family typewriter
@@ -33799,7 +33828,7 @@ Codons
 Symbol\SpecialChar softhyphen
 Index
 \family default
- and can be created from a 
+ interface and can be created from a 
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -33812,8 +33841,12 @@ eger\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
 some
 \family default
-.
- Codons created from a 
+ instances.
+ 
+\family typewriter
+Codons
+\family default
+ created from a 
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -33889,8 +33922,7 @@ Cod\SpecialChar softhyphen
 ons
 \family default
  object.
- Both codons are essentially the same.
- But using an 
+ Using an 
 \family typewriter
 Int\SpecialChar softhyphen
 eger\SpecialChar softhyphen
@@ -33925,11 +33957,20 @@ T
  This genericity lets you use the same interface for different result type,
  like 
 \family typewriter
-List<Symbol<String>>
+List<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
 \family default
  or 
 \family typewriter
-Tree<Symbol<String>, ?>
+Tree<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>, ?>
 \family default
 .
 \end_layout
@@ -34020,13 +34061,13 @@ Cfg
 R
 \family default
 .
- If the created result is a random instance of the input grammar, a reproducible
-, deterministic result, or even always the same result, is not by the interface
- itself.
+ The kind of the created result is not determined by interfaces.
+ It can be a random instance of the input grammar, a reproducible, deterministic
+ result, or even always the same result.
  It is the responsibility of the implementations to determine which kind
  of result to return.
- The reason for this was, not make assumptions about the sentence creation
- and bake this assumptions into the API; in other words, avoid leaky abstraction.
+ The reason for this is, not make assumptions about the sentence creation
+ and bake this assumptions into the API; this avoid a leaky abstraction.
  
 \end_layout
 
@@ -34121,10 +34162,22 @@ rator
  which will create random sentences with a maximal length of 1000.
  The generated sentence will be a list of terminal symbols.
  But it is quite easy to convert it to a string.
- The DerivationTreeGenerator work can be used similarly.
+ The 
+\family typewriter
+Deri\SpecialChar softhyphen
+vat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+ work can be used similarly.
  Instead of a list of terminals, it creates a 
 \family typewriter
-Tree<Symbol<String>, ?>
+Tree<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String>, ?>
 \family default
  instead.
 \end_layout
@@ -34134,7 +34187,7 @@ The factory methods of the
 \family typewriter
 Mappings
 \family default
- class puts it all together and lets you easily specify the needed parts
+ class puts it all together and let you easily specify the needed parts
  for the mapping process.
  
 \family sans
@@ -34148,8 +34201,28 @@ Jenetics
 \family typewriter
 Codec
 \family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
  interface.
- So no additional interface or class is introduce and the 
+ So no additional interface or class was introduce and the 
 \family typewriter
 Mappings
 \family default
@@ -34161,7 +34234,9 @@ Codec
  In the code snippet below you can see how to create the classical mapping,
  with a single 
 \family typewriter
-BitChromosome
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
 \family default
  used for the rule symbol selection.
  It is created via the 
@@ -34227,7 +34302,9 @@ final Codec<List<Terminal<String>>, BitGene> codec =
 For creating this codec you must specify the CFG, the length of the chromosome
  and the sentence 
 \family typewriter
-Generator
+Gen\SpecialChar softhyphen
+er\SpecialChar softhyphen
+ator
 \family default
 .
  The 
@@ -34498,20 +34575,6 @@ As you can see, the number range for each rule chromosome reflects the number
 rule -> IntRange.of(1_000)
 \family default
 .
-\end_layout
-
-\begin_layout Subsubsection
-Symbolic regression
-\end_layout
-
-\begin_layout Standard
-Now, since we have everything in place, we can try to build a whole example
- together.
-\end_layout
-
-\begin_layout Standard
-In this section we put the things together and create a symbolic regression
- example, using GE instead of the classical GP.
 \end_layout
 
 \begin_layout Section
@@ -42946,7 +43009,7 @@ noprefix "false"
 
 , can be done with grammatical evolution
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
