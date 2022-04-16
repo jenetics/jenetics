@@ -26771,10 +26771,6 @@ Example
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -27691,6 +27687,203 @@ g.
         (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
 \end_layout
 
+\begin_layout Subsubsection
+Tree reduction
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Tree-reduction"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!reduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Tree
+\family default
+ is a very mighty data structure.
+ It implements methods, which allows you to traverse and manipulate it.
+ One of these methods is the 
+\family typewriter
+Tree::reduce
+\family default
+ function, which traverses the tree in pre-order.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Tree<V, T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    default <U> U reduce(
+\end_layout
+
+\begin_layout Plain Layout
+
+        U[] neutral,
+\end_layout
+
+\begin_layout Plain Layout
+
+        BiFunction<? super V, ? super U[], ? extends U> reducer
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Tree::reduce-method"
+
+\end_inset
+
+Tree::reduce
+\family default
+ method
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Tree::reduce-method"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the signature of the reduce method.
+ The 
+\family typewriter
+neutral
+\family default
+ array is used in the 
+\family typewriter
+reducer
+\family default
+ function for leaf elements.
+ After the reduction process, one element is returned, which might be 
+\family typewriter
+null
+\family default
+ for empty trees.
+ The following code snippet shows how to use the 
+\family typewriter
+Tree::reduce
+\family default
+ method for evaluating a simple arithmetic expression tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> formula = TreeNode.parse(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(sub(6,div(230,10)),mul(5,6))"
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+final double result = formula.reduce(new Double[0], (op, args) ->
+\end_layout
+
+\begin_layout Plain Layout
+
+    switch (op) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "add" -> args[0] + args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "sub" -> args[0] - args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "mul" -> args[0] * args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "div" -> args[0] / args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        default -> Double.parseDouble(op);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The result of the reduces arithmetic tree will be 
+\begin_inset Formula $13.0$
+\end_inset
+
+, as expected.
+\end_layout
+
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
@@ -27784,6 +27977,16 @@ Rewrite rule
 
 \end_inset
 
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!rewrite rule
+\end_layout
+
+\end_inset
+
  A tree rewrite rule is a pair of terms (sub trees), 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
@@ -27854,6 +28057,16 @@ Rewrite system
 
 \end_inset
 
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!rewrite system
+\end_layout
+
+\end_inset
+
  A tree rewrite system is a set, 
 \begin_inset Formula $\mathfrak{\mathcal{R}}$
 \end_inset
@@ -27888,6 +28101,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Tree pattern
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!pattern
 \end_layout
 
 \end_inset
@@ -34279,6 +34502,11 @@ rule -> IntRange.of(1_000)
 
 \begin_layout Subsubsection
 Symbolic regression
+\end_layout
+
+\begin_layout Standard
+Now, since we have everything in place, we can try to build a whole example
+ together.
 \end_layout
 
 \begin_layout Standard
@@ -42665,7 +42893,106 @@ Symbolic regression polynomial
 \end_layout
 
 \begin_layout Section
+Grammar based regression
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Grammar-based-regression"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar based regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar!Regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The same example as in given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, can be done with grammatical evolution
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Grammatical-evolution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+ How to do this is shown in the following example.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/GrammarBasedRegression.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 DTLZ1
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:DTLZ1"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
