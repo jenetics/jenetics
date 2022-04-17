@@ -20,6 +20,7 @@
 package io.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -38,7 +39,7 @@ public interface EquivalentValidator<A, B> {
 	default void verify(final A value) {
 		final B object = from().apply(value);
 		final A reconstructed = to().apply(value, object);
-		Assert.assertEquals(reconstructed, value);
+		assertThat(reconstructed).isEqualTo(value);
 	}
 
 	public static <A, B> EquivalentValidator<A, B> of(
