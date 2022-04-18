@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 
 import io.jenetics.ext.internal.parser.Parser;
 import io.jenetics.ext.internal.parser.ParsingException;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class allows you to convert a sequence of <em>tokens</em>, which

@@ -32,7 +32,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.FormulaParser;
+import io.jenetics.ext.internal.util.FormulaParser;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

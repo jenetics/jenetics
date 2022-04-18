@@ -17,13 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.internal.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.internal.util.FormulaParser;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

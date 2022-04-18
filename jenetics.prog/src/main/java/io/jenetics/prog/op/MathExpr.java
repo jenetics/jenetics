@@ -23,8 +23,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
-import static io.jenetics.ext.util.FormulaParser.TokenType.FUNCTION;
-import static io.jenetics.ext.util.FormulaParser.TokenType.UNARY_OPERATOR;
+import static io.jenetics.ext.internal.util.FormulaParser.TokenType.FUNCTION;
+import static io.jenetics.ext.internal.util.FormulaParser.TokenType.UNARY_OPERATOR;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.prog.op.MathTokenType.COMMA;
@@ -55,11 +55,11 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.internal.parser.ParsingException;
 import io.jenetics.ext.internal.parser.Token;
+import io.jenetics.ext.internal.util.FormulaParser;
+import io.jenetics.ext.internal.util.FormulaParser.TokenType;
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.FlatTreeNode;
-import io.jenetics.ext.util.FormulaParser;
-import io.jenetics.ext.util.FormulaParser.TokenType;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
