@@ -25,6 +25,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGenerator.StreamableGenerator;
@@ -82,11 +84,17 @@ public class RandomRegistryTest {
 			assertThat(random).isSameAs(RandomRegistry.random());
 		}
 
+		final var exception = new AtomicReference<AssertionError>();
 		final var thread = new Thread(() ->
 			assertThat(random).isNotSameAs(RandomRegistry.random())
 		);
+		thread.setUncaughtExceptionHandler((t, e) -> exception.set((AssertionError)e));
 		thread.start();
 		thread.join();
+
+		if (exception.get() != null) {
+			throw exception.get();
+		}
 	}
 
 	@Test

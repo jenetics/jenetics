@@ -114,7 +114,7 @@ public class CodonsTest {
 
 		var generator = new SentenceGenerator<String>(
 			cds,
-			Expansion.LEFT_FIRST,
+			Expansion.LEFT_MOST,
 			MAX_VALUE
 		);
 
@@ -152,7 +152,7 @@ public class CodonsTest {
 		for (int i = 0; i < 1_000_000; ++i) {
 			var generator = new SentenceGenerator<String>(
 				SymbolIndex.of(random),
-				Expansion.LEFT_FIRST,
+				Expansion.LEFT_MOST,
 				200
 			);
 

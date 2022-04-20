@@ -22,7 +22,6 @@ package io.jenetics.example;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 import static io.jenetics.example.SymbolicRegression.SAMPLES;
-import static io.jenetics.prog.op.MathExpr.parseTree;
 
 import java.util.List;
 import java.util.function.Function;
@@ -76,6 +75,7 @@ public class GrammarBasedRegression
 	);
 
 	private static final Codec<Tree<Op<Double>, ?>, IntegerGene> CODEC = Mappers
+		// Creating a GE mapper/codec: `Codec<List<Terminal<String>, IntegerGene>`
 		.multiIntegerChromosomeMapper(
 			GRAMMAR,
 			// The length of the chromosome is 25 times the length of the
@@ -87,10 +87,12 @@ public class GrammarBasedRegression
 			// `List<Terminal<String>>`.
 			index -> new SentenceGenerator<>(index, 50)
 		)
-		// Map the type of the codec from `List<Terminal<String>>` to `String`
+		// Map the type of the codec from `Codec<List<Terminal<String>, IntegerGene>`
+		// to `Codec<String, IntegerGene>`
 		.map(s -> s.stream().map(Terminal::value).collect(joining()))
-		// Map the type of the codec from `String` to `Tree<Op<Double>, ?>`
-		.map(e -> e.isEmpty() ? TreeNode.of(Const.of(0.0)) : parseTree(e));
+		// Map the type of the codec from `String` to `Tree<Op<Double>, ?>` by
+		// parsing the created sentence to an operation tree.
+		.map(e -> e.isEmpty() ? TreeNode.of(Const.of(0.0)) : MathExpr.parseTree(e));
 
 	private static final Error<Double> ERROR = Error.of(LossFunction::mse);
 

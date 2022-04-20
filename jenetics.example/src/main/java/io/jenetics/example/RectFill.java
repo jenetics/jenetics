@@ -92,9 +92,9 @@ public final class RectFill
 				MAX_RECT_COUNT
 			)),
 			gt -> gt.chromosome().stream()
-						.map(AnyGene::allele)
-						.filter(r -> r != Rect.EMPTY)
-						.collect(ISeq.toISeq())
+				.map(AnyGene::allele)
+				.filter(r -> r != Rect.EMPTY)
+				.collect(ISeq.toISeq())
 		);
 	}
 

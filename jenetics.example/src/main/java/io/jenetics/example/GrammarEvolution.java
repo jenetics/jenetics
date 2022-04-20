@@ -19,7 +19,7 @@
  */
 package io.jenetics.example;
 
-import static java.util.stream.Collectors.joining;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
@@ -27,9 +27,9 @@ import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.grammar.Bnf;
 import io.jenetics.ext.grammar.Cfg;
-import io.jenetics.ext.grammar.Cfg.Symbol;
 import io.jenetics.ext.grammar.Mappers;
 import io.jenetics.ext.grammar.SentenceGenerator;
+import io.jenetics.ext.grammar.SymbolIndex;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,6 +39,11 @@ import io.jenetics.ext.grammar.SentenceGenerator;
 public class GrammarEvolution {
 
 	private static final Cfg<String> GRAMMAR = Bnf.parse("""
+		<main> ::=
+		'double fun(final double x) {
+			return ' <expr> ';
+		}'
+
 		<expr> ::= x | <num> | <expr> <op> <expr>
 		<op>   ::= + | - | * | /
 		<num>  ::= 2 | 3 | 4
@@ -51,11 +56,15 @@ public class GrammarEvolution {
 			rule -> IntRange.of(rule.alternatives().size()*25),
 			index -> new SentenceGenerator<>(index, 50)
 		)
-		.map(terminals -> terminals.stream().map(Symbol::name).collect(joining()));
+		.map(SentenceGenerator::toString);
 
-
-	public static void main(final String[] args) {
-
+	public static void main(String[] args) {
+		final var generator = new SentenceGenerator<String>(SymbolIndex.of(RandomGenerator.getDefault()), 1000);
+		final var value  = SentenceGenerator.toString(generator.generate(GRAMMAR));
+		System.out.println(value);
 	}
 
 }
+
+
+

@@ -95,7 +95,7 @@ public class SentenceGeneratorTest {
 		final long seed,
 		final String sentence
 	) {
-		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_FIRST);
+		compatibleSentenceGeneration(seed, sentence, Expansion.LEFT_MOST);
 	}
 
 	private void compatibleSentenceGeneration(

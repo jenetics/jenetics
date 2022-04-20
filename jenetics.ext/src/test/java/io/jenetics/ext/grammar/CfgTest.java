@@ -322,10 +322,12 @@ public class CfgTest {
 			"""
 		);
 
-		final Cfg<String> cfg2 = cfg.map(t ->"__" + t.value());
+		record Value(String value) {}
+
+		final Cfg<Value> cfg2 = cfg.map(t -> new Value("__" + t.value()));
 
 		for (var t : cfg2.terminals()) {
-			assertThat(t.value()).startsWith("__");
+			assertThat(t.value().value()).startsWith("__");
 		}
 		for (var t : cfg2.nonTerminals()) {
 			assertThat(t.name()).doesNotContain("__");

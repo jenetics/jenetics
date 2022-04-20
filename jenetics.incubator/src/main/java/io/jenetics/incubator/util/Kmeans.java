@@ -17,35 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.util;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 6.1
- */
-plugins {
-	`java-library`
-	idea
-	`maven-publish`
-	id("me.champeau.jmh")
-}
+public class Kmeans {
 
-description = "Jenetics - Java Genetic Algorithm Library"
+	public interface Vec<T> {
+		T data();
+	}
 
-extra["moduleName"] = "io.jenetics.base"
-
-dependencies {
-	testImplementation(libs.testng)
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
-	testImplementation(libs.equalsverifier)
-	testImplementation(libs.prngine)
-
-	jmh(libs.prngine)
-}
-
-tasks.test { dependsOn(tasks.compileJmhJava) }
-
-jmh {
-	includes.add(".*ProxySorterPerf.*")
 }

@@ -54,7 +54,7 @@ import io.jenetics.util.ISeq;
  * @version 6.0
  * @since 4.1
  */
-public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
+public final class EvolutionInit<G extends Gene<?, G>>
 	implements Serializable
 {
 

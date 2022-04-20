@@ -350,7 +350,6 @@ public record Cfg<T>(
 	 * @return the mapped grammar
 	 * @throws NullPointerException if the given mapper is {@code null}
 	 */
-	@SuppressWarnings("unchecked")
 	public <A> Cfg<A> map(final Function<? super Terminal<T>, ? extends A> mapper) {
 		requireNonNull(mapper);
 
@@ -358,6 +357,7 @@ public record Cfg<T>(
 		final Function<Terminal<T>, Terminal<A>> mapping = t -> cache
 			.computeIfAbsent(t, t2 -> new Terminal<>(t2.name(), mapper.apply(t2)));
 
+		@SuppressWarnings("unchecked")
 		final List<Rule<A>> rules = rules().stream()
 			.map(rule -> new Rule<>(
 				(NonTerminal<A>)rule.start(),
@@ -365,15 +365,11 @@ public record Cfg<T>(
 					.map(expr -> new Expression<>(
 						expr.symbols().stream()
 							.map(sym -> sym instanceof Cfg.Terminal<T> t
-								? mapping.apply(t)
-								: (NonTerminal<A>)sym
-							)
-							.collect(Collectors.toList())
-						)
-					)
+								? mapping.apply(t) : (Symbol<A>)sym)
+							.toList()
+						))
 					.toList()
-				)
-			)
+				))
 			.toList();
 
 		return Cfg.of(rules);

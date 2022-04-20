@@ -20,7 +20,8 @@
 package io.jenetics.ext.grammar;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.ext.grammar.SentenceGenerator.Expansion.LEFT_FIRST;
+import static java.util.stream.Collectors.joining;
+import static io.jenetics.ext.grammar.SentenceGenerator.Expansion.LEFT_MOST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
 
 /**
  * Standard implementation of a sentence generator. The generator can generate
- * sentences by expanding the grammar in a {@link Expansion#LEFT_FIRST} or
+ * sentences by expanding the grammar in a {@link Expansion#LEFT_MOST} or
  * {@link Expansion#LEFT_TO_RIGHT} order.
  * <p>
  * The following code snippet shows how to create a random sentence from a
@@ -90,10 +91,9 @@ public final class SentenceGenerator<T>
 		/**
 		 * The symbol replacement always starting from the leftmost nonterminal
 		 * as described in
-		 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
-		 * Grammatical Evolution</a>.
+		 * <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">Grammatical Evolution</a>.
 		 */
-		LEFT_FIRST,
+		LEFT_MOST,
 
 		/**
 		 * The symbol replacement is performed from left to right and is repeated
@@ -138,7 +138,7 @@ public final class SentenceGenerator<T>
 		final SymbolIndex index,
 		final int limit
 	) {
-		this(index, LEFT_FIRST, limit);
+		this(index, LEFT_MOST, limit);
 	}
 
 	/**
@@ -167,6 +167,7 @@ public final class SentenceGenerator<T>
 		do {
 			proceed = false;
 
+
 			final ListIterator<Symbol<T>> sit = symbols.listIterator();
 			while (sit.hasNext() &&
 				(_expansion == Expansion.LEFT_TO_RIGHT || !proceed))
@@ -183,6 +184,17 @@ public final class SentenceGenerator<T>
 				proceed = false;
 			}
 		} while (proceed);
+	}
+
+	/**
+	 * Converts a list of symbols to a string, by concatenating the names of
+	 * the given symbols.
+	 *
+	 * @param sentence the symbols list to covert
+	 * @return the converted sentences
+	 */
+	public static String toString(final List<? extends Symbol<?>> sentence) {
+		return sentence.stream().map(Symbol::name).collect(joining());
 	}
 
 }

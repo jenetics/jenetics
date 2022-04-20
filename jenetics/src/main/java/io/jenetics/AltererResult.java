@@ -43,7 +43,7 @@ import io.jenetics.util.Seq;
  * @since 4.0
  * @version 7.0
  */
-public final record AltererResult<
+public record AltererResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > (

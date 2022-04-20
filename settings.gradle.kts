@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 			library("commons-math", "org.apache.commons:commons-math3:3.6.1")
 			library("equalsverifier", "nl.jqno.equalsverifier:equalsverifier:3.7.2")
 			library("guava", "com.google.guava:guava:31.0.1-jre")
-			library("jpx", "io.jenetics:jpx:2.3.0")
+			library("jpx", "io.jenetics:jpx:3.0.1")
 			library("prngine", "io.jenetics:prngine:2.0.0")
 			library("rxjava", "io.reactivex.rxjava2:rxjava:2.2.21")
 			library("testng", "org.testng:testng:7.4.0")
