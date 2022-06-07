@@ -48,7 +48,7 @@ import io.jenetics.prog.regression.Sample;
  * sampling of values of the independent variables and the associated values of
  * the dependent variables. --- John R. Koza, Genetic Programming I
  *
- * @see GrammarBasedRegression
+ * @see GrammaticalSymbolicRegression
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0

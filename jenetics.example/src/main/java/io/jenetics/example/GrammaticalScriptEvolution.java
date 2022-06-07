@@ -24,7 +24,11 @@ import static java.util.stream.Collectors.joining;
 import static io.jenetics.example.SymbolicRegression.SAMPLES;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 import io.jenetics.IntegerGene;
 import io.jenetics.Phenotype;
@@ -42,12 +46,8 @@ import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.grammar.Mappers;
 import io.jenetics.ext.grammar.SentenceGenerator;
-import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.op.Const;
-import io.jenetics.prog.op.MathExpr;
-import io.jenetics.prog.op.Op;
 import io.jenetics.prog.regression.Error;
 import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Sample;
@@ -55,26 +55,27 @@ import io.jenetics.prog.regression.Sampling;
 import io.jenetics.prog.regression.Sampling.Result;
 
 /**
- * Symbolic regression example, based on Grammatical Evolution.
- *
- * @see SymbolicRegression
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.1
  * @since 7.1
  */
-public class GrammarBasedRegression
-	implements Problem<Tree<Op<Double>, ?>, IntegerGene, Double>
+public class GrammaticalScriptEvolution
+	implements Problem<ScriptFunction, IntegerGene, Double>
 {
 
+	// Create the script engine of your choice.
+	public static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager()
+		.getEngineByName("jexl3");
+
+	// Define a grammar which creates a valid script for the script engine.
 	private static final Cfg<String> GRAMMAR = Bnf.parse("""
 		<expr> ::= x | <num> | <expr> <op> <expr>
 		<op>   ::= + | - | * | /
-		<num>  ::= 2 | 3 | 4
+		<num>  ::= 2.0 | 3.0 | 4.0
 		"""
 	);
 
-	private static final Codec<Tree<Op<Double>, ?>, IntegerGene> CODEC = Mappers
+	private static final Codec<ScriptFunction, IntegerGene> CODEC = Mappers
 		// Creating a GE mapper/codec: `Codec<List<Terminal<String>, IntegerGene>`
 		.multiIntegerChromosomeMapper(
 			GRAMMAR,
@@ -90,38 +91,39 @@ public class GrammarBasedRegression
 		// Map the type of the codec from `Codec<List<Terminal<String>, IntegerGene>`
 		// to `Codec<String, IntegerGene>`
 		.map(s -> s.stream().map(Terminal::value).collect(joining()))
-		// Map the type of the codec from `String` to `Tree<Op<Double>, ?>` by
-		// parsing the created sentence to an operation tree.
-		.map(e -> e.isEmpty() ? TreeNode.of(Const.of(0.0)) : MathExpr.parseTree(e));
+		.map(script -> new ScriptFunction(script, SCRIPT_ENGINE));
 
 	private static final Error<Double> ERROR = Error.of(LossFunction::mse);
 
 	private final Sampling<Double> _sampling;
 
-	public GrammarBasedRegression(final Sampling<Double> sampling) {
+	public GrammaticalScriptEvolution(final Sampling<Double> sampling) {
 		_sampling = requireNonNull(sampling);
 	}
 
-	public GrammarBasedRegression(final List<Sample<Double>> samples) {
+	public GrammaticalScriptEvolution(final List<Sample<Double>> samples) {
 		this(Sampling.of(samples));
 	}
 
 	@Override
-	public Codec<Tree<Op<Double>, ?>, IntegerGene> codec() {
+	public Codec<ScriptFunction, IntegerGene> codec() {
 		return CODEC;
 	}
 
 	@Override
-	public Function<Tree<Op<Double>, ?>, Double> fitness() {
-		return program -> {
-			final Result<Double> result = _sampling.eval(program);
-			return ERROR.apply(program, result.calculated(), result.expected());
+	public Function<ScriptFunction, Double> fitness() {
+		return script -> {
+			final Result<Double> result = _sampling.eval(args -> {
+				final var value = (Double)script.apply(Map.of("x", args[0]));
+				return value != null ? value : Double.NaN;
+			});
+			return ERROR.apply(TreeNode.of(), result.calculated(), result.expected());
 		};
 	}
 
 	public static void main(final String[] args) {
 		// 4*x^3 - 3*x^2 + x
-		final var regression = new GrammarBasedRegression(SAMPLES);
+		final var regression = new GrammaticalScriptEvolution(SAMPLES);
 
 		final Engine<IntegerGene, Double> engine = Engine.builder(regression)
 			.alterers(new SwapMutator<>(), new SinglePointCrossover<>())
@@ -133,11 +135,14 @@ public class GrammarBasedRegression
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final Phenotype<IntegerGene, Double> best = result.bestPhenotype();
-		final Tree<Op<Double>, ?> program = CODEC.decode(best.genotype());
+		final ScriptFunction program = CODEC.decode(best.genotype());
 
 		System.out.println("Generations: " + result.totalGenerations());
-		System.out.println("Function:    " + new MathExpr(program).simplify());
+		System.out.println("Function:    " + program);
 		System.out.println("Error:       " + regression.fitness().apply(program));
 	}
 
 }
+
+
+
