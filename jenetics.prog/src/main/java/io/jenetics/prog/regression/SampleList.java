@@ -20,12 +20,14 @@
 package io.jenetics.prog.regression;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -102,9 +104,16 @@ final class SampleList<T>
 
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
+		requireNonNull(program);
+		return eval(args -> Program.eval(program, args));
+	}
+
+	@Override
+	public Result<T> eval(final Function<? super T[], ? extends T> function) {
+		requireNonNull(function);
 		@SuppressWarnings("unchecked")
 		final T[] calculated = Stream.of(_arguments)
-			.map(args -> Program.eval(program, args))
+			.map(function)
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 
 		return new Result<>(calculated, _results);
