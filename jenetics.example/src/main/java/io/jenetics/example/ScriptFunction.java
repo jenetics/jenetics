@@ -47,11 +47,11 @@ public final class ScriptFunction {
 		_script = requireNonNull(script);
 		_engine = requireNonNull(engine);
 
-		if (_engine instanceof Compilable compilable) {
+		if (_engine instanceof Compilable compiler) {
 			try {
-				_compiled = compilable.compile(_script);
+				_compiled = compiler.compile(_script);
 			} catch (ScriptException e) {
-				throw new RuntimeException(e);
+				throw new ScriptFunctionException(e);
 			}
 		} else {
 			_compiled = null;
