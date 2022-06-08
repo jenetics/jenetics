@@ -59,14 +59,14 @@ public final class ScriptFunction {
 	}
 
 	public Object apply(final Map<String, Object> bindings) {
-		final var sb = new SimpleBindings();
-		sb.putAll(bindings);
+		final var bnd = _engine.createBindings();
+		bnd.putAll(bindings);
 
 		try {
 			if (_compiled != null) {
-				return _compiled.eval(sb);
+				return _compiled.eval(bnd);
 			} else {
-				return _engine.eval(_script, sb);
+				return _engine.eval(_script, bnd);
 			}
 		} catch (ScriptException e) {
 			return null;

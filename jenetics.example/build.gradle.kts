@@ -34,6 +34,7 @@ dependencies {
 	implementation(libs.jexl)
 	implementation(libs.jpx)
 	implementation(libs.mvel)
+	implementation(libs.nashorn)
 	implementation(libs.prngine)
 	implementation(libs.rxjava)
 

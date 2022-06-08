@@ -40,6 +40,7 @@ dependencyResolutionManagement {
 			library("jexl", "org.apache.commons:commons-jexl3:3.2.1")
 			library("jpx", "io.jenetics:jpx:3.0.1")
 			library("mvel", "org.mvel:mvel2:2.4.14.Final")
+			library("nashorn", "org.openjdk.nashorn:nashorn-core:15.4")
 			library("prngine", "io.jenetics:prngine:2.0.0")
 			library("rxjava", "io.reactivex.rxjava2:rxjava:2.2.21")
 			library("testng", "org.testng:testng:7.4.0")
