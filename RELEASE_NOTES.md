@@ -1,5 +1,34 @@
 ## Release notes
 
+### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
+
+#### Improvements
+
+* [#813](https://github.com/jenetics/jenetics/issues/813): Re-implementation of `MathExpr` class. Replace ad-hoc parsing implementation.
+* [#815](https://github.com/jenetics/jenetics/issues/815): Implement Grammatical-Evolution.
+* [#820](https://github.com/jenetics/jenetics/issues/820): Additional `BitChromosome` methods: `and`, `or`, `xor`, `not`, `shiftRight`, `shiftLeft`.
+* [#833](https://github.com/jenetics/jenetics/issues/833): Implement `Tree::reduce` function. Allows to write code as follows:
+```java
+final Tree<String, ?> formula = TreeNode.parse(
+    "add(sub(6, div(230, 10)), mul(5, 6))",
+    String::trim
+);
+final double result = formula.reduce(new Double[0], (op, args) ->
+    switch (op) {
+        case "add" -> args[0] + args[1];
+        case "sub" -> args[0] - args[1];
+        case "mul" -> args[0] * args[1];
+        case "div" -> args[0] / args[1];
+        default -> Double.parseDouble(op);
+    }
+);
+```
+
+#### Bugs
+
+* [#831](https://github.com/jenetics/jenetics/issues/831): Error while parsing parentheses trees.
+* [#836](https://github.com/jenetics/jenetics/issues/836): Fix `BitChromosome`(`Test`).
+
 ### [7.0.0](https://github.com/jenetics/jenetics/releases/tag/v7.0.0)
 
 #### Improvements
