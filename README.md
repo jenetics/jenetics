@@ -13,7 +13,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.0.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.1.0.pdf)).
 
 ## Build Jenetics
 
@@ -30,7 +30,7 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 The following projects/modules are also published to Maven.
 
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
-* **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA). 
+* **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA) and doing Grammatical Evolution (GE). 
 * **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
 * **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
 
