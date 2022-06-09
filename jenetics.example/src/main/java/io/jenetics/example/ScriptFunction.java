@@ -27,10 +27,9 @@ import javax.script.Compilable;
 import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import javax.script.SimpleBindings;
 
 /**
- * Helper class which executes a given scripted function. It executs the script
+ * Helper class which executes a given scripted function. It executes the script
  * with the given {@link ScriptEngine}. This class is thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
