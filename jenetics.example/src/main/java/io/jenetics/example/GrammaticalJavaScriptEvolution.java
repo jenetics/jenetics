@@ -64,7 +64,7 @@ public class GrammaticalJavaScriptEvolution
 {
 
 	// Create the script engine of your choice.
-	public static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager()
+	private static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager()
 		.getEngineByName("nashorn");
 
 	// Define a grammar which creates a valid script for the script engine.
@@ -81,7 +81,7 @@ public class GrammaticalJavaScriptEvolution
 	);
 
 	private static final Codec<ScriptFunction, IntegerGene> CODEC = Mappers
-		// Creating a GE mapper/codec: `Codec<List<Terminal<String>, IntegerGene>`
+		// Creating a GE mapper/codec: `Codec<ScriptFunction, IntegerGene>`
 		.multiIntegerChromosomeMapper(
 			GRAMMAR,
 			// The length of the chromosome is 25 times the length of the
