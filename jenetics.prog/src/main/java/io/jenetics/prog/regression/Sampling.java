@@ -19,7 +19,8 @@
  */
 package io.jenetics.prog.regression;
 
-import static java.util.Objects.requireNonNull;
+import java.util.List;
+import java.util.function.Function;
 
 import io.jenetics.ext.util.Tree;
 
@@ -30,7 +31,7 @@ import io.jenetics.prog.op.Op;
  * a given evolved <em>program</em>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version 7.1
  * @since 6.0
  */
 @FunctionalInterface
@@ -65,6 +66,47 @@ public interface Sampling<T> {
 	 * @return the evaluated sample result. May be {@code null} if the sampling
 	 *         is empty and contains no sample points.
 	 */
+	//@Deprecated(since = "7.1", forRemoval = true)
 	Result<T> eval(final Tree<? extends Op<T>, ?> program);
+
+	/**
+	 * Evaluates the given {@code function} tree with its sample points. The
+	 * returned result object may be {@code null} if no sample point has been
+	 * added to the <em>sampling</em> when calling the {@code eval} method.
+	 *
+	 * @param function the function to evaluate
+	 * @return the evaluated sample result. May be {@code null} if the sampling
+	 *         is empty and contains no sample points.
+	 */
+	default Result<T> eval(final Function<? super T[], ? extends T> function) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Create a new sampling object from the given sample points.
+	 *
+	 * @since 7.1
+	 *
+	 * @param samples the sample points
+	 * @param <T> the sample type
+	 * @return a new sampling object
+	 */
+	static <T> Sampling<T> of(final List<? extends Sample<T>> samples) {
+		return new SampleList<>(samples);
+	}
+
+	/**
+	 * Create a new sampling object from the given sample points.
+	 *
+	 * @since 7.1
+	 *
+	 * @param samples the sample points
+	 * @param <T> the sample type
+	 * @return a new sampling object
+	 */
+	@SafeVarargs
+	static <T> Sampling<T> of(final Sample<T>... samples) {
+		return Sampling.of(List.of(samples));
+	}
 
 }

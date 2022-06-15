@@ -32,9 +32,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -54,7 +56,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version 7.1
  * @since 3.9
  */
 public final class FlatTreeNode<V>
@@ -67,6 +69,9 @@ public final class FlatTreeNode<V>
 	 * The flattened tree nodes.
 	 */
 	private record Nodes(Object[] values, int[] childOffsets, int[] childCounts) {
+		Nodes(final int size) {
+			this(new Object[size], new int[size], new int[size]);
+		}
 	}
 
 	@Serial
@@ -166,14 +171,14 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public Iterator<FlatTreeNode<V>> breadthFirstIterator() {
-		return _index == 0
+		return isRoot()
 			? new IntFunctionIterator<>(this::nodeAt, _nodes.values.length)
 			: FlatTree.super.breadthFirstIterator();
 	}
 
 	@Override
 	public Stream<FlatTreeNode<V>> breadthFirstStream() {
-		return _index == 0
+		return isRoot()
 			? IntStream.range(0, _nodes.values.length).mapToObj(this::nodeAt)
 			: FlatTree.super.breadthFirstStream();
 	}
@@ -207,6 +212,36 @@ public final class FlatTreeNode<V>
 	}
 
 	@Override
+	public <U> U reduce(
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
+	) {
+		requireNonNull(neutral);
+		requireNonNull(reducer);
+
+		@SuppressWarnings("unchecked")
+		final class Reducing {
+			private U reduce(final int index) {
+				return _nodes.childCounts[index] == 0
+					? reducer.apply((V)_nodes.values[index], neutral)
+					: reducer.apply((V)_nodes.values[index], children(index));
+			}
+			private U[] children(final int index) {
+				final U[] values = (U[])Array.newInstance(
+					neutral.getClass().getComponentType(),
+					_nodes.childCounts[index]
+				);
+				for (int i = 0; i < _nodes.childCounts[index]; ++i) {
+					values[i] = reduce(_nodes.childOffsets[index] + i);
+				}
+				return values;
+			}
+		}
+
+		return isEmpty() ? null : new Reducing().reduce(_index);
+	}
+
+	@Override
 	public int hashCode() {
 		return Tree.hashCode(this);
 	}
@@ -214,8 +249,8 @@ public final class FlatTreeNode<V>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof FlatTreeNode<?> other &&
-			(equals(other) || Tree.equals(other, this));
+			(obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
+			(obj instanceof Tree<?, ?> tree && Tree.equals(tree, this));
 	}
 
 	private boolean equals(final FlatTreeNode<?> tree) {
@@ -232,7 +267,7 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public int size() {
-		return _index == 0
+		return isRoot()
 			? _nodes.values.length
 			: countChildren(_index) + 1;
 	}
@@ -254,16 +289,22 @@ public final class FlatTreeNode<V>
 	 *
 	 * @param tree the source tree
 	 * @param <V> the tree value types
-	 * @return a new {@code FlatTreeNode} from the given {@code tree}
+	 * @return a {@code FlatTreeNode} from the given {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static <V> FlatTreeNode<V> ofTree(final Tree<? extends V, ?> tree) {
 		requireNonNull(tree);
 
+		if (tree instanceof FlatTreeNode<?> ft && ft.isRoot()) {
+			@SuppressWarnings("unchecked")
+			final var result = (FlatTreeNode<V>)ft;
+			return result;
+		}
+
 		final int size = tree.size();
 		assert size >= 1;
 
-		final var nodes = new Nodes(new Object[size], new int[size], new int[size]);
+		final var nodes = new Nodes(size);
 
 		int childOffset = 1;
 		int index = 0;
@@ -360,7 +401,7 @@ public final class FlatTreeNode<V>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		final FlatTreeNode<V> node = _index == 0
+		final FlatTreeNode<V> node = isRoot()
 			? this
 			: FlatTreeNode.ofTree(this);
 

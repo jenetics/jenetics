@@ -87,7 +87,7 @@ public final class TreeMatcher<V> {
 	/**
 	 * Return all matching <em>sub</em>-trees.
 	 *
-	 * @return all matching sub-trees
+	 * @return all matching subtrees
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public Stream<TreeMatchResult<V>> results() {

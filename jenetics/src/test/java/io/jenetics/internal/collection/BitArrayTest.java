@@ -19,6 +19,8 @@
  */
 package io.jenetics.internal.collection;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +163,45 @@ public class BitArrayTest {
 		return values.toArray(new Object[0][]);
 	}
 
+
+	@Test(dataProvider = "shiftLeftData")
+	public void shiftLeft(final String array, final int shift, final String shifted) {
+		final var bits = BitArray.of(array);
+		bits.shiftLeft(shift);
+		assertThat(bits.toString()).isEqualTo(shifted);
+	}
+
+	@DataProvider
+	public Object[][] shiftLeftData() {
+		return new Object[][] {
+			{"00000000001", 0, "00000000001"},
+			{"00000000001", 1, "00000000010"},
+			{"00000000001", 3, "00000001000"},
+			{"01000000001", 3, "00000001000"},
+			{"00100000001", 3, "00000001000"},
+			{"00010000001", 3, "10000001000"},
+			{"00010000001", 10, "10000000000"},
+			{"00010000001", 15, "00000000000"}
+		};
+	}
+
+	@Test(dataProvider = "shiftRightData")
+	public void shiftRight(final String array, final int shift, final String shifted) {
+		final var bits = BitArray.of(array);
+		bits.shiftRight(shift);
+		assertThat(bits.toString()).isEqualTo(shifted);
+	}
+
+	@DataProvider
+	public Object[][] shiftRightData() {
+		return new Object[][] {
+			{"00000000001", 0,  "00000000001"},
+			{"00000000010", 1,  "00000000001"},
+			{"00000001000", 3,  "00000000001"},
+			{"10000000000", 10,  "00000000001"},
+			{"01000000000", 15, "00000000000"}
+		};
+	}
 
 	@Test
 	public void fromShortStringWithLength() {

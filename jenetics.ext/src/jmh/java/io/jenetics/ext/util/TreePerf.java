@@ -25,35 +25,41 @@ import java.util.random.RandomGenerator;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.annotations.Warmup;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
-@State(Scope.Benchmark)
+@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Fork(value = 3)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
+@State(Scope.Benchmark)
 public class TreePerf {
 
 	@State(Scope.Benchmark)
 	public static class Trees {
-		Tree<?, ?> tree = newTree(4, new Random(123));
-		Tree<?, ?> flatTree = FlatTreeNode.ofTree(tree);
+		Tree<Integer, ?> tree = newTree(4, new Random(123));
+		Tree<Integer, ?> flatTree = FlatTreeNode.ofTree(tree);
 	}
 
 	private static TreeNode<Integer> newTree(final int levels, final RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 		return root;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new Trees().flatTree.size());
 	}
 
 	public static void fill(
@@ -93,17 +99,34 @@ public class TreePerf {
 		return trees.flatTree.breadthFirstStream().count();
 	}
 
-	public static void main(String[] args) throws RunnerException {
-		final Options opt = new OptionsBuilder()
-			.include(".*" + TreePerf.class.getSimpleName() + ".*")
-			.warmupIterations(3)
-			.measurementIterations(5)
-			.threads(1)
-			.forks(1)
-			.build();
-
-		new Runner(opt).run();
+	@Benchmark
+	public int reduce(final Trees trees) {
+		return trees.tree.reduce(new Integer[]{0}, TreePerf::sum);
 	}
+
+	@Benchmark
+	public int flatReduce(final Trees trees) {
+		return trees.flatTree.reduce(new Integer[]{0}, TreePerf::sum);
+	}
+
+	static int sum(final Integer zero, final Integer[] values) {
+		int value = zero;
+		for (var i : values) {
+			value += i;
+		}
+		return value;
+	}
+
+
+	/* 7.1
+Benchmark            Mode  Cnt     Score    Error  Units
+TreePerf.count       avgt   15  1398.861 ± 24.482  ns/op
+TreePerf.flatCount   avgt   15    27.249 ±  0.454  ns/op
+TreePerf.flatReduce  avgt   15  1174.845 ± 40.802  ns/op
+TreePerf.flatSize    avgt   15     3.361 ±  0.093  ns/op
+TreePerf.reduce      avgt   15  1237.930 ± 18.379  ns/op
+TreePerf.size        avgt   15   424.451 ±  5.099  ns/op
+	 */
 
 	/*
 Benchmark           Mode  Cnt     Score    Error  Units

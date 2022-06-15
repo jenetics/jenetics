@@ -127,7 +127,7 @@ tabs-within-sections
 \pdf_title "Jenetics"
 \pdf_author "Franz Wilhelmstötter"
 \pdf_subject "Genetic Algorithm"
-\pdf_keywords "research, artificial Intelligence, AI, bio-informatics, evolutionary algorithm, optimization, genetic algorithm, genetic programming, parallelized, algorithms, evolutionary, metaheuristics, stream, evolutionstream, evolution, machine learning"
+\pdf_keywords "research, artificial Intelligence, AI, bio-informatics, evolutionary algorithm, optimization, genetic algorithm, genetic programming, parallelized, algorithms, evolutionary, metaheuristics, stream, evolutionstream, evolution, machine learning, grammatical evolution, moo, multi-objective optimization"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -26771,10 +26771,6 @@ Example
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -27691,6 +27687,207 @@ g.
         (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
 \end_layout
 
+\begin_layout Subsubsection
+Tree reduction
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Tree-reduction"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!reduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Tree
+\family default
+ is a very mighty data structure.
+ It implements methods, which allows you to traverse and manipulate it.
+ One of these methods is the 
+\family typewriter
+Tree::reduce
+\family default
+ function, which traverses the tree in pre-order.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Tree<V, T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    default <U> U reduce(
+\end_layout
+
+\begin_layout Plain Layout
+
+        U[] neutral,
+\end_layout
+
+\begin_layout Plain Layout
+
+        BiFunction<? super V, ? super U[], ? extends U> reducer
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Tree::reduce-method"
+
+\end_inset
+
+Tree::reduce
+\family default
+ method
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Tree::reduce-method"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the signature of the 
+\family typewriter
+reduce
+\family default
+ method.
+ The 
+\family typewriter
+neutral
+\family default
+ array is used in the 
+\family typewriter
+reducer
+\family default
+ function for leaf elements.
+ After the reduction process, one element is returned, which might be 
+\family typewriter
+null
+\family default
+ for empty trees.
+ The following code snippet shows how to use the 
+\family typewriter
+Tree::reduce
+\family default
+ method for evaluating a simple arithmetic expression tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> formula = TreeNode.parse(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(sub(6,div(230,10)),mul(5,6))"
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+final double result = formula.reduce(new Double[0], (op, args) ->
+\end_layout
+
+\begin_layout Plain Layout
+
+    switch (op) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "add" -> args[0] + args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "sub" -> args[0] - args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "mul" -> args[0] * args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        case "div" -> args[0] / args[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        default -> Double.parseDouble(op);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The result of the reduced arithmetic tree will be 
+\begin_inset Formula $13.0$
+\end_inset
+
+, as expected.
+\end_layout
+
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
@@ -27784,6 +27981,16 @@ Rewrite rule
 
 \end_inset
 
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!rewrite rule
+\end_layout
+
+\end_inset
+
  A tree rewrite rule is a pair of terms (sub trees), 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
@@ -27854,6 +28061,16 @@ Rewrite system
 
 \end_inset
 
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!rewrite system
+\end_layout
+
+\end_inset
+
  A tree rewrite system is a set, 
 \begin_inset Formula $\mathfrak{\mathcal{R}}$
 \end_inset
@@ -27888,6 +28105,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Tree pattern
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree!pattern
 \end_layout
 
 \end_inset
@@ -31996,6 +32223,2360 @@ Factory
  and so on.
 \end_layout
 
+\begin_layout Subsection
+Grammatical evolution
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Grammatical-evolution"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammatical evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One of the difficulties when defining a codec
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for a given problem, is the creation of invalid solution candidates or
+ individuals.
+ Using constraints is one way of handling this problem, which is described
+ in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Another possibility is to assign bad fitness values to invalid individuals.
+ This might work to some degree, but at the cost of additional CPU and evolution
+ time.
+ In the best case, your codec is creating no invalid solutions at all.
+ Grammatical evolution (GE) can help you to achieve this.
+ GE was introduced by Michael O’Neill and Conor Ryan 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ryan1998grammatical,ONeil2003,Ryan2018"
+literal "false"
+
+\end_inset
+
+ for solving genetic programming (GP)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ problems.
+ Although the initial realm for GE was creating/evolving programs in arbitrary
+ languages, it is not restricted to this area.
+ GE can be used for every problems, where the problem domain can be expressed
+ as 
+\emph on
+sentences
+\emph default
+ of a context-free language (CFL)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Context-free_language
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/GrammaticalEvolution.svg
+	lyxscale 80
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Grammatical-evolution"
+
+\end_inset
+
+Grammatical evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+GE requires an additional 
+\emph on
+mapping
+\emph default
+ step for creating a sentence (program) from a given CFG.
+ Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Grammatical-evolution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the principal decoding process of GE.
+ A 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ or 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ determines the rules which are used for creating the sentences.
+ The grammar is usually given in Backus-Naur form (BNF).
+ The result is the construction of a syntactically correct program from
+ a binary string which can then be evaluated by a fitness function.
+ In the following sections, the building blocks of GE are described in a
+ greater detail.
+\end_layout
+
+\begin_layout Subsubsection
+Context-free grammar
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Context-free-grammar"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Context-free grammar
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CFG
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A context-free grammar (CFG)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Context-free_grammar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Greenlaw1998"
+literal "false"
+
+\end_inset
+
+ basically consists of a finite set of grammar rules.
+ The grammar rules consists of two kind of symbols: 1) the terminals, which
+ are the symbols of the alphabet underlying the languages, and 2) the 
+\emph on
+non
+\emph default
+-terminals, which behave like variables ranging over strings of terminals.
+ A rule is of the form 
+\begin_inset Formula $A\rightarrow\alpha$
+\end_inset
+
+, where 
+\begin_inset Formula $A$
+\end_inset
+
+ is a non-terminal, and 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is a terminal or non-terminal symbol.
+ CFGs are used to 
+\emph on
+generate
+\emph default
+ strings (sentences), rather than 
+\emph on
+recognize
+\emph default
+ strings.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(CFG):
+\series default
+ A context-free grammar, 
+\begin_inset Formula $G$
+\end_inset
+
+, is defined by the tuple 
+\begin_inset Formula $G=\left(\mathcal{N},\mathcal{T},\mathcal{R},\mathcal{S}\right)$
+\end_inset
+
+, where
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+ is a finite set of 
+\emph on
+non-terminal
+\emph default
+ symbols called the 
+\emph on
+variables
+\emph default
+.
+ Every symbol represents a different type of phrase in the sentence.
+ 
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\mathcal{T}$
+\end_inset
+
+ is a finite set of 
+\emph on
+terminal
+\emph default
+ symbols, not element of 
+\begin_inset Formula $\mathcal{N}$
+\end_inset
+
+.
+ Terminals make up the actual content of the sentences defined by 
+\begin_inset Formula $G$
+\end_inset
+
+.
+ The terminals are the alphabet of the language.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\mathcal{R}$
+\end_inset
+
+ is a finite relation in 
+\begin_inset Formula $\mathcal{N}\times\left(\mathcal{N}\cup\mathcal{T}\right)^{*}$
+\end_inset
+
+.
+ Members of 
+\begin_inset Formula $\mathcal{R}$
+\end_inset
+
+ are the rewrite rules of the grammar.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\mathcal{S}\in\mathcal{N}$
+\end_inset
+
+ is the start symbol and represents the whole sentence.
+\end_layout
+
+\begin_layout Subsubsection
+Backus-Naur form
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Backus-Naur-form"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Backus-Naur form
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+BNF
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Backus-Naur form (BNF)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Backus-Naur_form
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is a traditional form to represent a CFG.
+ It is used to formally define the grammar of a language, so that there
+ is no ambiguity as to what is allowed and what is not.
+ BNF uses a range of symbols and expressions to create production rules.
+ The names of the production rules are put within angle brackets, 
+\family typewriter
+<...>
+\family default
+, and the alternatives are separated by vertical bars, 
+\family typewriter
+|
+\family default
+.
+ A simple BNF production rule might look like this:
+\end_layout
+
+\begin_layout LyX-Code
+<num> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+In this example 
+\family typewriter
+num
+\family default
+ is the name of the production rule and the values 
+\family typewriter
+1..9
+\family default
+ represent the terminal symbols, associated with the rule.
+ If a non-terminal symbol appears on the right hand side, it means that
+ there will be another production rule (or a set of rules) to define its
+ replacement.
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout Standard
+This shows that 
+\family typewriter
+exp
+\family default
+ is either a 
+\family typewriter
+num
+\family default
+ or 
+\family typewriter
+var
+\family default
+ or two 
+\family typewriter
+expr
+\family default
+, concatenated by an 
+\family typewriter
+op
+\family default
+.
+ All components are non-terminal, therefore further production rules are
+ required.
+\end_layout
+
+\begin_layout LyX-Code
+<op>  ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+<var> ::= x | y
+\end_layout
+
+\begin_layout Standard
+This two rules defines four 
+\family typewriter
+op
+\family default
+ symbols, 
+\begin_inset Formula $\left\{ \mathsf{\mathtt{x,-,*,/}}\right\} $
+\end_inset
+
+, and two 
+\family typewriter
+var
+\family default
+ terminals, 
+\begin_inset Formula $\left\{ \mathtt{x,y}\right\} $
+\end_inset
+
+.
+ Production rules for the syntax of a language might come as a large set
+ of BNF statements that specify how every aspect of the language is defined.
+ Every non-terminal symbol on the right hand side of a production rule,
+ must have a rule that has the symbol on the left side.
+ This continues until everything can be specified in relation to terminal
+ symbols.
+ Here is the whole grammar, which will define a language for simple arithmetic
+ expressions:
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr> 
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y 
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+The symbol of the first rule, 
+\family typewriter
+expr
+\family default
+, will automatically serve as start symbol of the grammar, 
+\begin_inset Formula $G$
+\end_inset
+
+, defined by the given BNF.
+\end_layout
+
+\begin_layout Subsubsection
+Sentence generation
+\end_layout
+
+\begin_layout Standard
+After we have defined the CFG, we want to create a valid (random) sentences
+ from our grammar.
+ To do so, we will introduce a numbering schema for the alternative expressions
+ for every rule.
+ Such a schema, for our simple arithmetic grammar is shown below:
+\end_layout
+
+\begin_layout LyX-Code
+            
+\emph on
+[0]     [1]           [2]
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3]
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1]
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3] [4] [5] [6] [7] [8]
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Enumerate
+\begin_inset Formula $L\leftarrow\left[\mathcal{S}\right]$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Initialize the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, with the start symbol, 
+\begin_inset Formula $\mathcal{S}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $n\leftarrow L\left[\min\left\{ i\right\} \right]\in\mathcal{N}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Pick the leftmost non-terminal symbol, 
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]$
+\end_inset
+
+, from the current sentence list, 
+\begin_inset Formula $L$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $E\leftarrow R\left(n\right)\left[\textrm{rand}\right]$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Get the rule, 
+\begin_inset Formula $R\left(n\right)$
+\end_inset
+
+, for the chosen non-terminal, 
+\begin_inset Formula $n$
+\end_inset
+
+, and select a random rule alternative, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+ 
+\begin_inset Formula $E$
+\end_inset
+
+ will contain one of more terminal and/or non-terminal symbols.
+ 
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]\leftarrow E$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Replace the chosen variable, 
+\begin_inset Formula $n$
+\end_inset
+
+, with the selected symbols, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Repeat steps 
+\begin_inset Formula $2..4$
+\end_inset
+
+ until the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, contains only terminals.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Leftmost-derivation"
+
+\end_inset
+
+Leftmost derivation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following example shows snapshots of the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, for a possible sentence creation run, according to the described leftmost
+ derivation algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [<expr>]
+\family default
+.
+ Initialize the sentence list with the start symbol.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [<expr>, <op>, <expr>]
+\family default
+.
+ Select the first non-terminal symbol in the list, 
+\family typewriter
+<expr>
+\family default
+, and replace it with an randomly chosen rule alternative.
+ Alternative 
+\family typewriter
+[2]
+\family default
+, 
+\family typewriter
+<expr> <op> <expr>
+\family default
+, is chosen and replaces the variable 
+\family typewriter
+<expr>
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [<num>, <op>, <expr>]
+\family default
+.
+ Replacing the first 
+\family typewriter
+<expr>
+\family default
+ with alternative 
+\family typewriter
+[0]
+\family default
+, 
+\family typewriter
+<num>
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, <op>, <expr>]
+\family default
+.
+ Replacing 
+\family typewriter
+<num>
+\family default
+ with 5.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, <expr>]
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, <var>]
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+L = [5, -, x]
+\end_layout
+
+\begin_layout Standard
+After the 6
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+th
+\end_layout
+
+\end_inset
+
+ iteration the symbol list contains only terminal symbols and the generation
+ process stops.
+ If we convert the symbol list into a string, we get an algebraic expression,
+ 
+\begin_inset Formula $5-x$
+\end_inset
+
+, which is an element of the CFL, defined by our simple CFG.
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Enumerate
+\begin_inset Formula $L\leftarrow\left[\mathcal{S}\right]$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Initialize the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, with the start symbol, 
+\begin_inset Formula $\mathcal{S}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $n\leftarrow L\left[\max\left\{ i\right\} \right]\in\mathcal{N}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Pick the rightmost non-terminal symbol, 
+\begin_inset Formula $L\left[\max\left\{ i\right\} \right]$
+\end_inset
+
+, from the current sentence list, 
+\begin_inset Formula $L$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $E\leftarrow R\left(n\right)\left[\textrm{rand}\right]$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Get the rule, 
+\begin_inset Formula $R\left(n\right)$
+\end_inset
+
+, for the chosen non-terminal, 
+\begin_inset Formula $n$
+\end_inset
+
+, and select a random rule alternative, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+ 
+\begin_inset Formula $E$
+\end_inset
+
+ will contain one of more terminal and/or non-terminal symbols.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $L\left[\min\left\{ i\right\} \right]\leftarrow E$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Replace the chosen variable, 
+\begin_inset Formula $n$
+\end_inset
+
+, with the selected symbols, 
+\begin_inset Formula $E$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+Repeat steps 
+\begin_inset Formula $2..4$
+\end_inset
+
+ until the symbol list, 
+\begin_inset Formula $L$
+\end_inset
+
+, contains only terminals.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Rightmost-derivation"
+
+\end_inset
+
+Rightmost derivation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the rightmost derivation method, which is a variation of the leftmost
+ derivation algorithm.
+ The only difference is, that instead of the processing the symbol list
+ from left to right, it is processed from right to left.
+\end_layout
+
+\begin_layout Subsubsection
+Mapping
+\end_layout
+
+\begin_layout Standard
+Now we have everything in place to do the last step.
+ How to create a sentence from a given grammar? The original paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ryan1998grammatical"
+literal "false"
+
+\end_inset
+
+ uses a bit string for creating a sentence from a given chromosome and called
+ this process 
+\emph on
+mapping
+\emph default
+.
+ Since we have already described how to create a sentence from a grammar,
+ we must describe the last missing part of the process, and this missing
+ part is the selection of alternative symbols from a given rule.
+ This is step three in the described algorithms 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Instead of selecting a 
+\emph on
+random
+\emph default
+ alternative, the index of the selected alternative must be determined by
+ the given chromosome.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/GrammaticalEvolutionMapping.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GE-mapping"
+
+\end_inset
+
+GE mapping
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:GE-mapping"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows he GE mapping process.
+ The binary string is split into 8-bit junks and interpreted as unsigned
+ integers, with vales in the range of 
+\begin_inset Formula $\left[0,256\right)$
+\end_inset
+
+.
+ This 8-bit junks are called 
+\emph on
+codons
+\emph default
+.
+ Whenever a new rule alternative must be selected, a new codon is read from
+ the chromosome.
+ A simple modulo operation is used to get an index within the desired range.
+ If more codons are needed during the mapping process than available in
+ the input chromosome, the reading of the codons is wrapped over and starts
+ at the beginning of the chromosome again.
+\end_layout
+
+\begin_layout Subsubsection
+Implementing classes
+\end_layout
+
+\begin_layout Standard
+This section describes the main classes which are part of the implementation
+ of the GE.
+ All the described classes are part of the 
+\family typewriter
+io\SpecialChar softhyphen
+.jene\SpecialChar softhyphen
+tics\SpecialChar softhyphen
+.ext
+\family default
+ module and reside in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jene\SpecialChar softhyphen
+tics\SpecialChar softhyphen
+.ext.grammar
+\family default
+ package.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Cfg
+\family default
+ This class represents a context-free grammar as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Context-free-grammar"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Bnf
+\family default
+ Although it is possible to create instances of the 
+\family typewriter
+Cfg
+\family default
+ class manually, it is in most cases easier to define it as BNF string.
+ This class contains methods for parsing and formatting CFGs from and to
+ BNF strings.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+SymbolIndex
+\family default
+ The 
+\family typewriter
+SymbolIndex
+\family default
+ interface defines the strategy, which alternative symbols of a given rule
+ are selected during the sentence generation process.
+ The classical algorithm uses codons, encoded in an binary string.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Codons
+\family default
+ This class is an implementation of the classical symbol selection algorithms
+ as described in the original paper.
+ It implements the 
+\family typewriter
+Sym\SpecialChar softhyphen
+bol\SpecialChar softhyphen
+In\SpecialChar softhyphen
+dex
+\family default
+ interface.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Generator
+\family default
+ The 
+\family typewriter
+Generator
+\family default
+ interface is an abstraction of the sentence generation algorithm as such
+ as algorithm 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Leftmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "alg:Rightmost-derivation"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+Mappings
+\family default
+ The 
+\family typewriter
+Mappings
+\family default
+ class contains factory methods for creating different mapping strategies.
+ Since the mapping process, as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:GE-mapping"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, is implemented as 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, the factory methods will return 
+\family typewriter
+Codec
+\family default
+ instances for the 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ and 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mosome
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Let's start with the 
+\family typewriter
+Cfg
+\family default
+ class and how to create grammars.
+ The 
+\family typewriter
+Cfg
+\family default
+ class comes with a set of factory methods, which lets you create 
+\family typewriter
+Cfg
+\family default
+ objects quite easily.
+ Our already known arithmetic expression grammar can be created with the
+ following code.
+ The used factory methods, 
+\family typewriter
+N
+\family default
+, 
+\family typewriter
+T
+\family default
+, 
+\family typewriter
+E
+\family default
+, 
+\family typewriter
+R
+\family default
+, were statically imported.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Cfg<String> cfg = Cfg.of(     
+\end_layout
+
+\begin_layout Plain Layout
+
+    R("expr",
+\end_layout
+
+\begin_layout Plain Layout
+
+        E(N("num")), E(N("var")),
+\end_layout
+
+\begin_layout Plain Layout
+
+        E(N("expr"), N("op"), N("expr"))
+\end_layout
+
+\begin_layout Plain Layout
+
+    ),
+\end_layout
+
+\begin_layout Plain Layout
+
+    R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
+\end_layout
+
+\begin_layout Plain Layout
+
+    R("var", E(T("x")), E(T("y"))),
+\end_layout
+
+\begin_layout Plain Layout
+
+    R("num",
+\end_layout
+
+\begin_layout Plain Layout
+
+        E(T("1")), E(T("2")), E(T("3")),
+\end_layout
+
+\begin_layout Plain Layout
+
+        E(T("4")), E(T("5")), E(T("6")), 
+\end_layout
+
+\begin_layout Plain Layout
+
+        E(T("7")), E(T("8")), E(T("9"))
+\end_layout
+
+\begin_layout Plain Layout
+
+    )
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+As alternative, the above CFG can also been creating via a string in BNF
+ form, as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Backus-Naur-form"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The code snippet below shows how to do this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Cfg<String> cfg = Bnf.parse("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    <expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <op>   ::= + | - | * | /
+\end_layout
+
+\begin_layout Plain Layout
+
+    <var>  ::= x | y
+\end_layout
+
+\begin_layout Plain Layout
+
+    <num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ interface is responsible for selecting the index of the rule alternative
+ to choose.
+ The reason for this interface is to decouple the selection algorithm from
+ the data structure, which determines the selection; it should decouple
+ the algorithm from the underlying 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ or 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
+public interface SymbolIndex {
+\end_layout
+
+\begin_layout Plain Layout
+
+    int next(Cfg.Rule<?> rule, int bound);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:SymbolIndex-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+SymbolIndex
+\end_layout
+
+\end_inset
+
+SymbolIndex
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:SymbolIndex-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the single method of the 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ interface.
+ It takes the rule, for which to select the alternatives and the desired
+ index bounds and returns the selected symbol index.
+ The 
+\family typewriter
+rule
+\family default
+ parameter of the next function allows to use different index selection
+ strategies, or different index sources, for the different rules.
+ This interface makes it possible to let the sentence creation to be controlled
+ by an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ instead the classical bit string.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Codons
+\family default
+ class implements the 
+\family typewriter
+Symbol\SpecialChar softhyphen
+Index
+\family default
+ interface and can be created from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ and 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ instances.
+ 
+\family typewriter
+Codons
+\family default
+ created from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ gives you an implementation of the classic symbol selection algorithm.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Create codons backed up by binary string.
+\end_layout
+
+\begin_layout Plain Layout
+
+var bch = BitChromosome.of(100*8);
+\end_layout
+
+\begin_layout Plain Layout
+
+var bcodons = Codons.ofBitGenes(bch);
+\end_layout
+
+\begin_layout Plain Layout
+
+// Creadte codons backed up by integer string.
+\end_layout
+
+\begin_layout Plain Layout
+
+var ich = IntegerChromosome.of(IntRange.of(0, 256), 100);
+\end_layout
+
+\begin_layout Plain Layout
+
+var icodons = Codons.ofIntegerGenes(ich);
+\end_layout
+
+\end_inset
+
+The code snipped above shows two ways for creating essentially the same
+ codons.
+ In the first variant, the codons are read from a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ with the length of 800, which results in 100 different indexes readable
+ from the created 
+\family typewriter
+Cod\SpecialChar softhyphen
+ons
+\family default
+ object.
+ In the second variant an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+, with a value range of 
+\begin_inset Formula $\left[0,256\right)$
+\end_inset
+
+ and a length of 100, is used for the 
+\family typewriter
+Cod\SpecialChar softhyphen
+ons
+\family default
+ object.
+ Using an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ instead of a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ gives you a greater flexibility, as it allows you to specify an explicit
+ range for the codon values.
+\end_layout
+
+\begin_layout Standard
+Implementations of the functional 
+\family typewriter
+Generator
+\family default
+ interface are responsible for creating sentences from a given grammar.
+ It takes a 
+\family typewriter
+Cfg
+\family default
+ object as input and creates a generic result object of type 
+\family typewriter
+T
+\family default
+.
+ This genericity lets you use the same interface for different result type,
+ like 
+\family typewriter
+List<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+ or 
+\family typewriter
+Tree<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>, ?>
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
+public interface Generator<T, R> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    R generate(Cfg<? extends T> cfg);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Generator-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Generator
+\end_layout
+
+\end_inset
+
+Generator
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Generator-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the definition of the 
+\family typewriter
+Gene\SpecialChar softhyphen
+rator
+\family default
+ interface.
+ It takes a 
+\family typewriter
+Cfg
+\family default
+ object as input and returns the created result sentence of type 
+\family typewriter
+R
+\family default
+.
+ The kind of the created result is not determined by interfaces.
+ It can be a random instance of the input grammar, a reproducible, deterministic
+ result, or even always the same result.
+ It is the responsibility of the implementations to determine which kind
+ of result to return.
+ The reason for this is, not make assumptions about the sentence creation
+ and bake this assumptions into the API; this avoid a leaky abstraction.
+ 
+\end_layout
+
+\begin_layout Standard
+There are currently two implementation of the 
+\family typewriter
+Gene\SpecialChar softhyphen
+rator
+\family default
+ interface: 1) the 
+\family typewriter
+Sen\SpecialChar softhyphen
+tence\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+, which generates a list of terminal symbols (sentences) from a given grammar,
+ and 2) the 
+\family typewriter
+Deri\SpecialChar softhyphen
+vat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+, generating a derivation tree, or parse tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Define sentence generator for creating random sentences.
+\end_layout
+
+\begin_layout Plain Layout
+
+var generator = new SentenceGenerator<String>(
+\end_layout
+
+\begin_layout Plain Layout
+
+    SymbolIndex.of(RandomGenerator.getDefault()),
+\end_layout
+
+\begin_layout Plain Layout
+
+    1_000
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+// Create random sentence for given CFG.
+\end_layout
+
+\begin_layout Plain Layout
+
+List<Cfg.Terminal<String>> sentence = generator.generate(cfg);
+\end_layout
+
+\begin_layout Plain Layout
+
+String string = sentence.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Cfg.Symbol::name)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(Collectors.joining());
+\end_layout
+
+\end_inset
+
+In the code snippet above you can see how to create a 
+\family typewriter
+Sen\SpecialChar softhyphen
+tence\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+ which will create random sentences with a maximal length of 1000.
+ The generated sentence will be a list of terminal symbols.
+ But it is quite easy to convert it to a string.
+ The 
+\family typewriter
+Deri\SpecialChar softhyphen
+vat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+rator
+\family default
+ work can be used similarly.
+ Instead of a list of terminals, it creates a 
+\family typewriter
+Tree<\SpecialChar softhyphen
+Sym\SpecialChar softhyphen
+bol<\SpecialChar softhyphen
+String>, ?>
+\family default
+ instead.
+\end_layout
+
+\begin_layout Standard
+The factory methods of the 
+\family typewriter
+Mappings
+\family default
+ class puts it all together and let you easily specify the needed parts
+ for the mapping process.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ already has an interface for expressing such a mapping process, the 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ interface.
+ So no additional interface or class was introduce and the 
+\family typewriter
+Mappings
+\family default
+ factories will return 
+\family typewriter
+Codec
+\family default
+ instances instead.
+ In the code snippet below you can see how to create the classical mapping,
+ with a single 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ used for the rule symbol selection.
+ It is created via the 
+\family typewriter
+Map\SpecialChar softhyphen
+pers\SpecialChar softhyphen
+::sin\SpecialChar softhyphen
+gle\SpecialChar softhyphen
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some\SpecialChar softhyphen
+Map\SpecialChar softhyphen
+per
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, BitGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.singleBitChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Length of the used BitChromosome.
+\end_layout
+
+\begin_layout Plain Layout
+
+        100*8,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // The used generator, created from SymbolIndex.
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+For creating this codec you must specify the CFG, the length of the chromosome
+ and the sentence 
+\family typewriter
+Gen\SpecialChar softhyphen
+er\SpecialChar softhyphen
+ator
+\family default
+.
+ The 
+\family typewriter
+Gen\SpecialChar softhyphen
+era\SpecialChar softhyphen
+tor
+\family default
+ is given as factory function, which takes an 
+\family typewriter
+Sym\SpecialChar softhyphen
+bol\SpecialChar softhyphen
+In\SpecialChar softhyphen
+dex
+\family default
+ at input.
+ The codec, created in the code snippet below, is essentially the same as
+ created with the 
+\family typewriter
+Map\SpecialChar softhyphen
+pers\SpecialChar softhyphen
+::sin\SpecialChar softhyphen
+gle\SpecialChar softhyphen
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some\SpecialChar softhyphen
+Map\SpecialChar softhyphen
+per
+\family default
+ method.
+ It only differs in the way the codons are created.
+ Using an 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ as codons source gives you a greater flexibility and allows to change the
+ value range of the created codons.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, IntegerGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.singleIntegerChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Value range of created codons.
+\end_layout
+
+\begin_layout Plain Layout
+
+        IntRange.of(0, 256),
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Length of the used IntegerChromosome.
+\end_layout
+
+\begin_layout Plain Layout
+
+        100,
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Beside the classical mapping algorithms, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ contains also a novel method for genotype to sentence mapping.
+ This new approach uses a separate 
+\family typewriter
+Int\SpecialChar softhyphen
+eger\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ for every 
+\family typewriter
+Cfg.\SpecialChar softhyphen
+Rule
+\family default
+.
+ This allows to align the range of the chromosome with the number of alternative
+s of the rule.
+ With this property, no modulo operation is needed for creating codons with
+ the correct bounds.
+ No additional modulo operation means, that all alternatives have the same
+ probability for being selected, for randomly created chromosomes.
+ All rule alternatives have the same changes of being selected.
+ There is no accidental bias towards a given rule alternative or symbol.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<List<Terminal<String>>, IntegerGene> codec =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Mappers.multiIntegerChromosomeMapper(
+\end_layout
+
+\begin_layout Plain Layout
+
+        cfg,
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Chromosome length depends of number of alternatives.
+\end_layout
+
+\begin_layout Plain Layout
+
+        rule -> IntRange.of(rule.alternatives().size()*25),
+\end_layout
+
+\begin_layout Plain Layout
+
+        index -> new SentenceGenerator<>(index, 1_000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\end_inset
+
+The codes snippet above shows how to create a mapping, which uses a genotype
+ with one chromosome for every rule in the given CFG.
+ Our example CFG
+\end_layout
+
+\begin_layout LyX-Code
+            
+\emph on
+[0]     [1]           [2]
+\end_layout
+
+\begin_layout LyX-Code
+<expr> ::= <num> | <var> | <expr> <op> <expr>
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3]
+\end_layout
+
+\begin_layout LyX-Code
+<op>   ::= + | - | * | / 
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1]
+\end_layout
+
+\begin_layout LyX-Code
+<var>  ::= x | y
+\end_layout
+
+\begin_layout LyX-Code
+          
+\emph on
+[0] [1] [2] [3] [4] [5] [6] [7] [8]
+\end_layout
+
+\begin_layout LyX-Code
+<num>  ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end_layout
+
+\begin_layout Standard
+will use a 
+\family typewriter
+Genotype
+\family default
+ with the following structure for the encoding of the codons.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 3), 3*25), // <expr>
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 4), 4*25), // <op>
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 2), 2*25), // var
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntegerChromosome.of(IntRange.of(0, 9), 9*25)  // <num>
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+As you can see, the number range for each rule chromosome reflects the number
+ of available rule alternatives and the chromosome length can be expressed
+ as a multiple of the number of alternatives of the corresponding rule.
+ If you don't need this flexibility, it is of course also possible to use
+ constant chromosome lengths.
+ Just use a length function like this: 
+\family typewriter
+rule -> IntRange.of(1_000)
+\family default
+.
+\end_layout
+
 \begin_layout Section
 io.jenetics.prog
 \begin_inset CommandInset label
@@ -32098,7 +34679,7 @@ Gene
  Program\SpecialChar softhyphen
 Chromosome
 \family default
- pair, which serves as the main data-structure for genetic programs.
+ pair, which serves as the main data structure for genetic programs.
  A
 \family typewriter
  Program\SpecialChar softhyphen
@@ -40375,7 +42956,106 @@ Symbolic regression polynomial
 \end_layout
 
 \begin_layout Section
+Grammar based regression
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Grammar-based-regression"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar based regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar!Regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Grammar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The same example as in given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, can be done with grammatical evolution
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Grammatical-evolution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+ How to do this is shown in the following example.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/GrammarBasedRegression.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 DTLZ1
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:DTLZ1"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 

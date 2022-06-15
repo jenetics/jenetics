@@ -4,7 +4,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
 
-**Jenetics** is a **Genetic Algorithm**, **Evolutionary Algorithm**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
+**Jenetics** is a **Genetic Algorithm**, **Evolutionary Algorithm**, **Grammatical Evolution**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 **Other languages**
 
@@ -13,7 +13,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.0.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.1.0.pdf)).
 
 ## Build Jenetics
 
@@ -30,7 +30,7 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 The following projects/modules are also published to Maven.
 
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
-* **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA). 
+* **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA) and doing Grammatical Evolution (GE). 
 * **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
 * **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
 
@@ -241,29 +241,35 @@ Abdessamed Ouessai, Mohammed Salem, Antonio M. Mora. <a href="https://doi.org/10
 
 ## Release notes
 
-### [7.0.0](https://github.com/jenetics/jenetics/releases/tag/v7.0.0)
+### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
 
 #### Improvements
 
-* [#632](https://github.com/jenetics/jenetics/issues/632): Convert data classes to `records`.
-* [#696](https://github.com/jenetics/jenetics/issues/693): Convert libraries to JPMS modules.
-* [#715](https://github.com/jenetics/jenetics/issues/715): Improve `BitChromosome`.
-* [#762](https://github.com/jenetics/jenetics/issues/762): **Breaking change** Update to Java 17.
-* [#767](https://github.com/jenetics/jenetics/issues/767): **Incubator** - Grammar-based evolution.
-* [#773](https://github.com/jenetics/jenetics/issues/773): **Incubator** - Simplify and unify parsing code for `MathExpr` class.
-* [#785](https://github.com/jenetics/jenetics/issues/785): Using `RandomGenerator` instead of `Random` class.
-* [#787](https://github.com/jenetics/jenetics/issues/787): **Breaking change** - Change upper limit of `Integer`/`LongeGenes` from _inclusively_ to _exclusively_.
-* [#789](https://github.com/jenetics/jenetics/issues/789): Make `AbstractChromosome` non-`Serializable`.
-* [#796](https://github.com/jenetics/jenetics/issues/796): Use `InstantSource` instead of `Clock` for measuring evolution durations.
-* [#798](https://github.com/jenetics/jenetics/issues/798): Performance improve of _subset_ creation method.
-* [#801](https://github.com/jenetics/jenetics/issues/801): Introduce `Self` interface.
-* [#816](https://github.com/jenetics/jenetics/issues/816): Add Sudoku example (by [alex-cornejo](https://github.com/alex-cornejo)).
+* [#813](https://github.com/jenetics/jenetics/issues/813): Re-implementation of `MathExpr` class. Replace ad-hoc parsing implementation.
+* [#815](https://github.com/jenetics/jenetics/issues/815): Implement Grammatical-Evolution.
+* [#820](https://github.com/jenetics/jenetics/issues/820): Additional `BitChromosome` methods: `and`, `or`, `xor`, `not`, `shiftRight`, `shiftLeft`.
+* [#833](https://github.com/jenetics/jenetics/issues/833): Implement `Tree::reduce` function. Allows to write code as follows:
+```java
+final Tree<String, ?> formula = TreeNode.parse(
+    "add(sub(6, div(230, 10)), mul(5, 6))",
+    String::trim
+);
+final double result = formula.reduce(new Double[0], (op, args) ->
+    switch (op) {
+        case "add" -> args[0] + args[1];
+        case "sub" -> args[0] - args[1];
+        case "mul" -> args[0] * args[1];
+        case "div" -> args[0] / args[1];
+        default -> Double.parseDouble(op);
+    }
+);
+```
 
 #### Bugs
 
-* [#791](https://github.com/jenetics/jenetics/issues/791): Fix possible overflow in Integer/LongGene mean method.
-* [#794](https://github.com/jenetics/jenetics/issues/794): Fix possible underflow in DoubleGene mean method.
-* [#803](https://github.com/jenetics/jenetics/issues/803): Bug checking Sample arity in class SampleList.
+* [#831](https://github.com/jenetics/jenetics/issues/831): Error while parsing parentheses trees.
+* [#836](https://github.com/jenetics/jenetics/issues/836): Fix `BitChromosome`(`Test`).
+
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

@@ -34,7 +34,7 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.ProxySorter;
 
-import io.jenetics.ext.internal.IntList;
+import io.jenetics.ext.internal.util.IntList;
 
 /**
  * Low-level utility methods for doing pareto-optimal calculations. This methods

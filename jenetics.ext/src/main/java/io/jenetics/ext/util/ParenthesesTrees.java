@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import io.jenetics.ext.internal.Escaper;
+import io.jenetics.ext.internal.util.Escaper;
 
 /**
  * Helper methods for creating parentheses tree strings.

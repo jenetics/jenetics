@@ -99,7 +99,7 @@ public final class PartialAlterer<
 				result.alterations()
 			);
 		} else {
-			return new AltererResult<>(population.asISeq(), 0);
+			return new AltererResult<>(population.asISeq());
 		}
 	}
 
