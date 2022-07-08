@@ -21,10 +21,13 @@ package io.jenetics.prog.regression;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 
@@ -123,6 +126,16 @@ public final class SampleBuffer<T> implements Sampling<T> {
 		final SampleList<T> snapshot = _snapshot;
 		return snapshot != null && !snapshot.isEmpty()
 			? snapshot.eval(program)
+			: null;
+	}
+
+	@Override
+	public Result<T> eval(final Function<? super T[], ? extends T> function) {
+		requireNonNull(function);
+
+		final SampleList<T> snapshot = _snapshot;
+		return snapshot != null && !snapshot.isEmpty()
+			? snapshot.eval(function)
 			: null;
 	}
 

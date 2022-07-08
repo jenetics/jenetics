@@ -34,7 +34,7 @@ import java.util.stream.LongStream;
  * class.
  * <pre>{@code
  * final var random = RandomGenerator.getDefault();
- * final var bi = new BigInteger(100, RandomAdapter.of(random)
+ * final var bi = new BigInteger(100, RandomAdapter.of(random));
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

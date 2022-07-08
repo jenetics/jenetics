@@ -23,8 +23,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 
-import java.time.Clock;
 import java.time.Duration;
+import java.time.InstantSource;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -153,7 +153,7 @@ public final class Limits {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static Predicate<Object>
-	byExecutionTime(final Duration duration, final Clock clock) {
+	byExecutionTime(final Duration duration, final InstantSource clock) {
 		return new ExecutionTimeLimit(duration, clock);
 	}
 

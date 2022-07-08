@@ -149,7 +149,7 @@ public class PartialAltererTest {
 			.collect(ISeq.toISeq());
 
 		final Alterer<DoubleGene, Double> alterer = PartialAlterer.of(
-			(pop, gen) -> new AltererResult<>(pop.asISeq(), 0),
+			(pop, gen) -> new AltererResult<>(pop.asISeq()),
 			1, 2
 		);
 

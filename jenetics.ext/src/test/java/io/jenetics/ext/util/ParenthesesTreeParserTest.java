@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.util.ParenthesesTreeParser.parse;
 
 import java.util.List;
@@ -41,12 +42,9 @@ public class ParenthesesTreeParserTest {
 	@Test(dataProvider = "tokens")
 	public void tokenize(final String tree, final String[] tokens) {
 		final List<Token> tokenize = ParenthesesTreeParser.tokenize(tree);
-		Assert.assertEquals(
-			tokenize.stream()
-				.map(Token::seq)
-				.toArray(String[]::new),
-			tokens
-		);
+
+		assertThat(tokenize.stream().map(Token::seq).toList())
+			.isEqualTo(List.of(tokens));
 	}
 
 	@DataProvider(name = "tokens")
@@ -57,8 +55,8 @@ public class ParenthesesTreeParserTest {
 			{"a\\\\", new String[]{"a\\\\"}},
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
-			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
-			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}}
+			{"a(b\\))", new String[]{"a", "(", "b\\)", ")"}},
+			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "\\(b\\)", ",", "c\\,", ")"}}
 		};
 	}
 
@@ -177,6 +175,14 @@ public class ParenthesesTreeParserTest {
 			{"a(b,c)d(e,f)"},
 			{"a(b,c),d(e,f)"}
 		};
+	}
+
+	@Test
+	public void parsingError_831() {
+		final var tree = TreeNode.of("fun")
+			.attach("(", "x", ",", "y", ")");
+
+		assertThat(TreeNode.parse(tree.toParenthesesString())).isEqualTo(tree);
 	}
 
 }

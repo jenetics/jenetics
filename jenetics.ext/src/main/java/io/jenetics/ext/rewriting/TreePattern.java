@@ -21,7 +21,7 @@ package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
-import static io.jenetics.ext.internal.Names.isIdentifier;
+import static io.jenetics.ext.internal.util.Names.isIdentifier;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -39,7 +39,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import io.jenetics.ext.internal.Escaper;
+import io.jenetics.ext.internal.util.Escaper;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
@@ -398,8 +398,8 @@ public final class TreePattern<V> implements Serializable {
 	 * A sealed interface, which constitutes the nodes of a pattern tree.
 	 * The only two implementations of this class are the {@link Var} and the
 	 * {@link Val} class. The {@link Var} class represents a placeholder for an
-	 * arbitrary sub-tree and the {@link Val} class stands for an arbitrary
-	 * concrete sub-tree.
+	 * arbitrary subtree and the {@link Val} class stands for an arbitrary
+	 * concrete subtree.
 	 *
 	 * @see Var
 	 * @see Val

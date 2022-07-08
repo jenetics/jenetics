@@ -1,5 +1,58 @@
 ## Release notes
 
+### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
+
+#### Improvements
+
+* [#813](https://github.com/jenetics/jenetics/issues/813): Re-implementation of `MathExpr` class. Replace ad-hoc parsing implementation.
+* [#815](https://github.com/jenetics/jenetics/issues/815): Implement Grammatical-Evolution.
+* [#820](https://github.com/jenetics/jenetics/issues/820): Additional `BitChromosome` methods: `and`, `or`, `xor`, `not`, `shiftRight`, `shiftLeft`.
+* [#833](https://github.com/jenetics/jenetics/issues/833): Implement `Tree::reduce` function. Allows to write code as follows:
+```java
+final Tree<String, ?> formula = TreeNode.parse(
+    "add(sub(6, div(230, 10)), mul(5, 6))",
+    String::trim
+);
+final double result = formula.reduce(new Double[0], (op, args) ->
+    switch (op) {
+        case "add" -> args[0] + args[1];
+        case "sub" -> args[0] - args[1];
+        case "mul" -> args[0] * args[1];
+        case "div" -> args[0] / args[1];
+        default -> Double.parseDouble(op);
+    }
+);
+```
+
+#### Bugs
+
+* [#831](https://github.com/jenetics/jenetics/issues/831): Error while parsing parentheses trees.
+* [#836](https://github.com/jenetics/jenetics/issues/836): Fix `BitChromosome`(`Test`).
+
+### [7.0.0](https://github.com/jenetics/jenetics/releases/tag/v7.0.0)
+
+#### Improvements
+
+* [#632](https://github.com/jenetics/jenetics/issues/632): Convert data classes to `records`.
+* [#696](https://github.com/jenetics/jenetics/issues/693): Convert libraries to JPMS modules.
+* [#715](https://github.com/jenetics/jenetics/issues/715): Improve `BitChromosome`.
+* [#762](https://github.com/jenetics/jenetics/issues/762): Apply new Java17 construct where useful.
+* [#767](https://github.com/jenetics/jenetics/issues/767): **Incubator** - Grammar-based evolution.
+* [#773](https://github.com/jenetics/jenetics/issues/773): **Incubator** - Simplify and unify parsing code for `MathExpr` class.
+* [#785](https://github.com/jenetics/jenetics/issues/785): Using `RandomGenerator` instead of `Random` class.
+* [#787](https://github.com/jenetics/jenetics/issues/787): **Breaking change** - Change upper limit of `Integer`/`LongeGenes` from _inclusively_ to _exclusively_.
+* [#789](https://github.com/jenetics/jenetics/issues/789): Make `AbstractChromosome` non-`Serializable`.
+* [#796](https://github.com/jenetics/jenetics/issues/796): Use `InstantSource` instead of `Clock` for measuring evolution durations.
+* [#798](https://github.com/jenetics/jenetics/issues/798): Performance improve of _subset_ creation method.
+* [#801](https://github.com/jenetics/jenetics/issues/801): Introduce `Self` interface.
+* [#816](https://github.com/jenetics/jenetics/issues/816): Add Sudoku example (by [alex-cornejo](https://github.com/alex-cornejo)).
+
+#### Bugs
+
+* [#791](https://github.com/jenetics/jenetics/issues/791): Fix possible overflow in Integer/LongGene mean method.
+* [#794](https://github.com/jenetics/jenetics/issues/794): Fix possible underflow in DoubleGene mean method.
+* [#803](https://github.com/jenetics/jenetics/issues/803): Bug checking Sample arity in class SampleList.
+
 ### [6.3.0](https://github.com/jenetics/jenetics/releases/tag/v6.3.0)
 
 #### Improvements

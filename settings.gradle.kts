@@ -33,14 +33,17 @@ pluginManagement {
 dependencyResolutionManagement {
 	versionCatalogs {
 		create("libs") {
-			library("assertj", "org.assertj:assertj-core:3.20.2")
+			library("assertj", "org.assertj:assertj-core:3.23.1")
 			library("commons-math", "org.apache.commons:commons-math3:3.6.1")
-			library("equalsverifier", "nl.jqno.equalsverifier:equalsverifier:3.7.2")
-			library("guava", "com.google.guava:guava:31.0.1-jre")
-			library("jpx", "io.jenetics:jpx:2.3.0")
+			library("equalsverifier", "nl.jqno.equalsverifier:equalsverifier:3.10")
+			library("guava", "com.google.guava:guava:31.1-jre")
+			library("jexl", "org.apache.commons:commons-jexl3:3.2.1")
+			library("jpx", "io.jenetics:jpx:3.0.1")
+			library("mvel", "org.mvel:mvel2:2.4.14.Final")
+			library("nashorn", "org.openjdk.nashorn:nashorn-core:15.4")
 			library("prngine", "io.jenetics:prngine:2.0.0")
 			library("rxjava", "io.reactivex.rxjava2:rxjava:2.2.21")
-			library("testng", "org.testng:testng:7.4.0")
+			library("testng", "org.testng:testng:7.6.0")
 		}
 	}
 }
@@ -49,12 +52,14 @@ rootProject.name = "jenetics"
 
 // The Jenetics modules.
 include("jenetics")
-include("jenetics.doc")
-include("jenetics.example")
 include("jenetics.ext")
 include("jenetics.prog")
-include("jenetics.tool")
 include("jenetics.xml")
+
+// Non published modules.
+include("jenetics.doc")
+include("jenetics.example")
+include("jenetics.tool")
 
 // Incubation code
 include("jenetics.incubator")

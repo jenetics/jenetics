@@ -25,8 +25,8 @@ import java.util.List;
 
 /**
  * This sorting methods doesn't sort a given array directly, instead
- * an index lookup array is returned which allows to access the array in
- * an sorted order.
+ * an index lookup array is returned which allows to access the array in a
+ * sorted order.
  *
  * <pre>{@code
  * final double[] array = new Random().doubles(100).toArray();

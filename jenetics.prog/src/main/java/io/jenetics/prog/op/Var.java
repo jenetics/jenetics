@@ -20,7 +20,7 @@
 package io.jenetics.prog.op;
 
 import static java.lang.String.format;
-import static io.jenetics.ext.internal.Names.isIdentifier;
+import static io.jenetics.ext.internal.util.Names.isIdentifier;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -129,6 +129,11 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	@Override
 	public T apply(final T[] variables) {
+		if (_index >= variables.length) {
+			throw new IllegalArgumentException(format(
+				"No value for variable '%s' given.", this
+			));
+		}
 		return variables[_index];
 	}
 

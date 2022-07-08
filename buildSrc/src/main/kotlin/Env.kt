@@ -53,13 +53,20 @@ object Env {
  * Information about the library and author.
  */
 object Jenetics {
-	const val VERSION = "7.0.0-SNAPSHOT"
+	const val VERSION = "7.2.0-SNAPSHOT"
 	const val ID = "jenetics"
 	const val NAME = "Jenetics"
 	const val GROUP = "io.jenetics"
 	const val AUTHOR = "Franz Wilhelmstötter"
 	const val EMAIL = "franz.wilhelmstoetter@gmail.com"
 	const val URL = "https://jenetics.io"
+
+	val PROJECT_TO_MODULE = mapOf(
+		"jenetics" to "io.jenetics.base",
+		"jenetics.ext" to "io.jenetics.ext",
+		"jenetics.prog" to "io.jenetics.prog",
+		"jenetics.xml" to "io.jenetics.xml"
+	)
 }
 
 /**
