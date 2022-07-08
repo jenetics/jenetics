@@ -280,6 +280,7 @@ public interface Property {
 
 	/**
 	 * Read the direct (first level) bean properties from a given {@code object}.
+	 * If the given {@code object} is {@code null}, an empty stream is returned.
 	 *
 	 * @param basePath the base path of the read properties
 	 * @param object the object from where to read its properties

@@ -106,7 +106,9 @@ record PropertyDesc(
 	static Stream<PropertyDesc> stream(final Class<?> type) {
 		final Stream<PropertyDesc> result;
 
-		if (type.isRecord()) {
+		if (type == Class.class) {
+			result = Stream.empty();
+		} else if (type.isRecord()) {
 			result = Stream.of(type.getRecordComponents())
 				.map(cmp ->
 					new PropertyDesc(
