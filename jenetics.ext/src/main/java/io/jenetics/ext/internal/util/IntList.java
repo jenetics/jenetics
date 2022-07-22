@@ -44,7 +44,7 @@ public final class IntList {
 	private static final int[] DEFAULT_EMPTY_ARRAY = {};
 
 	private int[] _data;
-	private int _size;
+	private int  _size;
 
 	/**
 	 * Constructs an empty list with the specified initial capacity.
