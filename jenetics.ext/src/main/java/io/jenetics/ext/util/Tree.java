@@ -1024,7 +1024,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		return isEmpty() ? null : new Reducing().reduce(this);
 	}
 
-
 	/* *************************************************************************
 	 * 'toString' methods
 	 **************************************************************************/

@@ -81,11 +81,14 @@ final class ParenthesesTreeParser {
 	}
 
 	private static boolean isTokenSeparator(final char c) {
-		return c == '(' || c == ')' || c == ',';
+		return switch (c) {
+			case '(', ')', ',' -> true;
+			default -> false;
+		};
 	}
 
 	/**
-	 * Parses the given parentheses tree string
+	 * Parses the given parentheses' tree string
 	 *
 	 * @since 4.3
 	 *
