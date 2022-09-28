@@ -27,13 +27,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.6.6" apply false
+	id("me.champeau.jmh") version "0.6.8" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "7.4.2"
+	gradleVersion = "7.5.1"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -136,15 +136,10 @@ fun setupJava(project: Project) {
  * Setup of the Java test-environment and reporting.
  */
 fun setupTestReporting(project: Project) {
-	if (JavaVersion.current() == JavaVersion.VERSION_18) {
-		logger.info("Jacoco not supported for '" + JavaVersion.VERSION_18 + "'.")
-		return;
-	}
-
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.7"
+		toolVersion = "0.8.8"
 	}
 
 	project.tasks {
