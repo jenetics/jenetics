@@ -123,7 +123,7 @@ public final class Randoms {
 	 * @param start the start index (inclusively)
 	 * @param end the end index (exclusively)
 	 * @param p the index selection probability
-	 * @return an new random index stream
+	 * @return a new random index stream
 	 * @throws IllegalArgumentException if {@code p} is not a
 	 *         valid probability.
 	 */
@@ -159,7 +159,7 @@ public final class Randoms {
 	 *        indexes
 	 * @param n the end index (exclusively). The start index is zero.
 	 * @param p the index selection probability
-	 * @return an new random index stream
+	 * @return a new random index stream
 	 * @throws IllegalArgumentException if {@code p} is not a
 	 *         valid probability.
 	 * @throws NullPointerException if the given {@code random}
