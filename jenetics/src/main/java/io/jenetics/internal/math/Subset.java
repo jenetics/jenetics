@@ -90,7 +90,7 @@ public final class Subset {
 		// Calculate the 'inverse' subset if k > n - k.
 		if (k > n - k) {
 			subset0(n, n - k, a, rnd);
-			invert(n, k, a);
+			invert(n, a);
 		} else {
 			subset0(n, k, a, rnd);
 		}
@@ -106,10 +106,9 @@ public final class Subset {
 	 */
 	private static void invert(
 		final int n,
-		final int k,
 		final int[] a
 	) {
-		assert a.length == k;
+		final int k = a.length;
 
 		int v = n - 1;
 		int j = n - k - 1;

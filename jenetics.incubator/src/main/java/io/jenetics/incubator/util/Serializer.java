@@ -44,8 +44,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.Resources;
-import io.jenetics.internal.util.Lifecycle.Value;
+import io.jenetics.internal.util.Lifecycle.IOResources;
+import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
  * Static methods for reading and writing objects using the Java serialisation.
@@ -395,7 +395,7 @@ public final class Serializer {
 	 *         {@code null}
 	 */
 	public static Stream<Object> objects(final InputStream input) {
-		final Value<Stream<Object>, IOException> result = Value.build(resources ->
+		final IOValue<Stream<Object>> result = new IOValue<>(resources ->
 			objectStream(input, resources)
 		);
 
@@ -405,7 +405,7 @@ public final class Serializer {
 	}
 
 	private static Stream<Object>
-	objectStream(final InputStream input, final Resources<IOException> resources) {
+	objectStream(final InputStream input, final IOResources resources) {
 		final Supplier<Object> readObject = new Supplier<>() {
 			private ObjectInputStream _oin = null;
 
@@ -413,11 +413,11 @@ public final class Serializer {
 			public synchronized Object get() {
 				try {
 					if (_oin == null) {
-						var in = resources.add(input, Closeable::close);
+						var in = resources.add(input);
 						if (!(in instanceof BufferedInputStream)) {
-							in = resources.add(new BufferedInputStream(in), Closeable::close);
+							in = resources.add(new BufferedInputStream(in));
 						}
-						_oin = resources.add(new ObjectInputStream(in), Closeable::close);
+						_oin = resources.add(new ObjectInputStream(in));
 					}
 
 					return _oin.readObject();
@@ -455,7 +455,7 @@ public final class Serializer {
 	 * @throws IOException if the object stream couldn't be created
 	 */
 	public static Stream<Object> objects(final Path path) throws IOException {
-		final Value<Stream<Object>, IOException> result = Value.build(resources ->
+		final IOValue<Stream<Object>> result = new IOValue<>(resources ->
 			objectStream(path, resources)
 		);
 
@@ -465,7 +465,7 @@ public final class Serializer {
 	}
 
 	private static Stream<Object>
-	objectStream(final Path path, final Resources<IOException> resources)
+	objectStream(final Path path, final IOResources resources)
 		throws IOException
 	{
 		return isEmpty(path)
@@ -475,7 +475,7 @@ public final class Serializer {
 
 	/**
 	 * Reads all objects from the given {@code input} stream, which were
-	 * previously written with one of the the {@code write} methods.
+	 * previously written with one of the {@code write} methods.
 	 *
 	 * @param input the input stream where the objects are read from
 	 * @return a list of all read objects
@@ -495,7 +495,7 @@ public final class Serializer {
 
 	/**
 	 * Reads all objects from the given {@code path}, which were previously
-	 * written with one of the the {@code write} methods.
+	 * written with one of the {@code write} methods.
 	 *
 	 * @param path the data path
 	 * @return a list of all read objects

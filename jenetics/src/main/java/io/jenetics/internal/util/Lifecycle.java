@@ -22,6 +22,8 @@ package io.jenetics.internal.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,7 +37,7 @@ import java.util.function.Supplier;
  * The common use cases are shown as follows:
  * <p><b>Wrapping <em>non</em>-closeable values</b></p>
  * <pre>{@code
- * final Value<Path, IOException> file = Value.of(
+ * final Value<Path, IOException> file = new Value<>(
  *     Files.createFile(Path.of("some_file")),
  *     Files::deleteIfExists
  * );
@@ -50,10 +52,10 @@ import java.util.function.Supplier;
  *
  * <p><b>Building complex closeable values</b></p>
  * <pre>{@code
- * final Value<Stream<Object>, IOException> result = Value.build(resources -> {
- *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
- *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
- *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
+ * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
+ *     final var fin = resources.add(new FileInputStream(file.toFile()));
+ *     final var bin = resources.add(new BufferedInputStream(fin));
+ *     final var oin = resources.add(new ObjectInputStream(bin));
  *
  *     return Stream.generate(() -> readNextObject(oin))
  *         .takeWhile(Objects::nonNull);
@@ -73,12 +75,12 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
- * @version 6.3
+ * @version 7.2
  */
 public class Lifecycle {
 
 	/* *************************************************************************
-	 *  General interfaces.
+	 * Throwing functional interfaces.
 	 * ************************************************************************/
 
 	/**
@@ -269,7 +271,7 @@ public class Lifecycle {
 	 *
 	 * <pre>{@code
 	 * // Create the closeable file.
-	 * final Value<Path, IOException> file = Value.of(
+	 * final Value<Path, IOException> file = new Value<>(
 	 *     Files.createFile(Path.of("some_file")),
 	 *     Files::deleteIfExists
 	 * );
@@ -282,24 +284,86 @@ public class Lifecycle {
 	 * }
 	 * }</pre>
 	 *
-	 * @see #of(Object, ThrowingConsumer)
-	 * @see #build(ThrowingFunction)
-	 *
 	 * @param <T> the value type
 	 */
-	public static final class Value<T, E extends Exception>
+	public static sealed class Value<T, E extends Exception>
 		implements Supplier<T>, ExtendedCloseable<E>
 	{
 
-		private final T _value;
-		private final ThrowingConsumer<? super T, ? extends E> _release;
+		T _value;
+		ThrowingConsumer<? super T, ? extends E> _release;
 
-		private Value(
+		private Value() {
+		}
+
+		/**
+		 * Create a new closeable value with the given resource {@code value}
+		 * and its {@code release} method.
+		 *
+		 * @param value the actual resource value
+		 * @param release the {@code release} method for the given {@code value}
+		 * @throws NullPointerException if the {@code release} function is
+		 *         {@code null}
+		 */
+		public Value(
 			final T value,
 			final ThrowingConsumer<? super T, ? extends E> release
 		) {
-			_value = requireNonNull(value);
+			_value = value;
 			_release = requireNonNull(release);
+		}
+
+		/**
+		 * Opens a kind of {@code try-catch} with resources block. The difference
+		 * is, that the resources, registered with the
+		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
+		 * in the case of an error. If the <em>value</em> could be created, the
+		 * caller is responsible for closing the opened <em>resources</em> by
+		 * calling the {@link Value#close()} method.
+		 *
+		 * <pre>{@code
+		 * final Value<Stream<Object>, IOException> result = new Value<>(resources -> {
+		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
+		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
+		 *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
+		 *
+		 *     return Stream.generate(() -> readNextObject(oin))
+		 *         .takeWhile(Objects::nonNull);
+		 * });
+		 *
+		 * try (result) {
+		 *     result.get().forEach(System.out::println);
+		 * }
+		 * }</pre>
+		 *
+		 * @see Resources
+		 *
+		 * @param builder the builder method
+		 * @param <BE> the exception type which might be thrown while building
+		 *             the value
+		 * @throws BE in the case of an error. If this exception is thrown, all
+		 *         already <em>registered</em> resources are closed.
+		 * @throws NullPointerException if the given {@code builder} is
+		 *         {@code null}
+		 */
+		public <BE extends Exception> Value(
+			final ThrowingFunction<
+				? super Resources<E>,
+				? extends T,
+				? extends BE> builder
+		)
+			throws BE
+		{
+			requireNonNull(builder);
+
+			final var resources = new Resources<E>();
+			try {
+				_value = builder.apply(resources);
+				_release = value -> resources.close();
+			} catch (Throwable error) {
+				resources.silentClose(error);
+				throw error;
+			}
 		}
 
 		@Override
@@ -360,21 +424,51 @@ public class Lifecycle {
 			}
 		}
 
+	}
+
+	/**
+	 * This class represents a <em>closeable</em> value. It is useful in cases
+	 * where the object value doesn't implement the {@link AutoCloseable}
+	 * interface but needs some cleanup work to do after usage. In the following
+	 * example the created {@code file} is automatically deleted when leaving the
+	 * {@code try} block.
+	 *
+	 * <pre>{@code
+	 * // Create the closeable file.
+	 * final IOValue<Path> file = new IOValue<>(
+	 *     Files.createFile(Path.of("some_file")),
+	 *     Files::deleteIfExists
+	 * );
+	 *
+	 * // Automatically delete the file after the test.
+	 * try (file) {
+	 *     Files.write(file.get(), "foo".getBytes());
+	 *     final var writtenText = Files.readString(file.get());
+	 *     assert "foo".equals(writtenText);
+	 * }
+	 * }</pre>
+	 *
+	 * @param <T> the value type
+	 */
+	public static final class IOValue<T>
+		extends Value<T, IOException>
+		implements Closeable
+	{
+
 		/**
 		 * Create a new closeable value with the given resource {@code value}
 		 * and its {@code release} method.
 		 *
 		 * @param value the actual resource value
 		 * @param release the {@code release} method for the given {@code value}
-		 * @param <T> the value type
-		 * @return a new closeable value
-		 * @throws NullPointerException if one of the arguments is {@code null}
+		 * @throws NullPointerException if the {@code release} function is
+		 *         {@code null}
 		 */
-		public static <T, E extends Exception> Value<T, E> of(
+		public IOValue(
 			final T value,
-			final ThrowingConsumer<? super T, ? extends E> release
+			final ThrowingConsumer<? super T, ? extends IOException> release
 		) {
-			return new Value<>(value,release);
+			super(value, release);
 		}
 
 		/**
@@ -386,10 +480,10 @@ public class Lifecycle {
 		 * calling the {@link Value#close()} method.
 		 *
 		 * <pre>{@code
-		 * final Value<Stream<Object>, IOException> result = Value.build(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
-		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
-		 *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
+		 * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
+		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
+		 *     final var bin = resources.add(new BufferedInputStream(fin));
+		 *     final var oin = resources.add(new ObjectInputStream(bin));
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
@@ -403,21 +497,16 @@ public class Lifecycle {
 		 * @see Resources
 		 *
 		 * @param builder the builder method
-		 * @param <T> the value type of the created <em>closeable</em> value
 		 * @param <BE> the exception type which might be thrown while building
 		 *             the value
-		 * @param <VE> the exception type which might be thrown when releasing
-		 *              the returned <em>closeable</em> value
-		 * @return the built closeable value
 		 * @throws BE in the case of an error. If this exception is thrown, all
 		 *         already <em>registered</em> resources are closed.
 		 * @throws NullPointerException if the given {@code builder} is
 		 *         {@code null}
 		 */
-		public static <T, BE extends Exception, VE extends Exception> Value<T, VE>
-		build(
+		public <BE extends Exception> IOValue(
 			final ThrowingFunction<
-				? super Resources<VE>,
+				? super IOResources,
 				? extends T,
 				? extends BE> builder
 		)
@@ -425,12 +514,10 @@ public class Lifecycle {
 		{
 			requireNonNull(builder);
 
-			final var resources = new Resources<VE>();
+			final var resources = new IOResources();
 			try {
-				return Value.of(
-					builder.apply(resources),
-					value -> resources.close()
-				);
+				_value = builder.apply(resources);
+				_release = value -> resources.close();
 			} catch (Throwable error) {
 				resources.silentClose(error);
 				throw error;
@@ -443,7 +530,7 @@ public class Lifecycle {
 	 * This class allows to collect one or more {@link AutoCloseable} objects
 	 * into one. The registered closeable objects are closed in reverse order.
 	 * <p>
-	 * Using the {@code Resources} class can simplify the the creation of
+	 * Using the {@code Resources} class can simplify the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
@@ -457,10 +544,8 @@ public class Lifecycle {
 	 *     // ...
 	 * }
 	 * }</pre>
-	 *
-	 * @see Value#build(ThrowingFunction)
 	 */
-	public static final class Resources<E extends Exception>
+	public static sealed class Resources<E extends Exception>
 		implements ExtendedCloseable<E>
 	{
 
@@ -500,7 +585,7 @@ public class Lifecycle {
 		 * resources.
 		 *
 		 * @param resource the new resource to register
-		 * @param release the method, which <em>releases</em> the the acquired
+		 * @param release the method, which <em>releases</em> the acquired
 		 *        resource
 		 * @param <C> the resource type
 		 * @return the registered resource
@@ -518,11 +603,93 @@ public class Lifecycle {
 			return resource;
 		}
 
+		/**
+		 * Registers the given {@code resource} to the list of managed
+		 * resources.
+		 *
+		 * @param resource the new resource to register
+		 * @param <C> the resource type
+		 * @return the registered resource
+		 * @throws NullPointerException if one of the given arguments is
+		 *         {@code null}
+		 */
+		public <C extends ExtendedCloseable<? extends E>> C add(final C resource) {
+			return add(resource, C::close);
+		}
+
 		@Override
 		public void close() throws E {
 			if (!_resources.isEmpty()) {
 				ExtendedCloseable.of(_resources).close();
 			}
+		}
+
+	}
+
+	/**
+	 * This class allows to collect one or more {@link AutoCloseable} objects
+	 * into one. The registered closeable objects are closed in reverse order.
+	 * <p>
+	 * Using the {@code IOResources} class can simplify the creation of
+	 * dependent input streams, where it might be otherwise necessary to create
+	 * nested {@code try-with-resources} blocks.
+	 *
+	 * <pre>{@code
+	 * try (var resources = new IOResources()) {
+	 *     final var fin = resources.add(new FileInputStream(file));
+	 *     if (fin.read() != -1) {
+	 *         return;
+	 *     }
+	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     // ...
+	 * }
+	 * }</pre>
+	 */
+	public static final class IOResources extends Resources<IOException> {
+
+		/**
+		 * Create a new {@code IOResources} object, initialized with the given
+		 * resource <em>release</em> methods.
+		 *
+		 * @param releases the release methods
+		 */
+		public IOResources(
+			final Collection<? extends ThrowingRunnable<? extends IOException>> releases
+		) {
+			super(releases);
+		}
+
+		/**
+		 * Create a new {@code IOResources} object, initialized with the given
+		 * resource <em>release</em> methods.
+		 *
+		 * @param releases the release methods
+		 */
+		@SafeVarargs
+		public IOResources(
+			final ThrowingRunnable<? extends IOException>... releases
+		) {
+			super(releases);
+		}
+
+		/**
+		 * Create a new, empty {@code IOResources} object.
+		 */
+		public IOResources() {
+		}
+
+		/**
+		 * Registers the given {@code resource} to the list of managed
+		 * resources.
+		 *
+		 * @param resource the new resource to register
+		 * @param <C> the resource type
+		 * @return the registered resource
+		 * @throws NullPointerException if one of the given arguments is
+		 *         {@code null}
+		 */
+		public <C extends Closeable> C add(final C resource) {
+			return add(resource, Closeable::close);
 		}
 
 	}
