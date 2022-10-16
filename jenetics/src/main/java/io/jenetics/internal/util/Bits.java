@@ -206,6 +206,16 @@ public final class Bits {
 	 * @return the number of one-bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] bits, final int start, final int end) {
+		if (end - start <= Byte.SIZE) {
+			int count = 0;
+			for (int i = start; i < end; ++i) {
+				if (get(bits, i)) {
+					++count;
+				}
+			}
+			return count;
+		}
+
 		final int byteStart = start/Byte.SIZE + 1;
 		final int byteEnd = end/Byte.SIZE;
 
