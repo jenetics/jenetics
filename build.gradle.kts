@@ -55,7 +55,6 @@ allprojects {
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
-
 }
 
 apply("./gradle/alljavadoc.gradle")

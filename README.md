@@ -248,6 +248,12 @@ Christoph G. Schuetz, Thomas Lorünser, Samuel Jaburek, Kevin Schuetz, Florian W
 
 ## Release notes
 
+### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
+
+#### Bugs
+
+* [#842](https://github.com/jenetics/jenetics/issues/842): `BitChromosone::bitCount` returns wrong results for chromosome lengths <= 8.
+
 ### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
 
 #### Improvements
