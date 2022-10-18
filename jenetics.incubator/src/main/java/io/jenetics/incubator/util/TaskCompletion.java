@@ -76,27 +76,16 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * Wrapper class for the <em>runnable</em> to be executed.
 	 */
-	private static final class Task implements Runnable {
-		private final Runnable _task;
-		private final Runnable _finished;
-
-		Task(
-			final Runnable task,
-			final Runnable finished
-		) {
-			_task = requireNonNull(task);
-			_finished = requireNonNull(finished);
-		}
-
+	private record Task(Runnable task, Runnable finished) implements Runnable {
 		@Override
 		public void run() {
 			try {
-				_task.run();
+				task.run();
 			} catch (Throwable e) {
-				final var thread = Thread.currentThread();
-				thread.getUncaughtExceptionHandler().uncaughtException(thread, e);
+				final var t = Thread.currentThread();
+				t.getUncaughtExceptionHandler().uncaughtException(t, e);
 			} finally {
-				_finished.run();
+				finished.run();
 			}
 		}
 	}
@@ -193,7 +182,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 */
 	public List<Runnable> tasks() {
 		return Stream.of(_tasks.toArray(Task[]::new))
-			.map(t -> t._task)
+			.map(Task::task)
 			.toList();
 	}
 
@@ -209,7 +198,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	public int drainTo(final Collection<? super Runnable> collection) {
 		final var tasks = new ArrayList<Task>();
 		final int drained = _tasks.drainTo(tasks);
-		tasks.forEach(t -> collection.add(t._task));
+		tasks.forEach(t -> collection.add(t.task()));
 		return drained;
 	}
 
@@ -229,7 +218,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	/**
 	 * Enqueues the given {@code command} to the task queue. The method will
 	 * return immediately after, except the {@link #capacity()} of the queue is
-	 * exhausted. Then this call will block until an other task has finished or
+	 * exhausted. Then this call will block until another task has finished or
 	 * the specified waiting time has expired.
 	 *
 	 * @param command the code block to execute.
