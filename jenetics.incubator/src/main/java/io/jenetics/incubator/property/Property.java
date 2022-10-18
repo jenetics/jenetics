@@ -92,6 +92,10 @@ import java.util.stream.StreamSupport;
  */
 public interface Property {
 
+	/* *************************************************************************
+	 * Property interface methods.
+	 * ************************************************************************/
+
 	/**
 	 * Returns the object which contains {@code this} property; always
 	 * non-{@code null}.
@@ -149,6 +153,11 @@ public interface Property {
 	default boolean write(final Object value) {
 		return false;
 	}
+
+
+	/* *************************************************************************
+	 * Property creation methods.
+	 * ************************************************************************/
 
 	/**
 	 * Return a Stream that is lazily populated with bean properties by walking

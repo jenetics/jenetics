@@ -17,9 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.property;
 
-public class MurmurDigest {
+import java.util.List;
 
+public class ObjectGraph {
+
+	public static final class Node {
+		Object parent;
+		Object value;
+		List<Object> fields;
+	}
+
+
+	public Object parentOf(final Object value) {
+		return null;
+	}
 
 }
