@@ -302,7 +302,7 @@ public final class Streams {
 	Function<C, Stream<C>> toIntervalMax(final Duration timespan) {
 		return sliceBest(Streams::max, timespan, systemUTC());
 	}
- 
+
 	/**
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the elements emitted within the given {@code timespan}.
