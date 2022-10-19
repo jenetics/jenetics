@@ -28,17 +28,17 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-record ImmutableProperty(
+record ReadonlyPropertyRecord(
 	Object object,
 	Path path,
 	Class<?> type,
 	Path name,
 	Object value
 )
-	implements Property
+	implements ReadonlyProperty
 {
 
-	ImmutableProperty {
+	ReadonlyPropertyRecord {
 		requireNonNull(object);
 		requireNonNull(path);
 		requireNonNull(type);

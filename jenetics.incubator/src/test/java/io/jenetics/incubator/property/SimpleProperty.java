@@ -31,7 +31,7 @@ public record SimpleProperty(
 	Path name,
 	Object value
 )
-	implements Property
+	implements ReadonlyProperty
 {
 
 	public SimpleProperty {

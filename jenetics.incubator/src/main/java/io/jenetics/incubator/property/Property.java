@@ -46,39 +46,39 @@ import java.util.stream.StreamSupport;
  * a given root object.
  * <pre>{@code
  * final var root = ...;
- * final List<Property> properties = Property
- *     // Wall all properties from the 'root' object which are defined
+ * final List<Property> properties = Properties
+ *     // Get all properties from the 'root' object which are defined
  *     // in the 'io.jenetics' package.
- *     .walk(root, "io.jenetics")
+ *     .stream(root, "io.jenetics")
  *     .toList();
  * }</pre>
  * Only get string properties.
  * <pre>{@code
- * final List<Property> properties = Property
- *     .walk(root, "io.jenetics")
+ * final List<Property> properties = Properties
+ *     .stream(root, "io.jenetics")
  *     .filter(property -> property.type() == String.class)
  *     .toList();
  * }</pre>
  * Only get the properties declared in the {@code MyBeanObject} class.
  * <pre>{@code
- * final List<Property> properties = Property
- *     .walk(root, "io.jenetics")
+ * final List<Property> properties = Properties
+ *     .stream(root, "io.jenetics")
  *     .filter(property -> property.object().getClass() == MyBeanObject.class)
  *     .toList();
  * }</pre>
  * Only get properties with the name {@code index}. No matter where they defined
  * in the object hierarchy.
  * <pre>{@code
- * final List<Property> properties = Property
- *     .walk(root, "io.jenetics")
+ * final List<Property> properties = Properties
+ *     .stream(root, "io.jenetics")
  *     .filter(Property.pathMatcher("**index"))
  *     .toList();
  * }</pre>
  * Updates all "index" properties with value {@code -1} to zero and returns all
  * properties, which couldn't be updated, because the property was immutable.
  * <pre>{@code
- * final List<Property> notUpdated = Property
- *     .walk(root, "io.jenetics")
+ * final List<Property> notUpdated = Properties
+ *     .stream(root, "io.jenetics")
  *     .filter(Property.pathMatcher("**index"))
  *     .filter(property -> Objects.equals(property.value(), -1))
  *     .filter(property -> !property.write(0))
@@ -90,11 +90,7 @@ import java.util.stream.StreamSupport;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Property {
-
-	/* *************************************************************************
-	 * Property interface methods.
-	 * ************************************************************************/
+public sealed interface Property permits ReadonlyProperty, WriteableProperty {
 
 	/**
 	 * Returns the object which contains {@code this} property; always
@@ -134,194 +130,6 @@ public interface Property {
 	Object value();
 
 	/**
-	 * Read the current property value. Might differ from {@link #value()} if
-	 * the underlying (mutable) object has been changed.
-	 *
-	 * @return the current property value
-	 */
-	default Object read() {
-		return value();
-	}
-
-	/**
-	 * Changes the property value.
-	 *
-	 * @param value the new property value
-	 * @return {@code true} if the value has been changed successfully,
-	 *         {@code false} if the property is not mutable
-	 */
-	default boolean write(final Object value) {
-		return false;
-	}
-
-
-	/* *************************************************************************
-	 * Property creation methods.
-	 * ************************************************************************/
-
-	/**
-	 * Return a Stream that is lazily populated with bean properties by walking
-	 * the object graph rooted at a given starting {@code object}. The object
-	 * tree is traversed in pre-order.
-	 *
-	 * @param object the root of the object tree
-	 * @param reader the property reader for the given object kind
-	 * @param flattener function which allows flattening (unroll) properties.
-	 *        This might be useful when a property is a collection and contains
-	 *        itself objects for which you are interested in its properties.
-	 * @return the property stream, containing all transitive properties of the
-	 *         given root {@code object}. The object tree is traversed in
-	 *         pre-order.
-	 */
-	static Stream<Property> walk(
-		final Object object,
-		final Reader reader,
-		final Function<? super Property, ? extends Stream<?>> flattener
-	) {
-		requireNonNull(reader);
-		requireNonNull(flattener);
-
-		final Map<Object, Object> visited = new IdentityHashMap<>();
-		return walk(new Path(), object, reader, flattener, visited);
-	}
-
-	private static Stream<Property> walk(
-		final Path basePath,
-		final Object object,
-		final Reader reader,
-		final Function<? super Property, ? extends Stream<?>> flattener,
-		final Map<Object, Object> visited
-	) {
-		if (object == null) {
-			return Stream.empty();
-		}
-
-		final boolean exists;
-		synchronized(visited) {
-			if (!(exists = visited.containsKey(object))) {
-				visited.put(object, "");
-			}
-		}
-
-		if (exists) {
-			return Stream.empty();
-		} else {
-			final var it = new PropertyPreOrderIterator(basePath, object, reader);
-			final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
-
-			return StreamSupport.stream(sp, false)
-				.flatMap(prop ->
-					Stream.concat(
-						Stream.of(prop),
-						flatten(prop, reader, flattener, visited)
-					)
-				);
-		}
-	}
-
-	private static Stream<Property> flatten(
-		final Property property,
-		final Reader reader,
-		final Function<? super Property, ? extends Stream<?>> flattener,
-		final Map<Object, Object> visited
-	) {
-		final var index = new AtomicInteger();
-
-		return flattener.apply(property)
-			.flatMap(ele -> {
-				final Path path = property.path()
-					.indexed(index.getAndIncrement());
-
-				final var parent = new ImmutableProperty(
-					property.value(),
-					path,
-					ele != null ? ele.getClass() : Object.class,
-					path.head(),
-					ele
-				);
-
-				return Stream.concat(
-					Stream.of(parent),
-					walk(
-						path,
-						ele,
-						reader,
-						flattener,
-						visited
-					)
-				);
-			});
-	}
-
-	static Stream<Property> walk(
-		final Object object,
-		final Function<? super Property, ? extends Stream<?>> flattener,
-		final String... packages
-	) {
-		return walk(
-			object,
-			Reader.DEFAULT.filterPackages(packages),
-			flattener
-		);
-	}
-
-	/**
-	 * Return a Stream that is lazily populated with bean properties by walking
-	 * the object graph rooted at a given starting {@code object}. The object
-	 * tree is traversed in pre-order.
-	 *
-	 * @param object the root of the object tree
-	 * @param packages the base packages of the object where the properties
-	 *        are read from
-	 * @return the property stream, containing all transitive properties of the
-	 *         given root {@code object}. The object tree is traversed in
-	 *         pre-order.
-	 */
-	static Stream<Property> walk(final Object object, final String... packages) {
-		return walk(
-			object,
-			property -> property.value() instanceof Collection<?> coll
-				? coll.stream()
-				: Stream.empty(),
-			packages
-		);
-	}
-
-	/**
-	 * Read the direct (first level) bean properties from a given {@code object}.
-	 * If the given {@code object} is {@code null}, an empty stream is returned.
-	 *
-	 * @param basePath the base path of the read properties
-	 * @param object the object from where to read its properties
-	 * @return the object's bean properties
-	 */
-	static Stream<Property> read(final Path basePath, final Object object) {
-		if (object != null) {
-			return PropertyDesc.stream(object.getClass())
-				.map(desc -> {
-					if (desc.setter() != null) {
-						return new MutableProperty(
-							desc,
-							object,
-							basePath.append(desc.name()),
-							desc.read(object)
-						);
-					} else {
-						return new ImmutableProperty(
-							object,
-							basePath.append(desc.name()),
-							desc.type(),
-							new Path(desc.name()),
-							desc.read(object)
-						);
-					}
-				});
-		} else {
-			return Stream.empty();
-		}
-	}
-
-	/**
 	 * Return a matcher for the {@link Property.Path} of a property.
 	 *
 	 * @see Property.Path#matcher(String)
@@ -356,7 +164,7 @@ public interface Property {
 		/**
 		 * The default property reader, using the bean introspector class.
 		 */
-		Reader DEFAULT = Property::read;
+		Reader DEFAULT = Properties::read;
 
 		/**
 		 * Reads the properties from the given {@code object}. The
@@ -379,7 +187,7 @@ public interface Property {
 		default Reader filter(final Predicate<? super Object> filter) {
 			return (basePath, object) -> {
 				if (filter.test(object)) {
-					return this.read(basePath, object);
+					return read(basePath, object);
 				} else {
 					return Stream.empty();
 				}
@@ -421,6 +229,8 @@ public interface Property {
 	 * path can be created with the {@link Path#of(String)} method.
 	 */
 	final class Path implements Iterable<Path> {
+
+		public static final Path EMPTY = new Path();
 
 		private final PathName name;
 		private final List<Path> elements;

@@ -28,16 +28,16 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-record MutableProperty(
-	PropertyDesc desc,
+record WriteablePropertyRecord(
+	PropertyDescription desc,
 	Object object,
 	Path path,
 	Object value
 )
-	implements Property
+	implements WriteableProperty
 {
 
-	MutableProperty {
+	WriteablePropertyRecord {
 		requireNonNull(desc);
 		requireNonNull(object);
 		requireNonNull(path);

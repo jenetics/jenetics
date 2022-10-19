@@ -36,15 +36,15 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-record PropertyDesc(
+record PropertyDescription(
 	Class<?> type,
 	String name,
 	Method getter,
 	Method setter
 )
-	implements Comparable<PropertyDesc>
+	implements Comparable<PropertyDescription>
 {
-	PropertyDesc {
+	PropertyDescription {
 		requireNonNull(type);
 		requireNonNull(name);
 		requireNonNull(getter);
@@ -70,7 +70,7 @@ record PropertyDesc(
 	 * @param object the object where the property is declared
 	 * @param value  the new property value
 	 * @return {@code true} if the new property value has been written
-	 * successfully, {@code false} if the property is immutable
+	 *         successfully, {@code false} if the property is immutable
 	 */
 	boolean write(final Object object, final Object value) {
 		try {
@@ -93,7 +93,7 @@ record PropertyDesc(
 	}
 
 	@Override
-	public int compareTo(final PropertyDesc o) {
+	public int compareTo(final PropertyDescription o) {
 		return name.compareTo(o.name);
 	}
 
@@ -103,15 +103,15 @@ record PropertyDesc(
 	 * @param type the type to be analyzed
 	 * @return a stream of property descriptions for the given {@code type}
 	 */
-	static Stream<PropertyDesc> stream(final Class<?> type) {
-		final Stream<PropertyDesc> result;
+	static Stream<PropertyDescription> stream(final Class<?> type) {
+		final Stream<PropertyDescription> result;
 
 		if (type == Class.class) {
 			result = Stream.empty();
 		} else if (type.isRecord()) {
 			result = Stream.of(type.getRecordComponents())
 				.map(cmp ->
-					new PropertyDesc(
+					new PropertyDescription(
 						cmp.getType(),
 						cmp.getName(),
 						cmp.getAccessor(),
@@ -128,7 +128,7 @@ record PropertyDesc(
 					.filter(desc -> desc.getPropertyType() != Class.class)
 					.filter(desc -> desc.getReadMethod() != null)
 					.map(desc ->
-						new PropertyDesc(
+						new PropertyDescription(
 							desc.getPropertyType(),
 							desc.getName(),
 							desc.getReadMethod(),

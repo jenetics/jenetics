@@ -50,8 +50,8 @@ public class PropertyTest {
 
 	@Test
 	public void walk() {
-		final List<Property> properties = Property
-			.walk(root, "io.jenetics")
+		final List<Property> properties = Properties
+			.stream(root, "io.jenetics")
 			.toList();
 
 		assertThat(properties.size()).isEqualTo(24);
@@ -59,8 +59,8 @@ public class PropertyTest {
 
 	@Test
 	public void filter() {
-		final var properties = Property
-			.walk(root, "io.jenetics")
+		final var properties = Properties
+			.stream(root, "io.jenetics")
 			.filter(Property.pathMatcher("**index"))
 			.map(Property::value)
 			.toList();
@@ -74,13 +74,14 @@ public class PropertyTest {
 		root.setIndex(0);
 		root.setName("name");
 
-		final List<Property> properties = Property
-			.walk(root, "io.jenetics")
+		final List<Property> properties = Properties
+			.stream(root, "io.jenetics")
 			.toList();
 
-		properties.get(0).write(10);
-		assertThat(properties.get(0).value()).isEqualTo(0);
-		assertThat(properties.get(0).read()).isEqualTo(10);
+		final var wp = (WriteableProperty)properties.get(0);
+		wp.write(10);
+		assertThat(wp.value()).isEqualTo(0);
+		assertThat(wp.read()).isEqualTo(10);
 	}
 
 }
