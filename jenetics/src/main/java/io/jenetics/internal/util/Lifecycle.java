@@ -725,7 +725,7 @@ public class Lifecycle {
 	 */
 	static <A, E extends Exception> void invokeAll(
 		final ThrowingConsumer<? super A, ? extends E> method,
-		final Collection<? extends A> objects
+		final Iterable<? extends A> objects
 	)
 		throws E
 	{
@@ -760,7 +760,7 @@ public class Lifecycle {
 	 */
 	static <A, E extends Exception> Throwable invokeAll0(
 		final ThrowingConsumer<? super A, ? extends E> method,
-		final Collection<? extends A> objects
+		final Iterable<? extends A> objects
 	) {
 		int suppressedCount = 0;
 		Throwable error = null;
