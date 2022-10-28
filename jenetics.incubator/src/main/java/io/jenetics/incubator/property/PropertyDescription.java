@@ -104,6 +104,8 @@ record PropertyDescription(
 	 * @return a stream of property descriptions for the given {@code type}
 	 */
 	static Stream<PropertyDescription> stream(final Class<?> type) {
+		requireNonNull(type);
+
 		final Stream<PropertyDescription> result;
 
 		if (type == Class.class) {
@@ -136,7 +138,10 @@ record PropertyDescription(
 						)
 					);
 			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException("Can't introspect Object.", e);
+				throw new IllegalArgumentException(
+					"Can't introspect class '%s'.".formatted(type.getName()),
+					e
+				);
 			}
 		}
 

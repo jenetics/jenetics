@@ -42,12 +42,12 @@ public class PropertyReaderTest {
 				"object" + 1,
 				Path.of("path"+ i),
 				String.class,
-				Path.of("name" +i),
+				"name" +i,
 				"value" + i
 			))
 			.collect(Collectors.toUnmodifiableList());
 
-		final Property.Reader reader = (basePath, object) -> properties.stream();
+		final PropertyReader reader = (basePath, object) -> properties.stream();
 
 		assertThat(
 			reader.read(null, null).toList()

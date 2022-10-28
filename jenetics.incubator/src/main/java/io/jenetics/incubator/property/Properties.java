@@ -1,5 +1,9 @@
 package io.jenetics.incubator.property;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static java.util.Spliterators.spliteratorUnknownSize;
+
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -9,12 +13,46 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
+import io.jenetics.incubator.property.Property.Path;
 
 public final class Properties {
+
 	private Properties() {
 	}
+
+	/**
+	 * Read the direct (first level) bean properties from a given {@code object}.
+	 * If the given {@code object} is {@code null}, an empty stream is returned.
+	 *
+	 * @param basePath the base path of the read properties
+	 * @param object the object from where to read its properties
+	 * @return the object's bean properties
+	 */
+	public static Stream<Property> stream(final Path basePath, final Object object) {
+		if (object != null) {
+			return PropertyDescription.stream(object.getClass())
+				.map(desc -> {
+					if (desc.setter() != null) {
+						return new WriteablePropertyRecord(
+							desc,
+							object,
+							basePath.append(desc.name()),
+							desc.read(object)
+						);
+					} else {
+						return new ReadonlyPropertyRecord(
+							object,
+							basePath.append(desc.name()),
+							desc.type(),
+							desc.read(object)
+						);
+					}
+				});
+		} else {
+			return Stream.empty();
+		}
+	}
+
 
 	/**
 	 * Return a Stream that is lazily populated with bean properties by walking
@@ -32,20 +70,20 @@ public final class Properties {
 	 */
 	public static Stream<Property> stream(
 		final Object object,
-		final Property.Reader reader,
+		final PropertyReader reader,
 		final Function<? super Property, ? extends Stream<?>> flattener
 	) {
 		requireNonNull(reader);
 		requireNonNull(flattener);
 
 		final Map<Object, Object> visited = new IdentityHashMap<>();
-		return stream(Property.Path.EMPTY, object, reader, flattener, visited);
+		return stream(Path.EMPTY, object, reader, flattener, visited);
 	}
 
 	private static Stream<Property> stream(
-		final Property.Path basePath,
+		final Path basePath,
 		final Object object,
-		final Property.Reader reader,
+		final PropertyReader reader,
 		final Function<? super Property, ? extends Stream<?>> flattener,
 		final Map<Object, Object> visited
 	) {
@@ -78,7 +116,7 @@ public final class Properties {
 
 	private static Stream<Property> flatten(
 		final Property property,
-		final Property.Reader reader,
+		final PropertyReader reader,
 		final Function<? super Property, ? extends Stream<?>> flattener,
 		final Map<Object, Object> visited
 	) {
@@ -86,14 +124,13 @@ public final class Properties {
 
 		return flattener.apply(property)
 			.flatMap(ele -> {
-				final Property.Path path = property.path()
+				final Path path = property.path()
 					.indexed(index.getAndIncrement());
 
 				final var parent = new ReadonlyPropertyRecord(
 					property.value(),
 					path,
 					ele != null ? ele.getClass() : Object.class,
-					path.head(),
 					ele
 				);
 
@@ -117,7 +154,7 @@ public final class Properties {
 	) {
 		return stream(
 			object,
-			Property.Reader.DEFAULT.filterPackages(packages),
+			PropertyReader.DEFAULT.filterPackages(packages),
 			flattener
 		);
 	}
@@ -144,38 +181,14 @@ public final class Properties {
 		);
 	}
 
-	/**
-	 * Read the direct (first level) bean properties from a given {@code object}.
-	 * If the given {@code object} is {@code null}, an empty stream is returned.
-	 *
-	 * @param basePath the base path of the read properties
-	 * @param object the object from where to read its properties
-	 * @return the object's bean properties
-	 */
-	public static Stream<Property> read(final Property.Path basePath, final Object object) {
-		if (object != null) {
-			return PropertyDescription.stream(object.getClass())
-				.map(desc -> {
-					if (desc.setter() != null) {
-						return new WriteablePropertyRecord(
-							desc,
-							object,
-							basePath.append(desc.name()),
-							desc.read(object)
-						);
-					} else {
-						return new ReadonlyPropertyRecord(
-							object,
-							basePath.append(desc.name()),
-							desc.type(),
-							new Property.Path(desc.name()),
-							desc.read(object)
-						);
-					}
-				});
-		} else {
-			return Stream.empty();
-		}
+	static String toString(final Property property) {
+		return format(
+			"Property[path=%s, value=%s, type=%s, object=%s]",
+			property.path(),
+			property.value(),
+			property.type() != null ? property.type().getName() : null,
+			property.enclosingObject()
+		);
 	}
 
 }

@@ -25,17 +25,17 @@ import static java.util.Objects.requireNonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public record SimpleProperty(
-	Object object,
+	Object enclosingObject,
 	Path path,
 	Class<?> type,
-	Path name,
+	String name,
 	Object value
 )
 	implements ReadonlyProperty
 {
 
 	public SimpleProperty {
-		requireNonNull(object);
+		requireNonNull(enclosingObject);
 		requireNonNull(path);
 		requireNonNull(type);
 		requireNonNull(name);

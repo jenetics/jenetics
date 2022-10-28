@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * Bean <em>property</em> implementation.
  *
@@ -30,18 +28,12 @@ import static java.util.Objects.requireNonNull;
  */
 record WriteablePropertyRecord(
 	PropertyDescription desc,
-	Object object,
+	Object enclosingObject,
 	Path path,
 	Object value
 )
 	implements WriteableProperty
 {
-
-	WriteablePropertyRecord {
-		requireNonNull(desc);
-		requireNonNull(object);
-		requireNonNull(path);
-	}
 
 	@Override
 	public Class<?> type() {
@@ -49,23 +41,18 @@ record WriteablePropertyRecord(
 	}
 
 	@Override
-	public Path name() {
-		return new Path(desc.name());
-	}
-
-	@Override
 	public Object read() {
-		return desc.read(object);
+		return desc.read(enclosingObject);
 	}
 
 	@Override
 	public boolean write(final Object value) {
-		return desc.write(object, value);
+		return desc.write(enclosingObject, value);
 	}
 
 	@Override
 	public String toString() {
-		return Property.toString(this);
+		return Properties.toString(this);
 	}
 
 }

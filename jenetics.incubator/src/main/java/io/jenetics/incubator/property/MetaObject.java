@@ -19,19 +19,32 @@
  */
 package io.jenetics.incubator.property;
 
-import java.util.List;
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+public interface MetaObject {
 
-public class ObjectGraph {
+	/**
+	 * The name of the metaobject.
+	 *
+	 * @return name of the metaobject
+	 */
+	String name();
 
-	public static final class Node {
-		Object parent;
-		Object value;
-		List<Object> fields;
-	}
+	/**
+	 * The type of the metaobject, never {@code null}.
+	 *
+	 * @return the type of the metaobject
+	 */
+	Class<?> type();
 
-
-	public Object parentOf(final Object value) {
-		return null;
-	}
+	/**
+	 * The value of the metaobject, may be {@code null}.
+	 *
+	 * @return the value of the metaobject
+	 */
+	Object value();
 
 }

@@ -17,7 +17,7 @@ public non-sealed interface WriteableProperty extends Property {
 	 *
 	 * @param value the new property value
 	 * @return {@code true} if the value has been changed successfully,
-	 *         {@code false} if the property is not mutable
+	 *         {@code false} if the property value couldn't be changed
 	 */
 	default boolean write(final Object value) {
 		return false;

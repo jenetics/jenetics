@@ -37,13 +37,13 @@ import io.jenetics.incubator.property.Property.Path;
  */
 final class PropertyPreOrderIterator implements Iterator<Property> {
 
-	private final Property.Reader reader;
+	private final PropertyReader reader;
 	private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
 
 	PropertyPreOrderIterator(
 		final Path basePath,
 		final Object object,
-		final Property.Reader reader
+		final PropertyReader reader
 	) {
 		this.reader = requireNonNull(reader);
 		deque.push(reader.read(basePath, object).iterator());

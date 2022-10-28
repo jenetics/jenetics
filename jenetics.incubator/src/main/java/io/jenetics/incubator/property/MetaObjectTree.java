@@ -19,25 +19,36 @@
  */
 package io.jenetics.incubator.property;
 
+import java.util.Optional;
+
+import io.jenetics.ext.util.Tree;
+
 /**
- * Immutable property implementation.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-record ReadonlyPropertyRecord(
-	Object enclosingObject,
-	Path path,
-	Class<?> type,
-	Object value
-)
-	implements ReadonlyProperty
-{
+public class MetaObjectTree implements Tree<Property, MetaObjectTree> {
 
 	@Override
-	public String toString() {
-		return Properties.toString(this);
+	public Property value() {
+		return null;
+	}
+
+
+	@Override
+	public Optional<MetaObjectTree> parent() {
+		return Optional.empty();
+	}
+
+	@Override
+	public MetaObjectTree childAt(int index) {
+		return null;
+	}
+
+	@Override
+	public int childCount() {
+		return 0;
 	}
 
 }

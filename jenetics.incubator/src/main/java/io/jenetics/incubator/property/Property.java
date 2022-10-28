@@ -19,25 +19,14 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
-
 import java.nio.file.FileSystems;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -90,44 +79,39 @@ import java.util.stream.StreamSupport;
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Property permits ReadonlyProperty, WriteableProperty {
+public sealed interface Property
+	extends MetaObject
+	permits ReadonlyProperty, WriteableProperty
+{
 
 	/**
-	 * Returns the object which contains {@code this} property; always
-	 * non-{@code null}.
+	 * Returns the object which contains {@code this} property.
 	 *
 	 * @return the object which contains {@code this} property
 	 */
-	Object object();
+	Object enclosingObject();
 
 	/**
 	 * The full path, separated with dots '.', of {@code this} property from
-	 * the <em>root</em> object; always non-{@code null}.
+	 * the <em>root</em> object.
 	 *
 	 * @return the full property path
 	 */
 	Path path();
 
 	/**
-	 * The property type; always non-{@code null}.
-	 *
-	 * @return the property type
-	 */
-	Class<?> type();
-
-	/**
 	 * The name of {@code this} property; always non-{@code null}.
 	 *
 	 * @return the property name
 	 */
-	Path name();
+	@Override
+	default String name() {
+		return path().name();
+	}
 
-	/**
-	 * The initial, cached property value; might be {@code null}.
-	 *
-	 * @return the initial, cached property value
-	 */
-	Object value();
+	static Stream<Property> stream(final Path basePath, final Object object) {
+		return Properties.stream(basePath, object);
+	}
 
 	/**
 	 * Return a matcher for the {@link Property.Path} of a property.
@@ -141,88 +125,6 @@ public sealed interface Property permits ReadonlyProperty, WriteableProperty {
 		final var matcher = Path.matcher(pattern);
 		return property -> matcher.test(property.path());
 	}
-
-	static String toString(final Property property) {
-		return format(
-			"Property[path=%s, name=%s, value=%s, type=%s, object=%s]",
-			property.path(),
-			property.name(),
-			property.value(),
-			property.type() != null ? property.type().getName() : null,
-			property.object()
-		);
-	}
-
-
-	/**
-	 * This interface is responsible for reading the properties of a given
-	 * {@code object}.
-	 */
-	@FunctionalInterface
-	interface Reader {
-
-		/**
-		 * The default property reader, using the bean introspector class.
-		 */
-		Reader DEFAULT = Properties::read;
-
-		/**
-		 * Reads the properties from the given {@code object}. The
-		 * {@code basePath} is needed for building the <em>full</em> path of
-		 * the read properties. Both arguments may be {@code null}.
-		 *
-		 * @param basePath the base path of the read properties
-		 * @param object the object from where to read its properties
-		 * @return the object's properties
-		 */
-		Stream<Property> read(final Path basePath, final Object object);
-
-		/**
-		 * Create a new reader which filters specific object from the property
-		 * read.
-		 *
-		 * @param filter the object filter applied to the reader
-		 * @return a new reader with the applied filter
-		 */
-		default Reader filter(final Predicate<? super Object> filter) {
-			return (basePath, object) -> {
-				if (filter.test(object)) {
-					return read(basePath, object);
-				} else {
-					return Stream.empty();
-				}
-			};
-		}
-
-		/**
-		 * Create a new reader which reads the properties only from the given
-		 * packages.
-		 *
-		 * @param includes the base packages of the object where the properties
-		 *        are read from
-		 * @return a new reader which reads the properties only from the given
-		 * 		   packages
-		 */
-		default Reader filterPackages(final String... includes) {
-			return filter(object -> {
-				if (object != null) {
-					if (includes.length == 0) {
-						return true;
-					}
-
-					final var pkg = object.getClass().getPackage().getName();
-					for (var p : includes) {
-						if (pkg.startsWith(p)) {
-							return true;
-						}
-					}
-				}
-
-				return false;
-			});
-		}
-	}
-
 
 	/**
 	 * Represents the property path, which uniquely identifies a property. A
@@ -306,9 +208,9 @@ public sealed interface Property permits ReadonlyProperty, WriteableProperty {
 		}
 
 		/**
-		 * Return the path element which is farthest away from the root property.
+		 * Return the path element which is the farthest away from the root property.
 		 *
-		 * @return the path element which is farthest away from the root property
+		 * @return the path element which is the farthest away from the root property
 		 */
 		public Path head() {
 			return new Path(name(), index());
