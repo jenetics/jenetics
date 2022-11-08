@@ -3,10 +3,7 @@ package io.jenetics.incubator.property;
 import java.util.List;
 import java.util.Set;
 
-public final class SetProperty
-	extends AbstractCollectionProperty<Set<?>>
-	implements CollectionProperty
-{
+public final class SetProperty extends IterableProperty {
 
 	SetProperty(
 		final Object enclosingObject,
@@ -15,6 +12,11 @@ public final class SetProperty
 		final Set<?> value
 	) {
 		super(enclosingObject, path, type, value, List.copyOf(value));
+	}
+
+	@Override
+	public Set<?> value() {
+		return (Set<?>)value;
 	}
 
 	@Override

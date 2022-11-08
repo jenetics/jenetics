@@ -2,10 +2,7 @@ package io.jenetics.incubator.property;
 
 import java.util.List;
 
-public final class ListProperty
-	extends AbstractCollectionProperty<List<?>>
-	implements CollectionProperty
-{
+public final class ListProperty extends IterableProperty {
 
 	@SuppressWarnings("unchecked")
 	ListProperty(
@@ -15,6 +12,11 @@ public final class ListProperty
 		final List<?> value
 	) {
 		super(enclosingObject, path, type, value, (List<Object>)value);
+	}
+
+	@Override
+	public List<?> value() {
+		return (List<?>)value;
 	}
 
 	@Override

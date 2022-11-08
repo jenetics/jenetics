@@ -2,10 +2,7 @@ package io.jenetics.incubator.property;
 
 import java.util.Arrays;
 
-public final class ArrayProperty
-	extends AbstractCollectionProperty<Object[]>
-	implements CollectionProperty
-{
+public final class ArrayProperty extends IterableProperty {
 
 	ArrayProperty(
 		final Object enclosingObject,
@@ -14,6 +11,11 @@ public final class ArrayProperty
 		final Object[] value
 	) {
 		super(enclosingObject, path, type, value, Arrays.asList(value));
+	}
+
+	@Override
+	public Object[] value() {
+		return (Object[]) value;
 	}
 
 	@Override

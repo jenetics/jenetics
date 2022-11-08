@@ -5,7 +5,7 @@ import java.util.Map;
 
 public final class MapProperty
 	extends AbstractCollectionProperty<Map<?, ?>>
-	implements CollectionProperty
+	implements IterableProperty
 {
 
 	MapProperty(
