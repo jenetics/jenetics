@@ -41,13 +41,15 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
-
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
 	//antlr("org.antlr:antlr4:4.9.3")
 
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.guava)
 	testImplementation(libs.testng)
+	testImplementation(libs.jpx)
+	testImplementation("omds-domain:omds-domain")
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

@@ -21,12 +21,8 @@ package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.stream.Stream;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -36,18 +32,23 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-record PropertyDescription(
-	Class<?> type,
+public record PropertyDescription(
 	String name,
+	Class<?> type,
 	Method getter,
 	Method setter
 )
 	implements Comparable<PropertyDescription>
 {
-	PropertyDescription {
-		requireNonNull(type);
+
+	public PropertyDescription {
 		requireNonNull(name);
+		requireNonNull(type);
 		requireNonNull(getter);
+	}
+
+	public boolean isWriteable() {
+		return setter != null;
 	}
 
 	/**
@@ -56,7 +57,7 @@ record PropertyDescription(
 	 * @param object the object where the property is declared
 	 * @return the property value of the given {@code object}
 	 */
-	Object read(final Object object) {
+	public Object read(final Object object) {
 		try {
 			return getter.invoke(object);
 		} catch (IllegalAccessException | InvocationTargetException e) {
@@ -72,7 +73,7 @@ record PropertyDescription(
 	 * @return {@code true} if the new property value has been written
 	 *         successfully, {@code false} if the property is immutable
 	 */
-	boolean write(final Object object, final Object value) {
+	public boolean write(final Object object, final Object value) {
 		try {
 			if (setter != null) {
 				setter.invoke(object, value);
@@ -95,57 +96,6 @@ record PropertyDescription(
 	@Override
 	public int compareTo(final PropertyDescription o) {
 		return name.compareTo(o.name);
-	}
-
-	/**
-	 * Return a stream of property descriptions for the given {@code type}.
-	 *
-	 * @param type the type to be analyzed
-	 * @return a stream of property descriptions for the given {@code type}
-	 */
-	static Stream<PropertyDescription> stream(final Class<?> type) {
-		requireNonNull(type);
-
-		final Stream<PropertyDescription> result;
-
-		if (type == Class.class) {
-			result = Stream.empty();
-		} else if (type.isRecord()) {
-			result = Stream.of(type.getRecordComponents())
-				.map(cmp ->
-					new PropertyDescription(
-						cmp.getType(),
-						cmp.getName(),
-						cmp.getAccessor(),
-						null
-					)
-				);
-		} else {
-			try {
-				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(type)
-					.getPropertyDescriptors();
-
-				result = Stream.of(descriptors)
-					.filter(desc -> desc.getPropertyType() != Class.class)
-					.filter(desc -> desc.getReadMethod() != null)
-					.map(desc ->
-						new PropertyDescription(
-							desc.getPropertyType(),
-							desc.getName(),
-							desc.getReadMethod(),
-							desc.getWriteMethod()
-						)
-					);
-			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException(
-					"Can't introspect class '%s'.".formatted(type.getName()),
-					e
-				);
-			}
-		}
-
-		return result.sorted();
 	}
 
 }

@@ -3,8 +3,8 @@ package io.jenetics.incubator.property;
 import java.util.List;
 
 public final class ListProperty
-	extends AbstractCollectionProperty<List<?>, Object>
-	implements CollectionProperty<Object>
+	extends AbstractCollectionProperty<List<?>>
+	implements CollectionProperty
 {
 
 	@SuppressWarnings("unchecked")
@@ -12,17 +12,14 @@ public final class ListProperty
 		final Object enclosingObject,
 		final Path path,
 		final Class<?> type,
-		final Class<Object> elementType,
 		final List<?> value
 	) {
-		super(
-			enclosingObject,
-			path,
-			type,
-			elementType,
-			value,
-			(List<Object>)value
-		);
+		super(enclosingObject, path, type, value, (List<Object>)value);
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

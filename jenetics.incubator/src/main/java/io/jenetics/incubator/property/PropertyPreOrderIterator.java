@@ -26,8 +26,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import io.jenetics.incubator.property.Property.Path;
-
 /**
  * Preorder property iterator.
  *
@@ -37,27 +35,26 @@ import io.jenetics.incubator.property.Property.Path;
  */
 final class PropertyPreOrderIterator implements Iterator<Property> {
 
-	private final PropertyReader reader;
-	private final Deque<Iterator<Property>> deque = new ArrayDeque<>();
+	private final Extractor<? super DataObject, ? extends Property> reader;
+	private final Deque<Iterator<? extends Property>> deque = new ArrayDeque<>();
 
 	PropertyPreOrderIterator(
-		final Path basePath,
-		final Object object,
-		final PropertyReader reader
+		final DataObject object,
+		final Extractor<? super DataObject, ? extends Property> reader
 	) {
 		this.reader = requireNonNull(reader);
-		deque.push(reader.read(basePath, object).iterator());
+		deque.push(reader.extract(object).iterator());
 	}
 
 	@Override
 	public boolean hasNext() {
-		final Iterator<Property> peek = deque.peek();
+		final var peek = deque.peek();
 		return peek != null && peek.hasNext();
 	}
 
 	@Override
 	public Property next() {
-		final Iterator<Property> it = deque.peek();
+		final var it = deque.peek();
 		if (it == null) {
 			throw new NoSuchElementException("No next element.");
 		}
@@ -67,8 +64,8 @@ final class PropertyPreOrderIterator implements Iterator<Property> {
 			deque.pop();
 		}
 
-		final Iterator<Property> children = reader
-			.read(node.path(), node.value())
+		final var children = reader
+			.extract(new DataObject(node.path(), node.value()))
 			.iterator();
 		if (children.hasNext()) {
 			deque.push(children);

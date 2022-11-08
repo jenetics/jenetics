@@ -5,28 +5,25 @@ import java.util.List;
 
 import io.jenetics.incubator.property.Property.Path;
 
-abstract class AbstractCollectionProperty<T, E> {
+abstract class AbstractCollectionProperty<C> {
 
 	private final Object enclosingObject;
 	private final Path path;
 	private final Class<?> type;
-	private final Class<E> elementType;
-	private final T value;
+	private final C value;
 
-	private final List<E> elements;
+	private final List<Object> elements;
 
 	AbstractCollectionProperty(
 		final Object enclosingObject,
 		final Path path,
 		final Class<?> type,
-		final Class<E> elementType,
-		final T value,
-		final List<E> elements
+		final C value,
+		final List<Object> elements
 	) {
 		this.enclosingObject = enclosingObject;
 		this.path = path;
 		this.type = type;
-		this.elementType = elementType;
 		this.value = value;
 		this.elements = elements;
 	}
@@ -43,11 +40,7 @@ abstract class AbstractCollectionProperty<T, E> {
 		return type;
 	}
 
-	public Class<E> elementType() {
-		return elementType;
-	}
-
-	public T value() {
+	public C value() {
 		return value;
 	}
 
@@ -55,11 +48,11 @@ abstract class AbstractCollectionProperty<T, E> {
 		return elements.size();
 	}
 
-	public E get(final int index) {
+	public Object get(final int index) {
 		return elements.get(index);
 	}
 
-	public Iterator<E> iterator() {
+	public Iterator<Object> iterator() {
 		return elements.iterator();
 	}
 

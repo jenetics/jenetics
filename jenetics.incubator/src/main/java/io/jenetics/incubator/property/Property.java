@@ -24,9 +24,9 @@ import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -79,10 +79,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Property
-	extends MetaObject
-	permits ReadonlyProperty, WriteableProperty
-{
+public interface Property extends MetaObject {
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -109,21 +106,12 @@ public sealed interface Property
 		return path().name();
 	}
 
-	static Stream<Property> stream(final Path basePath, final Object object) {
-		return Properties.stream(basePath, object);
+	default Reader reader() {
+		return this::value;
 	}
 
-	/**
-	 * Return a matcher for the {@link Property.Path} of a property.
-	 *
-	 * @see Property.Path#matcher(String)
-	 *
-	 * @param pattern the path pattern
-	 * @return a new property path matcher
-	 */
-	static Predicate<Property> pathMatcher(final String pattern) {
-		final var matcher = Path.matcher(pattern);
-		return property -> matcher.test(property.path());
+	default Optional<Writer> writer() {
+		return Optional.empty();
 	}
 
 	/**
@@ -338,6 +326,33 @@ public sealed interface Property
 				.replace("[", "\\[")
 				.replace("]", "\\]");
 		}
+
+	}
+
+	@FunctionalInterface
+	interface Reader {
+
+		/**
+		 * Read the current property value. Might differ from {@link #value()} if
+		 * the underlying (mutable) object has been changed.
+		 *
+		 * @return the current property value
+		 */
+		Object read();
+
+	}
+
+	@FunctionalInterface
+	interface Writer {
+
+		/**
+		 * Changes the property value.
+		 *
+		 * @param value the new property value
+		 * @return {@code true} if the value has been changed successfully,
+		 *         {@code false} if the property value couldn't be changed
+		 */
+		boolean write(final Object value);
 
 	}
 

@@ -5,19 +5,17 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public sealed interface CollectionProperty<T>
-	extends ReadonlyProperty, Iterable<T>
+public sealed interface CollectionProperty
+	extends Iterable<Object>, Property
 	permits ArrayProperty, ListProperty, MapProperty, SetProperty
 {
 
-	Class<T> elementType();
-
 	int size();
 
-	T get(final int index);
+	Object get(final int index);
 
 	@Override
-	default Iterator<T> iterator() {
+	default Iterator<Object> iterator() {
 		return new Iterator<>() {
 			private int cursor = 0;
 
@@ -27,7 +25,7 @@ public sealed interface CollectionProperty<T>
 			}
 
 			@Override
-			public T next() {
+			public Object next() {
 				final int i = cursor;
 				if (cursor >= size()) {
 					throw new NoSuchElementException();
@@ -39,7 +37,7 @@ public sealed interface CollectionProperty<T>
 		};
 	}
 
-	default Stream<T> stream() {
+	default Stream<Object> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
 
