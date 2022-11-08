@@ -144,11 +144,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Christoph G. Schuetz, Thomas Lorünser, Samuel Jaburek, Kevin Schuetz, Florian Wohner, Roman Karl & Eduard Gringinger. <a href="https://doi.org/10.1007/978-3-031-17834-4_10">A Distributed Architecture for Privacy-Preserving Optimization Using Genetic Algorithms and Multi-party Computation.</a> <em> CoopIS 2022: Cooperative Information Systems pp 168–185. </em> Sep. 2022.
+Guilherme Espada, Leon Ingelse, Paulo Canelas, Pedro Barbosa, Alcides Fonseca. <a href="https://arxiv.org/abs/2210.04826">Data types as a more ergonomic frontend for Grammar-Guided Genetic Programming.</a> <em> arXiv. </em> Oct. 2022.
 
 ...
 </summary>
 
+1) Guilherme Espada, Leon Ingelse, Paulo Canelas, Pedro Barbosa, Alcides Fonseca. <a href="https://arxiv.org/abs/2210.04826">Data types as a more ergonomic frontend for Grammar-Guided Genetic Programming.</a> <em> arXiv. </em> Oct. 2022.
 1) Christoph G. Schuetz, Thomas Lorünser, Samuel Jaburek, Kevin Schuetz, Florian Wohner, Roman Karl & Eduard Gringinger. <a href="https://doi.org/10.1007/978-3-031-17834-4_10">A Distributed Architecture for Privacy-Preserving Optimization Using Genetic Algorithms and Multi-party Computation.</a> <em> CoopIS 2022: Cooperative Information Systems pp 168–185. </em> Sep. 2022.
 1) Christina Plump, Bernhard J. Berger, Rolf Drechsler. <a href="https://www.informatik.uni-bremen.de/agra/doc/konf/cec2022_cp.pdf">Using density of training data to improve evolutionary algorithms with approximative fitness functions.</a> <em> WCCI2022 IEEE WORLD CONGRESS ON COMPUTATIONAL INTELLIGENCE. </em> July 2022.
 2) Christina Plump, Bernhard J. Berger, Rolf Drechsler. <a href="https://doi.org/10.1145/3520304.3529066">Adapting mutation and recombination operators to range-aware relations in real-world application data.</a> <em> GECCO '22: Proceedings of the Genetic and Evolutionary Computation Conference Companion. Pages 755–758. </em> July 2022.
