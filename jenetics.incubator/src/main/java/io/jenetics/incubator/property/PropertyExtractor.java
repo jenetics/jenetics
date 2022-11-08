@@ -39,24 +39,22 @@ public class PropertyExtractor implements Extractor<DataObject, Property> {
 					if (type.isArray() &&
 						!type.getComponentType().isPrimitive())
 					{
-						final var array = (Object[])value;
-						return new ArrayProperty(enclosing, path, type, array);
+						return new ArrayProperty(desc, enclosing, path, value);
 					}
 					if (List.class.isAssignableFrom(type)) {
-						final var list = (List<?>)value;
-						return new ListProperty(enclosing, path, type, list);
+						return new ListProperty(desc, enclosing, path, value);
 					}
 					if (Set.class.isAssignableFrom(type)) {
-						final var set = (Set<?>)value;
-						return new SetProperty(enclosing, path, type, set);
+						return new SetProperty(desc, enclosing, path, value);
 					}
 					if (Collection.class.isAssignableFrom(type)) {
-						final var coll = (Collection<?>)value;
-						return new CollectionProperty(enclosing, path, type, coll);
+						return new CollectionProperty(desc, enclosing, path, value);
+					}
+					if (Iterable.class.isAssignableFrom(type)) {
+						return new IterableProperty(desc, enclosing, path, value);
 					}
 					if (Map.class.isAssignableFrom(type)) {
-						final var map = (Map<?, ?>)value;
-						return new MapProperty(enclosing, path, type, map);
+						return new MapProperty(desc, enclosing, path, value);
 					}
 
 					return new SimpleProperty(desc, enclosing, path, value);

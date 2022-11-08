@@ -1,22 +1,35 @@
 package io.jenetics.incubator.property;
 
-import java.util.List;
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
 import java.util.Set;
 
-public final class SetProperty extends IterableProperty {
+public final class SetProperty extends CollectionProperty {
 
 	SetProperty(
+		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
-		final Class<?> type,
-		final Set<?> value
+		final Object value
 	) {
-		super(enclosingObject, path, type, value, List.copyOf(value));
+		super(desc, enclosingObject, path, value);
 	}
 
 	@Override
-	public Set<?> value() {
-		return (Set<?>)value;
+	public int size() {
+		return value != null ? value().size() : 0;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return value != null ? value().iterator() : emptyIterator();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Set<Object> value() {
+		return (Set<Object>)value;
 	}
 
 	@Override

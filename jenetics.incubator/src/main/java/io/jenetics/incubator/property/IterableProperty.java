@@ -1,49 +1,27 @@
 package io.jenetics.incubator.property;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public abstract sealed class IterableProperty
+public sealed class IterableProperty
+	extends PropertyMethods
 	implements Iterable<Object>, Property
-	permits ArrayProperty, CollectionProperty, ListProperty, SetProperty, MapProperty
+	permits ArrayProperty, CollectionProperty, MapProperty
 {
 
-	private final Object enclosingObject;
 	private final Path path;
-	private final Class<?> type;
 	final Object value;
 
-	private final List<Object> elements;
-
 	IterableProperty(
+		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
-		final Class<?> type,
-		final Object value,
-		final List<Object> elements
+		final Object value
 	) {
-		this.enclosingObject = enclosingObject;
+		super(desc, enclosingObject);
 		this.path = path;
-		this.type = type;
 		this.value = value;
-		this.elements = elements;
-	}
-
-	IterableProperty(
-		final Object enclosingObject,
-		final Path path,
-		final Class<?> type,
-		final Collection<?> value
-	) {
-		this(enclosingObject, path, type, value, List.copyOf(value));
-	}
-
-	@Override
-	public Object enclosingObject() {
-		return enclosingObject;
 	}
 
 	@Override
@@ -52,21 +30,14 @@ public abstract sealed class IterableProperty
 	}
 
 	@Override
-	public Class<?> type() {
-		return type;
-	}
-
-	public int size() {
-		return elements.size();
-	}
-
-	public Object get(final int index) {
-		return elements.get(index);
+	@SuppressWarnings("unchecked")
+	public Iterator<Object> iterator() {
+		return ((Iterable<Object>)value).iterator();
 	}
 
 	@Override
-	public Iterator<Object> iterator() {
-		return elements.iterator();
+	public Object value() {
+		return null;
 	}
 
 	public Stream<Object> stream() {

@@ -1,22 +1,42 @@
 package io.jenetics.incubator.property;
 
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
 import java.util.List;
 
-public final class ListProperty extends IterableProperty {
+public final class ListProperty extends CollectionProperty {
 
-	@SuppressWarnings("unchecked")
 	ListProperty(
+		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
-		final Class<?> type,
-		final List<?> value
+		final Object value
 	) {
-		super(enclosingObject, path, type, value, (List<Object>)value);
+		super(desc, enclosingObject, path, value);
 	}
 
 	@Override
-	public List<?> value() {
-		return (List<?>)value;
+	public int size() {
+		return value != null ? value().size() : 0;
+	}
+
+	public Object get(final int index) {
+		if (value == null) {
+			throw new IndexOutOfBoundsException("List is null.");
+		}
+		return value().get(index);
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return value != null ? value().iterator() : emptyIterator();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Object> value() {
+		return (List<Object>)value;
 	}
 
 	@Override
