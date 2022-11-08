@@ -2,6 +2,7 @@ package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,12 +50,16 @@ public class PropertyExtractor implements Extractor<DataObject, Property> {
 						final var set = (Set<?>)value;
 						return new SetProperty(enclosing, path, type, set);
 					}
+					if (Collection.class.isAssignableFrom(type)) {
+						final var coll = (Collection<?>)value;
+						return new CollectionProperty(enclosing, path, type, coll);
+					}
 					if (Map.class.isAssignableFrom(type)) {
 						final var map = (Map<?, ?>)value;
 						return new MapProperty(enclosing, path, type, map);
 					}
 
-					return new SimplePropertyRecord(desc, enclosing, path, value);
+					return new SimpleProperty(desc, enclosing, path, value);
 				});
 		} else {
 			return Stream.empty();

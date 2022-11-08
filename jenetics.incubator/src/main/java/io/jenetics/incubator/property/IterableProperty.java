@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public sealed class IterableProperty
+public abstract sealed class IterableProperty
 	implements Iterable<Object>, Property
-	permits ArrayProperty, ListProperty, MapProperty, SetProperty
+	permits ArrayProperty, CollectionProperty, ListProperty, SetProperty, MapProperty
 {
 
 	private final Object enclosingObject;
@@ -54,11 +54,6 @@ public sealed class IterableProperty
 	@Override
 	public Class<?> type() {
 		return type;
-	}
-
-	@Override
-	public Collection<?> value() {
-		return (Collection<?>)value;
 	}
 
 	public int size() {

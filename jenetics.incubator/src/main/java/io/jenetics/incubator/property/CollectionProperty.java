@@ -1,22 +1,22 @@
 package io.jenetics.incubator.property;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-public final class MapProperty extends IterableProperty {
+public final class CollectionProperty extends IterableProperty {
 
-	MapProperty(
+	CollectionProperty(
 		final Object enclosingObject,
 		final Path path,
 		final Class<?> type,
-		final Map<?, ?> value
+		final Collection<?> value
 	) {
-		super(enclosingObject, path, type, value, List.copyOf(value.entrySet()));
+		super(enclosingObject, path, type, value, List.copyOf(value));
 	}
 
 	@Override
-	public Map<?, ?> value() {
-		return (Map<?, ?>)value;
+	public Collection<?> value() {
+		return (Collection<?>)value;
 	}
 
 	@Override

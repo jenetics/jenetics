@@ -15,7 +15,7 @@ public final class ArrayProperty extends IterableProperty {
 
 	@Override
 	public Object[] value() {
-		return (Object[]) value;
+		return (Object[])value;
 	}
 
 	@Override

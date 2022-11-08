@@ -79,7 +79,10 @@ import java.util.stream.Collectors;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Property extends MetaObject {
+public sealed interface Property
+	extends MetaObject
+	permits IterableProperty, SimpleProperty
+{
 
 	/**
 	 * Returns the object which contains {@code this} property.
