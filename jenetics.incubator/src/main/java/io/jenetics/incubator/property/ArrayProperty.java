@@ -29,7 +29,7 @@ import java.util.Iterator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends IterableProperty {
+public final class ArrayProperty extends CollectionProperty {
 
 	ArrayProperty(
 		final PropertyDescription desc,
@@ -45,10 +45,12 @@ public final class ArrayProperty extends IterableProperty {
 		return (Object[])value;
 	}
 
+	@Override
 	public int size() {
 		return value != null ? value().length : 0;
 	}
 
+	@Override
 	public Object get(final int index) {
 		if (value == null) {
 			throw new IndexOutOfBoundsException("Array is null.");

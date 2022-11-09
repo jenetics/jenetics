@@ -41,6 +41,12 @@ public final class ListProperty extends CollectionProperty {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<Object> value() {
+		return (List<Object>)value;
+	}
+
+	@Override
 	public int size() {
 		return value != null ? value().size() : 0;
 	}
@@ -55,12 +61,6 @@ public final class ListProperty extends CollectionProperty {
 	@Override
 	public Iterator<Object> iterator() {
 		return value != null ? value().iterator() : emptyIterator();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<Object> value() {
-		return (List<Object>)value;
 	}
 
 	@Override

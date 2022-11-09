@@ -21,10 +21,7 @@ package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -64,24 +61,11 @@ public class PropertyExtractor implements Extractor<DataObject, Property> {
 						!type.getComponentType().isPrimitive())
 					{
 						return new ArrayProperty(desc, enclosing, path, value);
-					}
-					if (List.class.isAssignableFrom(type)) {
+					} else if (List.class.isAssignableFrom(type)) {
 						return new ListProperty(desc, enclosing, path, value);
+					} else {
+						return new SimpleProperty(desc, enclosing, path, value);
 					}
-					if (Set.class.isAssignableFrom(type)) {
-						return new SetProperty(desc, enclosing, path, value);
-					}
-					if (Collection.class.isAssignableFrom(type)) {
-						return new CollectionProperty(desc, enclosing, path, value);
-					}
-					if (Iterable.class.isAssignableFrom(type)) {
-						return new IterableProperty(desc, enclosing, path, value);
-					}
-					if (Map.class.isAssignableFrom(type)) {
-						return new MapProperty(desc, enclosing, path, value);
-					}
-
-					return new SimpleProperty(desc, enclosing, path, value);
 				});
 		} else {
 			return Stream.empty();

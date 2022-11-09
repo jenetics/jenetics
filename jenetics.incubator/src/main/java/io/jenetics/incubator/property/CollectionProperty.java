@@ -19,20 +19,21 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.util.Collections.emptyIterator;
-
-import java.util.Collection;
-import java.util.Iterator;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public sealed class CollectionProperty
-	extends IterableProperty
-	permits ListProperty, SetProperty
+public abstract sealed class CollectionProperty
+	extends PropertyMethods
+	implements Iterable<Object>, Property
+	permits ListProperty, ArrayProperty
 {
+
+	final Path path;
+	final Object value;
 
 	CollectionProperty(
 		final PropertyDescription desc,
@@ -40,23 +41,19 @@ public sealed class CollectionProperty
 		final Path path,
 		final Object value
 	) {
-		super(desc, enclosingObject, path, value);
-	}
-
-	public int size() {
-		return value != null ? value().size() : 0;
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return value != null ? value().iterator() : emptyIterator();
+		super(desc, enclosingObject);
+		this.path = requireNonNull(path);
+		this.value = value;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public Collection<Object> value() {
-		return (Collection<Object>)value;
+	public Path path() {
+		return path;
 	}
+
+	public abstract int size();
+
+	public abstract Object get(final int index);
 
 	@Override
 	public String toString() {

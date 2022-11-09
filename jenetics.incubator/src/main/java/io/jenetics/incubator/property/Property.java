@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
  */
 public sealed interface Property
 	extends MetaObject
-	permits IterableProperty, SimpleProperty
+	permits CollectionProperty, SimpleProperty
 {
 
 	/**
