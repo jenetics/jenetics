@@ -19,14 +19,13 @@
  */
 package io.jenetics.incubator.property;
 
-import java.nio.file.FileSystems;
-import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -109,11 +108,21 @@ public sealed interface Property
 		return path().name();
 	}
 
-	default Reader reader() {
+	/**
+	 * Return a value reader of {@code this} property.
+	 *
+	 * @return value reader of {@code this} property
+	 */
+	default ValueReader reader() {
 		return this::value;
 	}
 
-	default Optional<Writer> writer() {
+	/**
+	 * Return a value writer of {@code this} property, if it is mutable.
+	 *
+	 * @return value writer of {@code this} property
+	 */
+	default Optional<ValueWriter> writer() {
 		return Optional.empty();
 	}
 
@@ -306,34 +315,14 @@ public sealed interface Property
 			return path;
 		}
 
-		/**
-		 * Return a path matcher with the given pattern.
-		 *
-		 * @param pattern the pattern to match
-		 * @return {@code true} if the given {@code pattern} matches {@code this}
-		 *         path, {@code false} otherwise
-		 */
-		public static Predicate<Path> matcher(final String pattern) {
-			final PathMatcher matcher = FileSystems.getDefault()
-				.getPathMatcher(toGlobPattern(pattern));
-
-			return path -> matcher.matches(
-				java.nio.file.Path.of(
-					path.toString().replace('.', '/')
-				)
-			);
-		}
-
-		private static String toGlobPattern(final String pattern) {
-			return "glob:" + pattern.replace('.', '/')
-				.replace("[", "\\[")
-				.replace("]", "\\]");
-		}
-
 	}
 
+	/**
+	 * Property value reader interface, which allows to re-read the property
+	 * value.
+	 */
 	@FunctionalInterface
-	interface Reader {
+	interface ValueReader {
 
 		/**
 		 * Read the current property value. Might differ from {@link #value()} if
@@ -345,8 +334,12 @@ public sealed interface Property
 
 	}
 
+	/**
+	 * Property value writer interface, which allows to mutate the property
+	 * value.
+	 */
 	@FunctionalInterface
-	interface Writer {
+	interface ValueWriter {
 
 		/**
 		 * Changes the property value.

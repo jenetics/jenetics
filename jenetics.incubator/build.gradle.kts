@@ -49,7 +49,7 @@ dependencies {
 	testImplementation(libs.guava)
 	testImplementation(libs.testng)
 	testImplementation(libs.jpx)
-	testImplementation("omds-domain:omds-domain")
+	//testImplementation("omds-domain:omds-domain")
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

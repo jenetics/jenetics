@@ -31,13 +31,11 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public enum PropertyDescriptionExtractor
-	implements Extractor<Class<?>, PropertyDescription>
-{
-	INSTANCE;
+final class PropertyDescriptionExtractor {
+	private PropertyDescriptionExtractor() {
+	}
 
-	@Override
-	public Stream<PropertyDescription> extract(final Class<?> type) {
+	static Stream<PropertyDescription> extract(final Class<?> type) {
 		final var descriptions = new ArrayList<PropertyDescription>();
 
 		if (type.isRecord()) {

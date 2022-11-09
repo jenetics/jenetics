@@ -36,4 +36,5 @@ public record DataObject(Path path, Object value) {
 	public DataObject(Object value) {
 		this(Path.EMPTY, value);
 	}
+
 }

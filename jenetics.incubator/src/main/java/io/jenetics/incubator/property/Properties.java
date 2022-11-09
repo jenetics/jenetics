@@ -21,13 +21,70 @@ package io.jenetics.incubator.property;
 
 import static java.lang.String.format;
 
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 /**
+ * This class contains helper methods for extracting the properties from a given
+ * root object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class Properties {
+public final class Properties {
 	private Properties() {
+	}
+
+	/**
+	 * Return a property extractor object, which extracts the direct (first level)
+	 * properties of the input object.
+	 *
+	 * @return a first level property extractor
+	 */
+	public static Extractor<DataObject, Property> extractor() {
+		return PropertyExtractor.DEFAULT;
+	}
+
+	/**
+	 * Return a {@code Stream} that is lazily populated with {@code Property}
+	 * by walking the object tree rooted at a given starting object. The object
+	 * tree is traversed in pre-order.
+	 *
+	 * @param root the root of the object tree
+	 * @param extractor the first level property extractor used for extracting
+	 *        the object properties
+	 * @return a property stream
+	 */
+	public static Stream<Property> walk(
+		final DataObject root,
+		final Extractor<DataObject, Property> extractor
+	) {
+		return new RecursivePropertyExtractor(extractor).extract(root);
+	}
+
+	/**
+	 * Return a {@code Stream} that is lazily populated with {@code Property}
+	 * by walking the object tree rooted at a given starting object. The object
+	 * tree is traversed in pre-order.
+	 *
+	 * <pre>{@code
+	 * Property.walk(new DataObject(root), "my.object.packages.*")
+	 *    .forEach(System.out::println);
+	 * }</pre>
+	 *
+	 * @param root the root of the object tree
+	 * @param includes the included object name (glob) patterns
+	 * @return a property stream
+	 */
+	public static Stream<Property> walk(final DataObject root, final String... includes) {
+		final var filter = Stream.of(includes)
+			.map(Filters::toPattern)
+			.map(Filters::toFilter)
+			.reduce(Predicate::or)
+			.orElse(a -> true);
+
+		return walk(root, extractor().sourceFilter(filter));
 	}
 
 	static String toString(final String name, final Property property) {

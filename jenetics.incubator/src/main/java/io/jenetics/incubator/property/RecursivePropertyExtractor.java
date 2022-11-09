@@ -20,14 +20,11 @@
 package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.incubator.property.Property.Path;
 
@@ -36,12 +33,12 @@ import io.jenetics.incubator.property.Property.Path;
  * @version !__version__!
  * @since !__version__!
  */
-public class RecursivePropertyExtractor implements Extractor<Object, Property> {
+final class RecursivePropertyExtractor implements Extractor<DataObject, Property> {
 
 	private final Extractor<? super DataObject, ? extends Property> properties;
 	private final Extractor<? super Property, ?> flattener;
 
-	public RecursivePropertyExtractor(
+	RecursivePropertyExtractor(
 		final Extractor<DataObject, Property> properties,
 		final Extractor<? super Property, ?> flattener
 	) {
@@ -49,20 +46,26 @@ public class RecursivePropertyExtractor implements Extractor<Object, Property> {
 		this.flattener = requireNonNull(flattener);
 	}
 
-	public RecursivePropertyExtractor(
+	RecursivePropertyExtractor(
 		final Extractor<DataObject, Property> properties
 	) {
-		this(properties, PropertyFlattener.INSTANCE);
+		this(properties, RecursivePropertyExtractor::flatten);
 	}
 
-	public RecursivePropertyExtractor() {
+	RecursivePropertyExtractor() {
 		this(PropertyExtractor.DEFAULT);
 	}
 
+	private static Stream<Object> flatten(final Property property) {
+		return property instanceof CollectionProperty coll
+			? coll.stream()
+			: Stream.empty();
+	}
+
 	@Override
-	public Stream<Property> extract(final Object source) {
+	public Stream<Property> extract(final DataObject source) {
 		final Map<Object, Object> visited = new IdentityHashMap<>();
-		return stream(new DataObject(Path.EMPTY, source), visited);
+		return stream(source, visited);
 	}
 
 	private Stream<Property> stream(
@@ -83,16 +86,15 @@ public class RecursivePropertyExtractor implements Extractor<Object, Property> {
 		if (exists) {
 			return Stream.empty();
 		} else {
-			final var it = new PropertyPreOrderIterator(object, properties);
-			final var sp = spliteratorUnknownSize(it, Spliterator.SIZED);
+			final var it = new PreOrderIterator<>(
+				object,
+				properties,
+				property -> new DataObject(property.path(), property.value())
+			);
 
-			return StreamSupport.stream(sp, false)
-				.flatMap(prop ->
-					Stream.concat(
-						Stream.of(prop),
-						flatten(prop, visited)
-					)
-				);
+			return it.stream()
+				.flatMap(prop -> Stream
+					.concat(Stream.of(prop), flatten(prop, visited)));
 		}
 	}
 
@@ -107,24 +109,7 @@ public class RecursivePropertyExtractor implements Extractor<Object, Property> {
 				final Path path = property.path()
 					.indexed(index.getAndIncrement());
 
-				final Property parent = null;
-				/*
-				new ReadonlyPropertyRecord(
-					property.value(),
-					path,
-					ele != null ? ele.getClass() : Object.class,
-					ele
-				);
-
-				 */
-
-				return Stream.concat(
-					Stream.of(parent),
-					stream(
-						new DataObject(path, ele),
-						visited
-					)
-				);
+				return stream(new DataObject(path, ele), visited);
 			});
 	}
 

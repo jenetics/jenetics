@@ -20,11 +20,16 @@
 package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Preorder property iterator.
@@ -33,16 +38,19 @@ import java.util.NoSuchElementException;
  * @version !__version__!
  * @since !__version__!
  */
-final class PropertyPreOrderIterator implements Iterator<Property> {
+final class PreOrderIterator<S, T> implements Iterator<T> {
 
-	private final Extractor<? super DataObject, ? extends Property> reader;
-	private final Deque<Iterator<? extends Property>> deque = new ArrayDeque<>();
+	private final Extractor<? super S, ? extends T> reader;
+	private final Function<? super T, ? extends S> mapper;
+	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
 
-	PropertyPreOrderIterator(
-		final DataObject object,
-		final Extractor<? super DataObject, ? extends Property> reader
+	PreOrderIterator(
+		final S object,
+		final Extractor<? super S, ? extends T> reader,
+		final Function<? super T, ? extends S> mapper
 	) {
 		this.reader = requireNonNull(reader);
+		this.mapper = requireNonNull(mapper);
 		deque.push(reader.extract(object).iterator());
 	}
 
@@ -53,25 +61,32 @@ final class PropertyPreOrderIterator implements Iterator<Property> {
 	}
 
 	@Override
-	public Property next() {
+	public T next() {
 		final var it = deque.peek();
 		if (it == null) {
 			throw new NoSuchElementException("No next element.");
 		}
 
-		final Property node = it.next();
+		final T node = it.next();
 		if (!it.hasNext()) {
 			deque.pop();
 		}
 
 		final var children = reader
-			.extract(new DataObject(node.path(), node.value()))
+			.extract(mapper.apply(node))
 			.iterator();
 		if (children.hasNext()) {
 			deque.push(children);
 		}
 
 		return node;
+	}
+
+	Stream<T> stream() {
+		return StreamSupport.stream(
+			spliteratorUnknownSize(this, Spliterator.SIZED),
+			false
+		);
 	}
 
 }

@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-public final class SimpleProperty extends PropertyMethods implements Property {
+public final class SimpleProperty extends PropertyDescriptionMethods implements Property {
 
 	private final Path path;
 	private final Object value;

@@ -23,6 +23,7 @@ import static java.util.Collections.emptyIterator;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -61,6 +62,11 @@ public final class ListProperty extends CollectionProperty {
 	@Override
 	public Iterator<Object> iterator() {
 		return value != null ? value().iterator() : emptyIterator();
+	}
+
+	@Override
+	public Stream<Object> stream() {
+		return value().stream();
 	}
 
 	@Override

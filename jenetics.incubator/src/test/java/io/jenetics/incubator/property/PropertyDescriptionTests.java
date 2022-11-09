@@ -9,7 +9,7 @@ public class PropertyDescriptionTests {
 	@Test
 	public void returnType() {
 		GPX gpx = GPX.builder().build();
-		final var props = PropertyDescriptionExtractor.INSTANCE.extract(GPX.class);
+		final var props = PropertyDescriptionExtractor.extract(GPX.class);
 
 		props.forEach(p -> {
 			var foo = p.getter().getGenericReturnType();

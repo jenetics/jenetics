@@ -21,13 +21,16 @@ package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public abstract sealed class CollectionProperty
-	extends PropertyMethods
+	extends PropertyDescriptionMethods
 	implements Iterable<Object>, Property
 	permits ListProperty, ArrayProperty
 {
@@ -54,6 +57,10 @@ public abstract sealed class CollectionProperty
 	public abstract int size();
 
 	public abstract Object get(final int index);
+
+	public Stream<Object> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 
 	@Override
 	public String toString() {

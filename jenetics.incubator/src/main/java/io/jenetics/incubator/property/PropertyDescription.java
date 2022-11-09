@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
  * @version !__version__!
  * @since !__version__!
  */
-public record PropertyDescription(
+record PropertyDescription(
 	String name,
 	Class<?> type,
 	Method getter,

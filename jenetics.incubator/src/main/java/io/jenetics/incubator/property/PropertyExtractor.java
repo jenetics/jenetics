@@ -29,14 +29,14 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public class PropertyExtractor implements Extractor<DataObject, Property> {
+final class PropertyExtractor implements Extractor<DataObject, Property> {
 
-	public static final PropertyExtractor DEFAULT =
-		new PropertyExtractor(PropertyDescriptionExtractor.INSTANCE);
+	static final PropertyExtractor DEFAULT =
+		new PropertyExtractor(PropertyDescriptionExtractor::extract);
 
 	private final Extractor<? super Class<?>, ? extends PropertyDescription> descriptions;
 
-	public PropertyExtractor(
+	PropertyExtractor(
 		final Extractor<
 			? super Class<?>,
 			? extends PropertyDescription> descriptions

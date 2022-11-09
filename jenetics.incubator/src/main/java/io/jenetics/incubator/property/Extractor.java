@@ -32,7 +32,11 @@ public interface Extractor<S, T> {
 
 	Stream<T> extract(final S source);
 
-	default Extractor<S, T> filter(final Predicate<? super T> predicate) {
+	default Extractor<S, T> sourceFilter(final Predicate<? super S> predicate) {
+		return source -> predicate.test(source) ? extract(source) : Stream.empty();
+	}
+
+	default Extractor<S, T> targetFilter(final Predicate<? super T> predicate) {
 		return source -> extract(source).filter(predicate);
 	}
 

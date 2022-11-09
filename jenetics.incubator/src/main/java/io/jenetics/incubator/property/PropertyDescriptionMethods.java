@@ -23,20 +23,20 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import io.jenetics.incubator.property.Property.Reader;
-import io.jenetics.incubator.property.Property.Writer;
+import io.jenetics.incubator.property.Property.ValueReader;
+import io.jenetics.incubator.property.Property.ValueWriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-abstract class PropertyMethods {
+abstract class PropertyDescriptionMethods {
 
 	final PropertyDescription desc;
 	final Object enclosingObject;
 
-	PropertyMethods(
+	PropertyDescriptionMethods(
 		final PropertyDescription desc,
 		final Object enclosingObject
 	) {
@@ -52,7 +52,7 @@ abstract class PropertyMethods {
 		return desc.type();
 	}
 
-	public Reader reader() {
+	public ValueReader reader() {
 		return this::read;
 	}
 
@@ -60,7 +60,7 @@ abstract class PropertyMethods {
 		return desc.read(enclosingObject);
 	}
 
-	public Optional<Writer> writer() {
+	public Optional<ValueWriter> writer() {
 		return desc.isWriteable()
 			? Optional.of(this::write)
 			: Optional.empty();
