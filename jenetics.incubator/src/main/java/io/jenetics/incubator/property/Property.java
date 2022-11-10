@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -80,7 +78,7 @@ import java.util.stream.Stream;
  */
 public sealed interface Property
 	extends MetaObject
-	permits CollectionProperty, SimpleProperty
+	permits SimpleProperty, CollectionProperty
 {
 
 	/**

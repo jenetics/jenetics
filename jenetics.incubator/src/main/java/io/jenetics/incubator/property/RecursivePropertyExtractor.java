@@ -33,13 +33,13 @@ import io.jenetics.incubator.property.Property.Path;
  * @version !__version__!
  * @since !__version__!
  */
-final class RecursivePropertyExtractor implements Extractor<DataObject, Property> {
+final class RecursivePropertyExtractor implements Extractor<PathObject, Property> {
 
-	private final Extractor<? super DataObject, ? extends Property> properties;
+	private final Extractor<? super PathObject, ? extends Property> properties;
 	private final Extractor<? super Property, ?> flattener;
 
 	RecursivePropertyExtractor(
-		final Extractor<DataObject, Property> properties,
+		final Extractor<PathObject, Property> properties,
 		final Extractor<? super Property, ?> flattener
 	) {
 		this.properties = requireNonNull(properties);
@@ -47,7 +47,7 @@ final class RecursivePropertyExtractor implements Extractor<DataObject, Property
 	}
 
 	RecursivePropertyExtractor(
-		final Extractor<DataObject, Property> properties
+		final Extractor<PathObject, Property> properties
 	) {
 		this(properties, RecursivePropertyExtractor::flatten);
 	}
@@ -63,13 +63,13 @@ final class RecursivePropertyExtractor implements Extractor<DataObject, Property
 	}
 
 	@Override
-	public Stream<Property> extract(final DataObject source) {
+	public Stream<Property> extract(final PathObject source) {
 		final Map<Object, Object> visited = new IdentityHashMap<>();
 		return stream(source, visited);
 	}
 
 	private Stream<Property> stream(
-		final DataObject object,
+		final PathObject object,
 		final Map<Object, Object> visited
 	) {
 		if (object == null) {
@@ -89,7 +89,7 @@ final class RecursivePropertyExtractor implements Extractor<DataObject, Property
 			final var it = new PreOrderIterator<>(
 				object,
 				properties,
-				property -> new DataObject(property.path(), property.value())
+				property -> new PathObject(property.path(), property.value())
 			);
 
 			return it.stream()
@@ -109,7 +109,7 @@ final class RecursivePropertyExtractor implements Extractor<DataObject, Property
 				final Path path = property.path()
 					.indexed(index.getAndIncrement());
 
-				return stream(new DataObject(path, ele), visited);
+				return stream(new PathObject(path, ele), visited);
 			});
 	}
 

@@ -22,11 +22,16 @@ package io.jenetics.incubator.property;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Represents a simple property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class SimpleProperty extends PropertyDescriptionMethods implements Property {
+public final class SimpleProperty
+	extends PropertyDescriptionMethods
+	implements Property
+{
 
 	private final Path path;
 	private final Object value;

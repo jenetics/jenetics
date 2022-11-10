@@ -24,16 +24,18 @@ import static java.util.Objects.requireNonNull;
 import io.jenetics.incubator.property.Property.Path;
 
 /**
+ * This class adds a path to a given object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record DataObject(Path path, Object value) {
-	public DataObject {
+public record PathObject(Path path, Object value) {
+	public PathObject {
 		requireNonNull(path);
 	}
 
-	public DataObject(Object value) {
+	public PathObject(Object value) {
 		this(Path.EMPTY, value);
 	}
 

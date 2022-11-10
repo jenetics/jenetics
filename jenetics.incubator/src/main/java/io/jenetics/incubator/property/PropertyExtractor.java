@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-final class PropertyExtractor implements Extractor<DataObject, Property> {
+final class PropertyExtractor implements Extractor<PathObject, Property> {
 
 	static final PropertyExtractor DEFAULT =
 		new PropertyExtractor(PropertyDescriptionExtractor::extract);
@@ -45,7 +45,7 @@ final class PropertyExtractor implements Extractor<DataObject, Property> {
 	}
 
 	@Override
-	public Stream<Property> extract(final DataObject object) {
+	public Stream<Property> extract(final PathObject object) {
 		requireNonNull(object);
 
 		if (object.value() != null) {
@@ -73,9 +73,9 @@ final class PropertyExtractor implements Extractor<DataObject, Property> {
 	}
 
 	public Stream<Property> properties(final Object value) {
-		final var data = value instanceof DataObject object
+		final var data = value instanceof PathObject object
 			? object
-			: new DataObject(value);
+			: new PathObject(value);
 
 		return extract(data);
 	}

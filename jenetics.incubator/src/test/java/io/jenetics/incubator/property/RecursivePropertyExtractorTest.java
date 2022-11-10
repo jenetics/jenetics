@@ -16,7 +16,7 @@ public class RecursivePropertyExtractorTest {
 				.getResourceAsStream("/Austria.gpx")
 		);
 
-		Properties.walk(new DataObject(gpx), "io.jenetics.*")
+		Properties.walk(new PathObject(gpx), "io.jenetics.*")
 			.forEach(System.out::println);
 	}
 

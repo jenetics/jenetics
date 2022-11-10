@@ -42,7 +42,7 @@ public final class Properties {
 	 *
 	 * @return a first level property extractor
 	 */
-	public static Extractor<DataObject, Property> extractor() {
+	public static Extractor<PathObject, Property> extractor() {
 		return PropertyExtractor.DEFAULT;
 	}
 
@@ -57,8 +57,8 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property> walk(
-		final DataObject root,
-		final Extractor<DataObject, Property> extractor
+		final PathObject root,
+		final Extractor<PathObject, Property> extractor
 	) {
 		return new RecursivePropertyExtractor(extractor).extract(root);
 	}
@@ -77,7 +77,7 @@ public final class Properties {
 	 * @param includes the included object name (glob) patterns
 	 * @return a property stream
 	 */
-	public static Stream<Property> walk(final DataObject root, final String... includes) {
+	public static Stream<Property> walk(final PathObject root, final String... includes) {
 		final var filter = Stream.of(includes)
 			.map(Filters::toPattern)
 			.map(Filters::toFilter)

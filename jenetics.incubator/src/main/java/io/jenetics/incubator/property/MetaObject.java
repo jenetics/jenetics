@@ -20,6 +20,8 @@
 package io.jenetics.incubator.property;
 
 /**
+ * This interface enriches a object value with its type and name.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
