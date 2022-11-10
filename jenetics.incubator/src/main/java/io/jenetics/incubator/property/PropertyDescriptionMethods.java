@@ -60,6 +60,10 @@ abstract class PropertyDescriptionMethods {
 		return desc.read(enclosingObject);
 	}
 
+	public boolean isWritable() {
+		return desc.isWriteable();
+	}
+
 	public Optional<ValueWriter> writer() {
 		return desc.isWriteable()
 			? Optional.of(this::write)

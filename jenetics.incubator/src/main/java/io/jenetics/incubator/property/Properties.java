@@ -21,8 +21,11 @@ package io.jenetics.incubator.property;
 
 import static java.lang.String.format;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.property.Property.Path;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -85,6 +88,13 @@ public final class Properties {
 			.orElse(a -> true);
 
 		return walk(root, extractor().sourceFilter(filter));
+	}
+
+	public static Optional<Property> get(final Object bean, final Path path) {
+		for (var p : path) {
+
+		}
+		return Optional.empty();
 	}
 
 	static String toString(final String name, final Property property) {

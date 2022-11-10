@@ -19,14 +19,21 @@
  */
 package io.jenetics.incubator.property;
 
+import static java.util.Objects.requireNonNull;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
+ * Methods for extracting {@link PropertyDescription} directly accessible from
+ * a given data type.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -40,14 +47,7 @@ final class PropertyDescriptionExtractor {
 
 		if (type.isRecord()) {
 			for (var component : type.getRecordComponents()) {
-				descriptions.add(
-					new PropertyDescription(
-						component.getName(),
-						component.getType(),
-						component.getAccessor(),
-						null
-					)
-				);
+				descriptions.add(toDescription(component));
 			}
 		} else {
 			try {
@@ -59,14 +59,7 @@ final class PropertyDescriptionExtractor {
 					if (descriptor.getReadMethod() != null &&
 						!"class".equals(descriptor.getName()))
 					{
-						descriptions.add(
-							new PropertyDescription(
-								descriptor.getName(),
-								descriptor.getPropertyType(),
-								descriptor.getReadMethod(),
-								descriptor.getWriteMethod()
-							)
-						);
+						descriptions.add(toDescription(descriptor));
 					}
 				}
 			} catch (IntrospectionException e) {
@@ -79,6 +72,60 @@ final class PropertyDescriptionExtractor {
 
 		descriptions.sort(Comparator.naturalOrder());
 		return descriptions.stream();
+	}
+
+	private static PropertyDescription toDescription(final RecordComponent component) {
+		return new PropertyDescription(
+			component.getName(),
+			component.getType(),
+			component.getAccessor(),
+			null
+		);
+	}
+
+	private static PropertyDescription toDescription(final PropertyDescriptor descriptor) {
+		return new PropertyDescription(
+			descriptor.getName(),
+			descriptor.getPropertyType(),
+			descriptor.getReadMethod(),
+			descriptor.getWriteMethod()
+		);
+	}
+
+	static Optional<PropertyDescription> extract(final Class<?> type, final String name) {
+		requireNonNull(type);
+		requireNonNull(name);
+
+		Optional<PropertyDescription> description = Optional.empty();
+		if (type.isRecord()) {
+			for (var component : type.getRecordComponents()) {
+				if (component.getName().equals(name)) {
+					description = Optional.of(toDescription(component));
+				}
+			}
+		} else {
+			try {
+				final PropertyDescriptor[] descriptors = Introspector
+					.getBeanInfo(type)
+					.getPropertyDescriptors();
+
+				for (var descriptor : descriptors) {
+					if (descriptor.getReadMethod() != null &&
+						!"class".equals(descriptor.getName()) &&
+						descriptor.getName().equals(name))
+					{
+						description = Optional.of(toDescription(descriptor));
+					}
+				}
+			} catch (IntrospectionException e) {
+				throw new IllegalArgumentException(
+					"Can't introspect class '%s'.".formatted(type.getName()),
+					e
+				);
+			}
+		}
+
+		return description;
 	}
 
 }

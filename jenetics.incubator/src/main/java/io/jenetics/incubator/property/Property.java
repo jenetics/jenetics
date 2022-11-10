@@ -76,10 +76,7 @@ import java.util.stream.Collectors;
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Property
-	extends MetaObject
-	permits SimpleProperty, CollectionProperty
-{
+public sealed interface Property permits SimpleProperty, CollectionProperty {
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -101,10 +98,23 @@ public sealed interface Property
 	 *
 	 * @return the property name
 	 */
-	@Override
 	default String name() {
 		return path().name();
 	}
+
+	/**
+	 * The type of the metaobject, never {@code null}.
+	 *
+	 * @return the type of the metaobject
+	 */
+	Class<?> type();
+
+	/**
+	 * The value of the metaobject, may be {@code null}.
+	 *
+	 * @return the value of the metaobject
+	 */
+	Object value();
 
 	/**
 	 * Return a value reader of {@code this} property.
@@ -113,6 +123,16 @@ public sealed interface Property
 	 */
 	default ValueReader reader() {
 		return this::value;
+	}
+
+	/**
+	 * Test whether {@code this} property is writable.
+	 *
+	 * @return {@code true} if @code this} property is writable, {@code false}
+	 *         otherwise
+	 */
+	default boolean isWritable() {
+		return false;
 	}
 
 	/**

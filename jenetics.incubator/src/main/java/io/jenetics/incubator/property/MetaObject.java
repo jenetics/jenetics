@@ -19,34 +19,26 @@
  */
 package io.jenetics.incubator.property;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.property.Property.Path;
+
 /**
- * This interface enriches a object value with its type and name.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface MetaObject {
+public record MetaObject(Object object) {
 
-	/**
-	 * The name of the metaobject.
-	 *
-	 * @return name of the metaobject
-	 */
-	String name();
+	public Stream<Property> properties(final String... includes) {
+		return object != null
+			? Properties.walk(new PathObject(object), includes)
+			: Stream.empty();
+	}
 
-	/**
-	 * The type of the metaobject, never {@code null}.
-	 *
-	 * @return the type of the metaobject
-	 */
-	Class<?> type();
-
-	/**
-	 * The value of the metaobject, may be {@code null}.
-	 *
-	 * @return the value of the metaobject
-	 */
-	Object value();
+	public Optional<Property> get(final Path path) {
+		return Optional.empty();
+	}
 
 }
