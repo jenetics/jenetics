@@ -41,7 +41,7 @@ import io.jenetics.util.Seq;
  *     .map(pt -> pt.eval(fitness))
  *     .asISeq();
  *
- * final Engine<G, C> engine = new Engine.Builder(evaluator, genotypeFactory)
+ * final Engine<G, C> engine = new Engine.Builder<>(evaluator, genotypeFactory)
  *     .build();
  * }</pre>
  *
