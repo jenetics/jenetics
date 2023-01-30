@@ -1016,6 +1016,13 @@ public final class Codecs {
 					while (i < basicSet.size() && !Objects.equals(basicSet.get(i), v)) {
 						++i;
 					}
+					if (i >= basicSet.size()) {
+						throw new IllegalArgumentException(
+							"Invalid subset; input values were not created by " +
+								"'decode' method."
+						);
+					}
+
 					Bits.set(bits, i);
 				}
 
