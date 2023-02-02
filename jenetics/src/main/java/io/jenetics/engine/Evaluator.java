@@ -33,7 +33,7 @@ import io.jenetics.util.Seq;
  * <p>
  * The implementer is free to do the evaluation <em>in place</em>, or create
  * new {@link Phenotype} instance and return the newly created one. A simple
- * serial evaluator can easily implemented:
+ * serial evaluator can easily implement:
  *
  * <pre>{@code
  * final Function<? super Genotype<G>, ? extends C> fitness = ...;
