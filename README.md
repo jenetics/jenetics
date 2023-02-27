@@ -144,11 +144,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Christoph Laaber, Tao Yue, Shaukat Ali. <a href="https://arxiv.org/abs/2211.13525">Multi-Objective Search-Based Software Microbenchmark Prioritization.</a> <em> ArXiv/Computer Science/Software Engineering. </em> Nov. 2022.
+Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023.200200">Optimization of input parameters of ANN–driven plasma source through nature-inspired evolutionary algorithms.</a> <em> Intelligent Systems with Applications, Volume 18, 2023, 200200, ISSN 2667-3053. </em> May 2023.
 
 ...
 </summary>
 
+1) Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023.200200">Optimization of input parameters of ANN–driven plasma source through nature-inspired evolutionary algorithms.</a> <em> Intelligent Systems with Applications, Volume 18, 2023, 200200, ISSN 2667-3053. </em> May 2023.
 1) Christoph Laaber, Tao Yue, Shaukat Ali. <a href="https://arxiv.org/abs/2211.13525">Multi-Objective Search-Based Software Microbenchmark Prioritization.</a> <em> ArXiv/Computer Science/Software Engineering. </em> Nov. 2022.
 1) Ricardo Ferreira Vilela, João Choma Neto, Victor Hugo Santiago Costa Pinto, Paulo Sérgio Lopes de Souza, Simone do Rocio Senger de Souza. <a href="https://doi.org/10.1002/cpe.7489">Bio-inspired optimization to support the test data generation of concurrent software.</a> <em> Concurrency and Computation: Practice and Experience. </em> Nov. 2022.
 2) G. Mateeva, D. Parvanov, I. Dimitrov, I. Iliev and T. Balabanov. <a href="https://doi.org/10.1109/ICAI55857.2022.9960128">An Efficiency of Third Party Genetic Algorithms Software Libraries in Mobile Distributed Computing for Financial Time Series Forecasting.</a> <em> 2022 International Conference Automatics and Informatics (ICAI). </em> Oct. 2022.
@@ -294,7 +295,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2022 Franz Wilhelmstötter
+	Copyright 2007-2023 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
