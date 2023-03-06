@@ -19,6 +19,8 @@
  */
 package io.jenetics.internal.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -391,6 +393,18 @@ public class BitsTest {
 			Bits.set(data, i);
 			System.out.println(Bits.toByteString(data));
 			Assert.assertTrue(Bits.get(data, i));
+		}
+	}
+
+	@Test
+	public void setGetBid2() {
+		final int length = 80;
+		final byte[] data = Bits.newArray(length);
+
+		for (int i = 0; i < length; ++i) {
+			assertThat(Bits.get(data, i)).isFalse();
+			Bits.set(data, i);
+			assertThat(Bits.get(data, i)).isTrue();
 		}
 	}
 

@@ -33,6 +33,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.IOValue;
 import io.jenetics.internal.util.Lifecycle.Value;
 
 public class LifecycleTest {
@@ -214,7 +215,7 @@ public class LifecycleTest {
 
 	@Test
 	public void closeableValue() throws Exception {
-		final var closeable = Value.of(
+		final var closeable = new Value<>(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -230,7 +231,7 @@ public class LifecycleTest {
 		final var resource2 = atomic();
 		final var resource3 = atomic();
 
-		final var closeable = Value.build(resources -> {
+		final var closeable = new Value<>(resources -> {
 			resources.add(resource1, Value::close);
 			resources.add(resource2, Value::close);
 			resources.add(resource3, Value::close);
@@ -248,7 +249,7 @@ public class LifecycleTest {
 	}
 
 	private static Value<AtomicInteger, RuntimeException> atomic() {
-		return Value.of(
+		return new Value<>(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -261,7 +262,7 @@ public class LifecycleTest {
 		final var resource3 = atomic();
 
 		try {
-			Value.build(resources -> {
+			new Value<>(resources -> {
 				resources.add(resource1, Value::close);
 				resources.add(resource2, Value::close);
 				resources.add(resource3, Value::close);
@@ -276,7 +277,7 @@ public class LifecycleTest {
 	}
 
 	private static Value<Path, IOException> tempFile() throws IOException {
-		final var file = Value.of(
+		final var file = new IOValue<>(
 			Files.createFile(Path.of("foo")),
 			Files::deleteIfExists
 		);
@@ -284,7 +285,7 @@ public class LifecycleTest {
 			System.out.println("asdf: " + file.get());
 		}
 
-		return Value.of(
+		return new Value<>(
 			Files.createTempFile("Lifecycle", "TEST"),
 			Files::deleteIfExists
 		);

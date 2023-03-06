@@ -79,7 +79,7 @@ import io.jenetics.util.Factory;
  * The invalid range is marked with {@code x}. Repairing an invalid value will
  * map values in the {@code l} range on the valid range <em>[0, 2)</em>, and
  * value in the {@code r} range on the valid range <em>[8, 10)</em>. This mapping
- * guarantees an evenly distribution of the values in the valid ranges, which is
+ * guarantees an even distribution of the values in the valid ranges, which is
  * an important characteristic of the repair function.
  *
  * <pre>{@code

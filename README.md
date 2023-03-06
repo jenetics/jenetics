@@ -253,6 +253,13 @@ Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023
 
 ## Release notes
 
+### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
+
+#### Improvemments
+
+* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
+
+
 ### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
 
 #### Bugs

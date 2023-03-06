@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,7 +36,7 @@ public final class CSV {
 	public static List<String> read(final InputStream in) {
 		try (in) {
 			final var value = new String(in.readAllBytes());
-			return Arrays.asList(value.split("\n"));
+			return Arrays.asList(value.split(Pattern.quote(System.lineSeparator())));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

@@ -17,38 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.math;
+package io.jenetics.incubator.property;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.util.RandomRegistry;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ProbabilitiesTest {
-
-	@Test
-	public void toIntToFloat() {
-		final var random = RandomRegistry.random();
-
-		for (int i = 0; i < 1_000_000; ++i) {
-			final float p = random.nextFloat();
-
-			final int ip = Probabilities.toInt(p);
-			final float fip = Probabilities.toFloat(ip);
-			Assert.assertEquals(fip, p);
-		}
+final class Filters {
+	private Filters() {
 	}
 
-	@Test
-	public void probabilityToInt() {
-		Assert.assertEquals(Probabilities.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(Probabilities.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(Probabilities.toInt(0.5), 0);
-		Assert.assertEquals(Probabilities.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(Probabilities.toInt(0.75), Integer.MAX_VALUE/2);
+	static Pattern toPattern(final String glob) {
+		return Pattern.compile(
+			"^" +
+				Pattern.quote(glob)
+					.replace("*", "\\E.*\\Q")
+					.replace("?", "\\E.\\Q") +
+				"$"
+		);
+	}
+
+	static Predicate<PathObject> toFilter(final Pattern pattern) {
+		return object -> pattern
+			.matcher(object.value().getClass().getName())
+			.matches();
 	}
 
 }

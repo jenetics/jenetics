@@ -17,38 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.math;
+package io.jenetics.incubator.property;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-import io.jenetics.util.RandomRegistry;
+import io.jenetics.incubator.property.Property.Path;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ProbabilitiesTest {
+public record MetaObject(Object object) {
 
-	@Test
-	public void toIntToFloat() {
-		final var random = RandomRegistry.random();
-
-		for (int i = 0; i < 1_000_000; ++i) {
-			final float p = random.nextFloat();
-
-			final int ip = Probabilities.toInt(p);
-			final float fip = Probabilities.toFloat(ip);
-			Assert.assertEquals(fip, p);
-		}
+	public Stream<Property> properties(final String... includes) {
+		return object != null
+			? Properties.walk(new PathObject(object), includes)
+			: Stream.empty();
 	}
 
-	@Test
-	public void probabilityToInt() {
-		Assert.assertEquals(Probabilities.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(Probabilities.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(Probabilities.toInt(0.5), 0);
-		Assert.assertEquals(Probabilities.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(Probabilities.toInt(0.75), Integer.MAX_VALUE/2);
+	public Optional<Property> get(final Path path) {
+		return Optional.empty();
 	}
 
 }

@@ -19,8 +19,6 @@
  */
 package io.jenetics.internal.math;
 
-import static io.jenetics.internal.math.Basics.pow;
-
 /**
  * Mathematical functions regarding probabilities.
  *
@@ -31,34 +29,20 @@ import static io.jenetics.internal.math.Basics.pow;
 public final class Probabilities {
 	private Probabilities() {}
 
-	private static final long INT_RANGE = pow(2, 32) - 1;
+	private static final long RANGE =
+		(long)Integer.MAX_VALUE - (long)Integer.MIN_VALUE;
 
 	/**
 	 * Maps the probability, given in the range {@code [0, 1]}, to an
 	 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
 	 *
-	 * @see #toInt(double)
-	 * @see #toFloat(int)
-	 *
-	 * @param probability the probability to widen.
-	 * @return the widened probability.
-	 */
-	public static int toInt(final float probability) {
-		return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
-	}
-
-	/**
-	 * Maps the probability, given in the range {@code [0, 1]}, to an
-	 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
-	 *
-	 * @see #toInt(float)
 	 * @see #toFloat(int)
 	 *
 	 * @param probability the probability to widen.
 	 * @return the widened probability.
 	 */
 	public static int toInt(final double probability) {
-		return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		return (int)(RANGE*probability + Integer.MIN_VALUE);
 	}
 
 	/**
@@ -66,14 +50,13 @@ public final class Probabilities {
 	 * {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]} back to a float
 	 * probability within the range {@code [0, 1]}.
 	 *
-	 * @see #toInt(float)
 	 * @see  #toInt(double)
 	 *
 	 * @param probability the <i>integer</i> probability to map.
 	 * @return the mapped probability within the range {@code [0, 1]}.
 	 */
 	public static float toFloat(final int probability) {
-		final long value = (long)probability + Integer.MAX_VALUE;
-		return (float)(value/(double)INT_RANGE);
+		final long value = (long)probability + Integer.MAX_VALUE + 1;
+		return (float)(value/(double) RANGE);
 	}
 }
