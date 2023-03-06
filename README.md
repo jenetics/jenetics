@@ -252,6 +252,13 @@ Christoph Laaber, Tao Yue, Shaukat Ali. <a href="https://arxiv.org/abs/2211.1352
 
 ## Release notes
 
+### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
+
+#### Improvemments
+
+* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
+
+
 ### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
 
 #### Bugs
