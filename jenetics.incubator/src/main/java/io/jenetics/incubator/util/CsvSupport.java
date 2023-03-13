@@ -104,7 +104,7 @@ public final class CsvSupport {
 	 *         CSV row
 	 * @throws NullPointerException if the given {@code row} is {@code null}
 	 */
-	public static List<String> split(final CharSequence line) {
+	public static List<String> split(CharSequence line) {
 		final var columns = new ArrayList<String>();
 		final var column = new StringBuilder(32);
 
@@ -209,7 +209,7 @@ public final class CsvSupport {
 	 * @param cols the CSV columns to join
 	 * @return a new CSV row, joined from the given columns
 	 */
-	public static String join(final Iterable<?> cols) {
+	public static String join(Iterable<?> cols) {
 		final var row = new StringBuilder(32);
 
 		final var it = cols.iterator();
@@ -224,7 +224,7 @@ public final class CsvSupport {
 		return row.toString();
 	}
 
-	private static String escape(final Object value) {
+	private static String escape(Object value) {
 		if (value == null) {
 			return "";
 		} else {
@@ -239,7 +239,7 @@ public final class CsvSupport {
 		}
 	}
 
-	private static boolean mustEscape(final CharSequence value) {
+	private static boolean mustEscape(CharSequence value) {
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 			if (c == SEPARATOR || c == '\n' || c == '\r') {
@@ -281,10 +281,10 @@ public final class CsvSupport {
 	 *        automatically closed when the returned line stream is closed.
 	 * @return the stream of CSV lines
 	 */
-	public static Stream<String> read(final Reader reader) {
+	public static Stream<String> read(Reader reader) {
 		final Value<Stream<String>, IOException> result = new Value<>(resources -> {
-			final var br = reader instanceof BufferedReader
-				? resources.add((BufferedReader)reader, Closeable::close)
+			final var br = reader instanceof BufferedReader r
+				? resources.add(r, Closeable::close)
 				: resources.add(new BufferedReader(reader), Closeable::close);
 
 			final var line = new StringBuilder();
@@ -311,7 +311,7 @@ public final class CsvSupport {
 		);
 	}
 
-	private static boolean nextLine(final Reader reader, final StringBuilder line)
+	private static boolean nextLine(Reader reader, StringBuilder line)
 		throws IOException
 	{
 		boolean quoted = false;
