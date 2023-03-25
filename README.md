@@ -319,5 +319,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Used software
 
-<a href="https://www.jetbrains.com/idea/">![IntelliJ](http://jenetics.io/img/icon_IntelliJIDEA.png)</a>
 
+<a href="https://www.jetbrains.com/idea/"><img src="http://jenetics.io/img/icon_IntelliJIDEA.png" alt="IntelliJ" height="100"/></a>
+
+<a href="https://www.syntevo.com/smartgit/"><img src="https://www.syntevo.com/assets/images/logos/smartgit-8c1aa1e2.svg" alt="SmartGit" height="100"/></a>
