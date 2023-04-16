@@ -75,7 +75,7 @@ gradle.projectsEvaluated {
 				modularity.inferModulePath.set(true)
 
 				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.VERSION_17
+				targetCompatibility = JavaVersion.current()
 			}
 
 			setupJava(project)
