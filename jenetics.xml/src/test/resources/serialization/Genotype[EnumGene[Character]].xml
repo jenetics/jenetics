@@ -2,102 +2,102 @@
 <genotype length="5" ngenes="75">
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Character">
-            <allele>尹</allele>
-            <allele>둫</allele>
-            <allele>玩</allele>
-            <allele>䃻</allele>
-            <allele>勇</allele>
-            <allele>펡</allele>
-            <allele>몑</allele>
-            <allele>延</allele>
-            <allele>沒</allele>
-            <allele>恵</allele>
-            <allele>㲳</allele>
-            <allele>煃</allele>
-            <allele>젲</allele>
-            <allele>䘭</allele>
-            <allele>옍</allele>
+            <allele>L</allele>
+            <allele>b</allele>
+            <allele>M</allele>
+            <allele>Z</allele>
+            <allele>z</allele>
+            <allele>D</allele>
+            <allele>C</allele>
+            <allele>z</allele>
+            <allele>N</allele>
+            <allele>d</allele>
+            <allele>p</allele>
+            <allele>i</allele>
+            <allele>r</allele>
+            <allele>h</allele>
+            <allele>m</allele>
         </valid-alleles>
-        <order>5 4 14 7 9 12 11 10 6 2 3 8 13 1 0</order>
+        <order>6 2 11 7 5 4 12 8 10 1 3 0 9 13 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Character">
-            <allele>㰻</allele>
-            <allele>뾇</allele>
-            <allele>䭼</allele>
-            <allele>栘</allele>
-            <allele>ﳩ</allele>
-            <allele>匊</allele>
-            <allele>鼳</allele>
-            <allele>荮</allele>
-            <allele>逋</allele>
-            <allele>堗</allele>
-            <allele>䇲</allele>
-            <allele>牺</allele>
-            <allele>ᒆ</allele>
-            <allele>嘹</allele>
-            <allele>䀶</allele>
+            <allele>k</allele>
+            <allele>B</allele>
+            <allele>s</allele>
+            <allele>H</allele>
+            <allele>e</allele>
+            <allele>1</allele>
+            <allele>U</allele>
+            <allele>d</allele>
+            <allele>u</allele>
+            <allele>6</allele>
+            <allele>6</allele>
+            <allele>h</allele>
+            <allele>G</allele>
+            <allele>K</allele>
+            <allele>S</allele>
         </valid-alleles>
-        <order>9 10 5 6 8 1 0 11 14 7 13 2 4 12 3</order>
+        <order>6 14 4 5 1 10 0 2 11 9 7 13 12 3 8</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Character">
-            <allele>䥎</allele>
-            <allele>禐</allele>
-            <allele>嵬</allele>
-            <allele>碇</allele>
-            <allele>ᬩ</allele>
-            <allele>გ</allele>
-            <allele>䂓</allele>
-            <allele>狃</allele>
-            <allele>㱮</allele>
-            <allele>坱</allele>
-            <allele>ﰜ</allele>
-            <allele>诌</allele>
-            <allele>披</allele>
-            <allele>㸄</allele>
-            <allele>싅</allele>
+            <allele>M</allele>
+            <allele>A</allele>
+            <allele>r</allele>
+            <allele>a</allele>
+            <allele>O</allele>
+            <allele>B</allele>
+            <allele>K</allele>
+            <allele>I</allele>
+            <allele>E</allele>
+            <allele>m</allele>
+            <allele>0</allele>
+            <allele>M</allele>
+            <allele>Q</allele>
+            <allele>f</allele>
+            <allele>K</allele>
         </valid-alleles>
-        <order>3 9 8 4 13 5 10 1 14 11 7 12 6 0 2</order>
+        <order>4 1 3 14 6 13 9 12 5 8 0 7 2 11 10</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Character">
-            <allele>쳬</allele>
-            <allele>멿</allele>
-            <allele>ꓒ</allele>
-            <allele>햁</allele>
-            <allele>酏</allele>
-            <allele>ᴹ</allele>
-            <allele>禣</allele>
-            <allele>齈</allele>
-            <allele>妹</allele>
-            <allele>快</allele>
-            <allele>绝</allele>
-            <allele>벬</allele>
-            <allele>ẑ</allele>
-            <allele>廓</allele>
-            <allele>褦</allele>
+            <allele>y</allele>
+            <allele>H</allele>
+            <allele>U</allele>
+            <allele>c</allele>
+            <allele>2</allele>
+            <allele>E</allele>
+            <allele>J</allele>
+            <allele>S</allele>
+            <allele>W</allele>
+            <allele>z</allele>
+            <allele>g</allele>
+            <allele>A</allele>
+            <allele>f</allele>
+            <allele>c</allele>
+            <allele>q</allele>
         </valid-alleles>
-        <order>13 9 7 11 10 0 5 4 6 8 14 1 2 12 3</order>
+        <order>0 3 12 4 6 8 2 11 7 13 9 1 5 10 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
         <valid-alleles type="java.lang.Character">
-            <allele>晬</allele>
-            <allele>脴</allele>
-            <allele>럙</allele>
-            <allele>뵘</allele>
-            <allele>䰑</allele>
-            <allele>ﴟ</allele>
-            <allele>抢</allele>
-            <allele>ꐚ</allele>
-            <allele>о</allele>
-            <allele>䯋</allele>
-            <allele>栄</allele>
-            <allele>鈿</allele>
-            <allele>匩</allele>
-            <allele>譩</allele>
-            <allele>蕁</allele>
+            <allele>F</allele>
+            <allele>U</allele>
+            <allele>9</allele>
+            <allele>n</allele>
+            <allele>h</allele>
+            <allele>J</allele>
+            <allele>x</allele>
+            <allele>d</allele>
+            <allele>R</allele>
+            <allele>Q</allele>
+            <allele>3</allele>
+            <allele>J</allele>
+            <allele>i</allele>
+            <allele>t</allele>
+            <allele>k</allele>
         </valid-alleles>
-        <order>1 14 8 11 9 13 12 2 4 6 0 7 5 10 3</order>
+        <order>3 6 9 11 5 12 10 7 14 0 8 2 1 13 4</order>
     </permutation-chromosome>
 </genotype>
