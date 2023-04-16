@@ -75,7 +75,7 @@ gradle.projectsEvaluated {
 				modularity.inferModulePath.set(true)
 
 				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.current()
+				targetCompatibility = JavaVersion.VERSION_17
 			}
 
 			setupJava(project)
@@ -138,7 +138,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.8"
+		toolVersion = "0.8.9"
 	}
 
 	project.tasks {
