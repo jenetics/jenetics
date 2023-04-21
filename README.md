@@ -253,6 +253,12 @@ Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023
 
 ## Release notes
 
+### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+
+#### Improvemments
+
+* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
+
 ### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
 
 #### Improvemments
