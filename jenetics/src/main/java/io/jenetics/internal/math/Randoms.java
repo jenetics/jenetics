@@ -40,13 +40,13 @@ public final class Randoms {
 	}
 
 	public static char nextChar(final RandomGenerator random) {
+		final int leftLimit = '0';
+		final int rightLimit = 'z';
+
 		char c = '\0';
 		do {
-			c = (char)random.nextInt(
-				Character.MIN_VALUE,
-				Character.MAX_VALUE + 1
-			);
-		} while (!Character.isLetterOrDigit(c));
+			c = (char)random.nextInt(leftLimit, rightLimit + 1);
+		} while (!((c <= 57 || c >= 65) && (c <= 90 || c >= 97)));
 
 		return c;
 	}

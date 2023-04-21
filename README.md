@@ -17,7 +17,7 @@ The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 17** to compile and run.
+**Jenetics** requires at least **Java 17** to compile and run. It also compiles and runs with **Java 20**.
 
 Check out the master branch from GitHub.
 
@@ -252,6 +252,12 @@ Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023
 </details>
 
 ## Release notes
+
+### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+
+#### Improvemments
+
+* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
 
 ### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
 
