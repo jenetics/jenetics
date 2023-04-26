@@ -19,10 +19,13 @@
  */
 package io.jenetics.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -664,6 +667,22 @@ public class CodecsTest {
 			{"1","2","3","7","5"},
 			{"1","2","3","5", "59"}
 		};
+	}
+
+	@Test
+	public void ofSelection() {
+		final var codec1 = Codecs.ofVector(DoubleRange.of(0, 10));
+		final var codec2 = Codecs.ofVector(DoubleRange.of(10, 20));
+		final var codec3 = Codecs.ofVector(DoubleRange.of(20, 30));
+		final var codec4 = Codecs.ofVector(DoubleRange.of(30, 40));
+
+		final var selection = Codecs.ofSelection(codec1, codec2, codec3, codec4);
+
+		final var genotype = selection.encoding().newInstance();
+		assertThat(genotype.length()).isEqualTo(5);
+
+		final double[] codec = selection.decoder().apply(genotype);
+		assertThat(codec.length).isEqualTo(1);
 	}
 
 }
