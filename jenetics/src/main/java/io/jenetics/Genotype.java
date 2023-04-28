@@ -198,7 +198,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * {@code fromIndex} (inclusively) to the given {@code toIndex} (exclusively).
 	 * This method creates a <em>view</em> of the underlying chromosomes.
 	 *
-	 * @since !__version__!
+	 * @since 7.2
 	 *
 	 * @param fromIndex the start chromosome index, inclusively
 	 * @param toIndex the end chromosome index, exclusively
