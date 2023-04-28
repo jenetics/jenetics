@@ -194,6 +194,24 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
+	 * Create a new Genotype which consists of the chromosomes from the given
+	 * {@code fromIndex} (inclusively) to the given {@code toIndex} (exclusively).
+	 * This method creates a <em>view</em> of the underlying chromosomes.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param fromIndex the start chromosome index, inclusively
+	 * @param toIndex the end chromosome index, exclusively
+	 * @return a new genotype consisting of the chromosomes within the given
+	 *         indexes
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code fromIndex < 0 || toIndex > length() || fromIndex > toIndex}).
+	 */
+	public Genotype<G> slice(int fromIndex, int toIndex) {
+		return Genotype.of(_chromosomes.subSeq(fromIndex, toIndex));
+	}
+
+	/**
 	 * Return a new, random genotype by creating new, random chromosomes (calling
 	 * the {@link Chromosome#newInstance()} method) from the chromosomes of this
 	 * genotype.
