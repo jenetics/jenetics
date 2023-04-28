@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.engine;
 
+import io.jenetics.Alterer;
 import io.jenetics.BoltzmannSelector;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
@@ -44,8 +45,9 @@ import io.jenetics.TruncationSelector;
 import io.jenetics.UniformCrossover;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
+import io.jenetics.engine.EvolutionParams;
 import io.jenetics.util.DoubleRange;
-import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.Mean;
 
 /**
@@ -58,17 +60,37 @@ public final class MetaCodecs {
 	private MetaCodecs() {
 	}
 
-	static void foo() {
-		Codec<Selector<IntegerGene, Double>, DoubleGene> selector =
-			Codecs.ofSelection(
-				ofEliteSelector(DoubleRange.of(1, 2)),
-				ofBoltzmannSelector(DoubleRange.of(1, 2))
-			);
-	}
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Codec<EvolutionParams<G, C>, DoubleGene> ofEvolution(
+		Codec<Selector<IntegerGene, Double>, DoubleGene> selectors,
+		Codec<ISeq<Alterer<G, C>>, DoubleGene> alterers,
+		DoubleRange populationSize,
+		DoubleRange offspringFraction,
+		DoubleRange maximalPhenotypeAge
+	) {
+		return Codec.of(
+			ISeq.of(
+				selectors,
+				selectors,
+				alterers,
+				Codecs.ofScalar(populationSize),
+				Codecs.ofScalar(offspringFraction),
+				Codecs.ofScalar(maximalPhenotypeAge)
+			),
+			values -> {
+				@SuppressWarnings("unchecked")
+				final var params = EvolutionParams.<G, C>builder()
+					.offspringSelector((Selector<G, C>)values[0])
+					.survivorsSelector((Selector<G, C>)values[1])
+					.alterers(Alterer.of(((ISeq<Alterer<G, C>>)values[2]).toArray(Alterer[]::new)))
+					.populationSize((int)values[3])
+					.offspringFraction((double)values[4])
+					.maximalPhenotypeAge((long)values[5])
+					.build();
 
-	private static <G extends Gene<?, G>> Genotype<G>
-	toGenotype(final Factory<Genotype<G>> factory) {
-		return factory instanceof Genotype<G> gt ? gt : factory.newInstance();
+				return params;
+			}
+		);
 	}
 
 	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
@@ -76,7 +98,7 @@ public final class MetaCodecs {
 	ofBoltzmannSelector(DoubleRange b) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(b, 1)),
-			gt -> new BoltzmannSelector<>(gt.chromosome().gene().doubleValue())
+			gt -> new BoltzmannSelector<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -85,7 +107,7 @@ public final class MetaCodecs {
 	ofEliteSelector(DoubleRange sampleSize) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(sampleSize, 1)),
-			gt -> new EliteSelector<>(gt.chromosome().gene().intValue())
+			gt -> new EliteSelector<>(gt.gene().intValue())
 		);
 	}
 
@@ -94,7 +116,7 @@ public final class MetaCodecs {
 	ofExponentialRankSelector(DoubleRange c) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(c, 1)),
-			gt -> new ExponentialRankSelector<>(gt.chromosome().gene().doubleValue())
+			gt -> new ExponentialRankSelector<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -103,7 +125,7 @@ public final class MetaCodecs {
 	ofLinearRankSelector(DoubleRange nminus) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(nminus, 1)),
-			gt -> new LinearRankSelector<>(gt.chromosome().gene().doubleValue())
+			gt -> new LinearRankSelector<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -130,7 +152,7 @@ public final class MetaCodecs {
 	ofTournamentSelector(DoubleRange sampleSize) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(sampleSize, 1)),
-			gt -> new TournamentSelector<>(gt.chromosome().gene().intValue())
+			gt -> new TournamentSelector<>(gt.gene().intValue())
 		);
 	}
 
@@ -139,7 +161,7 @@ public final class MetaCodecs {
 	ofTruncationSelector(DoubleRange n) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(n, 1)),
-			gt -> new TruncationSelector<>(gt.chromosome().gene().intValue())
+			gt -> new TruncationSelector<>(gt.gene().intValue())
 		);
 	}
 
@@ -152,7 +174,7 @@ public final class MetaCodecs {
 	ofGaussianMutator(DoubleRange probability) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(probability, 1)),
-			gt -> new GaussianMutator<>(gt.chromosome().gene().doubleValue())
+			gt -> new GaussianMutator<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -191,7 +213,7 @@ public final class MetaCodecs {
 	ofMeanAlterer(DoubleRange probability) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(probability, 1)),
-			gt -> new MeanAlterer<>(gt.get(0).gene().doubleValue())
+			gt -> new MeanAlterer<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -215,7 +237,7 @@ public final class MetaCodecs {
 	ofMutator(DoubleRange probability) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(probability, 1)),
-			gt -> new Mutator<>(gt.chromosome().gene().doubleValue())
+			gt -> new Mutator<>(gt.gene().doubleValue())
 		);
 	}
 
@@ -224,7 +246,7 @@ public final class MetaCodecs {
 	ofSwapMutator(DoubleRange probability) {
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(probability, 1)),
-			gt -> new SwapMutator<>(gt.get(0).gene().doubleValue())
+			gt -> new SwapMutator<>(gt.gene().doubleValue())
 		);
 	}
 

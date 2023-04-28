@@ -63,6 +63,8 @@ import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 
 /**
  * This class contains factory methods for creating common  problem encodings.
@@ -1210,11 +1212,9 @@ public final class Codecs {
 
 				final int index = maxIndex(selector);
 
-				final var genotype = Genotype.of(
-					chromosomes.subList(
-						starts[index],
-						starts[index] + lengths[index]
-					)
+				final var genotype = gt.slice(
+					starts[index],
+					starts[index] + lengths[index]
 				);
 
 				return codecs.get(index).decoder().apply(genotype);
@@ -1243,6 +1243,64 @@ public final class Codecs {
 	public static <T> Codec<T, DoubleGene>
 	ofSelection(Codec<? extends T, DoubleGene>... codecs) {
 		return ofSelection(List.of(codecs));
+	}
+
+
+	public static <T> Codec<ISeq<T>, DoubleGene>
+	ofSubSet(List<? extends Codec<? extends T, DoubleGene>> codecs) {
+		// The chromosome length of every selector codec.
+		final int[] lengths = codecs.stream()
+			.map(codec -> toGenotype(codec.encoding()))
+			.mapToInt(Genotype::length)
+			.toArray();
+
+		// The start index of the chromosome list.
+		final int[] starts = new int[codecs.size()];
+		int start = 1;
+		for (int i = 0; i < starts.length; ++i) {
+			starts[i] = start;
+			start += lengths[i];
+		}
+
+		// Creating the needed chromosomes.
+		final var chromosomes = new ArrayList<Chromosome<DoubleGene>>();
+		chromosomes.add(DoubleChromosome.of(0, 1, codecs.size()));
+		codecs.stream()
+			.flatMap(codec -> codec.encoding().newInstance().stream())
+			.forEach(chromosomes::add);
+
+		return Codec.of(
+			Genotype.of(chromosomes),
+			gt -> {
+				final double[] selector = gt.get(0)
+					.as(DoubleChromosome.class)
+					.toArray();
+
+				int count = 0;
+				for (double v : selector) {
+					if (v >= 0.5) {
+						++count;
+					}
+				}
+				count = Math.min(count, 1);
+
+				final int[] indexes = ProxySorter.sort(selector);
+
+				final var results = MSeq.<T>ofLength(count);
+				for (int i = 0; i < count; ++i) {
+					final var genotype = Genotype.of(
+						gt.slice(
+							starts[indexes[i]],
+							starts[indexes[i]] + lengths[indexes[i]]
+						)
+					);
+
+					results.set(i, codecs.get(indexes[i]).decoder().apply(genotype));
+				}
+
+				return results.toISeq();
+			}
+		);
 	}
 
 }
