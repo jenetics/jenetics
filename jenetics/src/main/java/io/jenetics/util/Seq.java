@@ -574,11 +574,11 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * populationSort that commonly exist for arrays). Any operation that
-	 * expects an array can be used as a range operation by passing an sub
-	 * sequence view instead of an whole sequence.
+	 * expects an array can be used as a range operation by passing a
+	 * subsequence view instead of a whole sequence.
 	 *
-	 * @param start low end point (inclusive) of the sub sequence.
-	 * @param end high end point (exclusive) of the sub sequence.
+	 * @param start low-end point (inclusive) of the sub sequence.
+	 * @param end high-end point (exclusive) of the sub sequence.
 	 * @return a view of the specified range within this sequence.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
