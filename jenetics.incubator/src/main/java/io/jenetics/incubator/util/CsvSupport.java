@@ -290,13 +290,7 @@ public final class CsvSupport {
 			final var line = new StringBuilder();
 			final Supplier<String> nextLine = () -> {
 				try {
-					if (nextLine(br, line)) {
-						final var l = line.toString();
-						line.setLength(0);
-						return l;
-					} else {
-						return null;
-					}
+					return nextLine(br, line) ? line.toString() : null;
 				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}
@@ -314,6 +308,8 @@ public final class CsvSupport {
 	private static boolean nextLine(Reader reader, StringBuilder line)
 		throws IOException
 	{
+		line.setLength(0);
+
 		boolean quoted = false;
 		boolean escaped = false;
 		boolean eol = false;

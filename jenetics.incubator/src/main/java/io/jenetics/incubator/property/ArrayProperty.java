@@ -68,9 +68,4 @@ public final class ArrayProperty extends CollectionProperty {
 			: emptyIterator();
 	}
 
-	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
-	}
-
 }

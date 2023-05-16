@@ -71,9 +71,4 @@ public final class ListProperty extends CollectionProperty {
 		return value().stream();
 	}
 
-	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
-	}
-
 }
