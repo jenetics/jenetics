@@ -144,12 +144,13 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Dolly Sapra and Andy D. Pimentel. <a href="http://admorph.eu/wp-content/uploads/2023/05/SAMOS_Dolly-2.pdf">OExploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em> SAMOS '23. </em> May 2023.
+Sikora, M., Smołka, M. <a href="https://doi.org/10.1007/978-3-031-35995-8_16">An Application of Evolutionary Algorithms and Machine Learning in Four-Part Harmonization.</a> <em> Computational Science – ICCS 2023. ICCS 2023. Lecture Notes in Computer Science, vol 14073. Springer </em> June 2023.
 
 ...
 </summary>
 
-1) Dolly Sapra and Andy D. Pimentel. <a href="http://admorph.eu/wp-content/uploads/2023/05/SAMOS_Dolly-2.pdf">OExploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em> SAMOS '23. </em> May 2023.
+1) Sikora, M., Smołka, M. <a href="https://doi.org/10.1007/978-3-031-35995-8_16">An Application of Evolutionary Algorithms and Machine Learning in Four-Part Harmonization.</a> <em> Computational Science – ICCS 2023. ICCS 2023. Lecture Notes in Computer Science, vol 14073. Springer </em> June 2023.
+1) Dolly Sapra and Andy D. Pimentel. <a href="http://admorph.eu/wp-content/uploads/2023/05/SAMOS_Dolly-2.pdf">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em> SAMOS '23. </em> May 2023.
 1) Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023.200200">Optimization of input parameters of ANN–driven plasma source through nature-inspired evolutionary algorithms.</a> <em> Intelligent Systems with Applications, Volume 18, 2023, 200200, ISSN 2667-3053. </em> May 2023.
 2) P. Feichtenschlager, K. Schuetz, S. Jaburek, C. Schuetz, E. Gringinger. <a href="http://www.dke.jku.at/rest/dke_web_res/publications/papers/Schu23c/Schu23c_copy.pdf">Privacy-Preserving Implementation of an Auction Mechanism for ATFM Slot Swapping.</a> <em> Proceedings of the 23rd Integrated Communications, Navigation and Surveillance Conference (ICNS 2023), Washington D.C., U.S.A., April 18-20, 2023, IEEE Press, 12 pages. </em> April 2023.
 1) Christoph Laaber, Tao Yue, Shaukat Ali. <a href="https://arxiv.org/abs/2211.13525">Multi-Objective Search-Based Software Microbenchmark Prioritization.</a> <em> ArXiv/Computer Science/Software Engineering. </em> Nov. 2022.
