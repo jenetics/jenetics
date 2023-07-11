@@ -15,9 +15,9 @@ set MODULES=(^
 
 set CLASSPATH=.
 for %%m in %MODULES% do (
-	set CLASSPATH=!CLASSPATH!;%%m\build\classes\main
+	set CLASSPATH=!CLASSPATH!;%%m\build\classes\java\main
 	set CLASSPATH=!CLASSPATH!;%%m\build\resources\main
-	set CLASSPATH=!CLASSPATH!;%%m\build\classes\test
+	set CLASSPATH=!CLASSPATH!;%%m\build\classes\java\test
 	set CLASSPATH=!CLASSPATH!;%%m\build\resources\test
 )
 
