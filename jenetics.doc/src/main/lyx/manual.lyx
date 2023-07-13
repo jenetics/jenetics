@@ -25982,7 +25982,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Engine<DobuleGene, Double> engine = Engine.build(problem)
+final Engine<DobuleGene, Double> engine = Engine.builder(problem)
 \end_layout
 
 \begin_layout Plain Layout
@@ -26072,7 +26072,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Engine<DobuleGene, Double> engine = Engine.build(problem)
+final Engine<DobuleGene, Double> engine = Engine.builder(problem)
 \end_layout
 
 \begin_layout Plain Layout
