@@ -91,7 +91,7 @@ public interface Sampling<T> {
 	 * @param <T> the sample type
 	 * @return a new sampling object
 	 */
-	static <T> Sampling<T> of(final List<? extends Sample<T>> samples) {
+	static <T> Sampling<T> of(final List<? extends Sample<? extends T>> samples) {
 		return new SampleList<>(samples);
 	}
 
@@ -105,7 +105,7 @@ public interface Sampling<T> {
 	 * @return a new sampling object
 	 */
 	@SafeVarargs
-	static <T> Sampling<T> of(final Sample<T>... samples) {
+	static <T> Sampling<T> of(final Sample<? extends T>... samples) {
 		return Sampling.of(List.of(samples));
 	}
 
