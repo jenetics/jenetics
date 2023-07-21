@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -53,6 +54,15 @@ public class CsvSupportTest {
 		}
 
 		assertThat(csv).isEqualToIgnoringNewLines(expected);
+	}
+
+	@Test
+	public void split() throws IOException {
+		final var line = "1,2,3,4";
+		final var column = new String[3];
+
+		CsvSupport.split(line, column, 2, 3);
+		System.out.println(Arrays.toString(column));
 	}
 
 }
