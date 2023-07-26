@@ -49,6 +49,10 @@ record PathName(String value, Integer index) {
 		}
 	}
 
+	PathName() {
+		this("", null);
+	}
+
 	@Override
 	public String toString() {
 		return index != null

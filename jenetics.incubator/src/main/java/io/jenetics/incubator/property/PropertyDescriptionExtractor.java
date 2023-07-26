@@ -57,7 +57,8 @@ final class PropertyDescriptionExtractor {
 
 				for (var descriptor : descriptors) {
 					if (descriptor.getReadMethod() != null &&
-						!"class".equals(descriptor.getName()))
+						!"class".equals(descriptor.getName()) &&
+						!"declaringClass".equals(descriptor.getName()))
 					{
 						descriptions.add(toDescription(descriptor));
 					}

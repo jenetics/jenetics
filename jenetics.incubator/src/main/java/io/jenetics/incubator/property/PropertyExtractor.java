@@ -53,7 +53,7 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 				.extract(object.value().getClass())
 				.map(desc -> {
 					final var enclosing = object.value();
-					final var path = object.path().append(desc.name());
+					final var path = object.path(); //.append(desc.name());
 					final var type = desc.type();
 					final var value = desc.read(object.value());
 

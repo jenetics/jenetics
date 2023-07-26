@@ -91,9 +91,11 @@ public final class Properties {
 	}
 
 	public static Optional<Property> get(final Object bean, final Path path) {
+		/*
 		for (var p : path) {
 
 		}
+		 */
 		return Optional.empty();
 	}
 

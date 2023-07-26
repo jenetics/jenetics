@@ -61,7 +61,8 @@ record PropertyDescription(
 		try {
 			return getter.invoke(object);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
+			//throw new IllegalStateException(e);
+			return null;
 		}
 	}
 

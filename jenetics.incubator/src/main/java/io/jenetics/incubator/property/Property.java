@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Represents an object's property. A property might be defined as usual
  * <em>bean</em> property, with getter and setter, or as record component. The
@@ -76,7 +78,7 @@ import java.util.stream.Collectors;
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Property permits SimpleProperty, CollectionProperty {
+public sealed interface Property permits CollectionProperty, ElementProperty, SimpleProperty {
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -99,7 +101,7 @@ public sealed interface Property permits SimpleProperty, CollectionProperty {
 	 * @return the property name
 	 */
 	default String name() {
-		return path().name();
+		return ""; //path().name();
 	}
 
 	/**
@@ -148,190 +150,199 @@ public sealed interface Property permits SimpleProperty, CollectionProperty {
 	 * Represents the property path, which uniquely identifies a property. A
 	 * path can be created with the {@link Path#of(String)} method.
 	 */
-	final class Path implements Iterable<Path> {
+	final class Path /*implements Iterable<Path>*/ {
 
 		public static final Path EMPTY = new Path();
 
-		private final PathName name;
-		private final List<Path> elements;
+		private final List<PathName> elements;
 
-		private Path(final String name, final Integer index, final List<Path> head) {
-			this.name = new PathName(name, index);
-			this.elements = append(head, this);
+		private Path(final List<PathName> elements) {
+			this.elements = List.copyOf(elements);
+		}
+
+		private Path(final PathName name) {
+			this(List.of(name));
 		}
 
 		private Path() {
-			this.name = null;
-			this.elements = List.of();
+			this(List.of());
 		}
 
-		private static List<Path> append(final List<Path> head, final Path path) {
-			final var result = new ArrayList<Path>(head.size() + 1);
-			result.addAll(head);
-			result.add(path);
-			return List.copyOf(result);
+		private Path append(final PathName name) {
+			final var elems = new ArrayList<>(elements);
+			elems.add(name);
+			return new Path(elems);
 		}
 
-		Path(final String name, final int index) {
-			this(name, index, List.of());
-		}
+//		/**
+//		 * Return the property name, without index, from {@code this} path.
+//		 * This is the path element <em>farthest</em> away from the root.
+//		 *
+//		 * @return the property name
+//		 */
+//		public String name() {
+//			return name != null ? name.value() : "";
+//		}
 
-		Path(final String name) {
-			this(name, null, List.of());
-		}
-
-		/**
-		 * Return the property name, without index, from {@code this} path.
-		 * This is the path element <em>farthest</em> away from the root.
-		 *
-		 * @return the property name
-		 */
-		public String name() {
-			return name.value();
-		}
-
-		/**
-		 * Return the index, from {@code this} path, or {@code null} if the
-		 * property is not part of a collection.
-		 *
-		 * @return the property index, or {@code null} if {@code this} path has
-		 *         no index defined
-		 */
-		public Integer index() {
-			return name.index();
-		}
-
-		/**
-		 * Returns the number of elements in the path.
-		 *
-		 * @return the number of elements in the path, or 0 if this path only
-		 *         represents a root component
-		 */
-		public int count() {
-			return elements.size();
-		}
-
-		/**
-		 * Returns an element of this path. The index parameter is the index of
-		 * the path element to return. The element that is closest to the root
-		 * in the property hierarchy has index 0. The element that is farthest
-		 * from the root has index count - 1.
-		 *
-		 * @param index the path index
-		 * @return the path element
-		 */
-		public Path get(final int index) {
-			final var ele = elements.get(index);
-			return new Path(ele.name(), ele.index(), List.of());
-		}
-
-		/**
-		 * Return the path element which is the farthest away from the root property.
-		 *
-		 * @return the path element which is the farthest away from the root property
-		 */
-		public Path head() {
-			return new Path(name(), index());
-		}
-
-		/**
-		 * Create a new path object with the given element appended.
-		 *
-		 * @param element the path element to append
-		 * @return a new path object with the given element appended
-		 */
-		Path append(final String element) {
-			return new Path(element, null, elements);
-		}
-
-		/**
-		 * Create a new path object with the given element and index appended.
-		 *
-		 * @param element the path element to append
-		 * @param index the property index
-		 * @return a new path object with the given element appended
-		 */
-		Path append(final String element, final int index) {
-			return new Path(element, index, elements);
-		}
-
-		/**
-		 * Create a new path object by converting the last element of
-		 * {@code this} path to an <em>indexed</em> path element.
-		 *
-		 * @param index the index of the last path element
-		 * @return a new path object
-		 */
-		Path indexed(final int index) {
-			return new Path(name.value(), index, elements.subList(0, elements.size() - 1));
-		}
-
-		@Override
-		public Iterator<Path> iterator() {
-			return elements.iterator();
-		}
-
-		@Override
-		public int hashCode() {
-			int hashCode = 1;
-			for (var path : this) {
-				hashCode = 31*path.name.hashCode();
-			}
-			return hashCode;
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			if (obj == this) {
-				return true;
-			} else if (obj instanceof Path path && count() == path.count()) {
-				for (int i = 0; i < count(); ++i) {
-					if (!get(i).name.equals(path.get(i).name)) {
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		public String toString() {
-			return elements.stream()
-				.map(ele -> ele.name.toString())
-				.collect(Collectors.joining("."));
-		}
-
-		/**
-		 * Create a new property path form the given string {@code value}. A
-		 * valid path consists of a names, which must be a valid Java identifier,
-		 * and indexes, separated by a dot, '.'. A valid path with three elements
-		 * will look like this:
-		 * <pre>{@code
-		 * final var path = Path.of("name1.name2[9].value");
-		 * }</pre>
-		 *
-		 * @param value the path value
-		 * @return a new property path
-		 * @throws IllegalArgumentException if the given path is invalid
-		 */
-		public static Path of(final String value) {
-			final var parts = java.nio.file.Path.of(value.replace('.', '/'))
-				.normalize()
-				.iterator();
-
-			var path = new Path();
-			while (parts.hasNext()) {
-				final var part = parts.next();
-				final var element = PathName.of(part.toString());
-				path = element.index() != null
-					? path.append(element.value(), element.index())
-					: path.append(element.value());
-			}
-
-			return path;
-		}
+//		/**
+//		 * Return the index, from {@code this} path, or {@code null} if the
+//		 * property is not part of a collection.
+//		 *
+//		 * @return the property index, or {@code null} if {@code this} path has
+//		 *         no index defined
+//		 */
+//		public Integer index() {
+//			return name != null ? name.index() : null;
+//		}
+//
+//		public boolean isListPath() {
+//			return index() != null;
+//		}
+//
+//		/**
+//		 * Returns the number of elements in the path.
+//		 *
+//		 * @return the number of elements in the path, or 0 if this path only
+//		 *         represents a root component
+//		 */
+//		public int count() {
+//			return elements.size();
+//		}
+//
+//		public boolean isEmpty() {
+//			return count() == 0;
+//		}
+//
+//		/**
+//		 * Returns an element of this path. The index parameter is the index of
+//		 * the path element to return. The element that is closest to the root
+//		 * in the property hierarchy has index 0. The element that is farthest
+//		 * from the root has index count - 1.
+//		 *
+//		 * @param index the path index
+//		 * @return the path element
+//		 */
+//		public Path get(final int index) {
+//			final var ele = elements.get(index);
+//			return new Path(ele.name, List.of());
+//		}
+//
+//		/**
+//		 * Return the path element which is the farthest away from the root property.
+//		 *
+//		 * @return the path element which is the farthest away from the root property
+//		 */
+//		public Path head() {
+//			return get(count() - 1);
+//		}
+//
+//		public Path subpath(final int beginIndex, final int endIndex) {
+//			final var head = elements.get(endIndex - 1);
+//			return new Path(head.name, elements.subList(beginIndex, endIndex));
+//		}
+//
+//		/**
+//		 * Create a new path object with the given element appended.
+//		 *
+//		 * @param element the path element to append
+//		 * @return a new path object with the given element appended
+//		 */
+//		Path append(final String element) {
+//			return new Path(new PathName(element, null), elements);
+//		}
+//
+//		/**
+//		 * Create a new path object with the given element and index appended.
+//		 *
+//		 * @param element the path element to append
+//		 * @param index the property index
+//		 * @return a new path object with the given element appended
+//		 */
+//		Path append(final String element, final int index) {
+//			return new Path(new PathName(element, index), elements);
+//		}
+//
+//		/**
+//		 * Create a new path object by converting the last element of
+//		 * {@code this} path to an <em>indexed</em> path element.
+//		 *
+//		 * @param index the index of the last path element
+//		 * @return a new path object
+//		 */
+//		Path indexed(final int index) {
+//			return new Path(new PathName(name.value(), index), elements.subList(0, elements.size() - 1));
+//		}
+//
+//		@Override
+//		public Iterator<Path> iterator() {
+//			return elements.iterator();
+//		}
+//
+//		@Override
+//		public int hashCode() {
+//			int hashCode = 1;
+//			for (var path : this) {
+//				hashCode = 31*path.name.hashCode();
+//			}
+//			return hashCode;
+//		}
+//
+//		@Override
+//		public boolean equals(final Object obj) {
+//			if (obj == this) {
+//				return true;
+//			} else if (obj instanceof Path path && count() == path.count()) {
+//				for (int i = 0; i < count(); ++i) {
+//					if (!get(i).name.equals(path.get(i).name)) {
+//						return false;
+//					}
+//				}
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		}
+//
+//		@Override
+//		public String toString() {
+//			return elements.stream()
+//				.map(ele -> ele.name.toString())
+//				.collect(Collectors.joining("."));
+//		}
+//
+//		/**
+//		 * Create a new property path form the given string {@code value}. A
+//		 * valid path consists of a names, which must be a valid Java identifier,
+//		 * and indexes, separated by a dot, '.'. A valid path with three elements
+//		 * will look like this:
+//		 * <pre>{@code
+//		 * final var path = Path.of("name1.name2[9].value");
+//		 * }</pre>
+//		 *
+//		 * @param value the path value
+//		 * @return a new property path
+//		 * @throws IllegalArgumentException if the given path is invalid
+//		 */
+//		public static Path of(final String value) {
+//			if (value.isEmpty()) {
+//				return EMPTY;
+//			}
+//
+//			final var parts = java.nio.file.Path.of(value.replace('.', '/'))
+//				.normalize()
+//				.iterator();
+//
+//			var path = new Path();
+//			while (parts.hasNext()) {
+//				final var part = parts.next();
+//				final var element = PathName.of(part.toString());
+//				path = element.index() != null
+//					? path.append(element.value(), element.index())
+//					: path.append(element.value());
+//			}
+//
+//			return path;
+//		}
 
 	}
 

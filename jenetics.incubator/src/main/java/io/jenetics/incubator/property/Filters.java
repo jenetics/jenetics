@@ -43,7 +43,7 @@ final class Filters {
 
 	static Predicate<PathObject> toFilter(final Pattern pattern) {
 		return object -> pattern
-			.matcher(object.value().getClass().getName())
+			.matcher(object.value() != null ? object.value().getClass().getName() : "-")
 			.matches();
 	}
 
