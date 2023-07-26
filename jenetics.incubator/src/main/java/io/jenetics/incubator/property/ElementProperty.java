@@ -2,7 +2,7 @@ package io.jenetics.incubator.property;
 
 public record ElementProperty(
 	Object enclosingObject,
-	Path path,
+	Property.Path path,
 	Object value,
 	Class<?> type
 ) implements Property {

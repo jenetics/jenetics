@@ -20,12 +20,14 @@
 package io.jenetics.incubator.property;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.regex.Pattern.compile;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -78,7 +80,9 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Property permits CollectionProperty, ElementProperty, SimpleProperty {
+public sealed interface Property
+	permits CollectionProperty, ElementProperty, SimpleProperty
+{
 
 	/**
 	 * Returns the object which contains {@code this} property.
@@ -146,43 +150,129 @@ public sealed interface Property permits CollectionProperty, ElementProperty, Si
 		return Optional.empty();
 	}
 
+
 	/**
 	 * Represents the property path, which uniquely identifies a property. A
 	 * path can be created with the {@link Path#of(String)} method.
 	 */
 	final class Path /*implements Iterable<Path>*/ {
 
-		public static final Path EMPTY = new Path();
+		private sealed interface Element {
+			String NAME_PATTERN = "((?:\\b[_a-zA-Z]|\\B\\$)[_$a-zA-Z0-9]*+)";
+			String INDEX_PATTERN = "((\\[([0-9]*)\\])*)";
+			Pattern PATH_NAME_PATTERN = compile(NAME_PATTERN + INDEX_PATTERN);
 
-		private final List<PathName> elements;
+			private static List<Element> parse(final String value) {
+				final var matcher = PATH_NAME_PATTERN.matcher(value);
 
-		private Path(final List<PathName> elements) {
+				if (matcher.matches()) {
+					final var name = matcher.group(1);
+					final var index = matcher.group(3);
+
+					try {
+						if (index == null) {
+							return List.of(new Name(name));
+						} else {
+							final var i = Integer
+								.parseInt(index.substring(1, index.length() - 1));
+
+							return List.of(new Name(name), new ListIndex(i));
+						}
+					} catch (NumberFormatException e) {
+						throw new IllegalArgumentException(format(
+							"Invalid path name '%s'. '%s' is not an positive integer.",
+							value, index.substring(1, index.length() - 1)
+						));
+					}
+				} else {
+					throw new IllegalArgumentException(format(
+						"Invalid path name '%s'.", value
+					));
+				}
+			}
+		}
+
+		private record Name(String name) implements Element {
+			@Override
+			public String toString() {
+				return name;
+			}
+		}
+
+		private record ListIndex(int index) implements Element {
+			@Override
+			public String toString() {
+				return "[%d]".formatted(index);
+			}
+		}
+
+		public static final Path EMPTY = new Path(List.of());
+
+		private final List<Element> elements;
+
+		private Path(final List<Element> elements) {
 			this.elements = List.copyOf(elements);
 		}
 
-		private Path(final PathName name) {
-			this(List.of(name));
+		/**
+		 * Return the property name, without index, from {@code this} path.
+		 * This is the path element <em>farthest</em> away from the root.
+		 *
+		 * @return the property name
+		 */
+		public Path head() {
+			if (!isEmpty()) {
+				return new Path(List.of(elements.get(count() - 1)));
+			} else {
+				throw new NoSuchElementException("Given path is empty.");
+			}
 		}
 
-		private Path() {
-			this(List.of());
+		/**
+		 * Returns the number of elements in the path.
+		 *
+		 * @return the number of elements in the path, or 0 if this path only
+		 *         represents a root component
+		 */
+		public int count() {
+			return elements.size();
 		}
 
-		private Path append(final PathName name) {
-			final var elems = new ArrayList<>(elements);
-			elems.add(name);
-			return new Path(elems);
+		/**
+		 * Returns the <em>parent path</em>, or {@link Optional#empty()} if this
+		 * path does not have a parent.
+		 *
+		 * @return a path representing the path's parent
+		 */
+		public Optional<Path> parent() {
+			return count() > 1
+				? Optional.of(subPath(0, count() - 1))
+				: Optional.empty();
 		}
 
-//		/**
-//		 * Return the property name, without index, from {@code this} path.
-//		 * This is the path element <em>farthest</em> away from the root.
-//		 *
-//		 * @return the property name
-//		 */
-//		public String name() {
-//			return name != null ? name.value() : "";
-//		}
+		/**
+		 * Returns a relative {@code Path} that is a subsequence of the name
+		 * elements of this path.
+		 *
+		 * @param fromIndex low endpoint (inclusive) of the subPath
+		 * @param toIndex high endpoint (exclusive) of the subPath
+		 * @return  a new {@code Path} object that is a subsequence of the
+		 *          elements in this {@code Path}
+		 * @throws IndexOutOfBoundsException for an illegal endpoint index value
+		 *         ({@code fromIndex < 0 || toIndex > size ||
+		 *         fromIndex > toIndex})
+		 */
+		public Path subPath(final int fromIndex, final int toIndex) {
+			return new Path(elements.subList(fromIndex, toIndex));
+		}
+
+		public Path append(final Path... paths) {
+			final var list = new ArrayList<>(this.elements);
+			for (var path : paths) {
+				list.addAll(path.elements);
+			}
+			return new Path(list);
+		}
 
 //		/**
 //		 * Return the index, from {@code this} path, or {@code null} if the
@@ -198,21 +288,12 @@ public sealed interface Property permits CollectionProperty, ElementProperty, Si
 //		public boolean isListPath() {
 //			return index() != null;
 //		}
-//
-//		/**
-//		 * Returns the number of elements in the path.
-//		 *
-//		 * @return the number of elements in the path, or 0 if this path only
-//		 *         represents a root component
-//		 */
-//		public int count() {
-//			return elements.size();
-//		}
-//
-//		public boolean isEmpty() {
-//			return count() == 0;
-//		}
-//
+
+
+		public boolean isEmpty() {
+			return count() == 0;
+		}
+
 //		/**
 //		 * Returns an element of this path. The index parameter is the index of
 //		 * the path element to return. The element that is closest to the root
@@ -235,11 +316,7 @@ public sealed interface Property permits CollectionProperty, ElementProperty, Si
 //		public Path head() {
 //			return get(count() - 1);
 //		}
-//
-//		public Path subpath(final int beginIndex, final int endIndex) {
-//			final var head = elements.get(endIndex - 1);
-//			return new Path(head.name, elements.subList(beginIndex, endIndex));
-//		}
+
 //
 //		/**
 //		 * Create a new path object with the given element appended.
@@ -277,72 +354,65 @@ public sealed interface Property permits CollectionProperty, ElementProperty, Si
 //		public Iterator<Path> iterator() {
 //			return elements.iterator();
 //		}
-//
-//		@Override
-//		public int hashCode() {
-//			int hashCode = 1;
-//			for (var path : this) {
-//				hashCode = 31*path.name.hashCode();
-//			}
-//			return hashCode;
-//		}
-//
-//		@Override
-//		public boolean equals(final Object obj) {
-//			if (obj == this) {
-//				return true;
-//			} else if (obj instanceof Path path && count() == path.count()) {
-//				for (int i = 0; i < count(); ++i) {
-//					if (!get(i).name.equals(path.get(i).name)) {
-//						return false;
-//					}
-//				}
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		}
-//
-//		@Override
-//		public String toString() {
-//			return elements.stream()
-//				.map(ele -> ele.name.toString())
-//				.collect(Collectors.joining("."));
-//		}
-//
-//		/**
-//		 * Create a new property path form the given string {@code value}. A
-//		 * valid path consists of a names, which must be a valid Java identifier,
-//		 * and indexes, separated by a dot, '.'. A valid path with three elements
-//		 * will look like this:
-//		 * <pre>{@code
-//		 * final var path = Path.of("name1.name2[9].value");
-//		 * }</pre>
-//		 *
-//		 * @param value the path value
-//		 * @return a new property path
-//		 * @throws IllegalArgumentException if the given path is invalid
-//		 */
-//		public static Path of(final String value) {
-//			if (value.isEmpty()) {
-//				return EMPTY;
-//			}
-//
-//			final var parts = java.nio.file.Path.of(value.replace('.', '/'))
-//				.normalize()
-//				.iterator();
-//
-//			var path = new Path();
-//			while (parts.hasNext()) {
-//				final var part = parts.next();
-//				final var element = PathName.of(part.toString());
-//				path = element.index() != null
-//					? path.append(element.value(), element.index())
-//					: path.append(element.value());
-//			}
-//
-//			return path;
-//		}
+
+		@Override
+		public int hashCode() {
+			return elements.hashCode();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Path path &&
+				elements.equals(path.elements);
+		}
+
+		@Override
+		public String toString() {
+			final var out = new StringBuilder();
+
+			for (int i = 0; i < elements.size(); ++i) {
+				Element element = elements.get(i);
+				out.append(element);
+
+				if (i < elements.size() - 1 && !(elements.get(i + 1) instanceof ListIndex)) {
+					out.append('.');
+				}
+			}
+
+			return out.toString();
+		}
+
+		/**
+		 * Create a new property path form the given string {@code value}. A
+		 * valid path consists of a names, which must be a valid Java identifier,
+		 * and indexes, separated by a dot, '.'. A valid path with three elements
+		 * will look like this:
+		 * <pre>{@code
+		 * final var path = Path.of("name1.name2[9].value");
+		 * }</pre>
+		 *
+		 * @param value the path value
+		 * @return a new property path
+		 * @throws IllegalArgumentException if the given path is invalid
+		 */
+		public static Path of(final String value) {
+			if (value.isEmpty()) {
+				return EMPTY;
+			}
+
+			final var path = java.nio.file.Path.of(value.replace('.', '/'))
+				.normalize();
+			final var parts = path.iterator();
+
+			final var elements = new ArrayList<Element>();
+			while (parts.hasNext()) {
+				final var part = parts.next();
+				elements.addAll(Element.parse(part.toString()));
+			}
+
+			return new Path(elements);
+		}
 
 	}
 
