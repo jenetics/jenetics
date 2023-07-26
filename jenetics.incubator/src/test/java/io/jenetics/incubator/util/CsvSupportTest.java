@@ -24,12 +24,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
 
 public class CsvSupportTest {
+
+	record Measurement(
+		OffsetDateTime createdAt,
+		int co2,
+		float temperature,
+		float humidity
+	) {
+		static Measurement of(final String[] values) {
+			return new Measurement(
+				OffsetDateTime.parse(values[0]),
+				Integer.parseInt(values[1]),
+				Float.parseFloat(values[2]),
+				Float.parseFloat(values[3])
+			);
+		}
+	}
+
+	@Test
+	public void readMeasurements() throws IOException {
+		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
+		final var input = CsvSupportTest.class.getResourceAsStream(file);
+		final var reader = new InputStreamReader(input);
+
+		try (var lines = CsvSupport.read(reader)) {
+			final var columns = new String[4];
+			final var result = lines
+				.map(line -> CsvSupport.split(line, columns))
+				.map(Measurement::of)
+				.toList();
+
+			result.forEach(System.out::println);
+		}
+	}
 
 	@Test
 	public void readWrite() throws IOException {
