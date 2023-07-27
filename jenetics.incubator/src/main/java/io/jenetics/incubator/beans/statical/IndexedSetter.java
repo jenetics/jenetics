@@ -1,4 +1,4 @@
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
 @FunctionalInterface
 public interface IndexedSetter {

@@ -19,6 +19,11 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.Description;
+import io.jenetics.incubator.beans.statical.IndexedDescription;
+import io.jenetics.incubator.beans.statical.DescriptionExtractor;
+import io.jenetics.incubator.beans.statical.SimpleDescription;
+
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -33,7 +38,7 @@ import static java.util.Objects.requireNonNull;
 final class PropertyExtractor implements Extractor<PathObject, Property> {
 
 	static final PropertyExtractor DEFAULT =
-		new PropertyExtractor(PropertyDescriptionExtractor::extract);
+		new PropertyExtractor(DescriptionExtractor::extract);
 
 	private final Extractor<? super Class<?>, ? extends Description> descriptions;
 
@@ -56,7 +61,7 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 					final var enclosing = object.value();
 
 
-					if (description instanceof PropertyDescription desc) {
+					if (description instanceof SimpleDescription desc) {
 						final var type = desc.type();
 						final var path = object.path().append(desc.name());
 						final var value = desc.getter().apply(object.value());
@@ -72,10 +77,10 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 							property = new SimpleProperty(desc, enclosing, path, value);
 						}
 						return Stream.of(property);
-					} else if (description instanceof IndexedPropertyDescription desc) {
+					} else if (description instanceof IndexedDescription desc) {
 						int size = desc.size().applyAsInt(object.value());
 						return IntStream.range(0, size).mapToObj(i -> {
-							return new IndexedProperty(
+							return new IndexProperty(
 								enclosing,
 								object.path().append(new Property.Path.Index(i)),
 								desc.getter().apply(object.value(), i),

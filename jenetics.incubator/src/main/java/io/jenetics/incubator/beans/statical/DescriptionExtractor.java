@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -29,23 +29,22 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Methods for extracting {@link PropertyDescription} directly accessible from
+ * Methods for extracting {@link SimpleDescription} directly accessible from
  * a given data type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class PropertyDescriptionExtractor {
-	private PropertyDescriptionExtractor() {
+public final class DescriptionExtractor {
+	private DescriptionExtractor() {
 	}
 
-	static Stream<Description> extract(final Class<?> type) {
+	public static Stream<Description> extract(final Class<?> type) {
 		final var descriptions = new ArrayList<Description>();
 
 		if (type.isArray() && !type.getComponentType().isPrimitive()) {
-			final var desc = new IndexedPropertyDescription(
-				"[*]",
+			final var desc = new IndexedDescription(
 				type.getComponentType(),
 				object -> ((Object[])object).length,
 				(object, index) -> ((Object[])object)[index],
@@ -56,8 +55,7 @@ final class PropertyDescriptionExtractor {
 			);
 			descriptions.add(desc);
 		} else if (List.class.isAssignableFrom(type)) {
-			final var desc = new IndexedPropertyDescription(
-				"[*]",
+			final var desc = new IndexedDescription(
 				type,
 				object -> ((List<?>)object).size(),
 				(object, index) -> ((List<?>)object).get(index),
@@ -97,8 +95,9 @@ final class PropertyDescriptionExtractor {
 		return descriptions.stream();
 	}
 
-	private static PropertyDescription toDescription(final RecordComponent component) {
-		return new PropertyDescription(
+	private static SimpleDescription
+	toDescription(final RecordComponent component) {
+		return new SimpleDescription(
 			component.getName(),
 			component.getType(),
 			Methods.toGetter(component.getAccessor()),
@@ -106,50 +105,14 @@ final class PropertyDescriptionExtractor {
 		);
 	}
 
-	private static PropertyDescription
+	private static SimpleDescription
 	toDescription(final PropertyDescriptor descriptor) {
-		return new PropertyDescription(
+		return new SimpleDescription(
 			descriptor.getName(),
 			descriptor.getPropertyType(),
 			Methods.toGetter(descriptor.getReadMethod()),
 			Methods.toSetter(descriptor.getWriteMethod())
 		);
 	}
-
-//	static Optional<PropertyDescription> extract(final Class<?> type, final String name) {
-//		requireNonNull(type);
-//		requireNonNull(name);
-//
-//		Optional<PropertyDescription> description = Optional.empty();
-//		if (type.isRecord()) {
-//			for (var component : type.getRecordComponents()) {
-//				if (component.getName().equals(name)) {
-//					description = Optional.of(toDescription(component));
-//				}
-//			}
-//		} else {
-//			try {
-//				final PropertyDescriptor[] descriptors = Introspector
-//					.getBeanInfo(type)
-//					.getPropertyDescriptors();
-//
-//				for (var descriptor : descriptors) {
-//					if (descriptor.getReadMethod() != null &&
-//						!"class".equals(descriptor.getName()) &&
-//						descriptor.getName().equals(name))
-//					{
-//						description = Optional.of(toDescription(descriptor));
-//					}
-//				}
-//			} catch (IntrospectionException e) {
-//				throw new IllegalArgumentException(
-//					"Can't introspect class '%s'.".formatted(type.getName()),
-//					e
-//				);
-//			}
-//		}
-//
-//		return description;
-//	}
 
 }

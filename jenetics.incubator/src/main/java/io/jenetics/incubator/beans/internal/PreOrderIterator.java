@@ -17,7 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.internal;
+
+import io.jenetics.incubator.beans.Extractor;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
@@ -38,13 +40,13 @@ import java.util.stream.StreamSupport;
  * @version !__version__!
  * @since !__version__!
  */
-final class PreOrderIterator<S, T> implements Iterator<T> {
+public final class PreOrderIterator<S, T> implements Iterator<T> {
 
 	private final Extractor<? super S, ? extends T> reader;
 	private final Function<? super T, ? extends S> mapper;
 	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
 
-	PreOrderIterator(
+	public PreOrderIterator(
 		final S object,
 		final Extractor<? super S, ? extends T> reader,
 		final Function<? super T, ? extends S> mapper
@@ -83,7 +85,7 @@ final class PreOrderIterator<S, T> implements Iterator<T> {
 		return node;
 	}
 
-	Stream<T> stream() {
+	public Stream<T> stream() {
 		return StreamSupport.stream(
 			spliteratorUnknownSize(this, Spliterator.SIZED),
 			false

@@ -1,4 +1,7 @@
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
+
+import io.jenetics.incubator.beans.statical.Getter;
+import io.jenetics.incubator.beans.statical.Setter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

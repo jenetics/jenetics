@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.SimpleDescription;
+
 import static java.util.Collections.emptyIterator;
 
 import java.util.Arrays;
@@ -34,7 +36,7 @@ import java.util.Iterator;
 public final class ArrayProperty extends CollectionProperty {
 
 	ArrayProperty(
-		final PropertyDescription desc,
+		final SimpleDescription desc,
 		final Object enclosingObject,
 		final Path path,
 		final Object value

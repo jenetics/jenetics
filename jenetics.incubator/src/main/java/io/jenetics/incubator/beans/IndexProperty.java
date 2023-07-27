@@ -1,6 +1,6 @@
 package io.jenetics.incubator.beans;
 
-public record IndexedProperty(
+public record IndexProperty(
 	Object enclosingObject,
 	Property.Path path,
 	Object value,
@@ -10,6 +10,6 @@ public record IndexedProperty(
 {
 	@Override
 	public String toString() {
-		return Properties.toString(IndexedProperty.class.getSimpleName(), this);
+		return Properties.toString(IndexProperty.class.getSimpleName(), this);
 	}
 }

@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
+
 import static java.util.Objects.requireNonNull;
 
 import java.util.IdentityHashMap;
@@ -107,11 +109,7 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 				final Property.Path path = property.path()
 					.append(new Property.Path.Index(index.getAndIncrement()));
 
-				System.out.println("ELE: " + ele + ": " + ele.getClass().getName());
-				var foo = properties.extract(new PathObject(path, ele)).toList();
-				System.out.println("EXTRACTED: " + foo);
-
-				final var prop = new IndexedProperty(
+				final var prop = new IndexProperty(
 					property.enclosingObject(),
 					path,
 					ele,

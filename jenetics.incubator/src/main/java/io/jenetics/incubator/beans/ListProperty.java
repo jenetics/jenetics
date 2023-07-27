@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.SimpleDescription;
+
 import static java.util.Collections.emptyIterator;
 
 import java.util.Iterator;
@@ -35,7 +37,7 @@ import java.util.stream.Stream;
 public final class ListProperty extends CollectionProperty {
 
 	ListProperty(
-		final PropertyDescription desc,
+		final SimpleDescription desc,
 		final Object enclosingObject,
 		final Path path,
 		final Object value

@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.SimpleDescription;
+
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -30,11 +32,11 @@ import static java.util.Objects.requireNonNull;
  */
 abstract class PropertyDescriptionMethods {
 
-	final PropertyDescription desc;
+	final SimpleDescription desc;
 	final Object enclosingObject;
 
 	PropertyDescriptionMethods(
-		final PropertyDescription desc,
+		final SimpleDescription desc,
 		final Object enclosingObject
 	) {
 		this.desc = requireNonNull(desc);

@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.SimpleDescription;
+
 import static java.util.Objects.requireNonNull;
 
 import java.util.stream.Stream;
@@ -41,7 +43,7 @@ public abstract sealed class CollectionProperty
 	final Object value;
 
 	CollectionProperty(
-		final PropertyDescription desc,
+		final SimpleDescription desc,
 		final Object enclosingObject,
 		final Path path,
 		final Object value

@@ -19,11 +19,12 @@
  */
 package io.jenetics.incubator.beans;
 
+import io.jenetics.incubator.beans.statical.DescriptionExtractor;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class PropertyDescriptionExtractorTests {
+public class SimpleDescriptionExtractorTests {
 
 	public static final class Box {
 		List<Integer> root;
@@ -53,7 +54,7 @@ public class PropertyDescriptionExtractorTests {
 	public void extractIntArray() {
 		final var data = new int[0];
 
-		final var desc = PropertyDescriptionExtractor.extract(data.getClass())
+		final var desc = DescriptionExtractor.extract(data.getClass())
 			.toList();
 
 		System.out.println(desc);

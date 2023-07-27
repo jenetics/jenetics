@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-record PropertyDescription(
+public record SimpleDescription(
 	String name,
 	Class<?> type,
 	Getter getter,
@@ -38,7 +38,7 @@ record PropertyDescription(
 	implements Description
 {
 
-	PropertyDescription {
+	public SimpleDescription {
 		requireNonNull(name);
 		requireNonNull(type);
 		requireNonNull(getter);

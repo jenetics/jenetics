@@ -1,8 +1,8 @@
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
-sealed interface Description
+public sealed interface Description
 	extends Comparable<Description>
-	permits IndexedPropertyDescription, PropertyDescription
+	permits IndexedDescription, SimpleDescription
 {
 
 	String name();

@@ -1,11 +1,10 @@
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
 import java.util.function.ToIntFunction;
 
 import static java.util.Objects.requireNonNull;
 
-record IndexedPropertyDescription(
-	String name,
+public record IndexedDescription(
 	Class<?> type,
 	ToIntFunction<Object> size,
 	IndexedGetter getter,
@@ -13,9 +12,14 @@ record IndexedPropertyDescription(
 )
 	implements Description
 {
-	IndexedPropertyDescription {
-		requireNonNull(name);
+	public IndexedDescription {
 		requireNonNull(type);
 		requireNonNull(getter);
 	}
+
+	@Override
+	public String name() {
+		return "[*]";
+	}
+
 }
