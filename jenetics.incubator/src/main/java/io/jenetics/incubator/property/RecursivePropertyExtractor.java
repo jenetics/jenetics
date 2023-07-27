@@ -106,10 +106,10 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 
 		return flattener.extract(property)
 			.flatMap(ele -> {
-				final Path path = property.path();
-					//.indexed(index.getAndIncrement());
+				final Path path = property.path()
+					.append(new Path.Index(index.getAndIncrement()));
 
-				final var prop = new ElementProperty(
+				final var prop = new IndexProperty(
 					property.enclosingObject(),
 					path,
 					ele,

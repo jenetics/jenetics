@@ -20,14 +20,13 @@
 package io.jenetics.incubator.property;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static java.util.regex.Pattern.compile;
+import java.util.stream.IntStream;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -81,7 +80,7 @@ import static java.util.regex.Pattern.compile;
  * @since !__version__!
  */
 public sealed interface Property
-	permits CollectionProperty, ElementProperty, SimpleProperty
+	permits CollectionProperty, IndexProperty, SimpleProperty
 {
 
 	/**
@@ -105,7 +104,7 @@ public sealed interface Property
 	 * @return the property name
 	 */
 	default String name() {
-		return ""; //path().name();
+		return path().isEmpty() ? "" : path().element().toString();
 	}
 
 	/**
@@ -116,9 +115,9 @@ public sealed interface Property
 	Class<?> type();
 
 	/**
-	 * The value of the metaobject, may be {@code null}.
+	 * The value of the meta-object, may be {@code null}.
 	 *
-	 * @return the value of the metaobject
+	 * @return the value of the meta-object
 	 */
 	Object value();
 
@@ -155,51 +154,81 @@ public sealed interface Property
 	 * Represents the property path, which uniquely identifies a property. A
 	 * path can be created with the {@link Path#of(String)} method.
 	 */
-	final class Path /*implements Iterable<Path>*/ {
+	final class Path implements Iterable<Path> {
 
-		private sealed interface Element {
-			String NAME_PATTERN = "((?:\\b[_a-zA-Z]|\\B\\$)[_$a-zA-Z0-9]*+)";
-			String INDEX_PATTERN = "((\\[([0-9]*)\\])*)";
-			Pattern PATH_NAME_PATTERN = compile(NAME_PATTERN + INDEX_PATTERN);
+		private static final Pattern PATH_ELEMENT_PATTERN =
+			Pattern.compile("\\b[_a-zA-Z][_a-zA-Z0-9]*\\b|\\[[0-9^]+]");
 
-			private static List<Element> parse(final String value) {
-				final var matcher = PATH_NAME_PATTERN.matcher(value);
-
-				if (matcher.matches()) {
-					final var name = matcher.group(1);
-					final var index = matcher.group(3);
-
+		/**
+		 * Represents the path element.
+		 */
+		public sealed interface Element {
+			private static Element parse(final String value) {
+				if (value.startsWith("[") && value.endsWith("]")) {
 					try {
-						if (index == null) {
-							return List.of(new Name(name));
-						} else {
-							final var i = Integer
-								.parseInt(index.substring(1, index.length() - 1));
+						final var index = Integer
+							.parseInt(value.substring(1, value.length() - 1));
 
-							return List.of(new Name(name), new ListIndex(i));
-						}
+						return new Index(index);
 					} catch (NumberFormatException e) {
-						throw new IllegalArgumentException(format(
-							"Invalid path name '%s'. '%s' is not an positive integer.",
-							value, index.substring(1, index.length() - 1)
-						));
+						throw new IllegalArgumentException(
+							"Invalid list-index path element '%s'."
+								.formatted(value)
+						);
 					}
 				} else {
-					throw new IllegalArgumentException(format(
-						"Invalid path name '%s'.", value
-					));
+					return new Name(value);
 				}
 			}
 		}
 
-		private record Name(String name) implements Element {
+		/**
+		 * Path element which represents a property name.
+		 *
+		 * @param name the property name
+		 */
+		public record Name(String name) implements Element {
+
+			public Name {
+				if (!isValid(name)) {
+					throw new IllegalArgumentException(
+						"'%s' is not a valid field name.".formatted(name)
+					);
+				}
+			}
+
+			private static boolean isValid(final String name) {
+				if (name.isEmpty()) {
+					return false;
+				}
+				int cp = name.codePointAt(0);
+				if (!Character.isJavaIdentifierStart(cp)) {
+					return false;
+				}
+				for (int i = Character.charCount(cp);
+					 i < name.length();
+					 i += Character.charCount(cp))
+				{
+					cp = name.codePointAt(i);
+					if (!Character.isJavaIdentifierPart(cp)) {
+						return false;
+					}
+				}
+				return true;
+			}
+
 			@Override
 			public String toString() {
 				return name;
 			}
 		}
 
-		private record ListIndex(int index) implements Element {
+		/**
+		 * Path element which represents a list/array index.
+		 *
+		 * @param index the list/array index
+		 */
+		public record Index(int index) implements Element {
 			@Override
 			public String toString() {
 				return "[%d]".formatted(index);
@@ -215,14 +244,27 @@ public sealed interface Property
 		}
 
 		/**
-		 * Return the property name, without index, from {@code this} path.
-		 * This is the path element <em>farthest</em> away from the root.
+		 * Return the head path. This is the path element <em>farthest</em> away
+		 * from the root.
 		 *
 		 * @return the property name
 		 */
 		public Path head() {
 			if (!isEmpty()) {
-				return new Path(List.of(elements.get(count() - 1)));
+				return get(count() - 1);
+			} else {
+				throw new NoSuchElementException("Given path is empty.");
+			}
+		}
+
+		/**
+		 * Return the path element of {@code this path}.
+		 *
+		 * @return the path element
+		 */
+		public Element element() {
+			if (!isEmpty()) {
+				return elements.get(count() - 1);
 			} else {
 				throw new NoSuchElementException("Given path is empty.");
 			}
@@ -266,6 +308,13 @@ public sealed interface Property
 			return new Path(elements.subList(fromIndex, toIndex));
 		}
 
+		/**
+		 * Appends the given {@code paths} to {@code this} and returns a new
+		 * path object.
+		 *
+		 * @param paths the paths to append to {@code this} path
+		 * @return a new path object
+		 */
 		public Path append(final Path... paths) {
 			final var list = new ArrayList<>(this.elements);
 			for (var path : paths) {
@@ -274,86 +323,63 @@ public sealed interface Property
 			return new Path(list);
 		}
 
-//		/**
-//		 * Return the index, from {@code this} path, or {@code null} if the
-//		 * property is not part of a collection.
-//		 *
-//		 * @return the property index, or {@code null} if {@code this} path has
-//		 *         no index defined
-//		 */
-//		public Integer index() {
-//			return name != null ? name.index() : null;
-//		}
-//
-//		public boolean isListPath() {
-//			return index() != null;
-//		}
+		/**
+		 * Appends the given {@code elements} to {@code this} and returns a new
+		 * path object.
+		 *
+		 * @param elements the paths to append to {@code this} path
+		 * @return a new path object
+		 */
+		public Path append(final Element... elements) {
+			final var list = new ArrayList<>(this.elements);
+			list.addAll(Arrays.asList(elements));
+			return new Path(list);
+		}
 
+		/**
+		 * Appends the given {@code names} to {@code this} and returns a new
+		 * path object.
+		 *
+		 * @param names the paths to append to {@code this} path
+		 * @return a new path object
+		 */
+		public Path append(final String... names) {
+			final var list = new ArrayList<>(this.elements);
+			for (var name : names) {
+				list.add(new Name(name));
+			}
+			return new Path(list);
+		}
 
+		/**
+		 * Return {@code true} if this path contains no elements.
+		 *
+		 * @return @code true} if this path contains no elements, {@code false}
+		 *         otherwise
+		 */
 		public boolean isEmpty() {
 			return count() == 0;
 		}
 
-//		/**
-//		 * Returns an element of this path. The index parameter is the index of
-//		 * the path element to return. The element that is closest to the root
-//		 * in the property hierarchy has index 0. The element that is farthest
-//		 * from the root has index count - 1.
-//		 *
-//		 * @param index the path index
-//		 * @return the path element
-//		 */
-//		public Path get(final int index) {
-//			final var ele = elements.get(index);
-//			return new Path(ele.name, List.of());
-//		}
-//
-//		/**
-//		 * Return the path element which is the farthest away from the root property.
-//		 *
-//		 * @return the path element which is the farthest away from the root property
-//		 */
-//		public Path head() {
-//			return get(count() - 1);
-//		}
+		/**
+		 * Returns an element of this path. The index parameter is the index of
+		 * the path element to return. The element that is closest to the root
+		 * in the property hierarchy has index 0. The element that is farthest
+		 * from the root has index count - 1.
+		 *
+		 * @param index the path index
+		 * @return the path element
+		 */
+		public Path get(final int index) {
+			return new Path(List.of(elements.get(index)));
+		}
 
-//
-//		/**
-//		 * Create a new path object with the given element appended.
-//		 *
-//		 * @param element the path element to append
-//		 * @return a new path object with the given element appended
-//		 */
-//		Path append(final String element) {
-//			return new Path(new PathName(element, null), elements);
-//		}
-//
-//		/**
-//		 * Create a new path object with the given element and index appended.
-//		 *
-//		 * @param element the path element to append
-//		 * @param index the property index
-//		 * @return a new path object with the given element appended
-//		 */
-//		Path append(final String element, final int index) {
-//			return new Path(new PathName(element, index), elements);
-//		}
-//
-//		/**
-//		 * Create a new path object by converting the last element of
-//		 * {@code this} path to an <em>indexed</em> path element.
-//		 *
-//		 * @param index the index of the last path element
-//		 * @return a new path object
-//		 */
-//		Path indexed(final int index) {
-//			return new Path(new PathName(name.value(), index), elements.subList(0, elements.size() - 1));
-//		}
-//
-//		@Override
-//		public Iterator<Path> iterator() {
-//			return elements.iterator();
-//		}
+		@Override
+		public Iterator<Path> iterator() {
+			return IntStream.range(0, count())
+				.mapToObj(this::get)
+				.iterator();
+		}
 
 		@Override
 		public int hashCode() {
@@ -369,13 +395,19 @@ public sealed interface Property
 
 		@Override
 		public String toString() {
+			return toString(elements);
+		}
+
+		private static String toString(final List<Element> elements) {
 			final var out = new StringBuilder();
 
 			for (int i = 0; i < elements.size(); ++i) {
 				Element element = elements.get(i);
 				out.append(element);
 
-				if (i < elements.size() - 1 && !(elements.get(i + 1) instanceof ListIndex)) {
+				if (i < elements.size() - 1
+					&& !(elements.get(i + 1) instanceof Index))
+				{
 					out.append('.');
 				}
 			}
@@ -401,14 +433,16 @@ public sealed interface Property
 				return EMPTY;
 			}
 
-			final var path = java.nio.file.Path.of(value.replace('.', '/'))
-				.normalize();
-			final var parts = path.iterator();
-
+			final var matcher = PATH_ELEMENT_PATTERN.matcher(value);
 			final var elements = new ArrayList<Element>();
-			while (parts.hasNext()) {
-				final var part = parts.next();
-				elements.addAll(Element.parse(part.toString()));
+			while (matcher.find()) {
+				elements.add(Element.parse(matcher.group()));
+			}
+
+			if (!toString(elements).equals(value)) {
+				throw new IllegalArgumentException(
+					"Invalid path: '%s'.".formatted(value)
+				);
 			}
 
 			return new Path(elements);

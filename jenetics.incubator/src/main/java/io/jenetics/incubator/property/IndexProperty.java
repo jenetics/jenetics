@@ -1,13 +1,15 @@
 package io.jenetics.incubator.property;
 
-public record ElementProperty(
+public record IndexProperty(
 	Object enclosingObject,
 	Property.Path path,
 	Object value,
 	Class<?> type
-) implements Property {
+)
+	implements Property
+{
 	@Override
 	public String toString() {
-		return Properties.toString(ElementProperty.class.getSimpleName(), this);
+		return Properties.toString(IndexProperty.class.getSimpleName(), this);
 	}
 }

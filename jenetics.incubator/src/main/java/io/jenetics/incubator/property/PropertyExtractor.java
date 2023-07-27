@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -53,7 +53,7 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 				.extract(object.value().getClass())
 				.map(desc -> {
 					final var enclosing = object.value();
-					final var path = object.path(); //.append(desc.name());
+					final var path = object.path().append(desc.name());
 					final var type = desc.type();
 					final var value = desc.read(object.value());
 

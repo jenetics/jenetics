@@ -75,6 +75,7 @@ final class PreOrderIterator<S, T> implements Iterator<T> {
 		final var children = reader
 			.extract(mapper.apply(node))
 			.iterator();
+
 		if (children.hasNext()) {
 			deque.push(children);
 		}
