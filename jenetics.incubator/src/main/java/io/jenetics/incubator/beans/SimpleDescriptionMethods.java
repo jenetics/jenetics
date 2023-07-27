@@ -19,11 +19,11 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.beans.statical.SimpleDescription;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

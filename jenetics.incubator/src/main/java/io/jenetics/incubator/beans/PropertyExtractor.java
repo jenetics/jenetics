@@ -25,38 +25,47 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.statical.Description;
 import io.jenetics.incubator.beans.statical.DescriptionExtractor;
 import io.jenetics.incubator.beans.statical.IndexedDescription;
 import io.jenetics.incubator.beans.statical.SimpleDescription;
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class PropertyExtractor implements Extractor<PathObject, Property> {
+public final class PropertyExtractor {
 
-	static final PropertyExtractor DEFAULT =
-		new PropertyExtractor(DescriptionExtractor::extract);
+	/**
+	 * Property extractor object, which extracts the direct (first level)
+	 * properties of the input object.
+	 */
+	public static final Extractor<PathObject, Property>
+		DIRECT =
+		PropertyExtractor::extract;
 
-	private final Extractor<? super Class<?>, ? extends Description> descriptions;
+	/**
+	 * Property extractor object, which extracts the all properties of the input
+	 * object, recursively.
+	 */
+	public static final Extractor<PathObject, Property>
+		RECURSIVE =
+		new RecursiveExtractor<>(
+			DIRECT,
+			property -> new PathObject(property.path(), property.value())
+		);
 
-	PropertyExtractor(
-		final Extractor<
-			? super Class<?>,
-			? extends Description> descriptions
-	) {
-		this.descriptions = requireNonNull(descriptions);
+
+	private PropertyExtractor() {
 	}
 
-	@Override
-	public Stream<Property> extract(final PathObject object) {
+	private static Stream<Property> extract(final PathObject object) {
 		requireNonNull(object);
 
 		if (object.value() != null) {
-			return descriptions
-				.extract(object.value().getClass())
+			return DescriptionExtractor.extract(object.value().getClass())
 				.flatMap(description -> {
 					final var enclosing = object.value();
 
@@ -103,14 +112,6 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 		} else {
 			return Stream.empty();
 		}
-	}
-
-	public Stream<Property> properties(final Object value) {
-		final var data = value instanceof PathObject object
-			? object
-			: new PathObject(value);
-
-		return extract(data);
 	}
 
 }

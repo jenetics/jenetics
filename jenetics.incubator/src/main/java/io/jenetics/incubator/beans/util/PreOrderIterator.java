@@ -17,9 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.internal;
-
-import io.jenetics.incubator.beans.Extractor;
+package io.jenetics.incubator.beans.util;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
@@ -42,18 +40,18 @@ import java.util.stream.StreamSupport;
  */
 public final class PreOrderIterator<S, T> implements Iterator<T> {
 
-	private final Extractor<? super S, ? extends T> reader;
+	private final Extractor<? super S, ? extends T> extractor;
 	private final Function<? super T, ? extends S> mapper;
 	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
 
 	public PreOrderIterator(
 		final S object,
-		final Extractor<? super S, ? extends T> reader,
+		final Extractor<? super S, ? extends T> extractor,
 		final Function<? super T, ? extends S> mapper
 	) {
-		this.reader = requireNonNull(reader);
+		this.extractor = requireNonNull(extractor);
 		this.mapper = requireNonNull(mapper);
-		deque.push(reader.extract(object).iterator());
+		deque.push(extractor.extract(object).iterator());
 	}
 
 	@Override
@@ -74,7 +72,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 			deque.pop();
 		}
 
-		final var children = reader
+		final var children = extractor
 			.extract(mapper.apply(node))
 			.iterator();
 

@@ -21,9 +21,11 @@ package io.jenetics.incubator.beans;
 
 import static java.lang.String.format;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -35,16 +37,6 @@ import java.util.stream.Stream;
  */
 public final class Properties {
 	private Properties() {
-	}
-
-	/**
-	 * Return a property extractor object, which extracts the direct (first level)
-	 * properties of the input object.
-	 *
-	 * @return a first level property extractor
-	 */
-	public static Extractor<PathObject, Property> extractor() {
-		return PropertyExtractor.DEFAULT;
 	}
 
 	/**
@@ -61,7 +53,11 @@ public final class Properties {
 		final PathObject root,
 		final Extractor<PathObject, Property> extractor
 	) {
-		return new RecursivePropertyExtractor(extractor).extract(root);
+		final var ext = new RecursiveExtractor<>(
+			extractor,
+			property -> new PathObject(property.path(), property.value())
+		);
+		return ext.extract(root);
 	}
 
 	/**
@@ -85,16 +81,7 @@ public final class Properties {
 			.reduce(Predicate::or)
 			.orElse(a -> true);
 
-		return walk(root, extractor().sourceFilter(filter));
-	}
-
-	public static Optional<Property> get(final Object bean, final Property.Path path) {
-		/*
-		for (var p : path) {
-
-		}
-		 */
-		return Optional.empty();
+		return walk(root, PropertyExtractor.DIRECT.sourceFilter(filter));
 	}
 
 	static String toString(final String name, final Property property) {

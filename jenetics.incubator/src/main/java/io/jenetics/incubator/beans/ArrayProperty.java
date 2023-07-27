@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
-
 import static java.util.Collections.emptyIterator;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
+import io.jenetics.incubator.beans.statical.SimpleDescription;
 
 /**
  * Represents an array property.

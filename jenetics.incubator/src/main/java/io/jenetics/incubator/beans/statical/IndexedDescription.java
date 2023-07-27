@@ -19,9 +19,9 @@
  */
 package io.jenetics.incubator.beans.statical;
 
-import java.util.function.ToIntFunction;
-
 import static java.util.Objects.requireNonNull;
+
+import java.util.function.ToIntFunction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

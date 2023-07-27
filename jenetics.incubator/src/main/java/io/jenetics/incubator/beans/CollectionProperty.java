@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
-
 import static java.util.Objects.requireNonNull;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import io.jenetics.incubator.beans.statical.SimpleDescription;
 
 /**
  * Base class for properties which consists of 0 to n objects.

@@ -19,13 +19,13 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
-
 import static java.util.Collections.emptyIterator;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.statical.SimpleDescription;
 
 /**
  * Represents a list property.

@@ -25,7 +25,6 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-
 public class PropertyExtractorTest {
 
 	private record Data(
@@ -53,8 +52,8 @@ public class PropertyExtractorTest {
 			Map.of("a", 1, "b", 2)
 		);
 
-		PropertyExtractor.DEFAULT
-			.properties(data)
+		PropertyExtractor.DIRECT
+			.extract(new PathObject(data))
 			.forEach(System.out::println);
 	}
 
@@ -62,8 +61,8 @@ public class PropertyExtractorTest {
 	public void extractIntArray() {
 		final var data = new Object[] {1, 2};
 
-		PropertyExtractor.DEFAULT
-			.properties(data)
+		PropertyExtractor.DIRECT
+			.extract(new PathObject(data))
 			.forEach(System.out::println);
 	}
 
