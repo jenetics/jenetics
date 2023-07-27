@@ -49,18 +49,13 @@ public class RecursivePropertyExtractorTest {
 			)
 		);
 
-		Properties.walk(new PathObject(data))
+		Properties.walk(data)
 			.peek(p -> {
 				if (p instanceof IndexProperty ip) {
 					if (ip.type() == String.class) {
-						//System.out.println(ip.writer());
-						//System.out.println("VALUE: " + ip.value());
 						ip.writer().ifPresent(writer -> {
 							var value = ip.value().toString();
-							final var result = writer.write("A:" + value);
-							//System.out.println("WRITTEN: " + result);
-
-							//System.out.println(ip.read());
+							writer.write("A:" + value);
 						});
 					}
 				}

@@ -21,6 +21,7 @@ package io.jenetics.incubator.beans;
 
 import static java.lang.String.format;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -36,6 +37,27 @@ import io.jenetics.incubator.beans.util.RecursiveExtractor;
  * @since !__version__!
  */
 public final class Properties {
+
+	public static final Predicate<PathObject> NON_JAVA_CLASSES = object -> {
+		final var type = object.value() != null
+			? object.value().getClass()
+			: Object.class;
+
+		final var name = type.getName();
+
+		return
+			// Allow native Java arrays, except byte[] arrays.
+			(name.startsWith("[") && !name.endsWith("[B")) ||
+			// Allow Java collection classes.
+			Collection.class.isAssignableFrom(type) ||
+			(
+				!name.startsWith("java") &&
+				!name.startsWith("com.sun") &&
+				!name.startsWith("sun") &&
+				!name.startsWith("jdk")
+			);
+	};
+
 	private Properties() {
 	}
 
@@ -74,14 +96,38 @@ public final class Properties {
 	 * @param includes the included object name (glob) patterns
 	 * @return a property stream
 	 */
-	public static Stream<Property> walk(final PathObject root, final String... includes) {
-		final var filter = Stream.of(includes)
+	public static Stream<Property>
+	walk(final PathObject root, final String... includes) {
+		return walk(
+			root,
+			PropertyExtractor.DIRECT
+				.sourceFilter(includesFilter(includes))
+				.sourceFilter(NON_JAVA_CLASSES)
+		);
+	}
+
+	private static Predicate<PathObject> includesFilter(final String... includes) {
+		return Stream.of(includes)
 			.map(Filters::toPattern)
 			.map(Filters::toFilter)
 			.reduce(Predicate::or)
 			.orElse(a -> true);
+	}
 
-		return walk(root, PropertyExtractor.DIRECT.sourceFilter(filter));
+	public static Stream<Property> walk(
+		final Object root,
+		final String... includes
+	) {
+		final var object = root instanceof PathObject po
+			? po
+			: new PathObject(root);
+
+		return walk(
+			object,
+			PropertyExtractor.DIRECT
+				.sourceFilter(includesFilter(includes))
+				.sourceFilter(NON_JAVA_CLASSES)
+		);
 	}
 
 	static String toString(final String name, final Property property) {

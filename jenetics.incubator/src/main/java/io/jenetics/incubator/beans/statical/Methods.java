@@ -37,7 +37,6 @@ final class Methods {
 				method.setAccessible(true);
 				return method.invoke(object);
 			} catch (IllegalAccessException | InvocationTargetException e) {
-				//return null;
 				throw new IllegalArgumentException(e);
 			}
 		};

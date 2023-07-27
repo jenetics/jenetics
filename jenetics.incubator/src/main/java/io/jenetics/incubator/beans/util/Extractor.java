@@ -53,7 +53,10 @@ public interface Extractor<S, T> {
 	 */
 	default Extractor<S, T> sourceFilter(final Predicate<? super S> predicate) {
 		requireNonNull(predicate);
-		return source -> predicate.test(source) ? extract(source) : Stream.empty();
+
+		return source -> predicate.test(source)
+			? extract(source)
+			: Stream.empty();
 	}
 
 	/**
