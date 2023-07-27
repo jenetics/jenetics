@@ -94,7 +94,6 @@ public final class PropertyExtractor {
 						int size = desc.size().applyAsInt(list);
 
 						return IntStream.range(0, size).mapToObj(i -> {
-
 							final var value = desc.getter().apply(list, i);
 
 							return new IndexProperty(

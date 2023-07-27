@@ -374,7 +374,7 @@ public sealed interface Property
 		/**
 		 * Return {@code true} if this path contains no elements.
 		 *
-		 * @return @code true} if this path contains no elements, {@code false}
+		 * @return {@code true} if this path contains no elements, {@code false}
 		 *         otherwise
 		 */
 		public boolean isEmpty() {

@@ -28,18 +28,28 @@ import org.testng.annotations.Test;
 public class DescriptionExtractorTests {
 
 	public static final class Box {
-		List<Integer> root;
+		List<Integer> list;
 
-		public Box(List<Integer> root) {
-			this.root = root;
+		public String[] getStrings() {
+			return strings;
 		}
 
-		public List<Integer> getRoot() {
-			return root;
+		public void setStrings(String[] strings) {
+			this.strings = strings;
 		}
 
-		public void setRoot(List<Integer> root) {
-			this.root = root;
+		String[] strings;
+
+		public Box(List<Integer> list) {
+			this.list = list;
+		}
+
+		public List<Integer> getList() {
+			return list;
+		}
+
+		public void setList(List<Integer> list) {
+			this.list = list;
 		}
 	}
 
@@ -59,12 +69,15 @@ public class DescriptionExtractorTests {
 		list.add(23);
 
 		final var desc = DescriptionExtractor.extract(Box.class)
+			/*
 			.flatMap(d ->
 					Stream.concat(
 						Stream.of(d),
 						DescriptionExtractor.extract(d.type())
 					)
 				)
+
+			 */
 			.toList();
 
 

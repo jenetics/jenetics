@@ -32,7 +32,7 @@ import io.jenetics.jpx.GPX.Reader;
 public class RecursivePropertyExtractorTest {
 
 	private record Data(
-		//Object[][] ints,
+		Integer[][] ints,
 		List<List<String>> strings
 	) {}
 
@@ -40,11 +40,9 @@ public class RecursivePropertyExtractorTest {
 	@Test
 	public void extractRecursive() {
 		final var data = new Data(
-			/*
-			new Object[][] {
+			new Integer[][] {
 				{1}
 			},
-			 */
 			listOf(
 				listOf("1", "2"),
 				listOf("a", "b", "c")

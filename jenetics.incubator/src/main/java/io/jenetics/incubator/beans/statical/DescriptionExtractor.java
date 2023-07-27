@@ -80,8 +80,7 @@ public final class DescriptionExtractor {
 
 				for (var descriptor : descriptors) {
 					if (descriptor.getReadMethod() != null &&
-						!"class".equals(descriptor.getName()) &&
-						!"declaringClass".equals(descriptor.getName()))
+						descriptor.getReadMethod().getReturnType() != Class.class)
 					{
 						descriptions.add(toDescription(descriptor));
 					}
@@ -111,22 +110,34 @@ public final class DescriptionExtractor {
 	private static Description
 	toDescription(final PropertyDescriptor descriptor) {
 		final Type returnType = descriptor.getReadMethod().getGenericReturnType();
-		if (returnType instanceof ParameterizedType ptype) {
-			if (ptype.getRawType() instanceof Class<?> cls) {
-				if (List.class.isAssignableFrom(cls)) {
-					final var atype = ptype.getActualTypeArguments();
-					if (atype.length == 1) {
-						if (atype[0] instanceof Class<?> acls) {
-							return new IndexedDescription(
-								descriptor.getName(),
-								acls, List.class,
-								Methods.toGetter(descriptor.getReadMethod()),
-								Lists::size, Lists::get, Lists::set
-							);
-						}
-					}
 
-				}
+		// Check if the return type is an array.
+		if (returnType instanceof Class<?> arrayType && arrayType.isArray()) {
+			return new IndexedDescription(
+				descriptor.getName(),
+				arrayType.getComponentType(),
+				arrayType,
+				Methods.toGetter(descriptor.getReadMethod()),
+				Array::getLength, Array::get, Array::set
+			);
+		}
+
+		// Check if the return type is a list.
+		if (returnType instanceof ParameterizedType parameterizedType &&
+			parameterizedType.getRawType() instanceof Class<?> listType &&
+			List.class.isAssignableFrom(listType))
+		{
+			final var typeArguments = parameterizedType.getActualTypeArguments();
+			if (typeArguments.length == 1 &&
+				typeArguments[0] instanceof Class<?> componentType)
+			{
+				return new IndexedDescription(
+					descriptor.getName(),
+					componentType,
+					List.class,
+					Methods.toGetter(descriptor.getReadMethod()),
+					Lists::size, Lists::get, Lists::set
+				);
 			}
 		}
 

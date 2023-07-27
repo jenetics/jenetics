@@ -34,10 +34,7 @@ public final class IndexProperty
     private final int index;
     private final Object value;
 
-    /**
-     *
-     */
-    public IndexProperty(
+	IndexProperty(
 	    final IndexedDescription desc,
 	    final Object enclosingObject,
 		final Path path,
