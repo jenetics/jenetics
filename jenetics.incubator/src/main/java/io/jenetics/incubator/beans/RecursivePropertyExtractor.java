@@ -19,14 +19,13 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.internal.PreOrderIterator;
-
 import static java.util.Objects.requireNonNull;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,30 +35,9 @@ import java.util.stream.Stream;
 final class RecursivePropertyExtractor implements Extractor<PathObject, Property> {
 
 	private final Extractor<? super PathObject, ? extends Property> properties;
-	private final Extractor<? super Property, ?> flattener;
 
-	RecursivePropertyExtractor(
-		final Extractor<PathObject, Property> properties,
-		final Extractor<? super Property, ?> flattener
-	) {
+	RecursivePropertyExtractor(final Extractor<PathObject, Property> properties) {
 		this.properties = requireNonNull(properties);
-		this.flattener = requireNonNull(flattener);
-	}
-
-	RecursivePropertyExtractor(
-		final Extractor<PathObject, Property> properties
-	) {
-		this(properties, RecursivePropertyExtractor::flatten);
-	}
-
-	RecursivePropertyExtractor() {
-		this(PropertyExtractor.DEFAULT);
-	}
-
-	private static Stream<Object> flatten(final Property property) {
-		return property instanceof CollectionProperty coll
-			? Stream.empty() //coll.stream()
-			: Stream.empty();
 	}
 
 	@Override
@@ -86,45 +64,14 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 		if (exists) {
 			return Stream.empty();
 		} else {
-			final var it = new PreOrderIterator<>(
+			final var it = new PreOrderIterator<PathObject, Property>(
 				object,
 				properties,
 				property -> new PathObject(property.path(), property.value())
 			);
 
-			return it.stream()
-				.flatMap(prop -> Stream
-					.concat(Stream.of(prop), flatten(prop, visited)));
+			return it.stream();
 		}
-	}
-
-	private Stream<Property> flatten(
-		final Property property,
-		final Map<Object, Object> visited
-	) {
-		final var index = new AtomicInteger();
-
-		return flattener.extract(property)
-			.flatMap(ele -> {
-				final Property.Path path = property.path()
-					.append(new Property.Path.Index(index.getAndIncrement()));
-
-				/*
-				final var prop = new IndexProperty(
-					property.enclosingObject(),
-					path,
-					ele,
-					ele.getClass()
-				);
-				 */
-
-				return Stream.concat(
-					//Stream.of(prop),
-					Stream.empty(),
-					//properties.extract(new PathObject(path, ele)),
-					stream(new PathObject(path, ele), visited)
-				);
-			});
 	}
 
 }
