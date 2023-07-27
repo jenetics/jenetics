@@ -17,14 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
 
 /**
+ * The <em>setter</em> function of a property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface IndexedGetter {
-	Object apply(final Object object, final int index);
+public interface Setter {
+
+	/**
+	 * Sets the property {@code value} to the given <em>parent</em> {@code object}.
+	 *
+	 * @param object the parent object
+	 * @param value the new property value
+	 */
+	void apply(final Object object, Object value);
+
 }

@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
  * Base class for properties which consists of 0 to n objects.

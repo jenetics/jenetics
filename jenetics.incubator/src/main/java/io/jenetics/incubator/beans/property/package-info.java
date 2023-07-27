@@ -17,37 +17,5 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.function.ToIntFunction;
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
- */
-public record IndexedDescription(
-	String name,
-	Class<?> type,
-	Class<?> containerType,
-	Getter container,
-	ToIntFunction<Object> size,
-	IndexedGetter getter,
-	IndexedSetter setter
-)
-	implements Description
-{
-	public IndexedDescription {
-		requireNonNull(name);
-		requireNonNull(type);
-		requireNonNull(getter);
-	}
-
-	@Override
-	public boolean isWriteable() {
-		return setter != null;
-	}
-
-}
+package io.jenetics.incubator.beans.property;

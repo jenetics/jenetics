@@ -17,60 +17,56 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.statical.IndexedDescription;
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
- * This property represents an element of an {@link IndexedProperty}.
+ * Represents a simple property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class IndexProperty
-	extends IndexedDescriptionMethods
+public final class SimpleProperty
+	extends SimpleDescriptionMethods
 	implements Property
 {
-    private final Path path;
-    private final int index;
-    private final Object value;
 
-	IndexProperty(
-	    final IndexedDescription desc,
-	    final Object enclosingObject,
+	private final Path path;
+	private final Object value;
+
+	SimpleProperty(
+		final SimpleDescription desc,
+		final Object enclosingObject,
 		final Path path,
-		final int index,
 		final Object value
-    ) {
+	) {
 		super(desc, enclosingObject);
-        this.path = path;
-        this.index = index;
-        this.value = value;
-    }
+		this.path = requireNonNull(path);
+		this.value = value;
+	}
 
-    @Override
-    public Path path() {
-        return path;
-    }
+	@Override
+	public Path path() {
+		return path;
+	}
 
 	@Override
 	public Class<?> type() {
 		return value() != null ? value.getClass() : desc.type();
 	}
 
-    public int index() {
-        return index;
-    }
-
-    @Override
-    public Object value() {
-        return value;
-    }
+	@Override
+	public Object value() {
+		return value;
+	}
 
 	@Override
 	public String toString() {
-		return Properties.toString(IndexProperty.class.getSimpleName(), this);
+		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
 	}
 
 }

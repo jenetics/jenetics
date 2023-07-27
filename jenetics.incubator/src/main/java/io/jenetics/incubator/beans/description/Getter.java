@@ -17,47 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
 
 /**
- * A {@code Description} object describes the <em>statical</em>, at compile time
- * available property of a Java Bean or a record class.
+ * The <em>getter</em> function of a property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Description
-	extends Comparable<Description>
-	permits IndexedDescription, SimpleDescription
-{
+@FunctionalInterface
+public interface Getter {
 
 	/**
-	 * The name of the property. Usually the field name.
+	 * Return the property value from a given <em>parent</em> {@code object}.
 	 *
-	 * @return the name of the property
+	 * @param object the parent object
+	 * @return the property value
 	 */
-	String name();
-
-	/**
-	 * The compile time type of the property.
-	 *
-	 * @return the compile time type of the property
-	 */
-	Class<?> type();
-
-
-	/**
-	 * Return {@code true} if this property can be updated.
-	 *
-	 * @return {@code true} if this property can be updated, {@code false}
-	 *         otherwise
-	 */
-	boolean isWriteable();
-
-	@Override
-	default int compareTo(final Description o) {
-		return name().compareTo(o.name());
-	}
+	Object apply(final Object object);
 
 }

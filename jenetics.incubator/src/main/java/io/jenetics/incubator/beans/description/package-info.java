@@ -18,4 +18,4 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;

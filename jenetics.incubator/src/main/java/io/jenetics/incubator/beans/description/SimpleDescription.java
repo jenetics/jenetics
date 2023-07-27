@@ -17,14 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
+
+import static java.util.Objects.requireNonNull;
 
 /**
+ * A {@code PropertyDesc} describes one property that a Java Bean exports or a
+ * {@link java.lang.reflect.RecordComponent} in the case of a record class.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface IndexedSetter {
-	void apply(final Object object, final int index, final Object value);
+public record SimpleDescription(
+	String name,
+	Class<?> type,
+	Getter getter,
+	Setter setter
+)
+	implements Description
+{
+
+	public SimpleDescription {
+		requireNonNull(name);
+		requireNonNull(type);
+		requireNonNull(getter);
+	}
+
+	@Override
+	public boolean isWriteable() {
+		return setter != null;
+	}
+
 }

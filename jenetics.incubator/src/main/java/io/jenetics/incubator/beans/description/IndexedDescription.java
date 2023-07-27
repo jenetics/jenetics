@@ -17,24 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.description;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.ToIntFunction;
+
 /**
- * This class adds a path to a given object.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record PathObject(Property.Path path, Object value) {
-	public PathObject {
-		requireNonNull(path);
+public record IndexedDescription(
+	String name,
+	Class<?> type,
+	Class<?> containerType,
+	Getter container,
+	ToIntFunction<Object> size,
+	IndexedGetter getter,
+	IndexedSetter setter
+)
+	implements Description
+{
+	public IndexedDescription {
+		requireNonNull(name);
+		requireNonNull(type);
+		requireNonNull(getter);
 	}
 
-	public PathObject(Object value) {
-		this(Property.Path.EMPTY, value);
+	@Override
+	public boolean isWriteable() {
+		return setter != null;
 	}
 
 }

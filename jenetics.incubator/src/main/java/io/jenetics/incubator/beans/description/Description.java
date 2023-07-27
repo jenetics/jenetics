@@ -17,36 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
-
-import static java.util.Objects.requireNonNull;
+package io.jenetics.incubator.beans.description;
 
 /**
- * A {@code PropertyDesc} describes one property that a Java Bean exports or a
- * {@link java.lang.reflect.RecordComponent} in the case of a record class.
+ * A {@code Description} object describes the <em>statical</em>, at compile time
+ * available property of a Java Bean or a record class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record SimpleDescription(
-	String name,
-	Class<?> type,
-	Getter getter,
-	Setter setter
-)
-	implements Description
+public sealed interface Description
+	extends Comparable<Description>
+	permits IndexedDescription, SimpleDescription
 {
 
-	public SimpleDescription {
-		requireNonNull(name);
-		requireNonNull(type);
-		requireNonNull(getter);
-	}
+	/**
+	 * The name of the property. Usually the field name.
+	 *
+	 * @return the name of the property
+	 */
+	String name();
+
+	/**
+	 * The compile time type of the property.
+	 *
+	 * @return the compile time type of the property
+	 */
+	Class<?> type();
+
+
+	/**
+	 * Return {@code true} if this property can be updated.
+	 *
+	 * @return {@code true} if this property can be updated, {@code false}
+	 *         otherwise
+	 */
+	boolean isWriteable();
 
 	@Override
-	public boolean isWriteable() {
-		return setter != null;
+	default int compareTo(final Description o) {
+		return name().compareTo(o.name());
 	}
 
 }

@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Collections.emptyIterator;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
  * Represents an array property.

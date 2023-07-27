@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.PathObject;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.RecursiveExtractor;
 

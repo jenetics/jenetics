@@ -31,7 +31,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Property.Path;
+import io.jenetics.incubator.beans.property.Properties;
+import io.jenetics.incubator.beans.property.Property;
+import io.jenetics.incubator.beans.property.Property.Path;
 
 /**
  * Wrapper class for extending objects graphs with additional navigation methods.

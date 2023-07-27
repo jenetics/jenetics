@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.lang.String.format;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.statical.Descriptions;
+import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.RecursiveExtractor;
 

@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.jenetics.incubator.beans.property.Property;
+
 
 public class PropertyPathTest {
 

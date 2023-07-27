@@ -17,56 +17,61 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import java.util.Optional;
+
+import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
- * Represents a simple property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class SimpleProperty
-	extends SimpleDescriptionMethods
-	implements Property
-{
+abstract class SimpleDescriptionMethods {
 
-	private final Path path;
-	private final Object value;
+	final SimpleDescription desc;
+	final Object enclosingObject;
 
-	SimpleProperty(
+	SimpleDescriptionMethods(
 		final SimpleDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
+		final Object enclosingObject
 	) {
-		super(desc, enclosingObject);
-		this.path = requireNonNull(path);
-		this.value = value;
+		this.desc = requireNonNull(desc);
+		this.enclosingObject = requireNonNull(enclosingObject);
 	}
 
-	@Override
-	public Path path() {
-		return path;
+	public Object enclosingObject() {
+		return enclosingObject;
 	}
 
-	@Override
-	public Class<?> type() {
-		return value() != null ? value.getClass() : desc.type();
+	public Property.ValueReader reader() {
+		return this::read0;
 	}
 
-	@Override
-	public Object value() {
-		return value;
+	private Object read0() {
+		return desc.getter().apply(enclosingObject);
 	}
 
-	@Override
-	public String toString() {
-		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
+	public boolean isWritable() {
+		return desc.isWriteable();
+	}
+
+	public Optional<Property.ValueWriter> writer() {
+		return desc.isWriteable()
+			? Optional.of(this::write)
+			: Optional.empty();
+	}
+
+	private boolean write(final Object value) {
+		try {
+			desc.setter().apply(enclosingObject, value);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

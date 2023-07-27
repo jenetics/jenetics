@@ -17,24 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.property;
+
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 /**
- * The <em>setter</em> function of a property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Setter {
+final class Filters {
+	private Filters() {
+	}
 
-	/**
-	 * Sets the property {@code value} to the given <em>parent</em> {@code object}.
-	 *
-	 * @param object the parent object
-	 * @param value the new property value
-	 */
-	void apply(final Object object, Object value);
+	static Pattern toPattern(final String glob) {
+		return Pattern.compile(
+			"^" +
+				Pattern.quote(glob)
+					.replace("*", "\\E.*\\Q")
+					.replace("?", "\\E.\\Q") +
+				"$"
+		);
+	}
+
+	static Predicate<PathObject> toFilter(final Pattern pattern) {
+		return object -> pattern
+			.matcher(object.value() != null
+				? object.value().getClass().getName()
+				: "-")
+			.matches();
+	}
 
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
 
 import java.util.Collection;
 import java.util.function.Predicate;
@@ -43,14 +43,14 @@ public final class Descriptions {
 		return
 			// Allow native Java arrays, except byte[] arrays.
 			(name.startsWith("[") && !name.endsWith("[B")) ||
-				// Allow Java collection classes.
-				Collection.class.isAssignableFrom(type) ||
-				(
-					!name.startsWith("java") &&
-						!name.startsWith("com.sun") &&
-						!name.startsWith("sun") &&
-						!name.startsWith("jdk")
-				);
+			// Allow Java collection classes.
+			Collection.class.isAssignableFrom(type) ||
+			(
+				!name.startsWith("java") &&
+					!name.startsWith("com.sun") &&
+					!name.startsWith("sun") &&
+					!name.startsWith("jdk")
+			);
 	};
 
 	private Descriptions() {

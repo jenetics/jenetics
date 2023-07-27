@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.statical.DescriptionExtractors;
-import io.jenetics.incubator.beans.statical.IndexedDescription;
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import io.jenetics.incubator.beans.description.DescriptionExtractors;
+import io.jenetics.incubator.beans.description.IndexedDescription;
+import io.jenetics.incubator.beans.description.SimpleDescription;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.RecursiveExtractor;
 

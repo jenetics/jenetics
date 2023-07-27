@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import io.jenetics.incubator.beans.statical.IndexedDescription;
+import io.jenetics.incubator.beans.description.IndexedDescription;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

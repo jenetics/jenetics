@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.beans.description.Descriptions;
+
 public class DescriptionExtractorTests {
 
 	public static final class Box {

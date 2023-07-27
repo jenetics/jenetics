@@ -17,24 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.statical;
+package io.jenetics.incubator.beans.description;
 
 /**
- * The <em>getter</em> function of a property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Getter {
-
-	/**
-	 * Return the property value from a given <em>parent</em> {@code object}.
-	 *
-	 * @param object the parent object
-	 * @return the property value
-	 */
-	Object apply(final Object object);
-
+public interface IndexedGetter {
+	Object apply(final Object object, final int index);
 }
