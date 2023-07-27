@@ -17,15 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import static java.lang.String.format;
 
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import io.jenetics.incubator.property.Property.Path;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -90,7 +88,7 @@ public final class Properties {
 		return walk(root, extractor().sourceFilter(filter));
 	}
 
-	public static Optional<Property> get(final Object bean, final Path path) {
+	public static Optional<Property> get(final Object bean, final Property.Path path) {
 		/*
 		for (var p : path) {
 

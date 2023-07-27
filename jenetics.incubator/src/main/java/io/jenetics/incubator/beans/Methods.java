@@ -1,4 +1,4 @@
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -1,6 +1,5 @@
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import java.util.function.IntFunction;
 import java.util.function.ToIntFunction;
 
 import static java.util.Objects.requireNonNull;

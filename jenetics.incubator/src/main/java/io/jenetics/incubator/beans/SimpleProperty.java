@@ -17,58 +17,49 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import static java.util.Collections.emptyIterator;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a list property.
+ * Represents a simple property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ListProperty extends CollectionProperty {
+public final class SimpleProperty
+	extends PropertyDescriptionMethods
+	implements Property
+{
 
-	ListProperty(
+	private final Path path;
+	private final Object value;
+
+	SimpleProperty(
 		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
 		final Object value
 	) {
-		super(desc, enclosingObject, path, value);
+		super(desc, enclosingObject);
+		this.path = requireNonNull(path);
+		this.value = value;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Object> value() {
-		return (List<Object>)value;
+	public Path path() {
+		return path;
 	}
 
 	@Override
-	public int size() {
-		return value != null ? value().size() : 0;
-	}
-
-	public Object get(final int index) {
-		if (value == null) {
-			throw new IndexOutOfBoundsException("List is null.");
-		}
-		return value().get(index);
+	public Object value() {
+		return value;
 	}
 
 	@Override
-	public Iterator<Object> iterator() {
-		return value != null ? value().iterator() : emptyIterator();
-	}
-
-	@Override
-	public Stream<Object> stream() {
-		return value().stream();
+	public String toString() {
+		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
 	}
 
 }

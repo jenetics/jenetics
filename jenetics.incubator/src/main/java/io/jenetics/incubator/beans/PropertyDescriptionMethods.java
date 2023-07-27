@@ -17,35 +17,58 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
+
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
 /**
- * A {@code PropertyDesc} describes one property that a Java Bean exports or a
- * {@link java.lang.reflect.RecordComponent} in the case of a record class.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-record PropertyDescription(
-	String name,
-	Class<?> type,
-	Getter getter,
-	Setter setter
-)
-	implements Description
-{
+abstract class PropertyDescriptionMethods {
 
-	PropertyDescription {
-		requireNonNull(name);
-		requireNonNull(type);
-		requireNonNull(getter);
+	final PropertyDescription desc;
+	final Object enclosingObject;
+
+	PropertyDescriptionMethods(
+		final PropertyDescription desc,
+		final Object enclosingObject
+	) {
+		this.desc = requireNonNull(desc);
+		this.enclosingObject = requireNonNull(enclosingObject);
 	}
 
-	public boolean isWriteable() {
-		return setter != null;
+	public Object enclosingObject() {
+		return enclosingObject;
+	}
+
+	public Class<?> type() {
+		return desc.type();
+	}
+
+	public Property.ValueReader reader() {
+		return this::read;
+	}
+
+	private Object read() {
+		return desc.getter().apply(enclosingObject);
+	}
+
+	public boolean isWritable() {
+		return desc.isWriteable();
+	}
+
+	public Optional<Property.ValueWriter> writer() {
+		return desc.isWriteable()
+			? Optional.of(this::write)
+			: Optional.empty();
+	}
+
+	private boolean write(final Object value) {
+		return desc.setter().apply(enclosingObject, value);
 	}
 
 }

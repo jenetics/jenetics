@@ -17,23 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import static java.util.Collections.emptyIterator;
 
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * Represents an array property.
+ * Represents a list property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends CollectionProperty {
+public final class ListProperty extends CollectionProperty {
 
-	ArrayProperty(
+	ListProperty(
 		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
@@ -43,29 +44,31 @@ public final class ArrayProperty extends CollectionProperty {
 	}
 
 	@Override
-	public Object[] value() {
-		return (Object[])value;
+	@SuppressWarnings("unchecked")
+	public List<Object> value() {
+		return (List<Object>)value;
 	}
 
 	@Override
 	public int size() {
-		return value != null ? value().length : 0;
+		return value != null ? value().size() : 0;
 	}
 
-	@Override
 	public Object get(final int index) {
 		if (value == null) {
-			throw new IndexOutOfBoundsException("Array is null.");
+			throw new IndexOutOfBoundsException("List is null.");
 		}
-
-		return value()[index];
+		return value().get(index);
 	}
 
 	@Override
 	public Iterator<Object> iterator() {
-		return value != null
-			? Arrays.asList(value()).iterator()
-			: emptyIterator();
+		return value != null ? value().iterator() : emptyIterator();
+	}
+
+	@Override
+	public Stream<Object> stream() {
+		return value().stream();
 	}
 
 }

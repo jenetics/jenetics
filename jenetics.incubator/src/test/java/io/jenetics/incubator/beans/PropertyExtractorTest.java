@@ -17,50 +17,53 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.jpx.GPX;
-import io.jenetics.jpx.GPX.Reader;
 
-public class RecursivePropertyExtractorTest {
+public class PropertyExtractorTest {
 
 	private record Data(
-		Object[][] ints,
-		List<List<String>> strings
+		String string,
+		Integer integer,
+		int i,
+		int[] ints,
+		Integer[] integers,
+		List<String> list,
+		Set<Integer> set,
+		Map<String, Integer> map
 	) {}
 
 
 	@Test
-	public void extractRecursive() {
+	public void extract() {
 		final var data = new Data(
-			new Object[][] {
-				{1}
-			},
-			List.of(
-				List.of("1", "2"),
-				List.of("a", "b", "c")
-			)
+			"stringValue",
+			123,
+			456,
+			new int[] {1, 2, 3},
+			new Integer[] {4, 5, 6},
+			List.of("a", "b", "c"),
+			Set.of(1, 2, 3),
+			Map.of("a", 1, "b", 2)
 		);
 
-		Properties.walk(new PathObject(data))
+		PropertyExtractor.DEFAULT
+			.properties(data)
 			.forEach(System.out::println);
 	}
 
 	@Test
-	public void extract() throws IOException {
-		final GPX gpx = Reader.DEFAULT.read(
-			RecursivePropertyExtractorTest.class
-				.getResourceAsStream("/Austria.gpx")
-		);
+	public void extractIntArray() {
+		final var data = new Object[] {1, 2};
 
-		Properties.walk(new PathObject(gpx), "io.jenetics.*")
+		PropertyExtractor.DEFAULT
+			.properties(data)
 			.forEach(System.out::println);
 	}
 

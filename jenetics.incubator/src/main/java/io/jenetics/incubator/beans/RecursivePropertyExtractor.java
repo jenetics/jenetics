@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,8 +25,6 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
-import io.jenetics.incubator.property.Property.Path;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -106,8 +104,8 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 
 		return flattener.extract(property)
 			.flatMap(ele -> {
-				final Path path = property.path()
-					.append(new Path.Index(index.getAndIncrement()));
+				final Property.Path path = property.path()
+					.append(new Property.Path.Index(index.getAndIncrement()));
 
 				System.out.println("ELE: " + ele + ": " + ele.getClass().getName());
 				var foo = properties.extract(new PathObject(path, ele)).toList();

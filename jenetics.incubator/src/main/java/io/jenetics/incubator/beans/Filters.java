@@ -17,48 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import org.testng.annotations.Test;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
-import io.jenetics.jpx.GPX;
-
-import java.util.List;
-
-public class PropertyDescriptionExtractorTests {
-
-	public static final class Box {
-		List<Integer> root;
-
-		public Box(List<Integer> root) {
-			this.root = root;
-		}
-
-		public Object root() {
-			return root;
-		}
-
-		public void setRoot(List<Integer> root) {
-			this.root = root;
-		}
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+final class Filters {
+	private Filters() {
 	}
 
-	static class Data {
-		int _1;
-		int _2;
-		int _3;
-
-		int[] _x;
+	static Pattern toPattern(final String glob) {
+		return Pattern.compile(
+			"^" +
+				Pattern.quote(glob)
+					.replace("*", "\\E.*\\Q")
+					.replace("?", "\\E.\\Q") +
+				"$"
+		);
 	}
 
-	@Test
-	public void extractIntArray() {
-		final var data = new int[0];
-
-		final var desc = PropertyDescriptionExtractor.extract(data.getClass())
-			.toList();
-
-		System.out.println(desc);
+	static Predicate<PathObject> toFilter(final Pattern pattern) {
+		return object -> pattern
+			.matcher(object.value() != null ? object.value().getClass().getName() : "-")
+			.matches();
 	}
 
 }

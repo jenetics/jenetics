@@ -1,4 +1,4 @@
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 public record IndexedProperty(
 	Object enclosingObject,

@@ -17,61 +17,56 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
-
-import io.jenetics.incubator.property.Property.ValueReader;
-import io.jenetics.incubator.property.Property.ValueWriter;
-
-import java.util.Optional;
+package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
+ * Base class for properties which consists of 0 to n objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-abstract class PropertyDescriptionMethods {
+public abstract sealed class CollectionProperty
+	extends PropertyDescriptionMethods
+	implements Iterable<Object>, Property
+	permits ListProperty, ArrayProperty
+{
 
-	final PropertyDescription desc;
-	final Object enclosingObject;
+	final Path path;
+	final Object value;
 
-	PropertyDescriptionMethods(
+	CollectionProperty(
 		final PropertyDescription desc,
-		final Object enclosingObject
+		final Object enclosingObject,
+		final Path path,
+		final Object value
 	) {
-		this.desc = requireNonNull(desc);
-		this.enclosingObject = requireNonNull(enclosingObject);
+		super(desc, enclosingObject);
+		this.path = requireNonNull(path);
+		this.value = value;
 	}
 
-	public Object enclosingObject() {
-		return enclosingObject;
+	@Override
+	public Path path() {
+		return path;
 	}
 
-	public Class<?> type() {
-		return desc.type();
+	public abstract int size();
+
+	public abstract Object get(final int index);
+
+	public Stream<Object> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 
-	public ValueReader reader() {
-		return this::read;
-	}
-
-	private Object read() {
-		return desc.getter().apply(enclosingObject);
-	}
-
-	public boolean isWritable() {
-		return desc.isWriteable();
-	}
-
-	public Optional<ValueWriter> writer() {
-		return desc.isWriteable()
-			? Optional.of(this::write)
-			: Optional.empty();
-	}
-
-	private boolean write(final Object value) {
-		return desc.setter().apply(enclosingObject, value);
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

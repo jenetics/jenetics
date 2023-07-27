@@ -17,49 +17,35 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a simple property.
+ * A {@code PropertyDesc} describes one property that a Java Bean exports or a
+ * {@link java.lang.reflect.RecordComponent} in the case of a record class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class SimpleProperty
-	extends PropertyDescriptionMethods
-	implements Property
+record PropertyDescription(
+	String name,
+	Class<?> type,
+	Getter getter,
+	Setter setter
+)
+	implements Description
 {
 
-	private final Path path;
-	private final Object value;
-
-	SimpleProperty(
-		final PropertyDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject);
-		this.path = requireNonNull(path);
-		this.value = value;
+	PropertyDescription {
+		requireNonNull(name);
+		requireNonNull(type);
+		requireNonNull(getter);
 	}
 
-	@Override
-	public Path path() {
-		return path;
-	}
-
-	@Override
-	public Object value() {
-		return value;
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
+	public boolean isWriteable() {
+		return setter != null;
 	}
 
 }

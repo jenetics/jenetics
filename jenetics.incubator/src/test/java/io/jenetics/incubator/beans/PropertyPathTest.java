@@ -1,4 +1,4 @@
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

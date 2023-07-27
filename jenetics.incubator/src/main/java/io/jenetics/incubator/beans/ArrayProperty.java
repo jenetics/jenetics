@@ -17,56 +17,55 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Collections.emptyIterator;
 
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
- * Base class for properties which consists of 0 to n objects.
+ * Represents an array property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public abstract sealed class CollectionProperty
-	extends PropertyDescriptionMethods
-	implements Iterable<Object>, Property
-	permits ListProperty, ArrayProperty
-{
+public final class ArrayProperty extends CollectionProperty {
 
-	final Path path;
-	final Object value;
-
-	CollectionProperty(
+	ArrayProperty(
 		final PropertyDescription desc,
 		final Object enclosingObject,
 		final Path path,
 		final Object value
 	) {
-		super(desc, enclosingObject);
-		this.path = requireNonNull(path);
-		this.value = value;
+		super(desc, enclosingObject, path, value);
 	}
 
 	@Override
-	public Path path() {
-		return path;
-	}
-
-	public abstract int size();
-
-	public abstract Object get(final int index);
-
-	public Stream<Object> stream() {
-		return StreamSupport.stream(spliterator(), false);
+	public Object[] value() {
+		return (Object[])value;
 	}
 
 	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
+	public int size() {
+		return value != null ? value().length : 0;
+	}
+
+	@Override
+	public Object get(final int index) {
+		if (value == null) {
+			throw new IndexOutOfBoundsException("Array is null.");
+		}
+
+		return value()[index];
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return value != null
+			? Arrays.asList(value()).iterator()
+			: emptyIterator();
 	}
 
 }

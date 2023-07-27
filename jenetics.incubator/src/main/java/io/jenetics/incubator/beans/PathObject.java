@@ -17,34 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans;
 
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
+import static java.util.Objects.requireNonNull;
 
 /**
+ * This class adds a path to a given object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class Filters {
-	private Filters() {
+public record PathObject(Property.Path path, Object value) {
+	public PathObject {
+		requireNonNull(path);
 	}
 
-	static Pattern toPattern(final String glob) {
-		return Pattern.compile(
-			"^" +
-				Pattern.quote(glob)
-					.replace("*", "\\E.*\\Q")
-					.replace("?", "\\E.\\Q") +
-				"$"
-		);
-	}
-
-	static Predicate<PathObject> toFilter(final Pattern pattern) {
-		return object -> pattern
-			.matcher(object.value() != null ? object.value().getClass().getName() : "-")
-			.matches();
+	public PathObject(Object value) {
+		this(Property.Path.EMPTY, value);
 	}
 
 }

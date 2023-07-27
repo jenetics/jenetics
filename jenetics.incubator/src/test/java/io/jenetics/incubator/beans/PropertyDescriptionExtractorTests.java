@@ -17,54 +17,46 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+package io.jenetics.incubator.beans;
 
 import org.testng.annotations.Test;
 
+import java.util.List;
 
-public class PropertyExtractorTest {
+public class PropertyDescriptionExtractorTests {
 
-	private record Data(
-		String string,
-		Integer integer,
-		int i,
-		int[] ints,
-		Integer[] integers,
-		List<String> list,
-		Set<Integer> set,
-		Map<String, Integer> map
-	) {}
+	public static final class Box {
+		List<Integer> root;
 
+		public Box(List<Integer> root) {
+			this.root = root;
+		}
 
-	@Test
-	public void extract() {
-		final var data = new Data(
-			"stringValue",
-			123,
-			456,
-			new int[] {1, 2, 3},
-			new Integer[] {4, 5, 6},
-			List.of("a", "b", "c"),
-			Set.of(1, 2, 3),
-			Map.of("a", 1, "b", 2)
-		);
+		public Object root() {
+			return root;
+		}
 
-		PropertyExtractor.DEFAULT
-			.properties(data)
-			.forEach(System.out::println);
+		public void setRoot(List<Integer> root) {
+			this.root = root;
+		}
+	}
+
+	static class Data {
+		int _1;
+		int _2;
+		int _3;
+
+		int[] _x;
 	}
 
 	@Test
 	public void extractIntArray() {
-		final var data = new Object[] {1, 2};
+		final var data = new int[0];
 
-		PropertyExtractor.DEFAULT
-			.properties(data)
-			.forEach(System.out::println);
+		final var desc = PropertyDescriptionExtractor.extract(data.getClass())
+			.toList();
+
+		System.out.println(desc);
 	}
 
 }
