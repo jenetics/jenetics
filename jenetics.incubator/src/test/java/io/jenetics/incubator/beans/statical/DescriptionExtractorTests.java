@@ -17,14 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.statical;
 
-import io.jenetics.incubator.beans.statical.DescriptionExtractor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.testng.annotations.Test;
 
-import java.util.List;
-
-public class SimpleDescriptionExtractorTests {
+public class DescriptionExtractorTests {
 
 	public static final class Box {
 		List<Integer> root;
@@ -33,7 +34,7 @@ public class SimpleDescriptionExtractorTests {
 			this.root = root;
 		}
 
-		public Object root() {
+		public List<Integer> getRoot() {
 			return root;
 		}
 
@@ -54,10 +55,20 @@ public class SimpleDescriptionExtractorTests {
 	public void extractIntArray() {
 		final var data = new int[0];
 
-		final var desc = DescriptionExtractor.extract(data.getClass())
+		final List<Integer> list = new ArrayList<Integer>() {};
+		list.add(23);
+
+		final var desc = DescriptionExtractor.extract(Box.class)
+			.flatMap(d ->
+					Stream.concat(
+						Stream.of(d),
+						DescriptionExtractor.extract(d.type())
+					)
+				)
 			.toList();
 
-		System.out.println(desc);
+
+		desc.forEach(System.out::println);
 	}
 
 }

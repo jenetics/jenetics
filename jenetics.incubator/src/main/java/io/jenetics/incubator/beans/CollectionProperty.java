@@ -34,7 +34,7 @@ import java.util.stream.StreamSupport;
  * @since !__version__!
  */
 public abstract sealed class CollectionProperty
-	extends PropertyDescriptionMethods
+	extends SimpleDescriptionMethods
 	implements Iterable<Object>, Property
 	permits ListProperty, ArrayProperty
 {
@@ -56,6 +56,11 @@ public abstract sealed class CollectionProperty
 	@Override
 	public Path path() {
 		return path;
+	}
+
+	@Override
+	public Class<?> type() {
+		return value() != null ? value.getClass() : desc.type();
 	}
 
 	public abstract int size();

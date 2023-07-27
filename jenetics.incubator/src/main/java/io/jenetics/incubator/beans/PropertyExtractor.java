@@ -19,16 +19,16 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.Description;
-import io.jenetics.incubator.beans.statical.IndexedDescription;
-import io.jenetics.incubator.beans.statical.DescriptionExtractor;
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.beans.statical.Description;
+import io.jenetics.incubator.beans.statical.DescriptionExtractor;
+import io.jenetics.incubator.beans.statical.IndexedDescription;
+import io.jenetics.incubator.beans.statical.SimpleDescription;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -60,7 +60,6 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 				.flatMap(description -> {
 					final var enclosing = object.value();
 
-
 					if (description instanceof SimpleDescription desc) {
 						final var type = desc.type();
 						final var path = object.path().append(desc.name());
@@ -78,13 +77,23 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 						}
 						return Stream.of(property);
 					} else if (description instanceof IndexedDescription desc) {
-						int size = desc.size().applyAsInt(object.value());
+						final var path = desc.name().isEmpty()
+							? object.path()
+							: object.path().append(new Property.Path.Name(desc.name()));
+
+						final var list = desc.container().apply(object.value());
+						int size = desc.size().applyAsInt(list);
+
 						return IntStream.range(0, size).mapToObj(i -> {
+
+							final var value = desc.getter().apply(list, i);
+
 							return new IndexProperty(
+								desc,
 								enclosing,
-								object.path().append(new Property.Path.Index(i)),
-								desc.getter().apply(object.value(), i),
-								desc.getter().apply(object.value(), i).getClass()
+								path.append(new Property.Path.Index(i)),
+								i,
+								value
 							);
 						});
 					}

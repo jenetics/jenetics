@@ -44,6 +44,7 @@ public record SimpleDescription(
 		requireNonNull(getter);
 	}
 
+	@Override
 	public boolean isWriteable() {
 		return setter != null;
 	}

@@ -58,7 +58,7 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 
 	private static Stream<Object> flatten(final Property property) {
 		return property instanceof CollectionProperty coll
-			? coll.stream()
+			? Stream.empty() //coll.stream()
 			: Stream.empty();
 	}
 
@@ -109,15 +109,18 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 				final Property.Path path = property.path()
 					.append(new Property.Path.Index(index.getAndIncrement()));
 
+				/*
 				final var prop = new IndexProperty(
 					property.enclosingObject(),
 					path,
 					ele,
 					ele.getClass()
 				);
+				 */
 
 				return Stream.concat(
-					Stream.of(prop),
+					//Stream.of(prop),
+					Stream.empty(),
 					//properties.extract(new PathObject(path, ele)),
 					stream(new PathObject(path, ele), visited)
 				);

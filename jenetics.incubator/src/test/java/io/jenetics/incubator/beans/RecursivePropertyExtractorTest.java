@@ -20,6 +20,8 @@
 package io.jenetics.incubator.beans;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -30,7 +32,7 @@ import io.jenetics.jpx.GPX.Reader;
 public class RecursivePropertyExtractorTest {
 
 	private record Data(
-		Object[][] ints,
+		//Object[][] ints,
 		List<List<String>> strings
 	) {}
 
@@ -38,17 +40,41 @@ public class RecursivePropertyExtractorTest {
 	@Test
 	public void extractRecursive() {
 		final var data = new Data(
+			/*
 			new Object[][] {
 				{1}
 			},
-			List.of(
-				List.of("1", "2"),
-				List.of("a", "b", "c")
+			 */
+			listOf(
+				listOf("1", "2"),
+				listOf("a", "b", "c")
 			)
 		);
 
 		Properties.walk(new PathObject(data))
+			.peek(p -> {
+				if (p instanceof IndexProperty ip) {
+					if (ip.type() == String.class) {
+						System.out.println(ip.writer());
+						System.out.println("VALUE: " + ip.value());
+						ip.writer().ifPresent(writer -> {
+							var value = ip.value().toString();
+							final var result = writer.write("A:" + value);
+							System.out.println("WRITTEN: " + result);
+
+							System.out.println(ip.read());
+						});
+					}
+				}
+			})
 			.forEach(System.out::println);
+
+		System.out.println(data);
+	}
+
+	@SafeVarargs
+	private static <T> List<T> listOf(T... values) {
+		return new ArrayList<T>(Arrays.asList(values));
 	}
 
 	@Test

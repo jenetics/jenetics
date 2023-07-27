@@ -19,48 +19,42 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.statical.SimpleDescription;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.beans.statical.IndexedDescription;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-abstract class PropertyDescriptionMethods {
+abstract class IndexedDescriptionMethods {
 
-	final SimpleDescription desc;
+	final IndexedDescription desc;
 	final Object enclosingObject;
 
-	PropertyDescriptionMethods(
-		final SimpleDescription desc,
+	IndexedDescriptionMethods(
+		final IndexedDescription desc,
 		final Object enclosingObject
 	) {
 		this.desc = requireNonNull(desc);
 		this.enclosingObject = requireNonNull(enclosingObject);
 	}
 
+	abstract int index();
+
 	public Object enclosingObject() {
 		return enclosingObject;
 	}
 
-	public Class<?> type() {
-		return desc.type();
-	}
-
 	public Property.ValueReader reader() {
-		return this::read;
+		return this::read0;
 	}
 
-	private Object read() {
-		return desc.getter().apply(enclosingObject);
-	}
-
-	public boolean isWritable() {
-		return desc.isWriteable();
+	private Object read0() {
+		return desc.getter().apply(enclosingObject, index());
 	}
 
 	public Optional<Property.ValueWriter> writer() {
@@ -70,7 +64,12 @@ abstract class PropertyDescriptionMethods {
 	}
 
 	private boolean write(final Object value) {
-		return desc.setter().apply(enclosingObject, value);
+		try {
+			desc.setter().apply(enclosingObject, index(), value);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

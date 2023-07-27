@@ -115,11 +115,31 @@ public sealed interface Property
 	Class<?> type();
 
 	/**
-	 * The value of the meta-object, may be {@code null}.
+	 * The value of the meta-object, may be {@code null}. This method always
+	 * returns the initial property value. If the values have been changed, via
+	 * the property {@link #writer()} , this method still returns the
+	 * <em>old</em> value. If you want the guaranteed <em>current</em> value,
+	 * you have to use the {@link #read()} method.
 	 *
-	 * @return the value of the meta-object
+	 * @see #read()
+	 * @see #writer()
+	 * @see #isWritable()
+	 *
+	 * @return the <em>original</em> value of the meta-object
 	 */
 	Object value();
+
+	/**
+	 * Return always the <em>current</em> value of the property.
+	 *
+	 * @see #value()
+	 * @see #writer()
+	 *
+	 * @return the current property value
+	 */
+	default Object read() {
+		return reader().read();
+	}
 
 	/**
 	 * Return a value reader of {@code this} property.

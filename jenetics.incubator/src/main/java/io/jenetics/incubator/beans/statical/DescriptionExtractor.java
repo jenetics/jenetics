@@ -22,15 +22,18 @@ package io.jenetics.incubator.beans.statical;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Methods for extracting {@link SimpleDescription} directly accessible from
- * a given data type.
+ * Methods for extracting <em>static</em> property {@link Description} objects,
+ * directly accessible from a given data type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -41,30 +44,30 @@ public final class DescriptionExtractor {
 	}
 
 	public static Stream<Description> extract(final Class<?> type) {
+		if (type == null) {
+			return Stream.empty();
+		}
+
 		final var descriptions = new ArrayList<Description>();
 
 		if (type.isArray() && !type.getComponentType().isPrimitive()) {
-			final var desc = new IndexedDescription(
-				type.getComponentType(),
-				object -> ((Object[])object).length,
-				(object, index) -> ((Object[])object)[index],
-				(object, index, value) -> {
-					((Object[])object)[index] = value;
-					return true;
-				}
+			descriptions.add(
+				new IndexedDescription(
+					"",
+					type.getComponentType(), type,
+					object -> object,
+					Array::getLength, Array::get, Array::set
+				)
 			);
-			descriptions.add(desc);
 		} else if (List.class.isAssignableFrom(type)) {
-			final var desc = new IndexedDescription(
-				type,
-				object -> ((List<?>)object).size(),
-				(object, index) -> ((List<?>)object).get(index),
-				(object, index, value) -> {
-					((List<Object>)object).set(index, value);
-					return true;
-				}
+			descriptions.add(
+				new IndexedDescription(
+					"",
+					Object.class, List.class,
+					object -> object,
+					Lists::size, Lists::get, Lists::set
+				)
 			);
-			descriptions.add(desc);
 		} else if (type.isRecord()) {
 			for (var component : type.getRecordComponents()) {
 				descriptions.add(toDescription(component));
@@ -105,8 +108,28 @@ public final class DescriptionExtractor {
 		);
 	}
 
-	private static SimpleDescription
+	private static Description
 	toDescription(final PropertyDescriptor descriptor) {
+		final Type returnType = descriptor.getReadMethod().getGenericReturnType();
+		if (returnType instanceof ParameterizedType ptype) {
+			if (ptype.getRawType() instanceof Class<?> cls) {
+				if (List.class.isAssignableFrom(cls)) {
+					final var atype = ptype.getActualTypeArguments();
+					if (atype.length == 1) {
+						if (atype[0] instanceof Class<?> acls) {
+							return new IndexedDescription(
+								descriptor.getName(),
+								acls, List.class,
+								Methods.toGetter(descriptor.getReadMethod()),
+								Lists::size, Lists::get, Lists::set
+							);
+						}
+					}
+
+				}
+			}
+		}
+
 		return new SimpleDescription(
 			descriptor.getName(),
 			descriptor.getPropertyType(),
