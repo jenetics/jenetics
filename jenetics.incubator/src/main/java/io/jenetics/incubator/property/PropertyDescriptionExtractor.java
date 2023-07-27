@@ -19,15 +19,13 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.util.Objects.requireNonNull;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -42,10 +40,34 @@ final class PropertyDescriptionExtractor {
 	private PropertyDescriptionExtractor() {
 	}
 
-	static Stream<PropertyDescription> extract(final Class<?> type) {
-		final var descriptions = new ArrayList<PropertyDescription>();
+	static Stream<Description> extract(final Class<?> type) {
+		final var descriptions = new ArrayList<Description>();
 
-		if (type.isRecord()) {
+		if (type.isArray() && !type.getComponentType().isPrimitive()) {
+			final var desc = new IndexedPropertyDescription(
+				"[*]",
+				type.getComponentType(),
+				object -> ((Object[])object).length,
+				(object, index) -> ((Object[])object)[index],
+				(object, index, value) -> {
+					((Object[])object)[index] = value;
+					return true;
+				}
+			);
+			descriptions.add(desc);
+		} else if (List.class.isAssignableFrom(type)) {
+			final var desc = new IndexedPropertyDescription(
+				"[*]",
+				type,
+				object -> ((List<?>)object).size(),
+				(object, index) -> ((List<?>)object).get(index),
+				(object, index, value) -> {
+					((List<Object>)object).set(index, value);
+					return true;
+				}
+			);
+			descriptions.add(desc);
+		} else if (type.isRecord()) {
 			for (var component : type.getRecordComponents()) {
 				descriptions.add(toDescription(component));
 			}
@@ -79,54 +101,55 @@ final class PropertyDescriptionExtractor {
 		return new PropertyDescription(
 			component.getName(),
 			component.getType(),
-			component.getAccessor(),
+			Methods.toGetter(component.getAccessor()),
 			null
 		);
 	}
 
-	private static PropertyDescription toDescription(final PropertyDescriptor descriptor) {
+	private static PropertyDescription
+	toDescription(final PropertyDescriptor descriptor) {
 		return new PropertyDescription(
 			descriptor.getName(),
 			descriptor.getPropertyType(),
-			descriptor.getReadMethod(),
-			descriptor.getWriteMethod()
+			Methods.toGetter(descriptor.getReadMethod()),
+			Methods.toSetter(descriptor.getWriteMethod())
 		);
 	}
 
-	static Optional<PropertyDescription> extract(final Class<?> type, final String name) {
-		requireNonNull(type);
-		requireNonNull(name);
-
-		Optional<PropertyDescription> description = Optional.empty();
-		if (type.isRecord()) {
-			for (var component : type.getRecordComponents()) {
-				if (component.getName().equals(name)) {
-					description = Optional.of(toDescription(component));
-				}
-			}
-		} else {
-			try {
-				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(type)
-					.getPropertyDescriptors();
-
-				for (var descriptor : descriptors) {
-					if (descriptor.getReadMethod() != null &&
-						!"class".equals(descriptor.getName()) &&
-						descriptor.getName().equals(name))
-					{
-						description = Optional.of(toDescription(descriptor));
-					}
-				}
-			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException(
-					"Can't introspect class '%s'.".formatted(type.getName()),
-					e
-				);
-			}
-		}
-
-		return description;
-	}
+//	static Optional<PropertyDescription> extract(final Class<?> type, final String name) {
+//		requireNonNull(type);
+//		requireNonNull(name);
+//
+//		Optional<PropertyDescription> description = Optional.empty();
+//		if (type.isRecord()) {
+//			for (var component : type.getRecordComponents()) {
+//				if (component.getName().equals(name)) {
+//					description = Optional.of(toDescription(component));
+//				}
+//			}
+//		} else {
+//			try {
+//				final PropertyDescriptor[] descriptors = Introspector
+//					.getBeanInfo(type)
+//					.getPropertyDescriptors();
+//
+//				for (var descriptor : descriptors) {
+//					if (descriptor.getReadMethod() != null &&
+//						!"class".equals(descriptor.getName()) &&
+//						descriptor.getName().equals(name))
+//					{
+//						description = Optional.of(toDescription(descriptor));
+//					}
+//				}
+//			} catch (IntrospectionException e) {
+//				throw new IllegalArgumentException(
+//					"Can't introspect class '%s'.".formatted(type.getName()),
+//					e
+//				);
+//			}
+//		}
+//
+//		return description;
+//	}
 
 }

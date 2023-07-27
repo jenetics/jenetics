@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.property;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.property.Property.ValueReader;
+import io.jenetics.incubator.property.Property.ValueWriter;
 
 import java.util.Optional;
 
-import io.jenetics.incubator.property.Property.ValueReader;
-import io.jenetics.incubator.property.Property.ValueWriter;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -57,7 +57,7 @@ abstract class PropertyDescriptionMethods {
 	}
 
 	private Object read() {
-		return desc.read(enclosingObject);
+		return desc.getter().apply(enclosingObject);
 	}
 
 	public boolean isWritable() {
@@ -71,7 +71,7 @@ abstract class PropertyDescriptionMethods {
 	}
 
 	private boolean write(final Object value) {
-		return desc.write(enclosingObject, value);
+		return desc.setter().apply(enclosingObject, value);
 	}
 
 }

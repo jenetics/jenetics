@@ -23,19 +23,42 @@ import org.testng.annotations.Test;
 
 import io.jenetics.jpx.GPX;
 
-public class PropertyDescriptionTests {
+import java.util.List;
+
+public class PropertyDescriptionExtractorTests {
+
+	public static final class Box {
+		List<Integer> root;
+
+		public Box(List<Integer> root) {
+			this.root = root;
+		}
+
+		public Object root() {
+			return root;
+		}
+
+		public void setRoot(List<Integer> root) {
+			this.root = root;
+		}
+	}
+
+	static class Data {
+		int _1;
+		int _2;
+		int _3;
+
+		int[] _x;
+	}
 
 	@Test
-	public void returnType() {
-		GPX gpx = GPX.builder().build();
-		final var props = PropertyDescriptionExtractor.extract(GPX.class);
+	public void extractIntArray() {
+		final var data = new int[0];
 
-		props.forEach(p -> {
-			var foo = p.getter().getGenericReturnType();
-			System.out.println(foo.getTypeName());
-		});
+		final var desc = PropertyDescriptionExtractor.extract(data.getClass())
+			.toList();
 
-		//props.forEach(System.out::println);
+		System.out.println(desc);
 	}
 
 }

@@ -20,6 +20,7 @@
 package io.jenetics.incubator.property;
 
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -34,12 +35,12 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 	static final PropertyExtractor DEFAULT =
 		new PropertyExtractor(PropertyDescriptionExtractor::extract);
 
-	private final Extractor<? super Class<?>, ? extends PropertyDescription> descriptions;
+	private final Extractor<? super Class<?>, ? extends Description> descriptions;
 
 	PropertyExtractor(
 		final Extractor<
 			? super Class<?>,
-			? extends PropertyDescription> descriptions
+			? extends Description> descriptions
 	) {
 		this.descriptions = requireNonNull(descriptions);
 	}
@@ -51,21 +52,39 @@ final class PropertyExtractor implements Extractor<PathObject, Property> {
 		if (object.value() != null) {
 			return descriptions
 				.extract(object.value().getClass())
-				.map(desc -> {
+				.flatMap(description -> {
 					final var enclosing = object.value();
-					final var path = object.path().append(desc.name());
-					final var type = desc.type();
-					final var value = desc.read(object.value());
 
-					if (type.isArray() &&
-						!type.getComponentType().isPrimitive())
-					{
-						return new ArrayProperty(desc, enclosing, path, value);
-					} else if (List.class.isAssignableFrom(type)) {
-						return new ListProperty(desc, enclosing, path, value);
-					} else {
-						return new SimpleProperty(desc, enclosing, path, value);
+
+					if (description instanceof PropertyDescription desc) {
+						final var type = desc.type();
+						final var path = object.path().append(desc.name());
+						final var value = desc.getter().apply(object.value());
+
+						final Property property;
+						if (type.isArray() &&
+							!type.getComponentType().isPrimitive())
+						{
+							property = new ArrayProperty(desc, enclosing, path, value);
+						} else if (List.class.isAssignableFrom(type)) {
+							property = new ListProperty(desc, enclosing, path, value);
+						} else {
+							property = new SimpleProperty(desc, enclosing, path, value);
+						}
+						return Stream.of(property);
+					} else if (description instanceof IndexedPropertyDescription desc) {
+						int size = desc.size().applyAsInt(object.value());
+						return IntStream.range(0, size).mapToObj(i -> {
+							return new IndexedProperty(
+								enclosing,
+								object.path().append(new Property.Path.Index(i)),
+								desc.getter().apply(object.value(), i),
+								desc.getter().apply(object.value(), i).getClass()
+							);
+						});
 					}
+
+					return Stream.empty();
 				});
 		} else {
 			return Stream.empty();

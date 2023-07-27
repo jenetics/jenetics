@@ -20,6 +20,9 @@
 package io.jenetics.incubator.property;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.testng.annotations.Test;
 
@@ -27,6 +30,28 @@ import io.jenetics.jpx.GPX;
 import io.jenetics.jpx.GPX.Reader;
 
 public class RecursivePropertyExtractorTest {
+
+	private record Data(
+		Object[][] ints,
+		List<List<String>> strings
+	) {}
+
+
+	@Test
+	public void extractRecursive() {
+		final var data = new Data(
+			new Object[][] {
+				{1}
+			},
+			List.of(
+				List.of("1", "2"),
+				List.of("a", "b", "c")
+			)
+		);
+
+		Properties.walk(new PathObject(data))
+			.forEach(System.out::println);
+	}
 
 	@Test
 	public void extract() throws IOException {

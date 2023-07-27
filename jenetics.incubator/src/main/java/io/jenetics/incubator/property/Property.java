@@ -80,7 +80,7 @@ import java.util.stream.IntStream;
  * @since !__version__!
  */
 public sealed interface Property
-	permits CollectionProperty, IndexProperty, SimpleProperty
+	permits CollectionProperty, IndexedProperty, SimpleProperty
 {
 
 	/**

@@ -21,9 +21,6 @@ package io.jenetics.incubator.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
  * {@link java.lang.reflect.RecordComponent} in the case of a record class.
@@ -35,13 +32,13 @@ import java.lang.reflect.Method;
 record PropertyDescription(
 	String name,
 	Class<?> type,
-	Method getter,
-	Method setter
+	Getter getter,
+	Setter setter
 )
-	implements Comparable<PropertyDescription>
+	implements Description
 {
 
-	public PropertyDescription {
+	PropertyDescription {
 		requireNonNull(name);
 		requireNonNull(type);
 		requireNonNull(getter);
@@ -49,54 +46,6 @@ record PropertyDescription(
 
 	public boolean isWriteable() {
 		return setter != null;
-	}
-
-	/**
-	 * Read the property value of the given {@code object}.
-	 *
-	 * @param object the object where the property is declared
-	 * @return the property value of the given {@code object}
-	 */
-	public Object read(final Object object) {
-		try {
-			return getter.invoke(object);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			//throw new IllegalStateException(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Tries to write a new value to {@code this} property.
-	 *
-	 * @param object the object where the property is declared
-	 * @param value  the new property value
-	 * @return {@code true} if the new property value has been written
-	 *         successfully, {@code false} if the property is immutable
-	 */
-	public boolean write(final Object object, final Object value) {
-		try {
-			if (setter != null) {
-				setter.invoke(object, value);
-				return true;
-			}
-		} catch (IllegalAccessException ignore) {
-		} catch (InvocationTargetException e) {
-			if (e.getTargetException() instanceof RuntimeException re) {
-				throw re;
-			} else {
-				throw new IllegalStateException(e.getTargetException());
-			}
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid argument: " + value, e);
-		}
-
-		return false;
-	}
-
-	@Override
-	public int compareTo(final PropertyDescription o) {
-		return name.compareTo(o.name);
 	}
 
 }

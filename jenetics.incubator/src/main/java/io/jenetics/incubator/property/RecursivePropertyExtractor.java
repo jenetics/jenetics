@@ -109,7 +109,11 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 				final Path path = property.path()
 					.append(new Path.Index(index.getAndIncrement()));
 
-				final var prop = new IndexProperty(
+				System.out.println("ELE: " + ele + ": " + ele.getClass().getName());
+				var foo = properties.extract(new PathObject(path, ele)).toList();
+				System.out.println("EXTRACTED: " + foo);
+
+				final var prop = new IndexedProperty(
 					property.enclosingObject(),
 					path,
 					ele,
@@ -118,6 +122,7 @@ final class RecursivePropertyExtractor implements Extractor<PathObject, Property
 
 				return Stream.concat(
 					Stream.of(prop),
+					//properties.extract(new PathObject(path, ele)),
 					stream(new PathObject(path, ele), visited)
 				);
 			});

@@ -58,4 +58,13 @@ public class PropertyExtractorTest {
 			.forEach(System.out::println);
 	}
 
+	@Test
+	public void extractIntArray() {
+		final var data = new Object[] {1, 2};
+
+		PropertyExtractor.DEFAULT
+			.properties(data)
+			.forEach(System.out::println);
+	}
+
 }
