@@ -33,7 +33,7 @@ import io.jenetics.incubator.beans.statical.SimpleDescription;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends CollectionProperty {
+public final class ArrayProperty extends IndexedProperty {
 
 	ArrayProperty(
 		final SimpleDescription desc,

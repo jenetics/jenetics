@@ -31,6 +31,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.beans.PathObject;
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.RecursiveExtractor;
+
 /**
  * Methods for extracting <em>static</em> property {@link Description} objects,
  * directly accessible from a given data type.
@@ -39,11 +43,31 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public final class DescriptionExtractor {
-	private DescriptionExtractor() {
+public final class DescriptionExtractors {
+
+	/**
+	 * Descriptor extractor object, which extracts the direct (first level)
+	 * properties of the input type.
+	 */
+	public static final Extractor<Class<?>, Description>
+		DIRECT =
+		DescriptionExtractors::extract;
+
+	/**
+	 * Descriptor extractor object, which extracts the all properties of the input
+	 * object, recursively.
+	 */
+	public static final Extractor<Class<?>, Description>
+		RECURSIVE =
+		new RecursiveExtractor<>(
+			DIRECT,
+			Description::type
+		);
+
+	private DescriptionExtractors() {
 	}
 
-	public static Stream<Description> extract(final Class<?> type) {
+	private static Stream<Description> extract(final Class<?> type) {
 		if (type == null) {
 			return Stream.empty();
 		}

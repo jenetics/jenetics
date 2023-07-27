@@ -52,7 +52,7 @@ public class PropertyExtractorTest {
 			Map.of("a", 1, "b", 2)
 		);
 
-		PropertyExtractor.DIRECT
+		PropertyExtractors.DIRECT
 			.extract(new PathObject(data))
 			.forEach(System.out::println);
 	}
@@ -61,7 +61,7 @@ public class PropertyExtractorTest {
 	public void extractIntArray() {
 		final var data = new Object[] {1, 2};
 
-		PropertyExtractor.DIRECT
+		PropertyExtractors.DIRECT
 			.extract(new PathObject(data))
 			.forEach(System.out::println);
 	}

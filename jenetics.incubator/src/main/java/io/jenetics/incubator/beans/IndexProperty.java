@@ -22,6 +22,8 @@ package io.jenetics.incubator.beans;
 import io.jenetics.incubator.beans.statical.IndexedDescription;
 
 /**
+ * This property represents an element of an {@link IndexedProperty}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

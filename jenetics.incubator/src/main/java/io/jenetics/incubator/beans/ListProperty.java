@@ -34,7 +34,7 @@ import io.jenetics.incubator.beans.statical.SimpleDescription;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ListProperty extends CollectionProperty {
+public final class ListProperty extends IndexedProperty {
 
 	ListProperty(
 		final SimpleDescription desc,

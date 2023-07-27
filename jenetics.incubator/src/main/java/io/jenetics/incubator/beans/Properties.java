@@ -21,16 +21,17 @@ package io.jenetics.incubator.beans;
 
 import static java.lang.String.format;
 
-import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.beans.statical.Descriptions;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
  * This class contains helper methods for extracting the properties from a given
- * root object.
+ * root object. It is the main entry point for the extracting properties from
+ * an object graph.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -43,19 +44,7 @@ public final class Properties {
 			? object.value().getClass()
 			: Object.class;
 
-		final var name = type.getName();
-
-		return
-			// Allow native Java arrays, except byte[] arrays.
-			(name.startsWith("[") && !name.endsWith("[B")) ||
-			// Allow Java collection classes.
-			Collection.class.isAssignableFrom(type) ||
-			(
-				!name.startsWith("java") &&
-				!name.startsWith("com.sun") &&
-				!name.startsWith("sun") &&
-				!name.startsWith("jdk")
-			);
+		return Descriptions.NON_JAVA_CLASSES.test(type);
 	};
 
 	private Properties() {
@@ -100,7 +89,7 @@ public final class Properties {
 	walk(final PathObject root, final String... includes) {
 		return walk(
 			root,
-			PropertyExtractor.DIRECT
+			PropertyExtractors.DIRECT
 				.sourceFilter(includesFilter(includes))
 				.sourceFilter(NON_JAVA_CLASSES)
 		);
@@ -124,7 +113,7 @@ public final class Properties {
 
 		return walk(
 			object,
-			PropertyExtractor.DIRECT
+			PropertyExtractors.DIRECT
 				.sourceFilter(includesFilter(includes))
 				.sourceFilter(NON_JAVA_CLASSES)
 		);

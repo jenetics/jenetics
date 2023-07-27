@@ -27,6 +27,9 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
+ * Implementation of a <em>recursive</em> extractor. The recursive extractor
+ * can be used with an arbitrary <em>flat</em> extractor.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -37,6 +40,12 @@ public class RecursiveExtractor<S, T> implements Extractor<S, T> {
 	private final Extractor<S, T> extractor;
 	private final Function<T, S> mapper;
 
+	/**
+	 * Create a new <em>recursive</em> extractor from the given parameters.
+	 *
+	 * @param extractor the <em>direct</em> extractor
+	 * @param mapper mapper function from the target type back to the source type
+	 */
 	@SuppressWarnings("unchecked")
 	public RecursiveExtractor(
 		final Extractor<? super S, ? extends T> extractor,
@@ -60,11 +69,9 @@ public class RecursiveExtractor<S, T> implements Extractor<S, T> {
 			return Stream.empty();
 		}
 
-		final boolean exists;
-		synchronized(visited) {
-			if (!(exists = visited.containsKey(object))) {
-				visited.put(object, "");
-			}
+		final boolean exists = visited.containsKey(object);
+		if (!exists) {
+			visited.put(object, "");
 		}
 
 		return !exists

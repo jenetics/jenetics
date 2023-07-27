@@ -21,7 +21,6 @@ package io.jenetics.incubator.beans.statical;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -68,7 +67,7 @@ public class DescriptionExtractorTests {
 		final List<Integer> list = new ArrayList<Integer>() {};
 		list.add(23);
 
-		final var desc = DescriptionExtractor.extract(Box.class)
+		final var desc = Descriptions.walk(Box.class)
 			/*
 			.flatMap(d ->
 					Stream.concat(

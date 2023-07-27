@@ -25,18 +25,23 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.statical.DescriptionExtractor;
+import io.jenetics.incubator.beans.statical.DescriptionExtractors;
 import io.jenetics.incubator.beans.statical.IndexedDescription;
 import io.jenetics.incubator.beans.statical.SimpleDescription;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
+ * Contains functionality for extracting the properties from a given bean object.
+ * The higher level functionality is implemented in the {@link Properties} class.
+ *
+ * @see Properties
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class PropertyExtractor {
+public final class PropertyExtractors {
 
 	/**
 	 * Property extractor object, which extracts the direct (first level)
@@ -44,7 +49,7 @@ public final class PropertyExtractor {
 	 */
 	public static final Extractor<PathObject, Property>
 		DIRECT =
-		PropertyExtractor::extract;
+		PropertyExtractors::extract;
 
 	/**
 	 * Property extractor object, which extracts the all properties of the input
@@ -58,14 +63,14 @@ public final class PropertyExtractor {
 		);
 
 
-	private PropertyExtractor() {
+	private PropertyExtractors() {
 	}
 
 	private static Stream<Property> extract(final PathObject object) {
 		requireNonNull(object);
 
 		if (object.value() != null) {
-			return DescriptionExtractor.extract(object.value().getClass())
+			return DescriptionExtractors.DIRECT.extract(object.value().getClass())
 				.flatMap(description -> {
 					final var enclosing = object.value();
 

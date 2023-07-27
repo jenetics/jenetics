@@ -33,7 +33,7 @@ import io.jenetics.incubator.beans.statical.SimpleDescription;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract sealed class CollectionProperty
+public abstract sealed class IndexedProperty
 	extends SimpleDescriptionMethods
 	implements Iterable<Object>, Property
 	permits ListProperty, ArrayProperty
@@ -42,7 +42,7 @@ public abstract sealed class CollectionProperty
 	final Path path;
 	final Object value;
 
-	CollectionProperty(
+	IndexedProperty(
 		final SimpleDescription desc,
 		final Object enclosingObject,
 		final Path path,
