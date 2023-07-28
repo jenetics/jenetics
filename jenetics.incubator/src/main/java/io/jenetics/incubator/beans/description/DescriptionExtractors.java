@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.util.Extractor;
 
 import java.beans.IntrospectionException;
@@ -66,7 +67,7 @@ public final class DescriptionExtractors {
 		if (type.isArray() && !type.getComponentType().isPrimitive()) {
 			descriptions.add(
 				new IndexedDescription(
-					"",
+					Path.EMPTY,
 					type.getComponentType(), type,
 					object -> object,
 					Array::getLength, Array::get, Array::set
@@ -75,7 +76,7 @@ public final class DescriptionExtractors {
 		} else if (List.class.isAssignableFrom(type)) {
 			descriptions.add(
 				new IndexedDescription(
-					"",
+					Path.EMPTY,
 					Object.class, List.class,
 					object -> object,
 					Lists::size, Lists::get, Lists::set
@@ -113,8 +114,9 @@ public final class DescriptionExtractors {
 	private static SimpleDescription
 	toDescription(final RecordComponent component) {
 		return new SimpleDescription(
-			component.getName(),
+			Path.of(component.getName()),
 			component.getType(),
+			component.getDeclaringRecord(),
 			Methods.toGetter(component.getAccessor()),
 			null
 		);
@@ -159,8 +161,9 @@ public final class DescriptionExtractors {
 		 */
 
 		return new SimpleDescription(
-			descriptor.getName(),
+			Path.of(descriptor.getName()),
 			descriptor.getPropertyType(),
+			descriptor.getReadMethod().getDeclaringClass(),
 			Methods.toGetter(descriptor.getReadMethod()),
 			Methods.toSetter(descriptor.getWriteMethod())
 		);

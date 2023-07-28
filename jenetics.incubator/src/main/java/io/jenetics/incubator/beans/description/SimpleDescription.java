@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import io.jenetics.incubator.beans.Path;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -30,8 +32,9 @@ import static java.util.Objects.requireNonNull;
  * @since !__version__!
  */
 public record SimpleDescription(
-	String name,
+	Path path,
 	Class<?> type,
+	Class<?> enclosingType,
 	Getter getter,
 	Setter setter
 )
@@ -39,7 +42,7 @@ public record SimpleDescription(
 {
 
 	public SimpleDescription {
-		requireNonNull(name);
+		requireNonNull(path);
 		requireNonNull(type);
 		requireNonNull(getter);
 	}

@@ -27,7 +27,6 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.beans.property.IndexProperty;
-import io.jenetics.incubator.beans.property.PathObject;
 import io.jenetics.incubator.beans.property.Properties;
 
 import io.jenetics.jpx.GPX;

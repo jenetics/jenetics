@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.Node;
 
 import java.util.Optional;
 
@@ -75,6 +75,7 @@ import java.util.Optional;
  * @since !__version__!
  */
 public sealed interface Property
+	extends Node
 	permits IndexedProperty, IndexProperty, SimpleProperty
 {
 
@@ -84,30 +85,6 @@ public sealed interface Property
 	 * @return the object which contains {@code this} property
 	 */
 	Object enclosingObject();
-
-	/**
-	 * The full path, separated with dots '.', of {@code this} property from
-	 * the <em>root</em> object.
-	 *
-	 * @return the full property path
-	 */
-	Path path();
-
-	/**
-	 * The name of {@code this} property; always non-{@code null}.
-	 *
-	 * @return the property name
-	 */
-	default String name() {
-		return path().isEmpty() ? "" : path().element().toString();
-	}
-
-	/**
-	 * The type of the metaobject, never {@code null}.
-	 *
-	 * @return the type of the metaobject
-	 */
-	Class<?> type();
 
 	/**
 	 * The value of the meta-object, may be {@code null}. This method always
@@ -143,16 +120,6 @@ public sealed interface Property
 	 */
 	default ValueReader reader() {
 		return this::value;
-	}
-
-	/**
-	 * Test whether {@code this} property is writable.
-	 *
-	 * @return {@code true} if @code this} property is writable, {@code false}
-	 *         otherwise
-	 */
-	default boolean isWritable() {
-		return false;
 	}
 
 	/**

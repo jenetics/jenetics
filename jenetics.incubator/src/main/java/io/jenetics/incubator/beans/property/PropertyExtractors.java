@@ -20,6 +20,7 @@
 package io.jenetics.incubator.beans.property;
 
 import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathObject;
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
@@ -93,7 +94,7 @@ public final class PropertyExtractors {
 				}
 				return Stream.of(property);
 			} else if (description instanceof IndexedDescription desc) {
-				final var path = desc.name().isEmpty()
+				final var path = desc.path().isEmpty()
 					? object.path()
 					: object.path().append(new Path.Name(desc.name()));
 

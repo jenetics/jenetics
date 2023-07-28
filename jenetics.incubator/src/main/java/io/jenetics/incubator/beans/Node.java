@@ -17,26 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
-
-import io.jenetics.incubator.beans.Path;
-
-import static java.util.Objects.requireNonNull;
+package io.jenetics.incubator.beans;
 
 /**
- * This class adds a path to a given object.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record PathObject(Path path, Object value) {
-	public PathObject {
-		requireNonNull(path);
+public interface Node {
+
+	/**
+	 * The full path, separated with dots '.', of {@code this} property from
+	 * the <em>root</em> object.
+	 *
+	 * @return the full property path
+	 */
+	Path path();
+
+	/**
+	 * The name of {@code this} property; always non-{@code null}.
+	 *
+	 * @return the node name
+	 */
+	default String name() {
+		return path().isEmpty() ? "" : path().element().toString();
 	}
 
-	public PathObject(Object value) {
-		this(Path.EMPTY, value);
+	/**
+	 * The type of the metaobject, never {@code null}.
+	 *
+	 * @return the type of the metaobject
+	 */
+	Class<?> type();
+
+	/**
+	 * Test whether {@code this} property is writable.
+	 *
+	 * @return {@code true} if @code this} property is writable, {@code false}
+	 *         otherwise
+	 */
+	default boolean isWritable() {
+		return false;
 	}
 
 }

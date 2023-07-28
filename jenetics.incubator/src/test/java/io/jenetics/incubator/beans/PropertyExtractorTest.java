@@ -26,7 +26,6 @@ import java.util.Set;
 import io.jenetics.incubator.beans.property.Properties;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.beans.property.PathObject;
 import io.jenetics.incubator.beans.property.PropertyExtractors;
 
 public class PropertyExtractorTest {

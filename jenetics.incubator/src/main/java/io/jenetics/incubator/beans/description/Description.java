@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import io.jenetics.incubator.beans.Node;
+
 /**
  * A {@code Description} object describes the <em>statical</em>, at compile time
  * available property of a Java Bean or a record class.
@@ -28,35 +30,16 @@ package io.jenetics.incubator.beans.description;
  * @since !__version__!
  */
 public sealed interface Description
-	extends Comparable<Description>
+	extends Node, Comparable<Description>
 	permits IndexedDescription, SimpleDescription
 {
 
-//	/**
-//	 * Returns the class which contains {@code this} description.
-//	 *
-//	 * @return the class which contains {@code this} description
-//	 */
-//	Class<?> enclosingClass();
-
-//	/**
-//	 * The full path, separated with dots '.', of {@code this} description from
-//	 * the <em>root</em> class.
-//	 *
-//	 * @return the full property path
-//	 */
-//	Property.Path path();
-
-//	/**
-//	 * The name of the property. Usually the field name.
-//	 *
-//	 * @return the name of the property
-//	 */
-//	default String name() {
-//		return path().isEmpty() ? "" : path().element().toString();
-//	}
-
-	String name();
+	/**
+	 * Returns the class which contains {@code this} description.
+	 *
+	 * @return the class which contains {@code this} description
+	 */
+	Class<?> enclosingType();
 
 	/**
 	 * The compile time type of the property.

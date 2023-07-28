@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import io.jenetics.incubator.beans.PathObject;
+
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 

@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import io.jenetics.incubator.beans.PathObject;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.PreOrderIterator;
