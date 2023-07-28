@@ -19,12 +19,13 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.PreOrderIterator;
+
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -60,9 +61,10 @@ public final class Descriptions {
 		final Class<?> root,
 		final Extractor<Class<?>, Description> extractor
 	) {
-		final var ext = new RecursiveExtractor<Class<?>, Description>(
+		final var ext = PreOrderIterator.<Class<?>, Description>extractor(
 			extractor,
-			Description::type
+			Description::type,
+			Function.identity()
 		);
 		return ext.extract(root);
 	}

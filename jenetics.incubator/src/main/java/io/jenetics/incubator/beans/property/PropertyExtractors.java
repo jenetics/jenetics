@@ -19,17 +19,15 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
 import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.RecursiveExtractor;
+import io.jenetics.incubator.beans.util.PreOrderIterator;
+
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Contains functionality for extracting the properties from a given bean object.
@@ -57,65 +55,65 @@ public final class PropertyExtractors {
 	 */
 	public static final Extractor<PathObject, Property>
 		RECURSIVE =
-		new RecursiveExtractor<>(
+		PreOrderIterator.extractor(
 			DIRECT,
-			property -> new PathObject(property.path(), property.value())
+			property -> new PathObject(property.path(), property.value()),
+			PathObject::value
 		);
-
 
 	private PropertyExtractors() {
 	}
 
 	private static Stream<Property> extract(final PathObject object) {
-		requireNonNull(object);
-
-		if (object.value() != null) {
-			return DescriptionExtractors.DIRECT.extract(object.value().getClass())
-				.flatMap(description -> {
-					final var enclosing = object.value();
-
-					if (description instanceof SimpleDescription desc) {
-						final var type = desc.type();
-						final var path = object.path().append(desc.name());
-						final var value = desc.getter().apply(object.value());
-
-						final Property property;
-						if (type.isArray() &&
-							!type.getComponentType().isPrimitive())
-						{
-							property = new ArrayProperty(desc, enclosing, path, value);
-						} else if (List.class.isAssignableFrom(type)) {
-							property = new ListProperty(desc, enclosing, path, value);
-						} else {
-							property = new SimpleProperty(desc, enclosing, path, value);
-						}
-						return Stream.of(property);
-					} else if (description instanceof IndexedDescription desc) {
-						final var path = desc.name().isEmpty()
-							? object.path()
-							: object.path().append(new Property.Path.Name(desc.name()));
-
-						final var list = desc.container().apply(object.value());
-						int size = desc.size().applyAsInt(list);
-
-						return IntStream.range(0, size).mapToObj(i -> {
-							final var value = desc.getter().apply(list, i);
-
-							return new IndexProperty(
-								desc,
-								enclosing,
-								path.append(new Property.Path.Index(i)),
-								i,
-								value
-							);
-						});
-					}
-
-					return Stream.empty();
-				});
-		} else {
+		if (object == null || object.value() == null) {
 			return Stream.empty();
 		}
+
+		final var type = object.value().getClass();
+		final var descriptions = DescriptionExtractors.DIRECT.extract(type);
+
+		return descriptions.flatMap(description -> {
+			final var enclosing = object.value();
+
+			if (description instanceof SimpleDescription desc) {
+				final var typ = desc.type();
+				final var path = object.path().append(desc.name());
+				final var value = desc.getter().apply(object.value());
+
+				final Property property;
+				if (typ.isArray() &&
+					!typ.getComponentType().isPrimitive())
+				{
+					property = new ArrayProperty(desc, enclosing, path, value);
+				} else if (List.class.isAssignableFrom(typ)) {
+					property = new ListProperty(desc, enclosing, path, value);
+				} else {
+					property = new SimpleProperty(desc, enclosing, path, value);
+				}
+				return Stream.of(property);
+			} else if (description instanceof IndexedDescription desc) {
+				final var path = desc.name().isEmpty()
+					? object.path()
+					: object.path().append(new Property.Path.Name(desc.name()));
+
+				final var list = desc.container().apply(object.value());
+				int size = desc.size().applyAsInt(list);
+
+				return IntStream.range(0, size).mapToObj(i -> {
+					final var value = desc.getter().apply(list, i);
+
+					return new IndexProperty(
+						desc,
+						enclosing,
+						path.append(new Property.Path.Index(i)),
+						i,
+						value
+					);
+				});
+			}
+
+			return Stream.empty();
+		});
 	}
 
 }

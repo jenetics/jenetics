@@ -19,14 +19,14 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.lang.String.format;
+import io.jenetics.incubator.beans.description.Descriptions;
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.PreOrderIterator;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.RecursiveExtractor;
+import static java.lang.String.format;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -64,9 +64,10 @@ public final class Properties {
 		final PathObject root,
 		final Extractor<PathObject, Property> extractor
 	) {
-		final var ext = new RecursiveExtractor<>(
+		final var ext = PreOrderIterator.extractor(
 			extractor,
-			property -> new PathObject(property.path(), property.value())
+			property -> new PathObject(property.path(), property.value()),
+			PathObject::value
 		);
 		return ext.extract(root);
 	}

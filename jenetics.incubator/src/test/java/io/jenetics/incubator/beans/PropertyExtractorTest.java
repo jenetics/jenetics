@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.jenetics.incubator.beans.property.Properties;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.beans.property.PathObject;
@@ -55,8 +56,7 @@ public class PropertyExtractorTest {
 			Map.of("a", 1, "b", 2)
 		);
 
-		PropertyExtractors.DIRECT
-			.extract(new PathObject(data))
+		Properties.walk(data)
 			.forEach(System.out::println);
 	}
 

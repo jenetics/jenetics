@@ -19,20 +19,18 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import io.jenetics.incubator.beans.util.Extractor;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
-
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.RecursiveExtractor;
 
 /**
  * Methods for extracting <em>static</em> property {@link Description} objects,
@@ -44,6 +42,9 @@ import io.jenetics.incubator.beans.util.RecursiveExtractor;
  */
 public final class DescriptionExtractors {
 
+	private record IndexedType(Type type, Type componentType) {
+	}
+
 	/**
 	 * Descriptor extractor object, which extracts the direct (first level)
 	 * properties of the input type.
@@ -51,17 +52,6 @@ public final class DescriptionExtractors {
 	public static final Extractor<Class<?>, Description>
 		DIRECT =
 		DescriptionExtractors::extract;
-
-	/**
-	 * Descriptor extractor object, which extracts the all properties of the input
-	 * object, recursively.
-	 */
-	public static final Extractor<Class<?>, Description>
-		RECURSIVE =
-		new RecursiveExtractor<>(
-			DIRECT,
-			Description::type
-		);
 
 	private DescriptionExtractors() {
 	}
@@ -132,9 +122,10 @@ public final class DescriptionExtractors {
 
 	private static Description
 	toDescription(final PropertyDescriptor descriptor) {
-		final Type returnType = descriptor.getReadMethod().getGenericReturnType();
+		//final Type returnType = descriptor.getReadMethod().getGenericReturnType();
 
 		// Check if the return type is an array.
+		/*
 		if (returnType instanceof Class<?> arrayType && arrayType.isArray()) {
 			return new IndexedDescription(
 				descriptor.getName(),
@@ -144,8 +135,10 @@ public final class DescriptionExtractors {
 				Array::getLength, Array::get, Array::set
 			);
 		}
+		 */
 
 		// Check if the return type is a list.
+		/*
 		if (returnType instanceof ParameterizedType parameterizedType &&
 			parameterizedType.getRawType() instanceof Class<?> listType &&
 			List.class.isAssignableFrom(listType))
@@ -163,6 +156,7 @@ public final class DescriptionExtractors {
 				);
 			}
 		}
+		 */
 
 		return new SimpleDescription(
 			descriptor.getName(),
@@ -170,6 +164,12 @@ public final class DescriptionExtractors {
 			Methods.toGetter(descriptor.getReadMethod()),
 			Methods.toSetter(descriptor.getWriteMethod())
 		);
+	}
+
+	private static Stream<Description> extract0(final Type type) {
+
+
+		return Stream.empty();
 	}
 
 }

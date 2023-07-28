@@ -32,11 +32,30 @@ public sealed interface Description
 	permits IndexedDescription, SimpleDescription
 {
 
-	/**
-	 * The name of the property. Usually the field name.
-	 *
-	 * @return the name of the property
-	 */
+//	/**
+//	 * Returns the class which contains {@code this} description.
+//	 *
+//	 * @return the class which contains {@code this} description
+//	 */
+//	Class<?> enclosingClass();
+
+//	/**
+//	 * The full path, separated with dots '.', of {@code this} description from
+//	 * the <em>root</em> class.
+//	 *
+//	 * @return the full property path
+//	 */
+//	Property.Path path();
+
+//	/**
+//	 * The name of the property. Usually the field name.
+//	 *
+//	 * @return the name of the property
+//	 */
+//	default String name() {
+//		return path().isEmpty() ? "" : path().element().toString();
+//	}
+
 	String name();
 
 	/**
