@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**

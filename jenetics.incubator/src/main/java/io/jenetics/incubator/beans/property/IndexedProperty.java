@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**

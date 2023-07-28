@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
@@ -94,7 +95,7 @@ public final class PropertyExtractors {
 			} else if (description instanceof IndexedDescription desc) {
 				final var path = desc.name().isEmpty()
 					? object.path()
-					: object.path().append(new Property.Path.Name(desc.name()));
+					: object.path().append(new Path.Name(desc.name()));
 
 				final var list = desc.container().apply(object.value());
 				int size = desc.size().applyAsInt(list);
@@ -105,7 +106,7 @@ public final class PropertyExtractors {
 					return new IndexProperty(
 						desc,
 						enclosing,
-						path.append(new Property.Path.Index(i)),
+						path.append(new Path.Index(i)),
 						i,
 						value
 					);

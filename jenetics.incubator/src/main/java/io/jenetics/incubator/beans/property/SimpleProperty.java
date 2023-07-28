@@ -21,6 +21,7 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**

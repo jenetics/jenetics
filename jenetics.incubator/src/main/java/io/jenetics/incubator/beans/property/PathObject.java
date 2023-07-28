@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import io.jenetics.incubator.beans.Path;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -28,13 +30,13 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-public record PathObject(Property.Path path, Object value) {
+public record PathObject(Path path, Object value) {
 	public PathObject {
 		requireNonNull(path);
 	}
 
 	public PathObject(Object value) {
-		this(Property.Path.EMPTY, value);
+		this(Path.EMPTY, value);
 	}
 
 }

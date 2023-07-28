@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 
 /**

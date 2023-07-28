@@ -24,6 +24,7 @@ import static java.util.Collections.emptyIterator;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
