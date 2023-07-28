@@ -61,7 +61,7 @@ public abstract sealed class IndexedProperty
 
 	@Override
 	public Class<?> type() {
-		return value() != null ? value.getClass() : desc.type();
+		return value() != null ? value.getClass() : (Class<?>)desc.type();
 	}
 
 	public abstract int size();

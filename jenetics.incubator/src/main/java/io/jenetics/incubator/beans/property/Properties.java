@@ -19,15 +19,16 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static java.lang.String.format;
+
+import java.lang.reflect.Type;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.PreOrderIterator;
-
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-import static java.lang.String.format;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -41,11 +42,11 @@ import static java.lang.String.format;
 public final class Properties {
 
 	public static final Predicate<PathValue<Object>> NON_JAVA_CLASSES = object -> {
-		final var type = object.value() != null
+		final Type type = object.value() != null
 			? object.value().getClass()
 			: Object.class;
 
-		return Descriptions.NON_JAVA_CLASSES.test(type);
+		return Descriptions.NON_JAVA_CLASSES.test(new PathValue<>(object.path(), type));
 	};
 
 	private Properties() {
@@ -130,7 +131,7 @@ public final class Properties {
 			property.path(),
 			property.value(),
 			property.type() != null ? property.type().getName() : null,
-			property.enclosingObject().getClass().getName()
+			property.enclosure().getClass().getName()
 		);
 	}
 

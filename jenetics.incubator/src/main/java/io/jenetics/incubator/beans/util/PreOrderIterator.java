@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.beans.util;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.Spliterators.spliteratorUnknownSize;
+
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -30,9 +33,6 @@ import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
 
 /**
  * Preorder iterator which <em>recursively</em> traverses the object graph. It

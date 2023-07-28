@@ -19,32 +19,12 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.reflect.Type;
-
-import io.jenetics.incubator.beans.Path;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record IndexedDescription(
-	Path path,
-	Type type,
-	Class<?> enclosure,
-	Size size,
-	IndexedGetter getter,
-	IndexedSetter setter
-)
-	implements Description
-{
-	public IndexedDescription {
-		requireNonNull(path);
-		requireNonNull(type);
-		requireNonNull(size);
-		requireNonNull(getter);
-	}
-
+@FunctionalInterface
+public interface Size {
+	int apply(final Object object);
 }

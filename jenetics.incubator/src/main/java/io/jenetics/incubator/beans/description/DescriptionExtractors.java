@@ -19,22 +19,23 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.util.Extractor;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.Node;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.util.Extractor;
 
 /**
  * Methods for extracting <em>static</em> property {@link Description} objects,
@@ -46,119 +47,41 @@ import java.util.stream.Stream;
  */
 public final class DescriptionExtractors {
 
-	private record IndexedType(Type type, Type componentType) {
-	}
-
 	/**
 	 * Descriptor extractor object, which extracts the direct (first level)
 	 * properties of the input type.
 	 */
-	public static final Extractor<Class<?>, Description>
+	public static final Extractor<PathValue<Type>, Description>
 		DIRECT =
 		DescriptionExtractors::extract;
 
 	private DescriptionExtractors() {
 	}
 
-	private static Stream<Description> extract(final Class<?> type) {
-		if (type == null) {
+	private static Stream<Description> extract(final PathValue<? extends Type> type) {
+		if (type == null || type.value() == null) {
 			return Stream.empty();
 		}
 
 		final var descriptions = new ArrayList<Description>();
 
-		toArrayDescription(new PathValue<>(type)).ifPresent(descriptions::add);
-		toListDescription(new PathValue<>(type)).ifPresent(descriptions::add);
+		toArrayDescription(type).ifPresent(descriptions::add);
+		toListDescription(type).ifPresent(descriptions::add);
+		toDescriptions(type).forEach(descriptions::add);
 
-		if (type.isRecord()) {
-			for (var component : type.getRecordComponents()) {
-				descriptions.add(toDescription(component));
-			}
-		} else {
-			try {
-				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(type)
-					.getPropertyDescriptors();
-
-				for (var descriptor : descriptors) {
-					if (descriptor.getReadMethod() != null &&
-						descriptor.getReadMethod().getReturnType() != Class.class)
-					{
-						descriptions.add(toDescription(descriptor));
-					}
-				}
-			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException(
-					"Can't introspect class '%s'.".formatted(type.getName()),
-					e
-				);
-			}
-		}
-
-		descriptions.sort(Comparator.naturalOrder());
+		descriptions.sort(Comparator.comparing(Node::name));
 		return descriptions.stream();
 	}
 
-	private static SimpleDescription
-	toDescription(final RecordComponent component) {
-		return new SimpleDescription(
-			Path.of(component.getName()),
-			component.getType(),
-			component.getDeclaringRecord(),
-			Methods.toGetter(component.getAccessor()),
-			null
-		);
-	}
-
 	private static Description
-	toDescription(final PropertyDescriptor descriptor) {
-		//final Type returnType = descriptor.getReadMethod().getGenericReturnType();
-
+	toDescription(final Path path, final PropertyDescriptor descriptor) {
 		return new SimpleDescription(
-			Path.of(descriptor.getName()),
-			descriptor.getPropertyType(),
+			path.append(descriptor.getName()),
+			descriptor.getReadMethod().getGenericReturnType(),
 			descriptor.getReadMethod().getDeclaringClass(),
 			Methods.toGetter(descriptor.getReadMethod()),
 			Methods.toSetter(descriptor.getWriteMethod())
 		);
-
-		// Check if the return type is an array.
-		/*
-		if (returnType instanceof Class<?> arrayType && arrayType.isArray()) {
-			return new IndexedDescription(
-				descriptor.getName(),
-				arrayType.getComponentType(),
-				arrayType,
-				Methods.toGetter(descriptor.getReadMethod()),
-				Array::getLength, Array::get, Array::set
-			);
-		}
-		 */
-
-		// Check if the return type is a list.
-		/*
-		if (returnType instanceof ParameterizedType parameterizedType &&
-			parameterizedType.getRawType() instanceof Class<?> listType &&
-			List.class.isAssignableFrom(listType))
-		{
-			final var typeArguments = parameterizedType.getActualTypeArguments();
-			if (typeArguments.length == 1 &&
-				typeArguments[0] instanceof Class<?> componentType)
-			{
-				return new IndexedDescription(
-					descriptor.getName(),
-					componentType,
-					List.class,
-					Methods.toGetter(descriptor.getReadMethod()),
-					Lists::size, Lists::get, Lists::set
-				);
-			}
-		}
-		 */
-	}
-
-	private static Stream<Description> extract0(final PathValue<Type> type) {
-		return Stream.empty();
 	}
 
 	private static Optional<Description>
@@ -168,10 +91,9 @@ public final class DescriptionExtractors {
 		{
 			return Optional.of(
 				new IndexedDescription(
-					type.path(),
+					type.path().append(new Path.Index(0)),
 					arrayType.getComponentType(),
 					arrayType,
-					object -> object,
 					Array::getLength, Array::get, Array::set
 				)
 			);
@@ -182,21 +104,76 @@ public final class DescriptionExtractors {
 
 	private static Optional<Description>
 	toListDescription(final PathValue<? extends Type> type) {
+		 if (type.value() instanceof ParameterizedType parameterizedType &&
+			parameterizedType.getRawType() instanceof Class<?> listType &&
+			List.class.isAssignableFrom(listType))
+		{
+			final var typeArguments = parameterizedType.getActualTypeArguments();
+			if (typeArguments.length == 1 &&
+				typeArguments[0] instanceof Class<?> componentType)
+			{
+				return Optional.of(
+					new IndexedDescription(
+						type.path().append(new Path.Index(0)),
+						componentType,
+						List.class,
+						Lists::size, Lists::get, Lists::set
+					)
+				);
+			}
+		}
+
 		if (type.value() instanceof Class<?> listType &&
 			List.class.isAssignableFrom(listType))
 		{
 			return Optional.of(
 				new IndexedDescription(
-					type.path(),
+					type.path().append(new Path.Index(0)),
 					Object.class,
 					List.class,
-					object -> object,
 					Lists::size, Lists::get, Lists::set
 				)
 			);
-		} else {
-			return Optional.empty();
 		}
+
+		return Optional.empty();
+	}
+
+	private static Stream<Description>
+	toDescriptions(final PathValue<? extends Type> type) {
+		if (type.value() instanceof Class<?> cls && cls.isRecord()) {
+			return Stream.of(cls.getRecordComponents())
+				.map(c -> toDescription(type.path(), c));
+		} else if (type.value() instanceof Class<?> cls) {
+			try {
+				final PropertyDescriptor[] descriptors = Introspector
+					.getBeanInfo(cls)
+					.getPropertyDescriptors();
+
+				return Stream.of(descriptors)
+					.filter(d -> d.getReadMethod() != null)
+					.filter(d -> d.getReadMethod().getReturnType() != Class.class)
+					.map(d -> toDescription(type.path(), d));
+			} catch (IntrospectionException e) {
+				throw new IllegalArgumentException(
+					"Can't introspect class '%s'.".formatted(type.value()),
+					e
+				);
+			}
+		} else {
+			return Stream.of();
+		}
+	}
+
+	private static Description
+	toDescription(final Path path, final RecordComponent component) {
+		return new SimpleDescription(
+			path.append(component.getName()),
+			component.getAccessor().getGenericReturnType(),
+			component.getDeclaringRecord(),
+			Methods.toGetter(component.getAccessor()),
+			null
+		);
 	}
 
 }

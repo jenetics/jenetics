@@ -30,7 +30,7 @@ import io.jenetics.incubator.beans.Node;
  * @since !__version__!
  */
 public sealed interface Description
-	extends Node, Comparable<Description>
+	extends Node
 	permits IndexedDescription, SimpleDescription
 {
 
@@ -39,27 +39,6 @@ public sealed interface Description
 	 *
 	 * @return the class which contains {@code this} description
 	 */
-	Class<?> enclosingType();
-
-	/**
-	 * The compile time type of the property.
-	 *
-	 * @return the compile time type of the property
-	 */
-	Class<?> type();
-
-
-	/**
-	 * Return {@code true} if this property can be updated.
-	 *
-	 * @return {@code true} if this property can be updated, {@code false}
-	 *         otherwise
-	 */
-	boolean isWriteable();
-
-	@Override
-	default int compareTo(final Description o) {
-		return name().compareTo(o.name());
-	}
+	Class<?> enclosure();
 
 }

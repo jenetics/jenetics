@@ -32,9 +32,8 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.IntRange;
 
-import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Bnf;
-
+import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.grammar.Mappers;
 import io.jenetics.ext.grammar.SentenceGenerator;

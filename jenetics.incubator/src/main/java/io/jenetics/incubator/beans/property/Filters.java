@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.PathValue;
-
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import io.jenetics.incubator.beans.PathValue;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

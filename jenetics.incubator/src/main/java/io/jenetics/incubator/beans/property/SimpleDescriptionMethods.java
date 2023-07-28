@@ -43,7 +43,7 @@ abstract class SimpleDescriptionMethods {
 		this.enclosingObject = requireNonNull(enclosingObject);
 	}
 
-	public Object enclosingObject() {
+	public Object enclosure() {
 		return enclosingObject;
 	}
 
@@ -55,12 +55,8 @@ abstract class SimpleDescriptionMethods {
 		return desc.getter().apply(enclosingObject);
 	}
 
-	public boolean isWritable() {
-		return desc.isWriteable();
-	}
-
 	public Optional<Property.ValueWriter> writer() {
-		return desc.isWriteable()
+		return desc.setter() != null
 			? Optional.of(this::write)
 			: Optional.empty();
 	}

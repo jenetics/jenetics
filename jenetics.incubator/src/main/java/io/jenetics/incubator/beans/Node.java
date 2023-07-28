@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans;
 
+import java.lang.reflect.Type;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -48,16 +50,13 @@ public interface Node {
 	 *
 	 * @return the type of the metaobject
 	 */
-	Class<?> type();
+	Type type();
 
 	/**
-	 * Test whether {@code this} property is writable.
+	 * Returns the object which contains {@code this} node.
 	 *
-	 * @return {@code true} if @code this} property is writable, {@code false}
-	 *         otherwise
+	 * @return the object which contains {@code this} node
 	 */
-	default boolean isWritable() {
-		return false;
-	}
+	Object enclosure();
 
 }

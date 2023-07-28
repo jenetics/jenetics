@@ -19,9 +19,11 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import io.jenetics.incubator.beans.Path;
-
 import static java.util.Objects.requireNonNull;
+
+import java.lang.reflect.Type;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -33,8 +35,8 @@ import static java.util.Objects.requireNonNull;
  */
 public record SimpleDescription(
 	Path path,
-	Class<?> type,
-	Class<?> enclosingType,
+	Type type,
+	Class<?> enclosure,
 	Getter getter,
 	Setter setter
 )
@@ -45,11 +47,6 @@ public record SimpleDescription(
 		requireNonNull(path);
 		requireNonNull(type);
 		requireNonNull(getter);
-	}
-
-	@Override
-	public boolean isWriteable() {
-		return setter != null;
 	}
 
 }

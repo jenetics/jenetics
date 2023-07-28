@@ -45,7 +45,7 @@ abstract class IndexedDescriptionMethods {
 
 	abstract int index();
 
-	public Object enclosingObject() {
+	public Object enclosure() {
 		return enclosingObject;
 	}
 
@@ -58,7 +58,7 @@ abstract class IndexedDescriptionMethods {
 	}
 
 	public Optional<Property.ValueWriter> writer() {
-		return desc.isWriteable()
+		return desc.setter() != null
 			? Optional.of(this::write)
 			: Optional.empty();
 	}

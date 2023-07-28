@@ -275,6 +275,12 @@ public final class Path implements Iterable<Path> {
 		return out.toString();
 	}
 
+	public static Path of(final Element... elements) {
+		return elements.length == 0
+			? EMPTY
+			: new Path(List.of(elements));
+	}
+
 	/**
 	 * Create a new property path form the given string {@code value}. A
 	 * valid path consists of a names, which must be a valid Java identifier,

@@ -19,9 +19,9 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.Node;
-
 import java.util.Optional;
+
+import io.jenetics.incubator.beans.Node;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -80,14 +80,7 @@ public sealed interface Property
 {
 
 	/**
-	 * Returns the object which contains {@code this} property.
-	 *
-	 * @return the object which contains {@code this} property
-	 */
-	Object enclosingObject();
-
-	/**
-	 * The value of the meta-object, may be {@code null}. This method always
+	 * The value of the metaobject, may be {@code null}. This method always
 	 * returns the initial property value. If the values have been changed, via
 	 * the property {@link #writer()} , this method still returns the
 	 * <em>old</em> value. If you want the guaranteed <em>current</em> value,
@@ -97,9 +90,12 @@ public sealed interface Property
 	 * @see #writer()
 	 * @see #isWritable()
 	 *
-	 * @return the <em>original</em> value of the meta-object
+	 * @return the <em>original</em> value of the metaobject
 	 */
 	Object value();
+
+	@Override
+	Class<?> type();
 
 	/**
 	 * Return always the <em>current</em> value of the property.
@@ -131,6 +127,15 @@ public sealed interface Property
 		return Optional.empty();
 	}
 
+	/**
+	 * Test whether {@code this} property is writable.
+	 *
+	 * @return {@code true} if @code this} property is writable, {@code false}
+	 *         otherwise
+	 */
+	default boolean isWritable() {
+		return false;
+	}
 
 	/**
 	 * Property value reader interface, which allows to re-read the property

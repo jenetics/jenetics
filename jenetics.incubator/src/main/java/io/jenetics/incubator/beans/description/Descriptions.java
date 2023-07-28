@@ -19,13 +19,16 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.PreOrderIterator;
-
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.util.PreOrderIterator;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -38,19 +41,23 @@ import java.util.stream.Stream;
  */
 public final class Descriptions {
 
-	public static final Predicate<Class<?>> NON_JAVA_CLASSES = type -> {
-		final var name = type.getName();
+	public static final Predicate<PathValue<Type>> NON_JAVA_CLASSES = type -> {
+		final var cls = type.value() instanceof ParameterizedType pt
+			? (Class<?>)pt.getRawType()
+			: (Class<?>)type.value();
+
+		final var name = cls.getName();
 
 		return
 			// Allow native Java arrays, except byte[] arrays.
 			(name.startsWith("[") && !name.endsWith("[B")) ||
 			// Allow Java collection classes.
-			Collection.class.isAssignableFrom(type) ||
+			Collection.class.isAssignableFrom(cls) ||
 			(
 				!name.startsWith("java") &&
-					!name.startsWith("com.sun") &&
-					!name.startsWith("sun") &&
-					!name.startsWith("jdk")
+				!name.startsWith("com.sun") &&
+				!name.startsWith("sun") &&
+				!name.startsWith("jdk")
 			);
 	};
 
@@ -58,19 +65,19 @@ public final class Descriptions {
 	}
 
 	public static Stream<Description> walk(
-		final Class<?> root,
-		final Extractor<Class<?>, Description> extractor
+		final PathValue<Type> root,
+		final Extractor<PathValue<Type>, Description> extractor
 	) {
-		final var ext = PreOrderIterator.<Class<?>, Description>extractor(
+		final var ext = PreOrderIterator.extractor(
 			extractor,
-			Description::type,
+			desc -> new PathValue<>(desc.path(), desc.type()),
 			Function.identity()
 		);
 		return ext.extract(root);
 	}
 
 	public static Stream<Description>
-	walk(final Class<?> root) {
+	walk(final PathValue<Type> root) {
 		return walk(
 			root,
 			DescriptionExtractors.DIRECT.sourceFilter(NON_JAVA_CLASSES)

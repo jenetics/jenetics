@@ -57,7 +57,7 @@ public final class IndexProperty
 
 	@Override
 	public Class<?> type() {
-		return value() != null ? value.getClass() : desc.type();
+		return value() != null ? value.getClass() : (Class<?>)desc.type();
 	}
 
     public int index() {
