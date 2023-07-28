@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.PathObject;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.PreOrderIterator;
@@ -40,7 +40,7 @@ import static java.lang.String.format;
  */
 public final class Properties {
 
-	public static final Predicate<PathObject> NON_JAVA_CLASSES = object -> {
+	public static final Predicate<PathValue<Object>> NON_JAVA_CLASSES = object -> {
 		final var type = object.value() != null
 			? object.value().getClass()
 			: Object.class;
@@ -62,13 +62,13 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property> walk(
-		final PathObject root,
-		final Extractor<PathObject, Property> extractor
+		final PathValue<Object> root,
+		final Extractor<PathValue<Object>, Property> extractor
 	) {
 		final var ext = PreOrderIterator.extractor(
 			extractor,
-			property -> new PathObject(property.path(), property.value()),
-			PathObject::value
+			property -> new PathValue<>(property.path(), property.value()),
+			PathValue::value
 		);
 		return ext.extract(root);
 	}
@@ -88,7 +88,7 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property>
-	walk(final PathObject root, final String... includes) {
+	walk(final PathValue<Object> root, final String... includes) {
 		return walk(
 			root,
 			PropertyExtractors.DIRECT
@@ -97,7 +97,8 @@ public final class Properties {
 		);
 	}
 
-	private static Predicate<PathObject> includesFilter(final String... includes) {
+	private static Predicate<PathValue<Object>>
+	includesFilter(final String... includes) {
 		return Stream.of(includes)
 			.map(Filters::toPattern)
 			.map(Filters::toFilter)
@@ -109,9 +110,10 @@ public final class Properties {
 		final Object root,
 		final String... includes
 	) {
-		final var object = root instanceof PathObject po
-			? po
-			: new PathObject(root);
+		@SuppressWarnings("unchecked")
+		final var object = root instanceof PathValue<?> po
+			? (PathValue<Object>)po
+			: new PathValue<>(root);
 
 		return walk(
 			object,

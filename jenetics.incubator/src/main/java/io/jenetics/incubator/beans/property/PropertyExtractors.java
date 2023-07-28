@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.property;
 
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathObject;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
@@ -47,7 +47,7 @@ public final class PropertyExtractors {
 	 * Property extractor object, which extracts the direct (first level)
 	 * properties of the input object.
 	 */
-	public static final Extractor<PathObject, Property>
+	public static final Extractor<PathValue<Object>, Property>
 		DIRECT =
 		PropertyExtractors::extract;
 
@@ -55,18 +55,18 @@ public final class PropertyExtractors {
 	 * Property extractor object, which extracts the all properties of the input
 	 * object, recursively.
 	 */
-	public static final Extractor<PathObject, Property>
+	public static final Extractor<PathValue<Object>, Property>
 		RECURSIVE =
 		PreOrderIterator.extractor(
 			DIRECT,
-			property -> new PathObject(property.path(), property.value()),
-			PathObject::value
+			property -> new PathValue<>(property.path(), property.value()),
+			PathValue::value
 		);
 
 	private PropertyExtractors() {
 	}
 
-	private static Stream<Property> extract(final PathObject object) {
+	private static Stream<Property> extract(final PathValue<Object> object) {
 		if (object == null || object.value() == null) {
 			return Stream.empty();
 		}

@@ -64,7 +64,7 @@ public class PropertyExtractorTest {
 		final var data = new Object[] {1, 2};
 
 		PropertyExtractors.DIRECT
-			.extract(new PathObject(data))
+			.extract(new PathValue(data))
 			.forEach(System.out::println);
 	}
 

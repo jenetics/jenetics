@@ -28,12 +28,12 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-public record PathObject(Path path, Object value) {
-	public PathObject {
+public record PathValue<T>(Path path, T value) {
+	public PathValue {
 		requireNonNull(path);
 	}
 
-	public PathObject(Object value) {
+	public PathValue(T value) {
 		this(Path.EMPTY, value);
 	}
 

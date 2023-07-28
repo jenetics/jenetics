@@ -20,6 +20,7 @@
 package io.jenetics.incubator.beans.description;
 
 import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.util.Extractor;
 
 import java.beans.IntrospectionException;
@@ -31,6 +32,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -64,25 +67,10 @@ public final class DescriptionExtractors {
 
 		final var descriptions = new ArrayList<Description>();
 
-		if (type.isArray() && !type.getComponentType().isPrimitive()) {
-			descriptions.add(
-				new IndexedDescription(
-					Path.EMPTY,
-					type.getComponentType(), type,
-					object -> object,
-					Array::getLength, Array::get, Array::set
-				)
-			);
-		} else if (List.class.isAssignableFrom(type)) {
-			descriptions.add(
-				new IndexedDescription(
-					Path.EMPTY,
-					Object.class, List.class,
-					object -> object,
-					Lists::size, Lists::get, Lists::set
-				)
-			);
-		} else if (type.isRecord()) {
+		toArrayDescription(new PathValue<>(type)).ifPresent(descriptions::add);
+		toListDescription(new PathValue<>(type)).ifPresent(descriptions::add);
+
+		if (type.isRecord()) {
 			for (var component : type.getRecordComponents()) {
 				descriptions.add(toDescription(component));
 			}
@@ -126,6 +114,14 @@ public final class DescriptionExtractors {
 	toDescription(final PropertyDescriptor descriptor) {
 		//final Type returnType = descriptor.getReadMethod().getGenericReturnType();
 
+		return new SimpleDescription(
+			Path.of(descriptor.getName()),
+			descriptor.getPropertyType(),
+			descriptor.getReadMethod().getDeclaringClass(),
+			Methods.toGetter(descriptor.getReadMethod()),
+			Methods.toSetter(descriptor.getWriteMethod())
+		);
+
 		// Check if the return type is an array.
 		/*
 		if (returnType instanceof Class<?> arrayType && arrayType.isArray()) {
@@ -159,20 +155,48 @@ public final class DescriptionExtractors {
 			}
 		}
 		 */
-
-		return new SimpleDescription(
-			Path.of(descriptor.getName()),
-			descriptor.getPropertyType(),
-			descriptor.getReadMethod().getDeclaringClass(),
-			Methods.toGetter(descriptor.getReadMethod()),
-			Methods.toSetter(descriptor.getWriteMethod())
-		);
 	}
 
-	private static Stream<Description> extract0(final Type type) {
-
-
+	private static Stream<Description> extract0(final PathValue<Type> type) {
 		return Stream.empty();
+	}
+
+	private static Optional<Description>
+	toArrayDescription(final PathValue<? extends Type> type) {
+		if (type.value() instanceof Class<?> arrayType &&
+			arrayType.isArray() && !arrayType.componentType().isPrimitive())
+		{
+			return Optional.of(
+				new IndexedDescription(
+					type.path(),
+					arrayType.getComponentType(),
+					arrayType,
+					object -> object,
+					Array::getLength, Array::get, Array::set
+				)
+			);
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private static Optional<Description>
+	toListDescription(final PathValue<? extends Type> type) {
+		if (type.value() instanceof Class<?> listType &&
+			List.class.isAssignableFrom(listType))
+		{
+			return Optional.of(
+				new IndexedDescription(
+					type.path(),
+					Object.class,
+					List.class,
+					object -> object,
+					Lists::size, Lists::get, Lists::set
+				)
+			);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }
