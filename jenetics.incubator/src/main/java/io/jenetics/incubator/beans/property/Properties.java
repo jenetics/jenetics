@@ -26,8 +26,8 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.PreOrderIterator;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
  * This class contains helper methods for extracting the properties from a given

@@ -30,8 +30,8 @@ import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
 import io.jenetics.incubator.beans.description.IndexedValue;
 import io.jenetics.incubator.beans.description.SingleValue;
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.PreOrderIterator;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
  * Contains functionality for extracting the properties from a given bean object.

@@ -22,15 +22,12 @@ package io.jenetics.incubator.beans.description;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.property.Property;
-import io.jenetics.incubator.beans.property.SimpleProperty;
-import io.jenetics.incubator.beans.util.Extractor;
-import io.jenetics.incubator.beans.util.PreOrderIterator;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
  * This class contains helper methods for extracting the properties from a given

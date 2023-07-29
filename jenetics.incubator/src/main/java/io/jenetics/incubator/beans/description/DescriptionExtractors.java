@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathEntry;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.util.Extractor;
+import io.jenetics.incubator.beans.Extractor;
 
 /**
  * Methods for extracting <em>static</em> property {@link Description} objects,
