@@ -123,21 +123,23 @@ public final class Properties {
 		final Object value,
 		final Description.Value.Single description
 	) {
-		if (description.setter().isPresent()) {
-			return new Property.Value.Mutable(
-				enclosing,
-				value,
-				toClass(description.value()),
-				description.getter(),
-				description.setter().orElseThrow()
+		return description.setter()
+			.<Property.Value>map(setter ->
+				new Property.Value.Mutable(
+					enclosing,
+					value,
+					toClass(description.value()),
+					description.getter(),
+					setter
+				)
+			)
+			.orElseGet(() ->
+				new Property.Value.Immutable(
+					enclosing,
+					value,
+					toClass(description.value())
+				)
 			);
-		} else {
-			return new Property.Value.Immutable(
-				enclosing,
-				value,
-				toClass(description.value())
-			);
-		}
 	}
 
 	/**
@@ -251,10 +253,8 @@ public final class Properties {
 	 * @param includes the included object name (glob) patterns
 	 * @return a property stream
 	 */
-	public static Stream<Property> walk(
-		final Object root,
-		final String... includes
-	) {
+	public static Stream<Property>
+	walk(final Object root, final String... includes) {
 		return walk(
 			root instanceof PathEntry<?> po
 				? po : PathEntry.of(root),

@@ -39,11 +39,7 @@ public final class IndexProperty implements Property {
 	private final Value value;
 
 
-	IndexProperty(
-		final Path path,
-		final int index,
-		final Value value
-    ) {
+	IndexProperty(final Path path, final int index, final Value value) {
         this.path = requireNonNull(path);
         this.index = index;
         this.value = requireNonNull(value);

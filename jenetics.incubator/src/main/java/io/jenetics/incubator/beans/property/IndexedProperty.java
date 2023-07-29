@@ -42,10 +42,7 @@ public abstract sealed class IndexedProperty
 	private final Path path;
 	private final Value value;
 
-	IndexedProperty(
-		final Path path,
-		final Value value
-	) {
+	IndexedProperty(final Path path, final Value value) {
 		this.path = requireNonNull(path);
 		this.value = requireNonNull(value);
 	}
