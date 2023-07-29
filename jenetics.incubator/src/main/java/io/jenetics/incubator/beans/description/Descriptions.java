@@ -72,7 +72,7 @@ public final class Descriptions {
 	) {
 		final var ext = PreOrderIterator.extractor(
 			extractor,
-			desc -> new PathValue<>(desc.path(), desc.type()),
+			desc -> new PathValue<>(desc.path(), desc.value().value()),
 			Function.identity()
 		);
 		return ext.extract(root);

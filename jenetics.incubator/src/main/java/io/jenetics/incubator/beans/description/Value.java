@@ -19,32 +19,28 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static java.util.Objects.requireNonNull;
-
 import java.lang.reflect.Type;
-
-import io.jenetics.incubator.beans.Path;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record IndexedDescription(
-	Path path,
-	Type type,
-	Class<?> enclosure,
-	Size size,
-	IndexedGetter getter,
-	IndexedSetter setter
-)
-	implements Description
-{
-	public IndexedDescription {
-		requireNonNull(path);
-		requireNonNull(type);
-		requireNonNull(size);
-		requireNonNull(getter);
-	}
+public sealed interface Value permits IndexedValue, SingleValue {
+
+	/**
+	 * Returns the object which contains {@code this} node.
+	 *
+	 * @return the object which contains {@code this} node
+	 */
+	Class<?> enclosure();
+
+	/**
+	 * The value of the metaobject, may be {@code null}. This method always
+	 * returns the initial property value.
+	 *
+	 * @return the <em>original</em> value of the metaobject
+	 */
+	Type value();
 
 }

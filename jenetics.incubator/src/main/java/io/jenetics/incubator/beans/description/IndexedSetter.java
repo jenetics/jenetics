@@ -26,5 +26,5 @@ package io.jenetics.incubator.beans.description;
  */
 @FunctionalInterface
 public interface IndexedSetter {
-	void apply(final Object object, final int index, final Object value);
+	void set(final Object object, final int index, final Object value);
 }

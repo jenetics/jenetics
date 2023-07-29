@@ -17,74 +17,67 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
+package io.jenetics.incubator.beans.description;
 
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.beans.description.Getter;
-import io.jenetics.incubator.beans.description.Setter;
+import java.lang.reflect.Type;
+import java.util.Optional;
+import java.util.function.ToIntFunction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Mutable implements Value {
+public final class IndexedValue implements Value {
 
-	private final Object enclosure;
-	private final Object value;
-	private final Class<?> type;
-	private final Getter getter;
-	private final Setter setter;
+	private final Class<?> enclosure;
+	private final Type value;
+	private final Size size;
+	private final IndexedGetter getter;
+	private final IndexedSetter setter;
 
-	Mutable(
-		final Object enclosure,
-		final Object value,
-		final Class<?> type,
-		final Getter getter,
-		final Setter setter
+	IndexedValue(
+		final Class<?> enclosure,
+		final Type value,
+		final Size size,
+		final IndexedGetter getter,
+		final IndexedSetter setter
 	) {
 		this.enclosure = requireNonNull(enclosure);
-		this.value = value;
-		this.type = requireNonNull(type);
+		this.value = requireNonNull(value);
+		this.size = requireNonNull(size);
 		this.getter = requireNonNull(getter);
-		this.setter = requireNonNull(setter);
+		this.setter = setter;
 	}
 
 	@Override
-	public Object enclosure() {
+	public Class<?> enclosure() {
 		return enclosure;
 	}
 
 	@Override
-	public Object value() {
+	public Type value() {
 		return value;
 	}
 
-	@Override
-	public Class<?> type() {
-		return type;
+	public Size size() {
+		return size;
 	}
 
-	public Object read() {
-		return getter.get(enclosure);
+	public IndexedGetter getter() {
+		return getter;
 	}
 
-	public boolean write(final Object value) {
-		try {
-			setter.set(enclosure, value);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public Optional<IndexedSetter> setter() {
+		return Optional.ofNullable(setter);
 	}
 
 	@Override
 	public String toString() {
-		return "Mutable[value=%s, type=%s, enclosureType=%s]".formatted(
-			value(),
-			type().getName(),
-			enclosure().getClass().getName()
+		return "Single[enclosure=%s, value=%s]".formatted(
+			enclosure().getName(),  value()
 		);
 	}
 

@@ -35,6 +35,6 @@ public interface Setter {
 	 * @param object the parent object
 	 * @param value the new property value
 	 */
-	void apply(final Object object, Object value);
+	void set(final Object object, Object value);
 
 }

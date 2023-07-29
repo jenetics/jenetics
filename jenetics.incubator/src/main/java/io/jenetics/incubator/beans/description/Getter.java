@@ -35,6 +35,6 @@ public interface Getter {
 	 * @param object the parent object
 	 * @return the property value
 	 */
-	Object apply(final Object object);
+	Object get(final Object object);
 
 }

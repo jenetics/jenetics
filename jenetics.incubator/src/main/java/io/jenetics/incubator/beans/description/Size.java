@@ -26,5 +26,5 @@ package io.jenetics.incubator.beans.description;
  */
 @FunctionalInterface
 public interface Size {
-	int apply(final Object object);
+	int get(final Object object);
 }

@@ -47,4 +47,5 @@ public sealed interface Value permits Immutable, Mutable {
 	 * @return the type of the property value
 	 */
 	Class<?> type();
+
 }

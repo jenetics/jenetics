@@ -22,31 +22,55 @@ package io.jenetics.incubator.beans.description;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Type;
-
-import io.jenetics.incubator.beans.Path;
+import java.util.Optional;
 
 /**
- * A {@code PropertyDesc} describes one property that a Java Bean exports or a
- * {@link java.lang.reflect.RecordComponent} in the case of a record class.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record SimpleDescription(
-	Path path,
-	Type type,
-	Class<?> enclosure,
-	Getter getter,
-	Setter setter
-)
-	implements Description
-{
+public final class SingleValue implements Value {
 
-	public SimpleDescription {
-		requireNonNull(path);
-		requireNonNull(type);
-		requireNonNull(getter);
+	private final Class<?> enclosure;
+	private final Type value;
+	private final Getter getter;
+	private final Setter setter;
+
+	SingleValue(
+		final Class<?> enclosure,
+		final Type value,
+		final Getter getter,
+		final Setter setter
+	) {
+		this.enclosure = requireNonNull(enclosure);
+		this.value = requireNonNull(value);
+		this.getter = requireNonNull(getter);
+		this.setter = setter;
+	}
+
+	@Override
+	public Class<?> enclosure() {
+		return enclosure;
+	}
+
+	@Override
+	public Type value() {
+		return value;
+	}
+
+	public Getter getter() {
+		return getter;
+	}
+
+	public Optional<Setter> setter() {
+		return Optional.ofNullable(setter);
+	}
+
+	@Override
+	public String toString() {
+		return "Single[enclosure=%s, value=%s]".formatted(
+			enclosure().getName(),  value()
+		);
 	}
 
 }

@@ -19,26 +19,29 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import io.jenetics.incubator.beans.Node;
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathEntry;
 
 /**
- * A {@code Description} object describes the <em>statical</em>, at compile time
- * available property of a Java Bean or a record class.
+ * A {@code PropertyDesc} describes one property that a Java Bean exports or a
+ * {@link java.lang.reflect.RecordComponent} in the case of a record class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public sealed interface Description
-	extends Node
-	permits IndexedDescription, SimpleDescription
+public record Description(
+	Path path,
+	Value value
+)
+	implements PathEntry<Value>
 {
 
-	/**
-	 * Returns the class which contains {@code this} description.
-	 *
-	 * @return the class which contains {@code this} description
-	 */
-	Class<?> enclosure();
+	public Description {
+		requireNonNull(path);
+		requireNonNull(value);
+	}
 
 }

@@ -28,8 +28,8 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.DescriptionExtractors;
-import io.jenetics.incubator.beans.description.IndexedDescription;
-import io.jenetics.incubator.beans.description.SimpleDescription;
+import io.jenetics.incubator.beans.description.IndexedValue;
+import io.jenetics.incubator.beans.description.SingleValue;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.PreOrderIterator;
 
@@ -79,29 +79,29 @@ public final class PropertyExtractors {
 		return descriptions.flatMap(description -> {
 			final var enclosing = object.value();
 
-			if (description instanceof SimpleDescription desc) {
-				final var path = object.path().append(desc.name());
-				final var value = desc.getter().apply(object.value());
+			if (description.value() instanceof SingleValue desc) {
+				final var path = object.path().append(description.name());
+				final var value = desc.getter().get(object.value());
 
 				final Property property;
-				if (isArrayType(desc.type())) {
+				if (isArrayType(desc.value())) {
 					property = new ArrayProperty(path, toValue(enclosing, value, desc));
-				} else if (isListType(desc.type())) {
+				} else if (isListType(desc.value())) {
 					property = new ListProperty(path, toValue(enclosing, value, desc));
 				} else {
 					property = new SimpleProperty(path, toValue(enclosing, value, desc));
 				}
 
 				return Stream.of(property);
-			} else if (description instanceof IndexedDescription desc) {
-				final var path = desc.path().element() instanceof Path.Index
+			} else if (description.value() instanceof IndexedValue desc) {
+				final var path = description.path().element() instanceof Path.Index
 					? object.path()
-					: object.path().append(new Path.Name(desc.name()));
+					: object.path().append(new Path.Name(description.name()));
 
-				final int size = desc.size().apply(enclosing);
+				final int size = desc.size().get(enclosing);
 
 				return IntStream.range(0, size).mapToObj(i -> {
-					final var value = desc.getter().apply(enclosing, i);
+					final var value = desc.getter().get(enclosing, i);
 
 					return new IndexProperty(
 						path.append(new Path.Index(i)),
@@ -109,9 +109,9 @@ public final class PropertyExtractors {
 						new Mutable(
 							enclosing,
 							value,
-							value != null ? value.getClass() : toClass(desc.type()),
-							o -> desc.getter().apply(o, i),
-							(o, v) -> desc.setter().apply(o, i, v)
+							value != null ? value.getClass() : toClass(desc.value()),
+							o -> desc.getter().get(o, i),
+							(o, v) -> desc.setter().orElseThrow().set(o, i, v)
 						)
 					);
 				});
@@ -124,21 +124,21 @@ public final class PropertyExtractors {
 	private static Value toValue(
 		final Object enclosing,
 		final Object value,
-		final SimpleDescription desc
+		final SingleValue description
 	) {
-		if (desc.setter() != null) {
+		if (description.setter().isPresent()) {
 			return new Mutable(
 				enclosing,
 				value,
-				toClass(desc.type()),
-				desc.getter(),
-				desc.setter()
+				toClass(description.value()),
+				description.getter(),
+				description.setter().orElseThrow()
 			);
 		} else {
 			return new Immutable(
 				enclosing,
 				value,
-				toClass(desc.type())
+				toClass(description.value())
 			);
 		}
 	}

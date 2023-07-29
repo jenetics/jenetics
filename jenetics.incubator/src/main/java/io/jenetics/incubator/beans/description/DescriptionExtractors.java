@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Node;
 import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathEntry;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.util.Extractor;
 
@@ -69,18 +69,20 @@ public final class DescriptionExtractors {
 		toListDescription(type).ifPresent(descriptions::add);
 		toDescriptions(type).forEach(descriptions::add);
 
-		descriptions.sort(Comparator.comparing(Node::name));
+		descriptions.sort(Comparator.comparing(PathEntry::name));
 		return descriptions.stream();
 	}
 
 	private static Description
 	toDescription(final Path path, final PropertyDescriptor descriptor) {
-		return new SimpleDescription(
+		return new Description(
 			path.append(descriptor.getName()),
-			descriptor.getReadMethod().getGenericReturnType(),
-			descriptor.getReadMethod().getDeclaringClass(),
-			Methods.toGetter(descriptor.getReadMethod()),
-			Methods.toSetter(descriptor.getWriteMethod())
+			new SingleValue(
+				descriptor.getReadMethod().getDeclaringClass(),
+				descriptor.getReadMethod().getGenericReturnType(),
+				Methods.toGetter(descriptor.getReadMethod()),
+				Methods.toSetter(descriptor.getWriteMethod())
+			)
 		);
 	}
 
@@ -90,11 +92,13 @@ public final class DescriptionExtractors {
 			arrayType.isArray() && !arrayType.componentType().isPrimitive())
 		{
 			return Optional.of(
-				new IndexedDescription(
+				new Description(
 					type.path().append(new Path.Index(0)),
-					arrayType.getComponentType(),
-					arrayType,
-					Array::getLength, Array::get, Array::set
+					new IndexedValue(
+						arrayType.getComponentType(),
+						arrayType,
+						Array::getLength, Array::get, Array::set
+					)
 				)
 			);
 		} else {
@@ -113,11 +117,13 @@ public final class DescriptionExtractors {
 				typeArguments[0] instanceof Class<?> componentType)
 			{
 				return Optional.of(
-					new IndexedDescription(
+					new Description(
 						type.path().append(new Path.Index(0)),
-						componentType,
-						List.class,
-						Lists::size, Lists::get, Lists::set
+						new IndexedValue(
+							componentType,
+							List.class,
+							Lists::size, Lists::get, Lists::set
+						)
 					)
 				);
 			}
@@ -127,11 +133,13 @@ public final class DescriptionExtractors {
 			List.class.isAssignableFrom(listType))
 		{
 			return Optional.of(
-				new IndexedDescription(
+				new Description(
 					type.path().append(new Path.Index(0)),
-					Object.class,
-					List.class,
-					Lists::size, Lists::get, Lists::set
+					new IndexedValue(
+						Object.class,
+						List.class,
+						Lists::size, Lists::get, Lists::set
+					)
 				)
 			);
 		}
@@ -167,12 +175,14 @@ public final class DescriptionExtractors {
 
 	private static Description
 	toDescription(final Path path, final RecordComponent component) {
-		return new SimpleDescription(
+		return new Description(
 			path.append(component.getName()),
-			component.getAccessor().getGenericReturnType(),
-			component.getDeclaringRecord(),
-			Methods.toGetter(component.getAccessor()),
-			null
+			new SingleValue(
+				component.getDeclaringRecord(),
+				component.getAccessor().getGenericReturnType(),
+				Methods.toGetter(component.getAccessor()),
+				null
+			)
 		);
 	}
 

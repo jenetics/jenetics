@@ -26,5 +26,5 @@ package io.jenetics.incubator.beans.description;
  */
 @FunctionalInterface
 public interface IndexedGetter {
-	Object apply(final Object object, final int index);
+	Object get(final Object object, final int index);
 }
