@@ -22,10 +22,12 @@ package io.jenetics.incubator.beans.description;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.internal.Types;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -48,6 +50,10 @@ public record Description(
 	}
 
 	/**
+	 * The value type for the property description. It contains the information
+	 * about the <em>static</em> type of the property and the <em>static</em>
+	 * type of the enclosure type.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version !__version__!
 	 * @since !__version__!
@@ -55,21 +61,102 @@ public record Description(
 	public sealed interface Value {
 
 		/**
-		 * Returns the object which contains {@code this} node.
+		 * Returns the enclosure type.
 		 *
-		 * @return the object which contains {@code this} node
+		 * @return the enclosure type
 		 */
 		Class<?> enclosure();
 
 		/**
-		 * The value of the metaobject, may be {@code null}. This method always
-		 * returns the initial property value.
+		 * Return the <em>static</em> type of the property description.
 		 *
-		 * @return the <em>original</em> value of the metaobject
+		 * @return the <em>static</em> type of the property description
 		 */
 		Type value();
 
 		/**
+		 * Implementation of a single valued property description.
+		 *
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+		 * @version !__version__!
+		 * @since !__version__!
+		 */
+		final class Single implements Value {
+
+			private final Class<?> enclosure;
+			private final Type value;
+			private final Getter getter;
+			private final Setter setter;
+
+			Single(
+				final Class<?> enclosure,
+				final Type value,
+				final Getter getter,
+				final Setter setter
+			) {
+				this.enclosure = requireNonNull(enclosure);
+				this.value = requireNonNull(value);
+				this.getter = requireNonNull(getter);
+				this.setter = setter;
+			}
+
+			@Override
+			public Class<?> enclosure() {
+				return enclosure;
+			}
+
+			@Override
+			public Type value() {
+				return value;
+			}
+
+			/**
+			 * Return the getter function of the property.
+			 *
+			 * @return the getter function of the property
+			 */
+			public Getter getter() {
+				return getter;
+			}
+
+			/**
+			 * Return the setter function of the property if the property is
+			 * writable.
+			 *
+			 * @return the setter function of the property if the property
+			 */
+			public Optional<Setter> setter() {
+				return Optional.ofNullable(setter);
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(enclosure, value);
+			}
+
+			@Override
+			public boolean equals(final Object obj) {
+				return obj == this ||
+					obj instanceof Single s &&
+						enclosure.equals(s.enclosure) &&
+						value.equals(s.value);
+			}
+
+			@Override
+			public String toString() {
+				return "Single[value=%s, enclosure=%s]".formatted(
+					Types.toClass(value()) != null
+						? Types.toClass(value()).getName()
+						: value(),
+					enclosure().getName()
+				);
+			}
+
+		}
+
+		/**
+		 * Implements an indexed description property.
+		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 		 * @version !__version__!
 		 * @since !__version__!
@@ -106,76 +193,58 @@ public record Description(
 				return value;
 			}
 
+			/**
+			 * Return the size function of the <em>indexed</em> property.
+			 *
+			 * @return the size function of the <em>indexed</em> property
+			 */
 			public Size size() {
 				return size;
 			}
 
+			/**
+			 * Return the getter function of the <em>indexed</em> property.
+			 *
+			 * @return the getter function of the <em>indexed</em> property
+			 */
 			public IndexedGetter getter() {
 				return getter;
 			}
 
+			/**
+			 * Return the setter function of the <em>indexed</em> property, if
+			 * the property is writable.
+			 *
+			 * @return the setter function of the <em>indexed</em> property
+			 */
 			public Optional<IndexedSetter> setter() {
 				return Optional.ofNullable(setter);
 			}
 
 			@Override
+			public int hashCode() {
+				return Objects.hash(enclosure, value);
+			}
+
+			@Override
+			public boolean equals(final Object obj) {
+				return obj == this ||
+					obj instanceof Indexed i &&
+					enclosure.equals(i.enclosure) &&
+					value.equals(i.value);
+			}
+
+			@Override
 			public String toString() {
 				return "Indexed[value=%s, enclosure=%s]".formatted(
-					value(), enclosure().getName()
+					Types.toClass(value()) != null
+						? Types.toClass(value()).getName()
+						: value(),
+					enclosure().getName()
 				);
 			}
 
 		}
 
-		/**
-		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
-		 */
-		final class Single implements Value {
-
-			private final Class<?> enclosure;
-			private final Type value;
-			private final Getter getter;
-			private final Setter setter;
-
-			Single(
-				final Class<?> enclosure,
-				final Type value,
-				final Getter getter,
-				final Setter setter
-			) {
-				this.enclosure = requireNonNull(enclosure);
-				this.value = requireNonNull(value);
-				this.getter = requireNonNull(getter);
-				this.setter = setter;
-			}
-
-			@Override
-			public Class<?> enclosure() {
-				return enclosure;
-			}
-
-			@Override
-			public Type value() {
-				return value;
-			}
-
-			public Getter getter() {
-				return getter;
-			}
-
-			public Optional<Setter> setter() {
-				return Optional.ofNullable(setter);
-			}
-
-			@Override
-			public String toString() {
-				return "Single[value=%s, enclosure=%s]".formatted(
-					value(), enclosure().getName()
-				);
-			}
-
-		}
 	}
 }

@@ -35,13 +35,15 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class ArrayProperty extends IndexedProperty {
 
-	ArrayProperty(
-		final Path path,
-		final Value value
-	) {
+	ArrayProperty(final Path path, final Value value) {
 		super(path, value);
 	}
 
+	/**
+	 * Return the array values as {@code Object[]} array.
+	 *
+	 * @return the array values
+	 */
 	public Object[] array() {
 		return (Object[])value().value();
 	}

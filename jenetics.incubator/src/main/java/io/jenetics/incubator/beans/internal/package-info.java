@@ -18,4 +18,7 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+/**
+ * Internal package, contains classes not meant to be used outside this module.
+ */
 package io.jenetics.incubator.beans.internal;

@@ -21,6 +21,8 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
 import io.jenetics.incubator.beans.Path;
 
 /**
@@ -52,7 +54,11 @@ public final class IndexProperty implements Property {
         return path;
     }
 
-
+	/**
+	 * Return the actual index of the property.
+	 *
+	 * @return the actual index of the property
+	 */
     public int index() {
         return index;
     }
@@ -61,6 +67,20 @@ public final class IndexProperty implements Property {
     public Value value() {
         return value;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path, index, value);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IndexProperty ip &&
+			path.equals(ip.path) &&
+			index == ip.index &&
+			value.equals(ip.value);
+	}
 
 	@Override
 	public String toString() {

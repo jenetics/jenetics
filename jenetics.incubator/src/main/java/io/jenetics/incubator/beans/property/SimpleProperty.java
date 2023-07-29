@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import io.jenetics.incubator.beans.Path;
 
 /**
- * Represents a simple property.
+ * Represents a simple property value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

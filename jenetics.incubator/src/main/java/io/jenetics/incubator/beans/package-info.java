@@ -18,4 +18,9 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+/**
+ * This package contains classes which allow to perform random access to the
+ * properties of an object graph. The main entry point of this package is the
+ * {@link io.jenetics.incubator.beans.MetaObject} object.
+ */
 package io.jenetics.incubator.beans;

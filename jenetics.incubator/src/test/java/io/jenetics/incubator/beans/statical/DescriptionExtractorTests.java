@@ -19,8 +19,11 @@
  */
 package io.jenetics.incubator.beans.statical;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.testng.annotations.Test;
 
@@ -85,6 +88,13 @@ public class DescriptionExtractorTests {
 
 
 		desc.forEach(System.out::println);
+	}
+
+	@Test
+	public void foo() {
+		Descriptions
+			.walk(PathEntry.of(String.class), Descriptions::extract)
+			.forEach(System.out::println);
 	}
 
 }

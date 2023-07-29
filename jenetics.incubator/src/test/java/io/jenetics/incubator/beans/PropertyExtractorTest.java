@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.property.Properties;
 
 public class PropertyExtractorTest {
@@ -64,6 +65,27 @@ public class PropertyExtractorTest {
 
 		Properties.extract(PathEntry.of(data))
 			.forEach(System.out::println);
+	}
+
+
+	@Test
+	public void foo() {
+		record Author(String forename, String surname) { }
+		record Book(String title, int pages, List<Author> authors) { }
+
+		final var object = new Book(
+			"Oliver Twist",
+			366,
+			List.of(new Author("Charles", "Dickens"))
+		);
+
+		Properties.walk(PathEntry.of(object))
+			.forEach(System.out::println);
+
+		System.out.println("----");
+		Descriptions.walk(PathEntry.of(Book.class))
+			.forEach(System.out::println);
+
 	}
 
 }

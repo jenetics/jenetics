@@ -64,8 +64,8 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		this.extractor = requireNonNull(extractor);
 		this.mapper = requireNonNull(mapper);
 		this.identity = requireNonNull(identity);
-		deque.push(extractor.extract(object).iterator());
 
+		deque.push(extractor.extract(object).iterator());
 		visited.add(identity.apply(object));
 	}
 

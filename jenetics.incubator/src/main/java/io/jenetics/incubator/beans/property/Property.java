@@ -83,6 +83,9 @@ public sealed interface Property
 	permits IndexedProperty, IndexProperty, SimpleProperty
 {
 	/**
+	 * The value type for the property. It contains the information about the
+	 * value, type of the property and the enclosure value.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version !__version__!
 	 * @since !__version__!
@@ -112,6 +115,8 @@ public sealed interface Property
 		Class<?> type();
 
 		/**
+		 * Represents an <em>immutable</em> property value.
+		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 		 * @version !__version__!
 		 * @since !__version__!
@@ -130,6 +135,8 @@ public sealed interface Property
 		}
 
 		/**
+		 * Represents a <em>mutable</em> property value.
+		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 		 * @version !__version__!
 		 * @since !__version__!
@@ -171,10 +178,23 @@ public sealed interface Property
 				return type;
 			}
 
+			/**
+			 * Reads the actual value of the property. This value may be
+			 * different from the initial, cached {@link #value()}.
+			 *
+			 * @return the actual value of the property
+			 */
 			public Object read() {
 				return getter.get(enclosure);
 			}
 
+			/**
+			 * Writes a new value to the property.
+			 *
+			 * @param value the new property value
+			 * @return {@code true} if the new value has been written,
+			 *         {@code false} otherwise
+			 */
 			public boolean write(final Object value) {
 				try {
 					setter.set(enclosure, value);

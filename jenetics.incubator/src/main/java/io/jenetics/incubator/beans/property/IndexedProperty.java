@@ -21,6 +21,7 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -59,12 +60,41 @@ public abstract sealed class IndexedProperty
 		return value;
 	}
 
+	/**
+	 * Return the size of the <em>indexed</em> property.
+	 *
+	 * @return the size of the <em>indexed</em> property
+	 */
 	public abstract int size();
 
+	/**
+	 * Return the property value at the given {@code index}.
+	 *
+	 * @param index the property index
+	 * @return the property value at the given index
+	 */
 	public abstract Object get(final int index);
 
+	/**
+	 * Return the property values.
+	 *
+	 * @return the property values
+	 */
 	public Stream<Object> stream() {
 		return StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path, value);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IndexedProperty ip &&
+			path.equals(ip.path) &&
+			value.equals(ip.value);
 	}
 
 	@Override

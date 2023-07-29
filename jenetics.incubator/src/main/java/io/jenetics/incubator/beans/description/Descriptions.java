@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_DESCRIPTION_FILTER;
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_DESCRIPTION_FILTER;
 import static io.jenetics.incubator.beans.internal.Types.toArrayType;
 
 import java.beans.IntrospectionException;
@@ -28,10 +30,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Extractor;
@@ -50,35 +50,16 @@ import io.jenetics.incubator.beans.internal.PreOrderIterator;
  */
 public final class Descriptions {
 
-	public static final Predicate<PathEntry<Type>>
-		STANDARD_SOURCE_FILTER =
-		type -> {
-			final var cls = type.value() instanceof ParameterizedType pt
-				? (Class<?>)pt.getRawType()
-				: (Class<?>)type.value();
-
-			final var name = cls.getName();
-
-			return
-				// Allow native Java arrays, except byte[] arrays.
-				(name.startsWith("[") && !name.endsWith("[B")) ||
-				// Allow Java collection classes.
-				Collection.class.isAssignableFrom(cls) ||
-				(
-					!name.startsWith("java") &&
-					!name.startsWith("com.sun") &&
-					!name.startsWith("sun") &&
-					!name.startsWith("jdk")
-				);
-		};
-
-	public static final Predicate<Description> STANDARD_TARGET_FILTER = prop ->
-		!(prop.value() instanceof Description.Value.Single &&
-			prop.value().enclosure().getName().startsWith("java"));
-
 	private Descriptions() {
 	}
 
+	/**
+	 * Extracts the <em>directly</em> available property descriptions for the
+	 * given {@code type} and start path, {@link PathEntry#path()}.
+	 *
+	 * @param type the enclosure type + start <em>path</em>
+	 * @return the <em>directly</em> available property descriptions
+	 */
 	public static Stream<Description> extract(final PathEntry<? extends Type> type) {
 		if (type == null || type.value() == null) {
 			return Stream.empty();
@@ -207,36 +188,112 @@ public final class Descriptions {
 	}
 
 	/**
-	 * asdf
-	 * @param root adf
-	 * @param extractor af
-	 * @return asdf
+	 * Return a Stream that is lazily populated with {@code Description} by
+	 * searching for all property descriptions in an object tree rooted at a
+	 * given starting {@code root} object. Only the <em>statically</em>
+	 * available property descriptions are returned. If used with the
+	 * {@link #extract(PathEntry)} method, all found descriptions are returned,
+	 * including the descriptions from the Java classes.
+	 * <pre>{@code
+	 * Descriptions
+	 *     .walk(PathEntry.of(String.class), Descriptions::extract)
+	 *     .forEach(System.out::println);
+	 * }</pre>
+	 *
+	 * The code snippet above will create the following output:
+	 *
+	 * <pre>
+	 * Description[path=blank, value=Single[value=boolean, enclosure=java.lang.String]]
+	 * Description[path=bytes, value=Single[value=class [B, enclosure=java.lang.String]]
+	 * Description[path=empty, value=Single[value=boolean, enclosure=java.lang.String]]
+	 * </pre>
+	 *
+	 * If you are not interested in the property descriptions of the Java
+	 * classes, you should the {@link #walk(PathEntry)} instead.
+	 *
+	 * @see #walk(PathEntry)
+	 *
+	 * @param root the root class of the object graph
+	 * @param extractor the extractor used for fetching the directly available
+	 *        descriptions. See {@link #extract(PathEntry)}.
+	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(
-		final PathEntry<Type> root,
-		final Extractor<PathEntry<Type>, Description> extractor
+		final PathEntry<? extends Type> root,
+		final Extractor<
+			? super PathEntry<? extends Type>,
+			? extends Description
+		> extractor
 	) {
-		final var ext = PreOrderIterator.extractor(
-			extractor,
-			desc -> PathEntry.of(desc.path(), desc.value().value()),
-			PathEntry::value
-		);
-		return ext.extract(root);
+		final Extractor<? super PathEntry<? extends Type>, Description>
+			recursiveExtractor = PreOrderIterator.extractor(
+				extractor,
+				desc -> PathEntry.of(desc.path(), desc.value().value()),
+				PathEntry::value
+			);
+
+		return recursiveExtractor.extract(root);
 	}
 
 	/**
-	 * asdf
-	 * @param root adf
-	 * @return asdf
+	 * Return a Stream that is lazily populated with {@code Description} by
+	 * searching for all property descriptions in an object tree rooted at a
+	 * given starting {@code root} object. Only the <em>statically</em>
+	 * available property descriptions are returned, and the property
+	 * descriptions from Java classes are not part of the result.
+	 *
+	 * <pre>{@code
+	 * record Author(String forename, String surname) { }
+	 * record Book(String title, int pages, List<Author> authors) { }
+	 *
+	 * Descriptions.walk(PathEntry.of(Book.class))
+	 *     .forEach(System.out::println);
+	 * }</pre>
+	 *
+	 * The code snippet above will create the following output:
+	 *
+	 * <pre>{@code
+	 * Description[path=authors, value=Single[value=java.util.List<Author>, enclosure=Book]]
+	 * Description[path=authors[0], value=Indexed[value=Author, enclosure=java.util.List]]
+	 * Description[path=authors[0].forename, value=Single[value=java.lang.String, enclosure=Author]]
+	 * Description[path=authors[0].surname, value=Single[value=java.lang.String, enclosure=Author]]
+	 * Description[path=pages, value=Single[value=int, enclosure=Book]]
+	 * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
+	 * }</pre>
+	 *
+	 * @see #walk(PathEntry, Extractor)
+	 * @see #walk(Type)
+	 *
+	 * @param root the root class of the object graph
+	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
-	public static Stream<Description>
-	walk(final PathEntry<Type> root) {
+	public static Stream<Description> walk(final PathEntry<? extends Type> root) {
+		final Extractor<PathEntry<? extends Type>, Description>
+			extractor = Descriptions::extract;
+
 		return walk(
 			root,
-			((Extractor<PathEntry<Type>, Description>)Descriptions::extract)
-				.sourceFilter(STANDARD_SOURCE_FILTER)
-				.targetFilter(STANDARD_TARGET_FILTER)
+			extractor
+				.sourceFilter(STANDARD_SOURCE_DESCRIPTION_FILTER)
+				.targetFilter(STANDARD_TARGET_DESCRIPTION_FILTER)
 		);
+	}
+
+	/**
+	 * Return a Stream that is lazily populated with {@code Description} by
+	 * searching for all property descriptions in an object tree rooted at a
+	 * given starting {@code root} object. Only the <em>statically</em>
+	 * available property descriptions are returned, and the property
+	 * descriptions from Java classes are not part of the result.
+	 *
+	 * @see #walk(PathEntry, Extractor)
+	 * @see #walk(PathEntry)
+	 *
+	 * @param root the root class of the object graph
+	 * @return all <em>statically</em> fetch-able property descriptions
+	 */
+	public static Stream<Description> walk(final Type root) {
+		return walk(PathEntry.of(root));
 	}
 
 }

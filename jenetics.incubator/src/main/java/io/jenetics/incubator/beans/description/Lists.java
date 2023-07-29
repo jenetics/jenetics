@@ -22,7 +22,6 @@ package io.jenetics.incubator.beans.description;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Some helper methods for accessing list methods.
@@ -83,7 +82,7 @@ final class Lists {
 	}
 
 	/**
-	 * Sets the value of the indexed component of the specified list
+	 * Sets the value of the indexed component for the specified list
 	 * object to the specified new value.
 	 *
 	 * @param list the list
@@ -105,33 +104,6 @@ final class Lists {
 		} else {
 			throw noListValue(list);
 		}
-	}
-
-	static Class<?> getComponentType(final Class<?> type) {
-		if (List.class.isAssignableFrom(type)) {
-			var interfaces = type.getGenericInterfaces();
-			Stream.of(interfaces)
-				.forEach(System.out::println);
-			System.out.println("----");
-			System.out.println(type.getGenericSuperclass());
-			System.out.println("----");
-			var tparams = type.getTypeParameters();
-			Stream.of(tparams)
-				.forEach(System.out::println);
-
-			try {
-				System.out.println("----");
-				var t = type.getMethod("get", int.class).getGenericReturnType();
-				System.out.println(type.getMethod("get", int.class));
-				System.out.println("T: " + t);
-			} catch (NoSuchMethodException e) {
-				throw new RuntimeException(e);
-			}
-
-		} else {
-			throw noListValue(type);
-		}
-		return Object.class;
 	}
 
 }

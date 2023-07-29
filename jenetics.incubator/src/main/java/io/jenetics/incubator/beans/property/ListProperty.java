@@ -36,13 +36,15 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class ListProperty extends IndexedProperty {
 
-	ListProperty(
-		final Path path,
-		final Value value
-	) {
+	ListProperty(final Path path, final Value value) {
 		super(path, value);
 	}
 
+	/**
+	 * Return the list values as {@code List} object.
+	 *
+	 * @return the list values
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Object> list() {
 		return (List<Object>)value().value();
@@ -53,6 +55,7 @@ public final class ListProperty extends IndexedProperty {
 		return list() != null ? list().size() : 0;
 	}
 
+	@Override
 	public Object get(final int index) {
 		if (list() == null) {
 			throw new IndexOutOfBoundsException("List is null.");

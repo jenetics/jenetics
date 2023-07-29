@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_FILTER;
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_FILTER;
 import static io.jenetics.incubator.beans.internal.Types.isArrayType;
 import static io.jenetics.incubator.beans.internal.Types.isListType;
 import static io.jenetics.incubator.beans.internal.Types.toClass;
@@ -33,6 +35,7 @@ import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathEntry;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
+import io.jenetics.incubator.beans.internal.Filters;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
@@ -46,24 +49,8 @@ import io.jenetics.incubator.beans.internal.PreOrderIterator;
  */
 public final class Properties {
 
-	public static final Predicate<PathEntry<Object>>
-		STANDARD_SOURCE_FILTER =
-		object -> {
-			final var type = object.value() != null
-				? object.value().getClass()
-				: Object.class;
-
-			return Descriptions.STANDARD_SOURCE_FILTER
-				.test(PathEntry.of(object.path(), type));
-		};
-
-	public static final Predicate<Property> STANDARD_TARGET_FILTER = prop ->
-		!(prop instanceof SimpleProperty &&
-		prop.value().enclosure().getClass().getName().startsWith("java"));
-
 	private Properties() {
 	}
-
 
 	/**
 	 * This method extracts the direct properties of the given {@code root}
@@ -72,7 +59,7 @@ public final class Properties {
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> extract(final PathEntry<Object> root) {
+	public static Stream<Property> extract(final PathEntry<?> root) {
 		if (root == null || root.value() == null) {
 			return Stream.empty();
 		}
@@ -80,49 +67,55 @@ public final class Properties {
 		final var type = PathEntry.<Type>of(root.value().getClass());
 		final var descriptions = Descriptions.extract(type);
 
-		return descriptions.flatMap(description -> {
-			final var enclosing = root.value();
+		return descriptions
+			.flatMap(description -> extract(root, description));
+	}
 
-			if (description.value() instanceof Description.Value.Single desc) {
-				final var path = root.path().append(description.name());
-				final var value = desc.getter().get(root.value());
+	private static Stream<Property> extract(
+		final PathEntry<?> root,
+		final Description description
+	) {
+		final var enclosing = root.value();
 
-				final Property property;
-				if (isArrayType(desc.value())) {
-					property = new ArrayProperty(path, toValue(enclosing, value, desc));
-				} else if (isListType(desc.value())) {
-					property = new ListProperty(path, toValue(enclosing, value, desc));
-				} else {
-					property = new SimpleProperty(path, toValue(enclosing, value, desc));
-				}
+		if (description.value() instanceof Description.Value.Single desc) {
+			final var path = root.path().append(description.name());
+			final var value = desc.getter().get(root.value());
 
-				return Stream.of(property);
-			} else if (description.value() instanceof Description.Value.Indexed desc) {
-				final var path = description.path().element() instanceof Path.Index
-					? root.path()
-					: root.path().append(new Path.Name(description.name()));
-
-				final int size = desc.size().get(enclosing);
-
-				return IntStream.range(0, size).mapToObj(i -> {
-					final var value = desc.getter().get(enclosing, i);
-
-					return new IndexProperty(
-						path.append(new Path.Index(i)),
-						i,
-						new Property.Value.Mutable(
-							enclosing,
-							value,
-							value != null ? value.getClass() : toClass(desc.value()),
-							o -> desc.getter().get(o, i),
-							(o, v) -> desc.setter().orElseThrow().set(o, i, v)
-						)
-					);
-				});
+			final Property prop;
+			if (isArrayType(desc.value())) {
+				prop = new ArrayProperty(path, toValue(enclosing, value, desc));
+			} else if (isListType(desc.value())) {
+				prop = new ListProperty(path, toValue(enclosing, value, desc));
+			} else {
+				prop = new SimpleProperty(path, toValue(enclosing, value, desc));
 			}
 
+			return Stream.of(prop);
+		} else if (description.value() instanceof Description.Value.Indexed desc) {
+			final var path = description.path().element() instanceof Path.Index
+				? root.path()
+				: root.path().append(new Path.Name(description.name()));
+
+			final int size = desc.size().get(enclosing);
+
+			return IntStream.range(0, size).mapToObj(i -> {
+				final var value = desc.getter().get(enclosing, i);
+
+				return new IndexProperty(
+					path.append(new Path.Index(i)),
+					i,
+					new Property.Value.Mutable(
+						enclosing,
+						value,
+						value != null ? value.getClass() : toClass(desc.value()),
+						o -> desc.getter().get(o, i),
+						(o, v) -> desc.setter().orElseThrow().set(o, i, v)
+					)
+				);
+			});
+		} else {
 			return Stream.empty();
-		});
+		}
 	}
 
 	private static Property.Value toValue(
@@ -148,9 +141,28 @@ public final class Properties {
 	}
 
 	/**
-	 * Return a {@code Stream} that is lazily populated with {@code Property}
-	 * by walking the object tree rooted at a given starting object. The object
-	 * tree is traversed in pre-order.
+	 * Return a Stream that is lazily populated with {@code Property} by
+	 * searching for all properties in an object tree rooted at a given
+	 * starting {@code root} object. If used with the {@link #extract(PathEntry)}
+	 * method, all found descriptions are returned, including the descriptions
+	 * from the Java classes.
+	 * <pre>{@code
+	 * final var object = "Some Value";
+	 * Properties.walk(PathEntry.of(object), Properties::extract)
+	 *     .forEach(System.out::println);
+	 * }</pre>
+	 * The code snippet above will create the following output:
+	 * <pre>
+	 * SimpleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
+	 * SimpleProperty[path=bytes, value=Mutable[value=[B@41e1455d, type=[B, enclosureType=java.lang.String]]
+	 * SimpleProperty[path=empty, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
+	 * </pre>
+	 *
+	 * If you are not interested in the property descriptions of the Java
+	 * classes, you should the {@link #walk(PathEntry, String...)} )} instead.
+	 *
+	 * @see #walk(PathEntry, String...)
+	 * @see #walk(Object, String...)
 	 *
 	 * @param root the root of the object tree
 	 * @param extractor the first level property extractor used for extracting
@@ -158,61 +170,96 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property> walk(
-		final PathEntry<Object> root,
-		final Extractor<PathEntry<Object>, Property> extractor
+		final PathEntry<?> root,
+		final Extractor<? super PathEntry<?>, ? extends Property> extractor
 	) {
-		final var ext = PreOrderIterator.extractor(
-			extractor,
-			property -> PathEntry.of(property.path(), property.value().value()),
-			PathEntry::value
-		);
-		return ext.extract(root);
+		final Extractor<? super PathEntry<?>, Property>
+			recursiveExtractor = PreOrderIterator.extractor(
+				extractor,
+				property -> PathEntry.of(property.path(), property.value().value()),
+				PathEntry::value
+			);
+
+		return recursiveExtractor.extract(root);
 	}
 
 	/**
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
-	 * by walking the object tree rooted at a given starting object. The object
-	 * tree is traversed in pre-order.
+	 * by walking the object tree rooted at a given starting object.
 	 *
 	 * <pre>{@code
-	 * Property.walk(new DataObject(root), "my.object.packages.*")
-	 *    .forEach(System.out::println);
+	 * record Author(String forename, String surname) { }
+	 * record Book(String title, int pages, List<Author> authors) { }
+	 *
+	 * final var object = new Book(
+	 *     "Oliver Twist",
+	 *     366,
+	 *     List.of(new Author("Charles", "Dickens"))
+	 * );
+	 *
+	 * Properties.walk(PathEntry.of(object))
+	 *     .forEach(System.out::println);
 	 * }</pre>
+	 *
+	 * The code snippet above will create the following output:
+	 *
+	 * <pre>{@code
+	 * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
+	 * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
+	 * SimpleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
+	 * SimpleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
+	 * SimpleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
+	 * SimpleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
+	 * }</pre>
+	 *
+	 * @see #walk(Object, String...)
 	 *
 	 * @param root the root of the object tree
 	 * @param includes the included object name (glob) patterns
 	 * @return a property stream
 	 */
 	public static Stream<Property>
-	walk(final PathEntry<Object> root, final String... includes) {
+	walk(final PathEntry<?> root, final String... includes) {
+		final Extractor<PathEntry<?>, Property>
+			extractor = Properties::extract;
+
 		return walk(
 			root,
-			((Extractor<PathEntry<Object>, Property>)Properties::extract)
-				.sourceFilter(includesFilter(includes))
+			extractor
 				.sourceFilter(STANDARD_SOURCE_FILTER)
+				.sourceFilter(includesFilter(includes))
 				.targetFilter(STANDARD_TARGET_FILTER)
 		);
 	}
 
-	private static Predicate<PathEntry<Object>>
+	private static Predicate<? super PathEntry<?>>
 	includesFilter(final String... includes) {
 		return Stream.of(includes)
 			.map(Filters::toPattern)
 			.map(Filters::toFilter)
-			.reduce(Predicate::or)
+			.reduce((a, b) -> p -> a.test(p) || b.test(p))
 			.orElse(a -> true);
 	}
 
+	/**
+	 * Return a {@code Stream} that is lazily populated with {@code Property}
+	 * by walking the object tree rooted at a given starting object.
+	 *
+	 * @see #walk(PathEntry, String...)
+	 *
+	 * @param root the root of the object tree
+	 * @param includes the included object name (glob) patterns
+	 * @return a property stream
+	 */
 	public static Stream<Property> walk(
 		final Object root,
 		final String... includes
 	) {
-		@SuppressWarnings("unchecked")
-		final var object = root instanceof PathEntry<?> po
-			? (PathEntry<Object>)po
-			: PathEntry.of(root);
-
-		return walk(object, includes);
+		return walk(
+			root instanceof PathEntry<?> po
+				? po : PathEntry.of(root),
+			includes
+		);
 	}
 
 	static String toString(final String name, final Property property) {
