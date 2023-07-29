@@ -19,8 +19,10 @@
  */
 package io.jenetics.incubator.beans.internal;
 
+import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
 
 /**
@@ -30,6 +32,14 @@ import java.util.List;
  */
 public final class Types {
 	private Types() {
+	}
+
+	public static boolean isIdentityType(final Object object) {
+		return
+			object != null &&
+				!(object instanceof Constable) &&
+				!(object instanceof TemporalAccessor) &&
+				!(object instanceof Number);
 	}
 
 	public static Class<?> toClass(final Type type) {

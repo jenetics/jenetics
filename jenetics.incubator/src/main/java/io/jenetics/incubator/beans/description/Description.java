@@ -37,10 +37,7 @@ import io.jenetics.incubator.beans.internal.Types;
  * @version !__version__!
  * @since !__version__!
  */
-public record Description(
-	Path path,
-	Value value
-)
+public record Description(Path path, Value value)
 	implements PathEntry<Description.Value>
 {
 

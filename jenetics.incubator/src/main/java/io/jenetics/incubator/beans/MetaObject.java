@@ -20,10 +20,10 @@
 package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.beans.internal.Types.isIdentityType;
 
-import java.lang.constant.Constable;
-import java.time.temporal.TemporalAccessor;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,76 +41,77 @@ import io.jenetics.incubator.beans.property.Property;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MetaObject {
+public final class MetaObject implements Iterable<Property> {
 
     private final Object object;
 
-	private volatile List<Property> properties;
-	private volatile Map<Path, Property> paths;
-	private volatile Map<Object, Path> objects;
+	private volatile Values values;
 
+	private static final class Values {
+		final List<Property> properties;
+		final Map<Path, Property> paths;
+		final Map<Object, Path> objects;
+
+		private Values(final List<Property> properties) {
+			this.properties = requireNonNull(properties);
+
+			paths = properties.stream()
+				.collect(Collectors.toMap(
+					Property::path,
+					Function.identity()
+				));
+
+			objects = properties.stream()
+				.filter(prop -> isIdentityType(prop.value()))
+				.collect(Collectors.toMap(
+					Property::value,
+					Property::path,
+					(p1, p2) -> p1,
+					IdentityHashMap::new
+				));
+		}
+	}
+
+	/**
+	 * Create a new metaobject wrapper for the given {@code object}.
+	 *
+	 * @param object the object to wrap
+	 * @throws NullPointerException if the argument is {@code null}
+	 */
     public MetaObject(Object object) {
         this.object = requireNonNull(object);
     }
 
+	private Values values() {
+		Values val = values;
+		if (val == null) {
+			synchronized (this) {
+				val = values;
+				if (val == null) {
+					values = val = new Values(Properties.walk(object).toList());
+				}
+			}
+		}
+
+		return val;
+	}
+
+	/**
+	 * Return the wrapped model object.
+	 *
+	 * @return the wrapped model object
+	 */
 	public Object object() {
 		return object;
 	}
 
-	private void init() {
-		if (properties == null) {
-			synchronized (this) {
-				if (properties == null) {
-					properties = Properties.walk(object).toList();
-
-					paths = properties.stream()
-						.collect(Collectors.toMap(
-							Property::path,
-							Function.identity()
-						));
-
-					objects = properties.stream()
-						.filter(p -> isIdentityType(p.value()))
-						.collect(Collectors.toMap(
-							Property::value,
-							Property::path,
-							(p1, p2) -> p1,
-							IdentityHashMap::new
-						));
-				}
-			}
-		}
-	}
-
-	private static boolean isIdentityType(final Object object) {
-		return
-			object != null &&
-			!(object instanceof Constable) &&
-			!(object instanceof TemporalAccessor) &&
-			!(object instanceof Number);
-	}
-
 	/**
-	 * Return a <em>flattened</em> stream of all properties of the wrapped
-	 * object.
+	 * Return the number of properties, the wrapped object graph consists of.
 	 *
-	 * @return all properties
+	 * @return the number of properties
 	 */
-    public Stream<Property> properties() {
-	    init();
-		return properties.stream();
-    }
-
-	/**
-	 * Return the path of the given {@code value}, if it is part of the object
-	 * graph and an <em>identity</em> object.
-	 *
-	 * @param value the value to lookup in the object graph
-	 * @return the object path if part of the object graph
-	 */
-	public Optional<Path> pathOf(final Object value) {
-		init();
-		return Optional.ofNullable(objects.get(value));
+	public int size() {
+		return values().properties.size();
 	}
 
 	/**
@@ -119,9 +120,19 @@ public final class MetaObject {
 	 * @param path the path of the property
 	 * @return the property with the given path
 	 */
-	public Optional<Property> propertyAt(final Path path) {
-		init();
-		return Optional.ofNullable(paths.get(path));
+	public Optional<Property> get(final Path path) {
+		return Optional.ofNullable(values().paths.get(path));
+	}
+
+	/**
+	 * Return the path of the given {@code value}, if it is part of the object
+	 * graph and an <em>identity</em> object.
+	 *
+	 * @param value the value to lookup in the object graph
+	 * @return the object path if its part of the object graph
+	 */
+	public Optional<Path> pathOf(final Object value) {
+		return Optional.ofNullable(values().objects.get(value));
 	}
 
 	/**
@@ -133,7 +144,34 @@ public final class MetaObject {
 	public Optional<Property> parentOf(final Object value) {
 		return pathOf(value)
 			.flatMap(Path::parent)
-			.flatMap(this::propertyAt);
+			.flatMap(this::get);
+	}
+
+	@Override
+	public Iterator<Property> iterator() {
+		return values().properties.iterator();
+	}
+
+	/**
+	 * Return a <em>flattened</em> stream of all properties of the wrapped
+	 * object.
+	 *
+	 * @return all properties
+	 */
+	public Stream<Property> stream() {
+		return values().properties.stream();
+	}
+
+	@Override
+	public int hashCode() {
+		return object.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof MetaObject mo &&
+			object.equals(mo.object);
 	}
 
     @Override
