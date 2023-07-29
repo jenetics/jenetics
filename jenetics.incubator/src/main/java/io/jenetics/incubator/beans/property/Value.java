@@ -19,52 +19,32 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.util.Collections.emptyIterator;
-
-import java.util.Arrays;
-import java.util.Iterator;
-
-import io.jenetics.incubator.beans.Path;
-
 /**
- * Represents an array property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends IndexedProperty {
+public sealed interface Value permits Immutable, Mutable {
 
-	ArrayProperty(
-		final Path path,
-		final Value value
-	) {
-		super(path, value);
-	}
+	/**
+	 * Returns the object which contains {@code this} node.
+	 *
+	 * @return the object which contains {@code this} node
+	 */
+	Object enclosure();
 
-	public Object[] array() {
-		return (Object[])value().value();
-	}
+	/**
+	 * The value of the metaobject, may be {@code null}. This method always
+	 * returns the initial property value.
+	 *
+	 * @return the <em>original</em> value of the metaobject
+	 */
+	Object value();
 
-	@Override
-	public int size() {
-		return array() != null ? array().length : 0;
-	}
-
-	@Override
-	public Object get(final int index) {
-		if (array() == null) {
-			throw new IndexOutOfBoundsException("Array is null.");
-		}
-
-		return array()[index];
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return array() != null
-			? Arrays.asList(array()).iterator()
-			: emptyIterator();
-	}
-
+	/**
+	 * The type of the property value, never {@code null}.
+	 *
+	 * @return the type of the property value
+	 */
+	Class<?> type();
 }

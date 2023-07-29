@@ -21,7 +21,6 @@ package io.jenetics.incubator.beans.property;
 
 import static java.lang.String.format;
 
-import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -41,13 +40,20 @@ import io.jenetics.incubator.beans.util.PreOrderIterator;
  */
 public final class Properties {
 
-	public static final Predicate<PathValue<Object>> NON_JAVA_CLASSES = object -> {
-		final Type type = object.value() != null
-			? object.value().getClass()
-			: Object.class;
+	public static final Predicate<PathValue<Object>>
+		STANDARD_SOURCE_FILTER =
+		object -> {
+			final var type = object.value() != null
+				? object.value().getClass()
+				: Object.class;
 
-		return Descriptions.NON_JAVA_CLASSES.test(new PathValue<>(object.path(), type));
-	};
+			return Descriptions.STANDARD_SOURCE_FILTER
+				.test(new PathValue<>(object.path(), type));
+		};
+
+	public static final Predicate<Property> STANDARD_TARGET_FILTER = prop ->
+		!(prop instanceof SimpleProperty &&
+		prop.value().enclosure().getClass().getName().startsWith("java"));
 
 	private Properties() {
 	}
@@ -68,7 +74,7 @@ public final class Properties {
 	) {
 		final var ext = PreOrderIterator.extractor(
 			extractor,
-			property -> new PathValue<>(property.path(), property.value()),
+			property -> new PathValue<>(property.path(), property.value().value()),
 			PathValue::value
 		);
 		return ext.extract(root);
@@ -94,7 +100,8 @@ public final class Properties {
 			root,
 			PropertyExtractors.DIRECT
 				.sourceFilter(includesFilter(includes))
-				.sourceFilter(NON_JAVA_CLASSES)
+				.sourceFilter(STANDARD_SOURCE_FILTER)
+				.targetFilter(STANDARD_TARGET_FILTER)
 		);
 	}
 
@@ -116,22 +123,14 @@ public final class Properties {
 			? (PathValue<Object>)po
 			: new PathValue<>(root);
 
-		return walk(
-			object,
-			PropertyExtractors.DIRECT
-				.sourceFilter(includesFilter(includes))
-				.sourceFilter(NON_JAVA_CLASSES)
-		);
+		return walk(object, includes);
 	}
 
 	static String toString(final String name, final Property property) {
-		return format(
-			"%s[path=%s, value=%s, type=%s, enclosingType=%s]",
+		return "%s[path=%s, value=%s]".formatted(
 			name,
 			property.path(),
-			property.value(),
-			property.type() != null ? property.type().getName() : null,
-			property.enclosure().getClass().getName()
+			property.value()
 		);
 	}
 

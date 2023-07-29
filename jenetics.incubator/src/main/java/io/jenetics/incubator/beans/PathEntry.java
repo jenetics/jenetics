@@ -17,54 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
-
-import static java.util.Collections.emptyIterator;
-
-import java.util.Arrays;
-import java.util.Iterator;
-
-import io.jenetics.incubator.beans.Path;
+package io.jenetics.incubator.beans;
 
 /**
- * Represents an array property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends IndexedProperty {
+public interface PathEntry<V> {
 
-	ArrayProperty(
-		final Path path,
-		final Value value
-	) {
-		super(path, value);
+	/**
+	 * The full path, separated with dots '.', of {@code this} property from
+	 * the <em>root</em> object.
+	 *
+	 * @return the full property path
+	 */
+	Path path();
+
+	/**
+	 * The name of {@code this} property; always non-{@code null}.
+	 *
+	 * @return the node name
+	 */
+	default String name() {
+		return path().isEmpty() ? "" : path().element().toString();
 	}
 
-	public Object[] array() {
-		return (Object[])value().value();
-	}
-
-	@Override
-	public int size() {
-		return array() != null ? array().length : 0;
-	}
-
-	@Override
-	public Object get(final int index) {
-		if (array() == null) {
-			throw new IndexOutOfBoundsException("Array is null.");
-		}
-
-		return array()[index];
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return array() != null
-			? Arrays.asList(array()).iterator()
-			: emptyIterator();
-	}
+	/**
+	 * Return the value of the entry.
+	 *
+	 * @return the value of the entry
+	 */
+	V value();
 
 }

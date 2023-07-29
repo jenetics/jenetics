@@ -41,25 +41,27 @@ import io.jenetics.incubator.beans.util.PreOrderIterator;
  */
 public final class Descriptions {
 
-	public static final Predicate<PathValue<Type>> NON_JAVA_CLASSES = type -> {
-		final var cls = type.value() instanceof ParameterizedType pt
-			? (Class<?>)pt.getRawType()
-			: (Class<?>)type.value();
+	public static final Predicate<PathValue<Type>>
+		STANDARD_SOURCE_FILTER =
+		type -> {
+			final var cls = type.value() instanceof ParameterizedType pt
+				? (Class<?>)pt.getRawType()
+				: (Class<?>)type.value();
 
-		final var name = cls.getName();
+			final var name = cls.getName();
 
-		return
-			// Allow native Java arrays, except byte[] arrays.
-			(name.startsWith("[") && !name.endsWith("[B")) ||
-			// Allow Java collection classes.
-			Collection.class.isAssignableFrom(cls) ||
-			(
-				!name.startsWith("java") &&
-				!name.startsWith("com.sun") &&
-				!name.startsWith("sun") &&
-				!name.startsWith("jdk")
-			);
-	};
+			return
+				// Allow native Java arrays, except byte[] arrays.
+				(name.startsWith("[") && !name.endsWith("[B")) ||
+				// Allow Java collection classes.
+				Collection.class.isAssignableFrom(cls) ||
+				(
+					!name.startsWith("java") &&
+					!name.startsWith("com.sun") &&
+					!name.startsWith("sun") &&
+					!name.startsWith("jdk")
+				);
+		};
 
 	private Descriptions() {
 	}
@@ -80,7 +82,7 @@ public final class Descriptions {
 	walk(final PathValue<Type> root) {
 		return walk(
 			root,
-			DescriptionExtractors.DIRECT.sourceFilter(NON_JAVA_CLASSES)
+			DescriptionExtractors.DIRECT.sourceFilter(STANDARD_SOURCE_FILTER)
 		);
 	}
 

@@ -31,38 +31,11 @@ import io.jenetics.incubator.beans.description.SimpleDescription;
  * @version !__version__!
  * @since !__version__!
  */
-public final class SimpleProperty
-	extends SimpleDescriptionMethods
-	implements Property
-{
+public record SimpleProperty(Path path, Value value) implements Property {
 
-	private final Path path;
-	private final Object value;
-
-	SimpleProperty(
-		final SimpleDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject);
-		this.path = requireNonNull(path);
-		this.value = value;
-	}
-
-	@Override
-	public Path path() {
-		return path;
-	}
-
-	@Override
-	public Class<?> type() {
-		return value() != null ? value.getClass() : (Class<?>)desc.type();
-	}
-
-	@Override
-	public Object value() {
-		return value;
+	public SimpleProperty {
+		requireNonNull(path);
+		requireNonNull(value);
 	}
 
 	@Override

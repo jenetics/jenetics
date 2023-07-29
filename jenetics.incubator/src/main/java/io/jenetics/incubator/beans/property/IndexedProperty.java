@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
  * Base class for properties which consists of 0 to n objects.
@@ -35,23 +34,19 @@ import io.jenetics.incubator.beans.description.SimpleDescription;
  * @since !__version__!
  */
 public abstract sealed class IndexedProperty
-	extends SimpleDescriptionMethods
 	implements Iterable<Object>, Property
 	permits ListProperty, ArrayProperty
 {
 
-	final Path path;
-	final Object value;
+	private final Path path;
+	private final Value value;
 
 	IndexedProperty(
-		final SimpleDescription desc,
-		final Object enclosingObject,
 		final Path path,
-		final Object value
+		final Value value
 	) {
-		super(desc, enclosingObject);
 		this.path = requireNonNull(path);
-		this.value = value;
+		this.value = requireNonNull(value);
 	}
 
 	@Override
@@ -60,8 +55,8 @@ public abstract sealed class IndexedProperty
 	}
 
 	@Override
-	public Class<?> type() {
-		return value() != null ? value.getClass() : (Class<?>)desc.type();
+	public Value value() {
+		return value;
 	}
 
 	public abstract int size();

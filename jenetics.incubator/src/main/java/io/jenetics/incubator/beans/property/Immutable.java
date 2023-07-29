@@ -19,52 +19,20 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.util.Collections.emptyIterator;
-
-import java.util.Arrays;
-import java.util.Iterator;
-
-import io.jenetics.incubator.beans.Path;
-
 /**
- * Represents an array property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class ArrayProperty extends IndexedProperty {
-
-	ArrayProperty(
-		final Path path,
-		final Value value
-	) {
-		super(path, value);
-	}
-
-	public Object[] array() {
-		return (Object[])value().value();
-	}
-
+public record Immutable(Object enclosure, Object value, Class<?> type)
+	implements Value
+{
 	@Override
-	public int size() {
-		return array() != null ? array().length : 0;
+	public String toString() {
+		return "Immutable[value=%s, type=%s, enclosureType=%s]".formatted(
+			value(),
+			type().getName(),
+			enclosure().getClass().getName()
+		);
 	}
-
-	@Override
-	public Object get(final int index) {
-		if (array() == null) {
-			throw new IndexOutOfBoundsException("Array is null.");
-		}
-
-		return array()[index];
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		return array() != null
-			? Arrays.asList(array()).iterator()
-			: emptyIterator();
-	}
-
 }

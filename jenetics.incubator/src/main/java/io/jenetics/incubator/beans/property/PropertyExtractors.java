@@ -85,11 +85,11 @@ public final class PropertyExtractors {
 
 				final Property property;
 				if (isArrayType(desc.type())) {
-					property = new ArrayProperty(desc, enclosing, path, value);
+					property = new ArrayProperty(path, toValue(enclosing, value, desc));
 				} else if (isListType(desc.type())) {
-					property = new ListProperty(desc, enclosing, path, value);
+					property = new ListProperty(path, toValue(enclosing, value, desc));
 				} else {
-					property = new SimpleProperty(desc, enclosing, path, value);
+					property = new SimpleProperty(path, toValue(enclosing, value, desc));
 				}
 
 				return Stream.of(property);
@@ -98,24 +98,57 @@ public final class PropertyExtractors {
 					? object.path()
 					: object.path().append(new Path.Name(desc.name()));
 
-				final var list = object.value();
-				final int size = desc.size().apply(list);
+				final int size = desc.size().apply(enclosing);
 
 				return IntStream.range(0, size).mapToObj(i -> {
-					final var value = desc.getter().apply(list, i);
+					final var value = desc.getter().apply(enclosing, i);
 
 					return new IndexProperty(
-						desc,
-						enclosing,
 						path.append(new Path.Index(i)),
 						i,
-						value
+						new Mutable(
+							enclosing,
+							value,
+							value != null ? value.getClass() : toClass(desc.type()),
+							o -> desc.getter().apply(o, i),
+							(o, v) -> desc.setter().apply(o, i, v)
+						)
 					);
 				});
 			}
 
 			return Stream.empty();
 		});
+	}
+
+	private static Value toValue(
+		final Object enclosing,
+		final Object value,
+		final SimpleDescription desc
+	) {
+		if (desc.setter() != null) {
+			return new Mutable(
+				enclosing,
+				value,
+				toClass(desc.type()),
+				desc.getter(),
+				desc.setter()
+			);
+		} else {
+			return new Immutable(
+				enclosing,
+				value,
+				toClass(desc.type())
+			);
+		}
+	}
+
+	private static Class<?> toClass(final Type type) {
+		if (type instanceof ParameterizedType pt) {
+			return (Class<?>)pt.getRawType();
+		} else {
+			return (Class<?>)type;
+		}
 	}
 
 	private static boolean isArrayType(final Type type) {

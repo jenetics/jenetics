@@ -19,9 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import java.util.Optional;
-
-import io.jenetics.incubator.beans.Node;
+import io.jenetics.incubator.beans.PathEntry;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -75,102 +73,8 @@ import io.jenetics.incubator.beans.Node;
  * @since !__version__!
  */
 public sealed interface Property
-	extends Node
+	extends PathEntry<Value>
 	permits IndexedProperty, IndexProperty, SimpleProperty
 {
-
-	/**
-	 * The value of the metaobject, may be {@code null}. This method always
-	 * returns the initial property value. If the values have been changed, via
-	 * the property {@link #writer()} , this method still returns the
-	 * <em>old</em> value. If you want the guaranteed <em>current</em> value,
-	 * you have to use the {@link #read()} method.
-	 *
-	 * @see #read()
-	 * @see #writer()
-	 * @see #isWritable()
-	 *
-	 * @return the <em>original</em> value of the metaobject
-	 */
-	Object value();
-
-	@Override
-	Class<?> type();
-
-	/**
-	 * Return always the <em>current</em> value of the property.
-	 *
-	 * @see #value()
-	 * @see #writer()
-	 *
-	 * @return the current property value
-	 */
-	default Object read() {
-		return reader().read();
-	}
-
-	/**
-	 * Return a value reader of {@code this} property.
-	 *
-	 * @return value reader of {@code this} property
-	 */
-	default ValueReader reader() {
-		return this::value;
-	}
-
-	/**
-	 * Return a value writer of {@code this} property, if it is mutable.
-	 *
-	 * @return value writer of {@code this} property
-	 */
-	default Optional<ValueWriter> writer() {
-		return Optional.empty();
-	}
-
-	/**
-	 * Test whether {@code this} property is writable.
-	 *
-	 * @return {@code true} if @code this} property is writable, {@code false}
-	 *         otherwise
-	 */
-	default boolean isWritable() {
-		return false;
-	}
-
-	/**
-	 * Property value reader interface, which allows to re-read the property
-	 * value.
-	 */
-	@FunctionalInterface
-	interface ValueReader {
-
-		/**
-		 * Read the current property value. Might differ from {@link #value()} if
-		 * the underlying (mutable) object has been changed.
-		 *
-		 * @return the current property value
-		 */
-		Object read();
-
-	}
-
-	/**
-	 * Property value writer interface, which allows to mutate the property
-	 * value.
-	 */
-	@FunctionalInterface
-	interface ValueWriter {
-
-		/**
-		 * Changes the property value.
-		 *
-		 * @param value the new property value
-		 * @return {@code true} if the value has been changed successfully,
-		 *         {@code false} if the property value couldn't be changed
-		 */
-		boolean write(final Object value);
-
-	}
-
 }
 

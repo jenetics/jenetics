@@ -21,53 +21,71 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Optional;
-
-import io.jenetics.incubator.beans.description.SimpleDescription;
+import io.jenetics.incubator.beans.description.Getter;
+import io.jenetics.incubator.beans.description.Setter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-abstract class SimpleDescriptionMethods {
+public final class Mutable implements Value {
 
-	final SimpleDescription desc;
-	final Object enclosingObject;
+	private final Object enclosure;
+	private final Object value;
+	private final Class<?> type;
+	private final Getter getter;
+	private final Setter setter;
 
-	SimpleDescriptionMethods(
-		final SimpleDescription desc,
-		final Object enclosingObject
+	Mutable(
+		final Object enclosure,
+		final Object value,
+		final Class<?> type,
+		final Getter getter,
+		final Setter setter
 	) {
-		this.desc = requireNonNull(desc);
-		this.enclosingObject = requireNonNull(enclosingObject);
+		this.enclosure = requireNonNull(enclosure);
+		this.value = value;
+		this.type = requireNonNull(type);
+		this.getter = requireNonNull(getter);
+		this.setter = requireNonNull(setter);
 	}
 
+	@Override
 	public Object enclosure() {
-		return enclosingObject;
+		return enclosure;
 	}
 
-	public Property.ValueReader reader() {
-		return this::read0;
+	@Override
+	public Object value() {
+		return value;
 	}
 
-	private Object read0() {
-		return desc.getter().apply(enclosingObject);
+	@Override
+	public Class<?> type() {
+		return type;
 	}
 
-	public Optional<Property.ValueWriter> writer() {
-		return desc.setter() != null
-			? Optional.of(this::write)
-			: Optional.empty();
+	public Object read() {
+		return getter.apply(enclosure);
 	}
 
-	private boolean write(final Object value) {
+	public boolean write(final Object value) {
 		try {
-			desc.setter().apply(enclosingObject, value);
+			setter.apply(enclosure, value);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Mutable[value=%s, type=%s, enclosureType=%s]".formatted(
+			value(),
+			type().getName(),
+			enclosure().getClass().getName()
+		);
 	}
 
 }

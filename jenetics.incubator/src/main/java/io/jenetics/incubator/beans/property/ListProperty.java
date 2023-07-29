@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.description.SimpleDescription;
 
 /**
  * Represents a list property.
@@ -38,40 +37,37 @@ import io.jenetics.incubator.beans.description.SimpleDescription;
 public final class ListProperty extends IndexedProperty {
 
 	ListProperty(
-		final SimpleDescription desc,
-		final Object enclosingObject,
 		final Path path,
-		final Object value
+		final Value value
 	) {
-		super(desc, enclosingObject, path, value);
+		super(path, value);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public List<Object> value() {
-		return (List<Object>)value;
+	public List<Object> list() {
+		return (List<Object>)value().value();
 	}
 
 	@Override
 	public int size() {
-		return value != null ? value().size() : 0;
+		return list() != null ? list().size() : 0;
 	}
 
 	public Object get(final int index) {
-		if (value == null) {
+		if (list() == null) {
 			throw new IndexOutOfBoundsException("List is null.");
 		}
-		return value().get(index);
+		return list().get(index);
 	}
 
 	@Override
 	public Iterator<Object> iterator() {
-		return value != null ? value().iterator() : emptyIterator();
+		return list() != null ? list().iterator() : emptyIterator();
 	}
 
 	@Override
 	public Stream<Object> stream() {
-		return value().stream();
+		return list().stream();
 	}
 
 }

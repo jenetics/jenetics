@@ -19,8 +19,9 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static java.util.Objects.requireNonNull;
+
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.description.IndexedDescription;
 
 /**
  * This property represents an element of an {@link IndexedProperty}.
@@ -29,25 +30,21 @@ import io.jenetics.incubator.beans.description.IndexedDescription;
  * @version !__version__!
  * @since !__version__!
  */
-public final class IndexProperty
-	extends IndexedDescriptionMethods
-	implements Property
-{
+public final class IndexProperty implements Property {
+
     private final Path path;
     private final int index;
-    private final Object value;
+	private final Value value;
+
 
 	IndexProperty(
-	    final IndexedDescription desc,
-	    final Object enclosingObject,
 		final Path path,
 		final int index,
-		final Object value
+		final Value value
     ) {
-		super(desc, enclosingObject);
-        this.path = path;
+        this.path = requireNonNull(path);
         this.index = index;
-        this.value = value;
+        this.value = requireNonNull(value);
     }
 
     @Override
@@ -55,17 +52,13 @@ public final class IndexProperty
         return path;
     }
 
-	@Override
-	public Class<?> type() {
-		return value() != null ? value.getClass() : (Class<?>)desc.type();
-	}
 
     public int index() {
         return index;
     }
 
     @Override
-    public Object value() {
+    public Value value() {
         return value;
     }
 
