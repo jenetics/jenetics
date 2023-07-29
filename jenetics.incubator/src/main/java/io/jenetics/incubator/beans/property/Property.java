@@ -19,7 +19,13 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+
 import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.description.Getter;
+import io.jenetics.incubator.beans.description.Setter;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -73,8 +79,136 @@ import io.jenetics.incubator.beans.PathEntry;
  * @since !__version__!
  */
 public sealed interface Property
-	extends PathEntry<Value>
+	extends PathEntry<Property.Value>
 	permits IndexedProperty, IndexProperty, SimpleProperty
 {
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	sealed interface Value {
+
+		/**
+		 * Returns the object which contains {@code this} node.
+		 *
+		 * @return the object which contains {@code this} node
+		 */
+		Object enclosure();
+
+		/**
+		 * The value of the metaobject, may be {@code null}. This method always
+		 * returns the initial property value.
+		 *
+		 * @return the <em>original</em> value of the metaobject
+		 */
+		Object value();
+
+		/**
+		 * The type of the property value, never {@code null}.
+		 *
+		 * @return the type of the property value
+		 */
+		Class<?> type();
+
+		/**
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+		 * @version !__version__!
+		 * @since !__version__!
+		 */
+		record Immutable(Object enclosure, Object value, Class<?> type)
+			implements Value
+		{
+			@Override
+			public String toString() {
+				return "Immutable[value=%s, type=%s, enclosureType=%s]".formatted(
+					value(),
+					type().getName(),
+					enclosure().getClass().getName()
+				);
+			}
+		}
+
+		/**
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+		 * @version !__version__!
+		 * @since !__version__!
+		 */
+		final class Mutable implements Value {
+
+			private final Object enclosure;
+			private final Object value;
+			private final Class<?> type;
+			private final Getter getter;
+			private final Setter setter;
+
+			Mutable(
+				final Object enclosure,
+				final Object value,
+				final Class<?> type,
+				final Getter getter,
+				final Setter setter
+			) {
+				this.enclosure = requireNonNull(enclosure);
+				this.value = value;
+				this.type = requireNonNull(type);
+				this.getter = requireNonNull(getter);
+				this.setter = requireNonNull(setter);
+			}
+
+			@Override
+			public Object enclosure() {
+				return enclosure;
+			}
+
+			@Override
+			public Object value() {
+				return value;
+			}
+
+			@Override
+			public Class<?> type() {
+				return type;
+			}
+
+			public Object read() {
+				return getter.get(enclosure);
+			}
+
+			public boolean write(final Object value) {
+				try {
+					setter.set(enclosure, value);
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(enclosure, value, type);
+			}
+
+			@Override
+			public boolean equals(final Object obj) {
+				return obj == this ||
+					obj instanceof Mutable m &&
+					Objects.equals(enclosure, m.enclosure) &&
+					Objects.equals(value, m.value) &&
+					Objects.equals(type, m.type);
+			}
+
+			@Override
+			public String toString() {
+				return "Mutable[value=%s, type=%s, enclosureType=%s]".formatted(
+					value(),
+					type().getName(),
+					enclosure().getClass().getName()
+				);
+			}
+
+		}
+	}
+
 }
 

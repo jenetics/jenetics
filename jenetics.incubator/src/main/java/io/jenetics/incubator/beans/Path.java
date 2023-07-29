@@ -97,10 +97,15 @@ public final class Path implements Iterable<Path> {
 		}
 	}
 
-	public static final Path EMPTY = new Path(List.of());
+	private static final Path EMPTY = new Path(List.of());
 
 	private final List<Element> elements;
 
+	/**
+	 * Create a new <em>path</em> object with the given element.
+	 *
+	 * @param elements the path elements
+	 */
 	private Path(final List<Element> elements) {
 		this.elements = List.copyOf(elements);
 	}
@@ -251,7 +256,7 @@ public final class Path implements Iterable<Path> {
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Path path &&
-				elements.equals(path.elements);
+			elements.equals(path.elements);
 	}
 
 	@Override

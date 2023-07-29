@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.jenetics.incubator.beans.property.Properties;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.beans.property.PropertyExtractors;
+import io.jenetics.incubator.beans.property.Properties;
 
 public class PropertyExtractorTest {
 
@@ -63,8 +62,7 @@ public class PropertyExtractorTest {
 	public void extractIntArray() {
 		final var data = new Object[] {1, 2};
 
-		PropertyExtractors.DIRECT
-			.extract(new PathValue<>(data))
+		Properties.extract(PathEntry.of(data))
 			.forEach(System.out::println);
 	}
 

@@ -18,4 +18,7 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+/**
+ * This package contains class for reading <em>statically</em> bean information.
+ */
 package io.jenetics.incubator.beans.description;

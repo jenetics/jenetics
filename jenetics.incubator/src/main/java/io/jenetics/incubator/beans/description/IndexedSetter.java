@@ -20,11 +20,24 @@
 package io.jenetics.incubator.beans.description;
 
 /**
+ * Represents the <em>setter</em> function for <em>indexed</em> objects, e.g.
+ * array or {@code List} objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
 public interface IndexedSetter {
+
+	/**
+	 * Set a new value to the given <em>indexed</em> {@code object} for the
+	 * given {@code index}.
+	 *
+	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
+	 * @param index the array/list index
+	 * @param value the new value
+	 */
 	void set(final Object object, final int index, final Object value);
+
 }

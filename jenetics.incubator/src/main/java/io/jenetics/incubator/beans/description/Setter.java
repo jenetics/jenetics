@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.description;
 
 /**
- * The <em>setter</em> function of a property.
+ * This interface represents the <em>setter</em> function of a property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -32,7 +32,7 @@ public interface Setter {
 	/**
 	 * Sets the property {@code value} to the given <em>parent</em> {@code object}.
 	 *
-	 * @param object the parent object
+	 * @param object the object for which the property is set
 	 * @param value the new property value
 	 */
 	void set(final Object object, Object value);

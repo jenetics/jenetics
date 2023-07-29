@@ -22,7 +22,7 @@ package io.jenetics.incubator.beans.property;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PathEntry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -43,7 +43,7 @@ final class Filters {
 		);
 	}
 
-	static Predicate<PathValue<Object>> toFilter(final Pattern pattern) {
+	static Predicate<PathEntry<Object>> toFilter(final Pattern pattern) {
 		return object -> pattern
 			.matcher(object.value() != null
 				? object.value().getClass().getName()

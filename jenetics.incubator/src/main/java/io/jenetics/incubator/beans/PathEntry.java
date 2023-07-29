@@ -20,6 +20,8 @@
 package io.jenetics.incubator.beans;
 
 /**
+ * A {@code PathEntry} associates a value with a path.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -49,5 +51,16 @@ public interface PathEntry<V> {
 	 * @return the value of the entry
 	 */
 	V value();
+
+	static <V> PathEntry<V> of(final Path path, final V value) {
+		record SimplePathEntry<V>(Path path, V value) implements PathEntry<V> {
+		}
+
+		return new SimplePathEntry<>(path, value);
+	}
+
+	static <V> PathEntry<V> of(final V value) {
+		return of(Path.of(), value);
+	}
 
 }

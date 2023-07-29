@@ -27,8 +27,8 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.beans.property.IndexProperty;
-import io.jenetics.incubator.beans.property.Mutable;
 import io.jenetics.incubator.beans.property.Properties;
+import io.jenetics.incubator.beans.property.Property;
 
 import io.jenetics.jpx.GPX;
 import io.jenetics.jpx.GPX.Reader;
@@ -57,7 +57,7 @@ public class RecursivePropertyExtractorTest {
 			.peek(p -> {
 				if (p instanceof IndexProperty ip) {
 					if (ip.value().type() == String.class) {
-						if (ip.value() instanceof Mutable mv) {
+						if (ip.value() instanceof Property.Value.Mutable mv) {
 							var value = ip.value().value().toString();
 							mv.write("A:" + value);
 						}
@@ -81,7 +81,7 @@ public class RecursivePropertyExtractorTest {
 				.getResourceAsStream("/Austria.gpx")
 		);
 
-		Properties.walk(new PathValue<>(gpx), "io.jenetics.*")
+		Properties.walk(PathEntry.of(gpx), "io.jenetics.*")
 			.forEach(System.out::println);
 	}
 

@@ -20,11 +20,22 @@
 package io.jenetics.incubator.beans.description;
 
 /**
+ * Represents the <em>size</em> function for a <em>sizeable</em> object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
 public interface Size {
+
+	/**
+	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.
+	 * array of {@code List}.
+	 *
+	 * @param object the <em>sizeable</em> object
+	 * @return the object size
+	 */
 	int get(final Object object);
+
 }

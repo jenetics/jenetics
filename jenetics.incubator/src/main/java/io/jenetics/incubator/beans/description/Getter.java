@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.description;
 
 /**
- * The <em>getter</em> function of a property.
+ * This interface represents the <em>getter</em> function of a property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -32,7 +32,7 @@ public interface Getter {
 	/**
 	 * Return the property value from a given <em>parent</em> {@code object}.
 	 *
-	 * @param object the parent object
+	 * @param object the object from which the property is read
 	 * @return the property value
 	 */
 	Object get(final Object object);

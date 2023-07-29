@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PathEntry;
 import io.jenetics.incubator.beans.description.Descriptions;
 
 public class DescriptionExtractorTests {
@@ -70,7 +70,7 @@ public class DescriptionExtractorTests {
 		final List<Integer> list = new ArrayList<Integer>() {};
 		list.add(23);
 
-		final var desc = Descriptions.walk(new PathValue<>(Box.class))
+		final var desc = Descriptions.walk(PathEntry.of(Box.class))
 		//final var desc = Descriptions.walk(new PathValue<>(list.getClass()))
 			/*
 			.flatMap(d ->
