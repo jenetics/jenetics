@@ -68,8 +68,8 @@ public final class SingleValue implements Value {
 
 	@Override
 	public String toString() {
-		return "Single[enclosure=%s, value=%s]".formatted(
-			enclosure().getName(),  value()
+		return "Single[value=%s, enclosure=%s]".formatted(
+			value(), enclosure().getName()
 		);
 	}
 

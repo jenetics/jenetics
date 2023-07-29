@@ -27,6 +27,8 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.property.Property;
+import io.jenetics.incubator.beans.property.SimpleProperty;
 import io.jenetics.incubator.beans.util.Extractor;
 import io.jenetics.incubator.beans.util.PreOrderIterator;
 
@@ -63,6 +65,10 @@ public final class Descriptions {
 				);
 		};
 
+	public static final Predicate<Description> STANDARD_TARGET_FILTER = prop ->
+		!(prop.value() instanceof  SingleValue &&
+			prop.value().enclosure().getName().startsWith("java"));
+
 	private Descriptions() {
 	}
 
@@ -73,7 +79,7 @@ public final class Descriptions {
 		final var ext = PreOrderIterator.extractor(
 			extractor,
 			desc -> new PathValue<>(desc.path(), desc.value().value()),
-			Function.identity()
+			PathValue::value
 		);
 		return ext.extract(root);
 	}
@@ -82,7 +88,9 @@ public final class Descriptions {
 	walk(final PathValue<Type> root) {
 		return walk(
 			root,
-			DescriptionExtractors.DIRECT.sourceFilter(STANDARD_SOURCE_FILTER)
+			DescriptionExtractors.DIRECT
+				.sourceFilter(STANDARD_SOURCE_FILTER)
+				.targetFilter(STANDARD_TARGET_FILTER)
 		);
 	}
 

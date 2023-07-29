@@ -71,6 +71,7 @@ public class DescriptionExtractorTests {
 		list.add(23);
 
 		final var desc = Descriptions.walk(new PathValue<>(Box.class))
+		//final var desc = Descriptions.walk(new PathValue<>(list.getClass()))
 			/*
 			.flatMap(d ->
 					Stream.concat(

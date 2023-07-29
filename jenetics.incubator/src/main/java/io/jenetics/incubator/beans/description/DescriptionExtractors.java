@@ -86,6 +86,19 @@ public final class DescriptionExtractors {
 		);
 	}
 
+	private static Description
+	toDescription(final Path path, final RecordComponent component) {
+		return new Description(
+			path.append(component.getName()),
+			new SingleValue(
+				component.getDeclaringRecord(),
+				component.getAccessor().getGenericReturnType(),
+				Methods.toGetter(component.getAccessor()),
+				null
+			)
+		);
+	}
+
 	private static Optional<Description>
 	toArrayDescription(final PathValue<? extends Type> type) {
 		if (type.value() instanceof Class<?> arrayType &&
@@ -120,8 +133,8 @@ public final class DescriptionExtractors {
 					new Description(
 						type.path().append(new Path.Index(0)),
 						new IndexedValue(
+							listType,
 							componentType,
-							List.class,
 							Lists::size, Lists::get, Lists::set
 						)
 					)
@@ -136,8 +149,8 @@ public final class DescriptionExtractors {
 				new Description(
 					type.path().append(new Path.Index(0)),
 					new IndexedValue(
+						listType,
 						Object.class,
-						List.class,
 						Lists::size, Lists::get, Lists::set
 					)
 				)
@@ -151,6 +164,7 @@ public final class DescriptionExtractors {
 	toDescriptions(final PathValue<? extends Type> type) {
 		if (type.value() instanceof Class<?> cls && cls.isRecord()) {
 			return Stream.of(cls.getRecordComponents())
+				.filter(d -> d.getAccessor().getReturnType() != Class.class)
 				.map(c -> toDescription(type.path(), c));
 		} else if (type.value() instanceof Class<?> cls) {
 			try {
@@ -173,17 +187,5 @@ public final class DescriptionExtractors {
 		}
 	}
 
-	private static Description
-	toDescription(final Path path, final RecordComponent component) {
-		return new Description(
-			path.append(component.getName()),
-			new SingleValue(
-				component.getDeclaringRecord(),
-				component.getAccessor().getGenericReturnType(),
-				Methods.toGetter(component.getAccessor()),
-				null
-			)
-		);
-	}
 
 }

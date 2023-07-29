@@ -76,8 +76,8 @@ public final class IndexedValue implements Value {
 
 	@Override
 	public String toString() {
-		return "Single[enclosure=%s, value=%s]".formatted(
-			enclosure().getName(),  value()
+		return "Indexed[value=%s, enclosure=%s]".formatted(
+			value(), enclosure().getName()
 		);
 	}
 
