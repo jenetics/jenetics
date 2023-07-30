@@ -3,7 +3,9 @@ package io.jenetics.incubator.beans;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.TreeSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +26,7 @@ public class PropertyPathTest {
 	@Test
 	public void ofString() {
 		final var path = Path.of("person.name");
-		assertThat(path)
+		assertThat((Object)path)
 			.isEqualTo(Path.of("person").append("name"));
 	}
 
@@ -33,7 +35,7 @@ public class PropertyPathTest {
 		final var path = Path.of("person.name.title");
 		final var head = path.head();
 
-		assertThat(head).isEqualTo(Path.of("title"));
+		assertThat((Object)head).isEqualTo(Path.of("title"));
 	}
 
 	@Test
@@ -41,7 +43,7 @@ public class PropertyPathTest {
 		final var path = Path.of("a.b.c.d.e.f");
 		final var sub = path.subPath(1, 4);
 
-		assertThat(sub).isEqualTo(Path.of("b.c.d"));
+		assertThat((Object)sub).isEqualTo(Path.of("b.c.d"));
 	}
 
 	@Test(dataProvider = "paths")
@@ -100,6 +102,30 @@ public class PropertyPathTest {
 		final var path = Path.of("a");
 
 		assertThat(path.parent()).isEqualTo(Optional.empty());
+	}
+
+	@Test
+	public void treeSetPath() {
+		final var set = new TreeSet<Path>();
+		set.add(Path.of("a.d"));
+		set.add(Path.of("a.c"));
+		set.add(Path.of("b"));
+		set.add(Path.of("a.b.a"));
+		set.add(Path.of("a.b[0].c"));
+		set.add(Path.of("a.b[1].c"));
+		set.add(Path.of("a.b[2].c"));
+		set.add(Path.of("a.b[0]"));
+
+		System.out.println(set.size());
+		set.forEach(System.out::println);
+		System.out.println("------");
+
+		final var tail = set.tailSet(Path.of("a.b[1].c"));
+		System.out.println(tail.size());
+		tail.forEach(System.out::println);
+		System.out.println("----");
+
+
 	}
 
 }

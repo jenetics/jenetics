@@ -41,18 +41,18 @@ import io.jenetics.incubator.beans.property.Property;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MetaObject implements Iterable<Property> {
+public final class ModelProperties implements Iterable<Property> {
 
-    private final Object object;
+    private final Object model;
 
-	private volatile Values values;
+	private volatile Data data;
 
-	private static final class Values {
+	private static final class Data {
 		final List<Property> properties;
 		final Map<Path, Property> paths;
 		final Map<Object, Path> objects;
 
-		private Values(final List<Property> properties) {
+		private Data(final List<Property> properties) {
 			this.properties = requireNonNull(properties);
 
 			paths = properties.stream()
@@ -75,20 +75,20 @@ public final class MetaObject implements Iterable<Property> {
 	/**
 	 * Create a new metaobject wrapper for the given {@code object}.
 	 *
-	 * @param object the object to wrap
+	 * @param model the object to wrap
 	 * @throws NullPointerException if the argument is {@code null}
 	 */
-    public MetaObject(Object object) {
-        this.object = requireNonNull(object);
+    public ModelProperties(Object model) {
+        this.model = requireNonNull(model);
     }
 
-	private Values values() {
-		Values val = values;
+	private Data data() {
+		Data val = data;
 		if (val == null) {
 			synchronized (this) {
-				val = values;
+				val = data;
 				if (val == null) {
-					values = val = new Values(Properties.walk(object).toList());
+					data = val = new Data(Properties.walk(model).toList());
 				}
 			}
 		}
@@ -101,8 +101,8 @@ public final class MetaObject implements Iterable<Property> {
 	 *
 	 * @return the wrapped model object
 	 */
-	public Object object() {
-		return object;
+	public Object model() {
+		return model;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public final class MetaObject implements Iterable<Property> {
 	 * @return the number of properties
 	 */
 	public int size() {
-		return values().properties.size();
+		return data().properties.size();
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class MetaObject implements Iterable<Property> {
 	 * @return the property with the given path
 	 */
 	public Optional<Property> get(final Path path) {
-		return Optional.ofNullable(values().paths.get(path));
+		return Optional.ofNullable(data().paths.get(path));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class MetaObject implements Iterable<Property> {
 	 * @return the object path if its part of the object graph
 	 */
 	public Optional<Path> pathOf(final Object value) {
-		return Optional.ofNullable(values().objects.get(value));
+		return Optional.ofNullable(data().objects.get(value));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public final class MetaObject implements Iterable<Property> {
 
 	@Override
 	public Iterator<Property> iterator() {
-		return values().properties.iterator();
+		return data().properties.iterator();
 	}
 
 	/**
@@ -159,24 +159,24 @@ public final class MetaObject implements Iterable<Property> {
 	 * @return all properties
 	 */
 	public Stream<Property> stream() {
-		return values().properties.stream();
+		return data().properties.stream();
 	}
 
 	@Override
 	public int hashCode() {
-		return object.hashCode();
+		return model.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MetaObject mo &&
-			object.equals(mo.object);
+			obj instanceof ModelProperties mo &&
+			model.equals(mo.model);
 	}
 
     @Override
     public String toString() {
-        return "MetaObject[" + "object=" + object + ']';
+        return "MetaObject[" + "object=" + model + ']';
     }
 
 }
