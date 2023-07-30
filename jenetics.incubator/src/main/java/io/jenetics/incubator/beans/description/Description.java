@@ -135,8 +135,8 @@ public record Description(Path path, Value value)
 			public boolean equals(final Object obj) {
 				return obj == this ||
 					obj instanceof Single s &&
-						enclosure.equals(s.enclosure) &&
-						value.equals(s.value);
+					enclosure.equals(s.enclosure) &&
+					value.equals(s.value);
 			}
 
 			@Override

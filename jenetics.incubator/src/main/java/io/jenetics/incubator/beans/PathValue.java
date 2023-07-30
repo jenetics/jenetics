@@ -19,8 +19,10 @@
  */
 package io.jenetics.incubator.beans;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * A {@code PathEntry} associates a value with a path.
+ * A path value associates a value with a path.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -37,12 +39,14 @@ public interface PathValue<V> {
 	Path path();
 
 	/**
-	 * The name of {@code this} property; always non-{@code null}.
+	 * The name of {@code this} property, which is the name of the head path
+	 * element. If the path is empty, an empty string is returned.
 	 *
 	 * @return the node name
 	 */
 	default String name() {
-		return path().isEmpty() ? "" : path().element().toString();
+		final var element = path().element();
+		return element != null ? element.toString() :  "";
 	}
 
 	/**
@@ -52,13 +56,34 @@ public interface PathValue<V> {
 	 */
 	V value();
 
+	/**
+	 * Create a new path value from the given {@code path} and {@code value}.
+	 * The path {@code value} may be {@code null}.
+	 *
+	 * @param path the path
+	 * @param value the path {@code value}, may be {@code null}
+	 * @return a new path value object
+	 * @param <V> the path value type
+	 * @throws NullPointerException if the given {@code path} is {@code null}
+	 */
 	static <V> PathValue<V> of(final Path path, final V value) {
 		record SimplePathValue<V>(Path path, V value) implements PathValue<V> {
+			SimplePathValue {
+				requireNonNull(path);
+			}
 		}
 
 		return new SimplePathValue<>(path, value);
 	}
 
+	/**
+	 * Create a new path value from the given {@code value} and an <em>empty</em>
+	 * path.
+	 *
+	 * @param value the path {@code value}, may be {@code null}
+	 * @return a new path value object
+	 * @param <V> the path value type
+	 */
 	static <V> PathValue<V> of(final V value) {
 		return of(Path.of(), value);
 	}

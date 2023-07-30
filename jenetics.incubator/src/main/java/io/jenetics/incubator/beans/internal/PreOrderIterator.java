@@ -38,7 +38,7 @@ import io.jenetics.incubator.beans.Extractor;
 
 /**
  * Preorder iterator which <em>recursively</em> traverses the object graph. It
- * also tracks already visited nodes to prevent loops in the traversal.
+ * also tracks already visited nodes to prevent infinite loops in the traversal.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

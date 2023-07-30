@@ -22,6 +22,7 @@ package io.jenetics.incubator.beans;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.beans.internal.Types.isIdentityType;
 
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -84,17 +85,21 @@ public final class ModelProperties implements Iterable<Property> {
     }
 
 	private Data data() {
-		Data val = data;
-		if (val == null) {
+		Data value = data;
+		if (value == null) {
 			synchronized (this) {
-				val = data;
-				if (val == null) {
-					data = val = new Data(Properties.walk(model).toList());
+				value = data;
+				if (value == null) {
+					data = value = new Data(
+						Properties.walk(model)
+							.sorted(Comparator.comparing(Property::path))
+							.toList()
+					);
 				}
 			}
 		}
 
-		return val;
+		return value;
 	}
 
 	/**
