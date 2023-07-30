@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.internal.Types;
 
 /**
@@ -38,7 +38,7 @@ import io.jenetics.incubator.beans.internal.Types;
  * @since !__version__!
  */
 public record Description(Path path, Value value)
-	implements PathEntry<Description.Value>
+	implements PathValue<Description.Value>
 {
 
 	public Description {

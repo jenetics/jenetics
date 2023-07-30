@@ -1,7 +1,5 @@
 package io.jenetics.incubator.beans;
 
-import java.util.Comparator;
-
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.beans.property.Property;
@@ -12,10 +10,10 @@ public class ModelPropertiesTest {
     public void foo() {
         final var model = new ModelProperties("adf");
 
-        model.properties(Property.filtering(PathEntry::path, Path.filter("*")))
+        model.properties(Property.filtering(PathValue::path, Path.filter("*")))
             .forEach(System.out::println);
 
-        model.properties(Property.filtering(PathEntry::value, value -> value.type() == String.class))
+        model.properties(Property.filtering(PathValue::value, value -> value.type() == String.class))
             .forEach(System.out::println);
     }
 

@@ -1,14 +1,11 @@
 package io.jenetics.incubator.beans;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.util.Optional;
 import java.util.TreeSet;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 
 public class PropertyPathTest {
@@ -94,15 +91,15 @@ public class PropertyPathTest {
 	public void parent() {
 		final var path = Path.of("a.b.c");
 
-		assertThat(path.parent())
-			.isEqualTo(Optional.of(Path.of("a.b")));
+		assertThat((Object)path.parent())
+			.isEqualTo(Path.of("a.b"));
 	}
 
 	@Test
 	public void emptyParent() {
 		final var path = Path.of("a");
 
-		assertThat(path.parent()).isEqualTo(Optional.empty());
+		assertThat((Object)path.parent()).isEqualTo(null);
 	}
 
 	@Test

@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Getter;
 import io.jenetics.incubator.beans.description.Setter;
 
@@ -81,7 +81,7 @@ import io.jenetics.incubator.beans.description.Setter;
  * @since !__version__!
  */
 public sealed interface Property
-	extends PathEntry<Property.Value>
+	extends PathValue<Property.Value>
 	permits IndexedProperty, IndexProperty, SimpleProperty
 {
 	/**

@@ -63,7 +63,7 @@ public class PropertyExtractorTest {
 	public void extractIntArray() {
 		final var data = new Object[] {1, 2};
 
-		Properties.extract(PathEntry.of(data))
+		Properties.extract(PathValue.of(data))
 			.forEach(System.out::println);
 	}
 
@@ -79,11 +79,11 @@ public class PropertyExtractorTest {
 			List.of(new Author("Charles", "Dickens"))
 		);
 
-		Properties.walk(PathEntry.of(object))
+		Properties.walk(PathValue.of(object))
 			.forEach(System.out::println);
 
 		System.out.println("----");
-		Descriptions.walk(PathEntry.of(Book.class))
+		Descriptions.walk(PathValue.of(Book.class))
 			.forEach(System.out::println);
 
 	}

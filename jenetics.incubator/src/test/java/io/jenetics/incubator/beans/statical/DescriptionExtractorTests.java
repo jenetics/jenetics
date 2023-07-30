@@ -19,15 +19,12 @@
  */
 package io.jenetics.incubator.beans.statical;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Descriptions;
 
 public class DescriptionExtractorTests {
@@ -73,7 +70,7 @@ public class DescriptionExtractorTests {
 		final List<Integer> list = new ArrayList<Integer>() {};
 		list.add(23);
 
-		final var desc = Descriptions.walk(PathEntry.of(Box.class))
+		final var desc = Descriptions.walk(PathValue.of(Box.class))
 		//final var desc = Descriptions.walk(new PathValue<>(list.getClass()))
 			/*
 			.flatMap(d ->
@@ -93,7 +90,7 @@ public class DescriptionExtractorTests {
 	@Test
 	public void foo() {
 		Descriptions
-			.walk(PathEntry.of(String.class), Descriptions::extract)
+			.walk(PathValue.of(String.class), Descriptions::extract)
 			.forEach(System.out::println);
 	}
 

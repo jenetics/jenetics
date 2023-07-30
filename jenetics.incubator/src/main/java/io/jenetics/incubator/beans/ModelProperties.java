@@ -144,7 +144,7 @@ public final class ModelProperties implements Iterable<Property> {
 	 */
 	public Optional<Property> parentOf(final Object value) {
 		return pathOf(value)
-			.flatMap(Path::parent)
+			.flatMap(p -> Optional.ofNullable(p.parent()))
 			.flatMap(this::get);
 	}
 

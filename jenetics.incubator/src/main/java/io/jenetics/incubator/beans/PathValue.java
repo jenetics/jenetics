@@ -26,7 +26,7 @@ package io.jenetics.incubator.beans;
  * @version !__version__!
  * @since !__version__!
  */
-public interface PathEntry<V> {
+public interface PathValue<V> {
 
 	/**
 	 * The full path, separated with dots '.', of {@code this} property from
@@ -52,14 +52,14 @@ public interface PathEntry<V> {
 	 */
 	V value();
 
-	static <V> PathEntry<V> of(final Path path, final V value) {
-		record SimplePathEntry<V>(Path path, V value) implements PathEntry<V> {
+	static <V> PathValue<V> of(final Path path, final V value) {
+		record SimplePathValue<V>(Path path, V value) implements PathValue<V> {
 		}
 
-		return new SimplePathEntry<>(path, value);
+		return new SimplePathValue<>(path, value);
 	}
 
-	static <V> PathEntry<V> of(final V value) {
+	static <V> PathValue<V> of(final V value) {
 		return of(Path.of(), value);
 	}
 

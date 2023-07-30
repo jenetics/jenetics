@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
@@ -55,12 +55,12 @@ public final class Descriptions {
 
 	/**
 	 * Extracts the <em>directly</em> available property descriptions for the
-	 * given {@code type} and start path, {@link PathEntry#path()}.
+	 * given {@code type} and start path, {@link PathValue#path()}.
 	 *
 	 * @param type the enclosure type + start <em>path</em>
 	 * @return the <em>directly</em> available property descriptions
 	 */
-	public static Stream<Description> extract(final PathEntry<? extends Type> type) {
+	public static Stream<Description> extract(final PathValue<? extends Type> type) {
 		if (type == null || type.value() == null) {
 			return Stream.empty();
 		}
@@ -76,11 +76,11 @@ public final class Descriptions {
 		}
 
 		return toDescriptions(type)
-			.sorted(Comparator.comparing(PathEntry::name));
+			.sorted(Comparator.comparing(PathValue::name));
 	}
 
 	private static Description
-	toArrayDescription(final PathEntry<? extends Type> type) {
+	toArrayDescription(final PathValue<? extends Type> type) {
 		final var arrayType = toArrayType(type.value());
 
 		if (arrayType != null) {
@@ -98,7 +98,7 @@ public final class Descriptions {
 	}
 
 	private static Description
-	toListDescription(final PathEntry<? extends Type> type) {
+	toListDescription(final PathValue<? extends Type> type) {
 		if (type.value() instanceof ParameterizedType parameterizedType &&
 			parameterizedType.getRawType() instanceof Class<?> listType &&
 			List.class.isAssignableFrom(listType))
@@ -135,7 +135,7 @@ public final class Descriptions {
 	}
 
 	private static Stream<Description>
-	toDescriptions(final PathEntry<? extends Type> type) {
+	toDescriptions(final PathValue<? extends Type> type) {
 		if (type.value() instanceof Class<?> cls && cls.isRecord()) {
 			return Stream.of(cls.getRecordComponents())
 				.filter(d -> d.getAccessor().getReturnType() != Class.class)
@@ -192,7 +192,7 @@ public final class Descriptions {
 	 * searching for all property descriptions in an object tree rooted at a
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned. If used with the
-	 * {@link #extract(PathEntry)} method, all found descriptions are returned,
+	 * {@link #extract(PathValue)} method, all found descriptions are returned,
 	 * including the descriptions from the Java classes.
 	 * <pre>{@code
 	 * Descriptions
@@ -209,27 +209,27 @@ public final class Descriptions {
 	 * </pre>
 	 *
 	 * If you are not interested in the property descriptions of the Java
-	 * classes, you should the {@link #walk(PathEntry)} instead.
+	 * classes, you should the {@link #walk(PathValue)} instead.
 	 *
-	 * @see #walk(PathEntry)
+	 * @see #walk(PathValue)
 	 *
 	 * @param root the root class of the object graph
 	 * @param extractor the extractor used for fetching the directly available
-	 *        descriptions. See {@link #extract(PathEntry)}.
+	 *        descriptions. See {@link #extract(PathValue)}.
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(
-		final PathEntry<? extends Type> root,
+		final PathValue<? extends Type> root,
 		final Extractor<
-			? super PathEntry<? extends Type>,
+			? super PathValue<? extends Type>,
 			? extends Description
 		> extractor
 	) {
-		final Extractor<? super PathEntry<? extends Type>, Description>
+		final Extractor<? super PathValue<? extends Type>, Description>
 			recursiveExtractor = PreOrderIterator.extractor(
 				extractor,
-				desc -> PathEntry.of(desc.path(), desc.value().value()),
-				PathEntry::value
+				desc -> PathValue.of(desc.path(), desc.value().value()),
+				PathValue::value
 			);
 
 		return recursiveExtractor.extract(root);
@@ -261,14 +261,14 @@ public final class Descriptions {
 	 * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
 	 * }</pre>
 	 *
-	 * @see #walk(PathEntry, Extractor)
+	 * @see #walk(PathValue, Extractor)
 	 * @see #walk(Type)
 	 *
 	 * @param root the root class of the object graph
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
-	public static Stream<Description> walk(final PathEntry<? extends Type> root) {
-		final Extractor<PathEntry<? extends Type>, Description>
+	public static Stream<Description> walk(final PathValue<? extends Type> root) {
+		final Extractor<PathValue<? extends Type>, Description>
 			extractor = Descriptions::extract;
 
 		return walk(
@@ -286,14 +286,14 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * @see #walk(PathEntry, Extractor)
-	 * @see #walk(PathEntry)
+	 * @see #walk(PathValue, Extractor)
+	 * @see #walk(PathValue)
 	 *
 	 * @param root the root class of the object graph
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(final Type root) {
-		return walk(PathEntry.of(root));
+		return walk(PathValue.of(root));
 	}
 
 }

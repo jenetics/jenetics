@@ -32,10 +32,9 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.internal.Filters;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 /**
@@ -59,12 +58,12 @@ public final class Properties {
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> extract(final PathEntry<?> root) {
+	public static Stream<Property> extract(final PathValue<?> root) {
 		if (root == null || root.value() == null) {
 			return Stream.empty();
 		}
 
-		final var type = PathEntry.<Type>of(root.value().getClass());
+		final var type = PathValue.<Type>of(root.value().getClass());
 		final var descriptions = Descriptions.extract(type);
 
 		return descriptions
@@ -72,7 +71,7 @@ public final class Properties {
 	}
 
 	private static Stream<Property> extract(
-		final PathEntry<?> root,
+		final PathValue<?> root,
 		final Description description
 	) {
 		final var enclosing = root.value();
@@ -145,7 +144,7 @@ public final class Properties {
 	/**
 	 * Return a Stream that is lazily populated with {@code Property} by
 	 * searching for all properties in an object tree rooted at a given
-	 * starting {@code root} object. If used with the {@link #extract(PathEntry)}
+	 * starting {@code root} object. If used with the {@link #extract(PathValue)}
 	 * method, all found descriptions are returned, including the descriptions
 	 * from the Java classes.
 	 * <pre>{@code
@@ -161,9 +160,9 @@ public final class Properties {
 	 * </pre>
 	 *
 	 * If you are not interested in the property descriptions of the Java
-	 * classes, you should the {@link #walk(PathEntry, String...)} )} instead.
+	 * classes, you should the {@link #walk(PathValue, String...)} )} instead.
 	 *
-	 * @see #walk(PathEntry, String...)
+	 * @see #walk(PathValue, String...)
 	 * @see #walk(Object, String...)
 	 *
 	 * @param root the root of the object tree
@@ -172,14 +171,14 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property> walk(
-		final PathEntry<?> root,
-		final Extractor<? super PathEntry<?>, ? extends Property> extractor
+		final PathValue<?> root,
+		final Extractor<? super PathValue<?>, ? extends Property> extractor
 	) {
-		final Extractor<? super PathEntry<?>, Property>
+		final Extractor<? super PathValue<?>, Property>
 			recursiveExtractor = PreOrderIterator.extractor(
 				extractor,
-				property -> PathEntry.of(property.path(), property.value().value()),
-				PathEntry::value
+				property -> PathValue.of(property.path(), property.value().value()),
+				PathValue::value
 			);
 
 		return recursiveExtractor.extract(root);
@@ -221,8 +220,8 @@ public final class Properties {
 	 * @return a property stream
 	 */
 	public static Stream<Property>
-	walk(final PathEntry<?> root, final String... includes) {
-		final Extractor<PathEntry<?>, Property>
+	walk(final PathValue<?> root, final String... includes) {
+		final Extractor<PathValue<?>, Property>
 			extractor = Properties::extract;
 
 		return walk(
@@ -234,7 +233,7 @@ public final class Properties {
 		);
 	}
 
-	private static Predicate<? super PathEntry<?>>
+	private static Predicate<? super PathValue<?>>
 	includesFilter(final String... includes) {
 		final Predicate<? super Path> filter = Stream.of(includes)
 			.map(Path::filter)
@@ -248,7 +247,7 @@ public final class Properties {
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
 	 *
-	 * @see #walk(PathEntry, String...)
+	 * @see #walk(PathValue, String...)
 	 *
 	 * @param root the root of the object tree
 	 * @param includes the included object name (glob) patterns
@@ -257,8 +256,7 @@ public final class Properties {
 	public static Stream<Property>
 	walk(final Object root, final String... includes) {
 		return walk(
-			root instanceof PathEntry<?> po
-				? po : PathEntry.of(root),
+			root instanceof PathValue<?> pe ? pe : PathValue.of(root),
 			includes
 		);
 	}
@@ -270,8 +268,5 @@ public final class Properties {
 			property.value()
 		);
 	}
-
-
-
 
 }

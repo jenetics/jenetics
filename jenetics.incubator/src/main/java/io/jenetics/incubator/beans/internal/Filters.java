@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import io.jenetics.incubator.beans.PathEntry;
+import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.property.Property;
 import io.jenetics.incubator.beans.property.SimpleProperty;
@@ -40,7 +40,7 @@ public final class Filters {
 	private Filters() {
 	}
 
-	public static final Predicate<? super PathEntry<? extends Type>>
+	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_DESCRIPTION_FILTER =
 		type -> {
 			final var cls = type.value() instanceof ParameterizedType pt
@@ -68,7 +68,7 @@ public final class Filters {
 			prop.value().enclosure().getName().startsWith("java"));
 
 
-	public static final Predicate<? super PathEntry<?>>
+	public static final Predicate<? super PathValue<?>>
 		STANDARD_SOURCE_FILTER =
 		object -> {
 			final var type = object.value() != null
@@ -76,7 +76,7 @@ public final class Filters {
 				: Object.class;
 
 			return Filters.STANDARD_SOURCE_DESCRIPTION_FILTER
-				.test(PathEntry.of(object.path(), type));
+				.test(PathValue.of(object.path(), type));
 		};
 
 	public static final Predicate<? super Property> STANDARD_TARGET_FILTER = prop ->

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -136,27 +134,19 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 * Return the head path. This is the path element <em>farthest</em> away
 	 * from the root.
 	 *
-	 * @return the property name
+	 * @return the property name, or {@code null} if {@code this} path is empty
 	 */
 	public Path head() {
-		if (!isEmpty()) {
-			return get(count() - 1);
-		} else {
-			throw new NoSuchElementException("Given path is empty.");
-		}
+		return isEmpty() ? null : get(count() - 1);
 	}
 
 	/**
 	 * Return the path element of {@code this path}.
 	 *
-	 * @return the path element
+	 * @return the path element, or {@code null} if {@code this} path is empty
 	 */
 	public Element element() {
-		if (!isEmpty()) {
-			return elements.get(count() - 1);
-		} else {
-			throw new NoSuchElementException("Given path is empty.");
-		}
+		return isEmpty() ? null : elements.get(count() - 1);
 	}
 
 	/**
@@ -170,15 +160,14 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	}
 
 	/**
-	 * Returns the <em>parent path</em>, or {@link Optional#empty()} if this
-	 * path does not have a parent.
+	 * Returns the <em>parent path</em>, or {@code null} if this
+	 * path has no parent.
 	 *
-	 * @return a path representing the path's parent
+	 * @return a path representing the path's parent, or {@code null} if
+	 *         {@code this} path has no parent
 	 */
-	public Optional<Path> parent() {
-		return count() > 1
-			? Optional.of(subPath(0, count() - 1))
-			: Optional.empty();
+	public Path parent() {
+		return count() > 1 ? subPath(0, count() - 1) : null;
 	}
 
 	/**
