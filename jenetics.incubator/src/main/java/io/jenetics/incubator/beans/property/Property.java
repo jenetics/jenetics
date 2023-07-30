@@ -22,8 +22,6 @@ package io.jenetics.incubator.beans.property;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.description.Getter;
@@ -230,13 +228,6 @@ public sealed interface Property
 			}
 
 		}
-	}
-
-	static <T> Predicate<? super Property> filtering(
-		final Function<? super Property, ? extends T> extractor,
-		final Predicate<? super T> filter
-	) {
-		return property -> filter.test(extractor.apply(property));
 	}
 
 }

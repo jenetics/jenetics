@@ -168,8 +168,17 @@ public final class ModelProperties implements Iterable<Property> {
 		return data().properties.stream();
 	}
 
-	public Stream<Property> properties(final Predicate<? super Property> filter) {
-		return stream().filter(filter);
+	/**
+	 * Returns a stream consisting of the properties of this model that match
+	 * the given matcher.
+	 *
+	 * @param matcher the matcher to apply to each property to determine if it
+	 *        should be included in the stream
+	 * @return a property stream which matches the given matcher
+	 */
+	public Stream<Property> stream(final Matcher<? super Property> matcher) {
+		requireNonNull(matcher);
+		return stream().filter(matcher::matches);
 	}
 
 	@Override

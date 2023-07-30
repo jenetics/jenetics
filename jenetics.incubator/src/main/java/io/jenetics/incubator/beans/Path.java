@@ -316,7 +316,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 * @param glob the glib pattern used for the path filter
 	 * @return a new path filter with the given {@code glob} pattern
 	 */
-	public static Predicate<? super Path> filter(final String glob) {
+	public static Predicate<Path> filter(final String glob) {
 		final var pattern = Filters.toRegexPattern(glob);
 		return path -> pattern.matcher(path.toString()).matches();
 	}

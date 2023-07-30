@@ -10,11 +10,18 @@ public class ModelPropertiesTest {
     public void foo() {
         final var model = new ModelProperties("adf");
 
-        model.properties(Property.filtering(PathValue::path, Path.filter("*")))
+        model.stream(
+                Matcher.matching(
+                    Property::value,
+                    Property.Value::type,
+                    Class::getName,
+                    Matcher.ofGlob("*")
+                )
+            )
             .forEach(System.out::println);
 
-        model.properties(Property.filtering(PathValue::value, value -> value.type() == String.class))
-            .forEach(System.out::println);
+        //model.properties(Property.filtering(PathValue::value, value -> value.type() == String.class))
+        //    .forEach(System.out::println);
     }
 
 }
