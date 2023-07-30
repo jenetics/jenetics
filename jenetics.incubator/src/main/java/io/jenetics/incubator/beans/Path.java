@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Path implements Iterable<Path> {
+public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	private static final Pattern PATH_ELEMENT_PATTERN =
 		Pattern.compile("\\b[_a-zA-Z][_a-zA-Z0-9]*\\b|\\[[0-9^]+]");
@@ -25,7 +25,7 @@ public final class Path implements Iterable<Path> {
 	/**
 	 * Represents the path element.
 	 */
-	public sealed interface Element {
+	public sealed interface Element extends Comparable<Element> {
 		private static Element parse(final String value) {
 			if (value.startsWith("[") && value.endsWith("]")) {
 				try {
@@ -80,6 +80,15 @@ public final class Path implements Iterable<Path> {
 		}
 
 		@Override
+		public int compareTo(final Element other) {
+			if (other instanceof Name nme) {
+				return name.compareTo(nme.name);
+			} else {
+				return 1;
+			}
+		}
+
+		@Override
 		public String toString() {
 			return name;
 		}
@@ -91,6 +100,16 @@ public final class Path implements Iterable<Path> {
 	 * @param index the list/array index
 	 */
 	public record Index(int index) implements Element {
+
+		@Override
+		public int compareTo(final Element other) {
+			if (other instanceof Index idx) {
+				return Integer.compare(index, idx.index);
+			} else {
+				return -1;
+			}
+		}
+
 		@Override
 		public String toString() {
 			return "[%d]".formatted(index);
@@ -238,6 +257,24 @@ public final class Path implements Iterable<Path> {
 	 */
 	public Path get(final int index) {
 		return new Path(List.of(elements.get(index)));
+	}
+
+	@Override
+	public int compareTo(final Path other) {
+		final int len1 = count();
+		final int len2 = other.count();
+
+		final int n = Math.min(len1, len2);
+		int k = 0;
+		while (k < n) {
+			int cmp = elements.get(k).compareTo(other.elements.get(k));
+			if (cmp != 0) {
+				return cmp;
+			}
+			k++;
+		}
+
+		return len1 - len2;
 	}
 
 	@Override
