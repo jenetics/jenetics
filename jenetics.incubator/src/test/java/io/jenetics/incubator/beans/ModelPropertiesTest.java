@@ -13,9 +13,8 @@ public class ModelPropertiesTest {
         model.stream(
                 Matcher.matching(
                     Property::value,
-                    Property.Value::type,
-                    Class::getName,
-                    Matcher.ofGlob("*")
+                    Property.Value::value,
+                    String.class::isInstance
                 )
             )
             .forEach(System.out::println);

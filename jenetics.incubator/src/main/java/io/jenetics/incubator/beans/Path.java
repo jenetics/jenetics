@@ -253,20 +253,14 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	@Override
 	public int compareTo(final Path other) {
-		final int len1 = count();
-		final int len2 = other.count();
-
-		final int n = Math.min(len1, len2);
-		int k = 0;
-		while (k < n) {
-			int cmp = elements.get(k).compareTo(other.elements.get(k));
+		for (int i = 0, n = Math.min(count(), other.count()); i < n; ++i) {
+			int cmp = elements.get(i).compareTo(other.elements.get(i));
 			if (cmp != 0) {
 				return cmp;
 			}
-			k++;
 		}
 
-		return len1 - len2;
+		return Integer.compare(count(), other.count());
 	}
 
 	@Override
