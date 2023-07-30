@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import io.jenetics.incubator.beans.PathEntry;
 import io.jenetics.incubator.beans.description.Description;
@@ -82,7 +83,8 @@ public final class Filters {
 		!(prop instanceof SimpleProperty &&
 			prop.value().enclosure().getClass().getName().startsWith("java"));
 
-	public static Pattern toPattern(final String glob) {
+
+	public static Pattern toRegexPattern(final String glob) {
 		return Pattern.compile(
 			"^" +
 				Pattern.quote(glob)
@@ -92,13 +94,147 @@ public final class Filters {
 		);
 	}
 
-	public static Predicate<? super PathEntry<?>>
-	toFilter(final Pattern pattern) {
-		return object -> pattern
-			.matcher(object.value() != null
-				? object.value().getClass().getName()
-				: "-")
-			.matches();
+	private static final class Glob {
+		private static final String META_CHARS = "\\*?[{";
+		private static final char EOL = 0;
+
+		static String toRegexPattern(final String pattern) {
+			boolean inGroup = false;
+			StringBuilder regex = new StringBuilder("^");
+
+			int i = 0;
+			while (i < pattern.length()) {
+				char c = pattern.charAt(i++);
+				switch (c) {
+					case '\\' -> {
+						if (i == pattern.length()) {
+							throw new PatternSyntaxException(
+								"No character to escape", pattern, i - 1
+							);
+						}
+						char next = pattern.charAt(i++);
+						if (isGlobMeta(next)) {
+							regex.append('\\');
+						}
+						regex.append(next);
+					}
+					case '[' -> {
+						regex.append("[[^/]&&[");
+						if (next(pattern, i) == '^') {
+							regex.append("\\^");
+							i++;
+						} else {
+							if (next(pattern, i) == '!') {
+								regex.append('^');
+								i++;
+							}
+							if (next(pattern, i) == '-') {
+								regex.append('-');
+								i++;
+							}
+						}
+						boolean hasRangeStart = false;
+						char last = 0;
+						while (i < pattern.length()) {
+							c = pattern.charAt(i++);
+							if (c == ']') {
+								break;
+							}
+							if (c == '/') {
+								throw new PatternSyntaxException(
+									"Explicit 'name separator' in class",
+									pattern, i - 1
+								);
+							}
+							if (c == '\\' || c == '[' || c == '&' &&
+								next(pattern, i) == '&')
+							{
+								regex.append('\\');
+							}
+							regex.append(c);
+
+							if (c == '-') {
+								if (!hasRangeStart) {
+									throw new PatternSyntaxException(
+										"Invalid range", pattern, i - 1
+									);
+								}
+								if ((c = next(pattern, i++)) == EOL || c == ']') {
+									break;
+								}
+								if (c < last) {
+									throw new PatternSyntaxException(
+										"Invalid range", pattern, i - 3
+									);
+								}
+								regex.append(c);
+								hasRangeStart = false;
+							} else {
+								hasRangeStart = true;
+								last = c;
+							}
+						}
+						if (c != ']') {
+							throw new PatternSyntaxException(
+								"Missing ']", pattern, i - 1
+							);
+						}
+						regex.append("]]");
+					}
+					case '{' -> {
+						if (inGroup) {
+							throw new PatternSyntaxException(
+								"Cannot nest groups", pattern, i - 1
+							);
+						}
+						regex.append("(?:(?:");
+						inGroup = true;
+					}
+					case '}' -> {
+						if (inGroup) {
+							regex.append("))");
+							inGroup = false;
+						} else {
+							regex.append('}');
+						}
+					}
+					case ',' -> {
+						if (inGroup) {
+							regex.append(")|(?:");
+						} else {
+							regex.append(',');
+						}
+					}
+					case '*' -> {
+						if (next(pattern, i) == '*') {
+							regex.append(".*");
+							i++;
+						} else {
+							regex.append("[^/]*");
+						}
+					}
+					case '?' -> regex.append("[^/]");
+					default -> regex.append(c);
+				}
+			}
+
+			if (inGroup) {
+				throw new PatternSyntaxException("Missing '}", pattern, i - 1);
+			}
+
+			return regex.append('$').toString();
+		}
+
+		private static boolean isGlobMeta(final char c) {
+			return META_CHARS.indexOf(c) != -1;
+		}
+
+		private static char next(final String glob, final int i) {
+			if (i < glob.length()) {
+				return glob.charAt(i);
+			}
+			return EOL;
+		}
 	}
 
 }

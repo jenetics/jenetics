@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -160,6 +161,10 @@ public final class ModelProperties implements Iterable<Property> {
 	 */
 	public Stream<Property> stream() {
 		return data().properties.stream();
+	}
+
+	public Stream<Property> properties(final Predicate<? super Property> filter) {
+		return stream().filter(filter);
 	}
 
 	@Override

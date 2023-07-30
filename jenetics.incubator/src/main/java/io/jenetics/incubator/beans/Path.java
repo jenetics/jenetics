@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+
+import io.jenetics.incubator.beans.internal.Filters;
 
 /**
  * Represents the path, which uniquely identifies a property/description. A
@@ -317,6 +320,24 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		return out.toString();
 	}
 
+	/**
+	 * Return a predicate which can filter paths according to a given {@code glob}
+	 * pattern.
+	 *
+	 * @param glob the glib pattern used for the path filter
+	 * @return a new path filter with the given {@code glob} pattern
+	 */
+	public static Predicate<? super Path> filter(final String glob) {
+		final var pattern = Filters.toRegexPattern(glob);
+		return path -> pattern.matcher(path.toString()).matches();
+	}
+
+	/**
+	 * Create a new path object which consists of the given path <em>elements</em>.
+	 *
+	 * @param elements the path elements of the created path
+	 * @return a new path object.
+	 */
 	public static Path of(final Element... elements) {
 		return elements.length == 0
 			? EMPTY

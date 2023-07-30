@@ -236,11 +236,12 @@ public final class Properties {
 
 	private static Predicate<? super PathEntry<?>>
 	includesFilter(final String... includes) {
-		return Stream.of(includes)
-			.map(Filters::toPattern)
-			.map(Filters::toFilter)
-			.reduce((a, b) -> p -> a.test(p) || b.test(p))
+		final Predicate<? super Path> filter = Stream.of(includes)
+			.map(Path::filter)
+			.reduce((a, b) -> path -> a.test(path) || b.test(path))
 			.orElse(a -> true);
+
+		return entry -> filter.test(entry.path());
 	}
 
 	/**

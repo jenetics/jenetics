@@ -3,7 +3,8 @@ package io.jenetics.incubator.beans;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Comparator;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.util.Optional;
 import java.util.TreeSet;
 
@@ -125,7 +126,16 @@ public class PropertyPathTest {
 		tail.forEach(System.out::println);
 		System.out.println("----");
 
+	}
 
+	@Test
+	public void filter() {
+		assertThat(
+				Path
+					.filter("a.b[*]")
+					.test(Path.of("a.b[9]"))
+			)
+			.isTrue();
 	}
 
 }
