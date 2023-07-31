@@ -19,25 +19,22 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_DESCRIPTION_FILTER;
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_DESCRIPTION_FILTER;
-import static io.jenetics.incubator.beans.internal.Types.toArrayType;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.internal.PreOrderIterator;
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_DESCRIPTION_FILTER;
+import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_DESCRIPTION_FILTER;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -65,85 +62,38 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		final var array = toArrayDescription(type);
-		if (array != null) {
-			return Stream.of(array);
-		}
-
-		final var list = toListDescription(type);
-		if (list != null) {
-			return Stream.of(list);
-		}
-
-		return toDescriptions(type)
-			.sorted(Comparator.comparing(PathValue::name));
-	}
-
-	private static Description
-	toArrayDescription(final PathValue<? extends Type> type) {
-		final var arrayType = toArrayType(type.value());
-
-		if (arrayType != null) {
-			return new Description(
+		if (ArrayType.of(type.value()) instanceof ArrayType at) {
+			return Stream.of(new Description(
 				type.path().append(new Path.Index(0)),
 				new Description.Value.Indexed(
-					arrayType.getComponentType(),
-					arrayType,
+					at.type(), at.component(),
 					Array::getLength, Array::get, Array::set
 				)
-			);
-		} else {
-			return null;
-		}
-	}
-
-	private static Description
-	toListDescription(final PathValue<? extends Type> type) {
-		if (type.value() instanceof ParameterizedType parameterizedType &&
-			parameterizedType.getRawType() instanceof Class<?> listType &&
-			List.class.isAssignableFrom(listType))
-		{
-			final var typeArguments = parameterizedType.getActualTypeArguments();
-			if (typeArguments.length == 1 &&
-				typeArguments[0] instanceof Class<?> componentType)
-			{
-				return new Description(
-					type.path().append(new Path.Index(0)),
-					new Description.Value.Indexed(
-						listType,
-						componentType,
-						Lists::size, Lists::get, Lists::set
-					)
-				);
-			}
-		}
-
-		if (type.value() instanceof Class<?> listType &&
-			List.class.isAssignableFrom(listType))
-		{
-			return new Description(
+			));
+		} else if (ListType.of(type.value()) instanceof ListType lt) {
+			return Stream.of(new Description(
 				type.path().append(new Path.Index(0)),
 				new Description.Value.Indexed(
-					listType,
-					Object.class,
+					lt.type(), lt.component(),
 					Lists::size, Lists::get, Lists::set
 				)
-			);
+			));
+		} else {
+			return toDescriptions(type)
+				.sorted(Comparator.comparing(PathValue::name));
 		}
-
-		return null;
 	}
 
 	private static Stream<Description>
 	toDescriptions(final PathValue<? extends Type> type) {
-		if (type.value() instanceof Class<?> cls && cls.isRecord()) {
-			return Stream.of(cls.getRecordComponents())
+		if (RecordType.of(type.value()) instanceof RecordType rt) {
+			return Stream.of(rt.type().getRecordComponents())
 				.filter(d -> d.getAccessor().getReturnType() != Class.class)
 				.map(c -> toDescription(type.path(), c));
-		} else if (type.value() instanceof Class<?> cls) {
+		} else if (BeanType.of(type.value()) instanceof BeanType bt) {
 			try {
 				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(cls)
+					.getBeanInfo(bt.type())
 					.getPropertyDescriptors();
 
 				return Stream.of(descriptors)
