@@ -19,11 +19,16 @@
  */
 package io.jenetics.incubator.beans;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -75,6 +80,12 @@ public final class Types {
 	}
 
 	public record RecordType(Class<?> type) implements Trait {
+
+		public Stream<RecordComponent> components() {
+			return Stream.of(type.getRecordComponents())
+				.filter(comp -> comp.getAccessor().getReturnType() != Class.class);
+		}
+
 		public static Trait of(final Type type) {
 			if (type instanceof Class<?> cls && cls.isRecord()) {
 				return new RecordType(cls);
@@ -85,6 +96,25 @@ public final class Types {
 	}
 
 	public record BeanType(Class<?> type) implements Trait {
+
+		public Stream<PropertyDescriptor> descriptors() {
+			final PropertyDescriptor[] descriptors;
+			try {
+				descriptors = Introspector
+					.getBeanInfo(type)
+					.getPropertyDescriptors();
+			} catch (IntrospectionException e) {
+				throw new IllegalArgumentException(
+					"Can't introspect class '%s'.".formatted(type),
+					e
+				);
+			}
+
+			return Stream.of(descriptors)
+				.filter(d -> d.getReadMethod() != null)
+				.filter(d -> d.getReadMethod().getReturnType() != Class.class);
+		}
+
 		public static Trait of(final Type type) {
 			if (type instanceof ParameterizedType pt &&
 				pt.getRawType() instanceof Class<?> rt
@@ -125,9 +155,9 @@ public final class Types {
 	public static boolean isIdentityType(final Object object) {
 		return
 			object != null &&
-				!(object instanceof Constable) &&
-				!(object instanceof TemporalAccessor) &&
-				!(object instanceof Number);
+			!(object instanceof Constable) &&
+			!(object instanceof TemporalAccessor) &&
+			!(object instanceof Number);
 	}
 
 }

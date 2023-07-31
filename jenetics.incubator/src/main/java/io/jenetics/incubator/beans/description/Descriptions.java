@@ -19,20 +19,13 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.Types.ArrayType;
@@ -104,78 +97,16 @@ public final class Descriptions {
 		}
 
 		if (ArrayType.of(type.value()) instanceof ArrayType at) {
-			return Stream.of(new Description(
-				type.path().append(new Path.Index(0)),
-				new Description.Value.Indexed(
-					at.arrayType(), at.componentType(),
-					Array::getLength, Array::get, Array::set
-				)
-			));
+			return Stream.of(Description.of(type.path(), at));
 		} else if (ListType.of(type.value()) instanceof ListType lt) {
-			return Stream.of(new Description(
-				type.path().append(new Path.Index(0)),
-				new Description.Value.Indexed(
-					lt.listType(), lt.componentType(),
-					Lists::size, Lists::get, Lists::set
-				)
-			));
-		} else {
-			return toDescriptions(type)
-				.sorted(Comparator.comparing(PathValue::name));
-		}
-	}
-
-	private static Stream<Description>
-	toDescriptions(final PathValue<? extends Type> type) {
-		if (RecordType.of(type.value()) instanceof RecordType rt) {
-			return Stream.of(rt.type().getRecordComponents())
-				.filter(d -> d.getAccessor().getReturnType() != Class.class)
-				.map(c -> toDescription(type.path(), c));
+			return Stream.of(Description.of(type.path(), lt));
+		} else if (RecordType.of(type.value()) instanceof RecordType rt) {
+			return rt.components().map(c -> Description.of(type.path(), c));
 		} else if (BeanType.of(type.value()) instanceof BeanType bt) {
-			try {
-				final PropertyDescriptor[] descriptors = Introspector
-					.getBeanInfo(bt.type())
-					.getPropertyDescriptors();
-
-				return Stream.of(descriptors)
-					.filter(d -> d.getReadMethod() != null)
-					.filter(d -> d.getReadMethod().getReturnType() != Class.class)
-					.map(d -> toDescription(type.path(), d));
-			} catch (IntrospectionException e) {
-				throw new IllegalArgumentException(
-					"Can't introspect class '%s'.".formatted(type.value()),
-					e
-				);
-			}
+			return bt.descriptors().map(d -> Description.of(type.path(), d));
 		} else {
 			return Stream.of();
 		}
-	}
-
-	private static Description
-	toDescription(final Path path, final PropertyDescriptor descriptor) {
-		return new Description(
-			path.append(descriptor.getName()),
-			new Description.Value.Single(
-				descriptor.getReadMethod().getDeclaringClass(),
-				descriptor.getReadMethod().getGenericReturnType(),
-				Methods.toGetter(descriptor.getReadMethod()),
-				Methods.toSetter(descriptor.getWriteMethod())
-			)
-		);
-	}
-
-	private static Description
-	toDescription(final Path path, final RecordComponent component) {
-		return new Description(
-			path.append(component.getName()),
-			new Description.Value.Single(
-				component.getDeclaringRecord(),
-				component.getAccessor().getGenericReturnType(),
-				Methods.toGetter(component.getAccessor()),
-				null
-			)
-		);
 	}
 
 	/**

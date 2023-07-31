@@ -21,13 +21,18 @@ package io.jenetics.incubator.beans.description;
 
 import static java.util.Objects.requireNonNull;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.Types.ArrayType;
 import io.jenetics.incubator.beans.Types.BeanType;
+import io.jenetics.incubator.beans.Types.ListType;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -149,6 +154,38 @@ public record Description(Path path, Value value)
 				);
 			}
 
+			/**
+			 * Return a new single description value from the given record
+			 * component.
+			 *
+			 * @param component the record component
+			 * @return a new single description value
+			 */
+			public static Single of(final RecordComponent component) {
+				return new Single(
+					component.getDeclaringRecord(),
+					component.getAccessor().getGenericReturnType(),
+					Methods.toGetter(component.getAccessor()),
+					null
+				);
+			}
+
+			/**
+			 * Return a new single description value from the given property
+			 * descriptor.
+			 *
+			 * @param descriptor the property descriptor
+			 * @return a new single description value
+			 */
+			public static Single of(final PropertyDescriptor descriptor) {
+				return new Single(
+					descriptor.getReadMethod().getDeclaringClass(),
+					descriptor.getReadMethod().getGenericReturnType(),
+					Methods.toGetter(descriptor.getReadMethod()),
+					Methods.toSetter(descriptor.getWriteMethod())
+				);
+			}
+
 		}
 
 		/**
@@ -241,7 +278,63 @@ public record Description(Path path, Value value)
 				);
 			}
 
-		}
+			/**
+			 * Return an indexed description value from the given array type
+			 * information.
+			 *
+			 * @param trait the trait from which to create an indexed value
+			 * @return a new indexed value from the given trait
+			 */
+			public static Indexed of(final ArrayType trait) {
+				return new Indexed(
+					trait.arrayType(), trait.componentType(),
+					Array::getLength, Array::get, Array::set
+				);
+			}
 
+			/**
+			 * Return an indexed description value from the given list type
+			 * information.
+			 *
+			 * @param trait the trait from which to create an indexed value
+			 * @return a new indexed value from the given trait
+			 */
+			public static Indexed of(final ListType trait) {
+				return new Indexed(
+					trait.listType(), trait.componentType(),
+					Lists::size, Lists::get, Lists::set
+				);
+			}
+
+		}
 	}
+
+	public static Description of(final Path path, ArrayType trait) {
+		return new Description(
+			path.append(new Path.Index(0)),
+			Description.Value.Indexed.of(trait)
+		);
+	}
+
+	public static Description of(final Path path, ListType trait) {
+		return new Description(
+			path.append(new Path.Index(0)),
+			Description.Value.Indexed.of(trait)
+		);
+	}
+
+	public static Description of(final Path path, final PropertyDescriptor desc) {
+		return new Description(
+			path.append(desc.getName()),
+			Description.Value.Single.of(desc)
+		);
+	}
+
+	public static Description of(final Path path, final RecordComponent comp) {
+		return new Description(
+			path.append(comp.getName()),
+			Description.Value.Single.of(comp)
+		);
+	}
+
 }
