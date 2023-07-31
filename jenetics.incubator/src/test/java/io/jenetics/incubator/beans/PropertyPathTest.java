@@ -1,12 +1,11 @@
 package io.jenetics.incubator.beans;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.TreeSet;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.TreeSet;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertyPathTest {
 
@@ -123,16 +122,6 @@ public class PropertyPathTest {
 		tail.forEach(System.out::println);
 		System.out.println("----");
 
-	}
-
-	@Test
-	public void filter() {
-		assertThat(
-				Path
-					.filter("a.b[*]")
-					.test(Path.of("a.b[9]"))
-			)
-			.isTrue();
 	}
 
 }

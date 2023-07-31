@@ -83,6 +83,24 @@ public class RecursivePropertyExtractorTest {
 
 		Properties.walk(PathValue.of(gpx), "io.jenetics.*")
 			.forEach(System.out::println);
+
+		record Author(String forename, String surname) { }
+		record Book(String title, int pages, List<Author> authors) { }
+
+		final var book = new Book(
+			"Oliver Twist",
+			366,
+			List.of(new Author("Charles", "Dickens"))
+		);
+
+		var it = new PreOrderIterator<>(
+			PathValue.of(book),
+			Properties::extract,
+			property -> PathValue.of(property.path(), property.value().value()),
+			PathValue::value
+		);
+
+		it.forEachRemaining(System.out::println);
 	}
 
 }
