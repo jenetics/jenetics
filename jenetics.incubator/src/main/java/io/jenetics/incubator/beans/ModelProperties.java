@@ -19,10 +19,9 @@
  */
 package io.jenetics.incubator.beans;
 
-import io.jenetics.incubator.beans.property.Properties;
-import io.jenetics.incubator.beans.property.Property;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.beans.Types.isIdentityType;
 
-import java.lang.ref.PhantomReference;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -34,8 +33,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.jenetics.incubator.beans.Types.isIdentityType;
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.beans.property.Properties;
+import io.jenetics.incubator.beans.property.Property;
 
 /**
  * Wrapper class for extending objects graphs with additional navigation methods.

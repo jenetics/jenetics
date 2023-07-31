@@ -19,15 +19,6 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.Types.ArrayType;
-import io.jenetics.incubator.beans.Types.BeanType;
-import io.jenetics.incubator.beans.Types.ListType;
-import io.jenetics.incubator.beans.Types.RecordType;
-import io.jenetics.incubator.beans.PreOrderIterator;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -39,6 +30,15 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.Types.ArrayType;
+import io.jenetics.incubator.beans.Types.BeanType;
+import io.jenetics.incubator.beans.Types.ListType;
+import io.jenetics.incubator.beans.Types.RecordType;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property

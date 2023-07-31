@@ -19,23 +19,23 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Filters;
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.Types.ArrayType;
-import io.jenetics.incubator.beans.Types.BeanType;
-import io.jenetics.incubator.beans.Types.ListType;
-import io.jenetics.incubator.beans.description.Description;
-import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.PreOrderIterator;
+import static io.jenetics.incubator.beans.description.Descriptions.STANDARD_SOURCE_FILTER;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static io.jenetics.incubator.beans.description.Descriptions.STANDARD_SOURCE_FILTER;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Filters;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.Types.ArrayType;
+import io.jenetics.incubator.beans.Types.BeanType;
+import io.jenetics.incubator.beans.Types.ListType;
+import io.jenetics.incubator.beans.description.Description;
+import io.jenetics.incubator.beans.description.Descriptions;
 
 /**
  * This class contains helper methods for extracting the properties from a given

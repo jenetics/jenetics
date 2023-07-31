@@ -19,11 +19,11 @@
  */
 package io.jenetics.incubator.beans;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Helper methods for creating filter predicates.
