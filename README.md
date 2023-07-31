@@ -144,11 +144,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Sikora, M., Smołka, M. <a href="https://doi.org/10.1007/978-3-031-35995-8_16">An Application of Evolutionary Algorithms and Machine Learning in Four-Part Harmonization.</a> <em> Computational Science – ICCS 2023. ICCS 2023. Lecture Notes in Computer Science, vol 14073. Springer </em> June 2023.
+Garmendia, A., Bork, D., Eisenberg, M., Ferreira, T., Kessentini, M., Wimmer, M. <a href=" https://doi.org/10.1007/978-981-19-9948-2_4">Leveraging Artificial Intelligence for Model-based Software Analysis and Design.</a> <em> Optimising the Software Development Process with Artificial Intelligence. Natural Computing Series. Springer, Singapore. </em> July 2023.
 
 ...
 </summary>
 
+1) Garmendia, A., Bork, D., Eisenberg, M., Ferreira, T., Kessentini, M., Wimmer, M. <a href=" https://doi.org/10.1007/978-981-19-9948-2_4">Leveraging Artificial Intelligence for Model-based Software Analysis and Design.</a> <em> Optimising the Software Development Process with Artificial Intelligence. Natural Computing Series. Springer, Singapore. </em> July 2023.
 1) Sikora, M., Smołka, M. <a href="https://doi.org/10.1007/978-3-031-35995-8_16">An Application of Evolutionary Algorithms and Machine Learning in Four-Part Harmonization.</a> <em> Computational Science – ICCS 2023. ICCS 2023. Lecture Notes in Computer Science, vol 14073. Springer </em> June 2023.
 1) Dolly Sapra and Andy D. Pimentel. <a href="http://admorph.eu/wp-content/uploads/2023/05/SAMOS_Dolly-2.pdf">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em> SAMOS '23. </em> May 2023.
 1) Vipin Shukla, Mainak Bandyopadhyay. <a href="https://doi.org/10.1016/j.iswa.2023.200200">Optimization of input parameters of ANN–driven plasma source through nature-inspired evolutionary algorithms.</a> <em> Intelligent Systems with Applications, Volume 18, 2023, 200200, ISSN 2667-3053. </em> May 2023.
