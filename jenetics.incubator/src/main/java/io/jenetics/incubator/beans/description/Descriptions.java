@@ -28,10 +28,10 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.Types.ArrayType;
-import io.jenetics.incubator.beans.Types.BeanType;
-import io.jenetics.incubator.beans.Types.ListType;
-import io.jenetics.incubator.beans.Types.RecordType;
+import io.jenetics.incubator.beans.Reflect.ArrayType;
+import io.jenetics.incubator.beans.Reflect.BeanType;
+import io.jenetics.incubator.beans.Reflect.ListType;
+import io.jenetics.incubator.beans.Reflect.RecordType;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -65,6 +65,7 @@ public final class Descriptions {
 						!name.startsWith("jdk")
 					);
 		};
+
 	public static final Predicate<? super PathValue<?>>
 		STANDARD_SOURCE_FILTER =
 		object -> {

@@ -28,6 +28,16 @@ import java.util.regex.Pattern;
 /**
  * Helper methods for creating filter predicates.
  *
+ * <pre>{@code
+ * final Predicate<? super Path> filter = Stream.of(includes)
+ *     .map(include -> Filters
+ *         .filtering(
+ *             Path::toString,
+ *             Filters.ofGlob(include)
+ *         )
+ *     )
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

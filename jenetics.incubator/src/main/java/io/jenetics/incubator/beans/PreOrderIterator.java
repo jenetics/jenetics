@@ -72,6 +72,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	private final Extractor<? super S, ? extends T> extractor;
 	private final Function<? super T, ? extends S> mapper;
 	private final Function<? super S, ?> identity;
+
 	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
 
 	// Set for holding the already visited objects.
@@ -123,10 +124,9 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		}
 
 		final S source = mapper.apply(node);
-		final Iterator<? extends T> children =
-			!visited.add(identity.apply(source))
-				? Collections.emptyIterator()
-				: extractor.extract(source).iterator();
+		final Iterator<? extends T> children = !visited.add(identity.apply(source))
+			? Collections.emptyIterator()
+			: extractor.extract(source).iterator();
 
 		if (children.hasNext()) {
 			deque.push(children);

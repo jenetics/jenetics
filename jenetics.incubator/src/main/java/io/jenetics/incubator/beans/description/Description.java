@@ -30,9 +30,9 @@ import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.Types.ArrayType;
-import io.jenetics.incubator.beans.Types.BeanType;
-import io.jenetics.incubator.beans.Types.ListType;
+import io.jenetics.incubator.beans.Reflect.ArrayType;
+import io.jenetics.incubator.beans.Reflect.BeanType;
+import io.jenetics.incubator.beans.Reflect.ListType;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -149,7 +149,7 @@ public record Description(Path path, Value value)
 				return "Single[value=%s, enclosure=%s]".formatted(
 					BeanType.of(value()) instanceof BeanType bt
 						? bt.type().getName()
-						: value(),
+						: value().getTypeName(),
 					enclosure().getName()
 				);
 			}
@@ -273,7 +273,7 @@ public record Description(Path path, Value value)
 				return "Indexed[value=%s, enclosure=%s]".formatted(
 					BeanType.of(value()) instanceof BeanType bt
 						? bt.type().getName()
-						: value(),
+						: value().getTypeName(),
 					enclosure().getName()
 				);
 			}
