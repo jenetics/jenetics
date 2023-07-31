@@ -20,6 +20,7 @@
 package io.jenetics.incubator.beans;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -27,18 +28,18 @@ import java.util.regex.Pattern;
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Matcher<T> {
+public final class Filters {
 
-    boolean matches(final T value);
+	private Filters() {
+	}
 
-    static Matcher<String> ofRegex(final String pattern) {
+    public static Predicate<String> ofRegex(final String pattern) {
         final var regex = Pattern.compile(pattern);
 
         return string -> regex.matcher(string).matches();
     }
 
-    static Matcher<String> ofGlob(final String pattern) {
+    public static Predicate<String> ofGlob(final String pattern) {
         final var regex = Pattern.compile(
             "^" +
                 Pattern.quote(pattern)
@@ -50,32 +51,32 @@ public interface Matcher<T> {
         return string -> regex.matcher(string).matches();
     }
 
-    static <A, B> Matcher<B> matching(
+    public static <A, B> Predicate<B> filtering(
         final Function<? super B, ? extends A> extractor,
-        final Matcher<? super A> matcher
+        final Predicate<? super A> filters
     ) {
-        return value -> matcher.matches(extractor.apply(value));
+        return value -> filters.test(extractor.apply(value));
     }
 
-    static <A, B, C> Matcher<C> matching(
+    public static <A, B, C> Predicate<C> filtering(
         final Function<? super C, ? extends B> extractor1,
         final Function<? super B, ? extends A> extractor2,
-        final Matcher<? super A> matcher
+        final Predicate<? super A> filters
     ) {
-        return value -> matcher.matches(
+        return value -> filters.test(
             extractor2
                 .compose(extractor1)
                 .apply(value)
         );
     }
 
-    static <A, B, C, D> Matcher<D> matching(
+    public static <A, B, C, D> Predicate<D> filtering(
         final Function<? super D, ? extends C> extractor1,
         final Function<? super C, ? extends B> extractor2,
         final Function<? super B, ? extends A> extractor3,
-        final Matcher<? super A> matcher
+        final Predicate<? super A> filters
     ) {
-        return value -> matcher.matches(
+        return value -> filters.test(
             extractor3
                 .compose(extractor2)
                 .compose(extractor1)
@@ -83,14 +84,14 @@ public interface Matcher<T> {
         );
     }
 
-    static <A, B, C, D, E> Matcher<E> matching(
+    public static <A, B, C, D, E> Predicate<E> filtering(
         final Function<? super E, ? extends D> extractor1,
         final Function<? super D, ? extends C> extractor2,
         final Function<? super C, ? extends B> extractor3,
         final Function<? super B, ? extends A> extractor4,
-        final Matcher<? super A> matcher
+        final Predicate<? super A> filters
     ) {
-        return value -> matcher.matches(
+        return value -> filters.test(
             extractor4
                 .compose(extractor3)
                 .compose(extractor2)

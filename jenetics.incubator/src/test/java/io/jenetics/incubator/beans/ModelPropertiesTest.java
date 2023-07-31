@@ -11,7 +11,7 @@ public class ModelPropertiesTest {
         final var model = new ModelProperties("adf");
 
         model.stream(
-                Matcher.matching(
+                Filters.filtering(
                     Property::value,
                     Property.Value::value,
                     String.class::isInstance

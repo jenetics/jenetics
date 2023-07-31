@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
-
-import io.jenetics.incubator.beans.internal.Filters;
 
 /**
  * Represents the path, which uniquely identifies a property/description. A
@@ -301,18 +298,6 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		}
 
 		return out.toString();
-	}
-
-	/**
-	 * Return a predicate which can filter paths according to a given {@code glob}
-	 * pattern.
-	 *
-	 * @param glob the glib pattern used for the path filter
-	 * @return a new path filter with the given {@code glob} pattern
-	 */
-	public static Predicate<Path> filter(final String glob) {
-		final var pattern = Filters.toRegexPattern(glob);
-		return path -> pattern.matcher(path.toString()).matches();
 	}
 
 	/**

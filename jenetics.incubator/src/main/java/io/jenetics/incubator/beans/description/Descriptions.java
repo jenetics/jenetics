@@ -22,19 +22,23 @@ package io.jenetics.incubator.beans.description;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.internal.PreOrderIterator;
+import io.jenetics.incubator.beans.Types.ArrayType;
+import io.jenetics.incubator.beans.Types.BeanType;
+import io.jenetics.incubator.beans.Types.ListType;
+import io.jenetics.incubator.beans.Types.RecordType;
+import io.jenetics.incubator.beans.PreOrderIterator;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_DESCRIPTION_FILTER;
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_DESCRIPTION_FILTER;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -46,6 +50,43 @@ import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_DESCR
  * @since !__version__!
  */
 public final class Descriptions {
+
+	public static final Predicate<? super PathValue<? extends Type>>
+		STANDARD_SOURCE_DESCRIPTION_FILTER =
+		type -> {
+			final var cls = type.value() instanceof ParameterizedType pt
+				? (Class<?>)pt.getRawType()
+				: (Class<?>)type.value();
+
+			final var name = cls.getName();
+
+			return
+				// Allow native Java arrays, except byte[] arrays.
+				(name.startsWith("[") && !name.endsWith("[B")) ||
+					// Allow Java collection classes.
+					Collection.class.isAssignableFrom(cls) ||
+					(
+						!name.startsWith("java") &&
+						!name.startsWith("com.sun") &&
+						!name.startsWith("sun") &&
+						!name.startsWith("jdk")
+					);
+		};
+	public static final Predicate<? super PathValue<?>>
+		STANDARD_SOURCE_FILTER =
+		object -> {
+			final var type = object.value() != null
+				? object.value().getClass()
+				: Object.class;
+
+			return STANDARD_SOURCE_DESCRIPTION_FILTER
+				.test(PathValue.of(object.path(), type));
+		};
+
+	public static final Predicate<? super Description>
+		STANDARD_TARGET_DESCRIPTION_FILTER =
+		prop -> !(prop.value() instanceof Description.Value.Single &&
+			prop.value().enclosure().getName().startsWith("java"));
 
 	private Descriptions() {
 	}
@@ -66,7 +107,7 @@ public final class Descriptions {
 			return Stream.of(new Description(
 				type.path().append(new Path.Index(0)),
 				new Description.Value.Indexed(
-					at.type(), at.component(),
+					at.arrayType(), at.componentType(),
 					Array::getLength, Array::get, Array::set
 				)
 			));
@@ -74,7 +115,7 @@ public final class Descriptions {
 			return Stream.of(new Description(
 				type.path().append(new Path.Index(0)),
 				new Description.Value.Indexed(
-					lt.type(), lt.component(),
+					lt.listType(), lt.componentType(),
 					Lists::size, Lists::get, Lists::set
 				)
 			));

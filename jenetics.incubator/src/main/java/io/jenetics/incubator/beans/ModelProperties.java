@@ -19,9 +19,10 @@
  */
 package io.jenetics.incubator.beans;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.internal.Types.isIdentityType;
+import io.jenetics.incubator.beans.property.Properties;
+import io.jenetics.incubator.beans.property.Property;
 
+import java.lang.ref.PhantomReference;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -33,8 +34,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.property.Properties;
-import io.jenetics.incubator.beans.property.Property;
+import static io.jenetics.incubator.beans.Types.isIdentityType;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Wrapper class for extending objects graphs with additional navigation methods.
@@ -172,13 +173,13 @@ public final class ModelProperties implements Iterable<Property> {
 	 * Returns a stream consisting of the properties of this model that match
 	 * the given matcher.
 	 *
-	 * @param matcher the matcher to apply to each property to determine if it
+	 * @param filter the matcher to apply to each property to determine if it
 	 *        should be included in the stream
 	 * @return a property stream which matches the given matcher
 	 */
-	public Stream<Property> stream(final Matcher<? super Property> matcher) {
-		requireNonNull(matcher);
-		return stream().filter(matcher::matches);
+	public Stream<Property> stream(final Predicate<? super Property> filter) {
+		requireNonNull(filter);
+		return stream().filter(filter);
 	}
 
 	@Override

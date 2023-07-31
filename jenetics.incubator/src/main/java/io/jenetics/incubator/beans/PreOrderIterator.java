@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.internal;
+package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
@@ -33,8 +33,6 @@ import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import io.jenetics.incubator.beans.Extractor;
 
 /**
  * Preorder iterator which <em>recursively</em> traverses the object graph. It

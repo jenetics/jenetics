@@ -19,15 +19,15 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.Types.BeanType;
 
 import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.internal.Types;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -142,8 +142,8 @@ public record Description(Path path, Value value)
 			@Override
 			public String toString() {
 				return "Single[value=%s, enclosure=%s]".formatted(
-					Types.toClass(value()) != null
-						? Types.toClass(value()).getName()
+					BeanType.of(value()) instanceof BeanType bt
+						? bt.type().getName()
 						: value(),
 					enclosure().getName()
 				);
@@ -234,8 +234,8 @@ public record Description(Path path, Value value)
 			@Override
 			public String toString() {
 				return "Indexed[value=%s, enclosure=%s]".formatted(
-					Types.toClass(value()) != null
-						? Types.toClass(value()).getName()
+					BeanType.of(value()) instanceof BeanType bt
+						? bt.type().getName()
 						: value(),
 					enclosure().getName()
 				);

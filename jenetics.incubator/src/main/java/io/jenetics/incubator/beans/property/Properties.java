@@ -19,23 +19,23 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_SOURCE_FILTER;
-import static io.jenetics.incubator.beans.internal.Filters.STANDARD_TARGET_FILTER;
-import static io.jenetics.incubator.beans.internal.Types.isArrayType;
-import static io.jenetics.incubator.beans.internal.Types.isListType;
-import static io.jenetics.incubator.beans.internal.Types.toClass;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Filters;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.Types.ArrayType;
+import io.jenetics.incubator.beans.Types.BeanType;
+import io.jenetics.incubator.beans.Types.ListType;
+import io.jenetics.incubator.beans.description.Description;
+import io.jenetics.incubator.beans.description.Descriptions;
+import io.jenetics.incubator.beans.PreOrderIterator;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.description.Description;
-import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.internal.PreOrderIterator;
+import static io.jenetics.incubator.beans.description.Descriptions.STANDARD_SOURCE_FILTER;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -47,6 +47,11 @@ import io.jenetics.incubator.beans.internal.PreOrderIterator;
  * @since !__version__!
  */
 public final class Properties {
+
+	public static final Predicate<? super Property> STANDARD_TARGET_FILTER = prop ->
+		!(prop instanceof SimpleProperty &&
+			prop.value().enclosure().getClass().getName().startsWith("java"));
+
 
 	private Properties() {
 	}
@@ -81,9 +86,9 @@ public final class Properties {
 			final var value = desc.getter().get(root.value());
 
 			final Property prop;
-			if (isArrayType(desc.value())) {
+			if (ArrayType.of(desc.value()) != null) {
 				prop = new ArrayProperty(path, toValue(enclosing, value, desc));
-			} else if (isListType(desc.value())) {
+			} else if (ListType.of(desc.value()) != null) {
 				prop = new ListProperty(path, toValue(enclosing, value, desc));
 			} else {
 				prop = new SimpleProperty(path, toValue(enclosing, value, desc));
@@ -106,7 +111,9 @@ public final class Properties {
 					new Property.Value.Mutable(
 						enclosing,
 						value,
-						value != null ? value.getClass() : toClass(desc.value()),
+						value != null
+							? value.getClass()
+							: toClass(desc.value()),
 						o -> desc.getter().get(o, i),
 						(o, v) -> desc.setter().orElseThrow().set(o, i, v)
 					)
@@ -115,6 +122,10 @@ public final class Properties {
 		} else {
 			return Stream.empty();
 		}
+	}
+
+	private static Class<?> toClass(final Type type) {
+		return BeanType.of(type) instanceof BeanType bt ? bt.type() : null;
 	}
 
 	private static Property.Value toValue(
@@ -236,7 +247,12 @@ public final class Properties {
 	private static Predicate<? super PathValue<?>>
 	includesFilter(final String... includes) {
 		final Predicate<? super Path> filter = Stream.of(includes)
-			.map(Path::filter)
+			.map(include -> Filters
+				.filtering(
+					Path::toString,
+					Filters.ofGlob(include)
+				)
+			)
 			.reduce((a, b) -> path -> a.test(path) || b.test(path))
 			.orElse(a -> true);
 
