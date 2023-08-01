@@ -44,20 +44,20 @@ import io.jenetics.incubator.beans.Reflect.RecordType;
 public final class Descriptions {
 
 	/**
-	 * Standard filter for the source types. It excludes all JDK types from being
-	 * used, but includes arrays (except byte[] arrays) and list types.
+	 * Standard filter for the source types. It excludes all JDK types from
+	 * being used, except array- and list types.
 	 */
 	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_FILTER =
 		type -> !Reflect.isJdkType(type.value()) ||
 				ListType.of(type.value()) instanceof ListType ||
-				ArrayType.of(type.value()) instanceof ArrayType at &&
-					at.componentType() != byte[].class;
+				ArrayType.of(type.value()) instanceof ArrayType;
 
 	/**
 	 * Standard filter for the target types. It excludes all JDK types from being
 	 * part except they are part of the description
-	 * ({@code Description.Value.Indexed}).
+	 * ({@code Description.Value.Indexed}) or the enclosure type is an array- or
+	 * list type.
 	 */
 	public static final Predicate<? super Description>
 		STANDARD_TARGET_FILTER =

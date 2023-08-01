@@ -22,12 +22,9 @@ package io.jenetics.incubator.beans;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
-import java.util.ArrayDeque;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Function;
@@ -35,49 +32,24 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Preorder iterator which <em>recursively</em> traverses the object graph. It
- * also tracks already visited nodes to prevent infinite loops in the traversal.
- *
- * The following code example shows how to recursively travers the properties of
- * a simple domain model:
- * <pre>{@code
- * record Author(String forename, String surname) { }
- * record Book(String title, int pages, List<Author> authors) { }
- *
- * final var book = new Book(
- *     "Oliver Twist",
- *     366,
- *     List.of(new Author("Charles", "Dickens"))
- * );
- *
- * final var it = new PreOrderIterator<>(
- *     PathValue.of(book),
- *     Properties::extract,
- *     property -> PathValue.of(property.path(), property.value().value()),
- *     PathValue::value
- * );
- *
- * it.forEachRemaining(System.out::println);
- * }</pre>
- *
- * @param <S> the source object type
- * @param <T> the type of the extracted objects
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class PreOrderIterator<S, T> implements Iterator<T> {
+public class PostOrderIterator<S, T> implements Iterator<T> {
 
 	private final Extractor<? super S, ? extends T> extractor;
 	private final Function<? super T, ? extends S> mapper;
 	private final Function<? super S, ?> identity;
 
-	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
+	private final S first;
+	private final Iterator<? extends T> children;
+
+	private T root;
+	private Iterator<? extends T> subtree;
 
 	// Set for holding the already visited objects.
-	private final Set<Object> visited =
-		Collections.newSetFromMap(new IdentityHashMap<>());
+	private final Set<Object> visited;
 
 	/**
 	 * Create a new (<em>property</em>) pre-order iterator from the given
@@ -91,50 +63,73 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 * @param identity objects, returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops
 	 */
-	public PreOrderIterator(
+	public PostOrderIterator(
 		final S object,
 		final Extractor<? super S, ? extends T> extractor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
+		this(
+			object, null,
+			extractor, mapper, identity,
+			Collections.newSetFromMap(new IdentityHashMap<>())
+		);
+	}
+
+	private PostOrderIterator(
+		final S first,
+		final T root,
+		final Extractor<? super S, ? extends T> extractor,
+		final Function<? super T, ? extends S> mapper,
+		final Function<? super S, ?> identity,
+		final Set<Object> visited
+	) {
 		this.extractor = requireNonNull(extractor);
 		this.mapper = requireNonNull(mapper);
 		this.identity = requireNonNull(identity);
+		this.visited = requireNonNull(visited);
 
-		deque.push(extractor.extract(object).iterator());
-		visited.add(identity.apply(object));
+		this.first = first;
+		this.root = root;
+
+		final var id = identity.apply(first);
+		final var exists = !visited.add(id);
+		children = exists
+			? Collections.emptyIterator()
+			: extractor.extract(first).iterator();
+
+		subtree = Collections.emptyIterator();
 	}
 
 	@Override
 	public boolean hasNext() {
-		final var peek = deque.peek();
-		return peek != null && peek.hasNext();
+		return subtree.hasNext() || children.hasNext() || root != null;
 	}
 
 	@Override
 	public T next() {
-		final Iterator<? extends T> it = deque.peek();
-		if (it == null) {
-			throw new NoSuchElementException("No next element.");
+		final T result;
+		if (subtree.hasNext()) {
+			result = subtree.next();
+		} else if (children.hasNext()) {
+			final T next = children.next();
+
+			subtree = new PostOrderIterator<>(
+				mapper.apply(next),
+				next,
+				extractor,
+				mapper,
+				identity,
+				visited
+			);
+
+			result = subtree.next();
+		} else {
+			result = root;
+			root = null;
 		}
 
-		final T node = it.next();
-		if (!it.hasNext()) {
-			deque.pop();
-		}
-
-		final S source = mapper.apply(node);
-		final var id = identity.apply(source);
-		final var exists = !visited.add(id);
-		final Iterator<? extends T> children = exists
-			? Collections.emptyIterator()
-			: extractor.extract(source).iterator();
-
-		if (children.hasNext()) {
-			deque.push(children);
-		}
-
-		return node;
+		return result;
 	}
 
 	/**
@@ -167,7 +162,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
-		return source -> new PreOrderIterator<S, T>(
+		return source -> new PostOrderIterator<S, T>(
 			source, extractor, mapper, identity
 		).stream();
 	}

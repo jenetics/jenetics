@@ -37,6 +37,7 @@ import io.jenetics.jpx.GPX.Reader;
 public class RecursivePropertyExtractorTest {
 
 	private record Data(
+		byte[] payload,
 		Integer[][] ints,
 		List<List<String>> strings
 	) {}
@@ -45,6 +46,7 @@ public class RecursivePropertyExtractorTest {
 	@Test
 	public void extractRecursive() {
 		final var data = new Data(
+			new byte[]{1, 4},
 			new Integer[][] {
 				{1}
 			},

@@ -30,7 +30,8 @@ import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.PostOrderIterator;
+import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.ListType;
@@ -64,7 +65,8 @@ public final class Properties {
 
 	/**
 	 * Standard filter for the target types. It excludes all JDK types from being
-	 * part except they are part of the property ({@code IndexedProperty}).
+	 * part except they are array- or list properties or the enclosure type are
+	 * array- or list classes.
 	 */
 	public static final Predicate<? super Property>
 		STANDARD_TARGET_FILTER =
@@ -204,7 +206,7 @@ public final class Properties {
 		final Extractor<? super PathValue<?>, ? extends Property> extractor
 	) {
 		final Extractor<? super PathValue<?>, Property>
-			recursiveExtractor = PreOrderIterator.extractor(
+			recursiveExtractor = BreathFirstIterator.extractor(
 				extractor,
 				property -> PathValue.of(property.path(), property.value().value()),
 				PathValue::value
