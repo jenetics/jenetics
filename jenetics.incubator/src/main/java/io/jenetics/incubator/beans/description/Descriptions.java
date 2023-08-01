@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import java.lang.reflect.Type;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
@@ -27,10 +31,6 @@ import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.BeanType;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.Reflect.RecordType;
-
-import java.lang.reflect.Type;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property

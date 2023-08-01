@@ -19,6 +19,13 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static io.jenetics.incubator.beans.Reflect.toRawType;
+
+import java.lang.reflect.Type;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
@@ -29,13 +36,6 @@ import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
-
-import java.lang.reflect.Type;
-import java.util.function.Predicate;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static io.jenetics.incubator.beans.Reflect.toRawType;
 
 /**
  * This class contains helper methods for extracting the properties from a given

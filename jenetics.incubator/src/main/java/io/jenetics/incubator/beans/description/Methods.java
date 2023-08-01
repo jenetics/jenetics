@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Conversion methods for converting {@link Method} objects to getter und
