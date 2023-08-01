@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Represents the path, which uniquely identifies a property/description. A
@@ -284,6 +286,17 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		return IntStream.range(0, count())
 			.mapToObj(this::get)
 			.iterator();
+	}
+
+	/**
+	 * Return a stream of the path elements of {@code this} path.
+	 *
+	 * @see #iterator()
+	 *
+	 * @return the path stream
+	 */
+	public Stream<Path> stream() {
+		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override

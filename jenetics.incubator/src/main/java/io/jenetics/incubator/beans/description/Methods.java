@@ -22,6 +22,8 @@ package io.jenetics.incubator.beans.description;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Conversion methods for converting {@link Method} objects to getter und
  * setter functions.
@@ -35,34 +37,33 @@ final class Methods {
 	}
 
 	static Getter toGetter(final Method method) {
-		return object -> {
-			try {
-				method.setAccessible(true);
-				return method.invoke(object);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				throw new IllegalArgumentException(e);
-			}
-		};
+		requireNonNull(method);
+		return object -> invoke(method, object);
 	}
 
 	static Setter toSetter(final Method method) {
-		return (object, value) -> {
-			try {
-				if (method != null) {
-					method.setAccessible(true);
-					method.invoke(object, value);
-				}
-			} catch (IllegalAccessException ignore) {
-			} catch (InvocationTargetException e) {
-				if (e.getTargetException() instanceof RuntimeException re) {
-					throw re;
-				} else {
-					throw new IllegalStateException(e.getTargetException());
-				}
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Invalid argument: " + value, e);
+		return method != null
+			? (object, value) -> invoke(method, object, value)
+			: null;
+	}
+
+	private static Object invoke(
+		final Method method,
+		final Object object,
+		final Object... value
+	) {
+		try {
+			method.setAccessible(true);
+			return method.invoke(object, value);
+		} catch (InvocationTargetException e) {
+			if (e.getTargetException() instanceof RuntimeException re) {
+				throw re;
+			} else {
+				throw new IllegalStateException(e.getTargetException());
 			}
-		};
+		} catch (ReflectiveOperationException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

@@ -19,19 +19,18 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.BeanType;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.Reflect.RecordType;
+
+import java.lang.reflect.Type;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -44,43 +43,27 @@ import io.jenetics.incubator.beans.Reflect.RecordType;
  */
 public final class Descriptions {
 
+	/**
+	 * Standard filter for the source types. It excludes all JDK types from being
+	 * used, but includes arrays (except byte[] arrays) and list types.
+	 */
 	public static final Predicate<? super PathValue<? extends Type>>
-		STANDARD_SOURCE_DESCRIPTION_FILTER =
-		type -> {
-			final var cls = type.value() instanceof ParameterizedType pt
-				? (Class<?>)pt.getRawType()
-				: (Class<?>)type.value();
-
-			final var name = cls.getName();
-
-			return
-				// Allow native Java arrays, except byte[] arrays.
-				(name.startsWith("[") && !name.endsWith("[B")) ||
-					// Allow Java collection classes.
-					Collection.class.isAssignableFrom(cls) ||
-					(
-						!name.startsWith("java") &&
-						!name.startsWith("com.sun") &&
-						!name.startsWith("sun") &&
-						!name.startsWith("jdk")
-					);
-		};
-
-	public static final Predicate<? super PathValue<?>>
 		STANDARD_SOURCE_FILTER =
-		object -> {
-			final var type = object.value() != null
-				? object.value().getClass()
-				: Object.class;
+		type -> !Reflect.isJdkType(type.value()) ||
+				ListType.of(type.value()) instanceof ListType ||
+				ArrayType.of(type.value()) instanceof ArrayType at &&
+					at.componentType() != byte[].class;
 
-			return STANDARD_SOURCE_DESCRIPTION_FILTER
-				.test(PathValue.of(object.path(), type));
-		};
-
+	/**
+	 * Standard filter for the target types. It excludes all JDK types from being
+	 * part except they are part of the description
+	 * ({@code Description.Value.Indexed}).
+	 */
 	public static final Predicate<? super Description>
-		STANDARD_TARGET_DESCRIPTION_FILTER =
-		prop -> !(prop.value() instanceof Description.Value.Single &&
-			prop.value().enclosure().getName().startsWith("java"));
+		STANDARD_TARGET_FILTER =
+		prop -> (prop.value() instanceof Description.Value.Indexed) ||
+				!Reflect.isJdkType(prop.value().enclosure());
+
 
 	private Descriptions() {
 	}
@@ -97,7 +80,7 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		if (ArrayType.of(type.value()) instanceof ArrayType at) {
+		if (ArrayType.of(type.value()) instanceof ArrayType at && !at.isPrimitive()) {
 			return Stream.of(Description.of(type.path(), at));
 		} else if (ListType.of(type.value()) instanceof ListType lt) {
 			return Stream.of(Description.of(type.path(), lt));
@@ -197,8 +180,8 @@ public final class Descriptions {
 		return walk(
 			root,
 			extractor
-				.sourceFilter(STANDARD_SOURCE_DESCRIPTION_FILTER)
-				.targetFilter(STANDARD_TARGET_DESCRIPTION_FILTER)
+				.sourceFilter(STANDARD_SOURCE_FILTER)
+				.targetFilter(STANDARD_TARGET_FILTER)
 		);
 	}
 

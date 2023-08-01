@@ -2,20 +2,19 @@ package io.jenetics.incubator.beans;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.util.TreeSet;
+import java.util.random.RandomGenerator;
+import java.util.stream.Collectors;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class PropertyPathTest {
+public class PathTest {
 
 	@Test
 	public void ofEmptyString() {
-		final var fp = java.nio.file.Path.of("/").normalize();
-		System.out.println(fp.getNameCount());
-
 		final var path = Path.of("");
-
 		assertThat(path.count()).isEqualTo(0);
 		assertThat(path.isEmpty()).isTrue();
 	}
@@ -121,7 +120,44 @@ public class PropertyPathTest {
 		System.out.println(tail.size());
 		tail.forEach(System.out::println);
 		System.out.println("----");
+	}
 
+	@Test
+	public void random() {
+		final var random = RandomGenerator.getDefault();
+		for (int i = 0; i < 10; ++i) {
+			final var path = next(random);
+			System.out.println(path);
+			System.out.println(toPath(path));
+			System.out.println();
+		}
+	}
+
+	private static Path next(final RandomGenerator random) {
+		final int count = random.nextInt(20);
+		final var elements = new Path.Element[count];
+
+		for (int i = 0; i < count; ++i) {
+			if (random.nextBoolean()) {
+				elements[i] = new Path.Name("name_" + random.nextInt(10, 1000));
+			} else {
+				elements[i] = new Path.Index(random.nextInt(1000));
+			}
+		}
+
+		return Path.of(elements);
+	}
+
+	private static Path toPath(final java.nio.file.Path path) {
+		return Path.of(path.toString().replace(File.separatorChar, '.'));
+	}
+
+	private static java.nio.file.Path toPath(final Path path) {
+		final var string = path.stream()
+			.map(Path::toString)
+			.collect(Collectors.joining(File.separator));
+
+		return java.nio.file.Path.of(string);
 	}
 
 }

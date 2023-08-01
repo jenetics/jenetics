@@ -19,23 +19,23 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static io.jenetics.incubator.beans.description.Descriptions.STANDARD_SOURCE_FILTER;
+import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Filters;
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.Reflect;
+import io.jenetics.incubator.beans.Reflect.ArrayType;
+import io.jenetics.incubator.beans.Reflect.ListType;
+import io.jenetics.incubator.beans.description.Description;
+import io.jenetics.incubator.beans.description.Descriptions;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Extractor;
-import io.jenetics.incubator.beans.Filters;
-import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.Reflect.ArrayType;
-import io.jenetics.incubator.beans.Reflect.BeanType;
-import io.jenetics.incubator.beans.Reflect.ListType;
-import io.jenetics.incubator.beans.description.Description;
-import io.jenetics.incubator.beans.description.Descriptions;
+import static io.jenetics.incubator.beans.Reflect.toRawType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -48,9 +48,29 @@ import io.jenetics.incubator.beans.description.Descriptions;
  */
 public final class Properties {
 
-	public static final Predicate<? super Property> STANDARD_TARGET_FILTER = prop ->
-		!(prop instanceof SimpleProperty &&
-			prop.value().enclosure().getClass().getName().startsWith("java"));
+	/**
+	 * Standard filter for the source types. It excludes all JDK types from being
+	 * used, but includes arrays (except byte[] arrays) and list types.
+	 */
+	public static final Predicate<? super PathValue<?>>
+		STANDARD_SOURCE_FILTER =
+		object -> Descriptions.STANDARD_SOURCE_FILTER.test(
+			PathValue.of(
+				object.path(),
+				object.value() != null
+					? object.value().getClass()
+					: Object.class
+			)
+		);
+
+	/**
+	 * Standard filter for the target types. It excludes all JDK types from being
+	 * part except they are part of the property ({@code IndexedProperty}).
+	 */
+	public static final Predicate<? super Property>
+		STANDARD_TARGET_FILTER =
+		prop -> prop instanceof IndexedProperty ||
+				!Reflect.isJdkType(prop.value().enclosure().getClass());
 
 
 	private Properties() {
@@ -81,29 +101,29 @@ public final class Properties {
 	) {
 		final var enclosing = root.value();
 
-		if (description.value() instanceof Description.Value.Single desc) {
+		if (description.value() instanceof Description.Value.Single single) {
 			final var path = root.path().append(description.name());
-			final var value = desc.getter().get(root.value());
+			final var value = single.getter().get(root.value());
 
 			final Property prop;
-			if (ArrayType.of(desc.value()) != null) {
-				prop = new ArrayProperty(path, toValue(enclosing, value, desc));
-			} else if (ListType.of(desc.value()) != null) {
-				prop = new ListProperty(path, toValue(enclosing, value, desc));
+			if (ArrayType.of(single.value()) != null) {
+				prop = new ArrayProperty(path, toValue(enclosing, value, single));
+			} else if (ListType.of(single.value()) != null) {
+				prop = new ListProperty(path, toValue(enclosing, value, single));
 			} else {
-				prop = new SimpleProperty(path, toValue(enclosing, value, desc));
+				prop = new SimpleProperty(path, toValue(enclosing, value, single));
 			}
 
 			return Stream.of(prop);
-		} else if (description.value() instanceof Description.Value.Indexed desc) {
+		} else if (description.value() instanceof Description.Value.Indexed indexed) {
 			final var path = description.path().element() instanceof Path.Index
 				? root.path()
 				: root.path().append(new Path.Name(description.name()));
 
-			final int size = desc.size().get(enclosing);
+			final int size = indexed.size().get(enclosing);
 
 			return IntStream.range(0, size).mapToObj(i -> {
-				final var value = desc.getter().get(enclosing, i);
+				final var value = indexed.getter().get(enclosing, i);
 
 				return new IndexProperty(
 					path.append(new Path.Index(i)),
@@ -113,19 +133,15 @@ public final class Properties {
 						value,
 						value != null
 							? value.getClass()
-							: toClass(desc.value()),
-						o -> desc.getter().get(o, i),
-						(o, v) -> desc.setter().orElseThrow().set(o, i, v)
+							: toRawType(indexed.value()),
+						o -> indexed.getter().get(o, i),
+						(o, v) -> indexed.setter().orElseThrow().set(o, i, v)
 					)
 				);
 			});
 		} else {
 			return Stream.empty();
 		}
-	}
-
-	private static Class<?> toClass(final Type type) {
-		return BeanType.of(type) instanceof BeanType bt ? bt.type() : null;
 	}
 
 	private static Property.Value toValue(
@@ -138,7 +154,7 @@ public final class Properties {
 				new Property.Value.Mutable(
 					enclosing,
 					value,
-					toClass(description.value()),
+					toRawType(description.value()),
 					description.getter(),
 					setter
 				)
@@ -147,7 +163,7 @@ public final class Properties {
 				new Property.Value.Immutable(
 					enclosing,
 					value,
-					toClass(description.value())
+					toRawType(description.value())
 				)
 			);
 	}

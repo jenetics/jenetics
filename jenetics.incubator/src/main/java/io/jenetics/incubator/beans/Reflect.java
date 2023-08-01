@@ -28,6 +28,7 @@ import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -39,6 +40,15 @@ import java.util.stream.Stream;
  * @since !__version__!
  */
 public final class Reflect {
+
+	private static final Set<String> JDK_PACKAGE_PREFIXES = Set.of(
+		"com.sun",
+		"java",
+		"javax",
+		"jdk",
+		"sun"
+	);
+
 	private Reflect() {
 	}
 
@@ -61,7 +71,20 @@ public final class Reflect {
 	 * @param arrayType the array type
 	 * @param componentType the array component type
 	 */
-	public record ArrayType(Class<?> arrayType, Class<?> componentType) implements Trait {
+	public record ArrayType(Class<?> arrayType, Class<?> componentType)
+		implements Trait
+	{
+
+		/**
+		 * Determines if the specified {@code Trait} object represents a
+		 * primitive type array.
+		 *
+		 * @return {@code true} if and only if this class represents a primitive
+		 *         type array
+		 */
+		public boolean isPrimitive() {
+			return componentType.isPrimitive();
+		}
 
 		/**
 		 * Return an {@code ArrayType} instance if the given {@code type} is an
@@ -78,12 +101,9 @@ public final class Reflect {
 		 *         type, or null
 		 */
 		public static Trait of(final Type type) {
-			if (type instanceof Class<?> arrayType &&
-				arrayType.isArray() &&
-				!arrayType.getComponentType().isPrimitive())
-			{
+			if (type instanceof Class<?> arrayType && arrayType.isArray()) {
 				return new ArrayType(arrayType, arrayType.getComponentType());
-			} else {
+			}  {
 				return null;
 			}
 		}
@@ -245,6 +265,46 @@ public final class Reflect {
 			!(object instanceof Constable) &&
 			!(object instanceof TemporalAccessor) &&
 			!(object instanceof Number);
+	}
+
+	/**
+	 * Checks if the given {@code type} is part of the JDK.
+	 *
+	 * @param type the type to check
+	 * @return {@code true} if the given {@code type} is part of the JDK,
+	 *         {@code false} otherwise
+	 */
+	public static boolean isJdkType(final Type type) {
+		if (type == null) {
+			return false;
+		}
+
+		final var cls = toRawType(type);
+		final var name = cls != null ? cls.getName() : "-";
+
+		return JDK_PACKAGE_PREFIXES.stream()
+			.anyMatch(name::startsWith);
+
+	}
+
+	/**
+	 * Return the raw type of the given Java type, given its context. If the
+	 * type is a {@link ParameterizedType}, its raw type is returned.
+	 *
+	 * @param type the type to resolve
+	 * @return the resolved {@link Class} object or {@code null} if
+	 *      * the type could not be resolved
+	 */
+	public static Class<?> toRawType(final Type type) {
+		if (type instanceof Class<?> cls) {
+			return cls;
+		} else if (type instanceof ParameterizedType pt &&
+			pt.getRawType() instanceof Class<?> cls)
+		{
+			return cls;
+		} else {
+			return null;
+		}
 	}
 
 }
