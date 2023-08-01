@@ -61,8 +61,10 @@ public final class Descriptions {
 	 */
 	public static final Predicate<? super Description>
 		STANDARD_TARGET_FILTER =
-		prop -> (prop.value() instanceof Description.Value.Indexed) ||
-				!Reflect.isJdkType(prop.value().enclosure());
+		prop -> prop.value() instanceof Description.Value.Indexed ||
+				!Reflect.isJdkType(prop.value().enclosure()) ||
+				ArrayType.of(prop.value().enclosure()) != null ||
+				ListType.of(prop.value().enclosure()) != null;
 
 
 	private Descriptions() {

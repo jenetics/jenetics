@@ -54,13 +54,12 @@ public final class Properties {
 	 */
 	public static final Predicate<? super PathValue<?>>
 		STANDARD_SOURCE_FILTER =
-		object -> Descriptions.STANDARD_SOURCE_FILTER.test(
-			PathValue.of(
-				object.path(),
-				object.value() != null
-					? object.value().getClass()
-					: Object.class
-			)
+		Filters.filtering(
+			pv -> PathValue.of(
+				pv.path(),
+				pv.value() != null ? pv.value().getClass() : Object.class
+			),
+			Descriptions.STANDARD_SOURCE_FILTER
 		);
 
 	/**
@@ -69,8 +68,11 @@ public final class Properties {
 	 */
 	public static final Predicate<? super Property>
 		STANDARD_TARGET_FILTER =
-		prop -> prop instanceof IndexedProperty ||
-				!Reflect.isJdkType(prop.value().enclosure().getClass());
+		prop -> prop instanceof ListProperty ||
+				prop instanceof ArrayProperty ||
+				!Reflect.isJdkType(prop.value().enclosure().getClass()) ||
+				ArrayType.of(prop.value().enclosure().getClass()) != null ||
+				ListType.of(prop.value().enclosure().getClass()) != null;
 
 
 	private Properties() {

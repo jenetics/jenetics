@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.property.IndexProperty;
 import io.jenetics.incubator.beans.property.Properties;
 import io.jenetics.incubator.beans.property.Property;
@@ -52,6 +53,11 @@ public class RecursivePropertyExtractorTest {
 				listOf("a", "b", "c")
 			)
 		);
+
+		Descriptions.walk(Data.class)
+			.forEach(System.out::println);
+
+		System.out.println("----");
 
 		Properties.walk(data)
 			.peek(p -> {

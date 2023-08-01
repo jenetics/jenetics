@@ -41,12 +41,13 @@ import java.util.stream.Stream;
  */
 public final class Reflect {
 
-	private static final Set<String> JDK_PACKAGE_PREFIXES = Set.of(
-		"com.sun",
-		"java",
-		"javax",
-		"jdk",
-		"sun"
+	private static final Set<String> JDK_TYPE_PREFIXES = Set.of(
+		"[", // Java arrays
+		"com.sun.",
+		"java.",
+		"javax.",
+		"jdk.",
+		"sun."
 	);
 
 	private Reflect() {
@@ -138,9 +139,9 @@ public final class Reflect {
 			{
 				final var typeArguments = parameterizedType.getActualTypeArguments();
 				if (typeArguments.length == 1 &&
-					typeArguments[0] instanceof Class<?> componentType)
+					toRawType(typeArguments[0]) != null)
 				{
-					return new ListType(listType, componentType);
+					return new ListType(listType, toRawType(typeArguments[0]) );
 				}
 			}
 
@@ -282,7 +283,7 @@ public final class Reflect {
 		final var cls = toRawType(type);
 		final var name = cls != null ? cls.getName() : "-";
 
-		return JDK_PACKAGE_PREFIXES.stream()
+		return JDK_TYPE_PREFIXES.stream()
 			.anyMatch(name::startsWith);
 
 	}
