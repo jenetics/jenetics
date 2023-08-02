@@ -33,6 +33,7 @@ import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
+import io.jenetics.incubator.beans.Reflect.IndexedTrait;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
@@ -72,8 +73,7 @@ public final class Properties {
 		prop -> prop instanceof ListProperty ||
 				prop instanceof ArrayProperty ||
 				!Reflect.isJdkType(prop.value().enclosure().getClass()) ||
-				ArrayType.of(prop.value().enclosure().getClass()) != null ||
-				ListType.of(prop.value().enclosure().getClass()) != null;
+				IndexedTrait.of(prop.value().enclosure().getClass()) != null;
 
 
 	private Properties() {
@@ -106,15 +106,17 @@ public final class Properties {
 
 		if (description.value() instanceof Description.Value.Single single) {
 			final var path = root.path().append(description.name());
-			final var value = single.getter().get(root.value());
+			final var value = toValue(
+				enclosing, single.getter().get(root.value()), single
+			);
 
 			final Property prop;
 			if (ArrayType.of(single.value()) != null) {
-				prop = new ArrayProperty(path, toValue(enclosing, value, single));
+				prop = new ArrayProperty(path, value);
 			} else if (ListType.of(single.value()) != null) {
-				prop = new ListProperty(path, toValue(enclosing, value, single));
+				prop = new ListProperty(path, value);
 			} else {
-				prop = new SimpleProperty(path, toValue(enclosing, value, single));
+				prop = new SimpleProperty(path, value);
 			}
 
 			return Stream.of(prop);

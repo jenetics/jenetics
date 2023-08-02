@@ -27,10 +27,8 @@ import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.Reflect;
-import io.jenetics.incubator.beans.Reflect.ArrayType;
-import io.jenetics.incubator.beans.Reflect.BeanType;
-import io.jenetics.incubator.beans.Reflect.ListType;
-import io.jenetics.incubator.beans.Reflect.RecordType;
+import io.jenetics.incubator.beans.Reflect.IndexedTrait;
+import io.jenetics.incubator.beans.Reflect.StructTrait;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -50,8 +48,7 @@ public final class Descriptions {
 	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_FILTER =
 		type -> !Reflect.isJdkType(type.value()) ||
-				ListType.of(type.value()) instanceof ListType ||
-				ArrayType.of(type.value()) instanceof ArrayType;
+				IndexedTrait.of(type.value()) != null;
 
 	/**
 	 * Standard filter for the target types. It excludes all JDK types from being
@@ -63,8 +60,7 @@ public final class Descriptions {
 		STANDARD_TARGET_FILTER =
 		prop -> prop.value() instanceof Description.Value.Indexed ||
 				!Reflect.isJdkType(prop.value().enclosure()) ||
-				ArrayType.of(prop.value().enclosure()) != null ||
-				ListType.of(prop.value().enclosure()) != null;
+				IndexedTrait.of(prop.value().enclosure()) != null;
 
 
 	private Descriptions() {
@@ -82,14 +78,12 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		if (ArrayType.of(type.value()) instanceof ArrayType at && !at.isPrimitive()) {
-			return Stream.of(Description.of(type.path(), at));
-		} else if (ListType.of(type.value()) instanceof ListType lt) {
-			return Stream.of(Description.of(type.path(), lt));
-		} else if (RecordType.of(type.value()) instanceof RecordType rt) {
-			return rt.components().map(c -> Description.of(type.path(), c));
-		} else if (BeanType.of(type.value()) instanceof BeanType bt) {
-			return bt.descriptors().map(d -> Description.of(type.path(), d));
+		if (IndexedTrait.of(type.value()) instanceof IndexedTrait trait &&
+			!trait.componentType().isPrimitive())
+		{
+			return Stream.of(Description.of(type.path(), trait));
+		} else if (StructTrait.of(type.value()) instanceof StructTrait st) {
+			return st.components().map(c -> Description.of(type.path(), c));
 		} else {
 			return Stream.of();
 		}

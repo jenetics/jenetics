@@ -19,12 +19,14 @@
  */
 package io.jenetics.incubator.beans;
 
+import static java.util.Objects.requireNonNull;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.constant.Constable;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
 import java.util.List;
@@ -67,25 +69,107 @@ public final class Reflect {
 	}
 
 	/**
-	 * Trait which represents an array type.
-	 *
-	 * @param arrayType the array type
-	 * @param componentType the array component type
+	 * Represents indexed types. An indexed type is a container where
+	 * its elements are accessible via index. Such types are arrays and lists.
 	 */
-	public record ArrayType(Class<?> arrayType, Class<?> componentType)
-		implements Trait
-	{
+	public sealed interface IndexedTrait extends Trait {
 
 		/**
-		 * Determines if the specified {@code Trait} object represents a
-		 * primitive type array.
+		 * Return the container type, e.g., Array or List.
 		 *
-		 * @return {@code true} if and only if this class represents a primitive
-		 *         type array
+		 * @return the container type
 		 */
-		public boolean isPrimitive() {
-			return componentType.isPrimitive();
+		Class<?> type();
+
+		/**
+		 * Return the container element type.
+		 *
+		 * @return the container element type
+		 */
+		Class<?> componentType();
+
+		/**
+		 * Return an {@code IndexedType} from the given {@code type}. If the
+		 * type parameter doesn't represent an indexed type, {@code null} is
+		 * returned.
+		 *
+		 * @param type the input type
+		 * @return an indexed type if the input {@code type} is an array or list,
+		 *         {@code null} otherwise
+		 */
+		static Trait of(final Type type) {
+			var trait = ArrayType.of(type);
+			if (trait == null) {
+				trait = ListType.of(type);
+			}
+			return trait;
 		}
+	}
+
+	/**
+	 * Represents a <em>structural</em> type like a record or bean class.
+	 */
+	public sealed interface StructTrait extends Trait {
+
+		/**
+		 * Component information for the <em>structural</em> trait
+		 *
+		 * @param enclosure the enclosing type
+		 * @param name the component name
+		 * @param value the component type
+		 * @param getter the getter method
+		 * @param setter the setter method, may be {@code null}
+		 */
+		record Component(
+			Class<?> enclosure,
+			String name,
+			Type value,
+			Method getter,
+			Method setter
+		) {
+			public Component {
+				requireNonNull(enclosure);
+				requireNonNull(name);
+				requireNonNull(value);
+				requireNonNull(getter);
+			}
+		}
+
+		/**
+		 * Return the record components of {@code this} struct trait.
+		 *
+		 * @return the record components of {@code this} struct trait
+		 */
+		Stream<Component> components();
+
+		/**
+		 * Return an {@code StructType} from the given {@code type}. If the
+		 * type parameter doesn't represent a structural type, {@code null} is
+		 * returned.
+		 *
+		 * @param type the input type
+		 * @return a structure type if the input {@code type} is a record or
+		 *         bean
+		 */
+		static Trait of(final Type type) {
+			var trait = RecordType.of(type);
+			if (trait == null) {
+				trait = BeanType.of(type);
+			}
+			return trait;
+		}
+
+	}
+
+	/**
+	 * Trait which represents an array type.
+	 *
+	 * @param type the array type
+	 * @param componentType the array component type
+	 */
+	public record ArrayType(Class<?> type, Class<?> componentType)
+		implements IndexedTrait
+	{
 
 		/**
 		 * Return an {@code ArrayType} instance if the given {@code type} is an
@@ -101,7 +185,7 @@ public final class Reflect {
 		 * @return an {@code ArrayType} if the given {@code type} is an array
 		 *         type, or null
 		 */
-		public static Trait of(final Type type) {
+		public static IndexedTrait of(final Type type) {
 			if (type instanceof Class<?> arrayType && arrayType.isArray()) {
 				return new ArrayType(arrayType, arrayType.getComponentType());
 			}  {
@@ -113,10 +197,12 @@ public final class Reflect {
 	/**
 	 * Trait which represents a {@code List} type.
 	 *
-	 * @param listType the list type
+	 * @param type the list type
 	 * @param componentType the list component type
 	 */
-	public record ListType(Class<?> listType, Class<?> componentType) implements Trait {
+	public record ListType(Class<?> type, Class<?> componentType)
+		implements IndexedTrait
+	{
 
 		/**
 		 * Return a {@code ListType} instance if the given {@code type} is a
@@ -132,7 +218,7 @@ public final class Reflect {
 		 * @return an {@code ListType} if the given {@code type} is a list type,
 		 *         or null
 		 */
-		public static Trait of(final Type type) {
+		public static IndexedTrait of(final Type type) {
 			if (type instanceof ParameterizedType parameterizedType &&
 				parameterizedType.getRawType() instanceof Class<?> listType &&
 				List.class.isAssignableFrom(listType))
@@ -160,16 +246,24 @@ public final class Reflect {
 	 *
 	 * @param type the type object
 	 */
-	public record RecordType(Class<?> type) implements Trait {
+	public record RecordType(Class<?> type) implements StructTrait {
 
 		/**
 		 * Return the record components of {@code this} record type.
 		 *
 		 * @return the record components of {@code this} record type
 		 */
-		public Stream<RecordComponent> components() {
+		@Override
+		public Stream<Component> components() {
 			return Stream.of(type.getRecordComponents())
-				.filter(comp -> comp.getAccessor().getReturnType() != Class.class);
+				.filter(comp -> comp.getAccessor().getReturnType() != Class.class)
+				.map(rc -> new Component(
+					rc.getDeclaringRecord(),
+					rc.getName(),
+					rc.getAccessor().getGenericReturnType(),
+					rc.getAccessor(),
+					null
+				));
 		}
 
 		/**
@@ -200,14 +294,9 @@ public final class Reflect {
 	 *
 	 * @param type the type object
 	 */
-	public record BeanType(Class<?> type) implements Trait {
-
-		/**
-		 * Return the property descriptors of {@code this} bean.
-		 *
-		 * @return the property descriptors of {@code this} bean
-		 */
-		public Stream<PropertyDescriptor> descriptors() {
+	public record BeanType(Class<?> type) implements StructTrait {
+		@Override
+		public Stream<Component> components() {
 			final PropertyDescriptor[] descriptors;
 			try {
 				descriptors = Introspector
@@ -221,8 +310,15 @@ public final class Reflect {
 			}
 
 			return Stream.of(descriptors)
-				.filter(d -> d.getReadMethod() != null)
-				.filter(d -> d.getReadMethod().getReturnType() != Class.class);
+				.filter(pd -> pd.getReadMethod() != null)
+				.filter(pd -> pd.getReadMethod().getReturnType() != Class.class)
+				.map(pd -> new Component(
+					pd.getReadMethod().getDeclaringClass(),
+					pd.getName(),
+					pd.getReadMethod().getGenericReturnType(),
+					pd.getReadMethod(),
+					pd.getWriteMethod()
+				));
 		}
 
 		/**
