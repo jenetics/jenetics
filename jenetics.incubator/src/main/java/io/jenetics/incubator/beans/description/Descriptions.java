@@ -24,7 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.BreathFirstIterator;
-import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.IndexedType;
@@ -73,7 +73,7 @@ public final class Descriptions {
 	 * @param type the enclosure type + start <em>path</em>
 	 * @return the <em>directly</em> available property descriptions
 	 */
-	public static Stream<Description> extract(final PathValue<? extends Type> type) {
+	public static Stream<Description> unapply(final PathValue<? extends Type> type) {
 		if (type == null || type.value() == null) {
 			return Stream.empty();
 		}
@@ -94,7 +94,7 @@ public final class Descriptions {
 	 * searching for all property descriptions in an object tree rooted at a
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned. If used with the
-	 * {@link #extract(PathValue)} method, all found descriptions are returned,
+	 * {@link #unapply(PathValue)} method, all found descriptions are returned,
 	 * including the descriptions from the Java classes.
 	 * <pre>{@code
 	 * Descriptions
@@ -116,25 +116,25 @@ public final class Descriptions {
 	 * @see #walk(PathValue)
 	 *
 	 * @param root the root class of the object graph
-	 * @param extractor the extractor used for fetching the directly available
-	 *        descriptions. See {@link #extract(PathValue)}.
+	 * @param dtor the extractor used for fetching the directly available
+	 *        descriptions. See {@link #unapply(PathValue)}.
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(
 		final PathValue<? extends Type> root,
-		final Extractor<
-			? super PathValue<? extends Type>,
-			? extends Description
-		> extractor
+		final Dtor<
+					? super PathValue<? extends Type>,
+					? extends Description
+				> dtor
 	) {
-		final Extractor<? super PathValue<? extends Type>, Description>
-			recursiveExtractor = BreathFirstIterator.extractor(
-				extractor,
+		final Dtor<? super PathValue<? extends Type>, Description>
+			recursiveDtor = BreathFirstIterator.extractor(
+				dtor,
 				desc -> PathValue.of(desc.path(), desc.value().value()),
 				PathValue::value
 			);
 
-		return recursiveExtractor.extract(root);
+		return recursiveDtor.unapply(root);
 	}
 
 	/**
@@ -163,20 +163,18 @@ public final class Descriptions {
 	 * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
 	 * }</pre>
 	 *
-	 * @see #walk(PathValue, Extractor)
+	 * @see #walk(PathValue, Dtor)
 	 * @see #walk(Type)
 	 *
 	 * @param root the root class of the object graph
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(final PathValue<? extends Type> root) {
-		final Extractor<PathValue<? extends Type>, Description>
-			extractor = Descriptions::extract;
+		final Dtor<PathValue<? extends Type>, Description> dtor = Descriptions::unapply;
 
 		return walk(
 			root,
-			extractor
-				.sourceFilter(STANDARD_SOURCE_FILTER)
+			dtor.sourceFilter(STANDARD_SOURCE_FILTER)
 				.targetFilter(STANDARD_TARGET_FILTER)
 		);
 	}
@@ -188,7 +186,7 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * @see #walk(PathValue, Extractor)
+	 * @see #walk(PathValue, Dtor)
 	 * @see #walk(PathValue)
 	 *
 	 * @param root the root class of the object graph

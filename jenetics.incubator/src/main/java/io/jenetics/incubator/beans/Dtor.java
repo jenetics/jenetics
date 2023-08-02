@@ -25,22 +25,26 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * This functional interface can extract sub-elements from a given object.
+ * This functional interface deconstructs an object of type {@code S} to its
+ * components of type {@code T}.
+ *
+ * @param <S> the type of the deconstructed object
+ * @param <T> the type of the object's component type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Extractor<S, T> {
+public interface Dtor<S, T> {
 
 	/**
 	 * Extracts the sub-elements from the given {@code source} object.
 	 *
-	 * @param source the source object, which contains the sub-elements
-	 * @return the sub-element stream
+	 * @param source the source object
+	 * @return the stream of deconstructed object components
 	 */
-	Stream<T> extract(final S source);
+	Stream<T> unapply(final S source);
 
 	/**
 	 * Create a new {@code Extractor} by filtering the source object. If the
@@ -48,15 +52,12 @@ public interface Extractor<S, T> {
 	 * return an empty {@code Stream}.
 	 *
 	 * @param predicate the source object {@code predicate}
-	 * @return a new {@code Extractor} which filters on the source object
+	 * @return a new {@link Dtor} which filters on the source object
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}
 	 */
-	default Extractor<S, T> sourceFilter(final Predicate<? super S> predicate) {
+	default Dtor<S, T> sourceFilter(final Predicate<? super S> predicate) {
 		requireNonNull(predicate);
-
-		return source -> predicate.test(source)
-			? extract(source)
-			: Stream.empty();
+		return source -> predicate.test(source) ? unapply(source) : Stream.empty();
 	}
 
 	/**
@@ -68,9 +69,9 @@ public interface Extractor<S, T> {
 	 * @return a new {@code Extractor} which filters on the sub-elements
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}
 	 */
-	default Extractor<S, T> targetFilter(final Predicate<? super T> predicate) {
+	default Dtor<S, T> targetFilter(final Predicate<? super T> predicate) {
 		requireNonNull(predicate);
-		return source -> extract(source).filter(predicate);
+		return source -> unapply(source).filter(predicate);
 	}
 
 }

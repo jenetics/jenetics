@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.BreathFirstIterator;
-import io.jenetics.incubator.beans.Extractor;
+import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
@@ -85,19 +85,19 @@ public final class Properties {
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> extract(final PathValue<?> root) {
+	public static Stream<Property> unapply(final PathValue<?> root) {
 		if (root == null || root.value() == null) {
 			return Stream.empty();
 		}
 
 		final var type = PathValue.<Type>of(root.value().getClass());
-		final var descriptions = Descriptions.extract(type);
+		final var descriptions = Descriptions.unapply(type);
 
 		return descriptions
-			.flatMap(description -> extract(root, description));
+			.flatMap(description -> unapply(root, description));
 	}
 
-	private static Stream<Property> extract(
+	private static Stream<Property> unapply(
 		final PathValue<?> root,
 		final Description description
 	) {
@@ -175,7 +175,7 @@ public final class Properties {
 	/**
 	 * Return a Stream that is lazily populated with {@code Property} by
 	 * searching for all properties in an object tree rooted at a given
-	 * starting {@code root} object. If used with the {@link #extract(PathValue)}
+	 * starting {@code root} object. If used with the {@link #unapply(PathValue)}
 	 * method, all found descriptions are returned, including the descriptions
 	 * from the Java classes.
 	 * <pre>{@code
@@ -197,22 +197,22 @@ public final class Properties {
 	 * @see #walk(Object, String...)
 	 *
 	 * @param root the root of the object tree
-	 * @param extractor the first level property extractor used for extracting
+	 * @param dtor the first level property extractor used for extracting
 	 *        the object properties
 	 * @return a property stream
 	 */
 	public static Stream<Property> walk(
 		final PathValue<?> root,
-		final Extractor<? super PathValue<?>, ? extends Property> extractor
+		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
-		final Extractor<? super PathValue<?>, Property>
-			recursiveExtractor = BreathFirstIterator.extractor(
-				extractor,
+		final Dtor<? super PathValue<?>, Property> recursiveDtor =
+			BreathFirstIterator.extractor(
+				dtor,
 				property -> PathValue.of(property.path(), property.value().value()),
 				PathValue::value
 			);
 
-		return recursiveExtractor.extract(root);
+		return recursiveDtor.unapply(root);
 	}
 
 	/**
@@ -252,13 +252,11 @@ public final class Properties {
 	 */
 	public static Stream<Property>
 	walk(final PathValue<?> root, final String... includes) {
-		final Extractor<PathValue<?>, Property>
-			extractor = Properties::extract;
+		final Dtor<PathValue<?>, Property> dtor = Properties::unapply;
 
 		return walk(
 			root,
-			extractor
-				.sourceFilter(STANDARD_SOURCE_FILTER)
+			dtor.sourceFilter(STANDARD_SOURCE_FILTER)
 				.sourceFilter(includesFilter(includes))
 				.targetFilter(STANDARD_TARGET_FILTER)
 		);

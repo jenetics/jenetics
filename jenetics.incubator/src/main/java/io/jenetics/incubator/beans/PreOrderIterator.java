@@ -69,7 +69,7 @@ import java.util.stream.StreamSupport;
  */
 public final class PreOrderIterator<S, T> implements Iterator<T> {
 
-	private final Extractor<? super S, ? extends T> extractor;
+	private final Dtor<? super S, ? extends T> dtor;
 	private final Function<? super T, ? extends S> mapper;
 	private final Function<? super S, ?> identity;
 
@@ -84,7 +84,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 * arguments.
 	 *
 	 * @param object the root object of the model
-	 * @param extractor the extractor function which extracts the direct
+	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
@@ -93,15 +93,15 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 */
 	public PreOrderIterator(
 		final S object,
-		final Extractor<? super S, ? extends T> extractor,
+		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
-		this.extractor = requireNonNull(extractor);
+		this.dtor = requireNonNull(dtor);
 		this.mapper = requireNonNull(mapper);
 		this.identity = requireNonNull(identity);
 
-		deque.push(extractor.extract(object).iterator());
+		deque.push(dtor.unapply(object).iterator());
 		visited.add(identity.apply(object));
 	}
 
@@ -127,7 +127,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		final var exists = !visited.add(identity.apply(source));
 		final Iterator<? extends T> children = exists
 			? Collections.emptyIterator()
-			: extractor.extract(source).iterator();
+			: dtor.unapply(source).iterator();
 
 		if (children.hasNext()) {
 			deque.push(children);
@@ -151,7 +151,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	/**
 	 * Create an <em>recursive</em> extractor function from the given arguments.
 	 *
-	 * @param extractor the extractor function which extracts the direct
+	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
@@ -161,13 +161,13 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 * @param <S> the source object type
 	 * @param <T> the type of the extracted objects
 	 */
-	public static <S, T> Extractor<S, T> extractor(
-		final Extractor<? super S, ? extends T> extractor,
+	public static <S, T> Dtor<S, T> extractor(
+		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
 		return source -> new PreOrderIterator<S, T>(
-			source, extractor, mapper, identity
+			source, dtor, mapper, identity
 		).stream();
 	}
 

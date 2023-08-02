@@ -65,7 +65,7 @@ import java.util.stream.StreamSupport;
  */
 public class PostOrderIterator<S, T> implements Iterator<T> {
 
-	private final Extractor<? super S, ? extends T> extractor;
+	private final Dtor<? super S, ? extends T> dtor;
 	private final Function<? super T, ? extends S> mapper;
 	private final Function<? super S, ?> identity;
 
@@ -82,7 +82,7 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	 * arguments.
 	 *
 	 * @param object the root object of the model
-	 * @param extractor the extractor function which extracts the direct
+	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
@@ -91,13 +91,12 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	 */
 	public PostOrderIterator(
 		final S object,
-		final Extractor<? super S, ? extends T> extractor,
+		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
 		this(
-			object, null,
-			extractor, mapper, identity,
+			object, null, dtor, mapper, identity,
 			Collections.newSetFromMap(new IdentityHashMap<>())
 		);
 	}
@@ -105,12 +104,12 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	private PostOrderIterator(
 		final S object,
 		final T root,
-		final Extractor<? super S, ? extends T> extractor,
+		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity,
 		final Set<Object> visited
 	) {
-		this.extractor = requireNonNull(extractor);
+		this.dtor = requireNonNull(dtor);
 		this.mapper = requireNonNull(mapper);
 		this.identity = requireNonNull(identity);
 		this.visited = requireNonNull(visited);
@@ -121,7 +120,7 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 		final var exists = !visited.add(id);
 		children = exists
 			? Collections.emptyIterator()
-			: extractor.extract(object).iterator();
+			: dtor.unapply(object).iterator();
 
 		subtree = Collections.emptyIterator();
 	}
@@ -140,8 +139,7 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 			final T next = children.next();
 
 			subtree = new PostOrderIterator<>(
-				mapper.apply(next), next,
-				extractor, mapper, identity, visited
+				mapper.apply(next), next, dtor, mapper, identity, visited
 			);
 
 			result = subtree.next();
@@ -168,7 +166,7 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	/**
 	 * Create an <em>recursive</em> extractor function from the given arguments.
 	 *
-	 * @param extractor the extractor function which extracts the direct
+	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
@@ -178,13 +176,13 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	 * @param <S> the source object type
 	 * @param <T> the type of the extracted objects
 	 */
-	public static <S, T> Extractor<S, T> extractor(
-		final Extractor<? super S, ? extends T> extractor,
+	public static <S, T> Dtor<S, T> extractor(
+		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
 		return source -> new PostOrderIterator<S, T>(
-			source, extractor, mapper, identity
+			source, dtor, mapper, identity
 		).stream();
 	}
 

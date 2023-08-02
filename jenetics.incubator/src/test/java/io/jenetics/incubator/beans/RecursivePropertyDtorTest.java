@@ -34,7 +34,7 @@ import io.jenetics.incubator.beans.property.Property;
 import io.jenetics.jpx.GPX;
 import io.jenetics.jpx.GPX.Reader;
 
-public class RecursivePropertyExtractorTest {
+public class RecursivePropertyDtorTest {
 
 	private record Data(
 		byte[] payload,
@@ -85,7 +85,7 @@ public class RecursivePropertyExtractorTest {
 	@Test
 	public void extract() throws IOException {
 		final GPX gpx = Reader.DEFAULT.read(
-			RecursivePropertyExtractorTest.class
+			RecursivePropertyDtorTest.class
 				.getResourceAsStream("/Austria.gpx")
 		);
 
@@ -103,7 +103,7 @@ public class RecursivePropertyExtractorTest {
 
 		var it = new PreOrderIterator<>(
 			PathValue.of(book),
-			Properties::extract,
+			Properties::unapply,
 			property -> PathValue.of(property.path(), property.value().value()),
 			PathValue::value
 		);

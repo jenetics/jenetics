@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.property.Properties;
 
-public class PropertyExtractorTest {
+public class PropertyDtorTest {
 
 	private record Data(
 		String string,
@@ -63,7 +63,7 @@ public class PropertyExtractorTest {
 	public void extractIntArray() {
 		final var data = new Object[] {1, 2};
 
-		Properties.extract(PathValue.of(data))
+		Properties.unapply(PathValue.of(data))
 			.forEach(System.out::println);
 	}
 
