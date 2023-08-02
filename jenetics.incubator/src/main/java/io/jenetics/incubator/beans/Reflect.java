@@ -25,6 +25,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.constant.Constable;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -34,8 +35,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Reflection utility methods and types which supports the bean description and
- * property extraction.
+ * Reflection utility methods and types which are used as building blocks for
+ * the bean description and property extraction.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -72,7 +73,7 @@ public final class Reflect {
 	 * Represents indexed types. An indexed type is a container where
 	 * its elements are accessible via index. Such types are arrays and lists.
 	 */
-	public sealed interface IndexedTrait extends Trait {
+	public sealed interface IndexedType extends Trait {
 
 		/**
 		 * Return the container type, e.g., Array or List.
@@ -87,6 +88,40 @@ public final class Reflect {
 		 * @return the container element type
 		 */
 		Class<?> componentType();
+
+		/**
+		 * Returns the length of the given indexed object, as an {@code int}.
+		 *
+		 * @param object the indexed type
+		 * @return the length of the array
+		 * @throws NullPointerException if the specified object is {@code null}
+		 */
+		int size(final Object object);
+
+		/**
+		 * Returns the value of the indexed object at the given index.
+		 *
+		 * @param object the indexed type
+		 * @param index the index
+		 * @return the value of the indexed object at the given index
+		 * @throws NullPointerException if the specified object is {@code null}
+		 * @throws IndexOutOfBoundsException if the index is out of range
+		 *         ({@code index < 0 || index >= size()})
+		 */
+		Object get(final Object object, final int index);
+
+		/**
+		 * Sets the value of the indexed object at the given index.
+		 *
+		 * @param object the indexed object
+		 * @param index the index
+		 * @param value the new value of the indexed object
+		 * @throws NullPointerException if the specified object argument is
+		 *         {@code null}
+		 * @throws IndexOutOfBoundsException if the index is out of range
+		 *         ({@code index < 0 || index >= size()})
+		 */
+		void set(final Object object, final int index, final Object value);
 
 		/**
 		 * Return an {@code IndexedType} from the given {@code type}. If the
@@ -109,7 +144,7 @@ public final class Reflect {
 	/**
 	 * Represents a <em>structural</em> type like a record or bean class.
 	 */
-	public sealed interface StructTrait extends Trait {
+	public sealed interface StructType extends Trait {
 
 		/**
 		 * Component information for the <em>structural</em> trait
@@ -168,8 +203,23 @@ public final class Reflect {
 	 * @param componentType the array component type
 	 */
 	public record ArrayType(Class<?> type, Class<?> componentType)
-		implements IndexedTrait
+		implements IndexedType
 	{
+
+		@Override
+		public int size(Object object) {
+			return Array.getLength(object);
+		}
+
+		@Override
+		public Object get(Object object, int index) {
+			return Array.get(object, index);
+		}
+
+		@Override
+		public void set(Object object, int index, Object value) {
+			Array.set(object, index, value);
+		}
 
 		/**
 		 * Return an {@code ArrayType} instance if the given {@code type} is an
@@ -185,9 +235,12 @@ public final class Reflect {
 		 * @return an {@code ArrayType} if the given {@code type} is an array
 		 *         type, or null
 		 */
-		public static IndexedTrait of(final Type type) {
+		public static IndexedType of(final Type type) {
 			if (type instanceof Class<?> arrayType && arrayType.isArray()) {
-				return new ArrayType(arrayType, arrayType.getComponentType());
+				return new ArrayType(
+					arrayType,
+					arrayType.getComponentType()
+				);
 			}  {
 				return null;
 			}
@@ -201,8 +254,32 @@ public final class Reflect {
 	 * @param componentType the list component type
 	 */
 	public record ListType(Class<?> type, Class<?> componentType)
-		implements IndexedTrait
+		implements IndexedType
 	{
+
+		@Override
+		public int size(final Object object) {
+			return object instanceof List<?> list
+				? list.size()
+				: raise(new IllegalArgumentException("Not a list: " + object));
+		}
+
+		@Override
+		public Object get(final Object object, final int index) {
+			return object instanceof List<?> list
+				? list.get(index)
+				: raise(new IllegalArgumentException("Not a list: " + object));
+		}
+
+		@Override
+		@SuppressWarnings({"unchecked", "rawtypes"})
+		public void set(Object object, int index, Object value) {
+			if (object instanceof List list) {
+				list.set(index, value);
+			} else {
+				throw new IllegalArgumentException("Not a list: " + object);
+			}
+		}
 
 		/**
 		 * Return a {@code ListType} instance if the given {@code type} is a
@@ -218,7 +295,7 @@ public final class Reflect {
 		 * @return an {@code ListType} if the given {@code type} is a list type,
 		 *         or null
 		 */
-		public static IndexedTrait of(final Type type) {
+		public static IndexedType of(final Type type) {
 			if (type instanceof ParameterizedType parameterizedType &&
 				parameterizedType.getRawType() instanceof Class<?> listType &&
 				List.class.isAssignableFrom(listType))
@@ -246,7 +323,7 @@ public final class Reflect {
 	 *
 	 * @param type the type object
 	 */
-	public record RecordType(Class<?> type) implements StructTrait {
+	public record RecordType(Class<?> type) implements StructType {
 
 		/**
 		 * Return the record components of {@code this} record type.
@@ -294,7 +371,7 @@ public final class Reflect {
 	 *
 	 * @param type the type object
 	 */
-	public record BeanType(Class<?> type) implements StructTrait {
+	public record BeanType(Class<?> type) implements StructType {
 		@Override
 		public Stream<Component> components() {
 			final PropertyDescriptor[] descriptors;
@@ -346,6 +423,10 @@ public final class Reflect {
 				return null;
 			}
 		}
+	}
+
+	private static <T> T raise(final RuntimeException exception) {
+		throw exception;
 	}
 
 	/**

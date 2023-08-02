@@ -21,18 +21,15 @@ package io.jenetics.incubator.beans.description;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.BeanType;
-import io.jenetics.incubator.beans.Reflect.IndexedTrait;
-import io.jenetics.incubator.beans.Reflect.ListType;
-import io.jenetics.incubator.beans.Reflect.StructTrait.Component;
+import io.jenetics.incubator.beans.Reflect.IndexedType;
+import io.jenetics.incubator.beans.Reflect.StructType.Component;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -198,7 +195,7 @@ public record Description(Path path, Value value)
 				this.value = requireNonNull(value);
 				this.size = requireNonNull(size);
 				this.getter = requireNonNull(getter);
-				this.setter = setter;
+				this.setter = requireNonNull(setter);
 			}
 
 			@Override
@@ -269,26 +266,16 @@ public record Description(Path path, Value value)
 			 * @param trait the trait from which to create an indexed value
 			 * @return a new indexed value from the given trait
 			 */
-			public static Indexed of(final IndexedTrait trait) {
-				if (trait instanceof ArrayType) {
-					return new Indexed(
-						trait.type(), trait.componentType(),
-						Array::getLength, Array::get, Array::set
-					);
-				} else if (trait instanceof ListType) {
-					return new Indexed(
-						trait.type(), trait.componentType(),
-						Lists::size, Lists::get, Lists::set
-					);
-				} else {
-					throw new IllegalArgumentException("Unknown trait: " + trait);
-				}
-
+			public static Indexed of(final IndexedType trait) {
+				return new Indexed(
+					trait.type(), trait.componentType(),
+					trait::size, trait::get, trait::set
+				);
 			}
 		}
 	}
 
-	public static Description of(final Path path, final IndexedTrait trait) {
+	public static Description of(final Path path, final IndexedType trait) {
 		return new Description(
 			path.append(new Path.Index(0)),
 			Description.Value.Indexed.of(trait)

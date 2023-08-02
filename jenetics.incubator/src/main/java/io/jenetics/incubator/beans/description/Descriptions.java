@@ -27,8 +27,8 @@ import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.Reflect;
-import io.jenetics.incubator.beans.Reflect.IndexedTrait;
-import io.jenetics.incubator.beans.Reflect.StructTrait;
+import io.jenetics.incubator.beans.Reflect.IndexedType;
+import io.jenetics.incubator.beans.Reflect.StructType;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -48,7 +48,7 @@ public final class Descriptions {
 	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_FILTER =
 		type -> !Reflect.isJdkType(type.value()) ||
-				IndexedTrait.of(type.value()) != null;
+				IndexedType.of(type.value()) != null;
 
 	/**
 	 * Standard filter for the target types. It excludes all JDK types from being
@@ -58,9 +58,9 @@ public final class Descriptions {
 	 */
 	public static final Predicate<? super Description>
 		STANDARD_TARGET_FILTER =
-		prop -> prop.value() instanceof Description.Value.Indexed ||
-				!Reflect.isJdkType(prop.value().enclosure()) ||
-				IndexedTrait.of(prop.value().enclosure()) != null;
+		prop -> !Reflect.isJdkType(prop.value().enclosure()) ||
+				IndexedType.of(prop.value().enclosure()) != null ||
+				prop.value() instanceof Description.Value.Indexed;
 
 
 	private Descriptions() {
@@ -78,11 +78,11 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		if (IndexedTrait.of(type.value()) instanceof IndexedTrait trait &&
+		if (IndexedType.of(type.value()) instanceof IndexedType trait &&
 			!trait.componentType().isPrimitive())
 		{
 			return Stream.of(Description.of(type.path(), trait));
-		} else if (StructTrait.of(type.value()) instanceof StructTrait st) {
+		} else if (StructType.of(type.value()) instanceof StructType st) {
 			return st.components().map(c -> Description.of(type.path(), c));
 		} else {
 			return Stream.of();

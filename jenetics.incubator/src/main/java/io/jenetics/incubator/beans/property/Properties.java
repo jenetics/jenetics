@@ -33,7 +33,7 @@ import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
-import io.jenetics.incubator.beans.Reflect.IndexedTrait;
+import io.jenetics.incubator.beans.Reflect.IndexedType;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
@@ -70,10 +70,9 @@ public final class Properties {
 	 */
 	public static final Predicate<? super Property>
 		STANDARD_TARGET_FILTER =
-		prop -> prop instanceof ListProperty ||
-				prop instanceof ArrayProperty ||
-				!Reflect.isJdkType(prop.value().enclosure().getClass()) ||
-				IndexedTrait.of(prop.value().enclosure().getClass()) != null;
+		prop -> !Reflect.isJdkType(prop.value().enclosure().getClass()) ||
+				IndexedType.of(prop.value().enclosure().getClass()) != null ||
+				prop instanceof IndexedProperty;
 
 
 	private Properties() {

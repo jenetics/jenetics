@@ -99,7 +99,7 @@ public final class Filters {
     }
 
 	/**
-	 * Accepts functions that extracts the filter key from a type {@code C},
+	 * Accepts functions that extract the filter key from a type {@code C},
 	 * and returns a {@code Predicate<C>} that tests the key using the specified
 	 * {@code filter}.
 	 *
@@ -129,7 +129,7 @@ public final class Filters {
     }
 
 	/**
-	 * Accepts functions that extracts the filter key from a type {@code D},
+	 * Accepts functions that extract the filter key from a type {@code D},
 	 * and returns a {@code Predicate<D>} that tests the key using the specified
 	 * {@code filter}.
 	 *
@@ -164,7 +164,7 @@ public final class Filters {
     }
 
 	/**
-	 * Accepts functions that extracts the filter key from a type {@code E},
+	 * Accepts functions that extract the filter key from a type {@code E},
 	 * and returns a {@code Predicate<E>} that tests the key using the specified
 	 * {@code filter}.
 	 *

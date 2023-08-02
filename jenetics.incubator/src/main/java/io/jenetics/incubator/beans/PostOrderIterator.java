@@ -69,7 +69,6 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	private final Function<? super T, ? extends S> mapper;
 	private final Function<? super S, ?> identity;
 
-	private final S first;
 	private final Iterator<? extends T> children;
 
 	private T root;
@@ -104,7 +103,7 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 	}
 
 	private PostOrderIterator(
-		final S first,
+		final S object,
 		final T root,
 		final Extractor<? super S, ? extends T> extractor,
 		final Function<? super T, ? extends S> mapper,
@@ -116,14 +115,13 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 		this.identity = requireNonNull(identity);
 		this.visited = requireNonNull(visited);
 
-		this.first = first;
 		this.root = root;
 
-		final var id = identity.apply(first);
+		final var id = identity.apply(object);
 		final var exists = !visited.add(id);
 		children = exists
 			? Collections.emptyIterator()
-			: extractor.extract(first).iterator();
+			: extractor.extract(object).iterator();
 
 		subtree = Collections.emptyIterator();
 	}
