@@ -26,12 +26,11 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PostOrderIterator;
-import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.ListType;

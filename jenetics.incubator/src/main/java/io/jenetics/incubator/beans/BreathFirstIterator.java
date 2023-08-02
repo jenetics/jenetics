@@ -24,10 +24,10 @@ import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
-import java.util.Queue;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Function;

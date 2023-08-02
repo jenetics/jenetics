@@ -23,9 +23,9 @@ import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Extractor;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.BeanType;
@@ -134,7 +134,7 @@ public final class Descriptions {
 		> extractor
 	) {
 		final Extractor<? super PathValue<? extends Type>, Description>
-			recursiveExtractor = PreOrderIterator.extractor(
+			recursiveExtractor = BreathFirstIterator.extractor(
 				extractor,
 				desc -> PathValue.of(desc.path(), desc.value().value()),
 				PathValue::value
