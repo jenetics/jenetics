@@ -70,7 +70,7 @@ public final class Properties {
 	 */
 	public static final Predicate<? super Property>
 		STANDARD_TARGET_FILTER =
-		prop -> !Reflect.isJdkType(prop.value().enclosure().getClass()) ||
+		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
 				IndexedType.of(prop.value().enclosure().getClass()) != null ||
 				prop instanceof IndexedProperty;
 

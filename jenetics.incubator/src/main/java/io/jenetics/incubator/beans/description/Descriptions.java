@@ -47,7 +47,7 @@ public final class Descriptions {
 	 */
 	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_FILTER =
-		type -> !Reflect.isJdkType(type.value()) ||
+		type -> Reflect.isNonJdkType(type.value()) ||
 				IndexedType.of(type.value()) != null;
 
 	/**
@@ -58,7 +58,7 @@ public final class Descriptions {
 	 */
 	public static final Predicate<? super Description>
 		STANDARD_TARGET_FILTER =
-		prop -> !Reflect.isJdkType(prop.value().enclosure()) ||
+		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
 				IndexedType.of(prop.value().enclosure()) != null ||
 				prop.value() instanceof Description.Value.Indexed;
 

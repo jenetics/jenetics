@@ -452,17 +452,15 @@ public final class Reflect {
 	 * @return {@code true} if the given {@code type} is part of the JDK,
 	 *         {@code false} otherwise
 	 */
-	public static boolean isJdkType(final Type type) {
+	public static boolean isNonJdkType(final Type type) {
 		if (type == null) {
-			return false;
+			return true;
 		}
 
 		final var cls = toRawType(type);
 		final var name = cls != null ? cls.getName() : "-";
 
-		return JDK_TYPE_PREFIXES.stream()
-			.anyMatch(name::startsWith);
-
+		return JDK_TYPE_PREFIXES.stream().noneMatch(name::startsWith);
 	}
 
 	/**
