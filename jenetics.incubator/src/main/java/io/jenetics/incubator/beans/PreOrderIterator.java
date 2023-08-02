@@ -124,8 +124,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		}
 
 		final S source = mapper.apply(node);
-		final var id = identity.apply(source);
-		final var exists = !visited.add(id);
+		final var exists = !visited.add(identity.apply(source));
 		final Iterator<? extends T> children = exists
 			? Collections.emptyIterator()
 			: extractor.extract(source).iterator();

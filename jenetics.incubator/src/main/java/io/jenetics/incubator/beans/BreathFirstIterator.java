@@ -35,6 +35,30 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Breath-first iterator which <em>recursively</em> traverses the object graph.
+ * It also tracks already visited nodes to prevent infinite loops in the traversal.
+ * The following code example shows how to recursively travers the properties of
+ * a simple domain model:
+ * <pre>{@code
+ * record Author(String forename, String surname) { }
+ * record Book(String title, int pages, List<Author> authors) { }
+ *
+ * final var book = new Book(
+ *     "Oliver Twist",
+ *     366,
+ *     List.of(new Author("Charles", "Dickens"))
+ * );
+ *
+ * final var it = new BreathFirstIterator<>(
+ *     PathValue.of(book),
+ *     Properties::extract,
+ *     property -> PathValue.of(property.path(), property.value().value()),
+ *     PathValue::value
+ * );
+ *
+ * it.forEachRemaining(System.out::println);
+ * }</pre>
+ *
  * @param <S> the source object type
  * @param <T> the type of the extracted objects
  *
@@ -55,7 +79,7 @@ public class BreathFirstIterator<S, T> implements Iterator<T> {
 		Collections.newSetFromMap(new IdentityHashMap<>());
 
 	/**
-	 * Create a new (<em>property</em>) pre-order iterator from the given
+	 * Create a new (<em>property</em>) breath-first iterator from the given
 	 * arguments.
 	 *
 	 * @param object the root object of the model
@@ -99,8 +123,7 @@ public class BreathFirstIterator<S, T> implements Iterator<T> {
 		}
 
 		final S source = mapper.apply(node);
-		final var id = identity.apply(source);
-		final var exists = !visited.add(id);
+		final var exists = !visited.add(identity.apply(source));
 		final Iterator<? extends T> children = exists
 			? Collections.emptyIterator()
 			: extractor.extract(source).iterator();

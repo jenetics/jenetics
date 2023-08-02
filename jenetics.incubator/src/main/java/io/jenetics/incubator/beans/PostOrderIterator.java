@@ -32,6 +32,33 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Postorder iterator which <em>recursively</em> traverses the object graph. It
+ * also tracks already visited nodes to prevent infinite loops in the traversal.
+ * The following code example shows how to recursively travers the properties of
+ * a simple domain model:
+ * <pre>{@code
+ * record Author(String forename, String surname) { }
+ * record Book(String title, int pages, List<Author> authors) { }
+ *
+ * final var book = new Book(
+ *     "Oliver Twist",
+ *     366,
+ *     List.of(new Author("Charles", "Dickens"))
+ * );
+ *
+ * final var it = new PostOrderIterator<>(
+ *     PathValue.of(book),
+ *     Properties::extract,
+ *     property -> PathValue.of(property.path(), property.value().value()),
+ *     PathValue::value
+ * );
+ *
+ * it.forEachRemaining(System.out::println);
+ * }</pre>
+ *
+ * @param <S> the source object type
+ * @param <T> the type of the extracted objects
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -115,12 +142,8 @@ public class PostOrderIterator<S, T> implements Iterator<T> {
 			final T next = children.next();
 
 			subtree = new PostOrderIterator<>(
-				mapper.apply(next),
-				next,
-				extractor,
-				mapper,
-				identity,
-				visited
+				mapper.apply(next), next,
+				extractor, mapper, identity, visited
 			);
 
 			result = subtree.next();
