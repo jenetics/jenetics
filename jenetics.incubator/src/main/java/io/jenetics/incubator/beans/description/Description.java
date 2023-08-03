@@ -195,7 +195,7 @@ public record Description(Path path, Value value)
 				this.value = requireNonNull(value);
 				this.size = requireNonNull(size);
 				this.getter = requireNonNull(getter);
-				this.setter = requireNonNull(setter);
+				this.setter = setter;
 			}
 
 			@Override
@@ -269,7 +269,7 @@ public record Description(Path path, Value value)
 			public static Indexed of(final IndexedType trait) {
 				return new Indexed(
 					trait.type(), trait.componentType(),
-					trait::size, trait::get, trait::set
+					trait::size, trait::get, trait.isMutable() ? trait::set : null
 				);
 			}
 		}

@@ -21,6 +21,7 @@ package io.jenetics.incubator.beans.property;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,6 +33,8 @@ import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.model.Author;
 import io.jenetics.incubator.beans.model.Book;
 import io.jenetics.incubator.beans.model.Library;
+
+import io.jenetics.jpx.GPX;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -184,6 +187,17 @@ public class PropertiesTest {
 			""".split("\n");
 
 		assertThat(properties).isEqualTo(expected);
+	}
+
+	@Test
+	public void extract() throws IOException {
+		final GPX gpx = GPX.Reader.DEFAULT.read(
+			PropertiesTest.class
+				.getResourceAsStream("/Austria.gpx")
+		);
+
+		Properties.walk(PathValue.of(gpx))
+			.forEach(System.out::println);
 	}
 
 }

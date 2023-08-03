@@ -26,17 +26,21 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.ArrayType;
 import io.jenetics.incubator.beans.Reflect.IndexedType;
 import io.jenetics.incubator.beans.Reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
+import io.jenetics.incubator.beans.description.Getter;
+import io.jenetics.incubator.beans.description.Setter;
+import io.jenetics.incubator.beans.property.Property.Value.Immutable;
+import io.jenetics.incubator.beans.property.Property.Value.Mutable;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -110,7 +114,9 @@ public final class Properties {
 			);
 
 			final Property prop;
-			if (ArrayType.of(single.value()) != null) {
+			if (Reflect.OptionalType.of(single.value()) != null) {
+				prop = new OptionalProperty(path, value);
+			} else if (ArrayType.of(single.value()) != null) {
 				prop = new ArrayProperty(path, value);
 			} else if (ListType.of(single.value()) != null) {
 				prop = new ListProperty(path, value);
@@ -127,20 +133,21 @@ public final class Properties {
 			final int size = indexed.size().get(enclosing);
 
 			return IntStream.range(0, size).mapToObj(i -> {
-				final var value = indexed.getter().get(enclosing, i);
+				final Object value = indexed.getter().get(enclosing, i);
+				final Class<?> type = value != null
+					? value.getClass()
+					: toRawType(indexed.value());
+				final Getter getter = o -> indexed.getter().get(o, i);
+				final Setter setter = indexed.setter()
+					.map(s -> (Setter)(o, v) -> s.set(o, i, v))
+					.orElse(null);
 
 				return new IndexProperty(
 					path.append(new Path.Index(i)),
 					i,
-					new Property.Value.Mutable(
-						enclosing,
-						value,
-						value != null
-							? value.getClass()
-							: toRawType(indexed.value()),
-						o -> indexed.getter().get(o, i),
-						(o, v) -> indexed.setter().orElseThrow().set(o, i, v)
-					)
+					setter != null
+						? new Mutable(enclosing, value, type, getter, setter)
+						: new Immutable(enclosing, value, type)
 				);
 			});
 		} else {
@@ -155,7 +162,7 @@ public final class Properties {
 	) {
 		return description.setter()
 			.<Property.Value>map(setter ->
-				new Property.Value.Mutable(
+				new Mutable(
 					enclosing,
 					value,
 					toRawType(description.value()),
@@ -164,7 +171,7 @@ public final class Properties {
 				)
 			)
 			.orElseGet(() ->
-				new Property.Value.Immutable(
+				new Immutable(
 					enclosing,
 					value,
 					toRawType(description.value())
@@ -206,7 +213,7 @@ public final class Properties {
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
 		final Dtor<? super PathValue<?>, Property> recursiveDtor =
-			BreathFirstIterator.extractor(
+			PreOrderIterator.dtor(
 				dtor,
 				property -> PathValue.of(property.path(), property.value().value()),
 				PathValue::value

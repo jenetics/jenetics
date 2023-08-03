@@ -23,9 +23,9 @@ import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.BreathFirstIterator;
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.Reflect;
 import io.jenetics.incubator.beans.Reflect.IndexedType;
 import io.jenetics.incubator.beans.Reflect.StructType;
@@ -70,7 +70,7 @@ public final class Descriptions {
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
 	 *
-	 * @param type the enclosure type + start <em>path</em>
+	 * @param type the type to unapply
 	 * @return the <em>directly</em> available property descriptions
 	 */
 	public static Stream<Description> unapply(final PathValue<? extends Type> type) {
@@ -87,6 +87,17 @@ public final class Descriptions {
 		} else {
 			return Stream.of();
 		}
+	}
+
+	/**
+	 * Extracts the <em>directly</em> available property descriptions for the
+	 * given {@code type}.
+	 *
+	 * @param type the type to unapply
+	 * @return the <em>directly</em> available property descriptions
+	 */
+	public static Stream<Description> unapply(final Type type) {
+		return unapply(PathValue.of(type));
 	}
 
 	/**
@@ -122,13 +133,10 @@ public final class Descriptions {
 	 */
 	public static Stream<Description> walk(
 		final PathValue<? extends Type> root,
-		final Dtor<
-					? super PathValue<? extends Type>,
-					? extends Description
-				> dtor
+		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
 		final Dtor<? super PathValue<? extends Type>, Description>
-			recursiveDtor = BreathFirstIterator.extractor(
+			recursiveDtor = PreOrderIterator.dtor(
 				dtor,
 				desc -> PathValue.of(desc.path(), desc.value().value()),
 				PathValue::value

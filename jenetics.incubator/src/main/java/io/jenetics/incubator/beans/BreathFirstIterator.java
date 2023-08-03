@@ -160,7 +160,7 @@ public class BreathFirstIterator<S, T> implements Iterator<T> {
 	 * @param <S> the source object type
 	 * @param <T> the type of the extracted objects
 	 */
-	public static <S, T> Dtor<S, T> extractor(
+	public static <S, T> Dtor<S, T> dtor(
 		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity

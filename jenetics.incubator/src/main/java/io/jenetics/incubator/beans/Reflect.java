@@ -31,6 +31,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -90,6 +91,15 @@ public final class Reflect {
 		Class<?> componentType();
 
 		/**
+		 * Return {@code true} if {@code this} type is mutable.
+		 *
+		 * @return {@code true} if {@code this} type is mutable
+		 */
+		default boolean isMutable() {
+			return true;
+		}
+
+		/**
 		 * Returns the length of the given indexed object, as an {@code int}.
 		 *
 		 * @param object the indexed type
@@ -129,71 +139,93 @@ public final class Reflect {
 		 * returned.
 		 *
 		 * @param type the input type
-		 * @return an indexed type if the input {@code type} is an array or list,
-		 *         {@code null} otherwise
+		 * @return an indexed type if the input {@code type} is an optional,
+		 *         array or list, {@code null} otherwise
 		 */
 		static Trait of(final Type type) {
-			var trait = ArrayType.of(type);
+			var trait = OptionalType.of(type);
+			if (trait == null) {
+				trait = ArrayType.of(type);
+			}
 			if (trait == null) {
 				trait = ListType.of(type);
 			}
+
 			return trait;
 		}
 	}
 
 	/**
-	 * Represents a <em>structural</em> type like a record or bean class.
+	 * Trait which represents an {@code Optional} type.
+	 *
+	 * @param componentType the optional component type
 	 */
-	public sealed interface StructType extends Trait {
+	public record OptionalType(Class<?> componentType) implements IndexedType {
 
-		/**
-		 * Component information for the <em>structural</em> trait
-		 *
-		 * @param enclosure the enclosing type
-		 * @param name the component name
-		 * @param value the component type
-		 * @param getter the getter method
-		 * @param setter the setter method, may be {@code null}
-		 */
-		record Component(
-			Class<?> enclosure,
-			String name,
-			Type value,
-			Method getter,
-			Method setter
-		) {
-			public Component {
-				requireNonNull(enclosure);
-				requireNonNull(name);
-				requireNonNull(value);
-				requireNonNull(getter);
-			}
+		@Override
+		public Class<?> type() {
+			return Optional.class;
+		}
+
+		@Override
+		public boolean isMutable() {
+			return false;
+		}
+
+		@Override
+		public int size(Object object) {
+			return object instanceof Optional<?> optional
+				? optional.isPresent() ? 1 : 0
+				: raise(new IllegalArgumentException("Not an Optional: " + object));
+		}
+
+		@Override
+		public Object get(Object object, int index) {
+			return object instanceof Optional<?> optional
+				? optional.orElseThrow()
+				: raise(new IllegalArgumentException("Not an Optional: " + object));
+		}
+
+		@Override
+		public void set(Object object, int index, Object value) {
+			throw new UnsupportedOperationException();
 		}
 
 		/**
-		 * Return the record components of {@code this} struct trait.
+		 * Return a {@code OptionalType} instance if the given {@code type} is a
+		 * {@code Optional} class.
+		 * <pre>{@code
+		 * final Type type = ...;
+		 * if (OptionalType.of(type) instanceof OptionalType ot) {
+		 *     System.out.println(ot);
+		 * }
+		 * }</pre>
 		 *
-		 * @return the record components of {@code this} struct trait
+		 * @param type the type object
+		 * @return an {@code OptionalType} if the given {@code type} is an
+		 *         optional type, or {@code null}
 		 */
-		Stream<Component> components();
-
-		/**
-		 * Return an {@code StructType} from the given {@code type}. If the
-		 * type parameter doesn't represent a structural type, {@code null} is
-		 * returned.
-		 *
-		 * @param type the input type
-		 * @return a structure type if the input {@code type} is a record or
-		 *         bean
-		 */
-		static Trait of(final Type type) {
-			var trait = RecordType.of(type);
-			if (trait == null) {
-				trait = BeanType.of(type);
+		public static IndexedType of(final Type type) {
+			if (type instanceof ParameterizedType parameterizedType &&
+				parameterizedType.getRawType() instanceof Class<?> optionalType &&
+				Optional.class.isAssignableFrom(optionalType))
+			{
+				final var typeArguments = parameterizedType.getActualTypeArguments();
+				if (typeArguments.length == 1 &&
+					toRawType(typeArguments[0]) != null)
+				{
+					return new OptionalType(toRawType(typeArguments[0]) );
+				}
 			}
-			return trait;
-		}
 
+			if (type instanceof Class<?> optionalType &&
+				Optional.class.isAssignableFrom(optionalType))
+			{
+				return new OptionalType(Object.class);
+			}
+
+			return null;
+		}
 	}
 
 	/**
@@ -233,7 +265,7 @@ public final class Reflect {
 		 *
 		 * @param type the type object
 		 * @return an {@code ArrayType} if the given {@code type} is an array
-		 *         type, or null
+		 *         type, or {@code null}
 		 */
 		public static IndexedType of(final Type type) {
 			if (type instanceof Class<?> arrayType && arrayType.isArray()) {
@@ -293,7 +325,7 @@ public final class Reflect {
 		 *
 		 * @param type the type object
 		 * @return an {@code ListType} if the given {@code type} is a list type,
-		 *         or null
+		 *         or {@code null}
 		 */
 		public static IndexedType of(final Type type) {
 			if (type instanceof ParameterizedType parameterizedType &&
@@ -316,6 +348,61 @@ public final class Reflect {
 
 			return null;
 		}
+	}
+
+	/**
+	 * Represents a <em>structural</em> type like a record or bean class.
+	 */
+	public sealed interface StructType extends Trait {
+
+		/**
+		 * Component information for the <em>structural</em> trait
+		 *
+		 * @param enclosure the enclosing type
+		 * @param name the component name
+		 * @param value the component type
+		 * @param getter the getter method
+		 * @param setter the setter method, may be {@code null}
+		 */
+		record Component(
+			Class<?> enclosure,
+			String name,
+			Type value,
+			Method getter,
+			Method setter
+		) {
+			public Component {
+				requireNonNull(enclosure);
+				requireNonNull(name);
+				requireNonNull(value);
+				requireNonNull(getter);
+			}
+		}
+
+		/**
+		 * Return the record components of {@code this} struct trait.
+		 *
+		 * @return the record components of {@code this} struct trait
+		 */
+		Stream<Component> components();
+
+		/**
+		 * Return an {@code StructType} from the given {@code type}. If the
+		 * type parameter doesn't represent a structural type, {@code null} is
+		 * returned.
+		 *
+		 * @param type the input type
+		 * @return a structure type if the input {@code type} is a record or
+		 *         bean
+		 */
+		static Trait of(final Type type) {
+			var trait = RecordType.of(type);
+			if (trait == null) {
+				trait = BeanType.of(type);
+			}
+			return trait;
+		}
+
 	}
 
 	/**
@@ -355,7 +442,7 @@ public final class Reflect {
 		 *
 		 * @param type the type object
 		 * @return an {@code RecordType} if the given {@code type} is a record
-		 *         type, or null
+		 *         type, or {@code null}
 		 */
 		public static Trait of(final Type type) {
 			if (type instanceof Class<?> cls && cls.isRecord()) {
@@ -410,7 +497,7 @@ public final class Reflect {
 		 *
 		 * @param type the type object
 		 * @return an {@code ListType} if the given {@code type} is a bean type,
-		 *         or null
+		 *         or {@code null}
 		 */
 		public static Trait of(final Type type) {
 			if (type instanceof ParameterizedType pt &&
@@ -428,6 +515,24 @@ public final class Reflect {
 	private static <T> T raise(final RuntimeException exception) {
 		throw exception;
 	}
+
+	/*
+	public static <T> T call(final Callable<? extends T> callable) {
+		try {
+			return callable.call();
+		} catch (InvocationTargetException e) {
+			if (e.getTargetException() instanceof RuntimeException re) {
+				throw re;
+			} else {
+				throw new IllegalStateException(e.getTargetException());
+			}
+		} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
+			throw e;
+		} catch (Throwable e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+	 */
 
 	/**
 	 * Return {@code true} if the given {@code object} is considered as an

@@ -36,7 +36,7 @@ import io.jenetics.incubator.beans.Path;
  */
 public abstract sealed class IndexedProperty
 	implements Iterable<Object>, Property
-	permits ListProperty, ArrayProperty
+	permits OptionalProperty, ArrayProperty, ListProperty
 {
 
 	private final Path path;
