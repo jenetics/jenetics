@@ -46,7 +46,7 @@ import io.jenetics.incubator.beans.property.Property;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ModelProperties implements Iterable<Property> {
+public final class ModelBean implements Iterable<Property> {
 
     private final Object model;
 
@@ -85,7 +85,7 @@ public final class ModelProperties implements Iterable<Property> {
 	 * @param model the object to wrap
 	 * @throws NullPointerException if the argument is {@code null}
 	 */
-    public ModelProperties(Object model) {
+    public ModelBean(Object model) {
         this.model = requireNonNull(model);
     }
 
@@ -204,7 +204,7 @@ public final class ModelProperties implements Iterable<Property> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof ModelProperties mo &&
+			obj instanceof ModelBean mo &&
 			model.equals(mo.model);
 	}
 

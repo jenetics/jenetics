@@ -19,14 +19,10 @@
  */
 package io.jenetics.incubator.beans;
 
-import org.testng.annotations.Test;
-
-import io.jenetics.incubator.beans.property.Property;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ModelPropertiesTest {
+public class ModelBeanTest {
 
 
 }
