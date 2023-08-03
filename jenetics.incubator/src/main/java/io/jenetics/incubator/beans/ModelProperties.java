@@ -27,9 +27,12 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,19 +54,21 @@ public final class ModelProperties implements Iterable<Property> {
 
 	private static final class Data {
 		final List<Property> properties;
-		final Map<Path, Property> paths;
-		final Map<Object, Path> objects;
+		final TreeMap<Path, Property> values;
+		final Map<Object, Path> paths;
 
 		private Data(final List<Property> properties) {
 			this.properties = requireNonNull(properties);
 
-			paths = properties.stream()
+			values = properties.stream()
 				.collect(Collectors.toMap(
 					Property::path,
-					Function.identity()
+					Function.identity(),
+					(a, b) -> a,
+					TreeMap::new
 				));
 
-			objects = properties.stream()
+			paths = properties.stream()
 				.filter(prop -> isIdentityType(prop.value()))
 				.collect(Collectors.toMap(
 					Property::value,
@@ -127,7 +132,7 @@ public final class ModelProperties implements Iterable<Property> {
 	 * @return the property with the given path
 	 */
 	public Optional<Property> get(final Path path) {
-		return Optional.ofNullable(data().paths.get(path));
+		return Optional.ofNullable(data().values.get(path));
 	}
 
 	/**
@@ -138,7 +143,7 @@ public final class ModelProperties implements Iterable<Property> {
 	 * @return the object path if its part of the object graph
 	 */
 	public Optional<Path> pathOf(final Object value) {
-		return Optional.ofNullable(data().objects.get(value));
+		return Optional.ofNullable(data().paths.get(value));
 	}
 
 	/**
@@ -151,6 +156,29 @@ public final class ModelProperties implements Iterable<Property> {
 		return pathOf(value)
 			.flatMap(p -> Optional.ofNullable(p.parent()))
 			.flatMap(this::get);
+	}
+
+	/**
+	 * Performs the given action for each entry of this model until all entries
+	 * have been processed or the action throws an exception.
+	 *
+	 * @param action The action to be performed for each entry
+	 */
+	public void forEach(final BiConsumer<? super Path, ? super Property.Value> action) {
+		requireNonNull(action);
+
+		iterator().forEachRemaining(property ->
+			action.accept(property.path(), property.value())
+		);
+	}
+
+	/**
+	 * Returns a {@link Set} of the paths of this model.
+	 *
+	 * @return a {@link Set} of the paths of this model
+	 */
+	public NavigableSet<Path> paths() {
+		return data().values.navigableKeySet();
 	}
 
 	@Override
@@ -166,19 +194,6 @@ public final class ModelProperties implements Iterable<Property> {
 	 */
 	public Stream<Property> stream() {
 		return data().properties.stream();
-	}
-
-	/**
-	 * Returns a stream consisting of the properties of this model that match
-	 * the given matcher.
-	 *
-	 * @param filter the matcher to apply to each property to determine if it
-	 *        should be included in the stream
-	 * @return a property stream which matches the given matcher
-	 */
-	public Stream<Property> stream(final Predicate<? super Property> filter) {
-		requireNonNull(filter);
-		return stream().filter(filter);
 	}
 
 	@Override
