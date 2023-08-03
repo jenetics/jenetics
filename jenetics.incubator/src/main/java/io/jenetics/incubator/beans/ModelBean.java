@@ -40,7 +40,8 @@ import io.jenetics.incubator.beans.property.Properties;
 import io.jenetics.incubator.beans.property.Property;
 
 /**
- * Wrapper class for extending objects graphs with additional navigation methods.
+ * Wrapper class for extending model graphs with additional navigation methods.
+ * The bean properties of the wrapped model are evaluated lazily.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -85,7 +86,7 @@ public final class ModelBean implements Iterable<Property> {
 	 * @param model the object to wrap
 	 * @throws NullPointerException if the argument is {@code null}
 	 */
-    public ModelBean(Object model) {
+    private ModelBean(Object model) {
         this.model = requireNonNull(model);
     }
 
@@ -187,8 +188,7 @@ public final class ModelBean implements Iterable<Property> {
 	}
 
 	/**
-	 * Return a <em>flattened</em> stream of all properties of the wrapped
-	 * object.
+	 * Return a property stream of the wrapped model object.
 	 *
 	 * @return all properties
 	 */
@@ -210,7 +210,19 @@ public final class ModelBean implements Iterable<Property> {
 
     @Override
     public String toString() {
-        return "MetaObject[" + "object=" + model + ']';
+        return "ModelBean[" + "model=" + model + ']';
     }
+
+
+	/**
+	 * Return a new model-bean for the given {@code model} object.
+	 *
+	 * @param model the model object
+	 * @return a new model-bean for the given {@code model} object
+	 * @throws NullPointerException if the given {@code model} is {@code null}
+	 */
+	public static ModelBean of(final Object model) {
+		return new ModelBean(model);
+	}
 
 }
