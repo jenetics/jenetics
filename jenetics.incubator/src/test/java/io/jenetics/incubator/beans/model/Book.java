@@ -23,8 +23,6 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public record Book(String title, int pages, List<Author> authors) {
 	@Override
