@@ -22,15 +22,18 @@ package io.jenetics.incubator.beans;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.beans.Reflect.isIdentityType;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -55,13 +58,23 @@ public final class ModelBean implements Iterable<Property> {
 
 	private static final class Data {
 		final List<Property> properties;
-		final TreeMap<Path, Property> values;
-		final Map<Object, Path> paths;
+		final NavigableSet<Path> paths;
+
+		final NavigableMap<Path, Property> pathProperties;
+		final Map<Object, Path> objectPaths;
 
 		private Data(final List<Property> properties) {
 			this.properties = requireNonNull(properties);
 
-			values = properties.stream()
+			this.paths = Collections.unmodifiableNavigableSet(
+				new TreeSet<>(
+					properties.stream()
+						.map(Property::path)
+						.toList()
+				)
+			);
+
+			this.pathProperties = properties.stream()
 				.collect(Collectors.toMap(
 					Property::path,
 					Function.identity(),
@@ -69,14 +82,20 @@ public final class ModelBean implements Iterable<Property> {
 					TreeMap::new
 				));
 
-			paths = properties.stream()
-				.filter(prop -> isIdentityType(prop.value()))
+			this.objectPaths = properties.stream()
+				.filter(p -> isIdentityType(unwrap(p.value().value())))
 				.collect(Collectors.toMap(
-					Property::value,
+					p -> unwrap(p.value().value()),
 					Property::path,
 					(p1, p2) -> p1,
 					IdentityHashMap::new
 				));
+		}
+
+		private static Object unwrap(final Object object) {
+			return object instanceof Optional<?> optional
+				? optional.orElse(null)
+				: object;
 		}
 	}
 
@@ -133,7 +152,7 @@ public final class ModelBean implements Iterable<Property> {
 	 * @return the property with the given path
 	 */
 	public Optional<Property> get(final Path path) {
-		return Optional.ofNullable(data().values.get(path));
+		return Optional.ofNullable(data().pathProperties.get(path));
 	}
 
 	/**
@@ -144,7 +163,7 @@ public final class ModelBean implements Iterable<Property> {
 	 * @return the object path if its part of the object graph
 	 */
 	public Optional<Path> pathOf(final Object value) {
-		return Optional.ofNullable(data().paths.get(value));
+		return Optional.ofNullable(data().objectPaths.get(value));
 	}
 
 	/**
@@ -179,7 +198,7 @@ public final class ModelBean implements Iterable<Property> {
 	 * @return a {@link Set} of the paths of this model
 	 */
 	public NavigableSet<Path> paths() {
-		return data().values.navigableKeySet();
+		return data().paths;
 	}
 
 	@Override

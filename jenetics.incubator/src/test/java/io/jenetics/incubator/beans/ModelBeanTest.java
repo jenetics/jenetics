@@ -19,10 +19,52 @@
  */
 package io.jenetics.incubator.beans;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.incubator.beans.property.PropertiesTest;
+
+import io.jenetics.jpx.GPX;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ModelBeanTest {
+
+	private static final GPX AUSTRIA = gpx();
+
+	private static GPX gpx() {
+		try (var in = PropertiesTest.class
+			.getResourceAsStream("/io/jenetics/incubator/beans/Austria.gpx"))
+		{
+			return GPX.Reader.DEFAULT.read(in);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	@Test(dataProvider = "objectPaths")
+	public void pathAt(final Object object, final Path expected) {
+		final var bean = ModelBean.of(AUSTRIA);
+
+		var path = bean.pathOf(object);
+		assertThat((Object)path.orElseThrow()).isEqualTo(expected);
+	}
+
+	@DataProvider
+	public Object[][] objectPaths() {
+		return new Object[][] {
+			{AUSTRIA.getWayPoints(), Path.of("wayPoints")},
+			{AUSTRIA.getWayPoints().get(10), Path.of("wayPoints[10]")},
+			{AUSTRIA.getWayPoints().get(12), Path.of("wayPoints[12]")},
+			{AUSTRIA.getWayPoints().get(24), Path.of("wayPoints[24]")}
+		};
+	}
 
 
 }
