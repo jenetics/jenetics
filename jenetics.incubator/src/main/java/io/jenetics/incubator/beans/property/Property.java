@@ -115,6 +115,16 @@ public sealed interface Property
 		Class<?> type();
 
 		/**
+		 * Reads the actual value of the property. This value may be
+		 * different from the initial, cached {@link #value()}.
+		 *
+		 * @return the actual value of the property
+		 */
+		default Object read() {
+			return value();
+		}
+
+		/**
 		 * Represents an <em>immutable</em> property value.
 		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -178,12 +188,7 @@ public sealed interface Property
 				return type;
 			}
 
-			/**
-			 * Reads the actual value of the property. This value may be
-			 * different from the initial, cached {@link #value()}.
-			 *
-			 * @return the actual value of the property
-			 */
+			@Override
 			public Object read() {
 				return getter.get(enclosure);
 			}

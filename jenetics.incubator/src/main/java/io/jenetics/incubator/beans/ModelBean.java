@@ -156,6 +156,20 @@ public final class ModelBean implements Iterable<Property> {
 	}
 
 	/**
+	 * Return the property at the given {@code path}.
+	 *
+	 * @param path the path of the property
+	 * @return the property with the given path
+	 */
+	public Optional<Property> get(final String path) {
+		return get(Path.of(path));
+	}
+
+	public Property at(final String path) {
+		return get(path).orElseThrow();
+	}
+
+	/**
 	 * Return the path of the given {@code value}, if it is part of the object
 	 * graph and an <em>identity</em> object.
 	 *
@@ -211,7 +225,7 @@ public final class ModelBean implements Iterable<Property> {
 	 *
 	 * @return all properties
 	 */
-	public Stream<Property> stream() {
+	public Stream<Property> properties() {
 		return data().properties.stream();
 	}
 
