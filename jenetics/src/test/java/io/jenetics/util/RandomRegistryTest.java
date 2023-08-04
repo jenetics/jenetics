@@ -254,4 +254,16 @@ public class RandomRegistryTest {
 		assertEquals(genotypes1, genotypes2);
 	}
 
+	//@Test
+	public void defaultRandomGenerator() {
+		System.setProperty(
+			"io.jenetics.util.defaultRandomGenerator",
+			"L64X1024MixRandom")
+		;
+
+		final var generator = RandomRegistry.random();
+		assertThat(generator.getClass().getSimpleName())
+			.isEqualTo("L64X1024MixRandom");
+	}
+
 }

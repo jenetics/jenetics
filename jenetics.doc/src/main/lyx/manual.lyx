@@ -285,11 +285,6 @@ textcolor{white}{ENETICS}}}}
 \size giant
 \color white
 LIBRARY USER'S MANUAL @__minor_version__@
-\series default
-\size large
-\noun on
-\color inherit
-
 \end_layout
 
 \begin_layout Standard
@@ -311,10 +306,6 @@ Franz Wilhelmstötter
 \length 2.5cm
 \end_inset
 
-
-\size large
-\noun on
-\color inherit
 
 \end_layout
 
@@ -732,7 +723,6 @@ literal "false"
 
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 17 runtime.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -1248,7 +1238,6 @@ Chromosome
 
  chromosomes.
  For a detailed description of the genotype's structure have a look at section
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:Domain-classes-Genotype"
@@ -1629,12 +1618,8 @@ Stream
 \emph on
  Evolution Engine
 \emph default
-, which performs the needed
-\emph on
-
-\emph default
-evolution steps for each generation; the steps are described in the body
- of the
+, which performs the neededevolution steps for each generation; the steps
+ are described in the body of the
 \emph on
 while
 \emph default
@@ -1881,15 +1866,8 @@ noprefix "false"
 
 \end_inset
 
- shows the
-\emph on
-
-\emph default
-static view of the main
-\emph on
-
-\emph default
-evolution classes, together with its dependencies.
+ shows thestatic view of the mainevolution classes, together with its dependenci
+es.
  Since the
 \family typewriter
  Engine
@@ -2092,11 +2070,7 @@ io.jenetics.stat
  This package contains additional statistics classes which are not available
  in the Java core library.
  Java only includes classes for calculating the sum and the average of a
- given
-\emph on
-
-\emph default
-numeric stream (e.
+ givennumeric stream (e.
 \begin_inset space ~
 \end_inset
 
@@ -2507,11 +2481,8 @@ Allele
 \end_inset
 
 .
- Some of the implementations also contain domain information of the
-\emph on
-
-\emph default
-wrapped allele.
+ Some of the implementations also contain domain information of thewrapped
+ allele.
  This is the case for all
 \family typewriter
  Bounded\SpecialChar softhyphen
@@ -3236,7 +3207,7 @@ s, which can be accessed via the
 Count()
 \family default
  method:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 \end{equation}
@@ -3654,11 +3625,7 @@ The column major
 Gene
 \family default
 s with different constraints.
- This is almost the
-\emph on
-
-\emph default
-only reason for choosing the column major layout.
+ This is almost theonly reason for choosing the column major layout.
  The layout of this
 \family typewriter
  Genotype
@@ -3686,11 +3653,7 @@ noprefix "false"
 \family typewriter
  Chromosome
 \family default
-s of length
-\emph on
-
-\emph default
-one are needed.
+s of lengthone are needed.
 \end_layout
 
 \begin_layout Standard
@@ -3954,7 +3917,6 @@ some
 \family typewriter
  Genotype
 \family default
-
 \emph on
 scalar
 \emph default
@@ -4369,7 +4331,6 @@ noprefix "false"
 \end_inset
 
 .
-
 \end_layout
 
 \begin_layout Subsection
@@ -4404,7 +4365,6 @@ literal "false"
 
  are used for creating
 \shape italic
-
 \emph on
 genetic
 \shape default
@@ -4428,12 +4388,9 @@ Selector
 \series default
 \shape default
  library.
- It also contains some
-\emph on
-
-\emph default
-theoretical information, which should help you to choose the right combination
- of operators and parameters, for the problem to be solved.
+ It also contains sometheoretical information, which should help you to
+ choose the right combination of operators and parameters, for the problem
+ to be solved.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4455,14 +4412,12 @@ Selectors are responsible for selecting a given number of individuals from
  the population.
  The selectors are used to divide the population into
 \shape italic
-
 \emph on
 survivors
 \shape default
 \emph default
  and
 \shape italic
-
 \emph on
 offspring
 \shape default
@@ -4602,7 +4557,7 @@ The
 \end_inset
 
 , determines the number of selected offspring
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{O_{g}}=\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot f_{O}\right)
 \end{equation}
@@ -4610,7 +4565,7 @@ N_{O_{g}}=\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right
 \end_inset
 
 and the number of selected survivors
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
 \end{equation}
@@ -4918,7 +4873,6 @@ Probability selectors are a variation of
 \shape default
  selectors and selects individuals from a given population based on its
 \shape italic
-
 \emph on
 selection
 \shape default
@@ -4981,7 +4935,7 @@ noprefix "false"
 \end_inset
 
  specifies which individual is selected, by argument minimization:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{argmin}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
 \end{equation}
@@ -5016,7 +4970,7 @@ where
 \end_inset
 
 , follows a binomial distribution
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P\left(i,k\right)=\left(\begin{array}{c}
 n\\
@@ -5083,11 +5037,7 @@ Jenetics
 \family default
 \series default
 \shape default
- implements it as a
-\emph on
-
-\emph default
-probability selector.
+ implements it as aprobability selector.
  For calculating the selection probability,
 \begin_inset Formula $P\left(i\right)$
 \end_inset
@@ -5101,7 +5051,7 @@ probability selector.
 \end_inset
 
  is used.
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P\left(i\right)=\frac{f_{i}}{\sum_{j=0}^{N-1}f_{j}}\label{eq:roulette-wheele-distribution}
 \end{equation}
@@ -5135,7 +5085,7 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\mathrm{min}}\right)},
 \end{equation}
@@ -5143,9 +5093,9 @@ P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\m
 \end_inset
 
 where
-\begin_inset Formula
+\begin_inset Formula 
 \[
-f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}\left\{ f_{i},0\right\}
+f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}\left\{ f_{i},0\right\} 
 \]
 
 \end_inset
@@ -5223,7 +5173,7 @@ literal "true"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P\left(i\right)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
@@ -5291,7 +5241,7 @@ An alternative to the
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P\left(i\right)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
@@ -5347,7 +5297,7 @@ name "par:Boltzmann-selector"
 
 \begin_layout Standard
 The selection probability of the Boltzmann selector is defined as
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P\left(i\right)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
@@ -5363,7 +5313,7 @@ where
 \end_inset
 
  is defined as
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}.
 \end{equation}
@@ -5633,7 +5583,6 @@ recombination (e.
 \end_inset
 
 g.
-
 \begin_inset CommandInset href
 LatexCommand href
 name "crossover"
@@ -5722,7 +5671,7 @@ The mutation probability,
 , is defined as the probability that a specific gene, over the whole population,
  is mutated.
  That means, the (average) number of genes mutated by a mutator is
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \hat{\mu}=N_{P}\cdot N_{g}\cdot P\left(m\right)
 \end{equation}
@@ -5838,7 +5787,7 @@ The needed
  sub
 \emph default
  selection probabilities are set to
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 \end{equation}
@@ -5875,7 +5824,7 @@ The Gaussian mutator performs the mutation of number genes.
  the current value of the gene.
  The variance of the new value (before clipping to the allowed gene range)
  will be
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \hat{\sigma}^{2}=\left(\frac{g_{max}-g_{min}}{4}\right)^{2}
 \end{equation}
@@ -6730,7 +6679,6 @@ end{multicols}
 \begin_layout Standard
 The PMX is similar to the two-point crossover.
  A crossing region is chosen by selecting two crossing points (see figure
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6806,7 +6754,6 @@ Crossover!Partially-matched crossover
 \end_inset
 
 After performing the crossover we–normally–got two invalid chromosomes (figure
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -7173,11 +7120,7 @@ literal "true"
 
 \end_inset
 
- takes two
-\emph on
-
-\emph default
-numeric chromosomes and treats it as a real number vector.
+ takes twonumeric chromosomes and treats it as a real number vector.
  Each of these vectors can also be seen as a point in
 \begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
@@ -7258,20 +7201,12 @@ noprefix "false"
 \end_inset
 
 , the children may be located on an arbitrary place on the line, even outside
- of the hypercube.This is useful if you want to explore
-\emph on
-
-\emph default
-unknown regions, and you need a way to generate chromosomes further out
- than the parents are.
+ of the hypercube.This is useful if you want to exploreunknown regions, and
+ you need a way to generate chromosomes further out than the parents are.
 \end_layout
 
 \begin_layout Standard
-The
-\emph on
-
-\emph default
-internal random parameters, which define the location of the new crossover
+Theinternal random parameters, which define the location of the new crossover
  point, are generated once for the whole vector (chromosome).
  If the
 \family typewriter
@@ -7306,12 +7241,8 @@ name "par:Intermediate-crossover"
 
 \begin_layout Standard
 The intermediate crossover is quite similar to the line crossover.
- It differs in the way on how the
-\emph on
-
-\emph default
-internal random parameters are generated and the handling of the invalid—out
- of range-–genes.
+ It differs in the way on how theinternal random parameters are generated
+ and the handling of the invalid—out of range-–genes.
  The
 \emph on
  internal
@@ -7477,7 +7408,6 @@ Alterer
 Mutator
 \family default
  will only operate on the chromosome with the index 0 and 3, the wrapped
-
 \family typewriter
 Mean\SpecialChar softhyphen
 Alterer
@@ -7530,11 +7460,8 @@ Engine classes
 \end_layout
 
 \begin_layout Standard
-The
-\emph on
-
-\emph default
-executing classes, which perform the actual evolution, are located in the
+Theexecuting classes, which perform the actual evolution, are located in
+ the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine
@@ -7588,11 +7515,7 @@ Stream
 Result
 \family default
  class has several predefined collectors, but you are free to create your
- own one, which can be seamlessly
-\emph on
-
-\emph default
-plugged into the existing stream.
+ own one, which can be seamlesslyplugged into the existing stream.
 \end_layout
 
 \begin_layout Subsubsection
@@ -7878,11 +7801,7 @@ Evolution!Engine
 \end_layout
 
 \begin_layout Standard
-The
-\emph on
-
-\emph default
-evolution
+Theevolution
 \family typewriter
  Engine
 \family default
@@ -8297,7 +8216,6 @@ genotypeFactory
 interceptor
 \family default
  The interceptor lets you define functions, which are able to change the
-
 \family typewriter
 Evolution\SpecialChar softhyphen
 Result
@@ -8329,15 +8247,7 @@ maximalPhenotypeAge
 Phenotype
 \family default
 ).
- This prevents
-\emph on
-
-\emph default
-super individuals to live
-\emph on
-
-\emph default
-forever.
+ This preventssuper individuals to liveforever.
  The default value is set to 70.
 \end_layout
 
@@ -8537,7 +8447,6 @@ noprefix "false"
 \end_inset
 
 ).
-
 \end_layout
 
 \begin_layout Standard
@@ -8578,7 +8487,6 @@ final EvolutionStreamable<DoubleGene, Double> engine =
 
 \begin_layout Standard
 As shown in the example code above, one important difference between the
-
 \family typewriter
 Engine\SpecialChar softhyphen
 .limit
@@ -8596,11 +8504,7 @@ Engine
 \family default
  takes a limiting
 \family typewriter
-Predicate
-\family default
-
-\family typewriter
-Supplier
+PredicateSupplier
 \family default
  instead of the
 \family typewriter
@@ -8707,7 +8611,6 @@ noprefix "false"
 \family typewriter
 Evolution
 \family default
-
 \emph on
 functional
 \emph default
@@ -8815,16 +8718,9 @@ The
 Stream
 \family default
  controls the execution of the evolution process and can be seen as a kind
- of execution
-\emph on
-
-\emph default
-handle.
- This handle can be used to define the termination criteria and to
-\emph on
-
-\emph default
-collect the final evolution result.
+ of executionhandle.
+ This handle can be used to define the termination criteria and tocollect
+ the final evolution result.
  Since the
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -9056,15 +8952,7 @@ Stream
 ::stream
 \family default
  method.
- The
-\emph on
-
-\emph default
-immutable and
-\emph on
-
-\emph default
-stateless nature of the evolution
+ Theimmutable andstateless nature of the evolution
 \family typewriter
  Engine
 \family default
@@ -10460,7 +10348,6 @@ public static void main(final String[] args) {
 \begin_layout Plain Layout
 
     final Evaluator<DoubleGene, Double> evaluator = Evaluators
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -11382,11 +11269,7 @@ name "subsec:Randomness"
 \end_layout
 
 \begin_layout Standard
-In general, GAs heavily depend on
-\emph on
-
-\emph default
-pseudo random number generators (PRNG)
+In general, GAs heavily depend onpseudo random number generators (PRNG)
 \begin_inset Index idx
 status collapsed
 
@@ -11603,6 +11486,90 @@ Stream
 \end_layout
 
 \begin_layout Standard
+By default, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the 
+\family typewriter
+L64X\SpecialChar softhyphen
+256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
+Random
+\family default
+ random generator, which is part of the standard OpenJDK platform.
+ If you want to change this default for your whole application, without
+ changing your code, you can do this via the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.util\SpecialChar softhyphen
+.default\SpecialChar softhyphen
+Random\SpecialChar softhyphen
+Generator
+\family default
+ system property.
+ The code example below shows how to replace the default random generator
+ with 
+\family typewriter
+L64X\SpecialChar softhyphen
+1024\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
+Random
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A list of all random generators defined in the OpenJDK platform, can be
+ found here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/random/packa
+ge-summary.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.util.defaultRandomGenerator=
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+         L64X1024MixRandom
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -11638,7 +11605,7 @@ height "1pt"
 \family sans
 Setting the PRNG to a
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Generator
 \family sans
  object with a defined seed has the effect, that every evolution
@@ -11762,23 +11729,7 @@ Generator
  Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
- practice:
-\emph on
-
-\emph default
-Random seeding,
-\emph on
-
-\emph default
-Parameterization,
-\emph on
-
-\emph default
-Block splitting and
-\emph on
-
-\emph default
-Leapfrogging.
+ practice:Random seeding,Parameterization,Block splitting andLeapfrogging.
 \end_layout
 
 \begin_layout Paragraph
@@ -12065,7 +12016,6 @@ With the leapfrog method each thread
 \end_inset
 
  random number and jumps ahead in the random sequence by the number of threads,
-
 \begin_inset Formula $P$
 \end_inset
 
@@ -12082,11 +12032,7 @@ noprefix "false"
 
 \end_inset
 
- graphically shows the concept of the
-\emph on
-
-\emph default
-leapfrog method.
+ graphically shows the concept of theleapfrog method.
 \end_layout
 
 \begin_layout Standard
@@ -12364,7 +12310,6 @@ split
 \end_inset
 
  sub-streams.
-
 \begin_inset Formula $s$
 \end_inset
 
@@ -12386,7 +12331,6 @@ split
 jump
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
-
 \begin_inset Formula $s$
 \end_inset
 
@@ -12404,7 +12348,6 @@ jump
 jumpPowerOfTwo
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
-
 \begin_inset Formula $2^{s}$
 \end_inset
 
@@ -12741,7 +12684,6 @@ Seq
 \end_inset
 
 .
-
 \family typewriter
 Chromo\SpecialChar softhyphen
 some
@@ -12776,7 +12718,6 @@ Chromo\SpecialChar softhyphen
 some
 \family default
 s.
-
 \end_layout
 
 \begin_layout Paragraph
@@ -12838,11 +12779,7 @@ s, respectively.
 \emph on
  generic
 \emph default
- elements, because there are no casts needed when using
-\emph on
-
-\emph default
-nested generic types.
+ elements, because there are no casts needed when usingnested generic types.
 \end_layout
 
 \begin_layout Standard
@@ -12933,7 +12870,6 @@ status open
 \begin_layout Plain Layout
 
 // Create "different" sequences.
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -13787,11 +13723,7 @@ Gene
 \family default
 s are the starting point in the class hierarchy.
  They hold the actual information, the alleles, of the problem domain.
- Beside the
-\emph on
-
-\emph default
-classical bit-gene,
+ Beside theclassical bit-gene,
 \family sans
 \series bold
 \shape smallcaps
@@ -15247,7 +15179,6 @@ population
 \family default
  of the newly created individuals and the return value is the number of
  genes that has been altered and the altered population, aggregated in the
-
 \family typewriter
 Alterer\SpecialChar softhyphen
 Result
@@ -15700,7 +15631,6 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -15754,7 +15684,6 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -15794,7 +15723,6 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -15823,7 +15751,6 @@ public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
-
 
 \end_layout
 
@@ -16227,9 +16154,8 @@ When the
  only contains
 \emph on
  scalar
-\emph default
-
 \family typewriter
+\emph default
 Chromosome
 \family default
 s
@@ -17121,7 +17047,7 @@ https://en.wikipedia.org/wiki/Transformation_matrix
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 A=\left(\begin{array}{ccc}
 a_{11} & a_{12} & a_{13}\\
@@ -17387,14 +17313,14 @@ literal "true"
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \begin{eqnarray}
 a_{11} & = & s_{x}\cos\theta+k_{x}s_{y}\sin\theta\nonumber \\
 a_{12} & = & s_{y}k_{x}\cos\theta-s_{x}\sin\theta\nonumber \\
 a_{13} & = & t_{x}\nonumber \\
 a_{21} & = & k_{y}s_{x}\cos\theta+s_{y}\sin\theta\label{eq:Matrix parameters}\\
 a_{22} & = & s_{y}\cos\theta-s_{x}k_{y}\sin\theta\nonumber \\
-a_{23} & = & t_{y}\nonumber
+a_{23} & = & t_{y}\nonumber 
 \end{eqnarray}
 
 \end_inset
@@ -17404,7 +17330,7 @@ This corresponds to an transformation order of
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \[
 \left(\begin{array}{ccc}
 1 & 0 & t_{x}\\
@@ -18157,11 +18083,7 @@ Normally, the
 \family typewriter
  Genotype
 \family default
- has then to be
-\emph on
-
-\emph default
-transformed into an object of the problem domain.
+ has then to betransformed into an object of the problem domain.
  The usage
 \family typewriter
  Codec
@@ -19186,15 +19108,7 @@ Codec!Subset
 
 \begin_layout Standard
 There are currently two kinds of subset codecs you can choose from: finding
- subsets with
-\emph on
-
-\emph default
-variable size and with
-\emph on
-
-\emph default
-fixed size.
+ subsets withvariable size and withfixed size.
 \end_layout
 
 \begin_layout Paragraph
@@ -19206,11 +19120,7 @@ A
 \family typewriter
 Codec
 \family default
- for
-\emph on
-
-\emph default
-variable sized subsets can be easily implemented with the use of a
+ forvariable sized subsets can be easily implemented with the use of a
 \family typewriter
 Bit\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -19310,11 +19220,7 @@ name "lis:Codec-factory-method-ofSubSet"
 \end_layout
 
 \begin_layout Standard
-The following usage example of
-\emph on
-
-\emph default
-subset
+The following usage example ofsubset
 \family typewriter
  Codec
 \family default
@@ -19678,7 +19584,6 @@ Codec
  can be used for problems where the optimal solution depends on the order
  of the input elements.
  A classical example for such problems is the Knapsack problem (chapter
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Traveling-salesman-example"
@@ -21568,7 +21473,7 @@ literal "false"
 \end_inset
 
 , the constraints are usually given as a list of inequalities,
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 g_{i}\left(\mathbf{x}\right)\leq0,
 \end{equation}
@@ -21576,7 +21481,7 @@ g_{i}\left(\mathbf{x}\right)\leq0,
 \end_inset
 
 and a list of equations,
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 h_{j}\left(\mathbf{x}\right)=0.
 \end{equation}
@@ -21641,13 +21546,11 @@ noprefix "false"
 
 , divides the search space into a feasible and an infeasible part.
  There are different approaches for handling constraints.
-
 \emph on
 Penalty methods
 \emph default
  try to convert a constrained optimization problem into an unconstrained
  one by incorporating its constraints into the fitness function.
-
 \emph on
 Transformation methods
 \emph default
@@ -21690,17 +21593,12 @@ Usually, a given problem should be encoded in a way, that it is not possible
 \family typewriter
  Engine
 \family default
- to create
-\emph on
-
-\emph default
-invalid individuals (
+ to createinvalid individuals (
 \family typewriter
 Genotypes
 \family default
 ).
  Some possible encodings for common data structures are described in section
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Encoding"
@@ -21715,11 +21613,8 @@ noprefix "false"
 \family typewriter
  Engine
 \family default
- creates new individuals in the
-\emph on
-
-\emph default
-altering step, by rearranging (or creating new)
+ creates new individuals in thealtering step, by rearranging (or creating
+ new)
 \family typewriter
  Genes
 \family default
@@ -21732,11 +21627,7 @@ altering step, by rearranging (or creating new)
 \family typewriter
  Genotype
 \family default
- is treated as
-\emph on
-
-\emph default
-valid if every single
+ is treated asvalid if every single
 \family typewriter
  Gene
 \family default
@@ -21744,11 +21635,7 @@ valid if every single
 \family typewriter
  Chromosome
 \family default
- is
-\emph on
-
-\emph default
-valid, the validity property of the
+ isvalid, the validity property of the
 \family typewriter
  Gene
 \family default
@@ -21766,11 +21653,7 @@ s determines the validity of the whole
 \family typewriter
  Genotype
 \family default
-s which has been
-\emph on
-
-\emph default
-destroyed by the altering step.
+s which has beendestroyed by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new ones.
  Although this behavior will work for most
 \family typewriter
@@ -21875,7 +21758,6 @@ type
 repair
 \family default
  method creates a new individual using the invalid individual as template.
-
 \end_layout
 
 \begin_layout Standard
@@ -22005,7 +21887,6 @@ t method returns false, even if the
 Phenotype::isValid
 \family sans
  method returns true.
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -22203,7 +22084,7 @@ type
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{eqnarray*}
 x_{1}+x_{2}-1 & \leq & 0\\
 x_{2}\cdot x_{3}-0.5 & \leq & 0.
@@ -22531,7 +22412,6 @@ Split range domain
 
 The following listing shows how to create a constraint, which fulfills the
  desired codec property.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -23191,7 +23071,6 @@ noprefix "false"
  and the very same set of knapsack items.
  Each termination test was repeated 1,000 times, which should give enough
  data to draw the given candlestick diagrams.
-
 \end_layout
 
 \begin_layout Standard
@@ -23354,7 +23233,6 @@ long\SpecialChar softhyphen
 )
 \family default
  function instead.
-
 \end_layout
 
 \begin_layout Standard
@@ -23479,15 +23357,7 @@ Steady fitness
 \end_layout
 
 \begin_layout Standard
-The
-\emph on
-
-\emph default
-steady
-\emph on
-
-\emph default
-fitness strategy truncates the
+Thesteadyfitness strategy truncates the
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -23804,20 +23674,11 @@ noprefix "false"
  The variation of the total generation is quite big, as shown by the candlestick
 s.
  Though the variation can be quite big—the termination test has been repeated
-
 \begin_inset Formula $250$
 \end_inset
 
- times for each data point—, the tests showed that the
-\emph on
-
-\emph default
-steady
-\emph on
-
-\emph default
-fitness termination strategy always terminated, at least for the given test
- setup.
+ times for each data point—, the tests showed that thesteadyfitness termination
+ strategy always terminated, at least for the given test setup.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -24138,11 +23999,7 @@ noprefix "false"
  This means, that this termination strategy will (practically) not terminate,
  if the value for the fitness threshold is chosen too high.
  And it will definitely not terminate if the fitness threshold is higher
- than the
-\emph on
-
-\emph default
-global maximum of the fitness function.
+ than theglobal maximum of the fitness function.
  It will be a
 \emph on
  perfect
@@ -24359,7 +24216,7 @@ https://en.wikipedia.org/wiki/Moving_average
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \sigma_{F}(N)=\frac{1}{N}\sum_{i=0}^{N-1}F_{[G-i]}\label{eq:fitness-convergence-mean}
 \end{equation}
@@ -24384,7 +24241,7 @@ where
 
  the current generation.
  If the condition
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \frac{\left|\sigma_{F}(N_{S})-\sigma_{F}(N_{L})\right|}{\delta}<\epsilon\label{eq:fitness-convergence-term}
 \end{equation}
@@ -24402,7 +24259,7 @@ Stream
 \end_inset
 
  is defined as follows:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
 \max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
@@ -24630,7 +24487,7 @@ Stream
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \frac{\left|f_{max}-\bar{f}\right|}{\delta}<\epsilon,
 \end{equation}
@@ -24638,7 +24495,7 @@ Stream
 \end_inset
 
 where
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \bar{f}=\frac{1}{N}\sum_{i=0}^{N-1}f_{i},
 \end{equation}
@@ -24646,15 +24503,15 @@ where
 \end_inset
 
 
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
-f_{max}=\max_{i\in\left[0,N\right)}\left\{ f_{i}\right\}
+f_{max}=\max_{i\in\left[0,N\right)}\left\{ f_{i}\right\} 
 \end{equation}
 
 \end_inset
 
 and
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
 \max\left(\left|f_{max}\right|,\left|\bar{f}\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
@@ -24791,7 +24648,6 @@ Some problems can be defined with different kinds of fitness functions or
  encodings.
  Which combination works best can't usually be decided a priori.
  To choose one, some testing is needed.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -25001,7 +24857,6 @@ RandomRegistry
 \end_inset
 
 g.
-
 \family typewriter
 Collections::shuffle
 \family sans
@@ -25040,16 +24895,8 @@ Evolution!performance
 \end_layout
 
 \begin_layout Standard
-This section contains an empirical
-\emph on
-
-\emph default
-proof, that
-\emph on
-
-\emph default
-evolutionary selectors deliver significantly better fitness results than
- a random search.
+This section contains an empiricalproof, thatevolutionary selectors deliver
+ significantly better fitness results than a random search.
  The
 \family typewriter
  Monte\SpecialChar softhyphen
@@ -25118,11 +24965,7 @@ noprefix "false"
 
 \end_inset
 
- shows the
-\emph on
-
-\emph default
-evolution performance of the
+ shows theevolution performance of the
 \family typewriter
  Selec\SpecialChar softhyphen
 tor
@@ -25170,11 +25013,7 @@ Carlo\SpecialChar softhyphen
 Selector
 \family default
  for selecting the survivors and offspring population.
- It can be easily seen, that the performance of the
-\emph on
-
-\emph default
-real evolutionary
+ It can be easily seen, that the performance of thereal evolutionary
 \family typewriter
  Selector
 \family default
@@ -25220,23 +25059,7 @@ literal "true"
 \end_inset
 
  It is a global optimization algorithm in continuous search spaces and is
- an instance of an
-\emph on
-
-\emph default
-Evolutionary
-\emph on
-
-\emph default
-Algorithm from the field of
-\emph on
-
-\emph default
-Evolutionary
-\emph on
-
-\emph default
-Computation.
+ an instance of anEvolutionaryAlgorithm from the field ofEvolutionaryComputation.
  ES uses truncation selection
 \begin_inset Foot
 status collapsed
@@ -26023,7 +25846,6 @@ Evolution\SpecialChar softhyphen
 Result
 \family default
  is a powerful tool and should used cautiously.
-
 \end_layout
 
 \begin_layout Paragraph
@@ -26052,7 +25874,6 @@ Distinct population
 
 \begin_layout Standard
 This kind of intercepting the evolution process is very flexible.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -26487,11 +26308,7 @@ standard
 Gene
 \family default
 s and evolutionary operations.
- It also contains
-\emph on
-
-\emph default
-data structures which are used by these additional
+ It also containsdata structures which are used by these additional
 \family typewriter
 Gene
 \family default
@@ -26612,11 +26429,7 @@ noprefix "false"
 g.
  for node traversal and search, are implemented by default methods, which
  are derived from these four abstract tree methods.
- A
-\emph on
-
-\emph default
-mutable default implementation of the
+ Amutable default implementation of the
 \family typewriter
  Tree
 \family default
@@ -26842,7 +26655,6 @@ https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
 \end_inset
 
  is a serialized representation of a tree and is a simplified form of the
-
 \emph on
 Newick
 \emph default
@@ -27043,7 +26855,6 @@ If the string representation of the tree node value contains one of the
 
 \family default
 ' character.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -28088,7 +27899,6 @@ In contrast to string rewriting systems, whose objects are flat sequences
  the terms, form a term algebra.
  A term can be visualized as a tree of symbols, the set of admitted symbols
  being fixed by a given signature.
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -28159,9 +27969,8 @@ https://en.wikipedia.org/wiki/Algebraic_data_type
  of the
 \emph on
 sealed
-\emph default
-
 \family typewriter
+\emph default
 Decl
 \family default
  class.
@@ -28287,7 +28096,6 @@ x
 \family default
  will match for arbitrary sub trees.
  For more complicated patterns it is quite cumbersome to create it via a
-
 \family typewriter
 Decl
 \family default
@@ -28358,7 +28166,6 @@ The right-hand side functionality of the rewrite rule is used to expand
 Var
 \family default
  to sub tree mapping.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -29210,7 +29017,6 @@ j
  This mutation operator can also be used for combinatorial problems, where
  no duplicated genes within a chromosome are allowed, e.g.
  for the TSP.
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/abs-1203-3099"
@@ -29240,7 +29046,6 @@ tor
 \family default
 ) and RSM.
  Its main application is for combinatorial problems, like the TSP.
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/abs-1203-5028"
@@ -29870,7 +29675,6 @@ Iterable
 EvolutionStream
 \family default
  creation.
-
 \end_layout
 
 \begin_layout Standard
@@ -30016,7 +29820,6 @@ Stream
 io.jenetics.ext
 \family default
  module contains additional classes which allows for concatenating evolution
-
 \family typewriter
 Engines
 \family default
@@ -30481,7 +30284,6 @@ s are all creating limited streams, the resulting
 Evolution\SpecialChar softhyphen
 Stream
 \family default
-
 \emph on
 must
 \emph default
@@ -30489,9 +30291,8 @@ must
  The code snippet below shows the creation and execution of a
 \emph on
 cyclic
-\emph default
-
 \family typewriter
+\emph default
 EvolutionStream
 \family default
 .
@@ -30614,7 +30415,6 @@ optimize
 
  means finding such a solution which would give the values of all the objective
  functions acceptable to the decision maker.
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Osyczka1985"
@@ -30761,7 +30561,6 @@ literal "true"
 \end_inset
 
 .
-
 \end_layout
 
 \begin_layout Standard
@@ -31052,7 +30851,6 @@ Comparable
 .
  If the result type of the fitness function is a vector, it is no longer
  clear how to make the results comparable.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -31117,7 +30915,6 @@ io.jenetics.ext.moea
 Vec
 \family default
  interface, which allows you to wrap a vector of any element type into a
-
 \family typewriter
 Comparable
 \family default
@@ -31267,12 +31064,10 @@ dominance()
 
 .
  Since it is quite a bothersome to implement all these needed methods, the
-
 \family typewriter
 Vec
 \family default
  interface comes with a set of factory methods, which allows for creating
-
 \family typewriter
 Vec
 \family default
@@ -31496,7 +31291,6 @@ The crowding distance value of a solution provides an estimate of the density
  of solutions surrounding that solution.
  The crowding distance value of a particular solution is the average distance
  of its two neighboring solutions.
-
 \begin_inset Flex URL
 status collapsed
 
@@ -31751,7 +31545,7 @@ literal "true"
 
 \family typewriter
 
-\begin_inset Formula
+\begin_inset Formula 
 \begin{eqnarray}
 i\underset{n}{\succ}j & \mathsf{if} & \left(i_{rank}<j_{rank}\right)\lor\left(\left(i_{rank}=j_{rank}\right)\land i_{dist}>j_{dist}\right),\label{eq:crowding-distance}
 \end{eqnarray}
@@ -31800,7 +31594,6 @@ The selection of unique fitnesses lifts the selection bias towards over
  It is therefore no longer required to assign a crowding distance of zero
  to individual of equal fitness as the selection operator correctly enforces
  diversity preservation by picking unique points in the objective space.
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
@@ -32536,7 +32329,6 @@ variables
 \emph default
 .
  Every symbol represents a different type of phrase in the sentence.
-
 \end_layout
 
 \begin_layout Enumerate
@@ -32887,12 +32679,10 @@ Get the rule,
 \end_inset
 
 .
-
 \begin_inset Formula $E$
 \end_inset
 
  will contain one of more terminal and/or non-terminal symbols.
-
 \end_layout
 
 \begin_layout Enumerate
@@ -33005,7 +32795,6 @@ L = [<expr>, <op>, <expr>]
 <expr>
 \family default
 .
-
 \end_layout
 
 \begin_layout Enumerate
@@ -33073,7 +32862,6 @@ th
  iteration the symbol list contains only terminal symbols and the generation
  process stops.
  If we convert the symbol list into a string, we get an algebraic expression,
-
 \begin_inset Formula $5-x$
 \end_inset
 
@@ -33148,7 +32936,6 @@ Get the rule,
 \end_inset
 
 .
-
 \begin_inset Formula $E$
 \end_inset
 
@@ -33276,7 +33063,6 @@ random
 \emph default
  alternative, the index of the selected alternative must be determined by
  the given chromosome.
-
 \begin_inset Float figure
 wide false
 sideways false
@@ -33399,7 +33185,6 @@ Cfg
  class manually, it is in most cases easier to define it as BNF string.
  This class contains methods for parsing and formatting CFGs from and to
  BNF strings.
-
 \end_layout
 
 \begin_layout Description
@@ -33529,7 +33314,6 @@ Chro\SpecialChar softhyphen
 mosome
 \family default
 .
-
 \end_layout
 
 \begin_layout Standard
@@ -33842,7 +33626,6 @@ Chromo\SpecialChar softhyphen
 some
 \family default
  instances.
-
 \family typewriter
 Codons
 \family default
@@ -34068,7 +33851,6 @@ R
  of result to return.
  The reason for this is, not make assumptions about the sentence creation
  and bake this assumptions into the API; this avoid a leaky abstraction.
-
 \end_layout
 
 \begin_layout Standard
@@ -34189,7 +33971,6 @@ Mappings
 \family default
  class puts it all together and let you easily specify the needed parts
  for the mapping process.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -34434,7 +34215,6 @@ s of the rule.
  probability for being selected, for randomly created chromosomes.
  All rule alternatives have the same changes of being selected.
  There is no accidental bias towards a given rule alternative or symbol.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -35060,11 +34840,7 @@ final ISeq<Op<Double>> terminals = ISeq.of(x, y, z);
 \end_layout
 
 \begin_layout Standard
-The
-\emph on
-
-\emph default
-terminal operations defined in the listing above can be used for defining
+Theterminal operations defined in the listing above can be used for defining
  a program which takes a
 \begin_inset Formula $3$
 \end_inset
@@ -35253,15 +35029,7 @@ The
 Chromosome
 \family default
  comes with some factory methods, which lets you easily create program trees
- with a given depth and a given set of
-\emph on
-
-\emph default
-operations and
-\emph on
-
-\emph default
-terminals.
+ with a given depth and a given set ofoperations andterminals.
 \end_layout
 
 \begin_layout Standard
@@ -35446,7 +35214,6 @@ some
 validation
 \emph default
  predicate.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -35695,11 +35462,7 @@ Crossover
  Tree\SpecialChar softhyphen
 Gene
 \family default
- guarantees that the program tree after the
-\emph on
-
-\emph default
-alter operation is still valid.
+ guarantees that the program tree after thealter operation is still valid.
  It obeys the tree structure of the
 \family typewriter
 Gene
@@ -35724,11 +35487,7 @@ Marking the
 \family typewriter
 Chromosome
 \family default
- as
-\emph on
-
-\emph default
-invalid.
+ asinvalid.
  This possibility is easier to achieve, but would also to lead to a large
  number of invalid
 \family typewriter
@@ -35875,9 +35634,8 @@ Alterer
  The rewrite alterer uses the
 \emph on
 default
-\emph default
-
 \family typewriter
+\emph default
 Tree\SpecialChar softhyphen
 Rewiter
 \begin_inset Foot
@@ -36241,7 +35999,6 @@ The code snippet above shows how to create a codec with two independent
  These programs are then mapped, in the fitness function, to the combined
  fitness value.
  It is also possible to use different operations and terminals for each
-
 \family typewriter
 Program\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -36280,7 +36037,7 @@ g.
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \[
 f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}.
 \]
@@ -36470,7 +36227,7 @@ L2
 \emph default
  loss and is calculated as the average of the squared differences between
  the predicted and actual values.
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 MSE=\frac{1}{n}\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2},
 \end{equation}
@@ -36561,7 +36318,7 @@ L1
 \emph default
  loss, is calculated as the average of the absolute difference between the
  expected and calculated values.
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 MAE=\frac{1}{n}\sum_{i=0}^{n-1}\left|y_{i}-\tilde{y_{i}}\right|
 \end{equation}
@@ -36766,7 +36523,7 @@ ity
 \end_inset
 
 , is defined as
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 C\left(P\right)=1-\sqrt{1-\frac{\min\left(N\left(P\right),N_{max}\right)^{2}}{N_{max}^{2}}},
 \end{equation}
@@ -37086,12 +36843,10 @@ final Error<Double> error3 = Error.of(
 
 The code snippet above shows the three possibilities to create an error
  function by using the predefined loss functions and complexity measure.
-
 \family typewriter
 error1
 \family default
  is created by using the mean squared error, MES.
-
 \family typewriter
 error2
 \family default
@@ -37238,7 +36993,6 @@ final Sample<Double> sample3 = Sample.ofDouble(2.0, 2.0);
 \end_inset
 
 The code snippet above shows how to create three sample points for a function
-
 \begin_inset Formula $f:\mathbb{R}\rightarrow\mathbb{R}$
 \end_inset
 
@@ -37925,11 +37679,8 @@ Marshalling performance
 \begin_layout Standard
 Another important aspect when doing marshalling, is the space needed for
  the marshaled objects and the time needed for doing the marshalling.
- For the performance tests a genotype with a varying
-\emph on
-
-\emph default
-chromosome count is used.
+ For the performance tests a genotype with a varyingchromosome count is
+ used.
  The used genotype template can be seen in the code snippet below.
 \end_layout
 
@@ -38380,7 +38131,6 @@ Genotype write performance
 
 \begin_layout Standard
 For reading the serialized genotypes, we will see similar results (see diagram
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-read-performance"
@@ -38545,9 +38295,6 @@ Random\SpecialChar softhyphen
 Generator
 \family default
  interface, which makes it easily usable in other projects.
-
-\emph on
-
 \end_layout
 
 \begin_layout Standard
@@ -39253,7 +39000,6 @@ noprefix "false"
 \end_inset
 
  shows the PRN creation speed for all implemented generators.
-
 \end_layout
 
 \begin_layout Standard
@@ -40308,11 +40054,7 @@ $ java -cp prngine-2.0.0.jar
 \end_layout
 
 \begin_layout Standard
-will perform the statistical tests for the nano time
-\emph on
-
-\emph default
-random engine.
+will perform the statistical tests for the nano timerandom engine.
  The statistical quality is rather bad: every single test failed.
  Table
 \begin_inset CommandInset ref
@@ -40337,7 +40079,6 @@ The detailed test report can be found in the source of the Nano\SpecialChar soft
 Time\SpecialChar softhyphen
 Random
  class.
-
 \begin_inset Flex URL
 status collapsed
 
@@ -41363,7 +41104,7 @@ Real function
 
 \begin_layout Standard
 In this example we try to find the minimum value of the function
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 f(x)=\cos\left(\frac{1}{2}+\sin\left(x\right)\right)\cdot\cos\left(x\right).\label{eq:Example-real-function}
 \end{equation}
@@ -41572,7 +41313,7 @@ https://en.wikipedia.org/wiki/Rastrigin_function
 \end_inset
 
  is often used to test the optimization performance of genetic algorithm.
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\right)\right).\label{eq:Rastrigin-function}
 \end{equation}
@@ -42850,7 +42591,6 @@ priori
  As a second step you have to define the terminal operations.
  Terminals are either constants or variables.
  The number of variables defines the domain dimension of the fitness function.
-
 \end_layout
 
 \begin_layout Standard
@@ -42894,10 +42634,6 @@ https://en.wikipedia.org/wiki/Mean_squared_error
 
 \end_inset
 
-
-\emph on
-
-\emph default
 as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure
 \begin_inset CommandInset ref
@@ -43075,7 +42811,6 @@ Deb, Thiele, Laumanns and Zitzler have proposed a set of generational MOPs
  that are scalable to a user defined number of objectives.
  Because of the last names of its creators, this test suite is known as
  DTLZ (Deb-Thiele-Laumanns-Zitzler).
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
@@ -43103,7 +42838,7 @@ literal "true"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{eqnarray*}
 f_{1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots x_{M-1}\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
 f_{2}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots\left(1-x_{M-1}\right)\left(1+g\left(\boldsymbol{x}_{M}\right)\right),\\
@@ -43140,7 +42875,7 @@ The functional
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \[
 g\left(\mathbf{x}_{M}\right)=100\left[\left|\mathbf{x}_{M}\right|+\left(x-\frac{1}{2}\right)^{2}-\cos\left(20\pi\left(x-\frac{1}{2}\right)\right)\right].
 \]
@@ -43287,7 +43022,6 @@ For building the
 \series default
 \shape default
  library from source, download the most recent, stable package version from
-
 \begin_inset Flex URL
 status collapsed
 
@@ -43622,15 +43356,7 @@ official
 jenetics.doc
 \family default
 \series default
-: Contains the
-\emph on
-
-\emph default
-code of the website and
-\emph on
-
-\emph default
-this manual.
+: Contains thecode of the website andthis manual.
 \end_layout
 
 \begin_layout Itemize
