@@ -34,8 +34,8 @@ import io.jenetics.util.Seq;
  * performance by ensuring that the GA doesn't waste time re-discovering
  * previously refused partial solutions. Individuals that are preserved through
  * elitism remain eligible for selection as parents of the next generation.
- * Elitism is also related with memory: remember the best solution found so far.
- * A problem with elitism is that it may causes the GA to converge to a local
+ * Elitism is also related to memory: remember the best solution found so far.
+ * A problem with elitism is that it may cause the GA to converge to a local
  * optimum, so pure elitism is a race to the nearest local optimum.
  *
  * <pre>{@code
@@ -65,9 +65,9 @@ public class EliteSelector<
 
 	/**
 	 * Create a new elite selector with the desired number of elites to be
-	 * selected and the selector used for selecting the rest of the population.
+	 * selected, and the selector used for selecting the rest of the population.
 	 *
-	 * @param eliteCount the desired number of elite individual to be selected
+	 * @param eliteCount the desired number of elite individuals to be selected
 	 * @param nonEliteSelector the selector used for selecting the rest of the
 	 *        population
 	 * @throws IllegalArgumentException if {@code eliteCount < 1}
@@ -89,7 +89,7 @@ public class EliteSelector<
 	 *
 	 * @see TournamentSelector
 	 *
-	 * @param eliteCount the desired number of elite individual to be selected
+	 * @param eliteCount the desired number of elite individuals to be selected
 	 * @throws IllegalArgumentException if {@code eliteCount < 1}
 	 */
 	public EliteSelector(final int eliteCount) {
@@ -112,7 +112,7 @@ public class EliteSelector<
 	}
 
 	/**
-	 * Create a new elite selector with elite count 1 and the selector for
+	 * Create a new elite selector with elite count 1, and the selector for
 	 * selecting the rest of the population is initialized with
 	 * {@code TournamentSelector<>(3)}
 	 */

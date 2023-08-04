@@ -31,7 +31,7 @@ import io.jenetics.util.Verifiable;
  *
  * @implSpec
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
- * and guarantee an efficient random access ({@code O(1)}) to the genes. A
+ * and guarantee efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipedia: Chromosome</a>

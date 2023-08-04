@@ -90,10 +90,9 @@ import io.jenetics.util.Seq;
  * {@code Engine}.
  *
  * @implNote
- *     This class is thread safe:
- *     No mutable state is maintained by the engine. Therefore, it is safe to
- *     create multiple evolution streams with one engine, which may be actually
- *     used in different threads.
+ *     This class is thread safe: The engine maintains no mutable state.
+ *     Therefore, it is safe to create multiple evolution streams with one
+ *     engine, which may be actually used in different threads.
  *
  * @see Engine.Builder
  * @see EvolutionStart

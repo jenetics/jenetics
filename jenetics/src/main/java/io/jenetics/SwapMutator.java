@@ -30,7 +30,7 @@ import io.jenetics.util.MSeq;
  * hope of bringing related genes closer together, thereby facilitating the
  * production of building blocks. This mutation operator can also be used for
  * combinatorial problems, where no duplicated genes within a chromosome are
- * allowed, e.g. for the TSP.
+ * allowed, e.g., for the TSP.
  * <p>
  * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
  *

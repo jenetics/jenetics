@@ -37,7 +37,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 
 /**
- * Implementation of the NumericGene which holds a 64 bit floating point number.
+ * Implementation of the NumericGene which holds a 64-bit floating point number.
  *
  * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
  * value-based</a> class; use of identity-sensitive operations (including

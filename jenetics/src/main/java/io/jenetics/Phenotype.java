@@ -156,7 +156,7 @@ public final class Phenotype<
 	 *
 	 * @see #isEvaluated()
 	 *
-	 * @return {@code false} is this phenotype has an fitness value assigned,
+	 * @return {@code false} is this phenotype has a fitness value assigned,
 	 *         {@code true} otherwise
 	 */
 	public boolean nonEvaluated() {
@@ -313,7 +313,7 @@ public final class Phenotype<
 
 	/**
 	 * Create a new phenotype from the given arguments. The phenotype is created
-	 * with a non assigned fitness function and the call of {@link #isEvaluated()}
+	 * with a non-assigned fitness function and the call of {@link #isEvaluated()}
 	 * will return {@code false}.
 	 *
 	 * @param <G> the gene type of the chromosome

@@ -45,10 +45,10 @@ import io.jenetics.util.Verifiable;
  * <p>
  * <img alt="Genotype" src="doc-files/Genotype.svg" width="400" height="252" >
  * </p>
- * The chromosomes of a genotype doesn't have to have necessarily the same size.
+ * The chromosomes of a genotype don't have to have necessarily the same size.
  * It is only required that all genes are from the same type and the genes within
- * a chromosome have the same constraints; e. g. the same min- and max values
- * for number genes.
+ * a chromosome have the same constraints; e.g., the same min- and max values
+ * for the genes value.
  *
  * <pre>{@code
  * final Genotype<DoubleGene> genotype = Genotype.of(
@@ -60,7 +60,7 @@ import io.jenetics.util.Verifiable;
  * }</pre>
  * The code snippet above creates a genotype with the same structure as shown in
  * the figure above. In this example the {@link DoubleGene} has been chosen as
- * gene type.
+ * a gene type.
  *
  * @see Chromosome
  * @see Phenotype
@@ -93,7 +93,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
+	 *         elements.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
@@ -105,7 +105,7 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * Return the chromosome at the given index. It is guaranteed that the
 	 * returned chromosome is not null.
 	 *
 	 * @since 4.0
@@ -244,10 +244,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 *
 	 * @param <G> the gene type
 	 * @param first the first {@code Chromosome} of the {@code Genotype}
-	 * @param rest the rest of the genotypes chromosomes.
+	 * @param rest the rest of the genotype chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
-	 *         one of its element.
+	 *         one of its elements.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
@@ -299,7 +299,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *        of
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
-	 *         one of its element.
+	 *         one of its elements.
 	 * @throws IllegalArgumentException if {@code chromosome.length() < 1}.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G>

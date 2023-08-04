@@ -238,6 +238,12 @@ public final class Reflect {
 		implements IndexedType
 	{
 
+		public ArrayType {
+			if (!type.isArray()) {
+				throw new IllegalArgumentException("Not an array type: " + type);
+			}
+		}
+
 		@Override
 		public int size(Object object) {
 			return Array.getLength(object);
@@ -288,6 +294,12 @@ public final class Reflect {
 	public record ListType(Class<?> type, Class<?> componentType)
 		implements IndexedType
 	{
+
+		public ListType {
+			if (!List.class.isAssignableFrom(type)) {
+				throw new IllegalArgumentException("Not a list type: " + type);
+			}
+		}
 
 		@Override
 		public int size(final Object object) {
@@ -411,6 +423,12 @@ public final class Reflect {
 	 * @param type the type object
 	 */
 	public record RecordType(Class<?> type) implements StructType {
+
+		public RecordType {
+			if (!type.isRecord()) {
+				throw new IllegalArgumentException("Not a record type: " + type);
+			}
+		}
 
 		/**
 		 * Return the record components of {@code this} record type.

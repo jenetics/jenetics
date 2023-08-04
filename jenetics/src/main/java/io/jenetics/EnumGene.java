@@ -218,7 +218,7 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the sequence of valid alleles.
-	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 * @return a new {@code EnumGene} with a randomly chosen allele from the
 	 *         sequence of valid alleles
 	 * @throws java.lang.IllegalArgumentException if the give valid alleles
 	 *         sequence is empty
@@ -257,7 +257,7 @@ public final class EnumGene<A>
 	 *
 	 * @param <A> the allele type
 	 * @param validAlleles the array of valid alleles.
-	 * @return a new {@code EnumGene} with an randomly chosen allele from the
+	 * @return a new {@code EnumGene} with a randomly chosen allele from the
 	 *         sequence of valid alleles
 	 * @throws IllegalArgumentException if the give valid alleles array is empty
 	 */

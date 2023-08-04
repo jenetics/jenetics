@@ -130,7 +130,7 @@ public final class CharacterGene
 	/**
 	 * @see java.lang.Character#compareTo(java.lang.Character)
 	 * @param that The other gene to compare.
-	 * @return the value 0 if the argument Character is equal to this Character;
+	 * @return value 0 if the argument Character is equal to this Character;
 	 *         a value less than 0 if this Character is numerically less than
 	 *         the Character argument; and a value greater than 0 if this
 	 *         Character is numerically greater than the Character argument
@@ -235,7 +235,7 @@ public final class CharacterGene
 	 * Create a new CharacterGene from the give character.
 	 *
 	 * @param allele The allele.
-	 * @param validCharacters the valid characters fo the new gene
+	 * @param validCharacters the valid characters for the new gene
 	 * @return a new {@code CharacterGene} with the given parameter
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.

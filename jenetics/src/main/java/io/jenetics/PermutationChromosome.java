@@ -144,7 +144,7 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Return the sequence of valid alleles of this chromosome.
+	 * Return the sequence of the valid alleles of this chromosome.
 	 *
 	 * @return the sequence of valid alleles of this chromosome
 	 */

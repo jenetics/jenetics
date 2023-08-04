@@ -604,7 +604,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the next sibling of {@code this} node in the parent's children
-	 * array, or {@code null} if {@code this} node has no parent or it is the
+	 * array, or {@code null} if {@code this} node has no parent, or it is the
 	 * last child of the paren. This method performs a linear search that is
 	 * {@code O(n)} where n is the number of children; to traverse the entire
 	 * array, use the iterator of the parent instead.
@@ -897,7 +897,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return an iterator that follows the path from {@code ancestor} to
-	 * {@code this} node. The iterator return {@code ancestor} as first element,
+	 * {@code this} node. The iterator return {@code ancestor} as a first element,
 	 * The creation of the iterator is O(m), where m is the number of nodes
 	 * between {@code this} node and the {@code ancestor}, inclusive.
 	 * <p>
