@@ -74,8 +74,8 @@ gradle.projectsEvaluated {
 			configure<JavaPluginExtension> {
 				modularity.inferModulePath.set(true)
 
-				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.current()
+				sourceCompatibility = JavaVersion.VERSION_21
+				targetCompatibility = JavaVersion.VERSION_21
 			}
 
 			setupJava(project)
