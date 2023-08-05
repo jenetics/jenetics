@@ -61,10 +61,9 @@ public class ConcurrencyTest {
 		@Override
 		public void run() {
 			try {
-				System.out.println(format(
-					"Task: %d, thread %d: %d",
+				System.out.printf("Task: %d, thread %d: %d%n",
 					_task, Thread.currentThread().getId(), _sleep
-				));
+				);
 
 				Thread.sleep(_sleep);
 			} catch (InterruptedException e) {

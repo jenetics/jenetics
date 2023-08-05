@@ -204,7 +204,7 @@ public sealed interface Property
 				try {
 					setter.set(enclosure, value);
 					return true;
-				} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
+				} catch (VirtualMachineError|LinkageError e) {
 					throw e;
 				} catch (Throwable e) {
 					return false;
