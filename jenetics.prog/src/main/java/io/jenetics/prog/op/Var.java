@@ -64,7 +64,7 @@ import io.jenetics.ext.util.TreeNode;
  * }</pre>
  *
  * @implNote
- * The {@code Var} object is comparable according it's name.
+ * The {@code Var} object is comparable, according its name.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -239,7 +239,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	/**
 	 * Re-indexes the variables of the given operation {@code tree}. If the
-	 * operation tree is created from it's string representation, the indices
+	 * operation tree is created from its string representation, the indices
 	 * of the variables ({@link Var}), are all set to zero, since it needs the
 	 * whole tree for setting the indices correctly. The mapping from the node
 	 * string to the {@link Op} object, on the other hand, is a <em>local</em>
@@ -260,14 +260,14 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
 	 * variables first. If not, you will get the wrong result when evaluating
-	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 * the tree. After the re-indexing, you will get the correct result of 45.0.
 	 *
 	 * @since 5.0
 	 *
 	 * @see MathOp#toMathOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *
-	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param tree the tree where the variable indices need to be fixed
 	 * @param <V> the operation value type
 	 */
 	public static <V> void reindex(final TreeNode<Op<V>> tree) {
@@ -287,7 +287,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	/**
 	 * Re-indexes the variables of the given operation {@code tree}. If the
-	 * operation tree is created from it's string representation, the indices
+	 * operation tree is created from its string representation, the indices
 	 * of the variables ({@link Var}), are all set to zero, since it needs the
 	 * whole tree for setting the indices correctly.
 	 *
@@ -307,7 +307,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
 	 * variables first. If not, you will get the wrong result when evaluating
-	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 * the tree. After the re-indexing, you will get the correct result of 45.0.
 	 *
 	 * @since 5.0
 	 *
@@ -315,7 +315,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * @see BoolOp#toBoolOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *
-	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param tree the tree where the variable indices need to be fixed
 	 * @param indexes the variable to index mapping
 	 * @param <V> the operation value type
 	 */

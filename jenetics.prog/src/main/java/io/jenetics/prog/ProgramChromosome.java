@@ -84,7 +84,7 @@ public class ProgramChromosome<A>
 	 * this constructor.
 	 *
 	 * @param program the program. During the program evolution, newly created
-	 *        program trees has the same <em>depth</em> than this tree.
+	 *        program trees have the same <em>depth</em> than this tree.
 	 * @param validator the chromosome validator. A typical validator would
 	 *        check the size of the tree and if the tree is too large, mark it
 	 *        at <em>invalid</em>. The <em>validator</em> may be {@code null}.
@@ -355,7 +355,7 @@ public class ProgramChromosome<A>
 	 * Create a new program chromosome from the given (flattened) program tree.
 	 * This method doesn't make any assumption about the validity of the given
 	 * operation tree. If the tree is not valid, it will repair it. This
-	 * behaviour allows the <em>safe</em> usage of all existing alterer.
+	 * behaviour allows the <em>safe</em> usage of all existing alterers.
 	 *
 	 * <pre>{@code
 	 * final ProgramChromosome<Double> ch = ProgramChromosome.of(

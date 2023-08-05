@@ -39,7 +39,7 @@ import java.util.function.UnaryOperator;
  * }</pre>
  *
  * Implementations of the {@code Op} interface are usually immutable and doesn't
- * maintain internal state. But some instance are ephemeral with changing state.
+ * maintain internal state. But some instances are ephemeral with changing state.
  * This classes must override the {@link #get()} method inherited from the
  * {@link Supplier} interface and return a new instance.
  *

@@ -28,7 +28,7 @@ import io.jenetics.prog.op.Op;
 
 /**
  * Represents a complexity <em>measure</em> if a given program tree. The
- * program complexity ensures, that simpler programs with similar loss function
+ * program complexity ensures that simpler programs with similar loss function
  * values are preferred. It is part of the <em>overall</em> {@link Error}
  * function.
  *

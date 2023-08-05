@@ -27,6 +27,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
@@ -114,7 +115,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
-	 * @throws IllegalArgumentException if the length of the arguments array
+	 * @throws IllegalArgumentException if the length of the argument array
 	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
@@ -168,7 +169,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		return tree.reduce(variables, Op::apply);
+		return tree.reduce(variables, Function::apply);
 	}
 
 	/**

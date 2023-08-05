@@ -38,9 +38,9 @@ import io.jenetics.prog.op.Program;
 /**
  * This gene represents a program, build upon an AST of {@link Op} functions.
  * Because of the tight coupling with the {@link ProgramChromosome}, a
- * {@code ProgramGene} can't be created directly. This reduces the the possible
+ * {@code ProgramGene} can't be created directly. This reduces the possible
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
- * it can be easily used as result.
+ * it can be easily used as a result.
  *
  * <pre>{@code
  * final ProgramGene<Double> program = engine.stream()
@@ -176,7 +176,7 @@ public final class ProgramGene<A>
 	 * @return a new program gene with the given operation
 	 * @throws NullPointerException if the given {@code op} is {@code null}
 	 * @throws IllegalArgumentException if the arity of the given operation is
-	 *         different from the arity of current operation. This restriction
+	 *         different from the arity of the current operation. This restriction
 	 *         ensures that only valid program genes are created by this method.
 	 */
 	@Override
