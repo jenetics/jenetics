@@ -21,13 +21,11 @@ package io.jenetics.prog.regression;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 
@@ -72,14 +70,14 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	}
 
 	/**
-	 * The the given sample points to the buffer.  <em>You need to explicitly
+	 * The given sample points to the buffer.  <em>You need to explicitly
 	 * call {@link #publish()} to make it available for the {@link #eval(Tree)}
 	 * method.</em>
 	 *
 	 * @param samples the samples to add to the buffer
 	 * @throws NullPointerException if the given {@code samples} is {@code null}
 	 */
-	public void addAll(final Collection<? extends Sample<T>> samples) {
+	public void addAll(final Collection<? extends Sample<? extends T>> samples) {
 		samples.forEach(Objects::requireNonNull);
 		_buffer.addAll(samples);
 	}

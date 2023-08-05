@@ -49,7 +49,7 @@ final class SampleList<T>
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private final List<Sample<T>> _samples;
+	private final List<? extends Sample<? extends T>> _samples;
 
 	private final Class<T> _type;
 	private final T[][] _arguments;
@@ -120,8 +120,9 @@ final class SampleList<T>
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Sample<T> get(int index) {
-		return _samples.get(index);
+		return (Sample<T>)_samples.get(index);
 	}
 
 	@Override
