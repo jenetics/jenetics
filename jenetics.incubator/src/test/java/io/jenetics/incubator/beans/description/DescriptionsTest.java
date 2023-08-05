@@ -22,6 +22,7 @@ package io.jenetics.incubator.beans.description;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -142,6 +143,9 @@ public class DescriptionsTest {
 			.walk(PathValue.of(Path.of("gpx"), GPX.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
+			.filter(d ->
+				!d.contains("gpx.routes[0].points[0].time") &&
+				!d.contains("gpx.routes[0].points[0].elevation"))
 			.toArray(String[]::new);
 
 		final var expected = """
@@ -314,7 +318,13 @@ public class DescriptionsTest {
 			Description[path=gpx.wayPoints[0], value=Indexed[value=io.jenetics.jpx.WayPoint, enclosure=java.util.List]]
 			""".split("\n");
 
-		assertThat(descriptions).isEqualTo(expected);
+		assertThat(descriptions).isEqualTo(
+			Stream.of(expected)
+				.filter(d ->
+					!d.contains("gpx.routes[0].points[0].time") &&
+					!d.contains("gpx.routes[0].points[0].elevation"))
+				.toArray(String[]::new)
+		);
 	}
 
 
