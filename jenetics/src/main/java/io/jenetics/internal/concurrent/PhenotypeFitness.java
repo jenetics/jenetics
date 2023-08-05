@@ -17,38 +17,50 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.concurrent;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import static java.util.Objects.requireNonNull;
 
-import io.jenetics.DoubleChromosome;
-import io.jenetics.DoubleGene;
+import java.util.function.Function;
+
+import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.util.ISeq;
 
 /**
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ConcurrentEvaluatorTest {
+public final class PhenotypeFitness<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements Runnable
+{
+	private final Phenotype<G, C> _phenotype;
+	private final Function<? super Genotype<G>, ? extends C> _function;
 
-	@Test
-	public void evaluateSerial() {
-		final ISeq<Phenotype<DoubleGene, Double>> phenotypes =
-			Genotype.of(DoubleChromosome.of(0, 1)).instances()
-				.limit(100)
-				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, 1))
-				.collect(ISeq.toISeq());
+	private C _fitness;
 
-		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
+	public PhenotypeFitness(
+		final Phenotype<G, C> phenotype,
+		final Function<? super Genotype<G>, ? extends C> function
+	) {
+		_phenotype = requireNonNull(phenotype);
+		_function = requireNonNull(function);
+	}
 
-		final Evaluator<DoubleGene, Double> evaluator =
-			new ConcurrentEvaluator<>(gt -> gt.gene().doubleValue(), Runnable::run);
+	@Override
+	public void run() {
+		_fitness = _function.apply(_phenotype.genotype());
+	}
 
-		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(phenotypes);
-
-		evaluated.forEach(pt -> Assert.assertEquals(pt.genotype().gene().allele(), pt.fitness()));
+	public Phenotype<G, C> phenotype() {
+		return _phenotype.withFitness(_fitness);
 	}
 
 }

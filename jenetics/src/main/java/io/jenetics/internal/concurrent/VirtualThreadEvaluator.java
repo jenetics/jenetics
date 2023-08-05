@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +27,7 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.engine.ConcurrentEvaluator.PhenotypeFitness;
+import io.jenetics.engine.Evaluator;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -39,7 +39,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-final class VirtualThreadEvaluator<
+public final class VirtualThreadEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -48,7 +48,7 @@ final class VirtualThreadEvaluator<
 
 	private final Function<? super Genotype<G>, ? extends C> _function;
 
-	VirtualThreadEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
+	public VirtualThreadEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
 		_function = requireNonNull(function);
 	}
 

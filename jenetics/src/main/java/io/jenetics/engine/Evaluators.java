@@ -26,6 +26,8 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.internal.concurrent.ConcurrentEvaluator;
+import io.jenetics.internal.concurrent.VirtualThreadEvaluator;
 
 /**
  * This class contains factory methods for creating commonly usable
