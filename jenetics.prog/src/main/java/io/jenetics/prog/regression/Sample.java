@@ -70,7 +70,7 @@ public interface Sample<T> {
 	 * Create a new sample point from the given argument and sample result. It
 	 * represents the function arguments with the function value:
 	 * {@code f: sample[0:sample.length-1] -> sample[sample.length-1]}. The last
-	 * array element contains the result and the first n-1 elements are function
+	 * array element contains the result, and the first n-1 elements are function
 	 * arguments.
 	 *
 	 * @param <T> the sample type

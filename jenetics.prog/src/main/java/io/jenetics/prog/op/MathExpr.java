@@ -215,7 +215,7 @@ public final class MathExpr
 	}
 
 	/**
-	 * Return the math expression as operation tree.
+	 * Return the math expression as an operation tree.
 	 *
 	 * @return a new expression tree
 	 * @deprecated Will be removed, use {@link #tree()} instead
@@ -249,7 +249,7 @@ public final class MathExpr
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
-	 * @throws IllegalArgumentException if the length of the arguments array
+	 * @throws IllegalArgumentException if the length of the argument array
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
@@ -415,7 +415,7 @@ public final class MathExpr
 	}
 
 	/**
-	 * Parses the given {@code expression} into a AST tree.
+	 * Parses the given {@code expression} into an AST tree.
 	 *
 	 * @param expression the expression string
 	 * @return the tree representation of the given {@code expression}

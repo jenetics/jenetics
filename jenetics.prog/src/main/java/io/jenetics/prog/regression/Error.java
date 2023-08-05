@@ -87,7 +87,7 @@ public interface Error<T> {
 	 * Creates an error function by combining the given {@code loss} function
 	 * and program {@code complexity}. The loss function and program complexity
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
-	 * The complexity function penalizes programs which grows to big.
+	 * The complexity function penalizes programs which grow to big.
 	 *
 	 * @param <T> the sample type
 	 * @param loss the loss function
@@ -105,7 +105,7 @@ public interface Error<T> {
 	 * Creates an error function by combining the given {@code loss} function
 	 * and program {@code complexity}. The loss function and program complexity
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
-	 * The complexity function penalizes programs which grows to big.
+	 * The complexity function penalizes programs which grow to big.
 	 *
 	 * @param <T> the sample type
 	 * @param loss the loss function
