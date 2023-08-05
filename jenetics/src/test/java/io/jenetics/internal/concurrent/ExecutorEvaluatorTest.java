@@ -32,7 +32,7 @@ import io.jenetics.util.ISeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcurrentEvaluatorTest {
+public class ExecutorEvaluatorTest {
 
 	@Test
 	public void evaluateSerial() {
@@ -45,7 +45,7 @@ public class ConcurrentEvaluatorTest {
 		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
 
 		final Evaluator<DoubleGene, Double> evaluator =
-			new ConcurrentEvaluator<>(gt -> gt.gene().doubleValue(), Runnable::run);
+			new ExecutorEvaluator<>(gt -> gt.gene().doubleValue(), Runnable::run);
 
 		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(phenotypes);
 

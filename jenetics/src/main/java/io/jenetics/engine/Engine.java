@@ -39,7 +39,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
-import io.jenetics.internal.concurrent.ConcurrentEvaluator;
+import io.jenetics.internal.concurrent.ExecutorEvaluator;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -1039,7 +1039,7 @@ public final class Engine<
 		}
 
 		private Evaluator<G, C> __evaluator() {
-			return _evaluator instanceof ConcurrentEvaluator<G, C> ce
+			return _evaluator instanceof ExecutorEvaluator<G, C> ce
 				? ce.with(_executor)
 				: _evaluator;
 		}

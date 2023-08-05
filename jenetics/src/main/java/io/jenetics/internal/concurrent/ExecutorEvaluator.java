@@ -43,7 +43,7 @@ import io.jenetics.util.Seq;
  * @version 5.0
  * @since 4.2
  */
-public final class ConcurrentEvaluator<
+public final class ExecutorEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -53,7 +53,7 @@ public final class ConcurrentEvaluator<
 	private final Function<? super Genotype<G>, ? extends C> _function;
 	private final Executor _executor;
 
-	public ConcurrentEvaluator(
+	public ExecutorEvaluator(
 		final Function<? super Genotype<G>, ? extends C> function,
 		final Executor executor
 	) {
@@ -61,8 +61,8 @@ public final class ConcurrentEvaluator<
 		_executor = requireNonNull(executor);
 	}
 
-	public ConcurrentEvaluator<G, C> with(final Executor executor) {
-		return new ConcurrentEvaluator<>(_function, executor);
+	public ExecutorEvaluator<G, C> with(final Executor executor) {
+		return new ExecutorEvaluator<>(_function, executor);
 	}
 
 	@Override

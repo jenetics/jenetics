@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.concurrent.ConcurrentEvaluator;
+import io.jenetics.internal.concurrent.ExecutorEvaluator;
 import io.jenetics.internal.concurrent.VirtualThreadEvaluator;
 
 /**
@@ -125,7 +125,7 @@ public final class Evaluators {
 		final Function<? super Genotype<G>, ? extends C> fitness,
 		final Executor executor
 	) {
-		return new ConcurrentEvaluator<>(fitness, executor);
+		return new ExecutorEvaluator<>(fitness, executor);
 	}
 
 	/**
