@@ -62,7 +62,7 @@ public final class ExecutorEvaluator<
 
 	@Override
 	protected void execute(final Seq<? extends Runnable> tasks) {
-		try (var c = Concurrency.with(_executor)) {
+		try (var c = BatchExecutor.with(_executor)) {
 			c.execute(tasks);
 		}
 	}

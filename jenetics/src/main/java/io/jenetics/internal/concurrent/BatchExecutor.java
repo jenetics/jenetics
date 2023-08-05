@@ -42,26 +42,14 @@ import io.jenetics.util.Seq;
  * @version 3.8
  * @since 2.0
  */
-abstract class Concurrency implements Executor, AutoCloseable {
+abstract class BatchExecutor implements AutoCloseable {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	public static final Concurrency SERIAL_EXECUTOR = new SerialConcurrency();
-
-	public abstract void execute(final Seq<? extends Runnable> runnables);
+	public abstract void execute(final Seq<? extends Runnable> batch);
 
 	@Override
 	public abstract void close();
-
-	/**
-	 * Return the underlying {@code Executor}, which is used for performing the
-	 * actual task execution.
-	 *
-	 * @return the underlying {@code Executor} object
-	 */
-	public Executor getInnerExecutor() {
-		return this;
-	}
 
 	/**
 	 * Return a new Concurrency object from the given executor.
@@ -69,13 +57,11 @@ abstract class Concurrency implements Executor, AutoCloseable {
 	 * @param executor the underlying Executor
 	 * @return a new Concurrency object
 	 */
-	public static Concurrency with(final Executor executor) {
+	public static BatchExecutor with(final Executor executor) {
 		if (executor instanceof ForkJoinPool e) {
 			return new ForkJoinPoolConcurrency(e);
 		} else if (executor instanceof ExecutorService e) {
 			return new ExecutorServiceConcurrency(e);
-		} else if (executor == SERIAL_EXECUTOR) {
-			return SERIAL_EXECUTOR;
 		} else {
 			return new ExecutorConcurrency(executor);
 		}
@@ -86,7 +72,7 @@ abstract class Concurrency implements Executor, AutoCloseable {
 	 *
 	 * @return a new Concurrency object using the new ForkJoinPool
 	 */
-	public static Concurrency withCommonPool() {
+	public static BatchExecutor withCommonPool() {
 		return with(ForkJoinPool.commonPool());
 	}
 
@@ -94,7 +80,7 @@ abstract class Concurrency implements Executor, AutoCloseable {
 	/**
 	 * This Concurrency uses a ForkJoinPool.
 	 */
-	private static final class ForkJoinPoolConcurrency extends Concurrency {
+	private static final class ForkJoinPoolConcurrency extends BatchExecutor {
 		private final List<ForkJoinTask<?>> _tasks = new ArrayList<>();
 		private final ForkJoinPool _pool;
 
@@ -103,32 +89,22 @@ abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final Runnable runnable) {
-			_tasks.add(_pool.submit(runnable));
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> runnables) {
-			if (runnables.nonEmpty()) {
-				_tasks.add(_pool.submit(new RunnablesAction(runnables)));
+		public void execute(final Seq<? extends Runnable> batch) {
+			if (batch.nonEmpty()) {
+				_tasks.add(_pool.submit(new RunnablesAction(batch)));
 			}
 		}
 
 		@Override
-		public Executor getInnerExecutor() {
-			return _pool;
-		}
-
-		@Override
 		public void close() {
-			Concurrency.join(_tasks);
+			BatchExecutor.join(_tasks);
 		}
 	}
 
 	/**
 	 * This Concurrency uses an ExecutorService.
 	 */
-	private static final class ExecutorServiceConcurrency extends Concurrency {
+	private static final class ExecutorServiceConcurrency extends BatchExecutor {
 		private final List<Future<?>> _futures = new ArrayList<>();
 		private final ExecutorService _service;
 
@@ -137,35 +113,29 @@ abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final Runnable command) {
-			_futures.add(_service.submit(command));
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> runnables) {
-			if (runnables.nonEmpty()) {
+		public void execute(final Seq<? extends Runnable> batch) {
+			if (batch.nonEmpty()) {
 				final int[] parts = partition(
-					runnables.size(),
+					batch.size(),
 					max(
 						(CORES + 1)*2,
-						(int)ceil(runnables.size()/(double)maxBatchSize())
+						(int)ceil(batch.size()/(double)maxBatchSize())
 					)
 				);
 
 				for (int i = 0; i < parts.length - 1; ++i) {
-					execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+					execute(new RunnablesRunnable(batch, parts[i], parts[i + 1]));
 				}
 			}
 		}
 
-		@Override
-		public Executor getInnerExecutor() {
-			return _service;
+		private void execute(final Runnable command) {
+			_futures.add(_service.submit(command));
 		}
 
 		@Override
 		public void close() {
-			Concurrency.join(_futures);
+			BatchExecutor.join(_futures);
 		}
 
 	}
@@ -180,7 +150,7 @@ abstract class Concurrency implements Executor, AutoCloseable {
 				task.get();
 			}
 		} catch (ExecutionException e) {
-			Concurrency.cancel(task, tasks);
+			BatchExecutor.cancel(task, tasks);
 			final String msg = e.getCause() != null
 				? e.getCause().getMessage()
 				: null;
@@ -188,7 +158,7 @@ abstract class Concurrency implements Executor, AutoCloseable {
 				.initCause(e.getCause());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			Concurrency.cancel(task, tasks);
+			BatchExecutor.cancel(task, tasks);
 			final String msg = e.getMessage();
 			throw (CancellationException)new CancellationException(msg)
 				.initCause(e);
@@ -210,7 +180,7 @@ abstract class Concurrency implements Executor, AutoCloseable {
 	/**
 	 * This Concurrency uses an Executor.
 	 */
-	private static final class ExecutorConcurrency extends Concurrency {
+	private static final class ExecutorConcurrency extends BatchExecutor {
 		private final List<FutureTask<?>> _tasks = new ArrayList<>();
 		private final Executor _executor;
 
@@ -219,55 +189,33 @@ abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final Runnable command) {
+		public void execute(final Seq<? extends Runnable> batch) {
+			if (batch.nonEmpty()) {
+				final int[] parts = partition(
+					batch.size(),
+					max(
+						(CORES + 1)*2,
+						(int)ceil(batch.size()/(double)maxBatchSize())
+					)
+				);
+
+				for (int i = 0; i < parts.length - 1; ++i) {
+					execute(new RunnablesRunnable(batch, parts[i], parts[i + 1]));
+				}
+			}
+		}
+
+		private void execute(final Runnable command) {
 			final FutureTask<?> task = new FutureTask<>(command, null);
 			_tasks.add(task);
 			_executor.execute(task);
 		}
 
 		@Override
-		public void execute(final Seq<? extends Runnable> runnables) {
-			if (runnables.nonEmpty()) {
-				final int[] parts = partition(
-					runnables.size(),
-					max(
-						(CORES + 1)*2,
-						(int)ceil(runnables.size()/(double)maxBatchSize())
-					)
-				);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
-				}
-			}
-		}
-
-		@Override
 		public void close() {
-			Concurrency.join(_tasks);
+			BatchExecutor.join(_tasks);
 		}
 	}
-
-	/**
-	 * This Concurrency executes the runnables within the main thread.
-	 */
-	private static final class SerialConcurrency extends Concurrency {
-
-		@Override
-		public void execute(final Runnable command) {
-			command.run();
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> runnables) {
-			runnables.forEach(Runnable::run);
-		}
-
-		@Override
-		public void close() {
-		}
-	}
-
 
 	/**
 	 * Return an array with the indexes of the partitions of an array with the
