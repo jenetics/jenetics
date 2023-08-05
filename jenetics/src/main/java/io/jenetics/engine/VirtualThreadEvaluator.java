@@ -21,28 +21,25 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.Concurrency;
+import io.jenetics.engine.ConcurrentEvaluator.PhenotypeFitness;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
- * Default phenotype evaluation strategy. It uses the configured {@link Executor}
- * for the fitness evaluation.
- *
  * @param <G> the gene type
  * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
- * @since 4.2
+ * @version !__version__!
+ * @since !__version__!
  */
-final class ConcurrentEvaluator<
+final class VirtualThreadEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -50,18 +47,9 @@ final class ConcurrentEvaluator<
 {
 
 	private final Function<? super Genotype<G>, ? extends C> _function;
-	private final Executor _executor;
 
-	ConcurrentEvaluator(
-		final Function<? super Genotype<G>, ? extends C> function,
-		final Executor executor
-	) {
+	VirtualThreadEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
 		_function = requireNonNull(function);
-		_executor = requireNonNull(executor);
-	}
-
-	ConcurrentEvaluator<G, C> with(final Executor executor) {
-		return new ConcurrentEvaluator<>(_function, executor);
 	}
 
 	@Override
@@ -73,51 +61,20 @@ final class ConcurrentEvaluator<
 
 		final ISeq<Phenotype<G, C>> result;
 		if (evaluate.nonEmpty()) {
-			try (var c = Concurrency.with(_executor)) {
-				c.execute(evaluate);
+			try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
+				evaluate.forEach(c::execute);
 			}
 
 			result = evaluate.size() == population.size()
 				? evaluate.map(PhenotypeFitness::phenotype)
 				: population.stream()
-					.filter(Phenotype::isEvaluated)
-					.collect(ISeq.toISeq())
-					.append(evaluate.map(PhenotypeFitness::phenotype));
+				.filter(Phenotype::isEvaluated)
+				.collect(ISeq.toISeq())
+				.append(evaluate.map(PhenotypeFitness::phenotype));
 		} else {
 			result = population.asISeq();
 		}
 
 		return result;
 	}
-
-
-	static final class PhenotypeFitness<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		implements Runnable
-	{
-		final Phenotype<G, C> _phenotype;
-		final Function<? super Genotype<G>, ? extends C> _function;
-		C _fitness;
-
-		PhenotypeFitness(
-			final Phenotype<G, C> phenotype,
-			final Function<? super Genotype<G>, ? extends C> function
-		) {
-			_phenotype = phenotype;
-			_function = function;
-		}
-
-		@Override
-		public void run() {
-			_fitness = _function.apply(_phenotype.genotype());
-		}
-
-		Phenotype<G, C> phenotype() {
-			return _phenotype.withFitness(_fitness);
-		}
-
-	}
-
 }

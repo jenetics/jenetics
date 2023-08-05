@@ -100,6 +100,11 @@ public final class Evaluators {
 		return serial(fitness.compose(codec.decoder()));
 	}
 
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> virtual(final Function<? super Genotype<G>, ? extends C> fitness) {
+		return new VirtualThreadEvaluator<>(fitness);
+	}
+
 	/**
 	 * Return a new fitness evaluator, which evaluates the fitness function of
 	 * the population (concurrently) with the given {@code executor}. This is

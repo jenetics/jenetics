@@ -64,7 +64,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	}
 
 	/**
-	 * Return an new Concurrency object from the given executor.
+	 * Return a new Concurrency object from the given executor.
 	 *
 	 * @param executor the underlying Executor
 	 * @return a new Concurrency object
@@ -270,7 +270,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 
 	/**
-	 * Return a array with the indexes of the partitions of an array with the
+	 * Return an array with the indexes of the partitions of an array with the
 	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
 	 * <p>
 	 * Some examples:
@@ -280,7 +280,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * 	 partition(5, 10): [0, 1, 2, 3, 4, 5]
 	 * </pre>
 	 *
-	 * The following examples prints the start index (inclusive) and the end
+	 * The following examples print the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
 	 * <pre>{@code
 	 * int[] parts = partition(15, 6);
