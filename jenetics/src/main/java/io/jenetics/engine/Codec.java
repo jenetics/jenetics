@@ -133,8 +133,8 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	/**
 	 * Create a new {@code Codec} with the mapped result type. The following
-	 * example creates a double codec who's values are not uniformly distributed
-	 * between {@code [0..1)}. Instead the values now follow an exponential
+	 * example creates a double codec whose values are not uniformly distributed
+	 * between {@code [0..1)}. Instead, the values now follow an exponential
 	 * function.
 	 *
 	 * <pre>{@code

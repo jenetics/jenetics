@@ -25,8 +25,9 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
@@ -114,7 +115,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
-	 * @throws IllegalArgumentException if the length of the arguments array
+	 * @throws IllegalArgumentException if the length of the argument array
 	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
@@ -146,7 +147,14 @@ public class Program<T> implements Op<T>, Serializable {
 	 * ************************************************************************/
 
 	/**
-	 * Evaluates the given operation tree with the given variables.
+	 * Evaluates the given operation tree with the given variables. This method
+	 * is equivalent to
+	 * <pre>{@code
+	 * final T result = tree.reduce(variables, Op::apply);
+	 * }</pre>
+	 * but handles the variable sized {@code variables} array more conveniently.
+	 *
+	 * @see Tree#reduce(Object[], BiFunction)
 	 *
 	 * @param <T> the argument type
 	 * @param tree the operation tree
@@ -161,41 +169,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		requireNonNull(tree);
-		requireNonNull(variables);
-
-		final Op<T> op = tree.value();
-		return op.isTerminal()
-			? evalOp(op, variables)
-			: evalOp(op, evalChildren(tree, variables));
-	}
-
-	@SafeVarargs
-	private static <T> T evalOp(final Op<T> op, final T... variables) {
-		if (op instanceof Var && ((Var)op).index() >= variables.length) {
-			throw new IllegalArgumentException(format(
-				"No value for variable '%s' given.", op
-			));
-		}
-
-		return op.apply(variables);
-	}
-
-	@SafeVarargs
-	private static <T> T[] evalChildren(
-		final Tree<? extends Op<T>, ?> node,
-		final T... variables
-	) {
-		final T[] result = newArray(variables.getClass(), node.childCount());
-		for (int i = 0; i < node.childCount(); ++i) {
-			result[i] = eval(node.childAt(i), variables);
-		}
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] newArray(final Class<?> arrayType, final int size) {
-		return (T[])Array.newInstance(arrayType.getComponentType(), size);
+		return tree.reduce(variables, Function::apply);
 	}
 
 	/**

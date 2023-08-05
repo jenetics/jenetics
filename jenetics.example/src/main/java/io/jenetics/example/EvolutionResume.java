@@ -93,8 +93,9 @@ public class EvolutionResume {
 		System.out.println("Evolution started.");
 
 		// Read console command: type 'exit' for stopping evolution.
-		while (!System.console().readLine().equals("exit"))
+		while (!System.console().readLine().equals("exit")) {}
 		proceed.set(false);
+
 		System.out.println("Evolution stopped.");
 
 		// Writing the best evolution result to file.

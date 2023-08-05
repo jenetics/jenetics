@@ -45,7 +45,7 @@ import io.jenetics.internal.util.Requires;
  * @version 7.0
  * @since 4.0
  */
-public final record MutatorResult<T>(T result, int mutations)
+public record MutatorResult<T>(T result, int mutations)
 	implements Serializable
 {
 

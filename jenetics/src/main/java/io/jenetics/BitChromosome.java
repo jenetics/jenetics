@@ -364,6 +364,57 @@ public final class BitChromosome extends Number
 	}
 
 	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this & other}).
+	 *
+	 * @since 7.1
+	 *
+	 * @param other value to be AND'ed with this {@code BitChromosome}.
+	 * @return {@code this & other}
+	 */
+	public BitChromosome and(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) && other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this | other}).
+	 *
+	 * @since 7.1
+	 *
+	 * @param other value to be OR'ed with this {@code BitChromosome}.
+	 * @return {@code this | other}
+	 */
+	public BitChromosome or(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) || other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
+	 * Returns a {@code BitChromosome} whose value is ({@code this ^ other}).
+	 *
+	 * @since 7.1
+	 *
+	 * @param other value to be XOR'ed with this {@code BitChromosome}.
+	 * @return {@code this ^ other}
+	 */
+	public BitChromosome xor(final BitChromosome other) {
+		final var array = _genes.copy();
+		for (int i = 0; i < Math.min(length(), other.length()); ++i) {
+			array.set(i, array.get(i) ^ other._genes.get(i));
+		}
+
+		return new BitChromosome(array, _p);
+	}
+
+	/**
 	 * Invert the ones and zeros of this bit chromosome.
 	 *
 	 * @return a new BitChromosome with inverted ones and zeros.
@@ -372,6 +423,42 @@ public final class BitChromosome extends Number
 		final var array = _genes.copy();
 		array.invert();
 		return new BitChromosome(array, 1.0 - _p);
+	}
+
+	/**
+	 * Returns a new {@code BitChromosome} whose value is ({@code this << n}).
+	 * The shift distance, n, may be negative, in which case this method performs
+	 * a right shift.
+	 *
+	 * @param n shift distance, in bits
+	 * @return {@code this << n}
+	 */
+	public BitChromosome shiftLeft(final int n) {
+		final var genes = _genes.copy();
+		if (n >= 0) {
+			genes.shiftLeft(n);
+		} else {
+			genes.shiftRight(Math.abs(n));
+		}
+		return new BitChromosome(genes, _p);
+	}
+
+	/**
+	 * Returns a new {@code BitChromosome} whose value is ({@code this >> n}). The shift
+	 * distance, n, may be negative, in which case this method performs a left
+	 * shift.
+	 *
+	 * @param n shift distance, in bits
+	 * @return {@code this >> n}
+	 */
+	public BitChromosome shiftRight(final int n) {
+		final var genes = _genes.copy();
+		if (n >= 0) {
+			genes.shiftRight(n);
+		} else {
+			genes.shiftLeft(Math.abs(n));
+		}
+		return new BitChromosome(genes, _p);
 	}
 
 	@Override
@@ -487,7 +574,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability.
+	 * ones' probability.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
 	 * @param length length of the BitChromosome
@@ -507,7 +594,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability. The {@link #oneProbability()} of the chromosome is set
+	 * ones' probability. The {@link #oneProbability()} of the chromosome is set
 	 * to {@code 0.5}.
 	 *
 	 * @since 7.0

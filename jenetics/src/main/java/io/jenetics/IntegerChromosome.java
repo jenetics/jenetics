@@ -48,7 +48,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 7.0W
+ * @version 7.0
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
@@ -70,7 +70,7 @@ public class IntegerChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected IntegerChromosome(
@@ -141,7 +141,7 @@ public class IntegerChromosome
 
 	/**
 	 * Returns an int array containing all the elements in this chromosome in
-	 * proper sequence.  If the chromosome fits in the specified array, it is
+	 * a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -164,7 +164,7 @@ public class IntegerChromosome
 
 	/**
 	 * Returns an int array containing all the elements in this chromosome in
-	 * proper sequence.
+	 * a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -220,7 +220,7 @@ public class IntegerChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}
@@ -265,7 +265,7 @@ public class IntegerChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}

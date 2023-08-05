@@ -21,7 +21,7 @@ package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
-import static io.jenetics.ext.internal.Names.isIdentifier;
+import static io.jenetics.ext.internal.util.Names.isIdentifier;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -39,7 +39,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import io.jenetics.ext.internal.Escaper;
+import io.jenetics.ext.internal.util.Escaper;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
@@ -48,7 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  * This class serves two purposes. Firstly, it is used as a <em>classical</em>
  * pattern, which is used to find <em>matches</em> against a <em>matching</em>
  * tree. Secondly, it can <em>expand</em> a given pattern to a full tree with a
- * given <em>pattern</em> variable to sub-tree mapping.
+ * given <em>pattern</em> variable to subtree mapping.
  *
  * <p><b>Matching trees</b></p>
  *
@@ -56,18 +56,18 @@ import io.jenetics.ext.util.TreeNode;
  * specified as a parentheses string, must first be compiled into an instance of
  * this class. The resulting pattern can then be used to create a
  * {@link TreeMatcher} object that can match arbitrary trees against the tree
- * pattern. All the states involved in performing a match resides in the
+ * pattern. All the states involved in performing a match reside in the
  * matcher, so many matchers can share the same pattern.
  * <p>
  * The string representation of a tree pattern is a parenthesis tree string,
- * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
+ * with a special wildcard syntax for arbitrary subtrees. The subtree
  * variables are prefixed with a '$' and must be a valid Java identifier.
  * <pre>{@code
  * final TreePattern<String> p1 = TreePattern.compile("add($a,add($b,sin(x)))");
  * final TreePattern<String> p2 = TreePattern.compile("pow($x,$y)");
  * }</pre>
  *
- * If you need to have values which starts with a '$' character, you can escape
+ * If you need to have values which start with a '$' character, you can escape
  * it with a '\'.
  * <pre>{@code
  * final TreePattern<String> p1 = TreePattern.compile("concat($x,\\$foo)");
@@ -89,7 +89,7 @@ import io.jenetics.ext.util.TreeNode;
  * <p><b>Expanding trees</b></p>
  *
  * The second functionality of the tree pattern is to expand a pattern to a whole
- * tree with a given <em>pattern</em> variable to sub-tree mapping.
+ * tree with a given <em>pattern</em> variable to subtree mapping.
  * <pre>{@code
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
  * final Map<Var<String>, Tree<String, ?>> vars = Map.of(
@@ -105,7 +105,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see Tree#toParenthesesString()
  * @see TreeMatcher
  *
- * @param <V> the value type of the tree than can be matched by this pattern
+ * @param <V> the value type of the tree than can match by this pattern
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -398,8 +398,8 @@ public final class TreePattern<V> implements Serializable {
 	 * A sealed interface, which constitutes the nodes of a pattern tree.
 	 * The only two implementations of this class are the {@link Var} and the
 	 * {@link Val} class. The {@link Var} class represents a placeholder for an
-	 * arbitrary sub-tree and the {@link Val} class stands for an arbitrary
-	 * concrete sub-tree.
+	 * arbitrary subtree and the {@link Val} class stands for an arbitrary
+	 * concrete subtree.
 	 *
 	 * @see Var
 	 * @see Val
@@ -429,7 +429,7 @@ public final class TreePattern<V> implements Serializable {
 	}
 
 	/**
-	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
+	 * Represents a placeholder (variable) for an arbitrary subtree. A
 	 * <em>pattern</em> variable is identified by its name. The pattern DSL
 	 * denotes variable names with a leading '$' character, e.g. {@code $x},
 	 * {@code $y} or {@code $my_var}.

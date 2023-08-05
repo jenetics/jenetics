@@ -36,7 +36,7 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 
-import io.jenetics.ext.internal.ConcatSpliterator;
+import io.jenetics.ext.internal.util.ConcatSpliterator;
 
 /**
  * The {@code ConcatEngine} lets you concatenate two (or more) evolution

@@ -19,6 +19,8 @@
  */
 package io.jenetics.internal.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,10 +181,16 @@ public class BitsTest {
 		final var random = new Random(1234);
 
 		final List<Object[]> values = new ArrayList<>();
-		for (int i = 0; i < 20; ++i) {
-			final int length = random.nextInt(100) + 50;
-			final int start = random.nextInt(10);
-			final int end = length*Byte.SIZE - random.nextInt(10);
+		values.add(new Object[]{1, 0, 5});
+		values.add(new Object[]{1, 0, 7});
+		values.add(new Object[]{1, 0, 8});
+		values.add(new Object[]{1, 1, 8});
+		values.add(new Object[]{2, 8, 10});
+
+		for (int i = 0; i < 100; ++i) {
+			final int length = random.nextInt(1, 100);
+			final int start = random.nextInt(length*Byte.SIZE);
+			final int end = random.nextInt(start, length*Byte.SIZE) + 1;
 
 			values.add(new Object[]{length, start, end});
 		}
@@ -385,6 +393,18 @@ public class BitsTest {
 			Bits.set(data, i);
 			System.out.println(Bits.toByteString(data));
 			Assert.assertTrue(Bits.get(data, i));
+		}
+	}
+
+	@Test
+	public void setGetBid2() {
+		final int length = 80;
+		final byte[] data = Bits.newArray(length);
+
+		for (int i = 0; i < length; ++i) {
+			assertThat(Bits.get(data, i)).isFalse();
+			Bits.set(data, i);
+			assertThat(Bits.get(data, i)).isTrue();
 		}
 	}
 

@@ -48,7 +48,7 @@ public class SerializerTest {
 
 	@Test(dataProvider = "data")
 	public void appendReadExistingFile(final List<List<Object>> data) throws IOException {
-		final Value<Path, IOException> path = Value.of(
+		final Value<Path, IOException> path = new Value<>(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -78,7 +78,7 @@ public class SerializerTest {
 
 	@Test(dataProvider = "data")
 	public void appendReadNonExistingFile(final List<List<Object>> data) throws IOException {
-		final Value<Path, IOException> path = Value.of(
+		final Value<Path, IOException> path = new Value<>(
 			Path.of(
 				System.getProperty("java.io.tmpdir"),
 				format("IO-%s-TEST", randomUUID().toString().replace("-", ""))
@@ -137,7 +137,7 @@ public class SerializerTest {
 
 	@Test(dataProvider = "data")
 	public void writeRead(final List<List<Object>> data) throws IOException {
-		final Value<Path, IOException> path = Value.of(
+		final Value<Path, IOException> path = new Value<>(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -157,7 +157,7 @@ public class SerializerTest {
 
 	@Test
 	public void writeFiledReadFileExample() throws IOException {
-		final Value<Path, IOException> path = Value.of(
+		final Value<Path, IOException> path = new Value<>(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);
@@ -189,7 +189,7 @@ public class SerializerTest {
 
 	@Test
 	public void writeStreamReadFileExample() throws IOException {
-		final Value<Path, IOException> path = Value.of(
+		final Value<Path, IOException> path = new Value<>(
 			Files.createTempFile("IO-", "-TEST"),
 			Files::deleteIfExists
 		);

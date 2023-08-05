@@ -69,7 +69,7 @@ public interface Alterer<
 	 *        is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the alter-result object, which contains the altered population
-	 *         and the alteration count
+	 *         and the alteration counts
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
@@ -113,7 +113,7 @@ public interface Alterer<
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> new AltererResult<>(p.asISeq(), 0)
+			? (p, g) -> new AltererResult<>(p.asISeq())
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

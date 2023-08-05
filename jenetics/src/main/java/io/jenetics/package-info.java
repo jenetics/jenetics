@@ -20,8 +20,8 @@
 
 /**
  * This is the base package of the Jenetics library and contains all domain
- * classes, like Gene, Chromosome or Genotype. Most of this types are immutable
- * data classes and doesn't implement any behavior. It also contains the Selector
+ * classes, like Gene, Chromosome or Genotype. Most of these types are immutable
+ * data classes and don't implement any behavior. It also contains the Selector
  * and Alterer interfaces and its implementations. The classes in this package
  * are (almost) sufficient to implement an own GA.
  *

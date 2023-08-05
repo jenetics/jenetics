@@ -27,16 +27,16 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
- * This alterer takes two chromosome (treating it as vectors) and creates a
- * linear combination of these vectors as result. The  line-recombination depends
+ * This alterer takes two chromosomes (treating it as vectors) and creates a
+ * linear combination of these vectors as a result. The  line-recombination depends
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the
  * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
  * be located anywhere on the line, even somewhat outside the hypercube.
  * <p>
- * Points outside the allowed numeric range are rejected and a new points are
- * generated, until they lie in the valid range. The strategy on how
+ * Points outside the allowed numeric range are rejected, and new points are
+ * generated until they lie in the valid range. The strategy on how
  * out-of-range points are handled, is the difference to the very similar
  * {@link LineCrossover}.
  *

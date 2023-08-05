@@ -20,6 +20,7 @@
 package io.jenetics.internal.util;
 
 import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 import java.util.concurrent.CancellationException;
@@ -60,16 +61,21 @@ public class ConcurrencyTest {
 		@Override
 		public void run() {
 			try {
-				System.out.println(format(
-					"Task: %d, thread %d: %d",
+				System.out.printf("Task: %d, thread %d: %d%n",
 					_task, Thread.currentThread().getId(), _sleep
-				));
+				);
 
 				Thread.sleep(_sleep);
 			} catch (InterruptedException e) {
 				throw new CancellationException(e.getMessage());
 			}
 		}
+	}
+
+	//@org.testng.annotations.Test
+	public void maxBatchSize() {
+		System.setProperty("io.jenetics.concurrency.maxBatchSize", "1000000");
+		assertThat(Concurrency.maxBatchSize()).isEqualTo(1000000);
 	}
 
 }

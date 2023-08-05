@@ -21,9 +21,7 @@ package io.jenetics.incubator.prog;
 
 import java.util.List;
 
-import io.jenetics.incubator.grammar.Cfg.Terminal;
-import io.jenetics.incubator.mathexpr.MathExpr;
-
+import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -49,8 +47,10 @@ public final class MathSentence {
 	 * @param sentence the sentence to parse
 	 * @return the parsed sentence
 	 */
-	public static Tree<Op<Double>, ?> parse(final List<Terminal> sentence) {
-		return MathExpr.parse(new MathSentenceTokenizer(sentence));
+	public static Tree<Op<Double>, ?> parse(final List<Terminal<String>> sentence) {
+		//final Tokenizer<Token<String>> tokenizer = new MathSentenceTokenizer(sentence);
+		//return MathExpr.parseTree(tokenizer::next);
+		return null;
 	}
 
 }

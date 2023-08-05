@@ -28,7 +28,7 @@ import io.jenetics.util.Seq;
 
 /**
  * {@code StochasticUniversalSelector} is a method for selecting a
- * population according to some given probability in a way that minimize chance
+ * population according to some given probability in a way that minimizes chance
  * fluctuations. It can be viewed as a type of roulette game where now we have
  * P equally spaced points which we spin.
  *
@@ -90,7 +90,7 @@ public class StochasticUniversalSelector<
 		final double[] probabilities = probabilities(pop, count, opt);
 		assert pop.size() == probabilities.length;
 
-		//Calculating the equally spaces random points.
+		//Calculating the equal spaces random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
 		points[0] = RandomRegistry.random().nextDouble()*delta;

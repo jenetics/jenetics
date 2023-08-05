@@ -148,7 +148,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					runnables.size(),
 					max(
 						(CORES + 1)*2,
-						(int)ceil(runnables.size()/(double)Env.maxBatchSize)
+						(int)ceil(runnables.size()/(double)maxBatchSize())
 					)
 				);
 
@@ -232,7 +232,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 					runnables.size(),
 					max(
 						(CORES + 1)*2,
-						(int)ceil(runnables.size()/(double)Env.maxBatchSize)
+						(int)ceil(runnables.size()/(double)maxBatchSize())
 					)
 				);
 
@@ -345,6 +345,10 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		return partition;
+	}
+
+	static int maxBatchSize() {
+		return Env.maxBatchSize;
 	}
 
 	@SuppressWarnings("removal")

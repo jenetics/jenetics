@@ -43,7 +43,7 @@ final class ParenthesesTreeParser {
 	/**
 	 * Represents a parentheses tree string token.
 	 */
-	record Token(String seq, int pos){}
+	record Token(String seq, int pos) {}
 
 	/**
 	 * Tokenize the given parentheses string.
@@ -62,7 +62,7 @@ final class ParenthesesTreeParser {
 			final char c = value.charAt(i);
 
 			if (isTokenSeparator(c) && pc != ESCAPE_CHAR) {
-				tokens.add(new Token(unescape(token.toString()), pos));
+				tokens.add(new Token(token.toString(), pos));
 				tokens.add(new Token(Character.toString(c), i));
 				token.setLength(0);
 				pos = i;
@@ -74,18 +74,21 @@ final class ParenthesesTreeParser {
 		}
 
 		if (!token.isEmpty()) {
-			tokens.add(new Token(unescape(token.toString()), pos));
+			tokens.add(new Token(token.toString(), pos));
 		}
 
 		return tokens;
 	}
 
 	private static boolean isTokenSeparator(final char c) {
-		return c == '(' || c == ')' || c == ',';
+		return switch (c) {
+			case '(', ')', ',' -> true;
+			default -> false;
+		};
 	}
 
 	/**
-	 * Parses the given parentheses tree string
+	 * Parses the given parentheses' tree string
 	 *
 	 * @since 4.3
 	 *
@@ -155,7 +158,7 @@ final class ParenthesesTreeParser {
 						));
 					}
 					if (current.value() == null) {
-						current.value(mapper.apply(token.seq));
+						current.value(mapper.apply(unescape(token.seq)));
 					}
 				}
 			}

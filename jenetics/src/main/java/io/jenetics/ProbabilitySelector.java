@@ -38,7 +38,7 @@ import io.jenetics.util.Seq;
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and
- * selects individuals from a given population based on it's selection
+ * selects individuals from a given population based on its selection
  * probability <i>P(i)</i>.
  * <p>
  * <img src="doc-files/FitnessProportionalSelection.svg" width="400" alt="Selection">
@@ -216,7 +216,7 @@ public abstract class ProbabilitySelector<
 	 * Check if the given probabilities sum to one.
 	 *
 	 * @param probabilities the probabilities to check.
-	 * @return {@code true} if the sum of the probabilities are within the error
+	 * @return {@code true} if the sum of the probabilities is within the error
 	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {

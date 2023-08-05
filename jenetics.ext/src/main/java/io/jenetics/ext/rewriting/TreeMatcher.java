@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import io.jenetics.ext.util.Tree;
 
 /**
- * Implementation of a pattern based tree matcher. It allows you to iterate over
+ * Implementation of a pattern-based tree matcher. It allows you to iterate over
  * all matches of a tree for a given pattern.
  *
  * <pre>{@code
@@ -87,7 +87,7 @@ public final class TreeMatcher<V> {
 	/**
 	 * Return all matching <em>sub</em>-trees.
 	 *
-	 * @return all matching sub-trees
+	 * @return all matching subtrees
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public Stream<TreeMatchResult<V>> results() {

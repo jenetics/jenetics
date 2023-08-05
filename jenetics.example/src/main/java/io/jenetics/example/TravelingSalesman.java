@@ -26,11 +26,9 @@ import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.jpx.Length.Unit.METER;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.function.Function;
 
 import io.jenetics.EnumGene;
-import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.PartiallyMatchedCrossover;
 import io.jenetics.Phenotype;
@@ -43,12 +41,16 @@ import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.jpx.GPX;
+import io.jenetics.jpx.GPX.Reader;
+import io.jenetics.jpx.GPX.Writer.Indent;
 import io.jenetics.jpx.WayPoint;
 import io.jenetics.jpx.geom.Geoid;
 
 /**
  * Implementation of the Traveling Salesman Problem. This example tries to find
  * the shortest path, which visits all Austrian district capitals.
+ *
+ * @see DoubleGeneTravelingSalesman
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -83,8 +85,7 @@ public final class TravelingSalesman
 	}
 
 	public static void main(String[] args) throws IOException {
-		final TravelingSalesman tsm =
-			new TravelingSalesman(districtCapitals().subSeq(0, 10));
+		final var tsm = new TravelingSalesman(districtCapitals().subSeq(0, 10));
 
 		final Engine<EnumGene<WayPoint>, Double> engine = Engine.builder(tsm)
 			.optimize(Optimize.MINIMUM)
@@ -102,10 +103,7 @@ public final class TravelingSalesman
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
-		final ISeq<WayPoint> path = best.genotype()
-			.chromosome().stream()
-			.map(Gene::allele)
-			.collect(ISeq.toISeq());
+		final ISeq<WayPoint> path = tsm.decode(best.genotype());
 
 		final GPX gpx = GPX.builder()
 			.addTrack(track -> track
@@ -114,7 +112,7 @@ public final class TravelingSalesman
 			.build();
 
 		final double km = tsm.fitness(best.genotype())/1_000.0;
-		GPX.writer("    ")
+		GPX.Writer.of(new Indent("    "))
 			.write(gpx, format("%s/out_%d.gpx", getProperty("user.home"), (int)km));
 
 		System.out.println(statistics);
@@ -122,12 +120,10 @@ public final class TravelingSalesman
 	}
 
 	// Return the district capitals, we want to visit.
-	private static ISeq<WayPoint> districtCapitals() throws IOException {
+	static ISeq<WayPoint> districtCapitals() throws IOException {
 		final String capitals = "/io/jenetics/example/DistrictCapitals.gpx";
-		try (InputStream in = TravelingSalesman
-				.class.getResourceAsStream(capitals))
-		{
-			return ISeq.of(GPX.read(in).getWayPoints());
+		try (var in = TravelingSalesman.class.getResourceAsStream(capitals)) {
+			return ISeq.of(Reader.DEFAULT.read(in).getWayPoints());
 		}
 	}
 

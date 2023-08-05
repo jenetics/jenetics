@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Optional;
 
 import org.testng.Assert;
@@ -42,6 +44,20 @@ public class TreeTest {
 				.attach("8")
 				.attach("9")))
 		.attach(TreeNode.of("10"));
+
+	@Test
+	public void streamOrderEqualIteratorOrder() {
+		final Tree<String, ?> tree = TreeNode.parse(
+			"FUN1(0,((FUN1(2,FUN1((FUN1(5,(FUN2(y,x)*x))/(FUN2(y,FUN1(8,4))*" +
+			"FUN1(x,6))),4))/1)+((8-(FUN1(x,y)/y))-FUN2(((FUN1(y,(y+(FUN1(2,x)+" +
+			"FUN1(3,2))))+FUN2(8,x))+9),FUN2(x,9)))))"
+		);
+
+		assertThat(tree.size()).isEqualTo(43);
+		assertThat(tree.stream().count()).isEqualTo(43);
+		final var it = tree.iterator();
+		tree.stream().forEach(v -> assertThat(v).isEqualTo(it.next()));
+	}
 
 	@Test
 	public void toParenthesesTree1() {
@@ -138,6 +154,25 @@ public class TreeTest {
 		} else {
 			Assert.assertSame(TREE.childAtPath(child.path()).get(), child);
 		}
+	}
+
+	@Test
+	public void reduce() {
+		final Tree<String, ?> formula = TreeNode.parse(
+			"add(sub(6, div(230, 10)), mul(5, 6))",
+			String::trim
+		);
+		final double result = formula.reduce(new Double[0], (op, args) ->
+			switch (op) {
+				case "add" -> args[0] + args[1];
+				case "sub" -> args[0] - args[1];
+				case "mul" -> args[0] * args[1];
+				case "div" -> args[0] / args[1];
+				default -> Double.parseDouble(op);
+			}
+		);
+
+		assertThat(result).isEqualTo(13.0);
 	}
 
 }

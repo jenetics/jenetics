@@ -39,7 +39,7 @@ import io.jenetics.internal.util.Lazy;
 /**
  * Implementation of an <em>ephemeral</em> constant. It causes the insertion of
  * a <em>mutable</em> constant into the operation tree. Every time this terminal
- * is chosen a, different value is generated which is then used for that
+ * is chosen a different value is generated which is then used for that
  * particular terminal, and which will remain fixed for the given tree. The main
  * usage would be to introduce random terminal values.
  *
@@ -62,7 +62,7 @@ import io.jenetics.internal.util.Lazy;
  * }</pre>
  * The serialization of the <em>constant</em> will fail, if the lambda has to
  * capture variables form a <em>non</em>-serializable context (class). In such a
- * case it is advisable to create a dedicated supplier class.
+ * case, it is advisable to create a dedicated supplier class.
  * <pre>{@code
  * final class RandomInt implements Supplier<Integer>, Serializable {
  *     private final Random rnd = new Random();
@@ -143,7 +143,7 @@ public final class EphemeralConst<T>
 	/**
 	 * Create a new ephemeral constant with the given {@code name} and value
 	 * {@code supplier}. For every newly created operation tree, a new constant
-	 * value is chosen for this terminal operation. The value is than kept
+	 * value is chosen for this terminal operation. The value is then kept
 	 * constant for this tree.
 	 *
 	 * @param name the name of the ephemeral constant
@@ -162,7 +162,7 @@ public final class EphemeralConst<T>
 	/**
 	 * Create a new ephemeral constant with the given value {@code supplier}.
 	 * For every newly created operation tree, a new constant value is chosen
-	 * for this terminal operation. The value is than kept constant for this tree.
+	 * for this terminal operation. The value is then kept constant for this tree.
 	 *
 	 * @param supplier the value supplier
 	 * @param <T> the constant type

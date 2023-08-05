@@ -29,7 +29,7 @@ import static java.lang.String.format;
 /**
  * This function evaluates how well an evolved program tree fits the given
  * sample data set. If the predictions are totally off, the loss function will
- * output a higher value. If they’re pretty good, it’ll output a lower number.
+ * output a higher value. If they're pretty good, it’ll output a lower number.
  * It is the essential part of the <em>overall</em> {@link Error} function.
  *
  * <pre>{@code
@@ -52,7 +52,7 @@ public interface LossFunction<T> {
 	 * @param calculated the currently calculated function value
 	 * @param expected the expected function values
 	 * @return the error value
-	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 * @throws IllegalArgumentException if the length of the two arrays is not
 	 *         equal
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
@@ -69,7 +69,7 @@ public interface LossFunction<T> {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean square error
-	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 * @throws IllegalArgumentException if the length of the two arrays is not
 	 *         equal
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
@@ -95,7 +95,7 @@ public interface LossFunction<T> {
 	}
 
 	/**
-	 * Root mean square error is measured as the average of squared difference
+	 * Root-mean-square error is measured as the average of squared difference
 	 * between predictions and actual observations.
 	 *
 	 * @see #mse(Double[], Double[])
@@ -104,7 +104,7 @@ public interface LossFunction<T> {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean square error
-	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 * @throws IllegalArgumentException if the length of the two arrays is not
 	 *         equal
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
@@ -121,7 +121,7 @@ public interface LossFunction<T> {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean absolute error
-	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 * @throws IllegalArgumentException if the length of the two arrays is not
 	 *         equal
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}

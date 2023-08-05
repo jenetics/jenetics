@@ -30,10 +30,13 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.incubator.grammar.Cfg;
-import io.jenetics.incubator.grammar.Sentence;
-import io.jenetics.incubator.grammar.bnf.Bnf;
+import io.jenetics.util.IntRange;
 
+import io.jenetics.ext.grammar.Bnf;
+import io.jenetics.ext.grammar.Cfg;
+import io.jenetics.ext.grammar.Cfg.Terminal;
+import io.jenetics.ext.grammar.Mappers;
+import io.jenetics.ext.grammar.SentenceGenerator;
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -52,7 +55,7 @@ import io.jenetics.prog.regression.Sample;
 public class RegressionExample {
 
 	// Creating the context-free grammar from the BNF string.
-	private static final Cfg CFG = Bnf.parse("""
+	private static final Cfg<String> CFG = Bnf.parse("""
 		<expr> ::= (<expr><op><expr>) | <var>
 		<op> ::= + | - | *
 		<var> ::= x | 1 | 2 | 3 | 4
@@ -63,8 +66,11 @@ public class RegressionExample {
 
 	// Create 'Codec' which creates program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
-		Sentence
-			.codec(CFG, size -> size*10, 500)
+		Mappers.multiIntegerChromosomeMapper(
+				CFG,
+				rule -> IntRange.of(rule.alternatives().size()*10),
+				index -> new SentenceGenerator<>(index, 1000)
+			)
 			.map(s -> {
 				lengths
 					.computeIfAbsent(s.size(), key -> new AtomicInteger())
@@ -126,6 +132,12 @@ public class RegressionExample {
 	}
 
 	public static void main(final String[] args) {
+		Codec<List<Terminal<String>>, IntegerGene> foo = Mappers.multiIntegerChromosomeMapper(
+			CFG,
+			rule -> IntRange.of(rule.alternatives().size()*10),
+			index -> new SentenceGenerator<>(index, 1000)
+		);
+
 		final Engine<IntegerGene, Double> engine = Engine
 			.builder(RegressionExample::fitness, CODEC)
 			.minimizing()

@@ -67,10 +67,10 @@ public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 	}
 
 	public static void main(final String[] args) {
-		final OnesCounting problem = new OnesCounting(15, 0.13);
-		final Engine<BitGene, Integer> engine = Engine.builder(problem).build();
+		final var problem = new OnesCounting(15, 0.13);
+		final var engine = Engine.builder(problem).build();
 
-		final ISeq<BitGene> result = problem.codec().decoder().apply(
+		final ISeq<BitGene> result = problem.decode(
 			engine.stream()
 				.limit(10)
 				.collect(EvolutionResult.toBestGenotype())

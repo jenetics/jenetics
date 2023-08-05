@@ -32,12 +32,14 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -602,7 +604,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the next sibling of {@code this} node in the parent's children
-	 * array, or {@code null} if {@code this} node has no parent or it is the
+	 * array, or {@code null} if {@code this} node has no parent, or it is the
 	 * last child of the paren. This method performs a linear search that is
 	 * {@code O(n)} where n is the number of children; to traverse the entire
 	 * array, use the iterator of the parent instead.
@@ -895,7 +897,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return an iterator that follows the path from {@code ancestor} to
-	 * {@code this} node. The iterator return {@code ancestor} as first element,
+	 * {@code this} node. The iterator return {@code ancestor} as a first element,
 	 * The creation of the iterator is O(m), where m is the number of nodes
 	 * between {@code this} node and the {@code ancestor}, inclusive.
 	 * <p>
@@ -964,6 +966,62 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 */
 	default boolean identical(final Tree<?, ?> other) {
 		return this == other;
+	}
+
+	/**
+	 * Performs a reduction on the elements of {@code this} tree, using an
+	 * associative reduction function. This can be used for evaluating a given
+	 * expression tree in pre-order.
+	 * <pre>{@code
+	 * final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
+	 * final double result = formula.reduce(new Double[0], (op, args) ->
+	 *     switch (op) {
+	 *         case "add" -> args[0] + args[1];
+	 *         case "sub" -> args[0] - args[1];
+	 *         case "mul" -> args[0] * args[1];
+	 *         case "div" -> args[0] / args[1];
+	 *         default -> Double.parseDouble(op);
+	 *     }
+	 * );
+	 * assert result == 13.0;
+	 * }</pre>
+	 *
+	 * @since 7.1
+	 *
+	 * @param neutral the neutral element of the reduction. In most cases this will
+	 *        be {@code new U[0]}.
+	 * @param reducer the reduce function
+	 * @param <U> the result type
+	 * @return the result of the reduction, or {@code null} if {@code this} tree
+	 *         is empty ({@code isEmpty() == true})
+	 */
+	default <U> U reduce(
+		final U[] neutral,
+		final BiFunction<? super V, ? super U[], ? extends U> reducer
+	) {
+		requireNonNull(neutral);
+		requireNonNull(reducer);
+
+		@SuppressWarnings("unchecked")
+		final class Reducing {
+			private U reduce(final Tree<V, ?> node) {
+				return node.isLeaf()
+					? reducer.apply(node.value(), neutral)
+					: reducer.apply(node.value(), children(node));
+			}
+			private U[] children(final Tree<V, ?> node) {
+				final U[] values = (U[])Array.newInstance(
+					neutral.getClass().getComponentType(),
+					node.childCount()
+				);
+				for (int i = 0; i < node.childCount(); ++i) {
+					values[i] = reduce(node.childAt(i));
+				}
+				return values;
+			}
+		}
+
+		return isEmpty() ? null : new Reducing().reduce(this);
 	}
 
 	/* *************************************************************************
