@@ -26,7 +26,6 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.util.Concurrency;
 import io.jenetics.util.Seq;
 
 /**

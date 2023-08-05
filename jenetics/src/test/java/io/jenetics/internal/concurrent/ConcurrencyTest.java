@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.concurrent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,6 +25,7 @@ import java.util.Random;
 import java.util.concurrent.CancellationException;
 import java.util.stream.IntStream;
 
+import io.jenetics.internal.concurrent.Concurrency;
 import io.jenetics.util.ISeq;
 
 /**
