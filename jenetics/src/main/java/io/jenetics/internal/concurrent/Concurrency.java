@@ -42,7 +42,7 @@ import io.jenetics.util.Seq;
  * @version 3.8
  * @since 2.0
  */
-public abstract class Concurrency implements Executor, AutoCloseable {
+abstract class Concurrency implements Executor, AutoCloseable {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 

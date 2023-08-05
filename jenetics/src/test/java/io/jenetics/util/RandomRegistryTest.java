@@ -45,7 +45,6 @@ import org.testng.annotations.Test;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.concurrent.Concurrency;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -193,7 +192,7 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Concurrency c = Concurrency.withCommonPool()) {
+		try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
 			for (int i = 0; i < 25; ++i) {
 				c.execute(new ContextRunnable());
 			}
