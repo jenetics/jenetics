@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
