@@ -23,44 +23,41 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import io.jenetics.Gene;
-import io.jenetics.Genotype;
-import io.jenetics.Phenotype;
-
 /**
- * @param <G> the gene type
- * @param <C> the fitness result type
+ * @param <T> the type of the input to the function
+ * @param <R> the type of the result of the function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class FitnessCalculationTask<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
+public final class RunnableFunction<T, R>
 	implements Runnable
 {
-	private final Phenotype<G, C> _phenotype;
-	private final Function<? super Genotype<G>, ? extends C> _function;
+	private final T _input;
+	private final Function<? super T, ? extends R> _function;
 
-	private C _fitness;
+	private R _result;
 
-	public FitnessCalculationTask(
-		final Phenotype<G, C> phenotype,
-		final Function<? super Genotype<G>, ? extends C> function
+	public RunnableFunction(
+		final T argument,
+		final Function<? super T, ? extends R> function
 	) {
-		_phenotype = requireNonNull(phenotype);
+		_input = requireNonNull(argument);
 		_function = requireNonNull(function);
+	}
+
+	public T input() {
+		return _input;
+	}
+
+	public R result() {
+		return _result;
 	}
 
 	@Override
 	public void run() {
-		_fitness = _function.apply(_phenotype.genotype());
-	}
-
-	public Phenotype<G, C> phenotype() {
-		return _phenotype.withFitness(_fitness);
+		_result = _function.apply(_input);
 	}
 
 }

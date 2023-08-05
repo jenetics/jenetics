@@ -57,7 +57,10 @@ public abstract class AbstractEvaluator<
 	public final ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final var tasks = population.stream()
 			.filter(Phenotype::nonEvaluated)
-			.map(pt -> new FitnessCalculationTask<>(pt, _function))
+			.map(phenotype -> new RunnableFunction<>(
+				phenotype,
+				_function.compose(Phenotype::genotype))
+			)
 			.collect(ISeq.toISeq());
 
 		final ISeq<Phenotype<G, C>> result;
@@ -65,11 +68,11 @@ public abstract class AbstractEvaluator<
 			execute(tasks);
 
 			result = tasks.size() == population.size()
-				? tasks.map(FitnessCalculationTask::phenotype)
+				? tasks.map(t -> t.input().withFitness(t.result()))
 				: population.stream()
 					.filter(Phenotype::isEvaluated)
 					.collect(ISeq.toISeq())
-					.append(tasks.map(FitnessCalculationTask::phenotype));
+					.append(tasks.map(t -> t.input().withFitness(t.result())));
 		} else {
 			result = population.asISeq();
 		}
