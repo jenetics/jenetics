@@ -19,7 +19,6 @@
  */
 package io.jenetics.internal.util;
 
-import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
@@ -62,7 +61,7 @@ public class ConcurrencyTest {
 		public void run() {
 			try {
 				System.out.printf("Task: %d, thread %d: %d%n",
-					_task, Thread.currentThread().getId(), _sleep
+					_task, Thread.currentThread().threadId(), _sleep
 				);
 
 				Thread.sleep(_sleep);
