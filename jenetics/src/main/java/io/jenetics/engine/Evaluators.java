@@ -104,9 +104,60 @@ public final class Evaluators {
 		return serial(fitness.compose(codec.decoder()));
 	}
 
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function
+	 * using one virtual thread per fitness function.
+	 *
+	 * @param fitness the fitness function
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new serial fitness evaluator
+	 * @throws NullPointerException if the fitness {@code function} is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> virtual(final Function<? super Genotype<G>, ? extends C> fitness) {
+	Evaluator<G, C>
+	ofVirtualThread(final Function<? super Genotype<G>, ? extends C> fitness) {
 		return new VirtualThreadEvaluator<>(fitness);
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function
+	 * using one virtual thread per fitness function.
+	 *
+	 * @param fitness the fitness function
+	 * @param codec the codec used for transforming the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (concurrent) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> ofVirtualThread(
+		final Function<? super T, ? extends C> fitness,
+		final Codec<T, G> codec
+	) {
+		return ofVirtualThread(fitness.compose(codec.decoder()));
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function
+	 * using one virtual thread per fitness function.
+	 *
+	 * @param fitness the fitness function
+	 * @param decoder the decoder function for the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (concurrent) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> ofVirtualThread(
+		final Function<? super T, ? extends C> fitness,
+		final Function<? super Genotype<G>, ? extends T> decoder
+	) {
+		return ofVirtualThread(fitness.compose(decoder));
 	}
 
 	/**

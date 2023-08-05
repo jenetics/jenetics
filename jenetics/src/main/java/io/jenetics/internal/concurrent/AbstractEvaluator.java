@@ -42,7 +42,7 @@ public abstract class AbstractEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evaluator<G, C>
+	implements FitnessEvaluator<G, C>
 {
 
 	protected final Function<? super Genotype<G>, ? extends C> _function;
@@ -51,6 +51,11 @@ public abstract class AbstractEvaluator<
 		final Function<? super Genotype<G>, ? extends C> function
 	) {
 		_function = requireNonNull(function);
+	}
+
+	@Override
+	public Function<? super Genotype<G>, ? extends C> function() {
+		return _function;
 	}
 
 	@Override

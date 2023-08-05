@@ -590,8 +590,7 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> gtf
 	) {
-		//return new Builder<>(Evaluators.concurrent(ff, commonPool()), gtf);
-		return new Builder<>(Evaluators.virtual(ff), gtf);
+		return new Builder<>(Evaluators.ofVirtualThread(ff), gtf);
 	}
 
 	/**
