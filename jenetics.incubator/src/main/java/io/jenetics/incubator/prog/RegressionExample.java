@@ -64,7 +64,7 @@ public class RegressionExample {
 
 	static final Map<Integer, AtomicInteger> lengths = new ConcurrentHashMap<>();
 
-	// Create 'Codec' which creates program tree from an int[] array (codons).
+	// Create 'Codec' which creates a program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Mappers.multiIntegerChromosomeMapper(
 				CFG,
