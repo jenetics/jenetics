@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.ISeq;
@@ -41,7 +42,7 @@ public class BatchExecutorTest {
 			.collect(ISeq.toISeq());
 
 		final long start = System.currentTimeMillis();
-		try (BatchExecutor concurrency = BatchExecutor.withCommonPool()) {
+		try (var concurrency = BatchExecutor.with(ForkJoinPool.commonPool())) {
 			concurrency.execute(runnables);
 		}
 		final long stop = System.currentTimeMillis();

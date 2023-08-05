@@ -24,14 +24,10 @@ import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
@@ -39,17 +35,50 @@ import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.8
+ * @version !__version__!
  * @since 2.0
  */
-abstract class BatchExecutor implements AutoCloseable {
+class BatchExecutor implements AutoCloseable {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	public abstract void execute(final Seq<? extends Runnable> batch);
+	final List<Future<?>> _futures = new ArrayList<>();
+	final Executor _executor;
+
+	BatchExecutor(final Executor executor) {
+		_executor = requireNonNull(executor);
+	}
+
+	public void execute(final Seq<? extends Runnable> batch) {
+		if (batch.nonEmpty()) {
+			final int[] parts = partition(
+				batch.size(),
+				max(
+					(CORES + 1)*2,
+					(int)ceil(batch.size()/(double)maxBatchSize())
+				)
+			);
+
+			for (int i = 0; i < parts.length - 1; ++i) {
+				execute(new BatchRunnable(batch, parts[i], parts[i + 1]));
+			}
+		}
+	}
+
+	private void execute(final Runnable command) {
+		if (_executor instanceof ExecutorService service) {
+			_futures.add(service.submit(command));
+		} else {
+			final FutureTask<?> task = new FutureTask<>(command, null);
+			_futures.add(task);
+			_executor.execute(task);
+		}
+	}
 
 	@Override
-	public abstract void close();
+	public void close() {
+		Futures.join(_futures);
+	}
 
 	/**
 	 * Return a new Concurrency object from the given executor.
@@ -59,161 +88,9 @@ abstract class BatchExecutor implements AutoCloseable {
 	 */
 	public static BatchExecutor with(final Executor executor) {
 		if (executor instanceof ForkJoinPool e) {
-			return new ForkJoinPoolConcurrency(e);
-		} else if (executor instanceof ExecutorService e) {
-			return new ExecutorServiceConcurrency(e);
+			return new BatchForkJoinPool(e);
 		} else {
-			return new ExecutorConcurrency(executor);
-		}
-	}
-
-	/**
-	 * Return a new Concurrency object using the common ForkJoinPool.
-	 *
-	 * @return a new Concurrency object using the new ForkJoinPool
-	 */
-	public static BatchExecutor withCommonPool() {
-		return with(ForkJoinPool.commonPool());
-	}
-
-
-	/**
-	 * This Concurrency uses a ForkJoinPool.
-	 */
-	private static final class ForkJoinPoolConcurrency extends BatchExecutor {
-		private final List<ForkJoinTask<?>> _tasks = new ArrayList<>();
-		private final ForkJoinPool _pool;
-
-		ForkJoinPoolConcurrency(final ForkJoinPool pool) {
-			_pool = requireNonNull(pool);
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> batch) {
-			if (batch.nonEmpty()) {
-				_tasks.add(_pool.submit(new RunnablesAction(batch)));
-			}
-		}
-
-		@Override
-		public void close() {
-			BatchExecutor.join(_tasks);
-		}
-	}
-
-	/**
-	 * This Concurrency uses an ExecutorService.
-	 */
-	private static final class ExecutorServiceConcurrency extends BatchExecutor {
-		private final List<Future<?>> _futures = new ArrayList<>();
-		private final ExecutorService _service;
-
-		ExecutorServiceConcurrency(final ExecutorService service) {
-			_service = requireNonNull(service);
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> batch) {
-			if (batch.nonEmpty()) {
-				final int[] parts = partition(
-					batch.size(),
-					max(
-						(CORES + 1)*2,
-						(int)ceil(batch.size()/(double)maxBatchSize())
-					)
-				);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					execute(new RunnablesRunnable(batch, parts[i], parts[i + 1]));
-				}
-			}
-		}
-
-		private void execute(final Runnable command) {
-			_futures.add(_service.submit(command));
-		}
-
-		@Override
-		public void close() {
-			BatchExecutor.join(_futures);
-		}
-
-	}
-
-	private static void join(final Iterable<? extends Future<?>> jobs) {
-		Future<?> task = null;
-		Iterator<? extends Future<?>> tasks = null;
-		try {
-			tasks = jobs.iterator();
-			while (tasks.hasNext()) {
-				task = tasks.next();
-				task.get();
-			}
-		} catch (ExecutionException e) {
-			BatchExecutor.cancel(task, tasks);
-			final String msg = e.getCause() != null
-				? e.getCause().getMessage()
-				: null;
-			throw (CancellationException)new CancellationException(msg)
-				.initCause(e.getCause());
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			BatchExecutor.cancel(task, tasks);
-			final String msg = e.getMessage();
-			throw (CancellationException)new CancellationException(msg)
-				.initCause(e);
-		}
-	}
-
-	private static void cancel(
-		final Future<?> task,
-		final Iterator<? extends Future<?>> tasks
-	) {
-		if (task != null) {
-			task.cancel(true);
-		}
-		if (tasks != null) {
-			tasks.forEachRemaining(t -> t.cancel(true));
-		}
-	}
-
-	/**
-	 * This Concurrency uses an Executor.
-	 */
-	private static final class ExecutorConcurrency extends BatchExecutor {
-		private final List<FutureTask<?>> _tasks = new ArrayList<>();
-		private final Executor _executor;
-
-		ExecutorConcurrency(final Executor executor) {
-			_executor = requireNonNull(executor);
-		}
-
-		@Override
-		public void execute(final Seq<? extends Runnable> batch) {
-			if (batch.nonEmpty()) {
-				final int[] parts = partition(
-					batch.size(),
-					max(
-						(CORES + 1)*2,
-						(int)ceil(batch.size()/(double)maxBatchSize())
-					)
-				);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					execute(new RunnablesRunnable(batch, parts[i], parts[i + 1]));
-				}
-			}
-		}
-
-		private void execute(final Runnable command) {
-			final FutureTask<?> task = new FutureTask<>(command, null);
-			_tasks.add(task);
-			_executor.execute(task);
-		}
-
-		@Override
-		public void close() {
-			BatchExecutor.join(_tasks);
+			return new BatchExecutor(executor);
 		}
 	}
 

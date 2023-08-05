@@ -19,38 +19,34 @@
  */
 package io.jenetics.internal.concurrent;
 
-import java.util.concurrent.Executors;
-import java.util.function.Function;
-
-import io.jenetics.Gene;
-import io.jenetics.Genotype;
-import io.jenetics.util.Seq;
+import io.jenetics.util.BaseSeq;
 
 /**
- * @param <G> the gene type
- * @param <C> the fitness result type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since !__version__!
+ * @since 2.0
  */
-public final class VirtualThreadEvaluator<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends AbstractEvaluator<G, C>
-{
+final class BatchRunnable implements Runnable {
 
-	public VirtualThreadEvaluator(
-		final Function<? super Genotype<G>, ? extends C> function
+	private final BaseSeq<? extends Runnable> _runnables;
+	private final int _start;
+	private final int _end;
+
+	BatchRunnable(
+		final BaseSeq<? extends Runnable> runnables,
+		final int start,
+		final int end
 	) {
-		super(function);
+		_runnables = runnables;
+		_start = start;
+		_end = end;
 	}
 
 	@Override
-	protected void execute(final Seq<? extends Runnable> tasks) {
-		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-			tasks.forEach(executor::execute);
+	public void run() {
+		for (int i = _start; i < _end; ++i) {
+			_runnables.get(i).run();
 		}
 	}
+
 }
