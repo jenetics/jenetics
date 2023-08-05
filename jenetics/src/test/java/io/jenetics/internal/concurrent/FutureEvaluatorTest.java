@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.concurrent;
 
 import static org.testng.Assert.assertEquals;
 
@@ -31,6 +31,8 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.engine.Evaluator;
+import io.jenetics.engine.Evaluators;
 import io.jenetics.util.ISeq;
 
 /**

@@ -26,7 +26,9 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.internal.concurrent.CompletableFutureEvaluator;
 import io.jenetics.internal.concurrent.ExecutorEvaluator;
+import io.jenetics.internal.concurrent.FutureEvaluator;
 import io.jenetics.internal.concurrent.VirtualThreadEvaluator;
 
 /**

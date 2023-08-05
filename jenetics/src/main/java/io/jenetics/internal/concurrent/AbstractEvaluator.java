@@ -26,6 +26,9 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.engine.Evaluator;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * @param <G> the gene type
@@ -35,32 +38,45 @@ import io.jenetics.Phenotype;
  * @version !__version__!
  * @since !__version__!
  */
-public final class PhenotypeFitness<
+public abstract class AbstractEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Runnable
+	implements Evaluator<G, C>
 {
-	private final Phenotype<G, C> _phenotype;
-	private final Function<? super Genotype<G>, ? extends C> _function;
 
-	private C _fitness;
+	protected final Function<? super Genotype<G>, ? extends C> _function;
 
-	public PhenotypeFitness(
-		final Phenotype<G, C> phenotype,
+	protected AbstractEvaluator(
 		final Function<? super Genotype<G>, ? extends C> function
 	) {
-		_phenotype = requireNonNull(phenotype);
 		_function = requireNonNull(function);
 	}
 
 	@Override
-	public void run() {
-		_fitness = _function.apply(_phenotype.genotype());
+	public final ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
+		final var tasks = population.stream()
+			.filter(Phenotype::nonEvaluated)
+			.map(pt -> new FitnessCalculationTask<>(pt, _function))
+			.collect(ISeq.toISeq());
+
+		final ISeq<Phenotype<G, C>> result;
+		if (tasks.nonEmpty()) {
+			execute(tasks);
+
+			result = tasks.size() == population.size()
+				? tasks.map(FitnessCalculationTask::phenotype)
+				: population.stream()
+					.filter(Phenotype::isEvaluated)
+					.collect(ISeq.toISeq())
+					.append(tasks.map(FitnessCalculationTask::phenotype));
+		} else {
+			result = population.asISeq();
+		}
+
+		return result;
 	}
 
-	public Phenotype<G, C> phenotype() {
-		return _phenotype.withFitness(_fitness);
-	}
+	protected abstract void execute(final Seq<? extends Runnable> tasks);
 
 }

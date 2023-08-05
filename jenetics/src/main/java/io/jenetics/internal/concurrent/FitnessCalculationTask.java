@@ -21,51 +21,46 @@ package io.jenetics.internal.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.Executor;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.util.Concurrency;
-import io.jenetics.util.Seq;
+import io.jenetics.Phenotype;
 
 /**
- * Default phenotype evaluation strategy. It uses the configured {@link Executor}
- * for the fitness evaluation.
- *
  * @param <G> the gene type
  * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 4.2
+ * @since !__version__!
  */
-public final class ExecutorEvaluator<
+public final class FitnessCalculationTask<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractEvaluator<G, C>
+	implements Runnable
 {
+	private final Phenotype<G, C> _phenotype;
+	private final Function<? super Genotype<G>, ? extends C> _function;
 
-	private final Executor _executor;
+	private C _fitness;
 
-	public ExecutorEvaluator(
-		final Function<? super Genotype<G>, ? extends C> function,
-		final Executor executor
+	public FitnessCalculationTask(
+		final Phenotype<G, C> phenotype,
+		final Function<? super Genotype<G>, ? extends C> function
 	) {
-		super(function);
-		_executor = requireNonNull(executor);
-	}
-
-	public ExecutorEvaluator<G, C> with(final Executor executor) {
-		return new ExecutorEvaluator<>(_function, executor);
+		_phenotype = requireNonNull(phenotype);
+		_function = requireNonNull(function);
 	}
 
 	@Override
-	protected void execute(final Seq<? extends Runnable> tasks) {
-		try (var c = Concurrency.with(_executor)) {
-			c.execute(tasks);
-		}
+	public void run() {
+		_fitness = _function.apply(_phenotype.genotype());
+	}
+
+	public Phenotype<G, C> phenotype() {
+		return _phenotype.withFitness(_fitness);
 	}
 
 }

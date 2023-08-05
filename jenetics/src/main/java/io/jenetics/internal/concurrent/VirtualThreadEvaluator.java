@@ -19,16 +19,11 @@
  */
 package io.jenetics.internal.concurrent;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.Phenotype;
-import io.jenetics.engine.Evaluator;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -43,38 +38,19 @@ public final class VirtualThreadEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evaluator<G, C>
+	extends AbstractEvaluator<G, C>
 {
 
-	private final Function<? super Genotype<G>, ? extends C> _function;
-
-	public VirtualThreadEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
-		_function = requireNonNull(function);
+	public VirtualThreadEvaluator(
+		final Function<? super Genotype<G>, ? extends C> function
+	) {
+		super(function);
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
-		final ISeq<PhenotypeFitness<G, C>> evaluate = population.stream()
-			.filter(Phenotype::nonEvaluated)
-			.map(pt -> new PhenotypeFitness<>(pt, _function))
-			.collect(ISeq.toISeq());
-
-		final ISeq<Phenotype<G, C>> result;
-		if (evaluate.nonEmpty()) {
-			try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
-				evaluate.forEach(c::execute);
-			}
-
-			result = evaluate.size() == population.size()
-				? evaluate.map(PhenotypeFitness::phenotype)
-				: population.stream()
-				.filter(Phenotype::isEvaluated)
-				.collect(ISeq.toISeq())
-				.append(evaluate.map(PhenotypeFitness::phenotype));
-		} else {
-			result = population.asISeq();
+	protected void execute(final Seq<? extends Runnable> tasks) {
+		try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
+			tasks.forEach(c::execute);
 		}
-
-		return result;
 	}
 }
