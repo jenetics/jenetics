@@ -28,7 +28,6 @@ import java.util.concurrent.CompletionException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.PartialAlterer.Projection;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;

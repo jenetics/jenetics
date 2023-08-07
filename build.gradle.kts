@@ -179,7 +179,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.tags = listOf(
@@ -226,10 +225,12 @@ fun setupJavadoc(project: Project, taskName: String) {
 		}
 
 		javadoc.doLast {
+			/*
 			val colorizer = project.tasks.findByName("${taskName}colorizer")
 			colorizer?.actions?.forEach {
 				it.execute(colorizer)
 			}
+			 */
 
 			val java2html = project.tasks.findByName("${taskName}java2html")
 			java2html?.actions?.forEach {

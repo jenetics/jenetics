@@ -17,47 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.concurrent;
 
-import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since 2.0
  */
-public interface EquivalentValidator<A, B> {
+final class BatchRunnable implements Runnable {
 
-	Function<A, B> from();
+	private final BaseSeq<? extends Runnable> _runnables;
+	private final int _start;
+	private final int _end;
 
-	BiFunction<A, B, A> to();
-
-	default void verify(final A value) {
-		final B object = from().apply(value);
-		final A reconstructed = to().apply(value, object);
-		assertThat(reconstructed).isEqualTo(value);
+	BatchRunnable(
+		final BaseSeq<? extends Runnable> runnables,
+		final int start,
+		final int end
+	) {
+		_runnables = runnables;
+		_start = start;
+		_end = end;
 	}
 
-	public static <A, B> EquivalentValidator<A, B> of(
-		final Function<A, B> from,
-		final BiFunction<A, B, A> to
-	) {
-		requireNonNull(from);
-		requireNonNull(to);
-
-		return new EquivalentValidator<A, B>() {
-			@Override
-			public Function<A, B> from() {
-				return from;
-			}
-
-			@Override
-			public BiFunction<A, B, A> to() {
-				return to;
-			}
-		};
+	@Override
+	public void run() {
+		for (int i = _start; i < _end; ++i) {
+			_runnables.get(i).run();
+		}
 	}
 
 }

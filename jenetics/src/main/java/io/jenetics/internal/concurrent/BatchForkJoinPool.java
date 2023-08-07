@@ -17,47 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.concurrent;
 
-import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import io.jenetics.util.Seq;
 
 /**
+ * This executor uses a ForkJoinPool.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since 2.0
  */
-public interface EquivalentValidator<A, B> {
+public final class BatchForkJoinPool extends BatchExec {
 
-	Function<A, B> from();
-
-	BiFunction<A, B, A> to();
-
-	default void verify(final A value) {
-		final B object = from().apply(value);
-		final A reconstructed = to().apply(value, object);
-		assertThat(reconstructed).isEqualTo(value);
+	public BatchForkJoinPool(final ForkJoinPool pool) {
+		super(pool);
 	}
 
-	public static <A, B> EquivalentValidator<A, B> of(
-		final Function<A, B> from,
-		final BiFunction<A, B, A> to
-	) {
-		requireNonNull(from);
-		requireNonNull(to);
+	@Override
+	public void execute(final Seq<? extends Runnable> batch) {
+		if (batch.nonEmpty()) {
+			final var future = ((ForkJoinPool)_executor)
+				.submit(new BatchAction(batch));
 
-		return new EquivalentValidator<A, B>() {
-			@Override
-			public Function<A, B> from() {
-				return from;
-			}
-
-			@Override
-			public BiFunction<A, B, A> to() {
-				return to;
-			}
-		};
+			final var futures = new ArrayList<Future<?>>();
+			futures.add(future);
+			Futures.join(futures);
+		}
 	}
 
 }

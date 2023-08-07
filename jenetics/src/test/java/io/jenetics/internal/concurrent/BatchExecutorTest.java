@@ -17,12 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.concurrent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.ISeq;
@@ -30,7 +31,7 @@ import io.jenetics.util.ISeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcurrencyTest {
+public class BatchExecutorTest {
 
 	//@org.testng.annotations.Test
 	public void cpuTime() {
@@ -41,9 +42,7 @@ public class ConcurrencyTest {
 			.collect(ISeq.toISeq());
 
 		final long start = System.currentTimeMillis();
-		try (Concurrency concurrency = Concurrency.withCommonPool()) {
-			concurrency.execute(runnables);
-		}
+		new BatchExec(ForkJoinPool.commonPool()).execute(runnables);
 		final long stop = System.currentTimeMillis();
 		System.out.println("Runtime: " + (stop - start)/1000.0);
 	}
@@ -74,7 +73,7 @@ public class ConcurrencyTest {
 	//@org.testng.annotations.Test
 	public void maxBatchSize() {
 		System.setProperty("io.jenetics.concurrency.maxBatchSize", "1000000");
-		assertThat(Concurrency.maxBatchSize()).isEqualTo(1000000);
+		assertThat(BatchExec.maxBatchSize()).isEqualTo(1000000);
 	}
 
 }

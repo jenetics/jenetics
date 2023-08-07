@@ -17,36 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.internal.concurrent;
 
-import io.jenetics.util.BaseSeq;
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
 
 /**
+ * @param <T> the type of the input to the function
+ * @param <R> the type of the result of the function
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
- * @since 2.0
+ * @version !__version__!
+ * @since !__version__!
  */
-final class RunnablesRunnable implements Runnable {
+public final class RunnableFunction<T, R>
+	implements Runnable
+{
+	private final T _input;
+	private final Function<? super T, ? extends R> _function;
 
-	private final BaseSeq<? extends Runnable> _runnables;
-	private final int _start;
-	private final int _end;
+	private R _result;
 
-	RunnablesRunnable(
-		final BaseSeq<? extends Runnable> runnables,
-		final int start,
-		final int end
+	public RunnableFunction(
+		final T argument,
+		final Function<? super T, ? extends R> function
 	) {
-		_runnables = runnables;
-		_start = start;
-		_end = end;
+		_input = requireNonNull(argument);
+		_function = requireNonNull(function);
+	}
+
+	public T input() {
+		return _input;
+	}
+
+	public R result() {
+		return _result;
 	}
 
 	@Override
 	public void run() {
-		for (int i = _start; i < _end; ++i) {
-			_runnables.get(i).run();
-		}
+		_result = _function.apply(_input);
 	}
 
 }
