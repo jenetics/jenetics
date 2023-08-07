@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.Seq;
 
 /**
@@ -38,17 +38,17 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since 2.0
  */
-class BatchExecutor implements AutoCloseable {
+public class BatchExec implements BatchExecutor {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 
-	final List<Future<?>> _futures = new ArrayList<>();
 	final Executor _executor;
 
-	BatchExecutor(final Executor executor) {
+	public BatchExec(final Executor executor) {
 		_executor = requireNonNull(executor);
 	}
 
+	@Override
 	public void execute(final Seq<? extends Runnable> batch) {
 		if (batch.nonEmpty()) {
 			final int[] parts = partition(
@@ -59,38 +59,25 @@ class BatchExecutor implements AutoCloseable {
 				)
 			);
 
+			final var futures = new ArrayList<Future<?>>();
 			for (int i = 0; i < parts.length - 1; ++i) {
-				execute(new BatchRunnable(batch, parts[i], parts[i + 1]));
+				execute(
+					new BatchRunnable(batch, parts[i], parts[i + 1]),
+					futures
+				);
 			}
+
+			Futures.join(futures);
 		}
 	}
 
-	private void execute(final Runnable command) {
+	private void execute(final Runnable command, final List<Future<?>> futures) {
 		if (_executor instanceof ExecutorService service) {
-			_futures.add(service.submit(command));
+			futures.add(service.submit(command));
 		} else {
 			final FutureTask<?> task = new FutureTask<>(command, null);
-			_futures.add(task);
+			futures.add(task);
 			_executor.execute(task);
-		}
-	}
-
-	@Override
-	public void close() {
-		Futures.join(_futures);
-	}
-
-	/**
-	 * Return a new Concurrency object from the given executor.
-	 *
-	 * @param executor the underlying Executor
-	 * @return a new Concurrency object
-	 */
-	public static BatchExecutor with(final Executor executor) {
-		if (executor instanceof ForkJoinPool e) {
-			return new BatchForkJoinPool(e);
-		} else {
-			return new BatchExecutor(executor);
 		}
 	}
 

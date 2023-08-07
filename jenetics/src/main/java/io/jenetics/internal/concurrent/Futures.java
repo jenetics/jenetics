@@ -52,7 +52,8 @@ final class Futures {
 				future.get();
 			}
 			future = null;
-		} catch (InterruptedException | ExecutionException |
+		} catch (InterruptedException |
+		         ExecutionException |
 		         CancellationException e)
 		{
 			exception = e;

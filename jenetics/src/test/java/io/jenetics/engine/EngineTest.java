@@ -521,4 +521,8 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
+	@Test
+	public void foo() {
+	}
+
 }

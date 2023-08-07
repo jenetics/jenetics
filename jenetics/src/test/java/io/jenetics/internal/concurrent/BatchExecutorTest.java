@@ -42,9 +42,7 @@ public class BatchExecutorTest {
 			.collect(ISeq.toISeq());
 
 		final long start = System.currentTimeMillis();
-		try (var concurrency = BatchExecutor.with(ForkJoinPool.commonPool())) {
-			concurrency.execute(runnables);
-		}
+		new BatchExec(ForkJoinPool.commonPool()).execute(runnables);
 		final long stop = System.currentTimeMillis();
 		System.out.println("Runtime: " + (stop - start)/1000.0);
 	}
@@ -75,7 +73,7 @@ public class BatchExecutorTest {
 	//@org.testng.annotations.Test
 	public void maxBatchSize() {
 		System.setProperty("io.jenetics.concurrency.maxBatchSize", "1000000");
-		assertThat(BatchExecutor.maxBatchSize()).isEqualTo(1000000);
+		assertThat(BatchExec.maxBatchSize()).isEqualTo(1000000);
 	}
 
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,7 +26,8 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.engine.Evaluator;
+import io.jenetics.internal.concurrent.RunnableFunction;
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -38,28 +39,30 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class AbstractEvaluator<
+public final class FitnessEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements FitnessEvaluator<G, C>
+	implements Evaluator<G, C>
 {
 
-	protected final Function<? super Genotype<G>, ? extends C> _function;
+	private final Function<? super Genotype<G>, ? extends C> _function;
+	private final BatchExecutor _executor;
 
-	protected AbstractEvaluator(
-		final Function<? super Genotype<G>, ? extends C> function
+	public FitnessEvaluator(
+		final Function<? super Genotype<G>, ? extends C> function,
+		final BatchExecutor executor
 	) {
 		_function = requireNonNull(function);
+		_executor = requireNonNull(executor);
 	}
 
-	@Override
 	public Function<? super Genotype<G>, ? extends C> function() {
 		return _function;
 	}
 
 	@Override
-	public final ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final var tasks = population.stream()
 			.filter(Phenotype::nonEvaluated)
 			.map(phenotype -> new RunnableFunction<>(
@@ -70,7 +73,7 @@ public abstract class AbstractEvaluator<
 
 		final ISeq<Phenotype<G, C>> result;
 		if (tasks.nonEmpty()) {
-			execute(tasks);
+			_executor.execute(tasks);
 
 			result = tasks.size() == population.size()
 				? tasks.map(t -> t.input().withFitness(t.result()))
@@ -84,7 +87,4 @@ public abstract class AbstractEvaluator<
 
 		return result;
 	}
-
-	protected abstract void execute(final Seq<? extends Runnable> tasks);
-
 }

@@ -27,6 +27,8 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Evaluator;
+import io.jenetics.engine.FitnessEvaluator;
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.ISeq;
 
 /**
@@ -44,8 +46,12 @@ public class ExecutorEvaluatorTest {
 
 		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
 
-		final Evaluator<DoubleGene, Double> evaluator =
-			new ExecutorEvaluator<>(gt -> gt.gene().doubleValue(), Runnable::run);
+		final Evaluator<DoubleGene, Double>
+			evaluator =
+			new FitnessEvaluator<>(
+				gt -> gt.gene().doubleValue(),
+				BatchExecutor.of(Runnable::run)
+			);
 
 		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(phenotypes);
 

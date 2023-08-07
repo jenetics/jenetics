@@ -19,7 +19,9 @@
  */
 package io.jenetics.internal.concurrent;
 
+import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 import io.jenetics.util.Seq;
 
@@ -30,11 +32,10 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since 2.0
  */
-final class BatchForkJoinPool extends BatchExecutor {
+public final class BatchForkJoinPool extends BatchExec {
 
-	BatchForkJoinPool(final ForkJoinPool pool) {
+	public BatchForkJoinPool(final ForkJoinPool pool) {
 		super(pool);
-
 	}
 
 	@Override
@@ -43,7 +44,9 @@ final class BatchForkJoinPool extends BatchExecutor {
 			final var future = ((ForkJoinPool)_executor)
 				.submit(new BatchAction(batch));
 
-			_futures.add(future);
+			final var futures = new ArrayList<Future<?>>();
+			futures.add(future);
+			Futures.join(futures);
 		}
 	}
 
