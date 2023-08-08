@@ -23,7 +23,7 @@ import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.0
  * @since 2.0
  */
 final class BatchRunnable implements Runnable {

@@ -28,8 +28,8 @@ import java.util.function.Function;
  * @param <R> the type of the result of the function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.0
+ * @since 8.0
  */
 public final class RunnableFunction<T, R>
 	implements Runnable

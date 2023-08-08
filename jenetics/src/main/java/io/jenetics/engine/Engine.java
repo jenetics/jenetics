@@ -1023,7 +1023,7 @@ public final class Engine<
 		 * If a dedicated {@link Evaluator} is defined, this executor is not
 		 * used.
 		 *
-		 * @since !__version__!
+		 * @since 8.0
 		 *
 		 * @param executor the executor used for evaluating the fitness functions
 		 * @return {@code this} builder, for command chaining
@@ -1132,7 +1132,7 @@ public final class Engine<
 		/**
 		 * Return the batch executor, used for evaluating the fitness functions.
 		 *
-		 * @since !__version__!
+		 * @since 8.0
 		 *
 		 * @return the batch executor, used for evaluating the fitness functions
 		 */

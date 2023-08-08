@@ -29,7 +29,7 @@ import io.jenetics.util.Seq;
  * This executor uses a ForkJoinPool.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.0
  * @since 2.0
  */
 public final class BatchForkJoinPool extends BatchExec {

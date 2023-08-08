@@ -29,8 +29,8 @@ import java.util.concurrent.Future;
  * Helper method for handĺing future objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.0
+ * @since 8.0
  */
 final class Futures {
 	private Futures() {

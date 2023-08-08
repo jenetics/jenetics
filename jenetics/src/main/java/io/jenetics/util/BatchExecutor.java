@@ -35,8 +35,8 @@ import io.jenetics.internal.concurrent.BatchForkJoinPool;
  * been executed.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.0
+ * @since 8.0
  */
 @FunctionalInterface
 public interface BatchExecutor {
