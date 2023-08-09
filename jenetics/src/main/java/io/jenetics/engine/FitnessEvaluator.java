@@ -38,7 +38,7 @@ import io.jenetics.util.Seq;
  * @version 8.0
  * @since 8.0
  */
-public final class FitnessEvaluator<
+final class FitnessEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -48,7 +48,7 @@ public final class FitnessEvaluator<
 	private final Function<? super Genotype<G>, ? extends C> _function;
 	private final BatchExecutor _executor;
 
-	public FitnessEvaluator(
+	FitnessEvaluator(
 		final Function<? super Genotype<G>, ? extends C> function,
 		final BatchExecutor executor
 	) {
@@ -56,7 +56,7 @@ public final class FitnessEvaluator<
 		_executor = requireNonNull(executor);
 	}
 
-	public Function<? super Genotype<G>, ? extends C> function() {
+	Function<? super Genotype<G>, ? extends C> function() {
 		return _function;
 	}
 
