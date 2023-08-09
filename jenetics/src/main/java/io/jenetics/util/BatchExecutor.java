@@ -28,7 +28,7 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Batch executor interface, which is used for evaluating a <em>batch</em> of
  * runnables. The tasks of a batch are executed concurrently and the
- * {@link #execute(Seq)} method will return, if all tasks of the batch have
+ * {@link #execute(BaseSeq)} method will return, if all tasks of the batch have
  * been executed.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -45,7 +45,7 @@ public interface BatchExecutor {
 	 * @param batch the sequence of runnable to be executed concurrently
 	 * @throws NullPointerException if the given {@code batch} is {@code null}
 	 */
-	void execute(final Seq<? extends Runnable> batch);
+	void execute(final BaseSeq<? extends Runnable> batch);
 
 	/**
 	 * Create a batch executor, where the execution is forwarded to the given
@@ -61,7 +61,7 @@ public interface BatchExecutor {
 		if (executor instanceof ForkJoinPool pool) {
 			return new BatchForkJoinPool(pool);
 		} else {
-			return new BatchExec(executor);
+			return new PartitionBatchExecutor(executor);
 		}
 	}
 

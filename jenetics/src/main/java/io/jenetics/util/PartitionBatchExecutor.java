@@ -37,24 +37,23 @@ import io.jenetics.internal.util.Futures;
  * @version 8.0
  * @since 2.0
  */
-class BatchExec implements BatchExecutor {
-
-	public static final int CORES = Runtime.getRuntime().availableProcessors();
+final class PartitionBatchExecutor implements BatchExecutor {
 
 	final Executor _executor;
 
-	public BatchExec(final Executor executor) {
+	PartitionBatchExecutor(final Executor executor) {
 		_executor = requireNonNull(executor);
 	}
 
 	@Override
-	public void execute(final Seq<? extends Runnable> batch) {
+	public void execute(final BaseSeq<? extends Runnable> batch) {
 		if (batch.nonEmpty()) {
+			final int cores = Runtime.getRuntime().availableProcessors();
 			final int[] parts = partition(
-				batch.size(),
+				batch.length(),
 				max(
-					(CORES + 1)*2,
-					(int)ceil(batch.size()/(double)maxBatchSize())
+					(cores + 1)*2,
+					(int)ceil(batch.length()/(double)maxBatchSize())
 				)
 			);
 

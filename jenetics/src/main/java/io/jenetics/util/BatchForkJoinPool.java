@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
@@ -32,17 +34,18 @@ import io.jenetics.internal.util.Futures;
  * @version 8.0
  * @since 2.0
  */
-final class BatchForkJoinPool extends BatchExec {
+final class BatchForkJoinPool implements BatchExecutor {
 
-	public BatchForkJoinPool(final ForkJoinPool pool) {
-		super(pool);
+	private final ForkJoinPool _pool;
+
+	BatchForkJoinPool(final ForkJoinPool pool) {
+		_pool = requireNonNull(pool);
 	}
 
 	@Override
-	public void execute(final Seq<? extends Runnable> batch) {
+	public void execute(final BaseSeq<? extends Runnable> batch) {
 		if (batch.nonEmpty()) {
-			final var future = ((ForkJoinPool)_executor)
-				.submit(new BatchAction(batch));
+			final var future = _pool.submit(new BatchAction(batch));
 
 			final var futures = new ArrayList<Future<?>>();
 			futures.add(future);
