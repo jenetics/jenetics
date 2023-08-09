@@ -96,7 +96,7 @@ import io.jenetics.util.Seq;
  * executing the evolution steps and evaluating the fitness function concurrently.
  * You can change the used execution services with the {@link Builder#executor(Executor)}
  * method. If you want to use a different executor for evaluating the fitness
- * functions, you have to set the {@link Builder#batchExecutor(BatchExecutor)}.
+ * functions, you have to set the {@link Builder#fitnessExecutor(BatchExecutor)}.
  *
  * <pre>{@code
  * final Engine<DoubleGene, Double> engine = Engine
@@ -717,7 +717,7 @@ public final class Engine<
 
 		// Engine execution environment.
 		private Executor _executor = commonPool();
-		private BatchExecutor _batchExecutor = null;
+		private BatchExecutor _fitnessExecutor = null;
 		private InstantSource _clock = NanoClock.systemUTC();
 
 		private EvolutionInterceptor<G, C> _interceptor =
@@ -1028,8 +1028,8 @@ public final class Engine<
 		 * @param executor the executor used for evaluating the fitness functions
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> batchExecutor(final BatchExecutor executor) {
-			_batchExecutor = requireNonNull(executor);
+		public Builder<G, C> fitnessExecutor(final BatchExecutor executor) {
+			_fitnessExecutor = requireNonNull(executor);
 			return this;
 		}
 
@@ -1082,7 +1082,7 @@ public final class Engine<
 
 		private Evaluator<G, C> __evaluator() {
 			return _evaluator instanceof FitnessEvaluator<G, C> fe
-				? new FitnessEvaluator<>(fe.function(), batchExecutor())
+				? new FitnessEvaluator<>(fe.function(), fitnessExecutor())
 				: _evaluator;
 		}
 
@@ -1136,9 +1136,9 @@ public final class Engine<
 		 *
 		 * @return the batch executor, used for evaluating the fitness functions
 		 */
-		public BatchExecutor batchExecutor() {
-			return _batchExecutor != null
-				? _batchExecutor
+		public BatchExecutor fitnessExecutor() {
+			return _fitnessExecutor != null
+				? _fitnessExecutor
 				: BatchExecutor.of(executor());
 		}
 
