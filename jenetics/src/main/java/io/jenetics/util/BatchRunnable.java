@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import io.jenetics.util.BaseSeq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
