@@ -25,9 +25,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
-import io.jenetics.internal.concurrent.BatchExec;
-import io.jenetics.internal.concurrent.BatchForkJoinPool;
-
 /**
  * Batch executor interface, which is used for evaluating a <em>batch</em> of
  * runnables. The tasks of a batch are executed concurrently and the

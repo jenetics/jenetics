@@ -17,35 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.util;
 
-import io.jenetics.util.BaseSeq;
+import java.util.ArrayList;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
+
+import io.jenetics.internal.util.Futures;
 
 /**
+ * This executor uses a ForkJoinPool.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 2.0
  */
-final class BatchRunnable implements Runnable {
+final class BatchForkJoinPool extends BatchExec {
 
-	private final BaseSeq<? extends Runnable> _runnables;
-	private final int _start;
-	private final int _end;
-
-	BatchRunnable(
-		final BaseSeq<? extends Runnable> runnables,
-		final int start,
-		final int end
-	) {
-		_runnables = runnables;
-		_start = start;
-		_end = end;
+	public BatchForkJoinPool(final ForkJoinPool pool) {
+		super(pool);
 	}
 
 	@Override
-	public void run() {
-		for (int i = _start; i < _end; ++i) {
-			_runnables.get(i).run();
+	public void execute(final Seq<? extends Runnable> batch) {
+		if (batch.nonEmpty()) {
+			final var future = ((ForkJoinPool)_executor)
+				.submit(new BatchAction(batch));
+
+			final var futures = new ArrayList<Future<?>>();
+			futures.add(future);
+			Futures.join(futures);
 		}
 	}
 

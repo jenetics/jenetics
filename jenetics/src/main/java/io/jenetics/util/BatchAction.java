@@ -17,14 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.util;
 
 import static java.lang.Math.max;
 
 import java.io.Serial;
 import java.util.concurrent.RecursiveAction;
-
-import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

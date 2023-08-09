@@ -26,7 +26,6 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.concurrent.RunnableFunction;
 import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;

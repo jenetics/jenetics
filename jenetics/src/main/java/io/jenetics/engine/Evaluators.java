@@ -25,8 +25,6 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.concurrent.CompletableFutureEvaluator;
-import io.jenetics.internal.concurrent.FutureEvaluator;
 
 /**
  * This class contains factory methods for creating commonly usable

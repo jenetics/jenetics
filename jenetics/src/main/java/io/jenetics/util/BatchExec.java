@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.util;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
@@ -30,15 +30,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import io.jenetics.util.BatchExecutor;
-import io.jenetics.util.Seq;
+import io.jenetics.internal.util.Futures;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 2.0
  */
-public class BatchExec implements BatchExecutor {
+class BatchExec implements BatchExecutor {
 
 	public static final int CORES = Runtime.getRuntime().availableProcessors();
 

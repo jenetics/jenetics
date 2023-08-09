@@ -17,9 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.util;
+
+import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.0
+ * @version 8.0
+ * @since 2.0
  */
-package io.jenetics.internal.concurrent;
+final class BatchRunnable implements Runnable {
+
+	private final BaseSeq<? extends Runnable> _runnables;
+	private final int _start;
+	private final int _end;
+
+	BatchRunnable(
+		final BaseSeq<? extends Runnable> runnables,
+		final int start,
+		final int end
+	) {
+		_runnables = runnables;
+		_start = start;
+		_end = end;
+	}
+
+	@Override
+	public void run() {
+		for (int i = _start; i < _end; ++i) {
+			_runnables.get(i).run();
+		}
+	}
+
+}

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.internal.util;
 
 import java.util.Iterator;
 import java.util.concurrent.CancellationException;
@@ -32,7 +32,7 @@ import java.util.concurrent.Future;
  * @version 8.0
  * @since 8.0
  */
-final class Futures {
+public final class Futures {
 	private Futures() {
 	}
 
@@ -41,7 +41,7 @@ final class Futures {
 	 *
 	 * @param futures the future objects to join.
 	 */
-	static void join(final Iterable<? extends Future<?>> futures) {
+	public static void join(final Iterable<? extends Future<?>> futures) {
 		final Iterator<? extends Future<?>> tasks = futures.iterator();
 
 		Exception exception = null;

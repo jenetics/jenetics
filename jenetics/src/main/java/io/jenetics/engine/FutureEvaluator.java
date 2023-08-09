@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,7 +28,7 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.engine.Evaluator;
+import io.jenetics.internal.util.Futures;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
@@ -41,7 +41,7 @@ import io.jenetics.util.Seq;
  * @version 8.0
  * @since 5.0
  */
-public final class FutureEvaluator<
+final class FutureEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >

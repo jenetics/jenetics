@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.concurrent;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,9 +31,7 @@ import java.util.function.Function;
  * @version 8.0
  * @since 8.0
  */
-public final class RunnableFunction<T, R>
-	implements Runnable
-{
+final class RunnableFunction<T, R> implements Runnable {
 	private final T _input;
 	private final Function<? super T, ? extends R> _function;
 
