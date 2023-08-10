@@ -40,7 +40,7 @@ import java.time.Duration;
  * @param offspringSelectionDuration the duration needed for selecting the
  *        offspring population
  * @param survivorsSelectionDuration the duration needed for selecting the
- *        survivors population
+ *        survivor population
  * @param offspringAlterDuration the duration needed for altering the
  *        offspring population
  * @param offspringFilterDuration the duration needed for removing and
@@ -137,7 +137,7 @@ public record EvolutionDurations(
 	 * property is taken into account for the comparison.
 	 *
 	 * @param other the other durations object this object is compared with
-	 * @return a integer smaller/equal/greater than 0 if the
+	 * @return an integer smaller/equal/greater than zero if the
 	 *         {@link #evolveDuration()} property of {@code this} object is
 	 *         smaller/equal/greater than the corresponding property of the
 	 *         {@code other} project.

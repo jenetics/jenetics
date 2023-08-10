@@ -351,9 +351,9 @@ public final class BitArray implements Copyable<BitArray> {
 
 	/**
 	 * Creates a new bit-array from the given {@code value} and the given
-	 * {@code length}. It is guaranteed, that the created bit-array will
+	 * {@code length}. It is guaranteed that the created bit-array will
 	 * represent the given {@link BigInteger}, as long as the {@code length}
-	 * is big enough to store the whole value. If the length is shorter then
+	 * is big enough to store the whole value. If the length is shorter than
 	 * required, the higher order bits will be truncated.
 	 *
 	 * <pre>{@code
@@ -425,7 +425,7 @@ public final class BitArray implements Copyable<BitArray> {
 		for (int i = 0, j = length - 1; i < array.length; i++, j -= Byte.SIZE) {
 			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
 				if (get(chars, j - bits, length) == '1') {
-					array[i] |= BITS[bits];
+					array[i] |= (byte)BITS[bits];
 				}
 			}
 		}

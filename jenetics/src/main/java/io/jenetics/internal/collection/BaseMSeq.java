@@ -22,7 +22,7 @@ package io.jenetics.internal.collection;
 import io.jenetics.util.BaseSeq;
 
 /**
- * General base interface for a ordered, fixed sized, mutable, object sequence.
+ * General base interface for an ordered, fixed sized, mutable, object sequence.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 5.2

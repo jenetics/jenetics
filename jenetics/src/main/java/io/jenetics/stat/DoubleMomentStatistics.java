@@ -43,7 +43,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *     );
  * }</pre>
  *
- * For a non double stream, you can use a collector:
+ * For a non-double stream, you can use a collector:
  * <pre>{@code
  * final Stream<SomeObject> stream = ...
  * final DoubleMomentStatistics statistics = stream
@@ -84,7 +84,7 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -147,7 +147,7 @@ public class DoubleMomentStatistics
 	/**
 	 * Compares the state of two {@code DoubleMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final DoubleMomentStatistics ds1 = ...;
@@ -203,7 +203,7 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
+	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *

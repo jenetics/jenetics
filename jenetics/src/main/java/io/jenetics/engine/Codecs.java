@@ -815,7 +815,7 @@ public final class Codecs {
 	 * @param <M> the type of the encoded Map
 	 * @return a new mapping codec
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
-	 * @throws NullPointerException if one of the argument is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <A, B, M extends Map<A, B>> InvertibleCodec<M, EnumGene<Integer>>
 	ofMapping(
@@ -919,7 +919,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a codec, which creates a a mapping from the elements given in the
+	 * Create a codec, which creates a mapping from the elements given in the
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
@@ -949,7 +949,7 @@ public final class Codecs {
 	 * @param <B> the type of the target elements
 	 * @return a new mapping codec
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
-	 * @throws NullPointerException if one of the argument is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <A, B> InvertibleCodec<Map<A, B>, EnumGene<Integer>>
 	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
@@ -958,7 +958,7 @@ public final class Codecs {
 
 	/**
 	 * The subset {@link InvertibleCodec} can be used for problems where it is
-	 * required to find the best <b>variable-sized</b> subset from given basic
+	 * required to find the best <b>variable-sized</b> subset from a given basic
 	 * set. A typical usage example of the returned {@code Codec} is the
 	 * Knapsack problem.
 	 * <p>
@@ -1033,7 +1033,7 @@ public final class Codecs {
 
 	/**
 	 * The subset {@link InvertibleCodec} can be used for problems where it is
-	 * required to find the best <b>fixed-size</b> subset from given basic set.
+	 * required to find the best <b>fixed-size</b> subset from a given basic set.
 	 *
 	 * @since 3.4
 	 *

@@ -97,11 +97,11 @@ public final class Subset {
 	}
 
 	/*
-	 * "Inverts" the given subset array `a`. The first n - k elements represents
+	 * "Inverts" the given subset array `a`. The first n - k elements represent
 	 * the set, which must not be part of the "inverted" subset. This is done by
 	 * filling the array from the back, starting with the highest possible element,
 	 * which is not part of the "forbidden" subset elements. The result is a
-	 * subset array, filled with elements, which where not part of the original
+	 * subset array, filled with elements, which is not part of the original
 	 * "forbidden" subset.
 	 */
 	private static void invert(
@@ -222,7 +222,7 @@ public final class Subset {
 			--m;
 		}
 
-		// Convert to zero based indexed arrays.
+		// Convert to zero-based indexed arrays.
 		for (int i = 0; i < k; ++i) {
 			--a[i];
 		}

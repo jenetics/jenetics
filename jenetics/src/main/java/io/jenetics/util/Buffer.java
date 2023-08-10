@@ -41,7 +41,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * {@link #toArray()}, {@link #toArray(IntFunction)} and {@link #toSeq()} methods.
  *
  * @implNote
- * This class is not thread-safe. If two threads accesses the buffer
+ * This class is not thread-safe. If two threads access the buffer
  * concurrently it must be <em>synchronized</em> externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -148,7 +148,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * @param values the array which contains the values to add
 	 * @param start the start index of the source array
 	 * @param length the number of elements to copy
-	 * @throws IndexOutOfBoundsException if copying would cause access of data
+	 * @throws IndexOutOfBoundsException if copying causes access of data
 	 *         outside array bounds
 	 * @throws ArrayStoreException if an element in the {@code value} array
 	 *         could not be stored into the dest array because of a type mismatch

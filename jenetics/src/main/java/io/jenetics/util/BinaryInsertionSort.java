@@ -22,7 +22,7 @@ package io.jenetics.util;
 /**
  * Sorts a specified portion of the specified array using a binary insertion
  * sort. This is the best method for sorting small numbers of elements. It
- * requires O(n log n) compares, but O(n^2) data movement (worst case).
+ * requires O(n log n) compares, but O(n^2) data movement (the worst case).
  *
  * If the initial part of the specified range is already sorted, this method can
  * take advantage of it: the method assumes that the elements from index

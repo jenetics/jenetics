@@ -93,7 +93,7 @@ public abstract class IO {
 	 * @since 4.1
 	 *
 	 * @param object the object to serialize.
-	 * @throws NullPointerException if one of the object is {@code null}.
+	 * @throws NullPointerException if one of the objects is {@code null}.
 	 * @throws IOException if the object could not be serialized.
 	 * @return the serialized {@code object} as {@code byte[]} array
 	 */
@@ -165,9 +165,9 @@ public abstract class IO {
 	 * @since 4.1
 	 *
 	 * @param bytes the serialized object.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input {@code bytes} is {@code null}.
-	 * @throws IOException if the object could not be de-serialized.
+	 * @throws IOException if the object could not be deserialized.
 	 */
 	public Object fromByteArray(final byte[] bytes) throws IOException {
 		final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
@@ -180,7 +180,7 @@ public abstract class IO {
 	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -196,7 +196,7 @@ public abstract class IO {
 	 * Reads an object from the given file.
 	 *
 	 * @param path the path to read from.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -210,7 +210,7 @@ public abstract class IO {
 	 * @param <T> the type of the read object
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -226,7 +226,7 @@ public abstract class IO {
 	 * Reads an object from the given file.
 	 *
 	 * @param path the path to read from.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -240,7 +240,7 @@ public abstract class IO {
 	 * @param <T> the type of the read object
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -256,7 +256,7 @@ public abstract class IO {
 	 * Reads an object from the given file.
 	 *
 	 * @param file the file to read from.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -270,7 +270,7 @@ public abstract class IO {
 	 * @param <T> the type of the read object
 	 * @param in the input stream to read from.
 	 * @param type the type of the read object.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
@@ -281,7 +281,7 @@ public abstract class IO {
 	 * Reads an object from the given input stream.
 	 *
 	 * @param in the input stream to read from.
-	 * @return the de-serialized object.
+	 * @return the deserialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */

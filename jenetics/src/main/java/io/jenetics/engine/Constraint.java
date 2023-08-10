@@ -50,7 +50,7 @@ import io.jenetics.util.Factory;
  * Keep in mind, that this interface only repairs invalid individuals, which
  * has been destroyed by the <em>evolution</em> process. Individuals, created
  * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
- * This means that it is still possible, to have invalid individuals, created
+ * This means that it is still possible to have invalid individuals, created
  * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
  * factory which obeys {@code this} constraint. The following code will show
  * how to create such a <em>constrained</em> genotype factory and use it for
@@ -235,7 +235,7 @@ public interface Constraint<
 	 * @see #constrain(Codec)
 	 *
 	 * @param codec the codec to wrap
-	 * @param <T> the argument type of a given problem
+	 * @param <T> the argument type of given problem
 	 * @return the wrapped codec, which obeys {@code this} constraint
 	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */

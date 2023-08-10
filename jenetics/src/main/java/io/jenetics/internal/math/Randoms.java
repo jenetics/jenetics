@@ -212,7 +212,7 @@ public final class Randoms {
 	}
 
 	/**
-	 * Calculating a 64 bit seed value which can be used for initializing
+	 * Calculating a 64-bit seed value which can be used for initializing
 	 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:

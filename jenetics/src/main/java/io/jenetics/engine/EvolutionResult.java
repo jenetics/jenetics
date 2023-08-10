@@ -280,7 +280,7 @@ public final class EvolutionResult<
 
 	/**
 	 * Compare {@code this} evolution result with another one, according the
-	 * populations best individual.
+	 * population's best individual.
 	 *
 	 * @param other the other evolution result to compare
 	 * @return  a negative integer, zero, or a positive integer as this result
@@ -571,8 +571,8 @@ public final class EvolutionResult<
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param factory the genotype factory which create new individuals
-	 * @param maxRetries the maximal number of genotype creation tries
+	 * @param factory the genotype factory which creates new individuals
+	 * @param maxRetries the maximal number of genotype creations tries
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -624,7 +624,7 @@ public final class EvolutionResult<
 
 
 	/* *************************************************************************
-	 * Some collectors and mapping functions.
+	 * Some collector and mapping functions.
 	 * ************************************************************************/
 
 
@@ -646,7 +646,7 @@ public final class EvolutionResult<
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param factory the genotype factory which create new individuals
+	 * @param factory the genotype factory which creates new individuals
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -678,7 +678,7 @@ public final class EvolutionResult<
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param maxRetries the maximal number of genotype creation tries
+	 * @param maxRetries the maximal number of genotype creations tries
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -730,7 +730,7 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return an new {@code EvolutionResult} object with the given values.
+	 * Return a new {@code EvolutionResult} object with the given values.
 	 *
 	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step
@@ -772,7 +772,7 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return an new {@code EvolutionResult} object with the given values.
+	 * Return a new {@code EvolutionResult} object with the given values.
 	 *
 	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step

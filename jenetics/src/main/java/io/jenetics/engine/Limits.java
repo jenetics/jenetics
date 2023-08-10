@@ -71,7 +71,7 @@ public final class Limits {
 	 * the number of evaluations performed by the resulting stream. The evaluation
 	 * of the population is {@code max generations + 1}. This is because the
 	 * limiting predicate works on the {@link EvolutionResult} object, which
-	 * guarantees to contain an evaluated population. That means, that the
+	 * guarantees to contain an evaluated population. That means that the
 	 * population must be evaluated at least once, even for a generation limit
 	 * of zero. If this is an unacceptable performance penalty, better use the
 	 * {@link java.util.stream.Stream#limit(long)} function instead.
@@ -133,7 +133,7 @@ public final class Limits {
 	/**
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
-	 * used as safety net, for guaranteed stream truncation.
+	 * used as a safety net, for guaranteed stream truncation.
 	 *
 	 * <pre>{@code
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
@@ -160,7 +160,7 @@ public final class Limits {
 	/**
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
-	 * used as safety net, for guaranteed stream truncation.
+	 * used as a safety net, for guaranteed stream truncation.
 	 *
 	 * <pre>{@code
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
@@ -187,7 +187,7 @@ public final class Limits {
 	/**
 	 * Return a predicate, which will truncated the evolution stream if the
 	 * best fitness of the current population becomes less than the specified
-	 * threshold and the objective is set to minimize the fitness. This
+	 * threshold, and the objective is set to minimize the fitness. This
 	 * predicate also stops the evolution if the best fitness in the current
 	 * population becomes greater than the user-specified fitness threshold when
 	 * the objective is to maximize the fitness.
@@ -235,7 +235,7 @@ public final class Limits {
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
 	 *
-	 * @apiNote The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains a mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
 	 * of the {@code test} method.
 	 *
@@ -247,7 +247,7 @@ public final class Limits {
 	 *        stream.
 	 * @param proceed the predicate which determines when the evolution stream
 	 *        is truncated. The first parameter of the predicate contains the
-	 *        double statistics of the short filter and the second parameter
+	 *        double statistics of the short filter, and the second parameter
 	 *        contains the statistics of the long filter
 	 * @param <N> the fitness type
 	 * @return a new fitness convergence strategy
@@ -287,7 +287,7 @@ public final class Limits {
 	 * generations. The long filter uses the best fitness values of the last 15
 	 * generations.
 	 *
-	 * @apiNote The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains a mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
 	 * of the {@code test} method.
 	 *
@@ -346,7 +346,7 @@ public final class Limits {
 	 *
 	 * @param proceed the predicate which determines when the evolution stream
 	 *        is truncated. The first parameter of the predicate contains the
-	 *        best fitness of the population and the second parameter contains
+	 *        best fitness of the population, and the second parameter contains
 	 *        the statistics of population fitness values
 	 * @param <N> the fitness type
 	 * @return a new fitness convergence strategy
@@ -400,7 +400,7 @@ public final class Limits {
 	 * @since 4.0
 	 * @see #byGeneConvergence(double, double)
 	 *
-	 * @param geneConvergence predicate which defines when a gene is deemed as
+	 * @param geneConvergence predicate, which defines when a gene is deemed as
 	 *        converged, by using the statistics of this gene over all genotypes
 	 *        of the population
 	 * @param convergedGeneRate the percentage of genes which must be converged
@@ -429,7 +429,7 @@ public final class Limits {
 	 * ({@code convergenceRate}) away from the maximum gene value across the
 	 * genotypes.
 	 * <p>
-	 * This method is equivalent the following code snippet:
+	 * This method is equivalent to the following code snippet:
 	 * <pre>{@code
 	 * final Predicate<EvolutionResult<DoubleGene, ?>> limit =
 	 *     byGeneConvergence(

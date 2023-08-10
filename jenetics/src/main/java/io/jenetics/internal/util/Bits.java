@@ -27,7 +27,7 @@ import io.jenetics.util.RandomRegistry;
 
 
 /**
- * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
+ * Some bit utils. All operations assume <a href="http://en.wikipedia.org/wiki/Endianness">
  * <b>little-endian</b></a> byte order.
  *
  * <pre>
@@ -164,7 +164,7 @@ public final class Bits {
 	 *                          otherStart
 	 * }</pre>
 	 *
-	 * @param data the first byte array which are used for swapping.
+	 * @param data the first byte array which is used for swapping.
 	 * @param start the start bit index of the {@code data} byte array,
 	 *        inclusively.
 	 * @param end the end bit index of the {@code data} byte array, exclusively.
@@ -493,7 +493,7 @@ public final class Bits {
 
 	/**
 	 * Convert a string which was created with the {@link #toByteString(byte...)}
-	 * method back to an byte array.
+	 * method back to a byte array.
 	 *
 	 * @see #toByteString(byte...)
 	 *
