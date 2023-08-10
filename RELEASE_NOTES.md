@@ -21,6 +21,18 @@ java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
 * [#868](https://github.com/jenetics/jenetics/issues/868): Fix execution script `./jrun.cmd`
 
 
+### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+
+#### Improvemments
+
+* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
+
+### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
+
+#### Improvemments
+
+* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
+
 ### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
 
 #### Bugs
