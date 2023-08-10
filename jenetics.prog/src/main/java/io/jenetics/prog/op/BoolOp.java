@@ -183,13 +183,11 @@ public enum BoolOp implements Op<Boolean> {
 	}
 
 	private static Optional<Boolean> tryParseBoolean(final String value) {
-		switch (value) {
-			case "true":
-			case "1": return Optional.of(true);
-			case "false":
-			case "0": return Optional.of(false);
-			default: return Optional.empty();
-		}
+        return switch (value) {
+            case "true", "1" -> Optional.of(true);
+            case "false", "0" -> Optional.of(false);
+            default -> Optional.empty();
+        };
 	}
 
 	private static Optional<Op<Boolean>> toOp(final String string) {
