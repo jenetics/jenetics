@@ -97,7 +97,7 @@ public abstract class TreeCrossover<
 
 	// Since the allele type "A" is not part of the type signature, we have to
 	// do some unchecked casts to make it "visible" again. The implementor of
-	// the abstract "crossover" method usually don't have to do additional casts.
+	// the abstract "crossover" method usually doesn't have to do additional casts.
 	private <A> void crossover(
 		final MSeq<Chromosome<G>> c1,
 		final MSeq<Chromosome<G>> c2,
