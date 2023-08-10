@@ -198,9 +198,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	}
 
 	/**
-	 * Return the number of nodes of {@code this} node (sub-tree).
+	 * Return the number of nodes of {@code this} node (subtree).
 	 *
-	 * @return the number of nodes of {@code this} node (sub-tree)
+	 * @return the number of nodes of {@code this} node (subtree)
 	 */
 	default int size() {
 		return Trees.countChildren(this) + 1;

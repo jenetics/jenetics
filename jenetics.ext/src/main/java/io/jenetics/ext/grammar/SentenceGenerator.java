@@ -97,7 +97,7 @@ public final class SentenceGenerator<T>
 
 		/**
 		 * The symbol replacement is performed from left to right and is repeated
-		 * until all non-terminal symbol has been expanded.
+		 * until all non-terminal symbols have been expanded.
 		 */
 		LEFT_TO_RIGHT;
 	}
@@ -146,7 +146,7 @@ public final class SentenceGenerator<T>
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created terminal list (sentence), or an empty list if
-	 *         the length of the sentence exceed the defined sentence limit
+	 *         the length of the sentence exceeds the defined sentence limit
 	 */
 	@Override
 	public List<Terminal<T>> generate(final Cfg<? extends T> cfg) {
@@ -190,7 +190,7 @@ public final class SentenceGenerator<T>
 	 * Converts a list of symbols to a string, by concatenating the names of
 	 * the given symbols.
 	 *
-	 * @param sentence the symbols list to covert
+	 * @param sentence the symbol list to covert
 	 * @return the converted sentences
 	 */
 	public static String toString(final List<? extends Symbol<?>> sentence) {

@@ -181,7 +181,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 	/**
 	 * Trims {@code this} pareto front to the given size. The front elements are
-	 * sorted according its crowding distance and the elements which have smaller
+	 * sorted according its crowding distance, and the elements which have smaller
 	 * distance to its neighbors are removed first.
 	 *
 	 * <pre>{@code

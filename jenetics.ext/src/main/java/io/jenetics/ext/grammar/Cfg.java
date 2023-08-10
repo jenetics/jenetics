@@ -257,7 +257,7 @@ public record Cfg<T>(
 			);
 		}
 
-		// Check uniqueness of the rules.
+		// Check the uniqueness of the rules.
 		final var duplicatedRules = rules.stream()
 			.collect(Collectors.groupingBy(Rule::start))
 			.values().stream()

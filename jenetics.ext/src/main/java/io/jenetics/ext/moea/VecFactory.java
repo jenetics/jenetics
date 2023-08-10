@@ -47,7 +47,7 @@ import io.jenetics.Optimize;
  * }
  * }</pre>
  * In the example above, the first dimension of the created vector is maximized,
- * the following two are minimized and the last vector component is again
+ * the following two are minimized, and the last vector component is again
  * maximized.
  *
  * @see Vec
@@ -75,7 +75,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofIntVec(Optimize...)
 	 *
@@ -98,7 +98,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofIntVec(List)
 	 *
@@ -134,7 +134,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofLongVec(Optimize...)
 	 *
@@ -157,7 +157,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofLongVec(List)
 	 *
@@ -193,7 +193,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofDoubleVec(Optimize...)
 	 *
@@ -216,7 +216,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofDoubleVec(List)
 	 *
@@ -252,7 +252,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofObjectVec(Comparator, ElementDistance, Optimize...)
 	 *
@@ -277,7 +277,7 @@ public interface VecFactory<T> {
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofObjectVec(Comparator, ElementDistance, List)
 	 *
@@ -299,10 +299,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -329,10 +329,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -362,7 +362,7 @@ public interface VecFactory<T> {
 	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -390,7 +390,7 @@ public interface VecFactory<T> {
 	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -413,7 +413,7 @@ public interface VecFactory<T> {
 	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0

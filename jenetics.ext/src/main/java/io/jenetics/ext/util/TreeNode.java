@@ -189,7 +189,7 @@ public final class TreeNode<T>
 		return this;
 	}
 
-	// Only entry point for checking and creating non-existing children list.
+	// Only entry point for checking and creating a non-existing children list.
 	private void createChildrenIfMissing() {
 		if (_children == null) {
 			_children = new ArrayList<>(2);
@@ -257,7 +257,7 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Removes the child at the given {@code path}. If no child exists at the
+	 * Removes the child at the given {@code path}. If no child exists on the
 	 * given path, nothing is removed.
 	 *
 	 * @since 4.4
@@ -265,7 +265,7 @@ public final class TreeNode<T>
 	 * @param path the path of the child to replace
 	 * @return {@code true} if a child at the given {@code path} existed and
 	 *         has been removed
-	 * @throws NullPointerException if one of the given argument is {@code null}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public boolean removeAtPath(final Path path) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
@@ -277,7 +277,7 @@ public final class TreeNode<T>
 
 	/**
 	 * Replaces the child at the given {@code path} with the given new
-	 * {@code child}. If no child exists at the given path, nothing is replaced.
+	 * {@code child}. If no child exists on the given path, nothing is replaced.
 	 *
 	 * @since 4.4
 	 *
@@ -285,7 +285,7 @@ public final class TreeNode<T>
 	 * @param child the new child
 	 * @return {@code true} if a child at the given {@code path} existed and
 	 *         has been replaced
-	 * @throws NullPointerException if one of the given argument is {@code null}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public boolean replaceAtPath(final Path path, final TreeNode<T> child) {
 		requireNonNull(path);
@@ -529,8 +529,8 @@ public final class TreeNode<T>
 	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
 	 *
-	 * The parse method doesn't strip the whitespace between the parentheses and
-	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
+	 * The parse method doesn't strip the space between the parentheses and
+	 * the commas. If you want to remove this <em>formatting</em> space,
 	 * you should do the parsing with an addition <em>mapper</em> function.
 	 * <pre>{@code
 	 * final TreeNode<String> tree = TreeNode.parse(

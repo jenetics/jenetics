@@ -211,7 +211,7 @@ public final class Pareto {
 			}
 		}
 
-		// Compute for each element p the element q that it dominates and the
+		// Compute for each element p the element q that it dominates, and the
 		// number of times it is dominated. Using the names as defined in the
 		// referenced paper.
 		final int[] nq = new int[set.length()];
@@ -256,7 +256,7 @@ public final class Pareto {
 				final int fi = Fi.get(p);
 				ranks[fi] = i;
 
-				// Update the dominated counts as compute next front.
+				// Updates the dominated counts as compute next front.
 				for (int k = 0, n = fronts.get(fi).size(); k < n; ++k) {
 					final int q = fronts.get(fi).get(k);
 					nq[q] -= 1;
