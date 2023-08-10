@@ -258,53 +258,25 @@ Julien Amblard, Robert Filman, Gabriel Kopito. <a href="https://doi.org/10.1145/
 
 ## Release notes
 
-### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
 
 #### Improvemments
 
-* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
-
-### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
-
-#### Improvemments
-
-* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
-
-
-### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
-
-#### Bugs
-
-* [#842](https://github.com/jenetics/jenetics/issues/842): `BitChromosone::bitCount` returns wrong results for chromosome lengths <= 8.
-
-### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
-
-#### Improvements
-
-* [#813](https://github.com/jenetics/jenetics/issues/813): Re-implementation of `MathExpr` class. Replace ad-hoc parsing implementation.
-* [#815](https://github.com/jenetics/jenetics/issues/815): Implement Grammatical-Evolution.
-* [#820](https://github.com/jenetics/jenetics/issues/820): Additional `BitChromosome` methods: `and`, `or`, `xor`, `not`, `shiftRight`, `shiftLeft`.
-* [#833](https://github.com/jenetics/jenetics/issues/833): Implement `Tree::reduce` function. Allows to write code as follows:
-```java
-final Tree<String, ?> formula = TreeNode.parse(
-    "add(sub(6, div(230, 10)), mul(5, 6))",
-    String::trim
-);
-final double result = formula.reduce(new Double[0], (op, args) ->
-    switch (op) {
-        case "add" -> args[0] + args[1];
-        case "sub" -> args[0] - args[1];
-        case "mul" -> args[0] * args[1];
-        case "div" -> args[0] / args[1];
-        default -> Double.parseDouble(op);
-    }
-);
+* [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
+* [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
+```
+java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
+     -cp jenetics-@__version__@.jar:app.jar\
+         com.foo.bar.MyJeneticsAppjava 
 ```
 
+* [#872](https://github.com/jenetics/jenetics/issues/872): Improve generic type parameters for some argument types in `io.jenetics.prog` module.
+* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21-
+
 #### Bugs
 
-* [#831](https://github.com/jenetics/jenetics/issues/831): Error while parsing parentheses trees.
-* [#836](https://github.com/jenetics/jenetics/issues/836): Fix `BitChromosome`(`Test`).
+* [#865](https://github.com/jenetics/jenetics/issues/865), [#867](https://github.com/jenetics/jenetics/issues/867): Fixing typos in documentation.
+* [#868](https://github.com/jenetics/jenetics/issues/868): Fix execution script `./jrun.cmd`
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

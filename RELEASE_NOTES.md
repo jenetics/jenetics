@@ -1,5 +1,26 @@
 ## Release notes
 
+### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
+
+#### Improvemments
+
+* [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
+* [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
+```
+java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
+     -cp jenetics-@__version__@.jar:app.jar\
+         com.foo.bar.MyJeneticsAppjava 
+```
+
+* [#872](https://github.com/jenetics/jenetics/issues/872): Improve generic type parameters for some argument types in `io.jenetics.prog` module.
+* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21-
+
+#### Bugs
+
+* [#865](https://github.com/jenetics/jenetics/issues/865), [#867](https://github.com/jenetics/jenetics/issues/867): Fixing typos in documentation.
+* [#868](https://github.com/jenetics/jenetics/issues/868): Fix execution script `./jrun.cmd`
+
+
 ### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
 
 #### Bugs
