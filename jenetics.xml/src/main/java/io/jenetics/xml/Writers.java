@@ -31,12 +31,14 @@ import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
+import io.jenetics.BoundedChromosome;
 import io.jenetics.BoundedGene;
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
@@ -285,9 +287,9 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 
 			return elem(rootName,
-				attr(LENGTH_NAME).map(ch -> ch.length()),
-				elem(MIN_NAME, alleleWriter.map(ch -> ch.min())),
-				elem(MAX_NAME, alleleWriter.map(ch -> ch.max())),
+				attr(LENGTH_NAME).map(BaseSeq::length),
+				elem(MIN_NAME, alleleWriter.map(io.jenetics.BoundedChromosome::min)),
+				elem(MAX_NAME, alleleWriter.map(io.jenetics.BoundedChromosome::max)),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
 						.map(ch -> ISeq.of(ch).map(G::allele))
@@ -449,10 +451,10 @@ public final class Writers {
 		static final String ROOT_NAME = "long-chromosome";
 
 		/**
-		 * Return the default long allele writer for the
+		 * Return the default long-allele writer for the
 		 * {@code IntegerChromosome}.
 		 *
-		 * @return the default long allele writer
+		 * @return the default long-allele writer
 		 */
 		public static Writer<Long> alleleWriter() {
 			return Writer.text();
@@ -930,7 +932,7 @@ public final class Writers {
 
 		/**
 		 * Create a writer for genotypes of arbitrary chromosomes. How to write the
-		 * genotypes chromosomes is defined by the given {@link Writer}.
+		 * genotype chromosomes is defined by the given {@link Writer}.
 		 *
 		 * @param writer the chromosome writer
 		 * @param <A> the allele type
@@ -1088,8 +1090,8 @@ public final class Writers {
 
 		/**
 		 * Create a writer for genotypes of arbitrary chromosomes. How to write the
-		 * genotypes chromosomes is defined by the given {@link Writer}. The
-		 * following writer allows to write double-gene chromosomes:
+		 * genotype chromosomes is defined by the given {@link Writer}. The
+		 * following writer allows writing double-gene chromosomes:
 		 * <pre>{@code
 		 * final Writer<Collection<Genotype<DoubleGene>>> writer =
 		 *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer());

@@ -275,7 +275,7 @@ public abstract class Reader<T> {
 	 *
 	 * @param generator the generator function, which build the result object
 	 *        from the given parameter array
-	 * @param name the name of the root (sub-tree) element
+	 * @param name the name of the root (subtree) element
 	 * @param children the child element reader, which creates the values
 	 *        forwarded to the {@code generator} function
 	 * @param <T> the reader result type
@@ -346,7 +346,7 @@ public abstract class Reader<T> {
 
 	/**
 	 * Return a {@code Reader} which collects the elements, read by the given
-	 * child {@code reader}, and returns it as list of these elements.
+	 * child {@code reader}, and returns it as a list of these elements.
 	 * <p>
 	 * <b>XML</b>
 	 * <pre> {@code

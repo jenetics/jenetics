@@ -558,13 +558,13 @@ public final class Readers {
 		private Genotype() {}
 
 		/**
-		 * Create a genotype reader with he given chromosome reader.
+		 * Create a genotype reader with the given chromosome reader.
 		 *
 		 * @param chromosomeReader the underlying chromosome reader
 		 * @param <A> the allele type
 		 * @param <G> the gene type
 		 * @param <C> the chromosome type
-		 * @return a genotype reader with he given chromosome reader
+		 * @return a genotype reader with the given chromosome reader
 		 * @throws NullPointerException if the given {@code chromosomeReader} is
 		 *         {@code null}
 		 */
@@ -671,13 +671,13 @@ public final class Readers {
 		private Genotypes() {}
 
 		/**
-		 * Return a genotypes reader using the given chromosome reader.
+		 * Return a genotype reader using the given chromosome reader.
 		 *
 		 * @param chromosomeReader the underlying chromosome reader
 		 * @param <A> the allele type
 		 * @param <G> the gene type
 		 * @param <C> the chromosome type
-		 * @return a genotypes reader using the given chromosome reader
+		 * @return a genotype reader using the given chromosome reader
 		 * @throws NullPointerException if the given {@code chromosomeReader} is
 		 *         {@code null}
 		 */
