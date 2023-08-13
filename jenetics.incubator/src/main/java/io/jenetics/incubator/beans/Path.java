@@ -178,6 +178,19 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	}
 
 	/**
+	 * Returns an element of this path. The index parameter is the index of
+	 * the path element to return. The element that is closest to the root
+	 * in the property hierarchy has index 0. The element that is farthest
+	 * from the root has index count - 1.
+	 *
+	 * @param index the path index
+	 * @return the path element
+	 */
+	public Path get(final int index) {
+		return new Path(List.of(elements.get(index)));
+	}
+
+	/**
 	 * Returns the <em>parent path</em>, or {@code null} if this
 	 * path has no parent.
 	 *
@@ -250,23 +263,10 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 * Return {@code true} if this path contains no elements.
 	 *
 	 * @return {@code true} if this path contains no elements, {@code false}
-	 * otherwise
+	 *          otherwise
 	 */
 	public boolean isEmpty() {
 		return count() == 0;
-	}
-
-	/**
-	 * Returns an element of this path. The index parameter is the index of
-	 * the path element to return. The element that is closest to the root
-	 * in the property hierarchy has index 0. The element that is farthest
-	 * from the root has index count - 1.
-	 *
-	 * @param index the path index
-	 * @return the path element
-	 */
-	public Path get(final int index) {
-		return new Path(List.of(elements.get(index)));
 	}
 
 	@Override
