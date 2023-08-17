@@ -365,7 +365,7 @@ fun setupPublishing(project: Project) {
 	}
 }
 
-val exportDir = file("${rootProject.buildDir}/package/${identifier}")
+val exportDir = file("${rootProject.layout.buildDirectory}/package/${identifier}")
 
 val assemblePkg = "assemblePkg"
 tasks.register(assemblePkg) {
@@ -503,7 +503,7 @@ tasks.register<Zip>(pkgZip) {
 	description = "Zips the project package"
 
 	archiveFileName.set("${identifier}.zip")
-	destinationDirectory.set(file("${rootProject.buildDir}/package"))
+	destinationDirectory.set(file("${rootProject.layout.buildDirectory}/package"))
 
 	from(exportDir)
 }
