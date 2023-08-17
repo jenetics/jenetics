@@ -48,8 +48,8 @@ import io.jenetics.internal.util.Lifecycle.IOResources;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
- * Static methods for reading and writing objects using the Java serialisation.
- * The methods of this class allows appending additional objects to an existing
+ * Static methods for reading and writing objects using the Java serialization.
+ * The methods of this class allow appending additional objects to an existing
  * file.
  *
  * <pre>{@code
@@ -313,7 +313,7 @@ public final class Serializer {
 	 * @param options specifying how the file is opened
 	 * @return the number of bytes written to the file
 	 * @throws IOException if writing the objects fails
-	 * @throws IllegalArgumentException if options contains an invalid
+	 * @throws IllegalArgumentException if options contain an invalid
 	 *         combination of options
 	 * @throws UnsupportedOperationException if an unsupported option is
 	 *         specified

@@ -78,8 +78,8 @@ public interface Path<T> extends Iterable<Path<T>>, Comparable<Path<T>> {
 	}
 
 	/**
-	 * Returns a relative {@code Path} that is a subsequence of the name
-	 * elements of this path.
+	 * Returns a relative {@code Path} that is a subsequence the element names
+	 * of this path.
 	 *
 	 * @param fromIndex low endpoint (inclusive) of the subPath
 	 * @param toIndex   high endpoint (exclusive) of the subPath
