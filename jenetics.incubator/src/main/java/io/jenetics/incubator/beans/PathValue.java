@@ -25,8 +25,8 @@ import static java.util.Objects.requireNonNull;
  * A path value associates a value with a path.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public interface PathValue<V> {
 

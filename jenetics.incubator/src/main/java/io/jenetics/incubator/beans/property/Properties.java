@@ -48,8 +48,8 @@ import io.jenetics.incubator.beans.property.Property.Value.Mutable;
  * an object graph.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class Properties {
 

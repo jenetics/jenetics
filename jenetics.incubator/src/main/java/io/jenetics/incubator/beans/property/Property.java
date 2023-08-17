@@ -75,8 +75,8 @@ import io.jenetics.incubator.beans.description.Setter;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public sealed interface Property
 	extends PathValue<Property.Value>
@@ -87,8 +87,8 @@ public sealed interface Property
 	 * value, type of the property and the enclosure value.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 7.2
+	 * @since 7.2
 	 */
 	sealed interface Value {
 
@@ -128,8 +128,8 @@ public sealed interface Property
 		 * Represents an <em>immutable</em> property value.
 		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
+		 * @version 7.2
+		 * @since 7.2
 		 */
 		record Immutable(Object enclosure, Object value, Class<?> type)
 			implements Value
@@ -148,8 +148,8 @@ public sealed interface Property
 		 * Represents a <em>mutable</em> property value.
 		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
+		 * @version 7.2
+		 * @since 7.2
 		 */
 		final class Mutable implements Value {
 

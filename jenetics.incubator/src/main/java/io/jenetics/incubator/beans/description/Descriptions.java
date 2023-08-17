@@ -36,8 +36,8 @@ import io.jenetics.incubator.beans.Reflect.StructType;
  * properties from an object graph.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class Descriptions {
 

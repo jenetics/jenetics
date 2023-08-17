@@ -33,8 +33,8 @@ import java.util.stream.StreamSupport;
  * path can be created with the {@link Path#of(String)} method.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class Path implements Iterable<Path>, Comparable<Path> {
 

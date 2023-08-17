@@ -62,8 +62,8 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class CsvSupport {
 

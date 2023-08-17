@@ -32,8 +32,8 @@ import java.util.stream.Stream;
  * @param <T> the type of the object's component type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 @FunctionalInterface
 public interface Dtor<S, T> {

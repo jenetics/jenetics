@@ -27,8 +27,8 @@ import io.jenetics.incubator.beans.Path;
  * Represents a simple property value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public record SimpleProperty(Path path, Value value) implements Property {
 
