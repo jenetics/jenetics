@@ -193,12 +193,18 @@ fun setupJavadoc(project: Project, taskName: String) {
 			)
 
 		doLast {
+			val dir = if (project.extra.has("moduleName")) {
+				project.extra["moduleName"].toString()
+			} else {
+				""
+			}
+
 			project.copy {
 				from("src/main/java") {
 					include("io/**/doc-files/*.*")
 				}
 				includeEmptyDirs = false
-				into(destinationDir!!.resolve(project.extra["moduleName"].toString()))
+				into(destinationDir!!.resolve(dir))
 			}
 		}
 	}
@@ -365,7 +371,7 @@ fun setupPublishing(project: Project) {
 	}
 }
 
-val exportDir = file("${rootProject.layout.buildDirectory}/package/${identifier}")
+val exportDir = file("${rootProject.layout.buildDirectory.asFile.get()}/package/${identifier}")
 
 val assemblePkg = "assemblePkg"
 tasks.register(assemblePkg) {
@@ -503,7 +509,7 @@ tasks.register<Zip>(pkgZip) {
 	description = "Zips the project package"
 
 	archiveFileName.set("${identifier}.zip")
-	destinationDirectory.set(file("${rootProject.layout.buildDirectory}/package"))
+	destinationDirectory.set(file("${rootProject.layout.buildDirectory.asFile.get()}/package"))
 
 	from(exportDir)
 }
