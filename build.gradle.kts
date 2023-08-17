@@ -168,6 +168,9 @@ fun setupJavadoc(project: Project, taskName: String) {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.addStringOption("-show-module-contents", "api")
+		doclet.addStringOption("-show-packages", "exported")
+		doclet.addStringOption("exclude", "io.jenetics.internal")
 		doclet.version(true)
 		doclet.docEncoding = "UTF-8"
 		doclet.charSet = "UTF-8"
@@ -182,14 +185,12 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
+		doclet.addStringOption("docfilessubdirs")
 		doclet.tags = listOf(
 				"apiNote:a:API Note:",
 				"implSpec:a:Implementation Requirements:",
 				"implNote:a:Implementation Note:"
 			)
-
-		doclet.group("Core API", "io.jenetics", "io.jenetics.engine")
-		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
 
 		doLast {
 			project.copy {
@@ -197,7 +198,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 					include("io/**/doc-files/*.*")
 				}
 				includeEmptyDirs = false
-				into(destinationDir!!)
+				into(destinationDir!!.resolve(project.extra["moduleName"].toString()))
 			}
 		}
 	}
