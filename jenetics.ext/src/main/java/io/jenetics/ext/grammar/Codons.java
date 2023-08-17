@@ -64,8 +64,8 @@ public final class Codons implements SymbolIndex {
 	 * Create a new {@code Codons} object from a given {@code codons} source and
 	 * its {@code length}.
 	 *
-	 * @param codons the codons source
-	 * @param length the length of the codons source
+	 * @param codons the codon source
+	 * @param length the length of the codon source
 	 * @throws NullPointerException if the {@code codons} source is {@code null}
 	 * @throws IllegalArgumentException if the given {@code length} is smaller
 	 *         than one
@@ -89,7 +89,7 @@ public final class Codons implements SymbolIndex {
 	 * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
 	 * }</pre>
 	 *
-	 * @param genes the genes used for creating the codons object
+	 * @param genes the genes used for creating the codon object
 	 * @return a new <em>codons</em> object
 	 */
 	public static Codons ofBitGenes(final BaseSeq<BitGene> genes) {
@@ -128,7 +128,7 @@ public final class Codons implements SymbolIndex {
 	 * final var codons = Codons.ofIntegerGenes(chromosome);
 	 * }</pre>
 	 *
-	 * @param genes the genes used for creating the codons object
+	 * @param genes the genes used for creating the codon object
 	 * @return a new <em>codons</em> object
 	 */
 	public static Codons ofIntegerGenes(final BaseSeq<IntegerGene> genes) {

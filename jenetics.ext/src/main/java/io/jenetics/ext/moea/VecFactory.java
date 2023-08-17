@@ -25,7 +25,7 @@ import java.util.List;
 import io.jenetics.Optimize;
 
 /**
- * This interface allows creating vector object from a given array type
+ * This interface allows creating a vector object from a given array type
  * {@code T}. It is useful if you need some additional parametrization of the
  * created vectors.
  * <p>

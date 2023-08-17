@@ -200,7 +200,7 @@ public final class CyclicEngine<
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a new concatenating evolution engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	@SafeVarargs

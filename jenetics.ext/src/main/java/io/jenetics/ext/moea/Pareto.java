@@ -37,7 +37,7 @@ import io.jenetics.util.ProxySorter;
 import io.jenetics.ext.internal.util.IntList;
 
 /**
- * Low-level utility methods for doing pareto-optimal calculations. This methods
+ * Low-level utility methods for doing pareto-optimal calculations. These methods
  * are mostly for users who want to extend the existing <em>MOEA</em> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -256,7 +256,7 @@ public final class Pareto {
 				final int fi = Fi.get(p);
 				ranks[fi] = i;
 
-				// Updates the dominated counts as compute next front.
+				// The updates dominated counts as compute next front.
 				for (int k = 0, n = fronts.get(fi).size(); k < n; ++k) {
 					final int q = fronts.get(fi).get(k);
 					nq[q] -= 1;
