@@ -1151,10 +1151,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 6.0
+	 * @version 7.2
 	 * @since 4.4
 	 */
-	final class Path implements Serializable {
+	final class Path implements Comparable<Path>, Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;
@@ -1208,6 +1208,18 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 			System.arraycopy(_path, 0, p, 0, length());
 			System.arraycopy(path._path, 0, p, length(), path.length());
 			return new Path(p);
+		}
+
+		@Override
+		public int compareTo(final Path other) {
+			for (int i = 0, n = Math.min(length(), other.length()); i < n; ++i) {
+				final int cmp = Integer.compare(get(i), other.get(i));
+				if (cmp != 0) {
+					return cmp;
+				}
+			}
+
+			return Integer.compare(length(), other.length());
 		}
 
 		@Override
