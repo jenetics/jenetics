@@ -19,7 +19,9 @@
  */
 package io.jenetics.internal.math;
 
-import static java.lang.Math.abs;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.Probabilities.isOne;
+import static io.jenetics.internal.math.Probabilities.isZero;
 import static io.jenetics.internal.util.Requires.probability;
 
 import java.util.random.RandomGenerator;
@@ -133,21 +135,20 @@ public final class Randoms {
 		final int end,
 		final double p
 	) {
+		requireNonNull(random);
 		probability(p);
-		final int P = Probabilities.toInt(p);
 
-		return equals(p, 0, 1E-20)
-			? IntStream.empty()
-			: equals(p, 1, 1E-20)
-				? IntStream.range(start, end)
-				: IntStream.range(start, end)
-					.filter(i -> random.nextInt() < P);
+		if (isZero(p)) {
+			return IntStream.empty();
+		} else if (isOne(p)) {
+			return IntStream.range(start, end);
+		} else {
+			final int P = Probabilities.toInt(p);
+			return IntStream.range(start, end)
+				.filter(i -> random.nextInt() < P);
+		}
 	}
 
-	private static boolean
-	equals(final double a, final double b, final double delta) {
-		return abs(a - b) <= delta;
-	}
 
 	/**
 	 * Create an {@code IntStream} which creates random indexes within the
