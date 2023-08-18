@@ -122,7 +122,7 @@ public abstract class Recombinator<
 		final int order,
 		final RandomGenerator random
 	) {
-		final int[] ind = Subset.next(size, order, random);
+		final int[] ind = Subset.next(random, size, order);
 
 		// Find the correct slot for the "master" individual.
 		// This prevents duplicate index entries.
