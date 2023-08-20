@@ -19,7 +19,6 @@
  */
 package io.jenetics.internal.math;
 
-import static java.lang.Math.E;
 import static java.lang.Math.abs;
 
 /**

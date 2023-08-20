@@ -271,7 +271,7 @@ java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
 ```
 
 * [#872](https://github.com/jenetics/jenetics/issues/872): Improve generic type parameters for some argument types in `io.jenetics.prog` module.
-* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21-
+* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21.
 
 #### Bugs
 

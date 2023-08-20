@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.lang.Math.nextDown;
-import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.random.RandomGenerator;
@@ -71,11 +70,6 @@ public class GaussianMutator<
 		final double value = gene.doubleValue();
 		final double gaussian = random.nextGaussian();
 		return gene.newInstance(clamp(gaussian*std + value, min, nextDown(max)));
-	}
-
-	@Override
-	public String toString() {
-		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

@@ -391,11 +391,7 @@ public final class Phenotype<
 		final var genotype = (Genotype)in.readObject();
 		final var fitness = (Comparable)in.readObject();
 
-		return new Phenotype(
-			genotype,
-			generation,
-			fitness
-		);
+		return new Phenotype(genotype, generation, fitness);
 	}
 
 }

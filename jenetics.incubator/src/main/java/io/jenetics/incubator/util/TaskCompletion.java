@@ -172,7 +172,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * 	       task completion, {@code false} otherwise
 	 */
 	public boolean isEmpty() {
-		return _tasks.size() == 0;
+		return _tasks.isEmpty();
 	}
 
 	/**
