@@ -80,7 +80,7 @@ open class LyxPlugin : Plugin<Project> {
 			doLast {
 				project.copy {
 					from("${build.temporaryDir}/lyx/manual.pdf")
-					into("${project.buildDir}/doc")
+					into("${project.layout.buildDirectory.asFile.get()}/doc")
 					rename { name ->
 						name.replace("manual.pdf", "manual-${project.version}.pdf")
 					}
@@ -90,7 +90,7 @@ open class LyxPlugin : Plugin<Project> {
 
 		if (project.tasks.findByPath(CLEAN) == null) {
 			project.tasks.getByPath(CLEAN).doLast {
-				project.buildDir.deleteRecursively()
+				project.layout.buildDirectory.asFile.get().deleteRecursively()
 			}
 		}
 	}

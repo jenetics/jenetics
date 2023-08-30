@@ -220,7 +220,7 @@ public record Cfg<T>(
 		 * Creates a new rule object.
 		 *
 		 * @param start the start symbol of the rule
-		 * @param alternatives the list af alternative rule expressions
+		 * @param alternatives the list of alternative rule expressions
 		 * @throws IllegalArgumentException if the given list of
 		 *         {@code alternatives} is empty
 		 * @throws NullPointerException if one of the arguments is {@code null}
@@ -257,7 +257,7 @@ public record Cfg<T>(
 			);
 		}
 
-		// Check uniqueness of the rules.
+		// Check the uniqueness of the rules.
 		final var duplicatedRules = rules.stream()
 			.collect(Collectors.groupingBy(Rule::start))
 			.values().stream()

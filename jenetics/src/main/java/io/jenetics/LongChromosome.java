@@ -74,7 +74,7 @@ public class LongChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected LongChromosome(
@@ -144,8 +144,8 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -167,8 +167,8 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -225,7 +225,7 @@ public class LongChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}
@@ -271,7 +271,7 @@ public class LongChromosome
 	 * @return a new {@code LongChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}

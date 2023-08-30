@@ -25,8 +25,8 @@ import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 
 /**
- * This class allows to force a reevaluation of the fitness function. A
- * reevaluation is necessary, if the fitness function changes. Changing the
+ * This class allows forcing a reevaluation of the fitness function. A
+ * reevaluation is necessary if the fitness function changes. Changing the
  * fitness function is not the usual use case, but is necessary for some
  * problems, like symbolic regression analyses with changing input data (time
  * series).

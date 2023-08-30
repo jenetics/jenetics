@@ -88,7 +88,7 @@ public final class DerivationTreeGenerator<T>
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created derivation tree, or an empty tree if
-	 *         the number of nodes exceed the defined node limit
+	 *         the number of nodes exceeds the defined node limit
 	 */
 	@Override
 	public Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg) {

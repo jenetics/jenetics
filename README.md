@@ -13,11 +13,11 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-7.1.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/7.2/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-7.2.0.pdf)).
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 17** to compile and run. It also compiles and runs with **Java 20**.
+**Jenetics** requires at least **Java 17** to compile and run. It also compiles and runs with **Java 21**.
 
 Check out the master branch from GitHub.
 
@@ -40,12 +40,12 @@ The following projects/modules are also published to Maven.
 * **jenetics.doc**: Contains the code of the web-site and the manual.
 * **jenetics.tool**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
 
-For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
+For building the library change into the `<builddir>` directory (or one of the module directories) and call one of the available tasks:
 
 * **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
 * **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
-* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
+* **test**: Compiles and executes the unit tests. The test results are printed onto the console, and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
 For building the library jar from the source call
@@ -98,20 +98,20 @@ public class HelloWorld {
 }
 ```
 
-In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at listing above and discuss this simple program step by step:
+In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java streaming API. Now let's have a closer look at the listing above and discuss this simple program step by step:
 
 1. The probably most challenging part, when setting up a new evolution `Engine`, is to transform the problem domain into a appropriate `Genotype` (factory) representation. In our example we want to count the number of ones of a `BitChromosome`. Since we are counting only the ones of one chromosome, we are adding only one `BitChromosome` to our `Genotype`. In general, the `Genotype` can be created with 1 to n chromosomes.
 
-1. Once this is done, the fitness function which should be maximized, can be defined. Utilizing the new language features introduced in Java 8, we simply write a private static method, which takes the genotype we defined and calculate it's fitness value. If we want to use the optimized bit-counting method, `bitCount()`, we have to cast the `Chromosome<BitGene>` class to the actual used `BitChromosome` class. Since we know for sure that we created the Genotype with a `BitChromosome`, this can be done safely. A reference to the eval method is then used as fitness function and passed to the `Engine.build` method.
+1. Once this is done, the fitness function, which should be maximized, can be defined. Utilizing the new language features introduced in Java 8, we simply write a private static method, which takes the genotype we defined and calculates its fitness value. If we want to use the optimized bit-counting method, `bitCount()`, we have to cast the `Chromosome<BitGene>` class to the actual used `BitChromosome` class. Since we know for sure that we created the Genotype with a `BitChromosome`, this can be done safely. A reference to the eval method is then used as fitness function and passed to the `Engine.build` method.
 
-1. In the third step we are creating the evolution `Engine`, which is responsible for changing, respectively evolving, a given population. The `Engine` is highly configurable and takes parameters for controlling the evolutionary and the computational environment. For changing the evolutionary behavior, you can set different alterers and selectors. By changing the used `Executor` service, you control the number of threads, the Engine is allowed to use. An new `Engine` instance can only be created via its builder, which is created by calling the `Engine.builder` method.
+1. In the third step we are creating the evolution `Engine`, which is responsible for changing, respectively evolving, a given population. The `Engine` is highly configurable and takes parameters for controlling the evolutionary and the computational environment. For changing the evolutionary behavior, you can set different alterers and selectors. By changing the used `Executor` service, you control the number of threads; the Engine is allowed to use. A new `Engine` instance can only be created via its builder, which is created by calling the `Engine.builder` method.
 
 1. In the last step, we can create a new `EvolutionStream` from our `Engine`. The `EvolutionStream` is the model or view of the evolutionary process. It serves as a »process handle« and also allows you, among other things, to control the termination of the evolution. In our example, we simply truncate the stream after 100 generations. If you don't limit the stream, the `EvolutionStream` will not terminate and run forever. Since the `EvolutionStream` extends the `java.util.stream.Stream` interface, it integrates smoothly with the rest of the Java Stream API. The final result, the best `Genotype` in our example, is then collected with one of the predefined collectors of the `EvolutionResult` class.
 
 
 ### Evolving images
 
-This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
+This example tries to approximate a given image by semitransparent polygons.  It comes with a Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
     $ ./gradlew compileTestJava
 
@@ -121,7 +121,7 @@ you can start the example by calling
 
 ![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
-The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows storing polygonized images in PNG format to disk. At the button of the UI, you can change some GA parameters of the example.
+The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button, it is possible to load other images for polygonization. The »Save« button allows storing polygonized images in PNG format to disk. At the button of the UI, you can change some GA parameters of the example.
 
 
 ## Projects using Jenetics
@@ -258,53 +258,25 @@ Julien Amblard, Robert Filman, Gabriel Kopito. <a href="https://doi.org/10.1145/
 
 ## Release notes
 
-### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
 
 #### Improvemments
 
-* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
-
-### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
-
-#### Improvemments
-
-* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
-
-
-### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
-
-#### Bugs
-
-* [#842](https://github.com/jenetics/jenetics/issues/842): `BitChromosone::bitCount` returns wrong results for chromosome lengths <= 8.
-
-### [7.1.0](https://github.com/jenetics/jenetics/releases/tag/v7.1.0)
-
-#### Improvements
-
-* [#813](https://github.com/jenetics/jenetics/issues/813): Re-implementation of `MathExpr` class. Replace ad-hoc parsing implementation.
-* [#815](https://github.com/jenetics/jenetics/issues/815): Implement Grammatical-Evolution.
-* [#820](https://github.com/jenetics/jenetics/issues/820): Additional `BitChromosome` methods: `and`, `or`, `xor`, `not`, `shiftRight`, `shiftLeft`.
-* [#833](https://github.com/jenetics/jenetics/issues/833): Implement `Tree::reduce` function. Allows to write code as follows:
-```java
-final Tree<String, ?> formula = TreeNode.parse(
-    "add(sub(6, div(230, 10)), mul(5, 6))",
-    String::trim
-);
-final double result = formula.reduce(new Double[0], (op, args) ->
-    switch (op) {
-        case "add" -> args[0] + args[1];
-        case "sub" -> args[0] - args[1];
-        case "mul" -> args[0] * args[1];
-        case "div" -> args[0] / args[1];
-        default -> Double.parseDouble(op);
-    }
-);
+* [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
+* [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
+```
+java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
+     -cp jenetics-@__version__@.jar:app.jar\
+         com.foo.bar.MyJeneticsAppjava 
 ```
 
+* [#872](https://github.com/jenetics/jenetics/issues/872): Improve generic type parameters for some argument types in `io.jenetics.prog` module.
+* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21.
+
 #### Bugs
 
-* [#831](https://github.com/jenetics/jenetics/issues/831): Error while parsing parentheses trees.
-* [#836](https://github.com/jenetics/jenetics/issues/836): Fix `BitChromosome`(`Test`).
+* [#865](https://github.com/jenetics/jenetics/issues/865), [#867](https://github.com/jenetics/jenetics/issues/867): Fixing typos in documentation.
+* [#868](https://github.com/jenetics/jenetics/issues/868): Fix execution script `./jrun.cmd`
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

@@ -68,7 +68,7 @@ public class SinglePointCrossover<
 	}
 
 	/**
-	 * Create a new single point crossover object with crossover probability of
+	 * Create a new single-point crossover object with crossover probability of
 	 * {@code 0.05}.
 	 */
 	public SinglePointCrossover() {

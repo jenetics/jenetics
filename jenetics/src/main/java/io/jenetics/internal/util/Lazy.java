@@ -124,7 +124,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
 	/**
 	 * Create a new {@code Lazy} object with the given {@code value}. This
-	 * method allows to create a <em>lazy</em> object with the given
+	 * method allows creating a <em>lazy</em> object with the given
 	 * {@code value}.
 	 *
 	 * @since 3.7

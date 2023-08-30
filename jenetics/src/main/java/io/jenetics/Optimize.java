@@ -96,9 +96,9 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
 	 * }</pre>
 	 *
-	 * The code example above will populationSort the population according it's fitness
-	 * values in ascending order, since lower values are <i>better</i> in this
-	 * case.
+	 * The code example above will populationSort the population according its
+	 * fitness values in ascending order, since lower values are <i>better</i>
+	 * in this case.
 	 *
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
@@ -118,9 +118,9 @@ public enum Optimize {
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());
 	 * }</pre>
 	 *
-	 * The code example above will populationSort the population according it's fitness
-	 * values in descending order, since lower values are <i>better</i> in this
-	 * case.
+	 * The code example above will populationSort the population according its
+	 * fitness values in descending order, since lower values are <i>better</i>
+	 * in this case.
 	 *
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
@@ -137,7 +137,7 @@ public enum Optimize {
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
-	 * @return the best value. If both values are equal the first one is returned.
+	 * @return the best value. If both values are equal, the first one is returned.
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C best(final C a, final C b) {
@@ -178,7 +178,7 @@ public enum Optimize {
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
-	 * @return the worst value. If both values are equal the first one is returned.
+	 * @return the worst value. If both values are equal, the first one is returned.
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C worst(final C a, final C b) {

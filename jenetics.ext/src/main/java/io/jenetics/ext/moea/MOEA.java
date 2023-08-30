@@ -99,7 +99,7 @@ public final class MOEA {
 	 * @param size the allowed size range of the returned pareto set. If the
 	 *        size of the pareto set is bigger than {@code size.getMax()},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
-	 *        Pareto set elements which are close to each other are removed firsts.
+	 *        Pareto set elements which are close to each other are removed first.
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}
 	 * @param <V> the multi object result type vector
@@ -130,7 +130,7 @@ public final class MOEA {
 	 * @param size the allowed size range of the returned pareto set. If the
 	 *        size of the pareto set is bigger than {@code size.getMax()},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
-	 *        Pareto set elements which are close to each other are removed firsts.
+	 *        Pareto set elements which are close to each other are removed first.
 	 * @param dominance the pareto dominance measure of the fitness result type
 	 *        {@code C}
 	 * @param comparator the comparator of the elements of the vector type

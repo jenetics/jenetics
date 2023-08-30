@@ -46,17 +46,17 @@ import io.jenetics.util.RandomRegistry;
  *     C1 = 012|345|6789
  *     C2 = 987|654|3210
  * </pre>
- * After performing the crossover we normally got two invalid chromosomes.
+ * After performing the crossover, we normally got two invalid chromosomes.
  * <pre>
  *     C1 = 012|654|6789
  *     C2 = 987|345|3210
  * </pre>
- * Chromosome {@code C1} contains the value 6  twice and misses the value
- * 3. On  the other side chromosome {@code C2} contains the value 3 twice and
- * misses the value 6. We can observe that this crossover is equivalent
+ * Chromosome {@code C1} contains value 6 twice and misses value
+ * 3. On the other side chromosome {@code C2} contains the value 3 twice and
+ * misses value 6. We can observe that this crossover is equivalent
  * to the exchange of the values {@code 3 -> 6}, {@code 4 -> 5} and
- * {@code 5 -> 4}. To repair the two
- * chromosomes we have to apply this exchange outside the crossing region.
+ * {@code 5 -> 4}. To repair the two chromosomes, we have to apply this exchange
+ * outside the crossing region.
  * <pre>
  *     C1 = 012|654|3789
  *     C2 = 987|345|6210
@@ -94,7 +94,7 @@ public class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 
 		if (that.length() >= 2) {
 			final var random = RandomRegistry.random();
-			final int[] points = Subset.next(that.length(), 2, random);
+			final int[] points = Subset.next(random, that.length(), 2);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);

@@ -189,7 +189,7 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the duration statistics needed for the whole evolve step, in
+	 * Return the duration statistics needed for the whole evolved step, in
 	 * seconds.
 	 *
 	 * @return the duration statistics needed for the whole evolve step
@@ -234,7 +234,7 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the statistics about the individuals age.
+	 * Return the statistics about the individual's age.
 	 *
 	 * @return individual age statistics
 	 */

@@ -17,26 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.model;
 
-import static java.util.Objects.requireNonNull;
-
-import io.jenetics.incubator.property.Property.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
- * This class adds a path to a given object.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public record PathObject(Path path, Object value) {
-	public PathObject {
-		requireNonNull(path);
+public record Author(
+	String forename,
+	String surname,
+	LocalDate birthDate,
+	List<Book> books
+) {
+	@Override
+	public String toString() {
+		return "Author[%s %s]".formatted(forename, surname);
 	}
-
-	public PathObject(Object value) {
-		this(Path.EMPTY, value);
-	}
-
 }

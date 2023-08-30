@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
@@ -40,7 +41,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * <b>Using a {@link RandomGeneratorFactory}</b><br>
  * The following example registers the <em>L128X1024MixRandom</em> random
- * generator. By using a factory, each threads gets its own generator instance,
+ * generator. By using a factory, each thread gets its own generator instance,
  * which ensures thread-safety without the necessity of the created random
  * generator to be thread-safe.
  * <pre>{@code
@@ -61,8 +62,8 @@ import java.util.random.RandomGeneratorFactory;
  * RandomRegistry.random(() -> new MySpecialRandomGenerator());
  * }</pre>
  *
- * Register a random generator supplier is also more flexible. It allows to
- * use the streaming and splitting capabilities of the random generators
+ * Register a random generator supplier is also more flexible. It allows
+ * using the streaming and splitting capabilities of the random generators
  * implemented in the Java library.
  * <pre>{@code
  * final Iterator<RandomGenerator> randoms =
@@ -102,7 +103,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * <h2>Setup of a <i>local</i> PRNG</h2>
  *
- * You can temporarily (and locally) change the implementation of the PRNG. E.g.
+ * You can temporarily (and locally) change the implementation of the PRNG. E.g.,
  * for initialize the engine stream with the same initial population.
  *
  * <pre>{@code
@@ -125,6 +126,17 @@ import java.util.random.RandomGeneratorFactory;
  *             .collect(toBestEvolutionResult());
  *     }
  * }
+ * }</pre>
+ *
+ * <p>
+ * The default random generator used by <em>Jenetics</em> is
+ * {@code L64X256MixRandom}. Via the system property
+ * {@code io.jenetics.util.defaultRandomGenerator}, it is possible to use a
+ * different random generator.
+ * <pre>{@code
+ * java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
+ *      -cp jenetics-@__version__@.jar:app.jar\
+ *          com.foo.bar.MyJeneticsApp
  * }</pre>
  *
  * @see RandomGenerator
@@ -159,7 +171,7 @@ public final class RandomRegistry {
 	}
 
 	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
-		new TLR<>(RandomGeneratorFactory.of("L64X256MixRandom")::create);
+		new TLR<>(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
 	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
@@ -404,6 +416,18 @@ public final class RandomRegistry {
 			new TLR<>(supplier),
 			r -> function.apply(r.get())
 		);
+	}
+
+	@SuppressWarnings("removal")
+	private static final class Env {
+		private static final String defaultRandomGenerator =
+			java.security.AccessController.doPrivileged(
+				(java.security.PrivilegedAction<String>)() ->
+					System.getProperty(
+						"io.jenetics.util.defaultRandomGenerator",
+						"L64X256MixRandom"
+					)
+			);
 	}
 
 }

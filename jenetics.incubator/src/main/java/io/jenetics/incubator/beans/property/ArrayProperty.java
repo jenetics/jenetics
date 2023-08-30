@@ -17,63 +17,56 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Collections.emptyIterator;
 
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
- * Represents a list property.
+ * Represents an array property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
-public final class ListProperty extends CollectionProperty {
+public final class ArrayProperty extends IndexedProperty {
 
-	ListProperty(
-		final PropertyDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject, path, value);
+	ArrayProperty(final Path path, final Value value) {
+		super(path, value);
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<Object> value() {
-		return (List<Object>)value;
+	/**
+	 * Return the array values as {@code Object[]} array.
+	 *
+	 * @return the array values
+	 */
+	public Object[] array() {
+		return (Object[])value().value();
 	}
 
 	@Override
 	public int size() {
-		return value != null ? value().size() : 0;
+		return array() != null ? array().length : 0;
 	}
 
+	@Override
 	public Object get(final int index) {
-		if (value == null) {
-			throw new IndexOutOfBoundsException("List is null.");
+		if (array() == null) {
+			throw new IndexOutOfBoundsException("Array is null.");
 		}
-		return value().get(index);
+
+		return array()[index];
 	}
 
 	@Override
 	public Iterator<Object> iterator() {
-		return value != null ? value().iterator() : emptyIterator();
-	}
-
-	@Override
-	public Stream<Object> stream() {
-		return value().stream();
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
+		return array() != null
+			? Arrays.asList(array()).iterator()
+			: emptyIterator();
 	}
 
 }

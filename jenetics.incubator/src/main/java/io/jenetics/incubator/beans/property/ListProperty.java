@@ -17,60 +17,60 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Collections.emptyIterator;
 
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
- * Represents an array property.
+ * Represents a list property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
-public final class ArrayProperty extends CollectionProperty {
+public final class ListProperty extends IndexedProperty {
 
-	ArrayProperty(
-		final PropertyDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject, path, value);
+	ListProperty(final Path path, final Value value) {
+		super(path, value);
 	}
 
-	@Override
-	public Object[] value() {
-		return (Object[])value;
+	/**
+	 * Return the list values as {@code List} object.
+	 *
+	 * @return the list values
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object> list() {
+		return (List<Object>)value().value();
 	}
 
 	@Override
 	public int size() {
-		return value != null ? value().length : 0;
+		return list() != null ? list().size() : 0;
 	}
 
 	@Override
 	public Object get(final int index) {
-		if (value == null) {
-			throw new IndexOutOfBoundsException("Array is null.");
+		if (list() == null) {
+			throw new IndexOutOfBoundsException("List is null.");
 		}
-
-		return value()[index];
+		return list().get(index);
 	}
 
 	@Override
 	public Iterator<Object> iterator() {
-		return value != null
-			? Arrays.asList(value()).iterator()
-			: emptyIterator();
+		return list() != null ? list().iterator() : emptyIterator();
 	}
 
 	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
+	public Stream<Object> stream() {
+		return list().stream();
 	}
 
 }

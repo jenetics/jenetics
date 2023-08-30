@@ -221,7 +221,7 @@ public class Lifecycle {
 
 		/**
 		 * Create a new {@code ExtendedCloseable} object with the given initial
-		 * release <em>methods</em>>. The given list of objects are closed in
+		 * release <em>methods</em>>. The given list of objects is closed in
 		 * reversed order.
 		 *
 		 * @see #of(ThrowingRunnable...)
@@ -243,7 +243,7 @@ public class Lifecycle {
 
 		/**
 		 * Create a new {@code ExtendedCloseable} object with the given initial
-		 * release <em>methods</em>>. The given list of objects are closed in
+		 * release <em>methods</em>>. The given list of objects is closed in
 		 * reversed order.
 		 *
 		 * @see #of(Collection)
@@ -383,7 +383,7 @@ public class Lifecycle {
 
 		/**
 		 * Applies the give {@code block} to the already created closeable value.
-		 * If the {@code block} throws an exception, the  resource value is
+		 * If the {@code block} throws an exception, the resource value is
 		 * released, by calling the defined <em>release</em> method. The typical
 		 * use case for this method is when additional initialization of the
 		 * value is needed.
@@ -527,7 +527,7 @@ public class Lifecycle {
 	}
 
 	/**
-	 * This class allows to collect one or more {@link AutoCloseable} objects
+	 * This class allows collecting one or more {@link AutoCloseable} objects
 	 * into one. The registered closeable objects are closed in reverse order.
 	 * <p>
 	 * Using the {@code Resources} class can simplify the creation of
@@ -627,7 +627,7 @@ public class Lifecycle {
 	}
 
 	/**
-	 * This class allows to collect one or more {@link AutoCloseable} objects
+	 * This class allows collecting one or more {@link AutoCloseable} objects
 	 * into one. The registered closeable objects are closed in reverse order.
 	 * <p>
 	 * Using the {@code IOResources} class can simplify the creation of
@@ -749,7 +749,7 @@ public class Lifecycle {
 	private static final int MAX_SUPPRESSED = 5;
 
 	/**
-	 * Invokes the {@code method}> on all given {@code objects}, no matter if one
+	 * Invokes the {@code method} on all given {@code objects}, no matter if one
 	 * of the method invocations throws an exception. The first exception thrown
 	 * is returned, all other exceptions are swallowed.
 	 *
@@ -776,7 +776,7 @@ public class Lifecycle {
 			} else {
 				try {
 					method.accept(object);
-				} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
+				} catch (VirtualMachineError|LinkageError e) {
 					throw e;
 				} catch (Throwable e) {
 					error = e;

@@ -17,38 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
  * Base class for properties which consists of 0 to n objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
-public abstract sealed class CollectionProperty
-	extends PropertyDescriptionMethods
+public abstract sealed class IndexedProperty
 	implements Iterable<Object>, Property
-	permits ListProperty, ArrayProperty
+	permits OptionalProperty, ArrayProperty, ListProperty
 {
 
-	final Path path;
-	final Object value;
+	private final Path path;
+	private final Value value;
 
-	CollectionProperty(
-		final PropertyDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject);
+	IndexedProperty(final Path path, final Value value) {
 		this.path = requireNonNull(path);
-		this.value = value;
+		this.value = requireNonNull(value);
 	}
 
 	@Override
@@ -56,12 +52,46 @@ public abstract sealed class CollectionProperty
 		return path;
 	}
 
+	@Override
+	public Value value() {
+		return value;
+	}
+
+	/**
+	 * Return the size of the <em>indexed</em> property.
+	 *
+	 * @return the size of the <em>indexed</em> property
+	 */
 	public abstract int size();
 
+	/**
+	 * Return the property value at the given {@code index}.
+	 *
+	 * @param index the property index
+	 * @return the property value at the given index
+	 */
 	public abstract Object get(final int index);
 
+	/**
+	 * Return the property values.
+	 *
+	 * @return the property values
+	 */
 	public Stream<Object> stream() {
 		return StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path, value);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IndexedProperty ip &&
+			path.equals(ip.path) &&
+			value.equals(ip.value);
 	}
 
 	@Override

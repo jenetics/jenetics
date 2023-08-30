@@ -17,49 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
-
-import static java.util.Objects.requireNonNull;
+package io.jenetics.incubator.beans.description;
 
 /**
- * Represents a simple property.
+ * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.
+ * array or {@code List} objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
-public final class SimpleProperty
-	extends PropertyDescriptionMethods
-	implements Property
-{
+@FunctionalInterface
+public interface IndexedGetter {
 
-	private final Path path;
-	private final Object value;
-
-	SimpleProperty(
-		final PropertyDescription desc,
-		final Object enclosingObject,
-		final Path path,
-		final Object value
-	) {
-		super(desc, enclosingObject);
-		this.path = requireNonNull(path);
-		this.value = value;
-	}
-
-	@Override
-	public Path path() {
-		return path;
-	}
-
-	@Override
-	public Object value() {
-		return value;
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
-	}
+	/**
+	 * Return the value from a given <em>indexed</em> {@code object} with the
+	 * given {@code index}.
+	 *
+	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
+	 * @param index the array/list index
+	 * @return the value at the given {@code index}
+	 */
+	Object get(final Object object, final int index);
 
 }

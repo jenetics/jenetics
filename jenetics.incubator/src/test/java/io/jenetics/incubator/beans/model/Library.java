@@ -17,34 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.model;
 
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-final class Filters {
-	private Filters() {
-	}
-
-	static Pattern toPattern(final String glob) {
-		return Pattern.compile(
-			"^" +
-				Pattern.quote(glob)
-					.replace("*", "\\E.*\\Q")
-					.replace("?", "\\E.\\Q") +
-				"$"
-		);
-	}
-
-	static Predicate<PathObject> toFilter(final Pattern pattern) {
-		return object -> pattern
-			.matcher(object.value().getClass().getName())
-			.matches();
-	}
-
+public record Library(String name, List<Book> books) {
 }

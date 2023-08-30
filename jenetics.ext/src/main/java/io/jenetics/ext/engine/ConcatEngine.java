@@ -93,13 +93,13 @@ import io.jenetics.ext.internal.util.ConcatSpliterator;
  * }</pre>
  *
  * An essential part, when concatenating evolution engines, is to make sure your
- * your engines are creating <em>limited</em> evolution streams. This is what
+ * engines are creating <em>limited</em> evolution streams. This is what
  * the {@link EvolutionStreamable#limit(Supplier)} and
  * {@link EvolutionStreamable#limit(long)} methods are for. Limiting an engine
  * means, that this engine will surely create only streams, which are limited
  * with the predicate/generation given to the engine. If you have limited your
  * engines, it is no longer necessary to limit your final evolution stream, but
- * your are still able to do so.
+ * you are still able to do so.
  *
  * @see CyclicEngine
  *
@@ -121,7 +121,7 @@ public final class ConcatEngine<
 	 * Create a new concatenating evolution engine with the given list of engines.
 	 *
 	 * @param engines the engines which are concatenated to <em>one</em> engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	public ConcatEngine(final List<? extends EvolutionStreamable<G, C>> engines) {
@@ -212,7 +212,7 @@ public final class ConcatEngine<
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a new concatenating evolution engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	@SafeVarargs

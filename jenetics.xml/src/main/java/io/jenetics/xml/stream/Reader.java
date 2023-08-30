@@ -275,7 +275,7 @@ public abstract class Reader<T> {
 	 *
 	 * @param generator the generator function, which build the result object
 	 *        from the given parameter array
-	 * @param name the name of the root (sub-tree) element
+	 * @param name the name of the root (subtree) element
 	 * @param children the child element reader, which creates the values
 	 *        forwarded to the {@code generator} function
 	 * @param <T> the reader result type
@@ -346,7 +346,7 @@ public abstract class Reader<T> {
 
 	/**
 	 * Return a {@code Reader} which collects the elements, read by the given
-	 * child {@code reader}, and returns it as list of these elements.
+	 * child {@code reader}, and returns it as a list of these elements.
 	 * <p>
 	 * <b>XML</b>
 	 * <pre> {@code
@@ -526,45 +526,41 @@ final class ElemReader<T> extends Reader<T> {
 
 			boolean hasNext = false;
 			do {
-				switch (xml.getEventType()) {
-					case START_ELEMENT:
-						final ReaderResult result = results
-							.get(_readerIndexMapping.get(xml.getLocalName()));
-
-						if (result != null) {
-							result.put(result.reader().read(xml));
-							if (xml.hasNext()) {
-								hasNext = true;
-								xml.next();
-							} else {
-								hasNext = false;
-							}
-						}
-
-						break;
-					case CHARACTERS:
-					case CDATA:
-						if (text != null) {
-							text.put(text.reader().read(xml));
-						} else {
-							xml.next();
-						}
-						hasNext = true;
-
-						break;
-					case END_ELEMENT:
-						if (name().equals(xml.getLocalName())) {
-							try {
-								return _creator.apply(
-									results.stream()
-										.map(ReaderResult::value)
-										.toArray()
-								);
-							} catch (RuntimeException e) {
-								throw new XMLStreamException(e);
-							}
-						}
-				}
+                switch (xml.getEventType()) {
+                    case START_ELEMENT -> {
+                        final ReaderResult result = results.get(
+							_readerIndexMapping.get(xml.getLocalName())
+                        );
+                        if (result != null) {
+                            result.put(result.reader().read(xml));
+                            if (xml.hasNext()) {
+                                hasNext = true;
+                                xml.next();
+                            } else {
+                                hasNext = false;
+                            }
+                        }
+                    }
+                    case CHARACTERS, CDATA -> {
+                        if (text != null) {
+                            text.put(text.reader().read(xml));
+                        } else {
+                            xml.next();
+                        }
+                        hasNext = true;
+                    }
+                    case END_ELEMENT -> {
+                        if (name().equals(xml.getLocalName())) {
+                            try {
+                                return _creator.apply(results.stream()
+	                                .map(ReaderResult::value)
+	                                .toArray());
+                            } catch (RuntimeException e) {
+                                throw new XMLStreamException(e);
+                            }
+                        }
+                    }
+                }
 
 			} while (hasNext);
 		}

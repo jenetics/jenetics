@@ -17,25 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.description;
 
-import org.testng.annotations.Test;
+/**
+ * Represents the <em>setter</em> function for <em>indexed</em> objects, e.g.
+ * array or {@code List} objects.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 7.2
+ * @since 7.2
+ */
+@FunctionalInterface
+public interface IndexedSetter {
 
-import io.jenetics.jpx.GPX;
-
-public class PropertyDescriptionTests {
-
-	@Test
-	public void returnType() {
-		GPX gpx = GPX.builder().build();
-		final var props = PropertyDescriptionExtractor.extract(GPX.class);
-
-		props.forEach(p -> {
-			var foo = p.getter().getGenericReturnType();
-			System.out.println(foo.getTypeName());
-		});
-
-		//props.forEach(System.out::println);
-	}
+	/**
+	 * Set a new value to the given <em>indexed</em> {@code object} for the
+	 * given {@code index}.
+	 *
+	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
+	 * @param index the array/list index
+	 * @param value the new value
+	 */
+	void set(final Object object, final int index, final Object value);
 
 }

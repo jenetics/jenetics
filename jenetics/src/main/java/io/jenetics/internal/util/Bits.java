@@ -27,7 +27,7 @@ import io.jenetics.util.RandomRegistry;
 
 
 /**
- * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
+ * Some bit utils. All operations assume <a href="http://en.wikipedia.org/wiki/Endianness">
  * <b>little-endian</b></a> byte order.
  *
  * <pre>
@@ -130,7 +130,7 @@ public final class Bits {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index) {
-		data[index >>> 3] |= 1 << (index & 7);
+		data[index >>> 3] |= (byte)(1 << (index & 7));
 		return data;
 	}
 
@@ -146,7 +146,7 @@ public final class Bits {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] unset(final byte[] data, final int index) {
-		data[index >>> 3] &= ~(1 << (index & 7));
+		data[index >>> 3] &= (byte)~(1 << (index & 7));
 		return data;
 	}
 
@@ -164,7 +164,7 @@ public final class Bits {
 	 *                          otherStart
 	 * }</pre>
 	 *
-	 * @param data the first byte array which are used for swapping.
+	 * @param data the first byte array which is used for swapping.
 	 * @param start the start bit index of the {@code data} byte array,
 	 *        inclusively.
 	 * @param end the end bit index of the {@code data} byte array, exclusively.
@@ -444,7 +444,7 @@ public final class Bits {
 			}
 
 			// Trim (delete) the overhanging bits.
-			copy[copy.length - 1] &= 0xFF >>> ((copy.length << 3) - bitLength);
+			copy[copy.length - 1] &= (byte)(0xFF >>> ((copy.length << 3) - bitLength));
 		}
 
 		return copy;
@@ -493,7 +493,7 @@ public final class Bits {
 
 	/**
 	 * Convert a string which was created with the {@link #toByteString(byte...)}
-	 * method back to an byte array.
+	 * method back to a byte array.
 	 *
 	 * @see #toByteString(byte...)
 	 *
@@ -549,7 +549,7 @@ public final class Bits {
 		final byte[] bytes = newArray(length);
 
 		Randoms.indexes(RandomRegistry.random(), length, p)
-			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
+			.forEach(i -> bytes[i >>> 3] |= (byte)(1 << (i & 7)));
 
 		return bytes;
 	}
@@ -566,7 +566,10 @@ public final class Bits {
 				"Bit length must not smaller then zero: " + bitLength
 			);
 		}
-		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
+
+		return (bitLength & 7) == 0   // Is a multiple of Byte.SIZE (8)
+			? (bitLength >>> 3)       // divided by Byte.SIZE (8)
+			: (bitLength >>> 3) + 1;  // divide by Byte.SIZE and add one
 	}
 
 	public static int toInt(final byte[] data) {

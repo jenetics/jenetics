@@ -26,7 +26,7 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 
 /**
- * The evolution interceptor allows to update the {@link EvolutionStart} object,
+ * The evolution interceptor allows updating the {@link EvolutionStart} object,
  * <em>before</em> the evolution start, and update the {@link EvolutionResult}
  * object <em>after</em> the evolution.
  *

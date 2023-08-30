@@ -198,9 +198,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	}
 
 	/**
-	 * Return the number of nodes of {@code this} node (sub-tree).
+	 * Return the number of nodes of {@code this} node (subtree).
 	 *
-	 * @return the number of nodes of {@code this} node (sub-tree)
+	 * @return the number of nodes of {@code this} node (subtree)
 	 */
 	default int size() {
 		return Trees.countChildren(this) + 1;
@@ -604,7 +604,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the next sibling of {@code this} node in the parent's children
-	 * array, or {@code null} if {@code this} node has no parent or it is the
+	 * array, or {@code null} if {@code this} node has no parent, or it is the
 	 * last child of the paren. This method performs a linear search that is
 	 * {@code O(n)} where n is the number of children; to traverse the entire
 	 * array, use the iterator of the parent instead.
@@ -897,7 +897,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return an iterator that follows the path from {@code ancestor} to
-	 * {@code this} node. The iterator return {@code ancestor} as first element,
+	 * {@code this} node. The iterator return {@code ancestor} as a first element,
 	 * The creation of the iterator is O(m), where m is the number of nodes
 	 * between {@code this} node and the {@code ancestor}, inclusive.
 	 * <p>
@@ -1151,10 +1151,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 6.0
+	 * @version 7.2
 	 * @since 4.4
 	 */
-	final class Path implements Serializable {
+	final class Path implements Comparable<Path>, Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;
@@ -1208,6 +1208,18 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 			System.arraycopy(_path, 0, p, 0, length());
 			System.arraycopy(path._path, 0, p, length(), path.length());
 			return new Path(p);
+		}
+
+		@Override
+		public int compareTo(final Path other) {
+			for (int i = 0, n = Math.min(length(), other.length()); i < n; ++i) {
+				final int cmp = Integer.compare(get(i), other.get(i));
+				if (cmp != 0) {
+					return cmp;
+				}
+			}
+
+			return Integer.compare(length(), other.length());
 		}
 
 		@Override

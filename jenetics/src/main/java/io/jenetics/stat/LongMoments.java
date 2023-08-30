@@ -117,7 +117,7 @@ public record LongMoments(
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
+	 * Return a {@code Collector} which applies a long-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *

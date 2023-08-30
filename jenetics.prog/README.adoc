@@ -193,7 +193,7 @@ The error function uses the _mean square error_ as _loss_ function. It is also p
 ```java
 final Error error = Error.of(
     LossFunction::mse,
-    Complexity.ofMaxNodeCount(50)
+    Complexity.ofNodeCount(50)
 );
 
 ```
@@ -207,5 +207,3 @@ The GP is capable of finding the polynomial which created the sample data. and w
 	Error:       1.3621827363801722E-31
 
 This program can be reduced to _4*x^3 - 3*x^2 + x_, which is exactly the polynomial, which created the sample data.
-
-

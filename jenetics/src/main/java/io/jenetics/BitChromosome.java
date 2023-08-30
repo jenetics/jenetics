@@ -574,7 +574,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability.
+	 * ones' probability.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
 	 * @param length length of the BitChromosome
@@ -594,7 +594,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability. The {@link #oneProbability()} of the chromosome is set
+	 * ones' probability. The {@link #oneProbability()} of the chromosome is set
 	 * to {@code 0.5}.
 	 *
 	 * @since 7.0

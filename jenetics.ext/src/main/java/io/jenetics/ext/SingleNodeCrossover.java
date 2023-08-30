@@ -27,7 +27,7 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.
+ * Swaps two, randomly chosen, nodes (subtrees) from two given trees.
  * <pre> {@code
  *     Tree A                 Tree B
  *   0                      a

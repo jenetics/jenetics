@@ -17,28 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.property;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.property.Property.Path;
+import io.jenetics.incubator.beans.Path;
 
 /**
+ * Represents a simple property value.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
-public record MetaObject(Object object) {
+public record SimpleProperty(Path path, Value value) implements Property {
 
-	public Stream<Property> properties(final String... includes) {
-		return object != null
-			? Properties.walk(new PathObject(object), includes)
-			: Stream.empty();
+	public SimpleProperty {
+		requireNonNull(path);
+		requireNonNull(value);
 	}
 
-	public Optional<Property> get(final Path path) {
-		return Optional.empty();
+	@Override
+	public String toString() {
+		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
 	}
 
 }

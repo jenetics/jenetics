@@ -81,7 +81,7 @@ public class IntMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -144,7 +144,7 @@ public class IntMomentStatistics
 	/**
 	 * Compares the state of two {@code IntMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final IntMomentStatistics ims1 = ...;

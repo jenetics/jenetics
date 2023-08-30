@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotSame;
@@ -123,6 +124,24 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 			Chromosome<DoubleGene> ch2 = gt2.get(i);
 			Assert.assertEquals(ch1.length(), ch2.length());
 		}
+	}
+
+	@Test
+	public void slice() {
+		final var genotype = Genotype.of(
+			DoubleChromosome.of(0.0, 1.0, 8),
+			DoubleChromosome.of(1.0, 2.0, 10),
+			DoubleChromosome.of(0.0, 10.0, 9),
+			DoubleChromosome.of(0.1, 0.9, 5),
+			DoubleChromosome.of(0.1, 0.9, 8)
+		);
+
+		final var slice = genotype.slice(1, 3);
+
+		final var chromosomes = genotype.stream().toList();
+		final var expected = Genotype.of(chromosomes.subList(1, 3));
+
+		assertThat(slice).isEqualTo(expected);
 	}
 
 }

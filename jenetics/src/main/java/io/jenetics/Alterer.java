@@ -69,7 +69,7 @@ public interface Alterer<
 	 *        is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the alter-result object, which contains the altered population
-	 *         and the alteration count
+	 *         and the alteration counts
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */

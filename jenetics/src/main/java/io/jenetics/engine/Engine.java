@@ -90,10 +90,9 @@ import io.jenetics.util.Seq;
  * {@code Engine}.
  *
  * @implNote
- *     This class is thread safe:
- *     No mutable state is maintained by the engine. Therefore, it is safe to
- *     create multiple evolution streams with one engine, which may be actually
- *     used in different threads.
+ *     This class is thread safe: The engine maintains no mutable state.
+ *     Therefore, it is safe to create multiple evolution streams with one
+ *     engine, which may be actually used in different threads.
  *
  * @see Engine.Builder
  * @see EvolutionStart
@@ -146,7 +145,7 @@ public final class Engine<
 	 * @param optimize the kind of optimization (minimize or maximize)
 	 * @param evolutionParams the evolution parameters, which influences the
 	 *        evolution process
-	 * @param executor the executor used for executing the single evolve steps
+	 * @param executor the executor used for executing the single evolved steps
 	 * @param clock the clock used for calculating the timing results
 	 * @param interceptor the evolution interceptor, which gives additional
 	 *        possibilities to influence the actual evolution
@@ -244,7 +243,7 @@ public final class Engine<
 				_executor
 			);
 
-		// Evaluate the fitness-function and wait for result.
+		// Evaluate the fitness-function and wait for a result.
 		final ISeq<Phenotype<G, C>> pop = nextPopulation.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
 			eval(pop)
@@ -285,7 +284,7 @@ public final class Engine<
 			.clean();
 	}
 
-	// Selects the survivors population. A new population object is returned.
+	// Selects the survivor population. A new population object is returned.
 	private ISeq<Phenotype<G, C>>
 	selectSurvivors(final ISeq<Phenotype<G, C>> population) {
 		return _evolutionParams.survivorsSize() > 0
@@ -703,7 +702,7 @@ public final class Engine<
 
 		/**
 		 * Create a new evolution {@code Engine.Builder} with the given fitness
-		 * evaluator and genotype factory. This is the most general way for
+		 * evaluator and genotype factory. This is the most general way of
 		 * creating an engine builder.
 		 *
 		 * @since 5.0
@@ -768,10 +767,10 @@ public final class Engine<
 		}
 
 		/**
-		 * The selector used for selecting the survivors population. <i>Default
+		 * The selector used for selecting the survivor population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
-		 * @param selector used for selecting survivors population
+		 * @param selector used for selecting survivor population
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if one of the {@code selector} is
 		 *         {@code null}.
@@ -853,7 +852,7 @@ public final class Engine<
 		}
 
 		/**
-		 * Set to a fitness maximizing strategy.
+		 * Set to a fitness-maximizing strategy.
 		 *
 		 * @since 3.4
 		 *
@@ -893,7 +892,7 @@ public final class Engine<
 		}
 
 		/**
-		 * The survivors fraction. <i>Default values is set to {@code 0.4}.</i>
+		 * The survivor fraction. <i>Default values is set to {@code 0.4}.</i>
 		 * This method call is equivalent to
 		 * {@code offspringFraction(1 - survivorsFraction)} and will override
 		 * any previously set offspring-fraction.
@@ -902,7 +901,7 @@ public final class Engine<
 		 *
 		 * @see #offspringFraction(double)
 		 *
-		 * @param fraction the survivors fraction
+		 * @param fraction the survivor fraction
 		 * @return {@code this} builder, for command chaining
 		 * @throws java.lang.IllegalArgumentException if the fraction is not
 		 *         within the range [0, 1].
@@ -1252,7 +1251,7 @@ public final class Engine<
 		/**
 		 * Applies {@code this} setup to the given engine {@code builder}.
 		 *
-		 * @param builder the engine builder to setup (configure)
+		 * @param builder the engine builder to set up (configure)
 		 */
 		void apply(final Builder<G, C> builder);
 

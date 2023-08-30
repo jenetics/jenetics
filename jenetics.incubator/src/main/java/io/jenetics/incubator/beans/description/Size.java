@@ -17,26 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.property;
+package io.jenetics.incubator.beans.description;
 
-import java.io.IOException;
+/**
+ * Represents the <em>size</em> function for a <em>sizeable</em> object.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 7.2
+ * @since 7.2
+ */
+@FunctionalInterface
+public interface Size {
 
-import org.testng.annotations.Test;
-
-import io.jenetics.jpx.GPX;
-import io.jenetics.jpx.GPX.Reader;
-
-public class RecursivePropertyExtractorTest {
-
-	@Test
-	public void extract() throws IOException {
-		final GPX gpx = Reader.DEFAULT.read(
-			RecursivePropertyExtractorTest.class
-				.getResourceAsStream("/Austria.gpx")
-		);
-
-		Properties.walk(new PathObject(gpx), "io.jenetics.*")
-			.forEach(System.out::println);
-	}
+	/**
+	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.
+	 * array of {@code List}.
+	 *
+	 * @param object the <em>sizeable</em> object
+	 * @return the object size
+	 */
+	int get(final Object object);
 
 }

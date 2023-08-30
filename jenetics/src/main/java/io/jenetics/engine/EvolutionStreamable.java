@@ -50,7 +50,7 @@ public interface EvolutionStreamable<
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * evolution start. If an empty {@code Population} is given, the engine's
 	 * genotype factory is used for creating the population. The given
-	 * population might be the result of another engine and this method allows
+	 * population might be the result of another engine, and this method allows
 	 * to start the evolution with the outcome of a different engine.
 	 * The fitness function is replaced by the one defined for this engine.
 	 *
@@ -66,7 +66,7 @@ public interface EvolutionStreamable<
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * initial value. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
-	 * be the result of another engine and this method allows to start the
+	 * be the result of another engine, and this method allows to start the
 	 * evolution with the outcome of a different engine. The fitness function
 	 * is replaced by the one defined for this engine.
 	 *
@@ -100,7 +100,7 @@ public interface EvolutionStreamable<
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * evolution start. If an empty {@code Population} is given, the engine's genotype
 	 * factory is used for creating the population. The given population might
-	 * be the result of another engine and this method allows to start the
+	 * be the result of another engine, and this method allows to start the
 	 * evolution with the outcome of a different engine. The fitness function
 	 * is replaced by the one defined for this engine.
 	 *
@@ -174,7 +174,7 @@ public interface EvolutionStreamable<
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * initial population. If an empty {@code Population} is given, the engine's
 	 * genotype factory is used for creating the population. The given population
-	 * might be the result of a other engine and this method allows to start the
+	 * might be the result of another engine, and this method allows to start the
 	 * evolution with the outcome of a different engine. The fitness function
 	 * is replaced by the one defined for this engine.
 	 *
@@ -200,7 +200,7 @@ public interface EvolutionStreamable<
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * initial population. If an empty {@code Population} is given, the engine's
 	 * genotype factory is used for creating the population. The given population
-	 * might be the result of a other engine and this method allows to start the
+	 * might be the result of another engine, and this method allows to start the
 	 * evolution with the outcome of a different engine. The fitness function
 	 * is replaced by the one defined for this engine.
 	 *
@@ -258,11 +258,11 @@ public interface EvolutionStreamable<
 	/**
 	 * Return a new {@code EvolutionStreamable} instance where all created
 	 * {@code EvolutionStream}s are limited by the given predicate. Since some
-	 * predicates has to maintain internal state, a predicate {@code Supplier}
+	 * predicates have to maintain internal state, a predicate {@code Supplier}
 	 * must be given instead a plain limiting predicate.
 	 *
 	 * @param proceed the limiting predicate supplier.
-	 * @return a new evolution streamable object
+	 * @return a new evolution-streamable object
 	 * @throws NullPointerException if the give {@code predicate} is {@code null}
 	 */
 	default EvolutionStreamable<G, C>
@@ -289,7 +289,7 @@ public interface EvolutionStreamable<
 	 *
 	 * @param generations the number of generations after the created evolution
 	 *        streams are truncated
-	 * @return a new evolution streamable object
+	 * @return a new evolution-streamable object
 	 * @throws IllegalArgumentException if the given {@code generations} is
 	 *         smaller than zero.
 	 */

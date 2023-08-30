@@ -50,7 +50,7 @@ abstract class MomentStatistics {
 	/**
 	 * Update the moments with the given {@code value}.
 	 *
-	 * @param value the value which is used to update this statistical moments.
+	 * @param value the value which is used to update this statistical moment.
 	 */
 	void accept(final double value) {
 		++_n;

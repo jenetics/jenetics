@@ -32,9 +32,8 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.IntRange;
 
-import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Bnf;
-
+import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.grammar.Mappers;
 import io.jenetics.ext.grammar.SentenceGenerator;
@@ -65,7 +64,7 @@ public class RegressionExample {
 
 	static final Map<Integer, AtomicInteger> lengths = new ConcurrentHashMap<>();
 
-	// Create 'Codec' which creates program tree from an int[] array (codons).
+	// Create 'Codec' which creates a program tree from an int[] array (codons).
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Mappers.multiIntegerChromosomeMapper(
 				CFG,

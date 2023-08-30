@@ -30,7 +30,7 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
 /**
- * This class is for mutating a chromosomes of an given population. There are
+ * This class is for mutating the chromosomes of a given population. There are
  * two distinct roles mutation plays
  * <ul>
  *     <li>Exploring the search space. By making small moves mutation allows a
@@ -51,7 +51,7 @@ import io.jenetics.util.Seq;
  * rate should be set so that a reasonable neighborhood of solutions is explored.
  * </p>
  * The mutation probability <i>P(m)</i> is the probability that a specific gene
- * over the whole population is mutated. The number of available genes of an
+ * over the whole population is mutated. The number of available genes of a
  * population is
  * <p>
  * <img src="doc-files/mutator-N_G.svg" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" >

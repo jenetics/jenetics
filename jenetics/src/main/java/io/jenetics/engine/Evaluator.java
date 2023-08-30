@@ -26,7 +26,7 @@ import io.jenetics.util.Seq;
 
 /**
  * This interface allows defining different strategies for evaluating the
- * fitness functions of a given population. <em>Normally</em>, there is no
+ * fitness functions of a given population. <em>Normally</em> there is no
  * need for <em>overriding</em> the default evaluation strategy, but it might
  * be necessary if you have performance problems and a <em>batched</em>
  * fitness evaluation would solve the problem.
@@ -47,9 +47,9 @@ import io.jenetics.util.Seq;
  *
  * @apiNote
  * The size of the returned, evaluated, phenotype sequence must be exactly
- * the size of the input phenotype sequence and all phenotypes must have a
+ * the size of the input phenotype sequence, and all phenotypes must have a
  * fitness value assigned ({@code assert population.forAll(Phenotype::isEvaluated);}).
- * It is allowed to return the input sequence, after evaluation, as well a newly
+ * It is allowed to return the input sequence, after evaluation, as well as a newly
  * created one.
  *
  * @see Evaluators

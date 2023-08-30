@@ -58,8 +58,8 @@ import java.util.stream.Collector;
  * {@link java.util.stream.Stream#collect Stream.collect()} provides the
  * necessary partitioning, isolation, and merging of results for safe and
  * efficient parallel execution.
- * Using this class in the {@code collect} method of an parallel stream can
- * lead to an reduced accuracy of the quantile value. Since this implementation
+ * Using this class in the {@code collect} method of a parallel stream can
+ * lead to a reduced accuracy of the quantile value. Since this implementation
  * is an estimation algorithm, combining the estimations will only work for
  * large streams ({@code size >> 1000}).
  *
@@ -157,10 +157,10 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
-	 * Return the number of samples the quantile value  was calculated of.
+	 * Return the number of samples the quantile value was calculated of.
 	 *
 	 *
-	 * @return the number of samples the quantile value  was calculated of
+	 * @return the number of samples the quantile value was calculated of
 	 */
 	public long count() {
 		return _count;
@@ -264,7 +264,7 @@ public class Quantile implements DoubleConsumer {
 	private void update(double value) {
 		assert _initialized;
 
-		// If min or max, handle as special case; otherwise, ...
+		// If min or max, handle as a special case; otherwise, ...
 		if (_quantile == 0.0) {
 			if (value < _q[2]) {
 				_q[2] = value;
@@ -376,7 +376,7 @@ public class Quantile implements DoubleConsumer {
 	/**
 	 * Compares the state of two {@code Quantile} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final Quantile q1 = ...;
@@ -421,7 +421,7 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
+	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns quantiles for the resulting
 	 * values.
 	 *
@@ -434,7 +434,7 @@ public class Quantile implements DoubleConsumer {
 	 * @param quantile the wished quantile value.
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements
-	 * @return a {@code Collector} implementing the quantiles reduction
+	 * @return a {@code Collector} implementing the quantile reduction
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code quantile} is not in the
@@ -455,7 +455,7 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
+	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns the median for the resulting
 	 * values.
 	 *
@@ -466,7 +466,7 @@ public class Quantile implements DoubleConsumer {
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements
-	 * @return a {@code Collector} implementing the quantiles reduction
+	 * @return a {@code Collector} implementing the quantile reduction
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */

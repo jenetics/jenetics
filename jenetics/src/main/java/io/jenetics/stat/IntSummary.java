@@ -86,7 +86,7 @@ public record IntSummary(
 
 	/**
 	 * Return a {@code Collector} which applies an int-producing mapping
-	 * function to each input element, and returns summary-statistics for the
+	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
 	 *
 	 * <pre>{@code

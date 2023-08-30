@@ -28,7 +28,7 @@ import io.jenetics.util.RandomRegistry;
 
 /**
  * The uniform crossover uses swaps single genes between two chromosomes, instead
- * of whole ranges as in single- and multi-point crossover.
+ * of whole ranges as in single- and multipoint crossover.
  * <pre> {@code
  * +---+---+---+---+---+---+---+
  * | 1 | 2 | 3 | 4 | 6 | 7 | 8 |

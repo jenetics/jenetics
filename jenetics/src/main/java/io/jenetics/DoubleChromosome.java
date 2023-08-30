@@ -41,7 +41,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 64 bit floating point numbers.
+ * Numeric chromosome implementation which holds 64-bit floating point numbers.
  *
  * @see DoubleGene
  *
@@ -72,7 +72,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected DoubleChromosome(
@@ -144,7 +144,7 @@ public class DoubleChromosome
 
 	/**
 	 * Returns a double array containing all the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -169,8 +169,8 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Returns an double array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a double array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -228,7 +228,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -270,7 +270,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}

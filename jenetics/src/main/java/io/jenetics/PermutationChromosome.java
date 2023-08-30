@@ -144,7 +144,7 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Return the sequence of valid alleles of this chromosome.
+	 * Return the sequence of the valid alleles of this chromosome.
 	 *
 	 * @return the sequence of valid alleles of this chromosome
 	 */
@@ -225,7 +225,7 @@ public final class PermutationChromosome<T>
 		}
 
 		final var rnd = RandomRegistry.random();
-		final int[] subset = Subset.next(alleles.size(), length, rnd);
+		final int[] subset = Subset.next(rnd, alleles.size(), length);
 		shuffle(subset, rnd);
 
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
