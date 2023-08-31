@@ -127,7 +127,7 @@ public class UFTournamentSelector<
 		final List<Phenotype<G, C>> S = new ArrayList<>();
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
-			final int[] G = Subset.next(population.size(), k, random);
+			final int[] G = Subset.next(random, population.size(), k);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = cc.compare(G[j], G[j + 1]);

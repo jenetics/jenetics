@@ -466,7 +466,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @see java.util.Collection#toArray()
 	 *
-	 * @return an array containing all of the elements in this list in right
+	 * @return an array containing all of the elements in this list in the right
 	 *          order
 	 */
 	default Object[] toArray() {
@@ -485,7 +485,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * specified array and the length of this array.
 	 * <p>
 	 * If this sequence fits in the specified array with room to spare (i.e.,
-	 * the array has more elements than this array), the element in the array
+	 * the array has more elements than this array); the element in the array
 	 * immediately following the end of this array is set to null. (This is
 	 * useful in determining the length of the array only if the caller knows
 	 * that the list does not contain any null elements.)
@@ -547,15 +547,15 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * and {@code end} are equal, the returned sequence has length zero.)
 	 * The returned sequence is backed by this sequence, so non-structural
 	 * changes in the returned sequence are reflected in this sequence, and
 	 * vice-versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * populationSort that commonly exist for arrays). Any operation that
-	 * expects an sequence can be used as a range operation by passing an sub
-	 * sequence view instead of an whole sequence.
+	 * expects a sequence can be used as a range operation by passing a
+	 * sub-sequence view instead of a whole sequence.
 	 *
 	 * @param start lower end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
@@ -567,7 +567,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
-	 * and {@code end} are equal, the returned sequence has the length zero.)
+	 * and {@code end} are equal, the returned sequence has length zero.)
 	 * The returned sequence is backed by this sequence, so non-structural
 	 * changes in the returned sequence are reflected in this array, and
 	 * vice-versa.
@@ -577,8 +577,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * expects an array can be used as a range operation by passing a
 	 * subsequence view instead of a whole sequence.
 	 *
-	 * @param start low-end point (inclusive) of the sub sequence.
-	 * @param end high-end point (exclusive) of the sub sequence.
+	 * @param start low-end point (inclusive) of the sub-sequence.
+	 * @param end high-end point (exclusive) of the sub-sequence.
 	 * @return a view of the specified range within this sequence.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
@@ -590,7 +590,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of it's element is
+	 * @throws NullPointerException if the given array or one of its element is
 	 *         {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
@@ -610,7 +610,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param comparator the comparator which defines the order.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of it's element or
+	 * @throws NullPointerException if the given array or one of its element or
 	 *         the comparator is {@code null}.
 	 */
 	default boolean isSorted(final Comparator<? super T> comparator) {
@@ -938,7 +938,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Returns a sequence backed by the specified {@code seq}. (Changes to the
 	 * given sequence (if writeable) are "write through" to the returned
-	 * sequence.)  This method acts as bridge between basic sequences and
+	 * sequence.) This method acts as a bridge between basic sequences and
 	 * sequence-based APIs.
 	 *
 	 * @since 6.0
@@ -956,8 +956,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
 	/**
 	 * Returns a sequence backed by the specified list. (Changes to the given
-	 * list are "write through" to the returned sequence.)  This method acts
-	 * as bridge between collection-based and sequence-based APIs.
+	 * list are "write through" to the returned sequence.) This method acts
+	 *  as a bridge between collection-based and sequence-based APIs.
 	 *
 	 * @since 4.2
 	 *
@@ -974,8 +974,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
 	/**
 	 * Returns a fixed-size sequence backed by the specified array. (Changes to
-	 * the given array are "write through" to the returned sequence.)  This
-	 * method acts as bridge between array-based and sequence-based APIs.
+	 * the given array are "write through" to the returned sequence.) This
+	 * method acts as a bridge between array-based and sequence-based APIs.
 	 *
 	 * @since 4.2
 	 *

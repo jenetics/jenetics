@@ -56,7 +56,7 @@ include("jenetics.ext")
 include("jenetics.prog")
 include("jenetics.xml")
 
-// Non published modules.
+// Non-published modules.
 include("jenetics.doc")
 include("jenetics.example")
 include("jenetics.tool")

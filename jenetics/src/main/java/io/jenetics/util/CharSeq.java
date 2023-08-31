@@ -196,9 +196,9 @@ public final class CharSeq
 	}
 
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g
+	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @param pattern the {@code pattern} to expand.
 	 * @return the expanded pattern.
@@ -268,7 +268,7 @@ public final class CharSeq
 	/**
 	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @see #expand(CharSequence)
 	 *

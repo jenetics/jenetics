@@ -117,7 +117,7 @@ public class PermutationChromosomeTest
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream.
-			of(Subset.next(100, 10, RandomGenerator.getDefault()))
+			of(Subset.next(RandomGenerator.getDefault(), 100, 10))
 			.mapToObj(i -> EnumGene.of(i, alleles))
 			.collect(ISeq.toISeq());
 
@@ -133,7 +133,7 @@ public class PermutationChromosomeTest
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream
-			.of(Subset.next(100, 10, RandomGenerator.getDefault()))
+			.of(Subset.next(RandomGenerator.getDefault(), 100, 10))
 			.mapToObj(i -> EnumGene.of(i%3, alleles))
 			.collect(ISeq.toISeq());
 

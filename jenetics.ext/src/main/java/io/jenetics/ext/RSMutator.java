@@ -33,7 +33,7 @@ import io.jenetics.util.MSeq;
  * The reverse sequence mutation, two positions i and j are randomly chosen The
  * gene order in a chromosome will then be reversed between this two points.
  * This mutation operator can also be used for combinatorial problems, where no
- * duplicated genes within a chromosome are allowed, e.g. for the TSP.
+ * duplicated genes within a chromosome are allowed, e.g., for the TSP.
  *
  * @see io.jenetics.SwapMutator
  *
@@ -75,7 +75,7 @@ public class RSMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int[] points = Subset.next(chromosome.length() + 1, 2, random);
+			final int[] points = Subset.next(random, chromosome.length() + 1, 2);
 			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 

@@ -85,8 +85,8 @@ public record LongSummary(
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
-	 * function to each input element, and returns summary-statistics for the
+	 * Return a {@code Collector} which applies a long-producing mapping
+	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
 	 *
 	 * <pre>{@code

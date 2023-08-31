@@ -36,8 +36,8 @@ import io.jenetics.incubator.beans.Reflect.StructType.Component;
  * {@link java.lang.reflect.RecordComponent} in the case of a record class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public record Description(Path path, Value value)
 	implements PathValue<Description.Value>
@@ -54,8 +54,8 @@ public record Description(Path path, Value value)
 	 * type of the enclosure type.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 7.2
+	 * @since 7.2
 	 */
 	public sealed interface Value {
 
@@ -77,8 +77,8 @@ public record Description(Path path, Value value)
 		 * Implementation of a single valued property description.
 		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
+		 * @version 7.2
+		 * @since 7.2
 		 */
 		final class Single implements Value {
 
@@ -173,8 +173,8 @@ public record Description(Path path, Value value)
 		 * Implements an indexed description property.
 		 *
 		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version !__version__!
-		 * @since !__version__!
+		 * @version 7.2
+		 * @since 7.2
 		 */
 		final class Indexed implements Value {
 

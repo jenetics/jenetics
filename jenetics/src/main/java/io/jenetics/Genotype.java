@@ -70,7 +70,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.0
+ * @version 7.2
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -208,7 +208,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *          ({@code fromIndex < 0 || toIndex > length() || fromIndex > toIndex}).
 	 */
 	public Genotype<G> slice(int fromIndex, int toIndex) {
-		return Genotype.of(_chromosomes.subSeq(fromIndex, toIndex));
+		return new Genotype<>(_chromosomes.subSeq(fromIndex, toIndex));
 	}
 
 	/**

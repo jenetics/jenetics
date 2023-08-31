@@ -102,7 +102,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * <h2>Setup of a <i>local</i> PRNG</h2>
  *
- * You can temporarily (and locally) change the implementation of the PRNG. E.g.
+ * You can temporarily (and locally) change the implementation of the PRNG. E.g.,
  * for initialize the engine stream with the same initial population.
  *
  * <pre>{@code

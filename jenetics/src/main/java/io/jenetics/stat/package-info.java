@@ -21,7 +21,7 @@
 /**
  * This package contains additional statistics classes which are not available
  * in the Java core library. Java only includes classes for calculating the sum
- * and the average of a given numeric stream (e. g.
+ * and the average of a given numeric stream (e.g.
  * {@code DoubleSummaryStatistics}). With the additions in this package it is
  * also possible to calculate the variance, skewness and kurtosis---using the
  * {@code DoubleMomentStatistics} class. The {@code EvolutionStatistics} object,

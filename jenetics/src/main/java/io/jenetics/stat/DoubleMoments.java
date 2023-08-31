@@ -118,7 +118,7 @@ public record DoubleMoments(
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
+	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *

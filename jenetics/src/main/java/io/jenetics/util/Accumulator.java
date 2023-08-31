@@ -125,7 +125,7 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
-	 * accumulator. The given {@code lock} is used as synchronization object.
+	 * accumulator. The given {@code lock} is used as a synchronization object.
 	 *
 	 * @param lock the <em>lock</em> used for synchronization
 	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
@@ -144,7 +144,7 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
-	 * accumulator. {@code this} accumulator is used as synchronization object.
+	 * accumulator. {@code this} accumulator is used as a synchronization object.
 	 *
 	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
 	 * 	       accumulator

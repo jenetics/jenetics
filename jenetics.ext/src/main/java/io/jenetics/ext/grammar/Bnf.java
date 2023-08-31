@@ -66,7 +66,7 @@ public final class Bnf {
 
 	/**
 	 * Parses the given BNF {@code grammar} string to a {@link Cfg} object. The
-	 * following example show the grammar of a simple arithmetic expression.
+	 * following example shows the grammar of a simple arithmetic expression.
 	 *
 	 * <pre>{@code
 	 * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'

@@ -63,8 +63,8 @@ import java.util.stream.StreamSupport;
  * @param <T> the type of the extracted objects
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public class BreathFirstIterator<S, T> implements Iterator<T> {
 

@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
 
 /**
- * This class allows to create a reactive {@link Flow.Publisher} from a given
+ * This class allows creating a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
  *
  * <pre>{@code
@@ -170,7 +170,7 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 	/**
 	 * Unless already closed, issues {@code onComplete} signals to current
 	 * subscribers, and disallows subsequent attempts to publish. Upon return,
-	 * this method does NOT guarantee that all subscribers have yet completed.
+	 * this method does NOT guarantee that all subscribers have already completed.
 	 */
 	@Override
 	public void close() {

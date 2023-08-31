@@ -51,8 +51,6 @@ public final class Subset {
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 *
-	 * @see #next(int, int[], RandomGenerator)
-	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
 	 * @param rnd the random number generator used.
@@ -62,16 +60,18 @@ public final class Subset {
 	 * @return the a-set array for the given parameter. The returned sub-set
 	 *         array is sorted in increasing order.
 	 */
-	public static int[] next(final int n, final int k, final RandomGenerator rnd) {
+	public static int[] next(final RandomGenerator rnd, final int n, final int k) {
+		requireNonNull(rnd);
+
 		final var subset = new int[k];
-		next(n, subset, rnd);
+		next(rnd, n, subset);
 		return subset;
 	}
 
 	private static void next(
+		final RandomGenerator rnd,
 		final int n,
-		final int[] a,
-		final RandomGenerator rnd
+		final int[] a
 	) {
 		requireNonNull(rnd, "Random");
 		requireNonNull(a, "Sub set array");
@@ -89,19 +89,19 @@ public final class Subset {
 
 		// Calculate the 'inverse' subset if k > n - k.
 		if (k > n - k) {
-			subset0(n, n - k, a, rnd);
+			subset0(rnd, n, n - k, a);
 			invert(n, a);
 		} else {
-			subset0(n, k, a, rnd);
+			subset0(rnd, n, k, a);
 		}
 	}
 
 	/*
-	 * "Inverts" the given subset array `a`. The first n - k elements represents
+	 * "Inverts" the given subset array `a`. The first n - k elements represent
 	 * the set, which must not be part of the "inverted" subset. This is done by
 	 * filling the array from the back, starting with the highest possible element,
 	 * which is not part of the "forbidden" subset elements. The result is a
-	 * subset array, filled with elements, which where not part of the original
+	 * subset array, filled with elements, which is not part of the original
 	 * "forbidden" subset.
 	 */
 	private static void invert(
@@ -139,10 +139,10 @@ public final class Subset {
 
 	// The actual implementation of the `RANKSB` algorithm.
 	private static void subset0(
+		final RandomGenerator random,
 		final int n,
 		final int k,
-		final int[] a,
-		final RandomGenerator random
+		final int[] a
 	) {
 		assert k <= a.length;
 		assert k <= n - k;
@@ -222,7 +222,7 @@ public final class Subset {
 			--m;
 		}
 
-		// Convert to zero based indexed arrays.
+		// Convert to zero-based indexed arrays.
 		for (int i = 0; i < k; ++i) {
 			--a[i];
 		}

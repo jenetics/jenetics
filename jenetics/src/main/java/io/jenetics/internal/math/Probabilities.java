@@ -19,18 +19,58 @@
  */
 package io.jenetics.internal.math;
 
+import static java.lang.Math.abs;
+
 /**
  * Mathematical functions regarding probabilities.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 5.2
+ * @version 7.2
  */
 public final class Probabilities {
 	private Probabilities() {}
 
 	private static final long RANGE =
 		(long)Integer.MAX_VALUE - (long)Integer.MIN_VALUE;
+
+	/**
+	 * Values smaller than this value are treated as zero.
+	 *
+	 * @since 7.2
+	 */
+	public static final double EPSILON = Math.pow(10, -23);
+
+	/**
+	 * Return {@code true} if the given value can be treated as probability
+	 * <em>zero</em>.
+	 *
+	 * @since 7.2
+	 *
+	 * @param value the probability value to test
+	 * @return {@code true} if the given value can be treated as probability 0
+	 */
+	public static boolean isZero(final double value) {
+		return equals(0, value, EPSILON);
+	}
+
+	/**
+	 * Return {@code true} if the given value can be treated as probability
+	 * <em>one</em>.
+	 *
+	 * @since 7.2
+	 *
+	 * @param value the probability value to test
+	 * @return {@code true} if the given value can be treated as probability 1
+	 */
+	public static boolean isOne(final double value) {
+		return equals(1, value, EPSILON);
+	}
+
+	private static boolean
+	equals(final double a, final double b, final double delta) {
+		return abs(a - b) <= delta;
+	}
 
 	/**
 	 * Maps the probability, given in the range {@code [0, 1]}, to an

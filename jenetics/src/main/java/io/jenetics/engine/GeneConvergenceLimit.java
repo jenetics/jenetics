@@ -38,7 +38,7 @@ import io.jenetics.util.Seq;
 /**
  * A termination method that stops the evolution when a user-specified percentage
  * of the genes that make up a {@code Genotype} are deemed as converged. A gene
- * is deemed as converged when the average value of that gene across all of the
+ * is deemed as converged when the average value of that gene across all the
  * genotypes in the current population is less than a user-specified percentage
  * away from the maximum gene value across the genotypes.
  *

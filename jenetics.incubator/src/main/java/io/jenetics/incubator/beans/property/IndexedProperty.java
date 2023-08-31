@@ -31,8 +31,8 @@ import io.jenetics.incubator.beans.Path;
  * Base class for properties which consists of 0 to n objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public abstract sealed class IndexedProperty
 	implements Iterable<Object>, Property

@@ -353,10 +353,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Returns a list iterator over the elements in this sequence (in proper
+	 * Returns a list iterator over the elements in this sequence (in a proper
 	 * sequence).
 	 *
-	 * @return a list iterator over the elements in this list (in proper
+	 * @return a list iterator over the elements in this list (in a proper
 	 *         sequence)
 	 */
 	default ListIterator<T> listIterator() {
@@ -603,7 +603,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @param <T> the element type
 	 * @param values the array values.
-	 * @return an new {@code MSeq} with the given values
+	 * @return a new {@code MSeq} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")

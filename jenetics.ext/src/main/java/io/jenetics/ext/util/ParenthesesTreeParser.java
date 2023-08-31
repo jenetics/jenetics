@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * Parses an parentheses string into a {@code TreeNode<String>} object.
+ * Parses a parentheses string into a {@code TreeNode<String>} object.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 6.0

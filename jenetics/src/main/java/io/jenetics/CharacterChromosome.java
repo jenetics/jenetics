@@ -44,7 +44,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * CharacterChromosome which represents character sequences.
+ * Character chromosome which represents character sequences.
  *
  * @see CharacterGene
  *

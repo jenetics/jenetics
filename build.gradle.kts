@@ -33,7 +33,7 @@ plugins {
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.2.1"
+	gradleVersion = "8.3"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -168,6 +168,9 @@ fun setupJavadoc(project: Project, taskName: String) {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.addStringOption("-show-module-contents", "api")
+		doclet.addStringOption("-show-packages", "exported")
+		doclet.addStringOption("exclude", "io.jenetics.internal")
 		doclet.version(true)
 		doclet.docEncoding = "UTF-8"
 		doclet.charSet = "UTF-8"
@@ -181,22 +184,26 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
+		doclet.addStringOption("docfilessubdirs")
 		doclet.tags = listOf(
 				"apiNote:a:API Note:",
 				"implSpec:a:Implementation Requirements:",
 				"implNote:a:Implementation Note:"
 			)
 
-		doclet.group("Core API", "io.jenetics", "io.jenetics.engine")
-		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
-
 		doLast {
+			val dir = if (project.extra.has("moduleName")) {
+				project.extra["moduleName"].toString()
+			} else {
+				""
+			}
+
 			project.copy {
 				from("src/main/java") {
 					include("io/**/doc-files/*.*")
 				}
 				includeEmptyDirs = false
-				into(destinationDir!!)
+				into(destinationDir!!.resolve(dir))
 			}
 		}
 	}
@@ -365,7 +372,7 @@ fun setupPublishing(project: Project) {
 	}
 }
 
-val exportDir = file("${rootProject.buildDir}/package/${identifier}")
+val exportDir = file("${rootProject.layout.buildDirectory.asFile.get()}/package/${identifier}")
 
 val assemblePkg = "assemblePkg"
 tasks.register(assemblePkg) {
@@ -503,7 +510,7 @@ tasks.register<Zip>(pkgZip) {
 	description = "Zips the project package"
 
 	archiveFileName.set("${identifier}.zip")
-	destinationDirectory.set(file("${rootProject.buildDir}/package"))
+	destinationDirectory.set(file("${rootProject.layout.buildDirectory.asFile.get()}/package"))
 
 	from(exportDir)
 }

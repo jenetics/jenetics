@@ -83,35 +83,41 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 	public Token<String> next() {
 		while (isNonEof(c)) {
 			final char value = c;
-			switch (value) {
-				case ' ', '\r', '\n', '\t':
-					WS();
-					continue;
-				case ':':
-					return ASSIGN();
-				case '|':
-					consume();
-					return BAR.token(value);
-				case '>':
-					consume();
-					return GT.token(value);
-				case '<':
-					consume();
-					return LT.token(value);
-				case '\'':
-					return QUOTED_STRING();
-				default:
-					if (isAlphabetic(c)) {
-						return ID();
-					} else if (!isWhitespace(c)) {
-						return STRING();
-					} else {
-						throw new ParsingException(format(
+            switch (value) {
+                case ' ', '\r', '\n', '\t' -> {
+                    WS();
+                }
+                case ':' -> {
+                    return ASSIGN();
+                }
+                case '|' -> {
+                    consume();
+                    return BAR.token(value);
+                }
+                case '>' -> {
+                    consume();
+                    return GT.token(value);
+                }
+                case '<' -> {
+                    consume();
+                    return LT.token(value);
+                }
+                case '\'' -> {
+                    return QUOTED_STRING();
+                }
+                default -> {
+                    if (isAlphabetic(c)) {
+                        return ID();
+                    } else if (!isWhitespace(c)) {
+                        return STRING();
+                    } else {
+                        throw new ParsingException(format(
 							"Got invalid character '%s' at position '%d'.",
-							c, pos
-						));
-					}
-			}
+	                        c, pos
+                        ));
+                    }
+                }
+            }
 		}
 
 		return null;

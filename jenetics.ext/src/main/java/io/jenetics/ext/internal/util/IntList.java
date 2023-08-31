@@ -227,9 +227,9 @@ public final class IntList {
 	}
 
 	/**
-	 * Return the current elements as int array.
+	 * Return the current elements as an int array.
 	 *
-	 * @return the current elements as int array
+	 * @return the current elements as an int array
 	 */
 	public int[] toArray() {
 		return copyOf(_data, _size);

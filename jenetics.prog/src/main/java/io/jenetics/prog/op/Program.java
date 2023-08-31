@@ -38,7 +38,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class composes a given operation tree to a new operation. which can
+ * This class composes a given operation tree to a new operation, which can
  * serve as a sub <em>program</em> in another operation tree.
  *
  * @param <T> the argument type of the operation

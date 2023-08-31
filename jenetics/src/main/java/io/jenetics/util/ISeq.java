@@ -269,7 +269,7 @@ public interface ISeq<T>
 	}
 
 	/**
-	 * Allows a safe (without compile warning) upcast from {@code B} to
+	 * Allows a safe (without compiler warning) upcast from {@code B} to
 	 * {@code A}. Since {@code ISeq} instances are immutable, an <i>upcast</i>
 	 * will be always safe.
 	 *

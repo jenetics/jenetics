@@ -19,13 +19,8 @@
  */
 package io.jenetics.incubator.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @param <T> the path element type
@@ -34,115 +29,114 @@ import java.util.Optional;
  * @version 6.0
  * @since 6.0
  */
-public interface Path<T> extends Iterable<Path<T>> {
+public interface Path<T> extends Iterable<Path<T>>, Comparable<Path<T>> {
 
-	T value();
+	/**
+	 * Return the path element of {@code this path}.
+	 *
+	 * @return the path element, or {@code null} if {@code this} path is empty
+	 */
+	T element();
 
-	int length();
+	/**
+	 * Returns the number of elements in the path.
+	 *
+	 * @return the number of elements in the path, or 0 if this path only
+	 * represents a root component
+	 */
+	int count();
 
+	/**
+	 * Returns an element of this path. The index parameter is the index of
+	 * the path element to return. The element that is closest to the root
+	 * in the property hierarchy has index 0. The element that is farthest
+	 * from the root has index count - 1.
+	 *
+	 * @param index the path index
+	 * @return the path element
+	 */
+	Path<T> get(final int index);
+
+	/**
+	 * Return the path element of {@code this path}.
+	 *
+	 * @return the path element, or {@code null} if {@code this} path is empty
+	 */
 	default boolean isEmpty() {
-		return length() == 0;
+		return count() == 0;
 	}
 
-	default Optional<Path<T>> parent() {
-		return isEmpty() ? Optional.empty() : Optional.of(path(length() - 1));
+	/**
+	 * Returns the <em>parent path</em>, or {@code null} if this
+	 * path has no parent.
+	 *
+	 * @return a path representing the path's parent, or {@code null} if
+	 *         {@code this} path has no parent
+	 */
+	default Path<T> parent() {
+		return count() > 1 ? subPath(0, count() - 1) : null;
 	}
 
-	default Optional<Path<T>> root() {
-		return isEmpty() ? Optional.empty() : Optional.of(path(0));
-	}
+	/**
+	 * Returns a relative {@code Path} that is a subsequence the element names
+	 * of this path.
+	 *
+	 * @param fromIndex low endpoint (inclusive) of the subPath
+	 * @param toIndex   high endpoint (exclusive) of the subPath
+	 * @return a new {@code Path} object that is a subsequence of the
+	 * elements in this {@code Path}
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value
+	 *        ({@code fromIndex < 0 || toIndex > size || fromIndex > toIndex})
+	 */
+	Path<T> subPath(final int fromIndex, final int toIndex);
 
-	default Path<T> path(final int index) {
-		return subPath(0, index + 1);
-	}
+	/**
+	 * Appends the given {@code elements} to {@code this} and returns a new
+	 * path object.
+	 *
+	 * @param elements the paths to append to {@code this} path
+	 * @return a new path object
+	 */
+	@SuppressWarnings("unchecked")
+	Path<T> append(final T... elements);
 
-	List<T> elements();
-
-	Path<T> subPath(final int beginIndex, final int endIndex);
-
-	default Path<T> subPath(final int beginIndex) {
-		return subPath(beginIndex, length());
-	}
-
-	Path<T> append(final Path<T> path);
-
-	default Path<T> prepend(final Path<T> path) {
-		return path.append(this);
-	}
-
-
-	@SafeVarargs
-	static <T> Path<T> of(final T... elements) {
-
-		record PathElements<T>(List<T> values) implements Path<T> {
+	@Override
+	default Iterator<Path<T>> iterator() {
+		return new Iterator<>() {
+			private int cursor = 0;
 
 			@Override
-			public T value() {
-				if (!isEmpty()) {
-					return values.get(values.size() - 1);
-				} else {
-					throw new NoSuchElementException("Empty path.");
+			public boolean hasNext() {
+				return cursor != count();
+			}
+
+			@Override
+			public Path<T> next() {
+				final int i = cursor;
+				if (cursor >= count()) {
+					throw new NoSuchElementException();
 				}
+
+				cursor = i + 1;
+				return get(i);
 			}
+		};
+	}
 
-			@Override
-			public int length() {
-				return values.size();
+	@Override
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	default int compareTo(final Path<T> other) {
+		for (int i = 0, n = Math.min(count(), other.count()); i < n; ++i) {
+			final var e1 = (Comparable)get(i).element();
+			final var e2 = (Comparable)other.get(i).element();
+
+			int cmp = e1.compareTo(e2);
+			if (cmp != 0) {
+				return cmp;
 			}
-
-			@Override
-			public List<T> elements() {
-				return Collections.unmodifiableList(values);
-			}
-
-			@Override
-			public Path<T> subPath(final int beginIndex, final int endIndex) {
-				return new PathElements<>(values.subList(beginIndex, endIndex));
-			}
-
-			@Override
-			public Path<T> append(final Path<T> path) {
-				final var elems = new ArrayList<T>(values.size() + path.length());
-				elems.addAll(values);
-				elems.addAll(path.elements());
-
-				return new PathElements<>(elems);
-			}
-
-			@Override
-			public Iterator<Path<T>> iterator() {
-				return new Iterator<>() {
-					private int _cursor = 0;
-
-					@Override
-					public boolean hasNext() {
-						return _cursor != length();
-					}
-
-					@Override
-					public Path<T> next() {
-						final int i = _cursor;
-						if (_cursor >= length()) {
-							throw new NoSuchElementException();
-						}
-
-						_cursor = i + 1;
-						return path(i);
-					}
-				};
-			}
-
-			@Override
-			public String toString() {
-				return String.join(
-					"/",
-					elements().stream().map(Objects::toString).toList()
-				);
-			}
-
 		}
 
-		return new PathElements<T>(List.of(elements));
+		return Integer.compare(count(), other.count());
 	}
 
 }

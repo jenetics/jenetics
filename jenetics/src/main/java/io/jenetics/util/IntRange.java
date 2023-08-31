@@ -127,13 +127,13 @@ public final /*record*/ class IntRange implements Serializable {
 	}
 
 	/**
-	 * Return a new (half open) range, which contains only the given value:
+	 * Return a new (half-open) range, which contains only the given value:
 	 * {@code [value, value + 1)}.
 	 *
 	 * @since 4.0
 	 *
-	 * @param value the value of the created (half open) integer range
-	 * @return a new (half open) range, which contains only the given value
+	 * @param value the value of the created (half-open) integer range
+	 * @return a new (half-open) range, which contains only the given value
 	 */
 	public static IntRange of(final int value) {
 		return of(value, value + 1);

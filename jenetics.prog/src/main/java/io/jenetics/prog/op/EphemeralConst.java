@@ -39,7 +39,7 @@ import io.jenetics.internal.util.Lazy;
 /**
  * Implementation of an <em>ephemeral</em> constant. It causes the insertion of
  * a <em>mutable</em> constant into the operation tree. Every time this terminal
- * is chosen a different value is generated which is then used for that
+ * is chosen, a different value is generated which is then used for that
  * particular terminal, and which will remain fixed for the given tree. The main
  * usage would be to introduce random terminal values.
  *

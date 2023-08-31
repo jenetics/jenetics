@@ -29,8 +29,8 @@ import io.jenetics.incubator.beans.Path;
  * Represents an optional property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class OptionalProperty extends IndexedProperty {
 

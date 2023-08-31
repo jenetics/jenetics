@@ -62,8 +62,8 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 7.2
+ * @since 7.2
  */
 public final class CsvSupport {
 
@@ -119,7 +119,7 @@ public final class CsvSupport {
 			return Arrays.asList(columns);
 		} else {
 			final var columns = new ArrayList<String>();
-			new Splitter(new ColumnsList(columns, indexes)).split(line);
+			new Splitter(new ColumnList(columns, indexes)).split(line);
 			return List.copyOf(columns);
 		}
 	}
@@ -151,7 +151,7 @@ public final class CsvSupport {
 		final String[] columns,
 		final int... indexes
 	) {
-		new Splitter(new ColumnsArray(columns, indexes)).split(line);
+		new Splitter(new ColumnArray(columns, indexes)).split(line);
 		return columns;
 	}
 
@@ -315,13 +315,13 @@ public final class CsvSupport {
 
 			if (eol) {
 				eol = false;
-				if (line.length() > 0) {
+				if (!line.isEmpty()) {
 					return true;
 				}
 			}
 		}
 
-		return line.length() > 0;
+		return !line.isEmpty();
 	}
 
 	private static <T extends Record> Stream<T> read(
@@ -401,15 +401,15 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Columns collection, which is backed up by a {@code String[]} array.
+	 * Column collection, which is backed up by a {@code String[]} array.
 	 */
-	private static final class ColumnsArray implements Columns {
+	private static final class ColumnArray implements Columns {
 		private final String[] columns;
 		private final int[] indexes;
 
 		private int index = 0;
 
-		ColumnsArray(final String[] columns, final int[] indexes) {
+		ColumnArray(final String[] columns, final int[] indexes) {
 			this.columns = requireNonNull(columns);
 			this.indexes = requireNonNull(indexes);
 		}
@@ -429,15 +429,15 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Columns collection, which is backed up by a string list.
+	 * Column collection, which is backed up by a string list.
 	 */
-	private static final class ColumnsList implements Columns {
+	private static final class ColumnList implements Columns {
 		private final List<String> columns;
 		private final int[] indexes;
 
 		private int index = 0;
 
-		ColumnsList(final List<String> columns, final int[] indexes) {
+		ColumnList(final List<String> columns, final int[] indexes) {
 			this.columns = requireNonNull(columns);
 			this.indexes = requireNonNull(indexes);
 		}
@@ -544,7 +544,7 @@ public final class CsvSupport {
 			if (quoted) {
 				throw new IllegalArgumentException("Unbalanced quote character.");
 			}
-			if (line.length() == 0 ||
+			if (line.isEmpty() ||
 				SEPARATOR == line.charAt(line.length() - 1))
 			{
 				add(column);

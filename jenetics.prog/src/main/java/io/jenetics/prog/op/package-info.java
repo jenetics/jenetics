@@ -84,7 +84,7 @@
  * final Op<Double> pi = Const.of("π", Math.PI);
  * }</pre>
  *
- * We can create a constant operation in to flavours, with a value only and with
+ * We can create a constant operation in to flavors, with a value only and with
  * a dedicated name. If a constant has a name, the <em>symbolic</em> name is
  * used, instead of the value, when the program tree is printing.
  *

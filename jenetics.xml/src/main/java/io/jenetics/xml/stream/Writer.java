@@ -168,7 +168,7 @@ public interface Writer<T> {
 	 * ************************************************************************/
 
 	/**
-	 * Create a new {@code Writer}, which writes a XML element with the given
+	 * Create a new {@code Writer}, which writes an XML element with the given
 	 * name and writes the given children into it.
 	 *
 	 * @param name the root element name
@@ -265,8 +265,8 @@ public interface Writer<T> {
 	}
 
 	/**
-	 * Adds a XML prolog element written by the given {@code writer}. The default
-	 * values for encoding and version is set to "UTF-8" and "1.0", respectively.
+	 * Adds an XML prolog element written by the given {@code writer}. The default
+	 * values for encoding and version are set to "UTF-8" and "1.0", respectively.
 	 *
 	 * <pre> {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>

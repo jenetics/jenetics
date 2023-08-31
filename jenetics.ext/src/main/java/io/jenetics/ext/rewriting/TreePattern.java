@@ -328,7 +328,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree or one of the variable
-	 *         name is not a valid (Java) identifier
+	 *         names is not a valid (Java) identifier
 	 */
 	public static TreePattern<String> compile(final String pattern) {
 		return compile(pattern, Function.identity());
@@ -345,7 +345,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree or one of the variable
-	 *         name is not a valid (Java) identifier
+	 *         names is not a valid (Java) identifier
 	 */
 	public static <V> TreePattern<V> compile(
 		final String pattern,

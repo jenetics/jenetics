@@ -141,7 +141,7 @@ public final class ProxySorter {
 
 	/**
 	 * Sorting the given array by creating an index lookup array. The original
-	 * array is not touched and the returned array can then be used for
+	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
 	 *
 	 * <pre>{@code
@@ -163,7 +163,7 @@ public final class ProxySorter {
 	 * @param comparator the array element comparator
 	 * @param <T> the array type
 	 * @return the sorted index array
-	 * @throws NullPointerException if one of the array or comparator is
+	 * @throws NullPointerException if one of the arrays or comparator is
 	 *         {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0}
@@ -179,7 +179,7 @@ public final class ProxySorter {
 
 	/**
 	 * Sorting the given array by creating an index lookup array. The original
-	 * array is not touched and the returned array can then be used for
+	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
 	 *
 	 * <pre>{@code
@@ -198,7 +198,7 @@ public final class ProxySorter {
 	 * @param comparator the array element comparator
 	 * @param <T> the array type
 	 * @return the sorted index array
-	 * @throws NullPointerException if one of the array is {@code null}
+	 * @throws NullPointerException if one of the arrays is {@code null}
 	 * @throws IllegalArgumentException if {@code length < 0}
 	 */
 	public static <T> int[] sort(
@@ -623,7 +623,7 @@ public final class ProxySorter {
 	/**
 	 * Initializes the given {@code indexes} array.
 	 *
-	 * @param indexes the indexes array to initialize
+	 * @param indexes the index array to initialize
 	 * @return the initialized indexes array
 	 * @throws NullPointerException if the given {@code indexes} array is
 	 *         {@code null}
