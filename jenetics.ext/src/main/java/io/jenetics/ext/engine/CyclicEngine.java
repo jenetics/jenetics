@@ -52,7 +52,7 @@ import io.jenetics.ext.internal.util.CyclicSpliterator;
  *    |                                                       |
  *    +------------------------------<------------------------+
  *                              Result
- * }</pre>
+ * } </pre>
  *
  * The {@code CyclicEngine} allows to do a broad search-fine search-cycle
  * as long as you want.

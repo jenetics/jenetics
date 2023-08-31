@@ -89,7 +89,7 @@ public final class Writers {
 	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version 3.9
@@ -161,7 +161,7 @@ public final class Writers {
 	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
 	 *     <alleles>ASDF</alleles>
 	 * </character-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class CharacterChromosome {
 		private CharacterChromosome() {}
@@ -252,7 +252,7 @@ public final class Writers {
 	 *         <allele>ggg</allele>
 	 *     </alleles>
 	 * </root-name>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class BoundedChromosome {
 		private BoundedChromosome() {}
@@ -322,7 +322,7 @@ public final class Writers {
 	 *         <allele>-88668137</allele>
 	 *     </alleles>
 	 * </int-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
@@ -443,7 +443,7 @@ public final class Writers {
 	 *         <allele>6053786736809578435</allele>
 	 *     </alleles>
 	 * </long-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
@@ -561,7 +561,7 @@ public final class Writers {
 	 *         <allele>0.43947528327497376</allele>
 	 *     </alleles>
 	 * </double-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class DoubleChromosome
 		//extends WriterProvider<io.jenetics.DoubleChromosome>
@@ -691,7 +691,7 @@ public final class Writers {
 	 *     </valid-alleles>
 	 *     <order>2 1 3 5 4</order>
 	 * </permutation-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
@@ -766,7 +766,7 @@ public final class Writers {
 		 *     </valid-alleles>
 		 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
 		 * </permutation-chromosome>
-		 * }</pre>
+		 * } </pre>
 		 *
 		 * @param <A> the allele type
 		 * @return a new permutation chromosome writer
@@ -921,7 +921,7 @@ public final class Writers {
 	 *         <alleles>
 	 *     </double-chromosome>
 	 * </genotype>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class Genotype {
 		private Genotype() {}
@@ -1080,7 +1080,7 @@ public final class Writers {
 	 *         </double-chromosome>
 	 *     </genotype>
 	 * </genotypes>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class Genotypes {
 		private Genotypes() {}

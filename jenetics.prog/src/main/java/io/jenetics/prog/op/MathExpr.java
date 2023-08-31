@@ -126,7 +126,7 @@ public final class MathExpr
 	 *     pow(0,$x)  ->  0
 	 *     pow($x,1)  ->  $x
 	 *     pow(1,$x)  ->  1
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @since 5.0
 	 */
@@ -458,7 +458,7 @@ public final class MathExpr
 	 *      │       │       └── 5.0
 	 *      │       └── 4.0
 	 *      └── 6.0
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param expression the expression string
 	 * @return the parsed expression tree

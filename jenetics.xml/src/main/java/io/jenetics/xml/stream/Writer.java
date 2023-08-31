@@ -39,7 +39,7 @@ import javax.xml.stream.XMLStreamWriter;
  *         <allele>-88668137</allele>
  *     </alleles>
  * </int-chromosome>
- * }</pre>
+ * } </pre>
  *
  * The XML has been written by the following {@code Writer} definition.
  *
@@ -270,7 +270,7 @@ public interface Writer<T> {
 	 *
 	 * <pre> {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param writer the root element writer
 	 * @param <T> the writer data type

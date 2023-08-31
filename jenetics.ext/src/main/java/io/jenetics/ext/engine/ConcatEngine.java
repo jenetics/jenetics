@@ -51,7 +51,7 @@ import io.jenetics.ext.internal.util.ConcatSpliterator;
  *   ------>|  Engine 1  |------------>|  Engine 2  |----------->
  *          |            | Result      |            |      Result
  *          +------------+             +------------+
- * }</pre>
+ * } </pre>
  *
  * The sketch above shows how the engine concatenation works. In this example,
  * the evolution stream of the first engine is evaluated until it terminates.

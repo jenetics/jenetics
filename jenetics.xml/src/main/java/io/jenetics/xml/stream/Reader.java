@@ -218,7 +218,7 @@ public abstract class Reader<T> {
 	 *         "element",
 	 *         attr("length").map(Integer::parseInt)
 	 *     );
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param name the attribute name
 	 * @return an attribute reader
@@ -242,7 +242,7 @@ public abstract class Reader<T> {
 	 *         "element",
 	 *         text().map(Integer::parseInt)
 	 *     );
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @return an element text reader
 	 */
@@ -271,7 +271,7 @@ public abstract class Reader<T> {
 	 *         attr("name"),
 	 *         text().map(Integer::parseInt)
 	 *     );
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param generator the generator function, which build the result object
 	 *        from the given parameter array
@@ -301,7 +301,7 @@ public abstract class Reader<T> {
 	 * the given parent element {@code name}.
 	 * <p>
 	 * <b>XML</b>
-	 * <pre> {@code <min><property name="size">1234<property></min>}</pre>
+	 * <pre> {@code <min><property name="size">1234<property></min>} </pre>
 	 *
 	 * <b>Reader definition</b>
 	 * <pre>{@code
@@ -355,7 +355,7 @@ public abstract class Reader<T> {
 	 *     <property>-957346595</property>
 	 *     <property>-88668137</property>
 	 * </properties>
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * <b>Reader definition</b>
 	 * <pre>{@code
@@ -365,7 +365,7 @@ public abstract class Reader<T> {
 	 *         "properties",
 	 *         elems(elem("property", text().map(Integer::parseInt)))
 	 *     );
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param reader the child element reader
 	 * @param <T> the element type

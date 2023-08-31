@@ -214,7 +214,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * x[0]
 	 * y[3]
 	 * my_var[4]
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * If no variable <em>index</em> is encoded in the name, a variable with
 	 * index 0 is created.
