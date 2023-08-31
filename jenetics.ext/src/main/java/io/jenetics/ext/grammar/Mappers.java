@@ -35,14 +35,14 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * This class defines factories for different CFG &harr; Chromosome mappings
  * (encodings). The classical mapping codec, with a bit-chromosome can be created
  * in the following way.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = ...;
  * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
  *     cfg,
  *     1000,
  *     index -> new SentenceGenerator<>(index, 1000)
  * );
- * }</pre>
+ * }
  * This codec creates a mapping for the given grammar {@code cfg} and uses
  * bit-chromosomes with length {@code 1000}. The result of the mapping will be a
  * list of terminal symbols which has been created by the given
@@ -67,14 +67,14 @@ public final class Mappers {
 	 * 8-bit junks, as described in <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = ...;
 	 * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
 	 *     cfg,
 	 *     1000,
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see #singleIntegerChromosomeMapper(Cfg, IntRange, IntRange, Function)
 	 *
@@ -105,7 +105,7 @@ public final class Mappers {
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = ...;
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
@@ -113,7 +113,7 @@ public final class Mappers {
 	 *     IntRange.of(100),   // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param range the value range of the integer genes
@@ -144,7 +144,7 @@ public final class Mappers {
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = ...;
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
@@ -152,7 +152,7 @@ public final class Mappers {
 	 *     100,                 // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param range the value range of the integer genes
@@ -182,28 +182,28 @@ public final class Mappers {
 	 * every rule. The length of the chromosome is defined as a function of the
 	 * encoded rules. This means that the following CFG,
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *                       (0)            (1)
 	 * (0) <expr> ::= (<expr><op><expr>) | <var>
 	 *               (0) (1) (2) (3)
 	 * (1) <op>   ::= + | - | * | /
 	 *               (0) (1) (2) (3) (4)
 	 * (2) <var>  ::= x | 1 | 2 | 3 | 4
-	 * }</pre>
+	 * }
 	 *
 	 * will be represented by the following {@link Genotype}
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * Genotype.of(
 	 *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
 	 *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
 	 *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
 	 * )
-	 * }</pre>
+	 * }
 	 *
 	 * The {@code length} function lets you defining the number of codons as
 	 * function of the rule the chromosome is encoding.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = Bnf.parse(...);
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(
 	 *     cfg,
@@ -214,7 +214,7 @@ public final class Mappers {
 	 *     // with a maximal sentence length of 500.
 	 *     index -> new SentenceGenerator<>(index, 500)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param length the length of the chromosome which is used for selecting

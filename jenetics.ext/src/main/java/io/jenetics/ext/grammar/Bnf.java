@@ -32,7 +32,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * grammars in
  * <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a>
  * format.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> grammar = Bnf.parse("""
  *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
  *     <op>   ::= + | - | * | /
@@ -40,7 +40,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
  *     """
  * );
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
@@ -68,12 +68,12 @@ public final class Bnf {
 	 * Parses the given BNF {@code grammar} string to a {@link Cfg} object. The
 	 * following example shows the grammar of a simple arithmetic expression.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
 	 * <op>   ::= + | - | * | /
 	 * <var>  ::= x | y
 	 * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-	 * }</pre>
+	 * }
 	 *
 	 * @param grammar the BNF {@code grammar} string
 	 * @return the parsed {@code BNF} object

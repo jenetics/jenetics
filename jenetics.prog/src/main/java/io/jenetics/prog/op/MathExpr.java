@@ -95,11 +95,11 @@ public final class MathExpr
 	/**
 	 * This tree-rewriter rewrites constant expressions to its single value.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
 	 * MathExpr.CONST_REWRITER.rewrite(tree);
 	 * assertEquals(tree.getValue(), Const.of(27.0));
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 */
@@ -238,10 +238,10 @@ public final class MathExpr
 	 * Convenient method, which lets you apply the program function without
 	 * explicitly create a wrapper array.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *  final double result = MathExpr.parse("2*z + 3*x - y").eval(3, 2, 1);
 	 *  assert result == 9.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @see #apply(Double[])
 	 * @see #eval(String, double...)
@@ -273,11 +273,11 @@ public final class MathExpr
 	 * Return the string representation of this {@code MathExpr} object. The
 	 * string returned by this method can be parsed again and will result in the
 	 * same expression object.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
 	 *  final MathExpr tree = MathExpr.parse(expr);
 	 *  assert tree.toString().equals(expr);
-	 * }</pre>
+	 * }
 	 *
 	 * @return the expression string
 	 */
@@ -398,11 +398,11 @@ public final class MathExpr
 	 * Return the string representation of the given {@code tree} object. The
 	 * string returned by this method can be parsed again and will result in the
 	 * same expression object.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
 	 *  final MathExpr tree = MathExpr.parse(expr);
 	 *  assert MathExpr.format(tree.tree()).equals(expr);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.3
 	 *
@@ -431,10 +431,10 @@ public final class MathExpr
 	 * Parses the given mathematical expression string and returns the
 	 * mathematical expression tree. The expression may contain all functions
 	 * defined in {@link MathOp}.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<? extends Op<Double>, ?> tree = MathExpr
 	 *     .parseTree("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
-	 * }</pre>
+	 * }
 	 * The example above will lead to the following tree:
 	 * <pre> {@code
 	 *  add
@@ -481,10 +481,10 @@ public final class MathExpr
 	/**
 	 * Evaluates the given {@code expression} with the given arguments.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *  final double result = MathExpr.eval("2*z + 3*x - y", 3, 2, 1);
 	 *  assert result == 9.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @see #apply(Double[])
 	 * @see #eval(double...)

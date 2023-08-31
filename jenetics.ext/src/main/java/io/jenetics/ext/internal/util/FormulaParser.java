@@ -76,7 +76,7 @@ import io.jenetics.ext.util.TreeNode;
  * grammar, where the output is already a list of tokens (aka sentence). The
  * following example parser can be used to parse arithmetic expressions.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final FormulaParser<String> parser = FormulaParser.<String>builder()
  *     // Structural tokens.
  *     .lparen("(")
@@ -91,17 +91,17 @@ import io.jenetics.ext.util.TreeNode;
  *     .identifiers("x", "y", "z")
  *     .functions("pow", "sin", "cos")
  *     .build();
- * }</pre>
+ * }
  * This parser allows you to parse the following token list
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<String> tokens = List.of(
  *     "x", "*", "x", "+", "sin", "(", "z", ")", "-", "cos", "(", "x",
  *     ")", "+", "y", "/", "z", "-", "pow", "(", "z", ",", "x", ")"
  * );
  * final Tree<String, ?> tree = parser.parse(tokens);
- * }</pre>
+ * }
  * which will result in the following parsed tree:
- * <pre>{@code
+ * {@snippet lang="java":
  * "-"
  * ├── "+"
  * │   ├── "-"
@@ -119,7 +119,7 @@ import io.jenetics.ext.util.TreeNode;
  * └── "pow"
  *     ├── "z"
  *     └── "x"
- * }</pre>
+ * }
  * Note that the generated (parsed) tree is of type {@code Tree<String, ?>}. To
  * <em>evaluate</em> this tree, additional steps are necessary. If you want to
  * create an <em>executable</em> tree, you have to use the
@@ -128,7 +128,7 @@ import io.jenetics.ext.util.TreeNode;
  * The following code snippet shows how to create an <em>executable</em> AST
  * from a token list. The {@code MathExpr} class in the {@code io.jenetics.prog}
  * module uses a similar {@link TokenConverter}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Tree<Op<Double>, ?> tree = formula.parse(
  *     tokens,
  *     (token, type) -> switch (token) {
@@ -144,7 +144,7 @@ import io.jenetics.ext.util.TreeNode;
  *             : throw new IllegalArgumentException("Unknown token: " + token);
  *     }
  * );
- * }</pre>
+ * }
  *
  * @param <T> the token type used as input for the parser
  *

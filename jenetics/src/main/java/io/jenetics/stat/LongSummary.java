@@ -89,11 +89,11 @@ public record LongSummary(
 	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final LongSummary summary = stream
 	 *     .collect(toLongSummary(v -> v.longValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

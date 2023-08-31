@@ -36,7 +36,7 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  * This class allows creating a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Stream<Long> stream = engine.stream()
  *     .limit(33)
  *     .map(EvolutionResult::generation);
@@ -67,7 +67,7 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
  * @param <T> the element type of the publisher
  *

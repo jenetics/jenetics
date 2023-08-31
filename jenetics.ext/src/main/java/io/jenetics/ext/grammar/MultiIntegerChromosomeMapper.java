@@ -43,28 +43,28 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * every rule. The length of the chromosome is defined as a function of the
  * encoded rules. This means that the following CFG,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *                       (0)            (1)
  * (0) <expr> ::= (<expr><op><expr>) | <var>
  *               (0) (1) (2) (3)
  * (1) <op>   ::= + | - | * | /
  *               (0) (1) (2) (3) (4)
  * (2) <var>  ::= x | 1 | 2 | 3 | 4
- * }</pre>
+ * }
  *
  * will be represented by the following {@link Genotype}
- * <pre>{@code
+ * {@snippet lang="java":
  * Genotype.of(
  *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
  *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
  *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
  * )
- * }</pre>
+ * }
  *
  * The {@code length} function lets you defining the number of codons as
  * function of the rule the chromosome is encoding.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = Bnf.parse(...);
  * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
  *     cfg,
@@ -75,7 +75,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  *     // with a maximal sentence length of 5,000.
  *     index -> new SentenceGenerator<>(index, 5_000)
  * );
- * }</pre>
+ * }
  *
  * @param <T> the terminal token type of the grammar
  * @param <R> the result type of the mapper

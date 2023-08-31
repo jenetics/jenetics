@@ -273,7 +273,7 @@ public interface ISeq<T>
 	 * {@code A}. Since {@code ISeq} instances are immutable, an <i>upcast</i>
 	 * will be always safe.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // The sequence which we want to case.
 	 * final ISeq<? extends Number> ints = ISeq.of(1, 2, 3, 4, 5);
 	 *
@@ -284,7 +284,7 @@ public interface ISeq<T>
 	 * // This cast will, of course, still fail.
 	 * final ISeq<String> strings = ISeq.upcast(ints);
 	 * final ISeq<Integer> integers = ISeq.upcast(ints);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.6
 	 *

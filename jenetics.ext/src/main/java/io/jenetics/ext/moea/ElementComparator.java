@@ -26,10 +26,10 @@ import java.util.function.Function;
  * Defines the order of two elements of a given <em>vector</em> type {@code V}.
  * The following example creates an {@code ElementComparator} function for a
  * {@code double[] array}:
- * <pre>{@code
+ * {@snippet lang="java":
  * final ElementComparator<double[]> comp =
  *     (u, v, i) -> Double.compare(u[i], v[i]);
- * }</pre>
+ * }
  *
  * @param <V> the vector type
  *
@@ -43,10 +43,10 @@ public interface ElementComparator<V> {
 	/**
 	 * Compares the components of {@code a} and {@code b} at the given
 	 * {@code index}. E.g.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ElementComparator<double[]> comp =
 	 *     (u, v, i) -> Double.compare(u[i], v[i]);
-	 * }</pre>
+	 * }
 	 *
 	 * @param u the first vector
 	 * @param v the second vector

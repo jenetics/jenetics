@@ -38,7 +38,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * <p>
  * The following code snippet shows how to create a random sentence from a
  * given grammar:
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = Bnf.parse("""
  *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
  *     <fun>  ::= FUN1 | FUN2
@@ -60,9 +60,9 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  *     .collect(Collectors.joining());
  *
  * System.out.println(string);
- * }</pre>
+ * }
  * <em>Some sample output:</em>
- * <pre>{@code
+ * {@snippet lang="java":
  * > ((x-FUN1(5,5))+8)
  * > (FUN2(y,5)-FUN2(0,x))
  * > x
@@ -71,7 +71,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
  * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
  * > (9-(y*(x+x)))
- * > }</pre>
+ * > }
  *
  * @see DerivationTreeGenerator
  *

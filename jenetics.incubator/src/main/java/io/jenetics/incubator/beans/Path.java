@@ -349,9 +349,9 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 * valid path consists of a names, which must be a valid Java identifier,
 	 * and indexes, separated by a dot, '.'. A valid path with three elements
 	 * will look like this:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var path = Path.of("name1.name2[9].value");
-	 * }</pre>
+	 * }
 	 *
 	 * @param value the path value
 	 * @return a new property path

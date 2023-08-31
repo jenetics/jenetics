@@ -38,7 +38,7 @@ import io.jenetics.ext.internal.parser.Token;
 /**
  * Tokenizer for BNF grammars.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * ASSIGN: '::=';
  * BAR: '|';
  * GT: '>';
@@ -46,7 +46,7 @@ import io.jenetics.ext.internal.parser.Token;
  * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'-')+;
  * STRING: ( '%s' | '%i' )? '"' ( ~ '"' )* '"';
  * WS: [ \r\n\t] -> skip;
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1

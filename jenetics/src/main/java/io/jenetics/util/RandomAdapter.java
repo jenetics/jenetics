@@ -32,10 +32,10 @@ import java.util.stream.LongStream;
  * Some places in the Java API still require a {@link Random} object instead of
  * the new {@link RandomGenerator}. This class can be used by using this adapter
  * class.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var random = RandomGenerator.getDefault();
  * final var bi = new BigInteger(100, RandomAdapter.of(random));
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0

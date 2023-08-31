@@ -47,10 +47,10 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 
 	private static final Charset CHARSET = UTF_8;
 
-	// Original start tag: <pre>{@code
+	// Original start tag: {@snippet lang="java":
 	private static final String START_TAG = "<pre><code>";
 
-	// Original end tag: }</pre>
+	// Original end tag: }
 	private static final String END_TAG = "</code></pre>";
 
 	private File _baseDir;

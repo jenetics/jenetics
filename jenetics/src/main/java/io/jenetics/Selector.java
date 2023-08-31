@@ -27,13 +27,13 @@ import io.jenetics.util.Seq;
  * the population. The selectors are used to divide the population into
  * survivors and offspring. The selectors for offspring and for the survivors
  * can be chosen independently.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
  *     .offspringSelector(new RouletteWheelSelector<>())
  *     .survivorsSelector(new TournamentSelector<>())
  *     .build();
- * }</pre>
+ * }
  *
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).

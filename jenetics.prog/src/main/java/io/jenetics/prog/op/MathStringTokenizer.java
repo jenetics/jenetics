@@ -42,7 +42,7 @@ import io.jenetics.ext.internal.parser.Token;
 /**
  * Tokenizer for simple arithmetic expressions.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * LPAREN: '(';
  * RPAREN: ')';
  * COMMA: ',';
@@ -54,7 +54,7 @@ import io.jenetics.ext.internal.parser.Token;
  * NUMBER: ('0'..'9')+ ('.' ('0'..'9')+)? ((e|E) (+|-)? ('0'..'9'))?
  * ID: ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')+;
  * WS: [ \r\n\t] + -> skip;
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1

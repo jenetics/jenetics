@@ -169,13 +169,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate
@@ -193,13 +193,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -223,13 +223,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -650,14 +650,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * Returns the hash code value for this sequence. The hash code is defined
 	 * as followed:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see List#hashCode()
 	 * @see Seq#hashCode(BaseSeq)
@@ -718,14 +718,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * Unified method for calculating the hash code of every {@link Seq}
 	 * implementation. The hash code is defined as followed:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see Seq#hashCode()
 	 * @see List#hashCode()

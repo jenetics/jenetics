@@ -43,14 +43,14 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute the quantile with:
- * <pre>{@code
+ * {@snippet lang="java":
  * final DoubleStream stream = ...
  * final Quantile quantile = stream.collect(
  *         () -> new Quantile(0.23),
  *         Quantile::accept,
  *         Quantile::combine
  *     );
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use on a
@@ -378,7 +378,7 @@ public class Quantile implements DoubleConsumer {
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Quantile q1 = ...;
 	 * final Quantile q2 = ...;
 	 *
@@ -391,7 +391,7 @@ public class Quantile implements DoubleConsumer {
 	 *     assert q2.sameState(q1);
 	 *     assert q1.sameState(q1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -425,11 +425,11 @@ public class Quantile implements DoubleConsumer {
 	 * function to each input element, and returns quantiles for the resulting
 	 * values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final Quantile quantile = stream
 	 *     .collect(toQuantile(0.25, v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param quantile the wished quantile value.
 	 * @param mapper a mapping function to apply to each element
@@ -459,10 +459,10 @@ public class Quantile implements DoubleConsumer {
 	 * function to each input element, and returns the median for the resulting
 	 * values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final Quantile median = stream.collect(toMedian(v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

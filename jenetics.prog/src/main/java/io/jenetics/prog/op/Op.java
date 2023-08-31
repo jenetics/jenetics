@@ -31,12 +31,12 @@ import java.util.function.UnaryOperator;
  * with a given <em>arity</em> to a result object of the same type:
  * {@code T[] -> T}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Op<Double> add = Op.of("add", 2, v -> v[0] + v[1]);
  * final Op<Double> add3 = Op.of("add3", 3, v -> v[0] + v[1] + v[2]);
  * final Op<Double> sub = Op.of("sub", 2, v -> v[0] - v[1]);
  * final Op<Double> sin = Op.of("sin", 1, v -> Math.sin(v[0]));
- * }</pre>
+ * }
  *
  * Implementations of the {@code Op} interface are usually immutable and doesn't
  * maintain internal state. But some instances are ephemeral with changing state.

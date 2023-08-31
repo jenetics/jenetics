@@ -61,7 +61,7 @@ import io.jenetics.ext.internal.util.ConcatSpliterator;
  * Concatenating evolution engines might be useful, if you want to explore your
  * search space with random search first and then start the <em>real</em> GA
  * search.
- * <pre>{@code
+ * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
  *      v -> Math.sin(v[0])*Math.cos(v[1]),
  *      Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
@@ -90,7 +90,7 @@ import io.jenetics.ext.internal.util.ConcatSpliterator;
  *
  *  System.out.println(result + ": " +
  *          problem.fitness().apply(problem.codec().decode(result)));
- * }</pre>
+ * }
  *
  * An essential part, when concatenating evolution engines, is to make sure your
  * engines are creating <em>limited</em> evolution streams. This is what

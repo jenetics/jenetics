@@ -33,21 +33,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of longs with:
- * <pre>{@code
+ * {@snippet lang="java":
  * final LongStream stream = ...
  * final LongMomentStatistics statistics = stream.collect(
  *         LongMomentStatistics::new,
  *         LongMomentStatistics::accept,
  *         LongMomentStatistics::combine
  *     );
- * }</pre>
+ * }
  *
  * For a non-long stream, you can use a collector:
- * <pre>{@code
+ * {@snippet lang="java":
  * final Stream<SomeObject> stream = ...
  * final LongMomentStatistics statistics = stream
  *     .collect(toLongMomentStatistics(v -> v.longValue()));
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use
@@ -156,7 +156,7 @@ public class LongMomentStatistics
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final LongMomentStatistics lms1 = ...;
 	 * final LongMomentStatistics lms2 = ...;
 	 *
@@ -169,7 +169,7 @@ public class LongMomentStatistics
 	 *     assert lms2.sameState(lms1);
 	 *     assert lms1.sameState(lms1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -210,11 +210,11 @@ public class LongMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final LongMomentStatistics statistics = stream
 	 *     .collect(toLongMomentStatistics(v -> v.longValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

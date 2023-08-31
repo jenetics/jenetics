@@ -108,14 +108,14 @@ public final class Limits {
 	 * better phenotype could be found after the given number of
 	 * {@code generations}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @param generations the number of <i>steady</i> generations
 	 * @param <C> the fitness type
@@ -135,14 +135,14 @@ public final class Limits {
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as a safety net, for guaranteed stream truncation.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
 	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC())
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -162,14 +162,14 @@ public final class Limits {
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as a safety net, for guaranteed stream truncation.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
 	 *     .limit(byExecutionTime(Duration.ofMillis(500))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -192,7 +192,7 @@ public final class Limits {
 	 * population becomes greater than the user-specified fitness threshold when
 	 * the objective is to maximize the fitness.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream if the best fitness is higher than
 	 *      // the given threshold of '2.3'.
@@ -201,7 +201,7 @@ public final class Limits {
 	 *      // the termination (truncation) of the evolution stream.
 	 *     .limit(250)
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -222,7 +222,7 @@ public final class Limits {
 	 * fitness is converging. Two filters of different lengths are used to
 	 * smooth the best fitness across the generations.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
@@ -230,7 +230,7 @@ public final class Limits {
 	 *          return eps >= 10E-5
 	 *     }))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
@@ -275,11 +275,11 @@ public final class Limits {
 	 * away from the smoothed best fitness from the short filter, the fitness is
 	 * deemed as converged and the evolution terminates.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, 10E-4))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * In the given example, the evolution stream stops, if the difference of the
 	 * mean values of the long and short filter is less than 1%. The short
@@ -430,13 +430,13 @@ public final class Limits {
 	 * genotypes.
 	 * <p>
 	 * This method is equivalent to the following code snippet:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Predicate<EvolutionResult<DoubleGene, ?>> limit =
 	 *     byGeneConvergence(
 	 *         stat -> stat.getMax()*convergenceRate <= stat.getMean(),
 	 *         convergedGeneRate
 	 *     );
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.0
 	 * @see #byGeneConvergence(Predicate, double)

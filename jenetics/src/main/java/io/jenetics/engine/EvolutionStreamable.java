@@ -85,10 +85,10 @@ public interface EvolutionStreamable<
 	/**
 	 * Create a new, possibly <em>infinite</em>, evolution stream with a newly
 	 * created population. This method is a shortcut for
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final EvolutionStream<G, C> stream = streamable
 	 *     .stream(() -> EvolutionStart.of(ISeq.empty(), 1));
-	 * }</pre>
+	 * }
 	 *
 	 * @return a new evolution stream.
 	 */
@@ -120,7 +120,7 @@ public interface EvolutionStreamable<
 	 * of the given {@code result} and its total generation
 	 * {@link EvolutionResult#totalGenerations()}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * private static final Problem<Double, DoubleGene, Double>
 	 * PROBLEM = Problem.of(
 	 *     x -> cos(0.5 + sin(x))*cos(x),
@@ -152,7 +152,7 @@ public interface EvolutionStreamable<
 	 *
 	 *     System.out.println(result.bestPhenotype());
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * The example above shows how to save an {@link EvolutionResult} from a
 	 * first run, save it to disk and continue the evolution.

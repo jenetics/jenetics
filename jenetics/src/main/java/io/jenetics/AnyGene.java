@@ -35,7 +35,7 @@ import io.jenetics.util.MSeq;
  * {@code Gene} implementation, which allows to create genes without explicit
  * implementing the {@code Gene} interface.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * class Main {
  *     // First monday of 2015.
  *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
@@ -51,7 +51,7 @@ import io.jenetics.util.MSeq;
  *     // gene.newInstance(), are calling the 'newRandomMonday' method.
  *     final AnyGene<LocalDate> gene = AnyGene.of(Main::nextRandomMonday);
  * }
- * }</pre>
+ * }
  * The example above shows how to create {@code LocalDate} genes from a random
  * {@code LocalDate} supplier. It also shows how to implement a restriction on
  * the created dates. The usage of the {@code AnyGene} class is useful for

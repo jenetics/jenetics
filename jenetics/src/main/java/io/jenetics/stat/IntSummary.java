@@ -89,11 +89,11 @@ public record IntSummary(
 	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final IntSummary summary = stream
 	 *     .collect(toIntSummary(v -> v.intValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

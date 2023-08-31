@@ -98,11 +98,11 @@ public final /*record*/ class IntRange implements Serializable {
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * for (int i = range.min(); i < range.max(); ++i) {
 	 *     ...
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *

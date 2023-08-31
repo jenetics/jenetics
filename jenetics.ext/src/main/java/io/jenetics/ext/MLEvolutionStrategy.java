@@ -31,21 +31,21 @@ import io.jenetics.internal.util.Requires;
 /**
  * Setup for a (μ, λ)-Evolution Strategy. Applying this setup is done in the
  * following way.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var engine = Engine.builder(problem)
  *     .setup(new MLEvolutionStrategy<>(μ, λ, p)
  *     .build();
- * }</pre>
+ * }
  *
  * And is equivalent to the following builder setup.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var engine = Engine.builder(problem)
  *     .populationSize(λ)
  *     .survivorsSize(0)
  *     .offspringSelector(new TruncationSelector<>(μ))
  *     .alterers(new Mutator<>(p))
  *     .build();
- * }</pre>
+ * }
  *
  * @param <G> the gene type
  * @param <C> the fitness result type

@@ -83,17 +83,17 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.
 	 * This is a convenient method for an ordinary cast and allows seamless
 	 * method-chaining. Instead of
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Genotype<BitGene> gt = ...
 	 * final int count = ((BitChromosome)gt.chromosome()).bitCount()
-	 * }</pre>
+	 * }
 	 * you can write
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Genotype<BitGene> gt = ...
 	 * final int count = gt.chromosome()
 	 *     .as(BitChromosome.class)
 	 *     .bitCount()
-	 * }</pre>
+	 * }
 	 * This may lead to a more elegant programming style in some cases.
 	 *
 	 * @since 3.7

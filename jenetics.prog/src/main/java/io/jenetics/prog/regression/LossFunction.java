@@ -32,9 +32,9 @@ import static java.lang.String.format;
  * output a higher value. If they're pretty good, it’ll output a lower number.
  * It is the essential part of the <em>overall</em> {@link Error} function.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse);
- * }</pre>
+ * }
  *
  * @see <a href="https://en.wikipedia.org/wiki/Loss_function">Loss function</a>
  *

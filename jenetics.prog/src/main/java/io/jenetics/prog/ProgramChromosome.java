@@ -48,7 +48,7 @@ import io.jenetics.prog.op.Program;
 /**
  * Holds the nodes of the operation tree.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final int depth = 6;
  * final ISeq<Op<Double>> operations = ISeq.of(...);
  * final ISeq<Op<Double>> terminals = ISeq.of(...);
@@ -59,7 +59,7 @@ import io.jenetics.prog.op.Program;
  *     operations,
  *     terminals
  * );
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -357,7 +357,7 @@ public class ProgramChromosome<A>
 	 * operation tree. If the tree is not valid, it will repair it. This
 	 * behaviour allows the <em>safe</em> usage of all existing alterers.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ProgramChromosome<Double> ch = ProgramChromosome.of(
 	 *     genes,
 	 *     // If the program has more that 200 nodes, it is marked as "invalid".
@@ -365,7 +365,7 @@ public class ProgramChromosome<A>
 	 *     operations,
 	 *     terminals
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param genes the program genes
 	 * @param validator the chromosome validator to use

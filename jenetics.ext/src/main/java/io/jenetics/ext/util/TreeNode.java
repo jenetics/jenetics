@@ -532,12 +532,12 @@ public final class TreeNode<T>
 	 * The parse method doesn't strip the space between the parentheses and
 	 * the commas. If you want to remove this <em>formatting</em> space,
 	 * you should do the parsing with an addition <em>mapper</em> function.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<String> tree = TreeNode.parse(
 	 *     "mul(  div(cos( 1.0) , cos(π )), sin(mul(1.0, z) ) )",
 	 *     String::trim
 	 * );
-	 * }</pre>
+	 * }
 	 * The code above will trim all tree nodes during the parsing process.
 	 *
 	 * @see Tree#toParenthesesString(Function)
@@ -564,12 +564,12 @@ public final class TreeNode<T>
 	 *  0(1(4,5),2(6),3(7(10,11),8,9))
 	 * </pre>
 	 * and can be parsed to an integer tree with the following code:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<Integer, ?> tree = TreeNode.parse(
 	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
 	 *     Integer::parseInt
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()

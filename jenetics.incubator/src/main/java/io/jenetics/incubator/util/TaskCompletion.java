@@ -43,7 +43,7 @@ import java.util.stream.Stream;
  * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
  * <em>concurrently</em>.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
  * final var results = new ArrayList<Integer>();
  *
@@ -58,7 +58,7 @@ import java.util.stream.Stream;
  * for (int i = 0; i < results.size(); ++i) {
  *     assert results.get(i) == i;
  * }
- * }</pre>
+ * }
  *
  * Since the tasks are executed in the submitted order and the next task is
  * executed if the previous one has been finished, it is not necessary to use

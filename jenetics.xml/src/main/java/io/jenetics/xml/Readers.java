@@ -52,16 +52,16 @@ import io.jenetics.xml.stream.XML;
  * This class contains static fields and methods, for creating chromosome- and
  * genotype readers for different gene types.
  *
- * <pre>{@code
- * final Reader<Genotype<BitGene> bgr =
- *     Readers.Genotype.reader(Readers.BitChromosome.reader()));
+ * {@snippet lang="java":
+ * final Reader<Genotype<BitGene>> bgr =
+ *     Readers.Genotype.reader(Readers.BitChromosome.reader());
  *
  * final Reader<Genotype<IntegerGene>> igr =
- *     Writers.Genotype.reader(Readers.IntegerChromosome.reader()));
+ *     Writers.Genotype.reader(Readers.IntegerChromosome.reader());
  *
  * final Reader<Genotype<DoubleGene>> dgr =
- *     Readers.Genotype.reader(Readers.DoubleChromosome.reader()));
- * }</pre>
+ *     Readers.Genotype.reader(Readers.DoubleChromosome.reader());
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -78,7 +78,6 @@ public final class Readers {
 	 * <pre> {@code
 	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
 	 * } </pre>
-	 * }
 	 */
 	public static final class BitChromosome {
 		private BitChromosome() {}
@@ -393,7 +392,7 @@ public final class Readers {
 	 *         <allele>0.43947528327497376</allele>
 	 *     </alleles>
 	 * </double-chromosome>
-	 * } </pre>
+	 * }</pre>
 	 */
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}

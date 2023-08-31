@@ -101,10 +101,10 @@ public record IntMoments(
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<Integer> stream = ...
 	 * final IntMoments moments = stream.collect(toIntMoments()));
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.1
 	 *
@@ -121,11 +121,11 @@ public record IntMoments(
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = ...
 	 * final IntMoments moments = stream
 	 *     .collect(toIntMoments(v -> v.intValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

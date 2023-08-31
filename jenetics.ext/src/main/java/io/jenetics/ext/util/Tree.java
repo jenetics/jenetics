@@ -211,10 +211,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * {@code null} and has no children and parent. A newly created tree node
 	 * with no value is <em>empty</em>.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<String, ?> tree = TreeNode.of();
 	 * assert tree.isEmpty();
-	 * }</pre>
+	 * }
 	 *
 	 * @since 7.0
 	 *
@@ -398,13 +398,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the {@link Path} of {@code this} tree, such that
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<Integer, ?> tree = ...;
 	 * final Tree.Path path = tree.path();
 	 * assert tree == tree.getRoot()
 	 *     .childAtPath(path)
 	 *     .orElse(null);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.1
 	 *
@@ -921,12 +921,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * Return the path of {@code this} child node from the root node. You will
 	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
 	 * root node of {@code this} node.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<?, ?> node = ...;
 	 * final Tree<?, ?> root = node.getRoot();
 	 * final int[] path = node.childPath();
 	 * assert node == root.childAtPath(path);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.4
 	 *
@@ -972,7 +972,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * Performs a reduction on the elements of {@code this} tree, using an
 	 * associative reduction function. This can be used for evaluating a given
 	 * expression tree in pre-order.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
 	 * final double result = formula.reduce(new Double[0], (op, args) ->
 	 *     switch (op) {
@@ -984,7 +984,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *     }
 	 * );
 	 * assert result == 13.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @since 7.1
 	 *

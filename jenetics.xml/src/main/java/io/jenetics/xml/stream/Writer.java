@@ -43,7 +43,7 @@ import javax.xml.stream.XMLStreamWriter;
  *
  * The XML has been written by the following {@code Writer} definition.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Writer<IntegerChromosome> writer =
  *     elem("int-chromosome",
  *         attr("length").map(ch -> ch.length()),
@@ -54,16 +54,16 @@ import javax.xml.stream.XMLStreamWriter;
  *                 .map(ch -> ISeq.of(ch).map(g -> g.getAllele()))
  *         )
  *     );
- * }</pre>
+ * }
  *
  * How to write the XML writing is shown by the next code snippet.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final IntegerChromosome ch = IntegerChromosome.of(MIN_VALUE, MAX_VALUE, 3);
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
  *     write(ch, xml);
  * }
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -120,9 +120,9 @@ public interface Writer<T> {
 	 * Writes the attribute with the given {@code name} to the current
 	 * <em>outer</em> element.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Writer<String> writer1 = elem("element", attr("attribute"));
-	 * }</pre>
+	 * }
 	 *
 	 * @see #attr(String, Object)
 	 *
@@ -145,9 +145,9 @@ public interface Writer<T> {
 	 * Writes the attribute with the given {@code name} and a constant
 	 * {@code value} to the current <em>outer</em> element.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Writer<MyObject> = elem("element", attr("version", "1.0"));
-	 * }</pre>
+	 * }
 	 *
 	 * @param name the attribute name
 	 * @param value the attribute value
