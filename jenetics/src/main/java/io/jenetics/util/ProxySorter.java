@@ -28,7 +28,7 @@ import java.util.List;
  * an index lookup array is returned which allows to access the array in a
  * sorted order.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final double[] array = new Random().doubles(100).toArray();
  * final int[] proxy = ProxySorter.sort(array);
  *
@@ -40,18 +40,18 @@ import java.util.List;
  * for (int i = 0; i < array.length; ++i) {
  *     assert sorted[i] == array[proxy[i]];
  * }
- * }</pre>
+ * }
  *
  * The minimal requirement of the proxy-sorter will be an access function and
  * the number of elements you want to sort.
- * <pre>{@code
- * final IntFunction<String> access = ...;
+ * {@snippet lang="java":
+ * final IntFunction<String> access = null; // @replace substring='null' replacement="..."
  * final int length = 100;
  * final int[] proxy = ProxySorter.sort(
  *     access, length,
  *     (a, i, j) -> a.apply(i).compareTo(a.apply(j))
  * );
- * }</pre>
+ * }
  * @apiNote
  * The most general sorting method is {@link #sort(Object, int, Comparator)}.
  * All other sorting methods can be created with this method.
@@ -68,10 +68,10 @@ public final class ProxySorter {
 	/**
 	 * The comparator used for comparing two array elements at the specified
 	 * indexes.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ProxySorter.Comparator<double[]> comparator =
 	 *     (a, i, j) -> Double.compare(a[i], a[j]);
-	 * }</pre>
+	 * }
 	 * The example above shows how to create a comparator for {@code double[]}
 	 * arrays.
 	 *
@@ -144,8 +144,8 @@ public final class ProxySorter {
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
 	 *
-	 * <pre>{@code
-	 * final double[] array = ...;
+	 * {@snippet lang="java":
+	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
 	 *     array, 5, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
@@ -153,7 +153,7 @@ public final class ProxySorter {
 	 * for (int i : sorted) {
 	 *     System.out.println(array[i]);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.3
 	 *
@@ -182,8 +182,8 @@ public final class ProxySorter {
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
 	 *
-	 * <pre>{@code
-	 * final double[] array = ...;
+	 * {@snippet lang="java":
+	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
 	 *     array, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
@@ -191,7 +191,7 @@ public final class ProxySorter {
 	 * for (int i : sorted) {
 	 *     System.out.println(array[i]);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param array the array which is sorted
 	 * @param length the array length

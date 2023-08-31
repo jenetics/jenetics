@@ -29,11 +29,11 @@ import io.jenetics.internal.util.Requires;
  * <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * algorithm.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *     .setup(new WeaselProgram<>())
  *     .build();
- * }</pre>
+ * }
  *
  * @see WeaselSelector
  * @see WeaselMutator

@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  * Interfaces and classes for handling resource ({@link AutoCloseable}) objects.
  * The common use cases are shown as follows:
  * <p><b>Wrapping <em>non</em>-closeable values</b></p>
- * <pre>{@code
+ * {@snippet lang="java":
  * final Value<Path, IOException> file = new Value<>(
  *     Files.createFile(Path.of("some_file")),
  *     Files::deleteIfExists
@@ -48,10 +48,10 @@ import java.util.function.Supplier;
  *     final var writtenText = Files.readString(file.get());
  *     assert "foo".equals(writtenText);
  * }
- * }</pre>
+ * }
  *
  * <p><b>Building complex closeable values</b></p>
- * <pre>{@code
+ * {@snippet lang="java":
  * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
  *     final var fin = resources.add(new FileInputStream(file.toFile()));
  *     final var bin = resources.add(new BufferedInputStream(fin));
@@ -64,14 +64,14 @@ import java.util.function.Supplier;
  * try (result) {
  *     result.get().forEach(System.out::println);
  * }
- * }</pre>
+ * }
  *
  * <p><b>Wrapping several closeables into one</b></p>
- * <pre>{@code
+ * {@snippet lang="java":
  * try (var __ = ExtendedCloseable.of(c1, c2, c3)) {
- *     ...
+ *     // ...
  * }
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
@@ -269,7 +269,7 @@ public class Lifecycle {
 	 * example the created {@code file} is automatically deleted when leaving the
 	 * {@code try} block.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Create the closeable file.
 	 * final Value<Path, IOException> file = new Value<>(
 	 *     Files.createFile(Path.of("some_file")),
@@ -282,7 +282,7 @@ public class Lifecycle {
 	 *     final var writtenText = Files.readString(file.get());
 	 *     assert "foo".equals(writtenText);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param <T> the value type
 	 */
@@ -321,7 +321,7 @@ public class Lifecycle {
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Value<Stream<Object>, IOException> result = new Value<>(resources -> {
 		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
 		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
@@ -334,7 +334,7 @@ public class Lifecycle {
 		 * try (result) {
 		 *     result.get().forEach(System.out::println);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @see Resources
 		 *
@@ -388,7 +388,7 @@ public class Lifecycle {
 		 * use case for this method is when additional initialization of the
 		 * value is needed.
 		 *
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final var file = CloseableValue.of(
 		 *     Files.createFile(Path.of("some_file")),
 		 *     Files::deleteIfExists
@@ -400,7 +400,7 @@ public class Lifecycle {
 		 * try (file) {
 		 *     // Do something with temp file.
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param block the codec block which is applied to the value
 		 * @param releases additional release methods, which are called in the
@@ -433,7 +433,7 @@ public class Lifecycle {
 	 * example the created {@code file} is automatically deleted when leaving the
 	 * {@code try} block.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Create the closeable file.
 	 * final IOValue<Path> file = new IOValue<>(
 	 *     Files.createFile(Path.of("some_file")),
@@ -446,7 +446,7 @@ public class Lifecycle {
 	 *     final var writtenText = Files.readString(file.get());
 	 *     assert "foo".equals(writtenText);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param <T> the value type
 	 */
@@ -479,7 +479,7 @@ public class Lifecycle {
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
 		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
 		 *     final var bin = resources.add(new BufferedInputStream(fin));
@@ -492,7 +492,7 @@ public class Lifecycle {
 		 * try (result) {
 		 *     result.get().forEach(System.out::println);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @see Resources
 		 *
@@ -534,7 +534,7 @@ public class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (var resources = new Resources<IOException>()) {
 	 *     final var fin = resources.add(new FileInputStream(file), Closeable::close);
 	 *     if (fin.read() != -1) {
@@ -543,7 +543,7 @@ public class Lifecycle {
 	 *     final var oin = resources.add(new ObjectInputStream(fin), Closeable::close);
 	 *     // ...
 	 * }
-	 * }</pre>
+	 * }
 	 */
 	public static sealed class Resources<E extends Exception>
 		implements ExtendedCloseable<E>
@@ -634,7 +634,7 @@ public class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (var resources = new IOResources()) {
 	 *     final var fin = resources.add(new FileInputStream(file));
 	 *     if (fin.read() != -1) {
@@ -643,7 +643,7 @@ public class Lifecycle {
 	 *     final var oin = resources.add(new ObjectInputStream(fin));
 	 *     // ...
 	 * }
-	 * }</pre>
+	 * }
 	 */
 	public static final class IOResources extends Resources<IOException> {
 
@@ -707,14 +707,14 @@ public class Lifecycle {
 	 * is rethrown after invoking the method on the remaining objects, all other
 	 * exceptions are swallowed.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var streams = new ArrayList<InputStream>();
 	 * streams.add(new FileInputStream(file1));
 	 * streams.add(new FileInputStream(file2));
 	 * streams.add(new FileInputStream(file3));
 	 * // ...
 	 * invokeAll(Closeable::close, streams);
-	 * }</pre>
+	 * }
 	 *
 	 * @param <A> the closeable object type
 	 * @param <E> the exception type

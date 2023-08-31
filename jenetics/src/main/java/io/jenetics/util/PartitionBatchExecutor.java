@@ -92,12 +92,12 @@ final class PartitionBatchExecutor implements BatchExecutor {
 	 *
 	 * The following examples print the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * int[] parts = partition(15, 6);
 	 * for (int i = 0; i < parts.length - 1; ++i) {
 	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]);
 	 * }
-	 * }</pre>
+	 * }
 	 * <pre>
 	 * 	 0: 0 	2
 	 * 	 1: 2 	4
@@ -108,7 +108,7 @@ final class PartitionBatchExecutor implements BatchExecutor {
 	 * </pre>
 	 *
 	 * This example shows how this can be used in an concurrent environment:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
@@ -121,7 +121,7 @@ final class PartitionBatchExecutor implements BatchExecutor {
 	 *         }});
 	 *     }
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param size the size of the array to partition.
 	 * @param parts the number of parts the (virtual) array should be partitioned.

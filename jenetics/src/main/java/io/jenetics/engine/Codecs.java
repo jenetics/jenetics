@@ -131,7 +131,7 @@ public final class Codecs {
 	 * <p>
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} objects.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
@@ -142,7 +142,7 @@ public final class Codecs {
 	 *     // Verify that bit 7 is set. (For illustration purpose.)
 	 *     bi -> bi.testBit(7)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see AnyGene#of(Supplier, Predicate)
 	 * @see AnyChromosome#of(Supplier, Predicate)
@@ -470,7 +470,7 @@ public final class Codecs {
 	 * <p>
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} object arrays.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
@@ -483,7 +483,7 @@ public final class Codecs {
 	 *     // The 'Chromosome' length.
 	 *     123
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see AnyChromosome#of(Supplier, Predicate, Predicate, int)
 	 *
@@ -787,13 +787,13 @@ public final class Codecs {
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
 	 *     Codecs.ofMapping(numbers, strings, HashMap::new);
-	 * }</pre>
+	 * }
 	 *
 	 * If {@code source.size() > target.size()}, the created mapping is
 	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
@@ -924,13 +924,13 @@ public final class Codecs {
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
 	 *     Codecs.ofMapping(numbers, strings);
-	 * }</pre>
+	 * }
 	 *
 	 * If {@code source.size() > target.size()}, the created mapping is
 	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
@@ -964,28 +964,29 @@ public final class Codecs {
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public final class Main {
-	 *     // The basic set from where to choose an 'optimal' subset.
-	 *     private final static ISeq<Integer> SET =
-	 *         ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 *      // The basic set from where to choose an 'optimal' subset.
+	 *      private final static ISeq<Integer> SET =
+	 *          ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	 *
-	 *     // Fitness function directly takes an 'int' value.
-	 *     private static int fitness(final ISeq<Integer> subset) {
-	 *         assert(subset.size() <= SET.size());
-	 *         final int size = subset.stream()
-	 *             .collect(Collectors.summingInt(Integer::intValue));
-	 *         return size <= 20 ? size : 0;
-	 *     }
+	 *      // Fitness function directly takes an 'int' value.
+	 *      private static int fitness(final ISeq<Integer> subset) {
+	 *          assert(subset.size() <= SET.size());
+	 *          final int size = subset.stream()
+	 *             .mapToInt(Integer::intValue)
+	 *             .sum();
+	 *          return size <= 20 ? size : 0;
+	 *      }
 	 *
-	 *     public static void main(final String[] args) {
-	 *         final Engine<BitGene, Double> engine = Engine
-	 *             .builder(Main::fitness, codec.ofSubSet(SET))
-	 *             .build();
-	 *         ...
-	 *     }
+	 *      public static void main(final String[] args) {
+	 *          final Engine<BitGene, Double> engine = Engine
+	 *              .builder(Main::fitness, codec.ofSubSet(SET))
+	 *              .build();
+	 *          // ...
+	 *      }
+	 *  }
 	 * }
-	 * }</pre>
 	 *
 	 * @param <T> the element type of the basic set
 	 * @param basicSet the basic set, from where to choose the <i>optimal</i>

@@ -39,13 +39,13 @@ import io.jenetics.util.Factory;
  * The following example constraint checks a 2-dimensional point for validity.
  * In this example, a point is considered as valid if it lies within the unit
  * circle.
- * <pre>{@code
+ * {@snippet lang="java":
  * InvertibleCodec<double[], DoubleGene> codec = Codecs.ofVector(DoubleRange.of(-1, 1), 2);
  * Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
  *     codec,
  *     p -> p[0]*p[0] + p[1]*p[1] <= 1
  * );
- * }</pre>
+ * }
  * The probability that a randomly created point lies outside the unit circle is
  * <em>1 - π/4 &asymp; 0.2146</em>. This leads to a failure probability after 10
  * tries of <em>0.2146<sup>10</sup> &asymp; 0.000000207173567</em>. Since we are

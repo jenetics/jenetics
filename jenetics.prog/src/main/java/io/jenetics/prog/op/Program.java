@@ -149,9 +149,9 @@ public class Program<T> implements Op<T>, Serializable {
 	/**
 	 * Evaluates the given operation tree with the given variables. This method
 	 * is equivalent to
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final T result = tree.reduce(variables, Op::apply);
-	 * }</pre>
+	 * }
 	 * but handles the variable sized {@code variables} array more conveniently.
 	 *
 	 * @see Tree#reduce(Object[], BiFunction)

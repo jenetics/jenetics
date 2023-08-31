@@ -52,7 +52,7 @@ import io.jenetics.util.Seq;
  * Genetic algorithm <em>engine</em> which is the main class. The following
  * example shows the main steps in initializing and executing the GA.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
@@ -83,7 +83,7 @@ import io.jenetics.util.Seq;
  *            .collect(toBestPhenotype());
  *     }
  * }
- * }</pre>
+ * }
  *
  * The architecture allows to decouple the configuration of the engine from the
  * execution. The {@code Engine} is configured via the {@code Engine.Builder}
@@ -98,15 +98,15 @@ import io.jenetics.util.Seq;
  * method. If you want to use a different executor for evaluating the fitness
  * functions, you have to set the {@link Builder#fitnessExecutor(BatchExecutor)}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
- *     .builder(...)
+ *     .builder(null) // @replace substring='null' replacement="..."
  *     // Using this execution service for parallelize the evolution steps.
  *     .executor(Executors.newFixedThreadPool(5))
  *     // Using one virtual thread for every fitness function evaluation.
  *     .batchExecutor(BatchExecutor.ofVirtualThreads())
  *     .build();
- * }</pre>
+ * }
  *
  * @implNote
  *     This class is thread safe: The engine maintains no mutable state.
@@ -1284,11 +1284,11 @@ public final class Engine<
 	 * engine configurations. The following code snippet shows a possible usage
 	 * example.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
 	 *     .setup(new WeaselProgram<>())
 	 *     .build();
-	 * }</pre>
+	 * }
 	 *
 	 * @see Builder#setup(Setup)
 	 *

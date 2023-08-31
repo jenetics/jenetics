@@ -60,12 +60,12 @@ public final class Reflect {
 	/**
 	 * Base interface used for matching {@link Type} objects.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Type type = ...;
 	 * if (ArrayType.of(type) instanceof ArrayType at) {
 	 *     System.out.println(at);
 	 * }
-	 * }</pre>
+	 * }
 	 */
 	public sealed interface Trait {
 	}
@@ -194,12 +194,12 @@ public final class Reflect {
 		/**
 		 * Return a {@code OptionalType} instance if the given {@code type} is a
 		 * {@code Optional} class.
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Type type = ...;
 		 * if (OptionalType.of(type) instanceof OptionalType ot) {
 		 *     System.out.println(ot);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param type the type object
 		 * @return an {@code OptionalType} if the given {@code type} is an
@@ -262,12 +262,12 @@ public final class Reflect {
 		/**
 		 * Return an {@code ArrayType} instance if the given {@code type} is an
 		 * array class.
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Type type = ...;
 		 * if (ArrayType.of(type) instanceof ArrayType at) {
 		 *     System.out.println(at);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param type the type object
 		 * @return an {@code ArrayType} if the given {@code type} is an array
@@ -328,12 +328,12 @@ public final class Reflect {
 		/**
 		 * Return a {@code ListType} instance if the given {@code type} is a
 		 * {@code List} class.
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Type type = ...;
 		 * if (ListType.of(type) instanceof ListType lt) {
 		 *     System.out.println(lt);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param type the type object
 		 * @return an {@code ListType} if the given {@code type} is a list type,
@@ -451,12 +451,12 @@ public final class Reflect {
 		/**
 		 * Return a {@code RecordType} instance if the given {@code type} is a
 		 * {@code Record} class.
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Type type = ...;
 		 * if (RecordType.of(type) instanceof RecordType rt) {
 		 *     System.out.println(rt);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param type the type object
 		 * @return an {@code RecordType} if the given {@code type} is a record
@@ -506,12 +506,12 @@ public final class Reflect {
 		/**
 		 * Return a {@code BeanType} instance if the given {@code type} is a
 		 * bean class.
-		 * <pre>{@code
+		 * {@snippet lang="java":
 		 * final Type type = ...;
 		 * if (BeanType.of(type) instanceof BeanType bt) {
 		 *     System.out.println(bt);
 		 * }
-		 * }</pre>
+		 * }
 		 *
 		 * @param type the type object
 		 * @return an {@code ListType} if the given {@code type} is a bean type,

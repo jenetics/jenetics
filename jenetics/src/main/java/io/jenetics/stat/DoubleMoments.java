@@ -102,10 +102,10 @@ public record DoubleMoments(
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<Double> stream = ...
-	 * final DoubleMoments moments = stream.collect(toDoubleMoments()));
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final Stream<Double> stream = null; // @replace substring='null' replacement="..."
+	 * final DoubleMoments moments = stream.collect(toDoubleMoments());
+	 * }
 	 *
 	 * @since 4.1
 	 *
@@ -122,11 +122,11 @@ public record DoubleMoments(
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMoments moments = stream
 	 *     .collect(toDoubleMoments(v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

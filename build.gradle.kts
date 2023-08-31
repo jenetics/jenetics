@@ -210,10 +210,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 
 	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
-			directory = javadoc.destinationDir!!
-		}
-
 		project.tasks.register("${taskName}java2html") {
 			doLast {
 				val srcdir = file("${project.projectDir}/src/main/java")
@@ -232,13 +228,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 		}
 
 		javadoc.doLast {
-			/*
-			val colorizer = project.tasks.findByName("${taskName}colorizer")
-			colorizer?.actions?.forEach {
-				it.execute(colorizer)
-			}
-			 */
-
 			val java2html = project.tasks.findByName("${taskName}java2html")
 			java2html?.actions?.forEach {
 				it.execute(java2html)

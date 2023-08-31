@@ -45,7 +45,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * Helper methods for splitting CSV rows and merging CSV columns into a valid
  * CSV row.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * // Read CSV, including multiline CSV files, if properly quoted.
  * final List<List<String>> rows;
  * try (Stream<String> lines = CsvSupport.read(new FileReader("some_file.csv"))) {
@@ -57,7 +57,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
  *     .map(CsvSupport::join)
  *     .collect(CsvSupport.toCsv());
  * Files.writeString(Path.of("some_other_file.csv"), csv);
- * }</pre>
+ * }
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
@@ -94,11 +94,11 @@ public final class CsvSupport {
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
 	 * the reverse of the {@link #join(Iterable)} method.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
 	 * final var cols = CsvSupport.split(line);
 	 * assert List.of("a", "b", "c", "d", "e", "f").equals(cols)
-	 * }</pre>
+	 * }
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
 	 * @see #split(CharSequence, String[], int...)
@@ -129,11 +129,11 @@ public final class CsvSupport {
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
 	 * the reverse of the {@link #join(Iterable)} method.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
 	 * final var cols = new String[6]
 	 * CsvSupport.split(line, cols);
-	 * }</pre>
+	 * }
 	 *
 	 * @param line the CSV {@code row} to split
 	 * @param columns the columns, where the split result is written to. The
@@ -163,11 +163,11 @@ public final class CsvSupport {
 	 * Joins the given columns to a CSV line. This is the reverse operation of
 	 * the {@link #split(CharSequence, int...)} method.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var cols = List.of("a", "b", "c", "d", "e", "f");
 	 * final var line = CsvSupport.join(cols);
 	 * assert "a,b,c,d,e,f".equals(line);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #split(CharSequence, int...)
 	 *
@@ -217,13 +217,13 @@ public final class CsvSupport {
 	/**
 	 * Return a collector for joining a list of CSV rows into one CSV string.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final List<List<String>> rows = ...;
 	 *
 	 * final String csv = rows.stream()
 	 *     .map(CsvSupport::join)
 	 *     .collect(CsvSupport.toCSV());
-	 * }</pre>
+	 * }
 	 *
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */

@@ -32,39 +32,39 @@ import io.jenetics.incubator.beans.description.Setter;
  * <em>bean</em> property, with getter and setter, or as record component. The
  * following code shows how to create (a transitive) list of all properties from
  * a given root object.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var root = ...;
  * final List<Property> properties = Properties
  *     // Get all properties from the 'root' object which are defined
  *     // in the 'io.jenetics' package.
  *     .stream(root, "io.jenetics")
  *     .toList();
- * }</pre>
+ * }
  * Only get string properties.
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<Property> properties = Properties
  *     .stream(root, "io.jenetics")
  *     .filter(property -> property.type() == String.class)
  *     .toList();
- * }</pre>
+ * }
  * Only get the properties declared in the {@code MyBeanObject} class.
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<Property> properties = Properties
  *     .stream(root, "io.jenetics")
  *     .filter(property -> property.object().getClass() == MyBeanObject.class)
  *     .toList();
- * }</pre>
+ * }
  * Only get properties with the name {@code index}. No matter where they defined
  * in the object hierarchy.
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<Property> properties = Properties
  *     .stream(root, "io.jenetics")
  *     .filter(Property.pathMatcher("**index"))
  *     .toList();
- * }</pre>
+ * }
  * Updates all "index" properties with value {@code -1} to zero and returns all
  * properties, which couldn't be updated, because the property was immutable.
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<Property> notUpdated = Properties
  *     .stream(root, "io.jenetics")
  *     .filter(Property.pathMatcher("**index"))
@@ -72,7 +72,7 @@ import io.jenetics.incubator.beans.description.Setter;
  *     .filter(property -> !property.write(0))
  *     .toList();
  * assert notUpdated.isEmpty();
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2

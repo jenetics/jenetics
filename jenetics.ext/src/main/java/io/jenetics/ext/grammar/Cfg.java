@@ -68,7 +68,7 @@ import java.util.stream.Stream;
  * </ul>
  *
  * You can easily create a <em>Cfg</em> object from a given BNF grammar.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> grammar = Bnf.parse("""
  *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
  *     <op>   ::= + | - | * | /
@@ -76,10 +76,10 @@ import java.util.stream.Stream;
  *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
  *     """
  * );
- * }</pre>
+ * }
  *
  * It is also possible to create the grammar above programmatically.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> grammar = Cfg.of(
  *     R("expr",
  *         E(NT("num")),
@@ -94,7 +94,7 @@ import java.util.stream.Stream;
  *         E(T("8")), E(T("9"))
  *     )
  * );
- * }</pre>
+ * }
  *
  * @see Bnf#parse(String)
  *

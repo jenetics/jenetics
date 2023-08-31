@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 /**
  * Helper methods for creating filter predicates.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Predicate<? super Path> filter = Stream.of(includes)
  *     .map(include -> Filters
  *         .filtering(
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  *             Filters.ofGlob(include)
  *         )
  *     )
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2

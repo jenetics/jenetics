@@ -37,14 +37,14 @@ import io.jenetics.util.Factory;
  * is possible to <em>repair</em> invalid individuals. The evolution
  * {@link Engine} is using the constraint in the following way: check the validity
  * and repair invalid individuals.
- * <pre>{@code
+ * {@snippet lang="java":
  * for (int i = 0; i < population.size(); ++i) {
  *     final Phenotype<G, C> individual = population.get(i);
  *     if (!constraint.test(individual)) {
  *         population.set(i, constraint.repair(individual, generation));
  *     }
  * }
- * }</pre>
+ * }
  *
  * <b>Note</b><br>
  * Keep in mind, that this interface only repairs invalid individuals, which
@@ -55,17 +55,17 @@ import io.jenetics.util.Factory;
  * factory which obeys {@code this} constraint. The following code will show
  * how to create such a <em>constrained</em> genotype factory and use it for
  * creating an evolution engine.
- * <pre>{@code
- * final Constraint<DoubleGene, Double> constraint = ...;
- * final Factory<Genotype<DoubleGene>> gtf = ...;
+ * {@snippet lang="java":
+ * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+ * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(fitness, constraint.constrain(gtf))
  *     .constraint(constraint)
  *     .build();
- * }</pre>
+ * }
  *
  * The following example illustrates how a constraint which its repair function
- * can be look like. Imagine that your problem domain consists of double values
+ * can look like. Imagine that your problem domain consists of double values
  * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
  * <pre>{@code
  *   +--+--+--+--+--+--+--+--+--+--+
@@ -82,7 +82,7 @@ import io.jenetics.util.Factory;
  * guarantees an even distribution of the values in the valid ranges, which is
  * an important characteristic of the repair function.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final InvertibleCodec<Double, DoubleGene> codec = Codecs.ofScalar(DoubleRange.of(0, 10));
  * final Constraint<DoubleGene, Double> constraint = Constraint.of(
  *     codec,
@@ -94,14 +94,14 @@ import io.jenetics.util.Factory;
  *         return v;
  *     }
  * );
- * }</pre>
+ * }
  *
  * <b>Alternative solution</b><br>
  * Instead of repairing individuals, it is better to not create invalid one in
  * the first place. Once you have a proper <em>repair</em> strategy, you can use
  * it to create a {@link Codec} which only creates valid individuals, using your
  * repair method.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Codec<Double, DoubleGene> codec = Codecs
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
@@ -110,9 +110,9 @@ import io.jenetics.util.Factory;
  *             }
  *             return v;
  *         });
- * }</pre>
+ * }
  * The same example with an {@link InvertibleCodec} will look like this:
- * <pre>{@code
+ * {@snippet lang="java":
  * final InvertibleCodec<Double, DoubleGene> codec = Codecs
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
@@ -122,7 +122,7 @@ import io.jenetics.util.Factory;
  *             return v;
  *         },
  *         Function.identity());
- * }</pre>
+ * }
  *
  * @see Engine.Builder#constraint(Constraint)
  * @see RetryConstraint
@@ -183,14 +183,14 @@ public interface Constraint<
 	 * create an evolution engine, where also the genotype factory will only
 	 * create valid individuals.
 	 *
-	 * <pre>{@code
-	 * final Constraint<DoubleGene, Double> constraint = ...;
-	 * final Factory<Genotype<DoubleGene>> gtf = ...;
+	 * {@snippet lang="java":
+	 * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+	 * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Double> engine = Engine
 	 *     .builder(fitness, constraint.constrain(gtf))
 	 *     .constraint(constraint)
 	 *     .build();
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *

@@ -36,22 +36,22 @@ import io.jenetics.util.RandomRegistry;
  * </p>
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link io.jenetics.engine.Engine} instance.
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<Integer> alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(
  *     PermutationChromosome.of(alleles)
  * );
- * }</pre>
+ * }
  *
  * The following code shows the assurances of the {@code EnumGene}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<Integer> alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final EnumGene<Integer> gene = new EnumGene<>(5, alleles);
  *
  * assert(gene.alleleIndex() == 5);
  * assert(gene.allele() == gene.validAlleles().get(5));
  * assert(gene.validAlleles() == alleles);
- * }</pre>
+ * }
  *
  * @see PermutationChromosome
  * @see PartiallyMatchedCrossover
