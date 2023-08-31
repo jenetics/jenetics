@@ -34,7 +34,7 @@ import java.util.stream.Collector;
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of longs with:
  * {@snippet lang="java":
- * final LongStream stream = ...
+ * final LongStream stream = null; // @replace substring='null' replacement="..."
  * final LongMomentStatistics statistics = stream.collect(
  *         LongMomentStatistics::new,
  *         LongMomentStatistics::accept,
@@ -44,7 +44,7 @@ import java.util.stream.Collector;
  *
  * For a non-long stream, you can use a collector:
  * {@snippet lang="java":
- * final Stream<SomeObject> stream = ...
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final LongMomentStatistics statistics = stream
  *     .collect(toLongMomentStatistics(v -> v.longValue()));
  * }
@@ -157,8 +157,8 @@ public class LongMomentStatistics
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * {@snippet lang="java":
-	 * final LongMomentStatistics lms1 = ...;
-	 * final LongMomentStatistics lms2 = ...;
+	 * final LongMomentStatistics lms1 = null; // @replace substring='null' replacement="..."
+	 * final LongMomentStatistics lms2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (lms1.sameState(lms2)) {
 	 *     final long value = random.nextInt(1_000_000);
@@ -211,7 +211,7 @@ public class LongMomentStatistics
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongMomentStatistics statistics = stream
 	 *     .collect(toLongMomentStatistics(v -> v.longValue()));
 	 * }

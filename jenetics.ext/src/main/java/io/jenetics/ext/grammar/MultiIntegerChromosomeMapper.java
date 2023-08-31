@@ -43,14 +43,14 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * every rule. The length of the chromosome is defined as a function of the
  * encoded rules. This means that the following CFG,
  *
- * {@snippet lang="java":
+ * <pre>{@code
  *                       (0)            (1)
  * (0) <expr> ::= (<expr><op><expr>) | <var>
  *               (0) (1) (2) (3)
  * (1) <op>   ::= + | - | * | /
  *               (0) (1) (2) (3) (4)
  * (2) <var>  ::= x | 1 | 2 | 3 | 4
- * }
+ * }</pre>
  *
  * will be represented by the following {@link Genotype}
  * {@snippet lang="java":
@@ -65,7 +65,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * function of the rule the chromosome is encoding.
  *
  * {@snippet lang="java":
- * final Cfg<String> cfg = Bnf.parse(...);
+ * final Cfg<String> cfg = Bnf.parse(null); // @replace substring='null' replacement="..."
  * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
  *     cfg,
  *     // The chromosome length is 10 times the

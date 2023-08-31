@@ -33,7 +33,7 @@ import io.jenetics.internal.util.Requires;
  * following way.
  * {@snippet lang="java":
  * final var engine = Engine.builder(problem)
- *     .setup(new MLEvolutionStrategy<>(μ, λ, p)
+ *     .setup(new MLEvolutionStrategy<>(μ, λ, p))
  *     .build();
  * }
  *

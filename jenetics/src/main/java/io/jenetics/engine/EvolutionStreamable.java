@@ -144,7 +144,7 @@ public interface EvolutionStreamable<
 	 *     IO.object.write(rescue, path);
 	 *
 	 *     // Load the previous result and continue evolution.
-	 *     \@SuppressWarnings("unchecked")
+	 *     @SuppressWarnings("unchecked")
 	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
 	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
 	 *         .limit(Limits.bySteadyFitness(20))

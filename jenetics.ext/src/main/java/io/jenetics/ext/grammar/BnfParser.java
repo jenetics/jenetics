@@ -43,7 +43,7 @@ import io.jenetics.ext.internal.parser.TokenParser;
 /**
  * Parser for BNF grammars.
  *
- * {@snippet lang="java":
+ * <pre>{@code
  * rulelist: rule_* EOF;
  * rule: lhs ASSIGN rhs;
  * lhs: id;
@@ -54,7 +54,7 @@ import io.jenetics.ext.internal.parser.TokenParser;
  * text: STRING | QUOTED_STRING;
  * id: LT ruleid GT;
  * ruleid: ID;
- * }
+ * }</pre>
  *
  * The BNF object is build from the following classes.
  * <ul>

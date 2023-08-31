@@ -98,7 +98,7 @@ public class DoubleChromosome
 	 * are then wrapped into a newly created chromosome.
 	 *
 	 * {@snippet lang="java":
-	 * final DoubleChromosome chromosome = ...;
+	 * final DoubleChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final DoubleChromosome normalized = chromosome.map(Main::normalize);
 	 *
 	 * static double[] normalize(final double[] values) {

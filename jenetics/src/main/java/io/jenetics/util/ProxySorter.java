@@ -45,7 +45,7 @@ import java.util.List;
  * The minimal requirement of the proxy-sorter will be an access function and
  * the number of elements you want to sort.
  * {@snippet lang="java":
- * final IntFunction<String> access = ...;
+ * final IntFunction<String> access = null; // @replace substring='null' replacement="..."
  * final int length = 100;
  * final int[] proxy = ProxySorter.sort(
  *     access, length,
@@ -145,7 +145,7 @@ public final class ProxySorter {
 	 * iterating the array in ascending order.
 	 *
 	 * {@snippet lang="java":
-	 * final double[] array = ...;
+	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
 	 *     array, 5, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
@@ -183,7 +183,7 @@ public final class ProxySorter {
 	 * iterating the array in ascending order.
 	 *
 	 * {@snippet lang="java":
-	 * final double[] array = ...;
+	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
 	 *     array, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])

@@ -100,7 +100,7 @@ import io.jenetics.util.Seq;
  *
  * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
- *     .builder(...)
+ *     .builder(null) // @replace substring='null' replacement="..."
  *     // Using this execution service for parallelize the evolution steps.
  *     .executor(Executors.newFixedThreadPool(5))
  *     // Using one virtual thread for every fitness function evaluation.

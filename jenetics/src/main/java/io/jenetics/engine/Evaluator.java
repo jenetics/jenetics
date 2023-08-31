@@ -36,7 +36,7 @@ import io.jenetics.util.Seq;
  * serial evaluator can easily implement:
  *
  * {@snippet lang="java":
- * final Function<? super Genotype<G>, ? extends C> fitness = ...;
+ * final Function<? super Genotype<G>, ? extends C> fitness = null; // @replace substring='null' replacement="..."
  * final Evaluator<G, C> evaluator = population -> population
  *     .map(pt -> pt.eval(fitness))
  *     .asISeq();

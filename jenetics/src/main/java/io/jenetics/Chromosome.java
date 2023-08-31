@@ -84,15 +84,15 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * This is a convenient method for an ordinary cast and allows seamless
 	 * method-chaining. Instead of
 	 * {@snippet lang="java":
-	 * final Genotype<BitGene> gt = ...
-	 * final int count = ((BitChromosome)gt.chromosome()).bitCount()
+	 * final Genotype<BitGene> gt = null; // @replace substring='null' replacement="..."
+	 * final int count = ((BitChromosome)gt.chromosome()).bitCount();
 	 * }
 	 * you can write
 	 * {@snippet lang="java":
-	 * final Genotype<BitGene> gt = ...
+	 * final Genotype<BitGene> gt = null; // @replace substring='null' replacement="..."
 	 * final int count = gt.chromosome()
 	 *     .as(BitChromosome.class)
-	 *     .bitCount()
+	 *     .bitCount();
 	 * }
 	 * This may lead to a more elegant programming style in some cases.
 	 *

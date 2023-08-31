@@ -92,7 +92,7 @@ import java.util.random.RandomGeneratorFactory;
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         RandomRegistry.random(factory);
  *
- *         final Engine<DoubleGene, Double> engine = ...;
+ *         final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  *         final EvolutionResult<DoubleGene, Double> result = engine.stream()
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
@@ -117,7 +117,7 @@ import java.util.random.RandomGeneratorFactory;
  *                     .collect(toList())
  *             );
  *
- *         final Engine<DoubleGene, Double> engine = ...;
+ *         final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  *         final EvolutionResult<DoubleGene, Double> result = engine
  *              // Initialize the evolution stream with the given genotypes.
  *             .stream(genotypes)
@@ -132,11 +132,11 @@ import java.util.random.RandomGeneratorFactory;
  * {@code L64X256MixRandom}. Via the system property
  * {@code io.jenetics.util.defaultRandomGenerator}, it is possible to use a
  * different random generator.
- * {@snippet lang="java":
- * java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
- *      -cp jenetics-@__version__@.jar:app.jar\
+ * <pre>{@code
+ * java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom \
+ *      -cp jenetics-@__version__@.jar:app.jar \
  *          com.foo.bar.MyJeneticsApp
- * }
+ * }</pre>
  *
  * @see RandomGenerator
  * @see RandomGeneratorFactory
@@ -236,7 +236,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 *
 	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = ...
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(new Random(123), r -> {
 	 *     seq.shuffle();
 	 * });
@@ -267,7 +267,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 *
 	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = ...
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(RandomGeneratorFactory.getDefault(), r -> {
 	 *     seq.shuffle();
 	 * });
@@ -299,10 +299,8 @@ public final class RandomRegistry {
 	 * supplier.
 	 *
 	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = ...
-	 * using(() -> new MyRandomGenerator(), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
+	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());
 	 * }
 	 *
 	 * @since 7.0

@@ -89,7 +89,7 @@ public final /*record*/ class LongRange implements Serializable {
 	 * using a {@code for} loop as follows:
 	 * {@snippet lang="java":
 	 * for (long i = range.min(); i < range.max(); ++i) {
-	 *     ...
+	 *     // ...
 	 * }
 	 * }
 	 *

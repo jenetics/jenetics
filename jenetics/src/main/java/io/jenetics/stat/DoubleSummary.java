@@ -91,7 +91,7 @@ public record DoubleSummary(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleSummary summary = stream
 	 *     .collect(toDoubleSummary(v -> v.doubleValue()));
 	 * }

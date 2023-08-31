@@ -140,7 +140,7 @@ public final class Limits {
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
-	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC())
+	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC()))
 	 *     .collect(toBestPhenotype());
 	 * }
 	 *
@@ -167,7 +167,7 @@ public final class Limits {
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
-	 *     .limit(byExecutionTime(Duration.ofMillis(500))
+	 *     .limit(byExecutionTime(Duration.ofMillis(500)))
 	 *     .collect(toBestPhenotype());
 	 * }
 	 *
@@ -226,8 +226,8 @@ public final class Limits {
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
-	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
-	 *          return eps >= 10E-5
+	 *          final var eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
+	 *          return eps >= 10E-5;
 	 *     }))
 	 *     .collect(toBestPhenotype());
 	 * }

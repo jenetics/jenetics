@@ -92,7 +92,7 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * {@snippet lang="java":
-	 * final Population<DoubleGene, Double> population = ...
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
 	 * }
 	 *
@@ -114,7 +114,7 @@ public enum Optimize {
 	 * of <i>better</i> and <i>worse</i>.
 	 *
 	 * {@snippet lang="java":
-	 * final Population<DoubleGene, Double> population = ...
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());
 	 * }
 	 *

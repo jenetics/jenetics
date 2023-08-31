@@ -44,7 +44,7 @@ import java.util.stream.Collector;
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute the quantile with:
  * {@snippet lang="java":
- * final DoubleStream stream = ...
+ * final DoubleStream stream = null; // @replace substring='null' replacement="..."
  * final Quantile quantile = stream.collect(
  *         () -> new Quantile(0.23),
  *         Quantile::accept,
@@ -379,8 +379,8 @@ public class Quantile implements DoubleConsumer {
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * {@snippet lang="java":
-	 * final Quantile q1 = ...;
-	 * final Quantile q2 = ...;
+	 * final Quantile q1 = null; // @replace substring='null' replacement="..."
+	 * final Quantile q2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (q1.sameState(q2)) {
 	 *     final double value = random.nextDouble();
@@ -426,7 +426,7 @@ public class Quantile implements DoubleConsumer {
 	 * values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final Quantile quantile = stream
 	 *     .collect(toQuantile(0.25, v -> v.doubleValue()));
 	 * }
@@ -460,7 +460,7 @@ public class Quantile implements DoubleConsumer {
 	 * values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final Quantile median = stream.collect(toMedian(v -> v.doubleValue()));
 	 * }
 	 *

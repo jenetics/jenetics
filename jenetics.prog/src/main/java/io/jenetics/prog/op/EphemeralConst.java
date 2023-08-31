@@ -44,7 +44,7 @@ import io.jenetics.internal.util.Lazy;
  * usage would be to introduce random terminal values.
  *
  * {@snippet lang="java":
- * final Random random = ...;
+ * final Random random = null; // @replace substring='null' replacement="..."
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
  * }
  *
@@ -74,7 +74,7 @@ import io.jenetics.internal.util.Lazy;
  *         this.max = max;
  *     }
  *
- *     \@Override
+ *     @Override
  *     public Integer get() {
  *         return rnd.nextInt(max - min) + min;
  *     }

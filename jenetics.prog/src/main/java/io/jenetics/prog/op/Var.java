@@ -44,7 +44,7 @@ import io.jenetics.ext.util.TreeNode;
  * result space.
  *
  * {@snippet lang="java":
- * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
+ * final ISeq<? extends Op<Double>> operations = ISeq.of(null); // @replace substring='null' replacement="..."
  * final ISeq<? extends Op<Double>> terminals = ISeq.of(
  *     Var.of("x", 0), Var.of("y", 1)
  * );
@@ -55,11 +55,11 @@ import io.jenetics.ext.util.TreeNode;
  *
  * {@snippet lang="java":
  * static double error(final ProgramChromosome<Double> program) {
- *     final double x = ...;
- *     final double y = ...;
+ *     final double x = null; // @replace substring='null' replacement="..."
+ *     final double y = null; // @replace substring='null' replacement="..."
  *     final double result = program.eval(x, y);
- *     ...
- *     return ...;
+ *     // ...
+ *     return null; // @replace substring='null' replacement="..."
  * }
  * }
  *

@@ -96,7 +96,7 @@ public class IntegerChromosome
 	 * are then wrapped into a newly created chromosome.
 	 *
 	 * {@snippet lang="java":
-	 * final IntegerChromosome chromosome = ...;
+	 * final IntegerChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final IntegerChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static int[] half(final int[] values) {

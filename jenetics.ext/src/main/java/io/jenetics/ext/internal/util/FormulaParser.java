@@ -101,7 +101,7 @@ import io.jenetics.ext.util.TreeNode;
  * final Tree<String, ?> tree = parser.parse(tokens);
  * }
  * which will result in the following parsed tree:
- * {@snippet lang="java":
+ * <pre>{@code
  * "-"
  * ├── "+"
  * │   ├── "-"
@@ -119,7 +119,7 @@ import io.jenetics.ext.util.TreeNode;
  * └── "pow"
  *     ├── "z"
  *     └── "x"
- * }
+ * }</pre>
  * Note that the generated (parsed) tree is of type {@code Tree<String, ?>}. To
  * <em>evaluate</em> this tree, additional steps are necessary. If you want to
  * create an <em>executable</em> tree, you have to use the
@@ -140,7 +140,7 @@ import io.jenetics.ext.util.TreeNode;
  *         case "sin" -> MathOp.SIN;
  *         case "cos" -> MathOp.COS;
  *         default -> type == TokenType.IDENTIFIER
- *             ? Var.of(token);
+ *             ? Var.of(token)
  *             : throw new IllegalArgumentException("Unknown token: " + token);
  *     }
  * );

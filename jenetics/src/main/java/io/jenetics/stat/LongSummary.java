@@ -90,7 +90,7 @@ public record LongSummary(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongSummary summary = stream
 	 *     .collect(toLongSummary(v -> v.longValue()));
 	 * }

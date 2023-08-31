@@ -102,8 +102,8 @@ public record IntMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<Integer> stream = ...
-	 * final IntMoments moments = stream.collect(toIntMoments()));
+	 * final Stream<Integer> stream = null; // @replace substring='null' replacement="..."
+	 * final IntMoments moments = stream.collect(toIntMoments());
 	 * }
 	 *
 	 * @since 4.1
@@ -122,7 +122,7 @@ public record IntMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMoments moments = stream
 	 *     .collect(toIntMoments(v -> v.intValue()));
 	 * }

@@ -100,7 +100,7 @@ public final /*record*/ class IntRange implements Serializable {
 	 * using a {@code for} loop as follows:
 	 * {@snippet lang="java":
 	 * for (int i = range.min(); i < range.max(); ++i) {
-	 *     ...
+	 *     // ...
 	 * }
 	 * }
 	 *

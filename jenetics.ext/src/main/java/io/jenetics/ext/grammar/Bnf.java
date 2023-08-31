@@ -68,12 +68,12 @@ public final class Bnf {
 	 * Parses the given BNF {@code grammar} string to a {@link Cfg} object. The
 	 * following example shows the grammar of a simple arithmetic expression.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 * <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
 	 * <op>   ::= + | - | * | /
 	 * <var>  ::= x | y
 	 * <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-	 * }
+	 * }</pre>
 	 *
 	 * @param grammar the BNF {@code grammar} string
 	 * @return the parsed {@code BNF} object

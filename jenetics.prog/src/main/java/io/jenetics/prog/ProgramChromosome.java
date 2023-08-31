@@ -50,11 +50,11 @@ import io.jenetics.prog.op.Program;
  *
  * {@snippet lang="java":
  * final int depth = 6;
- * final ISeq<Op<Double>> operations = ISeq.of(...);
- * final ISeq<Op<Double>> terminals = ISeq.of(...);
+ * final ISeq<Op<Double>> operations = ISeq.of(null); // @replace substring='null' replacement="..."
+ * final ISeq<Op<Double>> terminals = ISeq.of(null); // @replace substring='null' replacement="..."
  * final ProgramChromosome<Double> ch = ProgramChromosome.of(
  *     depth,
- *     // If the program has more that 200 nodes, it is marked as "invalid".
+ *     // If the program has more than 200 nodes, it is marked as "invalid".
  *     ch -> ch.length() <= 200,
  *     operations,
  *     terminals

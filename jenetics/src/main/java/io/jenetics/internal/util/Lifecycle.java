@@ -69,7 +69,7 @@ import java.util.function.Supplier;
  * <p><b>Wrapping several closeables into one</b></p>
  * {@snippet lang="java":
  * try (var __ = ExtendedCloseable.of(c1, c2, c3)) {
- *     ...
+ *     // ...
  * }
  * }
  *

@@ -146,7 +146,7 @@ public interface Writer<T> {
 	 * {@code value} to the current <em>outer</em> element.
 	 *
 	 * {@snippet lang="java":
-	 * final Writer<MyObject> = elem("element", attr("version", "1.0"));
+	 * final Writer<MyObject> writer = elem("element", attr("version", "1.0"));
 	 * }
 	 *
 	 * @param name the attribute name

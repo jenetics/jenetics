@@ -124,7 +124,7 @@ public class CharacterChromosome
 	 * are then wrapped into a newly created chromosome.
 	 *
 	 * {@snippet lang="java":
-	 * final CharacterChromosome chromosome = ...;
+	 * final CharacterChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
 	 *
 	 * static int[] uppercase(final int[] values) {

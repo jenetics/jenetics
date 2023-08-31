@@ -54,11 +54,11 @@ public final class Streams {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *     +----3--2--5--4--7--7--4--9----|
 	 *        toStrictlyIncreasing()
 	 *     +----3-----5-----7--------9----|
-	 * }
+	 * }</pre>
 	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
@@ -86,11 +86,11 @@ public final class Streams {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *     +----9--8--9--5--6--6--2--9----|
 	 *        toStrictlyDecreasing()
 	 *     +----9--8-----5--------2-------|
-	 * }
+	 * }</pre>
 	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
@@ -182,13 +182,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the last <em>n</em> elements.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +----3---+----3---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
 	 *        toIntervalMax(3)
 	 *     +----------9--------5----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
@@ -204,13 +204,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the last <em>n</em> elements.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +----3---+----3---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
 	 *        toIntervalMin(3)
 	 *     +----------3--------1----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
@@ -281,13 +281,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
 	 *        toIntervalMax(3s)
 	 *     +----------9--------5----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @see #toIntervalMax(Duration, Clock)
 	 *
@@ -307,13 +307,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
 	 *        toIntervalMax(3s)
 	 *     +----------9--------5----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @see #toIntervalMax(Duration)
 	 *
@@ -334,13 +334,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
 	 *        toIntervalMin(3s)
 	 *     +----------3--------1----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @see #toIntervalMin(Duration, Clock)
 	 *
@@ -360,13 +360,13 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
 	 *        toIntervalMin(3s)
 	 *     +----------3--------1----------|
-	 * }
+	 * }</pre>
 	 *
 	 * @see #toIntervalMin(Duration)
 	 *

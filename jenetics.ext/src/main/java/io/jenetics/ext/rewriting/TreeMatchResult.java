@@ -32,8 +32,8 @@ import io.jenetics.ext.util.Tree;
  * tree variables which matches the matching tree.
  *
  * {@snippet lang="java":
- * final Tree<String, ?> tree = ...;
- * final TreePattern<String> pattern = ...;
+ * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
+ * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
  * final Optional<TreeMatchResult<String>> result = pattern.match(tree);
  * result.ifPresent(r -> {assert r.tree() == tree;});
  * }
@@ -63,8 +63,8 @@ public final class TreeMatchResult<V> {
 	 * match.
 	 *
 	 * {@snippet lang="java":
-	 * final Tree<String, ?> tree = ...;
-	 * final TreePattern<String> pattern = ...;
+	 * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
+	 * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
 	 * final Optional<TreeMatchResult<String>> result = pattern.match(tree);
 	 * result.ifPresent(r -> {assert r.tree() == tree;});
 	 * }

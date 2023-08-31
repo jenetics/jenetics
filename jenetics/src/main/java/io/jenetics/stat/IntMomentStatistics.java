@@ -33,7 +33,7 @@ import java.util.stream.Collector;
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of ints with:
  * {@snippet lang="java":
- * final IntStream stream = ...
+ * final IntStream stream = null; // @replace substring='null' replacement="..."
  * final IntMomentStatistics statistics = stream.collect(
  *         IntMomentStatistics::new,
  *         IntMomentStatistics::accept,
@@ -41,9 +41,9 @@ import java.util.stream.Collector;
  *     );
  * }
  *
- * For a non int stream, you can use a collector:
+ * For a non-int stream, you can use a collector:
  * {@snippet lang="java":
- * final Stream<SomeObject> stream = ...
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final IntMomentStatistics statistics = stream
  *     .collect(toIntMomentStatistics(v -> v.intValue()));
  * }
@@ -147,8 +147,8 @@ public class IntMomentStatistics
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * {@snippet lang="java":
-	 * final IntMomentStatistics ims1 = ...;
-	 * final IntMomentStatistics ims2 = ...;
+	 * final IntMomentStatistics ims1 = null; // @replace substring='null' replacement="..."
+	 * final IntMomentStatistics ims2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (ims1.sameState(ims2)) {
 	 *     final int value = random.nextInt(1_000_000);
@@ -201,7 +201,7 @@ public class IntMomentStatistics
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMomentStatistics statistics = stream
 	 *     .collect(toIntMomentStatistics(v -> v.intValue()));
 	 * }

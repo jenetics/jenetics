@@ -62,7 +62,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * System.out.println(string);
  * }
  * <em>Some sample output:</em>
- * {@snippet lang="java":
+ * <pre>{@code
  * > ((x-FUN1(5,5))+8)
  * > (FUN2(y,5)-FUN2(0,x))
  * > x
@@ -71,7 +71,8 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
  * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
  * > (9-(y*(x+x)))
- * > }
+ * >
+ * }</pre>
  *
  * @see DerivationTreeGenerator
  *

@@ -61,7 +61,7 @@ import io.jenetics.xml.stream.XML;
  * This class also contains some helper methods, which makes it easier to write
  * Jenetics domain objects to a given output stream.
  * {@snippet lang="java":
- * final List<Genotype<BitGene>> genotypes = ...;
+ * final List<Genotype<BitGene>> genotypes = null; // @replace substring='null' replacement="..."
  * try (OutputStream out = Files.newOutputStream(Paths.get("path"))) {
  *     Writers.write(out, genotypes, Writers.BitChromosome.writer());
  * }
@@ -669,9 +669,9 @@ public final class Writers {
 	 * <b>Writer code</b>
 	 * {@snippet lang="java":
 	 * final PermutationChromosome<Integer> value =
-	 *     PermutationChromosome.ofInteger(5)
+	 *     PermutationChromosome.ofInteger(5);
 	 *
-	 * final Writer<PermutationChromosome<Integer> writer =
+	 * final Writer<PermutationChromosome<Integer>> writer =
 	 *     Writers.PermutationChromosome.writer();
 	 *
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
@@ -740,7 +740,7 @@ public final class Writers {
 		 * serialized by calling the {@link Object#toString()} method. Calling
 		 * this method is equivalent with:
 		 * {@snippet lang="java":
-		 * final Writer<PermutationChromosome<Double> writer =
+		 * final Writer<PermutationChromosome<Double>> writer =
 		 *     PermutationChromosome.write(text().map(Objects::toString));
 		 * }
 		 *

@@ -56,8 +56,8 @@ import io.jenetics.util.Factory;
  * how to create such a <em>constrained</em> genotype factory and use it for
  * creating an evolution engine.
  * {@snippet lang="java":
- * final Constraint<DoubleGene, Double> constraint = ...;
- * final Factory<Genotype<DoubleGene>> gtf = ...;
+ * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+ * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(fitness, constraint.constrain(gtf))
  *     .constraint(constraint)
@@ -65,9 +65,9 @@ import io.jenetics.util.Factory;
  * }
  *
  * The following example illustrates how a constraint which its repair function
- * can be look like. Imagine that your problem domain consists of double values
+ * can look like. Imagine that your problem domain consists of double values
  * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
- * {@snippet lang="java":
+ * <pre>{@code
  *   +--+--+--+--+--+--+--+--+--+--+
  *   |  |  |  |  |  |  |  |  |  |  |
  *   0  1  2  3  4  5  6  7  8  9  10
@@ -75,7 +75,7 @@ import io.jenetics.util.Factory;
  *      ^  |llllllll|rrrrrrrr|  ^
  *      |       |        |      |
  *      +-------+        +------+
- * }
+ * }</pre>
  * The invalid range is marked with {@code x}. Repairing an invalid value will
  * map values in the {@code l} range on the valid range <em>[0, 2)</em>, and
  * value in the {@code r} range on the valid range <em>[8, 10)</em>. This mapping
@@ -184,8 +184,8 @@ public interface Constraint<
 	 * create valid individuals.
 	 *
 	 * {@snippet lang="java":
-	 * final Constraint<DoubleGene, Double> constraint = ...;
-	 * final Factory<Genotype<DoubleGene>> gtf = ...;
+	 * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+	 * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Double> engine = Engine
 	 *     .builder(fitness, constraint.constrain(gtf))
 	 *     .constraint(constraint)

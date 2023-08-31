@@ -966,25 +966,26 @@ public final class Codecs {
 	 * problem.
 	 * {@snippet lang="java":
 	 * public final class Main {
-	 *     // The basic set from where to choose an 'optimal' subset.
-	 *     private final static ISeq<Integer> SET =
-	 *         ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 *      // The basic set from where to choose an 'optimal' subset.
+	 *      private final static ISeq<Integer> SET =
+	 *          ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	 *
-	 *     // Fitness function directly takes an 'int' value.
-	 *     private static int fitness(final ISeq<Integer> subset) {
-	 *         assert(subset.size() <= SET.size());
-	 *         final int size = subset.stream()
-	 *             .collect(Collectors.summingInt(Integer::intValue));
-	 *         return size <= 20 ? size : 0;
-	 *     }
+	 *      // Fitness function directly takes an 'int' value.
+	 *      private static int fitness(final ISeq<Integer> subset) {
+	 *          assert(subset.size() <= SET.size());
+	 *          final int size = subset.stream()
+	 *             .mapToInt(Integer::intValue)
+	 *             .sum();
+	 *          return size <= 20 ? size : 0;
+	 *      }
 	 *
-	 *     public static void main(final String[] args) {
-	 *         final Engine<BitGene, Double> engine = Engine
-	 *             .builder(Main::fitness, codec.ofSubSet(SET))
-	 *             .build();
-	 *         ...
-	 *     }
-	 * }
+	 *      public static void main(final String[] args) {
+	 *          final Engine<BitGene, Double> engine = Engine
+	 *              .builder(Main::fitness, codec.ofSubSet(SET))
+	 *              .build();
+	 *          // ...
+	 *      }
+	 *  }
 	 * }
 	 *
 	 * @param <T> the element type of the basic set

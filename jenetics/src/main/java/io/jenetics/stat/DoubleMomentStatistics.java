@@ -35,7 +35,7 @@ import io.jenetics.internal.math.DoubleAdder;
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of doubles with:
  * {@snippet lang="java":
- * final DoubleStream stream = ...
+ * final DoubleStream stream = null; // @replace substring='null' replacement="..."
  * final DoubleMomentStatistics statistics = stream.collect(
  *         DoubleMomentStatistics::new,
  *         DoubleMomentStatistics::accept,
@@ -45,7 +45,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * For a non-double stream, you can use a collector:
  * {@snippet lang="java":
- * final Stream<SomeObject> stream = ...
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final DoubleMomentStatistics statistics = stream
  *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
  * }
@@ -150,8 +150,8 @@ public class DoubleMomentStatistics
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * {@snippet lang="java":
-	 * final DoubleMomentStatistics ds1 = ...;
-	 * final DoubleMomentStatistics ds2 = ...;
+	 * final DoubleMomentStatistics ds1 = null; // @replace substring='null' replacement="..."
+	 * final DoubleMomentStatistics ds2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (ds1.sameState(ds2)) {
 	 *     final double value = random.nextDouble();
@@ -208,7 +208,7 @@ public class DoubleMomentStatistics
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMomentStatistics statistics = stream
 	 *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
 	 * }

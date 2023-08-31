@@ -103,8 +103,8 @@ public record DoubleMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<Double> stream = ...
-	 * final DoubleMoments moments = stream.collect(toDoubleMoments()));
+	 * final Stream<Double> stream = null; // @replace substring='null' replacement="..."
+	 * final DoubleMoments moments = stream.collect(toDoubleMoments());
 	 * }
 	 *
 	 * @since 4.1
@@ -123,7 +123,7 @@ public record DoubleMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMoments moments = stream
 	 *     .collect(toDoubleMoments(v -> v.doubleValue()));
 	 * }

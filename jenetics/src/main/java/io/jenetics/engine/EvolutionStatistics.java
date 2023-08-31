@@ -40,7 +40,7 @@ import io.jenetics.stat.MinMax;
  * your evolution <i>stream</i>.
  *
  * {@snippet lang="java":
- * final Engine<DoubleGene, Double> engine = ...
+ * final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
  *     EvolutionStatistics.ofNumber();
  *
@@ -55,7 +55,7 @@ import io.jenetics.stat.MinMax;
  *
  * <b>Example output</b>
  *
- * {@snippet lang="java":
+ * <pre>{@code
  * +---------------------------------------------------------------------------+
  * |  Time statistics                                                          |
  * +---------------------------------------------------------------------------+
@@ -81,7 +81,7 @@ import io.jenetics.stat.MinMax;
  * |                      var  = 13006.132537301528                            |
  * |                      std  = 114.044432                                    |
  * +---------------------------------------------------------------------------+
- * }
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0

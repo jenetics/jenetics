@@ -52,7 +52,7 @@ import io.jenetics.util.ISeq;
  *              // and the appropriate Codec.
  *             .build(RealFunction::eval, Codecs.ofScalar(DoubleRange.of(0, 2*PI)))
  *             .build();
- *         ...
+ *         // ...
  *     }
  * }
  * }
@@ -89,7 +89,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * the genotype into an object of the problem domain.
 	 *
 	 * {@snippet lang="java":
-	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * final Codec<SomeObject, DoubleGene> codec = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 	 * final SomeObject arg = codec.decoder().apply(gt);
 	 * }
@@ -114,7 +114,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
 	 * {@snippet lang="java":
-	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * final Codec<SomeObject, DoubleGene> codec = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 	 *
 	 * final SomeObject arg = codec.decoder().apply(gt);
@@ -145,7 +145,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * This method can also be used for creating non-trivial codes like split
 	 * ranges, as shown in the following example, where only values between
 	 * <em>[0, 2)</em> and <em>[8, 10)</em> are valid.
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *   +--+--+--+--+--+--+--+--+--+--+
 	 *   |  |  |  |  |  |  |  |  |  |  |
 	 *   0  1  2  3  4  5  6  7  8  9  10
@@ -153,7 +153,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *      ^  |llllllll|rrrrrrrr|  ^
 	 *      |       |        |      |
 	 *      +-------+        +------+
-	 * }
+	 * }</pre>
 	 *
 	 * {@snippet lang="java":
 	 * final Codec<Double, DoubleGene> codec = Codecs

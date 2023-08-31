@@ -80,8 +80,8 @@
  * // The lookup table where the data points are stored.
  * static final double[][] SAMPLES = new double[][] {
  *     {-1.0, -8.0000},
- *     {-0.9, -6.2460},
- *     ...
+ *     {-0.9, -6.2460}
+ *     // ...
  * };
  *
  * static double error(final ProgramGene<Double> program) {

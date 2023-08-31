@@ -49,7 +49,7 @@ import io.jenetics.util.ISeq;
  * the {@link Tree} interface. It can only be created from an existing tree.
  *
  * {@snippet lang="java":
- * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(...));
+ * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(null)); // @replace substring='null' replacement="..."
  * }
  *
  * @implNote
@@ -189,7 +189,7 @@ public final class FlatTreeNode<V>
 	 * {@snippet lang="java":
 	 * final ISeq<B> seq = stream()
 	 *     .map(mapper)
-	 *     .collect(ISeq.toISeq())
+	 *     .collect(ISeq.toISeq());
 	 * }
 	 *
 	 * @param mapper the mapper function

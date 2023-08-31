@@ -27,9 +27,9 @@
  *
  * {@snippet lang="java":
  * public interface Op<T> {
- *     public String name();
- *     public int arity();
- *     public T apply(T[] args);
+ *     String name();
+ *     int arity();
+ *     T apply(T[] args);
  * }
  * }
  *

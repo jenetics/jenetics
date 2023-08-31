@@ -98,7 +98,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * This method can also be used for creating non-trivial codes like split
 	 * ranges, as shown in the following example, where only values between
 	 * <em>[0, 2)</em> and <em>[8, 10)</em> are valid.
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *   +--+--+--+--+--+--+--+--+--+--+
 	 *   |  |  |  |  |  |  |  |  |  |  |
 	 *   0  1  2  3  4  5  6  7  8  9  10
@@ -106,7 +106,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *      ^  |llllllll|rrrrrrrr|  ^
 	 *      |       |        |      |
 	 *      +-------+        +------+
-	 * }
+	 * }</pre>
 	 *
 	 * {@snippet lang="java":
 	 * final InvertibleCodec<Double, DoubleGene> codec = Codecs

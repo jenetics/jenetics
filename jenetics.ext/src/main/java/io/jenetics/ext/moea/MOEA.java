@@ -61,7 +61,6 @@ import io.jenetics.util.IntRange;
  *      .collect(MOEA.toParetoSet());
  * }
  *
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
  * @since 4.1

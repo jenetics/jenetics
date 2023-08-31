@@ -100,7 +100,7 @@ public class LongChromosome
 	 * are then wrapped into a newly created chromosome.
 	 *
 	 * {@snippet lang="java":
-	 * final LongChromosome chromosome = ...;
+	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static long[] half(final long[] values) {

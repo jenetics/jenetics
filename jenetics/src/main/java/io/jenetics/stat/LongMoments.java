@@ -102,8 +102,8 @@ public record LongMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<Long> stream = ...
-	 * final LongMoments moments = stream.collect(toLongMoments()));
+	 * final Stream<Long> stream = null; // @replace substring='null' replacement="..."
+	 * final LongMoments moments = stream.collect(toLongMoments());
 	 * }
 	 *
 	 * @since 4.1
@@ -122,7 +122,7 @@ public record LongMoments(
 	 * resulting values.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongMoments moments = stream
 	 *     .collect(toLongMoments(v -> v.longValue()));
 	 * }

@@ -38,7 +38,7 @@ import io.jenetics.util.Streams;
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute minimum and maximum values with:
  * {@snippet lang="java":
- * final Stream<Integer> stream = ...
+ * final Stream<Integer> stream = null; // @replace substring='null' replacement="..."
  * final MinMax<Integer> minMax = stream.collect(
  *         MinMax::of,
  *         MinMax::accept,
@@ -132,8 +132,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
 	 * {@snippet lang="java":
-	 * final MinMax mm1 = ...;
-	 * final MinMax mm2 = ...;
+	 * final MinMax<Long> mm1 = null; // @replace substring='null' replacement="..."
+	 * final MinMax<Long> mm2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (mm1.sameState(mm2)) {
 	 *     final long value = random.nextInt(1_000_000);
@@ -211,8 +211,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 * The given {@code comparator} is used for comparing two objects.
 	 *
 	 * {@snippet lang="java":
-	 * final Comparator<SomeObject> comparator = ...
-	 * final Stream<SomeObject> stream = ...
+	 * final Comparator<SomeObject> comparator = null; // @replace substring='null' replacement="..."
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
 	 * }
@@ -238,7 +238,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * The <i>reducing</i> objects must be comparable.
 	 *
 	 * {@snippet lang="java":
-	 * final Stream<SomeObject> stream = ...
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
 	 * }

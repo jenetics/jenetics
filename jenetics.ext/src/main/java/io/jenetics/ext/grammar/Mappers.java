@@ -36,7 +36,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * (encodings). The classical mapping codec, with a bit-chromosome can be created
  * in the following way.
  * {@snippet lang="java":
- * final Cfg<String> cfg = ...;
+ * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
  * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
  *     cfg,
  *     1000,
@@ -68,7 +68,7 @@ public final class Mappers {
 	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
 	 *
 	 * {@snippet lang="java":
-	 * final Cfg<String> cfg = ...;
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
 	 *     cfg,
 	 *     1000,
@@ -106,7 +106,7 @@ public final class Mappers {
 	 * integer-chromosome, so that no gene split is necessary.
 	 *
 	 * {@snippet lang="java":
-	 * final Cfg<String> cfg = ...;
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
 	 *     IntRange.of(0, 256), // Value range of chromosomes.
@@ -145,7 +145,7 @@ public final class Mappers {
 	 * integer-chromosome, so that no gene split is necessary.
 	 *
 	 * {@snippet lang="java":
-	 * final Cfg<String> cfg = ...;
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
 	 *     IntRange.of(0, 256), // Value range of chromosomes.
@@ -182,14 +182,14 @@ public final class Mappers {
 	 * every rule. The length of the chromosome is defined as a function of the
 	 * encoded rules. This means that the following CFG,
 	 *
-	 * {@snippet lang="java":
+	 * <pre>{@code
 	 *                       (0)            (1)
 	 * (0) <expr> ::= (<expr><op><expr>) | <var>
 	 *               (0) (1) (2) (3)
 	 * (1) <op>   ::= + | - | * | /
 	 *               (0) (1) (2) (3) (4)
 	 * (2) <var>  ::= x | 1 | 2 | 3 | 4
-	 * }
+	 * }</pre>
 	 *
 	 * will be represented by the following {@link Genotype}
 	 * {@snippet lang="java":
@@ -204,7 +204,7 @@ public final class Mappers {
 	 * function of the rule the chromosome is encoding.
 	 *
 	 * {@snippet lang="java":
-	 * final Cfg<String> cfg = Bnf.parse(...);
+	 * final Cfg<String> cfg = Bnf.parse(null); // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(
 	 *     cfg,
 	 *     // The chromosome length is 25 times the

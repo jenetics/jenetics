@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 /**
- * Operation interface. An operation is a function which maps some argument type
+ * Operation interface. An operation is a function that maps some argument type
  * with a given <em>arity</em> to a result object of the same type:
  * {@code T[] -> T}.
  *

@@ -99,7 +99,7 @@ public interface EvolutionStream<
 	 * from an own evolution (GA) engine.
 	 *
 	 * {@snippet lang="java":
-	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
+	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = null; // @replace substring='null' replacement="..."
 	 * final EvolutionStream<DoubleGene, Double> stream =
 	 *     EvolutionStream.of(start, new MySpecialEngine());
 	 * }

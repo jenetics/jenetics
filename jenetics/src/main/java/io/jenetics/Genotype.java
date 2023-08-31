@@ -133,7 +133,7 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is an alias for
 	 * {@snippet lang="java":
-	 * final Genotype<DoubleGene>; gt = ...
+	 * final Genotype<DoubleGene> gt = null; // @replace substring='null' replacement="..."
 	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
 	 * }
 	 *
@@ -149,7 +149,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is an alias for
 	 * {@snippet lang="java":
-	 * final Genotype<DoubleGene> gt = ...
+	 * final Genotype<DoubleGene> gt = null; // @replace substring='null' replacement="..."
 	 * final DoubleGene gene = gt.get(0).get(0);
 	 * }
 	 *
