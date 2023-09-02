@@ -96,7 +96,7 @@ public interface Problem<
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
 	 * {@snippet lang="java":
-	 * final Problem<SomeObject, DoubleGene, Double> problem = ...
+	 * final Problem<SomeObject, DoubleGene, Double> problem = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = problem.codec().encoding().newInstance();
 	 *
 	 * final SomeObject arg = problem.decode(gt);

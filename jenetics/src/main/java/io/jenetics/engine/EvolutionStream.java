@@ -97,7 +97,6 @@ public interface EvolutionStream<
 	 * population and {@code evolution} function. The main purpose of this
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
-	 *
 	 * {@snippet lang="java":
 	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = null; // @replace substring='null' replacement="..."
 	 * final EvolutionStream<DoubleGene, Double> stream =
@@ -105,7 +104,6 @@ public interface EvolutionStream<
 	 * }
 	 *
 	 * A more complete example for would look like as:
-	 *
 	 * {@snippet lang="java":
 	 * public final class SpecialEngine {
 	 *
@@ -114,7 +112,7 @@ public interface EvolutionStream<
 	 *         return gt.gene().allele();
 	 *     }
 	 *
-	 *     // Create new evolution start object.
+	 *     // Create a new evolution start object.
 	 *     private static EvolutionStart<DoubleGene, Double>
 	 *     start(final int populationSize, final long generation) {
 	 *         final Population<DoubleGene, Double> population =
@@ -144,7 +142,6 @@ public interface EvolutionStream<
 	 *     }
 	 * }
 	 * }
-	 *
 	 *
 	 * @since 5.1
 	 *

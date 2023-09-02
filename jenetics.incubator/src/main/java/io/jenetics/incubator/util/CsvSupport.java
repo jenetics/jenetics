@@ -97,7 +97,7 @@ public final class CsvSupport {
 	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
 	 * final var cols = CsvSupport.split(line);
-	 * assert List.of("a", "b", "c", "d", "e", "f").equals(cols)
+	 * assert List.of("a", "b", "c", "d", "e", "f").equals(cols);
 	 * }
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
@@ -116,7 +116,7 @@ public final class CsvSupport {
 		if (indexes.length > 0) {
 			final String[] columns = new String[indexes.length];
 			split(line, columns, indexes);
-			return Arrays.asList(columns);
+			return List.of(columns);
 		} else {
 			final var columns = new ArrayList<String>();
 			new Splitter(new ColumnList(columns, indexes)).split(line);
@@ -131,7 +131,7 @@ public final class CsvSupport {
 	 *
 	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
-	 * final var cols = new String[6]
+	 * final var cols = new String[6];
 	 * CsvSupport.split(line, cols);
 	 * }
 	 *
@@ -218,7 +218,7 @@ public final class CsvSupport {
 	 * Return a collector for joining a list of CSV rows into one CSV string.
 	 *
 	 * {@snippet lang="java":
-	 * final List<List<String>> rows = ...;
+	 * final List<List<String>> rows = null; // @replace substring='null' replacement="..."
 	 *
 	 * final String csv = rows.stream()
 	 *     .map(CsvSupport::join)

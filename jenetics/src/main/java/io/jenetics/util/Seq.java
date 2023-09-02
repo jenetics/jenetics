@@ -41,7 +41,7 @@ import java.util.stream.StreamSupport;
  * General interface for a ordered, fixed sized, object sequence.
  * <br>
  * Use the {@link #asList()} method to work together with the
- * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
+ * <a href="https://download.java.net/java/early_access/jdk21/docs/api/java.base/java/util/Collection.html">
  * Java Collection Framework</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -214,7 +214,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * negative, 0 for zero, 1 for positive).
 	 *
 	 * {@snippet lang="java":
-	 * final BitArray bits = ...;
+	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final BigInteger i = bits.toBigInteger();
 	 * assert bits.signum() == i.signum();
 	 * }
@@ -280,7 +280,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * of {@code this} bit-array.
 	 *
 	 * {@snippet lang="java":
-	 * final BitArray bits = ...;
+	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final byte[] bytes = bits.toByteArray();
 	 * assert bits.equals(BitArray.of(bytes, bits.length()));
 	 * }

@@ -399,7 +399,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	/**
 	 * Return the {@link Path} of {@code this} tree, such that
 	 * {@snippet lang="java":
-	 * final Tree<Integer, ?> tree = ...;
+	 * final Tree<Integer, ?> tree = null; // @replace substring='null' replacement="..."
 	 * final Tree.Path path = tree.path();
 	 * assert tree == tree.getRoot()
 	 *     .childAtPath(path)
@@ -922,7 +922,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
 	 * root node of {@code this} node.
 	 * {@snippet lang="java":
-	 * final Tree<?, ?> node = ...;
+	 * final Tree<?, ?> node = null; // @replace substring='null' replacement="..."
 	 * final Tree<?, ?> root = node.getRoot();
 	 * final int[] path = node.childPath();
 	 * assert node == root.childAtPath(path);
