@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <permutation-chromosome length="15">
     <valid-alleles type="java.lang.Character">
-        <allele>逄</allele>
-        <allele>웰</allele>
-        <allele>覆</allele>
-        <allele>嚱</allele>
-        <allele>勻</allele>
-        <allele>鼸</allele>
-        <allele>萰</allele>
-        <allele>萉</allele>
-        <allele>墧</allele>
-        <allele>蠬</allele>
-        <allele>䧉</allele>
-        <allele>鳘</allele>
-        <allele>吃</allele>
-        <allele>䶈</allele>
-        <allele>㲴</allele>
+        <allele>L</allele>
+        <allele>b</allele>
+        <allele>M</allele>
+        <allele>Z</allele>
+        <allele>z</allele>
+        <allele>D</allele>
+        <allele>C</allele>
+        <allele>z</allele>
+        <allele>N</allele>
+        <allele>d</allele>
+        <allele>p</allele>
+        <allele>i</allele>
+        <allele>r</allele>
+        <allele>h</allele>
+        <allele>m</allele>
     </valid-alleles>
-    <order>4 7 2 13 6 3 10 12 11 1 8 9 5 14 0</order>
+    <order>6 2 11 7 5 4 12 8 10 1 3 0 9 13 14</order>
 </permutation-chromosome>

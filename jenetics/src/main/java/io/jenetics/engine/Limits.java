@@ -23,8 +23,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 
-import java.time.Clock;
 import java.time.Duration;
+import java.time.InstantSource;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -36,8 +36,8 @@ import io.jenetics.util.NanoClock;
 /**
  * This class contains factory methods for creating predicates, which can be
  * used for limiting the evolution stream. Some of the <em>limit</em> predicates
- * have to maintain internal state for working properly. It is therefor
- * recommended to create new instances for every stream and don't reuse it.
+ * have to maintain internal state for working properly. It is therefore
+ * recommended creating new instances for every stream and don't reuse it.
  *
  * @see EvolutionStream#limit(Predicate)
  *
@@ -71,7 +71,7 @@ public final class Limits {
 	 * the number of evaluations performed by the resulting stream. The evaluation
 	 * of the population is {@code max generations + 1}. This is because the
 	 * limiting predicate works on the {@link EvolutionResult} object, which
-	 * guarantees to contain an evaluated population. That means, that the
+	 * guarantees to contain an evaluated population. That means that the
 	 * population must be evaluated at least once, even for a generation limit
 	 * of zero. If this is an unacceptable performance penalty, better use the
 	 * {@link java.util.stream.Stream#limit(long)} function instead.
@@ -108,14 +108,14 @@ public final class Limits {
 	 * better phenotype could be found after the given number of
 	 * {@code generations}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @param generations the number of <i>steady</i> generations
 	 * @param <C> the fitness type
@@ -133,16 +133,16 @@ public final class Limits {
 	/**
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
-	 * used as safety net, for guaranteed stream truncation.
+	 * used as a safety net, for guaranteed stream truncation.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
-	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC())
+	 *     .limit(byExecutionTime(Duration.ofMillis(500), Clock.systemUTC()))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -153,23 +153,23 @@ public final class Limits {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static Predicate<Object>
-	byExecutionTime(final Duration duration, final Clock clock) {
+	byExecutionTime(final Duration duration, final InstantSource clock) {
 		return new ExecutionTimeLimit(duration, clock);
 	}
 
 	/**
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
-	 * used as safety net, for guaranteed stream truncation.
+	 * used as a safety net, for guaranteed stream truncation.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 500 ms.
-	 *     .limit(byExecutionTime(Duration.ofMillis(500))
+	 *     .limit(byExecutionTime(Duration.ofMillis(500)))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -187,12 +187,12 @@ public final class Limits {
 	/**
 	 * Return a predicate, which will truncated the evolution stream if the
 	 * best fitness of the current population becomes less than the specified
-	 * threshold and the objective is set to minimize the fitness. This
+	 * threshold, and the objective is set to minimize the fitness. This
 	 * predicate also stops the evolution if the best fitness in the current
 	 * population becomes greater than the user-specified fitness threshold when
 	 * the objective is to maximize the fitness.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream if the best fitness is higher than
 	 *      // the given threshold of '2.3'.
@@ -201,7 +201,7 @@ public final class Limits {
 	 *      // the termination (truncation) of the evolution stream.
 	 *     .limit(250)
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.1
 	 *
@@ -222,20 +222,20 @@ public final class Limits {
 	 * fitness is converging. Two filters of different lengths are used to
 	 * smooth the best fitness across the generations.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
-	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
-	 *          return eps >= 10E-5
+	 *          final var eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
+	 *          return eps >= 10E-5;
 	 *     }))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
 	 *
-	 * @apiNote The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains a mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
 	 * of the {@code test} method.
 	 *
@@ -247,7 +247,7 @@ public final class Limits {
 	 *        stream.
 	 * @param proceed the predicate which determines when the evolution stream
 	 *        is truncated. The first parameter of the predicate contains the
-	 *        double statistics of the short filter and the second parameter
+	 *        double statistics of the short filter, and the second parameter
 	 *        contains the statistics of the long filter
 	 * @param <N> the fitness type
 	 * @return a new fitness convergence strategy
@@ -275,11 +275,11 @@ public final class Limits {
 	 * away from the smoothed best fitness from the short filter, the fitness is
 	 * deemed as converged and the evolution terminates.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, 10E-4))
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * In the given example, the evolution stream stops, if the difference of the
 	 * mean values of the long and short filter is less than 1%. The short
@@ -287,7 +287,7 @@ public final class Limits {
 	 * generations. The long filter uses the best fitness values of the last 15
 	 * generations.
 	 *
-	 * @apiNote The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains a mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
 	 * of the {@code test} method.
 	 *
@@ -346,7 +346,7 @@ public final class Limits {
 	 *
 	 * @param proceed the predicate which determines when the evolution stream
 	 *        is truncated. The first parameter of the predicate contains the
-	 *        best fitness of the population and the second parameter contains
+	 *        best fitness of the population, and the second parameter contains
 	 *        the statistics of population fitness values
 	 * @param <N> the fitness type
 	 * @return a new fitness convergence strategy
@@ -400,7 +400,7 @@ public final class Limits {
 	 * @since 4.0
 	 * @see #byGeneConvergence(double, double)
 	 *
-	 * @param geneConvergence predicate which defines when a gene is deemed as
+	 * @param geneConvergence predicate, which defines when a gene is deemed as
 	 *        converged, by using the statistics of this gene over all genotypes
 	 *        of the population
 	 * @param convergedGeneRate the percentage of genes which must be converged
@@ -424,19 +424,19 @@ public final class Limits {
 	 * A termination method that stops the evolution when a user-specified
 	 * percentage of the genes ({@code convergedGeneRage}) that make up a
 	 * {@code Genotype} are deemed as converged. A gene is deemed as converged
-	 * when the average value of that gene across all of the genotypes in the
+	 * when the average value of that gene across all the genotypes in the
 	 * current population is less than a user-specified percentage
 	 * ({@code convergenceRate}) away from the maximum gene value across the
 	 * genotypes.
 	 * <p>
-	 * This method is equivalent the following code snippet:
-	 * <pre>{@code
+	 * This method is equivalent to the following code snippet:
+	 * {@snippet lang="java":
 	 * final Predicate<EvolutionResult<DoubleGene, ?>> limit =
 	 *     byGeneConvergence(
 	 *         stat -> stat.getMax()*convergenceRate <= stat.getMean(),
 	 *         convergedGeneRate
 	 *     );
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.0
 	 * @see #byGeneConvergence(Predicate, double)

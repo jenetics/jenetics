@@ -33,12 +33,12 @@ import java.util.stream.Stream;
  * This class contains factory methods for (flat) mapping stream elements. The
  * functions of this class can be used in the following way.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
  *     .limit(100)
  *     .flatMap(Streams.toIntervalMax(13))
  *     .collect(ISeq.toISeq());
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.0
@@ -60,7 +60,7 @@ public final class Streams {
 	 *     +----3-----5-----7--------9----|
 	 * }</pre>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -69,7 +69,7 @@ public final class Streams {
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }</pre>
+	 * }
 	 *
 	 *
 	 * @param <C> the comparable type
@@ -92,7 +92,7 @@ public final class Streams {
 	 *     +----9--8-----5--------2-------|
 	 * }</pre>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -101,7 +101,7 @@ public final class Streams {
 	 *
 	 * System.out.println(values);
 	 * // [45,32,15,12,3,1]
-	 * }</pre>
+	 * }
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
@@ -117,7 +117,7 @@ public final class Streams {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -126,7 +126,7 @@ public final class Streams {
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }</pre>
+	 * }
 	 *
 	 * @see #toStrictlyIncreasing()
 	 * @see #toStrictlyDecreasing()
@@ -439,7 +439,6 @@ public final class Streams {
 			private final long _timespan  = timespan.toMillis();
 
 			private long _start = 0;
-			private long _end = 0;
 			private C _best;
 
 			@Override
@@ -449,10 +448,10 @@ public final class Streams {
 				}
 
 				_best = comp.apply(_best, value);
-				_end = clock.millis();
+				long end = clock.millis();
 
 				final Stream<C> result;
-				if (_end - _start >= _timespan) {
+				if (end - _start >= _timespan) {
 					result = Stream.of(_best);
 					_start = 0;
 					_best = null;

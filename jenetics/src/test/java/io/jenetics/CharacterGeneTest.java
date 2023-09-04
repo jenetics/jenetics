@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -31,7 +32,6 @@ import nl.jqno.equalsverifier.Warning;
 
 import java.util.Random;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
@@ -68,7 +68,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 			for (int i = 0; i < samples; ++i) {
 				final CharacterGene g1 = factory.newInstance();
 				final CharacterGene g2 = factory.newInstance();
-				Assert.assertNotSame(g1, g2);
+				assertThat(g1).isNotSameAs(g2);
 
 				histogram.accept(Long.valueOf(g1.allele().toString()));
 				histogram.accept(Long.valueOf(g2.allele().toString()));

@@ -32,8 +32,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.CloseableValue;
 import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.IOValue;
+import io.jenetics.internal.util.Lifecycle.Value;
 
 public class LifecycleTest {
 
@@ -132,7 +133,7 @@ public class LifecycleTest {
 	}
 
 	@Test(expectedExceptions = IOException.class)
-	public void close1() throws Exception {
+	public void close1() throws IOException {
 		final var count = new AtomicInteger();
 
 		try {
@@ -143,7 +144,7 @@ public class LifecycleTest {
 				count::incrementAndGet
 			);
 			closeables.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			Assert.assertEquals(3, count.get());
 			throw e;
 		}
@@ -186,7 +187,7 @@ public class LifecycleTest {
 		final var closeable = ExtendedCloseable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.uncheckedClose(e -> new UncheckedIOException((IOException)e));
+		closeable.uncheckedClose(UncheckedIOException::new);
 	}
 
 	@Test
@@ -214,7 +215,7 @@ public class LifecycleTest {
 
 	@Test
 	public void closeableValue() throws Exception {
-		final var closeable = CloseableValue.of(
+		final var closeable = new Value<>(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -230,10 +231,10 @@ public class LifecycleTest {
 		final var resource2 = atomic();
 		final var resource3 = atomic();
 
-		final var closeable = CloseableValue.build(resources -> {
-			resources.add(resource1);
-			resources.add(resource2);
-			resources.add(resource3);
+		final var closeable = new Value<>(resources -> {
+			resources.add(resource1, Value::close);
+			resources.add(resource2, Value::close);
+			resources.add(resource3, Value::close);
 			return 123;
 		});
 
@@ -247,8 +248,8 @@ public class LifecycleTest {
 		Assert.assertEquals(1, resource3.get().get());
 	}
 
-	private static CloseableValue<AtomicInteger> atomic() {
-		return CloseableValue.of(
+	private static Value<AtomicInteger, RuntimeException> atomic() {
+		return new Value<>(
 			new AtomicInteger(),
 			AtomicInteger::incrementAndGet
 		);
@@ -261,10 +262,10 @@ public class LifecycleTest {
 		final var resource3 = atomic();
 
 		try {
-			CloseableValue.build(resources -> {
-				resources.add(resource1);
-				resources.add(resource2);
-				resources.add(resource3);
+			new Value<>(resources -> {
+				resources.add(resource1, Value::close);
+				resources.add(resource2, Value::close);
+				resources.add(resource3, Value::close);
 				throw new IOException();
 			});
 		} catch (IOException e) {
@@ -275,15 +276,23 @@ public class LifecycleTest {
 		}
 	}
 
-	private static CloseableValue<Path> tempFile() throws IOException {
-		return CloseableValue.of(
+	private static Value<Path, IOException> tempFile() throws IOException {
+		final var file = new IOValue<>(
+			Files.createFile(Path.of("foo")),
+			Files::deleteIfExists
+		);
+		try (file) {
+			System.out.println("asdf: " + file.get());
+		}
+
+		return new Value<>(
 			Files.createTempFile("Lifecycle", "TEST"),
 			Files::deleteIfExists
 		);
 	}
 
 	@Test
-	public void closeableValueTrying() throws Exception {
+	public void closeableValueTrying() throws IOException {
 		final var file = tempFile();
 		file.trying(f -> f.toFile().deleteOnExit());
 

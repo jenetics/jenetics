@@ -30,6 +30,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -65,6 +66,7 @@ public final class Phenotype<
 		Verifiable,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 6L;
 
 	private final Genotype<G> _genotype;
@@ -137,7 +139,7 @@ public final class Phenotype<
 	 *
 	 * @see #nonEvaluated()
 	 *
-	 * @return {@code true} is this phenotype has an fitness value assigned,
+	 * @return {@code true} is this phenotype has a fitness value assigned,
 	 *         {@code false} otherwise
 	 */
 	public boolean isEvaluated() {
@@ -154,7 +156,7 @@ public final class Phenotype<
 	 *
 	 * @see #isEvaluated()
 	 *
-	 * @return {@code false} is this phenotype has an fitness value assigned,
+	 * @return {@code false} is this phenotype has a fitness value assigned,
 	 *         {@code true} otherwise
 	 */
 	public boolean nonEvaluated() {
@@ -257,11 +259,10 @@ public final class Phenotype<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Phenotype &&
-			_generation == ((Phenotype)obj)._generation &&
-			Objects.equals(_fitness, ((Phenotype)obj)._fitness) &&
-			Objects.equals(_genotype, ((Phenotype)obj)._genotype);
+		return obj instanceof Phenotype<?, ?> other &&
+			_generation == other._generation &&
+			Objects.equals(_fitness, other._fitness) &&
+			Objects.equals(_genotype, other._genotype);
 	}
 
 	@Override
@@ -276,7 +277,7 @@ public final class Phenotype<
 	 *
 	 * @since 4.2
 	 *
-	 * @param fitness the phenotypes fitness value
+	 * @param fitness the phenotypes' fitness value
 	 * @throws NullPointerException if the given {@code fitness} value is
 	 *         {@code null}
 	 * @return a new phenotype with the given fitness value
@@ -312,7 +313,7 @@ public final class Phenotype<
 
 	/**
 	 * Create a new phenotype from the given arguments. The phenotype is created
-	 * with a non assigned fitness function and the call of {@link #isEvaluated()}
+	 * with a non-assigned fitness function and the call of {@link #isEvaluated()}
 	 * will return {@code false}.
 	 *
 	 * @param <G> the gene type of the chromosome
@@ -364,10 +365,12 @@ public final class Phenotype<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PHENOTYPE, this);
+		return new SerialProxy(SerialProxy.PHENOTYPE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
@@ -388,11 +391,7 @@ public final class Phenotype<
 		final var genotype = (Genotype)in.readObject();
 		final var fitness = (Comparable)in.readObject();
 
-		return new Phenotype(
-			genotype,
-			generation,
-			fitness
-		);
+		return new Phenotype(genotype, generation, fitness);
 	}
 
 }

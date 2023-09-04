@@ -5,7 +5,6 @@
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>-1878762439</allele>
                 <allele>-957346595</allele>
                 <allele>-88668137</allele>
                 <allele>1454486635</allele>
@@ -25,14 +24,13 @@
                 <allele>1018444979</allele>
                 <allele>-1830946575</allele>
                 <allele>322908769</allele>
+                <allele>-94179005</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>-94179005</allele>
-                <allele>1674998083</allele>
                 <allele>1249232946</allele>
                 <allele>394913363</allele>
                 <allele>1236791559</allele>
@@ -51,15 +49,14 @@
                 <allele>-754761991</allele>
                 <allele>-973127457</allele>
                 <allele>1815190513</allele>
+                <allele>898471362</allele>
+                <allele>1252015163</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>898471362</allele>
-                <allele>1252015163</allele>
-                <allele>2020589447</allele>
                 <allele>592399228</allele>
                 <allele>-1264162792</allele>
                 <allele>-1705181975</allele>
@@ -77,16 +74,15 @@
                 <allele>-580622410</allele>
                 <allele>-1809281719</allele>
                 <allele>-865950033</allele>
+                <allele>1542897508</allele>
+                <allele>1308615625</allele>
+                <allele>1370564134</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>1542897508</allele>
-                <allele>1308615625</allele>
-                <allele>1370564134</allele>
-                <allele>-1089510063</allele>
                 <allele>-1333068854</allele>
                 <allele>893914449</allele>
                 <allele>2069892663</allele>
@@ -103,17 +99,16 @@
                 <allele>-2010417017</allele>
                 <allele>-1933567191</allele>
                 <allele>-558165806</allele>
+                <allele>1496400019</allele>
+                <allele>1802924739</allele>
+                <allele>667303022</allele>
+                <allele>-13936783</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>1496400019</allele>
-                <allele>1802924739</allele>
-                <allele>667303022</allele>
-                <allele>-13936783</allele>
-                <allele>488562577</allele>
                 <allele>-1066796004</allele>
                 <allele>1318986098</allele>
                 <allele>1470622241</allele>
@@ -129,6 +124,11 @@
                 <allele>-662781243</allele>
                 <allele>-1788036342</allele>
                 <allele>-1910035599</allele>
+                <allele>1098457242</allele>
+                <allele>-294024316</allele>
+                <allele>-956900726</allele>
+                <allele>1840616453</allele>
+                <allele>1874105321</allele>
             </alleles>
         </int-chromosome>
     </genotype>
@@ -137,12 +137,6 @@
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>1098457242</allele>
-                <allele>-294024316</allele>
-                <allele>-956900726</allele>
-                <allele>1840616453</allele>
-                <allele>1874105321</allele>
-                <allele>837911329</allele>
                 <allele>-485166348</allele>
                 <allele>1026646138</allele>
                 <allele>987188361</allele>
@@ -157,19 +151,18 @@
                 <allele>331523282</allele>
                 <allele>1032050049</allele>
                 <allele>77697359</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>2024340945</allele>
                 <allele>534453561</allele>
                 <allele>759828584</allele>
                 <allele>853965219</allele>
                 <allele>-1734566072</allele>
                 <allele>-2025314054</allele>
-                <allele>183589305</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-130195477</allele>
                 <allele>-474972451</allele>
                 <allele>-1307525972</allele>
@@ -183,12 +176,6 @@
                 <allele>-1519759778</allele>
                 <allele>1877206416</allele>
                 <allele>1571859156</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-1129010844</allele>
                 <allele>-1044475972</allele>
                 <allele>230932764</allele>
@@ -196,7 +183,12 @@
                 <allele>1627051169</allele>
                 <allele>-2069083838</allele>
                 <allele>-1855505854</allele>
-                <allele>1955358316</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1232765236</allele>
                 <allele>-1346783271</allele>
                 <allele>1351269720</allele>
@@ -209,12 +201,6 @@
                 <allele>1692402750</allele>
                 <allele>-1745859637</allele>
                 <allele>219179012</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>1257411135</allele>
                 <allele>1242977065</allele>
                 <allele>215386985</allele>
@@ -223,7 +209,12 @@
                 <allele>-1342346919</allele>
                 <allele>1260926690</allele>
                 <allele>-1711170194</allele>
-                <allele>-26153934</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-1649795403</allele>
                 <allele>1275344054</allele>
                 <allele>1881528266</allele>
@@ -235,12 +226,6 @@
                 <allele>-949129290</allele>
                 <allele>-341332727</allele>
                 <allele>1287107495</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-836515131</allele>
                 <allele>-604120246</allele>
                 <allele>1953489929</allele>
@@ -250,7 +235,12 @@
                 <allele>1592778679</allele>
                 <allele>-319631952</allele>
                 <allele>-1928862762</allele>
-                <allele>1738995604</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1865958217</allele>
                 <allele>2004131405</allele>
                 <allele>-855383105</allele>
@@ -261,14 +251,6 @@
                 <allele>-1455493408</allele>
                 <allele>25562880</allele>
                 <allele>-177065345</allele>
-            </alleles>
-        </int-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="100">
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>1702925860</allele>
                 <allele>-82510585</allele>
                 <allele>-11209368</allele>
@@ -279,7 +261,14 @@
                 <allele>1641941692</allele>
                 <allele>1953624208</allele>
                 <allele>961754428</allele>
-                <allele>-1119674696</allele>
+            </alleles>
+        </int-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="100">
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>69314570</allele>
                 <allele>-1265796698</allele>
                 <allele>-782506113</allele>
@@ -289,12 +278,6 @@
                 <allele>508141617</allele>
                 <allele>-1736694502</allele>
                 <allele>-1072203094</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>31912120</allele>
                 <allele>1862278960</allele>
                 <allele>930451491</allele>
@@ -306,7 +289,12 @@
                 <allele>-1527513993</allele>
                 <allele>436167706</allele>
                 <allele>306774238</allele>
-                <allele>-1712563574</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-1863887672</allele>
                 <allele>-1541841226</allele>
                 <allele>-1137434160</allele>
@@ -315,12 +303,6 @@
                 <allele>1134378138</allele>
                 <allele>-856407512</allele>
                 <allele>-848559211</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>133240896</allele>
                 <allele>-1269131222</allele>
                 <allele>660063364</allele>
@@ -333,7 +315,12 @@
                 <allele>-1808102927</allele>
                 <allele>1399544818</allele>
                 <allele>934585072</allele>
-                <allele>1140771921</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-191071849</allele>
                 <allele>1972852612</allele>
                 <allele>635791</allele>
@@ -341,12 +328,6 @@
                 <allele>137919988</allele>
                 <allele>1365485294</allele>
                 <allele>875365999</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-1990955069</allele>
                 <allele>-2002224986</allele>
                 <allele>2056571338</allele>
@@ -360,19 +341,18 @@
                 <allele>886424837</allele>
                 <allele>380397025</allele>
                 <allele>-1874999105</allele>
-                <allele>-1487243039</allele>
-                <allele>1405419809</allele>
-                <allele>-188704140</allele>
-                <allele>906751740</allele>
-                <allele>1608127328</allele>
-                <allele>1162265286</allele>
-                <allele>-882980893</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
+                <allele>1405419809</allele>
+                <allele>-188704140</allele>
+                <allele>906751740</allele>
+                <allele>1608127328</allele>
+                <allele>1162265286</allele>
+                <allele>-882980893</allele>
                 <allele>-1686963558</allele>
                 <allele>656340040</allele>
                 <allele>964073264</allele>
@@ -387,20 +367,17 @@
                 <allele>-781692759</allele>
                 <allele>504704629</allele>
                 <allele>1664371162</allele>
-                <allele>-178850062</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>955821343</allele>
                 <allele>-1871560489</allele>
                 <allele>-1668363644</allele>
                 <allele>825282484</allele>
                 <allele>626134</allele>
-            </alleles>
-        </int-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="100">
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-508043998</allele>
                 <allele>383448127</allele>
                 <allele>-516051189</allele>
@@ -416,17 +393,18 @@
                 <allele>-1205652802</allele>
                 <allele>2049183346</allele>
                 <allele>53066902</allele>
-                <allele>2070648356</allele>
-                <allele>-1891256906</allele>
-                <allele>-725603609</allele>
-                <allele>-1081968812</allele>
-                <allele>372565271</allele>
             </alleles>
         </int-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="100">
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
+                <allele>-1891256906</allele>
+                <allele>-725603609</allele>
+                <allele>-1081968812</allele>
+                <allele>372565271</allele>
                 <allele>-171628016</allele>
                 <allele>-1348049352</allele>
                 <allele>-436085645</allele>
@@ -443,16 +421,15 @@
                 <allele>212653628</allele>
                 <allele>-1507795114</allele>
                 <allele>1251814729</allele>
-                <allele>-879643</allele>
-                <allele>-1406957225</allele>
-                <allele>-734251528</allele>
-                <allele>-1696448387</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
+                <allele>-1406957225</allele>
+                <allele>-734251528</allele>
+                <allele>-1696448387</allele>
                 <allele>497689489</allele>
                 <allele>1564753908</allele>
                 <allele>-1579679084</allele>
@@ -470,15 +447,14 @@
                 <allele>1453864193</allele>
                 <allele>1945073811</allele>
                 <allele>422535385</allele>
-                <allele>58507186</allele>
-                <allele>-1785832700</allele>
-                <allele>-846807757</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
+                <allele>-1785832700</allele>
+                <allele>-846807757</allele>
                 <allele>-320862066</allele>
                 <allele>-117021775</allele>
                 <allele>-1181260480</allele>
@@ -497,14 +473,13 @@
                 <allele>-990374623</allele>
                 <allele>-1733515524</allele>
                 <allele>1263897829</allele>
-                <allele>1559897754</allele>
-                <allele>1675968754</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
+                <allele>1675968754</allele>
                 <allele>-736118494</allele>
                 <allele>-1627554776</allele>
                 <allele>658325860</allele>
@@ -524,11 +499,8 @@
                 <allele>1141072452</allele>
                 <allele>-1305880773</allele>
                 <allele>110181109</allele>
-                <allele>-459009849</allele>
             </alleles>
         </int-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="100">
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
@@ -555,11 +527,12 @@
                 <allele>1629440475</allele>
             </alleles>
         </int-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="100">
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>-1389577216</allele>
                 <allele>307544104</allele>
                 <allele>-1597962583</allele>
                 <allele>1622199872</allele>
@@ -579,14 +552,13 @@
                 <allele>-1627585012</allele>
                 <allele>139707921</allele>
                 <allele>106011549</allele>
+                <allele>756081103</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>756081103</allele>
-                <allele>-1938114281</allele>
                 <allele>1529701001</allele>
                 <allele>1863382113</allele>
                 <allele>-1925393053</allele>
@@ -605,15 +577,14 @@
                 <allele>-1009887129</allele>
                 <allele>387146923</allele>
                 <allele>-1283871739</allele>
+                <allele>1210974709</allele>
+                <allele>778988270</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>1210974709</allele>
-                <allele>778988270</allele>
-                <allele>2066929828</allele>
                 <allele>1112463019</allele>
                 <allele>-340658713</allele>
                 <allele>-1759882425</allele>
@@ -631,16 +602,15 @@
                 <allele>-399812021</allele>
                 <allele>1917857138</allele>
                 <allele>819065197</allele>
+                <allele>-1620961295</allele>
+                <allele>1545529538</allele>
+                <allele>-1701278997</allele>
             </alleles>
         </int-chromosome>
         <int-chromosome length="20">
             <min>-2147483648</min>
             <max>2147483647</max>
             <alleles>
-                <allele>-1620961295</allele>
-                <allele>1545529538</allele>
-                <allele>-1701278997</allele>
-                <allele>-710782494</allele>
                 <allele>862653628</allele>
                 <allele>2123070939</allele>
                 <allele>1616670052</allele>
@@ -657,19 +627,16 @@
                 <allele>1268826266</allele>
                 <allele>-283966772</allele>
                 <allele>1542395258</allele>
-            </alleles>
-        </int-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="100">
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-1997549598</allele>
                 <allele>1110507631</allele>
                 <allele>-1243863410</allele>
                 <allele>405755857</allele>
-                <allele>-1083987162</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-1590635139</allele>
                 <allele>-1839744244</allele>
                 <allele>1182428047</allele>
@@ -685,18 +652,19 @@
                 <allele>1332896553</allele>
                 <allele>-44070731</allele>
                 <allele>-1827889900</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>616186378</allele>
                 <allele>2111615952</allele>
                 <allele>820056880</allele>
                 <allele>-680652190</allele>
                 <allele>-629818529</allele>
-                <allele>-1459467975</allele>
+            </alleles>
+        </int-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="100">
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1824306308</allele>
                 <allele>-1999408580</allele>
                 <allele>-445636271</allele>
@@ -711,19 +679,18 @@
                 <allele>-1074038261</allele>
                 <allele>2046179298</allele>
                 <allele>-1137411694</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>1785817018</allele>
                 <allele>-169976030</allele>
                 <allele>-243178295</allele>
                 <allele>431823772</allele>
                 <allele>-1652484867</allele>
                 <allele>1293083968</allele>
-                <allele>-1729728683</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1639348056</allele>
                 <allele>-1555496530</allele>
                 <allele>1330174709</allele>
@@ -737,12 +704,6 @@
                 <allele>-101202004</allele>
                 <allele>-1014545564</allele>
                 <allele>-1943868471</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-1911207317</allele>
                 <allele>1167651051</allele>
                 <allele>-514121929</allele>
@@ -750,7 +711,12 @@
                 <allele>1593297726</allele>
                 <allele>708216780</allele>
                 <allele>1114874651</allele>
-                <allele>1602989073</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>954113615</allele>
                 <allele>654604997</allele>
                 <allele>247902027</allele>
@@ -763,12 +729,6 @@
                 <allele>-1438824896</allele>
                 <allele>1883573929</allele>
                 <allele>-1770220163</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-582338263</allele>
                 <allele>-92604528</allele>
                 <allele>1222903190</allele>
@@ -777,7 +737,12 @@
                 <allele>1441770819</allele>
                 <allele>-1565361773</allele>
                 <allele>-896188705</allele>
-                <allele>1295334714</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>301335815</allele>
                 <allele>-471406929</allele>
                 <allele>-1417073691</allele>
@@ -789,14 +754,6 @@
                 <allele>-894452325</allele>
                 <allele>444569253</allele>
                 <allele>-1789573307</allele>
-            </alleles>
-        </int-chromosome>
-    </genotype>
-    <genotype length="5" ngenes="100">
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-553135947</allele>
                 <allele>-1773060913</allele>
                 <allele>129500451</allele>
@@ -806,7 +763,12 @@
                 <allele>748119706</allele>
                 <allele>854748958</allele>
                 <allele>1994986556</allele>
-                <allele>198322806</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1683792714</allele>
                 <allele>-195725102</allele>
                 <allele>-2078881323</allele>
@@ -817,12 +779,6 @@
                 <allele>-1952817932</allele>
                 <allele>-1259599074</allele>
                 <allele>-1263030215</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>371119973</allele>
                 <allele>1738048873</allele>
                 <allele>-1698864528</allele>
@@ -833,7 +789,14 @@
                 <allele>1092475131</allele>
                 <allele>691364564</allele>
                 <allele>798671784</allele>
-                <allele>1655614754</allele>
+            </alleles>
+        </int-chromosome>
+    </genotype>
+    <genotype length="5" ngenes="100">
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1419939608</allele>
                 <allele>714820795</allele>
                 <allele>-1043384573</allele>
@@ -843,12 +806,6 @@
                 <allele>633426078</allele>
                 <allele>-1810050641</allele>
                 <allele>2028609985</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-1203966896</allele>
                 <allele>1729782102</allele>
                 <allele>-1636512362</allele>
@@ -860,7 +817,12 @@
                 <allele>-1223157134</allele>
                 <allele>236061321</allele>
                 <allele>1909741703</allele>
-                <allele>-1943278344</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-1196367577</allele>
                 <allele>1290577879</allele>
                 <allele>-498149812</allele>
@@ -869,12 +831,6 @@
                 <allele>833849486</allele>
                 <allele>-2022874116</allele>
                 <allele>1590035946</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-88005734</allele>
                 <allele>-1509563071</allele>
                 <allele>-1710759121</allele>
@@ -887,7 +843,12 @@
                 <allele>-317330081</allele>
                 <allele>-463816323</allele>
                 <allele>929425235</allele>
-                <allele>-2012763779</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>1764445875</allele>
                 <allele>-2126592122</allele>
                 <allele>1918102632</allele>
@@ -895,12 +856,6 @@
                 <allele>-1378801070</allele>
                 <allele>372654259</allele>
                 <allele>1006327194</allele>
-            </alleles>
-        </int-chromosome>
-        <int-chromosome length="20">
-            <min>-2147483648</min>
-            <max>2147483647</max>
-            <alleles>
                 <allele>-902215435</allele>
                 <allele>1816094</allele>
                 <allele>1985388496</allele>
@@ -914,13 +869,58 @@
                 <allele>-926771175</allele>
                 <allele>-1690094060</allele>
                 <allele>-1326591783</allele>
-                <allele>-1851660644</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
                 <allele>-500223090</allele>
                 <allele>849872046</allele>
                 <allele>544434555</allele>
                 <allele>1717976259</allele>
                 <allele>1761969830</allele>
                 <allele>1776189392</allele>
+                <allele>-1860044404</allele>
+                <allele>2048154001</allele>
+                <allele>189424900</allele>
+                <allele>1021674947</allele>
+                <allele>1670916360</allele>
+                <allele>1768009525</allele>
+                <allele>-727255212</allele>
+                <allele>-1596436250</allele>
+                <allele>-1754795663</allele>
+                <allele>-1386404712</allele>
+                <allele>-233461594</allele>
+                <allele>-1722473116</allele>
+                <allele>-1360961900</allele>
+                <allele>831406044</allele>
+            </alleles>
+        </int-chromosome>
+        <int-chromosome length="20">
+            <min>-2147483648</min>
+            <max>2147483647</max>
+            <alleles>
+                <allele>758244906</allele>
+                <allele>-1801601884</allele>
+                <allele>1327298095</allele>
+                <allele>-1494994365</allele>
+                <allele>-1617522902</allele>
+                <allele>1116386578</allele>
+                <allele>-541043641</allele>
+                <allele>2143826057</allele>
+                <allele>6392712</allele>
+                <allele>-2079529579</allele>
+                <allele>518265371</allele>
+                <allele>53073248</allele>
+                <allele>-2087825793</allele>
+                <allele>1785711790</allele>
+                <allele>-1873239271</allele>
+                <allele>1722048349</allele>
+                <allele>593662712</allele>
+                <allele>1476706170</allele>
+                <allele>-1243402152</allele>
+                <allele>-1662029043</allele>
             </alleles>
         </int-chromosome>
     </genotype>

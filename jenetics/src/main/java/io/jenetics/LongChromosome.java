@@ -30,6 +30,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -42,7 +43,7 @@ import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 64 bit integer numbers.
+ * Numeric chromosome implementation which holds 64-bit integer numbers.
  *
  * @see LongGene
  *
@@ -59,6 +60,7 @@ public class LongChromosome
 		NumericChromosome<Long, LongGene>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -72,7 +74,7 @@ public class LongChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected LongChromosome(
@@ -97,8 +99,8 @@ public class LongChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final LongChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static long[] half(final long[] values) {
@@ -107,7 +109,7 @@ public class LongChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -142,14 +144,14 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
+	 * @param array the array into which the elements of these chromosomes are to
 	 *        be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
@@ -165,8 +167,8 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -218,13 +220,15 @@ public class LongChromosome
 	 * @since 4.0
 	 *
 	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (exclusively).
 	 * @param lengthRange the allowed length range of the chromosome.
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
 	 */
@@ -241,11 +245,13 @@ public class LongChromosome
 	 * Create a new random {@code LongChromosome}.
 	 *
 	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongChromosome of(
 		final long min,
@@ -265,8 +271,10 @@ public class LongChromosome
 	 * @return a new {@code LongChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
 	 */
@@ -288,6 +296,8 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongChromosome of(final LongRange range, final int length) {
 		return of(range.min(), range.max(), length);
@@ -297,8 +307,10 @@ public class LongChromosome
 	 * Create a new random {@code LongChromosome} of length one.
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
-	 * @param max the maximal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
 	 * @return a new {@code LongChromosome} with the given gene parameters.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return of(min, max, 1);
@@ -312,6 +324,8 @@ public class LongChromosome
 	 * @param range the long range of the chromosome.
 	 * @return a new random {@code LongChromosome} of length one
 	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongChromosome of(final LongRange range) {
 		return of(range.min(), range.max());
@@ -323,10 +337,12 @@ public class LongChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.LONG_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

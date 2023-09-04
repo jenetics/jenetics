@@ -32,7 +32,7 @@ import io.jenetics.util.IntRange;
  * {@code Chromosome} implementation, which allows to create genes without
  * explicit implementing the {@code Chromosome} interface.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class LastMonday {
  *
  *     // First monday of 2015.
@@ -70,10 +70,10 @@ import io.jenetics.util.IntRange;
  *     }
  *
  * }
- * }</pre>
+ * }
  *
  * The <i>full</i> example above shows how the {@code AnyChromosome} is used
- * to use for an allele-type with no predefined gene- and chromosome type.
+ * to use it for an allele-type with no predefined gene- and chromosome type.
  *
  * @see AnyGene
  *
@@ -86,8 +86,6 @@ import io.jenetics.util.IntRange;
  */
 public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 
-	private static final long serialVersionUID = 1L;
-
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
 	private final Predicate<? super ISeq<A>> _alleleSeqValidator;
@@ -96,7 +94,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 
 	/**
 	 * Create a new {@code AnyChromosome} from the given {@code genes}
-	 * array. An chromosome is valid if both, the {@code alleleValidator} and
+	 * array. A chromosome is valid if both, the {@code alleleValidator} and
 	 * the {@code alleleSeqValidator} return {@code true}.
 	 *
 	 * @param genes the genes that form the chromosome.
@@ -111,7 +109,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @throws NullPointerException if the given arguments is {@code null}
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected AnyChromosome(

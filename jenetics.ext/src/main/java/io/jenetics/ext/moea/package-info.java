@@ -19,7 +19,7 @@
  */
 
 /**
- * This package contains class which allows to do multi-object optimization with
+ * This package contains classes which allow to do multi-object optimization with
  * Jenetics.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

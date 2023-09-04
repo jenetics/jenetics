@@ -32,21 +32,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of ints with:
- * <pre>{@code
- * final IntStream stream = ...
+ * {@snippet lang="java":
+ * final IntStream stream = null; // @replace substring='null' replacement="..."
  * final IntMomentStatistics statistics = stream.collect(
  *         IntMomentStatistics::new,
  *         IntMomentStatistics::accept,
  *         IntMomentStatistics::combine
  *     );
- * }</pre>
+ * }
  *
- * For a non int stream, you can use a collector:
- * <pre>{@code
- * final Stream<SomeObject> stream = ...
+ * For a non-int stream, you can use a collector:
+ * {@snippet lang="java":
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final IntMomentStatistics statistics = stream
  *     .collect(toIntMomentStatistics(v -> v.intValue()));
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use
@@ -81,7 +81,7 @@ public class IntMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -144,11 +144,11 @@ public class IntMomentStatistics
 	/**
 	 * Compares the state of two {@code IntMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
-	 * final IntMomentStatistics ims1 = ...;
-	 * final IntMomentStatistics ims2 = ...;
+	 * {@snippet lang="java":
+	 * final IntMomentStatistics ims1 = null; // @replace substring='null' replacement="..."
+	 * final IntMomentStatistics ims2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (ims1.sameState(ims2)) {
 	 *     final int value = random.nextInt(1_000_000);
@@ -159,7 +159,7 @@ public class IntMomentStatistics
 	 *     assert ims2.sameState(ims1);
 	 *     assert ims1.sameState(ims1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -200,11 +200,11 @@ public class IntMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMomentStatistics statistics = stream
 	 *     .collect(toIntMomentStatistics(v -> v.intValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

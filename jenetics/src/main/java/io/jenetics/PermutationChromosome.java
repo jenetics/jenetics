@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Arrays.shuffle;
 import static io.jenetics.internal.util.Bits.getAndSet;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
@@ -29,23 +30,24 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.math.Combinatorics;
-import io.jenetics.internal.util.Arrays;
+import io.jenetics.internal.math.Subset;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This chromosome can be used to model permutations of a given (sub) set of
  * alleles.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<String> alleles = ISeq.of("one", "two", "three", "four", "five");
  *
  * // Create a new randomly permuted chromosome from the given alleles.
@@ -63,7 +65,7 @@ import io.jenetics.util.MSeq;
  * // > two|one|four|five|three
  * // > three|one|five
  * // > five|three|one
- * }</pre>
+ * }
  *
  * Usable {@link Alterer} for this chromosome:
  * <ul>
@@ -109,6 +111,7 @@ public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
 	implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final ISeq<T> _validAlleles;
@@ -141,7 +144,7 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Return the sequence of valid alleles of this chromosome.
+	 * Return the sequence of the valid alleles of this chromosome.
 	 *
 	 * @return the sequence of valid alleles of this chromosome
 	 */
@@ -189,13 +192,13 @@ public final class PermutationChromosome<T>
 	 * <p>
 	 * The following example shows how to create a {@code PermutationChromosome}
 	 * for encoding a sub-set problem (of a fixed {@code length}).
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<String> basicSet = ISeq.of("a", "b", "c", "d", "e", "f");
 	 *
 	 * // The chromosome has a length of 3 and will only contain values from the
 	 * // given basic-set, with no duplicates.
 	 * final PermutationChromosome<String> ch = PermutationChromosome.of(basicSet, 3);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *
@@ -221,7 +224,10 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final int[] subset = Arrays.shuffle(Combinatorics.subset(alleles.size(), length));
+		final var rnd = RandomRegistry.random();
+		final int[] subset = Subset.next(rnd, alleles.size(), length);
+		shuffle(subset, rnd);
+
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());
@@ -321,10 +327,12 @@ public final class PermutationChromosome<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PERMUTATION_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PERMUTATION_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

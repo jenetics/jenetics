@@ -41,7 +41,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * {@link #toArray()}, {@link #toArray(IntFunction)} and {@link #toSeq()} methods.
  *
  * @implNote
- * This class is not thread-safe. If two threads accesses the buffer
+ * This class is not thread-safe. If two threads access the buffer
  * concurrently it must be <em>synchronized</em> externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -58,7 +58,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * Create a new ring buffer with the given {@code capacity}.
 	 *
 	 * @param capacity the buffer capacity
-	 * @throws NegativeArraySizeException if the the given {@code capacity} is
+	 * @throws NegativeArraySizeException if the given {@code capacity} is
 	 *         negative
 	 */
 	private Buffer(final int capacity) {
@@ -127,11 +127,11 @@ final class Buffer<T> implements Iterable<T> {
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
 	public void addAll(final Iterable<? extends T> values) {
-		if (values instanceof Buffer) {
-			final Object[] array = ((Buffer<?>)values).toArray();
+		if (values instanceof Buffer<?> buff) {
+			final Object[] array = buff.toArray();
 			addAll(array, 0, array.length);
-		} else if (values instanceof Collection) {
-			final Object[] array = ((Collection<?>)values).toArray();
+		} else if (values instanceof Collection<?> coll) {
+			final Object[] array = coll.toArray();
 			addAll(array, 0, array.length);
 		} else {
 			for (T value : values) {
@@ -148,7 +148,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * @param values the array which contains the values to add
 	 * @param start the start index of the source array
 	 * @param length the number of elements to copy
-	 * @throws IndexOutOfBoundsException if copying would cause access of data
+	 * @throws IndexOutOfBoundsException if copying causes access of data
 	 *         outside array bounds
 	 * @throws ArrayStoreException if an element in the {@code value} array
 	 *         could not be stored into the dest array because of a type mismatch
@@ -249,7 +249,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * @param <T> the element type
 	 * @param capacity the buffer capacity
 	 * @return a new ring buffer with the given capacity
-	 * @throws NegativeArraySizeException if the the given {@code capacity} is
+	 * @throws NegativeArraySizeException if the given {@code capacity} is
 	 *         negative
 	 */
 	public static <T> Buffer<T> ofCapacity(final int capacity) {

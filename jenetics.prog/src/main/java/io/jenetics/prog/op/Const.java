@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,17 +38,18 @@ import java.util.Objects;
  * is used when printing the program tree. The {@code Const} operation is a
  * <em>terminal</em> operation.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final static Op<Double> PI = Const.of("π", Math.PI);
  * final static Op<Double> ONE = Const.of(1.0);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class Const<T> extends Val<T> implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final T _const;
@@ -97,10 +99,12 @@ public final class Const<T> extends Val<T> implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CONST, this);
+		return new SerialProxy(SerialProxy.CONST, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

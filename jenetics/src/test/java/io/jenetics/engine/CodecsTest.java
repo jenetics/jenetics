@@ -25,6 +25,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -640,6 +641,28 @@ public class CodecsTest {
 
 			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G")), true},
 			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G"), 3), true}
+		};
+	}
+
+	@Test(
+		dataProvider = "invalidSubSets",
+		expectedExceptions = IllegalArgumentException.class
+	)
+	public void subSetEncodeError(final String[] subset) {
+		final ISeq<String> basicSet = IntStream.range(0, 20)
+			.mapToObj(String::valueOf)
+			.collect(ISeq.toISeq());
+
+		final var codec = Codecs.ofSubSet(basicSet);
+		codec.encode(ISeq.of(subset));
+	}
+
+	@DataProvider
+	public Object[][] invalidSubSets() {
+		return new Object[][] {
+			{"1","2","3","7","5","6","4","8","9"},
+			{"1","2","3","7","5"},
+			{"1","2","3","5", "59"}
 		};
 	}
 

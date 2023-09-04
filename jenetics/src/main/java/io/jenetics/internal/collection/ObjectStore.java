@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -42,6 +43,7 @@ import io.jenetics.internal.collection.Array.Store;
  */
 public final class ObjectStore<T> implements Store<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final Object[] _array;
@@ -99,10 +101,12 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.OBJECT_STORE, this);
+		return new SerialProxy(SerialProxy.OBJECT_STORE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -21,25 +21,22 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Randoms.nextDouble;
-
-import java.util.Random;
 
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
- * This alterer takes two chromosome (treating it as vectors) and creates a
- * linear combination of this vectors as result. The  line-recombination depends
+ * This alterer takes two chromosomes (treating it as vectors) and creates a
+ * linear combination of these vectors as a result. The line-recombination depends
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the
  * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
- * be located anywhere on the line, even somewhat outside of the hypercube.
+ * be located anywhere on the line, even somewhat outside the hypercube.
  * <p>
- * Points outside of the allowed numeric range are rejected and the original
- * value are used instead. The strategy on how out-of-range points are handled,
+ * Points outside the allowed numeric range are rejected and the original
+ * value is used instead. The strategy on how out-of-range points are handled,
  * is the difference to the very similar {@link IntermediateCrossover}.
  *
  * @see <a href="https://cs.gmu.edu/~sean/book/metaheuristics/"><em>
@@ -68,7 +65,7 @@ public class LineCrossover<
 	 *        <em>p</em> = 0 then the children will be located along the line
 	 *        within the hypercube between the two points. If <em>p</em> &gt; 0
 	 *        then the children may be located anywhere on the line, even
-	 *        somewhat outside of the hypercube.
+	 *        somewhat outside the hypercube.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */
@@ -103,13 +100,13 @@ public class LineCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double min = v.get(0).min().doubleValue();
 		final double max = v.get(0).max().doubleValue();
 
-		final double a = nextDouble(-_p, 1 + _p, random);
-		final double b = nextDouble(-_p, 1 + _p, random);
+		final double a = random.nextDouble(-_p, 1 + _p);
+		final double b = random.nextDouble(-_p, 1 + _p);
 
 		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {

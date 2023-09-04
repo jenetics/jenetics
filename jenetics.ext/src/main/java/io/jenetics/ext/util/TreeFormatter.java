@@ -80,7 +80,7 @@ public abstract class TreeFormatter {
 			while (it.hasNext()) {
 				final List<StringBuilder> subtree = toStrings(it.next(), mapper);
 				if (it.hasNext()) {
-					subtree(result, subtree, mapper);
+					subtree(result, subtree);
 				} else {
 					lastSubtree(result, subtree);
 				}
@@ -90,8 +90,7 @@ public abstract class TreeFormatter {
 
 		private <V> void subtree(
 			final List<StringBuilder> result,
-			final List<StringBuilder> subtree,
-			final Function<? super V, ? extends CharSequence> mapper
+			final List<StringBuilder> subtree
 		) {
 			final Iterator<StringBuilder> it = subtree.iterator();
 			result.add(it.next().insert(0, "├── "));

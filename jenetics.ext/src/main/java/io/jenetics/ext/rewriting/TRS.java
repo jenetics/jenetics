@@ -25,8 +25,9 @@ import static io.jenetics.internal.util.SerialIO.writeInt;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -40,7 +41,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * This class represents a Tree Rewrite System, which consists of a set of
  * Tree Rewrite Rules.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TRS<String> trs = TRS.parse(
  *     "add(0,$x) -> $x",
  *     "add(S($x),$y) -> S(add($x,$y))",
@@ -52,7 +53,7 @@ import io.jenetics.ext.util.TreeNode;
  * final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
  * trs.rewrite(tree);
  * assert tree.equals(TreeNode.parse("S(S(S(S(0))))"));
- * }</pre>
+ * }
  *
  * @see TreeRewriteRule
  * @see <a href="https://en.wikipedia.org/wiki/Rewriting">TRS</a>
@@ -63,6 +64,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<TreeRewriteRule<V>> _rules;
@@ -107,8 +109,8 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TRS &&
-			_rules.equals(((TRS)obj)._rules);
+			obj instanceof TRS<?> other &&
+			_rules.equals(other._rules);
 	}
 
 	@Override
@@ -156,11 +158,13 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TRS_KEY, this);
+		return new SerialProxy(SerialProxy.TRS_KEY, this);
 	}
 
-	private void readObject(final ObjectOutputStream stream)
+	@Serial
+	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{
 		throw new InvalidObjectException("Serialization proxy required.");

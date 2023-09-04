@@ -24,7 +24,6 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
@@ -34,7 +33,7 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 
-import io.jenetics.ext.internal.CyclicSpliterator;
+import io.jenetics.ext.internal.util.CyclicSpliterator;
 
 /**
  * The {@code CyclicEngine} lets you concatenate two (or more) evolution
@@ -53,12 +52,12 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  *    |                                                       |
  *    +------------------------------<------------------------+
  *                              Result
- * }</pre>
+ * } </pre>
  *
- * The {@code CyclicEngine} allows to do an broad search-fine search-cycle
+ * The {@code CyclicEngine} allows to do a broad search-fine search-cycle
  * as long as you want.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
  *      v -> Math.sin(v[0])*Math.cos(v[1]),
  *      Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
@@ -88,7 +87,7 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  *
  *  System.out.println(result + ": " +
  *      problem.fitness().apply(problem.codec().decode(result)));
- * }</pre>
+ * }
  *
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.
@@ -114,7 +113,7 @@ public final class CyclicEngine<
 	 * {@code engines}.
 	 *
 	 * @param engines the evolution engines which are part of the cycling engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	public CyclicEngine(
@@ -133,7 +132,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);
@@ -166,7 +165,7 @@ public final class CyclicEngine<
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, init, other, first))
-					.collect(Collectors.toList())
+					.toList()
 			),
 			false
 		);
@@ -201,7 +200,7 @@ public final class CyclicEngine<
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a new concatenating evolution engine
-	 * @throws NullPointerException if the {@code engines} or one of it's
+	 * @throws NullPointerException if the {@code engines} or one of its
 	 *         elements is {@code null}
 	 */
 	@SafeVarargs

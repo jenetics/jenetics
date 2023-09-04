@@ -19,16 +19,19 @@
  */
 package io.jenetics.internal.util;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Int reference class, which allows the usage in an lambda expression.
+ * Int reference class, which allows the usage in a lambda expression.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
  */
 public final class IntRef implements Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1;
 
 	/**
@@ -59,7 +62,7 @@ public final class IntRef implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntRef && ((IntRef)obj).value == value;
+		return obj instanceof IntRef other && other.value == value;
 	}
 
 	@Override

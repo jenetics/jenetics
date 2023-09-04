@@ -24,8 +24,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.Basics.clamp;
 
-import java.util.Random;
-
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
 import io.jenetics.internal.math.Randoms;
@@ -37,8 +35,8 @@ import io.jenetics.util.RandomRegistry;
  * Performs the simulated binary crossover (SBX) on a {@code Chromosome} of
  * {@link NumericGene}s such that each position is either crossed contracted or
  * expanded with a certain probability. The probability distribution is designed
- * such that the children will lie closer to their parents as is the case with
- * the single point binary crossover.
+ * such that the children will lie closer to their parents, as is the case with
+ * the single-point binary crossover.
  * <p>
  * It is implemented as described in Deb, K. and Agrawal, R. B. 1995. Simulated
  * binary crossover for continuous search space. Complex Systems, 9, pp. 115-148.
@@ -108,7 +106,7 @@ public class SimulatedBinaryCrossover<
 	}
 
 	private void crossover(final MSeq<G> that, final MSeq<G> other, final int i) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double u = random.nextDouble();
 		final double beta;
@@ -116,12 +114,10 @@ public class SimulatedBinaryCrossover<
 			// If u is smaller than 0.5 perform a contracting crossover.
 			beta = pow(2*u, 1.0/(_contiguity + 1));
 		} else if (u > 0.5) {
-			// Otherwise perform an expanding crossover.
+			// Otherwise, perform an expanding crossover.
 			beta = pow(0.5/(1.0 - u), 1.0/(_contiguity + 1));
-		} else if (u == 0.5) {
-			beta = 1;
 		} else {
-			beta = 0;
+			beta = 1;
 		}
 
 		final double v1 = that.get(i).doubleValue();

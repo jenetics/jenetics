@@ -32,7 +32,7 @@ import io.jenetics.Genotype;
  * evolution {@code Engine}. It connects the actual {@link #fitness()} function
  * and the needed {@link #codec()}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
  *     // Native fitness function
  *     genes -> (int)genes.stream()
@@ -44,7 +44,7 @@ import io.jenetics.Genotype;
  *         gt -> ISeq.of(gt.chromosome())
  *     )
  * );
- * }</pre>
+ * }
  *
  * The example above shows the Ones-Counting problem definition.
  *
@@ -75,7 +75,7 @@ public interface Problem<
 
 	/**
 	 * Return the codec, which translates the types of the problem domain into
-	 * types, which can be understand by the evolution {@code Engine}.
+	 * types, which can be understood by the evolution {@code Engine}.
 	 *
 	 * @return the engine codec
 	 */
@@ -95,12 +95,12 @@ public interface Problem<
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
-	 * <pre>{@code
-	 * final Problem<SomeObject, DoubleGene, Double> problem = ...
+	 * {@snippet lang="java":
+	 * final Problem<SomeObject, DoubleGene, Double> problem = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = problem.codec().encoding().newInstance();
 	 *
 	 * final SomeObject arg = problem.decode(gt);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.2
 	 *
@@ -195,11 +195,9 @@ public interface Problem<
 	Codec<T, G> wrap(final Constraint<G, C> constraint, final Codec<T, G> codec) {
 		Codec<T, G> result = codec;
 		if (constraint != null) {
-			if (codec instanceof InvertibleCodec) {
-				result = constraint.constrain((InvertibleCodec<T, G>)codec);
-			} else {
-				result = constraint.constrain(codec);
-			}
+			result = codec instanceof InvertibleCodec<T, G> ic
+				? constraint.constrain(ic)
+				: constraint.constrain(codec);
 		}
 
 		return result;

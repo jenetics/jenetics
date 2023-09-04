@@ -26,10 +26,10 @@ import java.util.stream.Stream;
 import io.jenetics.ext.util.Tree;
 
 /**
- * Implementation of a pattern based tree matcher. It allows you to iterate over
+ * Implementation of a pattern-based tree matcher. It allows you to iterate over
  * all matches of a tree for a given pattern.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y)");
  * final Tree<String, ?> tree = TreeNode.parse("add(1,add(2,3))");
  * final TreeMatcher<String> matcher = pattern.matcher(tree);
@@ -37,7 +37,7 @@ import io.jenetics.ext.util.Tree;
  * // Prints:
  * // add(1,add(2,3))
  * // add(2,3)
- * }</pre>
+ * }
  *
  * @see TreePattern#matcher(Tree)
  *
@@ -87,7 +87,7 @@ public final class TreeMatcher<V> {
 	/**
 	 * Return all matching <em>sub</em>-trees.
 	 *
-	 * @return all matching sub-trees
+	 * @return all matching subtrees
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public Stream<TreeMatchResult<V>> results() {

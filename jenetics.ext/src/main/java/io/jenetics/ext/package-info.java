@@ -19,6 +19,8 @@
  */
 
 /**
+ * This package contains additional genes/chromosomes and GA operators.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.5
  * @since 3.5

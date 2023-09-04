@@ -21,8 +21,6 @@ package io.jenetics.ext;
 
 import static java.lang.Math.min;
 
-import java.util.Random;
-
 import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
@@ -52,7 +50,7 @@ public abstract class TreeCrossover<
 {
 
 	/**
-	 * Constructs an tree crossover with a given recombination probability.
+	 * Constructs a tree crossover with a given recombination probability.
 	 *
 	 * @param probability the recombination probability
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
@@ -69,7 +67,7 @@ public abstract class TreeCrossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
@@ -99,7 +97,7 @@ public abstract class TreeCrossover<
 
 	// Since the allele type "A" is not part of the type signature, we have to
 	// do some unchecked casts to make it "visible" again. The implementor of
-	// the abstract "crossover" method usually don't have to do additional casts.
+	// the abstract "crossover" method usually doesn't have to do additional casts.
 	private <A> void crossover(
 		final MSeq<Chromosome<G>> c1,
 		final MSeq<Chromosome<G>> c2,
@@ -139,7 +137,7 @@ public abstract class TreeCrossover<
 
 	/**
 	 * Template method which performs the crossover. The arguments given are
-	 * mutable non null trees.
+	 * mutable non-null trees.
 	 *
 	 * @param <A> the <em>existential</em> allele type
 	 * @param that the first (chromosome) tree

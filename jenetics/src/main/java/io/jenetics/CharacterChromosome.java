@@ -32,6 +32,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -43,7 +44,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * CharacterChromosome which represents character sequences.
+ * Character chromosome which represents character sequences.
  *
  * @see CharacterGene
  *
@@ -60,13 +61,14 @@ public class CharacterChromosome
 		CharSequence,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	private transient final CharSeq _validCharacters;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
-	 * array is copied, so changes to the given genes array doesn't effect the
+	 * array is copied, so changes to the given genes array don't affect the
 	 * genes of this chromosome.
 	 *
 	 * @since 4.0
@@ -121,8 +123,8 @@ public class CharacterChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final CharacterChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final CharacterChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
 	 *
 	 * static int[] uppercase(final int[] values) {
@@ -131,7 +133,7 @@ public class CharacterChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -173,14 +175,14 @@ public class CharacterChromosome
 	}
 
 	/**
-	 * Returns an char array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a char array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
+	 * @param array the array into which the elements of this chromosome are to
 	 *        be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
@@ -199,8 +201,8 @@ public class CharacterChromosome
 	}
 
 	/**
-	 * Returns an char array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a char array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -228,7 +230,7 @@ public class CharacterChromosome
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	public static CharacterChromosome of(
@@ -267,7 +269,7 @@ public class CharacterChromosome
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	public static CharacterChromosome of(
@@ -326,10 +328,12 @@ public class CharacterChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.CHARACTER_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

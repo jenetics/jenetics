@@ -19,21 +19,21 @@
  */
 package io.jenetics.ext;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.AbstractAlterer;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.Combinatorics;
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.MSeq;
 
 /**
  * The reverse sequence mutation, two positions i and j are randomly chosen The
  * gene order in a chromosome will then be reversed between this two points.
  * This mutation operator can also be used for combinatorial problems, where no
- * duplicated genes within a chromosome are allowed, e.g. for the TSP.
+ * duplicated genes within a chromosome are allowed, e.g., for the TSP.
  *
  * @see io.jenetics.SwapMutator
  *
@@ -71,20 +71,20 @@ public class RSMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int[] points = Combinatorics.subset(chromosome.length() + 1, 2);
+			final int[] points = Subset.next(random, chromosome.length() + 1, 2);
 			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 
-			result = MutatorResult.of(
+			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
 				points[1] - points[0] - 1
 			);
 		} else {
-			result = MutatorResult.of(chromosome);
+			result = new MutatorResult<>(chromosome, 0);
 		}
 
 		return result;

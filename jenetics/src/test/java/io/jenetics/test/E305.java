@@ -21,7 +21,6 @@ package io.jenetics.test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.EnumGene;
@@ -52,7 +51,7 @@ public class E305 {
 			List<Integer> a = IntStream.rangeClosed(1, A.get(i - 1))
 				.boxed()
 				.map(x -> finalI)
-				.collect(Collectors.toList());
+				.toList();
 
 			tmp.addAll(a);
 		}

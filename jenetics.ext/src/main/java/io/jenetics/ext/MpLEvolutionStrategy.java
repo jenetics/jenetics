@@ -31,21 +31,21 @@ import io.jenetics.internal.util.Requires;
 /**
  * Setup for a (μ + λ)-Evolution Strategy. Applying this setup is done in the
  * following way.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var engine = Engine.builder(problem)
- *     .setup(new MpLEvolutionStrategy<>(μ, λ, p)
+ *     .setup(new MpLEvolutionStrategy<>(μ, λ, p))
  *     .build();
- * }</pre>
+ * }
  *
  * And is equivalent to the following builder setup.
- * <pre>{@code
+ * {@snippet lang="java":
  * final var engine = Engine.builder(problem)
  *     .populationSize(λ)
  *     .survivorsSize(μ)
  *     .offspringSelector(new TruncationSelector<>(μ))
  *     .alterers(new Mutator<>(p))
  *     .build();
- * }</pre>
+ * }
  *
  * @param <G> the gene type
  * @param <C> the fitness result type
@@ -68,7 +68,7 @@ public final class MpLEvolutionStrategy<
 	/**
 	 * Create a new (μ + λ)-Evolution Strategy with the given parameters.
 	 *
-	 * @param mu the number of fittest individuals to be selected
+	 * @param mu the number of the fittest individuals to be selected
 	 * @param lambda the population count
 	 * @param mutationProbability the mutation probability
 	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
@@ -100,7 +100,7 @@ public final class MpLEvolutionStrategy<
 	 * Create a new (μ + λ)-Evolution Strategy with the given parameters. The
 	 * mutation probability is set to {@link Mutator#DEFAULT_ALTER_PROBABILITY}.
 	 *
-	 * @param mu the number of fittest individuals to be selected
+	 * @param mu the number of the fittest individuals to be selected
 	 * @param lambda the population count
 	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}

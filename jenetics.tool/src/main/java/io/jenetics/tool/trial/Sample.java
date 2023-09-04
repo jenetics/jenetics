@@ -153,8 +153,8 @@ public final class Sample implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Sample &&
-			Arrays.equals(_values, ((Sample)obj)._values);
+		return obj instanceof Sample other &&
+			Arrays.equals(_values, other._values);
 	}
 
 	@Override

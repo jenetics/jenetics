@@ -227,14 +227,16 @@ public interface ISeq<T>
 	 * @return a new {@code ISeq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
 	static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		return values instanceof ISeq
-			? (ISeq<T>)values
-			: values instanceof MSeq
-				? ((MSeq<T>)values).toISeq()
+		@SuppressWarnings("unchecked")
+		final Iterable<T> vals = (Iterable<T>)values;
+
+		return vals instanceof ISeq<T> seq
+			? seq
+			: vals instanceof MSeq<T> mseq
+				? mseq.toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}
 
@@ -267,11 +269,11 @@ public interface ISeq<T>
 	}
 
 	/**
-	 * Allows a safe (without compile warning) upcast from {@code B} to
+	 * Allows a safe (without compiler warning) upcast from {@code B} to
 	 * {@code A}. Since {@code ISeq} instances are immutable, an <i>upcast</i>
 	 * will be always safe.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // The sequence which we want to case.
 	 * final ISeq<? extends Number> ints = ISeq.of(1, 2, 3, 4, 5);
 	 *
@@ -282,14 +284,14 @@ public interface ISeq<T>
 	 * // This cast will, of course, still fail.
 	 * final ISeq<String> strings = ISeq.upcast(ints);
 	 * final ISeq<Integer> integers = ISeq.upcast(ints);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.6
 	 *
 	 * @param seq the sequence to cast safely
 	 * @param <A> the <i>super</i>-object type
 	 * @param <B> the <i>sub</i>-object type
-	 * @return the casted instance of the given {@code seq}
+	 * @return the cast instance of the given {@code seq}
 	 */
 	@SuppressWarnings("unchecked")
 	static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {

@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -38,31 +39,31 @@ import io.jenetics.internal.util.Lazy;
 /**
  * Implementation of an <em>ephemeral</em> constant. It causes the insertion of
  * a <em>mutable</em> constant into the operation tree. Every time this terminal
- * is chosen a, different value is generated which is then used for that
+ * is chosen, a different value is generated which is then used for that
  * particular terminal, and which will remain fixed for the given tree. The main
  * usage would be to introduce random terminal values.
  *
- * <pre>{@code
- * final Random random = ...;
+ * {@snippet lang="java":
+ * final Random random = null; // @replace substring='null' replacement="..."
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
- * }</pre>
+ * }
  *
  * <b>Serialization</b>
  * Although the {@code EphemeralConst} class implements the {@link Serializable}
  * interface, the serialization will fail if the <em>const</em> supplier is not
  * <em>serializable</em> as well. This can be achieved by <em>casting</em> the
  * supplier to a {@link Serializable}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Random random = new Random();
  * final EphemeralConst<Integer> object = EphemeralConst.of(
  *     "R",
  *     (Supplier<Integer> & Serializable)random::nextInt
  * );
- * }</pre>
+ * }
  * The serialization of the <em>constant</em> will fail, if the lambda has to
  * capture variables form a <em>non</em>-serializable context (class). In such a
- * case it is advisable to create a dedicated supplier class.
- * <pre>{@code
+ * case, it is advisable to create a dedicated supplier class.
+ * {@snippet lang="java":
  * final class RandomInt implements Supplier<Integer>, Serializable {
  *     private final Random rnd = new Random();
  *     private final int min;
@@ -73,16 +74,16 @@ import io.jenetics.internal.util.Lazy;
  *         this.max = max;
  *     }
  *
- *     \@Override
+ *     @Override
  *     public Integer get() {
  *         return rnd.nextInt(max - min) + min;
  *     }
  * }
- * }</pre>
+ * }
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.0
  * @since 3.9
  */
 public final class EphemeralConst<T>
@@ -90,6 +91,7 @@ public final class EphemeralConst<T>
 	implements Op<T>, Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Lazy<T> _value;
@@ -141,7 +143,7 @@ public final class EphemeralConst<T>
 	/**
 	 * Create a new ephemeral constant with the given {@code name} and value
 	 * {@code supplier}. For every newly created operation tree, a new constant
-	 * value is chosen for this terminal operation. The value is than kept
+	 * value is chosen for this terminal operation. The value is then kept
 	 * constant for this tree.
 	 *
 	 * @param name the name of the ephemeral constant
@@ -160,7 +162,7 @@ public final class EphemeralConst<T>
 	/**
 	 * Create a new ephemeral constant with the given value {@code supplier}.
 	 * For every newly created operation tree, a new constant value is chosen
-	 * for this terminal operation. The value is than kept constant for this tree.
+	 * for this terminal operation. The value is then kept constant for this tree.
 	 *
 	 * @param supplier the value supplier
 	 * @param <T> the constant type
@@ -176,10 +178,12 @@ public final class EphemeralConst<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EPHEMERAL_CONST, this);
+		return new SerialProxy(SerialProxy.EPHEMERAL_CONST, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

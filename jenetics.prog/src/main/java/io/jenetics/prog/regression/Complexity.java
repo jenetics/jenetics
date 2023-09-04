@@ -28,13 +28,13 @@ import io.jenetics.prog.op.Op;
 
 /**
  * Represents a complexity <em>measure</em> if a given program tree. The
- * program complexity ensures, that simpler programs with similar loss function
+ * program complexity ensures that simpler programs with similar loss function
  * values are preferred. It is part of the <em>overall</em> {@link Error}
  * function.
  *
- * <pre>{@code
- * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
- * }</pre>
+ * {@snippet lang="java":
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
+ * }
  *
  * @see LossFunction
  * @see Error
@@ -64,7 +64,7 @@ public interface Complexity<T> {
 	 *
 	 * @param <T> the sample type
 	 * @param maxNodeCount the maximal node count. The returned complexity will
-	 *        be one if the program node count is greater or equal the given
+	 *        be one of the program node count is greater or equal the given
 	 *        {@code count}
 	 * @return a program node count complexity measure
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
@@ -87,10 +87,10 @@ public interface Complexity<T> {
 	 * If the node count is bigger or equal {@code maxNodes}, one is returned.
 	 * <p>
 	 * The complexity is calculated in the following way:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final double cc = min(program.size() - 1, maxNodes);
 	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
-	 * }</pre>
+	 * }
 	 *
 	 * @see #ofNodeCount(int)
 	 *

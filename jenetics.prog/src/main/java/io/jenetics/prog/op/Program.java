@@ -23,10 +23,12 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Objects;
-import java.util.Random;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -36,8 +38,8 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class composes a given operation tree to a new operation. which can
- * serve as a sub <em>program</em> in an other operation tree.
+ * This class composes a given operation tree to a new operation, which can
+ * serve as a sub <em>program</em> in another operation tree.
  *
  * @param <T> the argument type of the operation
  *
@@ -47,6 +49,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class Program<T> implements Op<T>, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
@@ -112,7 +115,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
-	 * @throws IllegalArgumentException if the length of the arguments array
+	 * @throws IllegalArgumentException if the length of the argument array
 	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
@@ -128,9 +131,9 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program &&
-			Objects.equals(((Program)obj)._name, _name) &&
-			Objects.equals(((Program)obj)._tree, _tree);
+			obj instanceof Program<?> other &&
+			Objects.equals(other._name, _name) &&
+			Objects.equals(other._tree, _tree);
 	}
 
 	@Override
@@ -144,7 +147,14 @@ public class Program<T> implements Op<T>, Serializable {
 	 * ************************************************************************/
 
 	/**
-	 * Evaluates the given operation tree with the given variables.
+	 * Evaluates the given operation tree with the given variables. This method
+	 * is equivalent to
+	 * {@snippet lang="java":
+	 * final T result = tree.reduce(variables, Op::apply);
+	 * }
+	 * but handles the variable sized {@code variables} array more conveniently.
+	 *
+	 * @see Tree#reduce(Object[], BiFunction)
 	 *
 	 * @param <T> the argument type
 	 * @param tree the operation tree
@@ -159,41 +169,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		requireNonNull(tree);
-		requireNonNull(variables);
-
-		final Op<T> op = tree.value();
-		return op.isTerminal()
-			? evalOp(op, variables)
-			: evalOp(op, evalChildren(tree, variables));
-	}
-
-	@SafeVarargs
-	private static <T> T evalOp(final Op<T> op, final T... variables) {
-		if (op instanceof Var && ((Var)op).index() >= variables.length) {
-			throw new IllegalArgumentException(format(
-				"No value for variable '%s' given.", op
-			));
-		}
-
-		return op.apply(variables);
-	}
-
-	@SafeVarargs
-	private static <T> T[] evalChildren(
-		final Tree<? extends Op<T>, ?> node,
-		final T... variables
-	) {
-		final T[] result = newArray(variables.getClass(), node.childCount());
-		for (int i = 0; i < node.childCount(); ++i) {
-			result[i] = eval(node.childAt(i), variables);
-		}
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] newArray(final Class<?> arrayType, final int size) {
-		return (T[])Array.newInstance(arrayType.getComponentType(), size);
+		return tree.reduce(variables, Function::apply);
 	}
 
 	/**
@@ -269,7 +245,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		return new Program<>(name, of(depth, operations, terminals, random));
 	}
@@ -319,7 +295,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (depth < 0) {
 			throw new IllegalArgumentException(
@@ -347,7 +323,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final TreeNode<Op<A>> tree,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		final Op<A> op = level == 0
 			? terminals.get(random.nextInt(terminals.size()))
@@ -408,7 +384,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
 		final int[] offsets,
 		final ISeq<? extends Op<A>> terminals,
-		final Random random
+		final RandomGenerator random
 	) {
 		if (index < nodes.size()) {
 			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);

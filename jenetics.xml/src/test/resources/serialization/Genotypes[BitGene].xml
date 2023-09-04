@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genotypes length="7">
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10000110100000100110</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00001111000010100111</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00011001111101000111</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00010100110101110111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01010011010111000111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01100100000101100001</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11100101000011110000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11100010111110011000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11101110101100101000</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">01100010000000001000</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00001101111100000100</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11000110010110000010</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00000101110011101110</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11010001100010010101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00010000000001000110</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00100000111110110000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01000001101001100011</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01110111001110100000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10101001000110001011</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">01110000001011011011</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00001001100111100011</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">01010101010001001000</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11000000010011010001</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10000000001100101100</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11011011010000001110</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11000111100110010000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00010010001010101010</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10001011001000000011</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00110100110000000001</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">10110000110010001110</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11101001001000101111</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00100000101001000011</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11100100001101011000</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11000010111110010101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01110001001100001101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11110100010010010111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11000010010100000100</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00011010110000100111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10101001111101000011</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">11110110011100000010</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10100111101010111100</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">01001111100101011101</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00001111100010001100</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10110001001011010010</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01000000111001101111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00111101010111100101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10111010100111110010</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00110001000111110000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01001011010010001101</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">10101110010100100011</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00011101101100110101</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">01101010100111100111</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10100000000111001101</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11000011001111000101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11000100101001110101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10101100110110111000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11100111100101010110</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10110011100000000101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">10100011110011000011</bit-chromosome>
     </genotype>
     <genotype length="5" ngenes="100">
-        <bit-chromosome length="20" ones-probability="0.5">11011000000110001111</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">00110100000001100010</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10110110100110110010</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">11110001011010101100</bit-chromosome>
-        <bit-chromosome length="20" ones-probability="0.5">10000000011111100000</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">11110001100000011011</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01000110000000101100</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">01001101100101101101</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00110101011010001111</bit-chromosome>
+        <bit-chromosome length="20" ones-probability="0.5">00000111111000000001</bit-chromosome>
     </genotype>
 </genotypes>

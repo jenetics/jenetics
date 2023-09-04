@@ -19,7 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import static io.jenetics.prog.op.Numbers.box;
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;
 import static java.lang.Math.asin;
@@ -44,10 +43,13 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.prog.op.Numbers.box;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -82,6 +84,11 @@ public enum MathOp implements Op<Double> {
 	 * <em>This operation has arity 1.</em>
 	 */
 	NEG("neg", 1, v -> -v[0]),
+
+	/**
+	 * The identity function.
+	 */
+	ID("id", 1, v -> v[0]),
 
 	/**
 	 * Return the minimum of two values.
@@ -346,6 +353,14 @@ public enum MathOp implements Op<Double> {
 	 */
 	public static final Const<Double> E = Const.of("e", Math.E);
 
+	/**
+	 * The names of all defined operation names.
+	 *
+	 * @since 7.0
+	 */
+	public static final Set<String> NAMES = Stream.of(MathOp.values())
+		.map(MathOp::toString)
+		.collect(Collectors.toUnmodifiableSet());
 
 	private final String _name;
 	private final int _arity;
@@ -400,7 +415,7 @@ public enum MathOp implements Op<Double> {
 	 * an operation tree. <b>If you use it that way, you should not forget to
 	 * re-index the tree variables.</b>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
 	 *     "add(mul(x,y),sub(y,x))",
 	 *     MathOp::toMathOp
@@ -409,7 +424,7 @@ public enum MathOp implements Op<Double> {
 	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
 	 * Var.reindex(tree);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 *

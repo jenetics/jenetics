@@ -95,7 +95,7 @@ public interface TreeRewriter<V> {
 
 	/**
 	 * Rewrites the given {@code tree} by applying the given {@code rewriters}.
-	 * This method to apply the all rewriters, in the order they are given in
+	 * This method to apply all rewriters, in the order they are given in
 	 * the sequence, until the tree stays unchanged.
 	 *
 	 * @param <V> the tree value type
@@ -138,7 +138,7 @@ public interface TreeRewriter<V> {
 
 	/**
 	 * Rewrites the given {@code tree} by applying the given {@code rewriters}.
-	 * This method to apply the all rewriters, in the order they are given in
+	 * This method to apply all rewriters, in the order they are given in
 	 * the sequence, until the tree stays unchanged.
 	 *
 	 * @see #rewrite(TreeNode, int, Iterable)

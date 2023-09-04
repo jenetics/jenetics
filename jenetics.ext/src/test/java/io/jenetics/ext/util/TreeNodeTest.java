@@ -22,6 +22,7 @@ package io.jenetics.ext.util;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -37,7 +38,7 @@ import io.jenetics.ext.util.Tree.Path;
  */
 public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
-	public TreeNode<Integer> newTree(final int levels, final Random random) {
+	public TreeNode<Integer> newTree(final int levels, final RandomGenerator random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 		return root;
@@ -46,7 +47,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 	public static void fill(
 		final TreeNode<Integer> node,
 		final int level,
-		final Random random
+		final RandomGenerator random
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();

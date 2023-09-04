@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -26,8 +28,6 @@
 plugins {
 	`java-gradle-plugin`
 	`kotlin-dsl`
-	kotlin("jvm") version "1.4.10"
-
 }
 
 repositories {
@@ -35,7 +35,6 @@ repositories {
 	gradlePluginPortal()
 }
 
-configure<JavaPluginConvention> {
-	sourceCompatibility = JavaVersion.VERSION_11
-	targetCompatibility = JavaVersion.VERSION_11
+tasks.withType<KotlinCompile>().configureEach {
+	kotlinOptions.jvmTarget = "17"
 }

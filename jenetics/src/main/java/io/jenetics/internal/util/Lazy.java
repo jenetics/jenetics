@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -40,6 +41,8 @@ import java.util.function.Supplier;
  * @version 5.0
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final transient Supplier<T> _supplier;
@@ -97,8 +100,8 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
     @Override
     public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Lazy &&
-			Objects.equals(((Lazy)obj).get(), get());
+			obj instanceof Lazy<?> other &&
+			Objects.equals(other.get(), get());
     }
 
     @Override
@@ -121,7 +124,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
 	/**
 	 * Create a new {@code Lazy} object with the given {@code value}. This
-	 * method allows to create a <em>lazy</em> object with the given
+	 * method allows creating a <em>lazy</em> object with the given
 	 * {@code value}.
 	 *
 	 * @since 3.7
@@ -139,18 +142,21 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 *  Java object serialization
 	 *************************************************************************/
 
-	static final class Serial implements Externalizable  {
+	static final class SerialProxy implements Externalizable  {
+
+		@Serial
 		private static final long serialVersionUID = 1L;
 
 		private Lazy<?> _object;
 
-		public Serial() {
+		public SerialProxy() {
 		}
 
-		Serial(final Lazy<?> object) {
+		SerialProxy(final Lazy<?> object) {
 			_object = object;
 		}
 
+		@Serial
 		private Object readResolve() {
 			return _object;
 		}
@@ -168,10 +174,12 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 		}
 	}
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(this);
+		return new SerialProxy(this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

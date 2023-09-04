@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.gradle.jmh")
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics - Java Genetic Algorithm Library"
@@ -35,16 +35,17 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	testImplementation(Libs.ApacheCommonsMath)
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
-	testImplementation(Libs.PRNGine)
+	testImplementation(libs.testng)
+	testImplementation(libs.assertj)
+	testImplementation(libs.commons.math)
+	testImplementation(libs.equalsverifier)
+	testImplementation(libs.prngine)
 
-	jmh(Libs.PRNGine)
+	jmh(libs.prngine)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*IntegerChromosomePerf.*")
+	includes.add(".*ProxySorterPerf.*")
 }

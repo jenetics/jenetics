@@ -94,7 +94,7 @@ public final class BoltzmannSelector<
 		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
-		// Copy the fitness values to probabilities arrays.
+		// Copy the fitness values to probability arrays.
 		final double[] fitness = new double[population.size()];
 
 		fitness[0] = population.get(0).fitness().doubleValue();

@@ -45,19 +45,10 @@ public class Springsteen
 	implements Problem<ISeq<Springsteen.Record>, BitGene, Double>
 {
 
-	public static final class Record {
-		final String name;
-		final double price;
-		final ISeq<String> songs;
-
-		public Record(
-			final String name,
-			final double price,
-			final ISeq<String> songs
-		) {
-			this.name = requireNonNull(name);
-			this.price = price;
-			this.songs = requireNonNull(songs);
+	public record Record(String name, double price, ISeq<String> songs) {
+		public Record{
+			requireNonNull(name);
+			requireNonNull(songs);
 		}
 	}
 

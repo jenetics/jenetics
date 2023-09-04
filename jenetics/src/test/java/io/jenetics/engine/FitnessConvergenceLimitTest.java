@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -117,7 +118,7 @@ public class FitnessConvergenceLimitTest {
 	}
 
 	public static DoubleMomentStatistics statistics(
-		final Random random,
+		final RandomGenerator random,
 		final int skip,
 		final int size
 	) {

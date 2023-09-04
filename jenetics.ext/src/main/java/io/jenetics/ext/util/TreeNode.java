@@ -27,6 +27,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Copyable;
-import io.jenetics.util.ISeq;
 
 /**
  * A general purpose node in a tree data-structure. The {@code TreeNode} is a
@@ -56,6 +56,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private T _value;
@@ -188,7 +189,7 @@ public final class TreeNode<T>
 		return this;
 	}
 
-	// Only entry point for checking and creating non-existing children list.
+	// Only entry point for checking and creating a non-existing children list.
 	private void createChildrenIfMissing() {
 		if (_children == null) {
 			_children = new ArrayList<>(2);
@@ -256,7 +257,7 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Removes the child at the given {@code path}. If no child exists at the
+	 * Removes the child at the given {@code path}. If no child exists on the
 	 * given path, nothing is removed.
 	 *
 	 * @since 4.4
@@ -264,7 +265,7 @@ public final class TreeNode<T>
 	 * @param path the path of the child to replace
 	 * @return {@code true} if a child at the given {@code path} existed and
 	 *         has been removed
-	 * @throws NullPointerException if one of the given argument is {@code null}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public boolean removeAtPath(final Path path) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
@@ -276,7 +277,7 @@ public final class TreeNode<T>
 
 	/**
 	 * Replaces the child at the given {@code path} with the given new
-	 * {@code child}. If no child exists at the given path, nothing is replaced.
+	 * {@code child}. If no child exists on the given path, nothing is replaced.
 	 *
 	 * @since 4.4
 	 *
@@ -284,7 +285,7 @@ public final class TreeNode<T>
 	 * @param child the new child
 	 * @return {@code true} if a child at the given {@code path} existed and
 	 *         has been replaced
-	 * @throws NullPointerException if one of the given argument is {@code null}
+	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public boolean replaceAtPath(final Path path, final TreeNode<T> child) {
 		requireNonNull(path);
@@ -293,20 +294,20 @@ public final class TreeNode<T>
 		final Optional<TreeNode<T>> old = childAtPath(path);
 		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::parent);
 
-		if (parent.isPresent()) {
-			parent.orElseThrow(AssertionError::new)
-				.replace(path.get(path.length() - 1), child);
-		} else {
-			removeAllChildren();
-			value(child.value());
+		parent.ifPresentOrElse(
+			p -> p.replace(path.get(path.length() - 1), child),
+			() -> {
+				removeAllChildren();
+				value(child.value());
 
-			final ISeq<TreeNode<T>> nodes = child.childStream()
-				.collect(ISeq.toISeq());
+				// Need to create a copy of the children, before attaching it.
+				final List<TreeNode<T>> nodes = child._children != null
+					? List.copyOf(child._children)
+					: List.of();
 
-			for (TreeNode<T> node : nodes) {
-				attach(node);
+				nodes.forEach(this::attach);
 			}
-		}
+		);
 
 		return old.isPresent();
 	}
@@ -428,7 +429,7 @@ public final class TreeNode<T>
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
 		final TreeNode<B> target = TreeNode.of(mapper.apply(value()));
-		fill(this, target, mapper);
+		copy(this, target, mapper);
 		return target;
 	}
 
@@ -440,9 +441,7 @@ public final class TreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreeNode &&
-			Tree.equals(this, (TreeNode)obj);
+		return obj instanceof Tree<?, ?> other && Tree.equals(this, other);
 	}
 
 	@Override
@@ -493,20 +492,21 @@ public final class TreeNode<T>
 		final Function<? super T, ? extends B> mapper
 	) {
 		final TreeNode<B> target = of(mapper.apply(tree.value()));
-		fill(tree, target, mapper);
+		copy(tree, target, mapper);
 		return target;
 	}
 
-	private static <T, B> void fill(
+	private static <T, B> void copy(
 		final Tree<? extends T, ?> source,
 		final TreeNode<B> target,
 		final Function<? super T, ? extends B> mapper
 	) {
-		source.childStream().forEachOrdered(child -> {
+		for (int i = 0; i < source.childCount(); ++i) {
+			final var child = source.childAt(i);
 			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
-			fill(child, targetChild, mapper);
-		});
+			copy(child, targetChild, mapper);
+		}
 	}
 
 	/**
@@ -529,15 +529,15 @@ public final class TreeNode<T>
 	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
 	 *
-	 * The parse method doesn't strip the whitespace between the parentheses and
-	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
+	 * The parse method doesn't strip the space between the parentheses and
+	 * the commas. If you want to remove this <em>formatting</em> space,
 	 * you should do the parsing with an addition <em>mapper</em> function.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<String> tree = TreeNode.parse(
 	 *     "mul(  div(cos( 1.0) , cos(π )), sin(mul(1.0, z) ) )",
 	 *     String::trim
 	 * );
-	 * }</pre>
+	 * }
 	 * The code above will trim all tree nodes during the parsing process.
 	 *
 	 * @see Tree#toParenthesesString(Function)
@@ -564,12 +564,12 @@ public final class TreeNode<T>
 	 *  0(1(4,5),2(6),3(7(10,11),8,9))
 	 * </pre>
 	 * and can be parsed to an integer tree with the following code:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<Integer, ?> tree = TreeNode.parse(
 	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
 	 *     Integer::parseInt
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()
@@ -598,10 +598,12 @@ public final class TreeNode<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.TREE_NODE, this);
+		return new SerialProxy(SerialProxy.TREE_NODE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

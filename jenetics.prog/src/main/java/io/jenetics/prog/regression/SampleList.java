@@ -20,11 +20,14 @@
 package io.jenetics.prog.regression;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -34,7 +37,7 @@ import io.jenetics.prog.op.Program;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 7.1
  * @since 5.0
  */
 final class SampleList<T>
@@ -43,16 +46,17 @@ final class SampleList<T>
 		Sampling<T>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private final List<Sample<T>> _samples;
+	private final List<? extends Sample<? extends T>> _samples;
 
 	private final Class<T> _type;
 	private final T[][] _arguments;
 	private final T[] _results;
 
 	@SuppressWarnings("unchecked")
-	SampleList(final List<Sample<T>> samples) {
+	SampleList(final List<? extends Sample<? extends T>> samples) {
 		if (samples.isEmpty()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
@@ -67,7 +71,7 @@ final class SampleList<T>
 		}
 
 		for (int i = 0; i < samples.size(); ++i) {
-			final Sample<T> sample = samples.get(0);
+			final var sample = samples.get(i);
 			if (arity != sample.arity()) {
 				throw new IllegalArgumentException(format(
 					"Expected arity %d, but got %d for sample index %d.",
@@ -76,10 +80,10 @@ final class SampleList<T>
 			}
 		}
 
-		_samples = samples;
+		_samples = (List<Sample<T>>)List.copyOf(samples);
 
 		_arguments = samples.stream()
-			.map(s -> args(_type, s))
+			.map(SampleList::args)
 			.toArray(size -> (T[][])Array.newInstance(_type, size, 0));
 
 		_results = _samples.stream()
@@ -87,7 +91,7 @@ final class SampleList<T>
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 	}
 
-	private static <T> T[] args(final Class<T> type, final Sample<T> sample) {
+	private static <T> T[] args(final Sample<? extends T> sample) {
 		@SuppressWarnings("unchecked")
 		final T[] args = (T[])Array
 			.newInstance(sample.argAt(0).getClass(), sample.arity());
@@ -100,17 +104,25 @@ final class SampleList<T>
 
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
-		@SuppressWarnings("unchecked")
-		final T[] calculated = Stream.of(_arguments)
-			.map(args -> Program.eval(program, args))
-			.toArray(size -> (T[])Array.newInstance(_type, size));
-
-		return Result.of(calculated, _results);
+		requireNonNull(program);
+		return eval(args -> Program.eval(program, args));
 	}
 
 	@Override
+	public Result<T> eval(final Function<? super T[], ? extends T> function) {
+		requireNonNull(function);
+		@SuppressWarnings("unchecked")
+		final T[] calculated = Stream.of(_arguments)
+			.map(function)
+			.toArray(size -> (T[])Array.newInstance(_type, size));
+
+		return new Result<>(calculated, _results);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
 	public Sample<T> get(int index) {
-		return _samples.get(index);
+		return (Sample<T>)_samples.get(index);
 	}
 
 	@Override

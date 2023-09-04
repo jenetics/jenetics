@@ -25,13 +25,13 @@ import java.util.List;
 import io.jenetics.Optimize;
 
 /**
- * This interface allows to create vector object from a given array type
+ * This interface allows creating a vector object from a given array type
  * {@code T}. It is useful if you need some additional parametrization of the
  * created vectors.
  * <p>
  * As the following example shows, only one {@code VecFactory} instance should
  * be used for creating the vectors for a given multi-objective <em>problem</em>.
- * <pre>{@code
+ * {@snippet lang="java":
  * private static final VecFactory<double[]> FACTORY = VecFactory.ofDoubleVec(
  *     Optimize.MAXIMUM,
  *     Optimize.MINIMUM,
@@ -45,9 +45,9 @@ import io.jenetics.Optimize;
  *     // ...
  *     return FACTORY.newVec(result);
  * }
- * }</pre>
+ * }
  * In the example above, the first dimension of the created vector is maximized,
- * the following two are minimized and the last vector component is again
+ * the following two are minimized, and the last vector component is again
  * maximized.
  *
  * @see Vec
@@ -71,11 +71,11 @@ public interface VecFactory<T> {
 	Vec<T> newVec(final T array);
 
 	/**
-	 * Create a new factory for {@code int[]} vectors. Additionally you can
+	 * Create a new factory for {@code int[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofIntVec(Optimize...)
 	 *
@@ -94,11 +94,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code int[]} vectors. Additionally you can
+	 * Create a new factory for {@code int[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofIntVec(List)
 	 *
@@ -130,11 +130,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code long[]} vectors. Additionally you can
+	 * Create a new factory for {@code long[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofLongVec(Optimize...)
 	 *
@@ -153,11 +153,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code long[]} vectors. Additionally you can
+	 * Create a new factory for {@code long[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofLongVec(List)
 	 *
@@ -189,11 +189,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code double[]} vectors. Additionally you can
+	 * Create a new factory for {@code double[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofDoubleVec(Optimize...)
 	 *
@@ -212,11 +212,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code double[]} vectors. Additionally you can
+	 * Create a new factory for {@code double[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofDoubleVec(List)
 	 *
@@ -248,11 +248,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code T[]} vectors. Additionally you can
+	 * Create a new factory for {@code T[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofObjectVec(Comparator, ElementDistance, Optimize...)
 	 *
@@ -273,11 +273,11 @@ public interface VecFactory<T> {
 	}
 
 	/**
-	 * Create a new factory for {@code T[]} vectors. Additionally you can
+	 * Create a new factory for {@code T[]} vectors. Additionally, you can
 	 * specify the optimization direction (maximization or minimization) for
 	 * each dimension. The dimensionality of the created vectors must be exactly
 	 * the same as the given length of the given {@code optimizes}. If the
-	 * lengths doesn't match, an {@link IllegalArgumentException} is thrown.
+	 * lengths don't match, an {@link IllegalArgumentException} is thrown.
 	 *
 	 * @see #ofObjectVec(Comparator, ElementDistance, List)
 	 *
@@ -299,10 +299,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -329,10 +329,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -359,10 +359,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -387,10 +387,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0
@@ -410,10 +410,10 @@ public interface VecFactory<T> {
 
 	/**
 	 * Create a new factory for {@code T[]} vectors with comparable element
-	 * types. Additionally you can specify the optimization direction
+	 * types. Additionally, you can specify the optimization direction
 	 * (maximization or minimization) for each dimension. The dimensionality of
 	 * the created vectors must be exactly the same as the given length of the
-	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * given {@code optimizes}. If the lengths don't match, an
 	 * {@link IllegalArgumentException} is thrown.
 	 *
 	 * @since 6.0

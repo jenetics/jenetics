@@ -22,7 +22,7 @@ package io.jenetics.prog;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
+import java.io.Serial;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
@@ -38,18 +38,18 @@ import io.jenetics.prog.op.Program;
 /**
  * This gene represents a program, build upon an AST of {@link Op} functions.
  * Because of the tight coupling with the {@link ProgramChromosome}, a
- * {@code ProgramGene} can't be created directly. This reduces the the possible
+ * {@code ProgramGene} can't be created directly. This reduces the possible
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
- * it can be easily used as result.
+ * it can be easily used as a result.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ProgramGene<Double> program = engine.stream()
  *     .limit(300)
  *     .collect(EvolutionResult.toBestGenotype())
  *     .getGene();
  *
  * final double result = program.eval(3.4);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.2
@@ -60,6 +60,7 @@ public final class ProgramGene<A>
 	implements Gene<Op<A>, ProgramGene<A>>, Function<A[], A>
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ISeq<? extends Op<A>> _operations;
@@ -150,7 +151,7 @@ public final class ProgramGene<A>
 
 	@Override
 	public ProgramGene<A> newInstance() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		Op<A> operation = value();
 		if (isLeaf()) {
@@ -175,7 +176,7 @@ public final class ProgramGene<A>
 	 * @return a new program gene with the given operation
 	 * @throws NullPointerException if the given {@code op} is {@code null}
 	 * @throws IllegalArgumentException if the arity of the given operation is
-	 *         different from the arity of current operation. This restriction
+	 *         different from the arity of the current operation. This restriction
 	 *         ensures that only valid program genes are created by this method.
 	 */
 	@Override

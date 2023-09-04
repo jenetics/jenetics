@@ -61,19 +61,19 @@ public enum Optimize {
 	 * to make it {@code null}-friendly, you can wrap it with the
 	 * {@link Comparator#nullsFirst(Comparator)} method.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MAXIMUM::compare);
 	 * assertEquals(comparator.compare(null, null), 0);
 	 * assertEquals(comparator.compare(null, 4), -1);
 	 * assertEquals(comparator.compare(4, null), 1);
-	 * }</pre>
+	 * }
 	 * or
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MINIMUM::compare);
 	 * assertEquals(comparator.compare(null, null), 0);
 	 * assertEquals(comparator.compare(null, 4), -1);
 	 * assertEquals(comparator.compare(4, null), 1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param <T> the comparable type
 	 * @param a the first object to be compared.
@@ -91,14 +91,14 @@ public enum Optimize {
 	 * sorted in <b>descending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
 	 *
-	 * <pre>{@code
-	 * final Population<DoubleGene, Double> population = ...
+	 * {@snippet lang="java":
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
-	 * }</pre>
+	 * }
 	 *
-	 * The code example above will populationSort the population according it's fitness
-	 * values in ascending order, since lower values are <i>better</i> in this
-	 * case.
+	 * The code example above will populationSort the population according its
+	 * fitness values in ascending order, since lower values are <i>better</i>
+	 * in this case.
 	 *
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
@@ -113,14 +113,14 @@ public enum Optimize {
 	 * sorted in <b>ascending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
 	 *
-	 * <pre>{@code
-	 * final Population<DoubleGene, Double> population = ...
+	 * {@snippet lang="java":
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());
-	 * }</pre>
+	 * }
 	 *
-	 * The code example above will populationSort the population according it's fitness
-	 * values in descending order, since lower values are <i>better</i> in this
-	 * case.
+	 * The code example above will populationSort the population according its
+	 * fitness values in descending order, since lower values are <i>better</i>
+	 * in this case.
 	 *
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
@@ -137,7 +137,7 @@ public enum Optimize {
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
-	 * @return the best value. If both values are equal the first one is returned.
+	 * @return the best value. If both values are equal, the first one is returned.
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C best(final C a, final C b) {
@@ -148,11 +148,11 @@ public enum Optimize {
 	 * Return a {@code null}-friendly function which returns the best element of
 	 * two values. E.g.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>best().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(null, 4), (Integer)4);
 	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(6, null), (Integer)6);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #best(Comparable, Comparable)
 	 *
@@ -163,12 +163,10 @@ public enum Optimize {
 	 * 	       two values
 	 */
 	public <C extends Comparable<? super C>> BinaryOperator<C> best() {
-		return (a, b) -> {
-			switch (cmp(a, b)) {
-				case 2: return best(a, b);
-				case -1: return b;
-				default: return a;
-			}
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> best(a, b);
+			case -1 -> b;
+			default -> a;
 		};
 	}
 
@@ -180,7 +178,7 @@ public enum Optimize {
 	 * @param <C> the fitness value type.
 	 * @param a the first value.
 	 * @param b the second value.
-	 * @return the worst value. If both values are equal the first one is returned.
+	 * @return the worst value. If both values are equal, the first one is returned.
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public <C extends Comparable<? super C>> C worst(final C a, final C b) {
@@ -191,11 +189,11 @@ public enum Optimize {
 	 * Return a {@code null}-friendly function which returns the worst element
 	 * of two values. E.g.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>worst().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(null, 4), (Integer)4);
 	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(6, null), (Integer)6);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #worst(Comparable, Comparable)
 	 *
@@ -206,12 +204,10 @@ public enum Optimize {
 	 * 	       two values
 	 */
 	public <C extends Comparable<? super C>> BinaryOperator<C> worst() {
-		return (a, b) -> {
-			switch (cmp(a, b)) {
-				case 2: return worst(a, b);
-				case -1: return b;
-				default: return a;
-			}
+		return (a, b) -> switch (cmp(a, b)) {
+			case 2 -> worst(a, b);
+			case -1 -> b;
+			default -> a;
 		};
 	}
 

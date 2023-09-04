@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import io.jenetics.util.MSeq;
 
@@ -30,7 +30,7 @@ import io.jenetics.util.MSeq;
  * hope of bringing related genes closer together, thereby facilitating the
  * production of building blocks. This mutation operator can also be used for
  * combinatorial problems, where no duplicated genes within a chromosome are
- * allowed, e.g. for the TSP.
+ * allowed, e.g., for the TSP.
  * <p>
  * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
  *
@@ -76,7 +76,7 @@ public class SwapMutator<
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
-		final Random random
+		final RandomGenerator random
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
@@ -84,12 +84,12 @@ public class SwapMutator<
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();
-			result = MutatorResult.of(
+			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
 				mutations
 			);
 		} else {
-			result = MutatorResult.of(chromosome);
+			result = new MutatorResult<>(chromosome, 0);
 		}
 
 		return result;

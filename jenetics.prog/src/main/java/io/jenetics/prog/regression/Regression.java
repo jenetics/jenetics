@@ -45,7 +45,7 @@ import io.jenetics.prog.regression.Sampling.Result;
  * This class implements a <em>symbolic</em> regression problem. The example
  * below shows a typical usage of the {@code Regression} class.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class SymbolicRegression {
  *     private static final ISeq<Op<Double>> OPERATIONS =
  *         ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
@@ -88,7 +88,7 @@ import io.jenetics.prog.regression.Sampling.Result;
  *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
  * }
- * }</pre>
+ * }
  *
  * @see SampleBuffer
  * @see Sampling
@@ -111,7 +111,7 @@ public final class Regression<T>
 	/**
 	 * Create a new <em>symbolic</em> regression problem with the given data.
 	 *
-	 * @param codec the codec used for the for the problem
+	 * @param codec the codec used for the problem
 	 * @param error the error function
 	 * @param sampling the sample values used for finding a regression.
 	 */

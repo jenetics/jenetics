@@ -29,6 +29,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -47,18 +48,18 @@ import io.jenetics.prog.op.Program;
 /**
  * Holds the nodes of the operation tree.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final int depth = 6;
- * final ISeq<Op<Double>> operations = ISeq.of(...);
- * final ISeq<Op<Double>> terminals = ISeq.of(...);
+ * final ISeq<Op<Double>> operations = ISeq.of(null); // @replace substring='null' replacement="..."
+ * final ISeq<Op<Double>> terminals = ISeq.of(null); // @replace substring='null' replacement="..."
  * final ProgramChromosome<Double> ch = ProgramChromosome.of(
  *     depth,
- *     // If the program has more that 200 nodes, it is marked as "invalid".
+ *     // If the program has more than 200 nodes, it is marked as "invalid".
  *     ch -> ch.length() <= 200,
  *     operations,
  *     terminals
  * );
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -66,10 +67,11 @@ import io.jenetics.prog.op.Program;
  */
 public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>
-	implements Function<A[], A>
+	implements Function<A[], A>, Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<Op<A>> _operations;
@@ -82,7 +84,7 @@ public class ProgramChromosome<A>
 	 * this constructor.
 	 *
 	 * @param program the program. During the program evolution, newly created
-	 *        program trees has the same <em>depth</em> than this tree.
+	 *        program trees have the same <em>depth</em> than this tree.
 	 * @param validator the chromosome validator. A typical validator would
 	 *        check the size of the tree and if the tree is too large, mark it
 	 *        at <em>invalid</em>. The <em>validator</em> may be {@code null}.
@@ -353,9 +355,9 @@ public class ProgramChromosome<A>
 	 * Create a new program chromosome from the given (flattened) program tree.
 	 * This method doesn't make any assumption about the validity of the given
 	 * operation tree. If the tree is not valid, it will repair it. This
-	 * behaviour allows the <em>safe</em> usage of all existing alterer.
+	 * behaviour allows the <em>safe</em> usage of all existing alterers.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ProgramChromosome<Double> ch = ProgramChromosome.of(
 	 *     genes,
 	 *     // If the program has more that 200 nodes, it is marked as "invalid".
@@ -363,7 +365,7 @@ public class ProgramChromosome<A>
 	 *     operations,
 	 *     terminals
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param genes the program genes
 	 * @param validator the chromosome validator to use
@@ -406,10 +408,12 @@ public class ProgramChromosome<A>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.PROGRAM_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.PROGRAM_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -40,7 +41,7 @@ public class GaussianMutatorTest extends MutatorTester {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final double min = 0;
 		final double max = 10;
@@ -65,7 +66,10 @@ public class GaussianMutatorTest extends MutatorTester {
 	@Test
 	public void mutateValidGene() {
 		final var mutator = new GaussianMutator<DoubleGene, Double>() {
-			public DoubleGene mutate(final DoubleGene gene, final Random random) {
+			public DoubleGene mutate(
+				final DoubleGene gene,
+				final RandomGenerator random
+			) {
 				return super.mutate(gene, random);
 			}
 		};
@@ -88,7 +92,10 @@ public class GaussianMutatorTest extends MutatorTester {
 	@Test
 	public void mutateInvalidGene() {
 		final var mutator = new GaussianMutator<DoubleGene, Double>() {
-			public DoubleGene mutate(final DoubleGene gene, final Random random) {
+			public DoubleGene mutate(
+				final DoubleGene gene,
+				final RandomGenerator random
+			) {
 				return super.mutate(gene, random);
 			}
 		};

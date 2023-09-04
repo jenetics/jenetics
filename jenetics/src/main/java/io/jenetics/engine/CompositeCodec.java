@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.util.Factory;
@@ -55,7 +54,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	 *
 	 * @param codecs the {@code Codec} sequence of the sub-problems
 	 * @param decoder the decoder which combines the argument types from the
-	 *        given given codecs, to the argument type of the resulting codec.
+	 *        given codecs, to the argument type of the resulting codec.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	CompositeCodec(
@@ -80,9 +79,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private static <G extends Gene<?, G>> Genotype<G>
 	toGenotype(final Factory<Genotype<G>> factory) {
-		return factory instanceof Genotype
-			? (Genotype<G>)factory
-			: factory.newInstance();
+		return factory instanceof Genotype<G> gt ? gt : factory.newInstance();
 	}
 
 	@Override
@@ -97,12 +94,11 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private Object[] groups(final Genotype<G> genotype) {
 		final Object[] groups = new Object[_codecs.length()];
-		final ISeq<Chromosome<G>> chromosomes = ISeq.of(genotype);
 
 		int start = 0;
 		for (int i = 0; i < _codecs.length(); ++i) {
 			final int end = start + _lengths[i];
-			final Genotype<G> gt = Genotype.of(chromosomes.subSeq(start, end));
+			final Genotype<G> gt = genotype.slice(start, end);
 
 			groups[i] = _codecs.get(i).decode(gt);
 			start = end;

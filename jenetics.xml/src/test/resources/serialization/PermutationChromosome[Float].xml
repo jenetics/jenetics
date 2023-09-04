@@ -6,16 +6,16 @@
         <allele>0.97935534</allele>
         <allele>0.33864903</allele>
         <allele>0.16874921</allele>
-        <allele>0.3241564</allele>
-        <allele>0.62196267</allele>
-        <allele>0.5163642</allele>
-        <allele>0.5157651</allele>
+        <allele>0.32415646</allele>
+        <allele>0.6219627</allele>
+        <allele>0.5163643</allele>
+        <allele>0.51576513</allele>
         <allele>0.34630203</allele>
         <allele>0.5319363</allele>
-        <allele>0.2882253</allele>
-        <allele>0.9270755</allele>
+        <allele>0.28822535</allele>
+        <allele>0.92707556</allele>
         <allele>0.612682</allele>
         <allele>0.32817638</allele>
     </valid-alleles>
-    <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+    <order>6 13 4 12 8 14 7 2 11 5 3 0 9 10 1</order>
 </permutation-chromosome>

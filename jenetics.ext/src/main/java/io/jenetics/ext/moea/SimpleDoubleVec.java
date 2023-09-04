@@ -27,6 +27,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -37,6 +38,8 @@ import java.util.Comparator;
  * @since 5.2
  */
 final class SimpleDoubleVec implements Vec<double[]>, Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final double[] _data;
@@ -87,8 +90,8 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimpleDoubleVec &&
-			Arrays.equals(((SimpleDoubleVec)obj)._data, _data);
+			obj instanceof SimpleDoubleVec other &&
+			Arrays.equals(other._data, _data);
 	}
 
 	@Override
@@ -101,10 +104,12 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.SIMPLE_DOUBLE_VEC, this);
+		return new SerialProxy(SerialProxy.SIMPLE_DOUBLE_VEC, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

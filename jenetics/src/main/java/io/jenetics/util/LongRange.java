@@ -29,6 +29,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.stream.LongStream;
 
@@ -44,6 +45,7 @@ import java.util.stream.LongStream;
  */
 public final /*record*/ class LongRange implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _min;
@@ -85,11 +87,11 @@ public final /*record*/ class LongRange implements Serializable {
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * for (long i = range.min(); i < range.max(); ++i) {
-	 *     ...
+	 *     // ...
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *
@@ -114,13 +116,13 @@ public final /*record*/ class LongRange implements Serializable {
 	}
 
 	/**
-	 * Return a new (half open) range, which contains only the given value:
+	 * Return a new (half-open) range, which contains only the given value:
 	 * {@code [value, value + 1)}.
 	 *
 	 * @since 4.0
 	 *
-	 * @param value the value of the created (half open) integer range
-	 * @return a new (half open) range, which contains only the given value
+	 * @param value the value of the created (half-open) integer range
+	 * @return a new (half-open) range, which contains only the given value
 	 */
 	public static LongRange of(final long value) {
 		return of(value, value + 1);
@@ -134,9 +136,9 @@ public final /*record*/ class LongRange implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LongRange &&
-			_min == ((LongRange)obj)._min &&
-			_max == ((LongRange)obj)._max;
+			obj instanceof LongRange other &&
+			_min == other._min &&
+			_max == other._max;
 	}
 
 	@Override
@@ -149,10 +151,12 @@ public final /*record*/ class LongRange implements Serializable {
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_RANGE, this);
+		return new SerialProxy(SerialProxy.LONG_RANGE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

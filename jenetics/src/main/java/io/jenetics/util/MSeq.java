@@ -29,9 +29,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -58,6 +58,7 @@ import io.jenetics.internal.collection.ObjectStore;
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
+	@Override
 	default List<T> asList() {
 		return new MSeqList<>(this);
 	}
@@ -196,7 +197,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Randomize the {@code array} using the {@link Random} object currently
+	 * Randomize the {@code array} using the {@link RandomGenerator} object currently
 	 * registered in the {@link RandomRegistry} class. The used shuffling
 	 * algorithm is from D. Knuth TAOCP, Seminumerical Algorithms, Third edition,
 	 * page 142, Algorithm S (Selection sampling technique).
@@ -208,15 +209,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * Randomize the {@code array} using the given {@link RandomGenerator} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
-	 * @param random the {@link Random} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomize.
 	 * @return this shuffled sequence
 	 * @throws NullPointerException if the random object is {@code null}.
 	 */
-	default MSeq<T> shuffle(final Random random) {
+	default MSeq<T> shuffle(final RandomGenerator random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}
@@ -352,10 +353,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Returns a list iterator over the elements in this sequence (in proper
+	 * Returns a list iterator over the elements in this sequence (in a proper
 	 * sequence).
 	 *
-	 * @return a list iterator over the elements in this list (in proper
+	 * @return a list iterator over the elements in this list (in a proper
 	 *         sequence)
 	 */
 	default ListIterator<T> listIterator() {
@@ -538,22 +539,22 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} object is
 	 *        {@code null}.
 	 */
-	@SuppressWarnings("unchecked")
 	static <T> MSeq<T> of(final Iterable<? extends T> values) {
+		requireNonNull(values);
+
+		@SuppressWarnings("unchecked")
+		final Iterable<T> vals = (Iterable<T>)values;
+
 		final MSeq<T> mseq;
-		if (values instanceof ISeq) {
-			final ISeq<T> seq = (ISeq<T>)values;
+		if (vals instanceof ISeq<T> seq) {
 			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (values instanceof MSeq) {
-			final MSeq<T> seq = (MSeq<T>)values;
+		} else if (vals instanceof MSeq<T> seq) {
 			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (values instanceof Collection) {
-			final Collection<T> collection = (Collection<T>)values;
+		} else if (vals instanceof Collection<T> collection) {
 			mseq = collection.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(collection.size()).setAll(values);
-		} else if (values instanceof BaseSeq) {
-			final BaseSeq<T> seq = (BaseSeq<T>)values;
+		} else if (vals instanceof BaseSeq<T> seq) {
 			mseq = seq.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(seq.length()).setAll(values);
@@ -602,7 +603,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @param <T> the element type
 	 * @param values the array values.
-	 * @return an new {@code MSeq} with the given values
+	 * @return a new {@code MSeq} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")

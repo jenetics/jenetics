@@ -24,9 +24,10 @@ import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.concurrent.ForkJoinPool.commonPool;
 
-import java.time.Clock;
+import java.time.InstantSource;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -39,6 +40,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -50,7 +52,7 @@ import io.jenetics.util.Seq;
  * Genetic algorithm <em>engine</em> which is the main class. The following
  * example shows the main steps in initializing and executing the GA.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
@@ -81,7 +83,7 @@ import io.jenetics.util.Seq;
  *            .collect(toBestPhenotype());
  *     }
  * }
- * }</pre>
+ * }
  *
  * The architecture allows to decouple the configuration of the engine from the
  * execution. The {@code Engine} is configured via the {@code Engine.Builder}
@@ -89,11 +91,27 @@ import io.jenetics.util.Seq;
  * performed by the {@link EvolutionStream}, which is created by the
  * {@code Engine}.
  *
+ * <H2>Concurrency</H2>
+ * By default, the engine uses the {@link ForkJoinPool#commonPool()} for
+ * executing the evolution steps and evaluating the fitness function concurrently.
+ * You can change the used execution services with the {@link Builder#executor(Executor)}
+ * method. If you want to use a different executor for evaluating the fitness
+ * functions, you have to set the {@link Builder#fitnessExecutor(BatchExecutor)}.
+ *
+ * {@snippet lang="java":
+ * final Engine<DoubleGene, Double> engine = Engine
+ *     .builder(null) // @replace substring='null' replacement="..."
+ *     // Using this execution service for parallelize the evolution steps.
+ *     .executor(Executors.newFixedThreadPool(5))
+ *     // Using one virtual thread for every fitness function evaluation.
+ *     .batchExecutor(BatchExecutor.ofVirtualThreads())
+ *     .build();
+ * }
+ *
  * @implNote
- *     This class is thread safe:
- *     No mutable state is maintained by the engine. Therefore it is save to
- *     create multiple evolution streams with one engine, which may be actually
- *     used in different threads.
+ *     This class is thread safe: The engine maintains no mutable state.
+ *     Therefore, it is safe to create multiple evolution streams with one
+ *     engine, which may be actually used in different threads.
  *
  * @see Engine.Builder
  * @see EvolutionStart
@@ -108,7 +126,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -131,7 +149,7 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final Executor _executor;
-	private final Clock _clock;
+	private final InstantSource _clock;
 	private final EvolutionInterceptor<G, C> _interceptor;
 
 
@@ -146,7 +164,7 @@ public final class Engine<
 	 * @param optimize the kind of optimization (minimize or maximize)
 	 * @param evolutionParams the evolution parameters, which influences the
 	 *        evolution process
-	 * @param executor the executor used for executing the single evolve steps
+	 * @param executor the executor used for executing the single evolved steps
 	 * @param clock the clock used for calculating the timing results
 	 * @param interceptor the evolution interceptor, which gives additional
 	 *        possibilities to influence the actual evolution
@@ -161,7 +179,7 @@ public final class Engine<
 		final Optimize optimize,
 		final EvolutionParams<G, C> evolutionParams,
 		final Executor executor,
-		final Clock clock,
+		final InstantSource clock,
 		final EvolutionInterceptor<G, C> interceptor
 	) {
 		_evaluator = requireNonNull(evaluator);
@@ -240,23 +258,23 @@ public final class Engine<
 		final CompletableFuture<ISeq<Phenotype<G, C>>> nextPopulation =
 			filteredSurvivors.thenCombineAsync(
 				filteredOffspring,
-				(s, o) -> ISeq.of(s.population.append(o.population)),
+				(s, o) -> ISeq.of(s.population().append(o.population())),
 				_executor
 			);
 
-		// Evaluate the fitness-function and wait for result.
+		// Evaluate the fitness-function and wait for a result.
 		final ISeq<Phenotype<G, C>> pop = nextPopulation.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
 			eval(pop)
 		);
 
 		final int killCount =
-			filteredOffspring.join().killCount +
-			filteredSurvivors.join().killCount;
+			filteredOffspring.join().killCount() +
+			filteredSurvivors.join().killCount();
 
 		final int invalidCount =
-			filteredOffspring.join().invalidCount +
-			filteredSurvivors.join().invalidCount;
+			filteredOffspring.join().invalidCount() +
+			filteredSurvivors.join().invalidCount();
 
 		final int alterationCount = alteredOffspring.join().alterations();
 
@@ -285,7 +303,7 @@ public final class Engine<
 			.clean();
 	}
 
-	// Selects the survivors population. A new population object is returned.
+	// Selects the survivor population. A new population object is returned.
 	private ISeq<Phenotype<G, C>>
 	selectSurvivors(final ISeq<Phenotype<G, C>> population) {
 		return _evolutionParams.survivorsSize() > 0
@@ -521,12 +539,12 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the {@link Clock} the engine is using for measuring the execution
-	 * time.
+	 * Return the {@link InstantSource} the engine is using for measuring the
+	 * execution time.
 	 *
 	 * @return the clock used for measuring the execution time
 	 */
-	public Clock clock() {
+	public InstantSource clock() {
 		return _clock;
 	}
 
@@ -590,7 +608,10 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> gtf
 	) {
-		return new Builder<>(Evaluators.concurrent(ff, commonPool()), gtf);
+		return new Builder<>(
+			new FitnessEvaluator<>(ff, BatchExecutor.of(commonPool())),
+			gtf
+		);
 	}
 
 	/**
@@ -696,14 +717,15 @@ public final class Engine<
 
 		// Engine execution environment.
 		private Executor _executor = commonPool();
-		private Clock _clock = NanoClock.systemUTC();
+		private BatchExecutor _fitnessExecutor = null;
+		private InstantSource _clock = NanoClock.systemUTC();
 
 		private EvolutionInterceptor<G, C> _interceptor =
 			EvolutionInterceptor.identity();
 
 		/**
 		 * Create a new evolution {@code Engine.Builder} with the given fitness
-		 * evaluator and genotype factory. This is the most general way for
+		 * evaluator and genotype factory. This is the most general way of
 		 * creating an engine builder.
 		 *
 		 * @since 5.0
@@ -714,14 +736,14 @@ public final class Engine<
 		 * @see Engine#builder(Function, Chromosome, Chromosome[])
 		 *
 		 * @param evaluator the fitness evaluator
-		 * @param genotypeFactory the genotype factory
+		 * @param gtf the genotype factory
 		 * @throws NullPointerException if one of the arguments is {@code null}.
 		 */
 		public Builder(
 			final Evaluator<G, C> evaluator,
-			final Factory<Genotype<G>> genotypeFactory
+			final Factory<Genotype<G>> gtf
 		) {
-			_genotypeFactory = requireNonNull(genotypeFactory);
+			_genotypeFactory = requireNonNull(gtf);
 			_evaluator = requireNonNull(evaluator);
 		}
 
@@ -768,10 +790,10 @@ public final class Engine<
 		}
 
 		/**
-		 * The selector used for selecting the survivors population. <i>Default
+		 * The selector used for selecting the survivor population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
-		 * @param selector used for selecting survivors population
+		 * @param selector used for selecting survivor population
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if one of the {@code selector} is
 		 *         {@code null}.
@@ -853,7 +875,7 @@ public final class Engine<
 		}
 
 		/**
-		 * Set to a fitness maximizing strategy.
+		 * Set to a fitness-maximizing strategy.
 		 *
 		 * @since 3.4
 		 *
@@ -893,7 +915,7 @@ public final class Engine<
 		}
 
 		/**
-		 * The survivors fraction. <i>Default values is set to {@code 0.4}.</i>
+		 * The survivor fraction. <i>Default values is set to {@code 0.4}.</i>
 		 * This method call is equivalent to
 		 * {@code offspringFraction(1 - survivorsFraction)} and will override
 		 * any previously set offspring-fraction.
@@ -902,7 +924,7 @@ public final class Engine<
 		 *
 		 * @see #offspringFraction(double)
 		 *
-		 * @param fraction the survivors fraction
+		 * @param fraction the survivor fraction
 		 * @return {@code this} builder, for command chaining
 		 * @throws java.lang.IllegalArgumentException if the fraction is not
 		 *         within the range [0, 1].
@@ -982,6 +1004,10 @@ public final class Engine<
 		/**
 		 * The executor used by the engine.
 		 *
+		 * @apiNote
+		 * If no dedicated {@link Evaluator} is defined, this is also the
+		 * executor, used for evaluating the fitness functions.
+		 *
 		 * @param executor the executor used by the engine
 		 * @return {@code this} builder, for command chaining
 		 */
@@ -991,12 +1017,29 @@ public final class Engine<
 		}
 
 		/**
+		 * This executor is used for evaluating the fitness functions.
+		 *
+		 * @apiNote
+		 * If a dedicated {@link Evaluator} is defined, this executor is not
+		 * used.
+		 *
+		 * @since 8.0
+		 *
+		 * @param executor the executor used for evaluating the fitness functions
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> fitnessExecutor(final BatchExecutor executor) {
+			_fitnessExecutor = requireNonNull(executor);
+			return this;
+		}
+
+		/**
 		 * The clock used for calculating the execution durations.
 		 *
 		 * @param clock the clock used for calculating the execution durations
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> clock(final Clock clock) {
+		public Builder<G, C> clock(final InstantSource clock) {
 			_clock = requireNonNull(clock);
 			return this;
 		}
@@ -1020,9 +1063,9 @@ public final class Engine<
 		}
 
 		/**
-		 * Builds an new {@code Engine} instance from the set properties.
+		 * Builds a new {@code Engine} instance from the set properties.
 		 *
-		 * @return an new {@code Engine} instance from the set properties
+		 * @return a new {@code Engine} instance from the set properties
 		 */
 		public Engine<G, C> build() {
 			return new Engine<>(
@@ -1038,8 +1081,8 @@ public final class Engine<
 		}
 
 		private Evaluator<G, C> __evaluator() {
-			return _evaluator instanceof ConcurrentEvaluator
-				? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
+			return _evaluator instanceof FitnessEvaluator<G, C> fe
+				? new FitnessEvaluator<>(fe.function(), fitnessExecutor())
 				: _evaluator;
 		}
 
@@ -1063,14 +1106,14 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the {@link Clock} the engine is using for measuring the execution
-		 * time.
+		 * Return the {@link InstantSource} the engine is using for measuring
+		 * the execution time.
 		 *
 		 * @since 3.1
 		 *
 		 * @return the clock used for measuring the execution time
 		 */
-		public Clock clock() {
+		public InstantSource clock() {
 			return _clock;
 		}
 
@@ -1084,6 +1127,19 @@ public final class Engine<
 		 */
 		public Executor executor() {
 			return _executor;
+		}
+
+		/**
+		 * Return the batch executor, used for evaluating the fitness functions.
+		 *
+		 * @since 8.0
+		 *
+		 * @return the batch executor, used for evaluating the fitness functions
+		 */
+		public BatchExecutor fitnessExecutor() {
+			return _fitnessExecutor != null
+				? _fitnessExecutor
+				: BatchExecutor.of(executor());
 		}
 
 		/**
@@ -1228,11 +1284,11 @@ public final class Engine<
 	 * engine configurations. The following code snippet shows a possible usage
 	 * example.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
 	 *     .setup(new WeaselProgram<>())
 	 *     .build();
-	 * }</pre>
+	 * }
 	 *
 	 * @see Builder#setup(Setup)
 	 *
@@ -1252,7 +1308,7 @@ public final class Engine<
 		/**
 		 * Applies {@code this} setup to the given engine {@code builder}.
 		 *
-		 * @param builder the engine builder to setup (configure)
+		 * @param builder the engine builder to set up (configure)
 		 */
 		void apply(final Builder<G, C> builder);
 

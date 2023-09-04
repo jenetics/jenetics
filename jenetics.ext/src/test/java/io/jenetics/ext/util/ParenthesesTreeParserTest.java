@@ -19,11 +19,13 @@
  */
 package io.jenetics.ext.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.util.ParenthesesTreeParser.parse;
 
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -40,12 +42,9 @@ public class ParenthesesTreeParserTest {
 	@Test(dataProvider = "tokens")
 	public void tokenize(final String tree, final String[] tokens) {
 		final List<Token> tokenize = ParenthesesTreeParser.tokenize(tree);
-		Assert.assertEquals(
-			tokenize.stream()
-				.map(t -> t.seq)
-				.toArray(String[]::new),
-			tokens
-		);
+
+		assertThat(tokenize.stream().map(Token::seq).toList())
+			.isEqualTo(List.of(tokens));
 	}
 
 	@DataProvider(name = "tokens")
@@ -56,8 +55,8 @@ public class ParenthesesTreeParserTest {
 			{"a\\\\", new String[]{"a\\\\"}},
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
-			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
-			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}}
+			{"a(b\\))", new String[]{"a", "(", "b\\)", ")"}},
+			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "\\(b\\)", ",", "c\\,", ")"}}
 		};
 	}
 
@@ -131,7 +130,7 @@ public class ParenthesesTreeParserTest {
 			.toArray(Object[][]::new);
 	}
 
-	public static TreeNode<String> of(final int depth, final Random random) {
+	public static TreeNode<String> of(final int depth, final RandomGenerator random) {
 		final TreeNode<String> root = TreeNode.of("R");
 		fill(depth, root, random);
 		return root;
@@ -140,7 +139,7 @@ public class ParenthesesTreeParserTest {
 	private static void fill(
 		final int level,
 		final TreeNode<String> tree,
-		final Random random
+		final RandomGenerator random
 	) {
 		tree.value(Integer.toString(random.nextInt(10)*(level+1)));
 		if (level > 1) {
@@ -154,8 +153,7 @@ public class ParenthesesTreeParserTest {
 
 	@Test(dataProvider = "invalidTrees", expectedExceptions = IllegalArgumentException.class)
 	public void parseInvalid(final String invalid) {
-		final Object obj = parse(invalid, Function.identity());
-		System.out.println(obj);
+		parse(invalid, Function.identity());
 	}
 
 	@DataProvider(name = "invalidTrees")
@@ -177,6 +175,14 @@ public class ParenthesesTreeParserTest {
 			{"a(b,c)d(e,f)"},
 			{"a(b,c),d(e,f)"}
 		};
+	}
+
+	@Test
+	public void parsingError_831() {
+		final var tree = TreeNode.of("fun")
+			.attach("(", "x", ",", "y", ")");
+
+		assertThat(TreeNode.parse(tree.toParenthesesString())).isEqualTo(tree);
 	}
 
 }

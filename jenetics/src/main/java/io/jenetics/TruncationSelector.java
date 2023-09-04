@@ -28,9 +28,9 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 /**
- * In truncation selection individuals are sorted according to their fitness.
+ * In truncation selection, individuals are sorted according to their fitness.
  * Only the n  best individuals are selected. The truncation selection is a very
- * basic selection algorithm. It has it's strength in fast selecting individuals
+ * basic selection algorithm. It has its strength in fast selecting individuals
  * in large populations, but is not very often used in practice.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Truncation_selection">
@@ -81,7 +81,7 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating
-	 * the selection probabilities. If the selection size is greater the the
+	 * the selection probabilities. If the selection size is greater the
 	 * population size, the whole population is duplicated until the desired
 	 * sample size is reached.
 	 *

@@ -28,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -44,22 +45,22 @@ import io.jenetics.util.Verifiable;
  * <p>
  * <img alt="Genotype" src="doc-files/Genotype.svg" width="400" height="252" >
  * </p>
- * The chromosomes of a genotype doesn't have to have necessarily the same size.
+ * The chromosomes of a genotype don't have to have necessarily the same size.
  * It is only required that all genes are from the same type and the genes within
- * a chromosome have the same constraints; e. g. the same min- and max values
- * for number genes.
+ * a chromosome have the same constraints; e.g., the same min- and max values
+ * for the genes value.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Genotype<DoubleGene> genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
  *     DoubleChromosome.of(1.0, 2.0, 10),
  *     DoubleChromosome.of(0.0, 10.0, 9),
  *     DoubleChromosome.of(0.1, 0.9, 5)
  * );
- * }</pre>
+ * }
  * The code snippet above creates a genotype with the same structure as shown in
  * the figure above. In this example the {@link DoubleGene} has been chosen as
- * gene type.
+ * a gene type.
  *
  * @see Chromosome
  * @see Phenotype
@@ -69,7 +70,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.0
+ * @version 7.2
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -78,6 +79,7 @@ public final class Genotype<G extends Gene<?, G>>
 		Verifiable,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
@@ -91,7 +93,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         element.
+	 *         elements.
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
@@ -103,7 +105,7 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * Return the chromosome at the given index. It is guaranteed that the
 	 * returned chromosome is not null.
 	 *
 	 * @since 4.0
@@ -130,10 +132,10 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return the first chromosome. This is an alias for
-	 * <pre>{@code
-	 * final Genotype<DoubleGene>; gt = ...
+	 * {@snippet lang="java":
+	 * final Genotype<DoubleGene> gt = null; // @replace substring='null' replacement="..."
 	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.2
 	 *
@@ -146,10 +148,10 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is an alias for
-	 * <pre>{@code
-	 * final Genotype<DoubleGene> gt = ...
+	 * {@snippet lang="java":
+	 * final Genotype<DoubleGene> gt = null; // @replace substring='null' replacement="..."
 	 * final DoubleGene gene = gt.get(0).get(0);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.2
 	 *
@@ -192,6 +194,24 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
+	 * Create a new Genotype which consists of the chromosomes from the given
+	 * {@code fromIndex} (inclusively) to the given {@code toIndex} (exclusively).
+	 * This method creates a <em>view</em> of the underlying chromosomes.
+	 *
+	 * @since 7.2
+	 *
+	 * @param fromIndex the start chromosome index, inclusively
+	 * @param toIndex the end chromosome index, exclusively
+	 * @return a new genotype consisting of the chromosomes within the given
+	 *         indexes
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code fromIndex < 0 || toIndex > length() || fromIndex > toIndex}).
+	 */
+	public Genotype<G> slice(int fromIndex, int toIndex) {
+		return new Genotype<>(_chromosomes.subSeq(fromIndex, toIndex));
+	}
+
+	/**
 	 * Return a new, random genotype by creating new, random chromosomes (calling
 	 * the {@link Chromosome#newInstance()} method) from the chromosomes of this
 	 * genotype.
@@ -208,9 +228,8 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Genotype &&
-			Objects.equals(_chromosomes, ((Genotype)obj)._chromosomes);
+		return obj instanceof Genotype<?> other &&
+			Objects.equals(_chromosomes, other._chromosomes);
 	}
 
 	@Override
@@ -225,10 +244,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 *
 	 * @param <G> the gene type
 	 * @param first the first {@code Chromosome} of the {@code Genotype}
-	 * @param rest the rest of the genotypes chromosomes.
+	 * @param rest the rest of the genotype chromosomes.
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
-	 *         one of its element.
+	 *         one of its elements.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> of(
@@ -249,10 +268,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 * for easily creating a <i>gene matrix</i>. The following example will
 	 * create a 10x5 {@code DoubleGene} <i>matrix</i>.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Genotype<DoubleGene> gt = Genotype
 	 *     .of(DoubleChromosome.of(0.0, 1.0, 10), 5);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.0
 	 *
@@ -280,7 +299,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *        of
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
-	 *         one of its element.
+	 *         one of its elements.
 	 * @throws IllegalArgumentException if {@code chromosome.length() < 1}.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G>
@@ -293,10 +312,12 @@ public final class Genotype<G extends Gene<?, G>>
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.GENOTYPE, this);
+		return new SerialProxy(SerialProxy.GENOTYPE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

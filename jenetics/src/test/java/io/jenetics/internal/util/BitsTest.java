@@ -19,10 +19,16 @@
  */
 package io.jenetics.internal.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -35,6 +41,30 @@ import io.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class BitsTest {
+
+	record Data(int nbits, byte[] bits, BitSet bitSet) {
+
+		void assertEquals() {
+			for (int i = 0; i < nbits; ++i) {
+				assertThat(Bits.get(bits, i)).isEqualTo(bitSet.get(i));
+			}
+		}
+
+		static Data random(int nbits) {
+			final var random = RandomGenerator.getDefault();
+			final var bits = new byte[Bits.toByteLength(nbits)];
+			final var bitSet = new BitSet();
+
+			for (int i = 0; i < nbits; ++i) {
+				if (random.nextBoolean()) {
+					Bits.set(bits, i);
+					bitSet.set(i);
+				}
+			}
+
+			return new Data(nbits, bits, bitSet);
+		}
+	}
 
 	@Test(dataProvider = "byteStrData")
 	public void byteStr(final byte[] data, final String result) {
@@ -110,7 +140,7 @@ public class BitsTest {
 
 	@Test
 	public void toStringFromString() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final byte[] bytes = new byte[625];
 			random.nextBytes(bytes);
@@ -124,7 +154,7 @@ public class BitsTest {
 
 	@Test
 	public void longToStringFromString() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final long value = random.nextLong();
 			final byte[] bytes = Bits.toBytes(value);
@@ -155,6 +185,43 @@ public class BitsTest {
 			}
 		}
 		return count;
+	}
+
+	@Test(dataProvider = "bitsCountRanges")
+	public void countBitsOfRange(final int length, final int start, final int end) {
+		final byte[] data = new byte[length];
+		new Random().nextBytes(data);
+
+		int expected = 0;
+		for (int i = start; i < end; ++i) {
+			if (Bits.get(data, i)) {
+				++expected;
+			}
+		}
+
+		Assert.assertEquals(Bits.count(data, start, end), expected);
+	}
+
+	@DataProvider
+	public Object[][] bitsCountRanges() {
+		final var random = new Random(1234);
+
+		final List<Object[]> values = new ArrayList<>();
+		values.add(new Object[]{1, 0, 5});
+		values.add(new Object[]{1, 0, 7});
+		values.add(new Object[]{1, 0, 8});
+		values.add(new Object[]{1, 1, 8});
+		values.add(new Object[]{2, 8, 10});
+
+		for (int i = 0; i < 100; ++i) {
+			final int length = random.nextInt(1, 100);
+			final int start = random.nextInt(length*Byte.SIZE);
+			final int end = random.nextInt(start, length*Byte.SIZE) + 1;
+
+			values.add(new Object[]{length, start, end});
+		}
+
+		return values.toArray(new Object[0][]);
 	}
 
 	@Test
@@ -241,7 +308,7 @@ public class BitsTest {
 
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
-			Assert.assertEquals(Bits.get(data, i), false);
+            Assert.assertFalse(Bits.get(data, i));
 		}
 		for (int i = shift, n = data.length*8; i < n; ++i) {
 			Assert.assertEquals(Bits.get(data, i), random.nextBoolean(), "Index: " + i);
@@ -261,7 +328,7 @@ public class BitsTest {
 		Bits.shiftLeft(data, 100);
 
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(Bits.get(data, i), false);
+            Assert.assertFalse(Bits.get(data, i));
 		}
 	}
 
@@ -280,7 +347,7 @@ public class BitsTest {
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
 			random.nextBoolean();
-			Assert.assertEquals(Bits.get(data, data.length*8 - 1 - i), false);
+            Assert.assertFalse(Bits.get(data, data.length * 8 - 1 - i));
 		}
 		for (int i = 0, n = data.length*8 - shift; i < n; ++i) {
 			Assert.assertEquals(Bits.get(data, i), random.nextBoolean(), "Index: " + i);
@@ -300,7 +367,7 @@ public class BitsTest {
 		Bits.shiftRight(data, 100);
 
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(Bits.get(data, i), false, "Index: " + i);
+            Assert.assertFalse(Bits.get(data, i), "Index: " + i);
 		}
 	}
 
@@ -345,12 +412,24 @@ public class BitsTest {
 
 	@Test
 	public void setGetBit1() {
-		final byte[] data = new byte[625];
+		final byte[] data = new byte[3];
 		Arrays.fill(data, (byte)0);
 
 		for (int i = 0; i < data.length*8; ++i) {
 			Bits.set(data, i);
 			Assert.assertTrue(Bits.get(data, i));
+		}
+	}
+
+	@Test
+	public void setGetBid2() {
+		final int length = 80;
+		final byte[] data = Bits.newArray(length);
+
+		for (int i = 0; i < length; ++i) {
+			assertThat(Bits.get(data, i)).isFalse();
+			Bits.set(data, i);
+			assertThat(Bits.get(data, i)).isTrue();
 		}
 	}
 
@@ -512,6 +591,37 @@ public class BitsTest {
 				throw new UnsupportedOperationException();
 			}
 		};
+	}
+
+	@Test
+	public void testSize() {
+		for (int i = 1; i < 1000; ++i) {
+			assertThat(Bits.toByteLength(i)).isEqualTo(size(i));
+		}
+	}
+
+	static int size(final int elements) {
+		return (int)Math.ceil((double)elements/Byte.SIZE);
+	}
+
+	@Test
+	public void testIndex() {
+		for (int i = 1; i < 1000; ++i) {
+			assertThat(i >>> 3).isEqualTo(index(i));
+		}
+	}
+
+	static int index(final int element) {
+		return (int)Math.floor((double)element/Byte.SIZE);
+	}
+
+	@Test(invocationCount = 20)
+	public void bitSetCompatibility() {
+		final var random = RandomRegistry.random();
+		final var size = random.nextInt(1, 10_000);
+
+		final var data = Data.random(size);
+		data.assertEquals();
 	}
 
 }

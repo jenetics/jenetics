@@ -20,8 +20,8 @@
 package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
@@ -31,170 +31,42 @@ import java.util.stream.Collector;
  *
  * @see io.jenetics.stat.IntMomentStatistics
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Integer#MAX_VALUE} if no
+ * 	      values have been recorded
+ * @param max the maximum value recorded, or {@link Integer#MIN_VALUE} if no
+ * 	      values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
+ * @param variance the variance of values recorded, or {@link Double#NaN} if no
+ * 	      values have been recorded
+ * @param skewness the <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+ *        of values recorded, or {@link Double#NaN} if less than two values have
+ *        been recorded
+ * @param kurtosis the <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+ *        of values recorded, or {@link Double#NaN} if less than four values
+ *        have been recorded
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version 7.0
  */
-public final /*record*/ class IntMoments implements Serializable {
+public record IntMoments(
+	long count,
+	int min,
+	int max,
+	long sum,
+	double mean,
+	double variance,
+	double skewness,
+	double kurtosis
+)
+	implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
-
-	private final long _count;
-	private final int _min;
-	private final int _max;
-	private final long _sum;
-	private final double _mean;
-	private final double _variance;
-	private final double _skewness;
-	private final double _kurtosis;
-
-
-	/**
-	 * Create an immutable object which contains statistical values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 * @param variance the variance of values
-	 * @param skewness the skewness of values
-	 * @param kurtosis the kurtosis of values
-	 */
-	private IntMoments(
-		final long count,
-		final int min,
-		final int max,
-		final long sum,
-		final double mean,
-		final double variance,
-		final double skewness,
-		final double kurtosis
-	) {
-		_count = count;
-		_min = min;
-		_max = max;
-		_sum = sum;
-		_mean = mean;
-		_variance = variance;
-		_skewness = skewness;
-		_kurtosis = kurtosis;
-	}
-
-	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 */
-	public long count() {
-		return _count;
-	}
-
-	/**
-	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
-	 */
-	public int min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
-	 */
-	public int max() {
-		return _max;
-	}
-
-	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 */
-	public long sum() {
-		return _sum;
-	}
-
-	/**
-	 * Return the arithmetic mean of values recorded, or zero if no values have
-	 * been recorded.
-	 *
-	 * @return the arithmetic mean of values, or zero if none
-	 */
-	public double mean() {
-		return _mean;
-	}
-
-	/**
-	 * Return the variance of values recorded, or {@code Double.NaN} if no
-	 * values have been recorded.
-	 *
-	 * @return the variance of values, or {@code NaN} if none
-	 */
-	public double variance() {
-		return _variance;
-	}
-
-	/**
-	 * Return the skewness of values recorded, or {@code Double.NaN} if less
-	 * than two values have been recorded.
-	 *
-	 * @see <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
-	 *
-	 * @return the skewness of values, or {@code NaN} if less than two values
-	 *         have been recorded
-	 */
-	public double skewness() {
-		return _skewness;
-	}
-
-	/**
-	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
-	 * than four values have been recorded.
-	 *
-	 * @see <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
-	 *
-	 * @return the kurtosis of values, or {@code NaN} if less than four values
-	 *         have been recorded
-	 */
-	public double kurtosis() {
-		return _kurtosis;
-	}
-
-	@Override
-	public int hashCode() {
-		return
-			hash(_count,
-			hash(_sum,
-			hash(_min,
-			hash(_max,
-			hash(_mean,
-			hash(_variance,
-			hash(_skewness,
-			hash(_kurtosis))))))));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntMoments &&
-			_count == ((IntMoments)obj)._count &&
-			_sum == ((IntMoments)obj)._sum &&
-			_min == ((IntMoments)obj)._min &&
-			_max == ((IntMoments)obj)._max &&
-			Double.compare(_mean, ((IntMoments)obj)._mean) == 0 &&
-			Double.compare(_variance, ((IntMoments)obj)._variance) == 0 &&
-			Double.compare(_skewness, ((IntMoments)obj)._skewness) == 0 &&
-			Double.compare(_kurtosis, ((IntMoments)obj)._kurtosis) == 0;
-	}
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	@Override
 	public String toString() {
@@ -202,41 +74,6 @@ public final /*record*/ class IntMoments implements Serializable {
 			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			count(), min(), max(), sum(),
 			mean(), variance(), skewness(), kurtosis()
-		);
-	}
-
-	/**
-	 * Create an immutable object which contains statistical values.
-	 *
-	 * @param count the count of values recorded
-	 * @param min the minimum value
-	 * @param max the maximum value
-	 * @param sum the sum of the recorded values
-	 * @param mean the arithmetic mean of values
-	 * @param variance the variance of values
-	 * @param skewness the skewness of values
-	 * @param kurtosis the kurtosis of values
-	 * @return an immutable object which contains statistical values
-	 */
-	public static IntMoments of(
-		final long count,
-		final int min,
-		final int max,
-		final long sum,
-		final double mean,
-		final double variance,
-		final double skewness,
-		final double kurtosis
-	) {
-		return new IntMoments(
-			count,
-			min,
-			max,
-			sum,
-			mean,
-			variance,
-			skewness,
-			kurtosis
 		);
 	}
 
@@ -264,10 +101,10 @@ public final /*record*/ class IntMoments implements Serializable {
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<Integer> stream = ...
-	 * final IntMoments moments = stream.collect(toIntMoments()));
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final Stream<Integer> stream = null; // @replace substring='null' replacement="..."
+	 * final IntMoments moments = stream.collect(toIntMoments());
+	 * }
 	 *
 	 * @since 4.1
 	 *
@@ -284,11 +121,11 @@ public final /*record*/ class IntMoments implements Serializable {
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMoments moments = stream
 	 *     .collect(toIntMoments(v -> v.intValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

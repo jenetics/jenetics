@@ -29,7 +29,8 @@
 plugins {
 	`java-library`
 	idea
-	id("me.champeau.gradle.jmh")
+	//antlr
+	id("me.champeau.jmh")
 }
 
 description = "Jenetics Genetic Incubator"
@@ -40,15 +41,21 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
+	//antlr("org.antlr:antlr4:4.9.3")
 
-	testImplementation(Libs.TestNG)
-	testImplementation(Libs.EqualsVerifier)
+	testImplementation(libs.assertj)
+	testImplementation(libs.equalsverifier)
+	testImplementation(libs.guava)
+	testImplementation(libs.testng)
+	testImplementation(libs.jpx)
+	//testImplementation("omds-domain:omds-domain")
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	include = listOf(".*MathExprPerf.*")
+	includes.add(".*MathExprPerf.*")
 }
 
 tasks.javadoc {

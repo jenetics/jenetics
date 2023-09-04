@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
@@ -30,10 +29,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Random;
 
-import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -41,7 +39,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 
 /**
- * NumericGene implementation which holds a 64 bit integer number.
+ * NumericGene implementation which holds a 64-bit integer number.
  *
  * <p>This is a <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/doc-files/ValueBased.html">
  * value-based</a> class; use of identity-sensitive operations (including
@@ -66,6 +64,7 @@ public final class LongGene
 		Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	private final long _allele;
@@ -74,13 +73,13 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * given range. If the {@code value} isn't within the interval [min, max),
 	 * no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
 	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 */
 	private LongGene(final long allele, final long min, final long max) {
 		_allele = allele;
@@ -146,7 +145,7 @@ public final class LongGene
 
 	@Override
 	public boolean isValid() {
-		return _allele >= _min && _allele <= _max;
+		return _allele >= _min && _allele < _max;
 	}
 
 	@Override
@@ -156,7 +155,11 @@ public final class LongGene
 
 	@Override
 	public LongGene mean(final LongGene that) {
-		return LongGene.of(_allele + (that._allele - _allele)/2, _min, _max);
+		final long x = that._allele;
+		final long y = _allele;
+
+		// http://aggregate.org/MAGIC/#Average%20of%20Integers
+		return LongGene.of((x&y) + ((x^y) >> 1), _min, _max);
 	}
 
 	/**
@@ -186,21 +189,21 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance() {
-		return LongGene.of(nextLong(random(), _min, _max), _min, _max);
+		return LongGene.of(random().nextLong(_min, _max), _min, _max);
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_min, hash(_max, hash(getClass()))));
+		return hash(_allele, hash(_min, hash(_max)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LongGene &&
-			((LongGene)obj)._allele == _allele &&
-			((LongGene)obj)._min == _min &&
-			((LongGene)obj)._max == _max;
+			obj instanceof LongGene other &&
+			other._allele == _allele &&
+			other._min == _min &&
+			other._max == _max;
 	}
 
 	@Override
@@ -220,7 +223,7 @@ public final class LongGene
 	 *
 	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long allele, final long min, final long max) {
@@ -249,11 +252,13 @@ public final class LongGene
 	 * the {@code LongGene} lies in the interval [min, max].
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code LongGene} with the given parameters.
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(nextLong(random(), min, max), min, max);
+		return of(random().nextLong(min, max), min, max);
 	}
 
 	/**
@@ -264,10 +269,12 @@ public final class LongGene
 	 *
 	 * @param range the long range to use
 	 * @return a new random {@code LongGene}
-	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if {@code max} is greater than
+	 *         or equal to {@code min}
 	 */
 	public static LongGene of(final LongRange range) {
-		return of(nextLong(random(), range.min(), range.max()), range);
+		return of(random().nextLong(range.min(), range.max()), range);
 	}
 
 	static ISeq<LongGene> seq(
@@ -275,82 +282,12 @@ public final class LongGene
 		final long max,
 		final IntRange lengthRange
 	) {
-		final Random r = random();
-		return MSeq.<LongGene>ofLength(Randoms.nextInt(lengthRange, r))
-			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
+		final var random = random();
+		final var length = random.nextInt(lengthRange.min(), lengthRange.max());
+
+		return MSeq.<LongGene>ofLength(length)
+			.fill(() -> LongGene.of(random.nextLong(min, max), min, max))
 			.toISeq();
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random
-	 *        long value
-	 * @param min lower bound for generated long integer
-	 * @param max upper bound for generated long integer
-	 * @return a random long integer greater than or equal to {@code min}
-	 *         and less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min > max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	static long nextLong(
-		final Random random,
-		final long min, final long max
-	) {
-		if (min > max) {
-			throw new IllegalArgumentException(format(
-				"min >= max: %d >= %d.", min, max
-			));
-		}
-
-		final long diff = (max - min) + 1;
-		long result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = random.nextLong();
-			} while (result < min || result > max);
-		} else if (diff < Integer.MAX_VALUE) {
-			result = random.nextInt((int)diff) + min;
-		} else {
-			result = nextLong(random, diff) + min;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between 0
-	 * (inclusive) and the specified value (exclusive), drawn from the given
-	 * random number generator's sequence.
-	 *
-	 * @param random the random engine used for creating the random number.
-	 * @param n the bound on the random number to be returned. Must be
-	 *        positive.
-	 * @return the next pseudo-random, uniformly distributed int value
-	 *         between 0 (inclusive) and n (exclusive) from the given random
-	 *         number generator's sequence
-	 * @throws IllegalArgumentException if n is smaller than 1.
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	static long nextLong(final Random random, final long n) {
-		if (n <= 0) {
-			throw new IllegalArgumentException(format(
-				"n is smaller than one: %d", n
-			));
-		}
-
-		long bits;
-		long result;
-		do {
-			bits = random.nextLong() & 0x7fffffffffffffffL;
-			result = bits%n;
-		} while (bits - result + (n - 1) < 0);
-
-		return result;
 	}
 
 
@@ -358,10 +295,12 @@ public final class LongGene
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.LONG_GENE, this);
+		return new SerialProxy(SerialProxy.LONG_GENE, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

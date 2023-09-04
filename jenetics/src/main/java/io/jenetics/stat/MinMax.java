@@ -37,14 +37,14 @@ import io.jenetics.util.Streams;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute minimum and maximum values with:
- * <pre>{@code
- * final Stream<Integer> stream = ...
+ * {@snippet lang="java":
+ * final Stream<Integer> stream = null; // @replace substring='null' replacement="..."
  * final MinMax<Integer> minMax = stream.collect(
  *         MinMax::of,
  *         MinMax::accept,
  *         MinMax::combine
  *     );
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use on a
@@ -129,11 +129,11 @@ public final class MinMax<C> implements Consumer<C> {
 	/**
 	 * Compares the state of two {@code LongMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
-	 * final MinMax mm1 = ...;
-	 * final MinMax mm2 = ...;
+	 * {@snippet lang="java":
+	 * final MinMax<Long> mm1 = null; // @replace substring='null' replacement="..."
+	 * final MinMax<Long> mm2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (mm1.sameState(mm2)) {
 	 *     final long value = random.nextInt(1_000_000);
@@ -144,7 +144,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 *     assert mm2.sameState(mm1);
 	 *     assert mm1.sameState(mm1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -210,12 +210,12 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return a {@code Collector} which calculates the minimum and maximum value.
 	 * The given {@code comparator} is used for comparing two objects.
 	 *
-	 * <pre>{@code
-	 * final Comparator<SomeObject> comparator = ...
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Comparator<SomeObject> comparator = null; // @replace substring='null' replacement="..."
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
-	 * }</pre>
+	 * }
 	 *
 	 * @param comparator the {@code Comparator} to use
 	 * @param <T> the type of the input elements
@@ -237,11 +237,11 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return a {@code Collector} which calculates the minimum and maximum value.
 	 * The <i>reducing</i> objects must be comparable.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final MinMax<SomeObject> moments = stream
 	 *     .collect(doubleMoments.toMinMax(comparator));
-	 * }</pre>
+	 * }
 	 *
 	 * @param <C> the type of the input elements
 	 * @return a {@code Collector} implementing the min-max reduction
@@ -288,7 +288,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -297,7 +297,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 *
@@ -315,7 +315,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -324,7 +324,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * System.out.println(values);
 	 * // [45,32,15,12,3,1]
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 *
@@ -342,7 +342,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -351,7 +351,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 *

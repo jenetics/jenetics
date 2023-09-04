@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,12 +49,15 @@ public class lists {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
 	 * @param list the {@code array} to randomize.
-	 * @param random the {@link Random} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is
 	 *          {@code null}.
 	 */
-	public static <T> void shuffle(final List<T> list, final Random random) {
+	public static <T> void shuffle(
+		final List<T> list,
+		final RandomGenerator random
+	) {
 		for (int j = list.size() - 1; j > 0; --j) {
 			swap(list, j, random.nextInt(j + 1));
 		}

@@ -33,21 +33,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of longs with:
- * <pre>{@code
- * final LongStream stream = ...
+ * {@snippet lang="java":
+ * final LongStream stream = null; // @replace substring='null' replacement="..."
  * final LongMomentStatistics statistics = stream.collect(
  *         LongMomentStatistics::new,
  *         LongMomentStatistics::accept,
  *         LongMomentStatistics::combine
  *     );
- * }</pre>
+ * }
  *
- * For a non long stream, you can use a collector:
- * <pre>{@code
- * final Stream<SomeObject> stream = ...
+ * For a non-long stream, you can use a collector:
+ * {@snippet lang="java":
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final LongMomentStatistics statistics = stream
  *     .collect(toLongMomentStatistics(v -> v.longValue()));
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use
@@ -81,7 +81,7 @@ public class LongMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -94,7 +94,7 @@ public class LongMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -154,11 +154,11 @@ public class LongMomentStatistics
 	/**
 	 * Compares the state of two {@code LongMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
-	 * final LongMomentStatistics lms1 = ...;
-	 * final LongMomentStatistics lms2 = ...;
+	 * {@snippet lang="java":
+	 * final LongMomentStatistics lms1 = null; // @replace substring='null' replacement="..."
+	 * final LongMomentStatistics lms2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (lms1.sameState(lms2)) {
 	 *     final long value = random.nextInt(1_000_000);
@@ -169,7 +169,7 @@ public class LongMomentStatistics
 	 *     assert lms2.sameState(lms1);
 	 *     assert lms1.sameState(lms1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -206,15 +206,15 @@ public class LongMomentStatistics
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
+	 * Return a {@code Collector} which applies a long-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongMomentStatistics statistics = stream
 	 *     .collect(toLongMomentStatistics(v -> v.longValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

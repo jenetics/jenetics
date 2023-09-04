@@ -20,11 +20,11 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Combinatorics.subset;
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -99,7 +99,7 @@ public abstract class Recombinator<
 	) {
 		final AltererResult<G, C> result;
 		if (population.size() >= 2) {
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int order = Math.min(_order, population.size());
 
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
@@ -108,9 +108,9 @@ public abstract class Recombinator<
 				.mapToInt(ind -> recombine(pop, ind, generation))
 				.sum();
 
-			result = AltererResult.of(pop.toISeq(), count);
+			result = new AltererResult<>(pop.toISeq(), count);
 		} else {
-			result = AltererResult.of(population.asISeq());
+			result = new AltererResult<>(population.asISeq());
 		}
 
 		return result;
@@ -120,9 +120,9 @@ public abstract class Recombinator<
 		final int index,
 		final int size,
 		final int order,
-		final Random random
+		final RandomGenerator random
 	) {
-		final int[] ind = subset(size, order, random);
+		final int[] ind = Subset.next(random, size, order);
 
 		// Find the correct slot for the "master" individual.
 		// This prevents duplicate index entries.

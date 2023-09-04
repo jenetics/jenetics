@@ -31,9 +31,13 @@ dependencies {
 	implementation(project(":jenetics"))
 	implementation(project(":jenetics.ext"))
 	implementation(project(":jenetics.prog"))
-	implementation(Libs.JPX)
-	implementation(Libs.PRNGine)
-	implementation(Libs.RxJava)
+	implementation(libs.jexl)
+	implementation(libs.jpx)
+	implementation(libs.mvel)
+	implementation(libs.nashorn)
+	implementation(libs.prngine)
+	implementation(libs.rxjava)
 
-	testImplementation(Libs.TestNG)
+	testImplementation(libs.assertj)
+	testImplementation(libs.testng)
 }

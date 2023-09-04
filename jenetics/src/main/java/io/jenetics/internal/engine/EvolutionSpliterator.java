@@ -71,7 +71,7 @@ public final class EvolutionSpliterator<
 	 *
 	 * @param start the start element
 	 * @param evolution the evolution function
-	 * @throws NullPointerException if one of the argument is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> start,

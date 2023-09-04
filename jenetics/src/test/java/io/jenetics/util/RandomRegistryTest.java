@@ -20,17 +20,23 @@
 package io.jenetics.util;
 
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGenerator.StreamableGenerator;
+import java.util.random.RandomGeneratorFactory;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -39,7 +45,6 @@ import org.testng.annotations.Test;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.util.Concurrency;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,7 +54,7 @@ public class RandomRegistryTest {
 	@Test
 	public void setDefault() {
 		RandomRegistry.reset();
-		final Random devault = RandomRegistry.random();
+		final var devault = RandomRegistry.random();
 		Assert.assertNotNull(devault);
 
 		RandomRegistry.random(new Random());
@@ -68,6 +73,70 @@ public class RandomRegistryTest {
 	}
 
 	@Test
+	public void setRandomFactory() throws InterruptedException {
+		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
+		RandomRegistry.random(factory);
+
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
+		}
+
+		final var exception = new AtomicReference<AssertionError>();
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.setUncaughtExceptionHandler((t, e) -> exception.set((AssertionError)e));
+		thread.start();
+		thread.join();
+
+		if (exception.get() != null) {
+			throw exception.get();
+		}
+	}
+
+	@Test
+	public void setRandomSupplier() throws InterruptedException {
+		final Supplier<RandomGenerator> supplier =
+			RandomGeneratorFactory.of("L128X1024MixRandom")::create;
+
+		RandomRegistry.random(supplier);
+
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
+		}
+
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.start();
+		thread.join();
+	}
+
+	@Test
+	public void setRandomSupplierStream() throws InterruptedException {
+		final Iterator<RandomGenerator> randoms = StreamableGenerator.of("L128X1024MixRandom")
+			.rngs()
+			.peek(System.out::println)
+			.iterator();
+
+		final Supplier<RandomGenerator> supplier = randoms::next;
+		RandomRegistry.random(supplier);
+
+		final var random = RandomRegistry.random();
+		for (int i = 0; i < 10; ++i) {
+			assertThat(random).isSameAs(RandomRegistry.random());
+		}
+
+		final var thread = new Thread(() ->
+			assertThat(random).isNotSameAs(RandomRegistry.random())
+		);
+		thread.start();
+		thread.join();
+	}
+
+	@Test
 	public void setRandomThreading()
 		throws ExecutionException, InterruptedException
 	{
@@ -76,10 +145,10 @@ public class RandomRegistryTest {
 
 		final ExecutorService executor = Executors.newFixedThreadPool(10);
 		try {
-			final List<Future<?>> futures = IntStream.range(0, 500)
+			final var futures = IntStream.range(0, 500)
 				.mapToObj(i -> executor
 					.submit(() -> assertSame(RandomRegistry.random(), random)))
-				.collect(Collectors.toList());
+				.toList();
 
 			for (Future<?> future : futures) {
 				future.get();
@@ -104,12 +173,12 @@ public class RandomRegistryTest {
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullTLRandom() {
-		RandomRegistry.random((ThreadLocal<Random>)null);
+		RandomRegistry.random((RandomGeneratorFactory<?>) null);
 	}
 
 	@Test
 	public void localContext() {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final Random random1 = new Random();
 		using(random1, r1 -> {
@@ -123,7 +192,7 @@ public class RandomRegistryTest {
 
 	@Test(invocationCount = 10)
 	public void concurrentLocalContext() {
-		try (Concurrency c = Concurrency.withCommonPool()) {
+		try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
 			for (int i = 0; i < 25; ++i) {
 				c.execute(new ContextRunnable());
 			}
@@ -181,6 +250,18 @@ public class RandomRegistryTest {
 			);
 
 		assertEquals(genotypes1, genotypes2);
+	}
+
+	//@Test
+	public void defaultRandomGenerator() {
+		System.setProperty(
+			"io.jenetics.util.defaultRandomGenerator",
+			"L64X1024MixRandom")
+		;
+
+		final var generator = RandomRegistry.random();
+		assertThat(generator.getClass().getSimpleName())
+			.isEqualTo("L64X1024MixRandom");
 	}
 
 }

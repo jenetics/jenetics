@@ -32,9 +32,9 @@ import io.jenetics.prog.op.Op;
  * The error is calculated from the {@link LossFunction} and, if desired, the
  * program {@link Complexity}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
- * }</pre>
+ * }
  *
  * @see LossFunction
  * @see Complexity
@@ -87,7 +87,7 @@ public interface Error<T> {
 	 * Creates an error function by combining the given {@code loss} function
 	 * and program {@code complexity}. The loss function and program complexity
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
-	 * The complexity function penalizes programs which grows to big.
+	 * The complexity function penalizes programs which grow to big.
 	 *
 	 * @param <T> the sample type
 	 * @param loss the loss function
@@ -105,7 +105,7 @@ public interface Error<T> {
 	 * Creates an error function by combining the given {@code loss} function
 	 * and program {@code complexity}. The loss function and program complexity
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
-	 * The complexity function penalizes programs which grows to big.
+	 * The complexity function penalizes programs which grow to big.
 	 *
 	 * @param <T> the sample type
 	 * @param loss the loss function

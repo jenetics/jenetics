@@ -23,7 +23,6 @@ import static java.util.Collections.emptyList;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -127,7 +126,7 @@ public class WritersReadersTests {
 				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
 					.instances()
 					.limit(20)
-					.collect(Collectors.toList()),
+					.toList(),
 				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
 				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
 			},

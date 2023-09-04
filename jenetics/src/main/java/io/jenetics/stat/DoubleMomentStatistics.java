@@ -34,21 +34,21 @@ import io.jenetics.internal.math.DoubleAdder;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of doubles with:
- * <pre>{@code
- * final DoubleStream stream = ...
+ * {@snippet lang="java":
+ * final DoubleStream stream = null; // @replace substring='null' replacement="..."
  * final DoubleMomentStatistics statistics = stream.collect(
  *         DoubleMomentStatistics::new,
  *         DoubleMomentStatistics::accept,
  *         DoubleMomentStatistics::combine
  *     );
- * }</pre>
+ * }
  *
- * For a non double stream, you can use a collector:
- * <pre>{@code
- * final Stream<SomeObject> stream = ...
+ * For a non-double stream, you can use a collector:
+ * {@snippet lang="java":
+ * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
  * final DoubleMomentStatistics statistics = stream
  *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
- * }</pre>
+ * }
  *
  * @implNote
  * This implementation is not thread safe. However, it is safe to use
@@ -84,7 +84,7 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Records a new value into the moments information
+	 * Records a new value into the moment information
 	 *
 	 * @param value the input {@code value}
 	 */
@@ -147,11 +147,11 @@ public class DoubleMomentStatistics
 	/**
 	 * Compares the state of two {@code DoubleMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable object. If two object have the same state, it
+	 * implement for this mutable object. If two objects have the same state, it
 	 * has still the same state when updated with the same value.
-	 * <pre>{@code
-	 * final DoubleMomentStatistics ds1 = ...;
-	 * final DoubleMomentStatistics ds2 = ...;
+	 * {@snippet lang="java":
+	 * final DoubleMomentStatistics ds1 = null; // @replace substring='null' replacement="..."
+	 * final DoubleMomentStatistics ds2 = null; // @replace substring='null' replacement="..."
 	 *
 	 * if (ds1.sameState(ds2)) {
 	 *     final double value = random.nextDouble();
@@ -162,7 +162,7 @@ public class DoubleMomentStatistics
 	 *     assert ds2.sameState(ds1);
 	 *     assert ds1.sameState(ds1);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.7
 	 *
@@ -203,15 +203,15 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
+	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMomentStatistics statistics = stream
 	 *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

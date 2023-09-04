@@ -24,14 +24,13 @@ import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.random.RandomGeneratorFactory;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
-import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.RandomRegistry;
 
 public class RngExample {
@@ -42,8 +41,7 @@ public class RngExample {
 
 	public static void main(String[] args) {
 		// Set the PRNG used by the evolution Engine.
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(123);
-		RandomRegistry.random(random);
+		RandomRegistry.random(RandomGeneratorFactory.of("LCG64ShiftRandom"));
 
 		// Configure and build the evolution Engine.
 		final Engine<BitGene, Integer> engine = Engine
@@ -55,16 +53,14 @@ public class RngExample {
 		// The 'Random(123)' object is used for creating a *reproducible*
 		// initial population. The original PRNG is restored after the 'with'
 		// block.
-		assert RandomRegistry.random() == random;
 		final List<Genotype<BitGene>> genotypes =
 			RandomRegistry.with(new Random(123), r -> {
 				assert RandomRegistry.random() == r;
 				return Genotype.of(BitChromosome.of(20, 0.15))
 					.instances()
 					.limit(50)
-					.collect(Collectors.toList());
+					.toList();
 			});
-		assert RandomRegistry.random() == random;
 
 		// The evolution process uses the global 'random' instance.
 		final Phenotype<BitGene, Integer> best = engine.stream(genotypes)

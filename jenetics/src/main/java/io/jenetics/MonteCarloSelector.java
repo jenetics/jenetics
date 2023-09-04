@@ -22,8 +22,6 @@ package io.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -31,8 +29,8 @@ import io.jenetics.util.Seq;
 
 /**
  * The Monte Carlo selector selects the individuals from a given population
- * randomly. This selector can be used to measure the performance of a other
- * selectors. In general, the performance of a selector should be better than
+ * randomly. This selector can be used to measure the performance of another
+ * selector. In general, the performance of a selector should be better than
  * the selection performance of the Monte Carlo selector.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -67,7 +65,7 @@ public final class MonteCarloSelector<
 		final MSeq<Phenotype<G, C>> selection;
 		if (count > 0 && !population.isEmpty()) {
 			selection = MSeq.ofLength(count);
-			final Random random = RandomRegistry.random();
+			final var random = RandomRegistry.random();
 			final int size = population.size();
 
 			for (int i = 0; i < count; ++i) {

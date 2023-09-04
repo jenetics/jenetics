@@ -32,6 +32,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -45,7 +46,7 @@ import io.jenetics.TournamentSelector;
 import io.jenetics.internal.util.Requires;
 
 /**
- * This class collects the parameters which control the behaviour of the
+ * This class collects the parameters which control the behavior of the
  * evolution process. This doesn't include the parameters for the
  * <em>technical</em> execution like the used execution service.
  *
@@ -66,6 +67,7 @@ public final class EvolutionParams<
 	implements Serializable
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Selector<G, C> _survivorsSelector;
@@ -252,10 +254,10 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * The selector used for selecting the survivors population. <i>Default
+		 * The selector used for selecting the survivor population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
-		 * @param selector used for selecting survivors population
+		 * @param selector used for selecting survivor population
 		 * @return {@code this} builder, for command chaining
 		 */
 		public Builder<G, C> survivorsSelector(
@@ -360,9 +362,9 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * Builds an new {@code EvolutionParams} instance from the set properties.
+		 * Builds a new {@code EvolutionParams} instance from the set properties.
 		 *
-		 * @return an new {@code EvolutionParams} instance from the set properties
+		 * @return a new {@code EvolutionParams} instance from the set properties
 		 */
 		public EvolutionParams<G, C> build() {
 			return new EvolutionParams<>(
@@ -463,10 +465,12 @@ public final class EvolutionParams<
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_PARAMS, this);
+		return new SerialProxy(SerialProxy.EVOLUTION_PARAMS, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

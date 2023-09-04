@@ -99,16 +99,25 @@ public class MathExprPerf {
 
 }
 
-/*
+/* 7.1
 Benchmark              Mode  Cnt     Score    Error  Units
-MathExprPerf.javaExpr  avgt   15   230.869 ±  6.066  ns/op
-MathExprPerf.mathExpr  avgt   15  2434.524 ± 57.198  ns/op
-*/
+MathExprPerf.exprSin   avgt   15    16.425 ±  0.225  ns/op
+MathExprPerf.javaExpr  avgt   15   221.220 ±  3.873  ns/op
+MathExprPerf.mathExpr  avgt   15  1965.469 ± 64.456  ns/op
+MathExprPerf.sin       avgt   15    15.331 ±  0.247  ns/op
+ */
 
-/*
+/* 7.0
 Benchmark              Mode  Cnt     Score    Error  Units
 MathExprPerf.exprSin   avgt   15    73.456 ±  3.725  ns/op
 MathExprPerf.javaExpr  avgt   15   246.253 ±  3.908  ns/op
 MathExprPerf.mathExpr  avgt   15  1237.706 ± 55.264  ns/op
 MathExprPerf.sin       avgt   15    14.984 ±  0.146  ns/op
 */
+
+/*
+Benchmark              Mode  Cnt     Score    Error  Units
+MathExprPerf.javaExpr  avgt   15   230.869 ±  6.066  ns/op
+MathExprPerf.mathExpr  avgt   15  2434.524 ± 57.198  ns/op
+*/
+

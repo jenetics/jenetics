@@ -35,7 +35,7 @@ public final class Basics {
 	private Basics() {}
 
 	/**
-	 * Normalize the given double array, so that it sum to one. The
+	 * Normalize the given double array, so that it sums to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
 	 *
@@ -139,7 +139,7 @@ public final class Basics {
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * double a = 0.0;
 	 * for (int i = 0; i < 10; ++i) {
 	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
@@ -151,7 +151,7 @@ public final class Basics {
 	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
 	 *     );
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * The code fragment above will create the following output:
 	 * <pre>

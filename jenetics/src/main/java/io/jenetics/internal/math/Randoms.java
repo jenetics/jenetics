@@ -19,184 +19,62 @@
  */
 package io.jenetics.internal.math;
 
-import static java.lang.Double.compare;
-import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.longBitsToDouble;
-import static java.lang.Float.compare;
-import static java.lang.Float.floatToIntBits;
-import static java.lang.Float.intBitsToFloat;
-import static java.lang.Math.abs;
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.Probabilities.isOne;
+import static io.jenetics.internal.math.Probabilities.isZero;
 import static io.jenetics.internal.util.Requires.probability;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
-
-import io.jenetics.util.IntRange;
 
 /**
  * Some random helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 5.2
+ * @version 7.0
  */
 public final class Randoms {
 	private Randoms() {}
 
-	public static byte nextByte(final Random random) {
-		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
+	public static byte nextByte(final RandomGenerator random) {
+		return (byte)random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
-	public static char nextChar(final Random random) {
+	public static char nextChar(final RandomGenerator random) {
+		final int leftLimit = '0';
+		final int rightLimit = 'z';
+
 		char c = '\0';
 		do {
-			c = (char)nextInt(
-				Character.MIN_VALUE,
-				Character.MAX_VALUE + 1,
-				random
-			);
-		} while (!Character.isLetterOrDigit(c));
+			c = (char)random.nextInt(leftLimit, rightLimit + 1);
+		} while (!((c <= 57 || c >= 65) && (c <= 90 || c >= 97)));
 
 		return c;
 	}
 
-	public static short nextShort(final Random random) {
-		return (short) nextInt(Short.MIN_VALUE, Short.MAX_VALUE + 1, random);
+	public static short nextShort(final RandomGenerator random) {
+		return (short)random.nextInt(Short.MIN_VALUE, Short.MAX_VALUE + 1);
 	}
 
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between origin
-	 * (included) and bound (excluded).
-	 *
-	 * @param origin the origin (inclusive) of each random value
-	 * @param bound the bound (exclusive) of each random value
-	 * @param random the random engine to use for calculating the random
-	 *        int value
-	 * @return a random integer greater than or equal to {@code min} and
-	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code origin >= bound}
-	 */
-	public static int nextInt(
-		final int origin,
-		final int bound,
-		final Random random
+	public static String nextASCIIString(
+		final int length,
+		final RandomGenerator random
 	) {
-		if (origin >= bound) {
-			throw new IllegalArgumentException(format(
-				"origin >= bound: %d >= %d", origin, bound
-			));
-		}
-
-		final int value;
-		int n = bound - origin;
-		if (n > 0) {
-			value = random.nextInt(n) + origin;
-		} else {
-			int r;
-			do {
-				r = random.nextInt();
-			} while (r < origin || r >= bound);
-			value = r;
-		}
-
-		return value;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between origin
-	 * (included) and bound (excluded).
-	 *
-	 * @param range the allowed integer range
-	 * @param random the random engine to use for calculating the random
-	 *        int value
-	 * @return a random integer greater than or equal to {@code min} and
-	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code range.getMin() >= range.getMax()}
-	 */
-	public static int nextInt(final IntRange range, final Random random) {
-		return range.size() == 1
-			? range.min()
-			: nextInt(range.min(), range.max(), random);
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed double value between
-	 * min (inclusively) and max (exclusively).
-	 *
-	 * @param min lower bound for generated float value (inclusively)
-	 * @param max upper bound for generated float value (exclusively)
-	 * @param random the random engine used for creating the random number.
-	 * @return a random float greater than or equal to {@code min} and less
-	 *         than to {@code max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	public static float nextFloat(
-		final float min,
-		final float max,
-		final Random random
-	) {
-		if (compare(min, max) >= 0) {
-			throw new IllegalArgumentException(format(
-				"min >= max: %f >= %f.", min, max
-			));
-		}
-
-		float value = random.nextFloat()*(max - min) + min;
-		if (compare(value, max) >= 0) {
-			value = intBitsToFloat(floatToIntBits(max) - 1);
-		}
-
-		return value;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed double value between
-	 * min (inclusively) and max (exclusively).
-	 *
-	 * @param min lower bound for generated double value (inclusively)
-	 * @param max upper bound for generated double value (exclusively)
-	 * @param random the random engine used for creating the random number.
-	 * @return a random double greater than or equal to {@code min} and less
-	 *         than to {@code max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	public static double nextDouble(
-		final double min,
-		final double max,
-		final Random random
-	) {
-		if (compare(min, max) >= 0) {
-			throw new IllegalArgumentException(format(
-				"min >= max: %f >= %f.", min, max
-			));
-		}
-
-		double value = random.nextDouble()*(max - min) + min;
-		if (compare(value, max) >= 0) {
-			value = longBitsToDouble(doubleToLongBits(max) - 1);
-		}
-
-		return value;
-	}
-
-	public static String nextASCIIString(final int length, final Random random) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
-			chars[i] = (char)nextInt(32, 127, random);
+			chars[i] = (char)random.nextInt(32, 127);
 		}
 
 		return new String(chars);
 	}
 
-	public static String nextASCIIString(final Random random) {
-		return nextASCIIString(nextInt(5, 20, random), random);
+	public static String nextASCIIString(final RandomGenerator random) {
+		return nextASCIIString(random.nextInt(5, 20), random);
 	}
 
 	/*
-	 * Conversion methods used by the 'Random' engine from the JDK.
+	 * Conversion methods used by the 'RandomGenerator' engine from the JDK.
 	 */
 
 	public static float toFloat(final int a) {
@@ -247,31 +125,30 @@ public final class Randoms {
 	 * @param start the start index (inclusively)
 	 * @param end the end index (exclusively)
 	 * @param p the index selection probability
-	 * @return an new random index stream
+	 * @return a new random index stream
 	 * @throws IllegalArgumentException if {@code p} is not a
 	 *         valid probability.
 	 */
 	public static IntStream indexes(
-		final Random random,
+		final RandomGenerator random,
 		final int start,
 		final int end,
 		final double p
 	) {
+		requireNonNull(random);
 		probability(p);
-		final int P = Probabilities.toInt(p);
 
-		return equals(p, 0, 1E-20)
-			? IntStream.empty()
-			: equals(p, 1, 1E-20)
-				? IntStream.range(start, end)
-				: IntStream.range(start, end)
-					.filter(i -> random.nextInt() < P);
+		if (isZero(p)) {
+			return IntStream.empty();
+		} else if (isOne(p)) {
+			return IntStream.range(start, end);
+		} else {
+			final int P = Probabilities.toInt(p);
+			return IntStream.range(start, end)
+				.filter(i -> random.nextInt() < P);
+		}
 	}
 
-	private static boolean
-	equals(final double a, final double b, final double delta) {
-		return abs(a - b) <= delta;
-	}
 
 	/**
 	 * Create an {@code IntStream} which creates random indexes within the
@@ -283,14 +160,14 @@ public final class Randoms {
 	 *        indexes
 	 * @param n the end index (exclusively). The start index is zero.
 	 * @param p the index selection probability
-	 * @return an new random index stream
+	 * @return a new random index stream
 	 * @throws IllegalArgumentException if {@code p} is not a
 	 *         valid probability.
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
 	public static IntStream indexes(
-		final Random random,
+		final RandomGenerator random,
 		final int n,
 		final double p
 	) {
@@ -336,18 +213,18 @@ public final class Randoms {
 	}
 
 	/**
-	 * Calculating a 64 bit seed value which can be used for initializing
+	 * Calculating a 64-bit seed value which can be used for initializing
 	 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
 	 * }
-	 * }</pre>
+	 * }
 	 *
-	 * This method passes all of the statistical tests of the
+	 * This method passes all the statistical tests of the
 	 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
 	 * dieharder</a> test suite&mdash;executed on a linux machine with
 	 * JDK version 1.7. <em>Since there is no prove that this will the case
@@ -367,7 +244,7 @@ public final class Randoms {
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public static long seed(final long base) {
 	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
 	 *                                         new Object().hashCode();
@@ -377,7 +254,7 @@ public final class Randoms {
 	 *     seed ^= seed << 8;
 	 *     return seed;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param base the base value of the seed to create
 	 * @return the created seed value.

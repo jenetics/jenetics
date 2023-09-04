@@ -28,6 +28,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.stream.DoubleStream;
@@ -40,7 +41,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 64 bit floating point numbers.
+ * Numeric chromosome implementation which holds 64-bit floating point numbers.
  *
  * @see DoubleGene
  *
@@ -57,6 +58,7 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 3L;
 
 	/**
@@ -70,7 +72,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected DoubleChromosome(
@@ -95,8 +97,8 @@ public class DoubleChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final DoubleChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final DoubleChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final DoubleChromosome normalized = chromosome.map(Main::normalize);
 	 *
 	 * static double[] normalize(final double[] values) {
@@ -106,7 +108,7 @@ public class DoubleChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -141,14 +143,14 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Returns an double array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a double array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
+	 * @param array the array into which the elements of these chromosomes are to
 	 *        be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
@@ -167,8 +169,8 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Returns an double array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a double array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -226,7 +228,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -268,7 +270,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -325,10 +327,12 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	@Serial
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
+		return new SerialProxy(SerialProxy.DOUBLE_CHROMOSOME, this);
 	}
 
+	@Serial
 	private void readObject(final ObjectInputStream stream)
 		throws InvalidObjectException
 	{

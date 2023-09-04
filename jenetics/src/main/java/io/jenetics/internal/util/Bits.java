@@ -27,7 +27,7 @@ import io.jenetics.util.RandomRegistry;
 
 
 /**
- * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
+ * Some bit utils. All operations assume <a href="http://en.wikipedia.org/wiki/Endianness">
  * <b>little-endian</b></a> byte order.
  *
  * <pre>
@@ -130,7 +130,7 @@ public final class Bits {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index) {
-		data[index >>> 3] |= 1 << (index & 7);
+		data[index >>> 3] |= (byte)(1 << (index & 7));
 		return data;
 	}
 
@@ -146,7 +146,7 @@ public final class Bits {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] unset(final byte[] data, final int index) {
-		data[index >>> 3] &= ~(1 << (index & 7));
+		data[index >>> 3] &= (byte)~(1 << (index & 7));
 		return data;
 	}
 
@@ -164,7 +164,7 @@ public final class Bits {
 	 *                          otherStart
 	 * </pre>
 	 *
-	 * @param data the first byte array which are used for swapping.
+	 * @param data the first byte array which is used for swapping.
 	 * @param start the start bit index of the {@code data} byte array,
 	 *        inclusively.
 	 * @param end the end bit index of the {@code data} byte array, exclusively.
@@ -186,17 +186,55 @@ public final class Bits {
 	}
 
 	/**
-	 * Returns the number of one-bits in the given {@code byte} array.
+	 * Returns the number of one-bits in the given {@code byte[]} array.
 	 *
 	 * @param data the {@code byte} array for which the one bits should be
 	 *        counted.
 	 * @return the number of one bits in the given {@code byte} array.
 	 */
 	public static int count(final byte[] data) {
-		int count = 0;
-		for (int i = data.length; --i >= 0;) {
-			count += count(data[i]);
+		return count(data, 0, data.length*Byte.SIZE);
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte[]} array.
+	 *
+	 * @param bits the bit values of the new chromosome gene.
+	 * @param start the initial (bit) index of the range to be copied, inclusive
+	 * @param end the final (bit) index of the range to be copied, exclusive.
+	 *        (This index may lie outside the array.)
+	 * @return the number of one-bits in the given {@code byte} array.
+	 */
+	public static int count(final byte[] bits, final int start, final int end) {
+		if (end - start <= Byte.SIZE) {
+			int count = 0;
+			for (int i = start; i < end; ++i) {
+				if (get(bits, i)) {
+					++count;
+				}
+			}
+			return count;
 		}
+
+		final int byteStart = start/Byte.SIZE + 1;
+		final int byteEnd = end/Byte.SIZE;
+
+		int count = 0;
+		for (int i = byteStart; i < byteEnd; ++i) {
+			count += count(bits[i]);
+		}
+
+		for (int i = start, n = byteStart*Byte.SIZE; i < n; ++i) {
+			if (get(bits, i)) {
+				++count;
+			}
+		}
+		for (int i = byteEnd*8; i < end; ++i) {
+			if (get(bits, i)) {
+				++count;
+			}
+		}
+
 		return count;
 	}
 
@@ -406,7 +444,7 @@ public final class Bits {
 			}
 
 			// Trim (delete) the overhanging bits.
-			copy[copy.length - 1] &= 0xFF >>> ((copy.length << 3) - bitLength);
+			copy[copy.length - 1] &= (byte)(0xFF >>> ((copy.length << 3) - bitLength));
 		}
 
 		return copy;
@@ -455,7 +493,7 @@ public final class Bits {
 
 	/**
 	 * Convert a string which was created with the {@link #toByteString(byte...)}
-	 * method back to an byte array.
+	 * method back to a byte array.
 	 *
 	 * @see #toByteString(byte...)
 	 *
@@ -511,7 +549,7 @@ public final class Bits {
 		final byte[] bytes = newArray(length);
 
 		Randoms.indexes(RandomRegistry.random(), length, p)
-			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
+			.forEach(i -> bytes[i >>> 3] |= (byte)(1 << (i & 7)));
 
 		return bytes;
 	}
@@ -523,7 +561,15 @@ public final class Bits {
 	 * @return the number of bytes needed to store the given number of bits.
 	 */
 	public static int toByteLength(final int bitLength) {
-		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
+		if (bitLength < 0) {
+			throw new IllegalArgumentException(
+				"Bit length must not smaller then zero: " + bitLength
+			);
+		}
+
+		return (bitLength & 7) == 0   // Is a multiple of Byte.SIZE (8)
+			? (bitLength >>> 3)       // divided by Byte.SIZE (8)
+			: (bitLength >>> 3) + 1;  // divide by Byte.SIZE and add one
 	}
 
 	public static int toInt(final byte[] data) {

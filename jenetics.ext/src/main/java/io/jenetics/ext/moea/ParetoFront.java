@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.ISeq;
@@ -47,22 +46,22 @@ import io.jenetics.util.Seq;
  * is deterministic.
  * <p>
  * You can create a new {@code ParetoFront} for {@link Vec} objects
- * <pre>{@code
+ * {@snippet lang="java":
  * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
  * front.add(Vec.of(1.0, 2.0));
  * front.add(Vec.of(1.1, 2.5));
  * front.add(Vec.of(0.9, 2.1));
  * front.add(Vec.of(0.0, 2.9));
- * }</pre>
+ * }
  *
  * or directly for {@code double[]} array objects
- * <pre>{@code
+ * {@snippet lang="java":
  * final ParetoFront<double[]> front = new ParetoFront<>(Pareto::dominance);
  * front.add(new double[]{1.0, 2.0});
  * front.add(new double[]{1.1, 2.5});
  * front.add(new double[]{0.9, 2.1});
  * front.add(new double[]{0.0, 2.9});
- * }</pre>
+ * }
  *
  * You only have to specify the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
  *     Pareto dominance/efficiency</a> measure.
@@ -182,13 +181,13 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 	/**
 	 * Trims {@code this} pareto front to the given size. The front elements are
-	 * sorted according its crowding distance and the elements which have smaller
-	 * distance to its neighbors are removed first.
+	 * sorted according to its crowding distance, and the elements which have
+	 * smaller distance to its neighbors are removed first.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
 	 * front.trim(10, Vec::compare, Vec::distance, Vec::length);
-	 * }</pre>
+	 * }
 	 * The example above reduces the given front to 10 elements.
 	 *
 	 * @param size the number of front elements after the trim. If
@@ -223,7 +222,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 			final List<T> list = IntStream.of(indexes)
 				.limit(size)
 				.mapToObj(_population::get)
-				.collect(Collectors.toList());
+				.toList();
 
 			_population.clear();
 			_population.addAll(list);

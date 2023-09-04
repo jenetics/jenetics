@@ -103,7 +103,7 @@ public class EngineTest {
 			a -> a,
 			Codec.of(
 				Genotype.of(IntegerChromosome.of(0, 1000)),
-				g -> g.gene().allele()
+				g -> g.gene().allele() + 1
 			)
 		);
 
@@ -111,7 +111,7 @@ public class EngineTest {
 		final int max = 1000;
 		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(1, genotypeCount)
 			.stream()
-			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(max, 0, max)))
+			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(max - 1, 0, max)))
 			.map(Genotype::of)
 			.collect(ISeq.toISeq());
 
@@ -519,6 +519,10 @@ public class EngineTest {
 				}
 			})
 			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void foo() {
 	}
 
 }

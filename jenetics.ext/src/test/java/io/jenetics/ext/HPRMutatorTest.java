@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -37,13 +37,13 @@ public class HPRMutatorTest {
 	@Test(invocationCount = 10)
 	public void mutate() {
 		final PermutationChromosome<Integer> original =
-			PermutationChromosome.ofInteger(100);
+			PermutationChromosome.ofInteger(1000);
 
 		final HPRMutator<EnumGene<Integer>, Integer> mutator =
 			new HPRMutator<>(1.0);
 
 		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
-			mutator.mutate(original, 1, new Random());
+			mutator.mutate(original, 1, RandomGenerator.getDefault());
 
 		final int[] a = original.stream()
 			.mapToInt(EnumGene::allele)
@@ -54,7 +54,7 @@ public class HPRMutatorTest {
 			.toArray();
 
 		Assert.assertNotEquals(a, b);
-
+		Math.floor(3.4);
 	}
 
 }

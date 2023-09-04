@@ -59,8 +59,8 @@ final class CompositeAlterer<
 	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
 		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
-			a -> a instanceof CompositeAlterer
-				? ((CompositeAlterer<G, C>)a).alterers().stream()
+			a -> a instanceof CompositeAlterer<G, C> ca
+				? ca.alterers().stream()
 				: Stream.of(a);
 
 		return alterers.stream()
@@ -73,14 +73,14 @@ final class CompositeAlterer<
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		AltererResult<G, C> result = AltererResult.of(population.asISeq());
+		AltererResult<G, C> result = new AltererResult<>(population.asISeq());
 		for (var alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
 				result.population(),
 				generation
 			);
 
-			result = AltererResult.of(
+			result = new AltererResult<>(
 				as.population(),
 				as.alterations() + result.alterations()
 			);
@@ -126,7 +126,7 @@ final class CompositeAlterer<
 
 	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
-	 * of the given alterers is a CompositeAlterer the sub alterers of it are
+	 * of the given alterers is a CompositeAlterer, the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
 	 *
 	 * @param <T> the gene type of the alterers.
@@ -135,7 +135,7 @@ final class CompositeAlterer<
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.
 	 * @return a new CompositeAlterer object.
-	 * @throws NullPointerException if one of the given alterer is {@code null}.
+	 * @throws NullPointerException if one of the given alterers is {@code null}.
 	 */
 	static <T extends Gene<?, T>, C extends Comparable<? super C>>
 	CompositeAlterer<T, C> join(

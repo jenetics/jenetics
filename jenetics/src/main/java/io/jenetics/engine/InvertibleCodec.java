@@ -34,13 +34,13 @@ import io.jenetics.util.Factory;
  * <em>inverse</em> functionality of the codec. The following example shows the
  * relation between <em>encoder</em> and <em>decoder</em> function must fulfill.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final InvertibleCodec<int[], IntegerGene> codec =
  *     Codecs.ofVector(IntRange.of(0, 100), 6);
  * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
  * final Genotype<IntegerGene> gt = codec.encode(value);
  * assert Arrays.equals(value, codec.decode(gt));
- * }</pre>
+ * }
  *
  * The main usage of an invertible codec is to simplify the definition of
  * {@link Constraint} objects. Instead of working with the GA classes
@@ -51,7 +51,7 @@ import io.jenetics.util.Factory;
  * @see RetryConstraint#of(InvertibleCodec, Predicate, Function)
  * @see RetryConstraint#of(InvertibleCodec, Predicate, int)
  *
- * @param <T> the argument type of a given problem
+ * @param <T> the argument type of given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,13 +66,13 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * <em>inverse</em> of the {@link #decoder()} function. The following code
 	 * snippet shows how a given value in the <em>native</em> problem domain
 	 * can be converted into a {@link Genotype} and transformed back.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final InvertibleCodec<int[], IntegerGene> codec =
 	 *     Codecs.ofVector(IntRange.of(0, 100), 6);
 	 * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
 	 * final Genotype<IntegerGene> gt = codec.encode(value);
 	 * assert Arrays.equals(value, codec.decode(gt));
-	 * }</pre>
+	 * }
 	 *
 	 * @see #decoder()
 	 * @see #encode(Object)
@@ -108,7 +108,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *      +-------+        +------+
 	 * }</pre>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final InvertibleCodec<Double, DoubleGene> codec = Codecs
 	 *     .ofScalar(DoubleRange.of(0, 10))
 	 *     .map(v -> {
@@ -118,7 +118,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *             return v;
 	 *         },
 	 *         Function.identity());
-	 * }</pre>
+	 * }
 	 *
 	 * @see Codec#map(Function)
 	 *

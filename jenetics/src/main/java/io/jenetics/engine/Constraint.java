@@ -33,39 +33,39 @@ import io.jenetics.util.Factory;
 /**
  * This interface allows you to define constraints on single phenotypes. It is a
  * more advanced version of the {@link Phenotype#isValid()} method, which checks
- * the validity of the underlying genotypes and/or chromosomes. Additionally it
+ * the validity of the underlying genotypes and/or chromosomes. Additionally, it
  * is possible to <em>repair</em> invalid individuals. The evolution
  * {@link Engine} is using the constraint in the following way: check the validity
  * and repair invalid individuals.
- * <pre>{@code
+ * {@snippet lang="java":
  * for (int i = 0; i < population.size(); ++i) {
  *     final Phenotype<G, C> individual = population.get(i);
  *     if (!constraint.test(individual)) {
  *         population.set(i, constraint.repair(individual, generation));
  *     }
  * }
- * }</pre>
+ * }
  *
  * <b>Note</b><br>
  * Keep in mind, that this interface only repairs invalid individuals, which
  * has been destroyed by the <em>evolution</em> process. Individuals, created
  * by the given {@code Factory<Genotype<G>>}, are not validated and repaired.
- * This means, that it is still possible, to have invalid individuals, created
+ * This means that it is still possible to have invalid individuals, created
  * by the genotype factory. The {@link #constrain(Factory)} will wrap the given
  * factory which obeys {@code this} constraint. The following code will show
  * how to create such a <em>constrained</em> genotype factory and use it for
  * creating an evolution engine.
- * <pre>{@code
- * final Constraint<DoubleGene, Double> constraint = ...;
- * final Factory<Genotype<DoubleGene>> gtf = ...;
+ * {@snippet lang="java":
+ * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+ * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(fitness, constraint.constrain(gtf))
  *     .constraint(constraint)
  *     .build();
- * }</pre>
+ * }
  *
  * The following example illustrates how a constraint which its repair function
- * can be look like. Imagine that your problem domain consists of double values
+ * can look like. Imagine that your problem domain consists of double values
  * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
  * <pre>{@code
  *   +--+--+--+--+--+--+--+--+--+--+
@@ -79,10 +79,10 @@ import io.jenetics.util.Factory;
  * The invalid range is marked with {@code x}. Repairing an invalid value will
  * map values in the {@code l} range on the valid range <em>[0, 2)</em>, and
  * value in the {@code r} range on the valid range <em>[8, 10)</em>. This mapping
- * guarantees an evenly distribution of the values in the valid ranges, which is
+ * guarantees an even distribution of the values in the valid ranges, which is
  * an important characteristic of the repair function.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final InvertibleCodec<Double, DoubleGene> codec = Codecs.ofScalar(DoubleRange.of(0, 10));
  * final Constraint<DoubleGene, Double> constraint = Constraint.of(
  *     codec,
@@ -94,14 +94,14 @@ import io.jenetics.util.Factory;
  *         return v;
  *     }
  * );
- * }</pre>
+ * }
  *
  * <b>Alternative solution</b><br>
  * Instead of repairing individuals, it is better to not create invalid one in
  * the first place. Once you have a proper <em>repair</em> strategy, you can use
  * it to create a {@link Codec} which only creates valid individuals, using your
  * repair method.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Codec<Double, DoubleGene> codec = Codecs
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
@@ -110,9 +110,9 @@ import io.jenetics.util.Factory;
  *             }
  *             return v;
  *         });
- * }</pre>
+ * }
  * The same example with an {@link InvertibleCodec} will look like this:
- * <pre>{@code
+ * {@snippet lang="java":
  * final InvertibleCodec<Double, DoubleGene> codec = Codecs
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
@@ -122,7 +122,7 @@ import io.jenetics.util.Factory;
  *             return v;
  *         },
  *         Function.identity());
- * }</pre>
+ * }
  *
  * @see Engine.Builder#constraint(Constraint)
  * @see RetryConstraint
@@ -133,7 +133,7 @@ import io.jenetics.util.Factory;
  * cases. If the {@link Engine} is created with an explicit constraint
  * ({@link Engine.Builder#constraint(Constraint)}), the <em>default</em>
  * validation mechanism via {@link Phenotype#isValid()} is overridden. Also keep
- * in mind, that a defined constraint doesn't protect the fitness function from
+ * in mind that a defined constraint doesn't protect the fitness function from
  * <em>invalid</em> values. It is still necessary that the fitness function must
  * handle invalid values accordingly. The constraint <em>only</em> filters
  * invalid individuals after the selection and altering step.
@@ -183,14 +183,14 @@ public interface Constraint<
 	 * create an evolution engine, where also the genotype factory will only
 	 * create valid individuals.
 	 *
-	 * <pre>{@code
-	 * final Constraint<DoubleGene, Double> constraint = ...;
-	 * final Factory<Genotype<DoubleGene>> gtf = ...;
+	 * {@snippet lang="java":
+	 * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
+	 * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Double> engine = Engine
 	 *     .builder(fitness, constraint.constrain(gtf))
 	 *     .constraint(constraint)
 	 *     .build();
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -218,7 +218,7 @@ public interface Constraint<
 	 * @see #constrain(InvertibleCodec)
 	 *
 	 * @param codec the codec to wrap
-	 * @param <T> the argument type of a given problem
+	 * @param <T> the argument type of given problem
 	 * @return the wrapped codec, which obeys {@code this} constraint
 	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */
@@ -235,7 +235,7 @@ public interface Constraint<
 	 * @see #constrain(Codec)
 	 *
 	 * @param codec the codec to wrap
-	 * @param <T> the argument type of a given problem
+	 * @param <T> the argument type of given problem
 	 * @return the wrapped codec, which obeys {@code this} constraint
 	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */
@@ -285,7 +285,7 @@ public interface Constraint<
 	/**
 	 * Return a new constraint object with the given {@code validator}. The used
 	 * repairer just creates a new phenotype by using the phenotype to be
-	 * repaired as template. The <em>repaired</em> phenotype might still be
+	 * repaired as a template. The <em>repaired</em> phenotype might still be
 	 * invalid.
 	 *
 	 * @see RetryConstraint#of(Predicate)
@@ -303,7 +303,7 @@ public interface Constraint<
 
 	/**
 	 * Return a new constraint object with the given {@code validator} and
-	 * {@code repairer}. The given invertible codec allows to simplify the
+	 * {@code repairer}. The given invertible codec allows simplifying the
 	 * needed validator and repairer.
 	 *
 	 * @since 5.2

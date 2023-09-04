@@ -19,11 +19,11 @@
  */
 package io.jenetics.ext.util;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
@@ -50,7 +50,7 @@ final class TreeNodeBreadthFirstIterator<V, T extends Tree<V, T>>
 	 */
 	TreeNodeBreadthFirstIterator(final T root) {
 		requireNonNull(root);
-		_queue.add(singletonList(root).iterator());
+		_queue.add(List.of(root).iterator());
 	}
 
 	@Override

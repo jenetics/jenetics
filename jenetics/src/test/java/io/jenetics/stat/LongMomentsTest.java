@@ -19,10 +19,6 @@
  */
 package io.jenetics.stat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.util.Random;
-
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
@@ -38,8 +34,8 @@ public class LongMomentsTest extends ObjectTester<LongMoments> {
 	@Override
 	protected Factory<LongMoments> factory() {
 		return () -> {
-			final Random random = RandomRegistry.random();
-			return LongMoments.of(
+			final var random = RandomRegistry.random();
+			return new LongMoments(
 				random.nextLong(),
 				random.nextLong(),
 				random.nextLong(),
@@ -50,11 +46,6 @@ public class LongMomentsTest extends ObjectTester<LongMoments> {
 				random.nextDouble()
 			);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(LongMoments.class).verify();
 	}
 
 }

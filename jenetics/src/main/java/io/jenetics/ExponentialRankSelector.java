@@ -81,7 +81,7 @@ public final class ExponentialRankSelector<
 	}
 
 	/**
-	 * Create a new selector with default value of 0.975.
+	 * Create a new selector with the default value of 0.975.
 	 */
 	public ExponentialRankSelector() {
 		this(0.975);

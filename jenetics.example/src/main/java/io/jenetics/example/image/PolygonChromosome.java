@@ -22,6 +22,8 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serial;
+import java.io.Serializable;
 
 import io.jenetics.AbstractChromosome;
 import io.jenetics.Chromosome;
@@ -30,8 +32,12 @@ import io.jenetics.util.ISeq;
 /**
  * A simple chromosome representing a list of polygons.
  */
-final class PolygonChromosome extends AbstractChromosome<PolygonGene> {
-	private static final long serialVersionUID = 1L;
+final class PolygonChromosome
+	extends AbstractChromosome<PolygonGene>
+	implements Serializable
+{
+	@Serial
+	private static final long serialVersionUID = 2L;
 
 	PolygonChromosome(final ISeq<PolygonGene> genes) {
 		super(genes);

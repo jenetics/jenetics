@@ -27,6 +27,8 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.filter
 import org.gradle.kotlin.dsl.register
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * Plugin which adds a build task for creating a PDF file from the lyx sources.
@@ -57,7 +59,7 @@ open class LyxPlugin : Plugin<Project> {
 						ReplaceTokens::class, "tokens" to mapOf(
 							"__version__" to project.version,
 							"__minor_version__" to Version.parse(project.version).minorVersionString(),
-							"__identifier__" to "${Jenetics.ID}-${Jenetics.VERSION}",
+							"__identifier__" to "${Jenetics.VERSION}-$BUILD_DATE",
 							"__year__" to Env.COPYRIGHT_YEAR
 						)
 					)
@@ -78,7 +80,7 @@ open class LyxPlugin : Plugin<Project> {
 			doLast {
 				project.copy {
 					from("${build.temporaryDir}/lyx/manual.pdf")
-					into("${project.buildDir}/doc")
+					into("${project.layout.buildDirectory.asFile.get()}/doc")
 					rename { name ->
 						name.replace("manual.pdf", "manual-${project.version}.pdf")
 					}
@@ -88,7 +90,7 @@ open class LyxPlugin : Plugin<Project> {
 
 		if (project.tasks.findByPath(CLEAN) == null) {
 			project.tasks.getByPath(CLEAN).doLast {
-				project.buildDir.deleteRecursively()
+				project.layout.buildDirectory.asFile.get().deleteRecursively()
 			}
 		}
 	}
@@ -98,5 +100,9 @@ open class LyxPlugin : Plugin<Project> {
 		private const val CLEAN = "clean"
 		private const val LYX = "lyx"
 		private const val PREPARE_PDF_GENERATION = "preparePDFGeneration"
+
+		private val BUILD_DATE = DateTimeFormatter
+			.ofPattern("yyyy/MM/dd")
+			.format(LocalDate.now());
 	}
 }

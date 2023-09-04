@@ -21,19 +21,17 @@ package io.jenetics.ext.moea;
 
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.Combinatorics.subset;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.internal.math.Subset;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -76,14 +74,14 @@ public class UFTournamentSelector<
 	 * Creates a new {@code UFTournamentSelector} with the functions needed for
 	 * handling the multi-objective result type {@code C}. For the {@link Vec}
 	 * classes, a selector is created like in the following example:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * new UFTournamentSelector<>(
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
 	 *     Vec<T>::length
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see #ofVec()
 	 *
@@ -115,7 +113,7 @@ public class UFTournamentSelector<
 		final int count,
 		final Optimize opt
 	) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 
 		final NSGA2Order<Phenotype<G, C>> order = new NSGA2Order<>(
 			population,
@@ -129,7 +127,7 @@ public class UFTournamentSelector<
 		final List<Phenotype<G, C>> S = new ArrayList<>();
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
-			final int[] G = subset(population.size(), k, random);
+			final int[] G = Subset.next(random, population.size(), k);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = order.compare(G[j], G[j + 1]);
@@ -145,7 +143,7 @@ public class UFTournamentSelector<
 				final C fitness = population.get(p).fitness();
 				final List<Phenotype<G, C>> list = population.stream()
 					.filter(pt -> pt.fitness().equals(fitness))
-					.collect(Collectors.toList());
+					.toList();
 
 				S.add(list.get(random.nextInt(list.size())));
 			}
@@ -157,14 +155,14 @@ public class UFTournamentSelector<
 	/**
 	 * Return a new selector for the given result type {@code V}. This method is
 	 * a shortcut for
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * new UFTournamentSelector<>(
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
 	 *     Vec<T>::length
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}

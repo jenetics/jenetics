@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
@@ -36,11 +37,11 @@ import io.jenetics.internal.collection.CharStore;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -54,6 +55,7 @@ public final class CharSeq
 		Comparable<CharSeq>,
 		Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 2L;
 
 	/**
@@ -169,8 +171,8 @@ public final class CharSeq
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof CharSeq &&
-			Arrays.equals(((CharSeq)obj).array, array);
+			obj instanceof CharSeq other &&
+			Arrays.equals(other.array, array);
 	}
 
 	@Override
@@ -194,9 +196,9 @@ public final class CharSeq
 	}
 
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g
+	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @param pattern the {@code pattern} to expand.
 	 * @return the expanded pattern.
@@ -266,7 +268,7 @@ public final class CharSeq
 	/**
 	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @see #expand(CharSequence)
 	 *
@@ -322,6 +324,8 @@ public final class CharSeq
 }
 
 abstract class CharSeqBase extends ArrayISeq<Character> {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	final char[] array;

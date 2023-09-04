@@ -214,7 +214,7 @@ class TestUtils {
 		final double min,
 		final double max
 	) {
-		final Random random = RandomRegistry.random();
+		final var random = RandomRegistry.random();
 		return newDoublePhenotype(random.nextDouble()*(max - min) + min);
 	}
 
