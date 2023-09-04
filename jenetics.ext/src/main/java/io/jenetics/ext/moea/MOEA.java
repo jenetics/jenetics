@@ -25,13 +25,13 @@ import static io.jenetics.ext.moea.Pareto.front;
 
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -40,7 +40,8 @@ import io.jenetics.util.IntRange;
  * optimization.
  *
  * {@snippet lang="java":
- *  final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
+ * final int objectives = 2;
+ * final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
  *      v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
  *      Codecs.ofVector(
  *          DoubleRange.of(0, 1),
@@ -58,7 +59,7 @@ import io.jenetics.util.IntRange;
  *
  *  final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
  *      .limit(Limits.byFixedGeneration(50))
- *      .collect(MOEA.toParetoSet());
+ *      .collect(MOEA.toParetoSet(objectives));
  * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -80,14 +81,16 @@ public final class MOEA {
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}
 	 * @param <V> the multi object result type vector
+	 * @param objectives the dimensionality of the result vector {@code C};
+	 *        {@code Vec::length}
 	 * @return the pareto set collector
 	 * @throws IllegalArgumentException if the minimal pareto set {@code size}
 	 *         is smaller than one
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	Collector<EvolutionResult<G, V>, ?, ISeq<Phenotype<G, V>>>
-	toParetoSet() {
-		return toParetoSet(DEFAULT_SET_RANGE);
+	toParetoSet(final int objectives) {
+		return toParetoSet(DEFAULT_SET_RANGE, objectives);
 	}
 
 	/**
@@ -99,6 +102,8 @@ public final class MOEA {
 	 *        size of the pareto set is bigger than {@code size.getMax()},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
 	 *        Pareto set elements which are close to each other are removed first.
+	 * @param objectives the dimensionality of the result vector {@code C};
+	 *        {@code Vec::length}
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}
 	 * @param <V> the multi object result type vector
@@ -109,13 +114,13 @@ public final class MOEA {
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	Collector<EvolutionResult<G, V>, ?, ISeq<Phenotype<G, V>>>
-	toParetoSet(final IntRange size) {
+	toParetoSet(final IntRange size, final int objectives) {
 		return toParetoSet(
 			size,
 			Vec::dominance,
 			Vec::compare,
 			Vec::distance,
-			Vec::length
+			objectives
 		);
 	}
 
@@ -124,7 +129,7 @@ public final class MOEA {
 	 * value is part of the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     pareto front</a>.
 	 *
-	 * @see #toParetoSet(IntRange)
+	 * @see #toParetoSet(IntRange, int)
 	 *
 	 * @param size the allowed size range of the returned pareto set. If the
 	 *        size of the pareto set is bigger than {@code size.getMax()},
@@ -136,8 +141,8 @@ public final class MOEA {
 	 *        {@code C}
 	 * @param distance the distance function of two elements of the vector
 	 *        type {@code C}
-	 * @param dimension the dimensionality of the result vector {@code C}.
-	 *        Usually {@code Vec::length}.
+	 * @param objectives the dimensionality of the result vector {@code C};
+	 *        {@code Vec::length}
 	 * @param <G> the gene type
 	 * @param <C> the multi object result vector. E.g. {@code Vec<double[]>}
 	 * @return the pareto set collector
@@ -152,11 +157,12 @@ public final class MOEA {
 		final Comparator<? super C> dominance,
 		final ElementComparator<? super C> comparator,
 		final ElementDistance<? super C> distance,
-		final ToIntFunction<? super C> dimension
+		final int objectives
 	) {
 		requireNonNull(size);
 		requireNonNull(dominance);
 		requireNonNull(distance);
+		Requires.positive(objectives);
 
 		if (size.min() < 1) {
 			throw new IllegalArgumentException(format(
@@ -167,7 +173,7 @@ public final class MOEA {
 
 		return Collector.of(
 			() -> new Front<G, C>(
-				size, dominance, comparator, distance, dimension
+				size, dominance, comparator, distance, objectives
 			),
 			Front::add,
 			Front::merge,
@@ -184,7 +190,7 @@ public final class MOEA {
 		final Comparator<? super C> _dominance;
 		final ElementComparator<? super C> _comparator;
 		final ElementDistance<? super C> _distance;
-		final ToIntFunction<? super C> _dimension;
+		final int _objectives;
 
 		private Optimize _optimize;
 		private ParetoFront<Phenotype<G, C>> _front;
@@ -194,13 +200,13 @@ public final class MOEA {
 			final Comparator<? super C> dominance,
 			final ElementComparator<? super C> comparator,
 			final ElementDistance<? super C> distance,
-			final ToIntFunction<? super C> dimension
+			final int objectives
 		) {
 			_size = size;
 			_dominance = dominance;
 			_comparator = comparator;
 			_distance = distance;
-			_dimension = dimension;
+			_objectives = objectives;
 		}
 
 		void add(final EvolutionResult<G, C> result) {
@@ -236,7 +242,7 @@ public final class MOEA {
 					_size.min(),
 					this::compare,
 					_distance.map(Phenotype::fitness),
-					v -> _dimension.applyAsInt(v.fitness())
+					_objectives
 				);
 			}
 		}

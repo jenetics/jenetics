@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 
@@ -195,7 +194,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * @param comparator the element comparator used for calculating the
 	 *        crowded distance
 	 * @param distance the element distance measure
-	 * @param dimension the number of vector elements of {@code T}
+	 * @param objectives the number of vector elements of {@code T}
 	 * @return {@code this} trimmed pareto front
 	 * @throws NullPointerException if one of the objects is {@code null}
 	 */
@@ -203,18 +202,17 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		final int size,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
-		final ToIntFunction<? super T> dimension
+		final int objectives
 	) {
 		requireNonNull(comparator);
 		requireNonNull(distance);
-		requireNonNull(dimension);
 
 		if (size() > size) {
 			final double[] distances = NSGA2.crowdingDistance(
 				Seq.viewOf(_population),
 				comparator,
 				distance,
-				dimension.applyAsInt(_population.get(0))
+				objectives
 			);
 			final int[] indexes = ProxySorter.sort(distances);
 			revert(indexes);

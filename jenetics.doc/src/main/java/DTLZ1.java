@@ -19,9 +19,9 @@ import io.jenetics.ext.moea.NSGA2Selector;
 import io.jenetics.ext.moea.Vec;
 
 public class DTLZ1 {
-	private static final int VARIABLES = 4;
-	private static final int OBJECTIVES = 3;
-	private static final int K = VARIABLES - OBJECTIVES + 1;
+	static final int VARIABLES = 4;
+	static final int OBJECTIVES = 3;
+	static final int K = VARIABLES - OBJECTIVES + 1;
 
 	static final Problem<double[], DoubleGene, Vec<double[]>>
 	PROBLEM = Problem.of(
@@ -57,14 +57,14 @@ public class DTLZ1 {
 				new SimulatedBinaryCrossover<>(1),
 				new Mutator<>(1.0/VARIABLES))
 			.offspringSelector(new TournamentSelector<>(5))
-			.survivorsSelector(NSGA2Selector.ofVec())
+			.survivorsSelector(NSGA2Selector.ofVec(OBJECTIVES))
 			.minimizing()
 			.build();
 
 	public static void main(final String[] args) {
 		final ISeq<Vec<double[]>> front = ENGINE.stream()
 			.limit(2500)
-			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
+			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100), OBJECTIVES))
 			.map(Phenotype::fitness);
 	}
 

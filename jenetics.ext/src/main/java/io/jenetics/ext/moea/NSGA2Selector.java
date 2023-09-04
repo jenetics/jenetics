@@ -24,13 +24,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
@@ -61,7 +61,7 @@ public class NSGA2Selector<
 	private final Comparator<Phenotype<G, C>> _dominance;
 	private final ElementComparator<Phenotype<G, C>> _comparator;
 	private final ElementDistance<Phenotype<G, C>> _distance;
-	private final ToIntFunction<Phenotype<G, C>> _dimension;
+	private final int _objectives;
 
 	/**
 	 * Creates a new {@code NSGA2Selector} with the functions needed for
@@ -72,32 +72,31 @@ public class NSGA2Selector<
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
-	 *     Vec<T>::length
+	 *     objectives
 	 * );
 	 * }
 	 *
-	 * @see #ofVec()
+	 * @see #ofVec(int)
 	 *
 	 * @param dominance the pareto dominance comparator
 	 * @param comparator the vector element comparator
 	 * @param distance the vector element distance
-	 * @param dimension the dimensionality of vector type {@code C}
+	 * @param objectives the dimensionality of vector type {@code C}
 	 */
 	public NSGA2Selector(
 		final Comparator<? super C> dominance,
 		final ElementComparator<? super C> comparator,
 		final ElementDistance<? super C> distance,
-		final ToIntFunction<? super C> dimension
+		final int objectives
 	) {
 		requireNonNull(dominance);
 		requireNonNull(comparator);
 		requireNonNull(distance);
-		requireNonNull(dimension);
 
 		_dominance = (a, b) -> dominance.compare(a.fitness(), b.fitness());
 		_comparator = comparator.map(Phenotype::fitness);
 		_distance = distance.map(Phenotype::fitness);
-		_dimension = v -> dimension.applyAsInt(v.fitness());
+		_objectives = Requires.positive(objectives);
 	}
 
 	@Override
@@ -112,7 +111,7 @@ public class NSGA2Selector<
 			_dominance,
 			_comparator,
 			_distance,
-			_dimension.applyAsInt(population.get(0))
+			_objectives
 		);
 
 		final int[] idx = ProxySorter.sort(
@@ -145,7 +144,7 @@ public class NSGA2Selector<
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
-	 *     Vec<T>::length
+	 *     objectives
 	 * );
 	 * }
 	 *
@@ -155,12 +154,12 @@ public class NSGA2Selector<
 	 * @return a new selector for the given result type {@code V}
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
-	NSGA2Selector<G, V> ofVec() {
+	NSGA2Selector<G, V> ofVec(final int objectives) {
 		return new NSGA2Selector<>(
 			Vec::dominance,
 			Vec::compare,
 			Vec::distance,
-			Vec::length
+			objectives
 		);
 	}
 

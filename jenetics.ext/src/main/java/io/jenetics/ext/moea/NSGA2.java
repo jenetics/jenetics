@@ -43,7 +43,7 @@ public final class NSGA2 {
 
 	/**
 	 * The crowding distance value of a solution provides an estimate of the
-	 * density of solutions surrounding that solution. The <em>crowding
+	 * solution density surrounding that solution. The <em>crowding
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
 	 *
