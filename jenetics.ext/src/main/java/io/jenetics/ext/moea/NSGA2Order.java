@@ -59,14 +59,14 @@ final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 					: dominance.reversed()
 			);
 
-			_dist = NSGA2.crowdingDistance(
-				population,
-				opt == Optimize.MAXIMUM
-					? comparator
-					: comparator.reversed(),
-				distance,
-				objectives
-			);
+			_dist = new CrowdingDistance<>(
+					opt == Optimize.MAXIMUM
+						? comparator
+						: comparator.reversed(),
+					distance,
+					objectives
+				)
+				.apply(population);
 		}
 	}
 

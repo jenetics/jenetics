@@ -208,12 +208,13 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		requireNonNull(distance);
 
 		if (size() > size) {
-			final double[] distances = NSGA2.crowdingDistance(
-				Seq.viewOf(_population),
-				comparator,
-				distance,
-				objectives
-			);
+			final double[] distances = new CrowdingDistance<>(
+					comparator,
+					distance,
+					objectives
+				)
+				.apply(Seq.viewOf(_population));
+
 			final int[] indexes = ProxySorter.sort(distances);
 			revert(indexes);
 
