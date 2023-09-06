@@ -62,6 +62,15 @@ public final class Basics {
 		return result;
 	}
 
+	public static double distance(double[] p1, double[] p2) {
+		double sum = 0;
+		for (int i = 0; i < p1.length; i++) {
+			final double dp = p1[i] - p2[i];
+			sum += dp * dp;
+		}
+		return Math.sqrt(sum);
+	}
+
 	/**
 	 * Component wise division of the given double array.
 	 *

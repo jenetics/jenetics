@@ -17,23 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.moea.weights;
+
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.moea.Vec;
 
 /**
+ * Methods for calculating reference points (weights) on the hyper-plane.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.ext {
-	requires transitive io.jenetics.base;
+public record Weights(ISeq<Vec<double[]>> values) {
 
-	exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.grammar;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.moea.weights;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
-
-	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
-	exports io.jenetics.ext.internal.util to io.jenetics.prog;
 }

@@ -48,7 +48,7 @@ public class CrowdingDistanceTest {
 
 		final double[] distance = CrowdingDistance
 			.<double[]>ofVec(objectives)
-			.apply(points);
+			.calculate(points);
 
 		Assert.assertEquals(
 			distance,

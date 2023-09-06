@@ -69,7 +69,7 @@ public record CrowdingDistance<T>(
 	 * @return the crowded distances of the {@code set} points
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public double[] apply(final BaseSeq<? extends T> set) {
+	public double[] calculate(final BaseSeq<? extends T> set) {
 		final double[] result = new double[set.length()];
 
 		if (set.length() < 3) {
