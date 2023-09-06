@@ -37,8 +37,8 @@ import io.jenetics.util.ProxySorter;
  */
 final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 
-	private final int[] _rank;
-	private final double[] _dist;
+	private final int[] _ranks;
+	private final double[] _distances;
 
 	NSGA2Order(
 		final BaseSeq<? extends T> population,
@@ -49,24 +49,25 @@ final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 		final int objectives
 	) {
 		if (population.isEmpty()) {
-			_rank = new int[0];
-			_dist = new double[0];
+			_ranks = new int[0];
+			_distances = new double[0];
 		} else {
-			_rank = Pareto.rank(
+			_ranks = Pareto.ranks(
 				population,
 				opt == Optimize.MAXIMUM
 					? dominance
 					: dominance.reversed()
 			);
 
-			_dist = new CrowdingDistance<>(
-					opt == Optimize.MAXIMUM
-						? comparator
-						: comparator.reversed(),
-					distance,
-					objectives
-				)
-				.apply(population);
+			final var dist = new CrowdingDistance<>(
+				opt == Optimize.MAXIMUM
+					? comparator
+					: comparator.reversed(),
+				distance,
+				objectives
+			);
+
+			_distances = dist.calculate(population);
 		}
 	}
 
@@ -86,7 +87,7 @@ final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 	}
 
 	private boolean cco(final int i, final int j) {
-		return _rank[i] < _rank[j] ||
-			(_rank[i] == _rank[j] && _dist[i] > _dist[j]);
+		return _ranks[i] < _ranks[j] ||
+			(_ranks[i] == _ranks[j] && _distances[i] > _distances[j]);
 	}
 }

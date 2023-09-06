@@ -94,7 +94,7 @@ public class ParetoTest {
 			.append(rank3)
 			.append(rank4);
 
-		final int[] rank = Pareto.rank(points);
+		final int[] rank = Pareto.ranks(points);
 		Assert.assertEquals(
 			IntStream.range(0, points.size())
 				.filter(i -> rank[i] == 0)
@@ -147,7 +147,7 @@ public class ParetoTest {
 			.append(rank3)
 			.append(rank4);
 
-		final int[] rank = Pareto.rank(points, (u, v) -> v.dominance(u));
+		final int[] rank = Pareto.ranks(points, (u, v) -> v.dominance(u));
 		Assert.assertEquals(
 			IntStream.range(0, points.size())
 				.filter(i -> rank[i] == 0)

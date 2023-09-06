@@ -49,7 +49,7 @@ public final class Pareto {
 	 * ************************************************************************/
 
 	/**
-	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
+	 * Calculates the <em>non-domination</em> ranks of the given input {@code set},
 	 * using the <em>natural</em> order of the elements as <em>dominance</em>
 	 * measure.
 	 *
@@ -69,12 +69,12 @@ public final class Pareto {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] rank(final BaseSeq<? extends Vec<T>> set) {
-		return rank(set, Vec::dominance);
+	public static <T> int[] ranks(final BaseSeq<? extends Vec<T>> set) {
+		return ranks(set, Vec::dominance);
 	}
 
 	/**
-	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
+	 * Calculates the <em>non-domination</em> ranks of the given input {@code set},
 	 * using the given {@code dominance} comparator.
 	 *
 	 * @apiNote
@@ -94,7 +94,7 @@ public final class Pareto {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] rank(
+	public static <T> int[] ranks(
 		final BaseSeq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {

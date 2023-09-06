@@ -213,7 +213,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 					distance,
 					objectives
 				)
-				.apply(Seq.viewOf(_population));
+				.calculate(Seq.viewOf(_population));
 
 			final int[] indexes = ProxySorter.sort(distances);
 			revert(indexes);
