@@ -17,23 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.moea;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
- */
-@SuppressWarnings("module")
-module io.jenetics.ext {
-	requires transitive io.jenetics.base;
+import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-    exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.grammar;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.moea.weights;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
+import io.jenetics.util.ISeq;
 
-	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
-	exports io.jenetics.ext.internal.util to io.jenetics.prog;
+public record Solutions<T>(int objectives, ISeq<Vec<T>> values)
+	implements Iterable<Vec<T>>
+{
+
+	@Override
+	public Iterator<Vec<T>> iterator() {
+		return values.iterator();
+	}
+
+	public Stream<Vec<T>> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 }

@@ -36,7 +36,6 @@ extra["moduleName"] = "io.jenetics.ext"
 
 dependencies {
 	api(project(":jenetics"))
-	implementation(libs.commons.math)
 
 	testImplementation(libs.commons.math)
 	testImplementation(libs.testng)

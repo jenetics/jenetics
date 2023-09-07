@@ -47,7 +47,7 @@ public final class NSGA3 {
 	/**
 	 * Calculates the intercepts between the hyperplane formed by the extreme
 	 * points and each axis.  The original paper (1) is unclear how to handle
-	 * degenerate cases, which occurs more frequently at larger dimensions.  In
+	 * degenerate cases, which occur more frequently in larger dimensions.  In
 	 * this implementation, we simply use the nadir point for scaling.
 	 *
 	 * @return an array of the intercept points for each objective
@@ -62,16 +62,12 @@ public final class NSGA3 {
 
 		try {
 			double[] b = new double[objectives];
+			Arrays.fill(b, 1.0);
 			double[][] A = new double[objectives][objectives];
 
-			for (int i = 0; i < objectives; i++) {
+			for (int i = 0; i < objectives; ++i) {
 				double[] obj = null; //(double[])extremePoints[i].getAttribute(NORMALIZED_OBJECTIVES);
-
-				b[i] = 1.0;
-
-				for (int j = 0; j < objectives; j++) {
-					A[i][j] = obj[j];
-				}
+                System.arraycopy(obj, 0, A[i], 0, objectives);
 			}
 
 			double[] result = lsolve(A, b);
@@ -84,7 +80,7 @@ public final class NSGA3 {
 		}
 
 		if (!degenerate) {
-			// avoid small or negative intercepts
+			// Avoid small or negative intercepts.
 			for (int i = 0; i < objectives; i++) {
 				if (intercepts[i] < 0.001) {
 					degenerate = true;
@@ -100,7 +96,8 @@ public final class NSGA3 {
 				for (int i = 0; i < objectives; i++) {
 					intercepts[i] = Math.max(
 						Math.max(intercepts[i], EPS),
-						0); //solution.getObjective(i));
+						solution.data()[i]
+					);
 				}
 			}
 		}
