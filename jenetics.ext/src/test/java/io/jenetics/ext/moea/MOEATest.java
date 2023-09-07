@@ -24,12 +24,14 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.math3.primes.Primes;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -100,6 +102,23 @@ public class MOEATest {
 			.collect(Collectors.toSet());
 
 		Assert.assertTrue(missing.size() < 10, "Expected < 10, got " + missing.size());
+	}
+
+	protected int[] generateFirstKPrimes(int k) {
+		int[] primes = new int[k];
+		primes[0] = 2;
+
+		for (int i = 1; i < k; i++) {
+			primes[i] = Primes.nextPrime(primes[i-1] + 1);
+		}
+
+		return primes;
+	}
+
+	@Test
+	public void test() {
+		int[] primes = generateFirstKPrimes(250);
+		System.out.println(Arrays.toString(primes));
 	}
 
 }

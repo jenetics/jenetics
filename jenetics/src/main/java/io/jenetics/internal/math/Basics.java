@@ -62,13 +62,25 @@ public final class Basics {
 		return result;
 	}
 
-	public static double distance(double[] a, double[] b) {
+	public static double distance(final double[] a, final double[] b) {
 		double sum = 0;
 		for (int i = 0; i < a.length; i++) {
 			final double dp = a[i] - b[i];
 			sum += dp * dp;
 		}
 		return Math.sqrt(sum);
+	}
+
+	public static long binomial(int n, int k) {
+		if (k > n - k) {
+			k = n - k;
+		}
+
+		long binom = 1;
+		for (int i = 1; i <= k; ++i) {
+			binom = Math.multiplyExact(binom, n + 1 - i) / i;
+		}
+		return binom;
 	}
 
 	/**
