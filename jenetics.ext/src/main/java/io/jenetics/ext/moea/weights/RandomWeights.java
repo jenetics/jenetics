@@ -118,7 +118,7 @@ public record RandomWeights(int objectives, int size, RandomGenerator random)
 			candidates.remove(weight);
 		}
 
-		return new Weights(ISeq.of(weights.stream().map(Vec::of).toList()));
+		return Weights.of(weights);
 	}
 
 }

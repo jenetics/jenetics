@@ -62,10 +62,10 @@ public final class Basics {
 		return result;
 	}
 
-	public static double distance(double[] p1, double[] p2) {
+	public static double distance(double[] a, double[] b) {
 		double sum = 0;
-		for (int i = 0; i < p1.length; i++) {
-			final double dp = p1[i] - p2[i];
+		for (int i = 0; i < a.length; i++) {
+			final double dp = a[i] - b[i];
 			sum += dp * dp;
 		}
 		return Math.sqrt(sum);

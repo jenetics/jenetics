@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.moea.weights;
 
+import java.util.List;
+
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.moea.Vec;
@@ -31,5 +33,10 @@ import io.jenetics.ext.moea.Vec;
  * @since !__version__!
  */
 public record Weights(ISeq<Vec<double[]>> values) {
+
+
+	public static Weights of(final List<double[]> weights) {
+		return new Weights(ISeq.of(weights.stream().map(Vec::of).toList()));
+	}
 
 }
