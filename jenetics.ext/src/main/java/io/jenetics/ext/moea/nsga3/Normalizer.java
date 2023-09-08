@@ -17,58 +17,68 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.moea;
+package io.jenetics.ext.moea.nsga3;
+
+import static io.jenetics.ext.internal.util.Finding.argmin;
 
 import java.util.Arrays;
+import java.util.function.ToDoubleFunction;
 
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.moea.weights.Weights;
 import io.jenetics.util.MSeq;
 
+import io.jenetics.ext.moea.Solutions;
+import io.jenetics.ext.moea.Vec;
+
 /**
+ * This class implements the <em>normalization</em> step of the NSGA3 algorithm,
+ * as described in (1).
+ * <p>
+ * <img alt="Normalization" src="doc-files/normalize.png" width="500">
+ * </p>
+ * <b>References:</b>
+ * <ol>
+ *   <li>
+ *       Rajnikant H. Bhesdadiya, Indrajit N. Trivedi, Pradeep Jangir,
+ *       Narottam Jangir and Arvind Kumar.<em> An NSGA-III algorithm for solving
+ *       multi-objective economic/environmental dispatch problem</em>,
+ *       Cogent Engineering, 3:1,
+ *       <a href="http://dx.doi.org/10.1080/23311916.2016.1269383">
+ *           DOI: 10.1080/23311916.2016.1269383</a>
+ *   </li>
+ * </ol>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record Normalizer(Weights weights) {
+public final class Normalizer {
+
+	private Normalizer() {
+	}
 
 	private static final double EPS = 1e-10;
 
-	/**
-	 * Calculates the ideal point of the given {@code solution}.
-	 *
-	 * @param solutions the solution for which to calculate the ideal point
-	 * @return the ideal point
-	 */
-	static Vec<double[]> ideal(final Solutions<double[]> solutions) {
-		final var point = new double[solutions.objectives()];
-		Arrays.fill(point, Double.POSITIVE_INFINITY);
 
-		for (var solution : solutions) {
-			for (int i = 0; i < solutions.objectives(); ++i) {
-				point[i] = Math.max(point[i], solution.data()[i]);
-			}
-		}
+	public static Solutions<double[]> normalize(final Solutions<double[]> solutions) {
+		// Compute ideal points.
+		final Vec<double[]> z_j_min = Z_j_min(solutions);
+		assert z_j_min.length() == solutions.objectives();
 
-		return Vec.of(point);
-	}
+		// Translate objectives.
+		final Solutions<double[]> translated = translate(solutions, z_j_min);
+		assert solutions.values().size() == translated.values().size();
 
-	static Solutions<double[]> translate(
-		final Solutions<double[]> solutions,
-		final Vec<double[]> point
-	) {
-		final var result = solutions.stream()
-			.map(solution -> {
-				final var p = solution.data().clone();
-				for (int i = 0; i < p.length; ++i) {
-					p[i] -= point.data()[i];
-				}
-				return Vec.of(p);
-			})
-			.collect(ISeq.toISeq());
+		// Compute extreme points.
+		final ISeq<Vec<double[]>> z_j_max = Z_j_max(translated);
+		assert z_j_max.size() == solutions.objectives();
 
-		return new Solutions<>(result);
+		// Compute intercepts.
+		final double[] intercepts = intercepts(solutions, z_j_max);
+		assert intercepts.length == solutions.objectives();
+
+		// Normalize objectives.
+		return normalize(translated, intercepts);
 	}
 
 	/**
@@ -79,8 +89,7 @@ public record Normalizer(Weights weights) {
 	 *
 	 * @return an array of the intercept points for each objective
 	 */
-	static double[] calculateIntercepts(final Solutions<double[]> solutions) {
-		ISeq<Vec<double[]>> extremePoints = extremePoints(solutions);
+	static double[] intercepts(final Solutions<double[]> solutions, final ISeq<Vec<double[]>> z_j_max) {
 		boolean degenerate = false;
 		double[] intercepts = new double[solutions.objectives()];
 
@@ -90,7 +99,8 @@ public record Normalizer(Weights weights) {
 			final var A = new double[solutions.objectives()][solutions.objectives()];
 
 			for (int i = 0; i < solutions.objectives(); ++i) {
-				double[] obj = null; //(double[])extremePoints[i].getAttribute(NORMALIZED_OBJECTIVES);
+				//(double[])extremePoints[i].getAttribute(NORMALIZED_OBJECTIVES);
+				final double[] obj = z_j_max.get(i).data();
 				System.arraycopy(obj, 0, A[i], 0, solutions.objectives());
 			}
 
@@ -99,7 +109,7 @@ public record Normalizer(Weights weights) {
 			for (int i = 0; i < solutions.objectives(); i++) {
 				intercepts[i] = 1.0 / result[i];
 			}
-		} catch (RuntimeException e) {
+		} catch (ArithmeticException e) {
 			degenerate = true;
 		}
 
@@ -129,78 +139,106 @@ public record Normalizer(Weights weights) {
 		return intercepts;
 	}
 
+	static Solutions<double[]> normalize(
+		final Solutions<double[]> solutions,
+		final double[] intercepts
+	) {
+		for (var solution : solutions) {
+			final double[] objectives = solution.data();
+			for (int i = 0; i < solutions.objectives(); ++i) {
+				objectives[i] /= intercepts[i];
+			}
+		}
+
+		return solutions;
+	}
+
 	/**
-	 * Returns the extreme points for all objectives.
+	 * Calculates the <em>ideal point</em> of the given {@code solution}.
+	 *
+	 * @param solutions the solution for which to calculate the ideal point
+	 * @return the ideal point
+	 */
+	static Vec<double[]> Z_j_min(final Solutions<double[]> solutions) {
+		final var point = new double[solutions.objectives()];
+		Arrays.fill(point, Double.POSITIVE_INFINITY);
+
+		for (var solution : solutions) {
+			for (int i = 0; i < solutions.objectives(); ++i) {
+				point[i] = Math.max(point[i], solution.data()[i]);
+			}
+		}
+
+		return Vec.of(point);
+	}
+
+	static Solutions<double[]> translate(
+		final Solutions<double[]> solutions,
+		final Vec<double[]> z_j_min
+	) {
+		final var result = solutions.stream()
+			.map(solution -> {
+				final var p = solution.data().clone();
+				for (int i = 0; i < p.length; ++i) {
+					p[i] -= z_j_min.data()[i];
+				}
+				return Vec.of(p);
+			})
+			.collect(ISeq.toISeq());
+
+		return new Solutions<>(result);
+	}
+
+	/**
+	 * Returns the <em>extreme points</em> for all objectives.
 	 *
 	 * @return an array of extreme points, each index corresponds to each
 	 *         objective
 	 */
-	private static ISeq<Vec<double[]>> extremePoints(final Solutions<double[]> solutions) {
+	static ISeq<Vec<double[]>> Z_j_max(final Solutions<double[]> solutions) {
 		final MSeq<Vec<double[]>> result = MSeq.ofLength(solutions.objectives());
 
 		for (int i = 0; i < result.length(); i++) {
-			result.set(i, extremePoint(solutions, i));
+			result.set(i, Z_j_max(solutions, i));
 		}
 
 		return result.toISeq();
 	}
 
-	// z_j_max
 	/**
 	 * Returns the extreme point in the given objective.  The extreme point is
 	 * the point that minimizes the achievement of scalarizing function using a
 	 * reference point near the given objective.
-	 * <p>
-	 * The NSGA-III paper (1) does not provide any details on the scalarizing
-	 * function, but an earlier paper by the authors (2) where some precursor
-	 * experiments are performed does define a possible function, replicated
-	 * below.
 	 *
 	 * @param objective the objective index
 	 * @return the extreme point in the given objective
 	 */
-	private static Vec<double[]> extremePoint(
+	static Vec<double[]> Z_j_max(
 		final Solutions<double[]> solutions,
 		final int objective
 	) {
+		// Initialize the weight vector for the given objective.
 		double[] weights = new double[solutions.objectives()];
-		Arrays.fill(weights, 0.000001);
+		Arrays.fill(weights, Math.pow(10, -6));
 		weights[objective] = 1;
 
-		Vec<double[]> result = null;
-		double resultASF = Double.POSITIVE_INFINITY;
-
-		for (var solution : solutions) {
-			double solutionASF = achievementScalarizingFunction(solution, weights);
-
-			if (solutionASF < resultASF) {
-				result = solution;
-				resultASF = solutionASF;
-			}
-		}
-
-		return result;
+		return argmin(solutions, ASF(weights));
 	}
 
-
 	/**
-	 * The Chebyshev achievement scalarizing function.
+	 * The Chebyshev achievement scalarizing function (ASF).
 	 *
-	 * @param solution the normalized solution
 	 * @param weights the reference point (weight vector)
-	 * @return the value of the scalarizing function
+	 * @return the scalarizing function for the given weights
 	 */
-	private static double achievementScalarizingFunction(
-		final Vec<double[]> solution,
-		final double[] weights
-	) {
-		double max = Double.NEGATIVE_INFINITY;
-
-		for (int i = 0; i < solution.length(); ++i) {
-			max = Math.max(max, solution.data()[i]/weights[i]);
-		}
-
-		return max;
+	static ToDoubleFunction<Vec<double[]>> ASF(final double[] weights) {
+		return solution -> {
+			double max = Double.NEGATIVE_INFINITY;
+			for (int i = 0; i < solution.length(); ++i) {
+				max = Math.max(max, solution.data()[i]/weights[i]);
+			}
+			return max;
+		};
 	}
 
 	/**
@@ -213,7 +251,7 @@ public record Normalizer(Weights weights) {
 	 * @return the solution for the given equation
 	 * @throws ArithmeticException if {@code A} is (near) singular
 	 */
-	private static double[] solve(final double[][] A, final double[] b) {
+	static double[] solve(final double[][] A, final double[] b) {
 		final int n  = b.length;
 
 		for (int p = 0; p < n; ++p) {
@@ -259,6 +297,5 @@ public record Normalizer(Weights weights) {
 
 		return x;
 	}
-
 
 }
