@@ -56,6 +56,14 @@ public record Solutions<T>(ISeq<Vec<T>> values, int objectives)
 		this(values, values.nonEmpty() ? values.get(0).length() : 0);
 	}
 
+	public int size() {
+		return values().size();
+	}
+
+	public Vec<T> get(final int index) {
+		return values.get(index);
+	}
+
 	@Override
 	public Iterator<Vec<T>> iterator() {
 		return values.iterator();

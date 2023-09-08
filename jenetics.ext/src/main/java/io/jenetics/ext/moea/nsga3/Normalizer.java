@@ -35,18 +35,6 @@ import io.jenetics.ext.moea.Vec;
  * as described in (1).
  * <p>
  * <img alt="Normalization" src="doc-files/normalize.png" width="500">
- * </p>
- * <b>References:</b>
- * <ol>
- *   <li>
- *       Rajnikant H. Bhesdadiya, Indrajit N. Trivedi, Pradeep Jangir,
- *       Narottam Jangir and Arvind Kumar.<em> An NSGA-III algorithm for solving
- *       multi-objective economic/environmental dispatch problem</em>,
- *       Cogent Engineering, 3:1,
- *       <a href="http://dx.doi.org/10.1080/23311916.2016.1269383">
- *           DOI: 10.1080/23311916.2016.1269383</a>
- *   </li>
- * </ol>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -67,7 +55,7 @@ public final class Normalizer {
 
 		// Translate objectives.
 		final Solutions<double[]> translated = translate(solutions, z_j_min);
-		assert solutions.values().size() == translated.values().size();
+		assert solutions.size() == translated.size();
 
 		// Compute extreme points.
 		final ISeq<Vec<double[]>> z_j_max = Z_j_max(translated);

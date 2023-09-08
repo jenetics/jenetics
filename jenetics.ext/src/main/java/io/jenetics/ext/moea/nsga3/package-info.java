@@ -19,6 +19,20 @@
  */
 
 /**
+ * This package contains classes implementing the <em>NSGA3</em> algorithm.
+ * <p>
+ * <b>References:</b>
+ * <ol>
+ *   <li>
+ *       Rajnikant H. Bhesdadiya, Indrajit N. Trivedi, Pradeep Jangir,
+ *       Narottam Jangir and Arvind Kumar.<em> An NSGA-III algorithm for solving
+ *       multi-objective economic/environmental dispatch problem</em>,
+ *       Cogent Engineering, 3:1,
+ *       <a href="http://dx.doi.org/10.1080/23311916.2016.1269383">
+ *           DOI: 10.1080/23311916.2016.1269383</a>
+ *   </li>
+ * </ol>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

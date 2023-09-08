@@ -31,6 +31,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.stream.IntStream;
 
 /**
@@ -40,10 +41,10 @@ import java.util.stream.IntStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.2
  */
-public final /*record*/ class IntRange implements Serializable {
+public final /*record*/ class IntRange implements Iterable<Integer>, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 2L;
@@ -89,6 +90,11 @@ public final /*record*/ class IntRange implements Serializable {
 	 */
 	public int size() {
 		return _max - _min;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		return stream().iterator();
 	}
 
 	/**
