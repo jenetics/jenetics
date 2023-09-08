@@ -19,15 +19,42 @@
  */
 package io.jenetics.ext.moea;
 
+import io.jenetics.util.ISeq;
+
 import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.util.ISeq;
-
-public record Solutions<T>(int objectives, ISeq<Vec<T>> values)
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+public record Solutions<T>(ISeq<Vec<T>> values, int objectives)
 	implements Iterable<Vec<T>>
 {
+
+	public Solutions {
+		if (values.isEmpty()) {
+			throw new IllegalArgumentException("Empty solutions.");
+		}
+
+		final int objs = values.stream()
+			.map(Vec::length)
+			.reduce(objectives, Math::max);
+
+		if (objs != objectives) {
+			throw new IllegalArgumentException("""
+				Expected all solutions to have %d objectives, but maximal \
+				objectives was %d.
+				""".formatted(objectives, objs)
+			);
+		}
+	}
+
+	public Solutions(ISeq<Vec<T>> values) {
+		this(values, values.nonEmpty() ? values.get(0).length() : 0);
+	}
 
 	@Override
 	public Iterator<Vec<T>> iterator() {
@@ -37,4 +64,5 @@ public record Solutions<T>(int objectives, ISeq<Vec<T>> values)
 	public Stream<Vec<T>> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
+
 }
