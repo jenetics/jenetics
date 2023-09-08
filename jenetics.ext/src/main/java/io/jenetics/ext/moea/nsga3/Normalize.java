@@ -40,9 +40,9 @@ import io.jenetics.ext.moea.Vec;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Normalizer {
+public final class Normalize {
 
-	private Normalizer() {
+	private Normalize() {
 	}
 
 	private static final double EPS = 1e-10;
