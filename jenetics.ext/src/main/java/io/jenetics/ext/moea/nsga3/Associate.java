@@ -53,13 +53,13 @@ public record Associate(Weights weights) {
 	 * @return the association of solutions to reference points
 	 */
 	public ISeq<List<Vec<double[]>>> associate(final Solutions<double[]> solutions) {
-		final var result = MSeq.<List<Vec<double[]>>>ofLength(weights.size())
+		final var result = MSeq.<List<Vec<double[]>>>ofLength(weights.length())
 			.fill(ArrayList::new)
 			.toISeq();
 
 		for (var solution : solutions) {
 			final int minWeightIndex = Finding.<Integer>argmin(
-				IntRange.of(0, weights.size()),
+				IntRange.of(0, weights.length()),
 				i -> distance(weights.get(i).data(), solution.data())
 			);
 

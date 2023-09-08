@@ -55,7 +55,7 @@ public final class Normalizer {
 
 		// Translate objectives.
 		final Solutions<double[]> translated = translate(solutions, z_j_min);
-		assert solutions.size() == translated.size();
+		assert solutions.length() == translated.length();
 
 		// Compute extreme points.
 		final ISeq<Vec<double[]>> z_j_max = Z_j_max(translated);
@@ -266,7 +266,7 @@ public final class Normalizer {
 
 				for (int j = p; j < n; j++) {
 					//A[i][j] -= alpha*A[p][j];
-					A[i][j] = -Math.fma(alpha, A[p][j], A[i][j]);
+					A[i][j] = -Math.fma(alpha, A[p][j], -A[i][j]);
 				}
 			}
 		}

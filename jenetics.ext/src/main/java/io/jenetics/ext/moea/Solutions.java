@@ -19,19 +19,15 @@
  */
 package io.jenetics.ext.moea;
 
-import io.jenetics.util.ISeq;
-
-import java.util.Iterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record Solutions<T>(ISeq<Vec<T>> values, int objectives)
-	implements Iterable<Vec<T>>
+public record Solutions<T>(BaseSeq<Vec<T>> values, int objectives)
+	implements BaseSeq<Vec<T>>
 {
 
 	public Solutions {
@@ -52,25 +48,18 @@ public record Solutions<T>(ISeq<Vec<T>> values, int objectives)
 		}
 	}
 
-	public Solutions(ISeq<Vec<T>> values) {
+	public Solutions(BaseSeq<Vec<T>> values) {
 		this(values, values.nonEmpty() ? values.get(0).length() : 0);
 	}
 
-	public int size() {
-		return values().size();
-	}
-
-	public Vec<T> get(final int index) {
-		return values.get(index);
+	@Override
+	public int length() {
+		return values().length();
 	}
 
 	@Override
-	public Iterator<Vec<T>> iterator() {
-		return values.iterator();
-	}
-
-	public Stream<Vec<T>> stream() {
-		return StreamSupport.stream(spliterator(), false);
+	public Vec<T> get(final int index) {
+		return values().get(index);
 	}
 
 }

@@ -19,11 +19,9 @@
  */
 package io.jenetics.ext.moea.weights;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.moea.Vec;
@@ -35,25 +33,18 @@ import io.jenetics.ext.moea.Vec;
  * @version !__version__!
  * @since !__version__!
  */
-public record Weights(ISeq<Vec<double[]>> values)
-	implements Iterable<Vec<double[]>>
+public record Weights(BaseSeq<Vec<double[]>> values)
+	implements BaseSeq<Vec<double[]>>
 {
 
-	public int size() {
-		return values().size();
-	}
-
-	public Vec<double[]> get(final int index) {
-		return values.get(index);
+	@Override
+	public int length() {
+		return values().length();
 	}
 
 	@Override
-	public Iterator<Vec<double[]>> iterator() {
-		return values.iterator();
-	}
-
-	public Stream<Vec<double[]>> stream() {
-		return StreamSupport.stream(spliterator(), false);
+	public Vec<double[]> get(final int index) {
+		return values().get(index);
 	}
 
 	public static Weights of(final List<double[]> weights) {
