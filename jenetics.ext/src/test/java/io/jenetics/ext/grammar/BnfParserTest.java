@@ -20,6 +20,7 @@
 package io.jenetics.ext.grammar;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.ext.grammar.Bnf.BNF;
 
 import java.util.random.RandomGenerator;
 
@@ -87,6 +88,21 @@ public class BnfParserTest {
 		final var parsedBnf = parser.parse();
 
 		assertThat(parsedBnf).isEqualTo(cfg);
+	}
+
+	@Test
+	public void template() {
+		var x = "XXX";
+		final var cfg = BNF."""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= \{x}
+			<var>  ::= y
+			<num>  ::= 0 | 1 | 2 | 3 | 4
+			<num>  ::= 5 | 6 | 7 | 8 | 9
+			""";
+
+		System.out.println(cfg);
 	}
 
 }

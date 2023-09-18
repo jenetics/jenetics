@@ -47,6 +47,10 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * @version 7.1
  */
 public final class Bnf {
+
+	public static final StringTemplate.Processor<Cfg<String>, RuntimeException>
+	BNF = template -> Bnf.parse(template.interpolate());
+
 	private Bnf() {}
 
 	static boolean isSymbolChar(final int ch) {
