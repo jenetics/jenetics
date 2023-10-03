@@ -33,6 +33,8 @@ pluginManagement {
 dependencyResolutionManagement {
 	versionCatalogs {
 		create("libs") {
+			//plugin("jmh", "me.champeau.jmh:0.7.1")
+
 			library("assertj", "org.assertj:assertj-core:3.24.2")
 			library("commons-math", "org.apache.commons:commons-math3:3.6.1")
 			library("equalsverifier", "nl.jqno.equalsverifier:equalsverifier:3.15.1")
