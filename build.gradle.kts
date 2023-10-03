@@ -27,7 +27,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.7.1" apply false
 }
 
 rootProject.version = Jenetics.VERSION
