@@ -33,7 +33,7 @@ import io.jenetics.incubator.beans.description.Setter;
  * following code shows how to create (a transitive) list of all properties from
  * a given root object.
  * {@snippet lang="java":
- * final var root = ...;
+ * final var root = null; // @replace substring='null' replacement="..."
  * final List<Property> properties = Properties
  *     // Get all properties from the 'root' object which are defined
  *     // in the 'io.jenetics' package.
