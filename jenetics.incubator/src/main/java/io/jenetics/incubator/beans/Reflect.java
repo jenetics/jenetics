@@ -61,7 +61,7 @@ public final class Reflect {
 	 * Base interface used for matching {@link Type} objects.
 	 *
 	 * {@snippet lang="java":
-	 * final Type type = ...;
+	 * final Type type = null; // @replace substring='null' replacement="..."
 	 * if (ArrayType.of(type) instanceof ArrayType at) {
 	 *     System.out.println(at);
 	 * }
@@ -195,7 +195,7 @@ public final class Reflect {
 		 * Return a {@code OptionalType} instance if the given {@code type} is a
 		 * {@code Optional} class.
 		 * {@snippet lang="java":
-		 * final Type type = ...;
+		 * final Type type = null; // @replace substring='null' replacement="..."
 		 * if (OptionalType.of(type) instanceof OptionalType ot) {
 		 *     System.out.println(ot);
 		 * }
@@ -263,7 +263,7 @@ public final class Reflect {
 		 * Return an {@code ArrayType} instance if the given {@code type} is an
 		 * array class.
 		 * {@snippet lang="java":
-		 * final Type type = ...;
+		 * final Type type = null; // @replace substring='null' replacement="..."
 		 * if (ArrayType.of(type) instanceof ArrayType at) {
 		 *     System.out.println(at);
 		 * }
@@ -329,7 +329,7 @@ public final class Reflect {
 		 * Return a {@code ListType} instance if the given {@code type} is a
 		 * {@code List} class.
 		 * {@snippet lang="java":
-		 * final Type type = ...;
+		 * final Type type = null; // @replace substring='null' replacement="..."
 		 * if (ListType.of(type) instanceof ListType lt) {
 		 *     System.out.println(lt);
 		 * }
@@ -452,7 +452,7 @@ public final class Reflect {
 		 * Return a {@code RecordType} instance if the given {@code type} is a
 		 * {@code Record} class.
 		 * {@snippet lang="java":
-		 * final Type type = ...;
+		 * final Type type = null; // @replace substring='null' replacement="..."
 		 * if (RecordType.of(type) instanceof RecordType rt) {
 		 *     System.out.println(rt);
 		 * }
@@ -507,7 +507,7 @@ public final class Reflect {
 		 * Return a {@code BeanType} instance if the given {@code type} is a
 		 * bean class.
 		 * {@snippet lang="java":
-		 * final Type type = ...;
+		 * final Type type = null; // @replace substring='null' replacement="..."
 		 * if (BeanType.of(type) instanceof BeanType bt) {
 		 *     System.out.println(bt);
 		 * }
