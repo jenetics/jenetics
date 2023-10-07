@@ -32,7 +32,7 @@ plugins {
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.4-rc-3"
+	gradleVersion = "8.4"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -72,6 +72,10 @@ subprojects {
 
 			sourceCompatibility = JavaVersion.VERSION_21
 			targetCompatibility = JavaVersion.VERSION_21
+
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(21)
+			}
 		}
 
 		setupJava(project)
