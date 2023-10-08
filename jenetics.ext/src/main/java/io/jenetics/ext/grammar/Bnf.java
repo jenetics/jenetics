@@ -21,8 +21,12 @@ package io.jenetics.ext.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
+import static java.lang.StringTemplate.RAW;
 import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.internal.parser.ParsingException;
@@ -48,8 +52,44 @@ import io.jenetics.ext.internal.parser.ParsingException;
  */
 public final class Bnf {
 
-	public static final StringTemplate.Processor<Cfg<String>, RuntimeException>
-	BNF = template -> Bnf.parse(template.interpolate());
+	public static final StringTemplate.Processor<Cfg<?>, RuntimeException>
+	BNF = template -> {
+		final List<String> fragments = template.fragments();
+		final List<Object> values = template.values();
+
+		if (values.isEmpty()) {
+			return Bnf.parse(fragments.getFirst());
+		}
+
+		final var bnf = new StringBuilder();
+		bnf.append(fragments.get(0));
+
+		final var terminals = new HashMap<String, Cfg.Terminal<?>>();
+
+		for (int i = 0; i < values.size(); ++i) {
+			final var value = values.get(i);
+
+			switch (value) {
+				case String string -> bnf.append(string);
+				case Cfg.NonTerminal<?> nt -> bnf.append(format(nt));
+				case Cfg.Terminal<?> t -> {
+					final var name = UUID.randomUUID().toString();
+					terminals.put(name, t);
+					bnf.append(name);
+				}
+				case Object object -> {
+					final var name = UUID.randomUUID().toString();
+					terminals.put(name, Cfg.T(object));
+					bnf.append(name);
+				}
+			}
+
+			bnf.append(fragments.get(i + 1));
+		}
+
+		return Bnf.parse(bnf)
+			.flatMap(t -> terminals.getOrDefault(t.name(), t));
+	};
 
 	private Bnf() {}
 
@@ -58,6 +98,14 @@ public final class Bnf {
 			case '<', '>', '|', ':', '=' -> true;
 			default -> false;
 		};
+	}
+
+	void foo(StringTemplate template) {
+
+	}
+
+	void bar() {
+		foo(RAW."");
 	}
 
 	static boolean isStringChar(final char c) {
@@ -85,7 +133,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Cfg<String> parse(final String grammar) {
+	public static Cfg<String> parse(final CharSequence grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 
