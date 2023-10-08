@@ -21,8 +21,11 @@ package io.jenetics.ext.grammar;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isWhitespace;
+import static java.lang.StringTemplate.RAW;
 import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.internal.parser.ParsingException;
@@ -48,8 +51,39 @@ import io.jenetics.ext.internal.parser.ParsingException;
  */
 public final class Bnf {
 
-	public static final StringTemplate.Processor<Cfg<String>, RuntimeException>
-	BNF = template -> Bnf.parse(template.interpolate());
+	public static final StringTemplate.Processor<Cfg<?>, RuntimeException>
+	BNF = template -> {
+		final List<String> fragments = template.fragments();
+		final List<Object> values = template.values();
+
+		if (values.isEmpty()) {
+			return Bnf.parse(fragments.getFirst());
+		}
+
+		final var bnf = new StringBuilder();
+		bnf.append(fragments.get(0));
+
+		final var terminals = new HashMap<String, Cfg.Terminal<?>>();
+
+		for (int i = 0; i < values.size(); ++i) {
+			final var value = values.get(i);
+
+			switch (value) {
+				case Cfg.Terminal<?> t -> {
+					final var name = format(t);
+					terminals.put(name.substring(1, name.length() - 1), t);
+					bnf.append(format(t));
+				}
+				case Cfg.NonTerminal<?> nt -> bnf.append(format(nt));
+				default -> bnf.append(value);
+			}
+
+			bnf.append(fragments.get(i + 1));
+		}
+
+		return Bnf.parse(bnf.toString())
+			.map(t -> terminals.getOrDefault(t.name(), t).value());
+	};
 
 	private Bnf() {}
 
@@ -58,6 +92,14 @@ public final class Bnf {
 			case '<', '>', '|', ':', '=' -> true;
 			default -> false;
 		};
+	}
+
+	void foo(StringTemplate template) {
+
+	}
+
+	void bar() {
+		foo(RAW."");
 	}
 
 	static boolean isStringChar(final char c) {

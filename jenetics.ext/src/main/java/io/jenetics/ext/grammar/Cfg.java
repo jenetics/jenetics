@@ -514,6 +514,10 @@ public record Cfg<T>(
 		return new Terminal<>(name, value);
 	}
 
+	public static <T> Terminal<T> T(final T value) {
+		return new Terminal<>(String.valueOf(value), value);
+	}
+
 	/**
 	 * Factory method for creating a terminal symbol with the given
 	 * {@code name}.
