@@ -26,6 +26,7 @@ import static io.jenetics.ext.internal.parser.CharSequenceTokenizer.isAlphabetic
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.internal.parser.ParsingException;
@@ -69,20 +70,25 @@ public final class Bnf {
 			final var value = values.get(i);
 
 			switch (value) {
-				case Cfg.Terminal<?> t -> {
-					final var name = format(t);
-					terminals.put(name.substring(1, name.length() - 1), t);
-					bnf.append(format(t));
-				}
+				case String string -> bnf.append(string);
 				case Cfg.NonTerminal<?> nt -> bnf.append(format(nt));
-				default -> bnf.append(value);
+				case Cfg.Terminal<?> t -> {
+					final var name = UUID.randomUUID().toString();
+					terminals.put(name, t);
+					bnf.append(name);
+				}
+				case Object object -> {
+					final var name = UUID.randomUUID().toString();
+					terminals.put(name, Cfg.T(object));
+					bnf.append(name);
+				}
 			}
 
 			bnf.append(fragments.get(i + 1));
 		}
 
-		return Bnf.parse(bnf.toString())
-			.map(t -> terminals.getOrDefault(t.name(), t).value());
+		return Bnf.parse(bnf)
+			.flatMap(t -> terminals.getOrDefault(t.name(), t));
 	};
 
 	private Bnf() {}
@@ -127,7 +133,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Cfg<String> parse(final String grammar) {
+	public static Cfg<String> parse(final CharSequence grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 

@@ -96,7 +96,7 @@ import java.util.stream.Stream;
  * );
  * }
  *
- * @see Bnf#parse(String)
+ * @see Bnf#parse(CharSequence)
  *
  * @param <T> the terminal symbol value type
  *
@@ -357,6 +357,37 @@ public record Cfg<T>(
 		final Function<Terminal<T>, Terminal<A>> mapping = t -> cache
 			.computeIfAbsent(t, t2 -> new Terminal<>(t2.name(), mapper.apply(t2)));
 
+		return flatMap(mapping);
+	}
+
+	/**
+	 * Maps the values of the terminal symbols from type {@code T} to type
+	 * {@code A}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param mapper the mapper function
+	 * @param <A> the new value type of the terminal symbols
+	 * @return the mapped grammar
+	 * @throws NullPointerException if the given mapper is {@code null}
+	 */
+	public <A> Cfg<A> flatMap(
+		final Function<
+			? super Terminal<T>,
+			? extends Terminal<? extends A>
+		> mapper
+	) {
+		requireNonNull(mapper);
+
+		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
+
+		@SuppressWarnings("unchecked")
+		final Function<Terminal<T>, Terminal<A>>
+			fn = (Function<Terminal<T>, Terminal<A>>)mapper;
+
+		final Function<Terminal<T>, Terminal<A>> mapping =
+			t -> cache.computeIfAbsent(t, fn);
+
 		@SuppressWarnings("unchecked")
 		final List<Rule<A>> rules = rules().stream()
 			.map(rule -> new Rule<>(
@@ -514,19 +545,17 @@ public record Cfg<T>(
 		return new Terminal<>(name, value);
 	}
 
-	public static <T> Terminal<T> T(final T value) {
-		return new Terminal<>(String.valueOf(value), value);
-	}
-
 	/**
 	 * Factory method for creating a terminal symbol with the given
-	 * {@code name}.
+	 * {@code value}.
 	 *
-	 * @param name the name of the terminal symbol
+	 * @since !__version__!
+	 *
+	 * @param value the value of the terminal symbol
 	 * @return a new terminal symbol
 	 */
-	public static Terminal<String> T(final String name) {
-		return new Terminal<>(name, name);
+	public static <T> Terminal<T> T(final T value) {
+		return new Terminal<>(String.valueOf(value), value);
 	}
 
 	/**
