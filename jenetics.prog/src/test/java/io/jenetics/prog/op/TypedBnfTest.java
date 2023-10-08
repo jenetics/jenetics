@@ -11,6 +11,7 @@ import io.jenetics.ext.grammar.Cfg;
 import io.jenetics.ext.grammar.DerivationTreeGenerator;
 import io.jenetics.ext.grammar.SymbolIndex;
 import io.jenetics.ext.util.TreeFormatter;
+import io.jenetics.ext.util.TreeNode;
 
 public class TypedBnfTest {
 
@@ -45,10 +46,16 @@ public class TypedBnfTest {
 		);
 
 		for (int i = 0; i < 10; ++i) {
-			final var tree = generator.generate(cfg);
+			final var dtree = generator.generate(cfg);
+			System.out.println(TreeFormatter.TREE.format(dtree));
+			System.out.println("----------------");
+
+			TreeNode<Object> tree = TreeNode.of();
+			TreeNode.prune(dtree, tree, value -> value instanceof Cfg.Terminal<?>);
+
 			final var string = TreeFormatter.TREE.format(tree);
 			System.out.println(string);
-			System.out.println("----------------");
+			System.out.println("===================================");
 		}
 
 	}
