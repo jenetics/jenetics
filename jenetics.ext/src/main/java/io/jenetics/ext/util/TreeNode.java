@@ -510,26 +510,6 @@ public final class TreeNode<T>
 		}
 	}
 
-	public static <T> void prune(
-		final Tree<? extends T, ?> source,
-		final TreeNode<T> target,
-		final Predicate<? super T> filter
-	) {
-		if (filter.test(source.value())) {
-			target.value(source.value());
-		}
-
-		for (int i = 0; i < source.childCount(); ++i) {
-			TreeNode<T> targetChild = target;
-			if (target.value() != null) {
-				targetChild = TreeNode.of();
-				target.attach(targetChild);
-			}
-
-			prune(source.childAt(i), targetChild, filter);
-		}
-	}
-
 	/**
 	 * Return a new {@code TreeNode} from the given source {@code tree}. The
 	 * whole tree is copied.

@@ -406,6 +406,11 @@ public record Cfg<T>(
 		return Cfg.of(rules);
 	}
 
+
+	/* *************************************************************************
+	 * Factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a grammar object with the given rules. Duplicated rules are merged
 	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
