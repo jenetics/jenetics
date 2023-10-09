@@ -21,7 +21,7 @@ package io.jenetics.ext.grammar;
 
 import static java.lang.StringTemplate.RAW;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.ext.grammar.Bnf.BNF;
+import static io.jenetics.ext.grammar.Cfg.BNF;
 
 import java.util.random.RandomGenerator;
 

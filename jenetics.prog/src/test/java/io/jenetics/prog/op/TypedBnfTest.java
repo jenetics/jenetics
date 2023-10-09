@@ -1,6 +1,6 @@
 package io.jenetics.prog.op;
 
-import static io.jenetics.ext.grammar.Bnf.BNF;
+import static io.jenetics.ext.grammar.Cfg.BNF;
 
 import java.util.Random;
 
@@ -20,7 +20,7 @@ public class TypedBnfTest {
 	public void grammar() {
 
 		@SuppressWarnings("unchecked")
-		final Cfg<Op<Double>> cfg = (Cfg<Op<Double>>)BNF."""
+		final var cfg = (Cfg<Op<Double>>)BNF."""
 			<expr> ::= <num> | <var> | <fun> <arg> <arg>
 			<arg>  ::= <expr> | <var> | <num> | <expr> | <expr>
 			<fun>  ::= \{MathOp.ADD}
