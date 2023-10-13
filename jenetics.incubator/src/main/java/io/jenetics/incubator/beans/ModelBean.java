@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.Reflect.isIdentityType;
+import static io.jenetics.incubator.beans.reflect.Reflect.isIdentityType;
 
 import java.util.Collections;
 import java.util.Comparator;

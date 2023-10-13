@@ -27,9 +27,9 @@ import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.Reflect.BeanType;
-import io.jenetics.incubator.beans.Reflect.IndexedType;
-import io.jenetics.incubator.beans.Reflect.StructType.Component;
+import io.jenetics.incubator.beans.reflect.Reflect.BeanType;
+import io.jenetics.incubator.beans.reflect.Reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.Reflect.StructType.Component;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a

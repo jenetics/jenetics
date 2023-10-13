@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.Reflect;
-import io.jenetics.incubator.beans.Reflect.IndexedType;
-import io.jenetics.incubator.beans.Reflect.StructType;
+import io.jenetics.incubator.beans.reflect.Reflect;
+import io.jenetics.incubator.beans.reflect.Reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.Reflect.StructType;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property

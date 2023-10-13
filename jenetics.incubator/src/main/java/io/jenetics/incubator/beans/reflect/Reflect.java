@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans;
+package io.jenetics.incubator.beans.reflect;
 
 import static java.util.Objects.requireNonNull;
 
