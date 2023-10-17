@@ -33,7 +33,7 @@ import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.Reflect;
 import io.jenetics.incubator.beans.reflect.Reflect.ArrayType;
-import io.jenetics.incubator.beans.reflect.Reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.IndexedType;
 import io.jenetics.incubator.beans.reflect.Reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
