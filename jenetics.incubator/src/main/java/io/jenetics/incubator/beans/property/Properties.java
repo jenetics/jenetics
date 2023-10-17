@@ -111,7 +111,7 @@ public final class Properties {
 	) {
 		final var enclosing = root.value();
 
-		if (description.value() instanceof Description.Value.Single single) {
+		if (description.value() instanceof io.jenetics.incubator.beans.description.Value.Single single) {
 			final var path = root.path().append(description.name());
 			final var value = toValue(
 				enclosing, single.getter().get(root.value()), single
@@ -139,7 +139,7 @@ public final class Properties {
 			 */
 
 			return Stream.of(prop);
-		} else if (description.value() instanceof Description.Value.Indexed indexed) {
+		} else if (description.value() instanceof io.jenetics.incubator.beans.description.Value.Indexed indexed) {
 			final var path = description.path().element() instanceof Path.Index
 				? root.path()
 				: root.path().append(new Path.Name(description.name()));
@@ -172,7 +172,7 @@ public final class Properties {
 	private static Value toValue(
 		final Object enclosing,
 		final Object value,
-		final Description.Value.Single description
+		final io.jenetics.incubator.beans.description.Value.Single description
 	) {
 		return description.setter()
 			.<Value>map(setter ->

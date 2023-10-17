@@ -60,7 +60,7 @@ public final class Descriptions {
 		STANDARD_TARGET_FILTER =
 		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
 				Reflect.trait(prop.value().enclosure()) instanceof IndexedType ||
-				prop.value() instanceof Description.Value.Indexed;
+				prop.value() instanceof Value.Indexed;
 
 
 	private Descriptions() {
