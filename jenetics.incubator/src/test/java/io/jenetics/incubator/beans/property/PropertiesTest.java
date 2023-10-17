@@ -112,10 +112,10 @@ public class PropertiesTest {
 			.toArray(String[]::new);
 
 		final var expected = """
-			SimpleProperty[path=birthDate, value=Immutable[value=1959-08-17, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=birthDate, value=Immutable[value=1959-08-17, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
 			ListProperty[path=books, value=Immutable[value=[], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=forename, value=Immutable[value=Jonathan, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=surname, value=Immutable[value=Franzen, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=forename, value=Immutable[value=Jonathan, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=surname, value=Immutable[value=Franzen, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
 			""".split("\n");
 
 		assertThat(properties).isEqualTo(expected);
@@ -130,8 +130,8 @@ public class PropertiesTest {
 
 		final var expected = """
 			ListProperty[path=authors, value=Immutable[value=[Author[Neal Stephenson]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=pages, value=Immutable[value=576, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=title, value=Immutable[value=Snow Crash, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=pages, value=Immutable[value=576, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=title, value=Immutable[value=Snow Crash, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			""".split("\n");
 
 		assertThat(properties).isEqualTo(expected);
@@ -149,40 +149,40 @@ public class PropertiesTest {
 			IndexProperty[path=books[0], value=Mutable[value=Book[The Corrections], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			ListProperty[path=books[0].authors, value=Immutable[value=[Author[Jonathan Franzen]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[0].authors[0], value=Mutable[value=Author[Jonathan Franzen], type=io.jenetics.incubator.beans.model.Author, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=books[0].authors[0].birthDate, value=Immutable[value=1959-08-17, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[0].authors[0].birthDate, value=Immutable[value=1959-08-17, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
 			ListProperty[path=books[0].authors[0].books, value=Immutable[value=[], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=books[0].authors[0].forename, value=Immutable[value=Jonathan, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=books[0].authors[0].surname, value=Immutable[value=Franzen, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=books[0].pages, value=Immutable[value=672, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[0].title, value=Immutable[value=The Corrections, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[0].authors[0].forename, value=Immutable[value=Jonathan, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[0].authors[0].surname, value=Immutable[value=Franzen, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[0].pages, value=Immutable[value=672, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[0].title, value=Immutable[value=The Corrections, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[1], value=Mutable[value=Book[Crossroads], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			ListProperty[path=books[1].authors, value=Immutable[value=[Author[Jonathan Franzen]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[1].authors[0], value=Mutable[value=Author[Jonathan Franzen], type=io.jenetics.incubator.beans.model.Author, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=books[1].pages, value=Immutable[value=832, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[1].title, value=Immutable[value=Crossroads, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[1].pages, value=Immutable[value=832, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[1].title, value=Immutable[value=Crossroads, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[2], value=Mutable[value=Book[Snow Crash], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			ListProperty[path=books[2].authors, value=Immutable[value=[Author[Neal Stephenson]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[2].authors[0], value=Mutable[value=Author[Neal Stephenson], type=io.jenetics.incubator.beans.model.Author, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=books[2].authors[0].birthDate, value=Immutable[value=1959-10-31, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[2].authors[0].birthDate, value=Immutable[value=1959-10-31, type=java.time.LocalDate, enclosureType=io.jenetics.incubator.beans.model.Author]]
 			ListProperty[path=books[2].authors[0].books, value=Immutable[value=[Book[Snow Crash], Book[Anathem], Book[Cryptonomicon]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Author]]
 			IndexProperty[path=books[2].authors[0].books[0], value=Mutable[value=Book[Snow Crash], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			IndexProperty[path=books[2].authors[0].books[1], value=Mutable[value=Book[Anathem], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			ListProperty[path=books[2].authors[0].books[1].authors, value=Immutable[value=[Author[Neal Stephenson]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[2].authors[0].books[1].authors[0], value=Mutable[value=Author[Neal Stephenson], type=io.jenetics.incubator.beans.model.Author, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=books[2].authors[0].books[1].pages, value=Immutable[value=981, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[2].authors[0].books[1].title, value=Immutable[value=Anathem, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].authors[0].books[1].pages, value=Immutable[value=981, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].authors[0].books[1].title, value=Immutable[value=Anathem, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[2].authors[0].books[2], value=Mutable[value=Book[Cryptonomicon], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			ListProperty[path=books[2].authors[0].books[2].authors, value=Immutable[value=[Author[Neal Stephenson]], type=java.util.List, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[2].authors[0].books[2].authors[0], value=Mutable[value=Author[Neal Stephenson], type=io.jenetics.incubator.beans.model.Author, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=books[2].authors[0].books[2].pages, value=Immutable[value=931, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[2].authors[0].books[2].title, value=Immutable[value=Cryptonomicon, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[2].authors[0].forename, value=Immutable[value=Neal, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=books[2].authors[0].surname, value=Immutable[value=Stephenson, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
-			SimpleProperty[path=books[2].pages, value=Immutable[value=576, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
-			SimpleProperty[path=books[2].title, value=Immutable[value=Snow Crash, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].authors[0].books[2].pages, value=Immutable[value=931, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].authors[0].books[2].title, value=Immutable[value=Cryptonomicon, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].authors[0].forename, value=Immutable[value=Neal, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[2].authors[0].surname, value=Immutable[value=Stephenson, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Author]]
+			SingleProperty[path=books[2].pages, value=Immutable[value=576, type=int, enclosureType=io.jenetics.incubator.beans.model.Book]]
+			SingleProperty[path=books[2].title, value=Immutable[value=Snow Crash, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Book]]
 			IndexProperty[path=books[3], value=Mutable[value=Book[Cryptonomicon], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
 			IndexProperty[path=books[4], value=Mutable[value=Book[Anathem], type=io.jenetics.incubator.beans.model.Book, enclosureType=java.util.ArrayList]]
-			SimpleProperty[path=name, value=Immutable[value=Private Books, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Library]]
+			SingleProperty[path=name, value=Immutable[value=Private Books, type=java.lang.String, enclosureType=io.jenetics.incubator.beans.model.Library]]
 			""".split("\n");
 
 		assertThat(properties).isEqualTo(expected);
