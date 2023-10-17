@@ -17,19 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.reflect;
+package io.jenetics.incubator.beans.property;
 
-import java.lang.reflect.Type;
+import java.util.stream.Stream;
 
 /**
- * Base interface used for matching {@link Type} objects.
- * <p>
- * {@snippet lang = "java":
- * final Type type = null; // @replace substring='null' replacement="..."
- * if (ArrayType.of(type) instanceof ArrayType at) {
- *     System.out.println(at);
- * }
- * }
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.0
+ * @since 8.0
  */
-public sealed interface Trait permits SingleType, StructType, IndexedType {
+public sealed interface StructProperty
+	extends Property
+	permits BeanProperty, RecordProperty
+{
+
+	Stream<Property> properties();
+
 }

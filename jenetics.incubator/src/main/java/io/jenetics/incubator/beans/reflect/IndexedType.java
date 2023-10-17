@@ -26,7 +26,8 @@ import java.lang.reflect.Type;
  * are accessible via index. Such types are arrays and lists.
  */
 public sealed interface IndexedType
-	extends Trait permits ArrayType, ListType, OptionalType
+	extends Trait
+	permits ArrayType, ListType, OptionalType
 {
 
 	/**
@@ -42,15 +43,6 @@ public sealed interface IndexedType
 	 * @return the container element type
 	 */
 	Class<?> componentType();
-
-	/**
-	 * Return {@code true} if {@code this} type is mutable.
-	 *
-	 * @return {@code true} if {@code this} type is mutable
-	 */
-	default boolean isMutable() {
-		return true;
-	}
 
 	/**
 	 * Returns the length of the given indexed object, as an {@code int}.
@@ -85,6 +77,15 @@ public sealed interface IndexedType
 	 * ({@code index < 0 || index >= size()})
 	 */
 	void set(final Object object, final int index, final Object value);
+
+	/**
+	 * Return {@code true} if {@code this} type is mutable.
+	 *
+	 * @return {@code true} if {@code this} type is mutable
+	 */
+	default boolean isMutable() {
+		return true;
+	}
 
 	/**
 	 * Return an {@code IndexedType} from the given {@code type}. If the type

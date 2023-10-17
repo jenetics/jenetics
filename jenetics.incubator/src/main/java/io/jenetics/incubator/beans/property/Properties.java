@@ -31,16 +31,17 @@ import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.reflect.OptionalType;
 import io.jenetics.incubator.beans.reflect.Reflect;
-import io.jenetics.incubator.beans.reflect.Reflect.ArrayType;
+import io.jenetics.incubator.beans.reflect.ArrayType;
 import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.Reflect.ListType;
+import io.jenetics.incubator.beans.reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.description.Getter;
 import io.jenetics.incubator.beans.description.Setter;
-import io.jenetics.incubator.beans.property.Property.Value.Immutable;
-import io.jenetics.incubator.beans.property.Property.Value.Mutable;
+import io.jenetics.incubator.beans.property.Value.Immutable;
+import io.jenetics.incubator.beans.property.Value.Mutable;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -114,14 +115,14 @@ public final class Properties {
 			);
 
 			final Property prop;
-			if (Reflect.OptionalType.of(single.value()) != null) {
+			if (OptionalType.of(single.value()) != null) {
 				prop = new OptionalProperty(path, value);
 			} else if (ArrayType.of(single.value()) != null) {
 				prop = new ArrayProperty(path, value);
 			} else if (ListType.of(single.value()) != null) {
 				prop = new ListProperty(path, value);
 			} else {
-				prop = new SimpleProperty(path, value);
+				prop = new SingleProperty(path, value);
 			}
 
 			return Stream.of(prop);
@@ -155,13 +156,13 @@ public final class Properties {
 		}
 	}
 
-	private static Property.Value toValue(
+	private static Value toValue(
 		final Object enclosing,
 		final Object value,
 		final Description.Value.Single description
 	) {
 		return description.setter()
-			.<Property.Value>map(setter ->
+			.<Value>map(setter ->
 				new Mutable(
 					enclosing,
 					value,

@@ -17,19 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.reflect;
+package io.jenetics.incubator.beans.property;
 
-import java.lang.reflect.Type;
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
- * Base interface used for matching {@link Type} objects.
- * <p>
- * {@snippet lang = "java":
- * final Type type = null; // @replace substring='null' replacement="..."
- * if (ArrayType.of(type) instanceof ArrayType at) {
- *     System.out.println(at);
- * }
- * }
+ * Represents a simple property value.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 7.2
+ * @since 7.2
  */
-public sealed interface Trait permits SingleType, StructType, IndexedType {
+public record SingleProperty(Path path, Value value) implements Property {
+
+	public SingleProperty {
+		requireNonNull(path);
+		requireNonNull(value);
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(SingleProperty.class.getSimpleName(), this);
+	}
+
 }

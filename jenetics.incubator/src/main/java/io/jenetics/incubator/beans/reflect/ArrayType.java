@@ -28,8 +28,12 @@ import java.lang.reflect.Type;
  * @param type the array type
  * @param componentType the array component type
  */
-public record ArrayType(Class<?> type,
-                        Class<?> componentType) implements IndexedType {
+public record ArrayType(
+	Class<?> type,
+	Class<?> componentType
+)
+	implements IndexedType
+{
 
 	public ArrayType {
 		if (!type.isArray()) {

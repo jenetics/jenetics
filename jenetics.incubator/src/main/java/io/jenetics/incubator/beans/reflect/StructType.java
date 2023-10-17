@@ -39,8 +39,13 @@ public sealed interface StructType extends Trait permits BeanType, RecordType {
 	 * @param getter the getter method
 	 * @param setter the setter method, may be {@code null}
 	 */
-	record Component(Class<?> enclosure, String name, Type value, Method getter,
-	                 Method setter) {
+	record Component(
+		Class<?> enclosure,
+		String name,
+		Type value,
+		Method getter,
+		Method setter
+	) {
 		public Component {
 			requireNonNull(enclosure);
 			requireNonNull(name);

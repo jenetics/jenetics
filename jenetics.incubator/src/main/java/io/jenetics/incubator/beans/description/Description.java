@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.reflect.Reflect.BeanType;
+import io.jenetics.incubator.beans.reflect.BeanType;
 import io.jenetics.incubator.beans.reflect.IndexedType;
 import io.jenetics.incubator.beans.reflect.StructType.Component;
 

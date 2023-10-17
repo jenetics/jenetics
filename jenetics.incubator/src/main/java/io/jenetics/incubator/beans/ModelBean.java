@@ -41,6 +41,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.property.Properties;
 import io.jenetics.incubator.beans.property.Property;
+import io.jenetics.incubator.beans.property.Value;
 
 /**
  * Wrapper class for extending model graphs with additional navigation methods.
@@ -198,7 +199,7 @@ public final class ModelBean implements Iterable<Property> {
 	 *
 	 * @param action The action to be performed for each entry
 	 */
-	public void forEach(final BiConsumer<? super Path, ? super Property.Value> action) {
+	public void forEach(final BiConsumer<? super Path, ? super Value> action) {
 		requireNonNull(action);
 
 		iterator().forEachRemaining(property ->

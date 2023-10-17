@@ -1,3 +1,5 @@
+package io.jenetics.incubator.beans.property;
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -17,29 +19,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
-
-import static java.util.Objects.requireNonNull;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Path;
 
 /**
- * Represents a simple property value.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.0
+ * @since 8.0
  */
-public record SimpleProperty(Path path, Value value) implements Property {
-
-	public SimpleProperty {
-		requireNonNull(path);
-		requireNonNull(value);
+public final class BeanProperty implements StructProperty {
+	@Override
+	public Path path() {
+		return null;
 	}
 
 	@Override
-	public String toString() {
-		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
+	public Value value() {
+		return null;
 	}
 
+	@Override
+	public Stream<Property> properties() {
+		return null;
+	}
 }

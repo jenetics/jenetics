@@ -32,6 +32,7 @@ import java.util.stream.Stream;
  * @param type the type object
  */
 public record BeanType(Class<?> type) implements StructType {
+
 	@Override
 	public Stream<Component> components() {
 		final PropertyDescriptor[] descriptors;
