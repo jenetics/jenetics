@@ -17,31 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
+package io.jenetics.incubator.beans.description;
 
-import java.util.stream.Stream;
-
-import io.jenetics.incubator.beans.Path;
+import java.lang.reflect.Type;
+import java.util.Optional;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public final class BeanProperty implements StructProperty {
-
-	@Override
-	public Path path() {
-		return null;
-	}
-
-	@Override
-	public Value value() {
-		return null;
-	}
-
-	@Override
-	public Stream<Property> properties() {
-		return null;
-	}
+public record SingleDescription(
+	Class<?> enclosure,
+	Type value,
+	Getter getter,
+	Optional<Setter> setter
+)
+	implements Desc
+{
 }

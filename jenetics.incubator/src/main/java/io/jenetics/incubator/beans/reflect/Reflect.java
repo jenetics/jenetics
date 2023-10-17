@@ -62,11 +62,6 @@ public final class Reflect {
 			);
 		}
 
-		// 2) Check for RecordType.
-		if (type instanceof Class<?> cls && cls.isRecord()) {
-			return new RecordType(cls);
-		}
-
 		// 3) Check for OptionalType.
 		if (type instanceof ParameterizedType parameterizedType &&
 			parameterizedType.getRawType() instanceof Class<?> optionalType &&
@@ -103,9 +98,25 @@ public final class Reflect {
 			return new ListType(listType, Object.class);
 		}
 
-		// 5) Check for SingleType.
-		if (toRawType(type) != null) {
-			return new SingleType(toRawType(type));
+		// 2) Check for RecordType.
+		if (type instanceof Class<?> cls && cls.isRecord()) {
+			return new RecordType(cls);
+		}
+
+		final Class<?> rawType = toRawType(type);
+
+//		// 6) Check for SingleType.
+//		if (rawType != null) {
+//			if (rawType.isPrimitive() ||
+//				Constable.class.isAssignableFrom(rawType))
+//			{
+//				return new SingleType(rawType);
+//			}
+//		}
+
+		// 5) Check for BeanType
+		if (rawType != null) {
+			return new SingleType(rawType);
 		}
 
 		throw new IllegalArgumentException("Unknown type '%s'.".formatted(type));

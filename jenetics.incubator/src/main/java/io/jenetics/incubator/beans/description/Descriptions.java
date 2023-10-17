@@ -28,6 +28,7 @@ import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.Reflect;
 import io.jenetics.incubator.beans.reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.SingleType;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
@@ -77,6 +78,21 @@ public final class Descriptions {
 		if (type == null || type.value() == null) {
 			return Stream.empty();
 		}
+
+		var foo = switch (Reflect.trait(type.value())) {
+			case SingleType t -> "asd";
+			case StructType t ->  t.components().map(c -> Description.of(type.path(), c));
+			case IndexedType t -> Stream.of(Description.of(type.path(), t));
+		};
+
+		/*
+		return switch (Reflect.trait(type.value())) {
+			case IndexedType t when !t.componentType().isPrimitive() ->  Stream.of(Description.of(type.path(), t));
+			case StructType t -> t.components().map(c -> Description.of(type.path(), c));
+			default -> Stream.empty();
+		};
+		 */
+
 
 		if (Reflect.trait(type.value()) instanceof IndexedType trait &&
 			!trait.componentType().isPrimitive())
