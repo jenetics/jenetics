@@ -31,17 +31,20 @@ import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.reflect.OptionalType;
-import io.jenetics.incubator.beans.reflect.Reflect;
-import io.jenetics.incubator.beans.reflect.ArrayType;
-import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.ListType;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.description.Getter;
 import io.jenetics.incubator.beans.description.Setter;
 import io.jenetics.incubator.beans.property.Value.Immutable;
 import io.jenetics.incubator.beans.property.Value.Mutable;
+import io.jenetics.incubator.beans.reflect.ArrayType;
+import io.jenetics.incubator.beans.reflect.BeanType;
+import io.jenetics.incubator.beans.reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.ListType;
+import io.jenetics.incubator.beans.reflect.OptionalType;
+import io.jenetics.incubator.beans.reflect.RecordType;
+import io.jenetics.incubator.beans.reflect.Reflect;
+import io.jenetics.incubator.beans.reflect.SingleType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -76,7 +79,7 @@ public final class Properties {
 	public static final Predicate<? super Property>
 		STANDARD_TARGET_FILTER =
 		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
-				IndexedType.of(prop.value().enclosure().getClass()) != null ||
+				Reflect.trait(prop.value().enclosure().getClass()) instanceof IndexedType ||
 				prop instanceof IndexedProperty;
 
 
@@ -114,7 +117,16 @@ public final class Properties {
 				enclosing, single.getter().get(root.value()), single
 			);
 
-			final Property prop;
+			final Property prop = switch (Reflect.trait(single.value())) {
+				case SingleType t -> new SingleProperty(path, value);
+				case RecordType t -> new RecordProperty();
+				case BeanType t -> new BeanProperty();
+				case OptionalType t -> new OptionalProperty(path, value);
+				case ArrayType t -> new ArrayProperty(path, value);
+				case ListType t -> new ListProperty(path, value);
+			};
+
+			/*
 			if (OptionalType.of(single.value()) != null) {
 				prop = new OptionalProperty(path, value);
 			} else if (ArrayType.of(single.value()) != null) {
@@ -124,6 +136,7 @@ public final class Properties {
 			} else {
 				prop = new SingleProperty(path, value);
 			}
+			 */
 
 			return Stream.of(prop);
 		} else if (description.value() instanceof Description.Value.Indexed indexed) {
@@ -193,9 +206,9 @@ public final class Properties {
 	 * }
 	 * The code snippet above will create the following output:
 	 * <pre>
-	 * SimpleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
-	 * SimpleProperty[path=bytes, value=Mutable[value=[B@41e1455d, type=[B, enclosureType=java.lang.String]]
-	 * SimpleProperty[path=empty, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
+	 * SingleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
+	 * SingleProperty[path=bytes, value=Mutable[value=[B@41e1455d, type=[B, enclosureType=java.lang.String]]
+	 * SingleProperty[path=empty, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
 	 * </pre>
 	 *
 	 * If you are not interested in the property descriptions of the Java
@@ -246,10 +259,10 @@ public final class Properties {
 	 * {@snippet lang="java":
 	 * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
 	 * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
-	 * SimpleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
-	 * SimpleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
-	 * SimpleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
-	 * SimpleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
+	 * SingleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
+	 * SingleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
+	 * SingleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
+	 * SingleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
 	 * }
 	 *
 	 * @see #walk(Object, String...)

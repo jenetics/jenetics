@@ -48,7 +48,7 @@ public final class Descriptions {
 	public static final Predicate<? super PathValue<? extends Type>>
 		STANDARD_SOURCE_FILTER =
 		type -> Reflect.isNonJdkType(type.value()) ||
-				IndexedType.of(type.value()) != null;
+				Reflect.trait(type.value()) instanceof IndexedType;
 
 	/**
 	 * Standard filter for the target types. It excludes all JDK types from being
@@ -59,7 +59,7 @@ public final class Descriptions {
 	public static final Predicate<? super Description>
 		STANDARD_TARGET_FILTER =
 		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
-				IndexedType.of(prop.value().enclosure()) != null ||
+				Reflect.trait(prop.value().enclosure()) instanceof IndexedType ||
 				prop.value() instanceof Description.Value.Indexed;
 
 
@@ -78,7 +78,7 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		if (IndexedType.of(type.value()) instanceof IndexedType trait &&
+		if (Reflect.trait(type.value()) instanceof IndexedType trait &&
 			!trait.componentType().isPrimitive())
 		{
 			return Stream.of(Description.of(type.path(), trait));

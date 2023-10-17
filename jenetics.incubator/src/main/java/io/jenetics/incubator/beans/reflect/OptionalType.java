@@ -30,6 +30,10 @@ import java.util.Optional;
  * Trait which represents an {@code Optional} type.
  *
  * @param componentType the optional component type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.0
+ * @since 8.0
  */
 public record OptionalType(Class<?> componentType) implements IndexedType {
 

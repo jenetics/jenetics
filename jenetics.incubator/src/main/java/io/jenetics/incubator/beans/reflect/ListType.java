@@ -31,6 +31,10 @@ import java.util.List;
  *
  * @param type the list type
  * @param componentType the list component type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.0
+ * @since 8.0
  */
 public record ListType(Class<?> type,
                        Class<?> componentType) implements IndexedType {

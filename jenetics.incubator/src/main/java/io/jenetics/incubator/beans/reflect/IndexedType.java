@@ -19,11 +19,13 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
-import java.lang.reflect.Type;
-
 /**
  * Represents indexed types. An indexed type is a container where its elements
  * are accessible via index. Such types are arrays and lists.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.0
+ * @since 8.0
  */
 public sealed interface IndexedType
 	extends Trait
@@ -87,23 +89,4 @@ public sealed interface IndexedType
 		return true;
 	}
 
-	/**
-	 * Return an {@code IndexedType} from the given {@code type}. If the type
-	 * parameter doesn't represent an indexed type, {@code null} is returned.
-	 *
-	 * @param type the input type
-	 * @return an indexed type if the input {@code type} is an optional, array
-	 * or list, {@code null} otherwise
-	 */
-	static Trait of(final Type type) {
-		var trait = OptionalType.of(type);
-		if (trait == null) {
-			trait = ArrayType.of(type);
-		}
-		if (trait == null) {
-			trait = ListType.of(type);
-		}
-
-		return trait;
-	}
 }

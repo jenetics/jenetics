@@ -26,6 +26,10 @@ import java.util.stream.Stream;
  * Trait which represents a {@code Record} type.
  *
  * @param type the type object
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.0
+ * @since 8.0
  */
 public record RecordType(Class<?> type) implements StructType {
 
