@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import java.util.stream.Stream;
-
 import io.jenetics.incubator.beans.Path;
 
 /**
@@ -28,20 +26,9 @@ import io.jenetics.incubator.beans.Path;
  * @version 8.0
  * @since 8.0
  */
-public final class BeanProperty implements StructProperty {
+public final class BeanProperty extends StructProperty {
 
-	@Override
-	public Path path() {
-		return null;
-	}
-
-	@Override
-	public Value value() {
-		return null;
-	}
-
-	@Override
-	public Stream<Property> properties() {
-		return null;
+	public BeanProperty(Path path, Value value) {
+		super(path, value);
 	}
 }

@@ -28,19 +28,9 @@ import io.jenetics.incubator.beans.Path;
  * @version 8.0
  * @since 8.0
  */
-public final class RecordProperty implements StructProperty {
-	@Override
-	public Path path() {
-		return null;
-	}
+public final class RecordProperty extends StructProperty {
 
-	@Override
-	public Value value() {
-		return null;
-	}
-
-	@Override
-	public Stream<Property> properties() {
-		return null;
+	public RecordProperty(Path path, Value value) {
+		super(path, value);
 	}
 }

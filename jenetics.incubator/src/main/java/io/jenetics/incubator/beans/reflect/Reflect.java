@@ -56,10 +56,14 @@ public final class Reflect {
 
 		// 1) Check for ArrayType.
 		if (type instanceof Class<?> arrayType && arrayType.isArray()) {
-			return new ArrayType(
-				arrayType,
-				arrayType.getComponentType()
-			);
+			if (arrayType.componentType().isPrimitive()) {
+				return new ElementType(arrayType);
+			} else {
+				return new ArrayType(
+					arrayType,
+					arrayType.getComponentType()
+				);
+			}
 		}
 
 		// 3) Check for OptionalType.
@@ -105,18 +109,16 @@ public final class Reflect {
 
 		final Class<?> rawType = toRawType(type);
 
-//		// 6) Check for SingleType.
-//		if (rawType != null) {
-//			if (rawType.isPrimitive() ||
-//				Constable.class.isAssignableFrom(rawType))
-//			{
-//				return new SingleType(rawType);
-//			}
-//		}
+		// 6) Check for ElementType.
+		if (rawType != null) {
+			if (isElementType(rawType)) {
+				return new ElementType(rawType);
+			}
+		}
 
 		// 5) Check for BeanType
 		if (rawType != null) {
-			return new SimpleType(rawType);
+			return new BeanType(rawType);
 		}
 
 		throw new IllegalArgumentException("Unknown type '%s'.".formatted(type));
@@ -159,6 +161,12 @@ public final class Reflect {
 			!(object instanceof Constable) &&
 			!(object instanceof TemporalAccessor) &&
 			!(object instanceof Number);
+	}
+
+	public static boolean isElementType(final Class<?> type) {
+		return type.isPrimitive() ||
+			Constable.class.isAssignableFrom(type) ||
+			TemporalAccessor.class.isAssignableFrom(type);
 	}
 
 	/**

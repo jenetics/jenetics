@@ -21,25 +21,35 @@ package io.jenetics.incubator.beans.description;
 
 import java.lang.reflect.Type;
 
+import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.reflect.StructType;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public sealed interface Desc permits SingleDescription {
+public record SimpleDescription(
+	Path path,
+	Class<?> enclosure,
+	Type type,
+	Accessor accessor
+)
+	implements Description
+{
 
-	/**
-	 * Returns the enclosure type.
-	 *
-	 * @return the enclosure type
-	 */
-	Class<?> enclosure();
+	static SimpleDescription of(final Path path, final StructType.Component component) {
+		final var getter = Methods.toGetter(component.getter());
+		final var setter = Methods.toSetter(component.setter());
 
-	/**
-	 * Return the <em>static</em> type of the property description.
-	 *
-	 * @return the <em>static</em> type of the property description
-	 */
-	Type value();
+		return new SimpleDescription(
+			path.append(component.name()),
+			component.enclosure(),
+			component.value(),
+			setter != null
+				? new Accessor.Writable(getter, setter)
+				: new Accessor.Readonly(getter)
+		);
+	}
 
 }

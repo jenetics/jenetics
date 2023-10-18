@@ -117,7 +117,10 @@ public sealed interface Value {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj == this || obj instanceof Single s && enclosure.equals(s.enclosure) && value.equals(s.value);
+			return obj == this ||
+				obj instanceof Single s &&
+				enclosure.equals(s.enclosure) &&
+				value.equals(s.value);
 		}
 
 		@Override
@@ -227,7 +230,11 @@ public sealed interface Value {
 
 		@Override
 		public String toString() {
-			return "Indexed[value=%s, enclosure=%s]".formatted(BeanType.of(value()) instanceof BeanType bt ? bt.type().getName() : value().getTypeName(), enclosure().getName());
+			return "Indexed[value=%s, enclosure=%s]".formatted(
+				BeanType.of(value()) instanceof BeanType bt
+					? bt.type().getName()
+					: value().getTypeName(), enclosure().getName()
+			);
 		}
 
 		/**
@@ -238,7 +245,13 @@ public sealed interface Value {
 		 * @return a new indexed value from the given trait
 		 */
 		public static Indexed of(final IndexedType trait) {
-			return new Indexed(trait.type(), trait.componentType(), trait::size, trait::get, trait.isMutable() ? trait::set : null);
+			return new Indexed(
+				trait.type(),
+				trait.componentType(),
+				trait::size,
+				trait::get,
+				trait.isMutable() ? trait::set : null
+			);
 		}
 	}
 }

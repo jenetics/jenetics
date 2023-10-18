@@ -31,20 +31,21 @@ import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.description.Accessor;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.description.Getter;
-import io.jenetics.incubator.beans.description.Setter;
+import io.jenetics.incubator.beans.description.IndexedAccessor;
+import io.jenetics.incubator.beans.description.IndexedDescription;
+import io.jenetics.incubator.beans.description.SimpleDescription;
 import io.jenetics.incubator.beans.property.Value.Immutable;
 import io.jenetics.incubator.beans.property.Value.Mutable;
 import io.jenetics.incubator.beans.reflect.ArrayType;
 import io.jenetics.incubator.beans.reflect.BeanType;
-import io.jenetics.incubator.beans.reflect.IndexedType;
 import io.jenetics.incubator.beans.reflect.ListType;
 import io.jenetics.incubator.beans.reflect.OptionalType;
 import io.jenetics.incubator.beans.reflect.RecordType;
 import io.jenetics.incubator.beans.reflect.Reflect;
-import io.jenetics.incubator.beans.reflect.SimpleType;
+import io.jenetics.incubator.beans.reflect.ElementType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -57,30 +58,30 @@ import io.jenetics.incubator.beans.reflect.SimpleType;
  */
 public final class Properties {
 
-	/**
-	 * Standard filter for the source types. It excludes all JDK types from being
-	 * used, but includes arrays (except byte[] arrays) and list types.
-	 */
-	public static final Predicate<? super PathValue<?>>
-		STANDARD_SOURCE_FILTER =
-		Filters.filtering(
-			pv -> PathValue.of(
-				pv.path(),
-				pv.value() != null ? pv.value().getClass() : Object.class
-			),
-			Descriptions.STANDARD_SOURCE_FILTER
-		);
-
-	/**
-	 * Standard filter for the target types. It excludes all JDK types from being
-	 * part except they are array- or list properties or the enclosure type are
-	 * array- or list classes.
-	 */
-	public static final Predicate<? super Property>
-		STANDARD_TARGET_FILTER =
-		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
-				Reflect.trait(prop.value().enclosure().getClass()) instanceof IndexedType ||
-				prop instanceof IndexedProperty;
+//	/**
+//	 * Standard filter for the source types. It excludes all JDK types from being
+//	 * used, but includes arrays (except byte[] arrays) and list types.
+//	 */
+//	public static final Predicate<? super PathValue<?>>
+//		STANDARD_SOURCE_FILTER =
+//		Filters.filtering(
+//			pv -> PathValue.of(
+//				pv.path(),
+//				pv.value() != null ? pv.value().getClass() : Object.class
+//			),
+//			Descriptions.STANDARD_SOURCE_FILTER
+//		);
+//
+//	/**
+//	 * Standard filter for the target types. It excludes all JDK types from being
+//	 * part except they are array- or list properties or the enclosure type are
+//	 * array- or list classes.
+//	 */
+//	public static final Predicate<? super Property>
+//		STANDARD_TARGET_FILTER =
+//		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
+//				Reflect.trait(prop.value().enclosure().getClass()) instanceof IndexedType ||
+//				prop instanceof IndexedProperty;
 
 
 	private Properties() {
@@ -105,93 +106,92 @@ public final class Properties {
 			.flatMap(description -> unapply(root, description));
 	}
 
+	private static Value toValue(
+		final Object enclosing,
+		final Object value,
+		final SimpleDescription description
+	) {
+		return switch (description.accessor()) {
+			case Accessor.Readonly accessor -> new Immutable(
+				enclosing,
+				value,
+				toRawType(description.type())
+			);
+			case Accessor.Writable accessor -> new Mutable(
+				enclosing,
+				value,
+				toRawType(description.type()),
+				accessor.getter(),
+				accessor.setter()
+			);
+		};
+	}
+
 	private static Stream<Property> unapply(
 		final PathValue<?> root,
 		final Description description
 	) {
 		final var enclosing = root.value();
 
-		if (description.value() instanceof io.jenetics.incubator.beans.description.Value.Single single) {
-			final var path = root.path().append(description.name());
-			final var value = toValue(
-				enclosing, single.getter().get(root.value()), single
-			);
-
-			final Property prop = switch (Reflect.trait(single.value())) {
-				case SimpleType t -> new SimpleProperty(path, value);
-				case RecordType t -> new RecordProperty();
-				case BeanType t -> new BeanProperty();
-				case OptionalType t -> new OptionalProperty(path, value);
-				case ArrayType t -> new ArrayProperty(path, value);
-				case ListType t -> new ListProperty(path, value);
-			};
-
-			/*
-			if (OptionalType.of(single.value()) != null) {
-				prop = new OptionalProperty(path, value);
-			} else if (ArrayType.of(single.value()) != null) {
-				prop = new ArrayProperty(path, value);
-			} else if (ListType.of(single.value()) != null) {
-				prop = new ListProperty(path, value);
-			} else {
-				prop = new SingleProperty(path, value);
-			}
-			 */
-
-			return Stream.of(prop);
-		} else if (description.value() instanceof io.jenetics.incubator.beans.description.Value.Indexed indexed) {
-			final var path = description.path().element() instanceof Path.Index
-				? root.path()
-				: root.path().append(new Path.Name(description.name()));
-
-			final int size = indexed.size().get(enclosing);
-
-			return IntStream.range(0, size).mapToObj(i -> {
-				final Object value = indexed.getter().get(enclosing, i);
-				final Class<?> type = value != null
-					? value.getClass()
-					: toRawType(indexed.value());
-				final Getter getter = o -> indexed.getter().get(o, i);
-				final Setter setter = indexed.setter()
-					.map(s -> (Setter)(o, v) -> s.set(o, i, v))
-					.orElse(null);
-
-				return new IndexProperty(
-					path.append(new Path.Index(i)),
-					i,
-					setter != null
-						? new Mutable(enclosing, value, type, getter, setter)
-						: new Immutable(enclosing, value, type)
+		return switch (description) {
+			case SimpleDescription sd -> {
+				final var path = root.path().append(sd.path().element());
+				final var value = toValue(
+					enclosing,
+					sd.accessor().getter().get(root.value()),
+					sd
 				);
-			});
-		} else {
-			return Stream.empty();
-		}
+
+				final Property prop = switch (Reflect.trait(sd.type())) {
+					case ElementType t -> new SimpleProperty(path, value);
+					case RecordType t -> new RecordProperty(path, value);
+					case BeanType t -> new BeanProperty(path, value);
+					case OptionalType t -> new OptionalProperty(path, value);
+					case ArrayType t -> new ArrayProperty(path, value);
+					case ListType t -> new ListProperty(path, value);
+				};
+
+				yield Stream.of(prop);
+			}
+			case IndexedDescription id -> {
+				final var path = description.path().element() instanceof Path.Index
+					? root.path()
+					: root.path().append(id.path().element());
+
+				final int size = id.accessor().size().get(enclosing);
+
+				yield  IntStream.range(0, size).mapToObj(i -> {
+					final Object value = id.accessor().getter().get(enclosing, i);
+					final Class<?> type = value != null
+						? value.getClass()
+						: toRawType(id.type());
+
+					var v = switch (id.accessor()) {
+						case IndexedAccessor.Readonly accessor -> new Immutable(
+							enclosing,
+							value,
+							type
+						);
+						case IndexedAccessor.Writable accessor -> new Mutable(
+							enclosing,
+							value,
+							type,
+							object -> accessor.getter().get(object, i),
+							(object, val) -> accessor.setter().set(object, i, val)
+						);
+					};
+
+					return new IndexProperty(
+						path.append(new Path.Index(i)),
+						i,
+						v
+					);
+				});
+			}
+		};
 	}
 
-	private static Value toValue(
-		final Object enclosing,
-		final Object value,
-		final io.jenetics.incubator.beans.description.Value.Single description
-	) {
-		return description.setter()
-			.<Value>map(setter ->
-				new Mutable(
-					enclosing,
-					value,
-					toRawType(description.value()),
-					description.getter(),
-					setter
-				)
-			)
-			.orElseGet(() ->
-				new Immutable(
-					enclosing,
-					value,
-					toRawType(description.value())
-				)
-			);
-	}
+
 
 	/**
 	 * Return a Stream that is lazily populated with {@code Property} by
@@ -277,9 +277,7 @@ public final class Properties {
 
 		return walk(
 			root,
-			dtor.sourceFilter(STANDARD_SOURCE_FILTER)
-				.sourceFilter(includesFilter(includes))
-				.targetFilter(STANDARD_TARGET_FILTER)
+			dtor.sourceFilter(includesFilter(includes))
 		);
 	}
 

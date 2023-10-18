@@ -19,12 +19,9 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static java.util.Objects.requireNonNull;
+import java.lang.reflect.Type;
 
 import io.jenetics.incubator.beans.Path;
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.StructType.Component;
 
 /**
  * A {@code PropertyDesc} describes one property that a Java Bean exports or a
@@ -34,27 +31,22 @@ import io.jenetics.incubator.beans.reflect.StructType.Component;
  * @version 7.2
  * @since 7.2
  */
-public record Description(Path path, Value value)
-	implements PathValue<Value>
-{
+public sealed interface Description permits IndexedDescription, SimpleDescription {
 
-	public Description {
-		requireNonNull(path);
-		requireNonNull(value);
-	}
+	Path path();
 
-	public static Description of(final Path path, final IndexedType trait) {
-		return new Description(
-			path.append(new Path.Index(0)),
-			Value.Indexed.of(trait)
-		);
-	}
+	/**
+	 * Returns the enclosure type.
+	 *
+	 * @return the enclosure type
+	 */
+	Class<?> enclosure();
 
-	public static Description of(final Path path, final Component component) {
-		return new Description(
-			path.append(component.name()),
-			Value.Single.of(component)
-		);
-	}
+	/**
+	 * Return the <em>static</em> type of the property description.
+	 *
+	 * @return the <em>static</em> type of the property description
+	 */
+	Type type();
 
 }

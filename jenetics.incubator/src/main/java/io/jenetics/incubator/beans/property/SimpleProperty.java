@@ -21,25 +21,62 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
 import io.jenetics.incubator.beans.Path;
 
 /**
  * Represents a simple property value.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz
+ * Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
-public record SimpleProperty(Path path, Value value) implements Property {
+public sealed class SimpleProperty
+	implements Property
+	permits IndexProperty, StructProperty
+{
+    private final Path path;
+    private final Value value;
 
-	public SimpleProperty {
-		requireNonNull(path);
-		requireNonNull(value);
+    public SimpleProperty(Path path, Value value) {
+        this.path = requireNonNull(path);
+        this.value = requireNonNull(value);
+    }
+
+	@Override
+	public Path path() {
+		return path;
 	}
 
 	@Override
-	public String toString() {
-		return Properties.toString(SimpleProperty.class.getSimpleName(), this);
+	public Value value() {
+		return value;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path, value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+		final var that = (SimpleProperty) obj;
+		return Objects.equals(this.path, that.path) &&
+			Objects.equals(this.value, that.value);
+	}
+
+    @Override
+    public String toString() {
+        return Properties.toString(getClass().getSimpleName(), this);
+    }
+
 
 }

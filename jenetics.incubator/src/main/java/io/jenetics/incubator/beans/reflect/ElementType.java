@@ -26,9 +26,9 @@ import static java.util.Objects.requireNonNull;
  * @version 8.0
  * @since 8.0
  */
-public record SimpleType(Class<?> type) implements Trait {
+public record ElementType(Class<?> type) implements Trait {
 
-	public SimpleType {
+	public ElementType {
 		requireNonNull(type);
 	}
 

@@ -20,15 +20,14 @@
 package io.jenetics.incubator.beans.description;
 
 import java.lang.reflect.Type;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.reflect.Reflect;
 import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.SimpleType;
+import io.jenetics.incubator.beans.reflect.Reflect;
+import io.jenetics.incubator.beans.reflect.ElementType;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
@@ -42,26 +41,26 @@ import io.jenetics.incubator.beans.reflect.StructType;
  */
 public final class Descriptions {
 
-	/**
-	 * Standard filter for the source types. It excludes all JDK types from
-	 * being used, except array- and list types.
-	 */
-	public static final Predicate<? super PathValue<? extends Type>>
-		STANDARD_SOURCE_FILTER =
-		type -> Reflect.isNonJdkType(type.value()) ||
-				Reflect.trait(type.value()) instanceof IndexedType;
-
-	/**
-	 * Standard filter for the target types. It excludes all JDK types from being
-	 * part except they are part of the description
-	 * ({@code Description.Value.Indexed}) or the enclosure type is an array- or
-	 * list type.
-	 */
-	public static final Predicate<? super Description>
-		STANDARD_TARGET_FILTER =
-		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
-				Reflect.trait(prop.value().enclosure()) instanceof IndexedType ||
-				prop.value() instanceof Value.Indexed;
+//	/**
+//	 * Standard filter for the source types. It excludes all JDK types from
+//	 * being used, except array- and list types.
+//	 */
+//	public static final Predicate<? super PathValue<? extends Type>>
+//		STANDARD_SOURCE_FILTER =
+//		type -> Reflect.isNonJdkType(type.value()) ||
+//				Reflect.trait(type.value()) instanceof IndexedType;
+//
+//	/**
+//	 * Standard filter for the target types. It excludes all JDK types from being
+//	 * part except they are part of the description
+//	 * ({@code Description.Value.Indexed}) or the enclosure type is an array- or
+//	 * list type.
+//	 */
+//	public static final Predicate<? super Description>
+//		STANDARD_TARGET_FILTER =
+//		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
+//				Reflect.trait(prop.value().enclosure()) instanceof IndexedType ||
+//				prop.value() instanceof Value.Indexed;
 
 
 	private Descriptions() {
@@ -79,30 +78,11 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		var foo = switch (Reflect.trait(type.value())) {
-			case SimpleType t -> "asd";
-			case StructType t ->  t.components().map(c -> Description.of(type.path(), c));
-			case IndexedType t -> Stream.of(Description.of(type.path(), t));
-		};
-
-		/*
 		return switch (Reflect.trait(type.value())) {
-			case IndexedType t when !t.componentType().isPrimitive() ->  Stream.of(Description.of(type.path(), t));
-			case StructType t -> t.components().map(c -> Description.of(type.path(), c));
-			default -> Stream.empty();
+			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
+			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
+			case ElementType t -> Stream.empty();
 		};
-		 */
-
-
-		if (Reflect.trait(type.value()) instanceof IndexedType trait &&
-			!trait.componentType().isPrimitive())
-		{
-			return Stream.of(Description.of(type.path(), trait));
-		} else if (StructType.of(type.value()) instanceof StructType st) {
-			return st.components().map(c -> Description.of(type.path(), c));
-		} else {
-			return Stream.of();
-		}
 	}
 
 	/**
@@ -154,7 +134,7 @@ public final class Descriptions {
 		final Dtor<? super PathValue<? extends Type>, Description>
 			recursiveDtor = PreOrderIterator.dtor(
 				dtor,
-				desc -> PathValue.of(desc.path(), desc.value().value()),
+				desc -> PathValue.of(desc.path(), desc.type()),
 				PathValue::value
 			);
 
@@ -198,8 +178,7 @@ public final class Descriptions {
 
 		return walk(
 			root,
-			dtor.sourceFilter(STANDARD_SOURCE_FILTER)
-				.targetFilter(STANDARD_TARGET_FILTER)
+			dtor
 		);
 	}
 

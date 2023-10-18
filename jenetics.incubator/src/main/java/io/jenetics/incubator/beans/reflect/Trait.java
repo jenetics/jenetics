@@ -35,5 +35,5 @@ import java.lang.reflect.Type;
  * @version 8.0
  * @since 8.0
  */
-public sealed interface Trait permits SimpleType, StructType, IndexedType {
+public sealed interface Trait permits ElementType, StructType, IndexedType {
 }
