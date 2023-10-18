@@ -44,7 +44,7 @@ import io.jenetics.incubator.beans.reflect.ListType;
 import io.jenetics.incubator.beans.reflect.OptionalType;
 import io.jenetics.incubator.beans.reflect.RecordType;
 import io.jenetics.incubator.beans.reflect.Reflect;
-import io.jenetics.incubator.beans.reflect.SingleType;
+import io.jenetics.incubator.beans.reflect.SimpleType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -118,7 +118,7 @@ public final class Properties {
 			);
 
 			final Property prop = switch (Reflect.trait(single.value())) {
-				case SingleType t -> new SingleProperty(path, value);
+				case SimpleType t -> new SimpleProperty(path, value);
 				case RecordType t -> new RecordProperty();
 				case BeanType t -> new BeanProperty();
 				case OptionalType t -> new OptionalProperty(path, value);

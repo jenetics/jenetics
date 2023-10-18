@@ -28,7 +28,7 @@ import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.Reflect;
 import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.SingleType;
+import io.jenetics.incubator.beans.reflect.SimpleType;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
@@ -80,7 +80,7 @@ public final class Descriptions {
 		}
 
 		var foo = switch (Reflect.trait(type.value())) {
-			case SingleType t -> "asd";
+			case SimpleType t -> "asd";
 			case StructType t ->  t.components().map(c -> Description.of(type.path(), c));
 			case IndexedType t -> Stream.of(Description.of(type.path(), t));
 		};

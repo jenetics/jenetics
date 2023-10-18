@@ -74,7 +74,7 @@ import io.jenetics.incubator.beans.PathValue;
  */
 public sealed interface Property
 	extends PathValue<Value>
-	permits SingleProperty, StructProperty, IndexedProperty, IndexProperty
+	permits SimpleProperty, StructProperty, IndexedProperty, IndexProperty
 {
 }
 

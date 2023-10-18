@@ -116,7 +116,7 @@ public final class Reflect {
 
 		// 5) Check for BeanType
 		if (rawType != null) {
-			return new SingleType(rawType);
+			return new SimpleType(rawType);
 		}
 
 		throw new IllegalArgumentException("Unknown type '%s'.".formatted(type));

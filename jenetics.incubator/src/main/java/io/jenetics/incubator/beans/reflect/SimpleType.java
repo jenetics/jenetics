@@ -17,29 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
+package io.jenetics.incubator.beans.reflect;
 
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.incubator.beans.Path;
-
 /**
- * Represents a simple property value.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.0
+ * @since 8.0
  */
-public record SingleProperty(Path path, Value value) implements Property {
+public record SimpleType(Class<?> type) implements Trait {
 
-	public SingleProperty {
-		requireNonNull(path);
-		requireNonNull(value);
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(SingleProperty.class.getSimpleName(), this);
+	public SimpleType {
+		requireNonNull(type);
 	}
 
 }
