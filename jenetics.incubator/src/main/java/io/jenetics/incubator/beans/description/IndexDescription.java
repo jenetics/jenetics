@@ -17,21 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
+package io.jenetics.incubator.beans.description;
+
+import java.lang.reflect.Type;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
- * This property represents an element of an {@link IndexedProperty}.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.0
+ * @since 8.0
  */
-public final class IndexProperty extends SimpleProperty {
+public final class IndexDescription extends SimpleDescription {
 
-    private final int index;
+	private final int index;
 
-	IndexProperty(final PropParam param, final int index) {
-		super(param);
+	public IndexDescription(
+		final Path path,
+		final Class<?> enclosure,
+		final Type type,
+		final Access access,
+		final int index
+	) {
+		super(path, enclosure, type, access);
 		this.index = index;
 	}
 
@@ -40,13 +48,8 @@ public final class IndexProperty extends SimpleProperty {
 	 *
 	 * @return the actual index of the property
 	 */
-    public int index() {
-        return index;
-    }
-
-	@Override
-	public String toString() {
-		return Properties.toString(IndexProperty.class.getSimpleName(), this);
+	public int index() {
+		return index;
 	}
 
 }

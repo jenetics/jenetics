@@ -17,36 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.property;
+package io.jenetics.incubator.beans.description;
 
 /**
- * This property represents an element of an {@link IndexedProperty}.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.0
+ * @since 8.0
  */
-public final class IndexProperty extends SimpleProperty {
+public sealed interface Access {
 
-    private final int index;
+	Getter getter();
 
-	IndexProperty(final PropParam param, final int index) {
-		super(param);
-		this.index = index;
-	}
+	record Readonly(Getter getter) implements Access {}
 
-	/**
-	 * Return the actual index of the property.
-	 *
-	 * @return the actual index of the property
-	 */
-    public int index() {
-        return index;
-    }
-
-	@Override
-	public String toString() {
-		return Properties.toString(IndexProperty.class.getSimpleName(), this);
-	}
+	record Writable(Getter getter, Setter setter) implements Access {}
 
 }

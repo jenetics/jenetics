@@ -41,7 +41,6 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.property.Properties;
 import io.jenetics.incubator.beans.property.Property;
-import io.jenetics.incubator.beans.property.Value;
 
 /**
  * Wrapper class for extending model graphs with additional navigation methods.
@@ -84,9 +83,9 @@ public final class ModelBean implements Iterable<Property> {
 				));
 
 			this.objectPaths = properties.stream()
-				.filter(p -> isIdentityType(unwrap(p.value().value())))
+				.filter(p -> isIdentityType(unwrap(p.value())))
 				.collect(Collectors.toMap(
-					p -> unwrap(p.value().value()),
+					p -> unwrap(p.value()),
 					Property::path,
 					(p1, p2) -> p1,
 					IdentityHashMap::new
@@ -199,11 +198,11 @@ public final class ModelBean implements Iterable<Property> {
 	 *
 	 * @param action The action to be performed for each entry
 	 */
-	public void forEach(final BiConsumer<? super Path, ? super Value> action) {
+	public void forEach(final BiConsumer<? super Path, ? super Property> action) {
 		requireNonNull(action);
 
 		iterator().forEachRemaining(property ->
-			action.accept(property.path(), property.value())
+			action.accept(property.path(), property)
 		);
 	}
 

@@ -31,21 +31,19 @@ import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.description.Accessor;
+import io.jenetics.incubator.beans.description.Access;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.description.IndexedAccessor;
+import io.jenetics.incubator.beans.description.IndexedAccess;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
-import io.jenetics.incubator.beans.property.Value.Immutable;
-import io.jenetics.incubator.beans.property.Value.Mutable;
 import io.jenetics.incubator.beans.reflect.ArrayType;
 import io.jenetics.incubator.beans.reflect.BeanType;
+import io.jenetics.incubator.beans.reflect.ElementType;
 import io.jenetics.incubator.beans.reflect.ListType;
 import io.jenetics.incubator.beans.reflect.OptionalType;
+import io.jenetics.incubator.beans.reflect.PropertyType;
 import io.jenetics.incubator.beans.reflect.RecordType;
-import io.jenetics.incubator.beans.reflect.Reflect;
-import io.jenetics.incubator.beans.reflect.ElementType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -57,32 +55,6 @@ import io.jenetics.incubator.beans.reflect.ElementType;
  * @since 7.2
  */
 public final class Properties {
-
-//	/**
-//	 * Standard filter for the source types. It excludes all JDK types from being
-//	 * used, but includes arrays (except byte[] arrays) and list types.
-//	 */
-//	public static final Predicate<? super PathValue<?>>
-//		STANDARD_SOURCE_FILTER =
-//		Filters.filtering(
-//			pv -> PathValue.of(
-//				pv.path(),
-//				pv.value() != null ? pv.value().getClass() : Object.class
-//			),
-//			Descriptions.STANDARD_SOURCE_FILTER
-//		);
-//
-//	/**
-//	 * Standard filter for the target types. It excludes all JDK types from being
-//	 * part except they are array- or list properties or the enclosure type are
-//	 * array- or list classes.
-//	 */
-//	public static final Predicate<? super Property>
-//		STANDARD_TARGET_FILTER =
-//		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
-//				Reflect.trait(prop.value().enclosure().getClass()) instanceof IndexedType ||
-//				prop instanceof IndexedProperty;
-
 
 	private Properties() {
 	}
@@ -106,92 +78,68 @@ public final class Properties {
 			.flatMap(description -> unapply(root, description));
 	}
 
-	private static Value toValue(
-		final Object enclosing,
-		final Object value,
-		final SimpleDescription description
-	) {
-		return switch (description.accessor()) {
-			case Accessor.Readonly accessor -> new Immutable(
-				enclosing,
-				value,
-				toRawType(description.type())
-			);
-			case Accessor.Writable accessor -> new Mutable(
-				enclosing,
-				value,
-				toRawType(description.type()),
-				accessor.getter(),
-				accessor.setter()
-			);
-		};
-	}
-
 	private static Stream<Property> unapply(
 		final PathValue<?> root,
 		final Description description
 	) {
-		final var enclosing = root.value();
+		final var enclosure = root.value();
 
 		return switch (description) {
-			case SimpleDescription sd -> {
-				final var path = root.path().append(sd.path().element());
-				final var value = toValue(
-					enclosing,
-					sd.accessor().getter().get(root.value()),
-					sd
+			case SimpleDescription desc -> {
+				final var param = new PropParam(
+					root.path().append(desc.path().element()),
+					enclosure,
+					desc.access().getter().get(root.value()),
+					toRawType(description.type()),
+					desc.access().getter(),
+					switch (desc.access()) {
+						case Access.Readonly access -> null;
+						case Access.Writable access -> access.setter();
+					}
 				);
 
-				final Property prop = switch (Reflect.trait(sd.type())) {
-					case ElementType t -> new SimpleProperty(path, value);
-					case RecordType t -> new RecordProperty(path, value);
-					case BeanType t -> new BeanProperty(path, value);
-					case OptionalType t -> new OptionalProperty(path, value);
-					case ArrayType t -> new ArrayProperty(path, value);
-					case ListType t -> new ListProperty(path, value);
+				final Property prop = switch (PropertyType.of(desc.type())) {
+					case ElementType t -> new SimpleProperty(param);
+					case RecordType t -> new RecordProperty(param);
+					case BeanType t -> new BeanProperty(param);
+					case OptionalType t -> new OptionalProperty(param);
+					case ArrayType t -> new ArrayProperty(param);
+					case ListType t -> new ListProperty(param);
 				};
 
 				yield Stream.of(prop);
 			}
-			case IndexedDescription id -> {
-				final var path = description.path().element() instanceof Path.Index
+			case IndexedDescription desc -> {
+				final var path = desc.path().element() instanceof Path.Index
 					? root.path()
-					: root.path().append(id.path().element());
+					: root.path().append(desc.path().element());
 
-				final int size = id.accessor().size().get(enclosing);
+				final int size = desc.size().get(enclosure);
 
-				yield  IntStream.range(0, size).mapToObj(i -> {
-					final Object value = id.accessor().getter().get(enclosing, i);
+				yield IntStream.range(0, size).mapToObj(i -> {
+					final Object value = desc.access().getter().get(enclosure, i);
 					final Class<?> type = value != null
 						? value.getClass()
-						: toRawType(id.type());
+						: toRawType(desc.type());
 
-					var v = switch (id.accessor()) {
-						case IndexedAccessor.Readonly accessor -> new Immutable(
-							enclosing,
-							value,
-							type
-						);
-						case IndexedAccessor.Writable accessor -> new Mutable(
-							enclosing,
-							value,
-							type,
-							object -> accessor.getter().get(object, i),
-							(object, val) -> accessor.setter().set(object, i, val)
-						);
-					};
-
-					return new IndexProperty(
+					final var param = new PropParam(
 						path.append(new Path.Index(i)),
-						i,
-						v
+						enclosure,
+						desc.access().getter().get(enclosure, i),
+						type,
+						object -> desc.access().getter().get(object, i),
+						switch (desc.access()) {
+							case IndexedAccess.Readonly access -> null;
+							case IndexedAccess.Writable access -> (object, val) ->
+								access.setter().set(object, i, val);
+						}
 					);
+
+					return new IndexProperty(param, i);
 				});
 			}
 		};
 	}
-
-
 
 	/**
 	 * Return a Stream that is lazily populated with {@code Property} by
@@ -229,7 +177,7 @@ public final class Properties {
 		final Dtor<? super PathValue<?>, Property> recursiveDtor =
 			PreOrderIterator.dtor(
 				dtor,
-				property -> PathValue.of(property.path(), property.value().value()),
+				property -> PathValue.of(property.path(), property.value()),
 				PathValue::value
 			);
 

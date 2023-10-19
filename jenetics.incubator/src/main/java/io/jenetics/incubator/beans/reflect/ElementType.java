@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  * @version 8.0
  * @since 8.0
  */
-public record ElementType(Class<?> type) implements Trait {
+public record ElementType(Class<?> type) implements PropertyType {
 
 	public ElementType {
 		requireNonNull(type);

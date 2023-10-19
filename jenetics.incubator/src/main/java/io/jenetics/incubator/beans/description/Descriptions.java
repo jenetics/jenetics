@@ -25,9 +25,9 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.reflect.IndexedType;
-import io.jenetics.incubator.beans.reflect.Reflect;
 import io.jenetics.incubator.beans.reflect.ElementType;
+import io.jenetics.incubator.beans.reflect.IndexedType;
+import io.jenetics.incubator.beans.reflect.PropertyType;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
@@ -40,28 +40,6 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * @since 7.2
  */
 public final class Descriptions {
-
-//	/**
-//	 * Standard filter for the source types. It excludes all JDK types from
-//	 * being used, except array- and list types.
-//	 */
-//	public static final Predicate<? super PathValue<? extends Type>>
-//		STANDARD_SOURCE_FILTER =
-//		type -> Reflect.isNonJdkType(type.value()) ||
-//				Reflect.trait(type.value()) instanceof IndexedType;
-//
-//	/**
-//	 * Standard filter for the target types. It excludes all JDK types from being
-//	 * part except they are part of the description
-//	 * ({@code Description.Value.Indexed}) or the enclosure type is an array- or
-//	 * list type.
-//	 */
-//	public static final Predicate<? super Description>
-//		STANDARD_TARGET_FILTER =
-//		prop -> Reflect.isNonJdkType(prop.value().enclosure()) ||
-//				Reflect.trait(prop.value().enclosure()) instanceof IndexedType ||
-//				prop.value() instanceof Value.Indexed;
-
 
 	private Descriptions() {
 	}
@@ -78,7 +56,7 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		return switch (Reflect.trait(type.value())) {
+		return switch (PropertyType.of(type.value())) {
 			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
 			case ElementType t -> Stream.empty();
@@ -176,10 +154,7 @@ public final class Descriptions {
 	public static Stream<Description> walk(final PathValue<? extends Type> root) {
 		final Dtor<PathValue<? extends Type>, Description> dtor = Descriptions::unapply;
 
-		return walk(
-			root,
-			dtor
-		);
+		return walk(root, dtor);
 	}
 
 	/**

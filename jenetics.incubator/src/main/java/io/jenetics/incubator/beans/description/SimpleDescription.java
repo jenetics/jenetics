@@ -29,27 +29,59 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * @version 8.0
  * @since 8.0
  */
-public record SimpleDescription(
-	Path path,
-	Class<?> enclosure,
-	Type type,
-	Accessor accessor
-)
+public sealed class SimpleDescription
 	implements Description
+	permits IndexDescription
 {
 
-	static SimpleDescription of(final Path path, final StructType.Component component) {
-		final var getter = Methods.toGetter(component.getter());
-		final var setter = Methods.toSetter(component.setter());
+    private final Path path;
+    private final Class<?> enclosure;
+    private final Type type;
+    private final Access access;
 
-		return new SimpleDescription(
+    public SimpleDescription(
+		final Path path,
+		final Class<?> enclosure,
+		final Type type,
+		final Access access
+    ) {
+        this.path = path;
+        this.enclosure = enclosure;
+        this.type = type;
+        this.access = access;
+    }
+
+    static SimpleDescription of(final Path path, final StructType.Component component) {
+        final var getter = Methods.toGetter(component.getter());
+        final var setter = Methods.toSetter(component.setter());
+
+        return new SimpleDescription(
 			path.append(component.name()),
-			component.enclosure(),
-			component.value(),
-			setter != null
-				? new Accessor.Writable(getter, setter)
-				: new Accessor.Readonly(getter)
-		);
-	}
+	        component.enclosure(),
+	        component.value(),
+	        setter != null
+		        ? new Access.Writable(getter, setter)
+		        : new Access.Readonly(getter)
+        );
+    }
+
+    @Override
+    public Path path() {
+        return path;
+    }
+
+    @Override
+    public Class<?> enclosure() {
+        return enclosure;
+    }
+
+    @Override
+    public Type type() {
+        return type;
+    }
+
+    public Access access() {
+        return access;
+    }
 
 }

@@ -31,8 +31,15 @@ import io.jenetics.incubator.beans.Path;
  * @version 7.2
  * @since 7.2
  */
-public sealed interface Description permits IndexedDescription, SimpleDescription {
+public sealed interface Description
+	permits IndexedDescription, SimpleDescription
+{
 
+	/**
+	 * Return the path of the description.
+	 *
+	 * @return the path of the description
+	 */
 	Path path();
 
 	/**

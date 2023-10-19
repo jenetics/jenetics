@@ -19,10 +19,6 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import java.util.stream.Stream;
-
-import io.jenetics.incubator.beans.Path;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
@@ -30,7 +26,8 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class RecordProperty extends StructProperty {
 
-	public RecordProperty(Path path, Value value) {
-		super(path, value);
+	RecordProperty(final PropParam param) {
+		super(param);
 	}
+
 }

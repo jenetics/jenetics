@@ -25,8 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Path;
-
 /**
  * Represents a list property.
  *
@@ -36,8 +34,8 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class ListProperty extends IndexedProperty {
 
-	ListProperty(final Path path, final Value value) {
-		super(path, value);
+	ListProperty(final PropParam param) {
+		super(param);
 	}
 
 	/**
@@ -47,7 +45,7 @@ public final class ListProperty extends IndexedProperty {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Object> list() {
-		return (List<Object>)value().value();
+		return (List<Object>)value();
 	}
 
 	@Override

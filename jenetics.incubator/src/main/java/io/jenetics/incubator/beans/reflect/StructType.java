@@ -32,7 +32,10 @@ import java.util.stream.Stream;
  * @version 8.0
  * @since 8.0
  */
-public sealed interface StructType extends Trait permits BeanType, RecordType {
+public sealed interface StructType
+	extends PropertyType
+	permits BeanType, RecordType
+{
 
 	/**
 	 * Component information for the <em>structural</em> trait
@@ -64,20 +67,5 @@ public sealed interface StructType extends Trait permits BeanType, RecordType {
 	 * @return the record components of {@code this} struct trait
 	 */
 	Stream<Component> components();
-
-	/**
-	 * Return an {@code StructType} from the given {@code type}. If the type
-	 * parameter doesn't represent a structural type, {@code null} is returned.
-	 *
-	 * @param type the input type
-	 * @return a structure type if the input {@code type} is a record or bean
-	 */
-	static Trait of(final Type type) {
-		var trait = RecordType.of(type);
-		if (trait == null) {
-			trait = BeanType.of(type);
-		}
-		return trait;
-	}
 
 }

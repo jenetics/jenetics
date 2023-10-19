@@ -19,11 +19,9 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.beans.reflect.Reflect.raise;
-import static io.jenetics.incubator.beans.reflect.Reflect.toRawType;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 /**
@@ -36,6 +34,10 @@ import java.util.Optional;
  * @since 8.0
  */
 public record OptionalType(Class<?> componentType) implements IndexedType {
+
+	public OptionalType {
+		requireNonNull(componentType);
+	}
 
 	@Override
 	public Class<?> type() {
@@ -65,39 +67,4 @@ public record OptionalType(Class<?> componentType) implements IndexedType {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Return a {@code OptionalType} instance if the given {@code type} is a
-	 * {@code Optional} class.
-	 * {@snippet lang = "java":
-	 * final Type type = null; // @replace substring='null' replacement="..."
-	 * if (OptionalType.of(type) instanceof OptionalType ot) {
-	 *     System.out.println(ot);
-	 * }
-	 * }
-     *
-     * @param type the type object
-     * @return an {@code OptionalType} if the given {@code type} is an optional
-     * type, or {@code null}
-     */
-    public static IndexedType of(final Type type) {
-        if (type instanceof ParameterizedType parameterizedType &&
-            parameterizedType.getRawType() instanceof Class<?> optionalType &&
-            Optional.class.isAssignableFrom(optionalType))
-        {
-            final var typeArguments = parameterizedType.getActualTypeArguments();
-            if (typeArguments.length == 1 &&
-                toRawType(typeArguments[0]) != null)
-            {
-                return new OptionalType(toRawType(typeArguments[0]) );
-            }
-        }
-
-        if (type instanceof Class<?> optionalType &&
-            Optional.class.isAssignableFrom(optionalType))
-        {
-            return new OptionalType(Object.class);
-        }
-
-        return null;
-    }
 }

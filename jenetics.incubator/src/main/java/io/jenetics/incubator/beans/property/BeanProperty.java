@@ -19,16 +19,13 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.Path;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
 public final class BeanProperty extends StructProperty {
-
-	public BeanProperty(Path path, Value value) {
-		super(path, value);
+	BeanProperty(final PropParam param) {
+		super(param);
 	}
 }

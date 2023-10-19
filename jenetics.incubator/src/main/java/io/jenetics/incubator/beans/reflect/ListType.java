@@ -19,11 +19,9 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.beans.reflect.Reflect.raise;
-import static io.jenetics.incubator.beans.reflect.Reflect.toRawType;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -36,13 +34,18 @@ import java.util.List;
  * @version 8.0
  * @since 8.0
  */
-public record ListType(Class<?> type,
-                       Class<?> componentType) implements IndexedType {
+public record ListType(
+	Class<?> type,
+	Class<?> componentType
+)
+	implements IndexedType
+{
 
 	public ListType {
 		if (!List.class.isAssignableFrom(type)) {
 			throw new IllegalArgumentException("Not a list type: " + type);
 		}
+		requireNonNull(componentType);
 	}
 
 	@Override
@@ -69,39 +72,4 @@ public record ListType(Class<?> type,
 		}
 	}
 
-	/**
-	 * Return a {@code ListType} instance if the given {@code type} is a
-	 * {@code List} class.
-	 * {@snippet lang = "java":
-	 * final Type type = null; // @replace substring='null' replacement="..."
-	 * if (ListType.of(type) instanceof ListType lt) {
-	 *     System.out.println(lt);
-	 * }
-	 * }
-     *
-     * @param type the type object
-     * @return an {@code ListType} if the given {@code type} is a list type, or
-     * {@code null}
-     */
-    public static IndexedType of(final Type type) {
-        if (type instanceof ParameterizedType parameterizedType &&
-            parameterizedType.getRawType() instanceof Class<?> listType &&
-            List.class.isAssignableFrom(listType))
-        {
-            final var typeArguments = parameterizedType.getActualTypeArguments();
-            if (typeArguments.length == 1 &&
-                toRawType(typeArguments[0]) != null)
-            {
-                return new ListType(listType, toRawType(typeArguments[0]) );
-            }
-        }
-
-        if (type instanceof Class<?> listType &&
-            List.class.isAssignableFrom(listType))
-        {
-            return new ListType(listType, Object.class);
-        }
-
-        return null;
-    }
 }

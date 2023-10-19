@@ -19,11 +19,11 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
+import static java.util.Objects.requireNonNull;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
 /**
@@ -37,13 +37,18 @@ import java.util.stream.Stream;
  */
 public record BeanType(Class<?> type) implements StructType {
 
+	public BeanType {
+		requireNonNull(type);
+	}
+
 	@Override
 	public Stream<Component> components() {
 		final PropertyDescriptor[] descriptors;
 		try {
 			descriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("Can't introspect class '%s'.".formatted(type), e);
+			throw new IllegalArgumentException("Can't introspect class '%s'."
+				.formatted(type), e);
 		}
 
 		return Stream.of(descriptors)
@@ -58,29 +63,4 @@ public record BeanType(Class<?> type) implements StructType {
 			);
 	}
 
-	/**
-	 * Return a {@code BeanType} instance if the given {@code type} is a bean
-	 * class.
-	 * {@snippet lang = "java":
-	 * final Type type = null; // @replace substring='null' replacement="..."
-	 * if (BeanType.of(type) instanceof BeanType bt) {
-	 *     System.out.println(bt);
-	 * }
-	 * }
-     *
-     * @param type the type object
-     * @return an {@code ListType} if the given {@code type} is a bean type, or
-     * {@code null}
-     */
-    public static Trait of(final Type type) {
-        if (type instanceof ParameterizedType pt &&
-            pt.getRawType() instanceof Class<?> rt
-        ) {
-            return new BeanType(rt);
-        } else if (type instanceof Class<?> cls) {
-            return new BeanType(cls);
-        } else {
-            return null;
-        }
-    }
 }

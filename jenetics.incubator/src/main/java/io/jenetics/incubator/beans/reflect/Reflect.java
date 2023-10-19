@@ -19,14 +19,10 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
-import static java.util.Objects.requireNonNull;
-
 import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -50,80 +46,6 @@ public final class Reflect {
 
 	private Reflect() {
 	}
-
-	public static Trait trait(final Type type) {
-		requireNonNull(type);
-
-		// 1) Check for ArrayType.
-		if (type instanceof Class<?> arrayType && arrayType.isArray()) {
-			if (arrayType.componentType().isPrimitive()) {
-				return new ElementType(arrayType);
-			} else {
-				return new ArrayType(
-					arrayType,
-					arrayType.getComponentType()
-				);
-			}
-		}
-
-		// 3) Check for OptionalType.
-		if (type instanceof ParameterizedType parameterizedType &&
-			parameterizedType.getRawType() instanceof Class<?> optionalType &&
-			Optional.class.isAssignableFrom(optionalType))
-		{
-			final var typeArguments = parameterizedType.getActualTypeArguments();
-			if (typeArguments.length == 1 &&
-				toRawType(typeArguments[0]) != null)
-			{
-				return new OptionalType(toRawType(typeArguments[0]) );
-			}
-		}
-		if (type instanceof Class<?> optionalType &&
-			Optional.class.isAssignableFrom(optionalType))
-		{
-			return new OptionalType(Object.class);
-		}
-
-		// 4) Check for ListType.
-		if (type instanceof ParameterizedType parameterizedType &&
-			parameterizedType.getRawType() instanceof Class<?> listType &&
-			List.class.isAssignableFrom(listType))
-		{
-			final var typeArguments = parameterizedType.getActualTypeArguments();
-			if (typeArguments.length == 1 &&
-				toRawType(typeArguments[0]) != null)
-			{
-				return new ListType(listType, toRawType(typeArguments[0]) );
-			}
-		}
-		if (type instanceof Class<?> listType &&
-			List.class.isAssignableFrom(listType))
-		{
-			return new ListType(listType, Object.class);
-		}
-
-		// 2) Check for RecordType.
-		if (type instanceof Class<?> cls && cls.isRecord()) {
-			return new RecordType(cls);
-		}
-
-		final Class<?> rawType = toRawType(type);
-
-		// 6) Check for ElementType.
-		if (rawType != null) {
-			if (isElementType(rawType)) {
-				return new ElementType(rawType);
-			}
-		}
-
-		// 5) Check for BeanType
-		if (rawType != null) {
-			return new BeanType(rawType);
-		}
-
-		throw new IllegalArgumentException("Unknown type '%s'.".formatted(type));
-	}
-
 
 	static <T> T raise(final RuntimeException exception) {
 		throw exception;

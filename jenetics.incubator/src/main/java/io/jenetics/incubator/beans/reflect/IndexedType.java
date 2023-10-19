@@ -28,7 +28,7 @@ package io.jenetics.incubator.beans.reflect;
  * @since 8.0
  */
 public sealed interface IndexedType
-	extends Trait
+	extends PropertyType
 	permits ArrayType, ListType, OptionalType
 {
 

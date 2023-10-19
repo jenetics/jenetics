@@ -21,7 +21,7 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import io.jenetics.incubator.beans.Path;
 
@@ -37,40 +37,60 @@ public sealed class SimpleProperty
 	implements Property
 	permits IndexProperty, StructProperty
 {
-    private final Path path;
-    private final Value value;
+	private final PropParam param;
 
-    public SimpleProperty(Path path, Value value) {
-        this.path = requireNonNull(path);
-        this.value = requireNonNull(value);
+	SimpleProperty(final PropParam param) {
+        this.param = requireNonNull(param);
     }
 
 	@Override
 	public Path path() {
-		return path;
+		return param.path();
 	}
 
 	@Override
-	public Value value() {
-		return value;
+	public Object enclosure() {
+		return param.enclosure();
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(path, value);
+	public Object value() {
+		return param.value();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
+	public Class<?> type() {
+		return param.type();
+	}
+
+	@Override
+	public Object read() {
+		return param.getter().get(enclosure());
+	}
+
+	@Override
+	public Optional<Writer> writer() {
+		return param.setter() != null
+			? Optional.of(this::write)
+			: Optional.empty();
+	}
+
+	/**
+	 * Writes a new value to the property.
+	 *
+	 * @param value the new property value
+	 * @return {@code true} if the new value has been written, {@code false}
+	 * otherwise
+	 */
+	private boolean write(final Object value) {
+		try {
+			param.setter().set(enclosure(), value);
 			return true;
-		}
-		if (obj == null || obj.getClass() != this.getClass()) {
+		} catch (VirtualMachineError | LinkageError e) {
+			throw e;
+		} catch (Throwable e) {
 			return false;
 		}
-		final var that = (SimpleProperty) obj;
-		return Objects.equals(this.path, that.path) &&
-			Objects.equals(this.value, that.value);
 	}
 
     @Override

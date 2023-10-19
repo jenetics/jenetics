@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Array;
 
 /**
@@ -42,6 +44,7 @@ public record ArrayType(
 		if (!type.isArray()) {
 			throw new IllegalArgumentException("Not an array type: " + type);
 		}
+		requireNonNull(componentType);
 	}
 
 	@Override
@@ -58,30 +61,5 @@ public record ArrayType(
 	public void set(Object object, int index, Object value) {
 		Array.set(object, index, value);
 	}
-
-//	/**
-//	 * Return an {@code ArrayType} instance if the given {@code type} is an
-//	 * array class.
-//	 * {@snippet lang = "java":
-//	 * final Type type = null; // @replace substring='null' replacement="..."
-//	 * if (ArrayType.of(type) instanceof ArrayType at) {
-//	 *     System.out.println(at);
-//	 * }
-//	 * }
-//     *
-//     * @param type the type object
-//     * @return an {@code ArrayType} if the given {@code type} is an array type,
-//     * or {@code null}
-//     */
-//    public static IndexedType of(final Type type) {
-//        if (type instanceof Class<?> arrayType && arrayType.isArray()) {
-//            return new ArrayType(
-//                arrayType,
-//                arrayType.getComponentType()
-//            );
-//        }  {
-//            return null;
-//        }
-//    }
 
 }

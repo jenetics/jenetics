@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.beans.reflect;
 
-import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
 /**
@@ -57,25 +56,4 @@ public record RecordType(Class<?> type) implements StructType {
 			));
 	}
 
-	/**
-	 * Return a {@code RecordType} instance if the given {@code type} is a
-	 * {@code Record} class.
-	 * {@snippet lang = "java":
-	 * final Type type = null; // @replace substring='null' replacement="..."
-	 * if (RecordType.of(type) instanceof RecordType rt) {
-	 *     System.out.println(rt);
-	 * }
-	 * }
-     *
-     * @param type the type object
-     * @return an {@code RecordType} if the given {@code type} is a record type,
-     * or {@code null}
-     */
-    public static Trait of(final Type type) {
-        if (type instanceof Class<?> cls && cls.isRecord()) {
-            return new RecordType(cls);
-        } else {
-            return null;
-        }
-    }
 }

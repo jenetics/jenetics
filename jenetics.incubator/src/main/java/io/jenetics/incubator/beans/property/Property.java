@@ -19,7 +19,9 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.PathValue;
+import java.util.Optional;
+
+import io.jenetics.incubator.beans.Path;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -73,8 +75,66 @@ import io.jenetics.incubator.beans.PathValue;
  * @since 7.2
  */
 public sealed interface Property
-	extends PathValue<Value>
 	permits SimpleProperty, IndexedProperty
 {
+
+	/**
+	 * Return the path of the property.
+	 *
+	 * @return the path of the property
+	 */
+	Path path();
+
+	/**
+	 * Return the property name, or {@code <root>} if it is the property root.
+	 *
+	 * @return the name of the property
+	 */
+	default String name() {
+		return path().isEmpty() ? "<root>" : path().element().toString();
+	}
+
+	/**
+	 * Returns the object which contains {@code this} node.
+	 *
+	 * @return the object which contains {@code this} node
+	 */
+	Object enclosure();
+
+	/**
+	 * The value of the metaobject, may be {@code null}. This method always
+	 * returns the initial property value.
+	 *
+	 * @return the <em>original</em> value of the metaobject
+	 */
+	Object value();
+
+	/**
+	 * The type of the property value, never {@code null}.
+	 *
+	 * @return the type of the property value
+	 */
+	Class<?> type();
+
+	/**
+	 * Reads the actual value of the property. This value may be different from
+	 * the initial, cached {@link #value()}.
+	 *
+	 * @return the actual value of the property
+	 */
+	default Object read() {
+		return value();
+	}
+
+	/**
+	 * Return the writer which allows to update the property, or
+	 * {@link Optional#empty()} if the property is unmodifiable.
+	 *
+	 * @return the property writer
+	 */
+	default Optional<Writer> writer() {
+		return Optional.empty();
+	}
+
 }
 

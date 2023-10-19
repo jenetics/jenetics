@@ -140,7 +140,7 @@ public class PropertiesTest {
 	@Test
 	public void walLibraryk() {
 		final var properties = Properties.walk(LIBRARY)
-			.sorted(Comparator.comparing(PathValue::path))
+			.sorted(Comparator.comparing(Property::path))
 			.map(Property::toString)
 			.toArray(String[]::new);
 

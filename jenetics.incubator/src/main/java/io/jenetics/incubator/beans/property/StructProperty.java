@@ -19,7 +19,12 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import io.jenetics.incubator.beans.Path;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.beans.reflect.PropertyType;
+import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -31,8 +36,28 @@ public sealed abstract class StructProperty
 	permits BeanProperty, RecordProperty
 {
 
-	public StructProperty(Path path, Value value) {
-		super(path, value);
+	public record Component(String name, Object value) {
+	}
+
+	StructProperty(final PropParam param) {
+		super(param);
+	}
+
+	public Stream<Component> components() {
+		return PropertyType.of(type()) instanceof StructType st
+			? st.components().map(component -> new Component(
+					component.name(),
+					read(component.getter())
+				))
+			: Stream.empty();
+	}
+
+	private Object read(final Method method) {
+		try {
+			return value() != null ? method.invoke(value()) : null;
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }
