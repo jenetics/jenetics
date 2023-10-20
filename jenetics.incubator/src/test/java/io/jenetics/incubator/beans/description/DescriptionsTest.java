@@ -42,7 +42,7 @@ public class DescriptionsTest {
 	@Test
 	public void extractLibrary() {
 		final var descriptions = Descriptions
-			.unapply(PathValue.of(Path.of("library"), Library.class))
+			.list(PathValue.of(Path.of("library"), Library.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
 			.toArray(String[]::new);
@@ -58,7 +58,7 @@ public class DescriptionsTest {
 	@Test
 	public void extractBook() {
 		final var descriptions = Descriptions
-			.unapply(PathValue.of(Book.class))
+			.list(PathValue.of(Book.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
 			.toArray(String[]::new);
@@ -75,7 +75,7 @@ public class DescriptionsTest {
 	@Test
 	public void extractAuthor() {
 		final var descriptions = Descriptions
-			.unapply(PathValue.of(Author.class))
+			.list(PathValue.of(Author.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
 			.toArray(String[]::new);
@@ -93,7 +93,7 @@ public class DescriptionsTest {
 	@Test
 	public void extractGPX() {
 		final var descriptions = Descriptions
-			.unapply(PathValue.of(GPX.class))
+			.list(PathValue.of(GPX.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
 			.toArray(String[]::new);

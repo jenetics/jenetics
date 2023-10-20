@@ -31,8 +31,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.incubator.beans.Dtor;
-
 /**
  * Postorder iterator which <em>recursively</em> traverses the object graph. It
  * also tracks already visited nodes to prevent infinite loops in the traversal.

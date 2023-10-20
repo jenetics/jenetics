@@ -22,7 +22,7 @@ package io.jenetics.incubator.beans.description;
 import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Dtor;
+import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.PathValue;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.ElementType;
@@ -45,13 +45,13 @@ public final class Descriptions {
 	}
 
 	/**
-	 * Extracts the <em>directly</em> available property descriptions for the
+	 * Lists the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
 	 *
-	 * @param type the type to unapply
+	 * @param type the enclosing type of the listed property descriptions
 	 * @return the <em>directly</em> available property descriptions
 	 */
-	public static Stream<Description> unapply(final PathValue<? extends Type> type) {
+	public static Stream<Description> list(final PathValue<? extends Type> type) {
 		if (type == null || type.value() == null) {
 			return Stream.empty();
 		}
@@ -67,11 +67,11 @@ public final class Descriptions {
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type}.
 	 *
-	 * @param type the type to unapply
+	 * @param type the enclosing type of the listed property descriptions
 	 * @return the <em>directly</em> available property descriptions
 	 */
-	public static Stream<Description> unapply(final Type type) {
-		return unapply(PathValue.of(type));
+	public static Stream<Description> list(final Type type) {
+		return list(PathValue.of(type));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class Descriptions {
 	 * searching for all property descriptions in an object tree rooted at a
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned. If used with the
-	 * {@link #unapply(PathValue)} method, all found descriptions are returned,
+	 * {@link #list(PathValue)} method, all found descriptions are returned,
 	 * including the descriptions from the Java classes.
 	 * {@snippet lang="java":
 	 * Descriptions
@@ -102,10 +102,10 @@ public final class Descriptions {
 	 *
 	 * @param root the root class of the object graph
 	 * @param dtor the extractor used for fetching the directly available
-	 *        descriptions. See {@link #unapply(PathValue)}.
+	 *        descriptions. See {@link #list(PathValue)}.
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
-	public static Stream<Description> walk(
+	private static Stream<Description> walk(
 		final PathValue<? extends Type> root,
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
@@ -152,9 +152,7 @@ public final class Descriptions {
 	 * @return all <em>statically</em> fetch-able property descriptions
 	 */
 	public static Stream<Description> walk(final PathValue<? extends Type> root) {
-		final Dtor<PathValue<? extends Type>, Description> dtor = Descriptions::unapply;
-
-		return walk(root, dtor);
+		return walk(root, Descriptions::list);
 	}
 
 	/**

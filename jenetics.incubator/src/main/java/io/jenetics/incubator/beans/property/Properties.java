@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Dtor;
+import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
@@ -66,19 +66,19 @@ public final class Properties {
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> unapply(final PathValue<?> root) {
+	public static Stream<Property> list(final PathValue<?> root) {
 		if (root == null || root.value() == null) {
 			return Stream.empty();
 		}
 
 		final var type = PathValue.<Type>of(root.value().getClass());
-		final var descriptions = Descriptions.unapply(type);
+		final var descriptions = Descriptions.list(type);
 
 		return descriptions
-			.flatMap(description -> unapply(root, description));
+			.flatMap(description -> list(root, description));
 	}
 
-	private static Stream<Property> unapply(
+	private static Stream<Property> list(
 		final PathValue<?> root,
 		final Description description
 	) {
@@ -142,9 +142,20 @@ public final class Properties {
 	}
 
 	/**
+	 * This method extracts the direct properties of the given {@code root}
+	 * object.
+	 *
+	 * @param root the root object from which the properties are extracted
+	 * @return all direct properties of the given {@code root} object
+	 */
+	public static Stream<Property> list(final Object root) {
+		return root instanceof PathValue<?> pv ? list(pv) : list(PathValue.of(root));
+	}
+
+	/**
 	 * Return a Stream that is lazily populated with {@code Property} by
 	 * searching for all properties in an object tree rooted at a given
-	 * starting {@code root} object. If used with the {@link #unapply(PathValue)}
+	 * starting {@code root} object. If used with the {@link #list(PathValue)}
 	 * method, all found descriptions are returned, including the descriptions
 	 * from the Java classes.
 	 * {@snippet lang="java":
@@ -170,7 +181,7 @@ public final class Properties {
 	 *        the object properties
 	 * @return a property stream
 	 */
-	public static Stream<Property> walk(
+	private static Stream<Property> walk(
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
@@ -221,7 +232,7 @@ public final class Properties {
 	 */
 	public static Stream<Property>
 	walk(final PathValue<?> root, final String... includes) {
-		final Dtor<PathValue<?>, Property> dtor = Properties::unapply;
+		final Dtor<PathValue<?>, Property> dtor = Properties::list;
 
 		return walk(
 			root,

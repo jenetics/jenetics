@@ -107,7 +107,7 @@ public class PropertiesTest {
 
 	@Test
 	public void extractAuthor() {
-		final var properties = Properties.unapply(PathValue.of(FRANZEN))
+		final var properties = Properties.list(PathValue.of(FRANZEN))
 			.sorted(Comparator.comparing(Property::path))
 			.map(Property::toString)
 			.toArray(String[]::new);
@@ -124,7 +124,7 @@ public class PropertiesTest {
 
 	@Test
 	public void extractBook() {
-		final var properties = Properties.unapply(PathValue.of(SNOW_CRASH))
+		final var properties = Properties.list(PathValue.of(SNOW_CRASH))
 			.sorted(Comparator.comparing(Property::path))
 			.map(Property::toString)
 			.toArray(String[]::new);
