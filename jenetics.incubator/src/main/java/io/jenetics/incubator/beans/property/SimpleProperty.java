@@ -98,5 +98,4 @@ public sealed class SimpleProperty
         return Properties.toString(getClass().getSimpleName(), this);
     }
 
-
 }

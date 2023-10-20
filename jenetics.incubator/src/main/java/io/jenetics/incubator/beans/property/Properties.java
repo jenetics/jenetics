@@ -263,10 +263,13 @@ public final class Properties {
 	}
 
 	static String toString(final String name, final Property property) {
-		return "%s[path=%s, value=%s]".formatted(
+		return "%s[path=%s, value=%s, mutable=%s, type=%s, enclosure=%s]".formatted(
 			name,
 			property.path(),
-			property.value()
+			property.value(),
+			property.writer().isPresent(),
+			property.type().getName(),
+			property.enclosure().getClass().getName()
 		);
 	}
 
