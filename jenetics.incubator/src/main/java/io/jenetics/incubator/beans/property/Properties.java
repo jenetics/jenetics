@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static io.jenetics.incubator.beans.reflect.Reflect.toRawType;
+import static io.jenetics.incubator.beans.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
@@ -30,7 +30,7 @@ import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 import io.jenetics.incubator.beans.description.Access;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;

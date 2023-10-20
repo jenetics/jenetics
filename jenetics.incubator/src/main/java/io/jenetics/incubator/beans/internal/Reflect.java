@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.beans.reflect;
+package io.jenetics.incubator.beans.internal;
 
 import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
@@ -47,7 +47,7 @@ public final class Reflect {
 	private Reflect() {
 	}
 
-	static <T> T raise(final RuntimeException exception) {
+	public static <T> T raise(final RuntimeException exception) {
 		throw exception;
 	}
 

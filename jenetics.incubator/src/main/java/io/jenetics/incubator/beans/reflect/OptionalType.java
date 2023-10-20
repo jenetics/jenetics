@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.reflect;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.reflect.Reflect.raise;
+import static io.jenetics.incubator.beans.internal.Reflect.raise;
 
 import java.util.Optional;
 

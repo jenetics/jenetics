@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.ElementType;
 import io.jenetics.incubator.beans.reflect.IndexedType;
 import io.jenetics.incubator.beans.reflect.PropertyType;

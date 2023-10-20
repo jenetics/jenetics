@@ -20,8 +20,8 @@
 package io.jenetics.incubator.beans.reflect;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.reflect.Reflect.isElementType;
-import static io.jenetics.incubator.beans.reflect.Reflect.toRawType;
+import static io.jenetics.incubator.beans.internal.Reflect.isElementType;
+import static io.jenetics.incubator.beans.internal.Reflect.toRawType;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
