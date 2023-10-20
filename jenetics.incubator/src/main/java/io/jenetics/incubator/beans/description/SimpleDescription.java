@@ -34,9 +34,8 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * @version 8.0
  * @since 8.0
  */
-public sealed class SimpleDescription
+public final class SimpleDescription
 	implements Description
-	permits IndexDescription
 {
     private final Path path;
     private final Class<?> enclosure;

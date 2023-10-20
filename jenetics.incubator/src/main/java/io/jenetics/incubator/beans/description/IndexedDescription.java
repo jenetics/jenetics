@@ -19,25 +19,89 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.reflect.IndexedType;
 
 /**
+ * This class represents indexed objects like arrays and lists.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public record IndexedDescription(
-	Path path,
-	Class<?> enclosure,
-	Type type,
-	Size size,
-	IndexedAccess access
-)
-	implements Description
-{
+public final class IndexedDescription implements Description {
+    private final Path path;
+    private final Class<?> enclosure;
+    private final Type type;
+    private final Size size;
+    private final IndexedAccess access;
+
+    IndexedDescription(
+		final Path path,
+		final Class<?> enclosure,
+		final Type type,
+		final Size size,
+		final IndexedAccess access
+    ) {
+        this.path = requireNonNull(path);
+        this.enclosure = requireNonNull(enclosure);
+        this.type = requireNonNull(type);
+        this.size = requireNonNull(size);
+        this.access = requireNonNull(access);
+    }
+
+    @Override
+    public Path path() {
+        return path;
+    }
+
+    @Override
+    public Class<?> enclosure() {
+        return enclosure;
+    }
+
+    @Override
+    public Type type() {
+        return type;
+    }
+
+	/**
+	 * Return the size function of the description.
+	 *
+	 * @return the size function of the description
+	 */
+    public Size size() {
+        return size;
+    }
+
+	/**
+	 * Return the access object for the description.
+	 *
+	 * @return the access object for the description
+	 */
+    public IndexedAccess access() {
+        return access;
+    }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path, enclosure, type.getTypeName());
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj != null &&
+			obj.getClass() == getClass() &&
+			((IndexedDescription)obj).path.equals(path) &&
+			((IndexedDescription)obj).type.getTypeName().equals(type.getTypeName()) &&
+			((IndexedDescription)obj).enclosure.equals(enclosure);
+	}
 
 	@Override
 	public String toString() {
