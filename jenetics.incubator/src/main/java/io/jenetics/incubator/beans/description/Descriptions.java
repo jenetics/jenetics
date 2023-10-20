@@ -22,8 +22,8 @@ package io.jenetics.incubator.beans.description;
 import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.PathValue;
+import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.ElementType;
 import io.jenetics.incubator.beans.reflect.IndexedType;

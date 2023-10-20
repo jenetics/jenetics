@@ -26,7 +26,6 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
@@ -36,6 +35,7 @@ import io.jenetics.incubator.beans.description.Descriptions;
 import io.jenetics.incubator.beans.description.IndexedAccess;
 import io.jenetics.incubator.beans.description.IndexedDescription;
 import io.jenetics.incubator.beans.description.SimpleDescription;
+import io.jenetics.incubator.beans.internal.Dtor;
 import io.jenetics.incubator.beans.internal.PreOrderIterator;
 import io.jenetics.incubator.beans.reflect.ArrayType;
 import io.jenetics.incubator.beans.reflect.BeanType;
