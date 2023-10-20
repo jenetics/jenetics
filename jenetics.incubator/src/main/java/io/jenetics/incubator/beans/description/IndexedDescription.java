@@ -19,11 +19,7 @@
  */
 package io.jenetics.incubator.beans.description;
 
-import static io.jenetics.incubator.beans.reflect.Reflect.toRawType;
-
 import java.lang.reflect.Type;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.reflect.IndexedType;
@@ -43,31 +39,13 @@ public record IndexedDescription(
 	implements Description
 {
 
-	public Stream<IndexDescription> descriptions(final Object enclosure) {
-		final int size = size().get(enclosure);
-
-		return IntStream.range(0, size).mapToObj(index -> {
-			final Object value = access.getter().get(enclosure, index);
-			final Class<?> type = value != null
-				? value.getClass()
-				: toRawType(type());
-
-			return new IndexDescription(
-				path.append(new Path.Index(index)),
-				enclosure.getClass(),
-				type,
-				switch (access) {
-					case IndexedAccess.Readonly acc -> new Access.Readonly(
-						object -> acc.getter().get(object, index)
-					);
-					case IndexedAccess.Writable acc -> new Access.Writable(
-						object -> acc.getter().get(object, index),
-						(object, val) -> acc.setter().set(object, index, val)
-					);
-				},
-				index
-			);
-		});
+	@Override
+	public String toString() {
+		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
+			path,
+			type instanceof Class<?> cls ? cls.getName() : type,
+			enclosure.getName()
+		);
 	}
 
 	static IndexedDescription of(final Path path, final IndexedType type) {

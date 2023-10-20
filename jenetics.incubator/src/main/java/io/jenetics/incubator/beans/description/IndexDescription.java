@@ -20,10 +20,14 @@
 package io.jenetics.incubator.beans.description;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 import io.jenetics.incubator.beans.Path;
 
 /**
+ * This description represents an element of an {@link IndexedDescription}
+ * object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
@@ -32,7 +36,7 @@ public final class IndexDescription extends SimpleDescription {
 
 	private final int index;
 
-	public IndexDescription(
+	IndexDescription(
 		final Path path,
 		final Class<?> enclosure,
 		final Type type,
@@ -50,6 +54,22 @@ public final class IndexDescription extends SimpleDescription {
 	 */
 	public int index() {
 		return index;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(path(), enclosure(), type().getTypeName(), index);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj != null &&
+			obj.getClass() == getClass() &&
+			((IndexDescription)obj).path().equals(path()) &&
+			((IndexDescription)obj).type().getTypeName().equals(type().getTypeName()) &&
+			((IndexDescription)obj).enclosure().equals(enclosure()) &&
+			((IndexDescription)obj).index() == index();
 	}
 
 }
