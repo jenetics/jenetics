@@ -172,6 +172,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.addStringOption("-snippet-path", "${project.projectDir}/src/test/java")
 		doclet.addStringOption("-show-module-contents", "api")
 		doclet.addStringOption("-show-packages", "exported")
 		doclet.addStringOption("exclude", "io.jenetics.internal")

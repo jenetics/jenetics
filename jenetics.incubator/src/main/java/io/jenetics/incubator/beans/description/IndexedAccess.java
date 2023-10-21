@@ -19,18 +19,48 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import static java.util.Objects.requireNonNull;
+
 /**
+ * This interface holds property getter and, optionally, property setter.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
 public sealed interface IndexedAccess {
 
+	/**
+	 * Return the property getter, never {@code null}.
+	 *
+	 * @return the property getter
+	 */
 	IndexedGetter getter();
 
-	record Readonly(IndexedGetter getter) implements IndexedAccess {}
+	/**
+	 * Read only property access-object.
+	 *
+	 * @param getter the property getter
+	 */
+	record Readonly(IndexedGetter getter) implements IndexedAccess {
+		public Readonly {
+			requireNonNull(getter);
+		}
+	}
 
+	/**
+	 * Writable property access-object.
+	 *
+	 * @param getter the property getter
+	 * @param setter the property setter
+	 */
 	record Writable(IndexedGetter getter, IndexedSetter setter)
-		implements IndexedAccess {}
+		implements IndexedAccess
+	{
+		public Writable {
+			requireNonNull(getter);
+			requireNonNull(setter);
+		}
+	}
 
 }

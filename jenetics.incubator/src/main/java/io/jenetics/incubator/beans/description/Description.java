@@ -24,8 +24,8 @@ import java.lang.reflect.Type;
 import io.jenetics.incubator.beans.Path;
 
 /**
- * A {@code PropertyDesc} describes one property that a Java Bean exports or a
- * {@link java.lang.reflect.RecordComponent} in the case of a record class.
+ * This interface describes the <em>static</em> type information for a property,
+ * together with its path in the object graph.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2

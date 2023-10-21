@@ -35,6 +35,18 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
  *
+ * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+ *
+ * The code snippet above will create the following output
+ * <pre>{@code
+ * Description[path=title, type=java.lang.String, enclosure=Book]
+ * Description[path=pages, type=int, enclosure=Book]
+ * Description[path=authors, type=java.util.List<Author>, enclosure=Book]
+ * Description[path=authors[0], type=Author, enclosure=java.util.List]
+ * Description[path=authors[0].forename, type=java.lang.String, enclosure=Author]
+ * Description[path=authors[0].surname, type=java.lang.String, enclosure=Author]
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
@@ -48,6 +60,15 @@ public final class Descriptions {
 	 * Lists the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
 	 *
+	 * {@snippet class="snippets.DescriptionsSnippets" region="list(PathValue)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * Description[path=book.title, type=java.lang.String, enclosure=Book]
+	 * Description[path=book.pages, type=int, enclosure=Book]
+	 * Description[path=book.authors, type=java.util.List<Author>, enclosure=Book]
+	 * }</pre>
+	 *
 	 * @param type the enclosing type of the listed property descriptions
 	 * @return the <em>directly</em> available property descriptions
 	 */
@@ -57,7 +78,8 @@ public final class Descriptions {
 		}
 
 		return switch (PropertyType.of(type.value())) {
-			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
+			case StructType t ->  t.components()
+				.map(c -> SimpleDescription.of(type.path(), c));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
 			case ElementType t -> Stream.empty();
 		};
@@ -67,6 +89,15 @@ public final class Descriptions {
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type}.
 	 *
+	 * {@snippet class="snippets.DescriptionsSnippets" region="list(Type)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * Description[path=title, type=java.lang.String, enclosure=Book]
+	 * Description[path=pages, type=int, enclosure=Book]
+	 * Description[path=authors, type=java.util.List<Author>, enclosure=Book]
+	 * }</pre>
+	 *
 	 * @param type the enclosing type of the listed property descriptions
 	 * @return the <em>directly</em> available property descriptions
 	 */
@@ -74,37 +105,6 @@ public final class Descriptions {
 		return list(PathValue.of(type));
 	}
 
-	/**
-	 * Return a Stream that is lazily populated with {@code Description} by
-	 * searching for all property descriptions in an object tree rooted at a
-	 * given starting {@code root} object. Only the <em>statically</em>
-	 * available property descriptions are returned. If used with the
-	 * {@link #list(PathValue)} method, all found descriptions are returned,
-	 * including the descriptions from the Java classes.
-	 * {@snippet lang="java":
-	 * Descriptions
-	 *     .walk(PathEntry.of(String.class), Descriptions::extract)
-	 *     .forEach(System.out::println);
-	 * }
-	 *
-	 * The code snippet above will create the following output:
-	 *
-	 * <pre>
-	 * Description[path=blank, value=Single[value=boolean, enclosure=java.lang.String]]
-	 * Description[path=bytes, value=Single[value=class [B, enclosure=java.lang.String]]
-	 * Description[path=empty, value=Single[value=boolean, enclosure=java.lang.String]]
-	 * </pre>
-	 *
-	 * If you are not interested in the property descriptions of the Java
-	 * classes, you should the {@link #walk(PathValue)} instead.
-	 *
-	 * @see #walk(PathValue)
-	 *
-	 * @param root the root class of the object graph
-	 * @param dtor the extractor used for fetching the directly available
-	 *        descriptions. See {@link #list(PathValue)}.
-	 * @return all <em>statically</em> fetch-able property descriptions
-	 */
 	private static Stream<Description> walk(
 		final PathValue<? extends Type> root,
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
@@ -126,26 +126,18 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * {@snippet lang="java":
-	 * record Author(String forename, String surname) { }
-	 * record Book(String title, int pages, List<Author> authors) { }
+	 * {@snippet class="snippets.DescriptionsSnippets" region="walk(PathValue)"}
 	 *
-	 * Descriptions.walk(PathEntry.of(Book.class))
-	 *     .forEach(System.out::println);
-	 * }
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * Description[path=library.title, type=java.lang.String, enclosure=Book]
+	 * Description[path=library.pages, type=int, enclosure=Book]
+	 * Description[path=library.authors, type=java.util.List<Author>, enclosure=Book]
+	 * Description[path=library.authors[0], type=Author, enclosure=java.util.List]
+	 * Description[path=library.authors[0].forename, type=java.lang.String, enclosure=Author]
+	 * Description[path=library.authors[0].surname, type=java.lang.String, enclosure=Author]
+	 * }</pre>
 	 *
-	 * The code snippet above will create the following output:
-	 *
-	 * {@snippet lang="java":
-	 * Description[path=authors, value=Single[value=java.util.List<Author>, enclosure=Book]]
-	 * Description[path=authors[0], value=Indexed[value=Author, enclosure=java.util.List]]
-	 * Description[path=authors[0].forename, value=Single[value=java.lang.String, enclosure=Author]]
-	 * Description[path=authors[0].surname, value=Single[value=java.lang.String, enclosure=Author]]
-	 * Description[path=pages, value=Single[value=int, enclosure=Book]]
-	 * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
-	 * }
-	 *
-	 * @see #walk(PathValue, Dtor)
 	 * @see #walk(Type)
 	 *
 	 * @param root the root class of the object graph
@@ -162,7 +154,18 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * @see #walk(PathValue, Dtor)
+	 * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * Description[path=title, type=java.lang.String, enclosure=Book]
+	 * Description[path=pages, type=int, enclosure=Book]
+	 * Description[path=authors, type=java.util.List<Author>, enclosure=Book]
+	 * Description[path=authors[0], type=Author, enclosure=java.util.List]
+	 * Description[path=authors[0].forename, type=java.lang.String, enclosure=Author]
+	 * Description[path=authors[0].surname, type=java.lang.String, enclosure=Author]
+	 * }</pre>
+	 *
 	 * @see #walk(PathValue)
 	 *
 	 * @param root the root class of the object graph
