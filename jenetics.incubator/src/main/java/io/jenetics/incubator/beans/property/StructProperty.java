@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.beans.property;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
@@ -27,6 +29,8 @@ import io.jenetics.incubator.beans.reflect.PropertyType;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
+ * Represents a <em>struct</em> property, like records or beans.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
@@ -36,13 +40,27 @@ public sealed abstract class StructProperty
 	permits BeanProperty, RecordProperty
 {
 
+	/**
+	 * The components of a struct property.
+	 *
+	 * @param name the property name
+	 * @param value the property value
+	 */
 	public record Component(String name, Object value) {
+		public Component {
+			requireNonNull(name);
+		}
 	}
 
 	StructProperty(final PropParam param) {
 		super(param);
 	}
 
+	/**
+	 * Returns the components of the property.
+	 *
+	 * @return the struct components
+	 */
 	public Stream<Component> components() {
 		return PropertyType.of(type()) instanceof StructType st
 			? st.components().map(component -> new Component(

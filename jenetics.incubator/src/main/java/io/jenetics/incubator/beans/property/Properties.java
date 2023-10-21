@@ -50,6 +50,20 @@ import io.jenetics.incubator.beans.reflect.RecordType;
  * root object. It is the main entry point for the extracting properties from
  * an object graph.
  *
+ * {@snippet class="snippets.PropertiesSnippets" region="walk(Object)"}
+ *
+ * The code snippet above will create the following output
+ * <pre>{@code
+ * SimpleProperty[path=title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=Book]
+ * SimpleProperty[path=pages, value=832, mutable=false, type=int, enclosure=Book]
+ * ListProperty[path=authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=Book]
+ * IndexProperty[path=authors[0], value=Author[Jonathan Franzen], mutable=true, type=Author, enclosure=java.util.ImmutableCollections$List12]
+ * SimpleProperty[path=authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+ * ListProperty[path=authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
@@ -62,6 +76,16 @@ public final class Properties {
 	/**
 	 * This method extracts the direct properties of the given {@code root}
 	 * object.
+	 *
+	 * {@snippet class="snippets.PropertiesSnippets" region="list(PathValue)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=author.forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=author.surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=author.birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=author.books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
 	 *
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
@@ -145,42 +169,25 @@ public final class Properties {
 	 * This method extracts the direct properties of the given {@code root}
 	 * object.
 	 *
+	 * {@snippet class="snippets.PropertiesSnippets" region="list(Object)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
+	 *
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
 	public static Stream<Property> list(final Object root) {
-		return root instanceof PathValue<?> pv ? list(pv) : list(PathValue.of(root));
+		return root instanceof PathValue<?> pv
+			? list(pv)
+			: list(PathValue.of(root));
 	}
 
-	/**
-	 * Return a Stream that is lazily populated with {@code Property} by
-	 * searching for all properties in an object tree rooted at a given
-	 * starting {@code root} object. If used with the {@link #list(PathValue)}
-	 * method, all found descriptions are returned, including the descriptions
-	 * from the Java classes.
-	 * {@snippet lang="java":
-	 * final var object = "Some Value";
-	 * Properties.walk(PathEntry.of(object), Properties::extract)
-	 *     .forEach(System.out::println);
-	 * }
-	 * The code snippet above will create the following output:
-	 * <pre>
-	 * SingleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
-	 * SingleProperty[path=bytes, value=Mutable[value=[B@41e1455d, type=[B, enclosureType=java.lang.String]]
-	 * SingleProperty[path=empty, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
-	 * </pre>
-	 *
-	 * If you are not interested in the property descriptions of the Java
-	 * classes, you should the {@link #walk(PathValue, String...)} )} instead.
-	 *
-	 * @see #walk(PathValue, String...)
-	 * @see #walk(Object, String...)
-	 *
-	 * @param root the root of the object tree
-	 * @param dtor the first level property extractor used for extracting
-	 *        the object properties
-	 * @return a property stream
-	 */
 	private static Stream<Property> walk(
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
@@ -198,31 +205,6 @@ public final class Properties {
 	/**
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
-	 *
-	 * {@snippet lang="java":
-	 * record Author(String forename, String surname) { }
-	 * record Book(String title, int pages, List<Author> authors) { }
-	 *
-	 * final var object = new Book(
-	 *     "Oliver Twist",
-	 *     366,
-	 *     List.of(new Author("Charles", "Dickens"))
-	 * );
-	 *
-	 * Properties.walk(PathEntry.of(object))
-	 *     .forEach(System.out::println);
-	 * }
-	 *
-	 * The code snippet above will create the following output:
-	 *
-	 * {@snippet lang="java":
-	 * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
-	 * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
-	 * SingleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
-	 * SingleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
-	 * SingleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
-	 * SingleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
-	 * }
 	 *
 	 * @see #walk(Object, String...)
 	 *
@@ -258,6 +240,20 @@ public final class Properties {
 	/**
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
+	 *
+	 * {@snippet class="snippets.PropertiesSnippets" region="walk(Object)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=Book]
+	 * SimpleProperty[path=pages, value=832, mutable=false, type=int, enclosure=Book]
+	 * ListProperty[path=authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=Book]
+	 * IndexProperty[path=authors[0], value=Author[Jonathan Franzen], mutable=true, type=Author, enclosure=java.util.ImmutableCollections$List12]
+	 * SimpleProperty[path=authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
 	 *
 	 * @see #walk(PathValue, String...)
 	 *

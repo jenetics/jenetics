@@ -19,6 +19,10 @@
  */
 
 /**
+ * This package contains all categories of property types.
+ *
+ * {@snippet class="snippets.ReflectPackageSnippet" region="PropertyType"}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0

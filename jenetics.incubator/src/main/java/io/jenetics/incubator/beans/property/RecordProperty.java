@@ -20,6 +20,8 @@
 package io.jenetics.incubator.beans.property;
 
 /**
+ * Represents a record property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0

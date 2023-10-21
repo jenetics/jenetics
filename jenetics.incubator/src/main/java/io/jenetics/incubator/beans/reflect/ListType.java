@@ -25,7 +25,7 @@ import static io.jenetics.incubator.beans.internal.Reflect.raise;
 import java.util.List;
 
 /**
- * Trait which represents a {@code List} type.
+ * Type which represents a {@code List} class.
  *
  * @param type the list type
  * @param componentType the list component type

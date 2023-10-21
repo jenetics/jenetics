@@ -28,47 +28,6 @@ import io.jenetics.incubator.beans.Path;
  * <em>bean</em> property, with getter and setter, or as record component. The
  * following code shows how to create (a transitive) list of all properties from
  * a given root object.
- * {@snippet lang="java":
- * final var root = null; // @replace substring='null' replacement="..."
- * final List<Property> properties = Properties
- *     // Get all properties from the 'root' object which are defined
- *     // in the 'io.jenetics' package.
- *     .stream(root, "io.jenetics")
- *     .toList();
- * }
- * Only get string properties.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(property -> property.type() == String.class)
- *     .toList();
- * }
- * Only get the properties declared in the {@code MyBeanObject} class.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(property -> property.object().getClass() == MyBeanObject.class)
- *     .toList();
- * }
- * Only get properties with the name {@code index}. No matter where they defined
- * in the object hierarchy.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(Property.pathMatcher("**index"))
- *     .toList();
- * }
- * Updates all "index" properties with value {@code -1} to zero and returns all
- * properties, which couldn't be updated, because the property was immutable.
- * {@snippet lang="java":
- * final List<Property> notUpdated = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(Property.pathMatcher("**index"))
- *     .filter(property -> Objects.equals(property.value(), -1))
- *     .filter(property -> !property.write(0))
- *     .toList();
- * assert notUpdated.isEmpty();
- * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2

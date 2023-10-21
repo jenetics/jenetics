@@ -30,13 +30,6 @@ import java.util.Optional;
 
 /**
  * Base interface used for matching {@link Type} objects.
- * <p>
- * {@snippet lang = "java":
- * final Type type = null; // @replace substring='null' replacement="..."
- * if (ArrayType.of(type) instanceof ArrayType at) {
- *     System.out.println(at);
- * }
- * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0

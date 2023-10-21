@@ -22,6 +22,10 @@ package io.jenetics.incubator.beans.reflect;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Represents a type, which doesn't contain any further properties, like
+ * primitives, strings or instances of {@link java.lang.constant.Constable}
+ * interfaces.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
