@@ -58,7 +58,7 @@ public class DescriptionsTest {
 	@Test
 	public void extractBook() {
 		final var descriptions = Descriptions
-			.walk(PathValue.of(Book.class))
+			.list(PathValue.of(Book.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
 			.peek(System.out::println)
