@@ -50,7 +50,8 @@ public sealed interface Property
 	 * @return the name of the property
 	 */
 	default String name() {
-		return path().isEmpty() ? "<root>" : path().element().toString();
+		final var element = path().element();
+		return element != null ? element.toString() :  "<root>";
 	}
 
 	/**

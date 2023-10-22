@@ -20,7 +20,7 @@
 
 /**
  * This package contains all categories of property types.
- *
+ * <p>
  * {@snippet class="snippets.ReflectPackageSnippet" region="PropertyType"}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

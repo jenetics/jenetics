@@ -19,7 +19,9 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Path;
 
@@ -55,5 +57,14 @@ public sealed interface Description
 	 * @return the <em>static</em> type of the property description
 	 */
 	Type type();
+
+	/**
+	 * Return a list of all annotations, available for property description.
+	 *
+	 * @return a list of all property annotations
+	 */
+	default Stream<Annotation> annotations() {
+		return Stream.empty();
+	}
 
 }

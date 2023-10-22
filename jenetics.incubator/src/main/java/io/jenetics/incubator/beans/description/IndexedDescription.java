@@ -35,6 +35,7 @@ import io.jenetics.incubator.beans.reflect.IndexedType;
  * @since 8.0
  */
 public final class IndexedDescription implements Description {
+
     private final Path path;
     private final Class<?> enclosure;
     private final Type type;

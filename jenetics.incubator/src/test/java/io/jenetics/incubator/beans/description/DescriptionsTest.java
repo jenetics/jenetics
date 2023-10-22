@@ -19,9 +19,15 @@
  */
 package io.jenetics.incubator.beans.description;
 
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
@@ -38,6 +44,30 @@ import io.jenetics.jpx.GPX;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class DescriptionsTest {
+
+	@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+	@Target({METHOD, TYPE})
+	public @interface Anno_1 { }
+
+	@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+	@Target({METHOD, TYPE})
+	public @interface Anno_2 { }
+
+	@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+	@Target({METHOD, TYPE})
+	public @interface Anno_3 { }
+
+	@Test
+	public void annotations() {
+		interface Data1 { @Anno_1 String value(); }
+		interface Data2 { @Anno_2 String value(); }
+		record DataRecord(@Anno_3 String value) implements Data1, Data2 { }
+
+		final var desc = Descriptions.list(DataRecord.class).toList().get(0);
+		assertThat(desc.annotations()).hasSize(3);
+		assertThat(desc.annotations().map(Annotation::annotationType).toArray())
+			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
+	}
 
 	@Test
 	public void extractLibrary() {

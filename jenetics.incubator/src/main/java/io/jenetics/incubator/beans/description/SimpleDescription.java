@@ -21,10 +21,14 @@ package io.jenetics.incubator.beans.description;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Objects;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.beans.Path;
+import io.jenetics.incubator.beans.internal.Reflect;
 import io.jenetics.incubator.beans.reflect.StructType;
 
 /**
@@ -41,17 +45,20 @@ public final class SimpleDescription
     private final Class<?> enclosure;
     private final Type type;
     private final Access access;
+	private final Supplier<Stream<Annotation>> annotations;
 
 	SimpleDescription(
 		final Path path,
 		final Class<?> enclosure,
 		final Type type,
+		final Supplier<Stream<Annotation>> annotations,
 		final Access access
     ) {
         this.path = requireNonNull(path);
         this.enclosure = requireNonNull(enclosure);
         this.type = requireNonNull(type);
         this.access = requireNonNull(access);
+		this.annotations = requireNonNull(annotations);
     }
 
     @Override
@@ -69,6 +76,11 @@ public final class SimpleDescription
         return type;
     }
 
+	@Override
+	public Stream<Annotation> annotations() {
+		return annotations.get();
+	}
+
 	/**
 	 * Return the access object for the description.
 	 *
@@ -77,6 +89,7 @@ public final class SimpleDescription
     public Access access() {
         return access;
     }
+
 
 	@Override
 	public int hashCode() {
@@ -121,6 +134,7 @@ public final class SimpleDescription
 			path.append(component.name()),
 			component.enclosure(),
 			component.value(),
+			() -> Reflect.getAnnotations(component.getter()),
 			setter != null
 				? new Access.Writable(getter, setter)
 				: new Access.Readonly(getter)

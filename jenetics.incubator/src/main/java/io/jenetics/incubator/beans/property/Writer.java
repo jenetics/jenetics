@@ -37,4 +37,5 @@ public interface Writer {
 	 *         otherwise
 	 */
 	boolean write(final Object value);
+
 }

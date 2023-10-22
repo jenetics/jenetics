@@ -30,6 +30,8 @@ import java.util.Optional;
 
 /**
  * Base interface used for matching {@link Type} objects.
+ * <p>
+ * {@snippet class="snippets.ReflectPackageSnippet" region="PropertyType"}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
@@ -39,6 +41,12 @@ public sealed interface PropertyType
 	permits ElementType, StructType, IndexedType
 {
 
+	/**
+	 * Creates a property type from the given {@code type}.
+	 *
+	 * @param type the java type
+	 * @return the converted property type
+	 */
 	static PropertyType of(final Type type) {
 		requireNonNull(type);
 
@@ -54,7 +62,7 @@ public sealed interface PropertyType
 			}
 		}
 
-		// 3) Check for OptionalType.
+		// 2) Check for OptionalType.
 		if (type instanceof ParameterizedType parameterizedType &&
 			parameterizedType.getRawType() instanceof Class<?> optionalType &&
 			Optional.class.isAssignableFrom(optionalType))
@@ -72,7 +80,7 @@ public sealed interface PropertyType
 			return new OptionalType(Object.class);
 		}
 
-		// 4) Check for ListType.
+		// 3) Check for ListType.
 		if (type instanceof ParameterizedType parameterizedType &&
 			parameterizedType.getRawType() instanceof Class<?> listType &&
 			List.class.isAssignableFrom(listType))
@@ -90,21 +98,21 @@ public sealed interface PropertyType
 			return new ListType(listType, Object.class);
 		}
 
-		// 2) Check for RecordType.
+		// 4) Check for RecordType.
 		if (type instanceof Class<?> cls && cls.isRecord()) {
 			return new RecordType(cls);
 		}
 
 		final Class<?> rawType = toRawType(type);
 
-		// 6) Check for ElementType.
+		// 5) Check for ElementType.
 		if (rawType != null) {
 			if (isElementType(rawType)) {
 				return new ElementType(rawType);
 			}
 		}
 
-		// 5) Check for BeanType
+		// 5) Rest must be BeanType
 		if (rawType != null) {
 			return new BeanType(rawType);
 		}

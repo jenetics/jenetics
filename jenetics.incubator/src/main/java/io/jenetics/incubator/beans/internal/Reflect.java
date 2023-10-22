@@ -19,11 +19,17 @@
  */
 package io.jenetics.incubator.beans.internal;
 
+import java.lang.annotation.Annotation;
 import java.lang.constant.Constable;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.temporal.TemporalAccessor;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * Reflection utility methods and types which are used as building blocks for
@@ -35,15 +41,6 @@ import java.util.Set;
  */
 public final class Reflect {
 
-	private static final Set<String> JDK_TYPE_PREFIXES = Set.of(
-		"[", // Java arrays
-		"com.sun.",
-		"java.",
-		"javax.",
-		"jdk.",
-		"sun."
-	);
-
 	private Reflect() {
 	}
 
@@ -51,62 +48,18 @@ public final class Reflect {
 		throw exception;
 	}
 
-	/*
-	public static <T> T call(final Callable<? extends T> callable) {
-		try {
-			return callable.call();
-		} catch (InvocationTargetException e) {
-			if (e.getTargetException() instanceof RuntimeException re) {
-				throw re;
-			} else {
-				throw new IllegalStateException(e.getTargetException());
-			}
-		} catch (VirtualMachineError|ThreadDeath|LinkageError e) {
-			throw e;
-		} catch (Throwable e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-	 */
-
 	/**
-	 * Return {@code true} if the given {@code object} is considered as an
-	 * identity type.
+	 * Checks if the given {@code type} is an element type. An element type has
+	 * no further properties.
 	 *
-	 * @param object the object to test
-	 * @return {@code true} if the object can be treated as identity class,
+	 * @param type the type to check
+	 * @return {@code true} if the given {@code type} is an element type,
 	 *         {@code false} otherwise
 	 */
-	public static boolean isIdentityType(final Object object) {
-		return
-			object != null &&
-			!(object instanceof Constable) &&
-			!(object instanceof TemporalAccessor) &&
-			!(object instanceof Number);
-	}
-
 	public static boolean isElementType(final Class<?> type) {
 		return type.isPrimitive() ||
 			Constable.class.isAssignableFrom(type) ||
 			TemporalAccessor.class.isAssignableFrom(type);
-	}
-
-	/**
-	 * Checks if the given {@code type} is part of the JDK.
-	 *
-	 * @param type the type to check
-	 * @return {@code true} if the given {@code type} is part of the JDK,
-	 *         {@code false} otherwise
-	 */
-	public static boolean isNonJdkType(final Type type) {
-		if (type == null) {
-			return true;
-		}
-
-		final var cls = toRawType(type);
-		final var name = cls != null ? cls.getName() : "-";
-
-		return JDK_TYPE_PREFIXES.stream().noneMatch(name::startsWith);
 	}
 
 	/**
@@ -127,6 +80,44 @@ public final class Reflect {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Return all annotations of the given method, inclusively the inherited one.
+	 *
+	 * @param method the method for which to fetch the annotations
+	 * @return all annotations of the given method
+	 */
+	public static Stream<Annotation> getAnnotations(final Method method) {
+		return getClasses(method.getDeclaringClass())
+			.flatMap(cls ->
+				Stream.concat(
+					Stream.of(cls),
+					Stream.of(cls.getInterfaces())
+				)
+			)
+			.flatMap(cls -> Stream.of(cls.getMethods()))
+			.filter(m -> equals(m, method))
+			.flatMap(m -> Stream.of(m.getAnnotations()));
+	}
+
+	private static boolean equals(final Method a, final Method b) {
+		return a.getName().equals(b.getName()) &&
+			Arrays.equals(a.getParameterTypes(), b.getParameterTypes());
+	}
+
+	private static Stream<Class<?>> getClasses(final Class<?> parent) {
+		final var type = new AtomicReference<Class<?>>(parent);
+
+		final Supplier<Class<?>> supplier = () -> {
+			final var next = type.get();
+			if (next != null) {
+				type.set(next.getSuperclass());
+			}
+			return next;
+		};
+
+		return Stream.generate(supplier).takeWhile(Objects::nonNull);
 	}
 
 }

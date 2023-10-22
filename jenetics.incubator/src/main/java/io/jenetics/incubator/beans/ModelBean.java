@@ -20,7 +20,6 @@
 package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.internal.Reflect.isIdentityType;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -83,7 +82,6 @@ public final class ModelBean implements Iterable<Property> {
 				));
 
 			this.objectPaths = properties.stream()
-				.filter(p -> isIdentityType(unwrap(p.value())))
 				.collect(Collectors.toMap(
 					p -> unwrap(p.value()),
 					Property::path,
