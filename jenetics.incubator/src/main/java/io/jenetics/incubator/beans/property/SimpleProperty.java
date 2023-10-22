@@ -28,8 +28,7 @@ import io.jenetics.incubator.beans.Path;
 /**
  * Represents a simple property value.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz
- * Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */

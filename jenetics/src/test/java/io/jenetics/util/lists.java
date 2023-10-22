@@ -49,7 +49,7 @@ public class lists {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
 	 * @param list the {@code array} to randomize.
-	 * @param random the {@link RandomGenerator} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomizing.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is
 	 *          {@code null}.
@@ -64,7 +64,7 @@ public class lists {
 	}
 
 	/**
-	 * Swap two elements of an given list.
+	 * Swap two elements of a given list.
 	 *
 	 * @param <T> the list type.
 	 * @param list the array
