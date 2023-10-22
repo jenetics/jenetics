@@ -735,14 +735,15 @@ public class Lifecycle {
 	private static <E extends Exception> void raise(final Throwable error)
 		throws E
 	{
-		if (error instanceof RuntimeException e) {
-			throw e;
-		} else if (error instanceof Error e) {
-			throw e;
-		} else if (error != null) {
-			@SuppressWarnings("unchecked")
-			final var e = (E)error;
-			throw e;
+		switch (error) {
+			case null -> {}
+			case RuntimeException e -> throw e;
+			case Error e -> throw e;
+			default ->  {
+				@SuppressWarnings("unchecked")
+				final var e = (E)error;
+				throw e;
+			}
 		}
 	}
 
