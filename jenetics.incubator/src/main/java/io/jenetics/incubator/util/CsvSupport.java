@@ -27,13 +27,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.RecordComponent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -92,7 +89,7 @@ public final class CsvSupport {
 	/**
 	 * Splits a given CSV line into its columns. It supports CSV records defined
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
-	 * the reverse of the {@link #join(Iterable)} method.
+	 * the reverse of the {@link #join(Iterable,int...)} method.
 	 *
 	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
@@ -102,10 +99,10 @@ public final class CsvSupport {
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
 	 * @see #split(CharSequence, String[], int...)
-	 * @see #join(Iterable)
+	 * @see #join(Iterable,int...)
 	 *
 	 * @param line the CSV {@code row} to split
-	 * @param indexes the sub-set of CSV column indexes which should returned.
+	 * @param indexes the subset of CSV column indexes which should returned.
 	 *        If no {@code indexes} are given, all split columns are returned
 	 * @return the split columns of the given CSV {@code row}
 	 * @throws IllegalArgumentException if the given {@code roes} isn't a valid
@@ -127,7 +124,7 @@ public final class CsvSupport {
 	/**
 	 * Splits a given CSV line into its columns. It supports CSV records defined
 	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
-	 * the reverse of the {@link #join(Iterable)} method.
+	 * the reverse of the {@link #join(Iterable,int...)} method.
 	 *
 	 * {@snippet lang="java":
 	 * final var line = "a,b,c,d,e,f";
@@ -139,7 +136,7 @@ public final class CsvSupport {
 	 * @param columns the columns, where the split result is written to. The
 	 *        splitting stops, if no more columns are available in the
 	 *        {@code line} or the {@code columns} array is full.
-	 * @param indexes the sub-set of CSV column indexes which should returned.
+	 * @param indexes the subset of CSV column indexes which should returned.
 	 *        If no {@code indexes} are given, all split columns are returned
 	 * @throws IllegalArgumentException if the given {@code roes} isn't a valid
 	 *         CSV row
@@ -164,8 +161,8 @@ public final class CsvSupport {
 	 * the {@link #split(CharSequence, int...)} method.
 	 *
 	 * {@snippet lang="java":
-	 * final var cols = List.of("a", "b", "c", "d", "e", "f");
-	 * final var line = CsvSupport.join(cols);
+	 * final List<String> cols = List.of("a", "b", "c", "d", "e", "f");
+	 * final String line = CsvSupport.join(cols);
 	 * assert "a,b,c,d,e,f".equals(line);
 	 * }
 	 *
@@ -174,19 +171,38 @@ public final class CsvSupport {
 	 * @param cols the CSV columns to join
 	 * @return a new CSV row, joined from the given columns
 	 */
-	public static String join(Iterable<?> cols) {
-		final var row = new StringBuilder(32);
-
-		final var it = cols.iterator();
-		while (it.hasNext()) {
-			final var column = it.next();
-			row.append(escape(column));
-			if (it.hasNext()) {
-				row.append(SEPARATOR_STR);
+	public static String join(Iterable<?> cols, int... indexes) {
+		if (indexes.length == 0) {
+			final var row = new StringBuilder(32);
+			final var it = cols.iterator();
+			while (it.hasNext()) {
+				final var column = it.next();
+				row.append(escape(column));
+				if (it.hasNext()) {
+					row.append(SEPARATOR_STR);
+				}
 			}
-		}
 
-		return row.toString();
+			return row.toString();
+		} else {
+			final var values = new Object[max(indexes) + 1];
+			int i = 0;
+			for (var col : cols) {
+				values[indexes[i++]] = col;
+			}
+
+			return join(Arrays.asList(values));
+		}
+	}
+
+	private static int max(int[] array) {
+		int max = Integer.MIN_VALUE;
+        for (int value : array) {
+            if (value > max) {
+                max = value;
+            }
+        }
+		return max;
 	}
 
 	private static String escape(Object value) {
@@ -212,6 +228,10 @@ public final class CsvSupport {
 			}
 		}
 		return false;
+	}
+
+	public static String join(Object[] cols, int... indexes) {
+		return join(Arrays.asList(cols), indexes);
 	}
 
 	/**
@@ -247,6 +267,8 @@ public final class CsvSupport {
 	 * @return the stream of CSV lines
 	 */
 	public static Stream<String> read(Reader reader) {
+		requireNonNull(reader);
+
 		final Value<Stream<String>, IOException> result = new Value<>(resources -> {
 			final var br = reader instanceof BufferedReader r
 				? resources.add(r, Closeable::close)
@@ -324,57 +346,6 @@ public final class CsvSupport {
 		return !line.isEmpty();
 	}
 
-	private static <T extends Record> Stream<T> read(
-		final Reader reader,
-		final Function<? super String[], ? extends T> converter,
-		final String[] columns,
-		final int... indexes
-	) {
-		return read(reader)
-			.map(line -> split(line, columns, indexes))
-			.map(converter);
-	}
-
-	public static <T extends Record> Stream<T> read(
-		final Reader reader,
-		final Class<T> type,
-		final int... indexes
-	) {
-		final var components = type.getRecordComponents();
-
-		if (indexes.length > 0 && indexes.length != components.length) {
-			throw new IllegalArgumentException();
-		}
-
-		final var constructor = getCanonicalConstructor(type);
-		final var paramTypes = constructor.getParameterTypes();
-
-		final String[] columns = new String[components.length];
-		return read(reader)
-			.map(line -> split(line, columns, indexes))
-			.map(cols -> parse(constructor, cols, paramTypes));
-	}
-
-	static <T extends Record> Constructor<T> getCanonicalConstructor(Class<T> cls) {
-		final Class<?>[] paramTypes = Arrays.stream(cls.getRecordComponents())
-			.map(RecordComponent::getType)
-			.toArray(Class<?>[]::new);
-
-		try {
-			return cls.getDeclaredConstructor(paramTypes);
-		} catch (NoSuchMethodException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	private static <T> T parse(
-		final Constructor<T> constructor,
-		final String[] values,
-		final Class<?>[] types
-	) {
-		return null;
-	}
-
 	/* *************************************************************************
 	 * Classes for splitting CSV lines.
 	 * ************************************************************************/
@@ -398,6 +369,17 @@ public final class CsvSupport {
 		 *         collection, {@code false} otherwise
 		 */
 		boolean isFull();
+
+		static int indexOf(int[] array, int start, int value) {
+			for (int i = start; i < array.length; ++i) {
+				if (array[i] == value) {
+					return i;
+				}
+			}
+
+			return -1;
+		}
+
 	}
 
 	/**
@@ -408,6 +390,7 @@ public final class CsvSupport {
 		private final int[] indexes;
 
 		private int index = 0;
+		private int count = 0;
 
 		ColumnArray(final String[] columns, final int[] indexes) {
 			this.columns = requireNonNull(columns);
@@ -417,15 +400,36 @@ public final class CsvSupport {
 		@Override
 		public void add(final String column) {
 			if (!isFull()) {
-				columns[index++] = column;
+				count += set(columns, column, index++);
 			}
+		}
+
+		private int set(String[] array, String element, int column) {
+			int updated = 0;
+
+			if (indexes.length == 0) {
+				array[column] = element;
+				++updated;
+			} else {
+				int pos = -1;
+				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1 &&
+					pos < array.length)
+				{
+					array[pos] = element;
+					++updated;
+				}
+			}
+
+			return updated;
 		}
 
 		@Override
 		public boolean isFull() {
-			return columns.length <= index ||
-				(indexes.length > 0 && indexes.length <= index);
+			return columns.length <= count ||
+				(indexes.length > 0 && indexes.length <= count);
+
 		}
+
 	}
 
 	/**
@@ -436,6 +440,7 @@ public final class CsvSupport {
 		private final int[] indexes;
 
 		private int index = 0;
+		private int count = 0;
 
 		ColumnList(final List<String> columns, final int[] indexes) {
 			this.columns = requireNonNull(columns);
@@ -445,15 +450,35 @@ public final class CsvSupport {
 		@Override
 		public void add(String column) {
 			if (!isFull()) {
-				columns.add(column);
-				++index;
+				count += set(columns, column, index++);
 			}
+		}
+
+		private int set(List<String> list, String element, int column) {
+			int updated = 0;
+
+			if (indexes.length == 0) {
+				list.add(element);
+				++updated;
+			} else {
+				int pos = -1;
+				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1) {
+					for (int i = list.size(); i < pos; ++i) {
+						list.add(null);
+					}
+					list.set(pos, element);
+					++updated;
+				}
+			}
+
+			return updated;
 		}
 
 		@Override
 		public boolean isFull() {
-			return indexes.length > 0 && indexes.length <= index;
+			return indexes.length > 0 && indexes.length <= count;
 		}
+
 	}
 
 	/**

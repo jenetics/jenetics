@@ -92,11 +92,13 @@ public class CsvSupportTest {
 
 	@Test
 	public void split() throws IOException {
-		final var line = "1,2,3,4";
-		final var column = new String[3];
+		final var line = "0,1,2,3,4,5,6,7,8,9";
+		final var row = new String[7];
 
-		CsvSupport.split(line, column, 2, 3);
-		System.out.println(Arrays.toString(column));
+		final int[] indexes = {9, 2, 3, 5, 5, 1, 8};
+		CsvSupport.split(line, row, indexes);
+		System.out.println(Arrays.toString(row));
+		System.out.println(CsvSupport.join(row, indexes));
 	}
 
 }
