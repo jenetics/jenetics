@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.csv;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -351,147 +351,24 @@ public final class CsvSupport {
 	 * ************************************************************************/
 
 	/**
-	 * Interface abstraction holding the columns of one CSV lines.
+	 * This class is used for splitting a CSV line into columns.
 	 */
-	private sealed interface Columns {
-
-		/**
-		 * Appends a {@code column} to the column collection.
-		 *
-		 * @param column the column to add
-		 */
-		void add(final String column);
-
-		/**
-		 * Checks whether another column can be added.
-		 *
-		 * @return {@code true} if another column can be added to this
-		 *         collection, {@code false} otherwise
-		 */
-		boolean isFull();
-
-		static int indexOf(int[] array, int start, int value) {
-			for (int i = start; i < array.length; ++i) {
-				if (array[i] == value) {
-					return i;
-				}
-			}
-
-			return -1;
-		}
-
-	}
-
-	/**
-	 * Column collection, which is backed up by a {@code String[]} array.
-	 */
-	private static final class ColumnArray implements Columns {
-		private final String[] columns;
-		private final int[] indexes;
-
-		private int index = 0;
-		private int count = 0;
-
-		ColumnArray(final String[] columns, final int[] indexes) {
-			this.columns = requireNonNull(columns);
-			this.indexes = requireNonNull(indexes);
-		}
-
-		@Override
-		public void add(final String column) {
-			if (!isFull()) {
-				count += set(columns, column, index++);
-			}
-		}
-
-		private int set(String[] array, String element, int column) {
-			int updated = 0;
-
-			if (indexes.length == 0) {
-				array[column] = element;
-				++updated;
-			} else {
-				int pos = -1;
-				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1 &&
-					pos < array.length)
-				{
-					array[pos] = element;
-					++updated;
-				}
-			}
-
-			return updated;
-		}
-
-		@Override
-		public boolean isFull() {
-			return columns.length <= count ||
-				(indexes.length > 0 && indexes.length <= count);
-
-		}
-
-	}
-
-	/**
-	 * Column collection, which is backed up by a string list.
-	 */
-	private static final class ColumnList implements Columns {
-		private final List<String> columns;
-		private final int[] indexes;
-
-		private int index = 0;
-		private int count = 0;
-
-		ColumnList(final List<String> columns, final int[] indexes) {
-			this.columns = requireNonNull(columns);
-			this.indexes = requireNonNull(indexes);
-		}
-
-		@Override
-		public void add(String column) {
-			if (!isFull()) {
-				count += set(columns, column, index++);
-			}
-		}
-
-		private int set(List<String> list, String element, int column) {
-			int updated = 0;
-
-			if (indexes.length == 0) {
-				list.add(element);
-				++updated;
-			} else {
-				int pos = -1;
-				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1) {
-					for (int i = list.size(); i < pos; ++i) {
-						list.add(null);
-					}
-					list.set(pos, element);
-					++updated;
-				}
-			}
-
-			return updated;
-		}
-
-		@Override
-		public boolean isFull() {
-			return indexes.length > 0 && indexes.length <= count;
-		}
-
-	}
-
-	/**
-	 * Helper class which is responsible for splitting a CSV line into columns.
-	 */
-	private static final class Splitter {
+	public static final class Splitter {
 		private final Columns columns;
 
 		Splitter(final Columns columns) {
 			this.columns = requireNonNull(columns);
 		}
 
-		void split(final CharSequence line) {
+		public Splitter(String[] columns, int... indexes) {
+			this(new ColumnArray(columns, indexes));
+		}
+
+		public Splitter(List<String> columns, int... indexes) {
+			this(new ColumnList(columns, indexes));
+		}
+
+		public void split(final CharSequence line) {
 			final StringBuilder column = new StringBuilder(32);
 
 			boolean quoted = false;
@@ -580,6 +457,146 @@ public final class CsvSupport {
 			columns.add(column.toString());
 			column.setLength(0);
 		}
+	}
+
+	/**
+	 * Interface abstraction holding the columns of one CSV lines.
+	 */
+	private sealed interface Columns {
+
+		/**
+		 * Appends a {@code column} to the column collection.
+		 *
+		 * @param column the column to add
+		 */
+		void add(final String column);
+
+		/**
+		 * Checks whether another column can be added.
+		 *
+		 * @return {@code true} if another column can be added to this
+		 *         collection, {@code false} otherwise
+		 */
+		boolean isFull();
+
+		static int indexOf(int[] array, int start, int value) {
+			for (int i = start; i < array.length; ++i) {
+				if (array[i] == value) {
+					return i;
+				}
+			}
+
+			return -1;
+		}
+
+	}
+
+	/**
+	 * Column collection, which is backed up by a {@code String[]} array.
+	 */
+	private static final class ColumnArray implements Columns {
+		private final String[] columns;
+		private final int[] indexes;
+
+		private int index = 0;
+		private int count = 0;
+
+		ColumnArray(final String[] columns, final int[] indexes) {
+			this.columns = requireNonNull(columns);
+			this.indexes = requireNonNull(indexes);
+		}
+
+		@Override
+		public void add(final String column) {
+			if (!isFull()) {
+				count += set(column, index++);
+			}
+		}
+
+		private int set(String element, int column) {
+			int updated = 0;
+
+			if (indexes.length == 0) {
+				columns[column] = element;
+				++updated;
+			} else {
+				int pos = -1;
+				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1 &&
+					pos < columns.length)
+				{
+					columns[pos] = element;
+					++updated;
+				}
+			}
+
+			return updated;
+		}
+
+		@Override
+		public boolean isFull() {
+			return columns.length <= count ||
+				(indexes.length > 0 && indexes.length <= count);
+
+		}
+
+	}
+
+	/**
+	 * Column collection, which is backed up by a string list.
+	 */
+	private static final class ColumnList implements Columns {
+		private final List<String> columns;
+		private final int[] indexes;
+
+		private int index = 0;
+		private int count = 0;
+
+		ColumnList(final List<String> columns, final int[] indexes) {
+			this.columns = requireNonNull(columns);
+			this.indexes = requireNonNull(indexes);
+		}
+
+		@Override
+		public void add(String column) {
+			if (!isFull()) {
+				count += set(column, index++);
+			}
+		}
+
+		private int set(String element, int column) {
+			int updated = 0;
+
+			if (indexes.length == 0) {
+				columns.add(element);
+				++updated;
+			} else {
+				int pos = -1;
+				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1) {
+					for (int i = columns.size(); i < pos; ++i) {
+						columns.add(null);
+					}
+					columns.set(pos, element);
+					++updated;
+				}
+			}
+
+			return updated;
+		}
+
+		@Override
+		public boolean isFull() {
+			return indexes.length > 0 && indexes.length <= count;
+		}
+
+	}
+
+
+	interface Spliter {
+		String[] split(CharSequence line);
+	}
+
+	interface Merger {
+		String merge(Object[] values);
 	}
 
 }
