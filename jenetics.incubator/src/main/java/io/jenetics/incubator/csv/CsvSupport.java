@@ -116,7 +116,7 @@ public final class CsvSupport {
 			return List.of(columns);
 		} else {
 			final var columns = new ArrayList<String>();
-			new Splitter(new ColumnList(columns, indexes)).split(line);
+			new ColumnSplitter(new ColumnList(columns, indexes)).split(line);
 			return List.copyOf(columns);
 		}
 	}
@@ -148,7 +148,7 @@ public final class CsvSupport {
 		final String[] columns,
 		final int... indexes
 	) {
-		new Splitter(new ColumnArray(columns, indexes)).split(line);
+		new ColumnSplitter(new ColumnArray(columns, indexes)).split(line);
 		return columns;
 	}
 
@@ -350,25 +350,37 @@ public final class CsvSupport {
 	 * Classes for splitting CSV lines.
 	 * ************************************************************************/
 
+
+	/* *************************************************************************
+	 * Base CSV interfaces.
+	 * ************************************************************************/
+
+	@FunctionalInterface
+	public interface Splitter {
+		String[] split(CharSequence line);
+	}
+
+	@FunctionalInterface
+	public interface Joiner {
+		String join(Object[] values);
+	}
+
+	/* *************************************************************************
+	 * Splitter implementation.
+	 * ************************************************************************/
+
 	/**
 	 * This class is used for splitting a CSV line into columns.
 	 */
-	public static final class Splitter {
+	private static final class ColumnSplitter {
 		private final Columns columns;
 
-		Splitter(final Columns columns) {
+		private ColumnSplitter(final Columns columns) {
 			this.columns = requireNonNull(columns);
 		}
 
-		public Splitter(String[] columns, int... indexes) {
-			this(new ColumnArray(columns, indexes));
-		}
-
-		public Splitter(List<String> columns, int... indexes) {
-			this(new ColumnList(columns, indexes));
-		}
-
 		public void split(final CharSequence line) {
+			columns.clear();
 			final StringBuilder column = new StringBuilder(32);
 
 			boolean quoted = false;
@@ -479,6 +491,11 @@ public final class CsvSupport {
 		 */
 		boolean isFull();
 
+		/**
+		 * Removes all columns.
+		 */
+		void clear();
+
 		static int indexOf(int[] array, int start, int value) {
 			for (int i = start; i < array.length; ++i) {
 				if (array[i] == value) {
@@ -539,6 +556,13 @@ public final class CsvSupport {
 
 		}
 
+		@Override
+		public void clear() {
+			Arrays.fill(columns, null);
+			index = 0;
+			count = 0;
+		}
+
 	}
 
 	/**
@@ -588,15 +612,13 @@ public final class CsvSupport {
 			return indexes.length > 0 && indexes.length <= count;
 		}
 
-	}
+		@Override
+		public void clear() {
+			columns.clear();
+			index = 0;
+			count = 0;
+		}
 
-
-	interface Spliter {
-		String[] split(CharSequence line);
-	}
-
-	interface Merger {
-		String merge(Object[] values);
 	}
 
 }
