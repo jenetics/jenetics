@@ -45,7 +45,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
  * {@snippet lang="java":
  * // Read CSV, including multiline CSV files, if properly quoted.
  * final List<List<String>> rows;
- * try (Stream<String> lines = CsvSupport.read(new FileReader("some_file.csv"))) {
+ * try (Stream<String> lines = CsvSupport.lines(new FileReader("some_file.csv"))) {
  *     rows = lines.map(CsvSupport::split).toList();
  * }
  *
@@ -64,179 +64,52 @@ import io.jenetics.internal.util.Lifecycle.Value;
  */
 public final class CsvSupport {
 
+	public record Quote(char value) {
+		public static final Quote DEFAULT = new Quote('"');
+	}
+
+	public record Separator(char value) {
+		public static final Separator DEFAULT = new Separator(',');
+	}
+
+	public record Indexes(int... values) {
+		public static final Indexes ALL = new Indexes();
+	}
+
 	/**
 	 * The newline string used for writing the CSV file: {@code \r\n}.
 	 */
 	public static final String EOL = "\r\n";
 
-	/**
-	 * The separator character: {@code ,}
-	 */
-	static final char SEPARATOR = ',';
-
-	/**
-	 * The quote character: {@code "}
-	 */
-	static final char QUOTE = '"';
-
-	static final String SEPARATOR_STR = ",";
-	static final String QUOTE_STR = "\"";
-	static final String DOUBLE_QUOTE_STR = "\"\"";
 
 	private CsvSupport() {
 	}
 
 	/**
-	 * Splits a given CSV line into its columns. It supports CSV records defined
-	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
-	 * the reverse of the {@link #join(Iterable,int...)} method.
+	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.
+	 * The rows are split at line breaks, as long as they are not part of a
+	 * quoted column. <em>The returned stream must be closed by the caller,
+	 * which also closes the given reader.</em>
 	 *
-	 * {@snippet lang="java":
-	 * final var line = "a,b,c,d,e,f";
-	 * final var cols = CsvSupport.split(line);
-	 * assert List.of("a", "b", "c", "d", "e", "f").equals(cols);
-	 * }
-	 *
-	 * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
-	 * @see #split(CharSequence, String[], int...)
-	 * @see #join(Iterable,int...)
-	 *
-	 * @param line the CSV {@code row} to split
-	 * @param indexes the subset of CSV column indexes which should returned.
-	 *        If no {@code indexes} are given, all split columns are returned
-	 * @return the split columns of the given CSV {@code row}
-	 * @throws IllegalArgumentException if the given {@code roes} isn't a valid
-	 *         CSV row
-	 * @throws NullPointerException if the given {@code row} is {@code null}
+	 * @param reader the reader stream to split into CSV lines. The reader is
+	 *        automatically closed when the returned line stream is closed.
+	 * @return the stream of CSV lines
 	 */
-	public static List<String> split(final CharSequence line, final int... indexes) {
-		if (indexes.length > 0) {
-			final String[] columns = new String[indexes.length];
-			split(line, columns, indexes);
-			return List.of(columns);
-		} else {
-			final var columns = new ArrayList<String>();
-			new ColumnSplitter(new ColumnList(columns, indexes)).split(line);
-			return List.copyOf(columns);
-		}
+	public static Stream<String> lines(final Reader reader) {
+		return LineReader.DEFAULT.read(reader);
 	}
 
-	/**
-	 * Splits a given CSV line into its columns. It supports CSV records defined
-	 * in <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. This is
-	 * the reverse of the {@link #join(Iterable,int...)} method.
-	 *
-	 * {@snippet lang="java":
-	 * final var line = "a,b,c,d,e,f";
-	 * final var cols = new String[6];
-	 * CsvSupport.split(line, cols);
-	 * }
-	 *
-	 * @param line the CSV {@code row} to split
-	 * @param columns the columns, where the split result is written to. The
-	 *        splitting stops, if no more columns are available in the
-	 *        {@code line} or the {@code columns} array is full.
-	 * @param indexes the subset of CSV column indexes which should returned.
-	 *        If no {@code indexes} are given, all split columns are returned
-	 * @throws IllegalArgumentException if the given {@code roes} isn't a valid
-	 *         CSV row
-	 * @return the input {@code columns} string array
-	 * @throws NullPointerException if the given {@code row} is {@code null}
-	 */
-	public static String[] split(
-		final CharSequence line,
-		final String[] columns,
-		final int... indexes
-	) {
-		new ColumnSplitter(new ColumnArray(columns, indexes)).split(line);
-		return columns;
+	public static String[] split(final CharSequence line) {
+		return LineSplitter.DEFAULT.split(line);
 	}
 
-	static boolean isTokenSeparator(final char c) {
-		return c == SEPARATOR || c == QUOTE;
+	public static String join(final Iterable<?> columns) {
+		return ColumnJoiner.DEFAULT.join(columns);
 	}
 
-	/**
-	 * Joins the given columns to a CSV line. This is the reverse operation of
-	 * the {@link #split(CharSequence, int...)} method.
-	 *
-	 * {@snippet lang="java":
-	 * final List<String> cols = List.of("a", "b", "c", "d", "e", "f");
-	 * final String line = CsvSupport.join(cols);
-	 * assert "a,b,c,d,e,f".equals(line);
-	 * }
-	 *
-	 * @see #split(CharSequence, int...)
-	 *
-	 * @param cols the CSV columns to join
-	 * @return a new CSV row, joined from the given columns
-	 */
-	public static String join(Iterable<?> cols, int... indexes) {
-		if (indexes.length == 0) {
-			final var row = new StringBuilder(32);
-			final var it = cols.iterator();
-			while (it.hasNext()) {
-				final var column = it.next();
-				row.append(escape(column));
-				if (it.hasNext()) {
-					row.append(SEPARATOR_STR);
-				}
-			}
-
-			return row.toString();
-		} else {
-			final var values = new Object[max(indexes) + 1];
-			int i = 0;
-			for (var col : cols) {
-				values[indexes[i++]] = col;
-			}
-
-			return join(Arrays.asList(values));
-		}
-	}
-
-	private static int max(int[] array) {
-		int max = Integer.MIN_VALUE;
-        for (int value : array) {
-            if (value > max) {
-                max = value;
-            }
-        }
-		return max;
-	}
-
-	private static String escape(Object value) {
-		if (value == null) {
-			return "";
-		} else {
-			var stringValue = value.toString();
-			var string = stringValue.replace(QUOTE_STR, DOUBLE_QUOTE_STR);
-
-			if (stringValue.length() != string.length() || mustEscape(string)) {
-				return QUOTE_STR + string + QUOTE_STR;
-			} else {
-				return stringValue;
-			}
-		}
-	}
-
-	private static boolean mustEscape(CharSequence value) {
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-			if (c == SEPARATOR || c == '\n' || c == '\r') {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static String join(Object[] cols, int... indexes) {
-		return join(Arrays.asList(cols), indexes);
-	}
 
 	/**
 	 * Return a collector for joining a list of CSV rows into one CSV string.
-	 *
 	 * {@snippet lang="java":
 	 * final List<List<String>> rows = null; // @replace substring='null' replacement="..."
 	 *
@@ -253,72 +126,94 @@ public final class CsvSupport {
 
 
 	/* *************************************************************************
-	 * CSV line reader methods
+	 * Base CSV classes.
 	 * ************************************************************************/
 
 	/**
-	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.
-	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller,
-	 * which also closes the given reader.</em>
+	 * This class reads CSV files and splits it into lines. It also obeys quoted
+	 * new lines.
 	 *
-	 * @param reader the reader stream to split into CSV lines. The reader is
-	 *        automatically closed when the returned line stream is closed.
-	 * @return the stream of CSV lines
+	 * @apiNote
+	 * This reader obeys <em>escaped</em> line breaks according
+	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 */
-	public static Stream<String> read(Reader reader) {
-		requireNonNull(reader);
+	public static final class LineReader {
 
-		final Value<Stream<String>, IOException> result = new Value<>(resources -> {
-			final var br = reader instanceof BufferedReader r
-				? resources.add(r, Closeable::close)
-				: resources.add(new BufferedReader(reader), Closeable::close);
+		static final LineReader DEFAULT = new LineReader(Quote.DEFAULT);
 
-			final var line = new StringBuilder();
-			final Supplier<String> nextLine = () -> {
-				try {
-					return nextLine(br, line) ? line.toString() : null;
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			};
+		private final Quote quote;
 
-			return Stream.generate(nextLine)
-				.takeWhile(Objects::nonNull);
-		});
+		/**
+		 * Create a new line-reader with the given parameters.
+		 *
+		 * @param quote the quoting character
+		 */
+		public LineReader(final Quote quote) {
+			this.quote = requireNonNull(quote);
+		}
 
-		return result.get().onClose(() ->
-			result.uncheckedClose(UncheckedIOException::new)
-		);
-	}
+		/**
+		 * Reads all CSV lines from the given {@code reader}.
+		 *
+		 * @apiNote
+		 * This method must be used within a try-with-resources statement or
+		 * similar control structure to ensure that the stream's open file is
+		 * closed promptly after the stream's operations have completed.
+		 *
+		 * @param reader the reader from which to read the CSV content
+		 * @return the CSV lines from the file as a {@code Stream}
+		 */
+		public Stream<String> read(final Reader reader) {
+			requireNonNull(reader);
 
-	private static boolean nextLine(Reader reader, StringBuilder line)
-		throws IOException
-	{
-		line.setLength(0);
+			final Value<Stream<String>, IOException> result = new Value<>(resources -> {
+				final var br = reader instanceof BufferedReader r
+					? resources.add(r, Closeable::close)
+					: resources.add(new BufferedReader(reader), Closeable::close);
 
-		boolean quoted = false;
-		boolean escaped = false;
-		boolean eol = false;
+				final var line = new StringBuilder();
+				final Supplier<String> nextLine = () -> {
+					try {
+						return nextLine(br, line) ? line.toString() : null;
+					} catch (IOException e) {
+						throw new UncheckedIOException(e);
+					}
+				};
 
-		int next = -2;
-		int i = 0;
+				return Stream.generate(nextLine)
+					.takeWhile(Objects::nonNull);
+			});
 
-		while (next >= 0 || (i = reader.read()) != -1) {
-			final char current = next != -2 ? (char)next : (char)i;
-			next = -2;
+			return result.get().onClose(() ->
+				result.uncheckedClose(UncheckedIOException::new)
+			);
+		}
 
-			switch (current) {
-				case '\n', '\r' -> {
+		private boolean nextLine(Reader reader, StringBuilder line)
+			throws IOException
+		{
+			line.setLength(0);
+
+			boolean quoted = false;
+			boolean escaped = false;
+			boolean eol = false;
+
+			int next = -2;
+			int i = 0;
+
+			while (next >= 0 || (i = reader.read()) != -1) {
+				final char current = next != -2 ? (char)next : (char)i;
+				next = -2;
+
+				if (current == '\n' || current == '\r') {
 					if (quoted) {
 						line.append(current);
 					} else {
 						eol = true;
 					}
-				}
-				case QUOTE -> {
+				} else if (current == quote.value) {
 					if (quoted) {
-						if (!escaped && (next = reader.read()) == QUOTE) {
+						if (!escaped && (next = reader.read()) == quote.value) {
 							escaped = true;
 						} else {
 							if (escaped) {
@@ -331,55 +226,57 @@ public final class CsvSupport {
 						quoted = true;
 					}
 					line.append(current);
+				} else {
+					line.append(current);
 				}
-				default -> line.append(current);
+
+				if (eol) {
+					eol = false;
+					if (!line.isEmpty()) {
+						return true;
+					}
+				}
 			}
 
-			if (eol) {
-				eol = false;
-				if (!line.isEmpty()) {
-					return true;
-				}
-			}
+			return !line.isEmpty();
 		}
-
-		return !line.isEmpty();
 	}
 
-	/* *************************************************************************
-	 * Classes for splitting CSV lines.
-	 * ************************************************************************/
-
-
-	/* *************************************************************************
-	 * Base CSV interfaces.
-	 * ************************************************************************/
-
-	@FunctionalInterface
-	public interface Splitter {
-		String[] split(CharSequence line);
-	}
-
-	@FunctionalInterface
-	public interface Joiner {
-		String join(Object[] values);
-	}
-
-	/* *************************************************************************
-	 * Splitter implementation.
-	 * ************************************************************************/
 
 	/**
-	 * This class is used for splitting a CSV line into columns.
+	 * Splitting a CSV line into columns (records).
 	 */
-	private static final class ColumnSplitter {
-		private final Columns columns;
+	public static final class LineSplitter {
 
-		private ColumnSplitter(final Columns columns) {
+		static final LineSplitter DEFAULT = new LineSplitter(
+			Separator.DEFAULT,
+			Quote.DEFAULT,
+			Indexes.ALL
+		);
+
+		private final Columns columns;
+		private final Separator separator;
+		private final Quote quote;
+
+		private LineSplitter(
+			final Columns columns,
+			final Separator separator,
+			final Quote quote
+		) {
 			this.columns = requireNonNull(columns);
+			this.separator = requireNonNull(separator);
+			this.quote = requireNonNull(quote);
 		}
 
-		public void split(final CharSequence line) {
+		public LineSplitter(
+			final Separator separator,
+			final Quote quote,
+			final Indexes indexes
+		) {
+			this(new Columns(indexes), separator, quote);
+		}
+
+		public String[] split(final CharSequence line) {
 			columns.clear();
 			final StringBuilder column = new StringBuilder(32);
 
@@ -392,65 +289,61 @@ public final class CsvSupport {
 				final char current = line.charAt(i);
 				final int next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
 
-				switch (current) {
-					case QUOTE -> {
-						if (quoted) {
-							if (!escaped && QUOTE == next) {
-								escaped = true;
-							} else {
-								if (escaped) {
-									column.append(QUOTE);
-									escaped = false;
-								} else {
-									if (next != -1 && SEPARATOR != next) {
-										throw new IllegalArgumentException(format(
-											"No other token than '%s' allowed after " +
-												"quote, but found '%s'.",
-											SEPARATOR, next
-										));
-									}
-
-
-									add(column);
-									full = columns.isFull();
-									quoted = false;
-								}
-							}
+				if (current == quote.value) {
+					if (quoted) {
+						if (!escaped && quote.value == next) {
+							escaped = true;
 						} else {
-							if (previous != -1 && SEPARATOR != previous) {
-								throw new IllegalArgumentException(format(
-									"No other token than '%s' allowed before " +
-										"quote, but found '%s'.",
-									SEPARATOR, previous
-								));
-							}
-							quoted = true;
-						}
-					}
-					case SEPARATOR -> {
-						if (quoted) {
-							column.append(current);
-						} else if (SEPARATOR == previous || previous == -1) {
-							add(column);
-							full = columns.isFull();
-						}
-					}
-					default -> {
-						int j = i;
+							if (escaped) {
+								column.append(quote.value);
+								escaped = false;
+							} else {
+								if (next != -1 && separator.value != next) {
+									throw new IllegalArgumentException(format(
+										"No other token than '%s' allowed after " +
+											"quote, but found '%s'.",
+										separator.value, next
+									));
+								}
 
-						// Read till the next token separator.
-						char c;
-						while (j < n && !isTokenSeparator(c = line.charAt(j))) {
-							column.append(c);
-							++j;
+
+								add(column);
+								full = columns.isFull();
+								quoted = false;
+							}
 						}
-						if (j != i) {
-							i = j - 1;
+					} else {
+						if (previous != -1 && separator.value != previous) {
+							throw new IllegalArgumentException(format(
+								"No other token than '%s' allowed before " +
+									"quote, but found '%s'.",
+								separator.value, previous
+							));
 						}
-						if (!quoted) {
-							add(column);
-							full = columns.isFull();
-						}
+						quoted = true;
+					}
+				} else if (current == separator.value) {
+					if (quoted) {
+						column.append(current);
+					} else if (separator.value == previous || previous == -1) {
+						add(column);
+						full = columns.isFull();
+					}
+				} else {
+					int j = i;
+
+					// Read till the next token separator.
+					char c;
+					while (j < n && !isTokenSeparator(c = line.charAt(j))) {
+						column.append(c);
+						++j;
+					}
+					if (j != i) {
+						i = j - 1;
+					}
+					if (!quoted) {
+						add(column);
+						full = columns.isFull();
 					}
 				}
 			}
@@ -459,72 +352,45 @@ public final class CsvSupport {
 				throw new IllegalArgumentException("Unbalanced quote character.");
 			}
 			if (line.isEmpty() ||
-				SEPARATOR == line.charAt(line.length() - 1))
+				separator.value == line.charAt(line.length() - 1))
 			{
 				add(column);
 			}
+
+			return columns.columns();
 		}
 
 		private void add(final StringBuilder column) {
 			columns.add(column.toString());
 			column.setLength(0);
 		}
+
+		private boolean isTokenSeparator(final char c) {
+			return c == separator.value || c == quote.value;
+		}
 	}
 
+
 	/**
-	 * Interface abstraction holding the columns of one CSV lines.
+	 * Column collection, which is backed up by a string list.
 	 */
-	private sealed interface Columns {
+	private static final class Columns {
+		private final List<String> columns = new ArrayList<>();
+		private final Indexes indexes;
+
+		private int index = 0;
+		private int count = 0;
+
+		Columns(final Indexes indexes) {
+			this.indexes = requireNonNull(indexes);
+		}
 
 		/**
 		 * Appends a {@code column} to the column collection.
 		 *
 		 * @param column the column to add
 		 */
-		void add(final String column);
-
-		/**
-		 * Checks whether another column can be added.
-		 *
-		 * @return {@code true} if another column can be added to this
-		 *         collection, {@code false} otherwise
-		 */
-		boolean isFull();
-
-		/**
-		 * Removes all columns.
-		 */
-		void clear();
-
-		static int indexOf(int[] array, int start, int value) {
-			for (int i = start; i < array.length; ++i) {
-				if (array[i] == value) {
-					return i;
-				}
-			}
-
-			return -1;
-		}
-
-	}
-
-	/**
-	 * Column collection, which is backed up by a {@code String[]} array.
-	 */
-	private static final class ColumnArray implements Columns {
-		private final String[] columns;
-		private final int[] indexes;
-
-		private int index = 0;
-		private int count = 0;
-
-		ColumnArray(final String[] columns, final int[] indexes) {
-			this.columns = requireNonNull(columns);
-			this.indexes = requireNonNull(indexes);
-		}
-
-		@Override
-		public void add(final String column) {
+		void add(String column) {
 			if (!isFull()) {
 				count += set(column, index++);
 			}
@@ -533,69 +399,12 @@ public final class CsvSupport {
 		private int set(String element, int column) {
 			int updated = 0;
 
-			if (indexes.length == 0) {
-				columns[column] = element;
-				++updated;
-			} else {
-				int pos = -1;
-				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1 &&
-					pos < columns.length)
-				{
-					columns[pos] = element;
-					++updated;
-				}
-			}
-
-			return updated;
-		}
-
-		@Override
-		public boolean isFull() {
-			return columns.length <= count ||
-				(indexes.length > 0 && indexes.length <= count);
-
-		}
-
-		@Override
-		public void clear() {
-			Arrays.fill(columns, null);
-			index = 0;
-			count = 0;
-		}
-
-	}
-
-	/**
-	 * Column collection, which is backed up by a string list.
-	 */
-	private static final class ColumnList implements Columns {
-		private final List<String> columns;
-		private final int[] indexes;
-
-		private int index = 0;
-		private int count = 0;
-
-		ColumnList(final List<String> columns, final int[] indexes) {
-			this.columns = requireNonNull(columns);
-			this.indexes = requireNonNull(indexes);
-		}
-
-		@Override
-		public void add(String column) {
-			if (!isFull()) {
-				count += set(column, index++);
-			}
-		}
-
-		private int set(String element, int column) {
-			int updated = 0;
-
-			if (indexes.length == 0) {
+			if (indexes.values.length == 0) {
 				columns.add(element);
 				++updated;
 			} else {
 				int pos = -1;
-				while ((pos = Columns.indexOf(indexes, pos + 1, column)) != -1) {
+				while ((pos = Columns.indexOf(indexes.values, pos + 1, column)) != -1) {
 					for (int i = columns.size(); i < pos; ++i) {
 						columns.add(null);
 					}
@@ -607,16 +416,143 @@ public final class CsvSupport {
 			return updated;
 		}
 
-		@Override
-		public boolean isFull() {
-			return indexes.length > 0 && indexes.length <= count;
+		private static int indexOf(int[] array, int start, int value) {
+			for (int i = start; i < array.length; ++i) {
+				if (array[i] == value) {
+					return i;
+				}
+			}
+
+			return -1;
 		}
 
-		@Override
+		/**
+		 * Checks whether another column can be added.
+		 *
+		 * @return {@code true} if another column can be added to this
+		 *         collection, {@code false} otherwise
+		 */
+		boolean isFull() {
+			return indexes.values.length > 0 && indexes.values.length <= count;
+		}
+
+		/**
+		 * Removes all columns.
+		 */
 		public void clear() {
 			columns.clear();
 			index = 0;
 			count = 0;
+		}
+
+		String[] columns() {
+			return columns.toArray(String[]::new);
+		}
+
+	}
+
+	/**
+	 * This class joins an array of columns into one CSV line.
+	 */
+	public static final class ColumnJoiner {
+
+		static final ColumnJoiner DEFAULT = new ColumnJoiner(
+			Separator.DEFAULT,
+			Quote.DEFAULT,
+			Indexes.ALL
+		);
+
+		/**
+		 * The CSV line splitter parameter.
+		 *
+		 * @param separator the column separator char
+		 * @param quote the qute char
+		 * @param indexes the column indices to read. If empty, all split columns
+		 *        are used.
+		 */
+		private record Param(char separator, char quote, int... indexes) {
+			public static final Param DEFAULT = new Param(',', '"');
+
+			public Param(int... indexes) {
+				this(DEFAULT.separator, DEFAULT.quote, indexes);
+			}
+
+			private String escape(Object value) {
+				final var quoteStr = String.valueOf(quote);
+
+				if (value == null) {
+					return "";
+				} else {
+					var stringValue = value.toString();
+					var string = stringValue.replace(quoteStr, quoteStr + quoteStr);
+
+					if (stringValue.length() != string.length() || mustEscape(string)) {
+						return quoteStr + string + quoteStr;
+					} else {
+						return stringValue;
+					}
+				}
+			}
+
+			private boolean mustEscape(CharSequence value) {
+				for (int i = 0; i < value.length(); ++i) {
+					final char c = value.charAt(i);
+					if (c == separator || c == '\n' || c == '\r') {
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
+		private final Param param;
+		private final int columnCount;
+
+		public ColumnJoiner(
+			final Separator separator,
+			final Quote quote,
+			final Indexes indexes
+		) {
+			this.param = new Param(separator.value, quote.value, indexes.values);
+			columnCount = max(param.indexes) + 1;
+		}
+
+		private static int max(int[] array) {
+			int max = Integer.MIN_VALUE;
+			for (int value : array) {
+				if (value > max) {
+					max = value;
+				}
+			}
+			return max;
+		}
+
+		public String join(final Iterable<?> cols) {
+			if (param.indexes.length == 0) {
+				return join0(cols);
+			} else {
+				final var values = new Object[columnCount];
+				int i = 0;
+				for (var col : cols) {
+					values[param.indexes[i++]] = col;
+				}
+
+				return join0(Arrays.asList(values));
+			}
+		}
+
+		private String join0(final Iterable<?> cols) {
+			final var row = new StringBuilder(32);
+			final var it = cols.iterator();
+			while (it.hasNext()) {
+				final var column = it.next();
+				row.append(param.escape(column));
+				if (it.hasNext()) {
+					row.append(param.separator);
+				}
+			}
+
+			return row.toString();
 		}
 
 	}

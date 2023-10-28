@@ -21,9 +21,12 @@ package io.jenetics.incubator.csv;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +34,15 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 public class CsvSupportTest {
+
+
+	@Test
+	public void lineReader() throws IOException {
+		final var file = Path.of("");
+		try (var lines = CsvSupport.lines(Files.newBufferedReader(file))) {
+
+		}
+	}
 
 	record Measurement(
 		OffsetDateTime createdAt,
@@ -48,57 +60,57 @@ public class CsvSupportTest {
 		}
 	}
 
-	@Test
-	public void readMeasurements() throws IOException {
-		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
-		final var input = CsvSupportTest.class.getResourceAsStream(file);
-		final var reader = new InputStreamReader(input);
-
-		try (var lines = CsvSupport.read(reader)) {
-			final var columns = new String[4];
-			final var result = lines
-				.map(line -> CsvSupport.split(line, columns))
-				.map(Measurement::of)
-				.toList();
-
-			result.forEach(System.out::println);
-		}
-	}
-
-	@Test
-	public void readWrite() throws IOException {
-		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
-		final var input = CsvSupportTest.class.getResourceAsStream(file);
-		final var reader = new InputStreamReader(input);
-
-		final List<List<String>> rows;
-		try (var lines = CsvSupport.read(reader)) {
-			rows = lines
-				.map(CsvSupport::split)
-				.toList();
-		}
-
-		final String csv = rows.stream()
-			.map(CsvSupport::join)
-			.collect(CsvSupport.toCsv());
-
-		final String expected;
-		try (var in = CsvSupportTest.class.getResourceAsStream(file)) {
-			expected = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-		}
-
-		assertThat(csv).isEqualToIgnoringNewLines(expected);
-	}
-
-	@Test
-	public void split() throws IOException {
-		final var line = "0,1,2,3,4,5,6,7,8,9";
-		final var row = new String[7];
-
-		final int[] indexes = {9, 2, 3, 5, 5, 1, 8};
-		CsvSupport.split(line, row, indexes);
-		System.out.println(Arrays.toString(row));
-		System.out.println(CsvSupport.join(row, indexes));
-	}
+//	@Test
+//	public void readMeasurements() throws IOException {
+//		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
+//		final var input = CsvSupportTest.class.getResourceAsStream(file);
+//		final var reader = new InputStreamReader(input);
+//
+//		try (var lines = CsvSupport.read(reader)) {
+//			final var columns = new String[4];
+//			final var result = lines
+//				.map(line -> CsvSupport.split(line, columns))
+//				.map(Measurement::of)
+//				.toList();
+//
+//			result.forEach(System.out::println);
+//		}
+//	}
+//
+//	@Test
+//	public void readWrite() throws IOException {
+//		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
+//		final var input = CsvSupportTest.class.getResourceAsStream(file);
+//		final var reader = new InputStreamReader(input);
+//
+//		final List<List<String>> rows;
+//		try (var lines = CsvSupport.read(reader)) {
+//			rows = lines
+//				.map(CsvSupport::split)
+//				.toList();
+//		}
+//
+//		final String csv = rows.stream()
+//			.map(CsvSupport::join)
+//			.collect(CsvSupport.toCsv());
+//
+//		final String expected;
+//		try (var in = CsvSupportTest.class.getResourceAsStream(file)) {
+//			expected = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+//		}
+//
+//		assertThat(csv).isEqualToIgnoringNewLines(expected);
+//	}
+//
+//	@Test
+//	public void split() throws IOException {
+//		final var line = "0,1,2,3,4,5,6,7,8,9";
+//		final var row = new String[7];
+//
+//		final int[] indexes = {9, 2, 3, 5, 5, 1, 8};
+//		CsvSupport.split(line, row, indexes);
+//		System.out.println(Arrays.toString(row));
+//		System.out.println(CsvSupport.join(row, indexes));
+//	}
 
 }
