@@ -21,6 +21,9 @@ package io.jenetics.incubator.util;
 
 import org.testng.annotations.Test;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class PathTest {
 
 	@Test

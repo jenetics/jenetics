@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.csv;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
@@ -39,22 +38,8 @@ import java.util.stream.Stream;
 import io.jenetics.internal.util.Lifecycle.Value;
 
 /**
- * Helper methods for splitting CSV rows and merging CSV columns into a valid
- * CSV row.
- *
- * {@snippet lang="java":
- * // Read CSV, including multiline CSV files, if properly quoted.
- * final List<List<String>> rows;
- * try (Stream<String> lines = CsvSupport.lines(new FileReader("some_file.csv"))) {
- *     rows = lines.map(CsvSupport::split).toList();
- * }
- *
- * // Write CSV.
- * final String csv = rows.stream()
- *     .map(CsvSupport::join)
- *     .collect(CsvSupport.toCsv());
- * Files.writeString(Path.of("some_other_file.csv"), csv);
- * }
+ * This class contains classes and helper methods for splitting CSV files into
+ * lines a splitting CSV lines into columns.
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
@@ -64,16 +49,101 @@ import io.jenetics.internal.util.Lifecycle.Value;
  */
 public final class CsvSupport {
 
-	public record Quote(char value) {
-		public static final Quote DEFAULT = new Quote('"');
-	}
-
+	/**
+	 * Holds the CSV column <em>separator</em> character.
+	 *
+	 * @param value the separator character
+	 */
 	public record Separator(char value) {
+
+		/**
+		 * The default separator character, '{@code ,}'.
+		 */
 		public static final Separator DEFAULT = new Separator(',');
+
+		/**
+		 * Creates a new Separator char object.
+		 *
+		 * @param value the separator character
+		 * @throws IllegalArgumentException if the given separator character is
+		 *         a line break character
+		 */
+		public Separator {
+			if (isLineBreak(value)) {
+				throw new IllegalArgumentException(
+					"Given separator char is a line break character."
+				);
+			}
+		}
 	}
 
-	public record Indexes(int... values) {
-		public static final Indexes ALL = new Indexes();
+	/**
+	 * Holds the CSV column <em>quote</em> character.
+	 *
+	 * @param value the quote character
+	 */
+	public record Quote(char value) {
+
+		/**
+		 * The default quote character, '{@code "}'.
+		 */
+		public static final Quote DEFAULT = new Quote('"');
+
+		/**
+		 * Creates a new Quote char object.
+		 *
+		 * @param value the quote character
+		 * @throws IllegalArgumentException if the given quote character is
+		 *         a line break character
+		 */
+		public Quote {
+			if (isLineBreak(value)) {
+				throw new IllegalArgumentException(
+					"Given quote char is a line break character."
+				);
+			}
+		}
+	}
+
+	/**
+	 * Holds the column indexes, which should be part of the split operation.
+	 * If specified, only defined column indexes are part of the split result.
+	 *
+	 * @param values the column indexes which are part of the split result
+	 */
+	public record ColumnIndexes(int... values) {
+
+		/**
+		 * Indicating that <em>all</em> columns should be part of the split
+		 * result.
+		 */
+		public static final ColumnIndexes ALL = new ColumnIndexes();
+
+		/**
+		 * Create a new column indexes object.
+		 *
+		 * @param values the column indexes
+		 */
+		public ColumnIndexes {
+			values = values.clone();
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(values);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof ColumnIndexes ci &&
+				Arrays.equals(values, ci.values);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(values);
+		}
 	}
 
 	/**
@@ -85,25 +155,69 @@ public final class CsvSupport {
 	private CsvSupport() {
 	}
 
+	private static boolean isLineBreak(final char c) {
+		return c == '\n' || c == '\r';
+	}
+
 	/**
-	 * Splits the given {@code reader} into a  {@code Stream} of CSV rows.
-	 * The rows are split at line breaks, as long as they are not part of a
-	 * quoted column. <em>The returned stream must be closed by the caller,
-	 * which also closes the given reader.</em>
+	 * Splits the CSV file, given by the {@code reader}, into a  {@code Stream}
+	 * of CSV rows. The rows are split at line breaks, as long as they are not
+	 * part of a quoted column. For reading the CSV lines, the default quote
+	 * character, {@link Quote#DEFAULT}, is used.
+	 *
+	 * @apiNote
+	 * The returned stream must be closed by the caller, which also closes the
+	 * CSV {@code reader}.
 	 *
 	 * @param reader the reader stream to split into CSV lines. The reader is
 	 *        automatically closed when the returned line stream is closed.
 	 * @return the stream of CSV lines
+	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 */
 	public static Stream<String> lines(final Reader reader) {
 		return LineReader.DEFAULT.read(reader);
 	}
 
+	/**
+	 * Splits a given CSV {@code line} into columns. The default values for the
+	 * separator and quote character are used ({@link Separator#DEFAULT},
+	 * {@link Quote#DEFAULT}) for splitting the line.
+	 *
+	 * @param line the CSV line to split
+	 * @return the split CSV lines
+	 * @throws NullPointerException if the given {@code line} is {@code null}
+	 */
 	public static String[] split(final CharSequence line) {
-		return LineSplitter.DEFAULT.split(line);
+		return LineSplitter.DEFAULT.get().split(line);
 	}
 
+	/**
+	 * Joins the given CSV {@code columns} to one CSV line. The default values
+	 * for the separator and quote character are used ({@link Separator#DEFAULT},
+	 * {@link Quote#DEFAULT}) for joining the columns.
+	 *
+	 * @see #join(Object[])
+	 *
+	 * @param columns the CSV columns to join
+	 * @return the CSV line, joined from the given {@code columns}
+	 * @throws NullPointerException if the given {@code columns} is {@code null}
+	 */
 	public static String join(final Iterable<?> columns) {
+		return ColumnJoiner.DEFAULT.join(columns);
+	}
+
+	/**
+	 * Joins the given CSV {@code columns} to one CSV line. The default values
+	 * for the separator and quote character are used ({@link Separator#DEFAULT},
+	 * {@link Quote#DEFAULT}) for joining the columns.
+	 *
+	 * @see #join(Iterable)
+	 *
+	 * @param columns the CSV columns to join
+	 * @return the CSV line, joined from the given {@code columns}
+	 * @throws NullPointerException if the given {@code columns} is {@code null}
+	 */
+	public static String join(final Object[] columns) {
 		return ColumnJoiner.DEFAULT.join(columns);
 	}
 
@@ -130,8 +244,9 @@ public final class CsvSupport {
 	 * ************************************************************************/
 
 	/**
-	 * This class reads CSV files and splits it into lines. It also obeys quoted
-	 * new lines.
+	 * This class reads CSV files and splits it into lines. It takes a quote
+	 * character as a parameter, which is needed for not splitting on quoted
+	 * line feeds.
 	 *
 	 * @apiNote
 	 * This reader obeys <em>escaped</em> line breaks according
@@ -139,7 +254,7 @@ public final class CsvSupport {
 	 */
 	public static final class LineReader {
 
-		static final LineReader DEFAULT = new LineReader(Quote.DEFAULT);
+		private static final LineReader DEFAULT = new LineReader(Quote.DEFAULT);
 
 		private final Quote quote;
 
@@ -248,34 +363,91 @@ public final class CsvSupport {
 	 */
 	public static final class LineSplitter {
 
-		static final LineSplitter DEFAULT = new LineSplitter(
+		private static final Supplier<LineSplitter> DEFAULT = () -> new LineSplitter(
 			Separator.DEFAULT,
 			Quote.DEFAULT,
-			Indexes.ALL
+			ColumnIndexes.ALL
 		);
 
-		private final Columns columns;
+		private final ColumnList columns;
 		private final Separator separator;
 		private final Quote quote;
 
-		private LineSplitter(
-			final Columns columns,
+		/**
+		 * Create a new line splitter with the given parameters.
+		 *
+		 * @param separator the separator character used by the CSV line to split
+		 * @param quote the quote character used by the CSV line to split
+		 * @param indexes the column indexes which should be part of the split
+		 *        result
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public LineSplitter(
 			final Separator separator,
-			final Quote quote
+			final Quote quote,
+			final ColumnIndexes indexes
 		) {
-			this.columns = requireNonNull(columns);
+			this.columns = new ColumnList(indexes);
 			this.separator = requireNonNull(separator);
 			this.quote = requireNonNull(quote);
 		}
 
-		public LineSplitter(
-			final Separator separator,
-			final Quote quote,
-			final Indexes indexes
-		) {
-			this(new Columns(indexes), separator, quote);
+		/**
+		 * Create a new line splitter with the given parameters.
+		 *
+		 * @param separator the separator character used by the CSV line to split
+		 * @param quote the quote character used by the CSV line to split
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public LineSplitter(final Separator separator, final Quote quote) {
+			this(separator, quote, ColumnIndexes.ALL);
 		}
 
+		/**
+		 * Create a new line splitter with the given parameters. The default
+		 * quote character, {@link Quote#DEFAULT}, will be used by the created
+		 * splitter.
+		 *
+		 * @param separator the separator character used by the CSV line to split
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public LineSplitter(final Separator separator) {
+			this(separator, Quote.DEFAULT, ColumnIndexes.ALL);
+		}
+
+		/**
+		 * Create a new line splitter with the given parameters. The default
+		 * separator character, {@link Separator#DEFAULT}, will be used by the
+		 * created splitter.
+		 *
+		 * @param quote the quote character used by the CSV line to split
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public LineSplitter(final Quote quote) {
+			this(Separator.DEFAULT, quote, ColumnIndexes.ALL);
+		}
+
+		/**
+		 * Create a new line splitter with the given parameters. Only the defined
+		 * columns will be part of the split result and the default separator
+		 * character, {@link Separator#DEFAULT}, and default quote character,
+		 * {@link Quote#DEFAULT}, is used by the created splitter.
+		 *
+		 * @param indexes the column indexes which should be part of the split
+		 *        result
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public LineSplitter(final ColumnIndexes indexes) {
+			this(Separator.DEFAULT, Quote.DEFAULT, indexes);
+		}
+
+		/**
+		 * Splitting the given CSV {@code line} into its columns.
+		 *
+		 * @param line the CSV line to split
+		 * @return the split CSV columns
+		 * @throws NullPointerException if the CSV {@code line} is {@code null}
+		 */
 		public String[] split(final CharSequence line) {
 			columns.clear();
 			final StringBuilder column = new StringBuilder(32);
@@ -299,13 +471,12 @@ public final class CsvSupport {
 								escaped = false;
 							} else {
 								if (next != -1 && separator.value != next) {
-									throw new IllegalArgumentException(format(
-										"No other token than '%s' allowed after " +
-											"quote, but found '%s'.",
-										separator.value, next
-									));
+									throw new IllegalArgumentException("""
+                                        No other token than '%s' allowed after \
+                                        quote, but found '%c'.
+                                        """.formatted(separator.value, next)
+									);
 								}
-
 
 								add(column);
 								full = columns.isFull();
@@ -314,11 +485,11 @@ public final class CsvSupport {
 						}
 					} else {
 						if (previous != -1 && separator.value != previous) {
-							throw new IllegalArgumentException(format(
-								"No other token than '%s' allowed before " +
-									"quote, but found '%s'.",
-								separator.value, previous
-							));
+							throw new IllegalArgumentException("""
+                                No other token than '%s' allowed after \
+                                quote, but found '%c'.
+                                """.formatted(separator.value, previous)
+							);
 						}
 						quoted = true;
 					}
@@ -374,14 +545,14 @@ public final class CsvSupport {
 	/**
 	 * Column collection, which is backed up by a string list.
 	 */
-	private static final class Columns {
+	private static final class ColumnList {
 		private final List<String> columns = new ArrayList<>();
-		private final Indexes indexes;
+		private final ColumnIndexes indexes;
 
 		private int index = 0;
 		private int count = 0;
 
-		Columns(final Indexes indexes) {
+		ColumnList(final ColumnIndexes indexes) {
 			this.indexes = requireNonNull(indexes);
 		}
 
@@ -404,8 +575,8 @@ public final class CsvSupport {
 				++updated;
 			} else {
 				int pos = -1;
-				while ((pos = Columns.indexOf(indexes.values, pos + 1, column)) != -1) {
-					for (int i = columns.size(); i < pos; ++i) {
+				while ((pos = ColumnList.indexOf(indexes.values, pos + 1, column)) != -1) {
+					for (int i = columns.size(); i <= pos; ++i) {
 						columns.add(null);
 					}
 					columns.set(pos, element);
@@ -446,6 +617,9 @@ public final class CsvSupport {
 		}
 
 		String[] columns() {
+			for (int i = columns.size(); i < indexes.values.length; ++i) {
+				columns.add(null);
+			}
 			return columns.toArray(String[]::new);
 		}
 
@@ -456,10 +630,10 @@ public final class CsvSupport {
 	 */
 	public static final class ColumnJoiner {
 
-		static final ColumnJoiner DEFAULT = new ColumnJoiner(
+		private static final ColumnJoiner DEFAULT = new ColumnJoiner(
 			Separator.DEFAULT,
 			Quote.DEFAULT,
-			Indexes.ALL
+			ColumnIndexes.ALL
 		);
 
 		/**
@@ -471,11 +645,6 @@ public final class CsvSupport {
 		 *        are used.
 		 */
 		private record Param(char separator, char quote, int... indexes) {
-			public static final Param DEFAULT = new Param(',', '"');
-
-			public Param(int... indexes) {
-				this(DEFAULT.separator, DEFAULT.quote, indexes);
-			}
 
 			private String escape(Object value) {
 				final var quoteStr = String.valueOf(quote);
@@ -508,13 +677,75 @@ public final class CsvSupport {
 		private final Param param;
 		private final int columnCount;
 
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param separator the CSV separator character used by the joiner
+		 * @param quote the CSV quote character used by the joiner
+		 * @param indexes the column indexes to join
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
 		public ColumnJoiner(
 			final Separator separator,
 			final Quote quote,
-			final Indexes indexes
+			final ColumnIndexes indexes
 		) {
 			this.param = new Param(separator.value, quote.value, indexes.values);
 			columnCount = max(param.indexes) + 1;
+		}
+
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param separator the CSV separator character used by the joiner
+		 * @param quote the CSV quote character used by the joiner
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public ColumnJoiner(final Separator separator, final Quote quote) {
+			this(separator, quote, ColumnIndexes.ALL);
+		}
+
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param separator the CSV separator character used by the joiner
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public ColumnJoiner(final Separator separator) {
+			this(separator, Quote.DEFAULT, ColumnIndexes.ALL);
+		}
+
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param separator the CSV separator character used by the joiner
+		 * @param indexes the column indexes to join
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public ColumnJoiner(final Separator separator, final ColumnIndexes indexes) {
+			this(separator, Quote.DEFAULT, indexes);
+		}
+
+
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param quote the CSV quote character used by the joiner
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public ColumnJoiner(final Quote quote) {
+			this(Separator.DEFAULT, quote, ColumnIndexes.ALL);
+		}
+
+		/**
+		 * Create a new column joiner with the given parameters.
+		 *
+		 * @param quote the CSV quote character used by the joiner
+		 * @param indexes the column indexes to join
+		 * @throws NullPointerException if one of the parameters is {@code null}
+		 */
+		public ColumnJoiner(final Quote quote, final ColumnIndexes indexes) {
+			this(Separator.DEFAULT, quote, indexes);
 		}
 
 		private static int max(int[] array) {
@@ -527,14 +758,26 @@ public final class CsvSupport {
 			return max;
 		}
 
-		public String join(final Iterable<?> cols) {
+		/**
+		 * Joins the given CSV {@code columns}, using the given separator and
+		 * quote character.
+		 *
+		 * @param columns the CSV columns to join
+		 * @return the joined CSV columns
+		 */
+		public String join(final Iterable<?> columns) {
 			if (param.indexes.length == 0) {
-				return join0(cols);
+				return join0(columns);
 			} else {
 				final var values = new Object[columnCount];
+				final var it = columns.iterator();
 				int i = 0;
-				for (var col : cols) {
-					values[param.indexes[i++]] = col;
+				while (it.hasNext() && i < param.indexes.length) {
+					final var col = it.next();
+					final var index = param.indexes[i++];
+					if (index >= 0) {
+						values[index] = col;
+					}
 				}
 
 				return join0(Arrays.asList(values));
@@ -553,6 +796,17 @@ public final class CsvSupport {
 			}
 
 			return row.toString();
+		}
+
+		/**
+		 * Joins the given CSV {@code columns}, using the given separator and
+		 * quote character.
+		 *
+		 * @param columns the CSV columns to join
+		 * @return the joined CSV columns
+		 */
+		public String join(final Object[] columns) {
+			return join(Arrays.asList(columns));
 		}
 
 	}

@@ -23,6 +23,9 @@ import com.google.common.hash.Hashing;
 
 import org.testng.annotations.Test;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class MurmurDigestTest {
 
 	@Test
