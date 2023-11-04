@@ -82,9 +82,8 @@ public class CsvSupportPerf {
 	public int parseCsvSupport(final Blackhole bh) {
 		int count = 0;
 
-		final var quote = new CsvSupport.Quote('|');
-		final var reader = new CsvSupport.LineReader(quote);
-		final var splitter = new CsvSupport.LineSplitter(quote);
+		final var reader = new CsvSupport.LineReader(CsvSupport.Quote.ZERO);
+		final var splitter = new CsvSupport.LineSplitter(CsvSupport.Quote.ZERO);
 
 		final Stream<String[]> result = reader.read(newStringReader())
 			.map(splitter::split);

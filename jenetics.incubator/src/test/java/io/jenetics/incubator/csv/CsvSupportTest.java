@@ -19,14 +19,15 @@
  */
 package io.jenetics.incubator.csv;
 
+import static java.lang.Double.parseDouble;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -36,7 +37,6 @@ import io.jenetics.incubator.csv.CsvSupport.ColumnJoiner;
 import io.jenetics.incubator.csv.CsvSupport.LineReader;
 import io.jenetics.incubator.csv.CsvSupport.LineSplitter;
 import io.jenetics.incubator.csv.CsvSupport.Quote;
-import io.jenetics.incubator.csv.CsvSupport.Separator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -240,6 +240,21 @@ public class CsvSupportTest {
 				"0,1,2,3,4,5,6,7,8,9"
 			},
 			{
+				new String[] {"0", "1", "2", "3", null, "5", "6", "7", "8", "9"},
+				ColumnIndexes.ALL,
+				"0,1,2,3,,5,6,7,8,9"
+			},
+			{
+				new String[] {"0", "1", "2", "3", "", "5", "6", "7", "8", "9"},
+				ColumnIndexes.ALL,
+				"0,1,2,3,,5,6,7,8,9"
+			},
+			{
+				new String[] {"0", "1", "2", "3", " ", "5", "6", "7", "8", "9"},
+				ColumnIndexes.ALL,
+				"0,1,2,3, ,5,6,7,8,9"
+			},
+			{
 				new String[] {"0", "1", "2", "3", "4", "5"},
 				new ColumnIndexes(0, 1, 2, 3),
 				"0,1,2,3"
@@ -272,91 +287,69 @@ public class CsvSupportTest {
 		};
 	}
 
+	 public void read() throws IOException {
+		 // @start region="readRows"
+		final List<String[]> rows;
+		try (Stream<String> lines = CsvSupport.lines(new FileReader("data.csv"))) {
+			rows = lines
+				.map(CsvSupport::split)
+				.toList();
+		}
+		// @end
+	 }
+
 	@Test
-	public void lineReader() throws IOException {
-		final var file = Path.of("/home/fwilhelm/Data/Storage/EurotaxSave_20230918000000/10Basic20230918000000/make.txt");
-
-		final var splitter = new LineSplitter(new Separator('\t'));
-		final var joiner = new ColumnJoiner(new Separator('\t'));
-
-		try (var lines = CsvSupport.lines(Files.newBufferedReader(file, Charset.forName("Cp1252")))) {
-			//lines.map(splitter::split)
-			//	.forEach(cols -> System.out.println(Arrays.toString(cols)));
-			var csv = lines.map(splitter::split)
-				.map(joiner::join)
-				.collect(CsvSupport.toCsv());
-
-			Files.write(Path.of(file.getParent().toString(), "make.csv"), csv.getBytes());
+	public void projection() {
+		// @start region="readEntries"
+		// The data structure.
+		record City(String name, String country, double lat, double lon) {
+			City(final String[] row) {
+				this(row[0], row[1], parseDouble(row[2]), parseDouble(row[3]));
+			}
+			Object[] toComponents() {
+				return new Object[] {name, country, lat, lon};
+			}
 		}
-	}
 
-	record Measurement(
-		OffsetDateTime createdAt,
-		int co2,
-		float temperature,
-		float humidity
-	) {
-		static Measurement of(final String[] values) {
-			return new Measurement(
-				OffsetDateTime.parse(values[0]),
-				Integer.parseInt(values[1]),
-				Float.parseFloat(values[2]),
-				Float.parseFloat(values[3])
-			);
+		// The CSV data.
+		final var csv = """
+			# Country,City,AccentCity,Region,Population,Latitude,Longitude
+			ad,aixas,Aixàs,06,,42.4833333,1.4666667
+			ad,aixirivali,Aixirivali,06,,42.4666667,1.5
+			ad,aixirivall,Aixirivall,06,,42.4666667,1.5
+			ad,aixirvall,Aixirvall,06,,42.4666667,1.5
+			ad,aixovall,Aixovall,06,,42.4666667,1.4833333
+			""";
+
+		// The splitter + the projected columns.
+		final var projection = new ColumnIndexes(2, 0, 5, 6);
+		final var splitter = new LineSplitter(projection);
+
+		// Read and convert the data.
+		final List<City> entries;
+		try (var lines = CsvSupport.lines(new StringReader(csv))) {
+			entries = lines
+				.filter(line -> !line.startsWith("#"))
+				.map(splitter::split)
+				.map(City::new)
+				.peek(System.out::println)
+				.toList();
 		}
-	}
+		// @end
 
-//	@Test
-//	public void readMeasurements() throws IOException {
-//		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
-//		final var input = CsvSupportTest.class.getResourceAsStream(file);
-//		final var reader = new InputStreamReader(input);
-//
-//		try (var lines = CsvSupport.read(reader)) {
-//			final var columns = new String[4];
-//			final var result = lines
-//				.map(line -> CsvSupport.split(line, columns))
-//				.map(Measurement::of)
-//				.toList();
-//
-//			result.forEach(System.out::println);
-//		}
-//	}
-//
-//	@Test
-//	public void readWrite() throws IOException {
-//		final var file = "/io/jenetics/incubator/util/Temperatures.csv";
-//		final var input = CsvSupportTest.class.getResourceAsStream(file);
-//		final var reader = new InputStreamReader(input);
-//
-//		final List<List<String>> rows;
-//		try (var lines = CsvSupport.read(reader)) {
-//			rows = lines
-//				.map(CsvSupport::split)
-//				.toList();
-//		}
-//
-//		final String csv = rows.stream()
-//			.map(CsvSupport::join)
-//			.collect(CsvSupport.toCsv());
-//
-//		final String expected;
-//		try (var in = CsvSupportTest.class.getResourceAsStream(file)) {
-//			expected = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-//		}
-//
-//		assertThat(csv).isEqualToIgnoringNewLines(expected);
-//	}
-//
-//	@Test
-//	public void split() throws IOException {
-//		final var line = "0,1,2,3,4,5,6,7,8,9";
-//		final var row = new String[7];
-//
-//		final int[] indexes = {9, 2, 3, 5, 5, 1, 8};
-//		CsvSupport.split(line, row, indexes);
-//		System.out.println(Arrays.toString(row));
-//		System.out.println(CsvSupport.join(row, indexes));
-//	}
+		// @start region="writeEntries"
+		// The joiner + the embedding column indexes
+		final var embedding = new ColumnIndexes(2, 0, 5, 6);
+		final var joiner = new ColumnJoiner(embedding);
+
+		// Create CSV string from records.
+		final String csv2 = entries.stream()
+			.map(City::toComponents)
+			.map(joiner::join)
+			.collect(CsvSupport.toCsv());
+
+		System.out.println(csv2);
+		// @end
+	}
 
 }
