@@ -50,12 +50,17 @@ dependencies {
 	testImplementation(libs.testng)
 	testImplementation(libs.jpx)
 	//testImplementation("omds-domain:omds-domain")
+
+	jmh(libs.commons.csv)
+	jmh(libs.javacsv)
+	jmh(libs.opencsv)
+	jmh(libs.supercsv)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*MathExprPerf.*")
+	includes.add(".*CsvSupportPerf.*")
 }
 
 tasks.javadoc {

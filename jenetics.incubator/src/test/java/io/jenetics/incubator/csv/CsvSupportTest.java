@@ -57,6 +57,8 @@ public class CsvSupportTest {
             'a
             b',,
                , ,  \s
+             a , b , c
+             a ,' b ', c
             """;
 
 		final String[][] expected = {
@@ -69,7 +71,9 @@ public class CsvSupportTest {
 			{"'", "'''", ""},
 			{"'", "f'd", ""},
 			{"a\nb", "", ""},
-			{"   ", " ", "   "}
+			{"   ", " ", "   "},
+			{" a ", " b ", " c"},
+			{" a ", " b ", " c"}
 		};
 
 		final var reader = new LineReader(new Quote('\''));
@@ -163,6 +167,36 @@ public class CsvSupportTest {
 				"0,1,2,3,4,5,6,7,8,9",
 				new ColumnIndexes(10, 11, 1, 2, 33, 18, 10, 2, 4, 10, 25, 9, 8, 8),
 				new String[] {null, null, "1", "2", null, null, null, "2", "4", null, null, "9", "8", "8"}
+			},
+			{
+				"0,1,2,3,4,5,6,7,8,9",
+				new ColumnIndexes(-10, -11, -33, -18, -10, -4),
+				new String[] {null, null, null, null, null, null}
+			},
+			{
+				"0,1,2,3,4,5,6,7,8,9",
+				new ColumnIndexes(-10, -11, -33, -18, -10, -4, -1),
+				new String[] {null, null, null, null, null, null, null}
+			},
+			{
+				"0,1,2",
+				new ColumnIndexes(0, 1, 2, 3, 4, 5),
+				new String[] {"0", "1", "2", null, null, null}
+			},
+			{
+				"0,1,2",
+				new ColumnIndexes(0, 1, 2, 5),
+				new String[] {"0", "1", "2", null}
+			},
+			{
+				"0,1,2",
+				new ColumnIndexes(0, 1, 2, 3, 3, 3),
+				new String[] {"0", "1", "2", null, null, null}
+			},
+			{
+				"0,1,2",
+				new ColumnIndexes(0, 1, 2, -1, -1, -1),
+				new String[] {"0", "1", "2", null, null, null}
 			}
 		};
 	}
@@ -224,6 +258,16 @@ public class CsvSupportTest {
 				new String[] {"0", "1", "2", "3", "4", "5"},
 				new ColumnIndexes(6, 1, 2, 3, -1, 4),
 				",1,2,3,5,,0"
+			},
+			{
+				new String[] {"0", "1", "2", "3", "4", "5"},
+				new ColumnIndexes(-12, -13, -14),
+				""
+			},
+			{
+				new String[] {"0", "1", "2", "3", "4", "5"},
+				new ColumnIndexes(-12, -13, -14, -3, -3, -3, 3),
+				",,,"
 			}
 		};
 	}

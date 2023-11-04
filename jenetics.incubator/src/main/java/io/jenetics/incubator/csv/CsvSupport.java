@@ -456,6 +456,8 @@ public final class CsvSupport {
 			boolean escaped = false;
 			boolean full = false;
 
+			int quoteIndex = 0;
+
 			for (int i = 0, n = line.length(); i < n && !full; ++i) {
 				final int previous = i > 0 ? line.charAt(i - 1) : -1;
 				final char current = line.charAt(i);
@@ -472,9 +474,14 @@ public final class CsvSupport {
 							} else {
 								if (next != -1 && separator.value != next) {
 									throw new IllegalArgumentException("""
-                                        No other token than '%s' allowed after \
-                                        quote, but found '%c'.
-                                        """.formatted(separator.value, next)
+                                        Only separator character, '%s', allowed \
+                                        after quote, but found '%c'.
+                                        %s
+                                        """.formatted(
+											separator.value,
+											next,
+											toError(line, i + 1)
+										)
 									);
 								}
 
@@ -486,12 +493,18 @@ public final class CsvSupport {
 					} else {
 						if (previous != -1 && separator.value != previous) {
 							throw new IllegalArgumentException("""
-                                No other token than '%s' allowed after \
+                                Only separator character, '%s', allowed before \
                                 quote, but found '%c'.
-                                """.formatted(separator.value, previous)
+                                %s
+                                """.formatted(
+									separator.value,
+									previous,
+									toError(line, Math.max(i - 1, 0))
+								)
 							);
 						}
 						quoted = true;
+						quoteIndex = i;
 					}
 				} else if (current == separator.value) {
 					if (quoted) {
@@ -520,7 +533,11 @@ public final class CsvSupport {
 			}
 
 			if (quoted) {
-				throw new IllegalArgumentException("Unbalanced quote character.");
+				throw new IllegalArgumentException("""
+					Unbalanced quote character.
+					%s
+					""".formatted(toError(line, quoteIndex))
+				);
 			}
 			if (line.isEmpty() ||
 				separator.value == line.charAt(line.length() - 1))
@@ -538,6 +555,16 @@ public final class CsvSupport {
 
 		private boolean isTokenSeparator(final char c) {
 			return c == separator.value || c == quote.value;
+		}
+
+		private static String toError(final CharSequence line, final int pos) {
+			return """
+                %s
+                %s
+                """.formatted(
+					line.toString().stripTrailing(),
+					" ".repeat(pos) + "^"
+				);
 		}
 	}
 
@@ -691,7 +718,7 @@ public final class CsvSupport {
 			final ColumnIndexes indexes
 		) {
 			this.param = new Param(separator.value, quote.value, indexes.values);
-			columnCount = max(param.indexes) + 1;
+			columnCount = Math.max(max(param.indexes) + 1, 0);
 		}
 
 		/**
