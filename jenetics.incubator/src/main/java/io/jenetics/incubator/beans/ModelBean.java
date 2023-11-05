@@ -20,7 +20,6 @@
 package io.jenetics.incubator.beans;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.beans.Reflect.isIdentityType;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -83,9 +82,8 @@ public final class ModelBean implements Iterable<Property> {
 				));
 
 			this.objectPaths = properties.stream()
-				.filter(p -> isIdentityType(unwrap(p.value().value())))
 				.collect(Collectors.toMap(
-					p -> unwrap(p.value().value()),
+					p -> unwrap(p.value()),
 					Property::path,
 					(p1, p2) -> p1,
 					IdentityHashMap::new
@@ -198,11 +196,11 @@ public final class ModelBean implements Iterable<Property> {
 	 *
 	 * @param action The action to be performed for each entry
 	 */
-	public void forEach(final BiConsumer<? super Path, ? super Property.Value> action) {
+	public void forEach(final BiConsumer<? super Path, ? super Property> action) {
 		requireNonNull(action);
 
 		iterator().forEachRemaining(property ->
-			action.accept(property.path(), property.value())
+			action.accept(property.path(), property)
 		);
 	}
 

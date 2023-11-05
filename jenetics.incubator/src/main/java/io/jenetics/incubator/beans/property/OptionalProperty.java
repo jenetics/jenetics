@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import io.jenetics.incubator.beans.Path;
-
 /**
  * Represents an optional property.
  *
@@ -34,8 +32,8 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class OptionalProperty extends IndexedProperty {
 
-	OptionalProperty(final Path path, final Value value) {
-		super(path, value);
+	OptionalProperty(final PropParam param) {
+		super(param);
 	}
 
 	/**
@@ -45,7 +43,7 @@ public final class OptionalProperty extends IndexedProperty {
 	 */
 	@SuppressWarnings("unchecked")
 	public Optional<Object> optional() {
-		return (Optional<Object>)value().value();
+		return (Optional<Object>)value();
 	}
 
 	@Override

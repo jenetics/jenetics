@@ -19,65 +19,56 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static io.jenetics.incubator.beans.Reflect.toRawType;
+import static io.jenetics.incubator.beans.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.beans.Dtor;
 import io.jenetics.incubator.beans.Filters;
 import io.jenetics.incubator.beans.Path;
 import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.PreOrderIterator;
-import io.jenetics.incubator.beans.Reflect;
-import io.jenetics.incubator.beans.Reflect.ArrayType;
-import io.jenetics.incubator.beans.Reflect.IndexedType;
-import io.jenetics.incubator.beans.Reflect.ListType;
+import io.jenetics.incubator.beans.description.Access;
 import io.jenetics.incubator.beans.description.Description;
 import io.jenetics.incubator.beans.description.Descriptions;
-import io.jenetics.incubator.beans.description.Getter;
-import io.jenetics.incubator.beans.description.Setter;
-import io.jenetics.incubator.beans.property.Property.Value.Immutable;
-import io.jenetics.incubator.beans.property.Property.Value.Mutable;
+import io.jenetics.incubator.beans.description.IndexedAccess;
+import io.jenetics.incubator.beans.description.IndexedDescription;
+import io.jenetics.incubator.beans.description.SimpleDescription;
+import io.jenetics.incubator.beans.internal.Dtor;
+import io.jenetics.incubator.beans.internal.PreOrderIterator;
+import io.jenetics.incubator.beans.reflect.ArrayType;
+import io.jenetics.incubator.beans.reflect.BeanType;
+import io.jenetics.incubator.beans.reflect.ElementType;
+import io.jenetics.incubator.beans.reflect.ListType;
+import io.jenetics.incubator.beans.reflect.OptionalType;
+import io.jenetics.incubator.beans.reflect.PropertyType;
+import io.jenetics.incubator.beans.reflect.RecordType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
  * root object. It is the main entry point for the extracting properties from
  * an object graph.
  *
+ * {@snippet class="snippets.PropertiesSnippets" region="walk(Object)"}
+ *
+ * The code snippet above will create the following output
+ * <pre>{@code
+ * SimpleProperty[path=title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=Book]
+ * SimpleProperty[path=pages, value=832, mutable=false, type=int, enclosure=Book]
+ * ListProperty[path=authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=Book]
+ * IndexProperty[path=authors[0], value=Author[Jonathan Franzen], mutable=true, type=Author, enclosure=java.util.ImmutableCollections$List12]
+ * SimpleProperty[path=authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+ * ListProperty[path=authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 public final class Properties {
-
-	/**
-	 * Standard filter for the source types. It excludes all JDK types from being
-	 * used, but includes arrays (except byte[] arrays) and list types.
-	 */
-	public static final Predicate<? super PathValue<?>>
-		STANDARD_SOURCE_FILTER =
-		Filters.filtering(
-			pv -> PathValue.of(
-				pv.path(),
-				pv.value() != null ? pv.value().getClass() : Object.class
-			),
-			Descriptions.STANDARD_SOURCE_FILTER
-		);
-
-	/**
-	 * Standard filter for the target types. It excludes all JDK types from being
-	 * part except they are array- or list properties or the enclosure type are
-	 * array- or list classes.
-	 */
-	public static final Predicate<? super Property>
-		STANDARD_TARGET_FILTER =
-		prop -> Reflect.isNonJdkType(prop.value().enclosure().getClass()) ||
-				IndexedType.of(prop.value().enclosure().getClass()) != null ||
-				prop instanceof IndexedProperty;
-
 
 	private Properties() {
 	}
@@ -86,136 +77,125 @@ public final class Properties {
 	 * This method extracts the direct properties of the given {@code root}
 	 * object.
 	 *
+	 * {@snippet class="snippets.PropertiesSnippets" region="list(PathValue)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=author.forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=author.surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=author.birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=author.books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
+	 *
 	 * @param root the root object from which the properties are extracted
 	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> unapply(final PathValue<?> root) {
+	public static Stream<Property> list(final PathValue<?> root) {
 		if (root == null || root.value() == null) {
 			return Stream.empty();
 		}
 
 		final var type = PathValue.<Type>of(root.value().getClass());
-		final var descriptions = Descriptions.unapply(type);
+		final var descriptions = Descriptions.list(type);
 
 		return descriptions
-			.flatMap(description -> unapply(root, description));
+			.flatMap(description -> list(root, description));
 	}
 
-	private static Stream<Property> unapply(
+	private static Stream<Property> list(
 		final PathValue<?> root,
 		final Description description
 	) {
-		final var enclosing = root.value();
+		final var enclosure = root.value();
 
-		if (description.value() instanceof Description.Value.Single single) {
-			final var path = root.path().append(description.name());
-			final var value = toValue(
-				enclosing, single.getter().get(root.value()), single
-			);
-
-			final Property prop;
-			if (Reflect.OptionalType.of(single.value()) != null) {
-				prop = new OptionalProperty(path, value);
-			} else if (ArrayType.of(single.value()) != null) {
-				prop = new ArrayProperty(path, value);
-			} else if (ListType.of(single.value()) != null) {
-				prop = new ListProperty(path, value);
-			} else {
-				prop = new SimpleProperty(path, value);
-			}
-
-			return Stream.of(prop);
-		} else if (description.value() instanceof Description.Value.Indexed indexed) {
-			final var path = description.path().element() instanceof Path.Index
-				? root.path()
-				: root.path().append(new Path.Name(description.name()));
-
-			final int size = indexed.size().get(enclosing);
-
-			return IntStream.range(0, size).mapToObj(i -> {
-				final Object value = indexed.getter().get(enclosing, i);
-				final Class<?> type = value != null
-					? value.getClass()
-					: toRawType(indexed.value());
-				final Getter getter = o -> indexed.getter().get(o, i);
-				final Setter setter = indexed.setter()
-					.map(s -> (Setter)(o, v) -> s.set(o, i, v))
-					.orElse(null);
-
-				return new IndexProperty(
-					path.append(new Path.Index(i)),
-					i,
-					setter != null
-						? new Mutable(enclosing, value, type, getter, setter)
-						: new Immutable(enclosing, value, type)
+		return switch (description) {
+			case SimpleDescription desc -> {
+				final var param = new PropParam(
+					root.path().append(desc.path().element()),
+					enclosure,
+					desc.access().getter().get(root.value()),
+					toRawType(description.type()),
+					desc.access().getter(),
+					switch (desc.access()) {
+						case Access.Readonly access -> null;
+						case Access.Writable access -> access.setter();
+					}
 				);
-			});
-		} else {
-			return Stream.empty();
-		}
-	}
 
-	private static Property.Value toValue(
-		final Object enclosing,
-		final Object value,
-		final Description.Value.Single description
-	) {
-		return description.setter()
-			.<Property.Value>map(setter ->
-				new Mutable(
-					enclosing,
-					value,
-					toRawType(description.value()),
-					description.getter(),
-					setter
-				)
-			)
-			.orElseGet(() ->
-				new Immutable(
-					enclosing,
-					value,
-					toRawType(description.value())
-				)
-			);
+				final Property prop = switch (PropertyType.of(desc.type())) {
+					case ElementType t -> new SimpleProperty(param);
+					case RecordType t -> new RecordProperty(param);
+					case BeanType t -> new BeanProperty(param);
+					case OptionalType t -> new OptionalProperty(param);
+					case ArrayType t -> new ArrayProperty(param);
+					case ListType t -> new ListProperty(param);
+				};
+
+				yield Stream.of(prop);
+			}
+			case IndexedDescription desc -> {
+				final var path = desc.path().element() instanceof Path.Index
+					? root.path()
+					: root.path().append(desc.path().element());
+
+				final int size = desc.size().get(enclosure);
+
+				yield IntStream.range(0, size).mapToObj(i -> {
+					final Object value = desc.access().getter().get(enclosure, i);
+					final Class<?> type = value != null
+						? value.getClass()
+						: toRawType(desc.type());
+
+					final var param = new PropParam(
+						path.append(new Path.Index(i)),
+						enclosure,
+						desc.access().getter().get(enclosure, i),
+						type,
+						object -> desc.access().getter().get(object, i),
+						switch (desc.access()) {
+							case IndexedAccess.Readonly access -> null;
+							case IndexedAccess.Writable access -> (object, val) ->
+								access.setter().set(object, i, val);
+						}
+					);
+
+					return new IndexProperty(param, i);
+				});
+			}
+		};
 	}
 
 	/**
-	 * Return a Stream that is lazily populated with {@code Property} by
-	 * searching for all properties in an object tree rooted at a given
-	 * starting {@code root} object. If used with the {@link #unapply(PathValue)}
-	 * method, all found descriptions are returned, including the descriptions
-	 * from the Java classes.
-	 * {@snippet lang="java":
-	 * final var object = "Some Value";
-	 * Properties.walk(PathEntry.of(object), Properties::extract)
-	 *     .forEach(System.out::println);
-	 * }
-	 * The code snippet above will create the following output:
-	 * <pre>
-	 * SimpleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
-	 * SimpleProperty[path=bytes, value=Mutable[value=[B@41e1455d, type=[B, enclosureType=java.lang.String]]
-	 * SimpleProperty[path=empty, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
-	 * </pre>
+	 * This method extracts the direct properties of the given {@code root}
+	 * object.
 	 *
-	 * If you are not interested in the property descriptions of the Java
-	 * classes, you should the {@link #walk(PathValue, String...)} )} instead.
+	 * {@snippet class="snippets.PropertiesSnippets" region="list(Object)"}
 	 *
-	 * @see #walk(PathValue, String...)
-	 * @see #walk(Object, String...)
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
 	 *
-	 * @param root the root of the object tree
-	 * @param dtor the first level property extractor used for extracting
-	 *        the object properties
-	 * @return a property stream
+	 * @param root the root object from which the properties are extracted
+	 * @return all direct properties of the given {@code root} object
 	 */
-	public static Stream<Property> walk(
+	public static Stream<Property> list(final Object root) {
+		return root instanceof PathValue<?> pv
+			? list(pv)
+			: list(PathValue.of(root));
+	}
+
+	private static Stream<Property> walk(
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
 		final Dtor<? super PathValue<?>, Property> recursiveDtor =
 			PreOrderIterator.dtor(
 				dtor,
-				property -> PathValue.of(property.path(), property.value().value()),
+				property -> PathValue.of(property.path(), property.value()),
 				PathValue::value
 			);
 
@@ -226,31 +206,6 @@ public final class Properties {
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
 	 *
-	 * {@snippet lang="java":
-	 * record Author(String forename, String surname) { }
-	 * record Book(String title, int pages, List<Author> authors) { }
-	 *
-	 * final var object = new Book(
-	 *     "Oliver Twist",
-	 *     366,
-	 *     List.of(new Author("Charles", "Dickens"))
-	 * );
-	 *
-	 * Properties.walk(PathEntry.of(object))
-	 *     .forEach(System.out::println);
-	 * }
-	 *
-	 * The code snippet above will create the following output:
-	 *
-	 * {@snippet lang="java":
-	 * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
-	 * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
-	 * SimpleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
-	 * SimpleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
-	 * SimpleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
-	 * SimpleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
-	 * }
-	 *
 	 * @see #walk(Object, String...)
 	 *
 	 * @param root the root of the object tree
@@ -259,13 +214,11 @@ public final class Properties {
 	 */
 	public static Stream<Property>
 	walk(final PathValue<?> root, final String... includes) {
-		final Dtor<PathValue<?>, Property> dtor = Properties::unapply;
+		final Dtor<PathValue<?>, Property> dtor = Properties::list;
 
 		return walk(
 			root,
-			dtor.sourceFilter(STANDARD_SOURCE_FILTER)
-				.sourceFilter(includesFilter(includes))
-				.targetFilter(STANDARD_TARGET_FILTER)
+			dtor.sourceFilter(includesFilter(includes))
 		);
 	}
 
@@ -288,6 +241,20 @@ public final class Properties {
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
 	 *
+	 * {@snippet class="snippets.PropertiesSnippets" region="walk(Object)"}
+	 *
+	 * The code snippet above will create the following output
+	 * <pre>{@code
+	 * SimpleProperty[path=title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=Book]
+	 * SimpleProperty[path=pages, value=832, mutable=false, type=int, enclosure=Book]
+	 * ListProperty[path=authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=Book]
+	 * IndexProperty[path=authors[0], value=Author[Jonathan Franzen], mutable=true, type=Author, enclosure=java.util.ImmutableCollections$List12]
+	 * SimpleProperty[path=authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+	 * SimpleProperty[path=authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+	 * ListProperty[path=authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+	 * }</pre>
+	 *
 	 * @see #walk(PathValue, String...)
 	 *
 	 * @param root the root of the object tree
@@ -303,10 +270,13 @@ public final class Properties {
 	}
 
 	static String toString(final String name, final Property property) {
-		return "%s[path=%s, value=%s]".formatted(
+		return "%s[path=%s, value=%s, mutable=%s, type=%s, enclosure=%s]".formatted(
 			name,
 			property.path(),
-			property.value()
+			property.value(),
+			property.writer().isPresent(),
+			property.type().getName(),
+			property.enclosure().getClass().getName()
 		);
 	}
 

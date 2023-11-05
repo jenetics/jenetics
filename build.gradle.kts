@@ -27,13 +27,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.7.1" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.3"
+	gradleVersion = "8.4"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -59,41 +58,46 @@ allprojects {
 
 apply("./gradle/alljavadoc.gradle")
 
+subprojects {
+	val project = this
+
+	tasks.withType<Test> {
+		useTestNG()
+	}
+
+	plugins.withType<JavaPlugin> {
+
+		configure<JavaPluginExtension> {
+			modularity.inferModulePath.set(true)
+
+			sourceCompatibility = JavaVersion.VERSION_21
+			targetCompatibility = JavaVersion.VERSION_21
+
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(21)
+			}
+		}
+
+		setupJava(project)
+		setupTestReporting(project)
+		setupJavadoc(project, "")
+	}
+
+	tasks.withType<JavaCompile> {
+		modularity.inferModulePath.set(true)
+
+		options.compilerArgs.add("-Xlint:${xlint()}")
+	}
+
+	if (plugins.hasPlugin("maven-publish")) {
+		setupPublishing(project)
+	}
+}
+
 /**
  * Project configuration *after* the projects has been evaluated.
  */
 gradle.projectsEvaluated {
-	subprojects {
-		val project = this
-
-		tasks.withType<Test> {
-			useTestNG()
-		}
-
-		plugins.withType<JavaPlugin> {
-			configure<JavaPluginExtension> {
-				modularity.inferModulePath.set(true)
-
-				sourceCompatibility = JavaVersion.VERSION_21
-				targetCompatibility = JavaVersion.VERSION_21
-			}
-
-			setupJava(project)
-			setupTestReporting(project)
-			setupJavadoc(project, "")
-		}
-
-		tasks.withType<JavaCompile> {
-			modularity.inferModulePath.set(true)
-
-			options.compilerArgs.add("-Xlint:${xlint()}")
-		}
-
-		if (plugins.hasPlugin("maven-publish")) {
-			setupPublishing(project)
-		}
-	}
-
 	setupJavadoc(rootProject, "all")
 }
 
@@ -168,6 +172,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.addStringOption("-snippet-path", "${project.projectDir}/src/test/java")
 		doclet.addStringOption("-show-module-contents", "api")
 		doclet.addStringOption("-show-packages", "exported")
 		doclet.addStringOption("exclude", "io.jenetics.internal")

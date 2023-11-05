@@ -58,10 +58,29 @@ import io.jenetics.util.Seq;
  * {@snippet lang="java":
  * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
  * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
- *     .optimize(Optimize.MINIMUM).build()
+ *     .optimize(Optimize.MINIMUM)
+ *     .build()
  *     .stream()
  *     .limit(100)
  *     .collect(EvolutionResult.toBestEvolutionResult());
+ * }
+ *
+ * @implSpec
+ * This class implements the {@link Comparable} interface, which compares two
+ * {@link EvolutionResult} objects according its <em>optimal</em> fitness value.
+ * This means that the better evolution result is always <em>greater</em>, no
+ * matter if the fitness function is minimized or maximized.
+ * {@snippet lang="java":
+ * final EvolutionResult<DoubleGene, Double> result1 = null; // @replace substring='null' replacement="..."
+ * final EvolutionResult<DoubleGene, Double> result2 = null; // @replace substring='null' replacement="..."
+ *
+ * if (result1.compareTo(result2) > 0) {
+ *      // Holds for maximizing evolution results.
+ *     assert result1.bestFitness() > result2.bestFitness();
+ *
+ *     // Holds for minimizing evolution results.
+  *    assert result1.bestFitness() < result2.bestFitness();
+ * }
  * }
  *
  * @see EvolutionStart

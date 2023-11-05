@@ -30,7 +30,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
 description = "Jenetics Genetic Programming"
@@ -41,9 +41,9 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 
-	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.testng)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

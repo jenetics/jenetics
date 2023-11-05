@@ -19,12 +19,6 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Objects;
-
-import io.jenetics.incubator.beans.Path;
-
 /**
  * This property represents an element of an {@link IndexedProperty}.
  *
@@ -32,23 +26,14 @@ import io.jenetics.incubator.beans.Path;
  * @version 7.2
  * @since 7.2
  */
-public final class IndexProperty implements Property {
+public final class IndexProperty extends SimpleProperty {
 
-    private final Path path;
     private final int index;
-	private final Value value;
 
-
-	IndexProperty(final Path path, final int index, final Value value) {
-        this.path = requireNonNull(path);
-        this.index = index;
-        this.value = requireNonNull(value);
-    }
-
-    @Override
-    public Path path() {
-        return path;
-    }
+	IndexProperty(final PropParam param, final int index) {
+		super(param);
+		this.index = index;
+	}
 
 	/**
 	 * Return the actual index of the property.
@@ -58,25 +43,6 @@ public final class IndexProperty implements Property {
     public int index() {
         return index;
     }
-
-    @Override
-    public Value value() {
-        return value;
-    }
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(path, index, value);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IndexProperty ip &&
-			path.equals(ip.path) &&
-			index == ip.index &&
-			value.equals(ip.value);
-	}
 
 	@Override
 	public String toString() {
