@@ -144,11 +144,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Syed Juned Ali, Jan Michael Laranjo, Dominik Bork. <a href="https://model-engineering.info/publications/papers/EDOC23-GGMF-web.pdf">A Generic and Customizable Genetic Algorithms-based Conceptual Model Modularization Framework.</a> <em> 27th International EDOC Conference (EDOC 2023) - Enterprise Design, Operations and Computing.</em> Sep. 2023.
+Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/978-3-031-46077-7_6">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em>  Embedded Computer Systems: Architectures, Modeling, and Simulation. SAMOS 2023. Lecture Notes in Computer Science, vol 14385. Springer, Cham.</em> Nov. 2023.
 
 ...
 </summary>
 
+1) Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/978-3-031-46077-7_6">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em>  Embedded Computer Systems: Architectures, Modeling, and Simulation. SAMOS 2023. Lecture Notes in Computer Science, vol 14385. Springer, Cham.</em> Nov. 2023.
 1) Syed Juned Ali, Jan Michael Laranjo, Dominik Bork. <a href="https://model-engineering.info/publications/papers/EDOC23-GGMF-web.pdf">A Generic and Customizable Genetic Algorithms-based Conceptual Model Modularization Framework.</a> <em> 27th International EDOC Conference (EDOC 2023) - Enterprise Design, Operations and Computing.</em> Sep. 2023.
 2) A. Elyasaf, E. Farchi, O. Margalit, G. Weiss and Y. Weiss. <a href="https://doi.ieeecomputersociety.org/10.1109/TSE.2023.3279570">Generalized Coverage Criteria for Combinatorial Sequence Testing.</a> <em> IEEE Transactions on Software Engineering, vol. 49, no. 08, pp. 4023-4034.</em> Aug. 2023.
 1) Julien Amblard, Robert Filman, Gabriel Kopito. <a href="https://doi.org/10.1145/3583133.3596369">GPStar4: A flexible framework for experimenting with genetic programming.</a> <em> OGECCO '23 Companion: Proceedings of the Companion Conference on Genetic and Evolutionary Computation. </em> July 2023.
