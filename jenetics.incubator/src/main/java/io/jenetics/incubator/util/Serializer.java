@@ -51,26 +51,24 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * Static methods for reading and writing objects using the Java serialization.
  * The methods of this class allow appending additional objects to an existing
  * file.
- *
  * {@snippet lang="java":
  * // Write three string objects to the given path and read them again.
  * Serializer.write(path, List.of("1", "2", "3"));
  * List<Object> objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
- * // Append another two string object to the same file.
+ * // Append another two-string object to the same file.
  * Serializer.write(path, List.of("4", "5"));
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
  *
- * // Truncates the the content of an existing file.
+ * // Truncates the content of an existing file.
  * Serializer.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("6", "7", "8"));
  * }
  *
  * It also allows reading object piecewise via a {@link Stream}.
- *
  * {@snippet lang="java":
  * try (Stream<Object> stream = Serializer.objects(Path.of("serialized-objects.bin"))) {
  *     stream.forEach(System.out::println);
@@ -292,14 +290,14 @@ public final class Serializer {
 	 *
 	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is created if
-	 * // it not exists or appended if the file already exists.
+	 * // it does not exist or appended if the file already exists.
 	 * Serializer.write(path, List.of("1", "2", "3"));
 	 * }
 	 *
 	 * Truncating an existing file:
 	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is truncated if
-	 * // it exists or created if the file doesn't exists.
+	 * // it exists or created if the file doesn't exist.
 	 * Serializer.write(
 	 *     path, List.of("1", "2", "3"),
 	 *     StandardOpenOption.TRUNCATE_EXISTING
