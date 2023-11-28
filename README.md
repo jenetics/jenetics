@@ -144,11 +144,13 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/978-3-031-46077-7_6">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em>  Embedded Computer Systems: Architectures, Modeling, and Simulation. SAMOS 2023. Lecture Notes in Computer Science, vol 14385. Springer, Cham.</em> Nov. 2023.
+Squillero, G., Tonda, A. <a href="https://link.springer.com/article/10.1007/s10710-023-09472-0">Veni, Vidi, Evolvi commentary on W. B. Langdon’s “Jaws 30”.</a> <em>  Genet Program Evolvable Mach 24, 24 (2023)</em> Nov. 2023.
 
 ...
 </summary>
 
+1) Squillero, G., Tonda, A. <a href="https://link.springer.com/article/10.1007/s10710-023-09472-0">Veni, Vidi, Evolvi commentary on W. B. Langdon’s “Jaws 30”.</a> <em>  Genet Program Evolvable Mach 24, 24 (2023)</em> Nov. 2023.
+1) Eneko Osaba, Gorka Benguria, Jesus L. Lobo, Josu Diaz-de-Arcaya, Juncal Alonso, Iñaki Etxaniz. <a href="https://doi.org/10.48550/arXiv.2311.10767">Optimizing IaC Configurations: a Case Study Using Nature-inspired Computing.</a> <em>  CIIS 2023. </em> Nov. 2023.
 1) Sapra, D., Pimentel, A.D. <a href="https://doi.org/10.1007/978-3-031-46077-7_6">Exploring Multi-core Systems with Lifetime Reliability and Power Consumption Trade-offs.</a> <em>  Embedded Computer Systems: Architectures, Modeling, and Simulation. SAMOS 2023. Lecture Notes in Computer Science, vol 14385. Springer, Cham.</em> Nov. 2023.
 1) Syed Juned Ali, Jan Michael Laranjo, Dominik Bork. <a href="https://model-engineering.info/publications/papers/EDOC23-GGMF-web.pdf">A Generic and Customizable Genetic Algorithms-based Conceptual Model Modularization Framework.</a> <em> 27th International EDOC Conference (EDOC 2023) - Enterprise Design, Operations and Computing.</em> Sep. 2023.
 2) A. Elyasaf, E. Farchi, O. Margalit, G. Weiss and Y. Weiss. <a href="https://doi.ieeecomputersociety.org/10.1109/TSE.2023.3279570">Generalized Coverage Criteria for Combinatorial Sequence Testing.</a> <em> IEEE Transactions on Software Engineering, vol. 49, no. 08, pp. 4023-4034.</em> Aug. 2023.
