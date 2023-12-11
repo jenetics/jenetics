@@ -10,9 +10,7 @@ import java.util.random.RandomGenerator;
  * chosen positions. The genes between the genes between the positions are shuffled.
  * This mutation operator can also be used for combinatorial problems,
  * where no duplicated genes within a chromosome are allowed, e.g., for the TSP.
- * For more details see: Kruse, R., Mostaghim, S., Borgelt, C., Braune, C., &
- * Steinbrecher, M. (2022a). Elements of evolutionary algorithms. In R. Kruse,
- * S. Mostaghim, C. Borgelt, C. Braune, & M. Steinbrecher (Eds.), Computational
+ * For more details see: Kruse et al.. Elements of evolutionary algorithms. In Kruse et al., Computational
  * intelligence: A methodological introduction (pp. 255–285). Springer International Publishing.
  * <a href="https://doi.org/10.1007/978-3-030-42227-1_12">https://doi.org/10.1007/978-3-030-42227-1_12</a>
  *

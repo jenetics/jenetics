@@ -12,9 +12,7 @@ import java.util.random.RandomGenerator;
  * contrast to the ArbitraryMutation, the number of genes which are mutated has an
  * expectancy value of p. Hereby a random value with a shifted expectancy value is
  * used.
- * For more details see: Kruse, R., Mostaghim, S., Borgelt, C., Braune, C., &
- * Steinbrecher, M. (2022a). Elements of evolutionary algorithms. In R. Kruse,
- * S. Mostaghim, C. Borgelt, C. Braune, & M. Steinbrecher (Eds.), Computational
+ * For more details see: Kruse et al.. Elements of evolutionary algorithms. In Kruse et al., Computational
  * intelligence: A methodological introduction (pp. 255–285). Springer International Publishing.
  * <a href="https://doi.org/10.1007/978-3-030-42227-1_12">https://doi.org/10.1007/978-3-030-42227-1_12</a>
  *

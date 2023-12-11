@@ -13,9 +13,7 @@ import java.util.random.RandomGenerator;
  * contrast to the ShiftMutation, the number of genes which are mutated has an
  * expectancy value of p. Hereby a random value with a shifted expectancy value is
  * used.
- * For more details see: Kruse, R., Mostaghim, S., Borgelt, C., Braune, C., &
- * Steinbrecher, M. (2022a). Elements of evolutionary algorithms. In R. Kruse,
- * S. Mostaghim, C. Borgelt, C. Braune, & M. Steinbrecher (Eds.), Computational
+ * For more details see: Kruse et al.. Elements of evolutionary algorithms. In Kruse et al., Computational
  * intelligence: A methodological introduction (pp. 255–285). Springer International Publishing.
  * <a href="https://doi.org/10.1007/978-3-030-42227-1_12">https://doi.org/10.1007/978-3-030-42227-1_12</a>
  *
@@ -53,7 +51,7 @@ public class ShiftMutatorWithK<
 	}
 
 	/**
-	 * Splits the values between two points with into two sequences and shits the second
+	 * Splits the values between two points with into two sequences and shifts the second
 	 * one in front of the first one. The distance between the two positions has an
 	 * expectancy value equal p.
 	 */
