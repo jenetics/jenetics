@@ -324,7 +324,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 			out.append(element);
 
 			if (i < elements.size() - 1
-				&& !(elements.get(i + 1) instanceof Index)) {
+				&& !(elements.get(i + 1) instanceof Index)) 
+			{
 				out.append('.');
 			}
 		}

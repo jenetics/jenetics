@@ -58,7 +58,7 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * List<Object> objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
- * // Append another two string object to the same file.
+ * // Append another two-string object to the same file.
  * Serializer.write(path, List.of("4", "5"));
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
