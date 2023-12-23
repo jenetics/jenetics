@@ -107,7 +107,7 @@ final class PartitionBatchExecutor implements BatchExecutor {
 	 * 	 5: 12	15
 	 * </pre>
 	 *
-	 * This example shows how this can be used in an concurrent environment:
+	 * This example shows how this can be used in a concurrent environment:
 	 * {@snippet lang="java":
 	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
