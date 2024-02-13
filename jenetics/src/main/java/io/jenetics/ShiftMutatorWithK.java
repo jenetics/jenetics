@@ -1,8 +1,24 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.jenetics;
 
-import io.jenetics.util.MSeq;
-
+import java.util.Random;
 import java.util.random.RandomGenerator;
+
+import io.jenetics.util.MSeq;
 
 /**
  * The shift mutation, applies mutation between two randomly chosen points.
@@ -63,44 +79,39 @@ public class ShiftMutatorWithK<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if(chromosome.length() > 1) {
-			try {
-				double lengthDouble = getDistance(p, random);
-				int lengthInt = (int) Math.round(chromosome.length() * lengthDouble);
-				if(lengthInt == 0) {
-					result = new MutatorResult<>(chromosome, 0);
+			double lengthDouble = getDistance(p, random);
+			int lengthInt = (int) Math.round(chromosome.length() * lengthDouble);
+			if(lengthInt == 0) {
+				result = new MutatorResult<>(chromosome, 0);
+			} else {
+				int startingPoint;
+				if (lengthInt >= chromosome.length()) {
+					startingPoint = 0;
 				} else {
-					int startingPoint;
-					if (lengthInt >= chromosome.length()) {
-						startingPoint = 0;
-					} else {
-						startingPoint = random.nextInt(chromosome.length() - lengthInt);
-					}
-					int endPoint = startingPoint + lengthInt;
-					int middlePoint = startingPoint + random.nextInt(lengthInt);
-					final MSeq<G> genes = MSeq.of(chromosome);
-					MSeq<G> firstSeq = genes.subSeq(startingPoint, middlePoint).copy();
-					int difOne = endPoint - middlePoint;
-					MSeq<G> secondSeq = genes.subSeq(middlePoint, endPoint).copy();
-					int difTwo = middlePoint - startingPoint;
-					int i = 0;
-					for (G g : firstSeq) {
-						genes.set(startingPoint + i + difOne, g);
-						i++;
-					}
-					i = 0;
-					for (G g : secondSeq) {
-						genes.set(middlePoint + i - difTwo, g);
-						i++;
-					}
-
-					result = new MutatorResult<>(
-						chromosome.newInstance(genes.toISeq()),
-						endPoint - startingPoint
-					);
+					startingPoint = random.nextInt(chromosome.length() - lengthInt);
 				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				return new MutatorResult<>(chromosome, 0);
+				int endPoint = startingPoint + lengthInt;
+				int middlePoint = startingPoint + random.nextInt(lengthInt);
+				final MSeq<G> genes = MSeq.of(chromosome);
+				MSeq<G> firstSeq = genes.subSeq(startingPoint, middlePoint).copy();
+				int difOne = endPoint - middlePoint;
+				MSeq<G> secondSeq = genes.subSeq(middlePoint, endPoint).copy();
+				int difTwo = middlePoint - startingPoint;
+				int i = 0;
+				for (G g : firstSeq) {
+					genes.set(startingPoint + i + difOne, g);
+					i++;
+				}
+				i = 0;
+				for (G g : secondSeq) {
+					genes.set(middlePoint + i - difTwo, g);
+					i++;
+				}
+
+				result = new MutatorResult<>(
+					chromosome.newInstance(genes.toISeq()),
+					endPoint - startingPoint
+				);
 			}
 		} else {
 			result = new MutatorResult<>(chromosome, 0);
@@ -108,7 +119,7 @@ public class ShiftMutatorWithK<
 		return result;
 	}
 
-	private double getDistance(double p, RandomGenerator random) {
+	static double getDistance(double p, RandomGenerator random) {
 		double r = random.nextDouble();
 		if(p == 0) {
 			return 0;
@@ -134,4 +145,6 @@ public class ShiftMutatorWithK<
 			return 1;
 		}
 	}
+
+
 }

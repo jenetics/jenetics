@@ -1,6 +1,5 @@
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
- * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
+
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
@@ -36,6 +36,32 @@ public class ShiftMutationTest extends MutatorTester {
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		return new ShiftMutator<>(p);
+	}
+
+	@Test
+	public void shift() {
+		final var chromosomes = ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		final var genes = MSeq.of(chromosomes);
+
+		new ShiftMutator.Shifter(2, 4, 7).shift(genes);
+		assertThat(genes)
+			.isEqualTo(ISeq.of(0, 1, 4, 5, 6, 2, 3, 7, 8, 9));
+	}
+
+	@Test
+	public void mutate() {
+		final var mutator =  new ShiftMutator<EnumGene<Integer>, Integer>(0.1);
+
+		final var values = IntRange.of(0, 10).stream().boxed().collect(ISeq.toISeq());
+		final var genes = values.stream()
+			.map(i -> EnumGene.of(i, values))
+			.collect(ISeq.toISeq());
+		final var chromosome = new PermutationChromosome<>(genes);
+		System.out.println(chromosome);
+
+		final var random = new Random(133);
+		final var result = mutator.mutate(chromosome, 1, random);
+		System.out.println(result.result());
 	}
 
 	@Override
@@ -77,10 +103,30 @@ public class ShiftMutationTest extends MutatorTester {
 	}
 
 	@Override
-	@DataProvider(name = "alterProbabilityParameters")
+	@DataProvider
 	public Object[][] alterProbabilityParameters() {
 		return new Object[][] {
-			//    ngenes,       nchromosomes     npopulation
+			// ngenes, nchromosomes, npopulation
+			{1, 1,  150, 0.15},
+			{1, 2,  150, 0.15},
+			{1, 15, 150, 0.15},
+
+			{2, 1,  150, 0.15},
+			{2, 2,  150, 0.15},
+			{2, 15, 150, 0.15},
+
+			{3, 1,  150, 0.15},
+			{3, 2,  150, 0.15},
+			{3, 15, 150, 0.15},
+
+			{4, 1,  150, 0.15},
+			{4, 2,  150, 0.15},
+			{4, 15, 150, 0.15},
+
+			{5, 1,  150, 0.15},
+			{5, 2,  150, 0.15},
+			{5, 15, 150, 0.15},
+
 			{180, 1,  150, 0.15},
 			{180, 2,  150, 0.15},
 			{180, 15, 150, 0.15},

@@ -383,6 +383,7 @@ public final class RandomRegistry {
 			r -> function.apply(r.get())
 		);
 	}
+
 	/**
 	 * Opens a new <em>scope</em> with the given random generator supplier and
 	 * executes the given function within it.
@@ -404,7 +405,6 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-
 	public static <R extends RandomGenerator, T> T with(
 		final Supplier<? extends R> supplier,
 		final Function<? super R, ? extends T> function

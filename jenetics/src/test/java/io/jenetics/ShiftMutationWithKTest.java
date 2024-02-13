@@ -19,12 +19,17 @@
  */
 package io.jenetics;
 
+import static io.jenetics.ShiftMutatorWithK.getDistance;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
+
+import java.util.Random;
+import java.util.stream.LongStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -93,6 +98,18 @@ public class ShiftMutationWithKTest extends MutatorTester {
 			{180, 2,  150, 0.85},
 			{180, 15, 150, 0.85}
 		};
+	}
+
+	public static void main(String[] args) {
+		final var histogram = Histogram.ofDouble(0.0, 1.0, 20);
+		final var random = new Random();
+		for (int i = 0; i < 10000; ++i) {
+			final var value = getDistance(0.3, random);
+			histogram.accept(value);
+		}
+
+		LongStream.of(histogram.getHistogram())
+			.forEach(System.out::println);
 	}
 
 }
