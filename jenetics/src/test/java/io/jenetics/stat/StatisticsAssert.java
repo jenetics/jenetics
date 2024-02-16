@@ -35,7 +35,7 @@ public final class StatisticsAssert {
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,
-		final Dist<C> distribution
+		final Distr<C> distribution
 	) {
 		final double χ2 =  histogram.χ2(distribution.getCDF());
 		final int degreeOfFreedom = histogram.length();

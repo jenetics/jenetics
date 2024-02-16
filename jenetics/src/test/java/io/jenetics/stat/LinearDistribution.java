@@ -65,7 +65,7 @@ import io.jenetics.util.Range;
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
 >
-	implements Dist<N>
+	implements Distr<N>
 {
 
 	private final Range<N> _domain;

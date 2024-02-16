@@ -39,7 +39,7 @@ public class DistributionTest {
 			stat.accept(value);
 		}
 
-		System.out.println(stat);
+		//System.out.println(stat);
 	}
 
 }
