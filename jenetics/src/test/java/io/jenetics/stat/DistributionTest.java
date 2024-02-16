@@ -17,37 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.stat;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.random.RandomGenerator;
+
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 6.1
  */
-plugins {
-	`java-library`
-	idea
-	`maven-publish`
-	alias(libs.plugins.jmh)
-}
+public class DistributionTest {
 
-description = "Jenetics - Java Genetic Algorithm Library"
+	@Test
+	public void linear() {
+		final var dist = Distribution.linear(0.12);
+		final var random = RandomGenerator.getDefault();
+		final var stat = new DoubleSummaryStatistics();
+		for (int i = 0; i < 100000; ++i) {
+			final var value = dist.sample(random);
+			stat.accept(value);
+		}
 
-extra["moduleName"] = "io.jenetics.base"
+		System.out.println(stat);
+	}
 
-dependencies {
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
-	testImplementation(libs.commons.rng.sampling)
-	testImplementation(libs.commons.rng.simple)
-	testImplementation(libs.equalsverifier)
-	testImplementation(libs.prngine)
-	testImplementation(libs.testng)
-
-	jmh(libs.prngine)
-}
-
-tasks.test { dependsOn(tasks.compileJmhJava) }
-
-jmh {
-	includes.add(".*ProxySorterPerf.*")
 }

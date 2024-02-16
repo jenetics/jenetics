@@ -40,7 +40,7 @@ import io.jenetics.util.Range;
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
 >
-	implements Distribution<N>
+	implements Dist<N>
 {
 
 	private final Range<N> _domain;
