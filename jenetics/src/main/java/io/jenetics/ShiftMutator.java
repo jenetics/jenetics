@@ -38,7 +38,6 @@ import io.jenetics.util.MSeq;
  *     Elements of evolutionary algorithms. Computational intelligence:
  *     A methodological introduction (pp. 255–285).</a>
  * @see Mutator
- * @see ShiftMutatorWithK
  *
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
  * @version 8.0
@@ -148,13 +147,16 @@ public class ShiftMutator<
 		 * Create a new random shift generator, which uses the given distributions
 		 * for creating the shift points.
 		 *
-		 * @param length the distribution of shifted gene count
-		 * @param index the distribution of shift indexes
+		 * @param lengthDist the distribution of shifted gene count
+		 * @param indexDist the distribution of shift indexes
 		 * @return a new random shift generator with the given parameters
 		 */
-		static ShifterRandom of(final Distribution length, final Distribution index) {
-			requireNonNull(length);
-			requireNonNull(index);
+		static ShifterRandom of(
+			final Distribution lengthDist,
+			final Distribution indexDist
+		) {
+			requireNonNull(lengthDist);
+			requireNonNull(indexDist);
 
 			return (random, size) -> {
 				if (size <= 1) {
@@ -164,9 +166,9 @@ public class ShiftMutator<
 					);
 				}
 
-				final int lng = length.sample(random, IntRange.of(2, size));
-				final int a = index.sample(random, IntRange.of(0, size - lng));
-				final int b = index.sample(random, IntRange.of(a + 1, lng - 1));
+				final int lng = lengthDist.sample(random, IntRange.of(2, size));
+				final int a = indexDist.sample(random, IntRange.of(0, size - lng));
+				final int b = indexDist.sample(random, IntRange.of(a + 1, lng - 1));
 				final int c = a + lng;
 
 				return new Shifter(a, b, c);
@@ -180,11 +182,11 @@ public class ShiftMutator<
 		 *
 		 * @see #of(Distribution, Distribution)
 		 *
-		 * @param length the distribution of shifted gene count
+		 * @param lengthDist the distribution of shifted gene count
 		 * @return a new random shift generator with the given parameters
 		 */
-		static ShifterRandom of(final Distribution length) {
-			return of(length, Distribution.UNIFORM);
+		static ShifterRandom of(final Distribution lengthDist) {
+			return of(lengthDist, Distribution.UNIFORM);
 		}
 
 	}
