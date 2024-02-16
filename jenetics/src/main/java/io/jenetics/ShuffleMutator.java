@@ -22,11 +22,12 @@ import java.util.random.RandomGenerator;
  * @since 7.2
  */
 
-public class ArbitraryMutator<
+public class ShuffleMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-	>
-	extends Mutator<G, C> {
+>
+	extends Mutator<G, C>
+{
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -35,7 +36,7 @@ public class ArbitraryMutator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public ArbitraryMutator(final double probability) {
+	public ShuffleMutator(final double probability) {
 		super(probability);
 	}
 
@@ -43,7 +44,7 @@ public class ArbitraryMutator<
 	 * Default constructor, with default mutation probability
 	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
 	 */
-	public ArbitraryMutator() {
+	public ShuffleMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 

@@ -17,7 +17,7 @@ import java.util.random.RandomGenerator;
  * <a href="https://doi.org/10.1007/978-3-030-42227-1_12">https://doi.org/10.1007/978-3-030-42227-1_12</a>
  *
  * @see Mutator
- * @see ArbitraryMutator
+ * @see ShuffleMutator
  *
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
  * @version 7.2

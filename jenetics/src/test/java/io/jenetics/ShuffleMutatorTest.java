@@ -31,11 +31,11 @@ import io.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
  */
-public class ArbitraryMutatorTest extends MutatorTester {
+public class ShuffleMutatorTest extends MutatorTester {
 
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
-		return new ArbitraryMutator<>(p);
+		return new ShuffleMutator<>(p);
 	}
 
 	@Override
