@@ -17,7 +17,7 @@ The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 17** to compile and run. It also compiles and runs with **Java 21**.
+**Jenetics** requires at least **Java 21** to compile and run.
 
 Check out the master branch from GitHub.
 
@@ -288,7 +288,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2023 Franz Wilhelmstötter
+	Copyright 2007-2024 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
