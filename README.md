@@ -145,11 +145,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Jordão, Rodolfo; Becker, Matthias; Sander, Ingo. <a href="https://doi.org/10.1145/3647640">IDeSyDe: Systematic Design Space Exploration via Design Space Identification.</a> <em>  ACM Transactions on Design Automation of Electronic Systems.</em> Feb. 2024.
+Koitz-Hristov R, Sterner T, Stracke L, Wotawa F. <a href="https://doi.org/10.1002/smr.2656"> On the suitability of checked coverage and genetic parameter tuning in test suite reduction.</a> <em>   J Softw Evol Proc. 2024;e2656.</em> Feb. 2024.
 
 ...
 </summary>
 
+1) Koitz-Hristov R, Sterner T, Stracke L, Wotawa F. <a href="https://doi.org/10.1002/smr.2656"> On the suitability of checked coverage and genetic parameter tuning in test suite reduction.</a> <em>   J Softw Evol Proc. 2024;e2656.</em> Feb. 2024.
 1) Jordão, Rodolfo; Becker, Matthias; Sander, Ingo. <a href="https://doi.org/10.1145/3647640">IDeSyDe: Systematic Design Space Exploration via Design Space Identification.</a> <em>  ACM Transactions on Design Automation of Electronic Systems.</em> Feb. 2024.
 1) Squillero, G., Tonda, A. <a href="https://link.springer.com/article/10.1007/s10710-023-09472-0">Veni, Vidi, Evolvi commentary on W. B. Langdon’s “Jaws 30”.</a> <em>  Genet Program Evolvable Mach 24, 24 (2023)</em> Nov. 2023.
 1) Eneko Osaba, Gorka Benguria, Jesus L. Lobo, Josu Diaz-de-Arcaya, Juncal Alonso, Iñaki Etxaniz. <a href="https://doi.org/10.48550/arXiv.2311.10767">Optimizing IaC Configurations: a Case Study Using Nature-inspired Computing.</a> <em>  CIIS 2023. </em> Nov. 2023.
@@ -292,7 +293,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2023 Franz Wilhelmstötter
+	Copyright 2007-2024 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
