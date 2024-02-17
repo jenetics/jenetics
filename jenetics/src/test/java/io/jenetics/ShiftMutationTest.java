@@ -15,16 +15,21 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.sqrt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.LinearDistribution;
+import io.jenetics.stat.Distribution;
+import io.jenetics.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -44,7 +49,7 @@ public class ShiftMutationTest extends MutatorTester {
 		final var chromosomes = ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 		final var genes = MSeq.of(chromosomes);
 
-		new ShiftMutator.Shifter(2, 4, 7).shift(genes);
+		new ShiftMutator.Range(2, 4, 7).shift(genes);
 		assertThat(genes)
 			.isEqualTo(ISeq.of(0, 1, 4, 5, 6, 2, 3, 7, 8, 9));
 	}
@@ -140,6 +145,23 @@ public class ShiftMutationTest extends MutatorTester {
 			{180, 2,  150, 0.85},
 			{180, 15, 150, 0.85}
 		};
+	}
+
+	public static void main(String[] args) {
+		final var random = RandomGenerator.getDefault();
+		final var histogram = Histogram.ofDouble(0.0, 1.0, 20);
+
+		//final var mean = 1.0 - sqrt(2)/2.0;
+		final var mean = sqrt(2)/2.0;
+		final var distribution = Distribution.linear(mean);
+
+		for (int i = 0; i < 100_000; ++i) {
+			histogram.accept(distribution.sample(random));
+		}
+
+		for (var i : histogram.getHistogram()) {
+			System.out.println(i);
+		}
 	}
 
 }

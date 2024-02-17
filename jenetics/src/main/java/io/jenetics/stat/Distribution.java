@@ -26,11 +26,21 @@ import static java.lang.Math.sqrt;
 
 import java.util.random.RandomGenerator;
 
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IntRange;
 
 /**
  * Interface for creating random samples, within the range {@code [0, 1)}, with
- * a given <em>distribution</em>.
+ * a given <em>distribution</em>. This interface isn't responsible for creating
+ * the random numbers itself. It uses a {@link RandomGenerator} generator, which
+ * is given by the caller.
+ * {@snippet lang=java:
+ * final var random = RandomGenerator.getDefault();
+ * final var distribution = Distribution.linear(0.1);
+ * // Create a new sample point, which obeys the given distribution.
+ * // The random generator is responsible for the base randomness.
+ * final double value = distribution.sample(random);
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
@@ -63,6 +73,24 @@ public interface Distribution {
 	double sample(RandomGenerator random);
 
 	/**
+	 * Create a new {@code double} sample point within the given range
+	 * {@code [min, max)}.
+	 *
+	 * @param random the random generator used for creating a sample point of
+	 *        the defined distribution
+	 * @param range the range of the sample point: {@code [min, max)}
+	 * @return a new sample point between {@code [min, max)}
+	 */
+	default double sample(RandomGenerator random, DoubleRange range) {
+		final var sample = sample(random);
+		assert Double.isFinite(sample);
+		assert sample >= 0.0;
+		assert sample < 1.0;
+
+		return (sample(random)*(range.max() - range.min())) + range.min();
+	}
+
+	/**
 	 * Create a new {@code int} sample point within the given range
 	 * {@code [min, max)}.
 	 *
@@ -80,6 +108,18 @@ public interface Distribution {
 		return (int)((sample(random)*(range.max() - range.min())) + range.min());
 	}
 
+	/**
+	 * Return a new <em>linear</em> distribution object with the given
+	 * {@code mean} value.
+	 * <p>
+	 *	<img src="doc-files/LinearDistributionPDF.svg" width="450"
+	 *	     alt="Shift mutator" >
+	 *
+	 * @param mean the mean value of the returned distribution
+	 * @return a new linear distribution with the given {@code mean} value
+	 * @throws IllegalArgumentException if the given {@code mean} value is not
+	 *         within the range {@code [0, 1)}
+	 */
 	static Distribution linear(final double mean) {
 		if (mean < 0 || mean >= 1) {
 			throw new IllegalArgumentException(

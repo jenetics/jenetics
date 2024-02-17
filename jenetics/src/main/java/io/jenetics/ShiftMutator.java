@@ -51,7 +51,7 @@ public class ShiftMutator<
 {
 
 	/**
-	 * This class implements the {@link Chromosome} shift operation.
+	 * This class defines the {@link Chromosome} shift indexes.
 	 * <p>
 	 *	<img src="doc-files/ShiftMutator.svg" width="450"
 	 *	     alt="Shift mutator" >
@@ -61,15 +61,15 @@ public class ShiftMutator<
 	 *        start index (inclusively) of the second shift range
 	 * @param c the end index (exclusively) of the second shift range
 	 */
-	public record Shifter(int a, int b, int c) {
+	public record Range(int a, int b, int c) {
 
 		/**
-		 * Create a new shifter with the given parameters
+		 * Create a new shift range with the given parameters
 		 *
 		 * @throws IllegalArgumentException if the indexes are smaller than zero
 		 *         or overlapping
 		 */
-		public Shifter {
+		public Range {
 			if (a < 0 || b < 0 || c < 0 || a >= b || b >= c) {
 				throw new IllegalArgumentException(
 					"Invalid shift range [%d, %d, %d].".formatted(a, b, c)
@@ -86,7 +86,7 @@ public class ShiftMutator<
 		 * @throws NullPointerException if the given {@code sequence} is
 		 *         {@code null}
 		 */
-		public <G> void shift(final MSeq<G> seq) {
+		<G> void shift(final MSeq<G> seq) {
 			if (seq.length() < c) {
 				throw new IllegalArgumentException(
 					"Sequence to short for given range: [length=%d, %s]."
@@ -109,18 +109,18 @@ public class ShiftMutator<
 	}
 
 	/**
-	 * Functional interface for creating random <em>shifter</em> objects for
+	 * Functional interface for creating random shift ranges objects for
 	 * shifting sequences of a given length.
 	 */
 	@FunctionalInterface
-	public interface ShifterRandom {
+	public interface RangeRandom {
 
 		/**
-		 * Random shifter generator, which creates shifter with uniformly
+		 * Random shift range generator, which creates shifter with uniformly
 		 * distributed shifting points. Both the length and the shift indexes
 		 * are chosen uniformly.
 		 */
-		ShifterRandom UNIFORM = (random, length) -> {
+		RangeRandom UNIFORM = (random, length) -> {
 			if (length <= 1) {
 				throw new IllegalArgumentException(
 					"Length must be greater then 1, but was %d."
@@ -129,11 +129,11 @@ public class ShiftMutator<
 			}
 
 			final int[] points = Subset.next(random, length + 1, 3);
-			return new Shifter(points[0], points[1], points[2]);
+			return new Range(points[0], points[1], points[2]);
 		};
 
 		/**
-		 * Create a new <em>random</em> shifter for shifting sequences with a
+		 * Create a new <em>random</em> shift range for shifting sequences with a
 		 * given {@code length}.
 		 *
 		 * @param random the random generator to be used for creating a new
@@ -141,17 +141,17 @@ public class ShiftMutator<
 		 * @param length the length of the sequence to be shifted
 		 * @return a new <em>randomly</em> created shifter
 		 */
-		Shifter newShifter(final RandomGenerator random, final int length);
+		Range newRange(final RandomGenerator random, final int length);
 
 		/**
-		 * Create a new random shift generator, which uses the given distributions
-		 * for creating the shift points.
+		 * Create a new random shift range generator, which uses the given
+		 * distributions for creating the shift points.
 		 *
 		 * @param lengthDist the distribution of shifted gene count
 		 * @param indexDist the distribution of shift indexes
 		 * @return a new random shift generator with the given parameters
 		 */
-		static ShifterRandom of(
+		static RangeRandom of(
 			final Distribution lengthDist,
 			final Distribution indexDist
 		) {
@@ -171,38 +171,38 @@ public class ShiftMutator<
 				final int b = indexDist.sample(random, IntRange.of(a + 1, lng - 1));
 				final int c = a + lng;
 
-				return new Shifter(a, b, c);
+				return new Range(a, b, c);
 			};
 		}
 
 		/**
-		 * Create a new random shift generator, which uses the given distributions
-		 * for creating the shift points. The shift indexes are uniformly
-		 * distributed.
+		 * Create a new random shift range generator, which uses the given
+		 * distributions for creating the shift points. The shift indexes are
+		 * uniformly distributed.
 		 *
 		 * @see #of(Distribution, Distribution)
 		 *
 		 * @param lengthDist the distribution of shifted gene count
 		 * @return a new random shift generator with the given parameters
 		 */
-		static ShifterRandom of(final Distribution lengthDist) {
+		static RangeRandom of(final Distribution lengthDist) {
 			return of(lengthDist, Distribution.UNIFORM);
 		}
 
 	}
 
-	private final ShifterRandom _random;
+	private final RangeRandom _random;
 
 	/**
 	 * Constructs an alterer with a given shifter-random and recombination
 	 * probability.
 	 *
 	 * @param probability the crossover probability.
-	 * @param random the {@link Shifter} generator.
+	 * @param random the {@link Range} generator.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public ShiftMutator(final ShifterRandom random, final double probability) {
+	public ShiftMutator(final RangeRandom random, final double probability) {
 		super(probability);
 		_random = requireNonNull(random);
 	}
@@ -210,11 +210,11 @@ public class ShiftMutator<
 	/**
 	 * Constructs an alterer with a given shifter-random.
 	 *
-	 * @param random the {@link Shifter} generator.
+	 * @param random the {@link Range} generator.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public ShiftMutator(final ShifterRandom random) {
+	public ShiftMutator(final RangeRandom random) {
 		this(random, DEFAULT_ALTER_PROBABILITY);
 	}
 
@@ -226,7 +226,7 @@ public class ShiftMutator<
 	 *          valid range of {@code [0, 1]}.
 	 */
 	public ShiftMutator(final double probability) {
-		this(ShifterRandom.UNIFORM, probability);
+		this(RangeRandom.UNIFORM, probability);
 	}
 
 	/**
@@ -251,13 +251,13 @@ public class ShiftMutator<
 
 		if (chromosome.length() > 1) {
 			final var genes = MSeq.of(chromosome);
-			final var shifter = _random.newShifter(random, chromosome.length());
+			final var range = _random.newRange(random, chromosome.length());
 
-			shifter.shift(genes);
+			range.shift(genes);
 
 			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
-				shifter.c - shifter.a
+				range.c - range.a
 			);
 		} else {
 			result = new MutatorResult<>(chromosome, 0);

@@ -67,7 +67,6 @@ import io.jenetics.util.Seq;
  * @version 8.0
  * @since 8.0
  */
-
 public class UniformOderBasedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
 {
@@ -105,7 +104,9 @@ public class UniformOderBasedCrossover<T, C extends Comparable<? super C>>
 				"Required chromosomes with same length: %d != %d"
 					.formatted(that.length(), other.length())
 			);
-		} else if (that.length() >= 2) {
+		}
+
+		if (that.length() >= 2) {
 			final var random = RandomRegistry.random();
 			final var positions = Subset.next(
 				random, that.length(), that.length()/2
@@ -121,9 +122,9 @@ public class UniformOderBasedCrossover<T, C extends Comparable<? super C>>
 			exchange(positions, reordered2, other);
 
 			return positions.length;
+		} else {
+			return 0;
 		}
-
-		return 0;
 	}
 
 	private static <T> void
