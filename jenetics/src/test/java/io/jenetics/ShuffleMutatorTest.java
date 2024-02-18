@@ -19,7 +19,10 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
+
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -36,6 +39,16 @@ public class ShuffleMutatorTest extends MutatorTester {
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		return new ShuffleMutator<>(p);
+	}
+
+	@Test
+	public void generator() {
+		final var random = RandomGenerator.getDefault();
+		for (int i = 0; i < 10_000; ++i) {
+			assertThatNoException().isThrownBy(() ->
+				ShuffleMutator.RangeRandom.UNIFORM.newRange(random, 100)
+			);
+		}
 	}
 
 	@Override

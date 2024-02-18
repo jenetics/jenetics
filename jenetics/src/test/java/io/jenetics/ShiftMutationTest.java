@@ -17,18 +17,17 @@ package io.jenetics;
 
 import static java.lang.Math.sqrt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Distribution;
+import io.jenetics.stat.Distributions;
 import io.jenetics.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -52,6 +51,16 @@ public class ShiftMutationTest extends MutatorTester {
 		new ShiftMutator.Range(2, 4, 7).shift(genes);
 		assertThat(genes)
 			.isEqualTo(ISeq.of(0, 1, 4, 5, 6, 2, 3, 7, 8, 9));
+	}
+
+	@Test
+	public void generator() {
+		final var random = RandomGenerator.getDefault();
+		for (int i = 0; i < 10_000; ++i) {
+			assertThatNoException().isThrownBy(() ->
+				ShiftMutator.RangeRandom.UNIFORM.newRange(random, 100)
+			);
+		}
 	}
 
 	@Test
@@ -149,11 +158,12 @@ public class ShiftMutationTest extends MutatorTester {
 
 	public static void main(String[] args) {
 		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.ofDouble(0.0, 1.0, 20);
+		final var histogram = Histogram.ofDouble(-10.0, 20.0, 20);
 
 		//final var mean = 1.0 - sqrt(2)/2.0;
 		final var mean = sqrt(2)/2.0;
-		final var distribution = Distribution.linear(mean);
+		//final var distribution = Distributions.linear(mean);
+		final var distribution = Distributions.triangular(-10, 4, 20);
 
 		for (int i = 0; i < 100_000; ++i) {
 			histogram.accept(distribution.sample(random));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:officeooo="http://openoffice.org/2009/office" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xmlns:smil="urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rpt="http://openoffice.org/2005/report" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:xforms="http://www.w3.org/2002/xforms" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.graphics">
- <office:meta><meta:initial-creator>Franz Wilhelmstötter</meta:initial-creator><meta:creation-date>2012-01-20T20:54:49</meta:creation-date><meta:generator>LibreOffice/7.3.7.2$Linux_X86_64 LibreOffice_project/30$Build-2</meta:generator><dc:date>2024-02-18T23:05:38.659797573</dc:date><meta:editing-duration>PT1H58M24S</meta:editing-duration><meta:editing-cycles>30</meta:editing-cycles><meta:document-statistic meta:object-count="17"/></office:meta>
+ <office:meta><meta:initial-creator>Franz Wilhelmstötter</meta:initial-creator><meta:creation-date>2012-01-20T20:54:49</meta:creation-date><meta:generator>LibreOffice/7.3.7.2$Linux_X86_64 LibreOffice_project/30$Build-2</meta:generator><dc:date>2024-02-18T23:11:54.783630403</dc:date><meta:editing-duration>PT2H3M43S</meta:editing-duration><meta:editing-cycles>32</meta:editing-cycles><meta:document-statistic meta:object-count="14"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">-2133</config:config-item>
@@ -118,8 +118,8 @@
   <style:font-face style:name="Lohit Hindi" svg:font-family="&apos;Lohit Hindi&apos;" style:font-family-generic="system" style:font-pitch="variable"/>
   <style:font-face style:name="Noto Sans" svg:font-family="&apos;Noto Sans&apos;" style:font-family-generic="roman" style:font-pitch="variable"/>
   <style:font-face style:name="Noto Sans CJK SC" svg:font-family="&apos;Noto Sans CJK SC&apos;" style:font-family-generic="system" style:font-pitch="variable"/>
-  <style:font-face style:name="Times New Roman" svg:font-family="&apos;Times New Roman&apos;" style:font-adornments="Regular" style:font-family-generic="roman" style:font-pitch="variable"/>
-  <style:font-face style:name="Times New Roman1" svg:font-family="&apos;Times New Roman&apos;" style:font-family-generic="roman" style:font-pitch="variable"/>
+  <style:font-face style:name="Times New Roman" svg:font-family="&apos;Times New Roman&apos;" style:font-family-generic="roman" style:font-pitch="variable"/>
+  <style:font-face style:name="Times New Roman1" svg:font-family="&apos;Times New Roman&apos;" style:font-adornments="Regular" style:font-family-generic="roman" style:font-pitch="variable"/>
   <style:font-face style:name="WenQuanYi Micro Hei" svg:font-family="&apos;WenQuanYi Micro Hei&apos;" style:font-family-generic="system" style:font-pitch="variable"/>
  </office:font-face-decls>
  <office:styles>
@@ -138,10 +138,10 @@
   <draw:stroke-dash draw:name="Ultrafine_20_2_20_Dots_20_3_20_Dashes" draw:display-name="Ultrafine 2 Dots 3 Dashes" draw:style="rect" draw:dots1="2" draw:dots1-length="0.051cm" draw:dots2="3" draw:dots2-length="0.254cm" draw:distance="0.127cm"/>
   <style:default-style style:family="graphic">
    <style:graphic-properties svg:stroke-color="#808080" draw:fill-color="#cfe7f5" fo:wrap-option="no-wrap"/>
-   <style:paragraph-properties style:text-autospace="ideograph-alpha" style:punctuation-wrap="simple" style:line-break="strict" style:font-independent-line-spacing="false">
+   <style:paragraph-properties style:text-autospace="ideograph-alpha" style:punctuation-wrap="simple" style:line-break="strict" style:writing-mode="lr-tb" style:font-independent-line-spacing="false">
     <style:tab-stops/>
    </style:paragraph-properties>
-   <style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Times New Roman1" fo:font-size="24pt" fo:language="en" fo:country="US" style:font-name-asian="DejaVu Sans" style:font-size-asian="24pt" style:language-asian="zh" style:country-asian="CN" style:font-name-complex="DejaVu Sans" style:font-size-complex="24pt" style:language-complex="hi" style:country-complex="IN"/>
+   <style:text-properties style:use-window-font-color="true" loext:opacity="0%" style:font-name="Times New Roman" fo:font-size="24pt" fo:language="en" fo:country="US" style:font-name-asian="DejaVu Sans" style:font-size-asian="24pt" style:language-asian="zh" style:country-asian="CN" style:font-name-complex="DejaVu Sans" style:font-size-complex="24pt" style:language-complex="hi" style:country-complex="IN"/>
   </style:default-style>
   <style:style style:name="standard" style:family="graphic">
    <style:graphic-properties draw:stroke="solid" svg:stroke-width="0cm" svg:stroke-color="#808080" draw:marker-start-width="0.2cm" draw:marker-start-center="false" draw:marker-end-width="0.2cm" draw:marker-end-center="false" draw:fill="solid" draw:fill-color="#cfe7e5" draw:textarea-horizontal-align="justify" fo:padding-top="0.125cm" fo:padding-bottom="0.125cm" fo:padding-left="0.25cm" fo:padding-right="0.25cm" draw:shadow="hidden" draw:shadow-offset-x="0.2cm" draw:shadow-offset-y="0.2cm" draw:shadow-color="#808080">
@@ -357,18 +357,15 @@
   <style:style style:name="gr2" style:family="graphic" style:parent-style-name="objectwithoutfill">
    <style:graphic-properties draw:fill="none" draw:textarea-vertical-align="middle"/>
   </style:style>
-  <style:style style:name="gr3" style:family="graphic" style:parent-style-name="objectwithoutfill">
-   <style:graphic-properties draw:stroke="dash" draw:stroke-dash="Fine_20_Dashed" draw:fill="none" draw:textarea-vertical-align="middle"/>
-  </style:style>
-  <style:style style:name="gr4" style:family="graphic" style:parent-style-name="objectwithoutfill">
-   <style:graphic-properties draw:stroke="dash" draw:stroke-dash="Ultrafine_20_2_20_Dots_20_3_20_Dashes" draw:fill="none" draw:textarea-vertical-align="middle"/>
-  </style:style>
-  <style:style style:name="gr5" style:family="graphic" style:parent-style-name="standard">
-   <style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" draw:textarea-horizontal-align="left" draw:auto-grow-height="true" draw:auto-grow-width="true" fo:min-height="1.085cm" fo:min-width="5.476cm"/>
+  <style:style style:name="gr3" style:family="graphic" style:parent-style-name="standard">
+   <style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" draw:textarea-horizontal-align="left" draw:auto-grow-height="true" draw:auto-grow-width="true" fo:min-height="1.093cm" fo:min-width="5.573cm"/>
    <style:paragraph-properties style:writing-mode="lr-tb"/>
   </style:style>
-  <style:style style:name="gr6" style:family="graphic" style:parent-style-name="Object_20_with_20_no_20_fill_20_and_20_no_20_line">
+  <style:style style:name="gr4" style:family="graphic" style:parent-style-name="Object_20_with_20_no_20_fill_20_and_20_no_20_line">
    <style:graphic-properties draw:textarea-horizontal-align="center" draw:textarea-vertical-align="middle" draw:ole-draw-aspect="1" style:protect="size"/>
+  </style:style>
+  <style:style style:name="gr5" style:family="graphic" style:parent-style-name="objectwithoutfill">
+   <style:graphic-properties draw:stroke="dash" draw:stroke-dash="Fine_20_Dashed" draw:fill="none" draw:textarea-vertical-align="middle"/>
   </style:style>
   <style:style style:name="P1" style:family="paragraph">
    <loext:graphic-properties draw:fill="none"/>
@@ -380,13 +377,13 @@
   <style:style style:name="P3" style:family="paragraph">
    <loext:graphic-properties draw:fill="none" draw:fill-color="#ffffff"/>
    <style:paragraph-properties style:writing-mode="lr-tb"/>
-   <style:text-properties style:font-name="Times New Roman" fo:font-size="14pt"/>
+   <style:text-properties style:font-name="Times New Roman1" fo:font-size="14pt"/>
   </style:style>
   <style:style style:name="T1" style:family="text">
-   <style:text-properties style:font-name="Times New Roman" fo:font-size="14pt"/>
+   <style:text-properties style:font-name="Times New Roman1" fo:font-size="14pt"/>
   </style:style>
   <style:style style:name="T2" style:family="text">
-   <style:text-properties style:font-name="Times New Roman" fo:font-size="14pt" fo:font-style="italic"/>
+   <style:text-properties style:font-name="Times New Roman1" fo:font-size="14pt" fo:font-style="italic"/>
   </style:style>
   <text:list-style style:name="L1">
    <text:list-level-style-bullet text:level="1" text:bullet-char="●">
@@ -453,165 +450,16 @@
     <draw:line draw:style-name="gr1" draw:text-style-name="P1" draw:layer="layout" svg:x1="3cm" svg:y1="10cm" svg:x2="14cm" svg:y2="10cm">
      <text:p/>
     </draw:line>
-    <draw:line draw:style-name="gr2" draw:text-style-name="P1" draw:layer="layout" svg:x1="3cm" svg:y1="7cm" svg:x2="14cm" svg:y2="7cm">
+    <draw:line draw:style-name="gr2" draw:text-style-name="P1" draw:layer="layout" svg:x1="4cm" svg:y1="10cm" svg:x2="7cm" svg:y2="4cm">
      <text:p/>
     </draw:line>
-    <draw:line draw:style-name="gr3" draw:text-style-name="P1" draw:layer="layout" svg:x1="3cm" svg:y1="4cm" svg:x2="14cm" svg:y2="10cm">
-     <text:p/>
-    </draw:line>
-    <draw:line draw:style-name="gr4" draw:text-style-name="P1" draw:layer="layout" svg:x1="3cm" svg:y1="10cm" svg:x2="14cm" svg:y2="4cm">
-     <text:p/>
-    </draw:line>
-    <draw:frame draw:style-name="gr5" draw:text-style-name="P3" draw:layer="layout" svg:width="6.073cm" svg:height="1.343cm" svg:x="5.8cm" svg:y="1.665cm">
+    <draw:frame draw:style-name="gr3" draw:text-style-name="P3" draw:layer="layout" svg:width="6.073cm" svg:height="1.343cm" svg:x="5.8cm" svg:y="1.665cm">
      <draw:text-box>
       <text:p><text:span text:style-name="T1">Probability density function</text:span></text:p>
-      <text:p text:style-name="P2"><text:span text:style-name="T2">(Linear distribution)</text:span></text:p>
+      <text:p text:style-name="P2"><text:span text:style-name="T2">(Triangular distribution)</text:span></text:p>
      </draw:text-box>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="1.119cm" svg:height="1.004cm" svg:x="11.819cm" svg:y="5.9cm">
-     <draw:object>
-      <loext:p/>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-       <semantics>
-        <mrow>
-         <mi>μ</mi>
-         <mo stretchy="false">=</mo>
-         <mfrac>
-          <mn>1</mn>
-          <mn>2</mn>
-         </mfrac>
-        </mrow>
-        <annotation encoding="StarMath 5.0">%mu = {1} over {2} </annotation>
-       </semantics>
-      </math>
-     </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAV8EAADs
-       AwAALQAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAF4EAADrAwAAlQAB
-       AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJv
-       bAAAAAAAAKYBAAD//wAAAAAFAAAAAAACAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAA
-       AAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAaAAAAagAAAHsCAAABAAAAvAP2AAAA
-       AAABAAEAvAOMAAEAAAAAAIsAAQACAAAAHwCKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJvbAAA
-       AAAAAKYBAAD//wAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAAAAEA
-       hwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAaAAAAcgEAAHsCAAABAAAAPQBOAQAAAAAB
-       AAEAPQCMAAEAAAAAAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlvbiBTZXJp
-       ZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAA
-       AAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAA/wIAAHIBAAABADHUAAAAAAAB
-       AAEAMQCMAAEAAAAAAIsAAQACAAAAHwCFAAEABQAAAAAAAAABhAABAAUAAAAAAAAAAIoAAQBA
-       AAAABAA6AAAACgBPcGVuU3ltYm9sAAAAAAAApgEAAP//AAAAAAUAAAAAAAAA/wMAAAAAAAAA
-       AQD/AwAAAAAAAAAAAIgAAQACAAAAAQCHAAEABQAAAP////8AhgABAAQAAAAAAAAAZwABABAA
-       AADlAgAA9wEAAOcDAAALAgAAjAABAAAAAACLAAEAAgAAAB8AigABAEYAAAAEAEAAAAAQAExp
-       YmVyYXRpb24gU2VyaWYAAAAAAACmAQAAAAAAAAAABQAAAAAAAAD/AwAAAAAAAAABAP8DAAAA
-       AAAAAAAAiAABAAIAAAABAIcAAQAFAAAA/////wCGAAEABAAAAAAAAAByAAIAFwAAAP8CAACE
-       AwAAAQAy1AAAAAAAAQABADIAjAABAAAAAACVAAEABAAAAAAAAACWAAEAAgAAAAkAjAABAAAA
-       AAA=
-      </office:binary-data>
-     </draw:image>
-    </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="1.953cm" svg:height="1.042cm" svg:x="3.9cm" svg:y="3.559cm">
-     <draw:object>
-      <loext:p/>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-       <semantics>
-        <mrow>
-         <mi>μ</mi>
-         <mo stretchy="false">=</mo>
-         <mrow>
-          <mn>1</mn>
-          <mo stretchy="false">−</mo>
-          <mfrac>
-           <msqrt>
-            <mn>2</mn>
-           </msqrt>
-           <mn>2</mn>
-          </mfrac>
-         </mrow>
-        </mrow>
-        <annotation encoding="StarMath 5.0">%mu = 1 - { sqrt{2} } over {2} </annotation>
-       </semantics>
-      </math>
-     </draw:object><draw:image>
-      <office:binary-data>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
-       AIwAAQAAAAAA
-      </office:binary-data>
-     </draw:image>
-    </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="1.382cm" svg:height="1.042cm" svg:x="11.3cm" svg:y="3.46cm">
-     <draw:object>
-      <loext:p/>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-       <semantics>
-        <mrow>
-         <mi>μ</mi>
-         <mo stretchy="false">=</mo>
-         <mfrac>
-          <msqrt>
-           <mn>2</mn>
-          </msqrt>
-          <mn>2</mn>
-         </mfrac>
-        </mrow>
-        <annotation encoding="StarMath 5.0">%mu = { sqrt{2} } over {2} </annotation>
-       </semantics>
-      </math>
-     </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAWYFAAAS
-       BAAAPQAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAGUFAAARBAAAlQAB
-       AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJv
-       bAAAAAAAAKYBAAD//wAAAAAFAAAAAAACAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAA
-       AAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAaAAAAagAAAJUCAAABAAAAvAP2AAAA
-       AAABAAEAvAOMAAEAAAAAAIsAAQACAAAAHwCKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJvbAAA
-       AAAAAKYBAAD//wAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAAAAEA
-       hwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAaAAAAcgEAAJUCAAABAAAAPQBOAQAAAAAB
-       AAEAPQCMAAEAAAAAAIsAAQACAAAAHwCKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJvbAAApwEA
-       AAUCAAD//wAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAKcBAACIAAEAAgAAAAEAhwAB
-       AAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAaAAAA/wIAAMIBAAABAAAAGiLgAAAAAAABAAEA
-       GiKMAAEAAAAAAIsAAQACAAAAHwCFAAEABQAAAAAAAAABhAABAAUAAAAAAAAAAIoAAQBAAAAA
-       BAA6AAAACgBPcGVuU3ltYm9sAACnAQAABQIAAP//AAAAAAUAAAAAAAAA/wMAAAAAAAAAAQD/
-       AwAAAAAApwEAAIgAAQACAAAAAQCHAAEABQAAAP////8AhgABAAQAAAAAAAAAZwABABAAAADT
-       AwAAGgAAAMAEAAAoAAAAjAABAAAAAACLAAEAAgAAAB8AigABAEYAAAAEAEAAAAAQAExpYmVy
-       YXRpb24gU2VyaWYAAAAAAACmAQAAAAAAAAAABQAAAAAAAAD/AwAAAAAAAAABAP8DAAAAAAAA
-       AAAAiAABAAIAAAABAIcAAQAFAAAA/////wCGAAEABAAAAAAAAAByAAIAFwAAAAgEAACnAQAA
-       AQAy1AAAAAAAAQABADIAjAABAAAAAACLAAEAAgAAAB8AhQABAAUAAAAAAAAAAYQAAQAFAAAA
-       AAAAAACKAAEAQAAAAAQAOgAAAAoAT3BlblN5bWJvbAAAAAAAAKYBAAD//wAAAAAFAAAAAAAA
-       AP8DAAAAAAAAAAEA/wMAAAAAAAAAAACIAAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAA
-       AAAAAGcAAQAQAAAA5QIAABECAADuBAAAJQIAAIwAAQAAAAAAiwABAAIAAAAfAIoAAQBGAAAA
-       BABAAAAAEABMaWJlcmF0aW9uIFNlcmlmAAAAAAAApgEAAAAAAAAAAAUAAAAAAAAA/wMAAAAA
-       AAAAAQD/AwAAAAAAAAAAAIgAAQACAAAAAQCHAAEABQAAAP////8AhgABAAQAAAAAAAAAcgAC
-       ABcAAACEAwAAuQMAAAEAMtQAAAAAAAEAAQAyAIwAAQAAAAAAlQABAAQAAAAAAAAAlgABAAIA
-       AAAJAIwAAQAAAAAA
-      </office:binary-data>
-     </draw:image>
-    </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.997cm" svg:height="0.513cm" svg:x="2.608cm" svg:y="2.6cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="0.997cm" svg:height="0.513cm" svg:x="2.608cm" svg:y="2.6cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -649,7 +497,7 @@
       </office:binary-data>
      </draw:image>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.437cm" svg:height="0.47cm" svg:x="14.5cm" svg:y="9.8cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="0.437cm" svg:height="0.47cm" svg:x="14.5cm" svg:y="9.8cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -669,33 +517,13 @@
       </office:binary-data>
      </draw:image>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.412cm" svg:height="0.47cm" svg:x="13.791cm" svg:y="10.3cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="0.429cm" svg:height="0.47cm" svg:x="12.1cm" svg:y="10.23cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
        <semantics>
-        <mn>1</mn>
-        <annotation encoding="StarMath 5.0">1
-</annotation>
-       </semantics>
-      </math>
-     </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAZwBAADX
-       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAJsBAADWAQAAlQAB
-       AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlv
-       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
-       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABADHU
-       AAAAAAABAAEAMQCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
-      </office:binary-data>
-     </draw:image>
-    </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.429cm" svg:height="0.47cm" svg:x="2.892cm" svg:y="10.3cm">
-     <draw:object>
-      <loext:p/>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-       <semantics>
-        <mn>0</mn>
-        <annotation encoding="StarMath 5.0">0
+        <mi>b</mi>
+        <annotation encoding="StarMath 5.0">b
 </annotation>
        </semantics>
       </math>
@@ -703,72 +531,101 @@
       <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAa0BAADX
        AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAKwBAADWAQAAlQAB
        AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlv
-       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
-       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABADDU
-       AAAAAAABAAEAMACMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
+       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAACAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
+       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABAGLU
+       AAAAAAABAAEAYgCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
       </office:binary-data>
      </draw:image>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.429cm" svg:height="0.47cm" svg:x="2.293cm" svg:y="9.8cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="0.434cm" svg:height="0.47cm" svg:x="3.8cm" svg:y="10.3cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
        <semantics>
-        <mn>0</mn>
-        <annotation encoding="StarMath 5.0">0
+        <mi>a</mi>
+        <annotation encoding="StarMath 5.0">a
 </annotation>
        </semantics>
       </math>
      </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAa0BAADX
-       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAKwBAADWAQAAlQAB
+      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAbIBAADX
+       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAALEBAADWAQAAlQAB
        AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlv
-       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
-       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABADDU
-       AAAAAAABAAEAMACMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
+       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAACAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
+       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABAGHU
+       AAAAAAABAAEAYQCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
       </office:binary-data>
      </draw:image>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.412cm" svg:height="0.47cm" svg:x="2.294cm" svg:y="6.8cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="1.106cm" svg:height="1.004cm" svg:x="1.595cm" svg:y="3.5cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
        <semantics>
-        <mn>1</mn>
-        <annotation encoding="StarMath 5.0">1
+        <mfrac>
+         <mn>2</mn>
+         <mrow>
+          <mi>b</mi>
+          <mo stretchy="false">−</mo>
+          <mi>a</mi>
+         </mrow>
+        </mfrac>
+        <annotation encoding="StarMath 5.0">{2} over {b-a} 
 </annotation>
        </semantics>
       </math>
      </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAZwBAADX
-       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAJsBAADWAQAAlQAB
+      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAVIEAADs
+       AwAALQAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAFEEAADrAwAAlQAB
        AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlv
        biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
-       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABADHU
-       AAAAAAABAAEAMQCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
+       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAwgEAAHIBAAABADLU
+       AAAAAAABAAEAMgCMAAEAAAAAAIsAAQACAAAAHwCFAAEABQAAAAAAAAABhAABAAUAAAAAAAAA
+       AIoAAQBAAAAABAA6AAAACgBPcGVuU3ltYm9sAAAAAAAApgEAAP//AAAAAAUAAAAAAAAA/wMA
+       AAAAAAAAAQD/AwAAAAAAAAAAAIgAAQACAAAAAQCHAAEABQAAAP////8AhgABAAQAAAAAAAAA
+       ZwABABAAAACEAAAA9wEAAOMDAAALAgAAjAABAAAAAACLAAEAAgAAAB8AigABAEYAAAAEAEAA
+       AAAQAExpYmVyYXRpb24gU2VyaWYAAAAAAACmAQAAAAAAAAAABQAAAAAAAgD/AwAAAAAAAAAB
+       AP8DAAAAAAAAAAAAiAABAAIAAAABAIcAAQAFAAAA/////wCGAAEABAAAAAAAAAByAAIAFwAA
+       AJ8AAACEAwAAAQBi1AAAAAAAAQABAGIAjAABAAAAAACLAAEAAgAAAB8AigABAEAAAAAEADoA
+       AAAKAE9wZW5TeW1ib2wAAAAAAACmAQAA//8AAAAABQAAAAAAAAD/AwAAAAAAAAABAP8DAAAA
+       AAAAAAAAiAABAAIAAAABAIcAAQAFAAAA/////wCGAAEABAAAAAAAAAByAAIAGgAAAHIBAACE
+       AwAAAQAAABIiTgEAAAAAAQABABIijAABAAAAAACLAAEAAgAAAB8AigABAEYAAAAEAEAAAAAQ
+       AExpYmVyYXRpb24gU2VyaWYAAAAAAACmAQAAAAAAAAAABQAAAAAAAgD/AwAAAAAAAAABAP8D
+       AAAAAAAAAAAAiAABAAIAAAABAIcAAQAFAAAA/////wCGAAEABAAAAAAAAAByAAIAFwAAAOUC
+       AACEAwAAAQBh1AAAAAAAAQABAGEAjAABAAAAAACVAAEABAAAAAAAAACWAAEAAgAAAAkAjAAB
+       AAAAAAA=
       </office:binary-data>
      </draw:image>
     </draw:frame>
-    <draw:frame draw:style-name="gr6" draw:text-style-name="P2" draw:layer="layout" svg:width="0.417cm" svg:height="0.47cm" svg:x="2.295cm" svg:y="3.8cm">
+    <draw:line draw:style-name="gr2" draw:text-style-name="P1" draw:layer="layout" svg:x1="12.3cm" svg:y1="10cm" svg:x2="7cm" svg:y2="4cm">
+     <text:p/>
+    </draw:line>
+    <draw:line draw:style-name="gr5" draw:text-style-name="P1" draw:layer="layout" svg:x1="7cm" svg:y1="4cm" svg:x2="7cm" svg:y2="10cm">
+     <text:p/>
+    </draw:line>
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P2" draw:layer="layout" svg:width="0.416cm" svg:height="0.47cm" svg:x="6.8cm" svg:y="10.3cm">
      <draw:object>
       <loext:p/>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
        <semantics>
-        <mn>2</mn>
-        <annotation encoding="StarMath 5.0">2
+        <mi>c</mi>
+        <annotation encoding="StarMath 5.0">c
 </annotation>
        </semantics>
       </math>
      </draw:object><draw:image>
-      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAaEBAADX
-       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAKABAADWAQAAlQAB
+      <office:binary-data>VkNMTVRGAQAxAAAAAAAAAAEAGwAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAaABAADX
+       AQAADwAAAJYAAQACAAAACQCLAAEAAgAAAP//gQABABAAAAAAAAAAAAAAAJ8BAADWAQAAlQAB
        AAQAAAAAAAAAlgABAAIAAAAJAIsAAQACAAAAHwCKAAEARgAAAAQAQAAAABAATGliZXJhdGlv
-       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAAAAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
-       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABADLU
-       AAAAAAABAAEAMgCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
+       biBTZXJpZgAAAAAAAKYBAAAAAAAAAAAFAAAAAAACAP8DAAAAAAAAAAEA/wMAAAAAAAAAAACI
+       AAEAAgAAAAEAhwABAAUAAAD/////AIYAAQAEAAAAAAAAAHIAAgAXAAAAagAAAHIBAAABAGO6
+       AAAAAAABAAEAYwCMAAEAAAAAAJUAAQAEAAAAAAAAAJYAAQACAAAACQCMAAEAAAAAAA==
       </office:binary-data>
      </draw:image>
     </draw:frame>
+    <draw:line draw:style-name="gr5" draw:text-style-name="P1" draw:layer="layout" svg:x1="7cm" svg:y1="4cm" svg:x2="3cm" svg:y2="4cm">
+     <text:p/>
+    </draw:line>
    </draw:page>
   </office:drawing>
  </office:body>

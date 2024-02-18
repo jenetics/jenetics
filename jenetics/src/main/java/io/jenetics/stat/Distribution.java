@@ -21,8 +21,6 @@ package io.jenetics.stat;
 
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Double.longBitsToDouble;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
 
 import java.util.random.RandomGenerator;
 
@@ -50,6 +48,55 @@ import io.jenetics.util.IntRange;
 public interface Distribution {
 
 	/**
+	 * The range of the sample point, created by a distribution.
+	 *
+	 * @param min the minimal sample point (inclusively)
+	 * @param max the maximal sample point (exclusively)
+	 */
+	record Range(double min, double max) {
+
+		/**
+		 * The default sample point range: {@code [0, 1)}.
+		 */
+		public static final Range DEFAULT = new Range(
+			0,
+			longBitsToDouble(doubleToLongBits(1) - 1)
+		);
+
+		/**
+		 * Create a new sample point range.
+		 *
+		 * @param min the minimal sample point (inclusively)
+		 * @param max the maximal sample point (exclusively)
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 */
+		public Range {
+			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid range: [min=%f, max=%f].".formatted(min, max)
+				);
+			}
+		}
+
+		/**
+		 * Checks if the given {@code value} is within {@code this} range.
+		 *
+		 * @param value the value to check
+		 * @throws IllegalArgumentException if the value is not within this
+		 *         range
+		 */
+		void check(final double value) {
+			if (!Double.isFinite(value) || value < min || value >= max) {
+				throw new IllegalArgumentException(
+					"Value %f not in valid range of [%f, %f)."
+						.formatted(value, min, max)
+				);
+			}
+		}
+
+	}
+
+	/**
 	 * Default uniform distribution by calling
 	 * {@link RandomGenerator#nextDouble()}.
 	 */
@@ -62,15 +109,25 @@ public interface Distribution {
 	Distribution GAUSSIAN = RandomGenerator::nextGaussian;
 
 	/**
-	 * Create a new sample, within the range {@code [0, 1)}, which obeys the
-	 * defined <em>distribution</em>. For creating such a sample, the given
-	 * {@code random} generator is used.
+	 * Create a new sample point within the defined range {@link #range()},
+	 * which obeys {@code this} <em>distribution</em>. For creating such a sample,
+	 * the given {@code random} generator is used.
 	 *
 	 * @param random the random generator used for creating a sample point of
 	 *        the defined distribution
 	 * @return a new sample point between {@code [0, 1)}
 	 */
 	double sample(RandomGenerator random);
+
+	/**
+	 * Return the range of the sample points, created by {@code this}
+	 * distribution.
+	 *
+	 * @return the range of the sample points
+	 */
+	default Range range() {
+		return Range.DEFAULT;
+	}
 
 	/**
 	 * Create a new {@code double} sample point within the given range
@@ -82,12 +139,17 @@ public interface Distribution {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default double sample(RandomGenerator random, DoubleRange range) {
-		final var sample = sample(random);
-		assert Double.isFinite(sample);
-		assert sample >= 0.0;
-		assert sample < 1.0;
+		final var sample = normalize(range(), sample(random));
 
-		return (sample(random)*(range.max() - range.min())) + range.min();
+		return (sample*(range.max() - range.min())) + range.min();
+	}
+
+	private static double normalize(final Range range, final double value) {
+		if (range.equals(Range.DEFAULT)) {
+			return value;
+		} else {
+			return value/(range.max - range.min);
+		}
 	}
 
 	/**
@@ -100,73 +162,9 @@ public interface Distribution {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default int sample(RandomGenerator random, IntRange range) {
-		final var sample = sample(random);
-		assert Double.isFinite(sample);
-		assert sample >= 0.0;
-		assert sample < 1.0;
+		final var sample = normalize(range(), sample(random));
 
-		return (int)((sample(random)*(range.max() - range.min())) + range.min());
-	}
-
-	/**
-	 * Return a new <em>linear</em> distribution object with the given
-	 * {@code mean} value.
-	 * <p>
-	 *	<img src="doc-files/LinearDistributionPDF.svg" width="450"
-	 *	     alt="Shift mutator" >
-	 *
-	 * @param mean the mean value of the returned distribution
-	 * @return a new linear distribution with the given {@code mean} value
-	 * @throws IllegalArgumentException if the given {@code mean} value is not
-	 *         within the range {@code [0, 1)}
-	 */
-	static Distribution linear(final double mean) {
-		if (mean < 0 || mean >= 1) {
-			throw new IllegalArgumentException(
-				"Mean value not within allowed range [0, 1): %f."
-					.formatted(mean)
-			);
-		}
-
-		final class Range {
-			static final double MIN = 0.0;
-			static final double MAX = longBitsToDouble(doubleToLongBits(1) - 1);
-			static double clamp(final double value) {
-				return Math.clamp(value, MIN, MAX);
-			}
-		}
-
-		if (Double.compare(mean, 0) == 0) {
-			return random -> Range.MIN;
-		} else if (mean == Range.MAX) {
-			return random -> Range.MAX;
-		}
-
-		final double b, m;
-		if (mean < 0.292893) {
-			b = (2 - sqrt(2))/mean;
-			m = -pow(b, 2)/2;
-		} else if (mean < 0.707107) {
-			b = (pow(mean, 2) - 0.5)/(pow(mean, 2) - mean);
-			m = 2 - 2*b;
-		} else if (mean < 1) {
-			b = 0.5*(1 - pow(((2 - sqrt(2))/(1 - mean) - 1), 2));
-			m = -b + sqrt(1 - 2*b) + 1;
-		} else {
-			b = m = 1;
-		}
-
-		return random -> {
-			final var r = random.nextDouble();
-
-			if (mean < 0.5) {
-				return Range.clamp((-b + sqrt(pow(b, 2) + 2*r*m))/m);
-			} else if (mean == 0.5) {
-				return r;
-			} else {
-				return Range.clamp((b - sqrt(pow(b, 2) + 2*m*(r - 1 + b + 0.5*m)))/-m);
-			}
-		};
+		return (int)((sample*(range.max() - range.min())) + range.min());
 	}
 
 }
