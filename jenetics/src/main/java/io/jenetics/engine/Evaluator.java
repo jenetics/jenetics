@@ -35,15 +35,15 @@ import io.jenetics.util.Seq;
  * new {@link Phenotype} instance and return the newly created one. A simple
  * serial evaluator can easily implement:
  *
- * <pre>{@code
- * final Function<? super Genotype<G>, ? extends C> fitness = ...;
+ * {@snippet lang="java":
+ * final Function<? super Genotype<G>, ? extends C> fitness = null; // @replace substring='null' replacement="..."
  * final Evaluator<G, C> evaluator = population -> population
  *     .map(pt -> pt.eval(fitness))
  *     .asISeq();
  *
  * final Engine<G, C> engine = new Engine.Builder<>(evaluator, genotypeFactory)
  *     .build();
- * }</pre>
+ * }
  *
  * @apiNote
  * The size of the returned, evaluated, phenotype sequence must be exactly

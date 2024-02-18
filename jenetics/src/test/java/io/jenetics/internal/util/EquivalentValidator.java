@@ -25,8 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.testng.Assert;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

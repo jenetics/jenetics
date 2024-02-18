@@ -36,7 +36,7 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  * This class allows creating a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Stream<Long> stream = engine.stream()
  *     .limit(33)
  *     .map(EvolutionResult::generation);
@@ -44,19 +44,19 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  * try (var publisher = new StreamPublisher<Long>()) {
  *     publisher.subscribe(new Subscriber<>() {
  *         private Subscription subscription;
- *         \@Override
+ *         @Override
  *         public void onSubscribe(final Subscription subscription) {
  *             (this.subscription = subscription).request(1);
  *         }
- *         \@Override
+ *         @Override
  *         public void onNext(final Long g) {
  *             System.out.println("Got new generation: " + g);
  *             subscription.request(1);
  *         }
- *         \@Override
+ *         @Override
  *         public void onError(final Throwable throwable) {
  *         }
- *         \@Override
+ *         @Override
  *         public void onComplete() {
  *             System.out.println("Evolution completed.");
  *         }
@@ -65,9 +65,9 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  *     // Attaching the stream, starts the element publishing.
  *     publisher.attach(stream);
  *
- *     ...
+ *     // ...
  * }
- * }</pre>
+ * }
  *
  * @param <T> the element type of the publisher
  *

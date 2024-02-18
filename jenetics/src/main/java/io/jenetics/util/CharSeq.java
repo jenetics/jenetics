@@ -37,11 +37,11 @@ import io.jenetics.internal.collection.CharStore;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0

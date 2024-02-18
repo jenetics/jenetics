@@ -39,7 +39,7 @@ import java.util.stream.StreamSupport;
  * It also tracks already visited nodes to prevent infinite loops in the traversal.
  * The following code example shows how to recursively travers the properties of
  * a simple domain model:
- * <pre>{@code
+ * {@snippet lang="java":
  * record Author(String forename, String surname) { }
  * record Book(String title, int pages, List<Author> authors) { }
  *
@@ -57,7 +57,7 @@ import java.util.stream.StreamSupport;
  * );
  *
  * it.forEachRemaining(System.out::println);
- * }</pre>
+ * }
  *
  * @param <S> the source object type
  * @param <T> the type of the extracted objects

@@ -34,28 +34,28 @@ import javax.xml.stream.XMLStreamException;
  * {@link javax.xml.stream.XMLStreamWriter} objects.
  * <p>
  * Creating a new XML stream reader:
- * <pre>{@code
+ * {@snippet lang="java":
  * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
  *     // Move XML stream to first element.
  *     xml.next();
  *     return reader.read(xml);
  * }
- * }</pre>
+ * }
  *
  * Create a new XML stream reader:
- * <pre>{@code
+ * {@snippet lang="java":
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
  *     writer.write(value, xml);
  * }
- * }</pre>
+ * }
  *
  * Create a new XML stream reader with pretty-print-indentation:
- * <pre>{@code
+ * {@snippet lang="java":
  * final String indent = "    ";
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
  *     writer.write(value, xml);
  * }
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -70,13 +70,13 @@ public final class XML {
 	 * The caller is responsible for closing the returned {@code XMLStreamReader}.
 	 * </em>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
 	 *     // Move XML stream to first element.
 	 *     xml.next();
 	 *     return reader.read(xml);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param input the input stream
 	 * @return a new {@code Closeable} XML stream reader
@@ -102,11 +102,11 @@ public final class XML {
 	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, "    ")) {
 	 *     writer.write(value, xml);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param output the underlying output stream
 	 * @param indent the element indent used for the XML output
@@ -138,11 +138,11 @@ public final class XML {
 	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
 	 *     writer.write(value, xml);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @param output the underlying output stream
 	 * @return a new {@code XMLStreamWriter} instance

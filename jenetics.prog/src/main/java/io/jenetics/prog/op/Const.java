@@ -38,10 +38,10 @@ import java.util.Objects;
  * is used when printing the program tree. The {@code Const} operation is a
  * <em>terminal</em> operation.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final static Op<Double> PI = Const.of("π", Math.PI);
  * final static Op<Double> ONE = Const.of(1.0);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0

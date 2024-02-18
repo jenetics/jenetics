@@ -153,7 +153,7 @@ public final class Bits {
 	/**
 	 * Swap a given range with a range of the same size with another array.
 	 *
-	 * <pre>{@code
+	 * <pre>
 	 *                start            end
 	 *                  |               |
 	 * data:      +---+---+---+---+---+---+---+---+---+---+---+---+
@@ -162,7 +162,7 @@ public final class Bits {
 	 * otherData: +---+---+---+---+---+---+---+---+---+---+---+---+
 	 *                              |
 	 *                          otherStart
-	 * }</pre>
+	 * </pre>
 	 *
 	 * @param data the first byte array which is used for swapping.
 	 * @param start the start bit index of the {@code data} byte array,
@@ -459,13 +459,13 @@ public final class Bits {
 	/**
 	 * Convert a binary representation of the given byte array to a string. The
 	 * string has the following format:
-	 * <pre>{@code
+	 * <pre>
 	 *  Byte:       3        2        1        0
 	 *              |        |        |        |
 	 *  Array: "11110011|10011101|01000000|00101010"
 	 *          |                 |        |      |
 	 *  Bit:    23                15       7      0
-	 * }</pre>
+	 * </pre>
 	 * <i>Only the array string is printed.</i>
 	 *
 	 * @see #fromByteString(String)

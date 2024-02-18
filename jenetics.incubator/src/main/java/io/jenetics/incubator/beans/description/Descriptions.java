@@ -107,11 +107,11 @@ public final class Descriptions {
 	 * available property descriptions are returned. If used with the
 	 * {@link #unapply(PathValue)} method, all found descriptions are returned,
 	 * including the descriptions from the Java classes.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * Descriptions
 	 *     .walk(PathEntry.of(String.class), Descriptions::extract)
 	 *     .forEach(System.out::println);
-	 * }</pre>
+	 * }
 	 *
 	 * The code snippet above will create the following output:
 	 *
@@ -152,24 +152,24 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * record Author(String forename, String surname) { }
 	 * record Book(String title, int pages, List<Author> authors) { }
 	 *
 	 * Descriptions.walk(PathEntry.of(Book.class))
 	 *     .forEach(System.out::println);
-	 * }</pre>
+	 * }
 	 *
 	 * The code snippet above will create the following output:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * Description[path=authors, value=Single[value=java.util.List<Author>, enclosure=Book]]
 	 * Description[path=authors[0], value=Indexed[value=Author, enclosure=java.util.List]]
 	 * Description[path=authors[0].forename, value=Single[value=java.lang.String, enclosure=Author]]
 	 * Description[path=authors[0].surname, value=Single[value=java.lang.String, enclosure=Author]]
 	 * Description[path=pages, value=Single[value=int, enclosure=Book]]
 	 * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
-	 * }</pre>
+	 * }
 	 *
 	 * @see #walk(PathValue, Dtor)
 	 * @see #walk(Type)

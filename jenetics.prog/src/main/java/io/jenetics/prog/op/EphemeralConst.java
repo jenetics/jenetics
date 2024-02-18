@@ -43,27 +43,27 @@ import io.jenetics.internal.util.Lazy;
  * particular terminal, and which will remain fixed for the given tree. The main
  * usage would be to introduce random terminal values.
  *
- * <pre>{@code
- * final Random random = ...;
+ * {@snippet lang="java":
+ * final Random random = null; // @replace substring='null' replacement="..."
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
- * }</pre>
+ * }
  *
  * <b>Serialization</b>
  * Although the {@code EphemeralConst} class implements the {@link Serializable}
  * interface, the serialization will fail if the <em>const</em> supplier is not
  * <em>serializable</em> as well. This can be achieved by <em>casting</em> the
  * supplier to a {@link Serializable}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Random random = new Random();
  * final EphemeralConst<Integer> object = EphemeralConst.of(
  *     "R",
  *     (Supplier<Integer> & Serializable)random::nextInt
  * );
- * }</pre>
+ * }
  * The serialization of the <em>constant</em> will fail, if the lambda has to
  * capture variables form a <em>non</em>-serializable context (class). In such a
  * case, it is advisable to create a dedicated supplier class.
- * <pre>{@code
+ * {@snippet lang="java":
  * final class RandomInt implements Supplier<Integer>, Serializable {
  *     private final Random rnd = new Random();
  *     private final int min;
@@ -74,12 +74,12 @@ import io.jenetics.internal.util.Lazy;
  *         this.max = max;
  *     }
  *
- *     \@Override
+ *     @Override
  *     public Integer get() {
  *         return rnd.nextInt(max - min) + min;
  *     }
  * }
- * }</pre>
+ * }
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -20,7 +20,6 @@
 package io.jenetics.engine;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -29,147 +28,16 @@ import io.jenetics.Genotype;
 
 /**
  * This class contains factory methods for creating commonly usable
- * {@link Evaluator} implementations. By default, the evolution {@link Engine}
- * uses the {@code concurrent} evaluators ({@link #concurrent(Function, Executor)}).
+ * {@link Evaluator} implementations.
  *
  * @see Evaluator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 8.0
  * @since 5.0
  */
 public final class Evaluators {
 	private Evaluators() {}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population serially in the main thread. Might be useful for testing
-	 * purpose.
-	 *
-	 * @param fitness the fitness function
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new serial fitness evaluator
-	 * @throws NullPointerException if the fitness {@code function} is {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C>
-	serial(final Function<? super Genotype<G>, ? extends C> fitness) {
-		return concurrent(fitness, Runnable::run);
-	}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population serially in the main thread. Might be useful for testing
-	 * purpose.
-	 *
-	 * @param fitness the fitness function
-	 * @param decoder the decoder function for the fitness domain
-	 * @param <T> the <em>native</em> fitness domain type
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new (concurrent) fitness evaluator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> serial(
-		final Function<? super T, ? extends C> fitness,
-		final Function<? super Genotype<G>, ? extends T> decoder
-	) {
-		return serial(fitness.compose(decoder));
-	}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population serially in the main thread. Might be useful for testing
-	 * purpose.
-	 *
-	 * @param fitness the fitness function
-	 * @param codec the codec used for transforming the fitness domain
-	 * @param <T> the <em>native</em> fitness domain type
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new (concurrent) fitness evaluator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> serial(
-		final Function<? super T, ? extends C> fitness,
-		final Codec<T, G> codec
-	) {
-		return serial(fitness.compose(codec.decoder()));
-	}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population (concurrently) with the given {@code executor}. This is
-	 * the default evaluator used by the evolution engine.
-	 *
-	 * @param fitness the fitness function
-	 * @param executor the {@code Executor} used for evaluating the fitness
-	 *        function
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new (concurrent) fitness evaluator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> concurrent(
-		final Function<? super Genotype<G>, ? extends C> fitness,
-		final Executor executor
-	) {
-		return new ConcurrentEvaluator<>(fitness, executor);
-	}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population (concurrently) with the given {@code executor}. This is
-	 * the default evaluator used by the evolution engine.
-	 *
-	 * @param fitness the fitness function, working on the <em>native</em>
-	 *        fitness domain
-	 * @param decoder the decoder function for the fitness domain
-	 * @param executor the {@code Executor} used for evaluating the fitness
-	 *        function
-	 * @param <T> the <em>native</em> fitness domain type
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new (concurrent) fitness evaluator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> concurrent(
-		final Function<? super T, ? extends C> fitness,
-		final Function<? super Genotype<G>, ? extends T> decoder,
-		final Executor executor
-	) {
-		return concurrent(fitness.compose(decoder), executor);
-	}
-
-	/**
-	 * Return a new fitness evaluator, which evaluates the fitness function of
-	 * the population (concurrently) with the given {@code executor}. This is
-	 * the default evaluator used by the evolution engine.
-	 *
-	 * @param fitness the fitness function, working on the <em>native</em>
-	 *        fitness domain
-	 * @param codec the codec used for transforming the fitness domain
-	 * @param executor the {@code Executor} used for evaluating the fitness
-	 *        function
-	 * @param <T> the <em>native</em> fitness domain type
-	 * @param <G> the gene type
-	 * @param <C> the fitness value type
-	 * @return a new (concurrent) fitness evaluator
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Evaluator<G, C> concurrent(
-		final Function<? super T, ? extends C> fitness,
-		final Codec<T, G> codec,
-		final Executor executor
-	) {
-		return concurrent(fitness, codec.decoder(), executor);
-	}
 
 	/**
 	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>

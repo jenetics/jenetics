@@ -31,7 +31,7 @@ import io.jenetics.Phenotype;
  * problems, like symbolic regression analyses with changing input data (time
  * series).
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final var nullifier = new FitnessNullifier<DoubleGene, Double>();
  *
  * final Engine<DoubleGene, Double> engine = Engine.builder(problem)
@@ -42,7 +42,7 @@ import io.jenetics.Phenotype;
  * // possible from a different thread. This forces the reevaluation of
  * // the fitness values at the start of the next generation.
  * nullifier.nullifyFitness();
- * }</pre>
+ * }
  *
  * @implNote
  * This interceptor is thread-safe and can be used from different threads. No

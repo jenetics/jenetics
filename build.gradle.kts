@@ -27,13 +27,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.7.1" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.3"
+	gradleVersion = "8.4"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -52,6 +51,18 @@ allprojects {
 		mavenCentral()
 	}
 
+	tasks.withType<JavaCompile>().configureEach {
+		options.compilerArgs.add("--enable-preview")
+	}
+
+	tasks.withType<Test>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
+	tasks.withType<JavaExec>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
@@ -59,41 +70,46 @@ allprojects {
 
 apply("./gradle/alljavadoc.gradle")
 
+subprojects {
+	val project = this
+
+	tasks.withType<Test> {
+		useTestNG()
+	}
+
+	plugins.withType<JavaPlugin> {
+
+		configure<JavaPluginExtension> {
+			modularity.inferModulePath.set(true)
+
+			sourceCompatibility = JavaVersion.VERSION_21
+			targetCompatibility = JavaVersion.VERSION_21
+
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(21)
+			}
+		}
+
+		setupJava(project)
+		setupTestReporting(project)
+		setupJavadoc(project, "")
+	}
+
+	tasks.withType<JavaCompile> {
+		modularity.inferModulePath.set(true)
+
+		options.compilerArgs.add("-Xlint:${xlint()}")
+	}
+
+	if (plugins.hasPlugin("maven-publish")) {
+		setupPublishing(project)
+	}
+}
+
 /**
  * Project configuration *after* the projects has been evaluated.
  */
 gradle.projectsEvaluated {
-	subprojects {
-		val project = this
-
-		tasks.withType<Test> {
-			useTestNG()
-		}
-
-		plugins.withType<JavaPlugin> {
-			configure<JavaPluginExtension> {
-				modularity.inferModulePath.set(true)
-
-				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.current()
-			}
-
-			setupJava(project)
-			setupTestReporting(project)
-			setupJavadoc(project, "")
-		}
-
-		tasks.withType<JavaCompile> {
-			modularity.inferModulePath.set(true)
-
-			options.compilerArgs.add("-Xlint:${xlint()}")
-		}
-
-		if (plugins.hasPlugin("maven-publish")) {
-			setupPublishing(project)
-		}
-	}
-
 	setupJavadoc(rootProject, "all")
 }
 
@@ -182,7 +198,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.addStringOption("docfilessubdirs")
@@ -211,10 +226,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 
 	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
-			directory = javadoc.destinationDir!!
-		}
-
 		project.tasks.register("${taskName}java2html") {
 			doLast {
 				val srcdir = file("${project.projectDir}/src/main/java")
@@ -233,11 +244,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 		}
 
 		javadoc.doLast {
-			val colorizer = project.tasks.findByName("${taskName}colorizer")
-			colorizer?.actions?.forEach {
-				it.execute(colorizer)
-			}
-
 			val java2html = project.tasks.findByName("${taskName}java2html")
 			java2html?.actions?.forEach {
 				it.execute(java2html)

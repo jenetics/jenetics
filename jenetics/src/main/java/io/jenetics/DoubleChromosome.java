@@ -97,8 +97,8 @@ public class DoubleChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final DoubleChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final DoubleChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final DoubleChromosome normalized = chromosome.map(Main::normalize);
 	 *
 	 * static double[] normalize(final double[] values) {
@@ -108,7 +108,7 @@ public class DoubleChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *

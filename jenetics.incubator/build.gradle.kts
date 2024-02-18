@@ -30,7 +30,7 @@ plugins {
 	`java-library`
 	idea
 	//antlr
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
 description = "Jenetics Genetic Incubator"

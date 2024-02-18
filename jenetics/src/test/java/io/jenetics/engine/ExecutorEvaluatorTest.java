@@ -26,12 +26,13 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcurrentEvaluatorTest {
+public class ExecutorEvaluatorTest {
 
 	@Test
 	public void evaluateSerial() {
@@ -43,8 +44,12 @@ public class ConcurrentEvaluatorTest {
 
 		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
 
-		final Evaluator<DoubleGene, Double> evaluator =
-			new ConcurrentEvaluator<>(gt -> gt.gene().doubleValue(), Runnable::run);
+		final Evaluator<DoubleGene, Double>
+			evaluator =
+			new FitnessEvaluator<>(
+				gt -> gt.gene().doubleValue(),
+				BatchExecutor.of(Runnable::run)
+			);
 
 		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(phenotypes);
 

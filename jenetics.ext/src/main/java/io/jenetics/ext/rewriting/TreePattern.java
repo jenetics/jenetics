@@ -62,16 +62,16 @@ import io.jenetics.ext.util.TreeNode;
  * The string representation of a tree pattern is a parenthesis tree string,
  * with a special wildcard syntax for arbitrary subtrees. The subtree
  * variables are prefixed with a '$' and must be a valid Java identifier.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> p1 = TreePattern.compile("add($a,add($b,sin(x)))");
  * final TreePattern<String> p2 = TreePattern.compile("pow($x,$y)");
- * }</pre>
+ * }
  *
  * If you need to have values which start with a '$' character, you can escape
  * it with a '\'.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> p1 = TreePattern.compile("concat($x,\\$foo)");
- * }</pre>
+ * }
  *
  * The second value, {@code $foo}, of the {@code concat} function is not treated
  * as <em>pattern</em> variable.
@@ -79,18 +79,18 @@ import io.jenetics.ext.util.TreeNode;
  * If you want to match against trees with a different value type than
  * {@code String}, you have to specify an additional type mapper function when
  * compiling the pattern string.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<Op<Double>> p = TreePattern.compile(
  *     "add($a,add($b,sin(x)))",
  *     MathOp::toMathOp
  * );
- * }</pre>
+ * }
  *
  * <p><b>Expanding trees</b></p>
  *
  * The second functionality of the tree pattern is to expand a pattern to a whole
  * tree with a given <em>pattern</em> variable to subtree mapping.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
  * final Map<Var<String>, Tree<String, ?>> vars = Map.of(
  *     Var.of("x"), TreeNode.parse("sin(x)"),
@@ -99,7 +99,7 @@ import io.jenetics.ext.util.TreeNode;
  *
  * final Tree<String, ?> tree = pattern.expand(vars);
  * assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
- * }</pre>
+ * }
  *
  * @see TreeRewriteRule
  * @see Tree#toParenthesesString()

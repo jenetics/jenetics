@@ -37,7 +37,7 @@ import io.jenetics.util.RandomRegistry;
  * +-+-+---+-+-+-+-+---+-+-+---+
  * | a | b | c | d | e | f | g |
  * +---+---+---+---+---+---+---+
- * }</pre>
+ * } </pre>
  * The probability that two genes are swapped is controlled by the
  * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by

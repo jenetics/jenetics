@@ -90,11 +90,11 @@ public record DoubleSummary(
 	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleSummary summary = stream
 	 *     .collect(toDoubleSummary(v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

@@ -31,7 +31,7 @@ import io.jenetics.Optimize;
  * <p>
  * As the following example shows, only one {@code VecFactory} instance should
  * be used for creating the vectors for a given multi-objective <em>problem</em>.
- * <pre>{@code
+ * {@snippet lang="java":
  * private static final VecFactory<double[]> FACTORY = VecFactory.ofDoubleVec(
  *     Optimize.MAXIMUM,
  *     Optimize.MINIMUM,
@@ -45,7 +45,7 @@ import io.jenetics.Optimize;
  *     // ...
  *     return FACTORY.newVec(result);
  * }
- * }</pre>
+ * }
  * In the example above, the first dimension of the created vector is maximized,
  * the following two are minimized, and the last vector component is again
  * maximized.

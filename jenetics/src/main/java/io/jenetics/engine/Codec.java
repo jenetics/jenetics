@@ -37,7 +37,7 @@ import io.jenetics.util.ISeq;
  * a {@code Codec} class. The example given in the {@link Engine} documentation
  * can be simplified as follows:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class RealFunction {
  *     // The conversion from the 'Genotype' to the argument type of the fitness
  *     // function is performed by the given 'Codec'. You can concentrate on the
@@ -52,19 +52,19 @@ import io.jenetics.util.ISeq;
  *              // and the appropriate Codec.
  *             .build(RealFunction::eval, Codecs.ofScalar(DoubleRange.of(0, 2*PI)))
  *             .build();
- *         ...
+ *         // ...
  *     }
  * }
- * }</pre>
+ * }
  *
  * The {@code Codec} needed for the above usage example, will look like this:
- * <pre>{@code
+ * {@snippet lang="java":
  * final DoubleRange domain = DoubleRange.of(0, 2*PI);
  * final Codec<Double, DoubleGene> codec = Codec.of(
  *     Genotype.of(DoubleChromosome.of(domain)),
  *     gt -> gt.chromosome().gene().allele()
  * );
- * }</pre>
+ * }
  *
  * Calling the {@link Codec#of(Factory, Function)} method is the usual way for
  * creating new {@code Codec} instances.
@@ -88,11 +88,11 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * must work together with the {@link #decoder()} function, which transforms
 	 * the genotype into an object of the problem domain.
 	 *
-	 * <pre>{@code
-	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * {@snippet lang="java":
+	 * final Codec<SomeObject, DoubleGene> codec = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 	 * final SomeObject arg = codec.decoder().apply(gt);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #decoder()
 	 *
@@ -113,12 +113,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
-	 * <pre>{@code
-	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * {@snippet lang="java":
+	 * final Codec<SomeObject, DoubleGene> codec = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 	 *
 	 * final SomeObject arg = codec.decoder().apply(gt);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.6
 	 *
@@ -137,10 +137,10 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * between {@code [0..1)}. Instead, the values now follow an exponential
 	 * function.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 *  final Codec<Double, DoubleGene> c = Codecs.ofScalar(DoubleRange.of(0, 1))
 	 *      .map(Math::exp);
-	 * }</pre>
+	 * }
 	 *
 	 * This method can also be used for creating non-trivial codes like split
 	 * ranges, as shown in the following example, where only values between
@@ -155,7 +155,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *      +-------+        +------+
 	 * }</pre>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<Double, DoubleGene> codec = Codecs
 	 *     .ofScalar(DoubleRange.of(0, 10))
 	 *     .map(v -> {
@@ -164,7 +164,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *             }
 	 *             return v;
 	 *         });
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.0
 	 *
@@ -245,7 +245,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * two {@code LocalDate} object (these are the argument types of the
 	 * component codecs) to a {@code Duration}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
 	 *     Genotype.of(LongChromosome.of(0, 10_000)),
 	 *     gt -> LocalDate.ofEpochDay(gt.gene().longValue())
@@ -274,7 +274,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * final Duration duration = durationCodec.decoder()
 	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.3
 	 *
@@ -310,7 +310,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * a problem into sub problems and combine them again.
 	 * <p>
 	 * The following example combines more than two sub-codecs into one.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<LocalDate, LongGene> dateCodec = Codec.of(
 	 *     Genotype.of(LongChromosome.of(0, 10_000)),
 	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
@@ -341,7 +341,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * final Duration duration = durationCodec.decoder()
 	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.3
 	 *

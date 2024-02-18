@@ -24,7 +24,7 @@ package io.jenetics;
  *
  * @implSpec
  * Implementations of the {@code NumericChromosome} interface must be
- * <em>immutable</em> and guarantee an efficient random access ({@code O(1)}) to
+ * <em>immutable</em> and guarantee efficient random access ({@code O(1)}) to
  * the genes. A {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see NumericGene

@@ -35,10 +35,10 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	/**
 	 * Return the root gene of this chromosome. Since the gene type is also a
 	 * {@link io.jenetics.ext.util.Tree}, you are able to assign it to one.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<A, ?> t1 = root();
 	 * final Tree<?, ?> t2 = root();
-	 * }</pre>
+	 * }
 	 * This method is also an alias for {@link #gene()}, which returns the
 	 * first gene of the chromosome.
 	 *

@@ -34,14 +34,14 @@ import io.jenetics.util.MSeq;
  * variance, skewness and kurtosis. The design of this class is similar to the
  * {@link java.util.DoubleSummaryStatistics} class.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Stream<Sample> stream = ...
  * final SampleSummaryStatistics statistics = stream.collect(
  *         () -> new SampleSummaryStatistics(parameterCount),
  *         SampleSummaryStatistics::accept,
  *         SampleSummaryStatistics::combine
  *     );
- * }</pre>
+ * }
  *
  * <p>
  * <b>Implementation note:</b>
@@ -141,11 +141,11 @@ public class SampleSummaryStatistics implements Consumer<Sample> {
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Stream<Sample> stream = ...
 	 * final SampleSummaryStatistics statistics = stream
 	 *     .collect(toDoubleMomentStatistics(parameterCount));
-	 * }</pre>
+	 * }
 	 *
 	 * @param parameterCount the number of parameter of the accumulated
 	 *        {@code Sample} objects

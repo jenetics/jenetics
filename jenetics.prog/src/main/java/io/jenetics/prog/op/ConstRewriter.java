@@ -35,11 +35,11 @@ import io.jenetics.ext.util.TreeNode;
  * <p>
  * The following example shows how to use the rewriter for a double operation
  * tree:
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2 + 3 + 4");
  * ConstRewriter.ofType(Double.class).rewrite(tree);
  * assert tree.getValue().equals(Const.of(10.0));
- * }</pre>
+ * }
  *
  * @param <T> the operation type the rewriter is working on
  *

@@ -136,7 +136,7 @@ public enum BoolOp implements Op<Boolean> {
 	 * an operation tree. If you use it that way, you should not forget to
 	 * re-index the tree variables.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Boolean>> tree = TreeNode.parse(
 	 *     "and(or(x,y),not(y))",
 	 *     BoolOp::toBoolOp
@@ -145,7 +145,7 @@ public enum BoolOp implements Op<Boolean> {
 	 * assert Program.eval(tree, false, false) == false;
 	 * Var.reindex(tree);
 	 * assert Program.eval(tree, false, false) == true;
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 *

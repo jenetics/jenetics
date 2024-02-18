@@ -38,14 +38,14 @@ import io.jenetics.util.Seq;
  * A problem with elitism is that it may cause the GA to converge to a local
  * optimum, so pure elitism is a race to the nearest local optimum.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
  *     // Number of best individuals preserved for next generation: elites
  *     3,
  *     // Selector used for selecting rest of population.
  *     new RouletteWheelSelector<>()
  * );
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0

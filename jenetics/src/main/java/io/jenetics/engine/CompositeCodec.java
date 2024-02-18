@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.util.Factory;

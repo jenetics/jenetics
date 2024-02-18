@@ -54,7 +54,7 @@ public class HPRMutatorTest {
 			.toArray();
 
 		Assert.assertNotEquals(a, b);
-
+		Math.floor(3.4);
 	}
 
 }

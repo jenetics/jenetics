@@ -55,14 +55,33 @@ import io.jenetics.util.Seq;
  * Represents a state of the GA after an evolution step. It also represents the
  * final state of an evolution process and can be created with an appropriate
  * collector:
- * <pre>{@code
- * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+ * {@snippet lang="java":
+ * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
  * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
- *     .optimize(Optimize.MINIMUM).build()
+ *     .optimize(Optimize.MINIMUM)
+ *     .build()
  *     .stream()
  *     .limit(100)
  *     .collect(EvolutionResult.toBestEvolutionResult());
- * }</pre>
+ * }
+ *
+ * @implSpec
+ * This class implements the {@link Comparable} interface, which compares two
+ * {@link EvolutionResult} objects according its <em>optimal</em> fitness value.
+ * This means that the better evolution result is always <em>greater</em>, no
+ * matter if the fitness function is minimized or maximized.
+ * {@snippet lang="java":
+ * final EvolutionResult<DoubleGene, Double> result1 = null; // @replace substring='null' replacement="..."
+ * final EvolutionResult<DoubleGene, Double> result2 = null; // @replace substring='null' replacement="..."
+ *
+ * if (result1.compareTo(result2) > 0) {
+ *      // Holds for maximizing evolution results.
+ *     assert result1.bestFitness() > result2.bestFitness();
+ *
+ *     // Holds for minimizing evolution results.
+  *    assert result1.bestFitness() < result2.bestFitness();
+ * }
+ * }
  *
  * @see EvolutionStart
  * @see Engine
@@ -380,14 +399,14 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
 	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestEvolutionResult());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -413,14 +432,14 @@ public final class EvolutionResult<
 	 * Return a collector which collects the best phenotype of an evolution
 	 * stream.
 	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Phenotype<EnumGene<Point>, Double> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -447,14 +466,14 @@ public final class EvolutionResult<
 	 * Return a collector which collects the best genotype of an evolution
 	 * stream.
 	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Genotype<EnumGene<Point>> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -483,14 +502,14 @@ public final class EvolutionResult<
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
 	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -526,14 +545,14 @@ public final class EvolutionResult<
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
 	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec()));
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -558,15 +577,15 @@ public final class EvolutionResult<
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
 	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(problem.codec().encoding(), 100))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
@@ -633,15 +652,15 @@ public final class EvolutionResult<
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
 	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(problem.codec().encoding()))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
@@ -665,15 +684,15 @@ public final class EvolutionResult<
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
 	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(10))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype(5));
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
@@ -700,15 +719,15 @@ public final class EvolutionResult<
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
 	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(EvolutionResult.toUniquePopulation())
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)

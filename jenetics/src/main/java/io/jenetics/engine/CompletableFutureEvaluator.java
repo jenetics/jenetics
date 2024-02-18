@@ -33,7 +33,7 @@ import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 8.0
  * @since 5.0
  */
 final class CompletableFutureEvaluator<
@@ -45,7 +45,7 @@ final class CompletableFutureEvaluator<
 
 	private final Function<? super Genotype<G>, ? extends CompletableFuture<C>> _fitness;
 
-	CompletableFutureEvaluator(
+	public CompletableFutureEvaluator(
 		final Function<? super Genotype<G>, ? extends CompletableFuture<C>> fitness
 	) {
 		_fitness = requireNonNull(fitness);

@@ -56,7 +56,7 @@ import io.jenetics.util.ISeq;
  *  Array: |11110011|10011101|01000000|00101010|
  *          |                 |        |      |
  *  Bit:    23                15       7      0
- * }</pre>
+ * } </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0

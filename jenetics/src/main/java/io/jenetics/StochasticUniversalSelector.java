@@ -112,9 +112,4 @@ public class StochasticUniversalSelector<
 		return selection.toISeq();
 	}
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
-
 }

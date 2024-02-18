@@ -72,10 +72,7 @@ final class MathStringTokenizer extends CharSequenceTokenizer {
 			final char value = c;
 
             switch (value) {
-                case ' ', '\r', '\n', '\t' -> {
-                    WS();
-                    continue;
-                }
+                case ' ', '\r', '\n', '\t' -> WS();
                 case '(' -> {
                     consume();
                     return LPAREN.token(value);
@@ -125,7 +122,10 @@ final class MathStringTokenizer extends CharSequenceTokenizer {
                     if (isJavaIdentifierStart(c)) {
                         return ID();
                     } else {
-                        throw new ParsingException(format("Got invalid character '%s' at position '%d'.", c, pos));
+                        throw new ParsingException(format(
+							"Got invalid character '%s' at position '%d'.",
+	                        c, pos
+                        ));
                     }
                 }
             }

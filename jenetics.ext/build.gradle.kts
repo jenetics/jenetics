@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
 description = "Jenetics Extension"
@@ -37,10 +37,10 @@ extra["moduleName"] = "io.jenetics.ext"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(libs.commons.math)
-	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
+	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.testng)
 	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
 }
 

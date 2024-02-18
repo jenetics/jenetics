@@ -101,10 +101,10 @@ public record LongMoments(
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<Long> stream = ...
-	 * final LongMoments moments = stream.collect(toLongMoments()));
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final Stream<Long> stream = null; // @replace substring='null' replacement="..."
+	 * final LongMoments moments = stream.collect(toLongMoments());
+	 * }
 	 *
 	 * @since 4.1
 	 *
@@ -121,11 +121,11 @@ public record LongMoments(
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongMoments moments = stream
 	 *     .collect(toLongMoments(v -> v.longValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

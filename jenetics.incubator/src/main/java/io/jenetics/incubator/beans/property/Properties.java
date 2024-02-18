@@ -185,11 +185,11 @@ public final class Properties {
 	 * starting {@code root} object. If used with the {@link #unapply(PathValue)}
 	 * method, all found descriptions are returned, including the descriptions
 	 * from the Java classes.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var object = "Some Value";
 	 * Properties.walk(PathEntry.of(object), Properties::extract)
 	 *     .forEach(System.out::println);
-	 * }</pre>
+	 * }
 	 * The code snippet above will create the following output:
 	 * <pre>
 	 * SimpleProperty[path=blank, value=Mutable[value=false, type=boolean, enclosureType=java.lang.String]]
@@ -226,7 +226,7 @@ public final class Properties {
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * record Author(String forename, String surname) { }
 	 * record Book(String title, int pages, List<Author> authors) { }
 	 *
@@ -238,18 +238,18 @@ public final class Properties {
 	 *
 	 * Properties.walk(PathEntry.of(object))
 	 *     .forEach(System.out::println);
-	 * }</pre>
+	 * }
 	 *
 	 * The code snippet above will create the following output:
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
 	 * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
 	 * SimpleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
 	 * SimpleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
 	 * SimpleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
 	 * SimpleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
-	 * }</pre>
+	 * }
 	 *
 	 * @see #walk(Object, String...)
 	 *

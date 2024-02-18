@@ -94,7 +94,8 @@ public final class BaseSeqSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public int characteristics() {
-		return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
+		return Spliterator.NONNULL | Spliterator.SIZED |
+			Spliterator.SUBSIZED | Spliterator.ORDERED;
 	}
 
 }

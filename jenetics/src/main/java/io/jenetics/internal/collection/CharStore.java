@@ -67,13 +67,13 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 		if (comparator == null) {
 			Arrays.sort(array, from, until);
 		} else {
-			final Character[] chars = new Character[array.length];
-			for (int i = 0; i < array.length; ++i) {
-				chars[i] = array[i];
+			final Character[] chars = new Character[until - from];
+			for (int i = from; i < until; ++i) {
+				chars[i - from] = array[i];
 			}
-			Arrays.sort(chars, from, until, comparator);
-			for (int i = 0; i < array.length; ++i) {
-				array[i] = chars[i];
+			Arrays.sort(chars, comparator);
+			for (int i = from; i < until; ++i) {
+				array[i] = chars[i - from];
 			}
 		}
 	}

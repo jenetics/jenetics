@@ -17,21 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.util;
 
 import static java.lang.Math.max;
 
 import java.io.Serial;
 import java.util.concurrent.RecursiveAction;
 
-import io.jenetics.util.BaseSeq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 8.0
  * @since 2.0
  */
-final class RunnablesAction extends RecursiveAction {
+final class BatchAction extends RecursiveAction {
 
 	@Serial
 	private static final long serialVersionUID = 1;
@@ -40,7 +38,7 @@ final class RunnablesAction extends RecursiveAction {
 	private final int _high;
 	private final int _low;
 
-	private RunnablesAction(
+	private BatchAction(
 		final BaseSeq<? extends Runnable> runnables,
 		final int low,
 		final int high
@@ -50,7 +48,7 @@ final class RunnablesAction extends RecursiveAction {
 		_high = high;
 	}
 
-	RunnablesAction(final BaseSeq<? extends Runnable> runnables) {
+	BatchAction(final BaseSeq<? extends Runnable> runnables) {
 		this(runnables, 0, runnables.length());
 	}
 
@@ -65,8 +63,8 @@ final class RunnablesAction extends RecursiveAction {
 		} else {
 			final int mid = (_low + _high) >>> 1;
 			invokeAll(
-				new RunnablesAction(_runnables, _low, mid),
-				new RunnablesAction(_runnables, mid, _high)
+				new BatchAction(_runnables, _low, mid),
+				new BatchAction(_runnables, mid, _high)
 			);
 		}
 	}

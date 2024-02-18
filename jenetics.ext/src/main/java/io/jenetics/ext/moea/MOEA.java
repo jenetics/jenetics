@@ -39,7 +39,7 @@ import io.jenetics.util.IntRange;
  * Collectors for collecting final <em>pareto-set</em> for multi-objective
  * optimization.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
  *      v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
  *      Codecs.ofVector(
@@ -59,8 +59,7 @@ import io.jenetics.util.IntRange;
  *  final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
  *      .limit(Limits.byFixedGeneration(50))
  *      .collect(MOEA.toParetoSet());
- * }</pre>
- *
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1

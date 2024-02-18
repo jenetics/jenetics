@@ -32,7 +32,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * grammars in
  * <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a>
  * format.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> grammar = Bnf.parse("""
  *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
  *     <op>   ::= + | - | * | /
@@ -40,13 +40,17 @@ import io.jenetics.ext.internal.parser.ParsingException;
  *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
  *     """
  * );
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
  * @version 7.1
  */
 public final class Bnf {
+
+	public static final StringTemplate.Processor<Cfg<String>, RuntimeException>
+	BNF = template -> Bnf.parse(template.interpolate());
+
 	private Bnf() {}
 
 	static boolean isSymbolChar(final int ch) {

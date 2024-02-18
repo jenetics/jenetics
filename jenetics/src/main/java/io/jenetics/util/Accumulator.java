@@ -34,7 +34,7 @@ import java.util.stream.Collector;
  * can deliver intermediate results while accumulating. An accumulator can be
  * created from any {@link Collector} with the ({@link #of(Collector)}) method.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Accumulator<Integer, ?, List<Integer>> accu =
  *     Accumulator.of(Collectors.toList());
  *
@@ -44,7 +44,7 @@ import java.util.stream.Collector;
  *     .collect(ISeq.toISeq());
  *
  * result.forEach(System.out::println);
- * }</pre>
+ * }
  * The code above gives you the following output.
  * <pre>
  * [0]
@@ -156,10 +156,10 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 	/**
 	 * Create a new accumulator from the given {@code collector}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Accumulator<Integer, ?, ISeq<Integer>> accu =
 	 *     Accumulator.of(ISeq.toISeq());
-	 * }</pre>
+	 * }
 	 *
 	 * @param collector the collector which is used for accumulation and creation
 	 *        the result value.

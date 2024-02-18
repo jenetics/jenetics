@@ -27,7 +27,7 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
 description = "Jenetics - Java Genetic Algorithm Library"
@@ -35,11 +35,11 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
 	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.prngine)
+	testImplementation(libs.testng)
 
 	jmh(libs.prngine)
 }

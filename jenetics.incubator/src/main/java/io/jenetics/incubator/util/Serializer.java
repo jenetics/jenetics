@@ -52,7 +52,7 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * The methods of this class allow appending additional objects to an existing
  * file.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * // Write three string objects to the given path and read them again.
  * Serializer.write(path, List.of("1", "2", "3"));
  * List<Object> objects = Serializer.readAllObjects(path);
@@ -67,15 +67,15 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * Serializer.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("6", "7", "8"));
- * }</pre>
+ * }
  *
  * It also allows reading object piecewise via a {@link Stream}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * try (Stream<Object> stream = Serializer.objects(Path.of("serialized-objects.bin"))) {
  *     stream.forEach(System.out::println);
  * }
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
@@ -216,24 +216,24 @@ public final class Serializer {
 	 * using Java serialization. For the <em>first</em> objects to be written
 	 * to the stream, the {@code append} flag must be set to {@code false}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var output = new ByteArrayOutputStream();
 	 * Serializer.write(output, List.of("1", "2", "3"), false);
 	 *
 	 * var input = new ByteArrayInputStream(output.toByteArray());
 	 * final List<Object> objects = Serializer.readAllObjects(output);
 	 * assert objects.equals(List.of("1", "2", "3"));
-	 * }</pre>
+	 * }
 	 *
 	 * When writing additional objects to the same output stream, the
 	 * {@code append} must be set to {@code true}.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * Serializer.write(output, List.of("4", "5"), true);
 	 * input = new ByteArrayInputStream(output.toByteArray());
 	 * objects = Serializer.readAllObjects(input);
 	 * assert objects.equals(List.of("1", "2", "3", "4", "5"));
-	 * }</pre>
+	 * }
 	 *
 	 * It is the responsibility of the caller to close the given {@code output}
 	 * stream when no longer needed.
@@ -290,21 +290,21 @@ public final class Serializer {
 	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
 	 * are appended to the existing file.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is created if
 	 * // it not exists or appended if the file already exists.
 	 * Serializer.write(path, List.of("1", "2", "3"));
-	 * }</pre>
+	 * }
 	 *
 	 * Truncating an existing file:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is truncated if
 	 * // it exists or created if the file doesn't exists.
 	 * Serializer.write(
 	 *     path, List.of("1", "2", "3"),
 	 *     StandardOpenOption.TRUNCATE_EXISTING
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see #write(Iterable, OutputStream, boolean)
 	 *
@@ -380,12 +380,12 @@ public final class Serializer {
 	 * objects efficiently. Note that the caller is responsible for closing the
 	 * returned object stream, which also closes the given {@code input} stream.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final InputStream input = ...;
 	 * try (Stream<Object> stream = Serializer.objects(input)) {
 	 *     stream.forEach(System.out::println);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see #objects(Path)
 	 *
@@ -440,11 +440,11 @@ public final class Serializer {
 	 * read huge files efficiently. Note that the caller is responsible for
 	 * closing the returned object stream.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * try (Stream<Object> stream = Serializer.objects(path)) {
 	 *     stream.forEach(System.out::println);
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see #objects(InputStream)
 	 *

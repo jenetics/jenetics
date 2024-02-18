@@ -49,7 +49,7 @@ public class ThreadIDPerf {
 
 	@Benchmark
 	public Object getThreadId() {
-		return Thread.currentThread().getId();
+		return Thread.currentThread().threadId();
 	}
 
 	public static void main(String[] args) throws RunnerException {

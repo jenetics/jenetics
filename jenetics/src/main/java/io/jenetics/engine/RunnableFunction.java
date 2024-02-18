@@ -17,47 +17,45 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.gradle;
+package io.jenetics.engine;
 
-import java.io.File;
-import java.io.IOException;
+import static java.util.Objects.requireNonNull;
 
-import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.InputFile;
-import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.TaskExecutionException;
+import java.util.function.Function;
 
 /**
+ * @param <T> the type of the input to the function
+ * @param <R> the type of the result of the function
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 6.1
+ * @version 8.0
+ * @since 8.0
  */
-public class ColorizerTask extends DefaultTask {
+final class RunnableFunction<T, R> implements Runnable {
+	private final T _input;
+	private final Function<? super T, ? extends R> _function;
 
-	private File _directory;
+	private R _result;
 
-	@InputFile
-	public File getDirectory() {
-		return _directory;
+	public RunnableFunction(
+		final T argument,
+		final Function<? super T, ? extends R> function
+	) {
+		_input = requireNonNull(argument);
+		_function = requireNonNull(function);
 	}
 
-	public void setDirectory(final File directory) {
-		_directory = directory;
+	public T input() {
+		return _input;
 	}
 
-	@TaskAction
-	public void colorize() {
-		try {
-			final Colorizer colorizer = new Colorizer(_directory);
-			colorizer.colorize();
+	public R result() {
+		return _result;
+	}
 
-			getLogger().lifecycle(
-				"Colorizer processed {} files and modified {}.",
-				colorizer.getProcessed(), colorizer.getModified()
-			);
-		} catch (final IOException e) {
-			throw new TaskExecutionException(this, e);
-		}
+	@Override
+	public void run() {
+		_result = _function.apply(_input);
 	}
 
 }

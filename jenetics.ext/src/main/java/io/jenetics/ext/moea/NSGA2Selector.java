@@ -67,14 +67,14 @@ public class NSGA2Selector<
 	 * Creates a new {@code NSGA2Selector} with the functions needed for
 	 * handling the multi-objective result type {@code C}. For the {@link Vec}
 	 * classes, a selector is created like in the following example:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * new NSGA2Selector<>(
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
 	 *     Vec<T>::length
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see #ofVec()
 	 *
@@ -140,14 +140,14 @@ public class NSGA2Selector<
 	/**
 	 * Return a new selector for the given result type {@code V}. This method is
 	 * a shortcut for
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * new NSGA2Selector<>(
 	 *     Vec<T>::dominance,
 	 *     Vec<T>::compare,
 	 *     Vec<T>::distance,
 	 *     Vec<T>::length
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}

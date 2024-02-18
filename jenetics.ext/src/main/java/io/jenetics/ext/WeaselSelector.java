@@ -42,7 +42,7 @@ import io.jenetics.util.Seq;
  * instances of the <i>best</i> {@link Phenotype}.
  * </p>
  * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *      // Set the 'WeaselSelector'.
  *     .selector(new WeaselSelector<>())
@@ -51,7 +51,7 @@ import io.jenetics.util.Seq;
  *      // Set the 'WeaselMutator'.
  *     .alterers(new WeaselMutator<>(0.05))
  *     .build();
- * }</pre>
+ * }
  *
  * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * @see WeaselMutator

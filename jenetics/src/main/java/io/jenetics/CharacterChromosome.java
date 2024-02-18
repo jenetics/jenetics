@@ -123,8 +123,8 @@ public class CharacterChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final CharacterChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final CharacterChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
 	 *
 	 * static int[] uppercase(final int[] values) {
@@ -133,7 +133,7 @@ public class CharacterChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *

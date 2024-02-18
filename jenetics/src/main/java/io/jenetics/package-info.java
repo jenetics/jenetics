@@ -43,7 +43,7 @@
  * implements the Factory interface and can therefore be used as prototype for
  * creating the initial Population and for creating new random Genotypes.</p>
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * import io.jenetics.BitChromosome;
  * import io.jenetics.BitGene;
  * import io.jenetics.Genotype;
@@ -77,7 +77,7 @@
  *         System.out.println("Hello World:\n" + result);
  *     }
  * }
- * }</pre>
+ * }
  *
  * <p>In contrast to other GA implementations, the library uses the concept of
  * an evolution stream (EvolutionStream) for executing the evolution steps.

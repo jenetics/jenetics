@@ -42,14 +42,14 @@ import io.jenetics.prog.op.Program;
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
  * it can be easily used as a result.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ProgramGene<Double> program = engine.stream()
  *     .limit(300)
  *     .collect(EvolutionResult.toBestGenotype())
  *     .getGene();
  *
  * final double result = program.eval(3.4);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.2
