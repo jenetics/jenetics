@@ -24,8 +24,6 @@ import static java.lang.Double.longBitsToDouble;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-import java.util.random.RandomGenerator;
-
 /**
  * This class defines some default distributions.
  *
@@ -102,7 +100,8 @@ public final class Distributions {
 	}
 
 	/**
-	 * Create a new triangle distribution with the given parameters.
+	 * Create a new triangle distribution with the given parameters. All
+	 * parameters must be within the range {@code [0, 1]}.
 	 * <p>
 	 *	<img src="doc-files/TriangularDistributionPDF.svg" width="450"
 	 *	     alt="Shift mutator" >
@@ -113,11 +112,12 @@ public final class Distributions {
 	 * @param c the middle point of the triangle
 	 * @param b the end point of the triangle
 	 * @return a new triangle distribution
-	 * @throws IllegalArgumentException if {@code b <= a || c > b || c < a}
+	 * @throws IllegalArgumentException if
+	 *         {@code a < 0 || b < 0 || c < 0 || b <= a || c > b || c < a}
 	 */
 	public static Distribution
 	triangular(final double a, final double c, final double b) {
-		if (b <= a || c > b || c < a) {
+		if (a < 0 || b < 0 || c < 0 || b <= a || c > b || c < a) {
 			throw new IllegalArgumentException(
 				"Invalid triangular: [a=%f, c=%f, b=%f].".formatted(a, c, b)
 			);
@@ -125,22 +125,15 @@ public final class Distributions {
 
 		final var fc = (c - a)/(b - a);
 
-		return new Distribution() {
-			@Override
-			public double sample(RandomGenerator random) {
-				final var r = random.nextDouble();
+		return random -> {
+			final var r = random.nextDouble();
 
-				if (Double.compare(r, 0.0) == 0) {
-					return 0;
-				} else if (r < fc) {
-					return a + sqrt(r*(b - a)*(c - a));
-				} else {
-					return b - sqrt((1 - r)*(b - a)*(b - c));
-				}
-			}
-			@Override
-			public Range range() {
-				return new Range(a, b);
+			if (Double.compare(r, 0.0) == 0) {
+				return 0;
+			} else if (r < fc) {
+				return a + sqrt(r*(b - a)*(c - a));
+			} else {
+				return b - sqrt((1 - r)*(b - a)*(b - c));
 			}
 		};
 	}
@@ -149,16 +142,14 @@ public final class Distributions {
 	 * Return a new <em>normalized</em> triangle distribution with the points
 	 * {@code [0, c, 1]}.
 	 *
-	 * @param c the middle point of the triangle within the range {@code [0, 1]}
+	 * @see #triangular(double, double, double)
+	 *
+	 * @param c the middle point of the triangle within the range {@code [0, 1}
 	 * @return a new triangle distribution
 	 * @throws IllegalArgumentException if c not within {@code [0, 1]}
 	 */
 	public static Distribution triangular(final double c) {
-		return triangular(
-			Distribution.Range.DEFAULT.min(),
-			c,
-			Distribution.Range.DEFAULT.max()
-		);
+		return triangular(0, c, 1.0);
 	}
 
 }

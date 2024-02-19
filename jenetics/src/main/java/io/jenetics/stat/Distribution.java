@@ -19,9 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.longBitsToDouble;
-
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.DoubleRange;
@@ -40,61 +37,18 @@ import io.jenetics.util.IntRange;
  * final double value = distribution.sample(random);
  * }
  *
+ * @apiNote
+ * The {@link #sample(RandomGenerator)} must return a value with the range
+ * {@code [0, 1)}.
+ *
+ * @see Distributions
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
 @FunctionalInterface
 public interface Distribution {
-
-	/**
-	 * The range of the sample point, created by a distribution.
-	 *
-	 * @param min the minimal sample point (inclusively)
-	 * @param max the maximal sample point (exclusively)
-	 */
-	record Range(double min, double max) {
-
-		/**
-		 * The default sample point range: {@code [0, 1)}.
-		 */
-		public static final Range DEFAULT = new Range(
-			0,
-			longBitsToDouble(doubleToLongBits(1) - 1)
-		);
-
-		/**
-		 * Create a new sample point range.
-		 *
-		 * @param min the minimal sample point (inclusively)
-		 * @param max the maximal sample point (exclusively)
-		 * @throws IllegalArgumentException if {@code min >= max}
-		 */
-		public Range {
-			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
-				throw new IllegalArgumentException(
-					"Invalid range: [min=%f, max=%f].".formatted(min, max)
-				);
-			}
-		}
-
-		/**
-		 * Checks if the given {@code value} is within {@code this} range.
-		 *
-		 * @param value the value to check
-		 * @throws IllegalArgumentException if the value is not within this
-		 *         range
-		 */
-		void check(final double value) {
-			if (!Double.isFinite(value) || value < min || value >= max) {
-				throw new IllegalArgumentException(
-					"Value %f not in valid range of [%f, %f)."
-						.formatted(value, min, max)
-				);
-			}
-		}
-
-	}
 
 	/**
 	 * Default uniform distribution by calling
@@ -109,25 +63,15 @@ public interface Distribution {
 	Distribution GAUSSIAN = RandomGenerator::nextGaussian;
 
 	/**
-	 * Create a new sample point within the defined range {@link #range()},
-	 * which obeys {@code this} <em>distribution</em>. For creating such a sample,
-	 * the given {@code random} generator is used.
+	 * Create a new sample point in the range {@code [0, 1)}, which obeys the
+	 * defined <em>distribution</em>. For creating such a sample, the given
+	 * {@code random} generator is used.
 	 *
 	 * @param random the random generator used for creating a sample point of
 	 *        the defined distribution
 	 * @return a new sample point between {@code [0, 1)}
 	 */
 	double sample(RandomGenerator random);
-
-	/**
-	 * Return the range of the sample points, created by {@code this}
-	 * distribution.
-	 *
-	 * @return the range of the sample points
-	 */
-	default Range range() {
-		return Range.DEFAULT;
-	}
 
 	/**
 	 * Create a new {@code double} sample point within the given range
@@ -139,17 +83,12 @@ public interface Distribution {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default double sample(RandomGenerator random, DoubleRange range) {
-		final var sample = normalize(range(), sample(random));
+		final var sample = sample(random);
+		assert Double.isFinite(sample);
+		assert sample >= 0.0;
+		assert sample < 1.0;
 
 		return (sample*(range.max() - range.min())) + range.min();
-	}
-
-	private static double normalize(final Range range, final double value) {
-		if (range.equals(Range.DEFAULT)) {
-			return value;
-		} else {
-			return value/(range.max - range.min);
-		}
 	}
 
 	/**
@@ -162,7 +101,10 @@ public interface Distribution {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default int sample(RandomGenerator random, IntRange range) {
-		final var sample = normalize(range(), sample(random));
+		final var sample = sample(random);
+		assert Double.isFinite(sample);
+		assert sample >= 0.0;
+		assert sample < 1.0;
 
 		return (int)((sample*(range.max() - range.min())) + range.min());
 	}
