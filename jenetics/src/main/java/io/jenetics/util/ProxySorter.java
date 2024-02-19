@@ -24,10 +24,9 @@ import static java.util.Objects.checkFromToIndex;
 import java.util.List;
 
 /**
- * This sorting methods doesn't sort a given array directly, instead
- * an index lookup array is returned which allows to access the array in a
+ * This sorting methods doesn't sort a given array directly; instead,
+ * an index lookup array is returned which allows accessing the array in a
  * sorted order.
- *
  * {@snippet lang="java":
  * final double[] array = new Random().doubles(100).toArray();
  * final int[] proxy = ProxySorter.sort(array);
@@ -143,7 +142,6 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array. The original
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
-	 *
 	 * {@snippet lang="java":
 	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
@@ -181,7 +179,6 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array. The original
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
-	 *
 	 * {@snippet lang="java":
 	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(

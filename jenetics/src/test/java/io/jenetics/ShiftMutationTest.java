@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -156,22 +157,26 @@ public class ShiftMutationTest extends MutatorTester {
 		};
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.ofDouble(-10.0, 20.0, 20);
+		final var histogram = Histogram.ofDouble(0.0, 1.0, 20);
 
 		//final var mean = 1.0 - sqrt(2)/2.0;
 		final var mean = sqrt(2)/2.0;
 		//final var distribution = Distributions.linear(mean);
-		final var distribution = Distributions.triangular(-10, 4, 20);
+		final var distribution = Distributions.triangular(0.2);
 
 		for (int i = 0; i < 100_000; ++i) {
 			histogram.accept(distribution.sample(random));
 		}
 
+		/*
 		for (var i : histogram.getHistogram()) {
 			System.out.println(i);
 		}
+		 */
+
+		histogram.print(System.out);
 	}
 
 }

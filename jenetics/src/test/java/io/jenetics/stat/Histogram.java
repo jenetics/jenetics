@@ -481,7 +481,7 @@ public class Histogram<C> implements Consumer<C> {
 
 		final Long[] separators = new Long[pts - 1];
 		for (int i = 1, n = pts - rest; i < n; ++i) {
-			separators[i - 1] = i*bulk + min;
+			separators[i - 1] = (long)i *bulk + min;
 		}
 		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
