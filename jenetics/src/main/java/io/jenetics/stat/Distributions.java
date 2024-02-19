@@ -112,12 +112,15 @@ public final class Distributions {
 	 * @param c the middle point of the triangle
 	 * @param b the end point of the triangle
 	 * @return a new triangle distribution
-	 * @throws IllegalArgumentException if
-	 *         {@code a < 0 || b < 0 || c < 0 || b <= a || c > b || c < a}
+	 * @throws IllegalArgumentException if one of the parameters is not within
+	 *         the range {@code [0, 1]} or {@code b <= a || c > b || c < a}
 	 */
 	public static Distribution
 	triangular(final double a, final double c, final double b) {
-		if (a < 0 || b < 0 || c < 0 || b <= a || c > b || c < a) {
+		if (a < 0 || b < 0 || c < 0  ||
+			a > 1 || b > 1 || c > 1 ||
+			b <= a || c > b || c < a)
+		{
 			throw new IllegalArgumentException(
 				"Invalid triangular: [a=%f, c=%f, b=%f].".formatted(a, c, b)
 			);
