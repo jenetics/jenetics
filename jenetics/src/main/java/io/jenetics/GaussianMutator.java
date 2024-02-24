@@ -19,8 +19,8 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.clamp;
 import static java.lang.Math.nextDown;
-import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.random.RandomGenerator;
 
