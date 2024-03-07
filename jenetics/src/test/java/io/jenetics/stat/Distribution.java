@@ -29,7 +29,7 @@ import io.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public interface Distr<C extends Comparable<? super C>> {
+public interface Distribution<C extends Comparable<? super C>> {
 
 	/**
 	 * Return the domain of this probability distribution.

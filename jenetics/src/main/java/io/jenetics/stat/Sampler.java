@@ -25,10 +25,10 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IntRange;
 
 /**
- * Interface for creating random samples, within the range {@code [0, 1)}, with
- * a given <em>distribution</em>. This interface isn't responsible for creating
- * the random numbers itself. It uses a {@link RandomGenerator} generator, which
- * is given by the caller.
+ * Interface for creating <em>normalized</em> random samples, within the range
+ * {@code [0, 1)}, with a given <em>distribution</em>. This interface isn't
+ * responsible for creating the random numbers itself. It uses a
+ * {@link RandomGenerator} generator, which is given by the caller.
  * {@snippet lang = java:
  * final var random = RandomGenerator.getDefault();
  * final var distribution = Sampler.linear(0.1);
@@ -58,12 +58,6 @@ public interface Sampler {
 	Sampler UNIFORM = RandomGenerator::nextDouble;
 
 	/**
-	 * Default gaussian distribution by calling
-	 * {@link RandomGenerator#nextGaussian()}.
-	 */
-	Sampler GAUSSIAN = RandomGenerator::nextGaussian;
-
-	/**
 	 * Create a new sample point in the range {@code [0, 1)}, which obeys the
 	 * defined <em>distribution</em>. For creating such a sample, the given
 	 * {@code random} generator is used.
@@ -89,7 +83,8 @@ public interface Sampler {
 		assert sample >= 0.0;
 		assert sample < 1.0;
 
-		return (sample*(range.max() - range.min())) + range.min();
+		return range.min() + sample*(range.max() - range.min());
+		// standardDeviation * normalized.sample() + mean;
 	}
 
 	/**
@@ -107,7 +102,7 @@ public interface Sampler {
 		assert sample >= 0.0;
 		assert sample < 1.0;
 
-		return (int)((sample*(range.max() - range.min())) + range.min());
+		return (int)(range.min() + sample*(range.max() - range.min()));
 	}
 
 }

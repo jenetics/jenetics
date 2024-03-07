@@ -101,16 +101,16 @@ public class ShuffleMutator<
 		 * Create a new random range generator, which uses the given distributions
 		 * for creating the range points.
 		 *
-		 * @param lengthDist the distribution of shifted gene count
-		 * @param indexDist the distribution of shift indexes
+		 * @param lengthSampler the sampler of shifted gene count
+		 * @param indexSampler the sampler of shift indexes
 		 * @return a new random range generator with the given parameters
 		 */
 		static RangeRandom of(
-			final Sampler lengthDist,
-			final Sampler indexDist
+			final Sampler lengthSampler,
+			final Sampler indexSampler
 		) {
-			requireNonNull(lengthDist);
-			requireNonNull(indexDist);
+			requireNonNull(lengthSampler);
+			requireNonNull(indexSampler);
 
 			return (random, size) -> {
 				if (size <= 1) {
@@ -120,8 +120,8 @@ public class ShuffleMutator<
 					);
 				}
 
-				final int lng = lengthDist.sample(random, IntRange.of(1, size));
-				final int a = indexDist.sample(random, IntRange.of(0, size - lng));
+				final int lng = lengthSampler.sample(random, IntRange.of(1, size));
+				final int a = indexSampler.sample(random, IntRange.of(0, size - lng));
 				final int b = a + lng;
 
 				return new Range(a, b);
@@ -135,11 +135,11 @@ public class ShuffleMutator<
 		 *
 		 * @see #of(Sampler, Sampler)
 		 *
-		 * @param lengthDist the distribution of shuffled gene count
+		 * @param lengthSampler the sampler of shuffled gene count
 		 * @return a new random shift generator with the given parameters
 		 */
-		static RangeRandom of(final Sampler lengthDist) {
-			return of(lengthDist, Sampler.UNIFORM);
+		static RangeRandom of(final Sampler lengthSampler) {
+			return of(lengthSampler, Sampler.UNIFORM);
 		}
 	}
 
