@@ -25,7 +25,7 @@
  */
 plugins {
 	`java-library`
-	idea
+	`java-test-fixtures`
 	`maven-publish`
 	alias(libs.plugins.jmh)
 }
@@ -42,6 +42,7 @@ dependencies {
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
+	testImplementation(testFixtures(project(":jenetics")))
 
 	jmh(libs.prngine)
 }

@@ -17,7 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.testfixtures.stat;
+
+import io.jenetics.stat.LongSummary;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
@@ -69,7 +71,7 @@ public class Histogram<C> implements Consumer<C> {
 	private final C[] _separators;
 
 	private long _count = 0;
-	private final long[] _histogram;
+	private final long[] _table;
 
 	/**
 	 * Create a new Histogram with the given class separators. The number of
@@ -88,10 +90,10 @@ public class Histogram<C> implements Consumer<C> {
 	public Histogram(final Comparator<C> comparator, final C... separators) {
 		_separators = check(separators);
 		_comparator = requireNonNull(comparator, "Comparator");
-		_histogram = new long[separators.length + 1];
+		_table = new long[separators.length + 1];
 
 		Arrays.sort(_separators, _comparator);
-		Arrays.fill(_histogram, 0L);
+		Arrays.fill(_table, 0L);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -107,7 +109,7 @@ public class Histogram<C> implements Consumer<C> {
 	@Override
 	public void accept(final C value) {
 		++_count;
-		++_histogram[index(value)];
+		++_table[index(value)];
 	}
 
 	/**
@@ -127,8 +129,8 @@ public class Histogram<C> implements Consumer<C> {
 		}
 
 		_count += other._count;
-		for (int i = other._histogram.length; --i >= 0;) {
-			_histogram[i] += other._histogram[i];
+		for (int i = other._table.length; --i >= 0;) {
+			_table[i] += other._table[i];
 		}
 	}
 
@@ -138,7 +140,7 @@ public class Histogram<C> implements Consumer<C> {
 	 * @param value the value to search.
 	 * @return the histogram index.
 	 */
-	final int index(final C value) {
+	public final int index(final C value) {
 		int low = 0;
 		int high = _separators.length - 1;
 
@@ -193,10 +195,10 @@ public class Histogram<C> implements Consumer<C> {
 		requireNonNull(histogram);
 
 		long[] hist = histogram;
-		if (histogram.length >= _histogram.length) {
-			System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
+		if (histogram.length >= _table.length) {
+			System.arraycopy(_table, 0, hist, 0, _table.length);
 		} else {
-			hist = _histogram.clone();
+			hist = _table.clone();
 		}
 
 		return hist;
@@ -208,7 +210,7 @@ public class Histogram<C> implements Consumer<C> {
 	 * @return a copy of the current histogram.
 	 */
 	public long[] getHistogram() {
-		return getHistogram(new long[_histogram.length]);
+		return getHistogram(new long[_table.length]);
 	}
 
 	public double[] getNormalizedHistogram() {
@@ -221,7 +223,7 @@ public class Histogram<C> implements Consumer<C> {
 	 * @return the number of classes of this histogram.
 	 */
 	public int length() {
-		return _histogram.length;
+		return _table.length;
 	}
 
 	/**
@@ -230,11 +232,11 @@ public class Histogram<C> implements Consumer<C> {
 	 * @return the class probabilities.
 	 */
 	public double[] getProbabilities() {
-		final double[] probabilities = new double[_histogram.length];
+		final double[] probabilities = new double[_table.length];
 
-		assert (LongSummary.sum(_histogram) == _count);
+		assert (LongSummary.sum(_table) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = (double)_histogram[i]/(double)_count;
+			probabilities[i] = (double)_table[i]/(double)_count;
 		}
 
 		return probabilities;
@@ -258,9 +260,9 @@ public class Histogram<C> implements Consumer<C> {
 	 */
 	public double χ2(final ToDoubleFunction<C> cdf, final C min, final C max) {
 		double χ2 = 0;
-		for (int j = 0; j < _histogram.length; ++j) {
+		for (int j = 0; j < _table.length; ++j) {
 			final long n0j = n0(j, cdf, min, max);
-			χ2 += ((_histogram[j] - n0j)*(_histogram[j] - n0j))/(double)n0j;
+			χ2 += ((_table[j] - n0j)*(_table[j] - n0j))/(double)n0j;
 		}
 		return χ2;
 	}
@@ -288,7 +290,7 @@ public class Histogram<C> implements Consumer<C> {
 			if (min != null) {
 				p0j = p0j - cdf.applyAsDouble(min);
 			}
-		} else if (j == _histogram.length - 1) {
+		} else if (j == _table.length - 1) {
 			if (max != null) {
 				p0j = cdf.applyAsDouble(max) - cdf.applyAsDouble(_separators[_separators.length - 1]);
 			} else {
@@ -329,7 +331,7 @@ public class Histogram<C> implements Consumer<C> {
 
 	@Override
 	public int hashCode() {
-		return hash(super.hashCode(), hash(_separators, hash(_histogram)));
+		return hash(super.hashCode(), hash(_separators, hash(_table)));
 	}
 
 	@Override
@@ -337,7 +339,7 @@ public class Histogram<C> implements Consumer<C> {
 		return obj == this ||
 			obj instanceof Histogram<?> other &&
 			Arrays.equals(_separators, other._separators) &&
-			Arrays.equals(_histogram, other._histogram);
+			Arrays.equals(_table, other._table);
 	}
 
 	@Override
@@ -527,12 +529,12 @@ public class Histogram<C> implements Consumer<C> {
 		for (int i = 0; i < length() - 1; ++i) {
 			max = _separators[i];
 			out.append("[" + min + "," + max + ")");
-			out.append(" " + _histogram[i] + "\n");
+			out.append(" " + _table[i] + "\n");
 			min = max;
 		}
 		if (length() - 1 > 0) {
 			out.append("[" + min + ",...)");
-			out.append(" " + _histogram[length() - 1] + "\n");
+			out.append(" " + _table[length() - 1] + "\n");
 		}
 
 		return out;

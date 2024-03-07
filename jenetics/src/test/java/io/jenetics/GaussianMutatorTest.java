@@ -25,7 +25,7 @@ import java.util.random.RandomGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Range;
 

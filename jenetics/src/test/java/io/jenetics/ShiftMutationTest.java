@@ -29,7 +29,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Distributions;
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;

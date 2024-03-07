@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
 
 /**
