@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.longBitsToDouble;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -58,7 +56,7 @@ public final class Distributions {
 
 		final class Range {
 			static final double MIN = 0.0;
-			static final double MAX = longBitsToDouble(doubleToLongBits(1) - 1);
+			static final double MAX = Math.nextDown(1.0);
 			static final double LIMIT1 = 1.0 - 1.0/sqrt(2);
 			static final double LIMIT2 = 1.0/sqrt(2);
 			static double clamp(final double value) {
