@@ -28,7 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Distributions;
+import io.jenetics.stat.Samplers;
 import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -164,7 +164,7 @@ public class ShiftMutationTest extends MutatorTester {
 		//final var mean = 1.0 - sqrt(2)/2.0;
 		final var mean = sqrt(2)/2.0;
 		//final var distribution = Distributions.linear(mean);
-		final var distribution = Distributions.triangular(0.2);
+		final var distribution = Samplers.triangular(0.2);
 
 		for (int i = 0; i < 100_000; ++i) {
 			histogram.accept(distribution.sample(random));

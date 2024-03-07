@@ -29,9 +29,9 @@ import static java.lang.Math.sqrt;
  * @version 8.0
  * @since 8.0
  */
-public final class Distributions {
+public final class Samplers {
 
-	private Distributions() {
+	private Samplers() {
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class Distributions {
 	 * @throws IllegalArgumentException if the given {@code mean} value is not
 	 *         within the range {@code [0, 1)}
 	 */
-	public static Distribution linear(final double mean) {
+	public static Sampler linear(final double mean) {
 		if (mean < 0 || mean >= 1) {
 			throw new IllegalArgumentException(
 				"Mean value not within allowed range [0, 1): %f."
@@ -113,7 +113,7 @@ public final class Distributions {
 	 * @throws IllegalArgumentException if one of the parameters is not within
 	 *         the range {@code [0, 1]} or {@code b <= a || c > b || c < a}
 	 */
-	public static Distribution
+	public static Sampler
 	triangular(final double a, final double c, final double b) {
 		if (a < 0 || b < 0 || c < 0  ||
 			a > 1 || b > 1 || c > 1 ||
@@ -149,7 +149,7 @@ public final class Distributions {
 	 * @return a new triangle distribution
 	 * @throws IllegalArgumentException if c not within {@code [0, 1]}
 	 */
-	public static Distribution triangular(final double c) {
+	public static Sampler triangular(final double c) {
 		return triangular(0, c, 1.0);
 	}
 

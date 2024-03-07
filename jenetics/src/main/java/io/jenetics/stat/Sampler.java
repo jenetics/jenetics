@@ -31,7 +31,7 @@ import io.jenetics.util.IntRange;
  * is given by the caller.
  * {@snippet lang = java:
  * final var random = RandomGenerator.getDefault();
- * final var distribution = Distribution.linear(0.1);
+ * final var distribution = Sampler.linear(0.1);
  * // Create a new sample point, which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
  * final double value = distribution.sample(random);
@@ -41,7 +41,7 @@ import io.jenetics.util.IntRange;
  * The {@link #sample(RandomGenerator)} must return a value with the range
  * {@code [0, 1)}.
  *
- * @see Distributions
+ * @see Samplers
  * @see <a href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">Inverse transform sampling</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,19 +49,19 @@ import io.jenetics.util.IntRange;
  * @since 8.0
  */
 @FunctionalInterface
-public interface Distribution {
+public interface Sampler {
 
 	/**
 	 * Default uniform distribution by calling
 	 * {@link RandomGenerator#nextDouble()}.
 	 */
-	Distribution UNIFORM = RandomGenerator::nextDouble;
+	Sampler UNIFORM = RandomGenerator::nextDouble;
 
 	/**
 	 * Default gaussian distribution by calling
 	 * {@link RandomGenerator#nextGaussian()}.
 	 */
-	Distribution GAUSSIAN = RandomGenerator::nextGaussian;
+	Sampler GAUSSIAN = RandomGenerator::nextGaussian;
 
 	/**
 	 * Create a new sample point in the range {@code [0, 1)}, which obeys the

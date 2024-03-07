@@ -27,11 +27,11 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class DistributionsTest {
+public class SamplersTest {
 
 	@Test
 	public void linear() {
-		final var dist = Distributions.linear(0.12);
+		final var dist = Samplers.linear(0.12);
 		final var random = RandomGenerator.getDefault();
 		final var stat = new DoubleSummaryStatistics();
 		for (int i = 0; i < 100000; ++i) {

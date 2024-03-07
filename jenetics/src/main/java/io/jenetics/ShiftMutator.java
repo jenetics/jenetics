@@ -20,7 +20,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.internal.math.Subset;
-import io.jenetics.stat.Distribution;
+import io.jenetics.stat.Sampler;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
@@ -152,8 +152,8 @@ public class ShiftMutator<
 		 * @return a new random shift generator with the given parameters
 		 */
 		static RangeRandom of(
-			final Distribution lengthDist,
-			final Distribution indexDist
+			final Sampler lengthDist,
+			final Sampler indexDist
 		) {
 			requireNonNull(lengthDist);
 			requireNonNull(indexDist);
@@ -180,13 +180,13 @@ public class ShiftMutator<
 		 * distributions for creating the shift points. The shift indexes are
 		 * uniformly distributed.
 		 *
-		 * @see #of(Distribution, Distribution)
+		 * @see #of(Sampler, Sampler)
 		 *
 		 * @param lengthDist the distribution of shifted gene count
 		 * @return a new random shift generator with the given parameters
 		 */
-		static RangeRandom of(final Distribution lengthDist) {
-			return of(lengthDist, Distribution.UNIFORM);
+		static RangeRandom of(final Sampler lengthDist) {
+			return of(lengthDist, Sampler.UNIFORM);
 		}
 
 	}
