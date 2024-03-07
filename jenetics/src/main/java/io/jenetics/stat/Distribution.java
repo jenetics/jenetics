@@ -29,19 +29,20 @@ import io.jenetics.util.IntRange;
  * a given <em>distribution</em>. This interface isn't responsible for creating
  * the random numbers itself. It uses a {@link RandomGenerator} generator, which
  * is given by the caller.
- * {@snippet lang=java:
+ * {@snippet lang = java:
  * final var random = RandomGenerator.getDefault();
  * final var distribution = Distribution.linear(0.1);
  * // Create a new sample point, which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
  * final double value = distribution.sample(random);
- * }
+ *}
  *
  * @apiNote
  * The {@link #sample(RandomGenerator)} must return a value with the range
  * {@code [0, 1)}.
  *
  * @see Distributions
+ * @see <a href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">Inverse transform sampling</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0

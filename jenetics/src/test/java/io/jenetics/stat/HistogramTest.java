@@ -172,4 +172,9 @@ public class HistogramTest {
 		);
 	}
 
+	public static void main(String[] args) {
+		final Histogram<Double> serial = Histogram.ofDouble(1.0, 2.0, 10);
+		System.out.println(serial);
+	}
+
 }
