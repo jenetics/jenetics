@@ -28,8 +28,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.stat.dist;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 

@@ -22,11 +22,11 @@ package io.jenetics.stat;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import io.jenetics.testfixtures.stat.Histogram;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.RandomRegistry;
 
 /**

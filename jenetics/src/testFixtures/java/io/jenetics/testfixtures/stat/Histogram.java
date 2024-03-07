@@ -19,8 +19,6 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import io.jenetics.stat.LongSummary;
-
 import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
@@ -36,6 +34,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
+
+import io.jenetics.stat.LongSummary;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
