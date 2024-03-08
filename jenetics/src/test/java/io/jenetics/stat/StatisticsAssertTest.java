@@ -40,7 +40,7 @@ public class StatisticsAssertTest {
 		random.doubles(10_000).forEach(hist);
 
 		assertHistogram(hist).isUniform();
-		System.out.println(hist);
+		//System.out.println(hist);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class StatisticsAssertTest {
 		}
 
 		assertHistogram(hist).isNormal(4, 5);
-		System.out.println(hist);
+		//System.out.println(hist);
 	}
 
 }

@@ -39,7 +39,7 @@ import io.jenetics.testfixtures.stat.Histogram;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class baseRandomTest {
+public class RandomsTest {
 
 	@DataProvider(name = "nextBigIntegerData")
 	public Object[][] nextBigIntegerData() {
