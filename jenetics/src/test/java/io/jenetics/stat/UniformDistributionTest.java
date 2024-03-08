@@ -22,6 +22,8 @@ package io.jenetics.stat;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.testfixtures.stat.UniformDistribution;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

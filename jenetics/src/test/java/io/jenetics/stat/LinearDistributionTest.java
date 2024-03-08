@@ -22,6 +22,7 @@ package io.jenetics.stat;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.testfixtures.stat.LinearDistribution;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ObjectTester;

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.testfixtures.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,9 +25,6 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
-import io.jenetics.testfixtures.stat.Cdf;
-import io.jenetics.testfixtures.stat.Distribution;
-import io.jenetics.testfixtures.stat.Pdf;
 import io.jenetics.util.DoubleRange;
 
 
