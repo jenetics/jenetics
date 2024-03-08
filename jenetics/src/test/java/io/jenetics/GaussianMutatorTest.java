@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.Range;
+import io.jenetics.testfixtures.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

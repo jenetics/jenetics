@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.testfixtures.util;
 
 import static io.jenetics.internal.util.Hashes.hash;
 

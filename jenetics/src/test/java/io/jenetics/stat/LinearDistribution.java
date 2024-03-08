@@ -26,7 +26,8 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
-import io.jenetics.util.Range;
+import io.jenetics.testfixtures.stat.Distribution;
+import io.jenetics.testfixtures.util.Range;
 
 
 /**

@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.testfixtures.stat;
+
+import io.jenetics.testfixtures.util.Range;
 
 import java.util.function.ToDoubleFunction;
-
-import io.jenetics.util.Range;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability

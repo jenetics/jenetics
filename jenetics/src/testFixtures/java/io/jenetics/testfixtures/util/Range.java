@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.testfixtures.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -36,7 +36,10 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public Range(final C min, final C max) {
-		super(requireNonNull(min, "Min value"), requireNonNull(max, "Max value"));
+		super(
+			requireNonNull(min, "Min value"),
+			requireNonNull(max, "Max value")
+		);
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"Min value must be smaller the max value: [%s, %s]", min, max

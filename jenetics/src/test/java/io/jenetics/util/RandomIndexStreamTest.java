@@ -25,6 +25,7 @@ import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
+import io.jenetics.testfixtures.util.Range;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
