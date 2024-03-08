@@ -54,7 +54,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 				.map(g -> Long.parseLong(g.allele().toString()))
 				.forEach(histogram::accept);
 
-			final double[] expected = dist.uniform(histogram.binCount());
+			final double[] expected = dist.uniform(histogram.binCount() - 2);
 			assertDistribution(histogram, expected);
 		});
     }

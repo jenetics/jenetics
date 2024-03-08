@@ -27,7 +27,6 @@ import java.util.Objects;
 
 import io.jenetics.util.DoubleRange;
 
-
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
  * Uniform distribution</a> class.
@@ -39,8 +38,6 @@ import io.jenetics.util.DoubleRange;
 public class UniformDistribution implements Distribution {
 
 	private final DoubleRange _domain;
-	private final double _min;
-	private final double _max;
 
 	/**
 	 * Create a new uniform distribution with the given {@code domain}.
@@ -50,8 +47,6 @@ public class UniformDistribution implements Distribution {
 	 */
 	public UniformDistribution(final DoubleRange domain) {
 		_domain = requireNonNull(domain, "Domain");
-		_min = _domain.min();
-		_max = _domain.max();
 	}
 
 	/**
@@ -87,7 +82,10 @@ public class UniformDistribution implements Distribution {
 	 */
 	@Override
 	public Pdf pdf() {
-		return x ->  (x >= _min && x <= _max) ? 1.0/(_max - _min) : 0.0;
+		return x ->
+			(x >= _domain.min() && x <= _domain.max())
+				? 1.0/(_domain.max() - _domain.min())
+				: 0.0;
 	}
 
 	/**
@@ -108,15 +106,15 @@ public class UniformDistribution implements Distribution {
 	@Override
 	public Cdf cdf() {
 		return x -> {
-			final double divisor = _max - _min;
+			final double divisor = _domain.max() - _domain.min();
 
 			double result = 0.0;
-			if (x < _min) {
+			if (x < _domain.min()) {
 				result = 0.0;
-			} else if (x > _max) {
+			} else if (x > _domain.max()) {
 				result = 1.0;
 			} else {
-				result = (x - _min)/divisor;
+				result = (x - _domain.min())/divisor;
 			}
 
 			return result;

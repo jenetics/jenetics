@@ -24,12 +24,10 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.normalize;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import java.util.stream.Collector;
 
-import io.jenetics.stat.LongSummary;
+import io.jenetics.util.DoubleRange;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -61,7 +59,7 @@ import io.jenetics.stat.LongSummary;
  */
 public class Histogram implements DoubleConsumer {
 
-	private final double[] _bins;
+	private final double[] _separators;
 	private final long[] _table;
 
 	private long _count = 0;
@@ -71,24 +69,18 @@ public class Histogram implements DoubleConsumer {
 	 * classes is {@code separators.length + 1}. A valid histogram consists of
 	 * at least two classes (with one separator).
 	 *
-	 * @param bins the class separators.
+	 * @param separators the class separators.
 	 * @throws NullPointerException if the classes of one of its elements
 	 *         or the {@code comparator} is {@code null}.
 	 * @throws IllegalArgumentException if the given separators array is empty.
 	 */
-	public Histogram(final double... bins) {
-		_bins = bins;
-		_table = new long[bins.length + 1];
+	public Histogram(final double... separators) {
+		_separators = separators.clone();
+		_table = new long[separators.length + 1];
 	}
 
-	@SuppressWarnings("unchecked")
-	private static <C> C[] check(final C... classes) {
-		List.of(classes).forEach(Objects::requireNonNull);
-		if (classes.length == 0) {
-			throw new IllegalArgumentException("Given classes array is empty.");
-		}
-
-		return classes;
+	public DoubleRange range() {
+		return DoubleRange.of(_separators[0], _separators[_separators.length - 1]);
 	}
 
 	@Override
@@ -101,13 +93,13 @@ public class Histogram implements DoubleConsumer {
 	 * Combine the given {@code other} histogram with {@code this} one.
 	 *
 	 * @param other the histogram to add.
-	 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
+	 * @throws IllegalArgumentException if the {@link #binCount()} and the
 	 *         separators of {@code this} and the given {@code histogram} are
 	 *         not the same.
 	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
 	 */
 	public void combine(final Histogram other) {
-		if (!Arrays.equals(_bins, other._bins)) {
+		if (!Arrays.equals(_separators, other._separators)) {
 			throw new IllegalArgumentException(
 				"The histogram separators are not equals."
 			);
@@ -127,49 +119,26 @@ public class Histogram implements DoubleConsumer {
 	 */
 	public int index(final double value) {
 		int low = 0;
-		int high = _bins.length - 1;
+		int high = _separators.length - 1;
 
 		while (low <= high) {
-			if (value < _bins[low]) {
+			if (value < _separators[low]) {
 				return low;
 			}
-			if (value >= _bins[high]) {
+			if (value >= _separators[high]) {
 				return high + 1;
 			}
 
 			final int mid = (low + high) >>> 1;
-			if (value < _bins[mid]) {
+			if (value < _separators[mid]) {
 				high = mid;
-			} else if (value >= _bins[mid]) {
+			} else if (value >= _separators[mid]) {
 				low = mid + 1;
 			}
 		}
 
 		throw new AssertionError("This line will never be reached.");
 	}
-
-//	/**
-//	 * Copy the histogram into the given array. If the array is big enough
-//	 * the same array is returned, otherwise a new array is created and
-//	 * returned. The length of the histogram array is the number of separators
-//	 * plus one ({@code getSeparators().length + 1}).
-//	 *
-//	 * @param histogram array to copy the histogram.
-//	 * @return the histogram array.
-//	 * @throws NullPointerException if the given array is {@code null}.
-//	 */
-//	public long[] getHistogram(final long[] histogram) {
-//		requireNonNull(histogram);
-//
-//		long[] hist = histogram;
-//		if (histogram.length >= _table.length) {
-//			System.arraycopy(_table, 0, hist, 0, _table.length);
-//		} else {
-//			hist = _table.clone();
-//		}
-//
-//		return hist;
-//	}
 
 	/**
 	 * Return a copy of the current histogram.
@@ -181,8 +150,8 @@ public class Histogram implements DoubleConsumer {
 	}
 
 	public long[] hist() {
-		final var hist = new long[binCount()];
-		System.arraycopy(_table, 1, hist, 0, binCount());
+		final var hist = new long[_table.length - 2];
+		System.arraycopy(_table, 1, hist, 0, hist.length);
 		return hist;
 	}
 
@@ -195,37 +164,32 @@ public class Histogram implements DoubleConsumer {
 	 *
 	 * @return the number of classes of this histogram.
 	 */
-	public int bucketCount() {
-		return _bins.length - 1;
-	}
-
 	public int binCount() {
-		return _bins.length - 1;
-	}
-
-	/**
-	 * Return the <i>histogram</i> as probability array.
-	 *
-	 * @return the class probabilities.
-	 */
-	public double[] getProbabilities() {
-		final double[] probabilities = new double[_table.length];
-
-		assert (LongSummary.sum(_table) == _count);
-		for (int i = 0; i < probabilities.length; ++i) {
-			probabilities[i] = (double)_table[i]/(double)_count;
-		}
-
-		return probabilities;
+		return _table.length;
 	}
 
 	public double chi2(final Cdf cdf) {
 		requireNonNull(cdf);
 
-		double chi2 = 0;
-		for (int i = 0; i < binCount(); ++i) {
-			final var e = p_i(i, cdf)*_count;
-			final var o2 = _table[i + 1]*_table[i + 1];
+		double chi2 = 0, e = 0, o2 = 0;
+
+		if (_table[0] != 0) {
+			e = cdf.apply(_separators[0])*_count;
+			o2 = _table[0]*_table[0];
+			chi2 += o2/e;
+		}
+
+		for (int i = 0; i < _table.length - 2; ++i) {
+			if (_table[i + 1] != 0) {
+				e = p_i(i, cdf)*_count;
+				o2 = _table[i + 1]*_table[i + 1];
+				chi2 += o2/e;
+			}
+		}
+
+		if (_table[_table.length - 1] != 0) {
+			e = cdf.apply(Double.MAX_VALUE)*_count;
+			o2 = _table[_table.length - 1]*_table[_table.length - 1];
 			chi2 += o2/e;
 		}
 
@@ -233,16 +197,16 @@ public class Histogram implements DoubleConsumer {
 	}
 
 	private double p_i(final int i, final Cdf cdf) {
-		return cdf.apply(_bins[i + 1]) - cdf.apply(_bins[i]);
+		return cdf.apply(_separators[i + 1]) - cdf.apply(_separators[i]);
 	}
 
-	public long getCount() {
+	public long sampleCount() {
 		return _count;
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_bins) + "\n" +
+		return Arrays.toString(_separators) + "\n" +
 			Arrays.toString(_table) +
 			"\nSamples: " + _count;
 	}

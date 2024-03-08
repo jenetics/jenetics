@@ -19,7 +19,7 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -31,33 +31,52 @@ import org.apache.commons.math3.stat.inference.ChiSquareTest;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class StatisticsAssert {
-	private StatisticsAssert() {}
+	private StatisticsAssert() {
+	}
 
-	public static void assertDistribution(
+	public static final class DistributionAssert {
+		private final Histogram _histogram;
+
+		private DistributionAssert(final Histogram histogram) {
+			_histogram = requireNonNull(histogram);
+		}
+
+		public void follows(final Distribution distribution) {
+			assertDistribution(_histogram, distribution);
+		}
+
+		public void isUniform() {
+			follows(new UniformDistribution(_histogram.range()));
+		}
+
+		public void isNormal(double mean, double stddev) {
+			follows(new NormalDistribution(mean, stddev));
+		}
+
+	}
+
+	public static DistributionAssert assertHistogram(Histogram histogram) {
+		return new DistributionAssert(histogram);
+	}
+
+	private static void assertDistribution(
 		final Histogram histogram,
 		final Distribution distribution
 	) {
-		final double χ2 =  histogram.chi2(distribution.cdf());
-		final int degreeOfFreedom = histogram.bucketCount();
+		final double chi2 =  histogram.chi2(distribution.cdf());
+		final int degreeOfFreedom = histogram.table().length;
 		assert (degreeOfFreedom > 0);
 
-		final double maxChi = chi(0.999, degreeOfFreedom)*2;
+		final double maxChi = chi(0.999, degreeOfFreedom);
+		System.out.println("MAX_CHI: " + maxChi + ", chi2: " + chi2);
 
-		if (χ2 > maxChi) {
-			System.out.println(format(
-				"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
+		assertThat(chi2)
+			.withFailMessage("""
+				The histogram %s doesn't follow the distribution %s.
+				χ2 must be smaller than %f but was %f.
+				""",
 				histogram, distribution,
-				maxChi, χ2
-			));
-		}
-
-		assertThat(χ2)
-			.withFailMessage(
-				"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
-				histogram, distribution,
-				maxChi, χ2
+				maxChi, chi2
 			)
 			.isLessThanOrEqualTo(maxChi);
 	}
@@ -82,7 +101,7 @@ public final class StatisticsAssert {
 		final long[] dist = histogram.hist();
 
 		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
-		final double max_χ2 = chi(1 - alpha, histogram.binCount());
+		final double max_χ2 = chi(1 - alpha, dist.length);
 		final boolean reject = χ2 > max_χ2*safety;
 		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
 
@@ -108,7 +127,7 @@ public final class StatisticsAssert {
 	}
 
 	public static void assertUniformDistribution(final Histogram histogram) {
-		final double[] expected = dist.uniform(histogram.binCount());
+		final double[] expected = dist.uniform(histogram.binCount() - 2);
 		assertDistribution(histogram, expected);
 	}
 

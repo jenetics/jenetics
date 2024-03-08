@@ -19,11 +19,10 @@
  */
 package io.jenetics.stat;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
 
-import java.util.Arrays;
+import java.util.random.RandomGenerator;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.testfixtures.stat.Histogram;
@@ -31,36 +30,30 @@ import io.jenetics.testfixtures.stat.Histogram;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class HistogramTest {
+public class StatisticsAssertTest {
 
 	@Test
-	public void create() {
-		final double begin = 12;
-		final double end = 123;
-		final int elements = 10;
+	public void assertUniformDistribution() {
+		final var hist = Histogram.of(0, 1, 20);
 
-		var histogram = Histogram.of(begin, end, elements);
-		Assert.assertEquals(histogram.binCount(), elements + 2);
-		Assert.assertEquals(histogram.table(), new long[elements + 2]);
+		final var random = RandomGenerator.getDefault();
+		random.doubles(10_000).forEach(hist);
+
+		assertHistogram(hist).isUniform();
+		System.out.println(hist);
 	}
 
 	@Test
-	public void accumulate() {
-		final long begin = 0;
-		final long end = 10;
-		final int binCount = 9;
+	public void assertNormalDistribution() {
+		final var hist = Histogram.of(-2, 2, 10);
 
-		var histogram = Histogram.of(begin, end, binCount);
-		for (int i = 0; i < binCount*1000; ++i) {
-			final var value = i%binCount + 1;
-			histogram.accept(value);
+		final var random = RandomGenerator.getDefault();
+		for (int i = 0; i < 100_000; ++i) {
+			hist.accept(random.nextGaussian(4, 5));
 		}
 
-		final long[] expected = new long[binCount + 2];
-		Arrays.fill(expected, 1000);
-		expected[0] = 0;
-		expected[expected.length - 1] = 0;
-		assertThat(histogram.table()).isEqualTo(expected);
+		assertHistogram(hist).isNormal(4, 5);
+		System.out.println(hist);
 	}
 
 }
