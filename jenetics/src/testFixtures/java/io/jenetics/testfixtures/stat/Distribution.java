@@ -19,9 +19,7 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import io.jenetics.testfixtures.util.Range;
-
-import java.util.function.ToDoubleFunction;
+import io.jenetics.util.DoubleRange;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
@@ -29,14 +27,14 @@ import java.util.function.ToDoubleFunction;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public interface Distribution<C extends Comparable<? super C>> {
+public interface Distribution {
 
 	/**
 	 * Return the domain of this probability distribution.
 	 *
 	 * @return the domain of this probability distribution.
 	 */
-	Range<C> domain();
+	DoubleRange domain();
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
@@ -45,7 +43,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
-	ToDoubleFunction<C> cdf();
+	Cdf cdf();
 
 	/**
 	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
@@ -54,6 +52,6 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Probability Density Function</i>.
 	 */
-	ToDoubleFunction<C> pdf();
+	Pdf pdf();
 
 }

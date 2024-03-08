@@ -21,6 +21,7 @@ package io.jenetics.stat;
 
 import java.util.function.ToDoubleFunction;
 
+import io.jenetics.util.DoubleRange;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -33,45 +34,42 @@ import io.jenetics.testfixtures.util.Range;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class LinearDistributionTest
-	extends ObjectTester<LinearDistribution<Double>>
+	extends ObjectTester<LinearDistribution>
 {
 
 	@Override
-	protected Factory<LinearDistribution<Double>> factory() {
+	protected Factory<LinearDistribution> factory() {
 		return () -> {
 			final var random = RandomRegistry.random();
 
 			final double min = random.nextInt(100) + 100;
 			final double max = random.nextInt(100) + 100 + min;
 			final double y2 = random.nextDouble();
-			final LinearDistribution<Double> dist =
-				new LinearDistribution<>(new Range<>(min, max), y2);
-
-			return dist;
+			return new LinearDistribution(DoubleRange.of(min, max), y2);
 		};
 	}
 
 	@Test
 	public void pdf() {
-		final Range<Double> domain = new Range<>(0.0, 1.0);
-		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
-		final ToDoubleFunction<Double> pdf = dist.pdf();
+		final var domain = DoubleRange.of(0.0, 1.0);
+		final var dist = new LinearDistribution(domain, 0);
+		final var pdf = dist.pdf();
 
 		for (int i = 0; i <= 10; ++i) {
 			final double x = i/10.0;
-			Assert.assertEquals(x*2, pdf.applyAsDouble(x), 0.00001);
+			Assert.assertEquals(x*2, pdf.apply(x), 0.00001);
 		}
 	}
 
 	@Test
 	public void cdf() {
-		final Range<Double> domain = new Range<>(0.0, 1.0);
-		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
-		final ToDoubleFunction<Double> cdf = dist.cdf();
+		final var domain = DoubleRange.of(0.0, 1.0);
+		final var dist = new LinearDistribution(domain, 0);
+		final var cdf = dist.cdf();
 
 		for (int i = 0; i <= 10; ++i) {
 			final double x = i/10.0;
-			final double y = cdf.applyAsDouble(x);
+			final double y = cdf.apply(x);
 			Assert.assertEquals(x*x, y, 0.0001);
 		}
 	}

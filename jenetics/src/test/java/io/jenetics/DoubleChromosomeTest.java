@@ -60,7 +60,7 @@ public class DoubleChromosomeTest
 
 
 			final MinMax<Double> mm = MinMax.of();
-			final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
+			final var histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);

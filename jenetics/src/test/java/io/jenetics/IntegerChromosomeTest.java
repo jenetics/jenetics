@@ -57,7 +57,7 @@ public class IntegerChromosomeTest
 			final int max = 10000000;
 
 			final MinMax<Integer> mm = MinMax.of();
-			final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
+			final var histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);

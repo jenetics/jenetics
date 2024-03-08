@@ -159,7 +159,7 @@ public class ShiftMutationTest extends MutatorTester {
 
 	public static void main(String[] args) throws IOException {
 		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.ofDouble(0.0, 1.0, 20);
+		final var histogram = Histogram.of(0.0, 1.0, 20);
 
 		//final var mean = 1.0 - sqrt(2)/2.0;
 		final var mean = sqrt(2)/2.0;
@@ -176,7 +176,7 @@ public class ShiftMutationTest extends MutatorTester {
 		}
 		 */
 
-		histogram.print(System.out);
+		//histogram.print(System.out);
 	}
 
 }

@@ -26,8 +26,11 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
+import io.jenetics.testfixtures.stat.Cdf;
 import io.jenetics.testfixtures.stat.Distribution;
+import io.jenetics.testfixtures.stat.Pdf;
 import io.jenetics.testfixtures.util.Range;
+import io.jenetics.util.DoubleRange;
 
 
 /**
@@ -38,13 +41,9 @@ import io.jenetics.testfixtures.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class UniformDistribution<
-	N extends Number & Comparable<? super N>
->
-	implements Distribution<N>
-{
+public class UniformDistribution implements Distribution {
 
-	private final Range<N> _domain;
+	private final DoubleRange _domain;
 	private final double _min;
 	private final double _max;
 
@@ -54,10 +53,10 @@ public class UniformDistribution<
 	 * @param domain the domain of the distribution.
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
-	public UniformDistribution(final Range<N> domain) {
+	public UniformDistribution(final DoubleRange domain) {
 		_domain = requireNonNull(domain, "Domain");
-		_min = _domain.getMin().doubleValue();
-		_max = _domain.getMax().doubleValue();
+		_min = _domain.min();
+		_max = _domain.max();
 	}
 
 	/**
@@ -68,12 +67,12 @@ public class UniformDistribution<
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public UniformDistribution(final N min, final N max) {
-		this(new Range<>(min, max));
+	public UniformDistribution(final double min, final double max) {
+		this(DoubleRange.of(min, max));
 	}
 
 	@Override
-	public Range<N> domain() {
+	public DoubleRange domain() {
 		return _domain;
 	}
 
@@ -92,11 +91,8 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> pdf() {
-		return value -> {
-			final double x = value.doubleValue();
-			return (x >= _min && x <= _max) ? 1.0/(_max - _min) : 0.0;
-		};
+	public Pdf pdf() {
+		return x ->  (x >= _min && x <= _max) ? 1.0/(_max - _min) : 0.0;
 	}
 
 	/**
@@ -115,9 +111,8 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> cdf() {
-		return value -> {
-			final double x = value.doubleValue();
+	public Cdf cdf() {
+		return x -> {
 			final double divisor = _max - _min;
 
 			double result = 0.0;
@@ -141,7 +136,7 @@ public class UniformDistribution<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof UniformDistribution<?> other &&
+			obj instanceof UniformDistribution other &&
 			Objects.equals(_domain, other._domain);
 	}
 

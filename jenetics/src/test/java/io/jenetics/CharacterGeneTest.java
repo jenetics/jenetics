@@ -62,7 +62,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
+			final var histogram = Histogram.of(0L, 10L, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
@@ -70,8 +70,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				assertThat(g1).isNotSameAs(g2);
 
-				histogram.accept(Long.valueOf(g1.allele().toString()));
-				histogram.accept(Long.valueOf(g2.allele().toString()));
+				histogram.accept(Long.parseLong(g1.allele().toString()));
+				histogram.accept(Long.parseLong(g2.allele().toString()));
 			}
 
 			assertUniformDistribution(histogram);

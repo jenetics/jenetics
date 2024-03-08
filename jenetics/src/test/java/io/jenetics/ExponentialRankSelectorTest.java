@@ -65,7 +65,7 @@ public class ExponentialRankSelectorTest
 
 			final Random random = new Random();
 			using(random, r -> {
-				final Histogram<Double> distribution = SelectorTester.distribution(
+				final var distribution = SelectorTester.distribution(
 					new ExponentialRankSelector<>(c),
 					opt,
 					npopulation,

@@ -36,11 +36,11 @@ import io.jenetics.testfixtures.stat.Histogram;
 public final class StatisticsAssert {
 	private StatisticsAssert() {}
 
-	public static <C extends Comparable<? super C>> void assertDistribution(
-		final Histogram<C> histogram,
-		final Distribution<C> distribution
+	public static void assertDistribution(
+		final Histogram histogram,
+		final Distribution distribution
 	) {
-		final double χ2 =  histogram.χ2(distribution.cdf());
+		final double χ2 =  histogram.chi2(distribution.cdf());
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
@@ -67,14 +67,14 @@ public final class StatisticsAssert {
 	}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
-		final Histogram<C> distribution,
+		final Histogram distribution,
 		final double[] expected
 	) {
 		assertDistribution(distribution, expected, 0.05);
 	}
 
-	public static <C extends Comparable<? super C>> void assertDistribution(
-		final Histogram<C> distribution,
+	public static void assertDistribution(
+		final Histogram distribution,
 		final double[] expected,
 		final double alpha,
 		final double safety
@@ -100,8 +100,8 @@ public final class StatisticsAssert {
 		);
 	}
 
-	public static <C extends Comparable<? super C>> void assertDistribution(
-		final Histogram<C> distribution,
+	public static void assertDistribution(
+		final Histogram distribution,
 		final double[] expected,
 		final double alpha
 	) {
@@ -113,9 +113,7 @@ public final class StatisticsAssert {
 			.inverseCumulativeProbability(p);
 	}
 
-	public static <C extends Comparable<? super C>> void assertUniformDistribution(
-		final Histogram<C> histogram
-	) {
+	public static void assertUniformDistribution(final Histogram histogram) {
 		final double[] expected = dist.uniform(histogram.length());
 		assertDistribution(histogram, expected);
 	}

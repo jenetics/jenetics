@@ -240,7 +240,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final List<Histogram<Double>> histograms = distributions(
+		final List<Histogram> histograms = distributions(
 			parameters,
 			selector,
 			opt,
@@ -266,7 +266,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param <P> the parameter type
 	 * @return the selector distributions
 	 */
-	public static <P> List<Histogram<Double>> distributions(
+	public static <P> List<Histogram> distributions(
 		final List<P> parameters,
 		final Function<P, Selector<DoubleGene, Double>> selector,
 		final Optimize opt,
@@ -291,7 +291,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param loops the number of selections performed for one population
 	 * @return the selectors selection distribution
 	 */
-	public static Histogram<Double> distribution(
+	public static Histogram distribution(
 		final Selector<DoubleGene, Double> selector,
 		final Optimize opt,
 		final int populationCount,
@@ -306,7 +306,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		};
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram<Double> hist = Histogram.ofDouble(MIN, MAX, CLASS_COUNT);
+			final Histogram hist = Histogram.of(MIN, MAX, CLASS_COUNT);
 
 			final ISeq<Phenotype<DoubleGene, Double>> population =
 				IntStream.range(0, populationCount)
@@ -316,7 +316,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 			selector.select(population, selectionCount, opt).stream()
 				.map(pt -> pt.genotype().gene().allele())
-				.forEach(hist);
+				.forEach(hist::accept);
 
 			return hist;
 		}).collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
@@ -334,7 +334,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Optimize opt,
 		final List<Selector<?, ?>> selectors,
 		final List<?> parameters,
-		final List<Histogram<Double>> histograms,
+		final List<Histogram> histograms,
 		final int populationCount,
 		final int loops
 	) {

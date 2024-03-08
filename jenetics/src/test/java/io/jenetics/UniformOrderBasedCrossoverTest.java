@@ -104,9 +104,7 @@ public class UniformOrderBasedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
-
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+		final Histogram histogram = Histogram.of(min, max, 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

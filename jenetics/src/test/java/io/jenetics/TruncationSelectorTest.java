@@ -82,7 +82,7 @@ public class TruncationSelectorTest
 
 			final Random random = new Random();
 			using(random, r -> {
-				final Histogram<Double> distribution = SelectorTester.distribution(
+				final Histogram distribution = SelectorTester.distribution(
 					new TruncationSelector<>(),
 					opt,
 					npopulation,

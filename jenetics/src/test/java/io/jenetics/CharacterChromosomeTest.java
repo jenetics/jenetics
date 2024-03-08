@@ -49,10 +49,10 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
 
-			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
+			final var histogram = Histogram.of(0L, 10L, 10);
 			chromosome.stream()
 				.map(g -> Long.valueOf(g.allele().toString()))
-				.forEach(histogram);
+				.forEach(histogram::accept);
 
 			final double[] expected = dist.uniform(histogram.length());
 			assertDistribution(histogram, expected);

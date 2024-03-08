@@ -1,9 +1,6 @@
 package io.jenetics.testfixtures.stat;
 
-/**
- * The cumulative distribution function.
- */
 @FunctionalInterface
-public interface Cdf {
+public interface Pdf {
 	double apply(double value);
 }

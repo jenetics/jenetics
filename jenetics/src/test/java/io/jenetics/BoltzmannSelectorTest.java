@@ -78,7 +78,7 @@ public class BoltzmannSelectorTest
 
 			final Random random = new Random();
 			using(random, r -> {
-				final Histogram<Double> distribution = SelectorTester.distribution(
+				final var distribution = SelectorTester.distribution(
 					new BoltzmannSelector<>(b),
 					opt,
 					npopulation,

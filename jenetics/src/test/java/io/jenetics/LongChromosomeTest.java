@@ -58,7 +58,7 @@ public class LongChromosomeTest
 			final long max = 10000000;
 
 			final MinMax<Long> mm = MinMax.of();
-			final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+			final var histogram = Histogram.of(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = LongChromosome.of(min, max, 500);

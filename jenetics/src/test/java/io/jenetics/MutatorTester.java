@@ -19,17 +19,15 @@
  */
 package io.jenetics;
 
-import static io.jenetics.TestUtils.diff;
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
-
+import io.jenetics.stat.LongMomentStatistics;
+import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.util.ISeq;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.util.ISeq;
-import io.jenetics.testfixtures.util.Range;
+import static io.jenetics.TestUtils.diff;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -76,9 +74,8 @@ public abstract class MutatorTester extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+		final Histogram histogram = Histogram.of(min, max, 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

@@ -24,10 +24,11 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
-import java.util.function.ToDoubleFunction;
 
+import io.jenetics.testfixtures.stat.Cdf;
 import io.jenetics.testfixtures.stat.Distribution;
-import io.jenetics.testfixtures.util.Range;
+import io.jenetics.testfixtures.stat.Pdf;
+import io.jenetics.util.DoubleRange;
 
 
 /**
@@ -63,13 +64,9 @@ import io.jenetics.testfixtures.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class LinearDistribution<
-	N extends Number & Comparable<? super N>
->
-	implements Distribution<N>
-{
+public class LinearDistribution implements Distribution {
 
-	private final Range<N> _domain;
+	private final DoubleRange _domain;
 
 	private final double _x1;
 	private final double _x2;
@@ -78,16 +75,16 @@ public class LinearDistribution<
 	private final double _k;
 	private final double _d;
 
-	public LinearDistribution(final Range<N> domain, final double y1) {
+	public LinearDistribution(final DoubleRange domain, final double y1) {
 		_domain = requireNonNull(domain);
 
 		_y1 = Math.max(y1, 0.0);
-		_x1 = domain.getMin().doubleValue();
-		_y2 = Math.max(y2(_x1, domain.getMax().doubleValue(), y1), 0.0);
+		_x1 = domain.min();
+		_y2 = Math.max(y2(_x1, domain.max(), y1), 0.0);
 		if (_y2 == 0) {
 			_x2 = 2.0/_y1 + _x1;
 		} else {
-			_x2 = domain.getMax().doubleValue();
+			_x2 = domain.max();
 		}
 
 		_k = (_y2 - _y1)/(_x2 - _x1);
@@ -99,7 +96,7 @@ public class LinearDistribution<
 	}
 
 	@Override
-	public Range<N> domain() {
+	public DoubleRange domain() {
 		return _domain;
 	}
 
@@ -116,10 +113,8 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> cdf() {
-		return value -> {
-			final double x = value.doubleValue();
-
+	public Cdf cdf() {
+		return x -> {
 			double result = 0;
 			if (x < _x1) {
 				result = 0.0;
@@ -148,10 +143,8 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> pdf() {
-		return value -> {
-			final double x = value.doubleValue();
-
+	public Pdf pdf() {
+		return x -> {
 			double result = 0.0;
 			if (x >= _x1 && x <= _x2) {
 				result = _k*x + _d;
@@ -175,7 +168,7 @@ public class LinearDistribution<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LinearDistribution<?> other &&
+			obj instanceof LinearDistribution other &&
 			Objects.equals(_domain, other._domain) &&
 			Double.compare(_d, other._d) == 0 &&
 			Double.compare(_k, other._k) == 0 &&

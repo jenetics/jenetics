@@ -145,7 +145,7 @@ public class SubsetTest {
 		final int n = 100_000;
 
 		final Random random = new Random();
-		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
+		final var histogram = Histogram.of(0, n, 13);
 
 		IntStream.range(0, 10_000)
 			.flatMap(i -> IntStream.of(Subset.next(random, n, 3)))
