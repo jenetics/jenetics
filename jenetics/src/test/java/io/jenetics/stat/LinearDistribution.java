@@ -98,7 +98,7 @@ public class LinearDistribution<
 	}
 
 	@Override
-	public Range<N> getDomain() {
+	public Range<N> domain() {
 		return _domain;
 	}
 
@@ -115,7 +115,7 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> getCDF() {
+	public ToDoubleFunction<N> cdf() {
 		return value -> {
 			final double x = value.doubleValue();
 
@@ -147,7 +147,7 @@ public class LinearDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> getPDF() {
+	public ToDoubleFunction<N> pdf() {
 		return value -> {
 			final double x = value.doubleValue();
 

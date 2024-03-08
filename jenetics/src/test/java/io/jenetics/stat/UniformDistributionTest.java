@@ -32,7 +32,7 @@ public class UniformDistributionTest {
 	@Test
 	public void pdf() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
-		final ToDoubleFunction<Double> pdf = dist.getPDF();
+		final ToDoubleFunction<Double> pdf = dist.pdf();
 
 		Assert.assertEquals(pdf.applyAsDouble(0.00), 0.1);
 		Assert.assertEquals(pdf.applyAsDouble(1.15), 0.1);
@@ -49,7 +49,7 @@ public class UniformDistributionTest {
 	@Test
 	public void cdf() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
-		final ToDoubleFunction<Double> cdf = dist.getCDF();
+		final ToDoubleFunction<Double> cdf = dist.cdf();
 
 		Assert.assertEquals(cdf.applyAsDouble(-9.0), 0.0);
 		Assert.assertEquals(cdf.applyAsDouble(0.0), 0.0);

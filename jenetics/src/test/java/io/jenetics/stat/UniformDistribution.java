@@ -72,7 +72,7 @@ public class UniformDistribution<
 	}
 
 	@Override
-	public Range<N> getDomain() {
+	public Range<N> domain() {
 		return _domain;
 	}
 
@@ -91,7 +91,7 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> getPDF() {
+	public ToDoubleFunction<N> pdf() {
 		return value -> {
 			final double x = value.doubleValue();
 			return (x >= _min && x <= _max) ? 1.0/(_max - _min) : 0.0;
@@ -114,7 +114,7 @@ public class UniformDistribution<
 	 *
 	 */
 	@Override
-	public ToDoubleFunction<N> getCDF() {
+	public ToDoubleFunction<N> cdf() {
 		return value -> {
 			final double x = value.doubleValue();
 			final double divisor = _max - _min;
