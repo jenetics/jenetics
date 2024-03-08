@@ -51,10 +51,10 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 			final var histogram = Histogram.of(0L, 10L, 10);
 			chromosome.stream()
-				.map(g -> Long.valueOf(g.allele().toString()))
+				.map(g -> Long.parseLong(g.allele().toString()))
 				.forEach(histogram::accept);
 
-			final double[] expected = dist.uniform(histogram.length());
+			final double[] expected = dist.uniform(histogram.binCount());
 			assertDistribution(histogram, expected);
 		});
     }

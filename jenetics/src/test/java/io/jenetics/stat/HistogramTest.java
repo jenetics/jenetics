@@ -19,15 +19,14 @@
  */
 package io.jenetics.stat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,146 +34,33 @@ import io.jenetics.util.RandomRegistry;
 public class HistogramTest {
 
 	@Test
-	public void createDouble() {
+	public void create() {
 		final double begin = 12;
 		final double end = 123;
 		final int elements = 10;
 
 		var histogram = Histogram.of(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
-	}
-
-	@Test
-	public void createLong() {
-		final long begin = 0;
-		final long end = 1000;
-		final int elements = 9;
-
-		var histogram = Histogram.of(begin, end, elements);
-		Assert.assertEquals(histogram.length(), elements);
-		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
+		Assert.assertEquals(histogram.binCount(), elements);
+		Assert.assertEquals(histogram.table(), new long[elements + 2]);
 	}
 
 	@Test
 	public void accumulate() {
 		final long begin = 0;
 		final long end = 10;
-		final int elements = 9;
+		final int binCount = 9;
 
-		var histogram = Histogram.of(begin, end, elements);
-		for (int i = 0; i < elements*1000; ++i) {
-			histogram.accept((long)(i%elements));
+		var histogram = Histogram.of(begin, end, binCount);
+		for (int i = 0; i < binCount*1000; ++i) {
+			final var value = i%binCount + 1;
+			histogram.accept(value);
 		}
 
-		final long[] expected = new long[9];
+		final long[] expected = new long[binCount + 2];
 		Arrays.fill(expected, 1000);
-		Assert.assertEquals(histogram.getHistogram(), expected);
+		expected[0] = 0;
+		expected[expected.length - 1] = 0;
+		assertThat(histogram.table()).isEqualTo(expected);
 	}
-
-//	@Test
-//	public void histogramIndex() {
-//		final var random = RandomRegistry.random();
-//		double[] parts = new double[10000];
-//		for (int i = 0; i < parts.length; ++i) {
-//			parts[i] = (double)i;
-//		}
-//
-//		var histogram = Histogram.of(parts);
-//		Double[] classes = histogram.getSeparators();
-//		for (int i = 0; i < 1000; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
-//		}
-//
-//		parts = new Double[]{1.0};
-//		histogram = Histogram.of(parts);
-//		classes = histogram.getSeparators();
-//		for (int i = 0; i < 10; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
-//		}
-//
-//		parts = new Double[]{1.0, 2.0};
-//		histogram = Histogram.of(parts);
-//		classes = histogram.getSeparators();
-//		for (int i = 0; i < 10; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
-//		}
-//
-//		parts = new Double[]{1.0, 2.0, 3.0};
-//		histogram = Histogram.of(parts);
-//		classes = histogram.getSeparators();
-//		for (int i = 0; i < 10; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
-//		}
-//	}
-
-	// The 'brute force' variante to test the binsearch one.
-//	private static <C extends Comparable<C>> int linearindex(final C[] classes, final C value) {
-//		int index = classes.length;
-//		for (int i = 0; i < classes.length && index == classes.length; ++i) {
-//			if (value.compareTo(classes[i]) < 0) {
-//				index = i;
-//			}
-//		}
-//		return index;
-//	}
-
-//	@Test(expectedExceptions = IllegalArgumentException.class)
-//	public void histogramEmptyClasses() {
-//		Histogram.<Double>of();
-//	}
-//
-//	@Test
-//	public void histogram() {
-//		final var random = RandomRegistry.random();
-//		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
-//
-//		for (int i = 0; i < 600_000; ++i) {
-//			histogram.accept(random.nextDouble()*6);
-//		}
-//		Assert.assertEquals(histogram.getCount(), 600_000);
-//
-//		final long[] hist = histogram.getHistogram();
-//		for (long l : hist) {
-//			Assert.assertEquals(l, 100_000.0, 1_200.0);
-//		}
-//	}
-//
-//	@Test
-//	public void collector() {
-//		final double min = 0.0;
-//		final double max = 1_000.0;
-//		final int nclasses = 71;
-//
-//		final LCG64ShiftRandom random = new LCG64ShiftRandom();
-//		final double[] values = new double[100_000];
-//		for (int i = 0; i < values.length; ++i) {
-//			values[i] = random.nextDouble(min, max);
-//		}
-//
-//		final Histogram<Double> serial = Histogram.ofDouble(min, max, nclasses);
-//		Arrays.stream(values).forEach(serial::accept);
-//
-//		final Histogram<Double> parallel =
-//			IntStream.range(0, values.length).parallel().mapToObj(i -> {
-//				final Histogram<Double> hist = Histogram.ofDouble(min, max, nclasses);
-//				hist.accept(values[i]);
-//				return hist;
-//			}).collect(Histogram.toDoubleHistogram(min, max, nclasses));
-//
-//		Assert.assertEquals(
-//			Arrays.toString(parallel.getHistogram()),
-//			Arrays.toString(serial.getHistogram())
-//		);
-//	}
-//
-//	public static void main(String[] args) {
-//		final Histogram<Double> serial = Histogram.ofDouble(1.0, 2.0, 10);
-//		System.out.println(serial);
-//	}
 
 }

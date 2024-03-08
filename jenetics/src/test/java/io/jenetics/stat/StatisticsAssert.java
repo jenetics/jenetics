@@ -41,7 +41,7 @@ public final class StatisticsAssert {
 		final Distribution distribution
 	) {
 		final double χ2 =  histogram.chi2(distribution.cdf());
-		final int degreeOfFreedom = histogram.length();
+		final int degreeOfFreedom = histogram.bucketCount();
 		assert (degreeOfFreedom > 0);
 
 		final double maxChi = chi(0.999, degreeOfFreedom)*2;
@@ -74,7 +74,7 @@ public final class StatisticsAssert {
 	}
 
 	public static void assertDistribution(
-		final Histogram distribution,
+		final Histogram histogram,
 		final double[] expected,
 		final double alpha,
 		final double safety
@@ -83,10 +83,10 @@ public final class StatisticsAssert {
 			.map(v -> Math.max(v, Double.MIN_VALUE))
 			.toArray();
 
-		final long[] dist = distribution.getHistogram();
+		final long[] dist = histogram.hist();
 
 		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
-		final double max_χ2 = chi(1 - alpha, distribution.length());
+		final double max_χ2 = chi(1 - alpha, histogram.binCount());
 		final boolean reject = χ2 > max_χ2*safety;
 		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
 
@@ -114,7 +114,7 @@ public final class StatisticsAssert {
 	}
 
 	public static void assertUniformDistribution(final Histogram histogram) {
-		final double[] expected = dist.uniform(histogram.length());
+		final double[] expected = dist.uniform(histogram.binCount());
 		assertDistribution(histogram, expected);
 	}
 

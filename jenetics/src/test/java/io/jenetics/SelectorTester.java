@@ -362,7 +362,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		writer.println(header);
 
 		final double[][] array = histograms.stream()
-			.map(Histogram::getNormalizedHistogram)
+			.map(Histogram::normalizedTable)
 			.toArray(double[][]::new);
 
 		for (int i = 0; i < array[0].length; ++i) {

@@ -26,14 +26,10 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.normalize;
 import static io.jenetics.internal.util.Hashes.hash;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
 import io.jenetics.stat.LongSummary;
@@ -83,7 +79,6 @@ public class Histogram implements DoubleConsumer {
 	 *         or the {@code comparator} is {@code null}.
 	 * @throws IllegalArgumentException if the given separators array is empty.
 	 */
-	@SafeVarargs
 	public Histogram(final double... bins) {
 		_bins = bins;
 		_table = new long[bins.length + 1];
@@ -109,7 +104,7 @@ public class Histogram implements DoubleConsumer {
 	 * Combine the given {@code other} histogram with {@code this} one.
 	 *
 	 * @param other the histogram to add.
-	 * @throws IllegalArgumentException if the {@link #length()} and the
+	 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
 	 *         separators of {@code this} and the given {@code histogram} are
 	 *         not the same.
 	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
@@ -156,40 +151,46 @@ public class Histogram implements DoubleConsumer {
 		throw new AssertionError("This line will never be reached.");
 	}
 
-	/**
-	 * Copy the histogram into the given array. If the array is big enough
-	 * the same array is returned, otherwise a new array is created and
-	 * returned. The length of the histogram array is the number of separators
-	 * plus one ({@code getSeparators().length + 1}).
-	 *
-	 * @param histogram array to copy the histogram.
-	 * @return the histogram array.
-	 * @throws NullPointerException if the given array is {@code null}.
-	 */
-	public long[] getHistogram(final long[] histogram) {
-		requireNonNull(histogram);
-
-		long[] hist = histogram;
-		if (histogram.length >= _table.length) {
-			System.arraycopy(_table, 0, hist, 0, _table.length);
-		} else {
-			hist = _table.clone();
-		}
-
-		return hist;
-	}
+//	/**
+//	 * Copy the histogram into the given array. If the array is big enough
+//	 * the same array is returned, otherwise a new array is created and
+//	 * returned. The length of the histogram array is the number of separators
+//	 * plus one ({@code getSeparators().length + 1}).
+//	 *
+//	 * @param histogram array to copy the histogram.
+//	 * @return the histogram array.
+//	 * @throws NullPointerException if the given array is {@code null}.
+//	 */
+//	public long[] getHistogram(final long[] histogram) {
+//		requireNonNull(histogram);
+//
+//		long[] hist = histogram;
+//		if (histogram.length >= _table.length) {
+//			System.arraycopy(_table, 0, hist, 0, _table.length);
+//		} else {
+//			hist = _table.clone();
+//		}
+//
+//		return hist;
+//	}
 
 	/**
 	 * Return a copy of the current histogram.
 	 *
 	 * @return a copy of the current histogram.
 	 */
-	public long[] getHistogram() {
-		return getHistogram(new long[_table.length]);
+	public long[] table() {
+		return _table.clone();
 	}
 
-	public double[] getNormalizedHistogram() {
-		return normalize(getHistogram());
+	public long[] hist() {
+		final var hist = new long[binCount()];
+		System.arraycopy(_table, 1, hist, 0, binCount());
+		return hist;
+	}
+
+	public double[] normalizedTable() {
+		return normalize(table());
 	}
 
 	/**
@@ -197,11 +198,11 @@ public class Histogram implements DoubleConsumer {
 	 *
 	 * @return the number of classes of this histogram.
 	 */
-	public int length() {
-		return _table.length;
+	public int bucketCount() {
+		return _bins.length - 1;
 	}
 
-	public int classes() {
+	public int binCount() {
 		return _bins.length - 1;
 	}
 
@@ -225,7 +226,7 @@ public class Histogram implements DoubleConsumer {
 		requireNonNull(cdf);
 
 		double chi2 = 0;
-		for (int i = 0; i < classes(); ++i) {
+		for (int i = 0; i < binCount(); ++i) {
 			final var e = p_i(i, cdf)*_count;
 			final var o2 = _table[i + 1]*_table[i + 1];
 			chi2 += o2/e;
