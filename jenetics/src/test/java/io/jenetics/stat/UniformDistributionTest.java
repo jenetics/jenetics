@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import java.util.function.ToDoubleFunction;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

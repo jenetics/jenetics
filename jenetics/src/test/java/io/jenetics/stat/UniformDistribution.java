@@ -24,12 +24,10 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
-import java.util.function.ToDoubleFunction;
 
 import io.jenetics.testfixtures.stat.Cdf;
 import io.jenetics.testfixtures.stat.Distribution;
 import io.jenetics.testfixtures.stat.Pdf;
-import io.jenetics.testfixtures.util.Range;
 import io.jenetics.util.DoubleRange;
 
 

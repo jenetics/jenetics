@@ -25,7 +25,6 @@ import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
-import io.jenetics.testfixtures.util.Range;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -34,6 +33,7 @@ import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.testfixtures.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

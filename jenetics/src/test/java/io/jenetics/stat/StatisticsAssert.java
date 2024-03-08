@@ -23,11 +23,11 @@ import static java.lang.String.format;
 
 import java.util.Arrays;
 
-import io.jenetics.testfixtures.stat.Distribution;
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.Assert;
 
+import io.jenetics.testfixtures.stat.Distribution;
 import io.jenetics.testfixtures.stat.Histogram;
 
 /**

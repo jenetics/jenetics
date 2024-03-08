@@ -19,15 +19,16 @@
  */
 package io.jenetics;
 
-import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.util.ISeq;
+import static io.jenetics.TestUtils.diff;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static io.jenetics.TestUtils.diff;
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
+import io.jenetics.stat.LongMomentStatistics;
+import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

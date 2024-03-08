@@ -19,16 +19,13 @@
  */
 package io.jenetics.stat;
 
-import java.util.function.ToDoubleFunction;
-
-import io.jenetics.util.DoubleRange;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ObjectTester;
 import io.jenetics.util.RandomRegistry;
-import io.jenetics.testfixtures.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

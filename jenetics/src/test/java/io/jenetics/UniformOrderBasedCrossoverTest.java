@@ -30,7 +30,6 @@ import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.testfixtures.util.Range;
 
 /**
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
