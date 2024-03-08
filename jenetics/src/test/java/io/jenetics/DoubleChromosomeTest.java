@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.math.DoubleAdder.sum;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;

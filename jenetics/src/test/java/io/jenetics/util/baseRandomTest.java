@@ -24,7 +24,7 @@ import static io.jenetics.internal.math.Randoms.toDouble;
 import static io.jenetics.internal.math.Randoms.toDouble2;
 import static io.jenetics.internal.math.Randoms.toFloat;
 import static io.jenetics.internal.math.Randoms.toFloat2;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
 import java.util.Random;

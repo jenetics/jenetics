@@ -44,6 +44,9 @@ dependencies {
 	testImplementation(libs.testng)
 	testImplementation(testFixtures(project(":jenetics")))
 
+	testFixturesApi(libs.commons.math)
+	testFixturesApi(libs.assertj)
+
 	jmh(libs.prngine)
 }
 

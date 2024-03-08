@@ -17,18 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.testfixtures.stat;
 
 import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
-import org.testng.Assert;
-
-import io.jenetics.testfixtures.stat.Distribution;
-import io.jenetics.testfixtures.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -55,15 +52,14 @@ public final class StatisticsAssert {
 			));
 		}
 
-		Assert.assertTrue(
-				χ2 <= maxChi,
-				format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				)
-			);
+		assertThat(χ2)
+			.withFailMessage(
+				"The histogram %s doesn't follow the distribution %s. \n" +
+					"χ2 must be smaller than %f but was %f",
+				histogram, distribution,
+				maxChi, χ2
+			)
+			.isLessThanOrEqualTo(maxChi);
 	}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
@@ -90,14 +86,12 @@ public final class StatisticsAssert {
 		final boolean reject = χ2 > max_χ2*safety;
 		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
 
-		Assert.assertFalse(
-			reject,
-			format(
+		assertThat(reject)
+			.withFailMessage(
 				"The histogram doesn't follow the given distribution." +
-					"χ2 must be smaller than %f but was %f",
-				max_χ2, χ2
+				"χ2 must be smaller than %f but was %f", max_χ2, χ2
 			)
-		);
+			.isFalse();
 	}
 
 	public static void assertDistribution(

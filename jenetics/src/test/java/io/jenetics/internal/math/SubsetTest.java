@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
 import java.util.HashSet;

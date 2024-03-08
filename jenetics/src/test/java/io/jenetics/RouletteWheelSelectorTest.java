@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.ArrayList;
