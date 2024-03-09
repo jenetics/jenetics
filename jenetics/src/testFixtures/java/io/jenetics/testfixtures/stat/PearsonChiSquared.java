@@ -50,10 +50,20 @@ public record PearsonChiSquared(Distribution hypothesis, double p)
 		final var chi2 = chi2(observation);
 
 		if (chi2 > maxChi2) {
-
+			return new Reject(
+				hypothesis,
+				observation,
+				"Data doesn't follow '%s': [chi2-max=%f, chi2=%f]."
+					.formatted(hypothesis, maxChi2, chi2)
+			);
+		} else {
+			return new Accept(
+				hypothesis,
+				observation,
+				"Data follows '%s': [chi2-max=%f, chi2=%f]."
+					.formatted(hypothesis, maxChi2, chi2)
+			);
 		}
-
-		return null;
 	}
 
 	double chi2(final Histogram hist) {

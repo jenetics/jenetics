@@ -30,10 +30,14 @@ public interface StatisticalHypothesis {
 		String message();
 	}
 
-	non-sealed interface Accept extends Result {
+	record Accept(Distribution hypothesis, Histogram observation, String message)
+		implements Result
+	{
 	}
 
-	non-sealed interface Reject extends Result {
+	record Reject(Distribution hypothesis, Histogram observation, String message)
+		implements Result
+	{
 	}
 
 	Distribution hypothesis();
