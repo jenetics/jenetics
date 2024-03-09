@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -90,7 +90,7 @@ public class MeanAltererTest extends AltererTester {
 			statistics.accept(alterations);
 		}
 
-		assertHistogram(histogram).isNormal(mean, Math.sqrt(statistics.variance()));
+		assertThatObservation(histogram).isNormal(mean, Math.sqrt(statistics.variance()));
 		System.out.println(histogram);
 	}
 

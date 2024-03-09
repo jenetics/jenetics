@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -63,7 +63,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			.mapToObj(i -> DoubleGene.of(min, max).allele())
 			.forEach(histogram::accept);
 
-		assertHistogram(histogram).isUniform();
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test

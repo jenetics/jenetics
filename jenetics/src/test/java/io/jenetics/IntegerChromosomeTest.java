@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -57,7 +57,7 @@ public class IntegerChromosomeTest
 			chromosome.forEach(g -> histogram.accept(g.allele()));
 		}
 
-		assertHistogram(histogram).isUniform();
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

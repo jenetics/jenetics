@@ -243,7 +243,7 @@ public final class Histogram implements DoubleConsumer {
 	 *
 	 * @param min the minimum range value of the returned histogram.
 	 * @param max the maximum range value of the returned histogram.
-	 * @param classes the number of classes of the returned histogram. The
+	 * @param nclasses the number of classes of the returned histogram. The
 	 *        number of separators will be {@code nclasses - 1}.
 	 * @return a new <i>histogram</i> for {@link Double} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
@@ -253,31 +253,31 @@ public final class Histogram implements DoubleConsumer {
 	public static Histogram of(
 		final double min,
 		final double max,
-		final int classes
+		final int nclasses
 	) {
 		if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
 			throw new IllegalArgumentException();
 		}
-		if (classes < 1) {
+		if (nclasses < 2) {
 			throw new IllegalArgumentException();
 		}
 
-		final double stride = (max - min)/classes;
-		final double[] bins = new double[classes + 1];
+		final var stride = (max - min)/nclasses;
+		final var separators = new double[nclasses + 1];
 
-		bins[0] = min;
-		bins[bins.length - 1] = max;
-		for (int i = 1; i < classes; ++i) {
-			bins[i] = bins[i - 1] + stride;
+		separators[0] = min;
+		separators[separators.length - 1] = max;
+		for (int i = 1; i < nclasses; ++i) {
+			separators[i] = separators[i - 1] + stride;
 		}
 
-		return new Histogram(bins);
+		return new Histogram(separators);
 	}
 
 	public static Collector<Histogram, ?, Histogram>
-	toDoubleHistogram(final double min, final double max, final int classCount) {
+	toDoubleHistogram(final double min, final double max, final int nclasses) {
 		return Collector.of(
-			() -> Histogram.of(min, max, classCount),
+			() -> Histogram.of(min, max, nclasses),
 			Histogram::combine,
 			(a, b) -> {a.combine(b); return a;}
 		);

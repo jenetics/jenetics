@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -59,7 +59,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			.mapToDouble(Integer::doubleValue)
 			.forEach(histogram);
 
-		assertHistogram(histogram).isUniform();
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test

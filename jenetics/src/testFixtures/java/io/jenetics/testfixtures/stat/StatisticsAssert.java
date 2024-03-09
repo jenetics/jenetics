@@ -35,20 +35,30 @@ public final class StatisticsAssert {
 	}
 
 	public static final class DistributionAssert {
-		private final Histogram _histogram;
+		private final Histogram _observation;
 
-		private HypothesisTester _tester;
+		private HypothesisTester _tester = PearsonChi2Tester.P_005;
 
-		private DistributionAssert(final Histogram histogram) {
-			_histogram = requireNonNull(histogram);
+		private DistributionAssert(final Histogram observation) {
+			_observation = requireNonNull(observation);
 		}
 
-		public void follows(final Distribution distribution) {
-			assertDistribution(_histogram, distribution);
+		public DistributionAssert withTester(HypothesisTester tester) {
+			_tester = requireNonNull(tester);
+			return this;
+		}
+
+		public void follows(final Distribution hypothesis) {
+			final var result = _tester.test(_observation,hypothesis);
+			if (result instanceof HypothesisTester.Reject) {
+				throw new AssertionError(result.message());
+			} else {
+				System.out.println(result.message());
+			}
 		}
 
 		public void isUniform() {
-			follows(new UniformDistribution(_histogram.range()));
+			follows(new UniformDistribution(_observation.range()));
 		}
 
 		public void isNormal(double mean, double stddev) {
@@ -57,8 +67,8 @@ public final class StatisticsAssert {
 
 	}
 
-	public static DistributionAssert assertHistogram(Histogram histogram) {
-		return new DistributionAssert(histogram);
+	public static DistributionAssert assertThatObservation(Histogram observation) {
+		return new DistributionAssert(observation);
 	}
 
 	private static void assertDistribution(

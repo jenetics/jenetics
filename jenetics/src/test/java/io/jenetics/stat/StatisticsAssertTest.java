@@ -19,13 +19,14 @@
  */
 package io.jenetics.stat;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
 import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.testfixtures.stat.PearsonChi2Tester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,11 +40,11 @@ public class StatisticsAssertTest {
 		final var random = RandomGenerator.getDefault();
 		random.doubles(10_000).forEach(hist);
 
-		assertHistogram(hist).isUniform();
+		assertThatObservation(hist).isUniform();
 		//System.out.println(hist);
-		//assertData(hist)
-		//	.follows(new NormalDistribution(1, 3))
-		//	.accepts(new PearsonChiSquared(new))
+		assertThatObservation(hist)
+			.withTester(new PearsonChi2Tester(0.0005))
+			.isUniform();
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class StatisticsAssertTest {
 			hist.accept(random.nextGaussian(4, 5));
 		}
 
-		assertHistogram(hist).isNormal(4, 5);
+		assertThatObservation(hist).isNormal(4, 5);
 		System.out.println(hist);
 		//hist.bins().forEach(System.out::println);
 	}

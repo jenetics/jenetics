@@ -22,6 +22,7 @@ package io.jenetics.testfixtures.stat;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
+@FunctionalInterface
 public interface HypothesisTester {
 
 	sealed interface Result {
@@ -40,8 +41,6 @@ public interface HypothesisTester {
 	{
 	}
 
-	Distribution hypothesis();
-
-	Result test(final Histogram observation);
+	Result test(final Histogram observation, final Distribution hypothesis);
 
 }

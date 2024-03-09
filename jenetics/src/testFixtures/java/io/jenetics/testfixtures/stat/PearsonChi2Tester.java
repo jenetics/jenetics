@@ -31,42 +31,39 @@ import io.jenetics.internal.util.Requires;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record PearsonChi2Tester(Distribution hypothesis, double p)
+public record PearsonChi2Tester(double p)
 	implements HypothesisTester
 {
 
+	public static final PearsonChi2Tester P_005 = new PearsonChi2Tester(0.05);
+
 	public PearsonChi2Tester {
-		requireNonNull(hypothesis);
 		Requires.probability(p);
 	}
 
-	public PearsonChi2Tester(Distribution hypothesis) {
-		this(hypothesis, 0.05);
-	}
-
 	@Override
-	public Result test(final Histogram observation) {
+	public Result test(final Histogram observation, final Distribution hypothesis) {
 		final var maxChi2 = maxChi2(observation.degreesOfFreedom());
-		final var chi2 = chi2(observation);
+		final var chi2 = chi2(observation, hypothesis);
 
 		if (chi2 > maxChi2) {
 			return new Reject(
 				hypothesis,
 				observation,
-				"Data doesn't follow '%s': [chi2-max=%f, chi2=%f]."
+				"Data doesn't follow %s: [max-chi2=%f, chi2=%f]."
 					.formatted(hypothesis, maxChi2, chi2)
 			);
 		} else {
 			return new Accept(
 				hypothesis,
 				observation,
-				"Data follows '%s': [chi2-max=%f, chi2=%f]."
+				"Data follows %s: [max-chi2=%f, chi2=%f]."
 					.formatted(hypothesis, maxChi2, chi2)
 			);
 		}
 	}
 
-	double chi2(final Histogram hist) {
+	double chi2(final Histogram hist, final Distribution hypothesis) {
 		requireNonNull(hist);
 
 		final var count = hist.sampleCount();
@@ -91,12 +88,7 @@ public record PearsonChi2Tester(Distribution hypothesis, double p)
 	}
 
 	public static void main(String[] args) {
-		final var hypothesis = new PearsonChi2Tester(
-			new NormalDistribution(0, 1),
-			0.005
-		);
-
-		System.out.println(hypothesis.maxChi2(5));
+		System.out.println(P_005.maxChi2(5));
 	}
 
 }
