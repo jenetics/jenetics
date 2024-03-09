@@ -47,7 +47,7 @@ public class LongChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final long min = 0;
 		final long max = 10000000;

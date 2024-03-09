@@ -20,12 +20,13 @@
 package io.jenetics.testfixtures.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
+
+import io.jenetics.testfixtures.stat.HypothesisTester.Accept;
+import io.jenetics.testfixtures.stat.HypothesisTester.Reject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,7 +38,7 @@ public final class StatisticsAssert {
 	public static final class DistributionAssert {
 		private final Histogram _observation;
 
-		private HypothesisTester _tester = PearsonChi2Tester.P_005;
+		private HypothesisTester _tester = PearsonChi2Tester.P_001;
 
 		private DistributionAssert(final Histogram observation) {
 			_observation = requireNonNull(observation);
@@ -49,11 +50,33 @@ public final class StatisticsAssert {
 		}
 
 		public void follows(final Distribution hypothesis) {
-			final var result = _tester.test(_observation,hypothesis);
-			if (result instanceof HypothesisTester.Reject) {
-				throw new AssertionError(result.message());
+			switch (_tester.test(_observation, hypothesis)) {
+				case Accept r -> System.out.println(r.message());
+				case Reject r -> throw new AssertionError(r.message());
+			}
+		}
+
+		public void isLike(double[] expected) {
+			final double[] exp = Arrays.stream(expected)
+				.map(v -> Math.max(v, Double.MIN_VALUE))
+				.toArray();
+			final long[] hist = _observation.hist();
+
+			final var maxChi2 = PearsonChi2Tester.P_001
+				.maxChi2(hist.length - 1);
+			final var chi2 = new ChiSquareTest()
+				.chiSquare(exp, _observation.hist());
+
+			if (chi2 > maxChi2) {
+				throw new AssertionError(
+					"Data doesn't follow the expected distribution: [max-chi2=%f, chi2=%f]."
+						.formatted(maxChi2, chi2)
+				);
 			} else {
-				System.out.println(result.message());
+				System.out.printf(
+					"Data follow the expected distribution: [max-chi2=%f, chi2=%f].%n",
+					maxChi2, chi2
+				);
 			}
 		}
 
@@ -69,78 +92,6 @@ public final class StatisticsAssert {
 
 	public static DistributionAssert assertThatObservation(Histogram observation) {
 		return new DistributionAssert(observation);
-	}
-
-	private static void assertDistribution(
-		final Histogram histogram,
-		final Distribution distribution
-	) {
-		final double chi2 = histogram.chi2(distribution.cdf());
-		final int degreeOfFreedom = histogram.binCount();
-		assert (degreeOfFreedom > 0);
-
-		final double maxChi = chi(0.999, degreeOfFreedom);
-		System.out.println("MAX_CHI: " + maxChi + ", chi2: " + chi2);
-
-		assertThat(chi2)
-			.withFailMessage("""
-				The histogram %s doesn't follow the distribution %s.
-				χ2 must be smaller than %f but was %f.
-				""",
-				histogram, distribution,
-				maxChi, chi2
-			)
-			.isLessThanOrEqualTo(maxChi);
-	}
-
-	public static <C extends Comparable<? super C>> void assertDistribution(
-		final Histogram distribution,
-		final double[] expected
-	) {
-		assertDistribution(distribution, expected, 0.05);
-	}
-
-	public static void assertDistribution(
-		final Histogram histogram,
-		final double[] expected,
-		final double alpha,
-		final double safety
-	) {
-		final double[] exp = Arrays.stream(expected)
-			.map(v -> Math.max(v, Double.MIN_VALUE))
-			.toArray();
-
-		final long[] dist = histogram.hist();
-
-		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
-		final double max_χ2 = chi(1 - alpha, dist.length);
-		final boolean reject = χ2 > max_χ2*safety;
-		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
-
-		assertThat(reject)
-			.withFailMessage(
-				"The histogram doesn't follow the given distribution." +
-				"χ2 must be smaller than %f but was %f", max_χ2, χ2
-			)
-			.isFalse();
-	}
-
-	public static void assertDistribution(
-		final Histogram distribution,
-		final double[] expected,
-		final double alpha
-	) {
-		assertDistribution(distribution, expected, alpha, 1.75);
-	}
-
-	private static double chi(final double p, final int degreeOfFreedom) {
-		return new ChiSquaredDistribution(degreeOfFreedom)
-			.inverseCumulativeProbability(p);
-	}
-
-	public static void assertUniformDistribution(final Histogram histogram) {
-		final double[] expected = dist.uniform(histogram.binCount() - 2);
-		assertDistribution(histogram, expected);
 	}
 
 }

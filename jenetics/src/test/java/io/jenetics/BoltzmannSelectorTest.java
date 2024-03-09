@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -65,28 +65,23 @@ public class BoltzmannSelectorTest
 		selector.probabilities(population, 10);
 	}
 
-	@Test(dataProvider = "expectedDistribution")
+	@Test(
+		dataProvider = "expectedDistribution",
+		invocationCount = 10, successPercentage = 70
+	)
 	public void selectDistribution(
 		final Double b,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		retry(3, () -> {
-			final int loops = 50;
-			final int npopulation = POPULATION_COUNT;
+		final var distribution = SelectorTester.distribution(
+			new BoltzmannSelector<>(b),
+			opt,
+			POPULATION_COUNT,
+			50
+		);
 
-			final Random random = new Random();
-			using(random, r -> {
-				final var distribution = SelectorTester.distribution(
-					new BoltzmannSelector<>(b),
-					opt,
-					npopulation,
-					loops
-				);
-
-				assertDistribution(distribution, expected.value, 0.001, 5);
-			});
-		});
+		assertThatObservation(distribution).isLike(expected.value);
 	}
 
 	@DataProvider(name = "expectedDistribution")

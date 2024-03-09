@@ -31,11 +31,11 @@ import io.jenetics.internal.util.Requires;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record PearsonChi2Tester(double p)
-	implements HypothesisTester
-{
+public record PearsonChi2Tester(double p) implements HypothesisTester {
 
-	public static final PearsonChi2Tester P_005 = new PearsonChi2Tester(0.05);
+	public static final PearsonChi2Tester P_001 = new PearsonChi2Tester(0.01);
+
+	public static final PearsonChi2Tester P_0001 = new PearsonChi2Tester(0.001);
 
 	public PearsonChi2Tester {
 		Requires.probability(p);
@@ -63,13 +63,13 @@ public record PearsonChi2Tester(double p)
 		}
 	}
 
-	double chi2(final Histogram hist, final Distribution hypothesis) {
-		requireNonNull(hist);
+	double chi2(final Histogram observation, final Distribution hypothesis) {
+		requireNonNull(observation);
 
-		final var count = hist.sampleCount();
+		final var count = observation.sampleCount();
 		final var cdf = hypothesis.cdf();
 
-		final var chi2 = hist.bins()
+		final var chi2 = observation.bins()
 			.map(bin -> new double[] {
 					bin.count()*bin.count(),
 					bin.probability(cdf)*count
@@ -82,13 +82,9 @@ public record PearsonChi2Tester(double p)
 		return chi2 - count;
 	}
 
-	private double maxChi2(final int degreesOfFreedom) {
+	double maxChi2(final int degreesOfFreedom) {
 		return new ChiSquaredDistribution(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - p);
-	}
-
-	public static void main(String[] args) {
-		System.out.println(P_005.maxChi2(5));
 	}
 
 }

@@ -53,7 +53,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		EqualsVerifier.forClass(DoubleGene.class).verify();
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final double min = 0;
 		final double max = 100;

@@ -305,21 +305,23 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram hist = Histogram.of(MIN, MAX, CLASS_COUNT);
+		return IntStream.range(0, loops).parallel()
+			.mapToObj(j -> {
+				final Histogram hist = Histogram.of(MIN, MAX, CLASS_COUNT);
 
-			final ISeq<Phenotype<DoubleGene, Double>> population =
-				IntStream.range(0, populationCount)
-					.mapToObj(i -> ptf.newInstance())
-					.collect(ISeq.toISeq());
+				final ISeq<Phenotype<DoubleGene, Double>> population =
+					IntStream.range(0, populationCount)
+						.mapToObj(i -> ptf.newInstance())
+						.collect(ISeq.toISeq());
 
-			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
-			selector.select(population, selectionCount, opt).stream()
-				.map(pt -> pt.genotype().gene().allele())
-				.forEach(hist::accept);
+				final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
+				selector.select(population, selectionCount, opt).stream()
+					.map(pt -> pt.genotype().gene().allele())
+					.forEach(hist::accept);
 
-			return hist;
-		}).collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
+				return hist;
+			})
+			.collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
 	}
 
 	/**

@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -151,7 +151,7 @@ public class SubsetTest {
 			.flatMap(i -> IntStream.of(Subset.next(random, n, 3)))
 			.forEach(histogram::accept);
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 

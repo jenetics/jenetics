@@ -19,28 +19,85 @@
  */
 package io.jenetics.testfixtures.stat;
 
+import static java.util.Objects.requireNonNull;
+
 /**
+ * Interface for statistical hypothesis testers. It checks if a given observation,
+ * given as histogram, follows a given distribution, the zero-hypothesis.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 @FunctionalInterface
 public interface HypothesisTester {
 
+	/**
+	 * The test result object.
+	 */
 	sealed interface Result {
+
+		/**
+		 * Return the zero-hypothesis.
+		 *
+		 * @return the zero-hypothesis
+		 */
 		Distribution hypothesis();
+
+		/**
+		 * Return the observation to test.
+		 *
+		 * @return the observation to test
+		 */
 		Histogram observation();
+
+		/**
+		 * Return the result message.
+		 *
+		 * @return the result message
+		 */
 		String message();
 	}
 
+	/**
+	 * This object is returned if the hypothesis has been accepted.
+	 *
+	 * @param observation the observation to test
+	 * @param hypothesis the zero-hypothesis
+	 * @param message the result message
+	 */
 	record Accept(Distribution hypothesis, Histogram observation, String message)
 		implements Result
 	{
+		public Accept {
+			requireNonNull(hypothesis);
+			requireNonNull(observation);
+			requireNonNull(message);
+		}
 	}
 
+	/**
+	 * This object is returned if the hypothesis has been rejected.
+	 *
+	 * @param observation the observation to test
+	 * @param hypothesis the zero-hypothesis
+	 * @param message the result message
+	 */
 	record Reject(Distribution hypothesis, Histogram observation, String message)
 		implements Result
 	{
+		public Reject {
+			requireNonNull(hypothesis);
+			requireNonNull(observation);
+			requireNonNull(message);
+		}
 	}
 
+	/**
+	 * Testing an <em>observation</em> against a given zero-<em>hypothesis</em>.
+	 *
+	 * @param observation the observation to test
+	 * @param hypothesis the zero-hypothesis
+	 * @return the hypothesis test result
+	 */
 	Result test(final Histogram observation, final Distribution hypothesis);
 
 }

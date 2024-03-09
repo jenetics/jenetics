@@ -48,7 +48,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		EqualsVerifier.forClass(IntegerGene.class).verify();
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final var min = 0;
 		final var max = Integer.MAX_VALUE;

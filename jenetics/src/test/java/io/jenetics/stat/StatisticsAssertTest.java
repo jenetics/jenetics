@@ -53,12 +53,13 @@ public class StatisticsAssertTest {
 
 		final var random = RandomGenerator.getDefault();
 		for (int i = 0; i < 100_000; ++i) {
-			hist.accept(random.nextGaussian(4, 5));
+			hist.accept(random.nextGaussian(0, 1));
 		}
 
-		assertThatObservation(hist).isNormal(4, 5);
+		assertThatObservation(hist).isNormal(0, 1);
 		System.out.println(hist);
 		//hist.bins().forEach(System.out::println);
+		hist.print(System.out);
 	}
 
 }

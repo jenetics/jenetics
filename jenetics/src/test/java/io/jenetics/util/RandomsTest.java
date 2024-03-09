@@ -24,7 +24,7 @@ import static io.jenetics.internal.math.Randoms.toDouble;
 import static io.jenetics.internal.math.Randoms.toDouble2;
 import static io.jenetics.internal.math.Randoms.toFloat;
 import static io.jenetics.internal.math.Randoms.toFloat2;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -88,10 +88,10 @@ public class RandomsTest {
 		final var histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accept((double)toFloat(random.nextInt()));
+			histogram.accept(toFloat(random.nextInt()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -103,7 +103,7 @@ public class RandomsTest {
 			histogram.accept((double)toFloat(random.nextLong()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -115,7 +115,7 @@ public class RandomsTest {
 			histogram.accept(toDouble(random.nextLong()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -128,7 +128,7 @@ public class RandomsTest {
 			histogram.accept(toDouble((int)(value >>> 32), (int)value));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -137,10 +137,10 @@ public class RandomsTest {
 		final var histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accept((double)toFloat2(random.nextInt()));
+			histogram.accept(toFloat2(random.nextInt()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -149,10 +149,10 @@ public class RandomsTest {
 		final var histogram = Histogram.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accept((double)toFloat2(random.nextLong()));
+			histogram.accept(toFloat2(random.nextLong()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -164,7 +164,7 @@ public class RandomsTest {
 			histogram.accept(toDouble2(random.nextLong()));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 	@Test(invocationCount = 5)
@@ -177,7 +177,7 @@ public class RandomsTest {
 			histogram.accept(toDouble2((int)(value >>> 32), (int)value));
 		}
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram).isUniform();
 	}
 
 }

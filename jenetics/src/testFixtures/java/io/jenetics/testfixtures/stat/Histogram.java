@@ -22,10 +22,12 @@ package io.jenetics.testfixtures.stat;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.normalize;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.function.DoubleConsumer;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.DoubleRange;
@@ -219,6 +221,23 @@ public final class Histogram implements DoubleConsumer {
 
 	public long sampleCount() {
 		return _count;
+	}
+
+	public void print(PrintStream out) {
+		final var hist = hist();
+		long max = LongStream.of(hist).max().orElse(0);
+
+		double factor = 80.0/max;
+
+		out.print("+");
+		out.println("-".repeat(80));
+		for (var count : hist) {
+			out.print("|");
+			int m = (int)(count*factor);
+			out.println("*".repeat(m));
+		}
+		out.print("+");
+		out.println("-".repeat(80));
 	}
 
 	@Override

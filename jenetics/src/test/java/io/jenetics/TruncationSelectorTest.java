@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -74,24 +74,19 @@ public class TruncationSelectorTest
 		}
 	}
 
-	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	@Test(
+		dataProvider = "expectedDistribution",
+		invocationCount = 10, successPercentage = 70
+	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		retry(3, () -> {
-			final int loops = 50;
-			final int npopulation = POPULATION_COUNT;
+		final Histogram distribution = SelectorTester.distribution(
+			new TruncationSelector<>(),
+			opt,
+			POPULATION_COUNT,
+			50
+		);
 
-			final Random random = new Random();
-			using(random, r -> {
-				final Histogram distribution = SelectorTester.distribution(
-					new TruncationSelector<>(),
-					opt,
-					npopulation,
-					loops
-				);
-
-				assertDistribution(distribution, expected.value, 0.001, 10);
-			});
-		});
+		assertThatObservation(distribution).isLike(expected.value);
 	}
 
 	@DataProvider(name = "expectedDistribution")

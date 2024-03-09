@@ -26,22 +26,20 @@ import java.time.Instant;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.test.Retry;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class NanoClockTest extends Retry {
+public class NanoClockTest {
 
-	@Test
-	public void millis() { retry(3, () -> {
+	@Test(invocationCount = 10, successPercentage = 70)
+	public void millis() {
 		final Clock nano = NanoClock.systemUTC();
 
 		final long t2 = System.currentTimeMillis();
 		final long t1 = nano.instant().toEpochMilli();
 
 		assertEquals(t1, t2, 15);
-	});}
+	}
 
 	private static void assertEquals(final long v1, final long v2, final long epsilon) {
 		final long diff = Math.abs(v1 - v2);

@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -74,7 +74,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accept(Long.parseLong(g2.allele().toString()));
 			}
 
-			assertUniformDistribution(histogram);
+			assertThatObservation(histogram).isUniform();
 		});
 	}
 

@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -57,28 +57,23 @@ public class LinearRankSelectorTest
 		return new LinearRankSelector<>(0.0);
 	}
 
-	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	@Test(
+		dataProvider = "expectedDistribution",
+		invocationCount = 10, successPercentage = 70
+	)
 	public void selectDistribution(
 		final Double nminus,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		retry(3, () -> {
-			final int loops = 50;
-			final int npopulation = POPULATION_COUNT;
+		final var distribution = SelectorTester.distribution(
+			new LinearRankSelector<>(nminus),
+			opt,
+			POPULATION_COUNT,
+			50
+		);
 
-			final Random random = new Random();
-			using(random, r -> {
-				final var distribution = SelectorTester.distribution(
-					new LinearRankSelector<>(nminus),
-					opt,
-					npopulation,
-					loops
-				);
-
-				assertDistribution(distribution, expected.value, 0.001, 5);
-			});
-		});
+		assertThatObservation(distribution).isLike(expected.value);
 	}
 
 	@DataProvider(name = "expectedDistribution")

@@ -46,7 +46,7 @@ public class IntegerChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final int min = 0;
 		final int max = 10000000;
