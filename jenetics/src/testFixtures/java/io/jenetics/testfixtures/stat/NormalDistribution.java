@@ -28,6 +28,8 @@ import io.jenetics.util.DoubleRange;
  *
  * @param mean the mean value of the distribution
  * @param stddev the standard deviation of the distribution
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public record NormalDistribution(double mean, double stddev)
 	implements Distribution

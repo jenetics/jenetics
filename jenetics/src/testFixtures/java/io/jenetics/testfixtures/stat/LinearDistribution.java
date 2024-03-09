@@ -27,7 +27,6 @@ import java.util.Objects;
 
 import io.jenetics.util.DoubleRange;
 
-
 /**
  * <p>This distribution has the following cdf.</p>
  * <p><img src="doc-files/LinearDistribution.png" alt="Distribution"></p>
