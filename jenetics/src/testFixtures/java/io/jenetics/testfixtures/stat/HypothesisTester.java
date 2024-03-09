@@ -22,7 +22,7 @@ package io.jenetics.testfixtures.stat;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public interface StatisticalHypothesis {
+public interface HypothesisTester {
 
 	sealed interface Result {
 		Distribution hypothesis();

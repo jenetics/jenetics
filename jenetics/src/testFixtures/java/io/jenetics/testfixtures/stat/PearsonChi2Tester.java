@@ -31,16 +31,16 @@ import io.jenetics.internal.util.Requires;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record PearsonChiSquared(Distribution hypothesis, double p)
-	implements StatisticalHypothesis
+public record PearsonChi2Tester(Distribution hypothesis, double p)
+	implements HypothesisTester
 {
 
-	public PearsonChiSquared {
+	public PearsonChi2Tester {
 		requireNonNull(hypothesis);
 		Requires.probability(p);
 	}
 
-	public PearsonChiSquared(Distribution hypothesis) {
+	public PearsonChi2Tester(Distribution hypothesis) {
 		this(hypothesis, 0.05);
 	}
 
@@ -91,7 +91,7 @@ public record PearsonChiSquared(Distribution hypothesis, double p)
 	}
 
 	public static void main(String[] args) {
-		final var hypothesis = new PearsonChiSquared(
+		final var hypothesis = new PearsonChi2Tester(
 			new NormalDistribution(0, 1),
 			0.005
 		);
