@@ -20,16 +20,12 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
-
-import java.util.Random;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.MinMax;
 import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -51,27 +47,20 @@ public class LongChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
+	@Test(invocationCount = 20)
 	public void newInstanceDistribution() {
-		using(new Random(12345), r -> {
-			final long min = 0;
-			final long max = 10000000;
+		final long min = 0;
+		final long max = 10000000;
 
-			final MinMax<Long> mm = MinMax.of();
-			final var histogram = Histogram.of(min, max, 10);
-
-			for (int i = 0; i < 1000; ++i) {
-				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
-				for (LongGene gene : chromosome) {
-					mm.accept(gene.allele());
-					histogram.accept(gene.allele());
-				}
+		final var histogram = Histogram.of(min, max, 20);
+		for (int i = 0; i < 1000; ++i) {
+			final var chromosome = LongChromosome.of(min, max, 500);
+			for (var gene : chromosome) {
+				histogram.accept(gene.allele());
 			}
+		}
 
-			Assert.assertTrue(mm.min().compareTo(0L) > 0);
-			Assert.assertTrue(mm.max().compareTo(100L) > 0);
-			assertUniformDistribution(histogram);
-		});
+		assertHistogram(histogram).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

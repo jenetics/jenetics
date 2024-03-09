@@ -19,12 +19,6 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
-
-import java.util.Objects;
-
 import io.jenetics.util.DoubleRange;
 
 /**
@@ -35,36 +29,7 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class UniformDistribution implements Distribution {
-
-	private final DoubleRange _domain;
-
-	/**
-	 * Create a new uniform distribution with the given {@code domain}.
-	 *
-	 * @param domain the domain of the distribution.
-	 * @throws NullPointerException if the {@code domain} is {@code null}.
-	 */
-	public UniformDistribution(final DoubleRange domain) {
-		_domain = requireNonNull(domain, "Domain");
-	}
-
-	/**
-	 * Create a new uniform distribution with the given min and max values.
-	 *
-	 * @param min the minimum value of the domain.
-	 * @param max the maximum value of the domain.
-	 * @throws IllegalArgumentException if {@code min >= max}
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public UniformDistribution(final double min, final double max) {
-		this(DoubleRange.of(min, max));
-	}
-
-	@Override
-	public DoubleRange domain() {
-		return _domain;
-	}
+public record UniformDistribution(DoubleRange domain) implements Distribution {
 
 	/**
 	 * Return a new PDF object.
@@ -83,8 +48,8 @@ public class UniformDistribution implements Distribution {
 	@Override
 	public Pdf pdf() {
 		return x ->
-			(x >= _domain.min() && x <= _domain.max())
-				? 1.0/(_domain.max() - _domain.min())
+			(x >= domain.min() && x <= domain.max())
+				? 1.0/(domain.max() - domain.min())
 				: 0.0;
 	}
 
@@ -106,36 +71,19 @@ public class UniformDistribution implements Distribution {
 	@Override
 	public Cdf cdf() {
 		return x -> {
-			final double divisor = _domain.max() - _domain.min();
+			final double divisor = domain.max() - domain.min();
 
 			double result = 0.0;
-			if (x < _domain.min()) {
+			if (x < domain.min()) {
 				result = 0.0;
-			} else if (x > _domain.max()) {
+			} else if (x > domain.max()) {
 				result = 1.0;
 			} else {
-				result = (x - _domain.min())/divisor;
+				result = (x - domain.min())/divisor;
 			}
 
 			return result;
 		};
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_domain);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof UniformDistribution other &&
-			Objects.equals(_domain, other._domain);
-	}
-
-	@Override
-	public String toString() {
-		return format("UniformDistribution[%s]", _domain);
 	}
 
 }

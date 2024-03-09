@@ -20,7 +20,6 @@
 package io.jenetics.testfixtures.stat;
 
 import org.apache.commons.math3.special.Erf;
-import org.apache.commons.math3.util.FastMath;
 
 import io.jenetics.util.DoubleRange;
 
@@ -34,42 +33,52 @@ public record NormalDistribution(double mean, double stddev)
 	implements Distribution
 {
 
+	private static final double SQRT2 = Math.sqrt(2);
+	private static final double HALF_LOG_TAU = 0.5*Math.log(Math.TAU);
+
+	private static final DoubleRange DOMAIN = DoubleRange.of(
+		Double.NEGATIVE_INFINITY,
+		Double.POSITIVE_INFINITY
+	);
+
+	public NormalDistribution {
+		if (stddev <= 0) {
+			throw new IllegalArgumentException(
+				"Stddev must be > 0, but was %f.".formatted(stddev)
+			);
+		}
+	}
+
 	@Override
 	public DoubleRange domain() {
-		return DoubleRange.of(-Double.MAX_VALUE, Double.MAX_VALUE);
+		return DOMAIN;
 	}
 
 	@Override
 	public Pdf pdf() {
-		return x -> {
-			final double x0 = x - mean;
-			final double x1 = x0/ stddev;
-			final double x2 = -0.5 * x1 * x1 - Math.log(stddev) + 0.5 * Math.log(6.283185307179586);
-			return Math.exp(x2);
-		};
+		return this::pdf;
+	}
+
+	public double pdf(final double x) {
+		final double x0 = x - mean;
+		final double x1 = x0/stddev;
+		final double x2 = -0.5*x1*x1 - Math.log(stddev) + HALF_LOG_TAU;
+		return Math.exp(x2);
 	}
 
 	@Override
 	public Cdf cdf() {
-		return x -> {
-			double dev = x - this.mean;
-			if (FastMath.abs(dev) > 40.0 * this.stddev) {
-				return dev < 0.0 ? 0.0 : 1.0;
-			} else {
-				return 0.5 * Erf.erfc(-dev / (stddev * Math.sqrt(2)));
-			}
-		};
+		return this::cdf;
 	}
 
-	/*
-	public double cumulativeProbability(double x) {
-		double dev = x - this.mean;
-		if (FastMath.abs(dev) > 40.0 * this.stddev) {
+	public double cdf(final double x) {
+		final double dev = x - mean;
+
+		if (Math.abs(dev) > 40.0*stddev) {
 			return dev < 0.0 ? 0.0 : 1.0;
 		} else {
-			return 0.5 * Erf.erfc(-dev / (this.stddev * SQRT2));
+			return 0.5 * Erf.erfc(-dev/(stddev*SQRT2));
 		}
 	}
-	 */
 
 }

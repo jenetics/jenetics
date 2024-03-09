@@ -53,7 +53,8 @@ public class StatisticsAssertTest {
 		}
 
 		assertHistogram(hist).isNormal(4, 5);
-		//System.out.println(hist);
+		System.out.println(hist);
+		//hist.bins().forEach(System.out::println);
 	}
 
 }

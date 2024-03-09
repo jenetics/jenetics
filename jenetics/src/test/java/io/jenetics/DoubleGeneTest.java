@@ -23,14 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -55,17 +53,17 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		EqualsVerifier.forClass(DoubleGene.class).verify();
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
+	@Test(invocationCount = 20)
 	public void newInstanceDistribution() {
 		final double min = 0;
 		final double max = 100;
-		final Histogram histogram = Histogram.of(min, max, 10);
 
-		using(new Random(12345), r -> IntStream.range(0, 200_000)
+		final var histogram = Histogram.of(min, max, 20);
+		IntStream.range(0, 200_000)
 			.mapToObj(i -> DoubleGene.of(min, max).allele())
-			.forEach(histogram::accept));
+			.forEach(histogram::accept);
 
-		assertUniformDistribution(histogram);
+		assertHistogram(histogram).isUniform();
 	}
 
 	@Test

@@ -37,6 +37,8 @@ public final class StatisticsAssert {
 	public static final class DistributionAssert {
 		private final Histogram _histogram;
 
+		//private PearsonChiSquared _tester = new PearsonChiSquared(0.05);
+
 		private DistributionAssert(final Histogram histogram) {
 			_histogram = requireNonNull(histogram);
 		}
@@ -63,8 +65,8 @@ public final class StatisticsAssert {
 		final Histogram histogram,
 		final Distribution distribution
 	) {
-		final double chi2 =  histogram.chi2(distribution.cdf());
-		final int degreeOfFreedom = histogram.table().length;
+		final double chi2 = histogram.chi2(distribution.cdf());
+		final int degreeOfFreedom = histogram.binCount();
 		assert (degreeOfFreedom > 0);
 
 		final double maxChi = chi(0.999, degreeOfFreedom);

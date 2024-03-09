@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertHistogram;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -28,7 +29,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.Range;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -59,7 +59,7 @@ public class MeanAltererTest extends AltererTester {
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
@@ -78,25 +78,20 @@ public class MeanAltererTest extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
 
-		final var histogram = Histogram.of(min, max, 10);
-		final LongMomentStatistics variance = new LongMomentStatistics();
+		final var histogram = Histogram.of(min, max, 20);
+		final var statistics = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover
 				.alter(population, 1)
 				.alterations();
 			histogram.accept(alterations);
-			variance.accept(alterations);
+			statistics.accept(alterations);
 		}
 
-		// Normal distribution as approximation for binomial distribution.
-		// TODO: Implement test.
-//		assertDistribution(
-//			histogram,
-//			new NormalDistribution<>(domain, mean, variance.getVariance())
-//		);
+		assertHistogram(histogram).isNormal(mean, Math.sqrt(statistics.variance()));
+		System.out.println(histogram);
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

@@ -19,13 +19,14 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.Basics.normalize;
 
 import java.util.Arrays;
 import java.util.function.DoubleConsumer;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.jenetics.util.DoubleRange;
 
@@ -57,7 +58,22 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class Histogram implements DoubleConsumer {
+public final class Histogram implements DoubleConsumer {
+
+	public record Bin(double min, double max, long count) {
+		public Bin {
+			if (min >= max || count < 0) {
+				throw new IllegalArgumentException(
+					"Invalid Bin[min=%f, max=%f, count=%d]."
+						.formatted(min, max, count)
+				);
+			}
+		}
+
+		double probability(final Cdf cdf) {
+			return cdf.apply(max) - cdf.apply(min);
+		}
+	}
 
 	private final double[] _separators;
 	private final long[] _table;
@@ -75,12 +91,29 @@ public class Histogram implements DoubleConsumer {
 	 * @throws IllegalArgumentException if the given separators array is empty.
 	 */
 	public Histogram(final double... separators) {
+		if (separators.length == 0) {
+			throw new IllegalArgumentException("Separator array is empty.");
+		}
+
 		_separators = separators.clone();
+		Arrays.sort(_separators);
 		_table = new long[separators.length + 1];
 	}
 
 	public DoubleRange range() {
 		return DoubleRange.of(_separators[0], _separators[_separators.length - 1]);
+	}
+
+	public Stream<Bin> bins() {
+		return IntStream.range(0, _table.length).mapToObj(i -> {
+			if (i == 0) {
+				return new Bin(Double.NEGATIVE_INFINITY, _separators[i], _table[i]);
+			} else if (i == _table.length - 1) {
+				return new Bin(_separators[i - 1], Double.POSITIVE_INFINITY, _table[i]);
+			} else {
+				return new Bin(_separators[i - 1], _separators[i], _table[i]);
+			}
+		});
 	}
 
 	@Override
@@ -117,7 +150,7 @@ public class Histogram implements DoubleConsumer {
 	 * @param value the value to search.
 	 * @return the histogram index.
 	 */
-	public int index(final double value) {
+	private int index(final double value) {
 		int low = 0;
 		int high = _separators.length - 1;
 
@@ -168,36 +201,20 @@ public class Histogram implements DoubleConsumer {
 		return _table.length;
 	}
 
+	public int degreesOfFreedom() {
+		return binCount() - 1;
+	}
+
 	public double chi2(final Cdf cdf) {
 		requireNonNull(cdf);
 
-		double chi2 = 0, e = 0, o2 = 0;
-
-		if (_table[0] != 0) {
-			e = cdf.apply(_separators[0])*_count;
-			o2 = _table[0]*_table[0];
-			chi2 += o2/e;
-		}
-
-		for (int i = 0; i < _table.length - 2; ++i) {
-			if (_table[i + 1] != 0) {
-				e = p_i(i, cdf)*_count;
-				o2 = _table[i + 1]*_table[i + 1];
-				chi2 += o2/e;
-			}
-		}
-
-		if (_table[_table.length - 1] != 0) {
-			e = cdf.apply(Double.MAX_VALUE)*_count;
-			o2 = _table[_table.length - 1]*_table[_table.length - 1];
-			chi2 += o2/e;
-		}
+		final var chi2 = bins()
+			.map(bin -> new double[] {bin.count*bin.count, bin.probability(cdf)*_count})
+			.filter(values -> values[0] != 0.0)
+			.mapToDouble(values -> values[0]/values[1])
+			.sum();
 
 		return chi2 - _count;
-	}
-
-	private double p_i(final int i, final Cdf cdf) {
-		return cdf.apply(_separators[i + 1]) - cdf.apply(_separators[i]);
 	}
 
 	public long sampleCount() {
@@ -264,26 +281,6 @@ public class Histogram implements DoubleConsumer {
 			Histogram::combine,
 			(a, b) -> {a.combine(b); return a;}
 		);
-	}
-
-	/*
-	 * Check the input values of the valueOf methods.
-	 */
-	private static <C extends Comparable<? super C>> void
-	check(final C min, final C max, final int nclasses)
-	{
-		requireNonNull(min, "Minimum");
-		requireNonNull(max, "Maximum");
-		if (min.compareTo(max) >= 0) {
-			throw new IllegalArgumentException(format(
-				"Min must be smaller than max: %s < %s failed.", min, max
-			));
-		}
-		if (nclasses < 2) {
-			throw new IllegalArgumentException(format(
-				"nclasses should be < 2, but was %s.", nclasses
-			));
-		}
 	}
 
 }
