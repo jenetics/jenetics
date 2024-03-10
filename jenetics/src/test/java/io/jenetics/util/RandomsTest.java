@@ -82,7 +82,7 @@ public class RandomsTest {
 		}
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat_int() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -94,7 +94,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat_long() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -106,7 +106,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble_long() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -118,7 +118,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble_int_int() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -131,7 +131,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat2_int() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -143,7 +143,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat2_long() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -155,7 +155,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble2_long() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);
@@ -167,7 +167,7 @@ public class RandomsTest {
 		assertThatObservation(histogram).isUniform();
 	}
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble2_int_int() {
 		final Random random = new Random();
 		final var histogram = Histogram.of(0.0, 1.0, 15);

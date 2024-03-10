@@ -38,6 +38,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.Factory;
@@ -364,7 +365,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		writer.println(header);
 
 		final double[][] array = histograms.stream()
-			.map(Histogram::normalizedTable)
+			.map(hist -> Basics.normalize(hist.table()))
 			.toArray(double[][]::new);
 
 		for (int i = 0; i < array[0].length; ++i) {

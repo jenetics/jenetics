@@ -22,6 +22,7 @@ package io.jenetics.stat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -61,6 +62,20 @@ public class HistogramTest {
 		expected[0] = 0;
 		expected[expected.length - 1] = 0;
 		assertThat(histogram.table()).isEqualTo(expected);
+	}
+
+	@Test
+	public void streaming() {
+		final long sampleCount = 100_000;
+		Histogram observation = RandomGenerator.getDefault()
+			.doubles(sampleCount)
+			.collect(
+				() -> Histogram.of(0,1, 20),
+				Histogram::accept,
+				Histogram::combine
+			);
+
+		assertThat(observation.sampleCount()).isEqualTo(sampleCount);
 	}
 
 }

@@ -60,12 +60,12 @@ public final class StatisticsAssert {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, Double.MIN_VALUE))
 				.toArray();
-			final long[] hist = _observation.hist();
+			final long[] hist = _observation.histogram();
 
 			final var maxChi2 = PearsonChi2Tester.P_001
 				.maxChi2(hist.length - 1);
 			final var chi2 = new ChiSquareTest()
-				.chiSquare(exp, _observation.hist());
+				.chiSquare(exp, _observation.histogram());
 
 			if (chi2 > maxChi2) {
 				throw new AssertionError(

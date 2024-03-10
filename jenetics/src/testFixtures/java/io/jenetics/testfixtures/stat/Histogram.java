@@ -19,9 +19,6 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.Basics.normalize;
-
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.function.DoubleConsumer;
@@ -33,35 +30,51 @@ import java.util.stream.Stream;
 import io.jenetics.util.DoubleRange;
 
 /**
- * To create an <i>Histogram Accumulator</i> you have to define the <i>class
- * border</i> which define the histogram classes. A value is part of the
- * <i>i</i><sup>th</sup> histogram array element:
+ * This class lets you create a histogram from {@code double} sample data. The
+ * following graph shows the structure of the histogram.
+ * <pre>{@code
+ * -Ꝏ     min                                          max    Ꝏ
+ *     -----+----+----+----+----+----+----+----+----+----+-----
+ *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+ *     -----+----+----+----+----+----+----+----+----+----+-----
+ *       0    1    2    3    4    5    6    7    8    9    10
+ * }</pre>
  * <p>
- * <img
- *     src="doc-files/histogram-class.gif"
- *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\
- *         len(c) & when & v \geq c_{len(c)-1} \\
- *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right."
- * >
- * </p>
- *
- * Example:
- * <pre>
- * Separators:             0    1    2    3    4    5    6    7    8    9
- *                  -------+----+----+----+----+----+----+----+----+----+------
- * Frequencies:        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |  18
- *                  -------+----+----+----+----+----+----+----+----+----+------
- * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
- * </pre>
+ * The defined separators must all be finite. A {@code [-Ꝏ, min)} and a
+ * {@code [max, Ꝏ)} bin is automatically added at the beginning and the end
+ * of the frequency {@link #table()}.
  * <p>
- * <strong>Note that this implementation is not synchronized.</strong> If
- * multiple threads access this object concurrently, and at least one of the
- * threads modifies it, it must be synchronized externally.
+ * <b>Histogram creation from stream</b>
+ * {@snippet lang="java":
+ * final Histogram observation = RandomGenerator.getDefault()
+ *     .doubles(10000)
+ *     .collect(
+ *          () -> Histogram.of(0.0, 1.0, 20),
+ *          Histogram::accept,
+ *          Histogram::combine
+ *     );
+ * }
+ * <p>
+ * <b>Histogram creation from array</b>
+ * {@snippet lang="java":
+ * final double[] data = null; // @replace substring='null' replacement="..."
+ * final Histogram observation = Histogram.of(0.0, 1.0, 20);
+ * for (var d : data) {
+ *     observation.accept(d);
+ * }
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class Histogram implements DoubleConsumer {
 
+	/**
+	 * Represents on histogram bin.
+	 *
+	 * @param min the minimal value of the bin range, inclusively
+	 * @param max the maximal value of the bin range, exclusively
+	 * @param count the bin count
+	 */
 	public record Bin(double min, double max, long count) {
 		public Bin {
 			if (min >= max || count < 0) {
@@ -72,6 +85,13 @@ public final class Histogram implements DoubleConsumer {
 			}
 		}
 
+		/**
+		 * Return the expected property of the bin, defined by the given
+		 * {@code cdf}.
+		 *
+		 * @param cdf the CDF used for calculating the expected property
+		 * @return the expected property
+		 */
 		double probability(final Cdf cdf) {
 			return cdf.apply(max) - cdf.apply(min);
 		}
@@ -90,22 +110,52 @@ public final class Histogram implements DoubleConsumer {
 	 * @param separators the class separators.
 	 * @throws NullPointerException if the classes of one of its elements
 	 *         or the {@code comparator} is {@code null}.
-	 * @throws IllegalArgumentException if the given separators array is empty.
+	 * @throws IllegalArgumentException if the given separators array is smaller
+	 *         than three
 	 */
 	public Histogram(final double... separators) {
-		if (separators.length == 0) {
-			throw new IllegalArgumentException("Separator array is empty.");
+		if (separators.length < 3) {
+			throw new IllegalArgumentException("""
+				At least three separators, which form two buckets are required, \
+				but found %d.""".formatted(separators.length)
+			);
 		}
 
-		_separators = separators.clone();
-		Arrays.sort(_separators);
+		_separators = sanatize(separators);
 		_table = new long[separators.length + 1];
 	}
 
+	private static double[] sanatize(final double[] separators) {
+		final var result = separators.clone();
+		Arrays.sort(result);
+
+		for (int i = 1; i < result.length; ++i) {
+			if (result[i - 1] == result[i]) {
+				throw new IllegalArgumentException(
+					"Separators must be unique: %s."
+						.formatted(Arrays.toString(result))
+				);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Return the <em>closed</em> range of the histogram.
+	 *
+	 * @return the closed range of the histogram
+	 */
 	public DoubleRange range() {
 		return DoubleRange.of(_separators[0], _separators[_separators.length - 1]);
 	}
 
+	/**
+	 * Return a stream of the histogram bins, inclusively the <em>open</em> bins
+	 * at the beginning and the end.
+	 *
+	 * @return a stream of the histogram bins
+	 */
 	public Stream<Bin> bins() {
 		return IntStream.range(0, _table.length).mapToObj(i -> {
 			if (i == 0) {
@@ -176,7 +226,17 @@ public final class Histogram implements DoubleConsumer {
 	}
 
 	/**
-	 * Return a copy of the current histogram.
+	 * Return a copy of the current histogram data, inclusively the open bins
+	 * at the beginning and the end.
+	 * <pre>{@code
+	 * -Ꝏ     min                                          max    Ꝏ
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *       0    1    2    3    4    5    6    7    8    9    10
+	 * }</pre>
+	 *
+	 * @see #histogram()
 	 *
 	 * @return a copy of the current histogram.
 	 */
@@ -184,47 +244,55 @@ public final class Histogram implements DoubleConsumer {
 		return _table.clone();
 	}
 
-	public long[] hist() {
-		final var hist = new long[_table.length - 2];
-		System.arraycopy(_table, 1, hist, 0, hist.length);
-		return hist;
-	}
-
-	public double[] normalizedTable() {
-		return normalize(table());
+	/**
+	 * Return the <em>closed</em> histogram data.
+	 * <pre>{@code
+	 * min                                          max
+	 *  +----+----+----+----+----+----+----+----+----+
+	 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
+	 *  +----+----+----+----+----+----+----+----+----+
+	 *    0    1    2    3    4    5    6    7    8
+	 * }</pre>
+	 *
+	 * @see #table()
+	 *
+	 * @return the closed histogram data
+	 */
+	public long[] histogram() {
+		return Arrays.copyOfRange(_table, 1, _table.length - 2);
 	}
 
 	/**
-	 * Return the number of classes of this histogram.
+	 * Return the number histogram bins, which is defined at
+	 * {@code table().length}.
 	 *
-	 * @return the number of classes of this histogram.
+	 * @return the number histogram bins
 	 */
 	public int binCount() {
 		return _table.length;
 	}
 
+	/**
+	 * Return the <em>degrees of freedom</em> of the histogram, which is
+	 * {@link #binCount()} - 1.
+	 *
+	 * @return the degrees of freedom
+	 */
 	public int degreesOfFreedom() {
 		return binCount() - 1;
 	}
 
-	public double chi2(final Cdf cdf) {
-		requireNonNull(cdf);
-
-		final var chi2 = bins()
-			.map(bin -> new double[] {bin.count*bin.count, bin.probability(cdf)*_count})
-			.filter(values -> values[0] != 0.0)
-			.mapToDouble(values -> values[0]/values[1])
-			.sum();
-
-		return chi2 - _count;
-	}
-
+	/**
+	 * Return the number of samples, which generated the histogram.
+	 *
+	 * @return the number of samples
+	 */
 	public long sampleCount() {
 		return _count;
 	}
 
 	public void print(PrintStream out) {
-		final var hist = hist();
+		final var hist = histogram();
 		long max = LongStream.of(hist).max().orElse(0);
 
 		double factor = 80.0/max;
@@ -250,15 +318,15 @@ public final class Histogram implements DoubleConsumer {
 	/**
 	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
-	 *
-	 * <pre>
-	 *    min                            max
-	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc |
-	 *     +----+----+----+----+  ~  +----+
-	 * </pre>
-	 *
-	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
+	 * <pre>{@code
+     *  -Ꝏ   min                                           max   Ꝏ
+     *     ----+----+----+----+----+----+----+----+  ~  +----+----
+     *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
+     *     ----+----+----+----+----+----+----+----+  ~  +----+----
+	 * }</pre>
+	 * The range of all classes will be equal {@code (max - min)/nclasses} and
+	 * an open bin at the beginning and end is added. This leads to a
+	 * {@link #binCount()} of {@code nclasses + 2}.
 	 *
 	 * @param min the minimum range value of the returned histogram.
 	 * @param max the maximum range value of the returned histogram.
@@ -266,8 +334,8 @@ public final class Histogram implements DoubleConsumer {
 	 *        number of separators will be {@code nclasses - 1}.
 	 * @return a new <i>histogram</i> for {@link Double} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
-	 *         {@code nclasses < 2}.
+	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+	 *         not finite or {@code nclasses < 2}
 	 */
 	public static Histogram of(
 		final double min,
@@ -275,10 +343,14 @@ public final class Histogram implements DoubleConsumer {
 		final int nclasses
 	) {
 		if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Invalid border: [min=%f, max=%f].".formatted(min, max)
+			);
 		}
 		if (nclasses < 2) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+				"Number of classes must at least two: %d.".formatted(nclasses)
+			);
 		}
 
 		final var stride = (max - min)/nclasses;
