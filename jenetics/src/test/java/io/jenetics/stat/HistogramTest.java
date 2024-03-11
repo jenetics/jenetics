@@ -41,7 +41,7 @@ public class HistogramTest {
 		final int elements = 10;
 
 		var histogram = Histogram.of(begin, end, elements);
-		Assert.assertEquals(histogram.binCount(), elements + 2);
+		Assert.assertEquals(histogram.bucketCount(), elements + 2);
 		Assert.assertEquals(histogram.table(), new long[elements + 2]);
 	}
 
@@ -62,6 +62,7 @@ public class HistogramTest {
 		expected[0] = 0;
 		expected[expected.length - 1] = 0;
 		assertThat(histogram.table()).isEqualTo(expected);
+		System.out.println(histogram);
 	}
 
 	@Test

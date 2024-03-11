@@ -69,10 +69,10 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 		final var count = observation.sampleCount();
 		final var cdf = hypothesis.cdf();
 
-		final var chi2 = observation.bins()
-			.map(bin -> new double[] {
-					bin.count()*bin.count(),
-					bin.probability(cdf)*count
+		final var chi2 = observation.buckets().stream()
+			.map(bucket -> new double[] {
+					bucket.count()*bucket.count(),
+					bucket.probability(cdf)*count
 				}
 			)
 			.filter(values -> values[0] != 0.0)

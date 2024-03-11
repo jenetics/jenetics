@@ -322,7 +322,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 				return hist;
 			})
-			.collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
+			.collect(Histogram.toHistogram(MIN, MAX, CLASS_COUNT));
 	}
 
 	/**
