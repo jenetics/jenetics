@@ -26,7 +26,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
@@ -72,12 +71,25 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucket> {
+public final class Histogram implements Iterable<Histogram.Bucket> {
 
 	public static final class Builder implements DoubleConsumer {
 		private final Separators _separators;
 		private final long[] _table;
 
+		/**
+		 * Create a <i>histogram</i> builder with the given {@code separators}.
+		 * The created <i>histogram</i> will have the following structure:
+		 * <pre>{@code
+		 * -Ꝏ     min                                          max    Ꝏ
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *       0    1    2    3    4    5    6    7    8    9    10
+		 * }</pre>
+		 *
+		 * @throws NullPointerException if {@code separators} is {@code null}.
+		 */
 		public Builder(Separators separators) {
 			_separators = requireNonNull(separators);
 			_table = new long[separators.length() + 1];
@@ -88,8 +100,59 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 			++_table[_separators.bucketIndexOf(value)];
 		}
 
+		/**
+		 * Combine the given {@code other} histogram with {@code this} one.
+		 *
+		 * @param other the histogram to add.
+		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
+		 *         separators of {@code this} and the given {@code histogram} are
+		 *         not the same.
+		 * @throws NullPointerException if the given {@code histogram} is {@code null}.
+		 */
+		public void combine(final Builder other) {
+			if (!_separators.equals(other._separators)) {
+				throw new IllegalArgumentException(
+					"The histogram separators are not equals."
+				);
+			}
+
+			for (int i = other._table.length; --i >= 0;) {
+				_table[i] += other._table[i];
+			}
+		}
+
 		public Histogram build() {
-			return null;
+			return new Histogram(_separators, _table);
+		}
+
+		/**
+		 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
+		 * array of the returned {@link Histogram} will look like this:
+		 * <pre>{@code
+		 *  -Ꝏ   min                                           max   Ꝏ
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 * }</pre>
+		 * The range of all classes will be equal {@code (max - min)/nclasses} and
+		 * an open bin at the beginning and end is added. This leads to a
+		 * {@link #bucketCount()} of {@code nclasses + 2}.
+		 *
+		 * @param min the minimum range value of the returned histogram.
+		 * @param max the maximum range value of the returned histogram.
+		 * @param nclasses the number of classes of the returned histogram. The
+		 *        number of separators will be {@code nclasses - 1}.
+		 * @return a new <i>histogram</i> for {@link Double} values.
+		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+		 *         not finite or {@code nclasses < 2}
+		 */
+		public static Builder of(
+			final double min,
+			final double max,
+			final int nclasses
+		) {
+			return new Builder(Separators.of(min, max, nclasses));
 		}
 	}
 
@@ -299,168 +362,15 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 		}
 	}
 
-	/**
-	 * Represents the buckets (bucket interval + frequency) of a histogram. It's
-	 * an immutable representation of a histogram.
-	 *
-	 * @see #buckets()
-	 * @see #Histogram(Buckets)
-	 */
-	public final class Buckets implements Iterable<Bucket> {
-		private final Separators _separators;
-		private final long[] _table;
-		private final long _sampleCount;
-
-		/**
-		 * Create a new {@code Buckets} object from the given bucket
-		 * {@code separators} and frequency {@code table}.
-		 *
-		 * @param separators the bucket separators
-		 * @param table the frequency table
-		 * @throws NullPointerException if one of the arguments is {@code null}
-		 * @throws IllegalArgumentException if
-		 *         {@code table.length != separators.length() + 1} or one of the
-		 *         frequency values is negative
-		 */
-		public Buckets(final Separators separators, final long[] table) {
-			if (table.length != separators.length() + 1) {
-				throw new IllegalArgumentException(
-					"Expected table.length of %d, but got %d."
-						.formatted(separators.length(), table.length)
-				);
-			}
-			for (var count : table) {
-				if (count < 0) {
-					throw new IllegalArgumentException(
-						"Frequency table must not contain negative values: %s."
-							.formatted(Arrays.toString(table))
-					);
-				}
-			}
-
-			_separators = separators;
-			_table = table.clone();
-			_sampleCount = LongStream.of(_table).sum();
-		}
-
-		/**
-		 * Return the bucket separators.
-		 *
-		 * @return the bucket separators
-		 */
-		public Separators separators() {
-			return _separators;
-		}
-
-		/**
-		 * Return the bucket table length. This will be
-		 * {@code separators.length() + 1}.
-		 *
-		 * @return the bucket table length
-		 */
-		public int length() {
-			return _table.length;
-		}
-
-		/**
-		 * Return the bucket value (frequency) at the given {@code index}.
-		 *
-		 * @param index the bucket index
-		 * @return the bucket value (frequency) at the given {@code index}
-		 */
-		public long at(final int index) {
-			return _table[index];
-		}
-
-		/**
-		 * Return the overall sample count of {@code this} object, which is the
-		 * sums of all frequencies.
-		 *
-		 * @return the overall sample count
-		 */
-		public long sampleCount() {
-			return _sampleCount;
-		}
-
-		/**
-		 * Return the elements of {@code this} {@code Buckets} object.
-		 *
-		 * @return a new bucket stream
-		 */
-		public Stream<Bucket> stream() {
-			return IntStream.range(0, Histogram.this._table.length)
-				.mapToObj(i -> new Bucket(
-					i == 0 ? NEGATIVE_INFINITY : _separators.at(i - 1),
-					i == Histogram.this._table.length - 1 ? POSITIVE_INFINITY : _separators.at(i),
-					Histogram.this._table[i]
-				));
-		}
-
-		@Override
-		public Iterator<Bucket> iterator() {
-			return stream().iterator();
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_separators, Arrays.hashCode(_table));
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return obj instanceof Histogram histogram &&
-				_separators.equals(histogram._separators) &&
-				Arrays.equals(_table, histogram._table);
-		}
-
-		@Override
-		public String toString() {
-			return """
-                Buckets[
-                    separators=%s,
-                    table=%s
-                ]
-                """.formatted(_separators, Arrays.toString(_table));
-		}
-
-	}
-
 	private final Separators _separators;
 	private final long[] _table;
-
 	private long _sampleCount = 0;
 
-	/**
-	 * Create a <i>histogram</i> with the given {@code separators}. The
-	 * <i>histogram</i> will have the following structure:
-	 * <pre>{@code
-	 * -Ꝏ     min                                          max    Ꝏ
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *       0    1    2    3    4    5    6    7    8    9    10
-	 * }</pre>
-	 *
-	 * @throws NullPointerException if {@code separators} is {@code null}.
-	 */
-	public Histogram(final Separators separators) {
-		_separators = requireNonNull(separators);
-		_table = new long[separators.length() + 1];
-	}
 
-	/**
-	 * Creates a (mutable) histogram from the given {@code buckets} data.
-	 *
-	 * @see #buckets()
-	 *
-	 * @param buckets the initial buckets of the newly created histogram
-	 * @throws NullPointerException if the given {@code buckets} object is
-	 *         {@code null}
-	 */
-	public Histogram(final Buckets buckets) {
-		_separators = buckets.separators();
-		_table = buckets()._table.clone();
-		_sampleCount = buckets.sampleCount();
+	private Histogram(final Separators separators, final long[] table) {
+		_separators = requireNonNull(separators);
+		_table = table.clone();
+		_sampleCount = io.jenetics.internal.util.Arrays.sum(_table);
 	}
 
 	/**
@@ -470,22 +380,6 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 	 */
 	public DoubleRange range() {
 		return _separators.range();
-	}
-
-	/**
-	 * Return a stream of the histogram bins, inclusively the <em>open</em> bins
-	 * at the beginning and the end.
-	 *
-	 * @return a stream of the histogram bins
-	 */
-	public Buckets buckets() {
-		return new Buckets(_separators, _table);
-	}
-
-	@Override
-	public void accept(final double value) {
-		++_sampleCount;
-		++_table[_separators.bucketIndexOf(value)];
 	}
 
 	/**
@@ -508,6 +402,25 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 		for (int i = other._table.length; --i >= 0;) {
 			_table[i] += other._table[i];
 		}
+	}
+
+	/**
+	 * Return the elements of {@code this} {@code Buckets} object.
+	 *
+	 * @return a new bucket stream
+	 */
+	public Stream<Bucket> stream() {
+		return IntStream.range(0, Histogram.this._table.length)
+			.mapToObj(i -> new Bucket(
+				i == 0 ? NEGATIVE_INFINITY : _separators.at(i - 1),
+				i == Histogram.this._table.length - 1 ? POSITIVE_INFINITY : _separators.at(i),
+				Histogram.this._table[i]
+			));
+	}
+
+	@Override
+	public Iterator<Bucket> iterator() {
+		return stream().iterator();
 	}
 
 	/**
@@ -576,11 +489,6 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 		return _sampleCount;
 	}
 
-	@Override
-	public Iterator<Bucket> iterator() {
-		return new Buckets(_separators, _table).iterator();
-	}
-
 	public void print(PrintStream out) {
 		final var hist = histogram();
 		long max = LongStream.of(hist).max().orElse(0);
@@ -609,43 +517,15 @@ public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucke
 			""".formatted(_separators, _sampleCount, Arrays.toString(_table));
 	}
 
-	/**
-	 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
-	 * array of the returned {@link Histogram} will look like this:
-	 * <pre>{@code
-     *  -Ꝏ   min                                           max   Ꝏ
-     *     ----+----+----+----+----+----+----+----+  ~  +----+----
-     *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
-     *     ----+----+----+----+----+----+----+----+  ~  +----+----
-	 * }</pre>
-	 * The range of all classes will be equal {@code (max - min)/nclasses} and
-	 * an open bin at the beginning and end is added. This leads to a
-	 * {@link #bucketCount()} of {@code nclasses + 2}.
-	 *
-	 * @param min the minimum range value of the returned histogram.
-	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The
-	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new <i>histogram</i> for {@link Double} values.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-	 *         not finite or {@code nclasses < 2}
-	 */
-	public static Histogram of(
-		final double min,
-		final double max,
-		final int nclasses
-	) {
-		return new Histogram(Separators.of(min, max, nclasses));
-	}
-
+	/*
 	public static Collector<Histogram, ?, Histogram>
 	toHistogram(final double min, final double max, final int nclasses) {
 		return Collector.of(
-			() -> Histogram.of(min, max, nclasses),
-			Histogram::combine,
-			(a, b) -> {a.combine(b); return a;}
+			() -> Histogram.Builder.of(min, max, nclasses),
+			Histogram.Builder::combine,
+			(a, b) -> {a. (b); return a;}
 		);
 	}
+	 */
 
 }
