@@ -68,6 +68,123 @@ import io.jenetics.util.DoubleRange;
  */
 public final class Histogram implements DoubleConsumer {
 
+	public static final class Separators {
+
+		private final double[] _separators;
+
+		public Separators(final double... separators) {
+			_separators = sanatize(separators);
+		}
+
+		private static double[] sanatize(final double[] separators) {
+			final var result = separators.clone();
+			Arrays.sort(result);
+
+			for (int i = 1; i < result.length; ++i) {
+				if (result[i - 1] == result[i]) {
+					throw new IllegalArgumentException(
+						"Separators must be unique: %s."
+							.formatted(Arrays.toString(result))
+					);
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * Return the number of separators.
+		 *
+		 * @return the number of separators
+		 */
+		public int length() {
+			return _separators.length;
+		}
+
+		/**
+		 * Return the separator at the given index.
+		 *
+		 * @param index the separator index
+		 * @return the separator at the given index.
+		 */
+		public double at(final int index) {
+			return _separators[index];
+		}
+
+		/**
+		 * Do binary search for the bucket index of the given value.
+		 *
+		 * @param value the value to search
+		 * @return the bucket index
+		 */
+		public int bucketIndexOf(final double value) {
+			int low = 0;
+			int high = length() - 1;
+
+			while (low <= high) {
+				if (value < at(low)) {
+					return low;
+				}
+				if (value >= at(high)) {
+					return high + 1;
+				}
+
+				final int mid = (low + high) >>> 1;
+				if (value < at(mid)) {
+					high = mid;
+				} else if (value >= at(mid)) {
+					low = mid + 1;
+				}
+			}
+
+			throw new AssertionError("This line will never be reached.");
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(_separators);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof Separators sep &&
+				Arrays.equals(_separators, sep._separators);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(_separators);
+		}
+
+		public static Separators of(
+			final double min,
+			final double max,
+			final int nclasses
+		) {
+			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid border: [min=%f, max=%f].".formatted(min, max)
+				);
+			}
+			if (nclasses < 2) {
+				throw new IllegalArgumentException(
+					"Number of classes must at least two: %d.".formatted(nclasses)
+				);
+			}
+
+			final var stride = (max - min)/nclasses;
+			final var separators = new double[nclasses + 1];
+
+			separators[0] = min;
+			separators[separators.length - 1] = max;
+			for (int i = 1; i < nclasses; ++i) {
+				separators[i] = separators[i - 1] + stride;
+			}
+
+			return new Separators(separators);
+		}
+	}
+
 	/**
 	 * Represents on histogram bin.
 	 *
