@@ -119,7 +119,7 @@ public class ParetoFrontTest {
 		final int trimmedSize = set.size()/2;
 		Assert.assertTrue(trimmedSize > 0);
 
-		set.trim(trimmedSize, Vec::compare, Vec::distance, Vec::length);
+		set.trim(trimmedSize, Vec::compare, Vec::distance, 2);
 		Assert.assertEquals(set.size(), trimmedSize);
 
 		/*

@@ -50,7 +50,13 @@ public final class Arrays {
 	}
 
 	public static void swap(final double[] array, final int i, final int j) {
-		final double temp = array[i];
+		final var temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+
+	public static void swap(final double[][] array, final int i, final int j) {
+		final var temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
 	}
@@ -118,6 +124,13 @@ public final class Arrays {
 	}
 
 	public static int[] add(final int[] array, final int b) {
+		for (int i = 0; i < array.length; ++i) {
+			array[i] += b;
+		}
+		return array;
+	}
+
+	public static double[] add(final double[] array, final double b) {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] += b;
 		}

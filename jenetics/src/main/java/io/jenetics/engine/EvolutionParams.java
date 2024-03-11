@@ -487,7 +487,7 @@ public final class EvolutionParams<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionParams read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionParams(
