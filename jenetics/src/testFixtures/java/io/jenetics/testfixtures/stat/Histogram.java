@@ -72,7 +72,27 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class Histogram implements DoubleConsumer {
+public final class Histogram implements DoubleConsumer, Iterable<Histogram.Bucket> {
+
+	public static final class Builder implements DoubleConsumer {
+		private final Separators _separators;
+		private final long[] _table;
+
+		public Builder(Separators separators) {
+			_separators = requireNonNull(separators);
+			_table = new long[separators.length() + 1];
+		}
+
+		@Override
+		public void accept(double value) {
+			++_table[_separators.bucketIndexOf(value)];
+		}
+
+		public Histogram build() {
+			return null;
+		}
+	}
+
 
 	/**
 	 * This class represents the bucket separators of the histogram.
@@ -289,7 +309,7 @@ public final class Histogram implements DoubleConsumer {
 	public final class Buckets implements Iterable<Bucket> {
 		private final Separators _separators;
 		private final long[] _table;
-		private final long _count;
+		private final long _sampleCount;
 
 		/**
 		 * Create a new {@code Buckets} object from the given bucket
@@ -320,7 +340,7 @@ public final class Histogram implements DoubleConsumer {
 
 			_separators = separators;
 			_table = table.clone();
-			_count = LongStream.of(_table).sum();
+			_sampleCount = LongStream.of(_table).sum();
 		}
 
 		/**
@@ -359,7 +379,7 @@ public final class Histogram implements DoubleConsumer {
 		 * @return the overall sample count
 		 */
 		public long sampleCount() {
-			return _count;
+			return _sampleCount;
 		}
 
 		/**
@@ -408,7 +428,7 @@ public final class Histogram implements DoubleConsumer {
 	private final Separators _separators;
 	private final long[] _table;
 
-	private long _count = 0;
+	private long _sampleCount = 0;
 
 	/**
 	 * Create a <i>histogram</i> with the given {@code separators}. The
@@ -440,7 +460,7 @@ public final class Histogram implements DoubleConsumer {
 	public Histogram(final Buckets buckets) {
 		_separators = buckets.separators();
 		_table = buckets()._table.clone();
-		_count = buckets.sampleCount();
+		_sampleCount = buckets.sampleCount();
 	}
 
 	/**
@@ -464,7 +484,7 @@ public final class Histogram implements DoubleConsumer {
 
 	@Override
 	public void accept(final double value) {
-		++_count;
+		++_sampleCount;
 		++_table[_separators.bucketIndexOf(value)];
 	}
 
@@ -484,7 +504,7 @@ public final class Histogram implements DoubleConsumer {
 			);
 		}
 
-		_count += other._count;
+		_sampleCount += other._sampleCount;
 		for (int i = other._table.length; --i >= 0;) {
 			_table[i] += other._table[i];
 		}
@@ -553,7 +573,12 @@ public final class Histogram implements DoubleConsumer {
 	 * @return the number of samples
 	 */
 	public long sampleCount() {
-		return _count;
+		return _sampleCount;
+	}
+
+	@Override
+	public Iterator<Bucket> iterator() {
+		return new Buckets(_separators, _table).iterator();
 	}
 
 	public void print(PrintStream out) {
@@ -581,7 +606,7 @@ public final class Histogram implements DoubleConsumer {
 			    sample=%d,
 			    table=%s
 			]
-			""".formatted(_separators, _count, Arrays.toString(_table));
+			""".formatted(_separators, _sampleCount, Arrays.toString(_table));
 	}
 
 	/**
