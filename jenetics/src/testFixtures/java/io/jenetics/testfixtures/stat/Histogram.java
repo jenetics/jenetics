@@ -71,7 +71,9 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class Histogram implements Iterable<Histogram.Bucket> {
+public record Histogram(Separators separators, Frequencies frequencies)
+	implements Iterable<Histogram.Bucket>
+{
 
 	public static final class Builder implements DoubleConsumer {
 		private final Separators _separators;
@@ -122,7 +124,7 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 		}
 
 		public Histogram build() {
-			return new Histogram(_separators, _table);
+			return new Histogram(_separators, new Frequencies(_table));
 		}
 
 		/**
@@ -333,6 +335,53 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 		}
 	}
 
+	public static final class Frequencies {
+		private final long[] _frequencies;
+
+		public Frequencies(final long... frequencies) {
+			if (frequencies.length < 4) {
+				throw new IllegalArgumentException(
+					"Frequency array length must be at least 4, but was %d."
+						.formatted(frequencies.length)
+				);
+			}
+
+			_frequencies = frequencies.clone();
+		}
+
+		public long sampleCount() {
+			return io.jenetics.internal.util.Arrays.sum(_frequencies);
+		}
+
+		public long[] histogram() {
+			return Arrays.copyOfRange(_frequencies, 1, length() - 2);
+		}
+
+		public int length() {
+			return _frequencies.length;
+		}
+
+		public long at(final int index) {
+			return _frequencies[index];
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(_frequencies);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof Frequencies frequencies &&
+				Arrays.equals(_frequencies, frequencies._frequencies);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(_frequencies);
+		}
+	}
+
 	/**
 	 * Represents on histogram bin.
 	 *
@@ -362,15 +411,13 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 		}
 	}
 
-	private final Separators _separators;
-	private final long[] _table;
-	private long _sampleCount = 0;
-
-
-	private Histogram(final Separators separators, final long[] table) {
-		_separators = requireNonNull(separators);
-		_table = table.clone();
-		_sampleCount = io.jenetics.internal.util.Arrays.sum(_table);
+	public Histogram {
+		if (frequencies.length() != separators.length() + 1) {
+			throw new IllegalArgumentException(
+				"Frequencies length must be separator length + 1: %d != %d."
+					.formatted(frequencies.length(), separators.length() + 1)
+			);
+		}
 	}
 
 	/**
@@ -379,7 +426,7 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 	 * @return the closed range of the histogram
 	 */
 	public DoubleRange range() {
-		return _separators.range();
+		return separators.range();
 	}
 
 	/**
@@ -391,17 +438,19 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 	 *         not the same.
 	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
 	 */
-	public void combine(final Histogram other) {
-		if (!_separators.equals(other._separators)) {
+	public Histogram combine(final Histogram other) {
+		if (!separators.equals(other.separators)) {
 			throw new IllegalArgumentException(
 				"The histogram separators are not equals."
 			);
 		}
 
-		_sampleCount += other._sampleCount;
-		for (int i = other._table.length; --i >= 0;) {
-			_table[i] += other._table[i];
+		final var table = new long[frequencies.length()];
+		for (int i = 0; i < table.length; ++i) {
+			table[i] = frequencies.at(i) + other.frequencies.at(i);
 		}
+
+		return new Histogram(separators, new Frequencies(table));
 	}
 
 	/**
@@ -410,11 +459,11 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 	 * @return a new bucket stream
 	 */
 	public Stream<Bucket> stream() {
-		return IntStream.range(0, Histogram.this._table.length)
+		return IntStream.range(0, frequencies.length())
 			.mapToObj(i -> new Bucket(
-				i == 0 ? NEGATIVE_INFINITY : _separators.at(i - 1),
-				i == Histogram.this._table.length - 1 ? POSITIVE_INFINITY : _separators.at(i),
-				Histogram.this._table[i]
+				i == 0 ? NEGATIVE_INFINITY : separators.at(i - 1),
+				i == frequencies.length() - 1 ? POSITIVE_INFINITY : separators.at(i),
+				frequencies.at(i)
 			));
 	}
 
@@ -423,51 +472,51 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 		return stream().iterator();
 	}
 
-	/**
-	 * Return a copy of the current histogram data, inclusively the open bins
-	 * at the beginning and the end.
-	 * <pre>{@code
-	 * -Ꝏ     min                                          max    Ꝏ
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *       0    1    2    3    4    5    6    7    8    9    10
-	 * }</pre>
-	 *
-	 * @see #histogram()
-	 *
-	 * @return a copy of the current histogram.
-	 */
-	public long[] table() {
-		return _table.clone();
-	}
+//	/**
+//	 * Return a copy of the current histogram data, inclusively the open bins
+//	 * at the beginning and the end.
+//	 * <pre>{@code
+//	 * -Ꝏ     min                                          max    Ꝏ
+//	 *     -----+----+----+----+----+----+----+----+----+----+-----
+//	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+//	 *     -----+----+----+----+----+----+----+----+----+----+-----
+//	 *       0    1    2    3    4    5    6    7    8    9    10
+//	 * }</pre>
+//	 *
+//	 * @see #histogram()
+//	 *
+//	 * @return a copy of the current histogram.
+//	 */
+//	public long[] table() {
+//		return _table.clone();
+//	}
 
-	/**
-	 * Return the <em>closed</em> histogram data.
-	 * <pre>{@code
-	 * min                                          max
-	 *  +----+----+----+----+----+----+----+----+----+
-	 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
-	 *  +----+----+----+----+----+----+----+----+----+
-	 *    0    1    2    3    4    5    6    7    8
-	 * }</pre>
-	 *
-	 * @see #table()
-	 *
-	 * @return the closed histogram data
-	 */
-	public long[] histogram() {
-		return Arrays.copyOfRange(_table, 1, _table.length - 2);
-	}
+//	/**
+//	 * Return the <em>closed</em> histogram data.
+//	 * <pre>{@code
+//	 * min                                          max
+//	 *  +----+----+----+----+----+----+----+----+----+
+//	 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
+//	 *  +----+----+----+----+----+----+----+----+----+
+//	 *    0    1    2    3    4    5    6    7    8
+//	 * }</pre>
+//	 *
+//	 * @see #table()
+//	 *
+//	 * @return the closed histogram data
+//	 */
+//	public long[] histogram() {
+//		return Arrays.copyOfRange(_table, 1, _table.length - 2);
+//	}
 
 	/**
 	 * Return the number histogram bins, which is defined at
-	 * {@code table().length}.
+	 * {@code frequences().length}.
 	 *
 	 * @return the number histogram bins
 	 */
 	public int bucketCount() {
-		return _table.length;
+		return frequencies.length();
 	}
 
 	/**
@@ -486,11 +535,11 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 	 * @return the number of samples
 	 */
 	public long sampleCount() {
-		return _sampleCount;
+		return frequencies.sampleCount();
 	}
 
 	public void print(PrintStream out) {
-		final var hist = histogram();
+		final var hist = frequencies.histogram();
 		long max = LongStream.of(hist).max().orElse(0);
 
 		double factor = 80.0/max;
@@ -514,7 +563,7 @@ public final class Histogram implements Iterable<Histogram.Bucket> {
 			    sample=%d,
 			    table=%s
 			]
-			""".formatted(_separators, _sampleCount, Arrays.toString(_table));
+			""".formatted(separators, sampleCount(), frequencies);
 	}
 
 	/*
