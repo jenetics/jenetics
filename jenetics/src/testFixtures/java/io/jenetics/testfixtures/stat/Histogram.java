@@ -27,6 +27,7 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.DoubleConsumer;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -47,9 +48,9 @@ import io.jenetics.util.DoubleRange;
  * <p>
  * The defined separators must all be finite. A {@code [-Ꝏ, min)} and a
  * {@code [max, Ꝏ)} bin is automatically added at the beginning and the end
- * of the frequency {@link #table()}.
+ * of the frequency {@link #frequencies()}.
  * <p>
- * <b>Histogram creation from stream</b>
+ * <b>Histogram creation from double stream</b>
  * {@snippet lang="java":
  * final Histogram observation = RandomGenerator.getDefault()
  *     .doubles(10000)
@@ -59,14 +60,24 @@ import io.jenetics.util.DoubleRange;
  *          Histogram::combine
  *     );
  * }
+ * <b>Histogram creation from object stream</b>
+ * {@snippet lang="java":
+ * final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
+ *     .instances().limit(1000)
+ *     .collect(ISeq.toISeq());
+ *
+ * final Histogram observations = genes.stream()
+ *     .collect(Histogram.toHistogram(0, 10, 20, DoubleGene::doubleValue));
+ * }
  * <p>
  * <b>Histogram creation from array</b>
  * {@snippet lang="java":
  * final double[] data = null; // @replace substring='null' replacement="..."
- * final Histogram observation = Histogram.of(0.0, 1.0, 20);
+ * final var builder = Histogram.Builder.of(0.0, 1.0, 20);
  * for (var d : data) {
- *     observation.accept(d);
+ *     builder.accept(d);
  * }
+ * final Histogram observations = builder.build();
  * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -75,9 +86,12 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	implements Iterable<Histogram.Bucket>
 {
 
+	/**
+	 * Histogram build class.
+	 */
 	public static final class Builder implements DoubleConsumer {
 		private final Separators _separators;
-		private final long[] _table;
+		private final long[] _frequencies;
 
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code separators}.
@@ -94,12 +108,12 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		 */
 		public Builder(Separators separators) {
 			_separators = requireNonNull(separators);
-			_table = new long[separators.length() + 1];
+			_frequencies = new long[separators.length() + 1];
 		}
 
 		@Override
 		public void accept(double value) {
-			++_table[_separators.bucketIndexOf(value)];
+			++_frequencies[_separators.bucketIndexOf(value)];
 		}
 
 		/**
@@ -118,13 +132,19 @@ public record Histogram(Separators separators, Frequencies frequencies)
 				);
 			}
 
-			for (int i = other._table.length; --i >= 0;) {
-				_table[i] += other._table[i];
+			for (int i = other._frequencies.length; --i >= 0;) {
+				_frequencies[i] += other._frequencies[i];
 			}
 		}
 
+		/**
+		 * Create a new <em>immutable</em> histogram object from the current
+		 * values.
+		 *
+		 * @return a new <em>immutable</em> histogram
+		 */
 		public Histogram build() {
-			return new Histogram(_separators, new Frequencies(_table));
+			return new Histogram(_separators, new Frequencies(_frequencies));
 		}
 
 		/**
@@ -335,9 +355,26 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		}
 	}
 
+	/**
+	 * Represents the actual frequency data of the histogram.
+	 * <pre>{@code
+	 * -Ꝏ     min                                          max    Ꝏ
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *       0    1    2    3    4    5    6    7    8    9    10
+	 * }</pre>
+	 */
 	public static final class Frequencies {
 		private final long[] _frequencies;
 
+		/**
+		 * Create a new frequency object from the given {@code frequency} values.
+		 *
+		 * @param frequencies the frequency values
+		 * @throws IllegalArgumentException if the given array has less than
+		 *         four elements
+		 */
 		public Frequencies(final long... frequencies) {
 			if (frequencies.length < 4) {
 				throw new IllegalArgumentException(
@@ -349,18 +386,56 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			_frequencies = frequencies.clone();
 		}
 
+		/**
+		 * Calculates the sample counts by summing the frequency values.
+		 *
+		 * @return the sample count
+		 */
 		public long sampleCount() {
 			return io.jenetics.internal.util.Arrays.sum(_frequencies);
 		}
 
+		/**
+		 * Return the frequency values as {@code long[]} array.
+		 *
+		 * @return the frequency values.
+		 */
+		public long[] values() {
+			return _frequencies.clone();
+		}
+
+		/**
+		 * Return the histogram values, which are the frequency values with the
+		 * first and last element removed.
+		 * <pre>{@code
+		 * min                                          max
+		 *  +----+----+----+----+----+----+----+----+----+
+		 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
+		 *  +----+----+----+----+----+----+----+----+----+
+		 *    0    1    2    3    4    5    6    7    8
+		 * }</pre>
+		 *
+		 * @return the histogram values
+		 */
 		public long[] histogram() {
 			return Arrays.copyOfRange(_frequencies, 1, length() - 2);
 		}
 
+		/**
+		 * Return the length of the frequency array.
+		 *
+		 * @return the length of the frequency array
+		 */
 		public int length() {
 			return _frequencies.length;
 		}
 
+		/**
+		 * Returns the frequency value at the given {@code index}.
+		 *
+		 * @param index the frequency index
+		 * @return the frequency value at the given {@code index}
+		 */
 		public long at(final int index) {
 			return _frequencies[index];
 		}
@@ -433,6 +508,8 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	 * Combine the given {@code other} histogram with {@code this} one.
 	 *
 	 * @param other the histogram to add.
+	 * @return a newly created histogram which combines {@code this} historgram
+	 *         with the {@code other} histogram
 	 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
 	 *         separators of {@code this} and the given {@code histogram} are
 	 *         not the same.
@@ -471,43 +548,6 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	public Iterator<Bucket> iterator() {
 		return stream().iterator();
 	}
-
-//	/**
-//	 * Return a copy of the current histogram data, inclusively the open bins
-//	 * at the beginning and the end.
-//	 * <pre>{@code
-//	 * -Ꝏ     min                                          max    Ꝏ
-//	 *     -----+----+----+----+----+----+----+----+----+----+-----
-//	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-//	 *     -----+----+----+----+----+----+----+----+----+----+-----
-//	 *       0    1    2    3    4    5    6    7    8    9    10
-//	 * }</pre>
-//	 *
-//	 * @see #histogram()
-//	 *
-//	 * @return a copy of the current histogram.
-//	 */
-//	public long[] table() {
-//		return _table.clone();
-//	}
-
-//	/**
-//	 * Return the <em>closed</em> histogram data.
-//	 * <pre>{@code
-//	 * min                                          max
-//	 *  +----+----+----+----+----+----+----+----+----+
-//	 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
-//	 *  +----+----+----+----+----+----+----+----+----+
-//	 *    0    1    2    3    4    5    6    7    8
-//	 * }</pre>
-//	 *
-//	 * @see #table()
-//	 *
-//	 * @return the closed histogram data
-//	 */
-//	public long[] histogram() {
-//		return Arrays.copyOfRange(_table, 1, _table.length - 2);
-//	}
 
 	/**
 	 * Return the number histogram bins, which is defined at
@@ -555,6 +595,35 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		out.println("-".repeat(80));
 	}
 
+	public void printHistogram(PrintStream out) {
+		final var hist = frequencies.histogram();
+		final var max = LongStream.of(hist).max().orElse(0);
+		final var factor = 20.0/max;
+
+		for (int i = 20; i >= 0; i--) {
+			out.format("%2d | ", i);
+
+			for (int j = 0; j < hist.length; j++) {
+				if (hist[j]*factor >= i) {
+					out.print(" # ");
+				} else {
+					out.print("   ");
+				}
+			}
+			out.println();
+		}
+		for (int i = 0; i < hist.length + 3; i++) {
+			out.print("----");
+		}
+
+		out.println();
+		out.print("     ");
+
+		for (int i = 0; i < hist.length; i++) {
+			//out.format("%2d ", hist[i]*factor);
+		}
+	}
+
 	@Override
 	public String toString() {
 		return """
@@ -566,15 +635,18 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			""".formatted(separators, sampleCount(), frequencies);
 	}
 
-	/*
-	public static Collector<Histogram, ?, Histogram>
-	toHistogram(final double min, final double max, final int nclasses) {
+	public static <T> Collector<T, ?, Histogram> toHistogram(
+		final double min,
+		final double max,
+		final int nclasses,
+		final ToDoubleFunction<? super T> fn
+	) {
 		return Collector.of(
 			() -> Histogram.Builder.of(min, max, nclasses),
-			Histogram.Builder::combine,
-			(a, b) -> {a. (b); return a;}
+			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
+			(a, b) -> { a.combine(b); return a; },
+			Histogram.Builder::build
 		);
 	}
-	 */
 
 }

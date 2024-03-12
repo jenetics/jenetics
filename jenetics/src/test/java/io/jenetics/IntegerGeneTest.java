@@ -52,14 +52,14 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	public void newInstanceDistribution() {
 		final var min = 0;
 		final var max = Integer.MAX_VALUE;
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 
 		IntStream.range(0, 200_000)
 			.mapToObj(i -> IntegerGene.of(min, max).allele())
 			.mapToDouble(Integer::doubleValue)
 			.forEach(histogram);
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test

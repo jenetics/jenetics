@@ -58,12 +58,12 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double min = 0;
 		final double max = 100;
 
-		final var histogram = Histogram.of(min, max, 20);
+		final var builder = Histogram.Builder.of(min, max, 20);
 		IntStream.range(0, 200_000)
 			.mapToObj(i -> DoubleGene.of(min, max).allele())
-			.forEach(histogram::accept);
+			.forEach(builder::accept);
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(builder.build()).isUniform();
 	}
 
 	@Test

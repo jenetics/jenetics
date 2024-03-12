@@ -53,13 +53,13 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 	public void newInstanceDistribution() {
 		final var min = 0L;
 		final var max = Integer.MAX_VALUE;
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 
 		IntStream.range(0, 200_000)
 			.mapToObj(i -> LongGene.of(min, max).allele())
 			.forEach(histogram::accept);
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test

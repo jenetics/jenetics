@@ -62,7 +62,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final var histogram = Histogram.of(0L, 10L, 10);
+			final var histogram = Histogram.Builder.of(0L, 10L, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
@@ -74,7 +74,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accept(Long.parseLong(g2.allele().toString()));
 			}
 
-			assertThatObservation(histogram).isUniform();
+			assertThatObservation(histogram.build()).isUniform();
 		});
 	}
 

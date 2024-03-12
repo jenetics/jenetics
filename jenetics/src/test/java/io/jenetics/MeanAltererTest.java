@@ -79,7 +79,7 @@ public class MeanAltererTest extends AltererTester {
 		final long min = 0;
 		final long max = nallgenes;
 
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 		final var statistics = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
@@ -90,8 +90,8 @@ public class MeanAltererTest extends AltererTester {
 			statistics.accept(alterations);
 		}
 
-		assertThatObservation(histogram).isNormal(mean, Math.sqrt(statistics.variance()));
-		System.out.println(histogram);
+		assertThatObservation(histogram.build())
+			.isNormal(mean, Math.sqrt(statistics.variance()));
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

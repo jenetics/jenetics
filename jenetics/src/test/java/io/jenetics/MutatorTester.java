@@ -76,8 +76,8 @@ public abstract class MutatorTester extends AltererTester {
 		final long min = 0;
 		final long max = nallgenes;
 
-		final Histogram histogram = Histogram.of(min, max, 10);
-		final LongMomentStatistics variance = new LongMomentStatistics();
+		final var histogram = Histogram.Builder.of(min, max, 10);
+		final var variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator

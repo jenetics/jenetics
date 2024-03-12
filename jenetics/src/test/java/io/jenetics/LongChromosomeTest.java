@@ -52,7 +52,7 @@ public class LongChromosomeTest
 		final long min = 0;
 		final long max = 10000000;
 
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 		for (int i = 0; i < 1000; ++i) {
 			final var chromosome = LongChromosome.of(min, max, 500);
 			for (var gene : chromosome) {
@@ -60,7 +60,7 @@ public class LongChromosomeTest
 			}
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

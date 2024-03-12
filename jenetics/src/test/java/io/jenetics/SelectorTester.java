@@ -306,9 +306,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		return IntStream.range(0, loops).parallel()
-			.mapToObj(j -> {
-				final Histogram hist = Histogram.of(MIN, MAX, CLASS_COUNT);
+		final var hist = Histogram.Builder.of(MIN, MAX, CLASS_COUNT);
+		IntStream.range(0, loops).parallel()
+			.forEach(j -> {
+
 
 				final ISeq<Phenotype<DoubleGene, Double>> population =
 					IntStream.range(0, populationCount)
@@ -319,10 +320,9 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				selector.select(population, selectionCount, opt).stream()
 					.map(pt -> pt.genotype().gene().allele())
 					.forEach(hist::accept);
+			});
 
-				return hist;
-			})
-			.collect(Histogram.toHistogram(MIN, MAX, CLASS_COUNT));
+		return hist.build();
 	}
 
 	/**
@@ -365,7 +365,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		writer.println(header);
 
 		final double[][] array = histograms.stream()
-			.map(hist -> Basics.normalize(hist.table()))
+			.map(hist -> Basics.normalize(hist.frequencies().values()))
 			.toArray(double[][]::new);
 
 		for (int i = 0; i < array[0].length; ++i) {

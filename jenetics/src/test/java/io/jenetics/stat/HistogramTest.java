@@ -24,10 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.random.RandomGenerator;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.DoubleGene;
 import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -40,9 +41,10 @@ public class HistogramTest {
 		final double end = 123;
 		final int elements = 10;
 
-		var histogram = Histogram.of(begin, end, elements);
-		Assert.assertEquals(histogram.bucketCount(), elements + 2);
-		Assert.assertEquals(histogram.table(), new long[elements + 2]);
+		var histogram = Histogram.Builder.of(begin, end, elements).build();
+		assertThat(histogram.bucketCount()).isEqualTo(elements + 2);
+		assertThat(histogram.frequencies())
+			.isEqualTo(new Histogram.Frequencies(new long[elements + 2]));
 	}
 
 	@Test
@@ -51,17 +53,19 @@ public class HistogramTest {
 		final long end = 10;
 		final int binCount = 9;
 
-		var histogram = Histogram.of(begin, end, binCount);
+		final var builder = Histogram.Builder.of(begin, end, binCount);
 		for (int i = 0; i < binCount*1000; ++i) {
 			final var value = i%binCount + 1;
-			histogram.accept(value);
+			builder.accept(value);
 		}
 
+		final var histogram = builder.build();
 		final long[] expected = new long[binCount + 2];
 		Arrays.fill(expected, 1000);
 		expected[0] = 0;
 		expected[expected.length - 1] = 0;
-		assertThat(histogram.table()).isEqualTo(expected);
+		assertThat(histogram.frequencies())
+			.isEqualTo(new Histogram.Frequencies(expected));
 		System.out.println(histogram);
 	}
 
@@ -71,12 +75,27 @@ public class HistogramTest {
 		Histogram observation = RandomGenerator.getDefault()
 			.doubles(sampleCount)
 			.collect(
-				() -> Histogram.of(0,1, 20),
-				Histogram::accept,
-				Histogram::combine
-			);
+				() -> Histogram.Builder.of(0,1, 20),
+				Histogram.Builder::accept,
+				Histogram.Builder::combine
+			)
+			.build();
 
 		assertThat(observation.sampleCount()).isEqualTo(sampleCount);
+	}
+
+	@Test
+	public void toHistogram() {
+		final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
+			.instances()
+			.limit(1000)
+			.collect(ISeq.toISeq());
+
+		final Histogram observations = genes.stream()
+			.collect(Histogram.toHistogram(0, 10, 20, DoubleGene::doubleValue));
+		assertThat(observations.sampleCount()).isEqualTo(1000);
+
+		observations.printHistogram(System.out);
 	}
 
 }

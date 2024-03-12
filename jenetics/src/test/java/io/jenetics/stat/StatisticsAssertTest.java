@@ -35,31 +35,27 @@ public class StatisticsAssertTest {
 
 	@Test
 	public void assertUniformDistribution() {
-		final var hist = Histogram.of(0, 1, 20);
+		final var hist = Histogram.Builder.of(0, 1, 20);
 
 		final var random = RandomGenerator.getDefault();
 		random.doubles(10_000).forEach(hist);
 
-		assertThatObservation(hist).isUniform();
-		//System.out.println(hist);
-		assertThatObservation(hist)
+		assertThatObservation(hist.build()).isUniform();
+		assertThatObservation(hist.build())
 			.withTester(new PearsonChi2Tester(0.0005))
 			.isUniform();
 	}
 
 	@Test
 	public void assertNormalDistribution() {
-		final var hist = Histogram.of(-2, 2, 10);
+		final var hist = Histogram.Builder.of(-2, 2, 10);
 
 		final var random = RandomGenerator.getDefault();
 		for (int i = 0; i < 100_000; ++i) {
 			hist.accept(random.nextGaussian(0, 1));
 		}
 
-		assertThatObservation(hist).isNormal(0, 1);
-		System.out.println(hist);
-		//hist.bins().forEach(System.out::println);
-		hist.print(System.out);
+		assertThatObservation(hist.build()).isNormal(0, 1);
 	}
 
 }

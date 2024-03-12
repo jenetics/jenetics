@@ -44,12 +44,12 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		final var characters = new CharSeq("0123456789");
 		final var chromosome = CharacterChromosome.of(characters, 10_000);
 
-		final var histogram = Histogram.of(0L, 10L, 10);
+		final var histogram = Histogram.Builder.of(0L, 10L, 10);
 		chromosome.stream()
 			.map(g -> Long.parseLong(g.allele().toString()))
 			.forEach(histogram::accept);
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
     }
 
 	@Test(dataProvider = "genes")

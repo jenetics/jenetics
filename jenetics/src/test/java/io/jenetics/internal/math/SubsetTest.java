@@ -144,14 +144,14 @@ public class SubsetTest {
 	public void subSetDistribution() {
 		final int n = 100_000;
 
-		final Random random = new Random();
-		final var histogram = Histogram.of(0, n, 13);
+		final var random = new Random();
+		final var histogram = Histogram.Builder.of(0, n, 13);
 
 		IntStream.range(0, 10_000)
 			.flatMap(i -> IntStream.of(Subset.next(random, n, 3)))
 			.forEach(histogram::accept);
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 

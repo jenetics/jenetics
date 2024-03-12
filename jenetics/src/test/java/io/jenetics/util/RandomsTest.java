@@ -85,99 +85,99 @@ public class RandomsTest {
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat_int() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toFloat(random.nextInt()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat_long() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accept((double)toFloat(random.nextLong()));
+			histogram.accept(toFloat(random.nextLong()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble_long() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toDouble(random.nextLong()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble_int_int() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
 			histogram.accept(toDouble((int)(value >>> 32), (int)value));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat2_int() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toFloat2(random.nextInt()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toFloat2_long() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toFloat2(random.nextLong()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble2_long() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toDouble2(random.nextLong()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(invocationCount = 5, successPercentage = 80)
 	public void toDouble2_int_int() {
 		final Random random = new Random();
-		final var histogram = Histogram.of(0.0, 1.0, 15);
+		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
 			histogram.accept(toDouble2((int)(value >>> 32), (int)value));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 }

@@ -51,13 +51,13 @@ public class IntegerChromosomeTest
 		final int min = 0;
 		final int max = 10000000;
 
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 		for (int i = 0; i < 1000; ++i) {
 			final var chromosome = IntegerChromosome.of(min, max, 500);
 			chromosome.forEach(g -> histogram.accept(g.allele()));
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

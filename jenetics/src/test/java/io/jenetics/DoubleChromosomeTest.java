@@ -53,7 +53,7 @@ public class DoubleChromosomeTest
 		final double min = 0;
 		final double max = 100;
 
-		final var histogram = Histogram.of(min, max, 20);
+		final var histogram = Histogram.Builder.of(min, max, 20);
 		for (int i = 0; i < 1000; ++i) {
 			final var chromosome = DoubleChromosome.of(min, max, 500);
 			for (var gene : chromosome) {
@@ -61,7 +61,7 @@ public class DoubleChromosomeTest
 			}
 		}
 
-		assertThatObservation(histogram).isUniform();
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")
