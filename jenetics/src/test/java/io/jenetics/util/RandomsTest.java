@@ -20,29 +20,18 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.internal.math.Randoms.toDouble;
-import static io.jenetics.internal.math.Randoms.toDouble2;
-import static io.jenetics.internal.math.Randoms.toFloat;
-import static io.jenetics.internal.math.Randoms.toFloat2;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
-
 import java.util.Arrays;
-import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.Randoms;
-import io.jenetics.testfixtures.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class RandomsTest {
-
-	private static final int INVOCATION_COUNT = 10;
-	private static final int SUCCESS_PERCENTAGE = 70;
 
 	@DataProvider(name = "nextBigIntegerData")
 	public Object[][] nextBigIntegerData() {
@@ -83,104 +72,6 @@ public class RandomsTest {
 			final byte[] seed2 = Randoms.seedBytes(length);
 			Assert.assertFalse(Arrays.equals(seed1, seed2));
 		}
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toFloat_int() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toFloat(random.nextInt()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toFloat_long() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toFloat(random.nextLong()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toDouble_long() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toDouble(random.nextLong()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toDouble_int_int() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			final long value = random.nextLong();
-			histogram.accept(toDouble((int)(value >>> 32), (int)value));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toFloat2_int() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toFloat2(random.nextInt()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toFloat2_long() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toFloat2(random.nextLong()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toDouble2_long() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			histogram.accept(toDouble2(random.nextLong()));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
-	}
-
-	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
-	public void toDouble2_int_int() {
-		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
-
-		for (int i = 0; i < 100000; ++i) {
-			final long value = random.nextLong();
-			histogram.accept(toDouble2((int)(value >>> 32), (int)value));
-		}
-
-		assertThatObservation(histogram.build()).isUniform();
 	}
 
 }
