@@ -598,7 +598,9 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	public void printHistogram(PrintStream out) {
 		final var hist = frequencies.histogram();
 		final var max = LongStream.of(hist).max().orElse(0);
-		final var factor = 20.0/max;
+
+		final var height = 20;
+		final var factor = ((double)height)/max;
 
 		for (int i = 20; i >= 0; i--) {
 			out.format("%2d | ", i);

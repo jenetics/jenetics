@@ -27,7 +27,7 @@ import static io.jenetics.internal.math.Randoms.toFloat2;
 import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.Arrays;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -40,6 +40,9 @@ import io.jenetics.testfixtures.stat.Histogram;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class RandomsTest {
+
+	private static final int INVOCATION_COUNT = 10;
+	private static final int SUCCESS_PERCENTAGE = 70;
 
 	@DataProvider(name = "nextBigIntegerData")
 	public Object[][] nextBigIntegerData() {
@@ -82,9 +85,9 @@ public class RandomsTest {
 		}
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toFloat_int() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -94,9 +97,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toFloat_long() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -106,9 +109,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toDouble_long() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -118,9 +121,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toDouble_int_int() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -131,9 +134,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toFloat2_int() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -143,9 +146,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toFloat2_long() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -155,9 +158,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toDouble2_long() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
@@ -167,9 +170,9 @@ public class RandomsTest {
 		assertThatObservation(histogram.build()).isUniform();
 	}
 
-	@Test(invocationCount = 5, successPercentage = 80)
+	@Test(invocationCount = INVOCATION_COUNT, successPercentage = SUCCESS_PERCENTAGE)
 	public void toDouble2_int_int() {
-		final Random random = new Random();
+		final var random = RandomGenerator.getDefault();
 		final var histogram = Histogram.Builder.of(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
