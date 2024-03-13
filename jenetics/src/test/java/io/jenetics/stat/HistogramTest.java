@@ -85,18 +85,28 @@ public class HistogramTest {
 	}
 
 	@Test
+	public void print() {
+		final var builder = Histogram.Builder.of(0, 10, 20);
+		final var random = RandomGenerator.getDefault();
+		for (int i = 0; i < 10_000; ++i) {
+			builder.accept(random.nextGaussian(5, 2));
+		}
+
+		final Histogram observation = builder.build();
+		observation.print(System.out);
+	}
+
+	@Test
 	public void toHistogram() {
 		final var random = RandomGenerator.getDefault();
 		final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
 			.instances()
-			.limit(random.nextInt(1000, 10000))
+			.limit(1000)
 			.collect(ISeq.toISeq());
 
 		final Histogram observations = genes.stream()
 			.collect(Histogram.toHistogram(0, 10, 20, DoubleGene::doubleValue));
-		//assertThat(observations.sampleCount()).isEqualTo(1000);
-
-		observations.printHistogram(System.out);
+		assertThat(observations.sampleCount()).isEqualTo(1000);
 	}
 
 }

@@ -230,15 +230,30 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		}
 
 		/**
+		 * Return the minimal separator value.
+		 *
+		 * @return the minimal separator value
+		 */
+		public double min() {
+			return _separators[0];
+		}
+
+		/**
+		 * Return the maximal separator value.
+		 *
+		 * @return the maximal separator value
+		 */
+		public double max() {
+			return _separators[_separators.length - 1];
+		}
+
+		/**
 		 * Return the minimal and maximal separator values.
 		 *
 		 * @return the minimal and maximal separator values
 		 */
 		public DoubleRange range() {
-			return DoubleRange.of(
-				_separators[0],
-				_separators[_separators.length - 1]
-			);
+			return DoubleRange.of(min(), max());
 		}
 
 		/**
@@ -578,105 +593,54 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		return frequencies.sampleCount();
 	}
 
-	public void print(PrintStream out) {
-		final var hist = frequencies.histogram();
-		long max = LongStream.of(hist).max().orElse(0);
-
-		double factor = 80.0/max;
-
-		out.print("+");
-		out.println("-".repeat(80));
-		for (var count : hist) {
-			out.print("|");
-			int m = (int)(count*factor);
-			out.println("*".repeat(m));
-		}
-		out.print("+");
-		out.println("-".repeat(80));
+	/**
+	 * Prints a graphical representation of the histogram to the given
+	 * {@code output}.
+	 * {@snippet lang="java":
+	 * final var builder = Histogram.Builder.of(0, 10, 20);
+	 * final var random = RandomGenerator.getDefault();
+	 * for (int i = 0; i < 10_000; ++i) {
+	 *     builder.accept(random.nextGaussian(5, 2));
+	 * }
+	 *
+	 * final Histogram observation = builder.build();
+	 * observation.print(System.out);
+	 * }
+	 * <p>
+	 * The code snippet above will lead to the following output.
+	 * <p>
+	 * <pre>{@code
+	 * 1020 │                             *  *
+	 *  952 │                          *  *  *  *
+	 *  884 │                          *  *  *  *  *
+	 *  816 │                       *  *  *  *  *  *
+	 *  748 │                       *  *  *  *  *  *
+	 *  680 │                    *  *  *  *  *  *  *  *
+	 *  612 │                    *  *  *  *  *  *  *  *
+	 *  544 │                    *  *  *  *  *  *  *  *  *
+	 *  476 │                 *  *  *  *  *  *  *  *  *  *
+	 *  408 │                 *  *  *  *  *  *  *  *  *  *  *
+	 *  340 │              *  *  *  *  *  *  *  *  *  *  *  *
+	 *  272 │           *  *  *  *  *  *  *  *  *  *  *  *  *  *
+	 *  204 │           *  *  *  *  *  *  *  *  *  *  *  *  *  *
+	 *  136 │     *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+	 *   68 │  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
+	 *      └───────────────────────────────────────────────────────────
+	 *      0.0                                                         10.0
+	 * }</pre>
+	 *
+	 * @param output the output stream
+	 */
+	public void print(PrintStream output) {
+		new Printer(15).print(output, this);
 	}
 
-	public void printHistogram(PrintStream out) {
-		final var hist = frequencies.histogram();
-		out.println(Arrays.toString(hist));
-		out.println(LongStream.of(hist).max().orElse(0));
+	private static int[] slots(final long[] histogram) {
+		final var max = LongStream.of(histogram).max().orElse(0);
+		final var slotSize = (int)Math.ceil((max/100.0))*10.0;
+		final var slotCount = max/slotSize + 1;
 
-		final var max = axisMax(LongStream.of(hist).max().orElse(0));
-		final var maxString = Long.toString(max);
-		final var formatString = "%" + maxString.length() + "d │ ";
-
-		final var height = 15;
-		final var factor = ((double)height)/max;
-
-		out.println("Samples: " + sampleCount() + ": " + max);
-		for (int i = height; i >= 0; i--) {
-			if (i == height) {
-				out.format(formatString, max);
-			//} else if (i == 0) {
-			//	out.format(formatString, i);
-			} else {
-				out.format (" ".repeat(maxString.length()) + " │ ");
-			}
-
-			for (int j = 0; j < hist.length; j++) {
-				if (hist[j]*factor >= i) {
-					out.print(" * ");
-				} else {
-					out.print("   ");
-				}
-			}
-			out.println();
-		}
-
-		//out.print(" ".repeat(maxString.length() + 1));
-		//out.print("└──");
-		out.print(("%" + maxString.length() + "d └──").formatted(0));
-		for (int i = 0; i < hist.length; i++) {
-			out.print("───");
-		}
-
-		out.println();
-		out.print(" ".repeat(5));
-
-		for (int i = 0; i < hist.length; i++) {
-			//out.format("%2d ", hist[i]*factor);
-		}
-	}
-
-	private static long axisMax(final long max) {
-		final var maxString = Long.toString(max);
-
-		final int lastDigit = Integer.parseInt(Character.toString(Long.toString(max).charAt(0)));
-		long maxAxis = Long.parseLong(maxString.charAt(0) + "0".repeat(maxString.length() - 1));
-
-		if (maxAxis < max) {
-			if (lastDigit == 1) {
-				maxAxis = Long.parseLong("2" + "0".repeat(maxString.length() - 1));
-			} else if (lastDigit < 2) {
-				maxAxis = Long.parseLong("2" + "0".repeat(maxString.length() -1 ));
-			} else if (lastDigit < 3) {
-				maxAxis = Long.parseLong("3" + "0".repeat(maxString.length() -1 ));
-			}  else if (lastDigit < 4) {
-				maxAxis = Long.parseLong("4" + "0".repeat(maxString.length() -1 ));
-			} else if (lastDigit < 5) {
-				maxAxis = Long.parseLong("5" + "0".repeat(maxString.length() - 1));
-			} else if (lastDigit < 6) {
-				maxAxis = Long.parseLong("6" + "0".repeat(maxString.length() -1 ));
-			} else if (lastDigit < 7) {
-				maxAxis = Long.parseLong("7" + "0".repeat(maxString.length() - 1));
-			} else if (lastDigit < 8) {
-				maxAxis = Long.parseLong("8" + "0".repeat(maxString.length() -1 ));
-			} else if (lastDigit < 9) {
-				maxAxis = Long.parseLong("9" + "0".repeat(maxString.length() - 1));
-			} else {
-				maxAxis = Long.parseLong("1" + "0".repeat(maxString.length()));
-			}
-		}
-
-		return maxAxis;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(axisMax(234873));
+		return new int[] { (int)slotSize, (int)slotCount };
 	}
 
 	@Override
@@ -685,9 +649,17 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			Histogram[
 			    separators=%s,
 			    sample=%d,
+			    max=%d,
+			    min=%d,
 			    table=%s
 			]
-			""".formatted(separators, sampleCount(), frequencies);
+			""".formatted(
+				separators,
+				sampleCount(),
+				LongStream.of(frequencies.histogram()).max().orElse(0),
+				LongStream.of(frequencies.histogram()).min().orElse(0),
+				frequencies
+			);
 	}
 
 	public static <T> Collector<T, ?, Histogram> toHistogram(
@@ -702,6 +674,66 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			(a, b) -> { a.combine(b); return a; },
 			Histogram.Builder::build
 		);
+	}
+
+	private static final class Printer {
+		private static final String FULL = " * ";
+		private static final String EMPTY = "   ";
+
+		private final int _frequencyStepCount;
+
+		private Printer(final int frequencyStepCount) {
+			_frequencyStepCount = frequencyStepCount;
+		}
+
+		void print(PrintStream out, Histogram histogram) {
+			final long[] values = histogram.frequencies().histogram();
+			final long max = LongStream.of(values).max().orElse(0);
+			final var stepSize = round(max/(double)_frequencyStepCount);
+
+			final var maxStringLength = Long.toString(stepSize*_frequencyStepCount).length();
+			final var formatString = "%" + maxStringLength + "d │ ";
+
+			for (int i = _frequencyStepCount - 1; i >= 0; --i) {
+				out.format(formatString, (i + 1)*stepSize);
+
+                for (long value : values) {
+                    if (value - 0.5 * stepSize >= i * stepSize) {
+                        out.print(FULL);
+                    } else {
+                        out.print(EMPTY);
+                    }
+                }
+				out.println();
+			}
+
+			out.print(" ".repeat(maxStringLength + 1));
+			out.print("└──");
+			for (int i = 0; i < values.length; i++) {
+				out.print("───");
+			}
+
+			out.println();
+			out.print(" ".repeat(maxStringLength + 1));
+			out.print(histogram.separators().at(0));
+
+			final var spaces =
+				Long.toString(max).length() +
+				EMPTY.length()*(histogram.bucketCount() - 2) -
+				Double.toString(histogram.separators().min()).length() -
+				Double.toString(histogram.separators().max()).length();
+
+			out.print(" ".repeat(spaces));
+			out.print(histogram.separators().at(histogram.separators().length() - 1));
+			out.println();
+		}
+
+		private static long round(final double value) {
+			final long size = (long)Math.ceil(value/100.0);
+			final long count = (long)Math.ceil(value/size);
+			return size*count;
+		}
+
 	}
 
 }
