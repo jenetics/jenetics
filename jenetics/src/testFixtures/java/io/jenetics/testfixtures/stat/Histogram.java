@@ -597,33 +597,86 @@ public record Histogram(Separators separators, Frequencies frequencies)
 
 	public void printHistogram(PrintStream out) {
 		final var hist = frequencies.histogram();
-		final var max = LongStream.of(hist).max().orElse(0);
+		out.println(Arrays.toString(hist));
+		out.println(LongStream.of(hist).max().orElse(0));
 
-		final var height = 20;
+		final var max = axisMax(LongStream.of(hist).max().orElse(0));
+		final var maxString = Long.toString(max);
+		final var formatString = "%" + maxString.length() + "d │ ";
+
+		final var height = 15;
 		final var factor = ((double)height)/max;
 
-		for (int i = 20; i >= 0; i--) {
-			out.format("%2d | ", i);
+		out.println("Samples: " + sampleCount() + ": " + max);
+		for (int i = height; i >= 0; i--) {
+			if (i == height) {
+				out.format(formatString, max);
+			//} else if (i == 0) {
+			//	out.format(formatString, i);
+			} else {
+				out.format (" ".repeat(maxString.length()) + " │ ");
+			}
 
 			for (int j = 0; j < hist.length; j++) {
 				if (hist[j]*factor >= i) {
-					out.print(" # ");
+					out.print(" * ");
 				} else {
 					out.print("   ");
 				}
 			}
 			out.println();
 		}
-		for (int i = 0; i < hist.length + 3; i++) {
-			out.print("----");
+
+		//out.print(" ".repeat(maxString.length() + 1));
+		//out.print("└──");
+		out.print(("%" + maxString.length() + "d └──").formatted(0));
+		for (int i = 0; i < hist.length; i++) {
+			out.print("───");
 		}
 
 		out.println();
-		out.print("     ");
+		out.print(" ".repeat(5));
 
 		for (int i = 0; i < hist.length; i++) {
 			//out.format("%2d ", hist[i]*factor);
 		}
+	}
+
+	private static long axisMax(final long max) {
+		final var maxString = Long.toString(max);
+
+		final int lastDigit = Integer.parseInt(Character.toString(Long.toString(max).charAt(0)));
+		long maxAxis = Long.parseLong(maxString.charAt(0) + "0".repeat(maxString.length() - 1));
+
+		if (maxAxis < max) {
+			if (lastDigit == 1) {
+				maxAxis = Long.parseLong("2" + "0".repeat(maxString.length() - 1));
+			} else if (lastDigit < 2) {
+				maxAxis = Long.parseLong("2" + "0".repeat(maxString.length() -1 ));
+			} else if (lastDigit < 3) {
+				maxAxis = Long.parseLong("3" + "0".repeat(maxString.length() -1 ));
+			}  else if (lastDigit < 4) {
+				maxAxis = Long.parseLong("4" + "0".repeat(maxString.length() -1 ));
+			} else if (lastDigit < 5) {
+				maxAxis = Long.parseLong("5" + "0".repeat(maxString.length() - 1));
+			} else if (lastDigit < 6) {
+				maxAxis = Long.parseLong("6" + "0".repeat(maxString.length() -1 ));
+			} else if (lastDigit < 7) {
+				maxAxis = Long.parseLong("7" + "0".repeat(maxString.length() - 1));
+			} else if (lastDigit < 8) {
+				maxAxis = Long.parseLong("8" + "0".repeat(maxString.length() -1 ));
+			} else if (lastDigit < 9) {
+				maxAxis = Long.parseLong("9" + "0".repeat(maxString.length() - 1));
+			} else {
+				maxAxis = Long.parseLong("1" + "0".repeat(maxString.length()));
+			}
+		}
+
+		return maxAxis;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(axisMax(234873));
 	}
 
 	@Override
