@@ -412,6 +412,15 @@ public record Histogram(Separators separators, Frequencies frequencies)
 
 		/**
 		 * Return the frequency values as {@code long[]} array.
+		 * <pre>{@code
+		 * -Ꝏ     min                                          max    Ꝏ
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *       0    1    2    3    4    5    6    7    8    9    10
+		 * }</pre>
+		 *
+		 * @see #histogram()
 		 *
 		 * @return the frequency values.
 		 */
@@ -429,6 +438,8 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		 *  +----+----+----+----+----+----+----+----+----+
 		 *    0    1    2    3    4    5    6    7    8
 		 * }</pre>
+		 *
+		 * @see #values()
 		 *
 		 * @return the histogram values
 		 */
@@ -496,7 +507,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		 * @param cdf the CDF used for calculating the expected property
 		 * @return the expected property
 		 */
-		double probability(final Cdf cdf) {
+		public double probability(final Cdf cdf) {
 			return cdf.apply(max) - cdf.apply(min);
 		}
 	}
@@ -610,37 +621,30 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	 * The code snippet above will lead to the following output.
 	 * <p>
 	 * <pre>{@code
-	 * 1020 │                             *  *
-	 *  952 │                          *  *  *  *
-	 *  884 │                          *  *  *  *  *
-	 *  816 │                       *  *  *  *  *  *
-	 *  748 │                       *  *  *  *  *  *
-	 *  680 │                    *  *  *  *  *  *  *  *
-	 *  612 │                    *  *  *  *  *  *  *  *
-	 *  544 │                    *  *  *  *  *  *  *  *  *
-	 *  476 │                 *  *  *  *  *  *  *  *  *  *
-	 *  408 │                 *  *  *  *  *  *  *  *  *  *  *
-	 *  340 │              *  *  *  *  *  *  *  *  *  *  *  *
-	 *  272 │           *  *  *  *  *  *  *  *  *  *  *  *  *  *
-	 *  204 │           *  *  *  *  *  *  *  *  *  *  *  *  *  *
-	 *  136 │     *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-	 *   68 │  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
-	 *      └───────────────────────────────────────────────────────────
-	 *      0.0                                                         10.0
+	 *      ┌───────────────────────────────────────────────────────────┐
+	 * 1020 ┤                            ██ ██                          │
+	 *  952 ┤                         ██ ██ ██ ██                       │
+	 *  884 ┤                      ██ ██ ██ ██ ██                       │
+	 *  816 ┤                      ██ ██ ██ ██ ██                       │
+	 *  748 ┤                      ██ ██ ██ ██ ██ ██                    │
+	 *  680 ┤                   ██ ██ ██ ██ ██ ██ ██ ██                 │
+	 *  612 ┤                   ██ ██ ██ ██ ██ ██ ██ ██                 │
+	 *  544 ┤                ██ ██ ██ ██ ██ ██ ██ ██ ██                 │
+	 *  476 ┤                ██ ██ ██ ██ ██ ██ ██ ██ ██ ██              │
+	 *  408 ┤             ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██              │
+	 *  340 ┤             ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██           │
+	 *  272 ┤          ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██        │
+	 *  204 ┤       ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██     │
+	 *  136 ┤       ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██  │
+	 *   68 ┤ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██  │
+	 *      └───┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬─┘
+	 *     0.0                                                         10.0
 	 * }</pre>
 	 *
 	 * @param output the output stream
 	 */
 	public void print(PrintStream output) {
 		new Printer(15).print(output, this);
-	}
-
-	private static int[] slots(final long[] histogram) {
-		final var max = LongStream.of(histogram).max().orElse(0);
-		final var slotSize = (int)Math.ceil((max/100.0))*10.0;
-		final var slotCount = max/slotSize + 1;
-
-		return new int[] { (int)slotSize, (int)slotCount };
 	}
 
 	@Override
@@ -677,7 +681,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	}
 
 	private static final class Printer {
-		private static final String FULL = " * ";
+		private static final String FULL = "██ ";
 		private static final String EMPTY = "   ";
 
 		private final int _frequencyStepCount;
@@ -692,7 +696,14 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			final var stepSize = round(max/(double)_frequencyStepCount);
 
 			final var maxStringLength = Long.toString(stepSize*_frequencyStepCount).length();
-			final var formatString = "%" + maxStringLength + "d │ ";
+			final var formatString = "%" + maxStringLength + "d ┤ ";
+
+			out.print(" ".repeat(maxStringLength + 1));
+			out.print("┌");
+			for (int i = 0; i < values.length; i++) {
+				out.print("───");
+			}
+			out.println("──┐");
 
 			for (int i = _frequencyStepCount - 1; i >= 0; --i) {
 				out.format(formatString, (i + 1)*stepSize);
@@ -704,21 +715,21 @@ public record Histogram(Separators separators, Frequencies frequencies)
                         out.print(EMPTY);
                     }
                 }
-				out.println();
+				out.println(" │");
 			}
 
 			out.print(" ".repeat(maxStringLength + 1));
 			out.print("└──");
 			for (int i = 0; i < values.length; i++) {
-				out.print("───");
+				out.print("─┬─");
 			}
+			out.println("┘");
 
-			out.println();
-			out.print(" ".repeat(maxStringLength + 1));
+			out.print(" ".repeat(maxStringLength));
 			out.print(histogram.separators().at(0));
 
 			final var spaces =
-				Long.toString(max).length() +
+				maxStringLength +
 				EMPTY.length()*(histogram.bucketCount() - 2) -
 				Double.toString(histogram.separators().min()).length() -
 				Double.toString(histogram.separators().max()).length();
