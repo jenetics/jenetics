@@ -19,9 +19,11 @@
  */
 package io.jenetics.testfixtures.stat;
 
+import java.util.NoSuchElementException;
+
 import org.apache.commons.math3.special.Erf;
 
-import io.jenetics.util.DoubleRange;
+import io.jenetics.stat.Sampler;
 
 /**
  * Gaussian distribution implementation.
@@ -34,14 +36,9 @@ import io.jenetics.util.DoubleRange;
 public record NormalDistribution(double mean, double stddev)
 	implements Distribution
 {
-
+	private static final int MAX_SAMPLER_ITERATION = 10_000;
 	private static final double SQRT2 = Math.sqrt(2);
 	private static final double HALF_LOG_TAU = 0.5*Math.log(Math.TAU);
-
-	private static final DoubleRange DOMAIN = DoubleRange.of(
-		Double.NEGATIVE_INFINITY,
-		Double.POSITIVE_INFINITY
-	);
 
 	public NormalDistribution {
 		if (stddev <= 0) {
@@ -52,8 +49,21 @@ public record NormalDistribution(double mean, double stddev)
 	}
 
 	@Override
-	public DoubleRange domain() {
-		return DOMAIN;
+	public Sampler sampler() {
+		return (random, range) -> {
+			double sample = random.nextGaussian(mean, stddev);
+			int count = 0;
+			while (!range.contains(sample) && ++count < MAX_SAMPLER_ITERATION) {
+				sample = random.nextGaussian(mean, stddev);
+			}
+			if (count == MAX_SAMPLER_ITERATION) {
+				throw new NoSuchElementException(
+					"Can't find sample for %s within %s after %d iterations."
+						.formatted(this, random, count)
+				);
+			}
+			return sample;
+		};
 	}
 
 	@Override

@@ -17,42 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.testfixtures.util;
+
+import org.testng.ITestResult;
+import org.testng.util.RetryAnalyzerCount;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 6.1
  */
-plugins {
-	`java-library`
-	`java-test-fixtures`
-	`maven-publish`
-	alias(libs.plugins.jmh)
-}
-
-description = "Jenetics - Java Genetic Algorithm Library"
-
-extra["moduleName"] = "io.jenetics.base"
-
-dependencies {
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
-	testImplementation(libs.commons.rng.sampling)
-	testImplementation(libs.commons.rng.simple)
-	testImplementation(libs.equalsverifier)
-	testImplementation(libs.prngine)
-	testImplementation(libs.testng)
-	testImplementation(testFixtures(project(":jenetics")))
-
-	testFixturesApi(libs.assertj)
-	testFixturesApi(libs.commons.math)
-	testFixturesApi(libs.testng)
-
-	jmh(libs.prngine)
-}
-
-tasks.test { dependsOn(tasks.compileJmhJava) }
-
-jmh {
-	includes.add(".*ProxySorterPerf.*")
+public final class RetryOnce extends RetryAnalyzerCount {
+	@Override
+	public boolean retryMethod(ITestResult result) {
+		return getCount() <= 1;
+	}
 }

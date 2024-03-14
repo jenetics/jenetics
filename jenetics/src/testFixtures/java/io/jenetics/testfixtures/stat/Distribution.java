@@ -19,7 +19,7 @@
  */
 package io.jenetics.testfixtures.stat;
 
-import io.jenetics.util.DoubleRange;
+import io.jenetics.stat.Sampler;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
@@ -30,11 +30,12 @@ import io.jenetics.util.DoubleRange;
 public interface Distribution {
 
 	/**
-	 * Return the domain of this probability distribution.
+	 * Return a sampler for creating sample points which follows {@code this}
+	 * distribution.
 	 *
-	 * @return the domain of this probability distribution.
+	 * @return a sampler for {@code this} distribution
 	 */
-	DoubleRange domain();
+	Sampler sampler();
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).

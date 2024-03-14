@@ -24,6 +24,8 @@ import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.util.DoubleRange;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -34,8 +36,10 @@ public class SamplersTest {
 		final var dist = Samplers.linear(0.12);
 		final var random = RandomGenerator.getDefault();
 		final var stat = new DoubleSummaryStatistics();
+
+		final var range = DoubleRange.of(10, 100);
 		for (int i = 0; i < 100000; ++i) {
-			final var value = dist.sample(random);
+			final var value = dist.sample(random, range);
 			stat.accept(value);
 		}
 

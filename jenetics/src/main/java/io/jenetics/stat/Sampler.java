@@ -25,21 +25,18 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IntRange;
 
 /**
- * Interface for creating <em>normalized</em> random samples, within the range
- * {@code [0, 1)}, with a given <em>distribution</em>. This interface isn't
- * responsible for creating the random numbers itself. It uses a
- * {@link RandomGenerator} generator, which is given by the caller.
+ * Interface for creating <em>continuous</em> random samples, with a given
+ * <em>distribution</em>. This interface isn't responsible for creating the
+ * random numbers itself. It uses a {@link RandomGenerator} generator, which is
+ * given by the caller.
  * {@snippet lang = java:
  * final var random = RandomGenerator.getDefault();
+ * final var range = DoubleRange.of(0, 1);
  * final var distribution = Sampler.linear(0.1);
  * // Create a new sample point, which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
- * final double value = distribution.sample(random);
+ * final double value = distribution.sample(random, range);
  *}
- *
- * @apiNote
- * The {@link #sample(RandomGenerator)} must return a value with the range
- * {@code [0, 1)}.
  *
  * @see Samplers
  * @see <a href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">Inverse transform sampling</a>
@@ -53,20 +50,9 @@ public interface Sampler {
 
 	/**
 	 * Default uniform distribution by calling
-	 * {@link RandomGenerator#nextDouble()}.
+	 * {@link RandomGenerator#nextDouble(double, double)}.
 	 */
-	Sampler UNIFORM = RandomGenerator::nextDouble;
-
-	/**
-	 * Create a new sample point in the range {@code [0, 1)}, which obeys the
-	 * defined <em>distribution</em>. For creating such a sample, the given
-	 * {@code random} generator is used.
-	 *
-	 * @param random the random generator used for creating a sample point of
-	 *        the defined distribution
-	 * @return a new sample point between {@code [0, 1)}
-	 */
-	double sample(RandomGenerator random);
+	Sampler UNIFORM = (random, range) -> random.nextDouble(range.min(), range.max());
 
 	/**
 	 * Create a new {@code double} sample point within the given range
@@ -77,15 +63,7 @@ public interface Sampler {
 	 * @param range the range of the sample point: {@code [min, max)}
 	 * @return a new sample point between {@code [min, max)}
 	 */
-	default double sample(RandomGenerator random, DoubleRange range) {
-		final var sample = sample(random);
-		assert Double.isFinite(sample);
-		assert sample >= 0.0;
-		assert sample < 1.0;
-
-		return range.min() + sample*(range.max() - range.min());
-		// standardDeviation * normalized.sample() + mean;
-	}
+	double sample(RandomGenerator random, DoubleRange range);
 
 	/**
 	 * Create a new {@code int} sample point within the given range
@@ -97,12 +75,7 @@ public interface Sampler {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default int sample(RandomGenerator random, IntRange range) {
-		final var sample = sample(random);
-		assert Double.isFinite(sample);
-		assert sample >= 0.0;
-		assert sample < 1.0;
-
-		return (int)(range.min() + sample*(range.max() - range.min()));
+		return (int)sample(random, DoubleRange.of(range.min(), range.max()));
 	}
 
 }

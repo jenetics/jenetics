@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Samplers;
 import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -108,7 +109,7 @@ public class ShiftMutationTest extends MutatorTester {
 	}
 
 	@Override
-	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
@@ -159,24 +160,15 @@ public class ShiftMutationTest extends MutatorTester {
 
 	public static void main(String[] args) throws IOException {
 		final var random = RandomGenerator.getDefault();
-		final var histogram = Histogram.Builder.of(0.0, 1.0, 20);
-
-		//final var mean = 1.0 - sqrt(2)/2.0;
-		final var mean = sqrt(2)/2.0;
-		//final var distribution = Distributions.linear(mean);
+		final var range = DoubleRange.of(0, 5);
+		final var histogram = Histogram.Builder.of(range.min(), range.max(), 20);
 		final var distribution = Samplers.triangular(0.2);
 
 		for (int i = 0; i < 100_000; ++i) {
-			histogram.accept(distribution.sample(random));
+			histogram.accept(distribution.sample(random, range));
 		}
 
-		/*
-		for (var i : histogram.getHistogram()) {
-			System.out.println(i);
-		}
-		 */
-
-		//histogram.print(System.out);
+		histogram.build().print(System.out);
 	}
 
 }

@@ -22,6 +22,8 @@ package io.jenetics.stat;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+import io.jenetics.util.DoubleRange;
+
 /**
  * This class defines some default distributions.
  *
@@ -65,9 +67,9 @@ public final class Samplers {
 		}
 
 		if (Double.compare(mean, 0) == 0) {
-			return random -> Range.MIN;
+			return (random, range) -> Range.MIN;
 		} else if (mean == Range.MAX) {
-			return random -> Range.MAX;
+			return (random, range) -> Range.MAX* range.max();
 		}
 
 		final double b, m;
@@ -84,16 +86,19 @@ public final class Samplers {
 			b = m = 1;
 		}
 
-		return random -> {
+		return (random, range) -> {
 			final var r = random.nextDouble();
 
+			final double sample;
 			if (mean < 0.5) {
-				return Range.clamp((-b + sqrt(b*b + 2*r*m))/m);
+				sample = Range.clamp((-b + sqrt(b*b + 2*r*m))/m);
 			} else if (mean == 0.5) {
-				return r;
+				sample = r;
 			} else {
-				return Range.clamp((b - sqrt(b*b + 2*m*(r - 1 + b + 0.5*m)))/-m);
+				sample = Range.clamp((b - sqrt(b*b + 2*m*(r - 1 + b + 0.5*m)))/-m);
 			}
+
+			return stretch(sample, range);
 		};
 	}
 
@@ -126,16 +131,19 @@ public final class Samplers {
 
 		final var fc = (c - a)/(b - a);
 
-		return random -> {
+		return (random, range) -> {
 			final var r = random.nextDouble();
 
+			final double sample;
 			if (Double.compare(r, 0.0) == 0) {
-				return 0;
+				sample = 0;
 			} else if (r < fc) {
-				return a + sqrt(r*(b - a)*(c - a));
+				sample = a + sqrt(r*(b - a)*(c - a));
 			} else {
-				return b - sqrt((1 - r)*(b - a)*(b - c));
+				sample = b - sqrt((1 - r)*(b - a)*(b - c));
 			}
+
+			return stretch(sample, range);
 		};
 	}
 
@@ -153,4 +161,9 @@ public final class Samplers {
 		return triangular(0, c, 1.0);
 	}
 
+	private static double stretch(final double sample, DoubleRange range) {
+		return range.min() + sample*(range.max() - range.min());
+	}
+
 }
+
