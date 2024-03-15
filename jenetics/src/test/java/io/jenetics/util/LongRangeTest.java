@@ -19,8 +19,13 @@
  */
 package io.jenetics.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.util.Optional;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -40,6 +45,40 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 	@Test
 	public void equalsVerifier() {
 		EqualsVerifier.forClass(LongRange.class).verify();
+	}
+
+	@Test(dataProvider = "containsRanges")
+	public void contains(LongRange a, int value, boolean result) {
+		assertThat(a.contains(value)).isEqualTo(result);
+	}
+
+	@DataProvider
+	public Object[][] containsRanges() {
+		return new Object[][] {
+			{LongRange.of(0, 10), 5, true},
+			{LongRange.of(0, 10), 0, true},
+			{LongRange.of(0, 10), 10, false},
+			{LongRange.of(0, 10), -5, false},
+			{LongRange.of(0, 10), 15, false}
+		};
+	}
+
+	@Test(dataProvider = "rangeIntersectionPairs")
+	public void intersect(LongRange a, LongRange b, Optional<LongRange> ir) {
+		assertThat(a.intersect(b)).isEqualTo(ir);
+	}
+
+	@DataProvider
+	public Object[][] rangeIntersectionPairs() {
+		return new Object[][] {
+			{LongRange.of(0, 10), LongRange.of(5, 20), Optional.of(LongRange.of(5, 10))},
+			{LongRange.of(6, 10), LongRange.of(5, 20), Optional.of(LongRange.of(6, 10))},
+			{LongRange.of(0, 10), LongRange.of(5, 7), Optional.of(LongRange.of(5, 7))},
+			{LongRange.of(0, 100), LongRange.of(5, 20), Optional.of(LongRange.of(5, 20))},
+			{LongRange.of(0, 10), LongRange.of(10, 20), Optional.empty()},
+			{LongRange.of(0, 10), LongRange.of(11, 20), Optional.empty()},
+			{LongRange.of(20, 100), LongRange.of(1, 5), Optional.empty()}
+		};
 	}
 
 }
