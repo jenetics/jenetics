@@ -86,7 +86,7 @@ public class HistogramTest {
 
 	@Test
 	public void print() {
-		final var builder = Histogram.Builder.of(0, 10, 20);
+		final var builder = Histogram.Builder.of(0, 10, 23);
 		final var random = RandomGenerator.getDefault();
 		for (int i = 0; i < 10_000; ++i) {
 			builder.accept(random.nextGaussian(5, 2));
@@ -105,7 +105,7 @@ public class HistogramTest {
 			.collect(ISeq.toISeq());
 
 		final Histogram observations = genes.stream()
-			.collect(Histogram.toHistogram(0, 10, 20, DoubleGene::doubleValue));
+			.collect(Histogram.toHistogram(0, 10, 15, DoubleGene::doubleValue));
 		assertThat(observations.sampleCount()).isEqualTo(1000);
 	}
 

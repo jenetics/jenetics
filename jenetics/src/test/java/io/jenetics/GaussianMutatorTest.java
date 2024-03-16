@@ -19,14 +19,17 @@
  */
 package io.jenetics;
 
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.Range;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -39,7 +42,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		return new GaussianMutator<>(p);
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
+	@Test(invocationCount = 20, successPercentage = 90)
 	public void mutate() {
 		final var random = RandomRegistry.random();
 
@@ -51,16 +54,17 @@ public class GaussianMutatorTest extends MutatorTester {
 		final DoubleGene gene = DoubleGene.of(mean, min, max);
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
-		final var histogram = Histogram.Builder.of(0.0, 10.0, 10);
+		final var statistics = new DoubleMomentStatistics();
+		final var histogram = Histogram.Builder.of(1.0, 10.0, 10);
 
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();
+			statistics.accept(value);
 			histogram.accept(value);
 		}
 
-		final Range<Double> domain = new Range<>(min, max);
-		// TODO: Implement test
-		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, var));
+		assertThatObservation(histogram.build())
+			.isNormal(5, Math.sqrt(var), DoubleRange.of(min, max));
 	}
 
 	@Test
@@ -76,7 +80,7 @@ public class GaussianMutatorTest extends MutatorTester {
 
 		final var random = new Random() {
 			@Override
-			public double nextGaussian() {
+			public double nextGaussian(double mean, double stddev) {
 				return 1;
 			}
 		};

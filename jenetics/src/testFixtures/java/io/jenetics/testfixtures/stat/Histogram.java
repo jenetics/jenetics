@@ -33,6 +33,8 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.DoubleRange;
 
 /**
@@ -53,12 +55,13 @@ import io.jenetics.util.DoubleRange;
  * <b>Histogram creation from double stream</b>
  * {@snippet lang="java":
  * final Histogram observation = RandomGenerator.getDefault()
- *     .doubles(10000)
+ *     .doubles(10_000)
  *     .collect(
- *          () -> Histogram.of(0.0, 1.0, 20),
- *          Histogram::accept,
- *          Histogram::combine
- *     );
+ *         () -> Histogram.Builder.of(0, 1, 20),
+ *         Histogram.Builder::accept,
+ *         Histogram.Builder::combine
+ *     )
+ *     .build();
  * }
  * <b>Histogram creation from object stream</b>
  * {@snippet lang="java":
@@ -82,7 +85,11 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record Histogram(Separators separators, Frequencies frequencies)
+public record Histogram(
+	Separators separators,
+	Frequencies frequencies,
+	DoubleMoments moments
+)
 	implements Iterable<Histogram.Bucket>
 {
 
@@ -92,6 +99,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	public static final class Builder implements DoubleConsumer {
 		private final Separators _separators;
 		private final long[] _frequencies;
+		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
 
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code separators}.
@@ -114,6 +122,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		@Override
 		public void accept(double value) {
 			++_frequencies[_separators.bucketIndexOf(value)];
+			_statistics.accept(value);
 		}
 
 		/**
@@ -135,6 +144,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			for (int i = other._frequencies.length; --i >= 0;) {
 				_frequencies[i] += other._frequencies[i];
 			}
+			_statistics.combine(other._statistics);
 		}
 
 		/**
@@ -144,7 +154,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		 * @return a new <em>immutable</em> histogram
 		 */
 		public Histogram build() {
-			return new Histogram(_separators, new Frequencies(_frequencies));
+			return new Histogram(_separators, new Frequencies(_frequencies), DoubleMoments.of(_statistics));
 		}
 
 		/**
@@ -531,32 +541,6 @@ public record Histogram(Separators separators, Frequencies frequencies)
 	}
 
 	/**
-	 * Combine the given {@code other} histogram with {@code this} one.
-	 *
-	 * @param other the histogram to add.
-	 * @return a newly created histogram which combines {@code this} historgram
-	 *         with the {@code other} histogram
-	 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
-	 *         separators of {@code this} and the given {@code histogram} are
-	 *         not the same.
-	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
-	 */
-	public Histogram combine(final Histogram other) {
-		if (!separators.equals(other.separators)) {
-			throw new IllegalArgumentException(
-				"The histogram separators are not equals."
-			);
-		}
-
-		final var table = new long[frequencies.length()];
-		for (int i = 0; i < table.length; ++i) {
-			table[i] = frequencies.at(i) + other.frequencies.at(i);
-		}
-
-		return new Histogram(separators, new Frequencies(table));
-	}
-
-	/**
 	 * Return the elements of {@code this} {@code Buckets} object.
 	 *
 	 * @return a new bucket stream
@@ -577,7 +561,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 
 	/**
 	 * Return the number histogram bins, which is defined at
-	 * {@code frequences().length}.
+	 * {@code frequencies().length}.
 	 *
 	 * @return the number histogram bins
 	 */
@@ -652,18 +636,14 @@ public record Histogram(Separators separators, Frequencies frequencies)
 		return """
 			Histogram[
 			    separators=%s,
-			    sample=%d,
-			    max=%d,
-			    min=%d,
-			    table=%s
+			    table=%s,
+			    %s
 			]
 			""".formatted(
-				separators,
-				sampleCount(),
-				LongStream.of(frequencies.histogram()).max().orElse(0),
-				LongStream.of(frequencies.histogram()).min().orElse(0),
-				frequencies
-			);
+					separators,
+					frequencies,
+					moments
+				);
 	}
 
 	public static <T> Collector<T, ?, Histogram> toHistogram(
@@ -698,6 +678,12 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			final var maxStringLength = Long.toString(stepSize*_frequencyStepCount).length();
 			final var formatString = "%" + maxStringLength + "d ┤ ";
 
+			final int margin = maxStringLength + 1;
+			final int length = values.length*3 + 4;
+			final int cols = 3;
+
+
+			// Print histogram
 			out.print(" ".repeat(maxStringLength + 1));
 			out.print("┌");
 			for (int i = 0; i < values.length; i++) {
@@ -709,7 +695,7 @@ public record Histogram(Separators separators, Frequencies frequencies)
 				out.format(formatString, (i + 1)*stepSize);
 
                 for (long value : values) {
-                    if (value - 0.5 * stepSize >= i * stepSize) {
+                    if (value - 0.5*stepSize >= i*stepSize) {
                         out.print(FULL);
                     } else {
                         out.print(EMPTY);
@@ -737,6 +723,20 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			out.print(" ".repeat(spaces));
 			out.print(histogram.separators().at(histogram.separators().length() - 1));
 			out.println();
+
+			// Print statistics.
+			table(out, margin, length, new String[][] {
+				{
+					" N=%d".formatted(histogram.moments.count()),
+					" ∧=%.2f".formatted(histogram.moments.min()),
+					" ∨=%.2f".formatted(histogram.moments.max())
+				},
+				{
+					" μ=%.3f".formatted(histogram.moments.mean()),
+					" s²=%.3f".formatted(histogram.moments.variance()),
+					" S=%.3f".formatted(histogram.moments.skewness())
+				}
+			});
 		}
 
 		private static long round(final double value) {
@@ -745,6 +745,97 @@ public record Histogram(Separators separators, Frequencies frequencies)
 			return size*count;
 		}
 
+	}
+
+
+	private static void table(
+		PrintStream out,
+		int margin,
+		int length,
+		String[][] table
+	) {
+		if (table.length >= 1) {
+			final int cols = table[0].length;
+			top(out, margin, length, cols);
+
+			for (int i = 0; i < table.length; ++i) {
+				final String[] line = table[i];
+				line(out, margin, length, line);
+
+				if (i < table.length - 1) {
+					middle(out, margin, length, cols);
+				} else {
+					bottom(out, margin, length, cols);
+				}
+			}
+		}
+	}
+
+	private static void top(PrintStream out, int margin, int length, int cols) {
+		final int[] cellSizes = partition(length - cols - 1, cols);
+
+		out.print(" ".repeat(margin));
+		out.print("┌");
+		for (int i = 0; i < cols - 1; ++i) {
+			out.print("─".repeat(cellSizes[i]));
+			out.print("┬");
+		}
+		out.print("─".repeat(cellSizes[cols - 1]));
+		out.println("┐");
+	}
+
+	private static void middle(PrintStream out, int margin, int length, int cols) {
+		final int[] cellSizes = partition(length - cols - 1, cols);
+
+		out.print(" ".repeat(margin));
+		out.print("├");
+		for (int i = 0; i < cols - 1; ++i) {
+			out.print("─".repeat(cellSizes[i]));
+			out.print("┼");
+		}
+		out.print("─".repeat(cellSizes[cols - 1]));
+		out.println("┤");
+	}
+
+	private static void line(PrintStream out, int margin, int length, String... cols) {
+		//final int cellSize = (length - cols.length - 1)/cols.length;
+		final int[] cellSizes = partition(length - cols.length - 1, cols.length);
+
+		out.print(" ".repeat(margin));
+		out.print("│");
+		for (int i = 0; i < cols.length - 1; ++i) {
+			out.print(String.format("%-" + cellSizes[i] + "s", cols[i]));
+			out.print("│");
+		}
+		out.print(String.format("%-" + cellSizes[cols.length - 1] + "s", cols[cols.length - 1]));
+		out.println("│");
+	}
+
+	private static void bottom(PrintStream out, int margin, int length, int cols) {
+		final int[] cellSizes = partition(length - cols - 1, cols);
+
+		out.print(" ".repeat(margin));
+		out.print("└");
+		for (int i = 0; i < cols - 1; ++i) {
+			out.print("─".repeat(cellSizes[i]));
+			out.print("┴");
+		}
+		out.print("─".repeat(cellSizes[cols - 1]));
+		out.println("┘");
+	}
+
+	private static int[] partition(final int size, final int parts) {
+		final int[] partition = new int[parts];
+
+		final int bulk = size/parts;
+		final int rest = size%parts;
+
+        Arrays.fill(partition, bulk);
+		for (int i = 0; i < rest; ++i) {
+			++partition[i];
+		}
+
+		return partition;
 	}
 
 }

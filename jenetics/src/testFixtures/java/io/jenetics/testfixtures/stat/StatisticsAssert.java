@@ -27,6 +27,7 @@ import org.apache.commons.math3.stat.inference.ChiSquareTest;
 
 import io.jenetics.testfixtures.stat.HypothesisTester.Accept;
 import io.jenetics.testfixtures.stat.HypothesisTester.Reject;
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -86,6 +87,10 @@ public final class StatisticsAssert {
 
 		public void isNormal(double mean, double stddev) {
 			follows(new NormalDistribution(mean, stddev));
+		}
+
+		public void isNormal(double mean, double stddev, DoubleRange range) {
+			follows(new RangedDistribution(new NormalDistribution(mean, stddev), range));
 		}
 
 	}
