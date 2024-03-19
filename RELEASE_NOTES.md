@@ -1,8 +1,28 @@
 ## Release notes
 
+### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
+
+#### Improvements
+
+* Java 21 is used for building and using the library.
+* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function.
+```java
+final Engine<DoubleGene, Double> engine = Engine.builder(ff)
+    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+    .build();
+```
+* [#880](https://github.com/jenetics/jenetics/issues/880): Replace code examples in Javadoc with [JEP 413](https://openjdk.org/jeps/413).
+* [#886](https://github.com/jenetics/jenetics/issues/886): Improve `CharStore` sort.
+* [#894](https://github.com/jenetics/jenetics/issues/894): New genetic operators: `ShiftMutator`, `ShuffleMutator` and `UniformOrderBasedCrossover`.
+* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default RandomGenerator selection. The used `RandomGenerator` is selected in the following order:
+	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter ist set. If so, take this generator.
+	2) Check if the `L64X256MixRandom` generator is available. If so, take this generator.
+	3) Find the _best_ available random generator according to the `RandomGeneratorFactory.stateBits()` value.
+	4) Use the `Random` generator if no _best_ generator can be found. This generator is guaranteed to be available on every platform.
+
 ### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
 
-#### Improvemments
+#### Improvements
 
 * [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
 * [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
@@ -23,13 +43,13 @@ java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
 
 ### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
 
-#### Improvemments
+#### Improvements
 
 * [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
 
 ### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
 
-#### Improvemments
+#### Improvements
 
 * [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
 
