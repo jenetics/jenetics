@@ -32,10 +32,10 @@ import io.jenetics.util.IntRange;
  * {@snippet lang = java:
  * final var random = RandomGenerator.getDefault();
  * final var range = DoubleRange.of(0, 1);
- * final var distribution = Sampler.linear(0.1);
+ * final var sampler = Sampler.linear(0.1);
  * // Create a new sample point, which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
- * final double value = distribution.sample(random, range);
+ * final double value = sampler.sample(random, range);
  *}
  *
  * @see Samplers

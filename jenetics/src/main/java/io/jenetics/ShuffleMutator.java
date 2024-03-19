@@ -101,8 +101,9 @@ public class ShuffleMutator<
 		 * Create a new random range generator, which uses the given distributions
 		 * for creating the range points.
 		 *
-		 * @param lengthSampler the sampler of shifted gene count
-		 * @param indexSampler the sampler of shift indexes
+		 * @param lengthSampler the sampler used for creating the shifted gene
+		 *        count
+		 * @param indexSampler the sampler used for creating the shift indexes
 		 * @return a new random range generator with the given parameters
 		 */
 		static RangeRandom of(
@@ -135,7 +136,8 @@ public class ShuffleMutator<
 		 *
 		 * @see #of(Sampler, Sampler)
 		 *
-		 * @param lengthSampler the sampler of shuffled gene count
+		 * @param lengthSampler the sampler used for creating the shifted gene
+		 *        count
 		 * @return a new random shift generator with the given parameters
 		 */
 		static RangeRandom of(final Sampler lengthSampler) {

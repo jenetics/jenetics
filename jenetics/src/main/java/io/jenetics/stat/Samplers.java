@@ -25,7 +25,7 @@ import static java.lang.Math.sqrt;
 import io.jenetics.util.DoubleRange;
 
 /**
- * This class defines some default distributions.
+ * This class defines some default samplers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
@@ -37,14 +37,14 @@ public final class Samplers {
 	}
 
 	/**
-	 * Return a new <em>linear</em> distribution object with the given
+	 * Return a new sampler for a <em>linear</em> distribution with the given
 	 * {@code mean} value.
 	 * <p>
 	 *	<img src="doc-files/LinearDistributionPDF.svg" width="450"
-	 *	     alt="Shift mutator" >
+	 *	     alt="Linear distribution sampler" >
 	 *
-	 * @param mean the mean value of the returned distribution
-	 * @return a new linear distribution with the given {@code mean} value
+	 * @param mean the mean value of the samplers distribution
+	 * @return a new linear sampler with the given {@code mean} value
 	 * @throws IllegalArgumentException if the given {@code mean} value is not
 	 *         within the range {@code [0, 1)}
 	 */
@@ -103,18 +103,18 @@ public final class Samplers {
 	}
 
 	/**
-	 * Create a new triangle distribution with the given parameters. All
-	 * parameters must be within the range {@code [0, 1]}.
+	 * Create a new sampler for a triangle distribution with the given
+	 * parameters. All parameters must be within the range {@code [0, 1]}.
 	 * <p>
 	 *	<img src="doc-files/TriangularDistributionPDF.svg" width="450"
-	 *	     alt="Shift mutator" >
+	 *	     alt="Triangle distribution sampler" >
 	 *
 	 * @see #triangular(double)
 	 *
 	 * @param a the start point of the triangle
 	 * @param c the middle point of the triangle
 	 * @param b the end point of the triangle
-	 * @return a new triangle distribution
+	 * @return a new triangle distribution sampler
 	 * @throws IllegalArgumentException if one of the parameters is not within
 	 *         the range {@code [0, 1]} or {@code b <= a || c > b || c < a}
 	 */
@@ -148,13 +148,13 @@ public final class Samplers {
 	}
 
 	/**
-	 * Return a new <em>normalized</em> triangle distribution with the points
-	 * {@code [0, c, 1]}.
+	 * Return a new sampler for a <em>normalized</em> triangle distribution
+	 * with the points {@code [0, c, 1]}.
 	 *
 	 * @see #triangular(double, double, double)
 	 *
 	 * @param c the middle point of the triangle within the range {@code [0, 1}
-	 * @return a new triangle distribution
+	 * @return a new triangle distribution sampler
 	 * @throws IllegalArgumentException if c not within {@code [0, 1]}
 	 */
 	public static Sampler triangular(final double c) {
