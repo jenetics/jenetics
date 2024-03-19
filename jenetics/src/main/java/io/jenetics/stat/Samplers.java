@@ -129,7 +129,7 @@ public final class Samplers {
 			);
 		}
 
-		final var fc = (c - a)/(b - a);
+		final double fc = (c - a)/(b - a);
 
 		return (random, range) -> {
 			final var r = random.nextDouble();

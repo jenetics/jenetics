@@ -39,7 +39,8 @@ import io.jenetics.util.IntRange;
  *}
  *
  * @see Samplers
- * @see <a href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">Inverse transform sampling</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Inverse_transform_sampling">
+ *     Inverse transform sampling</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0

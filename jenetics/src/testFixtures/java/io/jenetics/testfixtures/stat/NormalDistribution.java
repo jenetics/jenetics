@@ -59,7 +59,7 @@ public record NormalDistribution(double mean, double stddev)
 			if (count == MAX_SAMPLER_ITERATION) {
 				throw new NoSuchElementException(
 					"Can't find sample for %s within %s after %d iterations."
-						.formatted(this, random, count)
+						.formatted(this, range, count)
 				);
 			}
 			return sample;

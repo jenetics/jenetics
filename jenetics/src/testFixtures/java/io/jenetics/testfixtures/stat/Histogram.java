@@ -675,13 +675,11 @@ public record Histogram(
 			final long max = LongStream.of(values).max().orElse(0);
 			final var stepSize = round(max/(double)_frequencyStepCount);
 
-			final var maxStringLength = Long.toString(stepSize*_frequencyStepCount).length();
+			final var maxStringLength = (int)Math.ceil(Math.log10(stepSize*_frequencyStepCount));
 			final var formatString = "%" + maxStringLength + "d ┤ ";
 
 			final int margin = maxStringLength + 1;
-			final int length = values.length*3 + 4;
-			final int cols = 3;
-
+			final int length = values.length*FULL.length() + 4;
 
 			// Print histogram
 			out.print(" ".repeat(maxStringLength + 1));
@@ -728,13 +726,13 @@ public record Histogram(
 			table(out, margin, length, new String[][] {
 				{
 					" N=%d".formatted(histogram.moments.count()),
-					" ∧=%.2f".formatted(histogram.moments.min()),
-					" ∨=%.2f".formatted(histogram.moments.max())
+					" ∧=%.3f".formatted(histogram.moments.min()),
+					" ∨=%.3f".formatted(histogram.moments.max())
 				},
 				{
-					" μ=%.3f".formatted(histogram.moments.mean()),
-					" s²=%.3f".formatted(histogram.moments.variance()),
-					" S=%.3f".formatted(histogram.moments.skewness())
+					" μ=%.4f".formatted(histogram.moments.mean()),
+					" s²=%.4f".formatted(histogram.moments.variance()),
+					" S=%.4f".formatted(histogram.moments.skewness())
 				}
 			});
 		}
@@ -798,7 +796,6 @@ public record Histogram(
 	}
 
 	private static void line(PrintStream out, int margin, int length, String... cols) {
-		//final int cellSize = (length - cols.length - 1)/cols.length;
 		final int[] cellSizes = partition(length - cols.length - 1, cols.length);
 
 		out.print(" ".repeat(margin));
