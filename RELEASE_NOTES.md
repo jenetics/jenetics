@@ -14,8 +14,8 @@ final Engine<DoubleGene, Double> engine = Engine.builder(ff)
 * [#880](https://github.com/jenetics/jenetics/issues/880): Replace code examples in Javadoc with [JEP 413](https://openjdk.org/jeps/413).
 * [#886](https://github.com/jenetics/jenetics/issues/886): Improve `CharStore` sort.
 * [#894](https://github.com/jenetics/jenetics/issues/894): New genetic operators: `ShiftMutator`, `ShuffleMutator` and `UniformOrderBasedCrossover`.
-* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default RandomGenerator selection. The used `RandomGenerator` is selected in the following order:
-	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter ist set. If so, take this generator.
+* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default `RandomGenerator` selection. The used `RandomGenerator` is selected in the following order:
+	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter is set. If so, take this generator.
 	2) Check if the `L64X256MixRandom` generator is available. If so, take this generator.
 	3) Find the _best_ available random generator according to the `RandomGeneratorFactory.stateBits()` value.
 	4) Use the `Random` generator if no _best_ generator can be found. This generator is guaranteed to be available on every platform.
