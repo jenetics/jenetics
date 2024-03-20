@@ -104,7 +104,7 @@ import io.jenetics.util.Seq;
  *     // Using this execution service for parallelize the evolution steps.
  *     .executor(Executors.newFixedThreadPool(5))
  *     // Using one virtual thread for every fitness function evaluation.
- *     .batchExecutor(BatchExecutor.ofVirtualThreads())
+ *     .fitnessExecutor(BatchExecutor.ofVirtualThreads())
  *     .build();
  * }
  *
