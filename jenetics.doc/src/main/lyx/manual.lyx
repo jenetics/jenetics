@@ -669,13 +669,13 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 17:
+The library is build with and depends on Java SE 21:
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
-https://adoptium.net/
+https://www.oracle.com/java/technologies/downloads/
 \end_layout
 
 \end_inset
@@ -722,7 +722,7 @@ literal "false"
 \end_inset
 
  (GP) implementation.
- It has no runtime dependencies to other libraries, except the Java 17 runtime.
+ It has no runtime dependencies to other libraries, except the Java 21 runtime.
 
 \family sans
 \series bold
@@ -11731,7 +11731,7 @@ Generator
  Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
- practice:Random seeding,Parameterization,Block splitting and Leapfrogging.
+ practice: Random seeding,Parameterization,Block splitting and Leapfrogging.
 \end_layout
 
 \begin_layout Paragraph
@@ -12035,7 +12035,7 @@ noprefix "false"
 
 \end_inset
 
- graphically shows the concept of theleapfrog method.
+ graphically shows the concept of the leapfrog method.
 \end_layout
 
 \begin_layout Standard
@@ -13137,7 +13137,8 @@ Function
  function in ascending order.
  The
 \family typewriter
- ProxySorter
+ Proxy\SpecialChar softhyphen
+Sorter
 \family default
  uses the Timsort
 \begin_inset Foot
@@ -22087,7 +22088,7 @@ type
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-x_{1}+x_{2}-1 & \leq & 0\\
+x_{1}+x_{2}-1 & \leq & 0,\\
 x_{2}\cdot x_{3}-0.5 & \leq & 0.
 \end{eqnarray*}
 
@@ -27014,7 +27015,7 @@ noprefix "false"
  Chromosome
 \family default
  type is essentially an array, a mapping from the hierarchical tree structure
- to a
+ to a 
 \begin_inset Formula $1$
 \end_inset
 
@@ -28636,7 +28637,7 @@ Since the
  can rewrite constant expressions of arbitrary types, a rewrite instance
  of the appropriate type,
 \family typewriter
-Double
+ Double
 \family default
 , must be created first.
 \end_layout
@@ -35809,7 +35810,7 @@ The algorithm used for pruning the expression tree, currently only uses
 \begin_inset Formula $x+0=x$
 \end_inset
 
-,
+, 
 \begin_inset Formula $x\cdot1=x$
 \end_inset
 
@@ -42081,7 +42082,7 @@ It is also possible to run and configure the
 \emph on
  experiments
 \emph default
- and save polygon images every
+ and save polygon images every 
 \begin_inset Formula $n$
 \end_inset
 
@@ -42643,7 +42644,7 @@ https://en.wikipedia.org/wiki/Mean_squared_error
 
 \end_inset
 
-as loss function and no additional tree complexity metric.
+ as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure
 \begin_inset CommandInset ref
 LatexCommand ref
