@@ -1165,7 +1165,7 @@ Stream
  Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
- Now let's have a closer look at listing
+ Now let's have a closer look at listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Hello-World-GA"
@@ -1239,6 +1239,7 @@ Chromosome
 
  chromosomes.
  For a detailed description of the genotype's structure have a look at section
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:Domain-classes-Genotype"
@@ -1312,7 +1313,7 @@ In the third step we are creating the
  is highly configurable and takes parameters for controlling the evolutionary
  and the computational environment.
  For changing the evolutionary behavior, you can set different alterers
- and selectors (see section
+ and selectors (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Operation-classes"
@@ -1427,7 +1428,7 @@ There are many other GA implementations out there and they may slightly
 \series default
 \shape default
  uses an classical approach.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Genetic-algorithm"
@@ -1624,7 +1625,7 @@ Evolution!Stream
 \emph on
  while
 \emph default
- loop of listing
+ loop of listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Genetic-algorithm"
@@ -1688,7 +1689,7 @@ Evolution workflow
 \end_layout
 
 \begin_layout Standard
-The described evolution workflow is also illustrated in figure
+The described evolution workflow is also illustrated in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Evolution-workflow"
@@ -1857,7 +1858,7 @@ Evolution engine model
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Evolution-engine-model"
@@ -1969,7 +1970,7 @@ Package structure
 \end_layout
 
 \begin_layout Standard
-In figure
+In figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Package-structure"
@@ -2385,7 +2386,7 @@ Domain model
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Domain-model"
@@ -2635,7 +2636,7 @@ Gene
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Gene-interface"
@@ -2698,7 +2699,7 @@ g.
 \series default
 \shape default
  library cover a wide range of problem encodings.
- Refer to chapter
+ Refer to chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Genes"
@@ -2840,7 +2841,7 @@ Chromosome
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Chromosome-interface"
@@ -2938,7 +2939,7 @@ Chromosome
 \end_inset
 
 , equally distributed.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Chromosome-structure"
@@ -3141,7 +3142,7 @@ Genotype
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-structure"
@@ -3290,7 +3291,7 @@ The code snippet in the listing above creates a
 \family typewriter
  Genotype
 \family default
- with the same structure as shown in figure
+ with the same structure as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-structure"
@@ -3422,7 +3423,7 @@ Row major
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Row-major-genotype-vector"
@@ -3631,7 +3632,7 @@ s with different constraints.
 \family typewriter
  Genotype
 \family default
- vector is shown in
+ vector is shown in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Column-major-genotype-vector"
@@ -3871,7 +3872,7 @@ reference "par:Intermediate-crossover"
 \begin_layout Standard
 
 \emph on
-See also
+See also 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Vector-codec"
@@ -3921,7 +3922,7 @@ some
 \emph on
  scalar
 \emph default
- is shown in
+ is shown in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-scalar"
@@ -4045,7 +4046,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \begin_layout Standard
 
 \emph on
-See also
+See also 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Scalar-codec"
@@ -4200,7 +4201,7 @@ Phenotype
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Phenotype-class"
@@ -4321,7 +4322,7 @@ s.
 \family default
  interface allows for the expression of the immutability of the population
  at the type level and makes the code more readable.
- For a detailed description of this collection classes see section
+ For a detailed description of this collection classes see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "par:io.jenetics.util.Seq"
@@ -4711,7 +4712,7 @@ Tournament selector
 \end_layout
 
 \begin_layout Standard
-In
+In 
 \begin_inset CommandInset href
 LatexCommand href
 name "tournament selection"
@@ -4776,7 +4777,7 @@ Truncation selector
 \end_layout
 
 \begin_layout Standard
-In
+In 
 \begin_inset CommandInset href
 LatexCommand href
 name "truncation selection"
@@ -4920,7 +4921,7 @@ Fitness proportional selection
 
 \end_inset
 
-Fitness proportional selection works as shown in figure
+Fitness proportional selection works as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-proportional-selection"
@@ -5069,7 +5070,7 @@ Selecting
 
  times on the roulette-wheel.
  The population doesn't have to be sorted before selecting the individuals.
- Notice that equation
+ Notice that equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:roulette-wheele-distribution"
@@ -5430,7 +5431,7 @@ Stochastic-universal selection
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Stochastic-universal-selection"
@@ -5584,6 +5585,7 @@ recombination (e.
 \end_inset
 
 g.
+ 
 \begin_inset CommandInset href
 LatexCommand href
 name "crossover"
@@ -5687,7 +5689,7 @@ where
 \begin_inset Formula $N_{P}$
 \end_inset
 
- the population size (refer to equation
+ the population size (refer to equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:Number of genes"
@@ -5727,7 +5729,7 @@ The mutator has to deal with the problem, that the genes are arranged in
 \shape italic
  hierarchical
 \shape default
- structure with three levels (see chapter
+ structure with three levels (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:Domain-classes-Genotype"
@@ -6089,7 +6091,7 @@ Chromosome!recombination
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Chromosome-selection-recombination"
@@ -6328,7 +6330,7 @@ Crossover!Single-point crossover
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Single-point-crossover"
@@ -6410,7 +6412,7 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The figures in
+ The figures in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:2-point-crossover"
@@ -6680,6 +6682,7 @@ end{multicols}
 \begin_layout Standard
 The PMX is similar to the two-point crossover.
  A crossing region is chosen by selecting two crossing points (see figure
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6755,6 +6758,7 @@ Crossover!Partially-matched crossover
 \end_inset
 
 After performing the crossover we–normally–got two invalid chromosomes (figure
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6794,7 +6798,7 @@ noprefix "false"
 
 4.
  To repair the two chromosomes we have to apply this exchange outside the
- crossing region (figure
+ crossing region (figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6809,7 +6813,7 @@ noprefix "false"
  b
 \emph default
 )).
- At the end figure
+ At the end figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6926,7 +6930,7 @@ Crossover!Uniform crossover
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Uniform-crossover"
@@ -7173,7 +7177,7 @@ Line crossover hypercube
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Line-crossover-hypercube"
@@ -7927,7 +7931,7 @@ name "lis:Engine-class"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Engine-class"
@@ -7975,7 +7979,7 @@ Stream
  Evolution\SpecialChar softhyphen
 Stream
 \family default
- see section
+ see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:EvolutionStream"
@@ -8117,7 +8121,7 @@ type\SpecialChar softhyphen
  Const\SpecialChar softhyphen
 raint
 \family default
- interface is given in section
+ interface is given in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Constraint"
@@ -8174,7 +8178,7 @@ fitnessFunction
  Engine
 \family default
 .
- (See section
+ (See section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:Fitness-function"
@@ -8458,7 +8462,7 @@ s, they are truncated by the limit predicate defined by the
 \family typewriter
  Engine
 \family default
-s (see section
+s (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:ConcatEngine"
@@ -8619,7 +8623,7 @@ This functional interface represents the
 Stream
 \family default
 .
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Evolution-interface"
@@ -8854,7 +8858,7 @@ name "lis:EvolutionStream-class"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:EvolutionStream-class"
@@ -9217,7 +9221,7 @@ Result
 lution\SpecialChar softhyphen
 Stream
 \family default
-, as described in section
+, as described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:EvolutionStream"
@@ -9307,7 +9311,7 @@ name "lis:EvolutionResult-class"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsubsec:EvolutionResult"
@@ -9695,7 +9699,7 @@ name "lis:EvolutionStatistics-usage"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:EvolutionStatistics-usage"
@@ -10060,7 +10064,7 @@ name "lis:Live-evolution-statistics"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Live-evolution-statistics"
@@ -10504,7 +10508,7 @@ Evaluation batch
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Evaluation-batch"
@@ -10539,7 +10543,7 @@ noprefix "false"
 .maxBatchSize
 \family default
  system property.
- The usage of this property is described in section
+ The usage of this property is described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Concurrency-tweaks"
@@ -11979,6 +11983,10 @@ Generator
  practice: Random seeding, Parameterization, Block splitting and Leapfrogging.
 \end_layout
 
+\begin_layout Subsubsection
+Concepts
+\end_layout
+
 \begin_layout Paragraph
 
 \series bold
@@ -12270,7 +12278,7 @@ With the leapfrog method each thread
 .
  This method requires the ability to jump very quickly ahead in the sequence
  of random numbers by a given amount.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Parallelization-via-leapfrogging"
@@ -12410,7 +12418,7 @@ The
  trng::\SpecialChar softhyphen
 lcg64_shift
 \family default
- PRNG class of the
+ PRNG class of the 
 \begin_inset CommandInset href
 LatexCommand href
 name "TRNG"
@@ -12528,7 +12536,7 @@ LCG64ShiftRandom
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:LCG64ShiftRandom-class"
@@ -13032,7 +13040,8 @@ noprefix "false"
 
 \end_inset
 
- shows the probability density function of the numbers, created by the 
+ shows the probability density function (PDF) of the numbers, created by
+ the 
 \shape italic
 linear
 \shape default
@@ -13668,7 +13677,7 @@ Seq
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Seq-class-diagram"
@@ -13774,7 +13783,7 @@ How to create instances of the three
  functional
 \emph default
  programming style.
- For a full method description refer to the
+ For a full method description refer to the 
 \begin_inset CommandInset href
 LatexCommand href
 name "Javadoc"
@@ -14292,7 +14301,7 @@ name "tab:Statistics-classes"
 
 \end_inset
 
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Statistics-classes"
@@ -14393,7 +14402,7 @@ https://en.wikipedia.org/wiki/Quantile
 \end_inset
 
  of a stream of double values.
- Its implementing algorithm, which is described in
+ Its implementing algorithm, which is described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Jain:1985:PAD:4372.4378"
@@ -14880,7 +14889,7 @@ AnyGene
 \end_layout
 
 \begin_layout Standard
-Example listing
+Example listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:AnyGene-example"
@@ -15375,7 +15384,7 @@ AnyChromosome
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:AnyChromosome-example"
@@ -15835,7 +15844,7 @@ Elitism
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Elite-selector"
@@ -16130,7 +16139,7 @@ Statistics
  io.jenetics.\SpecialChar softhyphen
 engine
 \family default
- package (see listing
+ package (see listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:EvolutionStatistics-usage"
@@ -16422,7 +16431,7 @@ Special evolution engine
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Special-evolution-engine"
@@ -16750,7 +16759,7 @@ some
  fitness, not validity.
  An encoding that includes invalid individuals enlarges the search space
  and makes the search more costly.
- A deeper analysis of how to create encodings can be found in
+ A deeper analysis of how to create encodings can be found in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Rothlauf2006"
@@ -16758,7 +16767,7 @@ literal "true"
 
 \end_inset
 
- and
+ and 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Palmer1995"
@@ -17734,7 +17743,7 @@ For the special case of
  Genotype
 \family default
  can be simplified to the decoding we introduced for scalar functions in
- section
+ section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Scalar-function"
@@ -18137,7 +18146,7 @@ This encoding ensures that no invalid
 \begin_inset Formula $A$
 \end_inset
 
-, the following equations can be used
+, the following equations can be used 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hughes2014computer"
@@ -18454,7 +18463,7 @@ Undirected graph and adjacency matrix
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Undirected-graph"
@@ -18672,7 +18681,7 @@ Directed graph and adjacency matrix
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Directed-graph"
@@ -18889,7 +18898,7 @@ engine
 \family typewriter
  Codec
 \family default
- interface it is possible to implement the encodings of section
+ interface it is possible to implement the encodings of section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Encoding"
@@ -19002,7 +19011,7 @@ name "lis:Codec-interface"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-interface"
@@ -19261,7 +19270,7 @@ Codec!Scalar
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofScalar"
@@ -19482,7 +19491,7 @@ Codec!Vector
 \end_layout
 
 \begin_layout Standard
-In listing
+In listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofVector"
@@ -19741,7 +19750,7 @@ Codec!Matrix
 \end_layout
 
 \begin_layout Standard
-In listing
+In listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofMatrix"
@@ -19959,7 +19968,7 @@ A
 Chromo\SpecialChar softhyphen
 some
 \family default
-, as shown in listing
+, as shown in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofSubSet"
@@ -20057,7 +20066,7 @@ The following usage example of subset
 \family typewriter
  Codec
 \family default
- shows a simplified version of the Knapsack problem (see section
+ shows a simplified version of the Knapsack problem (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:0/1-Knapsack-example"
@@ -20417,6 +20426,7 @@ This kind of
  can be used for problems where the optimal solution depends on the order
  of the input elements.
  A classical example for such problems is the Knapsack problem (chapter
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Traveling-salesman-example"
@@ -20511,7 +20521,7 @@ name "lis:Codec-factory-method-ofPermutation"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofPermutation"
@@ -20533,7 +20543,7 @@ noprefix "false"
 \family typewriter
  Codec
 \family default
- in listing
+ in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Codec-factory-method-ofPermutation"
@@ -20847,7 +20857,7 @@ It is not necessary that the source and target set are of the same size.
 \end_inset
 
 .
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Codec-mapping-types"
@@ -20938,7 +20948,7 @@ https://en.wikipedia.org/wiki/Assignment_problem
 \end_inset
 
  The costs for such worker job assignments are usually given by a matrix.
- Such an example matrix is shown in table
+ Such an example matrix is shown in table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Worker-task-cost"
@@ -21310,7 +21320,7 @@ The
  Codec
 \family default
 s into one.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Composite-Codec-factory"
@@ -21472,7 +21482,7 @@ The following listing shows a full example which uses a combined
 \family typewriter
  Codec
 \family default
-, introduced in section
+, introduced in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Subset-codec"
@@ -21898,7 +21908,7 @@ name "lis:InvertibleCodec-interface"
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:InvertibleCodec-interface"
@@ -22056,7 +22066,7 @@ name "lis:Problem-interface"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Problem-interface"
@@ -22289,7 +22299,7 @@ Constraint
 
 \begin_layout Standard
 Constraints delimit the feasible space of solutions of an optimization problem
- and are considered in evolutionary algorithms
+ and are considered in evolutionary algorithms 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Datta2014,Mezura-Montes2009,Coello2002,Michalewicz1995ASO"
@@ -22363,7 +22373,7 @@ Constrained 2-dimensional search space
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Constrained-search-space"
@@ -22434,6 +22444,7 @@ Genotypes
 \family default
 ).
  Some possible encodings for common data structures are described in section
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Encoding"
@@ -22564,7 +22575,7 @@ name "lis:Constraint-interface"
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Constraint"
@@ -22742,7 +22753,7 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Domain-with-retry-constraint"
@@ -22810,7 +22821,7 @@ Domain points with retry-constraint
 
 Trying to create only valid domain points can sometimes lead to a nonuniform
  distribution.
- This can be seen in figure
+ This can be seen in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Only-valid-domain"
@@ -23177,7 +23188,7 @@ Writing a repair method this way is quite tedious.
 Co\SpecialChar softhyphen
 dec
 \family default
- interface, see section
+ interface, see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:InvertibleCodec-interface"
@@ -23188,7 +23199,7 @@ noprefix "false"
 \end_inset
 
 , allows to implement the repair function in a more natural way.
- Imagine you want to encode a split range, as shown in figure
+ Imagine you want to encode a split range, as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Split-range-domain"
@@ -23731,7 +23742,7 @@ https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/
 
 \end_inset
 
- (see section
+ (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:0/1-Knapsack-example"
@@ -23891,7 +23902,7 @@ Knapsack evolution parameters
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Knapsack-evolution-parameters"
@@ -24109,7 +24120,7 @@ Fixed generation termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fixed-generation-diagram"
@@ -24382,7 +24393,7 @@ Steady fitness
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Steady-fitness-limit"
@@ -24494,7 +24505,7 @@ Steady fitness termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Steady-fitness-diagram"
@@ -24679,7 +24690,7 @@ Execution time termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Execution-time-diagram"
@@ -24820,7 +24831,7 @@ Fitness threshold termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-threshold-diagram"
@@ -24948,7 +24959,7 @@ General fitness convergence
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:General-fitness-convergence"
@@ -25017,7 +25028,7 @@ Mean fitness convergence
 
 \end_inset
 
-The second factory method (shown in listing
+The second factory method (shown in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Mean-fitness-convergence"
@@ -25192,11 +25203,7 @@ Fitness convergence termination:
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-convergence-diagram-10-30"
@@ -25258,11 +25265,7 @@ Fitness convergence termination:
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-convergence-diagram-50-150"
@@ -25575,7 +25578,7 @@ Engine
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Reproducible-evolution-Engine"
@@ -25792,7 +25795,7 @@ Selector performance (Knapsack)
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Selector-performance-Knapsack"
@@ -25828,7 +25831,7 @@ Selector
 
 \end_inset
 
- used by the examples in section
+ used by the examples in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Termination"
@@ -26125,7 +26128,7 @@ name "lis:mu-lambda-Engine-configuration"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:mu-lambda-Engine-configuration"
@@ -26360,7 +26363,7 @@ literal "true"
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
--ES is shown in listing
+-ES is shown in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:mu-plus-lambda-Engine-configuration"
@@ -26796,7 +26799,7 @@ The
 \shape default
  library has been split into several modules, which allows keeping the base
  EA module as small as possible.
- It currently consists of the modules shown in table
+ It currently consists of the modules shown in table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Jenetics-modules"
@@ -27027,10 +27030,6 @@ Jenetics
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 With this module split, the code is easier to maintain and doesn't force
  the user to use parts of the library he or she isn't using.
  This keeps the
@@ -27048,7 +27047,7 @@ With this module split, the code is easier to maintain and doesn't force
 \series default
 \shape default
  modules will be described in this chapter.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Module-graph"
@@ -27239,11 +27238,7 @@ Tree
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Tree-interface"
@@ -27326,7 +27321,7 @@ Node
  Tree\SpecialChar softhyphen
 Node
 \family default
- instance from the tree shown in figure
+ instance from the tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Example-tree"
@@ -27420,7 +27415,7 @@ Example
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Example-TreeNode"
@@ -27515,7 +27510,7 @@ http://evolution.genetics.washington.edu/phylip/newicktree.html
 \end_inset
 
 .
- The parentheses tree representation of the tree in figure
+ The parentheses tree representation of the tree in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Example-tree"
@@ -27550,7 +27545,7 @@ As you can see, nodes on the same tree level are separated by a comma, '
  No additional spaces are inserted between the separator character and the
  node value.
  Any spaces in the parentheses tree string will be part of the node value.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Parentheses-tree-syntax"
@@ -27832,7 +27827,7 @@ The main purpose for the
  Tree\SpecialChar softhyphen
 Gene
 \family default
-s, which are needed for genetic programming (see section
+s, which are needed for genetic programming (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Genetic-programming"
@@ -27965,7 +27960,7 @@ FlatTree
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:FlatTree-interface"
@@ -28044,7 +28039,7 @@ Example
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Example-FlatTree"
@@ -28054,7 +28049,7 @@ noprefix "false"
 
 \end_inset
 
- illustrates the flattened example tree shown in figure
+ illustrates the flattened example tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Example-tree"
@@ -28427,7 +28422,7 @@ Tree::reduce
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Tree::reduce-method"
@@ -28571,7 +28566,7 @@ Tree rewriting is a synonym for term rewriting, i.e., the process of transformin
 \series default
 \shape default
  is currently used for simplifying program trees, which are evolved in genetic
- programming problems (see section
+ programming problems (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Genetic-programming"
@@ -28581,7 +28576,7 @@ noprefix "false"
 
 \end_inset
 
- and
+ and 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Program-pruning"
@@ -28592,7 +28587,7 @@ noprefix "false"
 \end_inset
 
 ).
- A good introduction in tree/term rewriting systems can be found in
+ A good introduction in tree/term rewriting systems can be found in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "baader_nipkow_1998"
@@ -28865,7 +28860,7 @@ TreePattern
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:TreePattern-class"
@@ -28952,7 +28947,7 @@ Pattern\SpecialChar softhyphen
 \family default
 .
  The base syntax for the tree pattern follows the parentheses tree DSL described
- in
+ in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Parentheses-tree"
@@ -29212,7 +29207,7 @@ A
 \family typewriter
  ->
 \family default
-, and the pattern DSL is described in section
+, and the pattern DSL is described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Tree-pattern"
@@ -29565,7 +29560,7 @@ Chromosome
 \family default
 .
  How the tree hierarchy is flattened and mapped to an array is described
- in section
+ in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Flat-tree"
@@ -29632,7 +29627,7 @@ s such that each position is either crossed contracted or expanded with
  a certain probability.
  The probability distribution is designed such that the children will lie
  closer to their parents as is the case with the single point binary crossover.
- It is implemented as described in
+ It is implemented as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb99self-adaptivegenetic"
@@ -29672,7 +29667,7 @@ some
 \family default
 s.
  It swaps two, randomly chosen, nodes from two tree chromosomes.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Single-node-crossover"
@@ -30336,7 +30331,7 @@ name "lis:Weasel-program"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Weasel-program"
@@ -30437,7 +30432,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-The (shortened) output of the Weasel program (listing
+The (shortened) output of the Weasel program (listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Weasel-program"
@@ -30617,7 +30612,7 @@ EvolutionStreamable
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:EvolutionStreamable-interface"
@@ -30774,7 +30769,7 @@ Engine
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Engine-concatenation"
@@ -31054,7 +31049,7 @@ Stream
  Cyclic\SpecialChar softhyphen
 Engine
 \family default
- is shown in figure
+ is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Cyclic-Engine"
@@ -31263,7 +31258,7 @@ literal "true"
 
 \begin_layout Standard
 There are several ways for solving multiobjective problems.
- An excellent theoretical foundation is given in
+ An excellent theoretical foundation is given in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
@@ -31280,7 +31275,7 @@ literal "true"
 \family default
 \series default
 \shape default
- are based in therms of Pareto optimality as described in
+ are based in therms of Pareto optimality as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
@@ -31288,7 +31283,7 @@ literal "true"
 
 \end_inset
 
-,
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
@@ -31296,7 +31291,7 @@ literal "true"
 
 \end_inset
 
- and
+ and 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Konak2006"
@@ -31476,7 +31471,7 @@ literal "true"
 
 \begin_layout Standard
 After this two basic definitions, lets have a look at a simple example.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Circle-points"
@@ -31537,7 +31532,7 @@ Circle points
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Maximizing-Pareto-front"
@@ -31598,7 +31593,7 @@ Maximizing Pareto front
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Minimizing-Pareto-front"
@@ -31695,7 +31690,7 @@ The classes, used for solving multi-objective problems, reside in the
 \family default
 \series default
 \shape default
- chooses to use the Pareto dominance relation (see section
+ chooses to use the Pareto dominance relation (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Pareto-efficiency"
@@ -31838,7 +31833,7 @@ Vec
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Vec-interface"
@@ -32031,7 +32026,7 @@ Result
  best
 \emph default
  result, which is different in the multi-object optimization.
- As we have seen in section
+ As we have seen in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Pareto-efficiency"
@@ -32146,7 +32141,7 @@ https://www.igi-global.com/dictionary/crowding-distance/42740
 
 \emph default
  measure is used for calculating the proximity of two points and it is described
- in
+ in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
@@ -32154,7 +32149,7 @@ literal "true"
 
 \end_inset
 
- and
+ and 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
@@ -32265,7 +32260,7 @@ The fitness function in the example problem above will create 2D-points
 \end_inset
 
 .
- In figure
+ In figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Maximizing-Pareto-front"
@@ -32357,7 +32352,7 @@ NSGA2 selector
 
 \begin_layout Standard
 This selector selects the first elements of the population, which has been
- sorted by the Crowded-comparison operator (equation
+ sorted by the Crowded-comparison operator (equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:crowding-distance"
@@ -32371,7 +32366,7 @@ noprefix "false"
 \begin_inset Formula $\underset{n}{\succ}$
 \end_inset
 
-, as described in
+, as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
@@ -32637,7 +32632,7 @@ Till now, we have only considered MOO problems, where all objectives where
 Factory
 \family default
  can be used for this task.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:VecFactory-interface"
@@ -32898,7 +32893,7 @@ noprefix "false"
  for a given problem, is the creation of invalid solution candidates or
  individuals.
  Using constraints is one way of handling this problem, which is described
- in section
+ in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Constraint"
@@ -33013,7 +33008,7 @@ GE requires an additional
  mapping
 \emph default
  step for creating a sentence (program) from a given CFG.
- Diagram
+ Diagram 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Grammatical-evolution"
@@ -33586,7 +33581,7 @@ The following example shows snapshots of the symbol list,
 \end_inset
 
 , for a possible sentence creation run, according to the described leftmost
- derivation algorithm
+ derivation algorithm 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Leftmost-derivation"
@@ -33836,7 +33831,7 @@ Rightmost derivation
 
 \end_inset
 
-Algorithm
+Algorithm 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Rightmost-derivation"
@@ -33858,7 +33853,7 @@ Mapping
 
 \begin_layout Standard
 Now we have everything in place to do the last step.
- How to create a sentence from a given grammar? The original paper
+ How to create a sentence from a given grammar? The original paper 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ryan1998grammatical"
@@ -33875,7 +33870,7 @@ literal "false"
  Since we have already described how to create a sentence from a grammar,
  we must describe the last missing part of the process, and this missing
  part is the selection of alternative symbols from a given rule.
- This is step three in the described algorithms
+ This is step three in the described algorithms 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Leftmost-derivation"
@@ -33885,7 +33880,7 @@ noprefix "false"
 
 \end_inset
 
- and
+ and 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Rightmost-derivation"
@@ -33940,7 +33935,7 @@ GE mapping
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:GE-mapping"
@@ -33999,7 +33994,7 @@ tics\SpecialChar softhyphen
 \family typewriter
 Cfg
 \family default
- This class represents a context-free grammar as described in section
+ This class represents a context-free grammar as described in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Context-free-grammar"
@@ -34067,7 +34062,7 @@ Generator
  Generator
 \family default
  interface is an abstraction of the sentence generation algorithm as such
- as algorithm
+ as algorithm 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Leftmost-derivation"
@@ -34077,7 +34072,7 @@ noprefix "false"
 
 \end_inset
 
- or
+ or 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "alg:Rightmost-derivation"
@@ -34100,7 +34095,7 @@ Mappings
  Mappings
 \family default
  class contains factory methods for creating different mapping strategies.
- Since the mapping process, as shown in figure
+ Since the mapping process, as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:GE-mapping"
@@ -34262,7 +34257,7 @@ final Cfg<String> cfg = Cfg.of(
 \end_inset
 
 As alternative, the above CFG can also been creating via a string in BNF
- form, as described in section
+ form, as described in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Backus-Naur-form"
@@ -34406,7 +34401,7 @@ SymbolIndex
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:SymbolIndex-interface"
@@ -34659,7 +34654,7 @@ Generator
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Generator-interface"
@@ -35514,7 +35509,7 @@ The generic type of the
 \family typewriter
  Op
 \family default
- interface (see listing
+ interface (see listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:GP-Op-interface"
@@ -36203,7 +36198,7 @@ final double result = program.eval(3.4);
 \end_layout
 
 \begin_layout Standard
-For a complete GP example have a look at the examples in chapter
+For a complete GP example have a look at the examples in chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Symbolic-regression-example"
@@ -36952,7 +36947,7 @@ ression
 \family default
  package.
  The following sections describes these classes and interfaces and its usage.
- A complete symbolic regression example is given in section
+ A complete symbolic regression example is given in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Symbolic-regression-example"
@@ -37250,7 +37245,7 @@ The interface used for calculating the loss between
 \emph on
  expected
 \emph default
- values is shown in listing
+ values is shown in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:LossFunction-interface"
@@ -37431,7 +37426,7 @@ Node count complexity
 
 \end_inset
 
-The graph in figure
+The graph in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:TreeNodeCountComplexity"
@@ -37497,7 +37492,7 @@ Complexity
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Complexity-interface"
@@ -37599,7 +37594,7 @@ Error
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Error-interface"
@@ -37914,7 +37909,7 @@ As you can see in the code snippet above, the
  Engine
 \family default
 .
- A full such regression example can be found in section
+ A full such regression example can be found in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Symbolic-regression-example"
@@ -38037,7 +38032,7 @@ The main entry point for writing XML files is the typed XML
 Writer
 \family default
  interface.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:XML-Writer-interface"
@@ -38303,7 +38298,7 @@ Reading and writing XML files uses the same concepts.
  Reader
 \family default
  class, which can be easily composed.
- The main method of the Reader class can be seen in listing
+ The main method of the Reader class can be seen in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:XML-Reader-class"
@@ -38559,7 +38554,7 @@ final Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Marshaled-object-size"
@@ -38915,7 +38910,7 @@ Writer
 
  the size of the JAXB serialized genotypes.
  The size of the marshaled objects also influences the write performance.
- As you can see in diagram
+ As you can see in diagram 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-write-performance"
@@ -38974,6 +38969,7 @@ Genotype write performance
 
 \begin_layout Standard
 For reading the serialized genotypes, we will see similar results (see diagram
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-read-performance"
@@ -39390,7 +39386,7 @@ All implemented PRNGs have been tested with the
  dieharder
 \family default
  test suite.
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Dieharder-results"
@@ -39832,7 +39828,7 @@ Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
 
 \end_inset
 
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:PRNG-creation-speed"
@@ -40612,7 +40608,7 @@ $ java -cp prngine-2.0.0.jar
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:LCG64ShiftRandom-quality"
@@ -40899,7 +40895,7 @@ $ java -cp prngine-2.0.0.jar
 \begin_layout Standard
 will perform the statistical tests for the nano time random engine.
  The statistical quality is rather bad: every single test failed.
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Nano-time-seeding"
@@ -41171,7 +41167,7 @@ $ java -cp prngine-2.0.0.jar
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Object-hash-seeding"
@@ -41436,7 +41432,7 @@ Random seeding
 
 \end_inset
 
- The code in listing
+ The code in listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Random-seeding"
@@ -41534,7 +41530,7 @@ https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetic
 
 \end_inset
 
-, which is shown in table
+, which is shown in table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:Combined-random-seeding"
@@ -41741,7 +41737,7 @@ Since the script uses JARs located in the build directory you have to build
 \emph on
  Gradle
 \emph default
- target first; see section
+ target first; see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Build"
@@ -41999,7 +41995,7 @@ Real function
 \end_layout
 
 \begin_layout Standard
-The graph of function
+The graph of function 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:Example-real-function"
@@ -42010,7 +42006,7 @@ reference "eq:Example-real-function"
 \begin_inset Formula $\left[0,2\pi\right]$
 \end_inset
 
-, is shown in figure
+, is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Real-function"
@@ -42163,7 +42159,7 @@ f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\
 
 \end_inset
 
-As the plot in figure
+As the plot in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Rastrigin-function"
@@ -42238,7 +42234,7 @@ The following listing shows the
  Engine
 \family default
  setup for solving the Rastrigin function, which is very similar to the
- setup for the real function in section
+ setup for the real function in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Real-function-example"
@@ -42776,7 +42772,7 @@ Examples!Evolving images
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Evolving-images"
@@ -42982,7 +42978,7 @@ $ ./jrun io.jenetics.example.image.EvolvingImages evolve
 \begin_layout Standard
 Every command line argument has proper default values, so that it is possible
  to start it without parameters.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Default-engine.properties"
@@ -43313,7 +43309,7 @@ Mona Lisa
 \end_layout
 
 \begin_layout Standard
-The images in figure
+The images in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Evolving-Mona-Lisa"
@@ -43330,7 +43326,7 @@ noprefix "false"
  engine\SpecialChar softhyphen
 .properties
 \family default
- file (listing
+ file (listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Default-engine.properties"
@@ -43478,7 +43474,7 @@ https://en.wikipedia.org/wiki/Mean_squared_error
 \end_inset
 
  as loss function and no additional tree complexity metric.
- One output of a GP run is shown in figure
+ One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Symbolic-regression-polynomial"
@@ -43576,7 +43572,7 @@ Grammar
 \end_layout
 
 \begin_layout Standard
-The same example as in given in section
+The same example as in given in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Symbolic-regression-example"
@@ -43767,7 +43763,7 @@ The listing above shows the encoding of the DTLZ1 problem with the
 \series default
 \shape default
  library.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Pareto-front-DTLZ1"
@@ -43865,6 +43861,7 @@ For building the
 \series default
 \shape default
  library from source, download the most recent, stable package version from
+ 
 \begin_inset Flex URL
 status collapsed
 
@@ -44387,7 +44384,7 @@ The whole
 \emph on
  Maven Central
 \emph default
- repository
+ repository 
 \begin_inset Flex URL
 status collapsed
 
@@ -44460,7 +44457,7 @@ License
 \end_layout
 
 \begin_layout Standard
-The library itself is licensed under the
+The library itself is licensed under the 
 \begin_inset CommandInset href
 LatexCommand href
 name "Apache License, Version 2.0"
@@ -44479,7 +44476,7 @@ Copyright @__year__@ Franz Wilhelmstötter
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -44501,7 +44498,7 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -44511,7 +44508,7 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
