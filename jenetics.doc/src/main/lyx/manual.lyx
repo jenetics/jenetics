@@ -11817,90 +11817,6 @@ Stream
 \end_layout
 
 \begin_layout Standard
-By default, 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- uses the 
-\family typewriter
-L64X\SpecialChar softhyphen
-256\SpecialChar softhyphen
-Mix\SpecialChar softhyphen
-Random
-\family default
- random generator, which is part of the standard OpenJDK platform.
- If you want to change this default for your whole application, without
- changing your code, you can do this via the 
-\family typewriter
-io\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
-.util\SpecialChar softhyphen
-.default\SpecialChar softhyphen
-Random\SpecialChar softhyphen
-Generator
-\family default
- system property.
- The code example below shows how to replace the default random generator
- with 
-\family typewriter
-L64X\SpecialChar softhyphen
-1024\SpecialChar softhyphen
-Mix\SpecialChar softhyphen
-Random
-\family default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-A list of all random generators defined in the OpenJDK platform, can be
- found here: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/random/packa
-ge-summary.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout LyX-Code
-$ java -Dio.jenetics.util.defaultRandomGenerator=
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-         L64X1024MixRandom 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -cp jenetics-@__version__@.jar:app.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-        com.foo.bar.MyJeneticsApp
-\end_layout
-
-\begin_layout Standard
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -12060,7 +11976,7 @@ Generator
  Usually this is done by taking the elements of the sequence of pseudo random
  numbers and distributing them among the threads.
  There are essentially four different parallelization techniques used in
- practice: Random seeding,Parameterization,Block splitting and Leapfrogging.
+ practice: Random seeding, Parameterization, Block splitting and Leapfrogging.
 \end_layout
 
 \begin_layout Paragraph
@@ -12689,6 +12605,594 @@ jumpPowerOfTwo
 \emph on
  block splitting
 \emph default
+.
+\end_layout
+
+\begin_layout Subsubsection
+Default generator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+RandomGenerator!default
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By default, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the 
+\family typewriter
+L64X\SpecialChar softhyphen
+256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
+Random
+\family default
+ random generator, which is part of the standard OpenJDK platform.
+ If you want to change this default for your whole application, without
+ changing your code, you can do this via the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.util\SpecialChar softhyphen
+.default\SpecialChar softhyphen
+Random\SpecialChar softhyphen
+Generator
+\family default
+ system property.
+ The code example below shows how to replace the default random generator
+ with 
+\family typewriter
+L64X\SpecialChar softhyphen
+1024\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
+Random
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A list of all random generators defined in the OpenJDK platform, can be
+ found here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/random/packa
+ge-summary.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.util.defaultRandomGenerator=
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+         L64X1024MixRandom 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+Some vendors of JDK binaries are also offering 
+\begin_inset Quotes ald
+\end_inset
+
+JRE
+\begin_inset Quotes ard
+\end_inset
+
+ builds.
+ Oracle doesn't specify such a thing like 
+\begin_inset Quotes ald
+\end_inset
+
+JRE
+\begin_inset Quotes ard
+\end_inset
+
+ and the vendors decides what to put into it and what not.
+ It seems that most of the JREs doesn't fully support the Java random API,
+ as introduced in Java 17.
+ They lack the 
+\family typewriter
+L64X\SpecialChar softhyphen
+256\SpecialChar softhyphen
+Mix\SpecialChar softhyphen
+Random
+\family default
+ random generator, which prevents the start of applications which uses the
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ Since it is always possible to specify the default random generator at
+ the command line, as described above, it is nevertheless a surprising behavior.
+ In order to make the random generator selection more robust, the following
+ 
+\shape italic
+algorithm
+\shape default
+ is used when choosing the default random generator:
+\end_layout
+
+\begin_layout Enumerate
+Check if the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.util\SpecialChar softhyphen
+.default\SpecialChar softhyphen
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gen\SpecialChar softhyphen
+er\SpecialChar softhyphen
+ator
+\family default
+ Java parameter is set.
+ If so, take this generator.
+\end_layout
+
+\begin_layout Enumerate
+Check if the 
+\family typewriter
+L64X256MixRandom
+\family default
+ generator is available.
+ If so, take this generator.
+\end_layout
+
+\begin_layout Enumerate
+Find the 
+\shape italic
+best
+\shape default
+ available random generator according to the 
+\family typewriter
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gen\SpecialChar softhyphen
+er\SpecialChar softhyphen
+ator\SpecialChar softhyphen
+Fac\SpecialChar softhyphen
+tory\SpecialChar softhyphen
+::state\SpecialChar softhyphen
+Bits method.
+\end_layout
+
+\begin_layout Enumerate
+Use the 
+\family typewriter
+Random
+\family default
+ generator if no 
+\shape italic
+best
+\shape default
+ generator can be found.
+ This generator is guaranteed to be available on every platform.
+\end_layout
+
+\begin_layout Standard
+The downside of this selection algorithm is, that the used default random
+ generator is no longer the same on all Java platforms.
+\end_layout
+
+\begin_layout Subsubsection
+Random sampler
+\end_layout
+
+\begin_layout Standard
+With the 
+\family typewriter
+RandomRegistry
+\family default
+ it is possible to define the 
+\family typewriter
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gener\SpecialChar softhyphen
+ator
+\family default
+ which is used in various parts of the library.
+ For some algorithms, this is not sufficient, they require random numbers
+ which follow a specific distribution.
+ The 
+\family typewriter
+Sample
+\family default
+ interface in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jene\SpecialChar softhyphen
+tics\SpecialChar softhyphen
+.stat
+\family default
+ package allows the creation of 
+\family typewriter
+dou\SpecialChar softhyphen
+ble
+\family default
+ random numbers within a given range, which follows a specific distribution.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Sampler-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows functional 
+\family typewriter
+Sampler
+\family default
+ interface.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "extendedchars=true,language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
+public interface Sampler {
+\end_layout
+
+\begin_layout Plain Layout
+
+    double sample(RandomGenerator random, DoubleRange range);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Sampler-interface"
+
+\end_inset
+
+
+\family typewriter
+Sampler
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Sampler
+\family default
+ itself is not responsible for the 
+\shape italic
+randomness
+\shape default
+ of the created numbers.
+ This is delegated to a 
+\family typewriter
+Ran\SpecialChar softhyphen
+dom\SpecialChar softhyphen
+Gen\SpecialChar softhyphen
+er\SpecialChar softhyphen
+ator
+\family default
+, which is the first parameter of the 
+\family typewriter
+sample
+\family default
+ method.
+ The 
+\family typewriter
+range
+\family default
+ of the created samples is controlled by the second parameter.
+ How to create a simple 
+\family typewriter
+Samp\SpecialChar softhyphen
+ler
+\family default
+, which creates uniformly distributed 
+\family typewriter
+doub\SpecialChar softhyphen
+le
+\family default
+ values, is shown in the code snippet below.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static final Sampler UNIFORM = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    (random, range) -> random.nextDouble(range.min(), range.max());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Two other 
+\family typewriter
+Samp\SpecialChar softhyphen
+ler
+\family default
+ implementations are currently available; one creates sample points which
+ follows a 
+\shape italic
+linear
+\shape default
+ distribution and the other one creates number, following a 
+\shape italic
+triangular
+\shape default
+ distribution.
+ They can be created with the 
+\family typewriter
+Samp\SpecialChar softhyphen
+lers\SpecialChar softhyphen
+::lin\SpecialChar softhyphen
+ear
+\family default
+ and 
+\family typewriter
+Samp\SpecialChar softhyphen
+lers\SpecialChar softhyphen
+::tri\SpecialChar softhyphen
+ang\SpecialChar softhyphen
+ular
+\family default
+ factory methods, respectively.
+\end_layout
+
+\begin_layout Paragraph
+Linear sampler
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Linear-distribution-pdf"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the probability density function of the numbers, created by the 
+\shape italic
+linear
+\shape default
+ sampler.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/LinearDistributionPDF.svg
+	lyxscale 70
+	width 85col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Linear-distribution-pdf"
+
+\end_inset
+
+Linear distribution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The static factory method, 
+\family typewriter
+Samp\SpecialChar softhyphen
+lers\SpecialChar softhyphen
+.lin\SpecialChar softhyphen
+ear(double mean)
+\family default
+, which creates the 
+\family typewriter
+Sampler
+\family default
+, takes the mean value, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, as parameter.
+ This parameter defines the mean value of the created sample points and
+ must be within the range 
+\begin_inset Formula $\left[0,1\right]$
+\end_inset
+
+.
+ Only points created within the range 
+\begin_inset Formula $\left[0,1\right)$
+\end_inset
+
+ will have the defined mean value.
+\end_layout
+
+\begin_layout Paragraph
+Triangular sampler
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Triangular-distribution-pdf"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the PDF of the sample points, created by the triangular sampler.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/TriangularDistributionPDF.svg
+	lyxscale 70
+	width 85col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Triangular-distribution-pdf"
+
+\end_inset
+
+Triangular distribution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The factory method for this 
+\family typewriter
+Sampler
+\family default
+, 
+\family typewriter
+Samp\SpecialChar softhyphen
+lers\SpecialChar softhyphen
+.tri\SpecialChar softhyphen
+angu\SpecialChar softhyphen
+lar(double a, double c, double b)
+\family default
+, takes the parameters 
+\begin_inset Formula $a$
+\end_inset
+
+, 
+\begin_inset Formula $b$
+\end_inset
+
+ and 
+\begin_inset Formula $c$
+\end_inset
+
+.
+ These parameters, also shown in the diagram, must within the range 
+\begin_inset Formula $\left[0,1\right)$
+\end_inset
+
 .
 \end_layout
 
