@@ -8190,6 +8190,26 @@ noprefix "false"
 \begin_layout Description
 
 \family typewriter
+fitnessExecutor
+\family default
+ This property lets you define the executor, which is responsible for evaluating
+ the fitness function.
+ It is possible to evaluate each fitness function in its own 
+\shape italic
+virtual
+\shape default
+ thread.
+ The fitness executor is only used for evaluating the fitness function.
+ For executing the genetic operations, the configured 
+\family typewriter
+executor
+\family default
+ is used.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 genotypeFactory
 \family default
  Defines the
@@ -11222,6 +11242,315 @@ https://www.youtube.com/watch?v=rUDGQQ83ZtI
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+BatchExecutor
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!BatchExecutor
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!Virtual thread
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Virtual thread
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Batch\SpecialChar softhyphen
+Exe\SpecialChar softhyphen
+cutor
+\family default
+ defines the way the fitness functions of a given population are evaluated.
+ It can be changed by setting the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Builder\SpecialChar softhyphen
+.fit\SpecialChar softhyphen
+ness\SpecialChar softhyphen
+Exe\SpecialChar softhyphen
+cutor
+\family default
+ property.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
+public interface BatchExecutor {
+\end_layout
+
+\begin_layout Plain Layout
+
+    void execute(BaseSeq<? extends Runnable> batch);
+\end_layout
+
+\begin_layout Plain Layout
+
+    static BatchExecutor of(final Executor executor) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+    static BatchExecutor ofVirtualThreads() {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+BatchExecutor
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:BatchExecutor-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A BatchExecutor can be implemented from scratch or created with one of the
+ two factory methods:
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+\series bold
+BatchExecutor::of
+\family default
+\series default
+: This factory creates a new 
+\family typewriter
+Batch\SpecialChar softhyphen
+Exe\SpecialChar softhyphen
+cutor
+\family default
+ which uses a given 
+\family typewriter
+executor
+\family default
+ for evaluating the fitness function.
+ This executor essentially partitions the given batch of 
+\family typewriter
+Runnable
+\family default
+s into 
+\shape italic
+equally
+\shape default
+ sized sub-batches and evaluates these concurrently.
+ By default, this BatchExecutor with the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool\SpecialChar softhyphen
+::com\SpecialChar softhyphen
+mon\SpecialChar softhyphen
+Pool
+\family default
+, is used by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ for evaluating the fitness functions.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+\series bold
+BatchExecutor::ofVirtualThreads
+\family default
+\series default
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!Virtual thread
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Virtual thread
+\end_layout
+
+\end_inset
+
+ This factory creates a 
+\family typewriter
+Batch\SpecialChar softhyphen
+Exe\SpecialChar softhyphen
+cutor
+\family default
+ which evaluates every fitness function in its own 
+\shape italic
+virtual
+\shape default
+ thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Using virtual threads for evaluating the fitness functions doesn't make
+ the GA execution automatically faster.
+ But it will help to utilize the available platform threads more efficiently,
+ if your fitness function contains blocking calls.
+ This is likely the case for remote calls, accessing a database or doing
+ file IO.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code snippet shows how to create an evolution 
+\family typewriter
+Engine
+\family default
+, which evaluates every fitness function in a virtual thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Executes every fitness function in its own virtual thread.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
 \end_layout
 
 \end_inset
