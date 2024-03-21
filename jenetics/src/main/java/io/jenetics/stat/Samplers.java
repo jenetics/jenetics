@@ -38,7 +38,8 @@ public final class Samplers {
 
 	/**
 	 * Return a new sampler for a <em>linear</em> distribution with the given
-	 * {@code mean} value.
+	 * {@code mean} value, when creating sample points for the range
+	 * {@code [0, 1)}.
 	 * <p>
 	 *	<img src="doc-files/LinearDistributionPDF.svg" width="450"
 	 *	     alt="Linear distribution sampler" >
