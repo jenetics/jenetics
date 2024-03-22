@@ -89,8 +89,13 @@ subprojects {
 		options.compilerArgs.add("-Xlint:${xlint()}")
 	}
 
-	if (plugins.hasPlugin("maven-publish")) {
-		setupPublishing(project)
+}
+
+gradle.projectsEvaluated {
+	subprojects {
+		if (plugins.hasPlugin("maven-publish")) {
+			setupPublishing(project)
+		}
 	}
 }
 
