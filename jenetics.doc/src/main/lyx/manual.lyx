@@ -5819,6 +5819,16 @@ Gaussian mutator
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mutator!Gaussian mutator
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5860,6 +5870,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Swap mutator
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mutator!Swap mutator
 \end_layout
 
 \end_inset
@@ -6237,6 +6257,174 @@ The recombination probability,
 \end_layout
 
 \begin_layout Paragraph
+Shift mutator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Swap mutator
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mutator!Swap mutator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The shift mutator applies mutation between two randomly chosen points, 
+\shape italic
+a
+\shape default
+ and 
+\shape italic
+c
+\shape default
+.
+ A random value between the two points, 
+\shape italic
+b
+\shape default
+, splits the sequences of genes between the positions.
+ The second sequence is then shifted in front of the first one.
+ This mutation operator can be used for combinatorial problems, where no
+ duplicated genes within a chromosome are allowed, e.g., for the TSP.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kruse2022"
+literal "false"
+
+\end_inset
+
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Shift-mutator"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows two shift examples with the chosen shift points and the results of
+ the shift.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ShiftMutator.svg
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Shift-mutator"
+
+\end_inset
+
+Shift mutator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Shuffle mutator
+\end_layout
+
+\begin_layout Standard
+The shuffle mutator, changes the order of the genes between two randomly
+ chosen positions.
+ The genes between the positions are shuffled.
+ This mutation operator can also be used for combinatorial problems, where
+ no duplicated genes within a chromosome are allowed, e.g., for the TSP.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kruse2022"
+literal "false"
+
+\end_inset
+
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Shuffle-mutator"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows two shuffle examples with the chosen shuffle points and a possible
+ mutation result.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ShuffleMutator.svg
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Shuffle-mutator"
+
+\end_inset
+
+Shuffle mutator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
 Single-point crossover
 \begin_inset Index idx
 status collapsed
@@ -6524,7 +6712,7 @@ Crossover!2-point crossover
 
 \end_inset
 
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:3-point-crossover"
@@ -6831,7 +7019,127 @@ noprefix "false"
 \end_layout
 
 \begin_layout Paragraph
+Uniform order-based crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Uniform order-based crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Uniform order-based crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Uniform order-based crossover guarantees that all genes are found exactly
+ once in each chromosome.
+ No gene is duplicated by this crossover.
+ This crossover can be applied usefully in the TSP or other permutation
+ problem encodings.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kruse2022"
+literal "false"
+
+\end_inset
+
+ How the uniform order-based crossover works is shown with the following
+ example chromosomes 
+\family typewriter
+C1
+\family default
+ and 
+\family typewriter
+C2
+\family default
+.
+\end_layout
+
+\begin_layout LyX-Code
+C1 = 0123456789
+\end_layout
+
+\begin_layout LyX-Code
+C2 = 9876543210
+\end_layout
+
+\begin_layout Standard
+1.
+ Within the uniform order-based crossover, a set of positions are chosen
+ randomly.
+ The genes at the positions are reordered in the order they occur in the
+ other parent.
+\end_layout
+
+\begin_layout LyX-Code
+Positions = 2, 4, 5, 7, 8
+\end_layout
+
+\begin_layout Standard
+2.
+ The genes at the chosen positions are removed.
+\end_layout
+
+\begin_layout LyX-Code
+C1 = 01_3__6__9 
+\end_layout
+
+\begin_layout LyX-Code
+C2 = 9__6__3_10
+\end_layout
+
+\begin_layout Standard
+3.
+ The order of the removed genes as they occur in the two genes.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+C1 = 2, 4, 5, 7, 8 
+\end_layout
+
+\begin_layout LyX-Code
+C2 = 8, 7, 5, 4, 2
+\end_layout
+
+\begin_layout Standard
+4.
+ The removed genes are than added in the order they occur in the other chromosom
+e.
+\end_layout
+
+\begin_layout LyX-Code
+C1 = 0183756429 
+\end_layout
+
+\begin_layout LyX-Code
+C2 = 9246573810
+\end_layout
+
+\begin_layout Paragraph
 Uniform crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Uniform crossover
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -11330,7 +11638,7 @@ public interface BatchExecutor {
 
 \begin_layout Plain Layout
 
-    static BatchExecutor of(final Executor executor) {...}
+    static BatchExecutor of(Executor executor) {...}
 \end_layout
 
 \begin_layout Plain Layout
@@ -11465,6 +11773,41 @@ virtual
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Executes every fitness function in its own virtual thread.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+The code snippet above shows how to create an evolution 
+\family typewriter
+Engine
+\family default
+, which evaluates every fitness function in a virtual thread.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -11516,45 +11859,6 @@ height "1pt"
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The following code snippet shows how to create an evolution 
-\family typewriter
-Engine
-\family default
-, which evaluates every fitness function in a virtual thread.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine = Engine.builder(...)
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Executes every fitness function in its own virtual thread.
-\end_layout
-
-\begin_layout Plain Layout
-
-    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build()
 \end_layout
 
 \end_inset

@@ -25,10 +25,13 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * The shuffle mutation, changes the oder of the genes between two randomly
- * chosen positions. The genes between the genes between the positions are
- * shuffled. This mutation operator can also be used for combinatorial problems,
- * where no duplicated genes within a chromosome are allowed, e.g., for the TSP.
+ * The shuffle mutation, changes the order of the genes between two randomly
+ * chosen positions. The genes between the positions are shuffled. This mutation
+ * operator can also be used for combinatorial problems, where no duplicated
+ * genes within a chromosome are allowed, e.g., for the TSP.
+ * <p>
+ *	<img src="doc-files/ShuffleMutator.svg" width="450"
+ *	     alt="Shuffle mutator" >
  *
  * @see <a href="https://doi.org/10.1007/978-3-030-42227-1_12">
  *     Elements of evolutionary algorithms. Computational intelligence:

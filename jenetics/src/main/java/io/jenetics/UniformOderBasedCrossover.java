@@ -25,9 +25,9 @@ import io.jenetics.util.Seq;
  * The {@code UniformOderBasedCrossover} guarantees that all {@link Gene}s
  * are found exactly once in each chromosome. No gene is duplicated by this
  * crossover. This crossover can be applied usefully in the TSP or other
- * permutation problem encodings. Permutation encoding is useful for all problems
- * where the fitness only depends on the ordering of the genes within the
- * chromosome. This is the case in many combinatorial optimization problems.
+ * permutation problem encodings. Permutation encoding is useful for all
+ * problems where the fitness only depends on the ordering of the genes within
+ * the chromosome. This is the case in many combinatorial optimization problems.
  * Other crossover operators for combinatorial optimization are:
  * <ul>
  *     <li>order crossover</li>
@@ -37,7 +37,7 @@ import io.jenetics.util.Seq;
  *     <li>partially matched crossover</li>
  * </ul>
  * <p>
- * Within the uniform order-based crossover, a set of positions is chosen
+ * Within the uniform order-based crossover, a set of positions are chosen
  * randomly. The genes at the positions are reordered in the order they occur in
  * the other parent.
  * <pre>
