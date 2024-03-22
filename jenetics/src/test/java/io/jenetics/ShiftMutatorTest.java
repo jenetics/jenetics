@@ -15,7 +15,6 @@
  */
 package io.jenetics;
 
-import static java.lang.Math.sqrt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
@@ -38,7 +37,7 @@ import io.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
  */
-public class ShiftMutationTest extends MutatorTester {
+public class ShiftMutatorTest extends MutatorTester {
 
 	@Override
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
