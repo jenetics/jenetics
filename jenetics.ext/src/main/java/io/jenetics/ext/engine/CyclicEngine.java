@@ -52,12 +52,12 @@ import io.jenetics.ext.internal.util.CyclicSpliterator;
  *    |                                                       |
  *    +------------------------------<------------------------+
  *                              Result
- * }</pre>
+ * } </pre>
  *
  * The {@code CyclicEngine} allows to do a broad search-fine search-cycle
  * as long as you want.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
  *      v -> Math.sin(v[0])*Math.cos(v[1]),
  *      Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
@@ -87,7 +87,7 @@ import io.jenetics.ext.internal.util.CyclicSpliterator;
  *
  *  System.out.println(result + ": " +
  *      problem.fitness().apply(problem.codec().decode(result)));
- * }</pre>
+ * }
  *
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.

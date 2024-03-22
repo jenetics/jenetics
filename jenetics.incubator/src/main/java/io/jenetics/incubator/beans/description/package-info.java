@@ -23,23 +23,16 @@
  * The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.description.Descriptions} object.
  *
+ * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+ *
+ * The code snippet above will create the following output
  * <pre>{@code
- * record Author(String forename, String surname) { }
- * record Book(String title, int pages, List<Author> authors) { }
- *
- * Descriptions.walk(PathEntry.of(Book.class))
- *     .forEach(System.out::println);
- * }</pre>
- *
- * The code snippet above will create the following output:
- *
- * <pre>{@code
- * Description[path=authors, value=Single[value=java.util.List<Author>, enclosure=Book]]
- * Description[path=authors[0], value=Indexed[value=Author, enclosure=java.util.List]]
- * Description[path=authors[0].forename, value=Single[value=java.lang.String, enclosure=Author]]
- * Description[path=authors[0].surname, value=Single[value=java.lang.String, enclosure=Author]]
- * Description[path=pages, value=Single[value=int, enclosure=Book]]
- * Description[path=title, value=Single[value=java.lang.String, enclosure=Book]]
+ * Description[path=title, type=java.lang.String, enclosure=Book]
+ * Description[path=pages, type=int, enclosure=Book]
+ * Description[path=authors, type=java.util.List<Author>, enclosure=Book]
+ * Description[path=authors[0], type=Author, enclosure=java.util.List]
+ * Description[path=authors[0].forename, type=java.lang.String, enclosure=Author]
+ * Description[path=authors[0].surname, type=java.lang.String, enclosure=Author]
  * }</pre>
  */
 package io.jenetics.incubator.beans.description;

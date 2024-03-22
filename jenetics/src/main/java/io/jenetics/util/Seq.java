@@ -41,7 +41,7 @@ import java.util.stream.StreamSupport;
  * General interface for a ordered, fixed sized, object sequence.
  * <br>
  * Use the {@link #asList()} method to work together with the
- * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
+ * <a href="https://download.java.net/java/early_access/jdk21/docs/api/java.base/java/util/Collection.html">
  * Java Collection Framework</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -169,13 +169,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate
@@ -193,13 +193,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -223,13 +223,13 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * sequence element.
 	 * </p>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(o -> o == null) == -1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param predicate the search predicate.
 	 * @param start the search start index
@@ -649,15 +649,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Returns the hash code value for this sequence. The hash code is defined
 	 * as followed:
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see List#hashCode()
 	 * @see Seq#hashCode(BaseSeq)
@@ -670,7 +669,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Compares the specified object with this sequence for equality. Returns
 	 * true if and only if the specified object is also a sequence, both
-	 * sequence have the same size, and all corresponding pairs of elements in
+	 * sequences have the same size, and all corresponding pairs of elements in
 	 * the two sequences are equal. (Two elements e1 and e2 are equal if
 	 * (e1==null ? e2==null : e1.equals(e2)).) This definition ensures that the
 	 * equals method works properly across different implementations of the Seq
@@ -717,15 +716,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Unified method for calculating the hash code of every {@link Seq}
 	 * implementation. The hash code is defined as followed:
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();
 	 * while (it.hasNext()) {
 	 *     final E obj = it.next();
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see Seq#hashCode()
 	 * @see List#hashCode()
@@ -957,7 +955,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	/**
 	 * Returns a sequence backed by the specified list. (Changes to the given
 	 * list are "write through" to the returned sequence.) This method acts
-	 *  as a bridge between collection-based and sequence-based APIs.
+	 * as a bridge between collection-based and sequence-based APIs.
 	 *
 	 * @since 4.2
 	 *

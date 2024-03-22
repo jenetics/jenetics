@@ -22,18 +22,18 @@ package io.jenetics.util;
 /**
  * This interface defines a <em>recursive</em> generic type {@code S}, which
  * represents the type of the implementing class.
- * <pre>{@code
+ * {@snippet lang="java":
  * interface Foo<T extends Foo<T>> extends Self<T> {
  *     // ...
  * }
- * }</pre>
+ * }
  * Using the {@code Self} interface in this case makes it clear that the generic
  * type {@code T} of the interface {@code Foo} represents the concrete type of
  * the class, implementing the interface {@code Foo}.
  * <p>
  * If the interface is used as intended, the following generic {@code min} method
  * can be implemented as a <em>default</em> method.
- * <pre>{@code
+ * {@snippet lang="java":
  * interface Foo<A extends Foo<A>> extends Self<A>, Comparable<A> {
  *     // ...
  *
@@ -41,7 +41,7 @@ package io.jenetics.util;
  *         return compareTo(other) > 0 ? self() : other;
  *     }
  * }
- * }</pre>
+ * }
  *
  * @param <S> the type of the implementing class.
  *

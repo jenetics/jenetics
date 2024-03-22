@@ -39,8 +39,8 @@ import io.jenetics.stat.MinMax;
  * following example shows how to integrate the <i>statistics</i> object into
  * your evolution <i>stream</i>.
  *
- * <pre>{@code
- * final Engine<DoubleGene, Double> engine = ...
+ * {@snippet lang="java":
+ * final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
  *     EvolutionStatistics.ofNumber();
  *
@@ -51,7 +51,7 @@ import io.jenetics.stat.MinMax;
  *     .collect(toBestPhenotype());
  *
  * System.println(statistics);
- * }</pre>
+ * }
  *
  * <b>Example output</b>
  *

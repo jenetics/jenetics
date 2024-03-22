@@ -33,7 +33,7 @@ import io.jenetics.util.Seq;
 /**
  * This alterer wraps a given alterer which works on a given section of the
  * genotype's chromosomes.
- * <pre>{@code
+ * {@snippet lang="java":
  * // The genotype prototype, consisting of 4 chromosomes
  * final Genotype<DoubleGene> gtf = Genotype.of(
  *     DoubleChromosome.of(0, 1),
@@ -55,7 +55,7 @@ import io.jenetics.util.Seq;
  *         new GaussianMutator<>()
  *     )
  *     .build();
- * }</pre>
+ * }
  *
  * If you are using chromosome indices which are greater or equal than the
  * number of chromosomes defined in the genotype, a

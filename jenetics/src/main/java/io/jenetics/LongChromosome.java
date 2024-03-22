@@ -99,8 +99,8 @@ public class LongChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final LongChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static long[] half(final long[] values) {
@@ -109,7 +109,7 @@ public class LongChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *

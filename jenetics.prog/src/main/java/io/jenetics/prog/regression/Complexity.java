@@ -32,9 +32,9 @@ import io.jenetics.prog.op.Op;
  * values are preferred. It is part of the <em>overall</em> {@link Error}
  * function.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
- * }</pre>
+ * }
  *
  * @see LossFunction
  * @see Error
@@ -87,10 +87,10 @@ public interface Complexity<T> {
 	 * If the node count is bigger or equal {@code maxNodes}, one is returned.
 	 * <p>
 	 * The complexity is calculated in the following way:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final double cc = min(program.size() - 1, maxNodes);
 	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
-	 * }</pre>
+	 * }
 	 *
 	 * @see #ofNodeCount(int)
 	 *

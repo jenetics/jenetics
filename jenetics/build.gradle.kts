@@ -25,9 +25,9 @@
  */
 plugins {
 	`java-library`
-	idea
+	`java-test-fixtures`
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
 description = "Jenetics - Java Genetic Algorithm Library"
@@ -35,11 +35,18 @@ description = "Jenetics - Java Genetic Algorithm Library"
 extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
-	testImplementation(libs.testng)
 	testImplementation(libs.assertj)
 	testImplementation(libs.commons.math)
+	testImplementation(libs.commons.rng.sampling)
+	testImplementation(libs.commons.rng.simple)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.prngine)
+	testImplementation(libs.testng)
+	testImplementation(testFixtures(project(":jenetics")))
+
+	testFixturesApi(libs.assertj)
+	testFixturesApi(libs.commons.math)
+	testFixturesApi(libs.testng)
 
 	jmh(libs.prngine)
 }

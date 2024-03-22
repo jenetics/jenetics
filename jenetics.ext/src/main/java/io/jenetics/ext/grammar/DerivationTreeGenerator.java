@@ -31,7 +31,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * Standard implementation of a derivation-tree generator. The following code
  * snippet lets you generate a derivation tree from a given grammar.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = Bnf.parse("""
  *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
  *     <fun>  ::= FUN1 | FUN2
@@ -48,7 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  *     1_000
  * );
  * final Tree<Symbol<String>, ?> tree = generator.generate(cfg);
- * }</pre>
+ * }
  *
  * @see SentenceGenerator
  *

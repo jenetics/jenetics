@@ -415,7 +415,7 @@ public enum MathOp implements Op<Double> {
 	 * an operation tree. <b>If you use it that way, you should not forget to
 	 * re-index the tree variables.</b>
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
 	 *     "add(mul(x,y),sub(y,x))",
 	 *     MathOp::toMathOp
@@ -424,7 +424,7 @@ public enum MathOp implements Op<Double> {
 	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
 	 * Var.reindex(tree);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.0
 	 *

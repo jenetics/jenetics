@@ -84,9 +84,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 		while (isNonEof(c)) {
 			final char value = c;
             switch (value) {
-                case ' ', '\r', '\n', '\t' -> {
-                    WS();
-                }
+                case ' ', '\r', '\n', '\t' -> WS();
                 case ':' -> {
                     return ASSIGN();
                 }

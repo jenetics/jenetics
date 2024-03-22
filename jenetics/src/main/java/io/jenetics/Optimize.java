@@ -60,20 +60,20 @@ public enum Optimize {
 	 * than the second. This compare method is {@code null}-hostile. If you need
 	 * to make it {@code null}-friendly, you can wrap it with the
 	 * {@link Comparator#nullsFirst(Comparator)} method.
-	 *
-	 * <pre>{@code
+	 * <p>
+	 * {@snippet lang="java":
 	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MAXIMUM::compare);
 	 * assertEquals(comparator.compare(null, null), 0);
 	 * assertEquals(comparator.compare(null, 4), -1);
 	 * assertEquals(comparator.compare(4, null), 1);
-	 * }</pre>
+	 * }
 	 * or
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MINIMUM::compare);
 	 * assertEquals(comparator.compare(null, null), 0);
 	 * assertEquals(comparator.compare(null, 4), -1);
 	 * assertEquals(comparator.compare(4, null), 1);
-	 * }</pre>
+	 * }
 	 *
 	 * @param <T> the comparable type
 	 * @param a the first object to be compared.
@@ -90,11 +90,11 @@ public enum Optimize {
 	 * collection of comparable objects with the returned comparator will be
 	 * sorted in <b>descending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
-	 *
-	 * <pre>{@code
-	 * final Population<DoubleGene, Double> population = ...
+	 * <p>
+	 * {@snippet lang="java":
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
-	 * }</pre>
+	 * }
 	 *
 	 * The code example above will populationSort the population according its
 	 * fitness values in ascending order, since lower values are <i>better</i>
@@ -112,11 +112,11 @@ public enum Optimize {
 	 * collection of comparable objects with the returned comparator will be
 	 * sorted in <b>ascending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
-	 *
-	 * <pre>{@code
-	 * final Population<DoubleGene, Double> population = ...
+	 * <p>
+	 * {@snippet lang="java":
+	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());
-	 * }</pre>
+	 * }
 	 *
 	 * The code example above will populationSort the population according its
 	 * fitness values in descending order, since lower values are <i>better</i>
@@ -148,11 +148,11 @@ public enum Optimize {
 	 * Return a {@code null}-friendly function which returns the best element of
 	 * two values. E.g.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>best().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(null, 4), (Integer)4);
 	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(6, null), (Integer)6);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #best(Comparable, Comparable)
 	 *
@@ -189,11 +189,11 @@ public enum Optimize {
 	 * Return a {@code null}-friendly function which returns the worst element
 	 * of two values. E.g.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>worst().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(null, 4), (Integer)4);
 	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(6, null), (Integer)6);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #worst(Comparable, Comparable)
 	 *

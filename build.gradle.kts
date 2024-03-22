@@ -27,13 +27,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.7.1" apply false
 }
 
 rootProject.version = Jenetics.VERSION
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.3"
+	gradleVersion = "8.7"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -59,41 +58,51 @@ allprojects {
 
 apply("./gradle/alljavadoc.gradle")
 
-/**
- * Project configuration *after* the projects has been evaluated.
- */
-gradle.projectsEvaluated {
-	subprojects {
-		val project = this
+subprojects {
+	val project = this
 
-		tasks.withType<Test> {
-			useTestNG()
-		}
+	tasks.withType<Test> {
+		useTestNG()
+	}
 
-		plugins.withType<JavaPlugin> {
-			configure<JavaPluginExtension> {
-				modularity.inferModulePath.set(true)
+	plugins.withType<JavaPlugin> {
 
-				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.current()
-			}
-
-			setupJava(project)
-			setupTestReporting(project)
-			setupJavadoc(project, "")
-		}
-
-		tasks.withType<JavaCompile> {
+		configure<JavaPluginExtension> {
 			modularity.inferModulePath.set(true)
 
-			options.compilerArgs.add("-Xlint:${xlint()}")
+			sourceCompatibility = JavaVersion.VERSION_21
+			targetCompatibility = JavaVersion.VERSION_21
+
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(21)
+			}
 		}
 
+		setupJava(project)
+		setupTestReporting(project)
+		setupJavadoc(project, "")
+	}
+
+	tasks.withType<JavaCompile> {
+		modularity.inferModulePath.set(true)
+
+		options.compilerArgs.add("-Xlint:${xlint()}")
+	}
+
+}
+
+gradle.projectsEvaluated {
+	subprojects {
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
 		}
 	}
+}
 
+/**
+ * Project configuration *after* the projects has been evaluated.
+ */
+gradle.projectsEvaluated {
 	setupJavadoc(rootProject, "all")
 }
 
@@ -138,7 +147,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.9"
+		toolVersion = "0.8.11"
 	}
 
 	project.tasks {
@@ -168,6 +177,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
 		doclet.memberLevel = JavadocMemberLevel.PROTECTED
+		doclet.addStringOption("-snippet-path", "${project.projectDir}/src/test/java")
 		doclet.addStringOption("-show-module-contents", "api")
 		doclet.addStringOption("-show-packages", "exported")
 		doclet.addStringOption("exclude", "io.jenetics.internal")
@@ -176,13 +186,12 @@ fun setupJavadoc(project: Project, taskName: String) {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/17/docs/api/",
+				"https://docs.oracle.com/en/java/javase/21/docs/api/",
 				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 			)
 		doclet.windowTitle = "Jenetics ${project.version}"
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.addStringOption("docfilessubdirs")
@@ -211,10 +220,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 
 	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
 	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
-			directory = javadoc.destinationDir!!
-		}
-
 		project.tasks.register("${taskName}java2html") {
 			doLast {
 				val srcdir = file("${project.projectDir}/src/main/java")
@@ -233,11 +238,6 @@ fun setupJavadoc(project: Project, taskName: String) {
 		}
 
 		javadoc.doLast {
-			val colorizer = project.tasks.findByName("${taskName}colorizer")
-			colorizer?.actions?.forEach {
-				it.execute(colorizer)
-			}
-
 			val java2html = project.tasks.findByName("${taskName}java2html")
 			java2html?.actions?.forEach {
 				it.execute(java2html)

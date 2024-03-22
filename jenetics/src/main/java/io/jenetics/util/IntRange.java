@@ -31,6 +31,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -81,6 +82,42 @@ public final /*record*/ class IntRange implements Serializable {
 	}
 
 	/**
+	 * Checks whether the given {@code value} is within the range
+	 * {@code [min, max)}.
+	 *
+	 * @since 8.0
+	 *
+	 * @param value the value to check
+	 * @return {@code true} if the {@code value} is with the range
+	 *         {@code [min, max)}, {@code false} otherwise
+	 */
+	public boolean contains(final int value) {
+		return value >= _min && value < _max;
+	}
+
+	/**
+	 * Return the intersection of {@code this} range with the {@code other}.
+	 *
+	 * @since 8.0
+	 *
+	 * @param other the intersection range or {@link Optional#empty()} if there
+	 *        is none
+	 * @return the range intersection
+	 */
+	public Optional<IntRange> intersect(final IntRange other) {
+		if (_max <= other._min || _min >= other._max) {
+			return Optional.empty();
+		} else {
+			return Optional.of(
+				IntRange.of(
+					Math.max(_min, other._min),
+					Math.min(_max, other._max)
+				)
+			);
+		}
+	}
+
+	/**
 	 * Return the size of the {@code IntRange}: {@code max - min}.
 	 *
 	 * @since 3.9
@@ -98,11 +135,11 @@ public final /*record*/ class IntRange implements Serializable {
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * for (int i = range.min(); i < range.max(); ++i) {
-	 *     ...
+	 *     // ...
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *

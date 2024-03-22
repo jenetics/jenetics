@@ -31,12 +31,12 @@ import io.jenetics.ext.util.Tree;
  * The result of a tree match operation. It contains the matching tree and the
  * tree variables which matches the matching tree.
  *
- * <pre>{@code
- * final Tree<String, ?> tree = ...;
- * final TreePattern<String> pattern = ...;
+ * {@snippet lang="java":
+ * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
+ * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
  * final Optional<TreeMatchResult<String>> result = pattern.match(tree);
  * result.ifPresent(r -> {assert r.tree() == tree;});
- * }</pre>
+ * }
  *
  * @see TreePattern#match(Tree)
  *
@@ -62,12 +62,12 @@ public final class TreeMatchResult<V> {
 	 * argument of the {@link TreePattern#match(Tree)} call, in the case of a
 	 * match.
 	 *
-	 * <pre>{@code
-	 * final Tree<String, ?> tree = ...;
-	 * final TreePattern<String> pattern = ...;
+	 * {@snippet lang="java":
+	 * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
+	 * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
 	 * final Optional<TreeMatchResult<String>> result = pattern.match(tree);
 	 * result.ifPresent(r -> {assert r.tree() == tree;});
-	 * }</pre>
+	 * }
 	 *
 	 * @return node (tree), which has been matched by some pattern
 	 */

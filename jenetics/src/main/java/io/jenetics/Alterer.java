@@ -29,7 +29,7 @@ import io.jenetics.util.Seq;
  * Alterers can be chained by appending a list of alterers with the
  * {@link io.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
@@ -38,7 +38,7 @@ import io.jenetics.util.Seq;
  *         new MeanAlterer<>(0.2))
  *     .build();
  * final EvolutionStream<DoubleGene, Double> stream = engine.stream();
- * }</pre>
+ * }
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *

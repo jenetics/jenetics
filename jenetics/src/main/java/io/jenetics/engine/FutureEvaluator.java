@@ -21,9 +21,6 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Iterator;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -31,6 +28,7 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.util.Futures;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
@@ -40,7 +38,7 @@ import io.jenetics.util.Seq;
  * a {@link Future} of the fitness value instead the value itself.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 8.0
  * @since 5.0
  */
 final class FutureEvaluator<
@@ -51,7 +49,7 @@ final class FutureEvaluator<
 {
 	private final Function<? super Genotype<G>, ? extends Future<C>> _fitness;
 
-	FutureEvaluator(
+	public FutureEvaluator(
 		final Function<? super Genotype<G>, ? extends Future<C>> fitness
 	) {
 		_fitness = requireNonNull(fitness);
@@ -68,46 +66,9 @@ final class FutureEvaluator<
 			.filter(Phenotype::isEvaluated)
 			.collect(ISeq.toISeq());
 
-		join(evaluate);
+		Futures.join(evaluate);
 
 		return evaluated.append(map(population, evaluate));
-	}
-
-	private static void join(final Iterable<? extends Future<?>> futures) {
-		final Iterator<? extends Future<?>> it = futures.iterator();
-
-		Exception exception = null;
-		Future<?> future = null;
-		try {
-			while (it.hasNext()) {
-				future = it.next();
-				future.get();
-			}
-			future = null;
-		} catch (InterruptedException |
-				ExecutionException |
-				CancellationException e)
-		{
-			exception = e;
-		}
-
-		if (future != null) {
-			future.cancel(true);
-			while (it.hasNext()) {
-				it.next().cancel(true);
-			}
-		}
-
-		if (exception instanceof InterruptedException ie) {
-			Thread.currentThread().interrupt();
-			final var ce = new CancellationException(ie.getMessage());
-			ce.initCause(ie);
-			throw ce;
-		} else if (exception instanceof CancellationException e) {
-			throw e;
-		} else if (exception != null) {
-			throw new CompletionException(exception);
-		}
 	}
 
 	private ISeq<Phenotype<G, C>> map(

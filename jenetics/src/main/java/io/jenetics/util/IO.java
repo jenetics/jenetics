@@ -34,8 +34,8 @@ import java.nio.file.Path;
 /**
  * Class for object serialization. The following example shows how to write and
  * reload a given population.
- *
- * <pre>{@code
+ * <p>
+ * {@snippet lang="java":
  * // Creating result population.
  * EvolutionResult<DoubleGene, Double> result = stream
  *     .collect(toBestEvolutionResult());
@@ -49,7 +49,7 @@ import java.nio.file.Path;
  * EvolutionStream<DoubleGene, Double> stream = Engine
  *     .build(ff, gtf)
  *     .stream(population, 1);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0

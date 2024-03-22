@@ -32,7 +32,7 @@ import io.jenetics.util.IntRange;
  * {@code Chromosome} implementation, which allows to create genes without
  * explicit implementing the {@code Chromosome} interface.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class LastMonday {
  *
  *     // First monday of 2015.
@@ -70,7 +70,7 @@ import io.jenetics.util.IntRange;
  *     }
  *
  * }
- * }</pre>
+ * }
  *
  * The <i>full</i> example above shows how the {@code AnyChromosome} is used
  * to use it for an allele-type with no predefined gene- and chromosome type.

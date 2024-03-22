@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.moea;
 
-import static io.jenetics.internal.math.Basics.clamp;
+import static java.lang.Math.clamp;
 
 import java.util.Comparator;
 
@@ -29,10 +29,10 @@ import java.util.Comparator;
  * allows you to create {@code Vec} instance from a given {@code int[]},
  * {@code long[]} or {@code double[]} array.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Vec<double[]> point2D = Vec.of(0.1, 5.4);
  * final Vec<int[]> point3D = Vec.of(1, 2, 3);
- * }</pre>
+ * }
  *
  * The underlying array is <em>just</em> wrapped and <em>not</em> copied. This
  * means you can change the values of the {@code Vec} once it is created,

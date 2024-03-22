@@ -53,19 +53,19 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * }</pre>
  *
  * will be represented by the following {@link Genotype}
- * <pre>{@code
+ * {@snippet lang="java":
  * Genotype.of(
  *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
  *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
  *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
  * )
- * }</pre>
+ * }
  *
  * The {@code length} function lets you defining the number of codons as
  * function of the rule the chromosome is encoding.
  *
- * <pre>{@code
- * final Cfg<String> cfg = Bnf.parse(...);
+ * {@snippet lang="java":
+ * final Cfg<String> cfg = Bnf.parse(null); // @replace substring='null' replacement="..."
  * final Codec<List<Terminal<String>>, IntegerGene> codec = new Mapper<>(
  *     cfg,
  *     // The chromosome length is 10 times the
@@ -75,7 +75,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  *     // with a maximal sentence length of 5,000.
  *     index -> new SentenceGenerator<>(index, 5_000)
  * );
- * }</pre>
+ * }
  *
  * @param <T> the terminal token type of the grammar
  * @param <R> the result type of the mapper

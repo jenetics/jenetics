@@ -33,13 +33,13 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @implNote Collecting an <em>empty</em> {@code EvolutionStream} will return
  *           {@code null}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final EvolutionResult<DoubleGene, Double> result = engine.stream()
  *     .limit(0)
  *     .collect(toBestEvolutionResult());
  *
  * assert result == null;
- * }</pre>
+ * }
  *
  * @see java.util.stream.Stream
  * @see Engine
@@ -61,25 +61,25 @@ public interface EvolutionStream<
 	 * when the given {@code proceed} predicate returns {@code false}.
 	 * <p>
 	 * <i>General usage example:</i>
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
 	 *     .limit(bySteadyFitness(5))
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * <b>Note:</b>
 	 * The evolution result may be {@code null}, if your <em>truncation</em>
 	 * predicate returns {@code false} for the initial population.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final EvolutionResult<DoubleGene, Double> result = engine.stream()
 	 *     .limit(er -> false)
 	 *     .collect(toBestEvolutionResult());
 	 *
 	 * assert result == null;
-	 * }</pre>
+	 * }
 	 *
 	 * @see Limits
 	 *
@@ -97,16 +97,14 @@ public interface EvolutionStream<
 	 * population and {@code evolution} function. The main purpose of this
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
-	 *
-	 * <pre>{@code
-	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
+	 * {@snippet lang="java":
+	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = null; // @replace substring='null' replacement="..."
 	 * final EvolutionStream<DoubleGene, Double> stream =
 	 *     EvolutionStream.of(start, new MySpecialEngine());
-	 * }</pre>
+	 * }
 	 *
 	 * A more complete example for would look like as:
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public final class SpecialEngine {
 	 *
 	 *     // The fitness function.
@@ -114,7 +112,7 @@ public interface EvolutionStream<
 	 *         return gt.gene().allele();
 	 *     }
 	 *
-	 *     // Create new evolution start object.
+	 *     // Create a new evolution start object.
 	 *     private static EvolutionStart<DoubleGene, Double>
 	 *     start(final int populationSize, final long generation) {
 	 *         final Population<DoubleGene, Double> population =
@@ -143,8 +141,7 @@ public interface EvolutionStream<
 	 *         System.out.println(String.format("Best Genotype: %s", best));
 	 *     }
 	 * }
-	 * }</pre>
-	 *
+	 * }
 	 *
 	 * @since 5.1
 	 *
@@ -171,7 +168,7 @@ public interface EvolutionStream<
 	 * Create a new evolution stream with an <em>adjustable</em> evolution
 	 * function.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public static void main(final String[] args) {
 	 *     final Problem<double[], DoubleGene, Double> problem = Problem.of(
 	 *         v -> Math.sin(v[0])*Math.cos(v[1]),
@@ -219,7 +216,7 @@ public interface EvolutionStream<
 	 *             .variance()
 	 *         : 0.0;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @see #ofEvolution(Supplier, Evolution)
 	 *

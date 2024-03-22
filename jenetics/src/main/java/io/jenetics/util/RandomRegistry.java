@@ -19,9 +19,10 @@
  */
 package io.jenetics.util;
 
-import static java.lang.Math.max;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -44,13 +45,13 @@ import java.util.random.RandomGeneratorFactory;
  * generator. By using a factory, each thread gets its own generator instance,
  * which ensures thread-safety without the necessity of the created random
  * generator to be thread-safe.
- * <pre>{@code
+ * {@snippet lang="java":
  * // This is the default setup.
  * RandomRegistry.random(RandomGeneratorFactory.getDefault());
  *
  * // Using the "L128X1024MixRandom" random generator for the evolution.
  * RandomRegistry.random(RandomGeneratorFactory.of("L128X1024MixRandom"));
- * }</pre>
+ * }
  * <br>
  *
  * <b>Using a {@link RandomGenerator} {@link Supplier}</b><br>
@@ -58,55 +59,55 @@ import java.util.random.RandomGeneratorFactory;
  * {@link RandomGeneratorFactory}, it is also possible to register a
  * {@link Supplier} of the desired random generator. This method has the same
  * thread-safety property as the method above.
- * <pre>{@code
+ * {@snippet lang="java":
  * RandomRegistry.random(() -> new MySpecialRandomGenerator());
- * }</pre>
+ * }
  *
  * Register a random generator supplier is also more flexible. It allows
  * using the streaming and splitting capabilities of the random generators
  * implemented in the Java library.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Iterator<RandomGenerator> randoms =
  *     StreamableGenerator.of("L128X1024MixRandom")
  *         .rngs()
  *         .iterator();
  *
  * RandomRegistry.random(randoms::next);
- * }</pre>
+ * }
  * <br>
  *
  * <b>Using a {@link RandomGenerator} instance</b><br>
  * It is also possible to set a single random generator instance for the whole
  * evolution process. When using this setup, the used random generator must be
  * thread safe.
- * <pre>{@code
+ * {@snippet lang="java":
  * RandomRegistry.random(new Random(123456));
- * }</pre>
+ * }
  * <p>
  *
  * The following code snippet shows an almost complete example of a typical
  * random generator setup.
- * <pre>{@code
+ * {@snippet lang="java":
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Initialize the registry with the factory of the PRGN.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         RandomRegistry.random(factory);
  *
- *         final Engine<DoubleGene, Double> engine = ...;
+ *         final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  *         final EvolutionResult<DoubleGene, Double> result = engine.stream()
  *             .limit(100)
  *             .collect(toBestEvolutionResult());
  *     }
  * }
- * }</pre>
+ * }
  *
  * <h2>Setup of a <i>local</i> PRNG</h2>
  *
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.,
  * for initialize the engine stream with the same initial population.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class GA {
  *     public static void main(final String[] args) {
  *         // Create a reproducible list of genotypes.
@@ -118,7 +119,7 @@ import java.util.random.RandomGeneratorFactory;
  *                     .collect(toList())
  *             );
  *
- *         final Engine<DoubleGene, Double> engine = ...;
+ *         final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  *         final EvolutionResult<DoubleGene, Double> result = engine
  *              // Initialize the evolution stream with the given genotypes.
  *             .stream(genotypes)
@@ -126,7 +127,7 @@ import java.util.random.RandomGeneratorFactory;
  *             .collect(toBestEvolutionResult());
  *     }
  * }
- * }</pre>
+ * }
  *
  * <p>
  * The default random generator used by <em>Jenetics</em> is
@@ -134,8 +135,8 @@ import java.util.random.RandomGeneratorFactory;
  * {@code io.jenetics.util.defaultRandomGenerator}, it is possible to use a
  * different random generator.
  * <pre>{@code
- * java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
- *      -cp jenetics-@__version__@.jar:app.jar\
+ * java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom \
+ *      -cp jenetics-@__version__@.jar:app.jar \
  *          com.foo.bar.MyJeneticsApp
  * }</pre>
  *
@@ -144,7 +145,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 7.0
+ * @version 8.0
  */
 public final class RandomRegistry {
 	private RandomRegistry() {}
@@ -236,12 +237,12 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
 	 *
-	 * <pre>{@code
-	 * final MSeq<Integer> seq = ...
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(new Random(123), r -> {
 	 *     seq.shuffle();
 	 * });
-	 * }</pre>
+	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@code Random(123)} engine.
@@ -267,12 +268,12 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
 	 *
-	 * <pre>{@code
-	 * final MSeq<Integer> seq = ...
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(RandomGeneratorFactory.getDefault(), r -> {
 	 *     seq.shuffle();
 	 * });
-	 * }</pre>
+	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
 	 * given {@link RandomGeneratorFactory#getDefault()} factory.
@@ -299,12 +300,10 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator
 	 * supplier.
 	 *
-	 * <pre>{@code
-	 * final MSeq<Integer> seq = ...
-	 * using(() -> new MyRandomGenerator(), r -> {
-	 *     seq.shuffle();
-	 * });
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
+	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());
+	 * }
 	 *
 	 * @since 7.0
 	 *
@@ -328,14 +327,14 @@ public final class RandomRegistry {
 	 * Opens a new <em>scope</em> with the given random generator and executes
 	 * the given function within it. The following example shows how to create a
 	 * reproducible list of genotypes:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
 	 *     with(new LCG64ShiftRandom(123), r ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
 	 *     );
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.0
 	 *
@@ -359,14 +358,14 @@ public final class RandomRegistry {
 	/**
 	 * Opens a new <em>scope</em> with the given random generator factory and
 	 * executes the given function within it.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
 	 *     with(RandomGeneratorFactory.getDefault(), random ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
 	 *     );
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.0
 	 *
@@ -386,17 +385,18 @@ public final class RandomRegistry {
 			r -> function.apply(r.get())
 		);
 	}
+
 	/**
 	 * Opens a new <em>scope</em> with the given random generator supplier and
 	 * executes the given function within it.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
 	 *     with(() -> new MyRandomGenerator(), random ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
 	 *     );
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.0
 	 *
@@ -407,7 +407,6 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-
 	public static <R extends RandomGenerator, T> T with(
 		final Supplier<? extends R> supplier,
 		final Function<? super R, ? extends T> function
@@ -420,14 +419,43 @@ public final class RandomRegistry {
 
 	@SuppressWarnings("removal")
 	private static final class Env {
+
 		private static final String defaultRandomGenerator =
 			java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<String>)() ->
-					System.getProperty(
-						"io.jenetics.util.defaultRandomGenerator",
-						"L64X256MixRandom"
-					)
+				(java.security.PrivilegedAction<String>)Env::get
 			);
+
+		private static String get() {
+			return getConfigured()
+				.or(Env::getDefault)
+				.orElseGet(Env::getBest);
+		}
+
+		private static Optional<String> getConfigured() {
+			return Optional.ofNullable(
+				System.getProperty("io.jenetics.util.defaultRandomGenerator")
+			);
+		}
+
+		private static Optional<String> getDefault() {
+			return RandomGeneratorFactory.all()
+				.map(RandomGeneratorFactory::name)
+				.filter("L64X256MixRandom"::equals)
+				.findFirst();
+		}
+
+		private static String getBest() {
+			final var highestStateBits = Comparator
+				.<RandomGeneratorFactory<?>>comparingInt(RandomGeneratorFactory::stateBits)
+				.reversed();
+
+			return RandomGeneratorFactory.all()
+				.sorted(highestStateBits)
+				.map(RandomGeneratorFactory::name)
+				.findFirst()
+				.orElse("Random");
+		}
+
 	}
 
 }

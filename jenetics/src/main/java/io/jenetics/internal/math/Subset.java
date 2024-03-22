@@ -57,7 +57,7 @@ public final class Subset {
 	 * @throws NullPointerException if {@code random} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *         {@code n*k} will cause an integer overflow.
-	 * @return the a-set array for the given parameter. The returned sub-set
+	 * @return the a-set array for the given parameter. The returned subset
 	 *         array is sorted in increasing order.
 	 */
 	public static int[] next(final RandomGenerator rnd, final int n, final int k) {

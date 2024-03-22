@@ -61,7 +61,7 @@ import io.jenetics.ext.util.TreeNode;
  *                              │   └── l
  *                              ├── i
  *                              └── j
- * }</pre>
+ * } </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0

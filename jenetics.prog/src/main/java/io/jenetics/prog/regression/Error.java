@@ -32,9 +32,9 @@ import io.jenetics.prog.op.Op;
  * The error is calculated from the {@link LossFunction} and, if desired, the
  * program {@link Complexity}.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
- * }</pre>
+ * }
  *
  * @see LossFunction
  * @see Complexity

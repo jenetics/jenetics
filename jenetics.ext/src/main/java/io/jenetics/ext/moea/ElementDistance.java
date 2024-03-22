@@ -26,9 +26,9 @@ import java.util.function.ToDoubleBiFunction;
  * Defines the distance of two elements of a given <em>vector</em> type {@code V}.
  * The following example creates an {@code ElementDistance} function for a
  * {@code double[] array}:
- * <pre>{@code
+ * {@snippet lang="java":
  * final ElementDistance<double[]> dist = (u, v, i) -> u[i] - v[i];
- * }</pre>
+ * }
  *
  * @param <V> the vector type
  *
@@ -42,9 +42,9 @@ public interface ElementDistance<V> {
 	/**
 	 * Calculates the distance of two vector elements at the given {@code index}.
 	 * E.g.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ElementDistance<double[]> dist = (u, v, i) -> u[i] - v[i];
-	 * }</pre>
+	 * }
 	 *
 	 * @param u the first vector
 	 * @param v the second vector

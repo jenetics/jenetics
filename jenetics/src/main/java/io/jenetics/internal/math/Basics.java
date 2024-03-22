@@ -20,7 +20,6 @@
 package io.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.min;
 
 import io.jenetics.stat.LongSummary;
 
@@ -104,25 +103,6 @@ public final class Basics {
 	}
 
 	/**
-	 * <i>Clamping</i> a value between a pair of boundary values.
-	 * <i>Note: using clamp with floating point numbers may give unexpected
-	 * results if one of the values is {@code NaN}.</i>
-	 *
-	 * @param v the value to <i>clamp</i>
-	 * @param lo the lower bound.
-	 * @param hi the upper bound.
-	 * @return The clamped value:
-	 *        <ul>
-	 *            <li>{@code lo if v < lo}</li>
-	 *            <li>{@code hi if hi < v}</li>
-	 *            <li>{@code otherwise, v}</li>
-	 *        </ul>
-	 */
-	public static double clamp(final double v, final double lo, final double hi) {
-		return v < lo ? lo : min(v, hi);
-	}
-
-	/**
 	 * Return the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * distance of the given two double values.
 	 *
@@ -139,7 +119,7 @@ public final class Basics {
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * double a = 0.0;
 	 * for (int i = 0; i < 10; ++i) {
 	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
@@ -151,7 +131,7 @@ public final class Basics {
 	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
 	 *     );
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * The code fragment above will create the following output:
 	 * <pre>

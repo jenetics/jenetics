@@ -47,7 +47,7 @@ import io.jenetics.util.RandomRegistry;
  * This chromosome can be used to model permutations of a given (sub) set of
  * alleles.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<String> alleles = ISeq.of("one", "two", "three", "four", "five");
  *
  * // Create a new randomly permuted chromosome from the given alleles.
@@ -65,7 +65,7 @@ import io.jenetics.util.RandomRegistry;
  * // > two|one|four|five|three
  * // > three|one|five
  * // > five|three|one
- * }</pre>
+ * }
  *
  * Usable {@link Alterer} for this chromosome:
  * <ul>
@@ -192,13 +192,13 @@ public final class PermutationChromosome<T>
 	 * <p>
 	 * The following example shows how to create a {@code PermutationChromosome}
 	 * for encoding a sub-set problem (of a fixed {@code length}).
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<String> basicSet = ISeq.of("a", "b", "c", "d", "e", "f");
 	 *
 	 * // The chromosome has a length of 3 and will only contain values from the
 	 * // given basic-set, with no duplicates.
 	 * final PermutationChromosome<String> ch = PermutationChromosome.of(basicSet, 3);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *

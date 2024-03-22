@@ -44,6 +44,9 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Lifecycle.Value;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class SerializerTest {
 
 	@Test(dataProvider = "data")

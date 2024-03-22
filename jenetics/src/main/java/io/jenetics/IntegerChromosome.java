@@ -95,8 +95,8 @@ public class IntegerChromosome
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
 	 *
-	 * <pre>{@code
-	 * final IntegerChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final IntegerChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final IntegerChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static int[] half(final int[] values) {
@@ -105,7 +105,7 @@ public class IntegerChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *

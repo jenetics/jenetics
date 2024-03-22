@@ -20,9 +20,9 @@
 package io.jenetics.ext;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.clamp;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Basics.clamp;
 
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;

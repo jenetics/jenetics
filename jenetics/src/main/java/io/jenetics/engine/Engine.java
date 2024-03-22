@@ -27,6 +27,7 @@ import static java.util.concurrent.ForkJoinPool.commonPool;
 import java.time.InstantSource;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -39,6 +40,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.util.BatchExecutor;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -50,7 +52,7 @@ import io.jenetics.util.Seq;
  * Genetic algorithm <em>engine</em> which is the main class. The following
  * example shows the main steps in initializing and executing the GA.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
@@ -81,13 +83,30 @@ import io.jenetics.util.Seq;
  *            .collect(toBestPhenotype());
  *     }
  * }
- * }</pre>
+ * }
  *
  * The architecture allows to decouple the configuration of the engine from the
  * execution. The {@code Engine} is configured via the {@code Engine.Builder}
  * class and can't be changed after creation. The actual <i>evolution</i> is
  * performed by the {@link EvolutionStream}, which is created by the
  * {@code Engine}.
+ *
+ * <H2>Concurrency</H2>
+ * By default, the engine uses the {@link ForkJoinPool#commonPool()} for
+ * executing the evolution steps and evaluating the fitness function concurrently.
+ * You can change the used execution services with the {@link Builder#executor(Executor)}
+ * method. If you want to use a different executor for evaluating the fitness
+ * functions, you have to set the {@link Builder#fitnessExecutor(BatchExecutor)}.
+ *
+ * {@snippet lang="java":
+ * final Engine<DoubleGene, Double> engine = Engine
+ *     .builder(null) // @replace substring='null' replacement="..."
+ *     // Using this execution service for parallelize the evolution steps.
+ *     .executor(Executors.newFixedThreadPool(5))
+ *     // Using one virtual thread for every fitness function evaluation.
+ *     .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+ *     .build();
+ * }
  *
  * @implNote
  *     This class is thread safe: The engine maintains no mutable state.
@@ -589,7 +608,10 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> gtf
 	) {
-		return new Builder<>(Evaluators.concurrent(ff, commonPool()), gtf);
+		return new Builder<>(
+			new FitnessEvaluator<>(ff, BatchExecutor.of(commonPool())),
+			gtf
+		);
 	}
 
 	/**
@@ -695,6 +717,7 @@ public final class Engine<
 
 		// Engine execution environment.
 		private Executor _executor = commonPool();
+		private BatchExecutor _fitnessExecutor = null;
 		private InstantSource _clock = NanoClock.systemUTC();
 
 		private EvolutionInterceptor<G, C> _interceptor =
@@ -713,14 +736,14 @@ public final class Engine<
 		 * @see Engine#builder(Function, Chromosome, Chromosome[])
 		 *
 		 * @param evaluator the fitness evaluator
-		 * @param genotypeFactory the genotype factory
+		 * @param gtf the genotype factory
 		 * @throws NullPointerException if one of the arguments is {@code null}.
 		 */
 		public Builder(
 			final Evaluator<G, C> evaluator,
-			final Factory<Genotype<G>> genotypeFactory
+			final Factory<Genotype<G>> gtf
 		) {
-			_genotypeFactory = requireNonNull(genotypeFactory);
+			_genotypeFactory = requireNonNull(gtf);
 			_evaluator = requireNonNull(evaluator);
 		}
 
@@ -981,11 +1004,32 @@ public final class Engine<
 		/**
 		 * The executor used by the engine.
 		 *
+		 * @apiNote
+		 * If no dedicated {@link Evaluator} is defined, this is also the
+		 * executor, used for evaluating the fitness functions.
+		 *
 		 * @param executor the executor used by the engine
 		 * @return {@code this} builder, for command chaining
 		 */
 		public Builder<G, C> executor(final Executor executor) {
 			_executor = requireNonNull(executor);
+			return this;
+		}
+
+		/**
+		 * This executor is used for evaluating the fitness functions.
+		 *
+		 * @apiNote
+		 * If a dedicated {@link Evaluator} is defined, this executor is not
+		 * used.
+		 *
+		 * @since 8.0
+		 *
+		 * @param executor the executor used for evaluating the fitness functions
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> fitnessExecutor(final BatchExecutor executor) {
+			_fitnessExecutor = requireNonNull(executor);
 			return this;
 		}
 
@@ -1037,8 +1081,8 @@ public final class Engine<
 		}
 
 		private Evaluator<G, C> __evaluator() {
-			return _evaluator instanceof ConcurrentEvaluator<G, C> ce
-				? ce.with(_executor)
+			return _evaluator instanceof FitnessEvaluator<G, C> fe
+				? new FitnessEvaluator<>(fe.function(), fitnessExecutor())
 				: _evaluator;
 		}
 
@@ -1083,6 +1127,19 @@ public final class Engine<
 		 */
 		public Executor executor() {
 			return _executor;
+		}
+
+		/**
+		 * Return the batch executor, used for evaluating the fitness functions.
+		 *
+		 * @since 8.0
+		 *
+		 * @return the batch executor, used for evaluating the fitness functions
+		 */
+		public BatchExecutor fitnessExecutor() {
+			return _fitnessExecutor != null
+				? _fitnessExecutor
+				: BatchExecutor.of(executor());
 		}
 
 		/**
@@ -1227,11 +1284,11 @@ public final class Engine<
 	 * engine configurations. The following code snippet shows a possible usage
 	 * example.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
 	 *     .setup(new WeaselProgram<>())
 	 *     .build();
-	 * }</pre>
+	 * }
 	 *
 	 * @see Builder#setup(Setup)
 	 *

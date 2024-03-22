@@ -3,6 +3,7 @@ java.io
 java.lang
 java.lang.annotation
 java.lang.constant
+java.lang.foreign
 java.lang.invoke
 java.lang.module
 java.lang.ref
@@ -221,12 +222,9 @@ module:jdk.hotspot.agent
 module:jdk.httpserver
 com.sun.net.httpserver
 com.sun.net.httpserver.spi
-module:jdk.incubator.foreign
-jdk.incubator.foreign
 module:jdk.incubator.vector
 jdk.incubator.vector
 module:jdk.jartool
-com.sun.jarsigner
 jdk.security.jarsigner
 module:jdk.javadoc
 jdk.javadoc.doclet

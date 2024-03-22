@@ -52,16 +52,16 @@ import io.jenetics.xml.stream.XML;
  * This class contains static fields and methods, for creating chromosome- and
  * genotype readers for different gene types.
  *
- * <pre>{@code
- * final Reader<Genotype<BitGene> bgr =
- *     Readers.Genotype.reader(Readers.BitChromosome.reader()));
+ * {@snippet lang="java":
+ * final Reader<Genotype<BitGene>> bgr =
+ *     Readers.Genotype.reader(Readers.BitChromosome.reader());
  *
  * final Reader<Genotype<IntegerGene>> igr =
- *     Writers.Genotype.reader(Readers.IntegerChromosome.reader()));
+ *     Writers.Genotype.reader(Readers.IntegerChromosome.reader());
  *
  * final Reader<Genotype<DoubleGene>> dgr =
- *     Readers.Genotype.reader(Readers.DoubleChromosome.reader()));
- * }</pre>
+ *     Readers.Genotype.reader(Readers.DoubleChromosome.reader());
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -77,8 +77,7 @@ public final class Readers {
 	 * <b>XML</b>
 	 * <pre> {@code
 	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
-	 * }</pre>
-	 * }
+	 * } </pre>
 	 */
 	public static final class BitChromosome {
 		private BitChromosome() {}
@@ -130,7 +129,7 @@ public final class Readers {
 	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
 	 *     <alleles>ASDF</alleles>
 	 * </character-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class CharacterChromosome {
 		private CharacterChromosome() {}
@@ -189,7 +188,7 @@ public final class Readers {
 	 *         <allele>ggg</allele>
 	 *     </alleles>
 	 * </root-name>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class BoundedChromosome {
 		private BoundedChromosome() {}
@@ -267,7 +266,7 @@ public final class Readers {
 	 *         <allele>-88668137</allele>
 	 *     </alleles>
 	 * </int-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
@@ -330,7 +329,7 @@ public final class Readers {
 	 *         <allele>6053786736809578435</allele>
 	 *     </alleles>
 	 * </long-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
@@ -457,7 +456,7 @@ public final class Readers {
 	 *     </valid-alleles>
 	 *     <order>2 1 3 5 4</order>
 	 * </permutation-chromosome>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
@@ -552,7 +551,7 @@ public final class Readers {
 	 *         <alleles>
 	 *     </double-chromosome>
 	 * </genotype>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class Genotype {
 		private Genotype() {}
@@ -665,7 +664,7 @@ public final class Readers {
 	 *         </double-chromosome>
 	 *     </genotype>
 	 * </genotypes>
-	 * }</pre>
+	 * } </pre>
 	 */
 	public static final class Genotypes {
 		private Genotypes() {}
