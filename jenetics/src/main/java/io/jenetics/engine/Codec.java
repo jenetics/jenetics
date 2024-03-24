@@ -194,11 +194,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 */
 	default InvertibleCodec<T, G>
 	toInvertibleCodec(final Function<? super T, Genotype<G>> encoder) {
-		return InvertibleCodec.of(
-			encoding(),
-			decoder(),
-			encoder
-		);
+		return InvertibleCodec.of(encoding(), decoder(), encoder);
 	}
 
 	/**
@@ -238,7 +234,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 	/**
 	 * Converts two given {@code Codec} instances into one. This lets you divide
-	 * a problem into sub problems and combine them again.
+	 * a problem into sub-problems and combine them again.
 	 * <p>
 	 * The following example shows how to combine two codecs, which converts a
 	 * {@code LongGene} to a {@code LocalDate}, to a codec which combines the
