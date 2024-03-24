@@ -32,7 +32,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.UncheckedCloseable;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 import io.jenetics.internal.util.Lifecycle.Value;
 
@@ -137,7 +137,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = ExtendedCloseable.of(
+			final var closeables = UncheckedCloseable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
@@ -155,7 +155,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = ExtendedCloseable.of(
+			final var closeables = UncheckedCloseable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
@@ -176,7 +176,7 @@ public class LifecycleTest {
 
 	@Test(expectedExceptions = IOException.class)
 	public void extendedCloseableClose() throws Exception {
-		final var closeable = ExtendedCloseable.of(
+		final var closeable = UncheckedCloseable.of(
 			() -> { throw new IOException(); }
 		);
 		closeable.close();
@@ -184,7 +184,7 @@ public class LifecycleTest {
 
 	@Test(expectedExceptions = UncheckedIOException.class)
 	public void extendedCloseableUncheckedClose() {
-		final var closeable = ExtendedCloseable.of(
+		final var closeable = UncheckedCloseable.of(
 			() -> { throw new IOException(); }
 		);
 		closeable.uncheckedClose(UncheckedIOException::new);
@@ -192,7 +192,7 @@ public class LifecycleTest {
 
 	@Test
 	public void extendedCloseableSilentClose() {
-		final var closeable = ExtendedCloseable.of(
+		final var closeable = UncheckedCloseable.of(
 			() -> { throw new IOException(); }
 		);
 		closeable.silentClose();
@@ -200,7 +200,7 @@ public class LifecycleTest {
 
 	@Test
 	public void extendedCloseableSilentCloseWithPrimaryError() {
-		final var closeable = ExtendedCloseable.of(
+		final var closeable = UncheckedCloseable.of(
 			() -> { throw new IOException(); }
 		);
 

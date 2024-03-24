@@ -66,12 +66,12 @@ import java.util.function.Supplier;
  * }
  * }
  *
- * <p><b>Wrapping several closeables into one</b></p>
- * {@snippet lang="java":
- * try (var __ = ExtendedCloseable.of(c1, c2, c3)) {
+ * <p><b>Wrapping several closeable into one</b></p>
+ * {@snippet lang = "java":
+ * try (var __ = UncheckedCloseable.of(c1, c2, c3)) {
  *     // ...
  * }
- * }
+ *}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
@@ -151,7 +151,7 @@ public class Lifecycle {
 	 * @param <E> the exception thrown by the {@link #close()} method
 	 */
 	@FunctionalInterface
-	public interface ExtendedCloseable<E extends Exception>
+	public interface UncheckedCloseable<E extends Exception>
 		extends AutoCloseable
 	{
 
@@ -192,7 +192,7 @@ public class Lifecycle {
 		 * exception is appended to the list of suppressed exceptions.
 		 *
 		 * @param previousError the error, which triggers the close of the given
-		 *        {@code closeables}
+		 *        {@code closeable}
 		 */
 		default void silentClose(final Throwable previousError) {
 			try {
@@ -206,7 +206,7 @@ public class Lifecycle {
 
 		/**
 		 * Wraps a given {@code release} method and returns an
-		 * {@link ExtendedCloseable}.
+		 * {@link UncheckedCloseable}.
 		 *
 		 * @param release the release method to wrap
 		 * @return a new extended closeable with the given underlying
@@ -214,7 +214,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if the given {@code release} method is
 		 *         {@code null}
 		 */
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> UncheckedCloseable<E>
 		of(final ThrowingRunnable<? extends E> release) {
 			return release::run;
 		}
@@ -232,7 +232,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the {@code releases} is
 		 *         {@code null}
 		 */
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> UncheckedCloseable<E>
 		of(final Collection<? extends ThrowingRunnable<? extends E>> releases) {
 			final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
 			releases.forEach(c -> list.add(requireNonNull(c)));
@@ -255,7 +255,7 @@ public class Lifecycle {
 		 *         {@code null}
 		 */
 		@SafeVarargs
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> UncheckedCloseable<E>
 		of(final ThrowingRunnable<? extends E>... releases) {
 			return of(Arrays.asList(releases));
 		}
@@ -287,7 +287,7 @@ public class Lifecycle {
 	 * @param <T> the value type
 	 */
 	public static sealed class Value<T, E extends Exception>
-		implements Supplier<T>, ExtendedCloseable<E>
+		implements Supplier<T>, UncheckedCloseable<E>
 	{
 
 		T _value;
@@ -418,7 +418,7 @@ public class Lifecycle {
 			try {
 				block.accept(get());
 			} catch (Throwable error) {
-				ExtendedCloseable.of(releases).silentClose(error);
+				UncheckedCloseable.of(releases).silentClose(error);
 				silentClose(error);
 				throw error;
 			}
@@ -450,10 +450,7 @@ public class Lifecycle {
 	 *
 	 * @param <T> the value type
 	 */
-	public static final class IOValue<T>
-		extends Value<T, IOException>
-		implements Closeable
-	{
+	public static final class IOValue<T> extends Value<T, IOException> {
 
 		/**
 		 * Create a new closeable value with the given resource {@code value}
@@ -546,7 +543,7 @@ public class Lifecycle {
 	 * }
 	 */
 	public static sealed class Resources<E extends Exception>
-		implements ExtendedCloseable<E>
+		implements UncheckedCloseable<E>
 	{
 
 		private final List<ThrowingRunnable<? extends E>> _resources = new ArrayList<>();
@@ -613,14 +610,14 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends ExtendedCloseable<? extends E>> C add(final C resource) {
+		public <C extends UncheckedCloseable<? extends E>> C add(final C resource) {
 			return add(resource, C::close);
 		}
 
 		@Override
 		public void close() throws E {
 			if (!_resources.isEmpty()) {
-				ExtendedCloseable.of(_resources).close();
+				UncheckedCloseable.of(_resources).close();
 			}
 		}
 
