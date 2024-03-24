@@ -246,9 +246,7 @@ public final class EvolutionParams<
 		 * @param selector used for selecting the offspring population
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> offspringSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> offspringSelector(final Selector<G, C> selector) {
 			_offspringSelector = requireNonNull(selector);
 			return this;
 		}
@@ -260,9 +258,7 @@ public final class EvolutionParams<
 		 * @param selector used for selecting survivor population
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> survivorsSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> survivorsSelector(final Selector<G, C> selector) {
 			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}

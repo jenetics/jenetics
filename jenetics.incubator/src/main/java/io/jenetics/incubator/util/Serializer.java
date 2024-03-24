@@ -400,7 +400,7 @@ public final class Serializer {
 		);
 
 		return result.get().onClose(() ->
-			result.uncheckedClose(UncheckedIOException::new)
+			result.release(UncheckedIOException::new)
 		);
 	}
 
@@ -460,7 +460,7 @@ public final class Serializer {
 		);
 
 		return result.get().onClose(() ->
-			result.uncheckedClose(UncheckedIOException::new)
+			result.release(UncheckedIOException::new)
 		);
 	}
 
