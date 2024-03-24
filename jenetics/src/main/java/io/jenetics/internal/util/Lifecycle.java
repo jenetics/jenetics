@@ -68,7 +68,7 @@ import java.util.function.Supplier;
  *
  * <p><b>Wrapping several closeable into one</b></p>
  * {@snippet lang = "java":
- * try (var __ = UncheckedCloseable.of(c1, c2, c3)) {
+ * try (var __ = Releasable.of(c1, c2, c3)) {
  *     // ...
  * }
  *}
@@ -77,7 +77,7 @@ import java.util.function.Supplier;
  * @since 6.2
  * @version 7.2
  */
-public class Lifecycle {
+public final class Lifecycle {
 
 	/* *************************************************************************
 	 * Throwing functional interfaces.
@@ -151,7 +151,7 @@ public class Lifecycle {
 	 * @param <E> the exception thrown by the {@link #close()} method
 	 */
 	@FunctionalInterface
-	public interface UncheckedCloseable<E extends Exception>
+	public interface Releasable<E extends Exception>
 		extends AutoCloseable
 	{
 
@@ -165,11 +165,8 @@ public class Lifecycle {
 		 * @throws RuntimeException if the {@link #close()} method throws
 		 *         an {@link Exception}
 		 */
-		default void uncheckedClose(
-			final Function<
-				? super E,
-				? extends RuntimeException> mapper
-		) {
+		default <R extends RuntimeException> void
+		release(final Function<? super E, ? extends R> mapper) throws R {
 			try {
 				close();
 			} catch (Exception e) {
@@ -182,8 +179,8 @@ public class Lifecycle {
 		/**
 		 * Calls the {@link #close()} method and ignores every thrown exception.
 		 */
-		default void silentClose() {
-			silentClose(null);
+		default void silentRelease() {
+			silentRelease(null);
 		}
 
 		/**
@@ -194,7 +191,7 @@ public class Lifecycle {
 		 * @param previousError the error, which triggers the close of the given
 		 *        {@code closeable}
 		 */
-		default void silentClose(final Throwable previousError) {
+		default void silentRelease(final Throwable previousError) {
 			try {
 				close();
 			} catch (Exception suppressed) {
@@ -206,7 +203,7 @@ public class Lifecycle {
 
 		/**
 		 * Wraps a given {@code release} method and returns an
-		 * {@link UncheckedCloseable}.
+		 * {@link Releasable}.
 		 *
 		 * @param release the release method to wrap
 		 * @return a new extended closeable with the given underlying
@@ -214,7 +211,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if the given {@code release} method is
 		 *         {@code null}
 		 */
-		static <E extends Exception> UncheckedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final ThrowingRunnable<? extends E> release) {
 			return release::run;
 		}
@@ -232,7 +229,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the {@code releases} is
 		 *         {@code null}
 		 */
-		static <E extends Exception> UncheckedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final Collection<? extends ThrowingRunnable<? extends E>> releases) {
 			final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
 			releases.forEach(c -> list.add(requireNonNull(c)));
@@ -255,7 +252,7 @@ public class Lifecycle {
 		 *         {@code null}
 		 */
 		@SafeVarargs
-		static <E extends Exception> UncheckedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final ThrowingRunnable<? extends E>... releases) {
 			return of(Arrays.asList(releases));
 		}
@@ -287,7 +284,7 @@ public class Lifecycle {
 	 * @param <T> the value type
 	 */
 	public static sealed class Value<T, E extends Exception>
-		implements Supplier<T>, UncheckedCloseable<E>
+		implements Supplier<T>, Releasable<E>
 	{
 
 		T _value;
@@ -361,7 +358,7 @@ public class Lifecycle {
 				_value = builder.apply(resources);
 				_release = value -> resources.close();
 			} catch (Throwable error) {
-				resources.silentClose(error);
+				resources.silentRelease(error);
 				throw error;
 			}
 		}
@@ -418,8 +415,8 @@ public class Lifecycle {
 			try {
 				block.accept(get());
 			} catch (Throwable error) {
-				UncheckedCloseable.of(releases).silentClose(error);
-				silentClose(error);
+				Releasable.of(releases).silentRelease(error);
+				silentRelease(error);
 				throw error;
 			}
 		}
@@ -516,7 +513,7 @@ public class Lifecycle {
 				_value = builder.apply(resources);
 				_release = value -> resources.close();
 			} catch (Throwable error) {
-				resources.silentClose(error);
+				resources.silentRelease(error);
 				throw error;
 			}
 		}
@@ -543,7 +540,7 @@ public class Lifecycle {
 	 * }
 	 */
 	public static sealed class Resources<E extends Exception>
-		implements UncheckedCloseable<E>
+		implements Releasable<E>
 	{
 
 		private final List<ThrowingRunnable<? extends E>> _resources = new ArrayList<>();
@@ -610,14 +607,14 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends UncheckedCloseable<? extends E>> C add(final C resource) {
+		public <C extends Releasable<? extends E>> C add(final C resource) {
 			return add(resource, C::close);
 		}
 
 		@Override
 		public void close() throws E {
 			if (!_resources.isEmpty()) {
-				UncheckedCloseable.of(_resources).close();
+				Releasable.of(_resources).close();
 			}
 		}
 
@@ -651,7 +648,8 @@ public class Lifecycle {
 		 * @param releases the release methods
 		 */
 		public IOResources(
-			final Collection<? extends ThrowingRunnable<? extends IOException>> releases
+			final Collection<
+				? extends ThrowingRunnable<? extends IOException>> releases
 		) {
 			super(releases);
 		}
@@ -664,7 +662,8 @@ public class Lifecycle {
 		 */
 		@SafeVarargs
 		public IOResources(
-			final ThrowingRunnable<? extends IOException>... releases
+			final ThrowingRunnable<
+				? extends IOException>... releases
 		) {
 			super(releases);
 		}

@@ -32,7 +32,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.UncheckedCloseable;
+import io.jenetics.internal.util.Lifecycle.Releasable;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 import io.jenetics.internal.util.Lifecycle.Value;
 
@@ -137,7 +137,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = UncheckedCloseable.of(
+			final var closeables = Releasable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IOException(); },
@@ -155,7 +155,7 @@ public class LifecycleTest {
 		final var count = new AtomicInteger();
 
 		try {
-			final var closeables = UncheckedCloseable.of(
+			final var closeables = Releasable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
 				() -> { throw new IllegalArgumentException(); },
@@ -176,7 +176,7 @@ public class LifecycleTest {
 
 	@Test(expectedExceptions = IOException.class)
 	public void extendedCloseableClose() throws Exception {
-		final var closeable = UncheckedCloseable.of(
+		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
 		closeable.close();
@@ -184,28 +184,28 @@ public class LifecycleTest {
 
 	@Test(expectedExceptions = UncheckedIOException.class)
 	public void extendedCloseableUncheckedClose() {
-		final var closeable = UncheckedCloseable.of(
+		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.uncheckedClose(UncheckedIOException::new);
+		closeable.release(UncheckedIOException::new);
 	}
 
 	@Test
 	public void extendedCloseableSilentClose() {
-		final var closeable = UncheckedCloseable.of(
+		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.silentClose();
+		closeable.silentRelease();
 	}
 
 	@Test
 	public void extendedCloseableSilentCloseWithPrimaryError() {
-		final var closeable = UncheckedCloseable.of(
+		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
 
 		final var primary = new IllegalArgumentException();
-		closeable.silentClose(primary);
+		closeable.silentRelease(primary);
 
 		Assert.assertEquals(
 			primary.getSuppressed()[0].getClass(),

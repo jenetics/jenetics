@@ -366,7 +366,7 @@ public final class CsvSupport {
 			});
 
 			return result.get().onClose(() ->
-				result.uncheckedClose(UncheckedIOException::new)
+				result.release(UncheckedIOException::new)
 			);
 		}
 
