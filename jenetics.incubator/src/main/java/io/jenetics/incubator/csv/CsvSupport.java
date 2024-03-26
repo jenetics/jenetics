@@ -35,7 +35,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.Value;
+import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
  * This class contains classes and helper methods for splitting CSV files into
@@ -347,7 +347,7 @@ public final class CsvSupport {
 		public Stream<String> read(final Reader reader) {
 			requireNonNull(reader);
 
-			final Value<Stream<String>, IOException> result = new Value<>(resources -> {
+			final var result = new IOValue<>(resources -> {
 				final var br = reader instanceof BufferedReader r
 					? resources.use(r, Closeable::close)
 					: resources.use(new BufferedReader(reader), Closeable::close);
