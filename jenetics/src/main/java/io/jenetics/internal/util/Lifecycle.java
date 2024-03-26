@@ -313,16 +313,16 @@ public final class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
+		 * {@link Resources#use(Object, ThrowingConsumer)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * {@snippet lang="java":
+		 * {@snippet lang = "java":
 		 * final Value<Stream<Object>, IOException> result = new Value<>(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
-		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
-		 *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
+		 *     final var fin = resources.use(new FileInputStream(file.toFile()), Closeable::close);
+		 *     final var bin = resources.use(new BufferedInputStream(fin), Closeable::close);
+		 *     final var oin = resources.use(new ObjectInputStream(bin), Closeable::close);
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
@@ -331,7 +331,7 @@ public final class Lifecycle {
 		 * try (result) {
 		 *     result.get().forEach(System.out::println);
 		 * }
-		 * }
+		 *}
 		 *
 		 * @see Resources
 		 *
@@ -468,7 +468,7 @@ public final class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
+		 * {@link Resources#use(Object, ThrowingConsumer)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
@@ -528,16 +528,16 @@ public final class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * try (var resources = new Resources<IOException>()) {
-	 *     final var fin = resources.add(new FileInputStream(file), Closeable::close);
+	 *     final var fin = resources.use(new FileInputStream(file), Closeable::close);
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin), Closeable::close);
+	 *     final var oin = resources.use(new ObjectInputStream(fin), Closeable::close);
 	 *     // ...
 	 * }
-	 * }
+	 *}
 	 */
 	public static sealed class Resources<E extends Exception>
 		implements Releasable<E>
@@ -586,7 +586,7 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C> C add(
+		public <C> C use(
 			final C resource,
 			final ThrowingConsumer<? super C, ? extends E> release
 		) {
@@ -607,8 +607,8 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends Releasable<? extends E>> C add(final C resource) {
-			return add(resource, C::close);
+		public <C extends Releasable<? extends E>> C use(final C resource) {
+			return use(resource, C::close);
 		}
 
 		@Override
@@ -685,7 +685,7 @@ public final class Lifecycle {
 		 *         {@code null}
 		 */
 		public <C extends Closeable> C add(final C resource) {
-			return add(resource, Closeable::close);
+			return use(resource, Closeable::close);
 		}
 
 	}

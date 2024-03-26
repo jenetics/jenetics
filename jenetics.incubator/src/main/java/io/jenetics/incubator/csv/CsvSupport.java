@@ -349,8 +349,8 @@ public final class CsvSupport {
 
 			final Value<Stream<String>, IOException> result = new Value<>(resources -> {
 				final var br = reader instanceof BufferedReader r
-					? resources.add(r, Closeable::close)
-					: resources.add(new BufferedReader(reader), Closeable::close);
+					? resources.use(r, Closeable::close)
+					: resources.use(new BufferedReader(reader), Closeable::close);
 
 				final var line = new StringBuilder();
 				final Supplier<String> nextLine = () -> {
