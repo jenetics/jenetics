@@ -413,11 +413,11 @@ public final class Serializer {
 			public synchronized Object get() {
 				try {
 					if (_oin == null) {
-						var in = resources.add(input);
+						var in = resources.use(input);
 						if (!(in instanceof BufferedInputStream)) {
-							in = resources.add(new BufferedInputStream(in));
+							in = resources.use(new BufferedInputStream(in));
 						}
-						_oin = resources.add(new ObjectInputStream(in));
+						_oin = resources.use(new ObjectInputStream(in));
 					}
 
 					return _oin.readObject();

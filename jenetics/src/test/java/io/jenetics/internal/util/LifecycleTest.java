@@ -232,9 +232,9 @@ public class LifecycleTest {
 		final var resource3 = atomic();
 
 		final var closeable = new Value<>(resources -> {
-			resources.add(resource1, Value::close);
-			resources.add(resource2, Value::close);
-			resources.add(resource3, Value::close);
+			resources.use(resource1, Value::close);
+			resources.use(resource2, Value::close);
+			resources.use(resource3, Value::close);
 			return 123;
 		});
 
@@ -263,9 +263,9 @@ public class LifecycleTest {
 
 		try {
 			new Value<>(resources -> {
-				resources.add(resource1, Value::close);
-				resources.add(resource2, Value::close);
-				resources.add(resource3, Value::close);
+				resources.use(resource1, Value::close);
+				resources.use(resource2, Value::close);
+				resources.use(resource3, Value::close);
 				throw new IOException();
 			});
 		} catch (IOException e) {
