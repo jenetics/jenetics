@@ -51,11 +51,11 @@ import java.util.function.Supplier;
  * }
  *
  * <p><b>Building complex closeable values</b></p>
- * {@snippet lang="java":
+ * {@snippet lang = "java":
  * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
- *     final var fin = resources.add(new FileInputStream(file.toFile()));
- *     final var bin = resources.add(new BufferedInputStream(fin));
- *     final var oin = resources.add(new ObjectInputStream(bin));
+ *     final var fin = resources.use(new FileInputStream(file.toFile()));
+ *     final var bin = resources.use(new BufferedInputStream(fin));
+ *     final var oin = resources.use(new ObjectInputStream(bin));
  *
  *     return Stream.generate(() -> readNextObject(oin))
  *         .takeWhile(Objects::nonNull);
@@ -64,7 +64,7 @@ import java.util.function.Supplier;
  * try (result) {
  *     result.get().forEach(System.out::println);
  * }
- * }
+ *}
  *
  * <p><b>Wrapping several closeable into one</b></p>
  * {@snippet lang = "java":
@@ -473,11 +473,11 @@ public final class Lifecycle {
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * {@snippet lang="java":
+		 * {@snippet lang = "java":
 		 * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
-		 *     final var bin = resources.add(new BufferedInputStream(fin));
-		 *     final var oin = resources.add(new ObjectInputStream(bin));
+		 *     final var fin = resources.use(new FileInputStream(file.toFile()));
+		 *     final var bin = resources.use(new BufferedInputStream(fin));
+		 *     final var oin = resources.use(new ObjectInputStream(bin));
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
@@ -486,7 +486,7 @@ public final class Lifecycle {
 		 * try (result) {
 		 *     result.get().forEach(System.out::println);
 		 * }
-		 * }
+		 *}
 		 *
 		 * @see Resources
 		 *
@@ -628,16 +628,16 @@ public final class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * try (var resources = new IOResources()) {
-	 *     final var fin = resources.add(new FileInputStream(file));
+	 *     final var fin = resources.use(new FileInputStream(file));
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     final var oin = resources.use(new ObjectInputStream(fin));
 	 *     // ...
 	 * }
-	 * }
+	 *}
 	 */
 	public static final class IOResources extends Resources<IOException> {
 
@@ -684,8 +684,8 @@ public final class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends Closeable> C add(final C resource) {
-			return use(resource, Closeable::close);
+		public <C extends Closeable> C use(final C resource) {
+			return use(resource, C::close);
 		}
 
 	}

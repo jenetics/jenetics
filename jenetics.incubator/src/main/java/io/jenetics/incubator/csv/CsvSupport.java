@@ -35,6 +35,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.jenetics.internal.util.Lifecycle;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
@@ -349,8 +350,8 @@ public final class CsvSupport {
 
 			final var result = new IOValue<>(resources -> {
 				final var br = reader instanceof BufferedReader r
-					? resources.use(r, Closeable::close)
-					: resources.use(new BufferedReader(reader), Closeable::close);
+					? resources.use(r)
+					: resources.use(new BufferedReader(reader));
 
 				final var line = new StringBuilder();
 				final Supplier<String> nextLine = () -> {
