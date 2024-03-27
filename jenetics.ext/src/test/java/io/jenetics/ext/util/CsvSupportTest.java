@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.CsvSupport;
 import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
 import io.jenetics.ext.util.CsvSupport.ColumnJoiner;
 import io.jenetics.ext.util.CsvSupport.LineReader;
