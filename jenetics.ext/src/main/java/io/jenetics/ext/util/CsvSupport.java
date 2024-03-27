@@ -17,12 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.csv;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -35,7 +34,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**

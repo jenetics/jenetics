@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.csv;
+package io.jenetics.ext.util;
 
 import static java.lang.Double.parseDouble;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,17 +26,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.csv.CsvSupport.ColumnIndexes;
-import io.jenetics.incubator.csv.CsvSupport.ColumnJoiner;
-import io.jenetics.incubator.csv.CsvSupport.LineReader;
-import io.jenetics.incubator.csv.CsvSupport.LineSplitter;
-import io.jenetics.incubator.csv.CsvSupport.Quote;
+import io.jenetics.ext.util.CsvSupport;
+import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
+import io.jenetics.ext.util.CsvSupport.ColumnJoiner;
+import io.jenetics.ext.util.CsvSupport.LineReader;
+import io.jenetics.ext.util.CsvSupport.LineSplitter;
+import io.jenetics.ext.util.CsvSupport.Quote;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
