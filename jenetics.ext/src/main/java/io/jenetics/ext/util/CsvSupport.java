@@ -17,12 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.csv;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -35,48 +34,37 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.Value;
+import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
- * This class contains classes and helper methods for splitting CSV files into
- * lines a splitting CSV lines into columns. How to do this can be seen in the
- * following example:
- * {@snippet class="io.jenetics.incubator.csv.CsvSupportTest" region="readRows"}
- * Or a shorter variant.
- * {@snippet lang="java":
- * final List<String> lines = CsvSupport.readAllLines(new FileReader("data.csv"));
- * }
- *
- * If you want to read a subset of the CSV columns into a record, the code snippet
- * below, shows how to do this.
- * {@snippet class="io.jenetics.incubator.csv.CsvSupportTest" region="readEntries"}
- *
- * This will create the following list of records:
- * <pre>{@code
- * > City[name=Aixàs, country=ad, lat=42.4833333, lon=1.4666667]
- * > City[name=Aixirivali, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixirivall, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixirvall, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixovall, country=ad, lat=42.4666667, lon=1.4833333]
- * }</pre>
- *
- * The reverse is also possible: Converting a list of records to a CSV string.
- * {@snippet class="io.jenetics.incubator.csv.CsvSupportTest" region="writeEntries"}
- *
- * The generated CSV string will look like this:
- * <pre>{@code
- * > ad,,Aixàs,,,42.4833333,1.4666667
- * > ad,,Aixirivali,,,42.4666667,1.5
- * > ad,,Aixirivall,,,42.4666667,1.5
- * > ad,,Aixirvall,,,42.4666667,1.5
- * > ad,,Aixovall,,,42.4666667,1.4833333
- * }</pre>
+ * This class contains helper classes, which are the building blocks for handling
+ * CSV files.
+ * <ul>
+ *     <li>{@link LineReader}: This class allows you to read the lines of a
+ *     CSV file. The result will be a {@link Stream} of CSV lines and are
+ *     not split.</li>
+ *     <li>{@link LineSplitter}: This class is responsible for splitting one
+ *     CSV line into column values.</li>
+ *     <li>{@link ColumnIndexes}: Allows to define the order of the split/joined
+ *     column values.</li>
+ *     <li>{@link ColumnJoiner}: Joining a column array into a CSV line, which
+ *     can be joined into a whole CSV string.</li>
+ * </ul>
+ * <p>
+ * Additionally, this class contains a set of helper methods for CSV handling
+ * using default configurations.
+ * <p>
+ * <b>Reading and splitting CSV lines</b>
+ * {@snippet class="Snippets" region="readRows"}
+ * <p>
+ * <b>Joining columns and creating CSV string</b>
+ * {@snippet class="Snippets" region="CsvSupportSnippets.collect"}
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class CsvSupport {
 
@@ -84,11 +72,14 @@ public final class CsvSupport {
 	 * Holds the CSV column <em>separator</em> character.
 	 *
 	 * @param value the separator character
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public record Separator(char value) {
 
 		/**
-		 * The default separator character, '{@code ,}'.
+		 * The default separator character, '{@code ','}'.
 		 */
 		public static final Separator DEFAULT = new Separator(',');
 
@@ -109,9 +100,36 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Holds the CSV column <em>quote</em> character.
+	 * Holds the CSV column <em>quote</em> character. The following excerpt from
+	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a> defines when
+	 * a quote character has to be used.
+	 * <pre>
+	 *     5.  Each field may or may not be enclosed in double quotes (however
+	 *         some programs, such as Microsoft Excel, do not use double quotes
+	 *         at all).  If fields are not enclosed with double quotes, then
+	 *         double quotes may not appear inside the fields.  For example:
+	 *
+	 *         "aaa","bbb","ccc" CRLF
+	 *         zzz,yyy,xxx
+	 *
+	 *     6.  Fields containing line breaks (CRLF), double quotes, and commas
+	 *         should be enclosed in double-quotes.  For example:
+	 *
+	 *         "aaa","b CRLF
+	 *         bb","ccc" CRLF
+	 *         zzz,yyy,xxx
+	 *
+	 *     7.  If double-quotes are used to enclose fields, then a double-quote
+	 *         appearing inside a field must be escaped by preceding it with
+	 *         another double quote.  For example:
+	 *
+	 *         "aaa","b""bb","ccc"
+	 * </pre>
 	 *
 	 * @param value the quote character
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public record Quote(char value) {
 
@@ -142,10 +160,19 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Holds the column indexes, which should be part of the split operation.
-	 * If specified, only defined column indexes are part of the split result.
+	 * Holds the column indexes, which should be part of the split or join
+	 * operation. When used in the {@link LineSplitter}, it lets you filter the
+	 * split column and define its order. When used in the {@link ColumnJoiner},
+	 * it can be used to define the column index in the resulting CSV for a
+	 * given row array.
+	 *
+	 * @see LineSplitter
+	 * @see ColumnJoiner
 	 *
 	 * @param values the column indexes which are part of the split result
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public record ColumnIndexes(int... values) {
 
@@ -162,6 +189,11 @@ public final class CsvSupport {
 		 */
 		public ColumnIndexes {
 			values = values.clone();
+		}
+
+		@Override
+		public int[] values() {
+			return values.clone();
 		}
 
 		@Override
@@ -280,21 +312,55 @@ public final class CsvSupport {
 		return ColumnJoiner.DEFAULT.join(columns);
 	}
 
+	/**
+	 * Converts the given {@code record} into its components.
+	 *
+	 * @param record the record to convert
+	 * @return the record components
+	 */
+	public static Object[] toComponents(final Record record) {
+		try {
+			final var components = record.getClass().getRecordComponents();
+			final var elements = new Object[components.length];
+			for (int i = 0; i < elements.length; ++i) {
+				elements[i] = components[i].getAccessor().invoke(record);
+			}
+
+			return elements;
+		} catch (ReflectiveOperationException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
 	/**
 	 * Return a collector for joining a list of CSV rows into one CSV string.
-	 * {@snippet lang="java":
-	 * final List<List<String>> rows = null; // @replace substring='null' replacement="..."
-	 *
-	 * final String csv = rows.stream()
-	 *     .map(CsvSupport::join)
-	 *     .collect(CsvSupport.toCSV());
-	 * }
 	 *
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */
 	public static Collector<CharSequence, ?, String> toCsv() {
-		return Collectors.joining(EOL, "", EOL);
+		return toCsv(EOL);
+	}
+
+	/**
+	 * Return a collector for joining a list of CSV rows into one CSV string.
+	 * For the line breaks, the given {@code eol} sequence is used.
+	 *
+	 * @param eol the end of line sequence used for line breaks
+	 * @return a collector for joining a list of CSV rows into one CSV string
+	 */
+	public static Collector<CharSequence, ?, String> toCsv(String eol) {
+		if (eol.isEmpty()) {
+			throw new IllegalArgumentException("EOL must not be empty.");
+		}
+		for (int i = 0; i < eol.length(); ++i) {
+			if (!isLineBreak(eol.charAt(i))) {
+				throw new IllegalArgumentException(
+					"EOl contains non-linebreak char: '%s'.".formatted(eol)
+				);
+			}
+		}
+
+		return Collectors.joining(eol, "", eol);
 	}
 
 
@@ -307,9 +373,33 @@ public final class CsvSupport {
 	 * character as a parameter, which is needed for not splitting on quoted
 	 * line feeds.
 	 *
+	 * {@snippet lang="java":
+	 * final var csv = """
+	 *     0.0,0.0000
+	 *     0.1,0.0740
+	 *     0.2,0.1120
+	 *     0.3,0.1380
+	 *     0.4,0.1760
+	 *     0.5,0.2500
+	 *     0.6,0.3840
+	 *     0.7,0.6020
+	 *     0.8,0.9280
+	 *     0.9,1.3860
+	 *     1.0,2.0000
+	 *     """;
+	 *
+	 * final var reader = new LineReader(new Quote('"'));
+	 * try (Stream<String> lines = reader.read(new StringReader(csv))) {
+	 *     lines.forEach(System.out::println);
+	 * }
+	 * }
+	 *
 	 * @apiNote
 	 * This reader obeys <em>escaped</em> line breaks according
 	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public static final class LineReader {
 
@@ -318,16 +408,20 @@ public final class CsvSupport {
 		private final Quote quote;
 
 		/**
-		 * Create a new line-reader with the given parameters.
+		 * Create a new line-reader with the given {@code quote} character,
+		 * which is used in the CSV file which is read.
 		 *
 		 * @param quote the quoting character
+		 * @throws NullPointerException if the {@code quote} character is
+		 *         {@code null}
 		 */
 		public LineReader(final Quote quote) {
 			this.quote = requireNonNull(quote);
 		}
 
 		/**
-		 * Create a new line reader with default quote character.
+		 * Create a new line reader with default quote character {@code '"'}
+		 * ({@link Quote#DEFAULT}).
 		 */
 		public LineReader() {
 			this(Quote.DEFAULT);
@@ -347,10 +441,10 @@ public final class CsvSupport {
 		public Stream<String> read(final Reader reader) {
 			requireNonNull(reader);
 
-			final Value<Stream<String>, IOException> result = new Value<>(resources -> {
+			final var result = new IOValue<>(resources -> {
 				final var br = reader instanceof BufferedReader r
-					? resources.add(r, Closeable::close)
-					: resources.add(new BufferedReader(reader), Closeable::close);
+					? resources.use(r)
+					: resources.use(new BufferedReader(reader));
 
 				final var line = new StringBuilder();
 				final Supplier<String> nextLine = () -> {
@@ -423,13 +517,21 @@ public final class CsvSupport {
 		}
 	}
 
-
 	/**
 	 * Splitting a CSV line into columns (records).
+	 * <h2>Examples</h2>
+	 * <b>Simple usage</b>
+	 * {@snippet class="Snippets" region="LineSplitterSnippets.simpleSplit"}
+	 *
+	 * <b>Projecting and re-ordering columns</b>
+	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
 	 * different threads.
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public static final class LineSplitter {
 
@@ -725,10 +827,29 @@ public final class CsvSupport {
 
 	/**
 	 * This class joins an array of columns into one CSV line.
+	 *
+	 * <h2>Examples</h2>
+	 * <b>Simple usage</b>
+	 * {@snippet class="Snippets" region="ColumnJoinerSnippets.simpleJoin"}
+	 *
+	 * <b>Embedding and re-ordering data</b>
+	 * {@snippet class="Snippets" region="ColumnJoinerSnippets.embedToCsv"}
+	 *
+	 * @apiNote
+	 * The column joiner is <em>thread-safe</em> and can be shared between
+	 * different threads.
+	 *
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public static final class ColumnJoiner {
 
-		private static final ColumnJoiner DEFAULT = new ColumnJoiner(
+		/**
+		 * Default column joiner, which is using default separator character,
+		 * {@link Separator#DEFAULT}, and default quote character,
+		 * {@link Quote#DEFAULT}.
+		 */
+		public static final ColumnJoiner DEFAULT = new ColumnJoiner(
 			Separator.DEFAULT,
 			Quote.DEFAULT,
 			ColumnIndexes.ALL
@@ -916,28 +1037,6 @@ public final class CsvSupport {
 		public String join(final Object[] columns) {
 			return join(Arrays.asList(columns));
 		}
-
-//		/**
-//		 * Converts the given {@code record} into a CSV line, by extracting the
-//		 * record components.
-//		 *
-//		 * @param record the record to convert
-//		 * @return the CSV line representation of the given {@code record}
-//		 */
-//		public String toLine(final Record record) {
-//			try {
-//				final var components = record.getClass().getRecordComponents();
-//				final var elements = new Object[components.length];
-//				for (int i = 0; i < elements.length; ++i) {
-//					elements[i] = components[i].getAccessor().invoke(record);
-//				}
-//
-//				return join(elements);
-//			} catch (ReflectiveOperationException e) {
-//				throw new IllegalArgumentException(e);
-//			}
-//		}
-
 	}
 
 }
