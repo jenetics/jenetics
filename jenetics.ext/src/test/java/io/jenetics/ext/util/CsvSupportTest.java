@@ -19,14 +19,10 @@
  */
 package io.jenetics.ext.util;
 
-import static java.lang.Double.parseDouble;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -286,69 +282,28 @@ public class CsvSupportTest {
 		};
 	}
 
-	 public void read() throws IOException {
-		 // @start region="readRows"
-		final List<String[]> rows;
-		try (Stream<String> lines = CsvSupport.lines(new FileReader("data.csv"))) {
-			rows = lines
-				.map(CsvSupport::split)
-				.toList();
-		}
-		// @end
-	 }
-
 	@Test
-	public void projection() {
-		// @start region="readEntries"
-		// The data structure.
-		record City(String name, String country, double lat, double lon) {
-			City(final String[] row) {
-				this(row[0], row[1], parseDouble(row[2]), parseDouble(row[3]));
-			}
-			Object[] toComponents() {
-				return new Object[] {name, country, lat, lon};
-			}
-		}
+	public void toComponents() {
+		record Foo(String string, double value, int index) {}
 
-		// The CSV data.
-		final var csv = """
-			# Country,City,AccentCity,Region,Population,Latitude,Longitude
-			ad,aixas,Aixàs,06,,42.4833333,1.4666667
-			ad,aixirivali,Aixirivali,06,,42.4666667,1.5
-			ad,aixirivall,Aixirivall,06,,42.4666667,1.5
-			ad,aixirvall,Aixirvall,06,,42.4666667,1.5
-			ad,aixovall,Aixovall,06,,42.4666667,1.4833333
-			""";
+		final var data = List.of(
+			new Foo("first", 2,3),
+			new Foo("second", 3,4),
+			new Foo("third", 4,35),
+			new Foo("fourth", 5,33)
+		);
 
-		// The splitter + the projected columns.
-		final var projection = new ColumnIndexes(2, 0, 5, 6);
-		final var splitter = new LineSplitter(projection);
+		final var csv = data.stream()
+			.map(CsvSupport::toComponents)
+			.map(CsvSupport::join)
+			.collect(CsvSupport.toCsv("\n"));
 
-		// Read and convert the data.
-		final List<City> entries;
-		try (var lines = CsvSupport.lines(new StringReader(csv))) {
-			entries = lines
-				.filter(line -> !line.startsWith("#"))
-				.map(splitter::split)
-				.map(City::new)
-				.peek(System.out::println)
-				.toList();
-		}
-		// @end
-
-		// @start region="writeEntries"
-		// The joiner + the embedding column indexes
-		final var embedding = new ColumnIndexes(2, 0, 5, 6);
-		final var joiner = new ColumnJoiner(embedding);
-
-		// Create CSV string from records.
-		final String csv2 = entries.stream()
-			.map(City::toComponents)
-			.map(joiner::join)
-			.collect(CsvSupport.toCsv());
-
-		System.out.println(csv2);
-		// @end
+		assertThat(csv).isEqualTo("""
+			first,2.0,3
+			second,3.0,4
+			third,4.0,35
+			fourth,5.0,33
+			""");
 	}
 
 }

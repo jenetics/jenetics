@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
 import io.jenetics.ext.util.CsvSupport.LineReader;
 import io.jenetics.ext.util.CsvSupport.LineSplitter;
 import io.jenetics.ext.util.CsvSupport.Separator;
@@ -84,7 +85,7 @@ public class CsvSupportLineSplitterTest {
 		final var reader = new LineReader();
 
 		// Only read three columns, in the specified order.
-		final var columns = new CsvSupport.ColumnIndexes(
+		final var projection = new ColumnIndexes(
 			// Read 'Region' as first column.
 			3,
 			// Read 'City' as second column.
@@ -95,7 +96,7 @@ public class CsvSupportLineSplitterTest {
 
 		// Configure the splitter with default separator and quote character,
 		// and make it return only the specified columns in the defined order.
-		final var splitter = new LineSplitter(columns);
+		final var splitter = new LineSplitter(projection);
 
 		try (Stream<String> lines = reader.read(new StringReader(csv))) {
 			final var result = lines

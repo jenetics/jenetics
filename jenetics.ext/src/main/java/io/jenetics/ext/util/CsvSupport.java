@@ -37,39 +37,28 @@ import java.util.stream.Stream;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
 /**
- * This class contains classes and helper methods for splitting CSV files into
- * lines a splitting CSV lines into columns. How to do this can be seen in the
- * following example:
- * {@snippet class="io.jenetics.ext.util.CsvSupportTest" region="readRows"}
- * Or a shorter variant.
- * {@snippet lang="java":
- * final List<String> lines = CsvSupport.readAllLines(new FileReader("data.csv"));
- * }
- *
- * If you want to read a subset of the CSV columns into a record, the code snippet
- * below, shows how to do this.
- * {@snippet class="io.jenetics.ext.util.CsvSupportTest" region="readEntries"}
- *
- * This will create the following list of records:
- * <pre>{@code
- * > City[name=Aixàs, country=ad, lat=42.4833333, lon=1.4666667]
- * > City[name=Aixirivali, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixirivall, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixirvall, country=ad, lat=42.4666667, lon=1.5]
- * > City[name=Aixovall, country=ad, lat=42.4666667, lon=1.4833333]
- * }</pre>
- *
- * The reverse is also possible: Converting a list of records to a CSV string.
- * {@snippet class="io.jenetics.ext.util.CsvSupportTest" region="writeEntries"}
- *
- * The generated CSV string will look like this:
- * <pre>{@code
- * > ad,,Aixàs,,,42.4833333,1.4666667
- * > ad,,Aixirivali,,,42.4666667,1.5
- * > ad,,Aixirivall,,,42.4666667,1.5
- * > ad,,Aixirvall,,,42.4666667,1.5
- * > ad,,Aixovall,,,42.4666667,1.4833333
- * }</pre>
+ * This class contains helper classes, which are the building blocks for handling
+ * CSV files.
+ * <ul>
+ *     <li>{@link LineReader}: This class allows you to read the lines of a
+ *     CSV file. The result will be a {@link Stream} of CSV lines and are
+ *     not split.</li>
+ *     <li>{@link LineSplitter}: This class is responsible for splitting one
+ *     CSV line into column values.</li>
+ *     <li>{@link ColumnIndexes}: Allows to define the order of the split/joined
+ *     column values.</li>
+ *     <li>{@link ColumnJoiner}: Joining a column array into a CSV line, which
+ *     can be joined into a whole CSV string.</li>
+ * </ul>
+ * <p>
+ * Additionally, this class contains a set of helper methods for CSV handling
+ * using default configurations.
+ * <p>
+ * <b>Reading and splitting CSV lines</b>
+ * {@snippet class="Snippets" region="readRows"}
+ * <p>
+ * <b>Joining columns and creating CSV string</b>
+ * {@snippet class="Snippets" region="CsvSupportSnippets.collect"}
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
@@ -171,11 +160,11 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Holds the column indexes, which should be part of the split operation.
-	 * When used in the {@link LineSplitter}, it lets you filter the split
-	 * column and define its order. When used in the {@link ColumnJoiner}, it
-	 * can be used to define the column index in the resulting CSV for a given
-	 * row array.
+	 * Holds the column indexes, which should be part of the split or join
+	 * operation. When used in the {@link LineSplitter}, it lets you filter the
+	 * split column and define its order. When used in the {@link ColumnJoiner},
+	 * it can be used to define the column index in the resulting CSV for a
+	 * given row array.
 	 *
 	 * @see LineSplitter
 	 * @see ColumnJoiner
@@ -200,6 +189,11 @@ public final class CsvSupport {
 		 */
 		public ColumnIndexes {
 			values = values.clone();
+		}
+
+		@Override
+		public int[] values() {
+			return values.clone();
 		}
 
 		@Override
@@ -318,21 +312,55 @@ public final class CsvSupport {
 		return ColumnJoiner.DEFAULT.join(columns);
 	}
 
+	/**
+	 * Converts the given {@code record} into its components.
+	 *
+	 * @param record the record to convert
+	 * @return the record components
+	 */
+	public static Object[] toComponents(final Record record) {
+		try {
+			final var components = record.getClass().getRecordComponents();
+			final var elements = new Object[components.length];
+			for (int i = 0; i < elements.length; ++i) {
+				elements[i] = components[i].getAccessor().invoke(record);
+			}
+
+			return elements;
+		} catch (ReflectiveOperationException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
 	/**
 	 * Return a collector for joining a list of CSV rows into one CSV string.
-	 * {@snippet lang="java":
-	 * final List<List<String>> rows = null; // @replace substring='null' replacement="..."
-	 *
-	 * final String csv = rows.stream()
-	 *     .map(CsvSupport::join)
-	 *     .collect(CsvSupport.toCSV());
-	 * }
 	 *
 	 * @return a collector for joining a list of CSV rows into one CSV string
 	 */
 	public static Collector<CharSequence, ?, String> toCsv() {
-		return Collectors.joining(EOL, "", EOL);
+		return toCsv(EOL);
+	}
+
+	/**
+	 * Return a collector for joining a list of CSV rows into one CSV string.
+	 * For the line breaks, the given {@code eol} sequence is used.
+	 *
+	 * @param eol the end of line sequence used for line breaks
+	 * @return a collector for joining a list of CSV rows into one CSV string
+	 */
+	public static Collector<CharSequence, ?, String> toCsv(String eol) {
+		if (eol.isEmpty()) {
+			throw new IllegalArgumentException("EOL must not be empty.");
+		}
+		for (int i = 0; i < eol.length(); ++i) {
+			if (!isLineBreak(eol.charAt(i))) {
+				throw new IllegalArgumentException(
+					"EOl contains non-linebreak char: '%s'.".formatted(eol)
+				);
+			}
+		}
+
+		return Collectors.joining(eol, "", eol);
 	}
 
 
@@ -489,72 +517,14 @@ public final class CsvSupport {
 		}
 	}
 
-
 	/**
 	 * Splitting a CSV line into columns (records).
 	 * <h2>Examples</h2>
 	 * <b>Simple usage</b>
-	 * {@snippet lang="java":
-	 * final var reader = new LineReader();
-	 * try (Stream<String> lines = reader.read(new StringReader(csv))) {
-	 *     final var splitter = new LineSplitter(new Separator(','));
-	 *     final var sum = lines
-	 *         .map(splitter::split)
-	 *         .map(cols -> new double[] {
-	 *                 Double.parseDouble(cols[0]),
-	 *                 Double.parseDouble(cols[1])
-	 *             }
-	 *         )
-	 *         .mapToDouble(cols -> cols[0] + cols[1])
-	 *         .sum();
+	 * {@snippet class="Snippets" region="LineSplitterSnippets.simpleSplit"}
 	 *
-	 *     // Will output `11.55`.
-	 *     System.out.println(sum);
-	 * }
-	 * }
-	 *
-	 * <b>Filtering and re-ordering columns</b>
-	 * {@snippet lang="java":
-	 * final var csv = """
-	 *     Country,City,AccentCity,Region,Population,Latitude,Longitude
-	 *     ad,aixas,Aixàs,06,,42.4833333,1.4666667
-	 *     ad,aixirivali,Aixirivali,06,,42.4666667,1.5
-	 *     ad,aixirivall,Aixirivall,06,,42.4666667,1.5
-	 *     ad,aixirvall,Aixirvall,06,,42.4666667,1.5
-	 *     ad,aixovall,Aixovall,06,,42.4666667,1.4833333
-	 *     """;
-	 *
-	 * final var reader = new LineReader();
-	 *
-	 * // Only read three columns, in the specified order.
-	 * final var columns = new ColumnIndexes(
-	 *     // Read 'Region' as first column.
-	 *     3,
-	 *     // Read 'City' as second column.
-	 *     1,
-	 *     // Read 'Country' as third column.
-	 *     0
-	 * );
-	 *
-	 * // Configure the splitter with default separator and quote character,
-	 * // and make it return only the specified columns in the defined order.
-	 * final var splitter = new LineSplitter(columns);
-	 *
-	 * try (Stream<String> lines = reader.read(new StringReader(csv))) {
-	 *     lines
-	 *         .map(splitter::split)
-	 *         .map(Arrays::toString)
-	 *         .forEach(System.out::println);
-	 * }
-	 *
-	 * // The following values are printed.
-	 * // [Region, City, Country]
-	 * // [06, aixas, ad]
-	 * // [06, aixirivali, ad]
-	 * // [06, aixirivall, ad]
-	 * // [06, aixirvall, ad]
-	 * // [06, aixovall, ad]
-	 * }
+	 * <b>Projecting and re-ordering columns</b>
+	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
@@ -858,6 +828,13 @@ public final class CsvSupport {
 	/**
 	 * This class joins an array of columns into one CSV line.
 	 *
+	 * <h2>Examples</h2>
+	 * <b>Simple usage</b>
+	 * {@snippet class="Snippets" region="ColumnJoinerSnippets.simpleJoin"}
+	 *
+	 * <b>Embedding and re-ordering data</b>
+	 * {@snippet class="Snippets" region="ColumnJoinerSnippets.embedToCsv"}
+	 *
 	 * @apiNote
 	 * The column joiner is <em>thread-safe</em> and can be shared between
 	 * different threads.
@@ -1060,28 +1037,6 @@ public final class CsvSupport {
 		public String join(final Object[] columns) {
 			return join(Arrays.asList(columns));
 		}
-
-//		/**
-//		 * Converts the given {@code record} into a CSV line, by extracting the
-//		 * record components.
-//		 *
-//		 * @param record the record to convert
-//		 * @return the CSV line representation of the given {@code record}
-//		 */
-//		public String toLine(final Record record) {
-//			try {
-//				final var components = record.getClass().getRecordComponents();
-//				final var elements = new Object[components.length];
-//				for (int i = 0; i < elements.length; ++i) {
-//					elements[i] = components[i].getAccessor().invoke(record);
-//				}
-//
-//				return join(elements);
-//			} catch (ReflectiveOperationException e) {
-//				throw new IllegalArgumentException(e);
-//			}
-//		}
-
 	}
 
 }
