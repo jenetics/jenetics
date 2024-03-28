@@ -63,8 +63,8 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.1
+ * @since 8.1
  */
 public final class CsvSupport {
 
@@ -73,8 +73,8 @@ public final class CsvSupport {
 	 *
 	 * @param value the separator character
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public record Separator(char value) {
 
@@ -128,8 +128,8 @@ public final class CsvSupport {
 	 *
 	 * @param value the quote character
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public record Quote(char value) {
 
@@ -171,8 +171,8 @@ public final class CsvSupport {
 	 *
 	 * @param values the column indexes which are part of the split result
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public record ColumnIndexes(int... values) {
 
@@ -398,8 +398,8 @@ public final class CsvSupport {
 	 * This reader obeys <em>escaped</em> line breaks according
 	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public static final class LineReader {
 
@@ -530,8 +530,8 @@ public final class CsvSupport {
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
 	 * different threads.
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public static final class LineSplitter {
 
@@ -839,8 +839,8 @@ public final class CsvSupport {
 	 * The column joiner is <em>thread-safe</em> and can be shared between
 	 * different threads.
 	 *
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.1
+	 * @since 8.1
 	 */
 	public static final class ColumnJoiner {
 
