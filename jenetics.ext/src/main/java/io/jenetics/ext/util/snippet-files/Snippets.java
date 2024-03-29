@@ -52,6 +52,17 @@ final class Snippets {
 			// @end
 		}
 
+		void parseCsv() {
+			// @start region="parseCsv"
+			final List<String[]> rows = CsvSupport.parse("""
+				# Country,City,AccentCity,Region,Population,Latitude,Longitude
+				ad,aixas,Aixàs,06,,42.4833333,1.4666667
+				ad,aixirivali,Aixirivali,06,,42.4666667,1.5
+				"""
+			);
+			// @end
+		}
+
 		void collect() {
 			// @start region="CsvSupportSnippets.collect"
 			final String[][] data = null; // @replace substring='null' replacement="..."
@@ -75,13 +86,13 @@ final class Snippets {
 
 			// The CSV data.
 			final var csv = """
-            # Country,City,AccentCity,Region,Population,Latitude,Longitude
-            ad,aixas,Aixàs,06,,42.4833333,1.4666667
-            ad,aixirivali,Aixirivali,06,,42.4666667,1.5
-            ad,aixirivall,Aixirivall,06,,42.4666667,1.5
-            ad,aixirvall,Aixirvall,06,,42.4666667,1.5
-            ad,aixovall,Aixovall,06,,42.4666667,1.4833333
-            """;
+				# Country,City,AccentCity,Region,Population,Latitude,Longitude
+				ad,aixas,Aixàs,06,,42.4833333,1.4666667
+				ad,aixirivali,Aixirivali,06,,42.4666667,1.5
+				ad,aixirivall,Aixirivall,06,,42.4666667,1.5
+				ad,aixirvall,Aixirvall,06,,42.4666667,1.5
+				ad,aixovall,Aixovall,06,,42.4666667,1.4833333
+				""";
 
 			// The splitter + the projected columns.
 			final var projection = new CsvSupport.ColumnIndexes(2, 0, 5, 6);

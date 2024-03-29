@@ -24,11 +24,13 @@ import static java.util.Objects.requireNonNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -45,8 +47,8 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  *     not split.</li>
  *     <li>{@link LineSplitter}: This class is responsible for splitting one
  *     CSV line into column values.</li>
- *     <li>{@link ColumnIndexes}: Allows to define the order of the split/joined
- *     column values.</li>
+ *     <li>{@link ColumnIndexes}: Allows to define the projection/embedding of
+ *     the split/joined column values.</li>
  *     <li>{@link ColumnJoiner}: Joining a column array into a CSV line, which
  *     can be joined into a whole CSV string.</li>
  * </ul>
@@ -59,6 +61,9 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * <p>
  * <b>Joining columns and creating CSV string</b>
  * {@snippet class="Snippets" region="CsvSupportSnippets.collect"}
+ * <p>
+ * <b>Parsing CSV string</b>
+ * {@snippet class="Snippets" region="parseCsv"}
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
@@ -79,7 +84,7 @@ public final class CsvSupport {
 	public record Separator(char value) {
 
 		/**
-		 * The default separator character, '{@code ','}'.
+		 * The default separator character, '{@code ,}'.
 		 */
 		public static final Separator DEFAULT = new Separator(',');
 
@@ -166,6 +171,10 @@ public final class CsvSupport {
 	 * it can be used to define the column index in the resulting CSV for a
 	 * given row array.
 	 *
+	 * @apiNote
+	 * The column indexes is <em>thread-safe</em> and can be shared between
+	 * different threads.
+	 *
 	 * @see LineSplitter
 	 * @see ColumnJoiner
 	 *
@@ -224,12 +233,15 @@ public final class CsvSupport {
 	}
 
 	private static boolean isLineBreak(final char c) {
-		return c == '\n' || c == '\r';
+		return switch (c) {
+			case '\n', '\r' -> true;
+			default -> false;
+		};
 	}
 
 	/**
-	 * Splits the CSV file, given by the {@code reader}, into a  {@code Stream}
-	 * of CSV lines. The rows are split at line breaks, as long as they are not
+	 * Splits the CSV file, given by the {@code reader}, into a  {@link Stream}
+	 * of CSV lines. The CSV is split at line breaks, as long as they are not
 	 * part of a quoted column. For reading the CSV lines, the default quote
 	 * character, {@link Quote#DEFAULT}, is used.
 	 *
@@ -249,8 +261,31 @@ public final class CsvSupport {
 	}
 
 	/**
+	 * Splits the CSV file, given by the {@code reader}, into a  {@code Stream}
+	 * of CSV rows. The CSV is split at line breaks, as long as they are not
+	 * part of a quoted column. For reading the CSV lines, the default quote
+	 * character, {@link Quote#DEFAULT}, is used. Then each line is split into
+	 * its columns using the default separator character.
+	 *
+	 * @apiNote
+	 * The returned stream must be closed by the caller, which also closes the
+	 * CSV {@code reader}.
+	 *
+	 * @see #readAllRows(Reader)
+	 *
+	 * @param reader the CSV source reader. The reader is automatically closed
+	 *        when the returned line stream is closed.
+	 * @return the stream of CSV rows
+	 * @throws NullPointerException if the given {@code reader} is {@code null}
+	 */
+	public static Stream<String[]> rows(final Reader reader) {
+		final var splitter = new LineSplitter();
+		return lines(reader).map(splitter::split);
+	}
+
+	/**
 	 * Splits the CSV file, given by the {@code reader}, into a  {@code List}
-	 * of CSV lines. The rows are split at line breaks, as long as they are not
+	 * of CSV lines. The CSV is split at line breaks, as long as they are not
 	 * part of a quoted column. For reading the CSV lines, the default quote
 	 * character, {@link Quote#DEFAULT}, is used.
 	 *
@@ -261,12 +296,90 @@ public final class CsvSupport {
 	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 * @throws IOException if reading the CSV lines fails
 	 */
-	public static List<String> readAllLines(final Reader reader) throws IOException {
+	public static List<String> readAllLines(final Reader reader)
+		throws IOException
+	{
 		try (var lines = lines(reader)) {
 			return lines.toList();
 		} catch (UncheckedIOException e) {
 			throw e.getCause();
 		}
+	}
+
+	/**
+	 * Splits the CSV file, given by the {@code reader}, into a  {@code List}
+	 * of CSV lines. The CSV is split at line breaks, as long as they are not
+	 * part of a quoted column. For reading the CSV lines, the default quote
+	 * character, {@link Quote#DEFAULT}, is used. Then each line is split into
+	 * its columns using the default separator character.
+	 *
+	 * @see #rows(Reader)
+	 *
+	 * @param reader the reader stream to split into CSV lines
+	 * @return the list of CSV rows
+	 * @throws NullPointerException if the given {@code reader} is {@code null}
+	 * @throws IOException if reading the CSV lines fails
+	 */
+	public static List<String[]> readAllRows(final Reader reader)
+		throws IOException
+	{
+		try (var rows = rows(reader)) {
+			return rows.toList();
+		} catch (UncheckedIOException e) {
+			throw e.getCause();
+		}
+	}
+
+	/**
+	 * Parses the given CSV string into a list of <em>records</em>. The records
+	 * are created from a <em>row</em> ({@code String[]} array) by applying the
+	 * given {@code mapper}.
+	 *
+	 * @param csv the CSV string to parse
+	 * @param mapper the record mapper
+	 * @return the parsed record list
+	 * @param <T> the record type
+	 */
+	public static <T> List<T> parse(
+		final String csv,
+		final Function<? super String[], ? extends T> mapper
+	) {
+		requireNonNull(csv);
+		requireNonNull(mapper);
+
+		try (var rows = rows(new StringReader(csv))) {
+			return rows
+				.map(mapper)
+				.collect(Collectors.toUnmodifiableList());
+		}
+	}
+
+	/**
+	 * Parses the given CSV string into a list of rows.
+	 *
+	 * @param csv the CSV string to parse
+	 * @return the parsed CSV rows
+	 */
+	public static List<String[]> parse(final String csv) {
+		return parse(csv, Function.identity());
+	}
+
+	/**
+	 * Parses the given CSV string into a list of {@code double[]} array rows.
+	 *
+	 * @param csv the CSV string to parse
+	 * @return the parsed double data
+	 */
+	public static List<double[]> parseDoubles(final String csv) {
+		return parse(csv, CsvSupport::toDoubles);
+	}
+
+	private static double[] toDoubles(final String[] values) {
+		final var result = new double[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = Double.parseDouble(values[i]);
+		}
+		return result;
 	}
 
 	/**
@@ -309,6 +422,22 @@ public final class CsvSupport {
 	 * @throws NullPointerException if the given {@code columns} is {@code null}
 	 */
 	public static String join(final Object[] columns) {
+		return ColumnJoiner.DEFAULT.join(columns);
+	}
+
+	/**
+	 * Joins the given CSV {@code columns} to one CSV line. The default values
+	 * for the separator and quote character are used ({@link Separator#DEFAULT},
+	 * {@link Quote#DEFAULT}) for joining the columns.
+	 *
+	 * @see #join(Iterable)
+	 * @see #join(Object[])
+	 *
+	 * @param columns the CSV columns to join
+	 * @return the CSV line, joined from the given {@code columns}
+	 * @throws NullPointerException if the given {@code columns} is {@code null}
+	 */
+	public static String join(final String... columns) {
 		return ColumnJoiner.DEFAULT.join(columns);
 	}
 
@@ -480,7 +609,7 @@ public final class CsvSupport {
 				final char current = next != -2 ? (char)next : (char)i;
 				next = -2;
 
-				if (current == '\n' || current == '\r') {
+				if (isLineBreak(current)) {
 					if (quoted) {
 						line.append(current);
 					} else {
@@ -544,16 +673,16 @@ public final class CsvSupport {
 		 *
 		 * @param separator the separator character used by the CSV line to split
 		 * @param quote the quote character used by the CSV line to split
-		 * @param indexes the column indexes which should be part of the split
+		 * @param projection the column indexes which should be part of the split
 		 *        result
 		 * @throws NullPointerException if one of the parameters is {@code null}
 		 */
 		public LineSplitter(
 			final Separator separator,
 			final Quote quote,
-			final ColumnIndexes indexes
+			final ColumnIndexes projection
 		) {
-			this.columns = new ColumnList(indexes);
+			this.columns = new ColumnList(projection);
 			this.separator = requireNonNull(separator);
 			this.quote = requireNonNull(quote);
 		}
@@ -599,12 +728,12 @@ public final class CsvSupport {
 		 * character, {@link Separator#DEFAULT}, and default quote character,
 		 * {@link Quote#DEFAULT}, is used by the created splitter.
 		 *
-		 * @param indexes the column indexes which should be part of the split
+		 * @param projection the column indexes which should be part of the split
 		 *        result
 		 * @throws NullPointerException if one of the parameters is {@code null}
 		 */
-		public LineSplitter(final ColumnIndexes indexes) {
-			this(Separator.DEFAULT, Quote.DEFAULT, indexes);
+		public LineSplitter(final ColumnIndexes projection) {
+			this(Separator.DEFAULT, Quote.DEFAULT, projection);
 		}
 
 		/**
@@ -747,13 +876,13 @@ public final class CsvSupport {
 	 */
 	private static final class ColumnList {
 		private final List<String> columns = new ArrayList<>();
-		private final ColumnIndexes indexes;
+		private final ColumnIndexes projection;
 
 		private int index = 0;
 		private int count = 0;
 
-		ColumnList(final ColumnIndexes indexes) {
-			this.indexes = requireNonNull(indexes);
+		ColumnList(final ColumnIndexes projection) {
+			this.projection = requireNonNull(projection);
 		}
 
 		/**
@@ -770,12 +899,12 @@ public final class CsvSupport {
 		private int set(String element, int column) {
 			int updated = 0;
 
-			if (indexes.values.length == 0) {
+			if (projection.values.length == 0) {
 				columns.add(element);
 				++updated;
 			} else {
 				int pos = -1;
-				while ((pos = indexOf(indexes.values, pos + 1, column)) != -1) {
+				while ((pos = indexOf(projection.values, pos + 1, column)) != -1) {
 					for (int i = columns.size(); i <= pos; ++i) {
 						columns.add(null);
 					}
@@ -804,7 +933,7 @@ public final class CsvSupport {
 		 *         collection, {@code false} otherwise
 		 */
 		boolean isFull() {
-			return indexes.values.length > 0 && indexes.values.length <= count;
+			return projection.values.length > 0 && projection.values.length <= count;
 		}
 
 		/**
@@ -817,7 +946,7 @@ public final class CsvSupport {
 		}
 
 		String[] toArray() {
-			for (int i = columns.size(); i < indexes.values.length; ++i) {
+			for (int i = columns.size(); i < projection.values.length; ++i) {
 				columns.add(null);
 			}
 			return columns.toArray(String[]::new);
@@ -860,10 +989,10 @@ public final class CsvSupport {
 		 *
 		 * @param separator the column separator char
 		 * @param quote the qute char
-		 * @param indexes the column indices to read. If empty, all split columns
-		 *        are used.
+		 * @param embedding the column indices to read. If empty, all split
+		 *        columns are used.
 		 */
-		private record Param(char separator, char quote, int... indexes) {
+		private record Param(char separator, char quote, int... embedding) {
 
 			private String escape(Object value) {
 				final var quoteStr = String.valueOf(quote);
@@ -901,16 +1030,16 @@ public final class CsvSupport {
 		 *
 		 * @param separator the CSV separator character used by the joiner
 		 * @param quote the CSV quote character used by the joiner
-		 * @param indexes the column indexes to join
+		 * @param embedding the column indexes to join
 		 * @throws NullPointerException if one of the parameters is {@code null}
 		 */
 		public ColumnJoiner(
 			final Separator separator,
 			final Quote quote,
-			final ColumnIndexes indexes
+			final ColumnIndexes embedding
 		) {
-			this.param = new Param(separator.value, quote.value, indexes.values);
-			columnCount = Math.max(max(param.indexes) + 1, 0);
+			this.param = new Param(separator.value, quote.value, embedding.values);
+			columnCount = Math.max(max(param.embedding) + 1, 0);
 		}
 
 		/**
@@ -938,11 +1067,11 @@ public final class CsvSupport {
 		 * Create a new column joiner with the given parameters.
 		 *
 		 * @param separator the CSV separator character used by the joiner
-		 * @param indexes the column indexes to join
+		 * @param embedding the column indexes to join
 		 * @throws NullPointerException if one of the parameters is {@code null}
 		 */
-		public ColumnJoiner(final Separator separator, final ColumnIndexes indexes) {
-			this(separator, Quote.DEFAULT, indexes);
+		public ColumnJoiner(final Separator separator, final ColumnIndexes embedding) {
+			this(separator, Quote.DEFAULT, embedding);
 		}
 
 
@@ -960,21 +1089,21 @@ public final class CsvSupport {
 		 * Create a new column joiner with the given <em>embedding</em> column
 		 * indexes.
 		 *
-		 * @param indexes the embedding column indexes
+		 * @param embedding the embedding column indexes
 		 */
-		public ColumnJoiner(final ColumnIndexes indexes) {
-			this(Separator.DEFAULT, Quote.DEFAULT, indexes);
+		public ColumnJoiner(final ColumnIndexes embedding) {
+			this(Separator.DEFAULT, Quote.DEFAULT, embedding);
 		}
 
 		/**
 		 * Create a new column joiner with the given parameters.
 		 *
 		 * @param quote the CSV quote character used by the joiner
-		 * @param indexes the column indexes to join
+		 * @param embedding the column indexes to join
 		 * @throws NullPointerException if one of the parameters is {@code null}
 		 */
-		public ColumnJoiner(final Quote quote, final ColumnIndexes indexes) {
-			this(Separator.DEFAULT, quote, indexes);
+		public ColumnJoiner(final Quote quote, final ColumnIndexes embedding) {
+			this(Separator.DEFAULT, quote, embedding);
 		}
 
 		private static int max(int[] array) {
@@ -995,15 +1124,15 @@ public final class CsvSupport {
 		 * @return the joined CSV columns
 		 */
 		public String join(final Iterable<?> columns) {
-			if (param.indexes.length == 0) {
+			if (param.embedding.length == 0) {
 				return join0(columns);
 			} else {
 				final var values = new Object[columnCount];
 				final var it = columns.iterator();
 				int i = 0;
-				while (it.hasNext() && i < param.indexes.length) {
+				while (it.hasNext() && i < param.embedding.length) {
 					final var col = it.next();
-					final var index = param.indexes[i++];
+					final var index = param.embedding[i++];
 					if (index >= 0) {
 						values[index] = col;
 					}

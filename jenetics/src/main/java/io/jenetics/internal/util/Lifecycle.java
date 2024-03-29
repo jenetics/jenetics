@@ -537,7 +537,7 @@ public final class Lifecycle {
 	 *     final var oin = resources.use(new ObjectInputStream(fin), Closeable::close);
 	 *     // ...
 	 * }
-	 *}
+	 * }
 	 */
 	public static sealed class Resources<E extends Exception>
 		implements Releasable<E>
@@ -637,7 +637,7 @@ public final class Lifecycle {
 	 *     final var oin = resources.use(new ObjectInputStream(fin));
 	 *     // ...
 	 * }
-	 *}
+	 * }
 	 */
 	public static final class IOResources extends Resources<IOException> {
 
