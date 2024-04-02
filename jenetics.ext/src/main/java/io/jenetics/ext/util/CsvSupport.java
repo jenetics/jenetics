@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -341,13 +340,13 @@ public final class CsvSupport {
 	 * @param <T> the record type
 	 */
 	public static <T> List<T> parse(
-		final String csv,
+		final CharSequence csv,
 		final Function<? super String[], ? extends T> mapper
 	) {
 		requireNonNull(csv);
 		requireNonNull(mapper);
 
-		try (var rows = rows(new StringReader(csv))) {
+		try (var rows = rows(new CharSeqReader(csv))) {
 			return rows
 				.map(mapper)
 				.collect(Collectors.toUnmodifiableList());
@@ -360,7 +359,7 @@ public final class CsvSupport {
 	 * @param csv the CSV string to parse
 	 * @return the parsed CSV rows
 	 */
-	public static List<String[]> parse(final String csv) {
+	public static List<String[]> parse(final CharSequence csv) {
 		return parse(csv, Function.identity());
 	}
 
@@ -370,14 +369,14 @@ public final class CsvSupport {
 	 * @param csv the CSV string to parse
 	 * @return the parsed double data
 	 */
-	public static List<double[]> parseDoubles(final String csv) {
+	public static List<double[]> parseDoubles(final CharSequence csv) {
 		return parse(csv, CsvSupport::toDoubles);
 	}
 
 	private static double[] toDoubles(final String[] values) {
 		final var result = new double[values.length];
 		for (int i = 0; i < result.length; ++i) {
-			result[i] = Double.parseDouble(values[i]);
+			result[i] = Double.parseDouble(values[i].trim());
 		}
 		return result;
 	}
@@ -682,9 +681,16 @@ public final class CsvSupport {
 			final Quote quote,
 			final ColumnIndexes projection
 		) {
+			if (separator.value == quote.value) {
+				throw new IllegalArgumentException(
+					"Separator and quote char must be different: %s == %s."
+						.formatted(separator.value, quote.value)
+				);
+			}
+
 			this.columns = new ColumnList(projection);
-			this.separator = requireNonNull(separator);
-			this.quote = requireNonNull(quote);
+			this.separator = separator;
+			this.quote = quote;
 		}
 
 		/**
@@ -933,7 +939,9 @@ public final class CsvSupport {
 		 *         collection, {@code false} otherwise
 		 */
 		boolean isFull() {
-			return projection.values.length > 0 && projection.values.length <= count;
+			return
+				projection.values.length > 0 &&
+				projection.values.length <= count;
 		}
 
 		/**
@@ -1014,7 +1022,7 @@ public final class CsvSupport {
 			private boolean mustEscape(CharSequence value) {
 				for (int i = 0; i < value.length(); ++i) {
 					final char c = value.charAt(i);
-					if (c == separator || c == '\n' || c == '\r') {
+					if (c == separator || isLineBreak(c)) {
 						return true;
 					}
 				}
@@ -1038,7 +1046,14 @@ public final class CsvSupport {
 			final Quote quote,
 			final ColumnIndexes embedding
 		) {
-			this.param = new Param(separator.value, quote.value, embedding.values);
+			if (separator.value == quote.value) {
+				throw new IllegalArgumentException(
+					"Separator and quote char must be different: %s == %s."
+						.formatted(separator.value, quote.value)
+				);
+			}
+
+			param = new Param(separator.value, quote.value, embedding.values);
 			columnCount = Math.max(max(param.embedding) + 1, 0);
 		}
 
@@ -1168,5 +1183,57 @@ public final class CsvSupport {
 		}
 	}
 
+	/**
+	 * Simple and fast char-sequence reader.
+	 */
+	static final class CharSeqReader extends Reader {
+		private static final int EOF = -1;
+
+		private final CharSequence seq;
+		private int idx;
+
+		CharSeqReader(final CharSequence seq) {
+			this.seq = requireNonNull(seq);
+		}
+
+		@Override
+		public int read() {
+			return idx >= seq.length() ? EOF : seq.charAt(idx++);
+		}
+
+		@Override
+		public int read(final char[] cbuf, final int offset, final int length) {
+			requireNonNull(cbuf);
+
+			if (idx >= seq.length()) {
+				return EOF;
+			} else if (length >= 0 && offset >= 0 && offset + length <= cbuf.length) {
+				int count = 0;
+
+				for(int i = 0; i < length; ++i) {
+					int c = read();
+					if (c == EOF) {
+						return count;
+					}
+
+					cbuf[offset + i] = (char)c;
+					++count;
+				}
+
+				return count;
+			} else {
+				throw new IndexOutOfBoundsException(
+					"Buffer size=%d, offset=%d, length=%d."
+						.formatted(cbuf.length, offset, length)
+				);
+			}
+		}
+
+		@Override
+		public void close() {
+		}
+	}
+
 }
+
 
