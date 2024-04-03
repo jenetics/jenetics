@@ -1203,30 +1203,31 @@ public final class CsvSupport {
 
 		@Override
 		public int read(final char[] cbuf, final int offset, final int length) {
-			requireNonNull(cbuf);
-
-			if (idx >= seq.length()) {
-				return EOF;
-			} else if (length >= 0 && offset >= 0 && offset + length <= cbuf.length) {
-				int count = 0;
-
-				for(int i = 0; i < length; ++i) {
-					int c = read();
-					if (c == EOF) {
-						return count;
-					}
-
-					cbuf[offset + i] = (char)c;
-					++count;
-				}
-
-				return count;
-			} else {
-				throw new IndexOutOfBoundsException(
-					"Buffer size=%d, offset=%d, length=%d."
-						.formatted(cbuf.length, offset, length)
-				);
-			}
+			throw new UnsupportedOperationException();
+//			requireNonNull(cbuf);
+//
+//			if (idx >= seq.length()) {
+//				return EOF;
+//			} else if (length >= 0 && offset >= 0 && offset + length <= cbuf.length) {
+//				int count = 0;
+//
+//				for(int i = 0; i < length; ++i) {
+//					int c = read();
+//					if (c == EOF) {
+//						return count;
+//					}
+//
+//					cbuf[offset + i] = (char)c;
+//					++count;
+//				}
+//
+//				return count;
+//			} else {
+//				throw new IndexOutOfBoundsException(
+//					"Buffer size=%d, offset=%d, length=%d."
+//						.formatted(cbuf.length, offset, length)
+//				);
+//			}
 		}
 
 		@Override
