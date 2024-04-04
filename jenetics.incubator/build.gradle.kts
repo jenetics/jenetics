@@ -42,6 +42,7 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
+	implementation(libs.commons.math)
 	//antlr("org.antlr:antlr4:4.9.3")
 
 	testImplementation(libs.assertj)
