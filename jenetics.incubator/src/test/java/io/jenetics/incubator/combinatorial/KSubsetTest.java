@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SubsetTest {
+public class KSubsetTest {
 
 	@Test
 	public void next() {
@@ -34,9 +34,9 @@ public class SubsetTest {
 		final int k = 8;
 		final long N = BinomialCoefficient.apply(n, k);
 
-		final int[] T = Subset.first(k);
+		final int[] T = KSubset.first(k);
 		int count = 1;
-		for (int i = 0; i < N + 3 && Subset.next(T, n); ++i) {
+		for (int i = 0; i < N + 3 && KSubset.next(T, n); ++i) {
 			++count;
 		}
 
@@ -47,12 +47,12 @@ public class SubsetTest {
 	public void rank() {
 		final int n = 20;
 		final int k = 8;
-		final int[] T = Subset.first(k);
+		final int[] T = KSubset.first(k);
 
-		assertThat(Subset.rank(T, n)).isEqualTo(0);
+		assertThat(KSubset.rank(T, n)).isEqualTo(0);
 		int rank = 1;
-		while (Subset.next(T, n)) {
-			assertThat(Subset.rank(T, n)).isEqualTo(rank);
+		while (KSubset.next(T, n)) {
+			assertThat(KSubset.rank(T, n)).isEqualTo(rank);
 			++rank;
 		}
 	}
@@ -61,16 +61,16 @@ public class SubsetTest {
 	public void unrank() {
 		final int n = 20;
 		final int k = 8;
-		final int[] T = Subset.first(k);
+		final int[] T = KSubset.first(k);
 
 		final int[] U = new int[k];
 		long rank = 0;
-		Subset.unrank(rank, n, U);
+		KSubset.unrank(rank, n, U);
 		assertThat(U).isEqualTo(T);
 
-		while (Subset.next(T, n)) {
+		while (KSubset.next(T, n)) {
 			++rank;
-			Subset.unrank(rank, n, U);
+			KSubset.unrank(rank, n, U);
 
 			assertThat(U).isEqualTo(T);
 		}

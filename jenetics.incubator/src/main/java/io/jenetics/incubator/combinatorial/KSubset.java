@@ -26,8 +26,8 @@ import java.util.Arrays;
  * @version 8.1
  * @since 8.1
  */
-public final class Subset {
-	private Subset() {
+public final class KSubset {
+	private KSubset() {
 	}
 
 	public static int[] first(final int k) {
