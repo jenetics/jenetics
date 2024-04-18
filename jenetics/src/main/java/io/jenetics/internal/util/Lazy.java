@@ -31,6 +31,7 @@ import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -77,6 +78,12 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 */
 	public boolean isEvaluated() {
 		return _supplier == null || _evaluated || _evaluated();
+	}
+
+	public synchronized void ifEvaluated(final Consumer<? super T> value) {
+		if (isEvaluated()) {
+			value.accept(get());
+		}
 	}
 
 	private synchronized boolean _evaluated() {
