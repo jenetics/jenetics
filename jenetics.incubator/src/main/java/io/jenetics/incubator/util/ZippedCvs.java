@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -34,6 +33,8 @@ import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipFile;
 
+import io.jenetics.incubator.util.Try.Failure;
+import io.jenetics.incubator.util.Try.Success;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
@@ -76,9 +77,9 @@ public class ZippedCvs extends Reader implements Closeable {
 				return resources.use(new BufferedReader(reader));
 			});
 
-			return new Try.Success<>(value);
+			return new Success<>(value);
 		} catch (IOException e) {
-			return new Try.Failure<>(e);
+			return new Failure<>(e);
 		}
 	}
 
@@ -142,20 +143,10 @@ public class ZippedCvs extends Reader implements Closeable {
 
 	@Override
 	public void close() throws IOException {
-		try {
-			entry.ifEvaluated(v -> {
-				try {
-					switch (v) {
-						case Try.Success<IOValue<Reader>, ?> s -> s.value().get().close();
-						case Try.Failure<?, ?> f -> {}
-					}
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			});
-		} catch (UncheckedIOException e) {
-			throw e.getCause();
-		}
+		entry.ifEvaluated(value -> { switch (value) {
+			case Success<IOValue<Reader>, ?>(var reader) -> reader.get().close();
+			case Failure<?, ?>(var __) -> {}
+		}});
 	}
 
 	public static void main(String[] args) throws Exception {

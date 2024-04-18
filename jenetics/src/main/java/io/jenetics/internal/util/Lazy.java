@@ -80,9 +80,29 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 		return _supplier == null || _evaluated || _evaluated();
 	}
 
-	public synchronized void ifEvaluated(final Consumer<? super T> value) {
-		if (isEvaluated()) {
-			value.accept(get());
+	/**
+	 * If a value is evaluated, performs the given action with the value,
+	 * otherwise does nothing.
+	 *
+	 * @since 8.1
+	 *
+	 * @param action the action to be performed if a value is evaluated
+	 * @param <E> the exception type thrown by the action
+	 * @throws E if the action throws an exception
+	 */
+	public <E extends Throwable> void
+	ifEvaluated(final ThrowingConsumer<? super T, E> action) throws E {
+		requireNonNull(action);
+
+		final boolean evaluated;
+		final T value;
+		synchronized (this) {
+			evaluated = _evaluated;
+			value = _value;
+		}
+
+		if (evaluated) {
+			action.accept(value);
 		}
 	}
 
