@@ -20,6 +20,13 @@
 package io.jenetics.internal.util;
 
 /**
+ * Represents an operation that accepts a single input argument and returns no
+ * result. Unlike most other functional interfaces, Consumer is expected to
+ * operate via side-effects.
+ *
+ * @param <T> the type of the input to the operation
+ * @param <E> the exception type the operation might throw
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.1
  * @since 8.1

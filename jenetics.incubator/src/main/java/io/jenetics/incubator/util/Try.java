@@ -19,7 +19,16 @@
  */
 package io.jenetics.incubator.util;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 /**
+ * The {@code Try} type represents a computation that may either result in an
+ * exception, or return a successfully computed value.
+ *
+ * @param <T> the result type for successful computations
+ * @param <E> the exception type for failed computations
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.1
  * @since 8.1
@@ -27,6 +36,47 @@ package io.jenetics.incubator.util;
 public sealed interface Try<T, E extends Throwable> {
 
 	T get() throws E;
+
+	@SuppressWarnings("unchecked")
+	default <B> Try<B, E> map(final Function<? super T, ? extends B> mapper) {
+		return switch (this) {
+			case Success(var value) -> new Success<>(mapper.apply(value));
+			case Failure<?, E> failure -> (Try<B, E>)failure;
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	default <B> Try<B, E>
+	flatMap(final Function<? super T, ? extends Try<? extends B, ? extends E>> mapper) {
+		return switch (this) {
+			case Success(var value) -> (Try<B, E>)mapper.apply(value);
+			case Failure<?, E> failure -> (Try<B, E>)failure;
+		};
+	}
+
+	default <B> B fold(
+		final Function<? super E, ? extends B> fa,
+		final Function<? super T, ? extends B> fb
+	) {
+		return switch (this) {
+			case Success(var value) -> fb.apply(value);
+			case Failure(var error) -> fa.apply(error);
+		};
+	}
+
+	default T orElse(final T defaultValue) {
+		return switch (this) {
+			case Success(var value) -> value;
+			case Failure(var error) -> defaultValue;
+		};
+	}
+
+	default T orElseGet(final Supplier<? extends T> supplier) {
+		return switch (this) {
+			case Success(var value) -> value;
+			case Failure(var error) -> supplier.get();
+		};
+	}
 
 	record Success<T, E extends Throwable>(T value) implements Try<T, E> {
 		@Override

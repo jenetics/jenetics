@@ -166,8 +166,8 @@ public class ZippedFileReader extends Reader {
 	@Override
 	public void close() throws IOException {
 		entry.ifEvaluated(value -> { switch (value) {
-			case Success<IOValue<Reader>, ?>(var reader) -> reader.get().close();
-			case Failure<?, ?>(var __) -> {}
+			case Success(var reader) -> reader.get().close();
+			case Failure(var __) -> {}
 		}});
 	}
 
