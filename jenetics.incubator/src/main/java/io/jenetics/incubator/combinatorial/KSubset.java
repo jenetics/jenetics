@@ -30,6 +30,16 @@ public final class KSubset {
 	private KSubset() {
 	}
 
+	record Subset(int n, int k) {
+		boolean next(final int[] T) {
+			return false;
+		}
+	}
+
+
+	public static void next(int n, int k, int[] T) {
+	}
+
 	public static int[] first(final int k) {
 		final var T = new int[k];
 		for (int i = 0; i < k; ++i) {
