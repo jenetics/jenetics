@@ -31,7 +31,6 @@ import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -39,7 +38,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 8.1
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 

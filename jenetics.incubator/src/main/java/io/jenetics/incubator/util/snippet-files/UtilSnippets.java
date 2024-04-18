@@ -18,12 +18,39 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+
+import io.jenetics.incubator.util.ZippedFileReader;
+
+import io.jenetics.ext.util.CsvSupport;
+
 /**
- * This package contains all categories of property types.
- * {@snippet class="ReflectSnippets" region="PropertyType"}
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
- * @since 8.0
  */
-package io.jenetics.incubator.beans.reflect;
+final class UtilSnippets {
+
+	static class ZippedFileReaderSnippets {
+
+		void reader() throws IOException {
+			// @start region="ZippedFileReaderSnippets.creation"
+			// The actual ZIP file.
+			final var zip = new File("path/to/csv.zip");
+
+			// The path to the CSV within the ZIP.
+			final var path = Path.of("data/Addresses.csv");
+
+			try (var reader = new ZippedFileReader(zip, path, UTF_8)) {
+				final List<String[]> rows = CsvSupport.readAllRows(reader);
+				// ... process the rows.
+			}
+			// @end
+		}
+
+	}
+
+}

@@ -25,5 +25,13 @@ package io.jenetics.internal.util;
  * @since 8.1
  */
 public interface ThrowingConsumer<T, E extends Throwable> {
+
+	/**
+	 * Performs this operation on the given argument.
+	 *
+	 * @param t the input argument
+	 * @throws E if the operation fails
+	 */
 	void accept(T t) throws E;
+
 }

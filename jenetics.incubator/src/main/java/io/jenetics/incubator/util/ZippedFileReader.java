@@ -19,8 +19,9 @@
  */
 package io.jenetics.incubator.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.io.Writer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipFile;
 
 import io.jenetics.incubator.util.Try.Failure;
@@ -38,37 +38,59 @@ import io.jenetics.incubator.util.Try.Success;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.internal.util.Lifecycle.IOValue;
 
-import io.jenetics.ext.util.CsvSupport;
-
 /**
+ * This reader allows reading a file within a ZIP archive.
+ * {@snippet class="UtilSnippets" region="ZippedFileReaderSnippets.creation"}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.1
  * @since 8.1
  */
-public class ZippedCvs extends Reader implements Closeable {
-
+public class ZippedFileReader extends Reader {
 	private final File zip;
-	private final Path csv;
+	private final Path path;
 	private final Charset charset;
 
 	private final Lazy<Try<IOValue<Reader>, IOException>>
 		entry = Lazy.of(this::zipEntryReader);
 
-	public ZippedCvs(final File zip, final Path csv, final Charset charset) {
-		this.zip = zip;
-		this.csv = csv;
-		this.charset = charset;
+	/**
+	 * Create a new reader from the given {@code zip} file and the path to the
+	 * zipped file.
+	 *
+	 * @param zip the ZIP file
+	 * @param path the path to the file within the ZIP to be read
+	 * @param charset the character set used for reading the characters
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public ZippedFileReader(final File zip, final Path path, final Charset charset) {
+		this.zip = requireNonNull(zip);
+		this.path = requireNonNull(path);
+		this.charset = requireNonNull(charset);
+	}
+
+	/**
+	 * Create a new reader from the given {@code zip} file and the path to the
+	 * zipped file. The {@link Charset#defaultCharset()} is used for decoding
+	 * the characters.
+	 *
+	 * @param zip the ZIP file
+	 * @param path the path to the file within the ZIP to be read
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public ZippedFileReader(final File zip, final Path path) {
+		this(zip, path, Charset.defaultCharset());
 	}
 
 	private Try<IOValue<Reader>, IOException> zipEntryReader() {
 		try {
 			final var value = new IOValue<Reader>(resources -> {
 				final var file = resources.use(new ZipFile(zip));
-				final var entry = file.getEntry(csv.toString());
+				final var entry = file.getEntry(path.toString());
 				if (entry == null) {
 					throw new FileNotFoundException(
-						"Zip entry not found (%s:%s)."
-							.formatted(zip, csv)
+						"Zip entry not found: '%s:%s'."
+							.formatted(zip, path)
 					);
 				}
 
@@ -149,21 +171,4 @@ public class ZippedCvs extends Reader implements Closeable {
 		}});
 	}
 
-	public static void main(String[] args) throws Exception {
-		final var zip = new File("164.zip");
-		final var csv = Path.of("EQTEXT.txt");
-
-		final var separator = new CsvSupport.Separator('\t');
-		final var quote = new CsvSupport.Quote('\'');
-		final var splitter = new CsvSupport.LineSplitter(separator, CsvSupport.Quote.ZERO);
-
-		final var lr = new CsvSupport.LineReader(CsvSupport.Quote.ZERO);
-
-		try (var lines = lr.read(new ZippedCvs(zip, csv, Charset.forName("Cp1252")))) {
-			final var count = new AtomicInteger();
-			lines.forEach(line -> {
-				System.out.println("ASDF---" + count.incrementAndGet() + ": " + line);
-			});
-		}
-	}
 }
