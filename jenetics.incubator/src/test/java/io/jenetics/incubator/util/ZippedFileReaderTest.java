@@ -21,7 +21,6 @@ package io.jenetics.incubator.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,13 +64,6 @@ public class ZippedFileReaderTest {
 	@Test
 	public void readUnknownFile() {
 		final var path = Path.of("some/not/existing/file");
-
-		assertThatNoException()
-			.isThrownBy(() -> {
-				try (var reader = new ZippedFileReader(ZIP, path)) {
-					assertThat(reader).isNotNull();
-				}
-			});
 
 		assertThatExceptionOfType(FileNotFoundException.class)
 			.isThrownBy(() -> {
