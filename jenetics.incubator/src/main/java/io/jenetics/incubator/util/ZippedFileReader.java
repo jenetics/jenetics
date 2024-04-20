@@ -67,8 +67,7 @@ public class ZippedFileReader extends Reader {
 			final var entry = zip.getEntry(path.toString());
 			if (entry == null) {
 				throw new FileNotFoundException(
-					"Zip entry not found: '%s:%s'."
-						.formatted(file, path)
+					"Zip entry not found: '%s:%s'.".formatted(file, path)
 				);
 			}
 

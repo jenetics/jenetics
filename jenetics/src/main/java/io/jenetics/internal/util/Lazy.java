@@ -31,6 +31,7 @@ import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -86,11 +87,8 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 * @since 8.1
 	 *
 	 * @param action the action to be performed if a value is evaluated
-	 * @param <E> the exception type thrown by the action
-	 * @throws E if the action throws an exception
 	 */
-	public <E extends Throwable> void
-	ifEvaluated(final ThrowingConsumer<? super T, E> action) throws E {
+	public void ifEvaluated(final Consumer<? super T> action) {
 		requireNonNull(action);
 
 		final boolean evaluated;
