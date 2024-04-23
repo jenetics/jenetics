@@ -49,7 +49,7 @@ import java.util.stream.Stream;
  *
  * for (int i = 0; i < 100; ++i) {
  *     final int index = i;
- *     executor.execute(() -> results.add(i));
+ *     executor.execute(() -> results.add(index));
  * }
  *
  * executor.shutdown();
