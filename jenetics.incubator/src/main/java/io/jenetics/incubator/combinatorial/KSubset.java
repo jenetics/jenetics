@@ -26,15 +26,34 @@ import java.util.Arrays;
  * @version 8.1
  * @since 8.1
  */
-public final class KSubset {
-	private KSubset() {
-	}
+public record KSubset(int n, int k) {
 
-	record Subset(int n, int k) {
-		boolean next(final int[] T) {
-			return false;
+	public static final class Cursor {
+		public boolean next(final int[] T) {
+			return true;
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	public static void next(int n, int k, int[] T) {
@@ -65,6 +84,21 @@ public final class KSubset {
 		}
 		return true;
 	}
+
+	/*
+	public static Cursor cursor(final int n, final int k) {
+		return new Cursor() {
+			final int[] next = KSubset.first(k);
+
+			@Override
+			public boolean next(int[] index) {
+				final boolean hasNext = KSubset.next(next, n);
+				System.arraycopy(next, 0, index, 0, k);
+				return hasNext;
+			}
+		};
+	};
+	 */
 
 	public static long rank(final int[] T, final int n) {
 		final int k = T.length;
