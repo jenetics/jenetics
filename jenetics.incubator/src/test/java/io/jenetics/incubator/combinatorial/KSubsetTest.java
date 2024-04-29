@@ -30,13 +30,12 @@ public class KSubsetTest {
 
 	@Test
 	public void next() {
-		final int n = 20;
-		final int k = 8;
-		final long N = BinomialCoefficient.apply(n, k);
+		final var sub = new KSubset(20, 8);
+		final long N = BinomialCoefficient.apply(sub.n(), sub.k());
 
-		final int[] T = KSubset.first(k);
+		final int[] T = sub.first();
 		int count = 1;
-		for (int i = 0; i < N + 3 && KSubset.next(T, n); ++i) {
+		for (int i = 0; i < N + 3 && KSubset.next(T, sub.n()); ++i) {
 			++count;
 		}
 
@@ -45,32 +44,30 @@ public class KSubsetTest {
 
 	@Test
 	public void rank() {
-		final int n = 20;
-		final int k = 8;
-		final int[] T = KSubset.first(k);
+		final var sub = new KSubset(20, 8);
+		final int[] T = sub.first();
 
-		assertThat(KSubset.rank(T, n)).isEqualTo(0);
+		assertThat(sub.rank(T)).isEqualTo(0);
 		int rank = 1;
-		while (KSubset.next(T, n)) {
-			assertThat(KSubset.rank(T, n)).isEqualTo(rank);
+		while (KSubset.next(T, sub.n())) {
+			assertThat(sub.rank(T)).isEqualTo(rank);
 			++rank;
 		}
 	}
 
 	@Test
 	public void unrank() {
-		final int n = 20;
-		final int k = 8;
-		final int[] T = KSubset.first(k);
+		final var sub = new KSubset(20, 8);
+		final int[] T = sub.first();
 
-		final int[] U = new int[k];
+		final int[] U = new int[sub.k()];
 		long rank = 0;
-		KSubset.unrank(rank, n, U);
+		sub.unrank(rank, U);
 		assertThat(U).isEqualTo(T);
 
-		while (KSubset.next(T, n)) {
+		while (KSubset.next(T, sub.n())) {
 			++rank;
-			KSubset.unrank(rank, n, U);
+			sub.unrank(rank, U);
 
 			assertThat(U).isEqualTo(T);
 		}

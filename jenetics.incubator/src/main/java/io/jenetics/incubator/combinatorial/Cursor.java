@@ -34,6 +34,8 @@ public interface Cursor {
 	 *        to
 	 * @return {@code true} if an index value has been written to the output
 	 *         {@code index} array
+	 * @throws ArrayIndexOutOfBoundsException if the given {@code index} is too
+	 *         small to hold the next subset
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
 	boolean next(int[] index);

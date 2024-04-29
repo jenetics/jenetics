@@ -96,7 +96,7 @@ public final class BinomialCoefficient {
 		}
 	}
 
-	private static void check(final int n, final int k) {
+	static void check(final int n, final int k) {
 		if (n < 0 || n < k) {
 			throw new IllegalArgumentException(
 				"Invalid coefficients [n=%d, k=%d].".formatted(n, k)

@@ -39,4 +39,9 @@ public class BinomialCoefficientTest {
 		}
 	}
 
+	@Test
+	public void zero() {
+		System.out.println(BinomialCoefficient.apply(0, 0));
+	}
+
 }
