@@ -45,8 +45,8 @@ import java.util.random.RandomGenerator;
  * @version 7.0
  * @since 4.0
  */
-public final class Subset {
-	private Subset() {}
+public final class Subsets {
+	private Subsets() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.

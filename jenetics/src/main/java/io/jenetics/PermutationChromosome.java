@@ -35,7 +35,7 @@ import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
@@ -225,7 +225,7 @@ public final class PermutationChromosome<T>
 		}
 
 		final var rnd = RandomRegistry.random();
-		final int[] subset = Subset.next(rnd, alleles.size(), length);
+		final int[] subset = Subsets.next(rnd, alleles.size(), length);
 		shuffle(subset, rnd);
 
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
