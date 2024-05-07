@@ -20,6 +20,10 @@
 package io.jenetics.incubator.combinatorial;
 
 /**
+ * This interface allows iterating over subset elements. The following example
+ * shows how to iterate over the indexes using a cursor.
+ * {@snippet class="CombinatorialSnippets" region="Cursor.loop"}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.1
  * @since 8.1
@@ -29,6 +33,7 @@ public interface Cursor {
 	/**
 	 * Writes the current value to the given {@code index} array and moves the
 	 * cursor forward.
+	 * {@snippet class="CombinatorialSnippets" region="Cursor.loop"}
 	 *
 	 * @param index the {@code int[]} array where the index values are written
 	 *        to
@@ -39,5 +44,25 @@ public interface Cursor {
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
 	boolean next(int[] index);
+
+	/**
+	 * Return the next index value or {@code null} if no further value is
+	 * available.
+	 * {@snippet class="CombinatorialSnippets" region="Cursor.loop2"}
+	 *
+	 * @return the next element or {@code null} if no further value is available
+	 */
+	default int[] next() {
+		final var index = new int[size()];
+		return next(index) ? index : null;
+	}
+
+	/**
+	 * Return the length of the <em>index</em> array {@code this} cursor works
+	 * with.
+	 *
+	 * @return the index array length
+	 */
+	int size();
 
 }

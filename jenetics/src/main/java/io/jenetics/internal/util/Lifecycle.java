@@ -331,7 +331,7 @@ public final class Lifecycle {
 		 * try (result) {
 		 *     result.get().forEach(System.out::println);
 		 * }
-		 *}
+		 * }
 		 *
 		 * @see Resources
 		 *
