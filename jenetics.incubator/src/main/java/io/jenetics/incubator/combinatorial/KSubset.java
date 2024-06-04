@@ -48,29 +48,16 @@ import io.jenetics.internal.math.Subsets;
  */
 public final class KSubset implements Iterable<int[]>, Comparator<int[]> {
 
-	private record Subset(int n, int k, int[] value)
-		implements Comparable<Subset>
-	{
-
-		private Subset {
-			if (value.length != k) {
-				throw new IllegalArgumentException(
-					"Invalid array size: %d != %d.".formatted(value.length, k)
-				);
-			}
-			for (var i : value) {
-				if (i < 0 || i >= n) {
-					throw new IllegalArgumentException(
-						"Values out of range [%d, %d): %s."
-							.formatted(0, n, Arrays.toString(value))
-					);
-				}
-			}
-		}
+	/**
+	 * Represents a k-subset element.
+	 *
+	 * @param value
+	 */
+	private record Subset(int[] value) implements Comparable<Subset> {
 
 		@Override
 		public int compareTo(final Subset other) {
-			for (int i = 0; i < k; ++i) {
+			for (int i = 0; i < value.length; ++i) {
 				if (value[i] < other.value[i]) {
 					return -1;
 				} else if (value[i] > other.value[i]) {
@@ -95,6 +82,10 @@ public final class KSubset implements Iterable<int[]>, Comparator<int[]> {
 		public String toString() {
 			return Arrays.toString(value);
 		}
+
+	}
+
+	private record Range(Subset start, Subset end, long startRang, long endRank) {
 
 	}
 
@@ -142,7 +133,7 @@ public final class KSubset implements Iterable<int[]>, Comparator<int[]> {
 		for (int i = 0; i < k; ++i) {
 			a[i] = i;
 		}
-		return new Subset(n, k, a);
+		return new Subset(a);
 	}
 
 	private static Subset end(final int n, final int k) {
@@ -150,7 +141,7 @@ public final class KSubset implements Iterable<int[]>, Comparator<int[]> {
 		for (int i = n - k; i < n; ++i) {
 			a[i - n + k] = i;
 		}
-		return new Subset(n, k, a);
+		return new Subset(a);
 	}
 
 	private static long size(final int n, final int k) {
@@ -219,8 +210,8 @@ public final class KSubset implements Iterable<int[]>, Comparator<int[]> {
 	}
 
 	public KSubset range(final int[] start, final int[] end) {
-		final var s = new Subset(n, k, start.clone());
-		final var e = new Subset(n, k, end.clone());
+		final var s = new Subset(start.clone());
+		final var e = new Subset(end.clone());
 
 		if (this.start.compareTo(s) > 0 || this.end.compareTo(s) < 0) {
 			throw new IllegalArgumentException("Invalid start value: " + s);
