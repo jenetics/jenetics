@@ -131,7 +131,7 @@ public record Histogram(
 		 * @param other the histogram to add.
 		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
 		 *         separators of {@code this} and the given {@code histogram} are
-		 *         not the same.
+		 *         different.
 		 * @throws NullPointerException if the given {@code histogram} is {@code null}.
 		 */
 		public void combine(final Builder other) {

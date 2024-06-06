@@ -23,7 +23,7 @@
  * The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.description.Descriptions} object.
  *
- * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+ * {@snippet class="DescriptionSnippets" region="walk(Type)"}
  *
  * The code snippet above will create the following output
  * <pre>{@code

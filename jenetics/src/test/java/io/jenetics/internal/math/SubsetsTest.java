@@ -41,7 +41,7 @@ import io.jenetics.util.TestData;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SubsetTest {
+public class SubsetsTest {
 
 	@Test
 	public void compatibility() {
@@ -49,7 +49,7 @@ public class SubsetTest {
 
 		for (int k = 2; k <= 500; ++k) {
 			int[] sub1 = subset(n, new int[k], new Random(123));
- 			int[] sub2 = Subset.next(new Random(123), n, k);
+ 			int[] sub2 = Subsets.next(new Random(123), n, k);
 
 			assertThat(sub2).isEqualTo(sub1);
 		}
@@ -57,7 +57,7 @@ public class SubsetTest {
 
 	@Test(dataProvider = "subsets")
 	public void compatibility(final int[] subset) {
-		assertThat(Subset.next(new Random(123), 1000, subset.length))
+		assertThat(Subsets.next(new Random(123), 1000, subset.length))
 			.isEqualTo(subset);
 	}
 
@@ -77,7 +77,7 @@ public class SubsetTest {
 
 		final Set<String> subsets = new HashSet<>();
 		for (int i = 0; i < 3_000; ++i) {
-			subsets.add(Arrays.toString(Subset.next(random, n, k)));
+			subsets.add(Arrays.toString(Subsets.next(random, n, k)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -109,12 +109,12 @@ public class SubsetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_1_0() {
-		Subset.next(RandomGenerator.getDefault(), 1,0);
+		Subsets.next(RandomGenerator.getDefault(), 1,0);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void subset_0_1() {
-		Subset.next(RandomGenerator.getDefault(), 0, 1);
+		Subsets.next(RandomGenerator.getDefault(), 0, 1);
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class SubsetTest {
 		final int n = 2_500;
 
 		for (int k = 1; k <= n; ++k) {
-			int[] sub = Subset.next(random, n, k);
+			int[] sub = Subsets.next(random, n, k);
 
 			for (int v : sub) {
 				assertThat(v).isBetween(0, n);
@@ -148,7 +148,7 @@ public class SubsetTest {
 		final var histogram = Histogram.Builder.of(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Subset.next(random, n, 3)))
+			.flatMap(i -> IntStream.of(Subsets.next(random, n, 3)))
 			.forEach(histogram::accept);
 
 		assertThatObservation(histogram.build()).isUniform();

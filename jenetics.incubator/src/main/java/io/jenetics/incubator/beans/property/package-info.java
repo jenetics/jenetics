@@ -23,7 +23,7 @@
  * The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.property.Properties} object.
  *
- * {@snippet class="snippets.PropertiesSnippets" region="walk(Object)"}
+ * {@snippet class="PropertySnippets" region="walk(Object)"}
  *
  * The code snippet above will create the following output
  * <pre>{@code

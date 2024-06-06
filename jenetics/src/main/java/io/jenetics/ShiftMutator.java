@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.stat.Sampler;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -128,7 +128,7 @@ public class ShiftMutator<
 				);
 			}
 
-			final int[] points = Subset.next(random, length + 1, 3);
+			final int[] points = Subsets.next(random, length + 1, 3);
 			return new Range(points[0], points[1], points[2]);
 		};
 
