@@ -145,11 +145,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Bernhard J. Berger; Christina Plump; Lauren Paul; Rolf Drechsler. <a href="https://agra.informatik.uni-bremen.de/doc/konf/gecco2024_cp.pdf"> EvoAl — Codeless Domain-Optimisation.</a> <em> Genetic and Evolutionary Computation Conference (GECCO-2024).</em> July 2024.
+Jianghao Wang, Clay Stevens, Brooke Kidmose, Myra B. Cohen & Hamid Bagheri . <a href="https://doi.org/10.1007/978-3-031-64573-0_1"> Evolutionary Analysis of Alloy Specifications with an Adaptive Fitness Function.</a> <em> Search-Based Software Engineering. SSBSE 2024. Lecture Notes in Computer Science, vol 14767. Springer.</em> July 2024.
 
 ...
 </summary>
 
+1) Jianghao Wang, Clay Stevens, Brooke Kidmose, Myra B. Cohen & Hamid Bagheri . <a href="https://doi.org/10.1007/978-3-031-64573-0_1"> Evolutionary Analysis of Alloy Specifications with an Adaptive Fitness Function.</a> <em> Search-Based Software Engineering. SSBSE 2024. Lecture Notes in Computer Science, vol 14767. Springer.</em> July 2024.
 1) Bernhard J. Berger; Christina Plump; Lauren Paul; Rolf Drechsler. <a href="https://agra.informatik.uni-bremen.de/doc/konf/gecco2024_cp.pdf"> EvoAl — Codeless Domain-Optimisation.</a> <em> Genetic and Evolutionary Computation Conference (GECCO-2024).</em> July 2024.
 2) Christina Plump, Daniel C. Hoinkiss, Jörn Huber, Bernhard J. Berger, Matthias Günther, Christoph Lüth, Rolf Drechsler. <a href="https://agra.informatik.uni-bremen.de/doc/konf/cec2024_cp.pdf"> Finding the perfect MRI sequence for your patient --- Towards an optimisation workflow for MRI-sequences.</a> <em>  IEEE WCCI 2024.</em> June 2024.
 3) Milan Čugurović, Milena Vujošević Janičić, Vojin Jovanović, Thomas Würthinger. <a href="https://doi.org/10.1016/j.jss.2024.112058"> GraalSP: Polyglot, efficient, and robust machine learning-based static profiler.</a> <em>  Journal of Systems and Software, Volume 213, 2024, 112058, ISSN 0164-1212.</em> July. 2024.
