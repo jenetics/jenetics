@@ -30,7 +30,7 @@ import java.util.Optional;
 
 /**
  * Base interface used for matching {@link Type} objects.
- * {@snippet class="snippets.ReflectPackageSnippet" region="PropertyType"}
+ * {@snippet class="ReflectSnippets" region="PropertyType"}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0

@@ -66,7 +66,6 @@ public interface Error<T> {
 		final T[] expected
 	);
 
-
 	/**
 	 * Creates an error function which only uses the given {@code loss} function
 	 * for calculating the program error

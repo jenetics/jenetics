@@ -185,7 +185,7 @@ public final class Regression<T>
 	 * @param samples the sample points used for regression analysis
 	 * @return a new regression problem instance
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
-	 * @throws NullPointerException if on of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
@@ -214,7 +214,7 @@ public final class Regression<T>
 	 * @param samples the sample points used for regression analysis
 	 * @return a new regression problem instance
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
-	 * @throws NullPointerException if on of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SafeVarargs
 	public static <T> Regression<T> of(

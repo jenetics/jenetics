@@ -134,7 +134,7 @@ public class EliteSelector<
 		}
 
 		ISeq<Phenotype<G, C>> result;
-		if (population.isEmpty() || count <= 0) {
+		if (population.isEmpty() || count == 0) {
 			result = ISeq.empty();
 		} else {
 			final int ec = min(count, _eliteCount);

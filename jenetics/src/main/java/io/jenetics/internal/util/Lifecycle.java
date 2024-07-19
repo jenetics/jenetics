@@ -51,11 +51,11 @@ import java.util.function.Supplier;
  * }
  *
  * <p><b>Building complex closeable values</b></p>
- * {@snippet lang="java":
+ * {@snippet lang = "java":
  * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
- *     final var fin = resources.add(new FileInputStream(file.toFile()));
- *     final var bin = resources.add(new BufferedInputStream(fin));
- *     final var oin = resources.add(new ObjectInputStream(bin));
+ *     final var fin = resources.use(new FileInputStream(file.toFile()));
+ *     final var bin = resources.use(new BufferedInputStream(fin));
+ *     final var oin = resources.use(new ObjectInputStream(bin));
  *
  *     return Stream.generate(() -> readNextObject(oin))
  *         .takeWhile(Objects::nonNull);
@@ -64,20 +64,20 @@ import java.util.function.Supplier;
  * try (result) {
  *     result.get().forEach(System.out::println);
  * }
- * }
+ *}
  *
- * <p><b>Wrapping several closeables into one</b></p>
- * {@snippet lang="java":
- * try (var __ = ExtendedCloseable.of(c1, c2, c3)) {
+ * <p><b>Wrapping several closeable into one</b></p>
+ * {@snippet lang = "java":
+ * try (var __ = Releasable.of(c1, c2, c3)) {
  *     // ...
  * }
- * }
+ *}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 6.2
  * @version 7.2
  */
-public class Lifecycle {
+public final class Lifecycle {
 
 	/* *************************************************************************
 	 * Throwing functional interfaces.
@@ -151,7 +151,7 @@ public class Lifecycle {
 	 * @param <E> the exception thrown by the {@link #close()} method
 	 */
 	@FunctionalInterface
-	public interface ExtendedCloseable<E extends Exception>
+	public interface Releasable<E extends Exception>
 		extends AutoCloseable
 	{
 
@@ -165,11 +165,8 @@ public class Lifecycle {
 		 * @throws RuntimeException if the {@link #close()} method throws
 		 *         an {@link Exception}
 		 */
-		default void uncheckedClose(
-			final Function<
-				? super E,
-				? extends RuntimeException> mapper
-		) {
+		default <R extends RuntimeException> void
+		release(final Function<? super E, ? extends R> mapper) throws R {
 			try {
 				close();
 			} catch (Exception e) {
@@ -182,8 +179,8 @@ public class Lifecycle {
 		/**
 		 * Calls the {@link #close()} method and ignores every thrown exception.
 		 */
-		default void silentClose() {
-			silentClose(null);
+		default void silentRelease() {
+			silentRelease(null);
 		}
 
 		/**
@@ -192,9 +189,9 @@ public class Lifecycle {
 		 * exception is appended to the list of suppressed exceptions.
 		 *
 		 * @param previousError the error, which triggers the close of the given
-		 *        {@code closeables}
+		 *        {@code closeable}
 		 */
-		default void silentClose(final Throwable previousError) {
+		default void silentRelease(final Throwable previousError) {
 			try {
 				close();
 			} catch (Exception suppressed) {
@@ -206,7 +203,7 @@ public class Lifecycle {
 
 		/**
 		 * Wraps a given {@code release} method and returns an
-		 * {@link ExtendedCloseable}.
+		 * {@link Releasable}.
 		 *
 		 * @param release the release method to wrap
 		 * @return a new extended closeable with the given underlying
@@ -214,7 +211,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if the given {@code release} method is
 		 *         {@code null}
 		 */
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final ThrowingRunnable<? extends E> release) {
 			return release::run;
 		}
@@ -232,7 +229,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the {@code releases} is
 		 *         {@code null}
 		 */
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final Collection<? extends ThrowingRunnable<? extends E>> releases) {
 			final List<ThrowingRunnable<? extends E>> list = new ArrayList<>();
 			releases.forEach(c -> list.add(requireNonNull(c)));
@@ -255,7 +252,7 @@ public class Lifecycle {
 		 *         {@code null}
 		 */
 		@SafeVarargs
-		static <E extends Exception> ExtendedCloseable<E>
+		static <E extends Exception> Releasable<E>
 		of(final ThrowingRunnable<? extends E>... releases) {
 			return of(Arrays.asList(releases));
 		}
@@ -287,7 +284,7 @@ public class Lifecycle {
 	 * @param <T> the value type
 	 */
 	public static sealed class Value<T, E extends Exception>
-		implements Supplier<T>, ExtendedCloseable<E>
+		implements Supplier<T>, Releasable<E>
 	{
 
 		T _value;
@@ -316,16 +313,16 @@ public class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
+		 * {@link Resources#use(Object, ThrowingConsumer)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * {@snippet lang="java":
+		 * {@snippet lang = "java":
 		 * final Value<Stream<Object>, IOException> result = new Value<>(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()), Closeable::close);
-		 *     final var bin = resources.add(new BufferedInputStream(fin), Closeable::close);
-		 *     final var oin = resources.add(new ObjectInputStream(bin), Closeable::close);
+		 *     final var fin = resources.use(new FileInputStream(file.toFile()), Closeable::close);
+		 *     final var bin = resources.use(new BufferedInputStream(fin), Closeable::close);
+		 *     final var oin = resources.use(new ObjectInputStream(bin), Closeable::close);
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
@@ -361,7 +358,7 @@ public class Lifecycle {
 				_value = builder.apply(resources);
 				_release = value -> resources.close();
 			} catch (Throwable error) {
-				resources.silentClose(error);
+				resources.silentRelease(error);
 				throw error;
 			}
 		}
@@ -418,8 +415,8 @@ public class Lifecycle {
 			try {
 				block.accept(get());
 			} catch (Throwable error) {
-				ExtendedCloseable.of(releases).silentClose(error);
-				silentClose(error);
+				Releasable.of(releases).silentRelease(error);
+				silentRelease(error);
 				throw error;
 			}
 		}
@@ -450,10 +447,7 @@ public class Lifecycle {
 	 *
 	 * @param <T> the value type
 	 */
-	public static final class IOValue<T>
-		extends Value<T, IOException>
-		implements Closeable
-	{
+	public static final class IOValue<T> extends Value<T, IOException> {
 
 		/**
 		 * Create a new closeable value with the given resource {@code value}
@@ -474,16 +468,16 @@ public class Lifecycle {
 		/**
 		 * Opens a kind of {@code try-catch} with resources block. The difference
 		 * is, that the resources, registered with the
-		 * {@link Resources#add(Object, ThrowingConsumer)} method, are only closed
+		 * {@link Resources#use(Object, ThrowingConsumer)} method, are only closed
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
 		 *
-		 * {@snippet lang="java":
+		 * {@snippet lang = "java":
 		 * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
-		 *     final var fin = resources.add(new FileInputStream(file.toFile()));
-		 *     final var bin = resources.add(new BufferedInputStream(fin));
-		 *     final var oin = resources.add(new ObjectInputStream(bin));
+		 *     final var fin = resources.use(new FileInputStream(file.toFile()));
+		 *     final var bin = resources.use(new BufferedInputStream(fin));
+		 *     final var oin = resources.use(new ObjectInputStream(bin));
 		 *
 		 *     return Stream.generate(() -> readNextObject(oin))
 		 *         .takeWhile(Objects::nonNull);
@@ -519,7 +513,7 @@ public class Lifecycle {
 				_value = builder.apply(resources);
 				_release = value -> resources.close();
 			} catch (Throwable error) {
-				resources.silentClose(error);
+				resources.silentRelease(error);
 				throw error;
 			}
 		}
@@ -534,19 +528,19 @@ public class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * try (var resources = new Resources<IOException>()) {
-	 *     final var fin = resources.add(new FileInputStream(file), Closeable::close);
+	 *     final var fin = resources.use(new FileInputStream(file), Closeable::close);
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin), Closeable::close);
+	 *     final var oin = resources.use(new ObjectInputStream(fin), Closeable::close);
 	 *     // ...
 	 * }
 	 * }
 	 */
 	public static sealed class Resources<E extends Exception>
-		implements ExtendedCloseable<E>
+		implements Releasable<E>
 	{
 
 		private final List<ThrowingRunnable<? extends E>> _resources = new ArrayList<>();
@@ -592,7 +586,7 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C> C add(
+		public <C> C use(
 			final C resource,
 			final ThrowingConsumer<? super C, ? extends E> release
 		) {
@@ -613,14 +607,14 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends ExtendedCloseable<? extends E>> C add(final C resource) {
-			return add(resource, C::close);
+		public <C extends Releasable<? extends E>> C use(final C resource) {
+			return use(resource, C::close);
 		}
 
 		@Override
 		public void close() throws E {
 			if (!_resources.isEmpty()) {
-				ExtendedCloseable.of(_resources).close();
+				Releasable.of(_resources).close();
 			}
 		}
 
@@ -634,13 +628,13 @@ public class Lifecycle {
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
 	 *
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * try (var resources = new IOResources()) {
-	 *     final var fin = resources.add(new FileInputStream(file));
+	 *     final var fin = resources.use(new FileInputStream(file));
 	 *     if (fin.read() != -1) {
 	 *         return;
 	 *     }
-	 *     final var oin = resources.add(new ObjectInputStream(fin));
+	 *     final var oin = resources.use(new ObjectInputStream(fin));
 	 *     // ...
 	 * }
 	 * }
@@ -654,7 +648,8 @@ public class Lifecycle {
 		 * @param releases the release methods
 		 */
 		public IOResources(
-			final Collection<? extends ThrowingRunnable<? extends IOException>> releases
+			final Collection<
+				? extends ThrowingRunnable<? extends IOException>> releases
 		) {
 			super(releases);
 		}
@@ -667,7 +662,8 @@ public class Lifecycle {
 		 */
 		@SafeVarargs
 		public IOResources(
-			final ThrowingRunnable<? extends IOException>... releases
+			final ThrowingRunnable<
+				? extends IOException>... releases
 		) {
 			super(releases);
 		}
@@ -688,8 +684,8 @@ public class Lifecycle {
 		 * @throws NullPointerException if one of the given arguments is
 		 *         {@code null}
 		 */
-		public <C extends Closeable> C add(final C resource) {
-			return add(resource, Closeable::close);
+		public <C extends Closeable> C use(final C resource) {
+			return use(resource, C::close);
 		}
 
 	}

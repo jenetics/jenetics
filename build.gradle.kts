@@ -176,8 +176,7 @@ fun setupJavadoc(project: Project, taskName: String) {
 
 		val doclet = options as StandardJavadocDocletOptions
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
-		doclet.memberLevel = JavadocMemberLevel.PROTECTED
-		doclet.addStringOption("-snippet-path", "${project.projectDir}/src/test/java")
+		snippetPaths(project)?.let { doclet.addStringOption("-snippet-path", it) }
 		doclet.addStringOption("-show-module-contents", "api")
 		doclet.addStringOption("-show-packages", "exported")
 		doclet.addStringOption("exclude", "io.jenetics.internal")
@@ -244,6 +243,16 @@ fun setupJavadoc(project: Project, taskName: String) {
 			}
 		}
 	}
+}
+
+fun snippetPaths(project: Project): String? {
+	return File("${project.projectDir}/src/main/java").walk()
+		.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
+		.joinToString(
+			transform = { file -> file.absolutePath },
+			separator = File.pathSeparator
+		)
+		.ifEmpty { null }
 }
 
 /**

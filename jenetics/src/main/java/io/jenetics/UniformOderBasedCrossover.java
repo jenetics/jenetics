@@ -15,7 +15,7 @@
  */
 package io.jenetics;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.util.BaseSeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -108,7 +108,7 @@ public class UniformOderBasedCrossover<T, C extends Comparable<? super C>>
 
 		if (that.length() >= 2) {
 			final var random = RandomRegistry.random();
-			final var positions = Subset.next(
+			final var positions = Subsets.next(
 				random, that.length(), that.length()/2
 			);
 

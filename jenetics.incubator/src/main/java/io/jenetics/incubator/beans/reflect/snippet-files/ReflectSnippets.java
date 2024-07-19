@@ -17,7 +17,6 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package snippets;
 
 import io.jenetics.incubator.beans.reflect.ArrayType;
 import io.jenetics.incubator.beans.reflect.BeanType;
@@ -30,24 +29,28 @@ import io.jenetics.incubator.beans.reflect.RecordType;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ReflectPackageSnippet {
+final class ReflectSnippets {
 
-	public static void main(String[] args) {
-		// @start region="PropertyType"
-		record Author(String forename, String surname) { }
+	static class ReflectPackageSnippet {
 
-		final var type = switch (PropertyType.of(Author.class)) {
-			case ElementType t -> "ElementType";
-			case RecordType t -> "RecordType";
-			case BeanType t -> "BeanType";
-			case OptionalType t -> "OptionalType";
-			case ArrayType t -> "ArrayType";
-			case ListType t -> "ListType";
-		};
+		public static void main(String[] args) {
+			// @start region="PropertyType"
+			record Author(String forename, String surname) { }
 
-		System.out.println(type);
-		// > RecordType
-		// @end
+			final var type = switch (PropertyType.of(Author.class)) {
+				case ElementType t -> "ElementType";
+				case RecordType t -> "RecordType";
+				case BeanType t -> "BeanType";
+				case OptionalType t -> "OptionalType";
+				case ArrayType t -> "ArrayType";
+				case ListType t -> "ListType";
+			};
+
+			System.out.println(type);
+			// > RecordType
+			// @end
+		}
+
 	}
 
 }

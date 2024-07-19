@@ -33,29 +33,7 @@ import io.jenetics.util.Seq;
 /**
  * This alterer wraps a given alterer which works on a given section of the
  * genotype's chromosomes.
- * {@snippet lang="java":
- * // The genotype prototype, consisting of 4 chromosomes
- * final Genotype<DoubleGene> gtf = Genotype.of(
- *     DoubleChromosome.of(0, 1),
- *     DoubleChromosome.of(1, 2),
- *     DoubleChromosome.of(2, 3),
- *     DoubleChromosome.of(3, 4)
- * );
- *
- * // Define the GA engine.
- * final Engine<DoubleGene, Double> engine = Engine
- *     .builder(gt -> gt.getGene().doubleValue(), gtf)
- *     .selector(new RouletteWheelSelector<>())
- *     .alterers(
- *         // The `Mutator` is used on chromosome with index 0 and 2.
- *         PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
- *         // The `MeanAlterer` is used on chromosome 3.
- *         PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
- *         // The `GaussianMutator` is used on all chromosomes.
- *         new GaussianMutator<>()
- *     )
- *     .build();
- * }
+ * {@snippet class="BaseSnippets" region="PartialAltererSnippets.usage"}
  *
  * If you are using chromosome indices which are greater or equal than the
  * number of chromosomes defined in the genotype, a

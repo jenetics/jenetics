@@ -61,9 +61,9 @@ final class SampleList<T>
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
 
-		_type = (Class<T>)samples.get(0).argAt(0).getClass();
+		_type = (Class<T>)samples.getFirst().argAt(0).getClass();
 
-		final int arity = samples.get(0).arity();
+		final int arity = samples.getFirst().arity();
 		if (arity == 0) {
 			throw new IllegalArgumentException(
 				"The arity of the sample point must not be zero."

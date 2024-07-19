@@ -35,7 +35,7 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
  *
- * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+ * {@snippet class="DescriptionSnippets" region="walk(Type)"}
  *
  * The code snippet above will create the following output
  * <pre>{@code
@@ -60,7 +60,7 @@ public final class Descriptions {
 	 * Lists the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
 	 *
-	 * {@snippet class="snippets.DescriptionsSnippets" region="list(PathValue)"}
+	 * {@snippet class="DescriptionSnippets" region="list(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -89,7 +89,7 @@ public final class Descriptions {
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type}.
 	 *
-	 * {@snippet class="snippets.DescriptionsSnippets" region="list(Type)"}
+	 * {@snippet class="DescriptionSnippets" region="list(Type)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -126,7 +126,7 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * {@snippet class="snippets.DescriptionsSnippets" region="walk(PathValue)"}
+	 * {@snippet class="DescriptionSnippets" region="walk(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -154,7 +154,7 @@ public final class Descriptions {
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
 	 *
-	 * {@snippet class="snippets.DescriptionsSnippets" region="walk(Type)"}
+	 * {@snippet class="DescriptionSnippets" region="walk(Type)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code

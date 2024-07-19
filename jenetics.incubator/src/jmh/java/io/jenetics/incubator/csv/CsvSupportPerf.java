@@ -50,6 +50,8 @@ import org.openjdk.jmh.infra.Blackhole;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
+import io.jenetics.ext.util.CsvSupport;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
