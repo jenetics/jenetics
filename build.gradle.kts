@@ -18,7 +18,6 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
-import io.jenetics.gradle.AllJavadocPlugin
 import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
@@ -35,28 +34,43 @@ rootProject.version = Jenetics.VERSION
 
 
 alljavadoc {
-//	javadocOfflineLinks.set(
-//		listOf(
-//			/*
-//			JavadocOfflineLink(
-//				"https://docs.oracle.com/en/java/javase/21/docs/api/",
-//				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
-//			)
-//			 */
-//		)
-//	)
+	excludes.add("*internal*")
 
-	excludes.set(listOf("**/internal/**"))
+	modules.set(listOf(
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	))
 
-	modules.set(
-		listOf(
-			"jenetics",
-			"jenetics.ext",
-			"jenetics.prog",
-			"jenetics.xml"
+	options.value { doclet ->
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
+		snippetPaths(project)?.let { doclet.addStringOption("-snippet-path", it) }
+		doclet.addStringOption("-show-module-contents", "api")
+		doclet.addStringOption("-show-packages", "exported")
+		doclet.addStringOption("exclude", "io.jenetics.internal")
+		doclet.version(true)
+		doclet.docEncoding = "UTF-8"
+		doclet.charSet = "UTF-8"
+		doclet.linkSource(true)
+		doclet.linksOffline(
+			"https://docs.oracle.com/en/java/javase/21/docs/api/",
+			"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 		)
-	)
+		doclet.windowTitle = "Jenetics ${project.version}"
+		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
+		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
+
+		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
+		doclet.addStringOption("docfilessubdirs")
+		doclet.tags = listOf(
+			"apiNote:a:API Note:",
+			"implSpec:a:Implementation Requirements:",
+			"implNote:a:Implementation Note:"
+		)
+	}
 }
+
 
 tasks.named<Wrapper>("wrapper") {
 	gradleVersion = "8.10"
@@ -82,8 +96,6 @@ allprojects {
 		resolutionStrategy.preferProjectModules()
 	}
 }
-
-//apply("./gradle/alljavadoc.gradle")
 
 subprojects {
 	val project = this
@@ -119,25 +131,12 @@ subprojects {
 }
 
 gradle.projectsEvaluated {
-	/*
-	rootProject.plugins.withType<AllJavadocPlugin> {
-		init()
-	}
-	 */
-
 	subprojects {
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
 		}
 	}
 }
-
-/**
- * Project configuration *after* the projects has been evaluated.
- */
-//gradle.projectsEvaluated {
-	//setupJavadoc(rootProject, "all")
-//}
 
 /**
  * Some common Java setup.
