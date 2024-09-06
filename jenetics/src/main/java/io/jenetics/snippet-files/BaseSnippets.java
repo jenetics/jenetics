@@ -17,17 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics;
 
-
-import io.jenetics.DoubleChromosome;
-import io.jenetics.DoubleGene;
-import io.jenetics.GaussianMutator;
-import io.jenetics.Genotype;
-import io.jenetics.IntegerChromosome;
-import io.jenetics.MeanAlterer;
-import io.jenetics.Mutator;
-import io.jenetics.PartialAlterer;
-import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Engine;
 
 /**
