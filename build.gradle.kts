@@ -18,6 +18,7 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
+import io.jenetics.gradle.AllJavadocPlugin
 import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
@@ -27,9 +28,33 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
+	id("alljavadoc")
 }
 
 rootProject.version = Jenetics.VERSION
+
+
+alljavadoc {
+	javadocOfflineLinks.set(
+		listOf(
+			JavadocOfflineLink(
+				"https://docs.oracle.com/en/java/javase/21/docs/api/",
+				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+			)
+		)
+	)
+
+	excludes.set(listOf("**/internal/**"))
+
+	modules.set(
+		listOf(
+			"io.jenetics",
+			"io.jenetics.ext",
+			"io.jenetics.prog",
+			"io.jenetics.xml"
+		)
+	)
+}
 
 tasks.named<Wrapper>("wrapper") {
 	gradleVersion = "8.10"
@@ -56,7 +81,7 @@ allprojects {
 	}
 }
 
-apply("./gradle/alljavadoc.gradle")
+//apply("./gradle/alljavadoc.gradle")
 
 subprojects {
 	val project = this
@@ -103,7 +128,10 @@ gradle.projectsEvaluated {
  * Project configuration *after* the projects has been evaluated.
  */
 gradle.projectsEvaluated {
-	setupJavadoc(rootProject, "all")
+	//setupJavadoc(rootProject, "all")
+	rootProject.plugins.withType<AllJavadocPlugin> {
+		init()
+	}
 }
 
 /**
