@@ -2,16 +2,21 @@ package io.jenetics.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.FileCollection
+import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.external.javadoc.JavadocMemberLevel
 import org.gradle.external.javadoc.JavadocOfflineLink
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
 import java.io.File
 import java.time.LocalDate
@@ -20,12 +25,12 @@ import java.time.LocalDate
 interface AllJavadocExtension {
 
     /**
-     * The names of the modules which are used for the Javadoc html page.
+     * The names of the modules which are used for the Javadoc HTML page.
      */
     val modules: ListProperty<String>
 
     /**
-     * The style sheet for the Javadoc html page.
+     * The style sheet for the Javadoc HTML page.
      * Can be nullable
      */
     val styleSheet: Property<File?>
@@ -41,8 +46,29 @@ interface AllJavadocExtension {
     val javadocOfflineLinks: ListProperty<JavadocOfflineLink>
 }
 
-val Project.sourceSets: SourceSetContainer
-    get() = this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
+val Project.sourceSets: SourceSetContainer get() =
+	this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
+
+val SourceSetContainer.main: SourceSet get() =
+	this.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+
+val Project.moduleName: String get() =
+	this.extra.get("moduleName")?.toString() ?: this.name
+
+val SourceDirectorySet.dirs: String get() =
+	this.toList()
+		.filter { it.isDirectory }
+		.distinct()
+		.joinToString(separator = ":")
+
+val Project.snippetPaths: String? get() =
+	File("${project.projectDir}/src/main/java").walk()
+		.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
+		.joinToString(
+			transform = { file -> file.absolutePath },
+			separator = File.pathSeparator
+		)
+		.ifEmpty { null }
 
 /**
  * Gradle Plugin which defines and configure the native [Javadoc] task.
@@ -58,12 +84,45 @@ class AllJavadocPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         this.project = project
 
-        project.extensions.create<AllJavadocExtension>("alljavadoc")
+        val extensions = project.extensions.create<AllJavadocExtension>("alljavadoc")
 
-        project.tasks.register("alljavadoc", Javadoc::class.java) {
-            description = "Aggregates Javadoc over all modules."
-            group = JavaBasePlugin.DOCUMENTATION_GROUP
-        }
+		project.gradle.projectsEvaluated {
+			project.tasks.register("alljavadoc", Javadoc::class.java) {
+				val opts = options as StandardJavadocDocletOptions
+
+				opts.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
+				opts.addStringOption("-show-module-contents", "api")
+				opts.addStringOption("-show-packages", "exported")
+				opts.linkSource(true)
+
+				val moduleProjects: List<Project> = extensions.modules.get()
+					.map { project.project(it) }
+
+				// Setting sources and classpath.
+				moduleProjects.forEach { module ->
+					source += module.sourceSets.main.allJava
+					classpath += module.sourceSets.main.compileClasspath
+
+					module.snippetPaths?.apply {
+						opts.addStringOption("-snippet-path", this)
+					}
+				}
+
+				val moduleSourcePaths = moduleProjects
+					.map { "${it.moduleName}=${it.projectDir}/src/main/java" }
+
+				moduleSourcePaths.forEach { println(it) }
+
+				opts.addMultilineStringsOption("-module-source-path")
+					.value = moduleSourcePaths
+
+				modularity.inferModulePath.set(true)
+
+				setDestinationDir(project.file(
+					"${project.layout.buildDirectory.asFile.get()}/docs/alljavadoc"
+				))
+			}
+		}
     }
 
     /**
@@ -83,10 +142,14 @@ class AllJavadocPlugin : Plugin<Project> {
      * @param extension the extension containing the desired modules
      * @param task the task that should be configured
      */
-    private fun configure(project: Project, extension: AllJavadocExtension, task: Javadoc) {
+    private fun configure(
+		project: Project,
+		extension: AllJavadocExtension,
+		task: Javadoc
+	) {
         val projects = project.subprojects
 			.filterNotNull()
-            .filter { extension.modules.get().contains(it.name) }
+            //.filter { extension.modules.get().contains(it.name) }
             .toSet()
 
         project.subprojects.forEach { subproject ->
@@ -115,8 +178,10 @@ class AllJavadocPlugin : Plugin<Project> {
 				"${project.layout.buildDirectory.asFile.get()}/docs/alljavadoc"
 			))
             task.title = "${project.name} documentation"
-            task.options {
-                this as StandardJavadocDocletOptions
+
+			task.modularity.inferModulePath.set(true)
+
+			task.options { this as StandardJavadocDocletOptions
                 addStringOption("Xdoclint:none", "-quiet")
                 addBooleanOption("Xdoclint:none", true)
                 windowTitle = "${project.name.uppercase()} ${LocalDate.now()}"
@@ -141,9 +206,9 @@ class AllJavadocPlugin : Plugin<Project> {
     }
 
     /**
-     * Function which parses all the fully-qualified names out of the given project.
+     * Function which parses all the full qualified names out of the given project.
      *
-     * @param project the project that contains the javadoc candidates
+     * @param project the project that contains the Javadoc candidates
      */
     private fun getPackages(project: Project): Set<String> =
         project.sourceSets.findByName("main")?.java
