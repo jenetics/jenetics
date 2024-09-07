@@ -17,12 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.combinatorial;
 
 import java.util.Arrays;
 import java.util.random.RandomGenerator;
-
-import io.jenetics.incubator.combinatorial.Cursor;
-import io.jenetics.incubator.combinatorial.KSubset;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
