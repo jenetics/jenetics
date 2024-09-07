@@ -17,14 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-
-import io.jenetics.incubator.beans.reflect.ArrayType;
-import io.jenetics.incubator.beans.reflect.BeanType;
-import io.jenetics.incubator.beans.reflect.ElementType;
-import io.jenetics.incubator.beans.reflect.ListType;
-import io.jenetics.incubator.beans.reflect.OptionalType;
-import io.jenetics.incubator.beans.reflect.PropertyType;
-import io.jenetics.incubator.beans.reflect.RecordType;
+package io.jenetics.incubator.beans.reflect;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

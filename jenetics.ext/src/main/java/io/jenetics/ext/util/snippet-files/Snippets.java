@@ -17,6 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.util;
 
 import static java.lang.Double.parseDouble;
 
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.ext.util.CsvSupport;
 import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
 import io.jenetics.ext.util.CsvSupport.ColumnJoiner;
 import io.jenetics.ext.util.CsvSupport.LineReader;
