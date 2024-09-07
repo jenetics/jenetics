@@ -61,7 +61,6 @@ alljavadoc {
 		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
 		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
 
-		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
 		doclet.addStringOption("docfilessubdirs")
 		doclet.tags = listOf(
 			"apiNote:a:API Note:",
