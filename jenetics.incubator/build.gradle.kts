@@ -43,14 +43,12 @@ dependencies {
 	api(project(":jenetics.prog"))
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
 	implementation(libs.commons.math)
-	//antlr("org.antlr:antlr4:4.9.3")
 
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.guava)
 	testImplementation(libs.testng)
 	testImplementation(libs.jpx)
-	//testImplementation("omds-domain:omds-domain")
 
 	jmh(libs.commons.csv)
 	jmh(libs.javacsv)

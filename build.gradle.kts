@@ -34,8 +34,6 @@ rootProject.version = Jenetics.VERSION
 
 
 alljavadoc {
-	excludes.add("*internal*")
-
 	modules.set(listOf(
 		"jenetics",
 		"jenetics.ext",
@@ -43,12 +41,14 @@ alljavadoc {
 		"jenetics.xml"
 	))
 
-	options.value { doclet ->
+	files.set { filter ->
+		filter.exclude("**/internal/**")
+	}
+
+	options.set { doclet ->
 		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
-		snippetPaths(project)?.let { doclet.addStringOption("-snippet-path", it) }
 		doclet.addStringOption("-show-module-contents", "api")
 		doclet.addStringOption("-show-packages", "exported")
-		doclet.addStringOption("exclude", "io.jenetics.internal")
 		doclet.version(true)
 		doclet.docEncoding = "UTF-8"
 		doclet.charSet = "UTF-8"
@@ -119,7 +119,7 @@ subprojects {
 
 		setupJava(project)
 		setupTestReporting(project)
-		setupJavadoc(project, "")
+		//setupJavadoc(project, "")
 	}
 
 	tasks.withType<JavaCompile> {
