@@ -38,8 +38,8 @@ import org.gradle.kotlin.dsl.create
  * tasks, which creates a combined Javadoc for all modules.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 8.1
+ * @version 8.1
  */
 interface AllJavadocExtension {
 
@@ -63,6 +63,10 @@ interface AllJavadocExtension {
 
 /**
  * Gradle Plugin which defines and configure the native [Javadoc] task.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.1
+ * @version 8.1
  */
 class AllJavadocPlugin : Plugin<Project> {
 
