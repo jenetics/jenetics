@@ -17,6 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.util;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -24,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
-import io.jenetics.incubator.util.ZippedFileReader;
 
 import io.jenetics.ext.util.CsvSupport;
 

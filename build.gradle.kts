@@ -27,9 +27,50 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
+	id("alljavadoc")
 }
 
 rootProject.version = Jenetics.VERSION
+
+
+alljavadoc {
+	modules.set(listOf(
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	))
+
+	files.set { filter ->
+		filter.exclude("**/internal/**")
+	}
+
+	options.set { doclet ->
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
+		doclet.addStringOption("-show-module-contents", "api")
+		doclet.addStringOption("-show-packages", "exported")
+		doclet.version(true)
+		doclet.docEncoding = "UTF-8"
+		doclet.charSet = "UTF-8"
+		doclet.linkSource(true)
+		doclet.linksOffline(
+			"https://docs.oracle.com/en/java/javase/21/docs/api/",
+			"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+		)
+		doclet.windowTitle = "Jenetics ${project.version}"
+		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
+		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
+
+		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
+		doclet.addStringOption("docfilessubdirs")
+		doclet.tags = listOf(
+			"apiNote:a:API Note:",
+			"implSpec:a:Implementation Requirements:",
+			"implNote:a:Implementation Note:"
+		)
+	}
+}
+
 
 tasks.named<Wrapper>("wrapper") {
 	gradleVersion = "8.10"
@@ -56,8 +97,6 @@ allprojects {
 	}
 }
 
-apply("./gradle/alljavadoc.gradle")
-
 subprojects {
 	val project = this
 
@@ -80,7 +119,6 @@ subprojects {
 
 		setupJava(project)
 		setupTestReporting(project)
-		setupJavadoc(project, "")
 	}
 
 	tasks.withType<JavaCompile> {
@@ -97,13 +135,6 @@ gradle.projectsEvaluated {
 			setupPublishing(project)
 		}
 	}
-}
-
-/**
- * Project configuration *after* the projects has been evaluated.
- */
-gradle.projectsEvaluated {
-	setupJavadoc(rootProject, "all")
 }
 
 /**
@@ -163,84 +194,6 @@ fun setupTestReporting(project: Project) {
 
 		named<Test>("test") {
 			finalizedBy("jacocoTestReport")
-		}
-	}
-}
-
-/**
- * Setup of the projects Javadoc.
- */
-fun setupJavadoc(project: Project, taskName: String) {
-	project.tasks.withType<Javadoc> {
-		modularity.inferModulePath.set(true)
-
-		val doclet = options as StandardJavadocDocletOptions
-		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
-		snippetPaths(project)?.let { doclet.addStringOption("-snippet-path", it) }
-		doclet.addStringOption("-show-module-contents", "api")
-		doclet.addStringOption("-show-packages", "exported")
-		doclet.addStringOption("exclude", "io.jenetics.internal")
-		doclet.version(true)
-		doclet.docEncoding = "UTF-8"
-		doclet.charSet = "UTF-8"
-		doclet.linkSource(true)
-		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/21/docs/api/",
-				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
-			)
-		doclet.windowTitle = "Jenetics ${project.version}"
-		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
-		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-
-		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
-		doclet.addStringOption("docfilessubdirs")
-		doclet.tags = listOf(
-				"apiNote:a:API Note:",
-				"implSpec:a:Implementation Requirements:",
-				"implNote:a:Implementation Note:"
-			)
-
-		doLast {
-			val dir = if (project.extra.has("moduleName")) {
-				project.extra["moduleName"].toString()
-			} else {
-				""
-			}
-
-			project.copy {
-				from("src/main/java") {
-					include("io/**/doc-files/*.*")
-				}
-				includeEmptyDirs = false
-				into(destinationDir!!.resolve(dir))
-			}
-		}
-	}
-
-	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
-	if (javadoc != null) {
-		project.tasks.register("${taskName}java2html") {
-			doLast {
-				val srcdir = file("${project.projectDir}/src/main/java")
-
-				if (srcdir.isDirectory) {
-					project.javaexec {
-						mainClass.set("de.java2html.Java2Html")
-						args = listOf(
-							"-srcdir", srcdir.toString(),
-							"-targetdir", "${javadoc.destinationDir}/src-html"
-						)
-						classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
-					}
-				}
-			}
-		}
-
-		javadoc.doLast {
-			val java2html = project.tasks.findByName("${taskName}java2html")
-			java2html?.actions?.forEach {
-				it.execute(java2html)
-			}
 		}
 	}
 }

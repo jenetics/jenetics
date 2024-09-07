@@ -20,18 +20,20 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
+ * @since 8.1
  */
 @SuppressWarnings("module")
-module io.jenetics.base {
-	exports io.jenetics;
-	exports io.jenetics.engine;
-	exports io.jenetics.stat;
-	exports io.jenetics.util;
+module io.jenetics.incubator {
+	requires io.jenetics.base;
+	requires io.jenetics.ext;
+	requires io.jenetics.prog;
+	requires java.desktop;
 
-	exports io.jenetics.internal.engine to io.jenetics.ext;
-	exports io.jenetics.internal.math to
-		io.jenetics.ext, io.jenetics.incubator;
-	exports io.jenetics.internal.util to
-		io.jenetics.ext, io.jenetics.prog, io.jenetics.incubator;
+	exports io.jenetics.incubator.beans;
+	exports io.jenetics.incubator.beans.description;
+	exports io.jenetics.incubator.beans.property;
+	exports io.jenetics.incubator.beans.reflect;
+	exports io.jenetics.incubator.combinatorial;
+	exports io.jenetics.incubator.prog;
+	exports io.jenetics.incubator.util;
 }
