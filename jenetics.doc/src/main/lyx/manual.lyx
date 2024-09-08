@@ -27459,6 +27459,292 @@ Data structures
 \end_layout
 
 \begin_layout Subsubsection
+CSV
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:CSV"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CSV
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Some optimization problems operate on data, stored in CSV format
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\family typewriter
+CsvSupport
+\family default
+ class fully implements RFC-4180: 
+\shape italic
+Common Format and MIME Type for Comma-Separated Values (CSV) Files
+\shape default
+ (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://tools.ietf.org/html/rfc4180
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+
+.
+ Symbolic regression, as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Symbolic-regression"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, is one example of such a problem.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+try (Stream<String> lines = 
+\end_layout
+
+\begin_layout Plain Layout
+
+     CsvSupport.lines(new FileReader("data.csv"))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    final List<String[]> rows = lines
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(CsvSupport::split)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toList();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:CsvSupport.lines method"
+
+\end_inset
+
+General usage example of
+\family typewriter
+ CsvSupport
+\family default
+ class.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:CsvSupport.lines method"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the most general way reading CSV data from a file.
+ Additional helper functions allows to parse CSV data directly from a CSV
+ string and parse it either as 
+\family typewriter
+String
+\family default
+ values:
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final List<String[]> rows = CsvSupport.parse("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    ad,aixas,Aixàs,06,,42.4833333,1.4666667
+\end_layout
+
+\begin_layout Plain Layout
+
+    ad,aixirivali,Aixirivali,06,,42.4666667,1.5
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+Or 
+\family typewriter
+double
+\family default
+ values:
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final List<double[]> rows = CsvSupport.parseDoubles("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.7,0.6020
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.8,0.9280
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.9,1.3860
+\end_layout
+
+\begin_layout Plain Layout
+
+    1.0,2.0000
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The functional design of the CsvSupport makes it highly configurable and
+ allows to read and write CSV data with different 
+\shape italic
+quote
+\shape default
+ and/or 
+\shape italic
+separator
+\shape default
+ characters.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final var reader = new LineReader(new Quote('
+\backslash
+"'));
+\end_layout
+
+\begin_layout Plain Layout
+
+final var splitter = new LineSplitter(new Separator(','));
+\end_layout
+
+\begin_layout Plain Layout
+
+try (Stream<String> lines = reader.read(new FileReader(csv))) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final List<String[]> rows = lines
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(splitter::split)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toList();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 Tree
 \begin_inset Index idx
 status collapsed
@@ -36150,6 +36436,13 @@ The ephemeral constant value is determined when it is inserted in the tree
 
 \begin_layout Subsection
 Program creation
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-creation"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -36578,6 +36871,13 @@ final Tree<?, ?> tree = chromosome.root();
 
 \begin_layout Subsection
 Program repair
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-repair"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -37012,6 +37312,13 @@ The variables in an expression string are sorted alphabetically.
 
 \begin_layout Subsection
 Multi-root programs
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Multi-root-programs"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -37149,6 +37456,13 @@ some
 
 \begin_layout Subsection
 Symbolic regression
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Symbolic-regression"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
