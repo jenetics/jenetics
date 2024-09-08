@@ -63,6 +63,12 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * <p>
  * <b>Parsing CSV string</b>
  * {@snippet class="Snippets" region="parseCsv"}
+ * <p>
+ * <b>Parsing double values, given as CSV string</b>
+ * <p>
+ * Another example is to parse double values, which are given as CSV string and
+ * use this data for running a regression analysis.
+ * {@snippet class="Snippets" region="DoublesParsingSnippets.parseDoubles"}
  *
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *

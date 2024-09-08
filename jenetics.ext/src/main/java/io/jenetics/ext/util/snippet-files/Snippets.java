@@ -269,4 +269,25 @@ final class Snippets {
 
 	}
 
+	static class DoublesParsingSnippets {
+		void parse() {
+			// @start region="DoublesParsingSnippets.parseDoubles"
+			final List<double[]> values = CsvSupport.parseDoubles("""
+				0.0,0.0000
+				0.1,0.0740
+				0.2,0.1120
+				0.3,0.1380
+				0.4,0.1760
+				0.5,0.2500
+				0.6,0.3840
+				0.7,0.6020
+				0.8,0.9280
+				0.9,1.3860
+				1.0,2.0000
+				"""
+			);
+			// @end
+		}
+	}
+
 }
