@@ -1,3 +1,5 @@
+import io.jenetics.gradle.dsl.moduleName
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -30,9 +32,8 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
+moduleName = "io.jenetics.base"
 description = "Jenetics - Java Genetic Algorithm Library"
-
-extra["moduleName"] = "io.jenetics.base"
 
 dependencies {
 	testImplementation(libs.assertj)

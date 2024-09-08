@@ -29,75 +29,91 @@ import org.gradle.kotlin.dsl.extra
 import java.io.File
 
 /**
- * Gets all source sets for java projects.
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.1
+ * @version 8.1
  */
-val Project.sourceSets: SourceSetContainer get() =
-	this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
 
 /**
  * Gets the main source set of the project.
  */
-val SourceSetContainer.main: SourceSet get() =
-	this.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+val SourceSetContainer.main: SourceSet
+	get() = this.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+
+/**
+ * Gets all source sets for java projects.
+ */
+val Project.sourceSets: SourceSetContainer
+	get() = this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
 
 /**
  * Gets the module name of the project, as configured in the build file.
  */
-val Project.moduleName: String get() =
-	this.extra.get("moduleName")?.toString() ?: this.name
+var Project.moduleName: String
+	get() = this.extra.get("moduleName")?.toString() ?: this.name
+	set(value) = this.extra.set("moduleName", value)
 
 /**
  * Checks if the project is configured as a module.
  */
-val Project.isModule: Boolean get() = this.extra.has("moduleName")
+val Project.isModule: Boolean
+	get() = this.extra.has("moduleName")
 
 /**
  * Gets all Java sources of the project.
  */
-val Project.allJava: FileTree get() = this.sourceSets.main.allJava.asFileTree
+val Project.allJava: FileTree
+	get() = this.sourceSets.main.allJava.asFileTree
 
 /**
  * Gets all Java sources from a list of projects.
  */
-val List<Project>.allJava: FileTree get() =
-	this.map { it.allJava }
-		.reduce { a, b -> a.plus(b) }
+val List<Project>.allJava: FileTree
+	get() = this.map { it.allJava }.reduce { a, b -> a.plus(b) }
 
 /**
  * Gets the classpath of the main source set of the project.
  */
-val Project.compileClasspath: FileCollection get() =
-	this.sourceSets.main.compileClasspath
+val Project.compileClasspath: FileCollection
+	get() = this.sourceSets.main.compileClasspath
 
 /**
  * Gets the combined classpath from a list of projects.
  */
-val List<Project>.compileClasspath: FileCollection get() =
-	this.map { it.compileClasspath }
-		.reduce { a, b -> a.plus(b) }
+val List<Project>.compileClasspath: FileCollection
+	get() = this.map { it.compileClasspath }.reduce { a, b -> a.plus(b) }
+
+/**
+ * Gets all source directories of the project.
+ */
+val Project.sourceDirs: List<File>
+	get() = this.sourceSets.flatMap { it.allSource.sourceDirectories }
 
 /**
  * Gets the _snippet_ paths fo a project.
  */
-val Project.snippetPaths: Set<String> get() =
-	File("${project.projectDir}/src/main/java").walk()
-		.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
-		.map { it.absolutePath }
+val Project.snippetPaths: Set<String>
+	get() = this.sourceDirs
+		.flatMap { dir ->
+			dir.walk()
+				.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
+				.map { it.absolutePath }
+		}
 		.toSet()
 
 /**
  * Gets the _snippet_ path of a project as string.
  */
-val Project.snippetPathString: String? get() =
-	this.snippetPaths
+val Project.snippetPathString: String?
+	get() = this.snippetPaths
 		.joinToString(separator = File.pathSeparator)
 		.ifEmpty { null }
 
 /**
  * Gets the _snippet_ path of a list of projects as string.
  */
-val List<Project>.snippetPathString: String? get() =
-	this.flatMap { it.snippetPaths }
+val List<Project>.snippetPathString: String?
+	get() = this.flatMap { it.snippetPaths }
 		.joinToString(separator = File.pathSeparator)
 		.ifEmpty { null }
 

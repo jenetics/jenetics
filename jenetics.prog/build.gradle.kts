@@ -1,3 +1,5 @@
+import io.jenetics.gradle.dsl.moduleName
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -33,9 +35,8 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
+moduleName = "org.jenetics.prog"
 description = "Jenetics Genetic Programming"
-
-extra["moduleName"] = "io.jenetics.prog"
 
 dependencies {
 	api(project(":jenetics"))
