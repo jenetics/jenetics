@@ -504,9 +504,8 @@ public final class CsvSupport {
 
 	/**
 	 * This class reads CSV files and splits it into lines. It takes a quote
-	 * character as a parameter, which is needed for not splitting on quoted
+	 * character as a parameter, which is necessary for not splitting on quoted
 	 * line feeds.
-	 *
 	 * {@snippet lang="java":
 	 * final var csv = """
 	 *     0.0,0.0000
