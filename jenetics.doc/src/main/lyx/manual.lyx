@@ -685,7 +685,7 @@ https://www.oracle.com/java/technologies/downloads/
 
 \end_inset
 
-, which provides a
+, which provides a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic algorithm"
@@ -694,7 +694,7 @@ literal "false"
 
 \end_inset
 
- (GA),
+ (GA), 
 \begin_inset CommandInset href
 LatexCommand href
 name "Evolutionary algorithm"
@@ -703,7 +703,7 @@ literal "false"
 
 \end_inset
 
- (EA),
+ (EA), 
 \begin_inset CommandInset href
 LatexCommand href
 name "Multi-objective optimization"
@@ -712,7 +712,7 @@ literal "false"
 
 \end_inset
 
- (MOO) and
+ (MOO) and 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic programming"
