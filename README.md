@@ -23,7 +23,7 @@ Check out the master branch from GitHub.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
-Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each subproject is located in its own subdirectory:
+Jenetics uses [Gradle](http://www.gradle.org/downloads) as a build system and organizes the source into *sub*-projects (modules). Each subproject is located in its own subdirectory:
 
 **Published projects**
 
@@ -31,13 +31,13 @@ The following projects/modules are also published to Maven.
 
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
 * **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA) and doing Grammatical Evolution (GE). 
-* **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
+* **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contain classes that allow to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
 * **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
 
 **Non-published projects**
 
 * **jenetics.example**: This project contains example code for the *core*-module.
-* **jenetics.doc**: Contains the code of the web-site and the manual.
+* **jenetics.doc**: Contains the code of the website and the manual.
 * **jenetics.tool**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
 
 For building the library change into the `<builddir>` directory (or one of the module directories) and call one of the available tasks:
@@ -276,12 +276,31 @@ Jared Murphy and Travis Desell. <a href="https://doi.org/10.1145/3638530.3664173
 
 ## Release notes
 
+### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
+
+#### Improvements
+
+* [#822](https://github.com/jenetics/jenetics/issues/822): Improve build script for generating combined Javadoc.
+* [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
+```java
+static List<Sample<Double>> parseDoubles(final CharSequence csv) {
+	return CsvSupport.parseDoubles(csv).stream()
+		.map(Sample::ofDouble)
+		.toList();
+}
+```
+* [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
+
+### Bugs
+
+* [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
+
 ### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
 
 #### Improvements
 
 * Java 21 is used for building and using the library.
-* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function. Must be enabled when creating an `Engine` (see code snippet below), the previous behaviour has been preserverd.
+* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function. Must be enabled when creating an `Engine` (see code snippet below), the previous behavior has been preserved.
 ```java
 final Engine<DoubleGene, Double> engine = Engine.builder(ff)
 	.fitnessExecutor(BatchExecutor.ofVirtualThreads())

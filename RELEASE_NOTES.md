@@ -1,5 +1,24 @@
 ## Release notes
 
+### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
+
+#### Improvements
+
+* [#822](https://github.com/jenetics/jenetics/issues/822): Improve build script for generating combined Javadoc.
+* [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
+```java
+static List<Sample<Double>> parseDoubles(final CharSequence csv) {
+	return CsvSupport.parseDoubles(csv).stream()
+		.map(Sample::ofDouble)
+		.toList();
+}
+```
+* [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
+
+### Bugs
+
+* [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
+
 ### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
 
 #### Improvements
