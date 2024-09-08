@@ -280,7 +280,7 @@ Jared Murphy and Travis Desell. <a href="https://doi.org/10.1145/3638530.3664173
 
 #### Improvements
 
-* [#822](https://github.com/jenetics/jenetics/issues/822): Improve build script for generating combined Javadoc.
+* [#822](https://github.com/jenetics/jenetics/issues/822): Improve the build script for generating combined Javadoc.
 * [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
 ```java
 static List<Sample<Double>> parseDoubles(final CharSequence csv) {
