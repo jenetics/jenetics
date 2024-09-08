@@ -32,7 +32,7 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
-moduleName = "org.jenetics.ext"
+moduleName = "io.jenetics.ext"
 description = "Jenetics Extension"
 
 dependencies {

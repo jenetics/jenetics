@@ -35,7 +35,7 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
-moduleName = "org.jenetics.prog"
+moduleName = "io.jenetics.prog"
 description = "Jenetics Genetic Programming"
 
 dependencies {

@@ -32,7 +32,7 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
-moduleName = "org.jenetics.xml"
+moduleName = "io.jenetics.xml"
 description = "Jenetics XML-Marshalling"
 
 dependencies {
