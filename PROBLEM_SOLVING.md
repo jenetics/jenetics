@@ -1,6 +1,14 @@
-# Problem-solving best practices
+# Optimizing with Jenetics
 
-Before describing best practises for implementing optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
+Jenetics is a library which allows to solve optimization problems using metaheuristic methods.
+
+> In computer science and mathematical optimization, a metaheuristic is a higher-level procedure or heuristic designed to find, generate, tune, or select a heuristic (partial search algorithm) that may provide a sufficiently good solution to an optimization problem or a machine learning problem, especially with incomplete or imperfect information or limited computation capacity.
+> 
+> [_Wikipedia_: Metaheuristic](https://en.wikipedia.org/wiki/Metaheuristic)
+
+Trying to solve a non-trivial optimization problem, one might be overwhelmed by the problem itself **and** the _correct_ usage of the Jenetics library. This might be the case when one is not familiar with Metaheuristics in general, or the field of Evolutionary algorithms in particular. The following will give a simple _methodology_ when developing optimization algorithms with Jenetics.
+
+Before describing one best practise when implementing an optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
 
 > In mathematics, engineering, computer science and economics, an optimization problem is the problem of finding the best solution from all feasible solutions.
 > 
@@ -12,7 +20,7 @@ A graphical representation of an optimization problem is shown in the diagram ab
 
  From a given solution space, _S_, we want to find the solution with the _optimal_ fitness value, which fulfills a given constraint, _C_. With this definition, we can start and suggest some implementation strategies using Jenetics.
 
-## General strategy
+## General methodology
 
 Jenetics uses the `Genotpye` class as unified view onto the solution space of the problem. For trivial "Hello World"-problems, it is totally fine to describe the solution space in terms of this class. E.g. for the Bit-count _text book_ example, where the fitness function directly uses the `Genotype` as input parameter.
 
@@ -28,13 +36,17 @@ For non-trivial optimization problems, using the encoding classes  `Genotype`, d
 
 It is recommended to first find a domain model, `T`, which best represents your solution space. Ideally, the domain model doesn't allow the modelling of invalid solutions. The fitness function calculates the fitness value with the model class `T`, instead of the `Genotype`, which usually simplifies the implementation. 
 
+> **Hint:** Choose a _native_ solution model, `T`, which is able to represent only valid solution candidates, or as view as possible invalid solution candidates.
+
 To connect the _native_ domain model and the fitness function with the Jenetics `Engine`, an appropriate `Codec` must be implemented. The `Codec` is the connector between the _native_ model and the `Engine`. With this approach, one can separate the problem of implementing the fitness function from the _mapping_ between `Genotype` and _native_ model `T`.
 
-> **General solution steps**
-> 1) Find domain model, `T`, for the solution space.
-> 2) Implement the fitness function in terms of `T`.
-> 3) Find a `Codec` which maps a `Genotype` to `T`. 
-> 4) Setup `Engine` with `Codec` and fitness function, _f(T)_.
+> **Hint:** The `Codec` should map every `Genotype` to only valid solution candidates in `T`, or as view as possible invalid solution candidates. Every `Genotype` should also be mapped to only one solution candidate in `T`.
+
+**Implementation steps**
+1) Find domain model, `T`, for the solution space.
+2) Implement the fitness function in terms of `T`.
+3) Find a `Codec` which maps a `Genotype` to `T`. 
+4) Setup `Engine` with `Codec` and fitness function, _f(T)_.
 
 The following code snippet shows how to use a `Codec` for the Ones-count problem, introduced above. It shows the steps 2 to 4 from the general solution template. Step 1, finding the domain model representing the solution space, is trivial in this example: `T := int`.
 
@@ -53,54 +65,9 @@ final Codec<Integer, BitGene> codec = Codec.of(
 );
 
 // 4. Engine creation.
-final static Engine<BitGene, Integer> eng = Engine
+final static Engine<BitGene, Integer> engine = Engine
     .builder(this::count, codec)
     .build();
 ```
 
-## Combinatorial problems
-
-
-## Unify heterogeneous (numerical) chromosomes
-
-The `Genotype` only allows to have chromosomes with the same `Gentype`. It is not allowed to use different chromosome types within the same `Genotype` and the following code would lead to a compile error.
-
-```java
-// Model class for native problem domain.
-record Tuple(int a, long b, double c) {}
-
-var codec = Codec.of(
-    // Invalid 'Genotype' definition; will not compile.
-    Genotype.of(
-        IntegerChromosome.of(IntRange.of(0, 100)),
-        LongChromosome.of(LongRange.of(0, Long.MAX_VALUE/2)),
-        DoubleChromosome.of(DoubleRange.of(0, 1))
-    ),
-    genotype -> new Tuple(
-        genotype.gene().intValue(),
-        genotype.gene().longValue(),
-        genotype.gene().doubleValue()
-    )
-);
-```
-
-If the `Genotype` only consists of `DoubleChromosome`s, the `Codec` will compile and work like intended.
-
-```java
-var codec = Codec.of(
-    // Will compile now.
-    Genotype.of(
-        DoubleChromosome.of(DoubleRange.of(0, 100)),
-        DoubleChromosome.of(DoubleRange.of(0, Long.MAX_VALUE/2)),
-        DoubleChromosome.of(DoubleRange.of(0, 1))
-    ),
-    genotype -> new Tuple(
-        genotype.gene().intValue(),
-        genotype.gene().longValue(),
-        genotype.gene().doubleValue()
-    )
-);
-```
-
-If your `Genotype` encoding requires different kinds of _numerical_ chromosomes, 
-
+Although the given guideline seems quite simplistic, it allows to break down the implementation process into several step, which can be solved one after another. And this can help to reduce the overall complexity of the final implementation.
