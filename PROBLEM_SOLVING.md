@@ -1,20 +1,20 @@
 # Optimizing with Jenetics
 
-Jenetics is a library which allows to solve optimization problems using metaheuristic methods.
+Jenetics is a library that allows to solve optimization problems using metaheuristic methods.
 
 > In computer science and mathematical optimization, a metaheuristic is a higher-level procedure or heuristic designed to find, generate, tune, or select a heuristic (partial search algorithm) that may provide a sufficiently good solution to an optimization problem or a machine learning problem, especially with incomplete or imperfect information or limited computation capacity.
 > 
 > [_Wikipedia_: Metaheuristic](https://en.wikipedia.org/wiki/Metaheuristic)
 
-Trying to solve a non-trivial optimization problem, one might be overwhelmed by the problem itself **and** the _correct_ usage of the Jenetics library. This might be the case when one is not familiar with Metaheuristics in general, or the field of Evolutionary algorithms in particular. The following will give a simple _methodology_ when developing optimization algorithms with Jenetics.
+Trying to solve a non-trivial optimization problem, one might be overwhelmed by the problem itself **and** the _correct_ usage of the Jenetics library. This might be the case when one is not familiar with Metaheuristics in general, or the field of Evolutionary algorithms in particular. The following will give a simple _methodology_ and tips when developing optimization algorithms with Jenetics.
 
-Before describing one best practise when implementing an optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
+Before describing one best practice when implementing an optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
 
 > In mathematics, engineering, computer science and economics, an optimization problem is the problem of finding the best solution from all feasible solutions.
 > 
 > [_Wikipedia_: Optimization problem](https://en.wikipedia.org/wiki/Optimization_problem)
 
-A graphical representation of an optimization problem is shown in the diagram above.
+A graphical representation of an optimization problem is shown in the diagram below.
 
 ![SVG Image](jenetics.doc/src/main/resources/graphic/OptimizationProblem.svg)
 
@@ -22,7 +22,7 @@ A graphical representation of an optimization problem is shown in the diagram ab
 
 ## General methodology
 
-Jenetics uses the `Genotpye` class as unified view onto the solution space of the problem. For trivial "Hello World"-problems, it is totally fine to describe the solution space in terms of this class. E.g. for the Bit-count _text book_ example, where the fitness function directly uses the `Genotype` as input parameter.
+Jenetics uses the `Genotpye` class as unified view onto the solution space of the problem. For trivial "Hello World"-problems, it is totally fine to describe the solution space in terms of this class. E.g., for the Ones-count _text book_ example, where the fitness function directly uses the `Genotype` as input parameter. The code snippet below shows the fitness function for the Ones-count problem.
 
 ```java
 static int count(final Genotype<BitGene> gt) {
@@ -34,7 +34,7 @@ static int count(final Genotype<BitGene> gt) {
 
 For non-trivial optimization problems, using the encoding classes  `Genotype`, directly is not the best way using the Jenetics library. 
 
-It is recommended to first find a domain model, `S`, which best represents your solution space. Ideally, the domain model doesn't allow the modelling of invalid solutions. The fitness function calculates the fitness value with the model class `S`, instead of the `Genotype`, which usually simplifies the implementation. 
+It is recommended to first find a domain model, `S`, which best represents your solution space. Ideally, the domain model doesn't allow the modeling of invalid solutions. The fitness function calculates the fitness value with the model class `S`, instead of the `Genotype`, which usually simplifies the implementation. 
 
 > **Hint:** Choose a _native_ solution model, `S`, which is able to represent only valid solution candidates, or as view as possible invalid solution candidates.
 
@@ -43,12 +43,12 @@ To connect the _native_ domain model and the fitness function with the Jenetics 
 > **Hint:** The `Codec` should map every `Genotype` to only valid solution candidates in `S`, or as view as possible invalid solution candidates. Every `Genotype` should also be mapped to only one solution candidate in `S`.
 
 **Implementation steps**
-1) Find domain model, `S`, for the solution space.
+1) Find a domain model, `S`, for the solution space.
 2) Implement the fitness function in terms of `S`.
 3) Find a `Codec` which maps a `Genotype` to `S`. 
 4) Setup `Engine` with `Codec` and fitness function, _f(S)_.
 
-The following code snippet shows how to use a `Codec` for the Ones-count problem, introduced above. It shows the steps 2 to 4 from the general solution template. Step 1, finding the domain model representing the solution space, is trivial in this example: `S := int`.
+The following code snippet shows how to use a `Codec` for the Ones-count problem, introduced above. It shows steps 2 to 4 from the general solution template. Step 1, finding the domain model representing the solution space, is trivial in this example: `S := int`.
 
 ```java
 // 2. Fitness function working on native solution space.
@@ -70,11 +70,11 @@ final static Engine<BitGene, Integer> engine = Engine
     .build();
 ```
 
-Although the given guideline seems quite simplistic, it allows to break down the implementation process into several step, which can be solved one after another. And this can help to reduce the overall complexity of the final implementation.
+Although the given guideline seems quite simplistic, it allows breaking down the implementation process into several steps, which can be solved one after another. And this can help to reduce the overall complexity of the final implementation.
 
 ## Mixed permutation problems
 
-Permutation problems are usually encoded by using the `PermutaionChromosme`, which guarantees that only permutations of a given gene set are possible. This works fine, if your problem is a purely permutational one. For _mixed_ problems, the `PermutationChromosome` can no longer be used, since all `Gene`s in a `Genotype` must be from the same time. The usual strategy for _numerical_ optimization problems is to use only `DoubleChromosome`s and cast the `double` values to `int`s in the codec, if integer values are required. E.g. imagine the following solution space model:
+Permutation problems are usually encoded by using the `PermutaionChromosme`, which guarantees that only permutations of a given gene set are possible. This works fine if your problem is a pure permutation. For _mixed_ problems, the `PermutationChromosome` can no longer be used, since all `Gene`s in a `Genotype` must be from the same type. The usual strategy for _numerical_ optimization problems is to use only `DoubleChromosome`s and cast the `double` values to `int`s in the codec, if integer values are required. E.g., imagine the following solution space model:
 
 ```java
 record Solution(
@@ -147,4 +147,4 @@ This way it is possible to split codecs into sub-codecs and combine it again.
 
 ***
 
-With these simple Jenetics tricks, it is possible to split the overall problem in smaller parts and make it manageable. Especially the possibility to combine several `Codec`s into one _uber_ `Codec` is a might, but, unfortunately, overlooked feature of Jenetics. 
+With these Jenetics tricks, it is possible to split the overall problem into smaller parts and make it manageable. Especially the possibility to combine several `Codec`s into one _uber_ `Codec` is a mighty, but, unfortunately, overlooked feature of Jenetics. 
