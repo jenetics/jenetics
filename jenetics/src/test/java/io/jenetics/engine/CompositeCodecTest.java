@@ -222,7 +222,7 @@ public class CompositeCodecTest {
 			gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 		);
 
-		final Codec<Duration, LongGene> durationCodec = Codec.of(
+		final Codec<Duration, LongGene> durationCodec = Codec.combine(
 			dateCodec1,
 			dateCodec2,
 			(d1, d2) -> Duration.ofDays(d2.toEpochDay() - d1.toEpochDay())
@@ -249,7 +249,7 @@ public class CompositeCodecTest {
 			gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 		);
 
-		final Codec<Duration, LongGene> durationCodec = Codec.of(
+		final Codec<Duration, LongGene> durationCodec = Codec.combine(
 			ISeq.of(dateCodec, dateCodec, dateCodec),
 			dates -> {
 				final LocalDate ld1 = (LocalDate)dates[0];
