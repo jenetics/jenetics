@@ -40961,13 +40961,32 @@ Optimizing
 \end_layout
 
 \begin_layout Standard
-Jenetics is a library that allows to solve optimization problems using metaheuri
-stic methods.
+In the previous sections, we've described the technical capabilities of
+ the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library in great detail.
+ What's missing are some general guidelines which will help to solve real
+ world optimization problems using metaheuristic methods, supported by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
 \end_layout
 
 \begin_layout Quote
 In computer science and mathematical optimization, a metaheuristic is a
- higher-level procedure or heuristic designed to find, generate, tune, or
+ higher-\SpecialChar softhyphen
+level procedure or heuristic designed to find, generate, tune, or
  select a heuristic (partial search algorithm) that may provide a sufficiently
  good solution to an optimization problem or a machine learning problem,
  especially with incomplete or imperfect information or limited computation
@@ -40983,17 +41002,26 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-Trying to solve a nontrivial optimization problem, one might be overwhelmed
- by the problem itself and the correct usage of the Jenetics library.
+The optimization examples shown so far where deliberately kept simple, since
+ the purpose was to illustrate library usage.
+ Trying to solve more advanced and nontrivial optimization problems, one
+ might be overwhelmed by the problem itself 
+\shape italic
+and
+\shape default
+ the correct usage of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
  This might be the case when one is not familiar with Metaheuristics in
  general, or the field of Evolutionary algorithms in particular.
- The following will give a simple methodology and tips when developing optimizat
-ion algorithms with Jenetics.
-\end_layout
-
-\begin_layout Standard
-Before describing one best practice when implementing an optimization algorithms
- with Jenetics, we should recap what an optimization problem actually is.
+ Before starting with the description of some best practices, we will recap
+ what an optimization problem actually is.
 \end_layout
 
 \begin_layout Quote
@@ -41010,8 +41038,20 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-A graphical representation of an optimization problem is shown in the diagram
- below.
+We will talk about general optimization problems, which minimization and
+ an maximization problem.
+ A graphical representation of an optimization problem is shown in diagram
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Optimization-problem"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -41048,10 +41088,26 @@ Optimization problem
 
 \end_inset
 
-From a given solution space, S, we want to find the solution with the optimal
- fitness value, which fulfills a given constraint, C.
+From a given solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+, we want to find the solution with the optimal fitness value, which fulfills
+ a given constraint, 
+\begin_inset Formula $C$
+\end_inset
+
+.
  With this definition, we can start and suggest some implementation strategies
- using Jenetics.
+ using 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
 \end_layout
 
 \begin_layout Section
@@ -41059,13 +41115,52 @@ General methodology
 \end_layout
 
 \begin_layout Standard
-Jenetics uses the Genotpye class as unified view onto the solution space
- of the problem.
- For trivial "Hello World"-problems, it is totally fine to describe the
- solution space in terms of this class.
- E.g., for the Ones-count text book example, where the fitness function directly
- uses the Genotype as input parameter.
- The code snippet below shows the fitness function for the Ones-count problem.
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the 
+\family typewriter
+Genotype
+\family default
+ class as unified view onto the solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+, of the problem.
+ This means, that the fitness function takes a Genotype as input 
+\family typewriter
+Genotype
+\family default
+.
+ For trivial 
+\shape italic
+Hello World
+\shape default
+ problems, it is totally fine to describe the solution space in terms of
+ a 
+\family typewriter
+Genotype
+\family default
+.
+ E.g., for the 
+\emph on
+bit counting
+\emph default
+ problem, where the fitness function directly uses the 
+\family typewriter
+Genotype
+\family default
+ as input parameter.
+ The code snippet below shows the fitness function for the 
+\emph on
+bit counting
+\emph default
+ problem.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -41073,7 +41168,7 @@ status open
 
 \begin_layout Plain Layout
 
-static int count(final Genotype<BitGene> gt) {
+static int fitness(final Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -41098,16 +41193,35 @@ static int count(final Genotype<BitGene> gt) {
 
 \end_inset
 
-For nontrivial optimization problems, using the encoding classes Genotype,
- directly is not the best way using the Jenetics library.
-\end_layout
+For nontrivial optimization problems, using the 
+\family typewriter
+Genotype
+\family default
+, directly is not the best way for implementing the fitness function.
+ The code will become hard to read very quickly, since the implementation
+ of the actual fitness function is mixed with the code needed for decoding
+ the 
+\family typewriter
+Genotype
+\family default
+ to the 
+\shape italic
+native
+\shape default
+ solution space, 
+\begin_inset Formula $S$
+\end_inset
 
-\begin_layout Standard
-It is recommended to first find a domain model, S, which best represents
- your solution space.
+.
+ It is better to implement the fitness function in terms of 
+\begin_inset Formula $S$
+\end_inset
+
+.
+ To do that, it is needed to find a domain model, which best represents
+ the solution space.
  Ideally, the domain model doesn't allow the modeling of invalid solutions.
- The fitness function calculates the fitness value with the model class
- S, instead of the Genotype, which usually simplifies the implementation.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -41144,8 +41258,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Choose a native solution model, S, which is able to represent only valid
- solution candidates, or as view as possible invalid solution candidates.
+Find a domain model, which is able to represent only valid solution candidates,
+ or as view as possible invalid solution candidates.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41166,11 +41280,79 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-To connect the native domain model and the fitness function with the Jenetics
- Engine, an appropriate Codec must be implemented.
- The Codec is the connector between the native model and the Engine.
+To connect the domain model and the fitness function, which uses this domain
+ model, with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ 
+\family typewriter
+Engine
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsubsec:Engine"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, an appropriate 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ must be implemented.
+ The 
+\family typewriter
+Codec
+\family default
+ interface is the connector between the domain model and the 
+\family typewriter
+Engine
+\family default
+ class.
  With this approach, one can separate the problem of implementing the fitness
- function from the mapping between Genotype and native model S.
+ function from the problem mapping the 
+\family typewriter
+Genotype
+\family default
+ to the domain model.
 \end_layout
 
 \begin_layout Standard
@@ -41207,10 +41389,28 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The Codec should map every Genotype to only valid solution candidates in
- S, or as view as possible invalid solution candidates.
- Every Genotype should also be mapped to only one solution candidate in
- S.
+The 
+\family typewriter
+Codec
+\family sans
+ should map every 
+\family typewriter
+Genotype
+\family sans
+ to only valid solution candidates in 
+\begin_inset Formula $S$
+\end_inset
+
+, or as view as possible invalid solution candidates.
+ Every 
+\family typewriter
+Genotype
+\family sans
+ should also be mapped to only one solution candidate in 
+\begin_inset Formula $S$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41230,37 +41430,76 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 
 \series bold
-Implementation steps
+Methodological approach
 \end_layout
 
 \begin_layout Enumerate
-Find a domain model, S, for the solution space.
+Find a domain model for the solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+.
  
 \end_layout
 
 \begin_layout Enumerate
-Implement the fitness function in terms of S.
+Implement the fitness function in terms of the domain model.
  
 \end_layout
 
 \begin_layout Enumerate
-Find a Codec which maps a Genotype to S.
+Find a 
+\family typewriter
+Codec
+\family default
+ which maps a 
+\family typewriter
+Genotype
+\family default
+ to the domain model.
  
 \end_layout
 
 \begin_layout Enumerate
-Setup Engine with Codec and fitness function, f(S).
+Setup 
+\family typewriter
+Engine
+\family default
+ with 
+\family typewriter
+Codec
+\family default
+ and fitness function, 
+\begin_inset Formula $f(S)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-The following code snippet shows how to use a Codec for the Ones-count problem,
- introduced above.
- It shows steps 2 to 4 from the general solution template.
+The following code snippet shows how to use a 
+\family typewriter
+Codec
+\family default
+ for the 
+\emph on
+bit counting
+\emph default
+ problem.
+ It shows the steps 2 to 4 from the methodological approach.
  Step 1, finding the domain model representing the solution space, is trivial
- in this example: S := int.
+ in this example: 
+\begin_inset Formula $S$
+\end_inset
+
+ is set to 
+\family typewriter
+int
+\family default
+.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -41274,7 +41513,7 @@ status open
 
 \begin_layout Plain Layout
 
-static int count(final int count) {
+int fitness(final int count) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -41294,7 +41533,7 @@ static int count(final int count) {
 \begin_layout Plain Layout
 
 // 3.
- Codec for Genotype <--> int mapping.
+ Codec for Genotype to int mapping.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41334,7 +41573,7 @@ final Codec<Integer, BitGene> codec = Codec.of(
 \begin_layout Plain Layout
 
 // 4.
- Engine creation.
+ Setup Engine.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41344,7 +41583,7 @@ final static Engine<BitGene, Integer> engine = Engine
 
 \begin_layout Plain Layout
 
-    .builder(this::count, codec)
+    .builder(this::fitness, codec)
 \end_layout
 
 \begin_layout Plain Layout
@@ -41355,6 +41594,27 @@ final static Engine<BitGene, Integer> engine = Engine
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When solving optimization problems with Jenetics, following these steps
+ is a good starting point.
+ It will break down one big problem into smaller, more manageable problems.
+ The remaining sections in this chapter will give some concrete best practices
+ for different problem classes.
+ 
 \end_layout
 
 \begin_layout Section
@@ -41452,7 +41712,12 @@ final Codec<Solution, DoubleGene> codec = Codec.of(
 
 \begin_layout Plain Layout
 
-        DoubleChromosome.of(DoubleRange.of(0.0, 1.0), 100)     ),
+        DoubleChromosome.of(DoubleRange.of(0.0, 1.0), 100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    ),
 \end_layout
 
 \begin_layout Plain Layout
