@@ -19,14 +19,15 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.DoubleToIntFunction;
 import java.util.function.DoubleToLongFunction;
+import java.util.function.Function;
 import java.util.function.IntToDoubleFunction;
 import java.util.function.IntToLongFunction;
 import java.util.function.LongToDoubleFunction;
 import java.util.function.LongToIntFunction;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains methods for converting from and to the primitive arrays
@@ -69,6 +70,19 @@ public class ArrayConversions {
 	}
 
 	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<int[], long[]>
+	intToLongFunction(final IntToLongFunction mapper) {
+		requireNonNull(mapper);
+		return array -> intToLongArray(array, mapper);
+	}
+
+	/**
 	 * Converts the given {@code int[]} {@code array} to a {@code long[]} array.
 	 *
 	 * @param array the array to convert
@@ -100,6 +114,19 @@ public class ArrayConversions {
 	}
 
 	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<int[], double[]>
+	intToDoubleArray(final IntToDoubleFunction mapper) {
+		requireNonNull(mapper);
+		return array -> intToDoubleArray(array, mapper);
+	}
+
+	/**
 	 * Converts the given {@code int[]} {@code array} to a {@code double[]} array.
 	 *
 	 * @param array the array to convert
@@ -128,6 +155,19 @@ public class ArrayConversions {
 			result[i] = mapper.applyAsInt(array[i]);
 		}
 		return result;
+	}
+
+	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<long[], int[]>
+	longToIntArray(final LongToIntFunction mapper) {
+		requireNonNull(mapper);
+		return array -> longToIntArray(array, mapper);
 	}
 
 	/**
@@ -164,6 +204,19 @@ public class ArrayConversions {
 	}
 
 	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<long[], double[]>
+	longToDoubleArray(final LongToDoubleFunction mapper) {
+		requireNonNull(mapper);
+		return array -> longToDoubleArray(array, mapper);
+	}
+
+	/**
 	 * Converts the given {@code long[]} {@code array} to a {@code double[]} array.
 	 *
 	 * @param array the array to convert
@@ -192,6 +245,24 @@ public class ArrayConversions {
 			result[i] = mapper.applyAsInt(array[i]);
 		}
 		return result;
+	}
+
+	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
+	 * }
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<double[], int[]>
+	doubleToIntArray(final DoubleToIntFunction mapper) {
+		requireNonNull(mapper);
+		return array -> doubleToIntArray(array, mapper);
 	}
 
 	/**
@@ -225,6 +296,19 @@ public class ArrayConversions {
 			result[i] = mapper.applyAsLong(array[i]);
 		}
 		return result;
+	}
+
+	/**
+	 * Return an array mapper function which applies the given {@code mapper} to
+	 * every array element.
+	 *
+	 * @param mapper the array element mapper
+	 * @return an array mapper function
+	 */
+	public static Function<double[], long[]>
+	doubleToLongArray(final DoubleToLongFunction mapper) {
+		requireNonNull(mapper);
+		return array -> doubleToLongArray(array, mapper);
 	}
 
 	/**
