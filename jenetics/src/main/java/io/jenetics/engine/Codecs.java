@@ -293,7 +293,21 @@ public final class Codecs {
 
 	/**
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
-	 * values are restricted by the same domain.
+	 * values are restricted by the same domain. Use the following code if you
+	 * want to create {@code int[]} arrays and still using {@link DoubleGene}.
+	 * The {@code int[]} array elements are created by casting the {@code double}
+	 * values to {@code int} values.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .map(ArrayConversions::doubleToIntArray);
+	 * }
+	 * If you want round the double values, you can use the following code.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
+	 * }
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
