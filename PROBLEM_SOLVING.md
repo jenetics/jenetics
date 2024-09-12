@@ -6,7 +6,7 @@ Jenetics is a library that allows to solve optimization problems using metaheuri
 > 
 > [_Wikipedia_: Metaheuristic](https://en.wikipedia.org/wiki/Metaheuristic)
 
-Trying to solve a non-trivial optimization problem, one might be overwhelmed by the problem itself **and** the _correct_ usage of the Jenetics library. This might be the case when one is not familiar with Metaheuristics in general, or the field of Evolutionary algorithms in particular. The following will give a simple _methodology_ and tips when developing optimization algorithms with Jenetics.
+Trying to solve a nontrivial optimization problem, one might be overwhelmed by the problem itself **and** the _correct_ usage of the Jenetics library. This might be the case when one is not familiar with Metaheuristics in general, or the field of Evolutionary algorithms in particular. The following will give a simple _methodology_ and tips when developing optimization algorithms with Jenetics.
 
 Before describing one best practice when implementing an optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
 
@@ -32,7 +32,7 @@ static int count(final Genotype<BitGene> gt) {
 }
 ```
 
-For non-trivial optimization problems, using the encoding classes  `Genotype`, directly is not the best way using the Jenetics library. 
+For nontrivial optimization problems, using the encoding classes  `Genotype`, directly is not the best way using the Jenetics library. 
 
 It is recommended to first find a domain model, `S`, which best represents your solution space. Ideally, the domain model doesn't allow the modeling of invalid solutions. The fitness function calculates the fitness value with the model class `S`, instead of the `Genotype`, which usually simplifies the implementation. 
 

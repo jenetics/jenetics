@@ -39797,7 +39797,7 @@ prngine
 \family sans
  module are
 \series bold
-not
+ not
 \series default
  cryptographically strong PRNGs.
 \end_layout
@@ -40954,6 +40954,735 @@ PRNG speed
 \end_inset
 
 
+\end_layout
+
+\begin_layout Chapter
+Optimizing
+\end_layout
+
+\begin_layout Standard
+Jenetics is a library that allows to solve optimization problems using metaheuri
+stic methods.
+\end_layout
+
+\begin_layout Quote
+In computer science and mathematical optimization, a metaheuristic is a
+ higher-level procedure or heuristic designed to find, generate, tune, or
+ select a heuristic (partial search algorithm) that may provide a sufficiently
+ good solution to an optimization problem or a machine learning problem,
+ especially with incomplete or imperfect information or limited computation
+ capacity.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "enwiki:1244797749"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Trying to solve a nontrivial optimization problem, one might be overwhelmed
+ by the problem itself and the correct usage of the Jenetics library.
+ This might be the case when one is not familiar with Metaheuristics in
+ general, or the field of Evolutionary algorithms in particular.
+ The following will give a simple methodology and tips when developing optimizat
+ion algorithms with Jenetics.
+\end_layout
+
+\begin_layout Standard
+Before describing one best practice when implementing an optimization algorithms
+ with Jenetics, we should recap what an optimization problem actually is.
+\end_layout
+
+\begin_layout Quote
+In mathematics, engineering, computer science and economics, an optimization
+ problem is the problem of finding the best solution from all feasible solutions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "enwiki:1187882212"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A graphical representation of an optimization problem is shown in the diagram
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/OptimizationProblem.svg
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Optimization-problem"
+
+\end_inset
+
+Optimization problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+From a given solution space, S, we want to find the solution with the optimal
+ fitness value, which fulfills a given constraint, C.
+ With this definition, we can start and suggest some implementation strategies
+ using Jenetics.
+\end_layout
+
+\begin_layout Section
+General methodology
+\end_layout
+
+\begin_layout Standard
+Jenetics uses the Genotpye class as unified view onto the solution space
+ of the problem.
+ For trivial "Hello World"-problems, it is totally fine to describe the
+ solution space in terms of this class.
+ E.g., for the Ones-count text book example, where the fitness function directly
+ uses the Genotype as input parameter.
+ The code snippet below shows the fitness function for the Ones-count problem.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int count(final Genotype<BitGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .as(BitChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .bitCount();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+For nontrivial optimization problems, using the encoding classes Genotype,
+ directly is not the best way using the Jenetics library.
+\end_layout
+
+\begin_layout Standard
+It is recommended to first find a domain model, S, which best represents
+ your solution space.
+ Ideally, the domain model doesn't allow the modeling of invalid solutions.
+ The fitness function calculates the fitness value with the model class
+ S, instead of the Genotype, which usually simplifies the implementation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Choose a native solution model, S, which is able to represent only valid
+ solution candidates, or as view as possible invalid solution candidates.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To connect the native domain model and the fitness function with the Jenetics
+ Engine, an appropriate Codec must be implemented.
+ The Codec is the connector between the native model and the Engine.
+ With this approach, one can separate the problem of implementing the fitness
+ function from the mapping between Genotype and native model S.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The Codec should map every Genotype to only valid solution candidates in
+ S, or as view as possible invalid solution candidates.
+ Every Genotype should also be mapped to only one solution candidate in
+ S.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Implementation steps
+\end_layout
+
+\begin_layout Enumerate
+Find a domain model, S, for the solution space.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Implement the fitness function in terms of S.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Find a Codec which maps a Genotype to S.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Setup Engine with Codec and fitness function, f(S).
+\end_layout
+
+\begin_layout Standard
+The following code snippet shows how to use a Codec for the Ones-count problem,
+ introduced above.
+ It shows steps 2 to 4 from the general solution template.
+ Step 1, finding the domain model representing the solution space, is trivial
+ in this example: S := int.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// 2.
+ Fitness function working on native solution space.
+\end_layout
+
+\begin_layout Plain Layout
+
+static int count(final int count) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return count;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// 3.
+ Codec for Genotype <--> int mapping.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Integer, BitGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(BitChromosome.of(100)),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .as(BitChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .bitCount()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// 4.
+ Engine creation.
+\end_layout
+
+\begin_layout Plain Layout
+
+final static Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(this::count, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Mixed permutation problems
+\end_layout
+
+\begin_layout Standard
+Permutation problems are usually encoded by using the PermutaionChromosme,
+ which guarantees that only permutations of a given gene set are possible.
+ This works fine if your problem is a pure permutation.
+ For mixed problems, the PermutationChromosome can no longer be used, since
+ all Genes in a Genotype must be from the same type.
+ The usual strategy for numerical optimization problems is to use only DoubleChr
+omosomes and cast the double values to ints in the codec, if integer values
+ are required.
+ E.g., imagine the following solution space model:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record Solution(
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Some scaling factor.
+\end_layout
+
+\begin_layout Plain Layout
+
+    double scale,
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Some size value.
+\end_layout
+
+\begin_layout Plain Layout
+
+    int size,
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Some element permutation.
+\end_layout
+
+\begin_layout Plain Layout
+
+    int[] permutations
+\end_layout
+
+\begin_layout Plain Layout
+
+) {}
+\end_layout
+
+\end_inset
+
+Such a solution model can't directly be encoded with the available chromosomes,
+ since each solution parameter has a different type.
+ With a simple trick, it is nevertheless possible to use three DoubleChromosomes
+ to encode the Solution class.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Solution, DoubleGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        DoubleChromosome.of(DoubleRange.of(0.0, 1.0)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        DoubleChromosome.of(DoubleRange.of(0, 1000)),
+\end_layout
+
+\begin_layout Plain Layout
+
+        DoubleChromosome.of(DoubleRange.of(0.0, 1.0), 100)     ),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> new Solution(
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt.gene().doubleValue(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt.gene().intValue(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProxySorter.sort(
+\end_layout
+
+\begin_layout Plain Layout
+
+            gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray()
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    )
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The encoding of the scale and size is straight forward and doesn't need
+ additional explanation.
+ Using the ProxySorter allows to encode a permutation as DoubleChromosome.
+ What it does is, that the ProxySorter doesn't sort the input double[] array
+ directly.
+ Instead, it returns a permutation array, which contains the sorted indexes
+ of the input.
+\end_layout
+
+\begin_layout Section
+Combining codecs
+\end_layout
+
+\begin_layout Standard
+If the solution model itself consists of nested models, it is possible to
+ define Codecs for each of the nested models and combine these sub Codec
+ classes to the final Codec.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record ParentSolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+    int[] counters,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Solution nested
+\end_layout
+
+\begin_layout Plain Layout
+
+) {}
+\end_layout
+
+\end_inset
+
+It is now possible to implement a Codec for the counters
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<int[], DoubleGene> countersCodec = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Codecs.ofVector(DoubleRange.of(0.0, 1000.0))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(array -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+            final var result = new int[array.length];
+\end_layout
+
+\begin_layout Plain Layout
+
+            for (int i = 0; i < array.length; i++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+                result[i] = (int)array[i];
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+            return result;
+\end_layout
+
+\begin_layout Plain Layout
+
+        });
+\end_layout
+
+\end_inset
+
+and combine it with the already existing Codec for the nested solution.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record ParentSolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+    int[] counters,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Solution nested
+\end_layout
+
+\begin_layout Plain Layout
+
+) {}
+\end_layout
+
+\end_inset
+
+and combine it with the already existing Codec for the nested solution.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<ParentSolution, DoubleGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    countersCodec, nestedCodec,
+\end_layout
+
+\begin_layout Plain Layout
+
+    (counters, nested) -> new ParentSolution(counters, nested)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+This way it is possible to split codecs into sub-codecs and combine it again.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With these Jenetics tricks, it is possible to split the overall problem
+ into smaller parts and make it manageable.
+ Especially the possibility to combine several Codecs into one uber Codec
+ is a mighty, but, unfortunately, overlooked feature of Jenetics.
 \end_layout
 
 \begin_layout Part*
