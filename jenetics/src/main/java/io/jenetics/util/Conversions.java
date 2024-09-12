@@ -33,19 +33,19 @@ import java.util.function.LongToIntFunction;
  * This class contains methods for converting from and to the primitive arrays
  * {@code int[]}, {@code long[]} and {@code double[]}. Its main usage is to
  * unify numerical gene codecs, e.g.:
- * {@snippet lang=java:
+ * {@snippet lang = java:
  * final Codec<int[], DoubleGene> codec = Codecs
  *     .ofVector(DoubleRange.of(0, 100), 100)
- *     .map(ArrayConversions::doubleToIntArray);
- * }
+ *     .map(Conversions::doubleToIntArray);
+ *}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ArrayConversions {
+public class Conversions {
 
-	private ArrayConversions() {
+	private Conversions() {
 	}
 
 	/**
@@ -250,11 +250,11 @@ public class ArrayConversions {
 	/**
 	 * Return an array mapper function which applies the given {@code mapper} to
 	 * every array element.
-	 * {@snippet lang=java:
+	 * {@snippet lang = java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
 	 *     .ofVector(DoubleRange.of(0, 100), 100)
-	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
-	 * }
+	 *     .map(Conversions.doubleToIntArray(v -> (int)Math.round(v)));
+	 *}
 	 *
 	 * @param mapper the array element mapper
 	 * @return an array mapper function

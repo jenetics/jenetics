@@ -29,14 +29,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ArrayConversionsTest {
+public class ConversionsTest {
 
 	@Test
 	public void intToLongArray() {
 		final var source = new int[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.intToLongArray(source);
+		final var target = Conversions.intToLongArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo(source[i]);
 		}
@@ -47,7 +47,7 @@ public class ArrayConversionsTest {
 		final var source = new int[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.intToDoubleArray(source);
+		final var target = Conversions.intToDoubleArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo(source[i]);
 		}
@@ -58,7 +58,7 @@ public class ArrayConversionsTest {
 		final var source = new long[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.longToIntArray(source);
+		final var target = Conversions.longToIntArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo(source[i]);
 		}
@@ -69,7 +69,7 @@ public class ArrayConversionsTest {
 		final var source = new long[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.longToDoubleArray(source);
+		final var target = Conversions.longToDoubleArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo(source[i]);
 		}
@@ -80,7 +80,7 @@ public class ArrayConversionsTest {
 		final var source = new double[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.doubleToIntArray(source);
+		final var target = Conversions.doubleToIntArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo((int)source[i]);
 		}
@@ -91,7 +91,7 @@ public class ArrayConversionsTest {
 		final var source = new double[100];
 		Arrays.fill(source, 50);
 
-		final var target = ArrayConversions.doubleToLongArray(source);
+		final var target = Conversions.doubleToLongArray(source);
 		for (int i = 0; i < source.length; ++i) {
 			assertThat(target[i]).isEqualTo((long)source[i]);
 		}
