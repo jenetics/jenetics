@@ -136,7 +136,6 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * example creates a double codec whose values are not uniformly distributed
 	 * between {@code [0..1)}. Instead, the values now follow an exponential
 	 * function.
-	 *
 	 * {@snippet lang="java":
 	 *  final Codec<Double, DoubleGene> c = Codecs.ofScalar(DoubleRange.of(0, 1))
 	 *      .map(Math::exp);
