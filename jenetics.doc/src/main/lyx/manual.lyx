@@ -87,7 +87,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends,assert,var}
+  morekeywords={*,...,public,extends,assert,var,record}
 }
 \end_preamble
 \options utf8
@@ -14103,6 +14103,23 @@ literal "false"
 
 \family typewriter
 io.jenetics.util.ProxySorter
+\begin_inset CommandInset label
+LatexCommand label
+name "par:io.jenetics.util.ProxySorter"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+ProxySorter
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -40957,7 +40974,11 @@ PRNG speed
 \end_layout
 
 \begin_layout Chapter
-Optimizing
+Practical 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
 \end_layout
 
 \begin_layout Standard
@@ -40970,7 +40991,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library in great detail.
+ library in a great detail.
  What's missing are some general guidelines which will help to solve real
  world optimization problems using metaheuristic methods, supported by 
 \family sans
@@ -41003,7 +41024,7 @@ literal "false"
 
 \begin_layout Standard
 The optimization examples shown so far where deliberately kept simple, since
- the purpose was to illustrate library usage.
+ the purpose was to illustrate the library usage.
  Trying to solve more advanced and nontrivial optimization problems, one
  might be overwhelmed by the problem itself 
 \shape italic
@@ -41594,6 +41615,81 @@ final static Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Section
+Encoding strategies
+\end_layout
+
+\begin_layout Standard
+Finding a proper encoding for the domain model of the solution space can
+ be quite challenging.
+ The 
+\family typewriter
+Codec
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\family default
+ interface has been introduced as a mapping abstraction between the 
+\family typewriter
+Genotype
+\family default
+ and the domain model, used by the fitness function.
+ While it is possible to create a 
+\family typewriter
+Codec
+\family default
+ directly by specifying the 
+\family typewriter
+Fac\SpecialChar softhyphen
+tory\SpecialChar softhyphen
+<\SpecialChar softhyphen
+Geno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+>
+\family default
+ and the 
+\family typewriter
+Genotype
+\family default
+ to domain model mapping, this is not always the best way for creating a
+ 
+\family typewriter
+Codec
+\family default
+.
+ With a basic set of predefined 
+\family typewriter
+Codec
+\family default
+s and the composition capability of the 
+\family typewriter
+Codec
+\family default
+ interface, complex 
+\family typewriter
+Codec
+\family default
+s can be created in a declarative style.
+ The following subsections describes solutions for common encoding problems.
+\end_layout
+
+\begin_layout Subsection
 Mapping codecs
 \end_layout
 
@@ -41630,6 +41726,26 @@ long
 double
 \family default
  values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Scalar-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -41652,6 +41768,26 @@ long
 double
 \family default
  values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Vector-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -41674,6 +41810,26 @@ long
 double
 \family default
  values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Matrix-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -41684,6 +41840,26 @@ Codec<int[], EnumGene>
 \family default
 \series default
 : Permutation support.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Permutation-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -41812,7 +41988,7 @@ double[]
  arrays.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Combining codecs
 \end_layout
 
@@ -41902,7 +42078,7 @@ status open
 
 \begin_layout Plain Layout
 
-record Path(WayPoint[] stops) {}
+record Locations(WayPoint[] coordinates) {}
 \end_layout
 
 \begin_layout Plain Layout
@@ -41921,26 +42097,17 @@ record Path(WayPoint[] stops) {}
 
 \begin_layout Plain Layout
 
-final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+final Codec<Locations, DoubleGene> pc = Codecs.ofVector(wpc, 10)
 \end_layout
 
 \begin_layout Plain Layout
 
-	.map(points -> points.toArray(WayPoint[]::new))
+	.map(coordinates -> coordinates.toArray(WayPoint[]::new))
 \end_layout
 
 \begin_layout Plain Layout
 
-	.map(Path::new);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-final Path path = pc.decode(pc.encoding().newInstance());
+	.map(Locations::new);
 \end_layout
 
 \end_inset
@@ -41953,7 +42120,51 @@ Codec
  encodings.
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+The 
+\family typewriter
+Codec
+\family default
+ also allows the creation of random 
+\family typewriter
+Genotype
+\family default
+s and the decoding of these 
+\family typewriter
+Genotype
+\family default
+s into instances of the domain model.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Create a new, random 'Genotype'.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> genotype = pc.encoding().newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+// Decode the 'Genotype' to an instance of the domain model.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Locations locations = pc.decode(genotype);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Partial permutation codecs
 \end_layout
 
@@ -42225,6 +42436,26 @@ Proxy\SpecialChar softhyphen
 Sor\SpecialChar softhyphen
 ter
 \family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:io.jenetics.util.ProxySorter"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
  doesn't sort the array directly, which means that the input array will
  be not changed.
  Instead the 
