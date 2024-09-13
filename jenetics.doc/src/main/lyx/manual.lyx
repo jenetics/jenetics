@@ -41132,11 +41132,11 @@ Genotype
 \end_inset
 
 , of the problem.
- This means, that the fitness function takes a Genotype as input 
+ This means, that the fitness function takes a 
 \family typewriter
 Genotype
 \family default
-.
+ as input.
  For trivial 
 \shape italic
 Hello World
@@ -41197,7 +41197,7 @@ For nontrivial optimization problems, using the
 \family typewriter
 Genotype
 \family default
-, directly is not the best way for implementing the fitness function.
+ directly is not the best way for implementing the fitness function.
  The code will become hard to read very quickly, since the implementation
  of the actual fitness function is mixed with the code needed for decoding
  the 
@@ -41218,7 +41218,7 @@ native
 \end_inset
 
 .
- To do that, it is needed to find a domain model, which best represents
+ To do that, it is first needed to find a domain model, which best represents
  the solution space.
  Ideally, the domain model doesn't allow the modeling of invalid solutions.
  
@@ -41618,6 +41618,149 @@ When solving optimization problems with Jenetics, following these steps
 \end_layout
 
 \begin_layout Section
+Mapping standard codecs
+\end_layout
+
+\begin_layout Section
+Combining codecs
+\end_layout
+
+\begin_layout Standard
+If the solution model itself consists of nested models, it is possible to
+ define Codecs for each of the nested models and combine these sub Codec
+ classes to the final Codec.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record ParentSolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+    int[] counters,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Solution nested
+\end_layout
+
+\begin_layout Plain Layout
+
+) {}
+\end_layout
+
+\end_inset
+
+It is now possible to implement a Codec for the counters
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<int[], DoubleGene> countersCodec = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Codecs.ofVector(DoubleRange.of(0.0, 1000.0))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(Converters::doubleToIntArray);
+\end_layout
+
+\end_inset
+
+and combine it with the already existing Codec for the nested solution.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record ParentSolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+    int[] counters,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Solution nested
+\end_layout
+
+\begin_layout Plain Layout
+
+) {}
+\end_layout
+
+\end_inset
+
+and combine it with the already existing Codec for the nested solution.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<ParentSolution, DoubleGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    countersCodec, nestedCodec,
+\end_layout
+
+\begin_layout Plain Layout
+
+    (counters, nested) -> new ParentSolution(counters, nested)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+This way it is possible to split codecs into sub-codecs and combine it again.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With these Jenetics tricks, it is possible to split the overall problem
+ into smaller parts and make it manageable.
+ Especially the possibility to combine several Codecs into one uber Codec
+ is a mighty, but, unfortunately, overlooked feature of Jenetics.
+\end_layout
+
+\begin_layout Section
 Mixed permutation problems
 \end_layout
 
@@ -41782,172 +41925,7 @@ The encoding of the scale and size is straight forward and doesn't need
 \end_layout
 
 \begin_layout Section
-Combining codecs
-\end_layout
-
-\begin_layout Standard
-If the solution model itself consists of nested models, it is possible to
- define Codecs for each of the nested models and combine these sub Codec
- classes to the final Codec.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-record ParentSolution(
-\end_layout
-
-\begin_layout Plain Layout
-
-    int[] counters,
-\end_layout
-
-\begin_layout Plain Layout
-
-    Solution nested
-\end_layout
-
-\begin_layout Plain Layout
-
-) {}
-\end_layout
-
-\end_inset
-
-It is now possible to implement a Codec for the counters
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Codec<int[], DoubleGene> countersCodec = 
-\end_layout
-
-\begin_layout Plain Layout
-
-    Codecs.ofVector(DoubleRange.of(0.0, 1000.0))
-\end_layout
-
-\begin_layout Plain Layout
-
-        .map(array -> {
-\end_layout
-
-\begin_layout Plain Layout
-
-            final var result = new int[array.length];
-\end_layout
-
-\begin_layout Plain Layout
-
-            for (int i = 0; i < array.length; i++) {
-\end_layout
-
-\begin_layout Plain Layout
-
-                result[i] = (int)array[i];
-\end_layout
-
-\begin_layout Plain Layout
-
-            }
-\end_layout
-
-\begin_layout Plain Layout
-
-            return result;
-\end_layout
-
-\begin_layout Plain Layout
-
-        });
-\end_layout
-
-\end_inset
-
-and combine it with the already existing Codec for the nested solution.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-record ParentSolution(
-\end_layout
-
-\begin_layout Plain Layout
-
-    int[] counters,
-\end_layout
-
-\begin_layout Plain Layout
-
-    Solution nested
-\end_layout
-
-\begin_layout Plain Layout
-
-) {}
-\end_layout
-
-\end_inset
-
-and combine it with the already existing Codec for the nested solution.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Codec<ParentSolution, DoubleGene> codec = Codec.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-    countersCodec, nestedCodec,
-\end_layout
-
-\begin_layout Plain Layout
-
-    (counters, nested) -> new ParentSolution(counters, nested)
-\end_layout
-
-\begin_layout Plain Layout
-
-);
-\end_layout
-
-\end_inset
-
-This way it is possible to split codecs into sub-codecs and combine it again.
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
-	lyxscale 20
-	height 12pt
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-With these Jenetics tricks, it is possible to split the overall problem
- into smaller parts and make it manageable.
- Especially the possibility to combine several Codecs into one uber Codec
- is a mighty, but, unfortunately, overlooked feature of Jenetics.
+Variable length chromosomes
 \end_layout
 
 \begin_layout Part*
