@@ -72,6 +72,64 @@ final static Engine<BitGene, Integer> engine = Engine
 
 Although the given guideline seems quite simplistic, it allows breaking down the implementation process into several steps, which can be solved one after another. And this can help to reduce the overall complexity of the final implementation.
 
+## Mapping codecs
+
+Before developing your own `Codec`, have a look at the `Codecs` class, which contains a base set of commonly usable codecs. They support scalars, vectors, matrices and permutations:
+* Codec<Integer, IntegerGene>: `int`/`long`/`double` scalar support
+* Codec<int[], IntegerGene>: `int`/`long`/`double` vector support
+* Codec<int[][], IntegerGene>: `int`/`long`/`double` matrix support
+* Codec<int[], EnumGene<Integer>>: permutation support
+
+```java
+record Solution(int[] values) {}
+final Codec<Solution, IntegerGene> codec = Codecs
+    .ofVector(IntRange.of(0, 100), 10)
+    .map(Solution::new);
+```
+
+Creating a `Codec` this way is more expressive and less error-prone. The `map` method can also be used to homogenize the `Gene` types for a `Genotype`. The following snippet shows how to create `int[]` arrays from `DoubleGene`s.
+
+```java
+final Codec<Solution, DoubleGene> codec = Codecs
+    .ofVector(DoubleRange.of(0, 100), 10)
+    .map(Conversions::doubleToIntArray)
+    .map(Solution::new);
+```
+
+## Combining codecs
+
+If the solution model itself consists of _nested_ models, it is possible to define `Codec`s for each of the _nested_ models and combine these sub `Codec` classes to the final `Codec`.
+
+```java
+record ParentSolution(
+    int[] counters,
+    Solution nested
+) {}
+```
+
+It is now possible to implement a `Codec` for the `counters`
+
+```java
+final Codec<int[], DoubleGene> countersCodec = Codecs
+    .ofVector(DoubleRange.of(0.0, 1000.0))
+    .map(Conversions::doubleToIntArray);
+```
+
+and combine it with the already existing `Codec` for the _nested_ solution.
+
+```java
+final Codec<ParentSolution, DoubleGene> codec = Codec.of(
+    countersCodec, nestedCodec,
+    (counters, nested) -> new ParentSolution(counters, nested)
+);
+```
+
+This way it is possible to split codecs into sub-codecs and combine it again.
+
+***
+
+With these Jenetics tricks, it is possible to split the overall problem into smaller parts and make it manageable. Especially the possibility to combine several `Codec`s into one _uber_ `Codec` is a mighty, but, unfortunately, overlooked feature of Jenetics.
+
 ## Mixed permutation problems
 
 Permutation problems are usually encoded by using the `PermutaionChromosme`, which guarantees that only permutations of a given gene set are possible. This works fine if your problem is a pure permutation. For _mixed_ problems, the `PermutationChromosome` can no longer be used, since all `Gene`s in a `Genotype` must be from the same type. The usual strategy for _numerical_ optimization problems is to use only `DoubleChromosome`s and cast the `double` values to `int`s in the codec, if integer values are required. E.g., imagine the following solution space model:
@@ -109,42 +167,3 @@ final Codec<Solution, DoubleGene> codec = Codec.of(
 ```
 
 The encoding of the `scale` and `size` is straight forward and doesn't need additional explanation. Using the `ProxySorter` allows to encode a permutation as `DoubleChromosome`. What it does is, that the `ProxySorter` doesn't sort the input `double[]` array directly. Instead, it returns a _permutation_ array, which contains the _sorted_ indexes of the input.
-
-## Combining codecs
-
-If the solution model itself consists of _nested_ models, it is possible to define `Codec`s for each of the _nested_ models and combine these sub `Codec` classes to the final `Codec`.
-
-```java
-record ParentSolution(
-    int[] counters,
-    Solution nested
-) {}
-```
-
-It is now possible to implement a `Codec` for the `counters`
-
-```java
-final Codec<int[], DoubleGene> countersCodec = Codecs.ofVector(DoubleRange.of(0.0, 1000.0))
-    .map(array -> {
-        final var result = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            result[i] = (int)array[i];
-        }
-        return result;
-    });
-```
-
-and combine it with the already existing `Codec` for the _nested_ solution.
-
-```java
-final Codec<ParentSolution, DoubleGene> codec = Codec.of(
-    countersCodec, nestedCodec,
-    (counters, nested) -> new ParentSolution(counters, nested)
-);
-```
-
-This way it is possible to split codecs into sub-codecs and combine it again.
-
-***
-
-With these Jenetics tricks, it is possible to split the overall problem into smaller parts and make it manageable. Especially the possibility to combine several `Codec`s into one _uber_ `Codec` is a mighty, but, unfortunately, overlooked feature of Jenetics. 
