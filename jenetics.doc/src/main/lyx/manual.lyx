@@ -41596,12 +41596,134 @@ final static Engine<BitGene, Integer> engine = Engine
 
 \end_layout
 
+\begin_layout Section
+Mapping codecs
+\end_layout
+
 \begin_layout Standard
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
-	lyxscale 20
-	height 12pt
+Before developing your own 
+\family typewriter
+Codec
+\family default
+, have a look at the 
+\family typewriter
+Codecs
+\family default
+ class, which contains a base set of commonly usable codecs.
+ They support scalars, vectors, matrices and permutations.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<Integer, IntegerGene>
+\family default
+\series default
+: Scalar support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[], IntegerGene>
+\family default
+\series default
+: Vector support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[][], IntegerGene>
+\family default
+\series default
+: Matrix support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[], EnumGene>
+\family default
+\series default
+: Permutation support.
+\end_layout
+
+\begin_layout Standard
+Creating a 
+\family typewriter
+Codec
+\family default
+, as shown in the code snippet below, is more expressive and less error
+ prone.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record Solution(int[] values) {}
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Solution, IntegerGene> codec = Codecs
+\end_layout
+
+\begin_layout Plain Layout
+
+    .ofVector(IntRange.of(0, 100), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Solution::new);
+\end_layout
 
 \end_inset
 
@@ -41609,16 +41731,88 @@ final static Engine<BitGene, Integer> engine = Engine
 \end_layout
 
 \begin_layout Standard
-When solving optimization problems with Jenetics, following these steps
- is a good starting point.
- It will break down one big problem into smaller, more manageable problems.
- The remaining sections in this chapter will give some concrete best practices
- for different problem classes.
- 
+The 
+\family typewriter
+map
+\family default
+ method can also be used to 
+\shape italic
+homogenize
+\shape default
+ the 
+\family typewriter
+Gene
+\family default
+ types for a 
+\family typewriter
+Genotype
+\family default
+, which only allows chromosomes with the same 
+\family typewriter
+Gene
+\family default
+ types.
+ The following snippet shows how to create an 
+\family typewriter
+int[]
+\family default
+ arrays from 
+\family typewriter
+DoubleGene
+\family default
+s, where this 
+\family typewriter
+int[]
+\family default
+ array is than used for creating the 
+\family typewriter
+Solution
+\family default
+ domain object.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Solution, DoubleGene> codec = Codecs
 \end_layout
 
-\begin_layout Section
-Mapping standard codecs
+\begin_layout Plain Layout
+
+    .ofVector(DoubleRange.of(0, 100), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Conversions::doubleToIntArray)    
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Solution::new);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Conversions
+\family default
+ class implements helper methods for converting 
+\family typewriter
+int[]
+\family default
+, 
+\family typewriter
+long[]
+\family default
+ and 
+\family typewriter
+double[]
+\family default
+ arrays.
 \end_layout
 
 \begin_layout Section
@@ -41627,8 +41821,28 @@ Combining codecs
 
 \begin_layout Standard
 If the solution model itself consists of nested models, it is possible to
- define Codecs for each of the nested models and combine these sub Codec
- classes to the final Codec.
+ define 
+\family typewriter
+Codec
+\family default
+s for each of the nested models and combine these sub 
+\family typewriter
+Codec
+\family default
+ classes to the final 
+\family typewriter
+Codec
+\family default
+.
+ The code snippet below shows how to combine two standard scalar 
+\family typewriter
+Codec
+\family default
+s to a 
+\family typewriter
+Codec
+\family default
+ for a given user type.
 \end_layout
 
 \begin_layout Standard
@@ -41639,96 +41853,27 @@ status open
 
 \begin_layout Plain Layout
 
-record ParentSolution(
+// Codec for GPS point (latitude, longitude).
 \end_layout
 
 \begin_layout Plain Layout
 
-    int[] counters,
+final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
 \end_layout
 
 \begin_layout Plain Layout
 
-    Solution nested
+	Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
 \end_layout
 
 \begin_layout Plain Layout
 
-) {}
-\end_layout
-
-\end_inset
-
-It is now possible to implement a Codec for the counters
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Codec<int[], DoubleGene> countersCodec = 
+	Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
 \end_layout
 
 \begin_layout Plain Layout
 
-    Codecs.ofVector(DoubleRange.of(0.0, 1000.0))
-\end_layout
-
-\begin_layout Plain Layout
-
-        .map(Converters::doubleToIntArray);
-\end_layout
-
-\end_inset
-
-and combine it with the already existing Codec for the nested solution.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-record ParentSolution(
-\end_layout
-
-\begin_layout Plain Layout
-
-    int[] counters,
-\end_layout
-
-\begin_layout Plain Layout
-
-    Solution nested
-\end_layout
-
-\begin_layout Plain Layout
-
-) {}
-\end_layout
-
-\end_inset
-
-and combine it with the already existing Codec for the nested solution.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Codec<ParentSolution, DoubleGene> codec = Codec.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-    countersCodec, nestedCodec,
-\end_layout
-
-\begin_layout Plain Layout
-
-    (counters, nested) -> new ParentSolution(counters, nested)
+	WayPoint::of
 \end_layout
 
 \begin_layout Plain Layout
@@ -41738,26 +41883,77 @@ final Codec<ParentSolution, DoubleGene> codec = Codec.of(
 
 \end_inset
 
-This way it is possible to split codecs into sub-codecs and combine it again.
+A more advanced example is shown in the code snippet below.
+ It uses the already created 
+\family typewriter
+Codec
+\family default
+ and creates a 
+\family typewriter
+Codec
+\family default
+ for an array of subdomain elements.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Domain model of solution space.
 \end_layout
 
-\begin_layout Standard
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
-	lyxscale 20
-	height 12pt
+\begin_layout Plain Layout
+
+record Path(WayPoint[] stops) {}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Codec for the path object, using the 
+\end_layout
+
+\begin_layout Plain Layout
+
+// 'wpc' codec for a single vector element.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(points -> points.toArray(WayPoint[]::new))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(Path::new);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Path path = pc.decode(pc.encoding().newInstance());
+\end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-With these Jenetics tricks, it is possible to split the overall problem
- into smaller parts and make it manageable.
- Especially the possibility to combine several Codecs into one uber Codec
- is a mighty, but, unfortunately, overlooked feature of Jenetics.
+As it can be seen, the composability of the 
+\family typewriter
+Codec
+\family default
+ interface is a very useful and mighty tool, for creating complex model
+ encodings.
 \end_layout
 
 \begin_layout Section
@@ -41765,13 +41961,53 @@ Mixed permutation problems
 \end_layout
 
 \begin_layout Standard
-Permutation problems are usually encoded by using the PermutaionChromosme,
- which guarantees that only permutations of a given gene set are possible.
- This works fine if your problem is a pure permutation.
- For mixed problems, the PermutationChromosome can no longer be used, since
- all Genes in a Genotype must be from the same type.
- The usual strategy for numerical optimization problems is to use only DoubleChr
-omosomes and cast the double values to ints in the codec, if integer values
+Permutation problems are usually encoded with the 
+\family typewriter
+Enum\SpecialChar softhyphen
+Gene
+\family default
+ and the 
+\family typewriter
+Per\SpecialChar softhyphen
+mu\SpecialChar softhyphen
+tat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+, which guarantees that only permutations of a given set of elements are
+ possible.
+ This works fine if your problem is a 
+\shape italic
+pure
+\shape default
+ permutation problem like the Traveling salesman problem.
+ For mixed problems, the 
+\family typewriter
+Per\SpecialChar softhyphen
+mu\SpecialChar softhyphen
+tat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ can no longer be used, since all 
+\family typewriter
+Gene
+\family default
+s in a 
+\family typewriter
+Genotype
+\family default
+ must be of the same type.
+ 
+\end_layout
+
+\begin_layout Standard
+The usual strategy for numerical optimization problems is to use only DoubleChro
+mosomes and cast the double values to ints in the codec, if integer values
  are required.
  E.g., imagine the following solution space model:
 \end_layout
