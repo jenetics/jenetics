@@ -41507,8 +41507,7 @@ status open
 
 \begin_layout Plain Layout
 
-// 2.
- Fitness function working on native solution space.
+// (2) Fitness function working on native solution space.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41532,8 +41531,7 @@ int fitness(final int count) {
 
 \begin_layout Plain Layout
 
-// 3.
- Codec for Genotype to int mapping.
+// (3) Codec for Genotype to int mapping.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41572,8 +41570,7 @@ final Codec<Integer, BitGene> codec = Codec.of(
 
 \begin_layout Plain Layout
 
-// 4.
- Setup Engine.
+// (4) Setup Engine.
 \end_layout
 
 \begin_layout Plain Layout
@@ -41957,7 +41954,7 @@ Codec
 \end_layout
 
 \begin_layout Section
-Mixed permutation problems
+Partial permutation codecs
 \end_layout
 
 \begin_layout Standard
@@ -41982,7 +41979,7 @@ some
 \shape italic
 pure
 \shape default
- permutation problem like the Traveling salesman problem.
+ permutation problem, like the Traveling salesman problem.
  For mixed problems, the 
 \family typewriter
 Per\SpecialChar softhyphen
@@ -42003,16 +42000,6 @@ Genotype
 \family default
  must be of the same type.
  
-\end_layout
-
-\begin_layout Standard
-The usual strategy for numerical optimization problems is to use only DoubleChro
-mosomes and cast the double values to ints in the codec, if integer values
- are required.
- E.g., imagine the following solution space model:
-\end_layout
-
-\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -42020,50 +42007,60 @@ status open
 
 \begin_layout Plain Layout
 
-record Solution(
+// Domain model for a variation of the TSP.
 \end_layout
 
 \begin_layout Plain Layout
 
-    // Some scaling factor.
+record Path(LocalTime start, WayPoint[] stops) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    double scale,
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Some size value.
-\end_layout
-
-\begin_layout Plain Layout
-
-    int size,
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Some element permutation.
-\end_layout
-
-\begin_layout Plain Layout
-
-    int[] permutations
-\end_layout
-
-\begin_layout Plain Layout
-
-) {}
+}
 \end_layout
 
 \end_inset
 
-Such a solution model can't directly be encoded with the available chromosomes,
- since each solution parameter has a different type.
- With a simple trick, it is nevertheless possible to use three DoubleChromosomes
- to encode the Solution class.
+If the optimal route of the TSP additionally depends on the start time of
+ the tour, we no longer have a pure permutation problem.
+ Additionally to the path
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The path is defined by an array of 
+\family typewriter
+WayPoint
+\family default
+s.
+ which are a data structure of the JPX library: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jpx
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, we have to encode a 
+\family typewriter
+Local\SpecialChar softhyphen
+Time
+\family default
+ object.
+ Lets break down the problem, and start with the 
+\family typewriter
+Codec
+\family default
+ of for the start time.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -42071,77 +42068,221 @@ status open
 
 \begin_layout Plain Layout
 
-final Codec<Solution, DoubleGene> codec = Codec.of(
+// Codec for a Java 'LocalTime' object.
 \end_layout
 
 \begin_layout Plain Layout
 
-    Genotype.of(
+final Codec<LocalTime, DoubleGene> ltc = Codecs
 \end_layout
 
 \begin_layout Plain Layout
 
-        DoubleChromosome.of(DoubleRange.of(0.0, 1.0)),
+	.ofScalar(DoubleRange.of(0, Duration.ofHours(24).toSeconds()))
 \end_layout
 
 \begin_layout Plain Layout
 
-        DoubleChromosome.of(DoubleRange.of(0, 1000)),
+	.map(Double::longValue)
 \end_layout
 
 \begin_layout Plain Layout
 
-        DoubleChromosome.of(DoubleRange.of(0.0, 1.0), 100)
+	.map(LocalTime::ofSecondOfDay);
+\end_layout
+
+\end_inset
+
+We used a 
+\family typewriter
+DoubleGene
+\family default
+ for the start time encoding and now we have to find a permutation encoding
+ which uses 
+\family typewriter
+DoubleGene
+\family default
+s as well.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// All waypoints of the tour.
 \end_layout
 
 \begin_layout Plain Layout
 
-    ),
+final WayPoint[] points = new WayPoint[] {
 \end_layout
 
 \begin_layout Plain Layout
 
-    gt -> new Solution(
+	WayPoint.of(23, 42) 
 \end_layout
 
 \begin_layout Plain Layout
 
-        gt.gene().doubleValue(),
+    // ...
 \end_layout
 
 \begin_layout Plain Layout
 
-        gt.gene().intValue(),
+};
 \end_layout
 
 \begin_layout Plain Layout
 
-        ProxySorter.sort(
 \end_layout
 
 \begin_layout Plain Layout
 
-            gt.chromosome()
+// Permutation codec, using DoubleGens.
 \end_layout
 
 \begin_layout Plain Layout
 
-                .as(DoubleChromosome.class)
+final Codec<WayPoint[], DoubleGene> wpc = Codecs
 \end_layout
 
 \begin_layout Plain Layout
 
-                .toArray()
+	.ofVector(DoubleRange.of(0, 1), points.length) // (1)
 \end_layout
 
 \begin_layout Plain Layout
 
-        )
+	.map(ProxySorter::sort)                        // (2)
 \end_layout
 
 \begin_layout Plain Layout
 
-    )
+	.map(permutation -> {                          // (3)
+\end_layout
+
+\begin_layout Plain Layout
+
+		assert permutation.length == points.length;
+\end_layout
+
+\begin_layout Plain Layout
+
+        var result = new WayPoint[points.length];
+\end_layout
+
+\begin_layout Plain Layout
+
+		for (int i = 0; i < points.length; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			result[i] = points[permutation[i]];
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		return result;
+\end_layout
+
+\begin_layout Plain Layout
+
+	});
+\end_layout
+
+\end_inset
+
+There is a lot going on here, so lets explain the steps 1 to 3.
+\end_layout
+
+\begin_layout Enumerate
+In the first step, a 
+\family typewriter
+double[]
+\family default
+ array with the length, equals to the number of the way points of the tour,
+ is created.
+ The actual value range of the array doesn't matter.
+ 
+\end_layout
+
+\begin_layout Enumerate
+In this step, the 
+\family typewriter
+double[]
+\family default
+ array will be sorted.
+ The 
+\family typewriter
+Proxy\SpecialChar softhyphen
+Sor\SpecialChar softhyphen
+ter
+\family default
+ doesn't sort the array directly, which means that the input array will
+ be not changed.
+ Instead the 
+\family typewriter
+Proxy\SpecialChar softhyphen
+Sor\SpecialChar softhyphen
+ter\SpecialChar softhyphen
+::sort
+\family default
+ method returns an index array, which represents the sort order of the input.
+\end_layout
+
+\begin_layout Enumerate
+The index array from the previous step is a permutation of the integers
+ in the range 
+\begin_inset Formula $\left[0...points.length\right)$
+\end_inset
+
+.
+ By 
+\begin_inset Quotes ald
+\end_inset
+
+sorting
+\begin_inset Quotes ard
+\end_inset
+
+ the tour points with the index array, we will create a valid TSP tour.
+\end_layout
+
+\begin_layout Standard
+We are now able to combine the two sub 
+\family typewriter
+Codec
+\family default
+s to the final 
+\family typewriter
+Codec
+\family default
+, and we already know how to do this.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Path, DoubleGene> codec = Codec.combine(
+\end_layout
+
+\begin_layout Plain Layout
+
+    ltc, wpc, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Path::new
 \end_layout
 
 \begin_layout Plain Layout
@@ -42151,17 +42292,7 @@ final Codec<Solution, DoubleGene> codec = Codec.of(
 
 \end_inset
 
-The encoding of the scale and size is straight forward and doesn't need
- additional explanation.
- Using the ProxySorter allows to encode a permutation as DoubleChromosome.
- What it does is, that the ProxySorter doesn't sort the input double[] array
- directly.
- Instead, it returns a permutation array, which contains the sorted indexes
- of the input.
-\end_layout
 
-\begin_layout Section
-Variable length chromosomes
 \end_layout
 
 \begin_layout Part*
