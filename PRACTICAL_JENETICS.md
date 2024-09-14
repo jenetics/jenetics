@@ -10,7 +10,7 @@ Trying to solve a nontrivial optimization problem, one might be overwhelmed by t
 
 Before describing one best practice when implementing an optimization algorithms with Jenetics, we should recap what an optimization problem actually is.
 
-> In mathematics, engineering, computer science and economics, an optimization problem is the problem of finding the best solution from all feasible solutions.
+> In mathematics, engineering, computer science and economics, an optimization problem is the problem of finding the best solution from all possible solutions.
 > 
 > [_Wikipedia_: Optimization problem](https://en.wikipedia.org/wiki/Optimization_problem)
 

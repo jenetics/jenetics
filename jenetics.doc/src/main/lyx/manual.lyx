@@ -42237,15 +42237,14 @@ If the optimal route of the TSP additionally depends on the start time of
  the tour, we no longer have a pure permutation problem.
  Additionally to the path
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The path is defined by an array of 
 \family typewriter
 WayPoint
 \family default
-s.
- which are a data structure of the JPX library: 
+s, which are a data structure of the JPX library: 
 \begin_inset Flex URL
 status collapsed
 
