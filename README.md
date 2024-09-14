@@ -298,7 +298,7 @@ final Codec<int[], DoubleGene> codec = Codecs
     .map(Conversions::doubleToIntArray);
 ```
 
-### Bugs
+#### Bugs
 
 * [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
 
