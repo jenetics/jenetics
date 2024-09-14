@@ -263,6 +263,8 @@ fun setupPublishing(project: Project) {
 	project.configure<PublishingExtension> {
 		publications {
 			create<MavenPublication>("mavenJava") {
+				suppressPomMetadataWarningsFor("test-fixtures")
+
 				artifactId = project.name
 				from(project.components["java"])
 				versionMapping {
