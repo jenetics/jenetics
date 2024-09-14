@@ -56,7 +56,7 @@ final class TimProxySorter {
 				? (a, i, j) -> comparator.compare(a, i + from, j + from)
 				: comparator;
 
-			// Sorting the sub-arrays with binary insertion sort.
+			// Sorting the subarrays with binary insertion sort.
 			for (int i = 0; i < length; i += RUN) {
 				BinaryInsertionSort.sort(
 					array, i,
@@ -99,7 +99,7 @@ final class TimProxySorter {
 		int j = 0;
 		int k = begin;
 
-		// After comparing, merge the two arrays in larger sub-array.
+		// After comparing, merge the two arrays in larger subarray.
 		while (i < left.length && j < right.length) {
 			proxy[k++] = cmp.compare(array, left[i], right[j]) <= 0
 				? left[i++]

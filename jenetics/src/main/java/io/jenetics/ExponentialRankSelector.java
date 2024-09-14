@@ -65,7 +65,7 @@ public final class ExponentialRankSelector<
 	/**
 	 * Create a new exponential rank selector.
 	 *
-	 * @param c the <i>c</i> value.
+	 * @param c the <i>c</i> value
 	 * @throws IllegalArgumentException if {@code c} is not within the range
 	 *         {@code [0..1)}.
 	 */

@@ -26,25 +26,25 @@ import java.time.format.DateTimeFormatter
  * Common environment values.
  */
 object Env {
-	val NOW = ZonedDateTime.now()
+	private val NOW: ZonedDateTime = ZonedDateTime.now()
 
-	val YEAR = Year.now();
+	private val YEAR: Year = Year.now()
+
+	private val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
 	val COPYRIGHT_YEAR = "2007-${YEAR}"
 
-	val DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+	val BUILD_DATE: String = DATE_FORMAT.format(NOW)
 
-	val BUILD_DATE = DATE_FORMAT.format(NOW)
+	val BUILD_JDK: String = System.getProperty("java.version")
 
-	val BUILD_JDK = System.getProperty("java.version")
+	val BUILD_OS_NAME: String = System.getProperty("os.name")
 
-	val BUILD_OS_NAME = System.getProperty("os.name")
+	val BUILD_OS_ARCH: String = System.getProperty("os.arch")
 
-	val BUILD_OS_ARCH = System.getProperty("os.arch")
+	val BUILD_OS_VERSION: String = System.getProperty("os.version")
 
-	val BUILD_OS_VERSION = System.getProperty("os.version")
-
-	val BUILD_BY = System.getProperty("user.name")
+	val BUILD_BY: String = System.getProperty("user.name")
 
 }
 
@@ -53,7 +53,7 @@ object Env {
  * Information about the library and author.
  */
 object Jenetics {
-	const val VERSION = "8.0.0"
+	const val VERSION = "8.1.0"
 	const val ID = "jenetics"
 	const val NAME = "Jenetics"
 	const val GROUP = "io.jenetics"

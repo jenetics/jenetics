@@ -29,7 +29,7 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
- * {@code Chromosome} implementation, which allows to create genes without
+ * {@code Chromosome} implementation, which allows creating genes without
  * explicit implementing the {@code Chromosome} interface.
  *
  * {@snippet lang="java":

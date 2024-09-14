@@ -17,32 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.combinatorial;
 
-rootProject.gradle.projectsEvaluated {
-	rootProject.task('alljavadoc', type: Javadoc) {
-		description = "Aggregates Javadoc API documentation of all subprojects."
-		group = JavaBasePlugin.DOCUMENTATION_GROUP
+import static org.assertj.core.api.Assertions.assertThat;
 
-		source Jenetics.PROJECT_TO_MODULE.collect {
-			project(":${it.key}").sourceSets.main.allJava
-		}
-		classpath = files(
-			Jenetics.PROJECT_TO_MODULE.collect {
-				project(":${it.key}").sourceSets.main.compileClasspath
+import org.apache.commons.math3.util.CombinatoricsUtils;
+import org.testng.annotations.Test;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
+public class BinomialCoefficientTest {
+
+	@Test
+	public void smallN() {
+		for (int n = 0; n < 62; ++n) {
+			for (int k = 0; k <= n; ++k) {
+				assertThat(BinomialCoefficient.apply(n, k))
+					.isEqualTo(CombinatoricsUtils.binomialCoefficient(n, k));
 			}
-		)
-
-		def moduleSourcePaths = Jenetics.PROJECT_TO_MODULE.collect {
-			"${it.value}=${rootProject.projectDir}/${it.key}/src/main/java".toString()
 		}
+	}
 
-		options {
-			addMultilineStringsOption("-module-source-path")
-				.setValue(moduleSourcePaths)
-		}
-
-		destinationDir rootProject.file("$rootProject.buildDir/docs/alljavadoc")
+	@Test
+	public void zero() {
+		System.out.println(BinomialCoefficient.apply(0, 0));
 	}
 
 }
-

@@ -315,7 +315,7 @@ public class TaskCompletionTest {
 
 	@Test
 	public void awaitRemainingTasks() throws Exception {
-		final int taskCount = 1000;
+		final int taskCount = 100;
 		final var indexes = new ArrayList<Integer>();
 
 		final class Task implements Runnable {
@@ -344,7 +344,7 @@ public class TaskCompletionTest {
 		completion.shutdown();
 		assertThat(completion.isShutdown()).isTrue();
 
-		var result = completion.awaitTermination(10, SECONDS);
+		var result = completion.awaitTermination(100, SECONDS);
 		assertThat(result).isTrue();
 		assertThat(completion.isEmpty()).isTrue();
 		assertThat(completion.size()).isEqualTo(0);

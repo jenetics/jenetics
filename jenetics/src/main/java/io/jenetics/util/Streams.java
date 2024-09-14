@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 /**
  * This class contains factory methods for (flat) mapping stream elements. The
  * functions of this class can be used in the following way.
- *
  * {@snippet lang="java":
  * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
  *     .limit(100)
@@ -116,7 +115,6 @@ public final class Streams {
 	 * stream, from an arbitrarily ordered source stream. Note that this
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
-	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()

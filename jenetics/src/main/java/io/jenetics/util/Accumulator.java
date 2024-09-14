@@ -154,7 +154,6 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Create a new accumulator from the given {@code collector}.
-	 *
 	 * {@snippet lang="java":
 	 * final Accumulator<Integer, ?, ISeq<Integer>> accu =
 	 *     Accumulator.of(ISeq.toISeq());

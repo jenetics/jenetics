@@ -87,7 +87,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends,assert,var}
+  morekeywords={*,...,public,extends,assert,var,record}
 }
 \end_preamble
 \options utf8
@@ -685,7 +685,7 @@ https://www.oracle.com/java/technologies/downloads/
 
 \end_inset
 
-, which provides a
+, which provides a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic algorithm"
@@ -694,7 +694,7 @@ literal "false"
 
 \end_inset
 
- (GA),
+ (GA), 
 \begin_inset CommandInset href
 LatexCommand href
 name "Evolutionary algorithm"
@@ -703,7 +703,7 @@ literal "false"
 
 \end_inset
 
- (EA),
+ (EA), 
 \begin_inset CommandInset href
 LatexCommand href
 name "Multi-objective optimization"
@@ -712,7 +712,7 @@ literal "false"
 
 \end_inset
 
- (MOO) and
+ (MOO) and 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic programming"
@@ -14103,6 +14103,23 @@ literal "false"
 
 \family typewriter
 io.jenetics.util.ProxySorter
+\begin_inset CommandInset label
+LatexCommand label
+name "par:io.jenetics.util.ProxySorter"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+ProxySorter
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -27459,6 +27476,292 @@ Data structures
 \end_layout
 
 \begin_layout Subsubsection
+CSV
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:CSV"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CSV
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Some optimization problems operate on data, stored in CSV format
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\family typewriter
+CsvSupport
+\family default
+ class fully implements RFC-4180: 
+\shape italic
+Common Format and MIME Type for Comma-Separated Values (CSV) Files
+\shape default
+ (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://tools.ietf.org/html/rfc4180
+\end_layout
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+
+.
+ Symbolic regression, as described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Symbolic-regression"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, is one example of such a problem.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+try (Stream<String> lines = 
+\end_layout
+
+\begin_layout Plain Layout
+
+     CsvSupport.lines(new FileReader("data.csv"))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    final List<String[]> rows = lines
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(CsvSupport::split)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toList();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:CsvSupport.lines method"
+
+\end_inset
+
+General usage example of
+\family typewriter
+ CsvSupport
+\family default
+ class.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:CsvSupport.lines method"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the most general way reading CSV data from a file.
+ Additional helper functions allows to parse CSV data directly from a CSV
+ string and parse it either as 
+\family typewriter
+String
+\family default
+ values:
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final List<String[]> rows = CsvSupport.parse("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    ad,aixas,Aixàs,06,,42.4833333,1.4666667
+\end_layout
+
+\begin_layout Plain Layout
+
+    ad,aixirivali,Aixirivali,06,,42.4666667,1.5
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+Or 
+\family typewriter
+double
+\family default
+ values:
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final List<double[]> rows = CsvSupport.parseDoubles("""
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.7,0.6020
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.8,0.9280
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.9,1.3860
+\end_layout
+
+\begin_layout Plain Layout
+
+    1.0,2.0000
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The functional design of the CsvSupport makes it highly configurable and
+ allows to read and write CSV data with different 
+\shape italic
+quote
+\shape default
+ and/or 
+\shape italic
+separator
+\shape default
+ characters.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final var reader = new LineReader(new Quote('
+\backslash
+"'));
+\end_layout
+
+\begin_layout Plain Layout
+
+final var splitter = new LineSplitter(new Separator(','));
+\end_layout
+
+\begin_layout Plain Layout
+
+try (Stream<String> lines = reader.read(new FileReader(csv))) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final List<String[]> rows = lines
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(splitter::split)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toList();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 Tree
 \begin_inset Index idx
 status collapsed
@@ -36150,6 +36453,13 @@ The ephemeral constant value is determined when it is inserted in the tree
 
 \begin_layout Subsection
 Program creation
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-creation"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -36578,6 +36888,13 @@ final Tree<?, ?> tree = chromosome.root();
 
 \begin_layout Subsection
 Program repair
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-repair"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -37012,6 +37329,13 @@ The variables in an expression string are sorted alphabetically.
 
 \begin_layout Subsection
 Multi-root programs
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Multi-root-programs"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -37149,6 +37473,13 @@ some
 
 \begin_layout Subsection
 Symbolic regression
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Symbolic-regression"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -39483,7 +39814,7 @@ prngine
 \family sans
  module are
 \series bold
-not
+ not
 \series default
  cryptographically strong PRNGs.
 \end_layout
@@ -40635,6 +40966,1558 @@ PRNG speed
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Practical 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\end_layout
+
+\begin_layout Standard
+In the previous sections, we've described the technical capabilities of
+ the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library in a great detail.
+ What's missing are some general guidelines which will help to solve real
+ world optimization problems using metaheuristic methods, supported by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+\end_layout
+
+\begin_layout Quote
+In computer science and mathematical optimization, a metaheuristic is a
+ higher-\SpecialChar softhyphen
+level procedure or heuristic designed to find, generate, tune, or
+ select a heuristic (partial search algorithm) that may provide a sufficiently
+ good solution to an optimization problem or a machine learning problem,
+ especially with incomplete or imperfect information or limited computation
+ capacity.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "enwiki:1244797749"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The optimization examples shown so far where deliberately kept simple, since
+ the purpose was to illustrate the library usage.
+ Trying to solve more advanced and nontrivial optimization problems, one
+ might be overwhelmed by the problem itself 
+\shape italic
+and
+\shape default
+ the correct usage of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ This might be the case when one is not familiar with Metaheuristics in
+ general, or the field of Evolutionary algorithms in particular.
+ Before starting with the description of some best practices, we will recap
+ what an optimization problem actually is.
+\end_layout
+
+\begin_layout Quote
+In mathematics, engineering, computer science and economics, an optimization
+ problem is the problem of finding the best solution from all feasible solutions.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "enwiki:1187882212"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We will talk about general optimization problems, which minimization and
+ an maximization problem.
+ A graphical representation of an optimization problem is shown in diagram
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Optimization-problem"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/OptimizationProblem.svg
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Optimization-problem"
+
+\end_inset
+
+Optimization problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+From a given solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+, we want to find the solution with the optimal fitness value, which fulfills
+ a given constraint, 
+\begin_inset Formula $C$
+\end_inset
+
+.
+ With this definition, we can start and suggest some implementation strategies
+ using 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+\end_layout
+
+\begin_layout Section
+General methodology
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the 
+\family typewriter
+Genotype
+\family default
+ class as unified view onto the solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+, of the problem.
+ This means, that the fitness function takes a 
+\family typewriter
+Genotype
+\family default
+ as input.
+ For trivial 
+\shape italic
+Hello World
+\shape default
+ problems, it is totally fine to describe the solution space in terms of
+ a 
+\family typewriter
+Genotype
+\family default
+.
+ E.g., for the 
+\emph on
+bit counting
+\emph default
+ problem, where the fitness function directly uses the 
+\family typewriter
+Genotype
+\family default
+ as input parameter.
+ The code snippet below shows the fitness function for the 
+\emph on
+bit counting
+\emph default
+ problem.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int fitness(final Genotype<BitGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .as(BitChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .bitCount();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+For nontrivial optimization problems, using the 
+\family typewriter
+Genotype
+\family default
+ directly is not the best way for implementing the fitness function.
+ The code will become hard to read very quickly, since the implementation
+ of the actual fitness function is mixed with the code needed for decoding
+ the 
+\family typewriter
+Genotype
+\family default
+ to the 
+\shape italic
+native
+\shape default
+ solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+.
+ It is better to implement the fitness function in terms of 
+\begin_inset Formula $S$
+\end_inset
+
+.
+ To do that, it is first needed to find a domain model, which best represents
+ the solution space.
+ Ideally, the domain model doesn't allow the modeling of invalid solutions.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Find a domain model, which is able to represent only valid solution candidates,
+ or as view as possible invalid solution candidates.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To connect the domain model and the fitness function, which uses this domain
+ model, with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ 
+\family typewriter
+Engine
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsubsec:Engine"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, an appropriate 
+\family typewriter
+Codec
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ must be implemented.
+ The 
+\family typewriter
+Codec
+\family default
+ interface is the connector between the domain model and the 
+\family typewriter
+Engine
+\family default
+ class.
+ With this approach, one can separate the problem of implementing the fitness
+ function from the problem mapping the 
+\family typewriter
+Genotype
+\family default
+ to the domain model.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The 
+\family typewriter
+Codec
+\family sans
+ should map every 
+\family typewriter
+Genotype
+\family sans
+ to only valid solution candidates in 
+\begin_inset Formula $S$
+\end_inset
+
+, or as view as possible invalid solution candidates.
+ Every 
+\family typewriter
+Genotype
+\family sans
+ should also be mapped to only one solution candidate in 
+\begin_inset Formula $S$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+
+\series bold
+Methodological approach
+\end_layout
+
+\begin_layout Enumerate
+Find a domain model for the solution space, 
+\begin_inset Formula $S$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Implement the fitness function in terms of the domain model.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Find a 
+\family typewriter
+Codec
+\family default
+ which maps a 
+\family typewriter
+Genotype
+\family default
+ to the domain model.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Setup 
+\family typewriter
+Engine
+\family default
+ with 
+\family typewriter
+Codec
+\family default
+ and fitness function, 
+\begin_inset Formula $f(S)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The following code snippet shows how to use a 
+\family typewriter
+Codec
+\family default
+ for the 
+\emph on
+bit counting
+\emph default
+ problem.
+ It shows the steps 2 to 4 from the methodological approach.
+ Step 1, finding the domain model representing the solution space, is trivial
+ in this example: 
+\begin_inset Formula $S$
+\end_inset
+
+ is set to 
+\family typewriter
+int
+\family default
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// (2) Fitness function working on native solution space.
+\end_layout
+
+\begin_layout Plain Layout
+
+int fitness(final int count) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return count;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// (3) Codec for Genotype to int mapping.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Integer, BitGene> codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(BitChromosome.of(100)),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .as(BitChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .bitCount()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// (4) Setup Engine.
+\end_layout
+
+\begin_layout Plain Layout
+
+final static Engine<BitGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(this::fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Encoding strategies
+\end_layout
+
+\begin_layout Standard
+Finding a proper encoding for the domain model of the solution space can
+ be quite challenging.
+ The 
+\family typewriter
+Codec
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\family default
+ interface has been introduced as a mapping abstraction between the 
+\family typewriter
+Genotype
+\family default
+ and the domain model, used by the fitness function.
+ While it is possible to create a 
+\family typewriter
+Codec
+\family default
+ directly by specifying the 
+\family typewriter
+Fac\SpecialChar softhyphen
+tory\SpecialChar softhyphen
+<\SpecialChar softhyphen
+Geno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+>
+\family default
+ and the 
+\family typewriter
+Genotype
+\family default
+ to domain model mapping, this is not always the best way for creating a
+ 
+\family typewriter
+Codec
+\family default
+.
+ With a basic set of predefined 
+\family typewriter
+Codec
+\family default
+s and the composition capability of the 
+\family typewriter
+Codec
+\family default
+ interface, complex 
+\family typewriter
+Codec
+\family default
+s can be created in a declarative style.
+ The following subsections describes solutions for common encoding problems.
+\end_layout
+
+\begin_layout Subsection
+Mapping codecs
+\end_layout
+
+\begin_layout Standard
+Before developing your own 
+\family typewriter
+Codec
+\family default
+, have a look at the 
+\family typewriter
+Codecs
+\family default
+ class, which contains a base set of commonly usable codecs.
+ They support scalars, vectors, matrices and permutations.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<Integer, IntegerGene>
+\family default
+\series default
+: Scalar support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Scalar-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[], IntegerGene>
+\family default
+\series default
+: Vector support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Vector-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[][], IntegerGene>
+\family default
+\series default
+: Matrix support for 
+\family typewriter
+int
+\family default
+/
+\family typewriter
+long
+\family default
+/
+\family typewriter
+double
+\family default
+ values.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Matrix-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+Codec<int[], EnumGene>
+\family default
+\series default
+: Permutation support.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Permutation-codec"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Creating a 
+\family typewriter
+Codec
+\family default
+, as shown in the code snippet below, is more expressive and less error
+ prone.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+record Solution(int[] values) {}
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Solution, IntegerGene> codec = Codecs
+\end_layout
+
+\begin_layout Plain Layout
+
+    .ofVector(IntRange.of(0, 100), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Solution::new);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+map
+\family default
+ method can also be used to 
+\shape italic
+homogenize
+\shape default
+ the 
+\family typewriter
+Gene
+\family default
+ types for a 
+\family typewriter
+Genotype
+\family default
+, which only allows chromosomes with the same 
+\family typewriter
+Gene
+\family default
+ types.
+ The following snippet shows how to create an 
+\family typewriter
+int[]
+\family default
+ arrays from 
+\family typewriter
+DoubleGene
+\family default
+s, where this 
+\family typewriter
+int[]
+\family default
+ array is than used for creating the 
+\family typewriter
+Solution
+\family default
+ domain object.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Solution, DoubleGene> codec = Codecs
+\end_layout
+
+\begin_layout Plain Layout
+
+    .ofVector(DoubleRange.of(0, 100), 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Conversions::doubleToIntArray)    
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(Solution::new);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+Conversions
+\family default
+ class implements helper methods for converting 
+\family typewriter
+int[]
+\family default
+, 
+\family typewriter
+long[]
+\family default
+ and 
+\family typewriter
+double[]
+\family default
+ arrays.
+\end_layout
+
+\begin_layout Subsection
+Combining codecs
+\end_layout
+
+\begin_layout Standard
+If the solution model itself consists of nested models, it is possible to
+ define 
+\family typewriter
+Codec
+\family default
+s for each of the nested models and combine these sub 
+\family typewriter
+Codec
+\family default
+ classes to the final 
+\family typewriter
+Codec
+\family default
+.
+ The code snippet below shows how to combine two standard scalar 
+\family typewriter
+Codec
+\family default
+s to a 
+\family typewriter
+Codec
+\family default
+ for a given user type.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Codec for GPS point (latitude, longitude).
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
+\end_layout
+
+\begin_layout Plain Layout
+
+	Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+\end_layout
+
+\begin_layout Plain Layout
+
+	Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+\end_layout
+
+\begin_layout Plain Layout
+
+	WayPoint::of
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+A more advanced example is shown in the code snippet below.
+ It uses the already created 
+\family typewriter
+Codec
+\family default
+ and creates a 
+\family typewriter
+Codec
+\family default
+ for an array of subdomain elements.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Domain model of solution space.
+\end_layout
+
+\begin_layout Plain Layout
+
+record Locations(WayPoint[] coordinates) {}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Codec for the path object, using the 
+\end_layout
+
+\begin_layout Plain Layout
+
+// 'wpc' codec for a single vector element.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<Locations, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(coordinates -> coordinates.toArray(WayPoint[]::new))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(Locations::new);
+\end_layout
+
+\end_inset
+
+As it can be seen, the composability of the 
+\family typewriter
+Codec
+\family default
+ interface is a very useful and mighty tool, for creating complex model
+ encodings.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Codec
+\family default
+ also allows the creation of random 
+\family typewriter
+Genotype
+\family default
+s and the decoding of these 
+\family typewriter
+Genotype
+\family default
+s into instances of the domain model.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Create a new, random 'Genotype'.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> genotype = pc.encoding().newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+// Decode the 'Genotype' to an instance of the domain model.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Locations locations = pc.decode(genotype);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Partial permutation codecs
+\end_layout
+
+\begin_layout Standard
+Permutation problems are usually encoded with the 
+\family typewriter
+Enum\SpecialChar softhyphen
+Gene
+\family default
+ and the 
+\family typewriter
+Per\SpecialChar softhyphen
+mu\SpecialChar softhyphen
+tat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+, which guarantees that only permutations of a given set of elements are
+ possible.
+ This works fine if your problem is a 
+\shape italic
+pure
+\shape default
+ permutation problem, like the Traveling salesman problem.
+ For mixed problems, the 
+\family typewriter
+Per\SpecialChar softhyphen
+mu\SpecialChar softhyphen
+tat\SpecialChar softhyphen
+ion\SpecialChar softhyphen
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ can no longer be used, since all 
+\family typewriter
+Gene
+\family default
+s in a 
+\family typewriter
+Genotype
+\family default
+ must be of the same type.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Domain model for a variation of the TSP.
+\end_layout
+
+\begin_layout Plain Layout
+
+record Path(LocalTime start, WayPoint[] stops) {
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+If the optimal route of the TSP additionally depends on the start time of
+ the tour, we no longer have a pure permutation problem.
+ Additionally to the path
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The path is defined by an array of 
+\family typewriter
+WayPoint
+\family default
+s, which are a data structure of the JPX library: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jpx
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, we have to encode a 
+\family typewriter
+Local\SpecialChar softhyphen
+Time
+\family default
+ object.
+ Lets break down the problem, and start with the 
+\family typewriter
+Codec
+\family default
+ of for the start time.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Codec for a Java 'LocalTime' object.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<LocalTime, DoubleGene> ltc = Codecs
+\end_layout
+
+\begin_layout Plain Layout
+
+	.ofScalar(DoubleRange.of(0, Duration.ofHours(24).toSeconds()))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(Double::longValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(LocalTime::ofSecondOfDay);
+\end_layout
+
+\end_inset
+
+We used a 
+\family typewriter
+DoubleGene
+\family default
+ for the start time encoding and now we have to find a permutation encoding
+ which uses 
+\family typewriter
+DoubleGene
+\family default
+s as well.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// All waypoints of the tour.
+\end_layout
+
+\begin_layout Plain Layout
+
+final WayPoint[] points = new WayPoint[] {
+\end_layout
+
+\begin_layout Plain Layout
+
+	WayPoint.of(23, 42) 
+\end_layout
+
+\begin_layout Plain Layout
+
+    // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Permutation codec, using DoubleGens.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Codec<WayPoint[], DoubleGene> wpc = Codecs
+\end_layout
+
+\begin_layout Plain Layout
+
+	.ofVector(DoubleRange.of(0, 1), points.length) // (1)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(ProxySorter::sort)                        // (2)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.map(permutation -> {                          // (3)
+\end_layout
+
+\begin_layout Plain Layout
+
+		assert permutation.length == points.length;
+\end_layout
+
+\begin_layout Plain Layout
+
+        var result = new WayPoint[points.length];
+\end_layout
+
+\begin_layout Plain Layout
+
+		for (int i = 0; i < points.length; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			result[i] = points[permutation[i]];
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		return result;
+\end_layout
+
+\begin_layout Plain Layout
+
+	});
+\end_layout
+
+\end_inset
+
+There is a lot going on here, so lets explain the steps 1 to 3.
+\end_layout
+
+\begin_layout Enumerate
+In the first step, a 
+\family typewriter
+double[]
+\family default
+ array with the length, equals to the number of the way points of the tour,
+ is created.
+ The actual value range of the array doesn't matter.
+ 
+\end_layout
+
+\begin_layout Enumerate
+In this step, the 
+\family typewriter
+double[]
+\family default
+ array will be sorted.
+ The 
+\family typewriter
+Proxy\SpecialChar softhyphen
+Sor\SpecialChar softhyphen
+ter
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:io.jenetics.util.ProxySorter"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ doesn't sort the array directly, which means that the input array will
+ be not changed.
+ Instead the 
+\family typewriter
+Proxy\SpecialChar softhyphen
+Sor\SpecialChar softhyphen
+ter\SpecialChar softhyphen
+::sort
+\family default
+ method returns an index array, which represents the sort order of the input.
+\end_layout
+
+\begin_layout Enumerate
+The index array from the previous step is a permutation of the integers
+ in the range 
+\begin_inset Formula $\left[0...points.length\right)$
+\end_inset
+
+.
+ By 
+\begin_inset Quotes ald
+\end_inset
+
+sorting
+\begin_inset Quotes ard
+\end_inset
+
+ the tour points with the index array, we will create a valid TSP tour.
+\end_layout
+
+\begin_layout Standard
+We are now able to combine the two sub 
+\family typewriter
+Codec
+\family default
+s to the final 
+\family typewriter
+Codec
+\family default
+, and we already know how to do this.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Path, DoubleGene> codec = Codec.combine(
+\end_layout
+
+\begin_layout Plain Layout
+
+    ltc, wpc, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Path::new
+\end_layout
+
+\begin_layout Plain Layout
+
+);
 \end_layout
 
 \end_inset

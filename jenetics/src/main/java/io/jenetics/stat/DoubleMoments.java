@@ -101,7 +101,6 @@ public record DoubleMoments(
 	/**
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<Double> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMoments moments = stream.collect(toDoubleMoments());
@@ -121,7 +120,6 @@ public record DoubleMoments(
 	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleMoments moments = stream

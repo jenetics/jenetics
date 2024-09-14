@@ -209,7 +209,6 @@ public final class MinMax<C> implements Consumer<C> {
 	/**
 	 * Return a {@code Collector} which calculates the minimum and maximum value.
 	 * The given {@code comparator} is used for comparing two objects.
-	 *
 	 * {@snippet lang="java":
 	 * final Comparator<SomeObject> comparator = null; // @replace substring='null' replacement="..."
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."

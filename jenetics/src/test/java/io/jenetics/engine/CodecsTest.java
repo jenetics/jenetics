@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -43,6 +44,8 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.jpx.WayPoint;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -664,6 +667,27 @@ public class CodecsTest {
 			{"1","2","3","7","5"},
 			{"1","2","3","5", "59"}
 		};
+	}
+
+	@Test
+	void ofCodecVector() {
+		// Domain model of solution space.
+		record Path(WayPoint[] stops) {}
+
+		// Codec fora single GPS point (latitude, longitude).
+		final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
+			Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+			Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+			WayPoint::of
+		);
+
+		// Codec for the path object.
+		final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+			.map(points -> points.toArray(WayPoint[]::new))
+			.map(Path::new);
+
+		final Path path = pc.decode(pc.encoding().newInstance());
+		assertThat(path.stops).hasSize(10);
 	}
 
 }

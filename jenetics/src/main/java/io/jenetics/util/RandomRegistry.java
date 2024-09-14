@@ -106,7 +106,6 @@ import java.util.random.RandomGeneratorFactory;
  *
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.,
  * for initialize the engine stream with the same initial population.
- *
  * {@snippet lang="java":
  * public class GA {
  *     public static void main(final String[] args) {
@@ -236,7 +235,6 @@ public final class RandomRegistry {
 
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(new Random(123), r -> {
@@ -267,7 +265,6 @@ public final class RandomRegistry {
 
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(RandomGeneratorFactory.getDefault(), r -> {
@@ -299,7 +296,6 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} generator
 	 * supplier.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());

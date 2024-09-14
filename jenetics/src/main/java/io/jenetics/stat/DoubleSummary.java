@@ -89,7 +89,6 @@ public record DoubleSummary(
 	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleSummary summary = stream

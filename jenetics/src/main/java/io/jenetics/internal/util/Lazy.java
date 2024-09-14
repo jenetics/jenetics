@@ -31,6 +31,7 @@ import java.io.ObjectOutput;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -38,7 +39,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 8.1
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 
@@ -77,6 +78,29 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 */
 	public boolean isEvaluated() {
 		return _supplier == null || _evaluated || _evaluated();
+	}
+
+	/**
+	 * If a value is evaluated, performs the given action with the value,
+	 * otherwise does nothing.
+	 *
+	 * @since 8.1
+	 *
+	 * @param action the action to be performed if a value is evaluated
+	 */
+	public void ifEvaluated(final Consumer<? super T> action) {
+		requireNonNull(action);
+
+		final boolean evaluated;
+		final T value;
+		synchronized (this) {
+			evaluated = _evaluated;
+			value = _value;
+		}
+
+		if (evaluated) {
+			action.accept(value);
+		}
 	}
 
 	private synchronized boolean _evaluated() {

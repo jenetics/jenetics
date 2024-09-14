@@ -40,7 +40,7 @@ import io.jenetics.util.Seq;
  *
  * {@snippet lang="java":
  * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
- *     // Number of best individuals preserved for next generation: elites
+ *     // Number of the best individuals preserved for the next generation: elites
  *     3,
  *     // Selector used for selecting rest of population.
  *     new RouletteWheelSelector<>()
@@ -134,7 +134,7 @@ public class EliteSelector<
 		}
 
 		ISeq<Phenotype<G, C>> result;
-		if (population.isEmpty() || count <= 0) {
+		if (population.isEmpty() || count == 0) {
 			result = ISeq.empty();
 		} else {
 			final int ec = min(count, _eliteCount);

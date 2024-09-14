@@ -45,8 +45,8 @@ import java.util.random.RandomGenerator;
  * @version 7.0
  * @since 4.0
  */
-public final class Subset {
-	private Subset() {}
+public final class Subsets {
+	private Subsets() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
@@ -68,7 +68,7 @@ public final class Subset {
 		return subset;
 	}
 
-	private static void next(
+	public static void next(
 		final RandomGenerator rnd,
 		final int n,
 		final int[] a
@@ -228,8 +228,16 @@ public final class Subset {
 		}
 	}
 
-
-	private static void checkSubSet(final int n, final int k) {
+	/**
+	 * Checks if the given subset parameters {@code n} and {@code k} can be used
+	 * safely by the {@code next} methods.
+	 *
+	 * @param n the cardinality of the superset
+	 * @param k the cardinality of the subset
+	 * @throws IllegalArgumentException if {@code k <= 0 || n < k} or if
+	 *         {@code n*k} overflows
+	 */
+	public static void checkSubSet(final int n, final int k) {
 		if (k <= 0) {
 			throw new IllegalArgumentException(format(
 				"Subset size smaller or equal zero: %s", k
