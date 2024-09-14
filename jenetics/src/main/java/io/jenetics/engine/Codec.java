@@ -334,7 +334,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(duration);
 	 *}
 	 *
-	 * @since !__version__!
+	 * @since 8.1
 	 *
 	 * @param <G> the gene type
 	 * @param <A> the argument type of the first codec
@@ -461,7 +461,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(duration);
 	 * }
 	 *
-	 * @since !__version__!
+	 * @since 8.1
 	 *
 	 * @param <G> the gene type
 	 * @param <T> the argument type of the compound codec

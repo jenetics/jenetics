@@ -609,7 +609,7 @@ public final class Codecs {
 	 * final Path path = pc.decode(pc.encoding().newInstance());
 	 * }
 	 *
-	 * @since !__version__!
+	 * @since 8.1
 	 *
 	 * @param codec the codec for the <em>domain</em> object
 	 * @param length the length of the vector.
