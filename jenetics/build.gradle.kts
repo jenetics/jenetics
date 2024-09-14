@@ -41,6 +41,7 @@ dependencies {
 	testImplementation(libs.commons.rng.sampling)
 	testImplementation(libs.commons.rng.simple)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.jpx)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
 	testImplementation(testFixtures(project(":jenetics")))

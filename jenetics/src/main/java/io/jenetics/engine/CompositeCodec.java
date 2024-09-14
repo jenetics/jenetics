@@ -50,9 +50,9 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	/**
 	 * Combines the given {@code codecs} into one codec. This lets you divide
-	 * a problem into sub problems and combine them again.
+	 * a problem into subproblems and combine them again.
 	 *
-	 * @param codecs the {@code Codec} sequence of the sub-problems
+	 * @param codecs the {@code Codec} sequence of the subproblems
 	 * @param decoder the decoder which combines the argument types from the
 	 *        given codecs, to the argument type of the resulting codec.
 	 * @throws NullPointerException if one of the arguments is {@code null}

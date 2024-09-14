@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Map.entry;
+import static java.util.Objects.checkIndex;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
@@ -584,6 +585,54 @@ public final class Codecs {
 		final int length
 	) {
 		return ofVector(supplier, Predicates.TRUE, length);
+	}
+
+	/**
+	 * Create a vector ({@link ISeq}) of domain objects, which are created with
+	 * the given {@code codec}.
+	 * {@snippet lang=java:
+	 * // Domain model of solution space.
+	 * record Path(WayPoint[] stops) {}
+	 *
+	 * // Codec fora single GPS point (latitude, longitude).
+	 * final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
+	 *     Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+	 *     Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	 *     WayPoint::of
+	 * );
+	 *
+	 * // Codec for the path object.
+	 * final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+	 *     .map(points -> points.toArray(WayPoint[]::new))
+	 *     .map(Path::new);
+	 *
+	 * final Path path = pc.decode(pc.encoding().newInstance());
+	 * }
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codec the codec for the <em>domain</em> object
+	 * @param length the length of the vector.
+	 * @return a codec for a sequence of domain objects
+	 * @param <S> the type of the domain object
+	 * @param <G> the encoding gene type
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 * @throws IllegalArgumentException if the length is smaller than 1
+	 */
+	@SuppressWarnings("unchecked")
+	public static <S, G extends Gene<?, G>> Codec<ISeq<S>, G>
+	ofVector(final Codec<? extends S, G> codec, final int length) {
+		requireNonNull(codec);
+		if (length <= 0) {
+			throw new IllegalArgumentException("Length must be positive: " + length);
+		}
+
+		return Codec.combine(
+			IntStream.range(0, length)
+				.mapToObj(__ -> codec)
+				.collect(ISeq.toISeq()),
+			objects -> ISeq.of((S[])objects)
+		);
 	}
 
 	/**

@@ -349,9 +349,9 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	static <A, B, T, G extends Gene<?, G>> Codec<T, G> combine(
-		final Codec<A, G> codec1,
-		final Codec<B, G> codec2,
-		final BiFunction<A, B, T> decoder
+		final Codec<? extends A, G> codec1,
+		final Codec<? extends B, G> codec2,
+		final BiFunction<? super A, ? super B, ? extends T> decoder
 	) {
 		@SuppressWarnings("unchecked")
 		final Function<Object[], T> decoderAdapter =
