@@ -263,8 +263,6 @@ fun setupPublishing(project: Project) {
 	project.configure<PublishingExtension> {
 		publications {
 			create<MavenPublication>("mavenJava") {
-				suppressPomMetadataWarningsFor("test-fixtures")
-
 				artifactId = project.name
 				from(project.components["java"])
 				versionMapping {
@@ -331,6 +329,19 @@ fun setupPublishing(project: Project) {
 
 	project.configure<SigningExtension> {
 		sign(project.the<PublishingExtension>().publications["mavenJava"])
+	}
+
+	// Exclude test fixtures from publication, as we use it only internally
+	plugins.withId("org.gradle.java-test-fixtures") {
+		val component = components["java"] as AdhocComponentWithVariants
+		component.withVariantsFromConfiguration(configurations["testFixturesApiElements"]) { skip() }
+		component.withVariantsFromConfiguration(configurations["testFixturesRuntimeElements"]) { skip() }
+
+		// Workaround to not publish test fixtures sources added by com.vanniktech.maven.publish plugin
+		// TODO: Remove as soon as https://github.com/vanniktech/gradle-maven-publish-plugin/issues/779 closed
+		afterEvaluate {
+			component.withVariantsFromConfiguration(configurations["testFixturesSourcesElements"]) { skip() }
+		}
 	}
 }
 
