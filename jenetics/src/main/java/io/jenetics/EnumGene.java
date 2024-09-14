@@ -80,11 +80,11 @@ public final class EnumGene<A>
 	 * Create a new enum gene from the given valid genes and the chosen allele
 	 * index.
 	 *
-	 * @param alleleIndex the index of the allele for this gene.
-	 * @param validAlleles the sequence of valid alleles.
+	 * @param alleleIndex the index of the allele for this gene
+	 * @param validAlleles the sequence of valid alleles
 	 * @throws IllegalArgumentException if the give valid alleles sequence is
 	 *         empty
-	 * @throws NullPointerException if the valid alleles seq is {@code null}.
+	 * @throws NullPointerException if the valid alleles seq is {@code null}
 	 */
 	EnumGene(final int alleleIndex, final ISeq<? extends A> validAlleles) {
 		if (validAlleles.isEmpty()) {
@@ -117,7 +117,7 @@ public final class EnumGene<A>
 	/**
 	 * Return the index of the allele this gene is representing.
 	 *
-	 * @return the index of the allele this gene is representing.
+	 * @return the index of the allele this gene is representing
 	 */
 	public int alleleIndex() {
 		return _alleleIndex;
@@ -146,8 +146,8 @@ public final class EnumGene<A>
 	 *
 	 * @since 1.6
 	 *
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
+	 * @param value the value of the new gene
+	 * @return a new gene with the given value
 	 */
 	public EnumGene<A> newInstance(final A value) {
 		return new EnumGene<>(
@@ -197,8 +197,8 @@ public final class EnumGene<A>
 	 * @since 3.4
 	 *
 	 * @param <A> the allele type
-	 * @param alleleIndex the index of the allele for this gene.
-	 * @param validAlleles the sequence of valid alleles.
+	 * @param alleleIndex the index of the allele for this gene
+	 * @param validAlleles the sequence of valid alleles
 	 * @return a new {@code EnumGene} with the given with the allele
 	 *        {@code validAlleles.get(alleleIndex)}
 	 * @throws IllegalArgumentException if the give valid alleles sequence is
@@ -236,7 +236,7 @@ public final class EnumGene<A>
 	 * index.
 	 *
 	 * @param <A> the allele type
-	 * @param alleleIndex the index of the allele for this gene.
+	 * @param alleleIndex the index of the allele for this gene
 	 * @param validAlleles the array of valid alleles.
 	 * @return a new {@code EnumGene} with the given with the allele
 	 *        {@code validAlleles[alleleIndex]}
@@ -256,7 +256,7 @@ public final class EnumGene<A>
 	 * valid alleles.
 	 *
 	 * @param <A> the allele type
-	 * @param validAlleles the array of valid alleles.
+	 * @param validAlleles the array of valid alleles
 	 * @return a new {@code EnumGene} with a randomly chosen allele from the
 	 *         sequence of valid alleles
 	 * @throws IllegalArgumentException if the give valid alleles array is empty

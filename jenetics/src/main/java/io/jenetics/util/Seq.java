@@ -550,14 +550,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * and {@code end} are equal, the returned sequence has length zero.)
 	 * The returned sequence is backed by this sequence, so non-structural
 	 * changes in the returned sequence are reflected in this sequence, and
-	 * vice-versa.
+	 * vice versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * populationSort that commonly exist for arrays). Any operation that
 	 * expects a sequence can be used as a range operation by passing a
-	 * sub-sequence view instead of a whole sequence.
+	 * subsequence view instead of a whole sequence.
 	 *
-	 * @param start lower end point (inclusive) of the sub array.
+	 * @param start lower end point (inclusive) of the subarray.
 	 * @return a view of the specified range within this array.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
@@ -570,15 +570,15 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * and {@code end} are equal, the returned sequence has length zero.)
 	 * The returned sequence is backed by this sequence, so non-structural
 	 * changes in the returned sequence are reflected in this array, and
-	 * vice-versa.
+	 * vice versa.
 	 * <p>
 	 * This method eliminates the need for explicit range operations (of the
 	 * populationSort that commonly exist for arrays). Any operation that
 	 * expects an array can be used as a range operation by passing a
 	 * subsequence view instead of a whole sequence.
 	 *
-	 * @param start low-end point (inclusive) of the sub-sequence.
-	 * @param end high-end point (exclusive) of the sub-sequence.
+	 * @param start low-end point (inclusive) of the subsequence.
+	 * @param end high-end point (exclusive) of the subsequence.
 	 * @return a view of the specified range within this sequence.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
@@ -610,7 +610,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param comparator the comparator which defines the order.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of its element or
+	 * @throws NullPointerException if the given array or one of its elements or
 	 *         the comparator is {@code null}.
 	 */
 	default boolean isSorted(final Comparator<? super T> comparator) {

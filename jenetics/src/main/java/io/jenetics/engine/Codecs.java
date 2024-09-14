@@ -61,7 +61,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 
 /**
- * This class contains factory methods for creating common  problem encodings.
+ * This class contains factory methods for creating common problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
@@ -849,7 +849,6 @@ public final class Codecs {
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
@@ -986,7 +985,6 @@ public final class Codecs {
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");

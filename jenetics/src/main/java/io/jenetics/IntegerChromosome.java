@@ -182,10 +182,10 @@ public class IntegerChromosome
 	/**
 	 * Create a new {@code IntegerChromosome} with the given genes.
 	 *
-	 * @param genes the genes of the chromosome.
-	 * @return a new chromosome with the given genes.
+	 * @param genes the genes of the chromosome
+	 * @return a new chromosome with the given genes
 	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty or the given {@code genes} doesn't have the same range.
+	 *         empty or the given {@code genes} doesn't have the same range
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
 		checkGeneRange(Stream.of(genes).map(IntegerGene::range));

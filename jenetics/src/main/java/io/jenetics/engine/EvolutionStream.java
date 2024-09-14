@@ -167,7 +167,6 @@ public interface EvolutionStream<
 	/**
 	 * Create a new evolution stream with an <em>adjustable</em> evolution
 	 * function.
-	 *
 	 * {@snippet lang="java":
 	 * public static void main(final String[] args) {
 	 *     final Problem<double[], DoubleGene, Double> problem = Problem.of(

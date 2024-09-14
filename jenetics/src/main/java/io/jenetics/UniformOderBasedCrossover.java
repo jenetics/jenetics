@@ -26,7 +26,7 @@ import io.jenetics.util.Seq;
  * are found exactly once in each chromosome. No gene is duplicated by this
  * crossover. This crossover can be applied usefully in the TSP or other
  * permutation problem encodings. Permutation encoding is useful for all
- * problems where the fitness only depends on the ordering of the genes within
+ * problems where fitness only depends on the ordering of the genes within
  * the chromosome. This is the case in many combinatorial optimization problems.
  * Other crossover operators for combinatorial optimization are:
  * <ul>

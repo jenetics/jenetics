@@ -35,7 +35,6 @@ import io.jenetics.internal.util.Lifecycle.Releasable;
 /**
  * This class allows creating a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
- *
  * {@snippet lang="java":
  * final Stream<Long> stream = engine.stream()
  *     .limit(33)

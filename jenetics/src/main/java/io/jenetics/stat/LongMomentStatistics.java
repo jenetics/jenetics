@@ -209,7 +209,6 @@ public class LongMomentStatistics
 	 * Return a {@code Collector} which applies a long-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final LongMomentStatistics statistics = stream

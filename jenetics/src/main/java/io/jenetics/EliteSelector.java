@@ -40,7 +40,7 @@ import io.jenetics.util.Seq;
  *
  * {@snippet lang="java":
  * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
- *     // Number of best individuals preserved for next generation: elites
+ *     // Number of the best individuals preserved for the next generation: elites
  *     3,
  *     // Selector used for selecting rest of population.
  *     new RouletteWheelSelector<>()

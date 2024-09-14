@@ -32,7 +32,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * {@code Gene} implementation, which allows to create genes without explicit
+ * {@code Gene} implementation, which allows creating genes without explicit
  * implementing the {@code Gene} interface.
  *
  * {@snippet lang="java":

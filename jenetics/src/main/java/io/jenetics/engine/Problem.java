@@ -31,7 +31,6 @@ import io.jenetics.Genotype;
  * This interface describes a <i>problem</i> which can be solved by the GA
  * evolution {@code Engine}. It connects the actual {@link #fitness()} function
  * and the needed {@link #codec()}.
- *
  * {@snippet lang="java":
  * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
  *     // Native fitness function
