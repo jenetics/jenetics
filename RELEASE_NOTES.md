@@ -14,6 +14,13 @@ static List<Sample<Double>> parseDoubles(final CharSequence csv) {
 }
 ```
 * [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
+* [#907](https://github.com/jenetics/jenetics/issues/907): Add a chapter in the user's manual for optimization strategies: _Practical Jenetics_.
+* [#909](https://github.com/jenetics/jenetics/issues/909): Helper methods for converting primitive arrays.
+```java
+final Codec<int[], DoubleGene> codec = Codecs
+    .ofVector(DoubleRange.of(0, 100), 100)
+    .map(Conversions::doubleToIntArray);
+```
 
 ### Bugs
 
