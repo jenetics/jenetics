@@ -45,7 +45,7 @@ import io.jenetics.prog.regression.Sample;
 /**
  * Symbolic regression involves finding a mathematical expression, in symbolic
  * form, that provides a good, best, or perfect fit between a given finite
- * sampling of values of the independent variables and the associated values of
+ * sampling values of the independent variables and the associated values of
  * the dependent variables. --- John R. Koza, Genetic Programming I
  *
  * @see GrammaticalSymbolicRegression
@@ -61,28 +61,29 @@ public class SymbolicRegression {
 	/**
 	 * Lookup table for {@code 4*x^3 - 3*x^2 + x}
 	 */
-	public static final List<Sample<Double>> SAMPLES = List.of(
-		Sample.ofDouble(-1.0, -8.0000),
-		Sample.ofDouble(-0.9, -6.2460),
-		Sample.ofDouble(-0.8, -4.7680),
-		Sample.ofDouble(-0.7, -3.5420),
-		Sample.ofDouble(-0.6, -2.5440),
-		Sample.ofDouble(-0.5, -1.7500),
-		Sample.ofDouble(-0.4, -1.1360),
-		Sample.ofDouble(-0.3, -0.6780),
-		Sample.ofDouble(-0.2, -0.3520),
-		Sample.ofDouble(-0.1, -0.1340),
-		Sample.ofDouble(0.0, 0.0000),
-		Sample.ofDouble(0.1, 0.0740),
-		Sample.ofDouble(0.2, 0.1120),
-		Sample.ofDouble(0.3, 0.1380),
-		Sample.ofDouble(0.4, 0.1760),
-		Sample.ofDouble(0.5, 0.2500),
-		Sample.ofDouble(0.6, 0.3840),
-		Sample.ofDouble(0.7, 0.6020),
-		Sample.ofDouble(0.8, 0.9280),
-		Sample.ofDouble(0.9, 1.3860),
-		Sample.ofDouble(1.0, 2.0000)
+	public static final List<Sample<Double>> SAMPLES = Sample.parseDoubles("""
+		-1.0, -8.0000
+		-0.9, -6.2460
+		-0.8, -4.7680
+		-0.7, -3.5420
+		-0.6, -2.5440
+		-0.5, -1.7500
+		-0.4, -1.1360
+		-0.3, -0.6780
+		-0.2, -0.3520
+		-0.1, -0.1340
+		 0.0,  0.0000
+		 0.1,  0.0740
+		 0.2,  0.1120
+		 0.3,  0.1380
+		 0.4,  0.1760
+		 0.5,  0.2500
+		 0.6,  0.3840
+		 0.7,  0.6020
+		 0.8,  0.9280
+		 0.9,  1.3860
+		 1.0,  2.0000
+		"""
 	);
 
 	// Definition of the allowed operations.
@@ -125,7 +126,7 @@ public class SymbolicRegression {
 		System.out.println("Error:       " + REGRESSION.error(tree));
 	}
 
-	// The function we want to determine.
+	// The function we want to find.
 	private static double f(final double x) {
 		return 4*x*x*x - 3*x*x + x;
 	}

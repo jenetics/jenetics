@@ -108,7 +108,7 @@ public final class Phenotype<
 	 * @since 5.0
 	 *
 	 * @param ff the fitness function
-	 * @return a evaluated phenotype or {@code this} if the fitness value is
+	 * @return an evaluated phenotype or {@code this} if the fitness value is
 	 *         already set
 	 * @throws NullPointerException if the given fitness function is {@code null}
 	 */

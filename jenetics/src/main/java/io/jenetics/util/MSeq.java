@@ -544,31 +544,25 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 		@SuppressWarnings("unchecked")
 		final Iterable<T> vals = (Iterable<T>)values;
-
-		final MSeq<T> mseq;
-		if (vals instanceof ISeq<T> seq) {
-			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (vals instanceof MSeq<T> seq) {
-			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (vals instanceof Collection<T> collection) {
-			mseq = collection.isEmpty()
-				? empty()
-				: MSeq.<T>ofLength(collection.size()).setAll(values);
-		} else if (vals instanceof BaseSeq<T> seq) {
-			mseq = seq.isEmpty()
+		return switch (vals) {
+            case ISeq<T> seq -> seq.isEmpty() ? empty() : seq.copy();
+            case MSeq<T> seq -> seq.isEmpty() ? empty() : MSeq.of(seq);
+			case BaseSeq<T> seq -> seq.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(seq.length()).setAll(values);
-		} else {
-			final Stream.Builder<T> builder = Stream.builder();
-			values.forEach(builder::add);
-			final Object[] objects = builder.build().toArray();
+            case Collection<T> coll -> coll.isEmpty()
+	                ? empty()
+	                : MSeq.<T>ofLength(coll.size()).setAll(values);
+            default -> {
+                final Stream.Builder<T> builder = Stream.builder();
+                values.forEach(builder::add);
+                final Object[] objects = builder.build().toArray();
 
-			mseq = objects.length == 0
-				? empty()
-				: new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
-		}
-
-		return mseq;
+                yield objects.length == 0
+	                ? empty()
+	                : new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
+            }
+        };
 	}
 
 	/**

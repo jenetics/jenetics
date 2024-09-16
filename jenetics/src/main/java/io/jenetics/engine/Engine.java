@@ -51,7 +51,6 @@ import io.jenetics.util.Seq;
 /**
  * Genetic algorithm <em>engine</em> which is the main class. The following
  * example shows the main steps in initializing and executing the GA.
- *
  * {@snippet lang="java":
  * public class RealFunction {
  *    // Definition of the fitness function.
@@ -104,7 +103,7 @@ import io.jenetics.util.Seq;
  *     // Using this execution service for parallelize the evolution steps.
  *     .executor(Executors.newFixedThreadPool(5))
  *     // Using one virtual thread for every fitness function evaluation.
- *     .batchExecutor(BatchExecutor.ofVirtualThreads())
+ *     .fitnessExecutor(BatchExecutor.ofVirtualThreads())
  *     .build();
  * }
  *
@@ -1045,7 +1044,7 @@ public final class Engine<
 		}
 
 		/**
-		 * The evolution interceptor, which allows to change the evolution start
+		 * The evolution interceptor, which allows changing the evolution start
 		 * and result.
 		 *
 		 * @since 6.0
@@ -1283,7 +1282,6 @@ public final class Engine<
 	 * {@link Builder}. It is mainly used for grouping mutually dependent
 	 * engine configurations. The following code snippet shows a possible usage
 	 * example.
-	 *
 	 * {@snippet lang="java":
 	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
 	 *     .setup(new WeaselProgram<>())

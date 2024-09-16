@@ -147,4 +147,12 @@ public final class Arrays {
 		}
 	}
 
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (var value : values) {
+			sum += value;
+		}
+		return sum;
+	}
+
 }

@@ -20,7 +20,6 @@
 package io.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.min;
 
 import io.jenetics.stat.LongSummary;
 
@@ -122,25 +121,6 @@ public final class Basics {
 	public static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return (int)m == m;
-	}
-
-	/**
-	 * <i>Clamping</i> a value between a pair of boundary values.
-	 * <i>Note: using clamp with floating point numbers may give unexpected
-	 * results if one of the values is {@code NaN}.</i>
-	 *
-	 * @param v the value to <i>clamp</i>
-	 * @param lo the lower bound.
-	 * @param hi the upper bound.
-	 * @return The clamped value:
-	 *        <ul>
-	 *            <li>{@code lo if v < lo}</li>
-	 *            <li>{@code hi if hi < v}</li>
-	 *            <li>{@code otherwise, v}</li>
-	 *        </ul>
-	 */
-	public static double clamp(final double v, final double lo, final double hi) {
-		return v < lo ? lo : min(v, hi);
 	}
 
 	/**

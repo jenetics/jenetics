@@ -1,8 +1,54 @@
 ## Release notes
 
+### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
+
+#### Improvements
+
+* [#822](https://github.com/jenetics/jenetics/issues/822): Improve the build script for generating combined Javadoc.
+* [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
+```java
+static List<Sample<Double>> parseDoubles(final CharSequence csv) {
+	return CsvSupport.parseDoubles(csv).stream()
+		.map(Sample::ofDouble)
+		.toList();
+}
+```
+* [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
+* [#907](https://github.com/jenetics/jenetics/issues/907): Add a chapter in the user's manual for optimization strategies: _Practical Jenetics_.
+* [#909](https://github.com/jenetics/jenetics/issues/909): Helper methods for converting primitive arrays.
+```java
+final Codec<int[], DoubleGene> codec = Codecs
+    .ofVector(DoubleRange.of(0, 100), 100)
+    .map(Conversions::doubleToIntArray);
+```
+
+### Bugs
+
+* [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
+
+### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
+
+#### Improvements
+
+* Java 21 is used for building and using the library.
+* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function.
+```java
+final Engine<DoubleGene, Double> engine = Engine.builder(ff)
+    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+    .build();
+```
+* [#880](https://github.com/jenetics/jenetics/issues/880): Replace code examples in Javadoc with [JEP 413](https://openjdk.org/jeps/413).
+* [#886](https://github.com/jenetics/jenetics/issues/886): Improve `CharStore` sort.
+* [#894](https://github.com/jenetics/jenetics/issues/894): New genetic operators: `ShiftMutator`, `ShuffleMutator` and `UniformOrderBasedCrossover`.
+* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default `RandomGenerator` selection. The used `RandomGenerator` is selected in the following order:
+	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter is set. If so, take this generator.
+	2) Check if the `L64X256MixRandom` generator is available. If so, take this generator.
+	3) Find the _best_ available random generator according to the `RandomGeneratorFactory.stateBits()` value.
+	4) Use the `Random` generator if no _best_ generator can be found. This generator is guaranteed to be available on every platform.
+
 ### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
 
-#### Improvemments
+#### Improvements
 
 * [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
 * [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
@@ -23,13 +69,13 @@ java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
 
 ### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
 
-#### Improvemments
+#### Improvements
 
 * [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
 
 ### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
 
-#### Improvemments
+#### Improvements
 
 * [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
 

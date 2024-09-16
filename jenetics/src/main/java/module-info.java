@@ -30,6 +30,8 @@ module io.jenetics.base {
 	exports io.jenetics.util;
 
 	exports io.jenetics.internal.engine to io.jenetics.ext;
-	exports io.jenetics.internal.math to io.jenetics.ext;
-	exports io.jenetics.internal.util to io.jenetics.ext, io.jenetics.prog;
+	exports io.jenetics.internal.math to
+		io.jenetics.ext, io.jenetics.incubator;
+	exports io.jenetics.internal.util to
+		io.jenetics.ext, io.jenetics.prog, io.jenetics.incubator;
 }

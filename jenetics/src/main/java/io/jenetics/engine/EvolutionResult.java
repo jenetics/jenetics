@@ -398,7 +398,6 @@ public final class EvolutionResult<
 
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
@@ -431,7 +430,6 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best phenotype of an evolution
 	 * stream.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Phenotype<EnumGene<Point>, Double> result = Engine.builder(tsm)
@@ -465,7 +463,6 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best genotype of an evolution
 	 * stream.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Genotype<EnumGene<Point>> result = Engine.builder(tsm)
@@ -501,7 +498,6 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
@@ -544,7 +540,6 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
@@ -576,7 +571,6 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
@@ -651,7 +645,6 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
@@ -683,7 +676,6 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
@@ -718,7 +710,6 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
-	 *
 	 * {@snippet lang="java":
 	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)

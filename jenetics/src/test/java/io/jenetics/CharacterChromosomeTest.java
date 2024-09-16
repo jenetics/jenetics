@@ -19,17 +19,13 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.StatisticsAssert.assertDistribution;
-import static io.jenetics.util.RandomRegistry.using;
-
-import java.util.Random;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
-import io.jenetics.stat.dist;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 
@@ -45,18 +41,15 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		using(new Random(12345), r -> {
-			final CharSeq characters = new CharSeq("0123456789");
-			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
+		final var characters = new CharSeq("0123456789");
+		final var chromosome = CharacterChromosome.of(characters, 10_000);
 
-			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
-			chromosome.stream()
-				.map(g -> Long.valueOf(g.allele().toString()))
-				.forEach(histogram);
+		final var histogram = Histogram.Builder.of(0L, 10L, 10);
+		chromosome.stream()
+			.map(g -> Long.parseLong(g.allele().toString()))
+			.forEach(histogram::accept);
 
-			final double[] expected = dist.uniform(histogram.length());
-			assertDistribution(histogram, expected);
-		});
+		assertThatObservation(histogram.build()).isUniform();
     }
 
 	@Test(dataProvider = "genes")

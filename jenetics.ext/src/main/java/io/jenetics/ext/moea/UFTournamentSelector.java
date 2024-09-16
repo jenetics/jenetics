@@ -31,7 +31,7 @@ import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -127,7 +127,7 @@ public class UFTournamentSelector<
 		final List<Phenotype<G, C>> S = new ArrayList<>();
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
-			final int[] G = Subset.next(random, population.size(), k);
+			final int[] G = Subsets.next(random, population.size(), k);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = order.compare(G[j], G[j + 1]);

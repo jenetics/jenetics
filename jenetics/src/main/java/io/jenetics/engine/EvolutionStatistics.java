@@ -38,7 +38,6 @@ import io.jenetics.stat.MinMax;
  * development phase of the GA or while testing the GA's performance. The
  * following example shows how to integrate the <i>statistics</i> object into
  * your evolution <i>stream</i>.
- *
  * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =

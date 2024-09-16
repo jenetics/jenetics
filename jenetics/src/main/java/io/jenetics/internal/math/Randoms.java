@@ -42,12 +42,14 @@ public final class Randoms {
 	}
 
 	public static char nextChar(final RandomGenerator random) {
-		final int leftLimit = '0';
-		final int rightLimit = 'z';
+		record Limits() {
+			private static final int LEFT = '0';
+			private static final int RIGHT = 'z' + 1;
+		}
 
 		char c = '\0';
 		do {
-			c = (char)random.nextInt(leftLimit, rightLimit + 1);
+			c = (char)random.nextInt(Limits.LEFT, Limits.RIGHT);
 		} while (!((c <= 57 || c >= 65) && (c <= 90 || c >= 97)));
 
 		return c;
@@ -71,47 +73,6 @@ public final class Randoms {
 
 	public static String nextASCIIString(final RandomGenerator random) {
 		return nextASCIIString(random.nextInt(5, 20), random);
-	}
-
-	/*
-	 * Conversion methods used by the 'RandomGenerator' engine from the JDK.
-	 */
-
-	public static float toFloat(final int a) {
-		return (a >>> 8)/(float)(1 << 24);
-	}
-
-	public static float toFloat(final long a) {
-		return (int)(a >>> 40)/(float)(1 << 24);
-	}
-
-	public static double toDouble(final long a) {
-		return (((a >>> 38) << 27) + ((int)a >>> 5))/(double)(1L << 53);
-	}
-
-	public static double toDouble(final int a, final int b) {
-		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
-	}
-
-
-	/*
-	 * Conversion methods used by the Apache Commons BitStreamGenerator.
-	 */
-
-	public static float toFloat2(final int a) {
-		return (a >>> 9)*0x1.0p-23f;
-	}
-
-	public static float toFloat2(final long a) {
-		return (int)(a >>> 41)*0x1.0p-23f;
-	}
-
-	public static double toDouble2(final long a) {
-		return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
-	}
-
-	public static double toDouble2(final int a, final int b) {
-		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 	}
 
 	/**

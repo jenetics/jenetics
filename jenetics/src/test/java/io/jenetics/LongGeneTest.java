@@ -21,19 +21,17 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigInteger;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.Factory;
 
 /**
@@ -53,17 +51,15 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final Long min = 0L;
-		final Long max = (long)Integer.MAX_VALUE;
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+		final var min = 0L;
+		final var max = Integer.MAX_VALUE;
+		final var histogram = Histogram.Builder.of(min, max, 20);
 
-		using(new Random(12345), r ->
-			IntStream.range(0, 200_000)
-				.mapToObj(i -> LongGene.of(min, max).allele())
-				.forEach(histogram)
-		);
+		IntStream.range(0, 200_000)
+			.mapToObj(i -> LongGene.of(min, max).allele())
+			.forEach(histogram::accept);
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test

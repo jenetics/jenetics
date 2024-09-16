@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -32,7 +32,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Named;
-import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.TestData;
 
@@ -53,28 +52,23 @@ public class ExponentialRankSelectorTest
 		return ExponentialRankSelector::new;
 	}
 
-	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	@Test(
+		dataProvider = "expectedDistribution",
+		invocationCount = 10, successPercentage = 70
+	)
 	public void selectDistribution(
 		final Double c,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		retry(3, () -> {
-			final int loops = 50;
-			final int npopulation = POPULATION_COUNT;
+		final var distribution = SelectorTester.distribution(
+			new ExponentialRankSelector<>(c),
+			opt,
+			POPULATION_COUNT,
+			50
+		);
 
-			final Random random = new Random();
-			using(random, r -> {
-				final Histogram<Double> distribution = SelectorTester.distribution(
-					new ExponentialRankSelector<>(c),
-					opt,
-					npopulation,
-					loops
-				);
-
-				assertDistribution(distribution, expected.value, 0.001, 5);
-			});
-		});
+		assertThatObservation(distribution).isLike(expected.value);
 	}
 
 	@DataProvider(name = "expectedDistribution")

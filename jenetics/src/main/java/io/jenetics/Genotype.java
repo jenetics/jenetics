@@ -91,10 +91,10 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
 	 *
 	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
-	 *         consists of.
+	 *         consists of
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
-	 *         elements.
-	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
+	 *         elements
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
 		if (chromosomes.isEmpty()) {
@@ -166,7 +166,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the number of genes this genotype consists of. This is the sum of
 	 * the number of genes of the genotype chromosomes.
 	 *
-	 * @return Return the number of genes this genotype consists of.
+	 * @return Return the number of genes this genotype consists of
 	 */
 	public int geneCount() {
 		int count = 0;
@@ -267,7 +267,6 @@ public final class Genotype<G extends Gene<?, G>>
 	 * which are created by the given {@code factory}. This method can be used
 	 * for easily creating a <i>gene matrix</i>. The following example will
 	 * create a 10x5 {@code DoubleGene} <i>matrix</i>.
-	 *
 	 * {@snippet lang="java":
 	 * final Genotype<DoubleGene> gt = Genotype
 	 *     .of(DoubleChromosome.of(0.0, 1.0, 10), 5);
@@ -280,8 +279,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 *        consists of
 	 * @param n the number of chromosomes this genotype consists of
 	 * @return new {@code Genotype} containing {@code n} chromosomes
-	 * @throws IllegalArgumentException if {@code n < 1}.
-	 * @throws NullPointerException if the {@code factory} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < 1}
+	 * @throws NullPointerException if the {@code factory} is {@code null}
 	 */
 	public static <G extends Gene<?, G>> Genotype<G>
 	of(final Factory<? extends Chromosome<G>> factory, final int n) {
@@ -300,7 +299,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return a new {@code Genotype} from the given chromosomes
 	 * @throws NullPointerException if {@code chromosomes} is {@code null} or
 	 *         one of its elements.
-	 * @throws IllegalArgumentException if {@code chromosome.length() < 1}.
+	 * @throws IllegalArgumentException if {@code chromosome.length() < 1}
 	 */
 	public static <G extends Gene<?, G>> Genotype<G>
 	of(final Iterable<? extends Chromosome<G>> chromosomes) {

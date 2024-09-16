@@ -24,10 +24,9 @@ import static java.util.Objects.checkFromToIndex;
 import java.util.List;
 
 /**
- * This sorting methods doesn't sort a given array directly, instead
- * an index lookup array is returned which allows to access the array in a
+ * This sorting methods doesn't sort a given array directly; instead,
+ * an index lookup array is returned which allows accessing the array in a
  * sorted order.
- *
  * {@snippet lang="java":
  * final double[] array = new Random().doubles(100).toArray();
  * final int[] proxy = ProxySorter.sort(array);
@@ -143,7 +142,6 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array. The original
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
-	 *
 	 * {@snippet lang="java":
 	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
@@ -181,7 +179,6 @@ public final class ProxySorter {
 	 * Sorting the given array by creating an index lookup array. The original
 	 * array is not touched, and the returned array can then be used for
 	 * iterating the array in ascending order.
-	 *
 	 * {@snippet lang="java":
 	 * final double[] array = null; // @replace substring='null' replacement="..."
 	 * final int[] sorted = ProxySorter.sort(
@@ -279,7 +276,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static int[] sort(final long[] array, final int from, final int to) {
 		checkFromToIndex(from, to, array.length);
@@ -315,7 +312,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static int[] sort(final double[] array, final int from, final int to) {
 		checkFromToIndex(from, to, array.length);
@@ -358,7 +355,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T> int[] sort(
 		final T[] array,
@@ -404,7 +401,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T extends Comparable<? super T>> int[] sort(
 		final T[] array,
@@ -454,7 +451,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T> int[] sort(
 		final BaseSeq<? extends T> array,
@@ -501,7 +498,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T extends Comparable<? super T>>
 	int[] sort(final BaseSeq<? extends T> array, final int from, final int to) {
@@ -548,7 +545,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T> int[] sort(
 		final List<? extends T> array,
@@ -595,7 +592,7 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static <T extends Comparable<? super T>>
 	int[] sort(final List<? extends T> array, final int from, final int to) {

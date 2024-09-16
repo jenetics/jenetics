@@ -32,7 +32,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * {@code Gene} implementation, which allows to create genes without explicit
+ * {@code Gene} implementation, which allows creating genes without explicit
  * implementing the {@code Gene} interface.
  *
  * {@snippet lang="java":
@@ -41,7 +41,7 @@ import io.jenetics.util.MSeq;
  *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
  *
  *     // Supplier of random 'LocalDate' objects. The implementation is responsible
- *     // for guaranteeing the desired allele restriction. In this case we will
+ *     // for guaranteeing the desired allele restriction. In this case, we will
  *     // generate only mondays.
  *     static LocalDate nextRandomMonday() {
  *         return MIN_MONDAY.plusWeeks(RandomRegistry.getRandom().nextInt(1000));
