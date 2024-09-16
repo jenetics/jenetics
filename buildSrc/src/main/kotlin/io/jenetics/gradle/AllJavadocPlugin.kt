@@ -34,7 +34,7 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.gradle.kotlin.dsl.create
 
 /**
- * Plugin which configures the {@code javaodc} task and adds an {@code alljavadoc}
+ * Plugin which configures the {@code javadoc} task and adds an {@code alljavadoc}
  * tasks, which creates a combined Javadoc for all modules.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

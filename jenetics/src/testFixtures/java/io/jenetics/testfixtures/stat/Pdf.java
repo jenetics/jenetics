@@ -20,6 +20,8 @@
 package io.jenetics.testfixtures.stat;
 
 /**
+ * Probability density function.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 @FunctionalInterface

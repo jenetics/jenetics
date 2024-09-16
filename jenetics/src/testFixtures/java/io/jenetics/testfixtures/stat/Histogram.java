@@ -132,7 +132,8 @@ public record Histogram(
 		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
 		 *         separators of {@code this} and the given {@code histogram} are
 		 *         different.
-		 * @throws NullPointerException if the given {@code histogram} is {@code null}.
+		 * @throws NullPointerException if the given {@code histogram} is
+		 *         {@code null}.
 		 */
 		public void combine(final Builder other) {
 			if (!_separators.equals(other._separators)) {
@@ -154,7 +155,11 @@ public record Histogram(
 		 * @return a new <em>immutable</em> histogram
 		 */
 		public Histogram build() {
-			return new Histogram(_separators, new Frequencies(_frequencies), DoubleMoments.of(_statistics));
+			return new Histogram(
+				_separators,
+				new Frequencies(_frequencies),
+				DoubleMoments.of(_statistics)
+			);
 		}
 
 		/**
@@ -801,10 +806,10 @@ public record Histogram(
 		out.print(" ".repeat(margin));
 		out.print("│");
 		for (int i = 0; i < cols.length - 1; ++i) {
-			out.print(String.format("%-" + cellSizes[i] + "s", cols[i]));
+			out.printf("%-" + cellSizes[i] + "s", cols[i]);
 			out.print("│");
 		}
-		out.print(String.format("%-" + cellSizes[cols.length - 1] + "s", cols[cols.length - 1]));
+		out.printf("%-" + cellSizes[cols.length - 1] + "s", cols[cols.length - 1]);
 		out.println("│");
 	}
 
