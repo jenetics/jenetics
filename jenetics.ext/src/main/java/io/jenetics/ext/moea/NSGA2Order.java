@@ -20,51 +20,63 @@
 package io.jenetics.ext.moea;
 
 import java.util.Comparator;
-import java.util.function.ToIntFunction;
 
 import io.jenetics.Optimize;
-import io.jenetics.internal.util.IntComparator;
 import io.jenetics.util.BaseSeq;
+import io.jenetics.util.ProxySorter;
 
 /**
- * Crowded distance comparator.
+ * NSGA2 crowded distance comparator.
+ *
+ * @see <a href="https://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf">
+ *     A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
-final class CrowdedComparator<T> implements IntComparator {
+final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 
-	private final int[] _rank;
-	private final double[] _dist;
+	private final int[] _ranks;
+	private final double[] _distances;
 
-	CrowdedComparator(
+	NSGA2Order(
 		final BaseSeq<? extends T> population,
 		final Optimize opt,
 		final Comparator<? super T> dominance,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
-		final ToIntFunction<? super T> dimension
+		final int objectives
 	) {
-		_rank = Pareto.rank(
-			population,
-			opt == Optimize.MAXIMUM
-				? dominance
-				: dominance.reversed()
-		);
+		if (population.isEmpty()) {
+			_ranks = new int[0];
+			_distances = new double[0];
+		} else {
+			_ranks = Pareto.ranks(
+				population,
+				opt == Optimize.MAXIMUM
+					? dominance
+					: dominance.reversed()
+			);
 
-		_dist = Pareto.crowdingDistance(
-			population,
-			opt == Optimize.MAXIMUM
-				? comparator
-				: comparator.reversed(),
-			distance,
-			dimension
-		);
+			final var dist = new CrowdingDistance<>(
+				opt == Optimize.MAXIMUM
+					? comparator
+					: comparator.reversed(),
+				distance,
+				objectives
+			);
+
+			_distances = dist.calculate(population);
+		}
 	}
 
 	@Override
-	public int compare(final int i, final int j) {
+	public int compare(final int[] array, final int i, final int j) {
+		return compare(array[i], array[j]);
+	}
+
+	int compare(final int i, final int j) {
 		if (cco(i, j)) {
 			return 1;
 		} else if (cco(j, i)) {
@@ -75,8 +87,7 @@ final class CrowdedComparator<T> implements IntComparator {
 	}
 
 	private boolean cco(final int i, final int j) {
-		return _rank[i] < _rank[j] ||
-			(_rank[i] == _rank[j] && _dist[i] > _dist[j]);
+		return _ranks[i] < _ranks[j] ||
+			(_ranks[i] == _ranks[j] && _distances[i] > _distances[j]);
 	}
-
 }
