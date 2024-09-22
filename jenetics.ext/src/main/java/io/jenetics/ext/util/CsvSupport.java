@@ -787,10 +787,10 @@ public final class CsvSupport {
 							} else {
 								if (next != -1 && separator.value != next) {
 									throw new IllegalArgumentException("""
-                                        Only separator character, '%s', allowed \
-                                        after quote, but found '%c'.
-                                        %s
-                                        """.formatted(
+										Only separator character, '%s', allowed \
+										after quote, but found '%c'.
+										%s
+										""".formatted(
 											separator.value,
 											next,
 											toErrorDesc(line, i + 1)
@@ -806,10 +806,10 @@ public final class CsvSupport {
 					} else {
 						if (previous != -1 && separator.value != previous) {
 							throw new IllegalArgumentException("""
-                                Only separator character, '%s', allowed before \
-                                quote, but found '%c'.
-                                %s
-                                """.formatted(
+								Only separator character, '%s', allowed before \
+								quote, but found '%c'.
+								%s
+								""".formatted(
 									separator.value,
 									previous,
 									toErrorDesc(line, Math.max(i - 1, 0))
@@ -872,9 +872,9 @@ public final class CsvSupport {
 
 		private static String toErrorDesc(final CharSequence line, final int pos) {
 			return """
-                %s
-                %s
-                """.formatted(
+				%s
+				%s
+				""".formatted(
 					line.toString().stripTrailing(),
 					" ".repeat(pos) + "^"
 				);
