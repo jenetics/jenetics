@@ -111,6 +111,9 @@ public record Cfg<T>(
 	NonTerminal<T> start
 ) {
 
+	public record Meta<A, T>(A annotation, T value) {
+	}
+
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
 	 *
@@ -511,6 +514,11 @@ public record Cfg<T>(
 	 * @return a new terminal symbol
 	 */
 	public static <T> Terminal<T> T(final String name, final T value) {
+		return new Terminal<>(name, value);
+	}
+
+	public static <A, T> Terminal<Meta<A, T>>
+	T(final String name, final Meta<A, T> value) {
 		return new Terminal<>(name, value);
 	}
 
