@@ -47,7 +47,6 @@ import io.jenetics.util.ISeq;
  * Default implementation of the {@link FlatTree} interface. Beside the
  * flattened and dense layout it is also an <em>immutable</em> implementation of
  * the {@link Tree} interface. It can only be created from an existing tree.
- *
  * {@snippet lang="java":
  * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(null)); // @replace substring='null' replacement="..."
  * }

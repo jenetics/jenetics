@@ -63,8 +63,8 @@ import java.util.stream.Stream;
  *     </li>
  *     <li>{@code S} is the start variable (or start symbol), used to represent
  *     the whole sentence (or program). It must be an element of {@code N}
- *     ({@link NonTerminal})
- *     .</li>
+ *     ({@link NonTerminal}).
+ *     </li>
  * </ul>
  *
  * You can easily create a <em>Cfg</em> object from a given BNF grammar.
@@ -194,7 +194,7 @@ public record Cfg<T>(
 	public record Expression<T>(List<Symbol<T>> symbols) {
 
 		/**
-		 * @param symbols the list of symbols of the expression
+		 * @param symbols the expression symbols
 		 * @throws IllegalArgumentException if the list of {@code symbols} is
 		 *         empty
 		 */
@@ -262,7 +262,7 @@ public record Cfg<T>(
 			.collect(Collectors.groupingBy(Rule::start))
 			.values().stream()
 			.filter(values -> values.size() > 1)
-			.map(rule -> rule.get(0).start.name)
+			.map(rule -> rule.getFirst().start.name)
 			.toList();
 
 		if (!duplicatedRules.isEmpty()) {
@@ -414,7 +414,7 @@ public record Cfg<T>(
 			normalizedRules.stream()
 				.map(r -> rebuild(r, symbols))
 				.toList(),
-			(NonTerminal<T>)select(normalizedRules.get(0).start(), symbols)
+			(NonTerminal<T>)select(normalizedRules.getFirst().start(), symbols)
 		);
 	}
 
@@ -540,7 +540,7 @@ public record Cfg<T>(
 	 * Factory method for creating an expression with the given
 	 * {@code symbols}.
 	 *
-	 * @param symbols the list of symbols of the expression
+	 * @param symbols the expression symbols
 	 * @throws IllegalArgumentException if the list of {@code symbols} is
 	 *         empty
 	 * @param <T> the terminal symbol value type
@@ -555,7 +555,7 @@ public record Cfg<T>(
 	 * Factory method for creating a new rule.
 	 *
 	 * @param name the name of start symbol of the rule
-	 * @param alternatives the list af alternative rule expressions
+	 * @param alternatives the list of alternative rule expressions
 	 * @throws IllegalArgumentException if the given list of
 	 *         {@code alternatives} is empty
 	 * @throws NullPointerException if one of the arguments is {@code null}

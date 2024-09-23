@@ -122,7 +122,6 @@ public final class Codons implements SymbolIndex {
 
 	/**
 	 * Creates a new <em>codons</em> object from the given int-genes.
-	 *
 	 * {@snippet lang="java":
 	 * final var chromosome = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
 	 * final var codons = Codons.ofIntegerGenes(chromosome);
