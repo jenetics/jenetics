@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -108,10 +109,18 @@ public record Cfg<T>(
 	List<NonTerminal<T>> nonTerminals,
 	List<Terminal<T>> terminals,
 	List<Rule<T>> rules,
-	NonTerminal<T> start
+	NonTerminal<T> start,
+	Map<Path<T>, ?> annotations
 ) {
 
-	public record Meta<A, T>(A annotation, T value) {
+	public record Path<T>(
+		NonTerminal<T> rule,
+		Element<T> element,
+		Symbol<T> symbol
+	) {
+	}
+
+	public sealed interface Element<T> {
 	}
 
 	/**
@@ -119,7 +128,7 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public sealed interface Symbol<T> {
+	public sealed interface Symbol<T> extends Element<T> {
 
 		/**
 		 * Return the name of the symbol.
@@ -194,7 +203,7 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Expression<T>(List<Symbol<T>> symbols) {
+	public record Expression<T>(List<Symbol<T>> symbols) implements Element<T> {
 
 		/**
 		 * @param symbols the expression symbols
@@ -210,6 +219,21 @@ public record Cfg<T>(
 			symbols = List.copyOf(symbols);
 		}
 
+		public Symbol<T> symbol(final int index) {
+			return symbols.get(index);
+		}
+
+		public Symbol<T> symbol(final String name) {
+			requireNonNull(name);
+			for (var symbol : symbols) {
+				if (symbol.name().equals(name)) {
+					return symbol;
+				}
+			}
+
+			throw new NoSuchElementException(format("Symbol '%s' not found.", name));
+		}
+
 	}
 
 	/**
@@ -217,7 +241,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives) {
+	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives)
+		implements Element<T>
+	{
 
 		/**
 		 * Creates a new rule object.
@@ -236,6 +262,10 @@ public record Cfg<T>(
 				);
 			}
 			alternatives = List.copyOf(alternatives);
+		}
+
+		public Expression<T> element(final int index) {
+			return alternatives.get(index);
 		}
 
 	}
@@ -326,6 +356,19 @@ public record Cfg<T>(
 		requireNonNull(start);
 	}
 
+	public Cfg(
+		final List<NonTerminal<T>> nonTerminals,
+		final List<Terminal<T>> terminals,
+		final List<Rule<T>> rules,
+		final NonTerminal<T> start
+	) {
+		this(nonTerminals, terminals, rules, start, Map.of());
+	}
+
+	public Optional<Element<T>> get(final Path<T> path) {
+		return Optional.empty();
+	}
+
 	/**
 	 * Return the rule for the given {@code start} symbol.
 	 *
@@ -342,6 +385,19 @@ public record Cfg<T>(
 			}
 		}
 		return Optional.empty();
+	}
+
+	public Rule<T> rule(final String name) {
+		requireNonNull(name);
+		for (var rule : rules) {
+			if (rule.start().name().equals(name)) {
+				return rule;
+			}
+		}
+
+		throw new NoSuchElementException(
+			"No rule with name '%s' found.".formatted(name)
+		);
 	}
 
 	/**
@@ -501,7 +557,7 @@ public record Cfg<T>(
 
 
 	/* *************************************************************************
-	 * Static factory methods for rule creation.
+	 * Static factory methods for rule creation: DSL methods.
 	 * ************************************************************************/
 
 	/**
@@ -514,11 +570,6 @@ public record Cfg<T>(
 	 * @return a new terminal symbol
 	 */
 	public static <T> Terminal<T> T(final String name, final T value) {
-		return new Terminal<>(name, value);
-	}
-
-	public static <A, T> Terminal<Meta<A, T>>
-	T(final String name, final Meta<A, T> value) {
 		return new Terminal<>(name, value);
 	}
 

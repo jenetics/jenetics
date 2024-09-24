@@ -334,4 +334,15 @@ public class CfgTest {
 		}
 	}
 
+	@Test
+	public void builder() {
+		final var cfg = Bnf.parse("""
+			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+			<op>   ::= + | - | * | /
+			<var>  ::= x | x | y
+			<num>  ::= 0 | 1 | 2
+			"""
+		);
+	}
+
 }
