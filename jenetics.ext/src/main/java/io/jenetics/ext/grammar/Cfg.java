@@ -483,19 +483,6 @@ public final class Cfg<T> {
 		return Optional.empty();
 	}
 
-	public Rule<T> rule(final String name) {
-		requireNonNull(name);
-		for (var rule : rules) {
-			if (rule.start().name().equals(name)) {
-				return rule;
-			}
-		}
-
-		throw new NoSuchElementException(
-			"No rule with name '%s' found.".formatted(name)
-		);
-	}
-
 	/**
 	 * Maps the values of the terminal symbols from type {@code T} to type
 	 * {@code A}.
@@ -733,6 +720,19 @@ public final class Cfg<T> {
 		return new Rule<>(new NonTerminal<>(name), List.of(alternatives));
 	}
 
+	/**
+	 * Factory method for creating a new rule.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param start the start symbol of the rule
+	 * @param alternatives the list of alternative rule expressions
+	 * @throws IllegalArgumentException if the given list of
+	 *         {@code alternatives} is empty
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param <T> the terminal symbol value type
+	 * @return a new rule
+	 */
 	@SafeVarargs
 	public static <T> Rule<T> R(
 		final NonTerminal<T> start,
