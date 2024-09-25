@@ -121,6 +121,7 @@ public record Cfg<T>(
 	}
 
 	public sealed interface Element<T> {
+		Object annotation();
 	}
 
 	/**
@@ -144,7 +145,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record NonTerminal<T>(String name) implements Symbol<T> {
+	public record NonTerminal<T>(String name, Object annotation)
+		implements Symbol<T>
+	{
 
 		/**
 		 * @param name the name of the non-terminal symbol
@@ -159,6 +162,11 @@ public record Cfg<T>(
 				);
 			}
 		}
+
+		public NonTerminal(final String name) {
+			this(name, null);
+		}
+
 	}
 
 	/**
@@ -166,7 +174,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Terminal<T>(String name, T value) implements Symbol<T> {
+	public record Terminal<T>(String name, T value, Object annotation)
+		implements Symbol<T>
+	{
 
 		/**
 		 * @param name the name of the terminal symbol
@@ -180,6 +190,10 @@ public record Cfg<T>(
 					"Terminal value must not be empty."
 				);
 			}
+		}
+
+		public Terminal(final String name, final T value) {
+			this(name, value, null);
 		}
 
 		/**
@@ -203,7 +217,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Expression<T>(List<Symbol<T>> symbols) implements Element<T> {
+	public record Expression<T>(List<Symbol<T>> symbols, Object annotation)
+		implements Element<T>
+	{
 
 		/**
 		 * @param symbols the expression symbols
@@ -217,6 +233,10 @@ public record Cfg<T>(
 				);
 			}
 			symbols = List.copyOf(symbols);
+		}
+
+		public Expression(final List<Symbol<T>> symbols) {
+			this(symbols, null);
 		}
 
 		public Symbol<T> symbol(final int index) {
@@ -241,7 +261,11 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives)
+	public record Rule<T>(
+		NonTerminal<T> start,
+		List<Expression<T>> alternatives,
+		Object annotation
+	)
 		implements Element<T>
 	{
 
@@ -262,6 +286,10 @@ public record Cfg<T>(
 				);
 			}
 			alternatives = List.copyOf(alternatives);
+		}
+
+		public Rule(NonTerminal<T> start, List<Expression<T>> alternatives) {
+			this(start, alternatives, null);
 		}
 
 		public Expression<T> element(final int index) {
@@ -503,7 +531,10 @@ public record Cfg<T>(
 			.toList();
 	}
 
-	private static <T> Rule<T> merge(final NonTerminal<T> start, final List<Rule<T>> rules) {
+	private static <T> Rule<T> merge(
+		final NonTerminal<T> start,
+		final List<Rule<T>> rules
+	) {
 		return new Rule<>(
 			start,
 			rules.stream()
@@ -520,7 +551,10 @@ public record Cfg<T>(
 		);
 	}
 
-	private static <T> Rule<T> rebuild(final Rule<T> rule, final List<Symbol<T>> symbols) {
+	private static <T> Rule<T> rebuild(
+		final Rule<T> rule,
+		final List<Symbol<T>> symbols
+	) {
 		return new Rule<>(
 			(NonTerminal<T>)select(rule.start, symbols),
 			rule.alternatives.stream()
@@ -543,7 +577,7 @@ public record Cfg<T>(
 		final List<Symbol<T>> symbols
 	) {
 		for (var s : symbols) {
-			if (s.name().equals(symbol.name())) {
+			if (s.equals(symbol)) {
 				return s;
 			}
 		}
