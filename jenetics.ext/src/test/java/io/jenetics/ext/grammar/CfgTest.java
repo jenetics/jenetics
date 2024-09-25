@@ -41,6 +41,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("removal")
 public class CfgTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

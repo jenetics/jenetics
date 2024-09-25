@@ -21,15 +21,10 @@ package io.jenetics.ext.grammar;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toCollection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -103,25 +98,44 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
- * @version 7.1
+ * @version !__version__!
  */
-public record Cfg<T>(
-	List<NonTerminal<T>> nonTerminals,
-	List<Terminal<T>> terminals,
-	List<Rule<T>> rules,
-	NonTerminal<T> start,
-	Map<Path<T>, ?> annotations
-) {
+public final class Cfg<T> {
 
-	public record Path<T>(
-		NonTerminal<T> rule,
-		Element<T> element,
-		Symbol<T> symbol
-	) {
-	}
+	/* *************************************************************************
+	 * Inner classes and interfaces.
+	 * ************************************************************************/
 
+	/**
+	 * Represents an element of a CFG. A CFG element can hold an optional
+	 * annotation object. The {@link Cfg} class doesn't restrict what an
+	 * annotation is and how it is used.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 *
+	 * @param <T> the terminal symbol value type
+	 */
 	public sealed interface Element<T> {
+
+		/**
+		 * Return the element annotation, might be {@code null}.
+		 *
+		 * @return the annotation of the element, or {@code null} if the element
+		 *         has none
+		 */
 		Object annotation();
+
+		/**
+		 * Create a new copy of the CFG element, with the given
+		 * {@code annotation}.
+		 *
+		 * @param annotation the annotation of the newly created element,
+		 *        may be {@code null}
+		 * @return a copy of the element with the given {@code annotation}
+		 */
+		Element<T> at(Object annotation);
+
 	}
 
 	/**
@@ -137,6 +151,9 @@ public record Cfg<T>(
 		 * @return the name of the symbol
 		 */
 		String name();
+
+		@Override
+		Symbol<T> at(Object annotation);
 
 	}
 
@@ -167,6 +184,13 @@ public record Cfg<T>(
 			this(name, null);
 		}
 
+		@Override
+		public NonTerminal<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new NonTerminal<>(name, annotation);
+		}
+
 	}
 
 	/**
@@ -194,6 +218,13 @@ public record Cfg<T>(
 
 		public Terminal(final String name, final T value) {
 			this(name, value, null);
+		}
+
+		@Override
+		public Terminal<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Terminal<>(name, value, annotation);
 		}
 
 		/**
@@ -239,19 +270,11 @@ public record Cfg<T>(
 			this(symbols, null);
 		}
 
-		public Symbol<T> symbol(final int index) {
-			return symbols.get(index);
-		}
-
-		public Symbol<T> symbol(final String name) {
-			requireNonNull(name);
-			for (var symbol : symbols) {
-				if (symbol.name().equals(name)) {
-					return symbol;
-				}
-			}
-
-			throw new NoSuchElementException(format("Symbol '%s' not found.", name));
+		@Override
+		public Expression<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Expression<>(symbols, annotation);
 		}
 
 	}
@@ -292,11 +315,23 @@ public record Cfg<T>(
 			this(start, alternatives, null);
 		}
 
-		public Expression<T> element(final int index) {
-			return alternatives.get(index);
+		@Override
+		public Rule<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Rule<>(start, alternatives, annotation);
 		}
 
 	}
+
+	/* *************************************************************************
+	 * CFG implementation.
+	 * ************************************************************************/
+
+	private final List<NonTerminal<T>> nonTerminals;
+	private final List<Terminal<T>> terminals;
+	private final List<Rule<T>> rules;
+	private final NonTerminal<T> start;
 
 	/**
 	 * Create a new <em>context-free</em> grammar object.
@@ -310,8 +345,16 @@ public record Cfg<T>(
 	 *         start symbol points to a missing rule or the rules uses symbols
 	 *         not defined in the list of {@link #nonTerminals()} or
 	 *         {@link #terminals()}
+	 * @deprecated This constructor will be removed, use {@link #of(Rule[])} or
+	 *             {@link #of(List)} instead.
 	 */
-	public Cfg {
+	@Deprecated(forRemoval = true, since = "!__version__!")
+	public Cfg(
+		List<NonTerminal<T>> nonTerminals,
+		List<Terminal<T>> terminals,
+		List<Rule<T>> rules,
+		NonTerminal<T> start
+	) {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The given list of rules must not be empty."
@@ -328,7 +371,7 @@ public record Cfg<T>(
 
 		if (!duplicatedRules.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Found duplicate rule(s), " + duplicatedRules + "."
+				"Found duplicate rule: %s.".formatted(duplicatedRules)
 			);
 		}
 
@@ -378,23 +421,48 @@ public record Cfg<T>(
 			));
 		}
 
-		nonTerminals = List.copyOf(nonTerminals);
-		terminals = List.copyOf(terminals);
-		rules = List.copyOf(rules);
-		requireNonNull(start);
+		this.nonTerminals = List.copyOf(nonTerminals);
+		this.terminals = List.copyOf(terminals);
+		this.rules = List.copyOf(rules);
+		this.start = requireNonNull(start);
 	}
 
-	public Cfg(
-		final List<NonTerminal<T>> nonTerminals,
-		final List<Terminal<T>> terminals,
-		final List<Rule<T>> rules,
-		final NonTerminal<T> start
-	) {
-		this(nonTerminals, terminals, rules, start, Map.of());
+	/**
+	 * Return the non-terminal symbols of {@code this} grammar. The returned
+	 * symbols have no annotation.
+	 *
+	 * @return the non-terminal symbols of {@code this} grammar
+	 */
+	public List<NonTerminal<T>> nonTerminals() {
+		return nonTerminals;
 	}
 
-	public Optional<Element<T>> get(final Path<T> path) {
-		return Optional.empty();
+	/**
+	 * Return the terminal symbols of {@code this} grammar. The returned
+	 * symbols have no annotation.
+	 *
+	 * @return the terminal symbols of {@code this} grammar
+	 */
+	public List<Terminal<T>> terminals() {
+		return terminals;
+	}
+
+	/**
+	 * Return the rules of {@code this} grammar.
+	 *
+	 * @return the rules of {@code this} grammar
+	 */
+	public List<Rule<T>> rules() {
+		return rules;
+	}
+
+	/**
+	 * Return the start symbol of {@code this} grammar.
+	 *
+	 * @return the start symbol of {@code this} grammar
+	 */
+	public NonTerminal<T> start() {
+		return start;
 	}
 
 	/**
@@ -462,6 +530,29 @@ public record Cfg<T>(
 		return Cfg.of(rules);
 	}
 
+	@Override
+	public int hashCode() {
+		return rules.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Cfg<?> cfg &&
+			rules.equals(cfg.rules());
+	}
+
+	@Override
+	public String toString() {
+		return "Cfg[nonTerminals=%s, terminals=%s, rules=%s, start=%s]"
+			.formatted(nonTerminals, terminals, rules, start);
+	}
+
+
+	/* *************************************************************************
+	 * Factory methods
+	 * ************************************************************************/
+
 	/**
 	 * Create a grammar object with the given rules. Duplicated rules are merged
 	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
@@ -472,25 +563,28 @@ public record Cfg<T>(
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
 	public static <T> Cfg<T> of(final List<Rule<T>> rules) {
+		// Rules must not be empty.
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The list of rules must not be empty."
 			);
 		}
 
-		final List<Rule<T>> normalizedRules = normalize(rules);
-
-		final List<Symbol<T>> symbols = normalizedRules.stream()
+		final List<Symbol<T>> symbols = rules.stream()
 			.flatMap(Cfg::ruleSymbols)
 			.distinct()
 			.toList();
 
 		final List<NonTerminal<T>> nonTerminals = symbols.stream()
+			.map(rule -> rule.at(null))
+			.distinct()
 			.filter(NonTerminal.class::isInstance)
 			.map(nt -> (NonTerminal<T>)nt)
 			.toList();
 
 		final List<Terminal<T>> terminals = symbols.stream()
+			.map(rule -> rule.at(null))
+			.distinct()
 			.filter(Terminal.class::isInstance)
 			.map(nt -> (Terminal<T>)nt)
 			.toList();
@@ -498,10 +592,10 @@ public record Cfg<T>(
 		return new Cfg<>(
 			nonTerminals,
 			terminals,
-			normalizedRules.stream()
+			rules.stream()
 				.map(r -> rebuild(r, symbols))
 				.toList(),
-			(NonTerminal<T>)select(normalizedRules.getFirst().start(), symbols)
+			(NonTerminal<T>)select(rules.getFirst().start(), symbols)
 		);
 	}
 
@@ -517,30 +611,6 @@ public record Cfg<T>(
 	@SafeVarargs
 	public static <T> Cfg<T> of(final Rule<T>... rules) {
 		return Cfg.of(List.of(rules));
-	}
-
-	private static <T> List<Rule<T>> normalize(final List<Rule<T>> rules) {
-		final Map<NonTerminal<T>, List<Rule<T>>> grouped = rules.stream()
-			.collect(groupingBy(
-				Rule::start,
-				LinkedHashMap::new,
-				toCollection(ArrayList::new)));
-
-		return grouped.entrySet().stream()
-			.map(entry -> merge(entry.getKey(), entry.getValue()))
-			.toList();
-	}
-
-	private static <T> Rule<T> merge(
-		final NonTerminal<T> start,
-		final List<Rule<T>> rules
-	) {
-		return new Rule<>(
-			start,
-			rules.stream()
-				.flatMap(rule -> rule.alternatives().stream())
-				.toList()
-		);
 	}
 
 	private static <T> Stream<Symbol<T>> ruleSymbols(final Rule<T> rule) {
@@ -661,6 +731,14 @@ public record Cfg<T>(
 		final Expression<T>... alternatives
 	) {
 		return new Rule<>(new NonTerminal<>(name), List.of(alternatives));
+	}
+
+	@SafeVarargs
+	public static <T> Rule<T> R(
+		final NonTerminal<T> start,
+		final Expression<T>... alternatives
+	) {
+		return new Rule<>(start, List.of(alternatives));
 	}
 
 }
