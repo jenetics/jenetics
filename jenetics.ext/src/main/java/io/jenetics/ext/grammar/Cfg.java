@@ -492,7 +492,8 @@ public final class Cfg<T> {
 	 * @return the mapped grammar
 	 * @throws NullPointerException if the given mapper is {@code null}
 	 */
-	public <A> Cfg<A> map(final Function<? super Terminal<T>, ? extends A> mapper) {
+	public <A> Cfg<A>
+	map(final Function<? super Terminal<? extends T>, ? extends A> mapper) {
 		requireNonNull(mapper);
 
 		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
@@ -549,15 +550,18 @@ public final class Cfg<T> {
 	 * @throws IllegalArgumentException if the list of rules is empty
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
-	public static <T> Cfg<T> of(final List<Rule<T>> rules) {
+	public static <T> Cfg<T> of(final List<? extends Rule<? extends T>> rules) {
+		@SuppressWarnings("unchecked")
+		final var rules0 = (List<Rule<T>>)List.copyOf(rules);
+
 		// Rules must not be empty.
-		if (rules.isEmpty()) {
+		if (rules0.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The list of rules must not be empty."
 			);
 		}
 
-		final List<Symbol<T>> symbols = rules.stream()
+		final List<Symbol<T>> symbols = rules0.stream()
 			.flatMap(Cfg::ruleSymbols)
 			.distinct()
 			.toList();
@@ -579,24 +583,23 @@ public final class Cfg<T> {
 		return new Cfg<>(
 			nonTerminals,
 			terminals,
-			rules.stream()
+			rules0.stream()
 				.map(r -> rebuild(r, symbols))
 				.toList(),
-			(NonTerminal<T>)select(rules.getFirst().start(), symbols)
+			(NonTerminal<T>)select(rules0.getFirst().start(), symbols)
 		);
 	}
 
 	/**
-	 * Create a grammar object with the given rules. Duplicated rules are merged
-	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
-	 * the start symbol of the created CFG
+	 * Create a grammar object with the given rules.
 	 *
 	 * @param rules the rules the grammar consists of
-	 * @throws IllegalArgumentException if the list of rules is empty
+	 * @throws IllegalArgumentException if the list of rules is empty or there
+	 *         are duplicate rules
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
 	@SafeVarargs
-	public static <T> Cfg<T> of(final Rule<T>... rules) {
+	public static <T> Cfg<T> of(final Rule<? extends T>... rules) {
 		return Cfg.of(List.of(rules));
 	}
 
