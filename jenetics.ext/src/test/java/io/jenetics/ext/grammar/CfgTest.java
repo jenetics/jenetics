@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.grammar;
 
-import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.ext.grammar.Cfg.E;
 import static io.jenetics.ext.grammar.Cfg.N;

@@ -65,33 +65,20 @@ import java.util.stream.Stream;
  *     </li>
  * </ul>
  *
- * You can easily create a <em>Cfg</em> object from a given BNF grammar.
- * {@snippet lang="java":
- * final Cfg<String> grammar = Bnf.parse("""
- *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
- *     <op>   ::= + | - | * | /
- *     <var>  ::= x | y
- *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
- *     """
- * );
- * }
- *
- * It is also possible to create the grammar above programmatically.
- * {@snippet lang="java":
- * final Cfg<String> grammar = Cfg.of(
- *     R("expr",
- *         N("num"),
- *         N("var"),
- *         E(T("("), N("expr"), N("op"), N("expr"), T(")"))
- *     ),
- *     R("op", T("+"), T("-"), T("*"), T("/")),
- *     R("var", T("x"), T("y")),
- *     R("num",
- *         T("0"), T("1"), T("2"), T("3"), T("4"),
- *         T("5"), T("6"), T("7"), T("8"), T("9")
- *     )
- * );
- * }
+ * <b>Creating <em>Cfg</em> object from a given BNF grammar</b>
+ * {@snippet class="Snippets" region="parseBnf"}
+ * <p>
+ * <b>Creating <em>Cfg</em> programmatically</b>
+ * {@snippet class="Snippets" region="cfgWithoutBuilder"}
+ * <p>
+ * <b>Creating <em>Cfg</em> programmatically with builders</b>
+ * <p>
+ * Using the CFG builder makes it easier to define annotation for symbols without
+ * pushing the Java generics to its edges.
+ * {@snippet class="Snippets" region="cfgWithBuilder"}
+ * <p>
+ * Annotating CFG elements can be used to influence the {@link Generator} classes,
+ * which creates <em>sentences</em> from a given grammar.
  *
  * @see Bnf#parse(String)
  *
@@ -458,7 +445,7 @@ public final class Cfg<T> {
 			 * @return {@code this} builder for method chaining
 			 */
 			public Builder<T>
-			E(final Consumer<? super Expression.Builder<? extends T>> builder) {
+			E(final Consumer<? super Expression.Builder<T>> builder) {
 				final var eb = new Expression.Builder<T>();
 				builder.accept(eb);
 				expressions.add(eb.build());
@@ -1088,7 +1075,7 @@ public final class Cfg<T> {
 		 */
 		public Builder<T> R(
 			final NonTerminal<T> start,
-			final Consumer<? super Rule.Builder<? extends T>> builder
+			final Consumer<? super Rule.Builder<T>> builder
 		) {
 			final var rb = new Rule.Builder<T>(start);
 			builder.accept(rb);
@@ -1106,7 +1093,7 @@ public final class Cfg<T> {
 		 */
 		public Builder<T> R(
 			final String name,
-			final Consumer<? super Rule.Builder<? extends T>> builder
+			final Consumer<? super Rule.Builder<T>> builder
 		) {
 			return R(new NonTerminal<>(name), builder);
 		}
