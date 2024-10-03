@@ -28,10 +28,12 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Plugin which configures the {@code javadoc} task and adds an {@code alljavadoc}
@@ -104,6 +106,10 @@ class AllJavadocPlugin : Plugin<Project> {
 
 			project.subprojects {
 				val prj = this
+
+				tasks.withType<Jar> {
+					exclude("**/Snippets*")
+				}
 
 				prj.tasks.named("javadoc", Javadoc::class.java) {
 					source = prj.allJava.matching {
