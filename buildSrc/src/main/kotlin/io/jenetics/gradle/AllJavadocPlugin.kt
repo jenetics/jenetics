@@ -19,7 +19,12 @@
  */
 package io.jenetics.gradle
 
-import io.jenetics.gradle.dsl.*
+import io.jenetics.gradle.dsl.allJava
+import io.jenetics.gradle.dsl.compileClasspath
+import io.jenetics.gradle.dsl.isModule
+import io.jenetics.gradle.dsl.moduleName
+import io.jenetics.gradle.dsl.snippetClasses
+import io.jenetics.gradle.dsl.snippetPathString
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
