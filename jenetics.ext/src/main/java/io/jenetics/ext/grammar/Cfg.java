@@ -740,8 +740,10 @@ public final class Cfg<T> {
 				rule.alternatives().stream()
 					.map(expr -> new Expression<>(
 						expr.symbols().stream()
-							.map(sym -> sym instanceof Cfg.Terminal<T> t
-								? mapping.apply(t) : (Symbol<A>)sym)
+							.map(sym ->
+								sym instanceof Cfg.Terminal<T> t
+									? mapping.apply(t) : (Symbol<A>)sym
+							)
 							.toList()
 						))
 					.toList()
