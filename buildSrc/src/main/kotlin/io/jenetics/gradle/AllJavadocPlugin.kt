@@ -23,15 +23,18 @@ import io.jenetics.gradle.dsl.allJava
 import io.jenetics.gradle.dsl.compileClasspath
 import io.jenetics.gradle.dsl.isModule
 import io.jenetics.gradle.dsl.moduleName
+import io.jenetics.gradle.dsl.snippetClasses
 import io.jenetics.gradle.dsl.snippetPathString
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Plugin which configures the {@code javadoc} task and adds an {@code alljavadoc}
@@ -103,32 +106,37 @@ class AllJavadocPlugin : Plugin<Project> {
 			}
 
 			project.subprojects {
-				val prj = this
+				// The snippet classes must not be part of class file jars.
+				tasks.withType<Jar> {
+					snippetClasses.forEach {
+						exclude("**/$it*.class")
+					}
+				}
 
-				prj.tasks.named("javadoc", Javadoc::class.java) {
-					source = prj.allJava.matching {
+				tasks.named("javadoc", Javadoc::class.java) {
+					source = allJava.matching {
 						extensions.files.orNull?.invoke(this)
 					}
-					classpath = prj.compileClasspath
+					classpath = compileClasspath
 
 					modularity.inferModulePath.set(true)
 
 					val opts = options as StandardJavadocDocletOptions
 					extensions.options.orNull?.invoke(opts)
 
-					prj.snippetPathString?.apply {
+					snippetPathString?.apply {
 						opts.addStringOption("-snippet-path", this)
 					}
 
-					if (prj.isModule) {
+					if (isModule) {
 						opts.addStringsOption("-module-source-path")
-							.value = listOf("${prj.moduleName}=${prj.projectDir}/src/main/java")
+							.value = listOf("${moduleName}=${projectDir}/src/main/java")
 					}
 
 					doLast {
-						val dir = if (prj.isModule) { prj.moduleName } else { "" }
+						val dir = if (isModule) { moduleName } else { "" }
 
-						prj.copy {
+						copy {
 							from("src/main/java") {
 								include("**/doc-files/*.*")
 							}
@@ -139,6 +147,6 @@ class AllJavadocPlugin : Plugin<Project> {
 				}
 			}
 		}
-
     }
+
 }

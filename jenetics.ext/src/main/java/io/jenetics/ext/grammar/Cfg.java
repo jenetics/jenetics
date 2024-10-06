@@ -21,17 +21,15 @@ package io.jenetics.ext.grammar;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toCollection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -67,34 +65,20 @@ import java.util.stream.Stream;
  *     </li>
  * </ul>
  *
- * You can easily create a <em>Cfg</em> object from a given BNF grammar.
- * {@snippet lang="java":
- * final Cfg<String> grammar = Bnf.parse("""
- *     <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
- *     <op>   ::= + | - | * | /
- *     <var>  ::= x | y
- *     <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
- *     """
- * );
- * }
- *
- * It is also possible to create the grammar above programmatically.
- * {@snippet lang="java":
- * final Cfg<String> grammar = Cfg.of(
- *     R("expr",
- *         E(NT("num")),
- *         E(NT("var")),
- *         E(T("("), NT("expr"), NT("op"), NT("expr"), T(")"))
- *     ),
- *     R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
- *     R("var", E(T("x")), E(T("y"))),
- *     R("num",
- *         E(T("0")), E(T("1")), E(T("2")), E(T("3")),
- *         E(T("4")), E(T("5")), E(T("6")), E(T("7")),
- *         E(T("8")), E(T("9"))
- *     )
- * );
- * }
+ * <b>Creating <em>Cfg</em> object from a given BNF grammar</b>
+ * {@snippet class="Snippets" region="parseBnf"}
+ * <p>
+ * <b>Creating <em>Cfg</em> programmatically</b>
+ * {@snippet class="Snippets" region="cfgWithoutBuilder"}
+ * <p>
+ * <b>Creating <em>Cfg</em> programmatically with builders</b>
+ * <p>
+ * Using the CFG builder makes it easier to define annotation for symbols without
+ * pushing the Java generics to its edges.
+ * {@snippet class="Snippets" region="cfgWithBuilder"}
+ * <p>
+ * Annotating CFG elements can be used to influence the {@link Generator} classes,
+ * which creates <em>sentences</em> from a given grammar.
  *
  * @see Bnf#parse(String)
  *
@@ -102,21 +86,59 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
- * @version 7.1
+ * @version !__version__!
  */
-public record Cfg<T>(
-	List<NonTerminal<T>> nonTerminals,
-	List<Terminal<T>> terminals,
-	List<Rule<T>> rules,
-	NonTerminal<T> start
-) {
+public final class Cfg<T> {
+
+	/* *************************************************************************
+	 * Inner classes and interfaces.
+	 * ************************************************************************/
+
+	/**
+	 * Interface for annotatable CFG types.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 *
+	 * @param <T> the terminal symbol value type
+	 */
+	public sealed interface Annotatable<T> {
+		/**
+		 * Return the element annotation, might be {@code null}.
+		 *
+		 * @return the annotation of the element, or {@code null} if the element
+		 *         has none
+		 */
+		Object annotation();
+
+		/**
+		 * Create a new copy of the CFG element, with the given
+		 * {@code annotation}.
+		 *
+		 * @param annotation the annotation of the newly created element,
+		 *        may be {@code null}
+		 * @return a copy of the element with the given {@code annotation}
+		 */
+		Annotatable<T> at(Object annotation);
+	}
+
+	/**
+	 * Represents an element of a CFG
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 *
+	 * @param <T> the terminal symbol value type
+	 */
+	public sealed interface Element<T> extends Annotatable<T> {
+	}
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public sealed interface Symbol<T> {
+	public sealed interface Symbol<T> extends Element<T> {
 
 		/**
 		 * Return the name of the symbol.
@@ -125,6 +147,9 @@ public record Cfg<T>(
 		 */
 		String name();
 
+		@Override
+		Symbol<T> at(Object annotation);
+
 	}
 
 	/**
@@ -132,7 +157,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record NonTerminal<T>(String name) implements Symbol<T> {
+	public record NonTerminal<T>(String name, Object annotation)
+		implements Symbol<T>
+	{
 
 		/**
 		 * @param name the name of the non-terminal symbol
@@ -147,6 +174,18 @@ public record Cfg<T>(
 				);
 			}
 		}
+
+		public NonTerminal(final String name) {
+			this(name, null);
+		}
+
+		@Override
+		public NonTerminal<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new NonTerminal<>(name, annotation);
+		}
+
 	}
 
 	/**
@@ -154,7 +193,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Terminal<T>(String name, T value) implements Symbol<T> {
+	public record Terminal<T>(String name, T value, Object annotation)
+		implements Symbol<T>
+	{
 
 		/**
 		 * @param name the name of the terminal symbol
@@ -168,6 +209,17 @@ public record Cfg<T>(
 					"Terminal value must not be empty."
 				);
 			}
+		}
+
+		public Terminal(final String name, final T value) {
+			this(name, value, null);
+		}
+
+		@Override
+		public Terminal<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Terminal<>(name, value, annotation);
 		}
 
 		/**
@@ -191,7 +243,9 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Expression<T>(List<Symbol<T>> symbols) {
+	public record Expression<T>(List<Symbol<T>> symbols, Object annotation)
+		implements Element<T>
+	{
 
 		/**
 		 * @param symbols the expression symbols
@@ -207,6 +261,122 @@ public record Cfg<T>(
 			symbols = List.copyOf(symbols);
 		}
 
+		public Expression(final List<Symbol<T>> symbols) {
+			this(symbols, null);
+		}
+
+		@Override
+		public Expression<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Expression<>(symbols, annotation);
+		}
+
+		/**
+		 * Builder class for building rule expressions.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param <T> the terminal symbol value type
+		 */
+		public static final class Builder<T> {
+			private final List<Symbol<T>> symbols = new ArrayList<>();
+			private Object annotation;
+
+			private Builder() {
+			}
+
+			/**
+			 * Add the given {@code symbol} to the expression.
+			 *
+			 * @param symbol the expression symbol
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> add(final Symbol<T> symbol) {
+				symbols.add(requireNonNull(symbol));
+				return this;
+			}
+
+			/**
+			 * Add a non-terminal symbol to the expression.
+			 *
+			 * @param name the symbol name
+			 * @param annotation the symbol annotation
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> N(final String name, final Object annotation) {
+				return add(new NonTerminal<>(name, annotation));
+			}
+
+			/**
+			 * Add a non-terminal symbol to the expression.
+			 *
+			 * @param name the symbol name
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> N(final String name) {
+				return N(name, null);
+			}
+
+			/**
+			 * Add a non-terminal symbol to the expression.
+			 *
+			 * @param name the symbol name
+			 * @param value the symbol value
+			 * @param annotation the symbol annotation
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T>
+			T(final String name, final T value, final Object annotation) {
+				return add(new Terminal<>(name, value, annotation));
+			}
+
+			/**
+			 * Add a non-terminal symbol to the expression.
+			 *
+			 * @param name the symbol name
+			 * @param value the symbol value
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> T(final String name, final T value) {
+				return add(new Terminal<>(name, value, null));
+			}
+
+			/**
+			 * Add a non-terminal symbol to the expression.
+			 *
+			 * @param name the symbol name
+			 * @throws ClassCastException if {@code T} is not a string
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> T(final String name) {
+				@SuppressWarnings("unchecked")
+				final T value = (T)name;
+				return add(new Terminal<>(name, value, null));
+			}
+
+			/**
+			 * Set the expression annotation.
+			 *
+			 * @param annotation the expression annotation
+			 *  @return {@code this} builder for method chaining
+			 */
+			public Builder<T> at(final Object annotation) {
+				this.annotation = annotation;
+				return this;
+			}
+
+			/**
+			 * Create a new rule object.
+			 *
+			 * @return a new rule object
+			 */
+			public Expression<T> build() {
+				return new Expression<>(symbols, annotation);
+			}
+
+		}
+
 	}
 
 	/**
@@ -214,7 +384,13 @@ public record Cfg<T>(
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
-	public record Rule<T>(NonTerminal<T> start, List<Expression<T>> alternatives) {
+	public record Rule<T>(
+		NonTerminal<T> start,
+		List<Expression<T>> alternatives,
+		Object annotation
+	)
+		implements Annotatable<T>
+	{
 
 		/**
 		 * Creates a new rule object.
@@ -235,7 +411,158 @@ public record Cfg<T>(
 			alternatives = List.copyOf(alternatives);
 		}
 
+		public Rule(NonTerminal<T> start, List<Expression<T>> alternatives) {
+			this(start, alternatives, null);
+		}
+
+		@Override
+		public Rule<T> at(final Object annotation) {
+			return annotation == this.annotation
+				? this
+				: new Rule<>(start, alternatives, annotation);
+		}
+
+		/**
+		 * Builder class for building CFG rules.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param <T> the terminal symbol value type
+		 */
+		public static final class Builder<T> {
+			private final NonTerminal<T> start;
+			private final List<Expression<T>> expressions = new ArrayList<>();
+			private Object annotation;
+
+			private Builder(final NonTerminal<T> start) {
+				this.start = requireNonNull(start);
+			}
+
+			/**
+			 * Builder method for creating a rule expression.
+			 *
+			 * @param builder the expression builder
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T>
+			E(final Consumer<? super Expression.Builder<T>> builder) {
+				final var eb = new Expression.Builder<T>();
+				builder.accept(eb);
+				expressions.add(eb.build());
+
+				return this;
+			}
+
+			/**
+			 * Builder method for creating an expression with the given
+			 * {@code symbols}.
+			 *
+			 * @param symbols the expression symbols
+			 * @throws IllegalArgumentException if the list of {@code symbols}
+			 *         is empty
+			 * @return {@code this} builder for method chaining
+			 */
+			@SafeVarargs
+			public final Builder<T> E(final Symbol<T>... symbols) {
+				expressions.add(Cfg.E(symbols));
+				return this;
+			}
+
+			/**
+			 * Add an expression which consists solely of the given non-terminal
+			 * symbol.
+			 *
+			 * @param name the symbol name
+			 * @param annotation the symbol annotation
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> N(final String name, final Object annotation) {
+				return E(new NonTerminal<>(name, annotation));
+			}
+
+			/**
+			 * Add an expression which consists solely of the given non-terminal
+			 * symbol.
+			 *
+			 * @param name the symbol name
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> N(final String name) {
+				return N(name, null);
+			}
+
+			/**
+			 * Add an expression which consists solely of the given terminal
+			 * symbol.
+			 *
+			 * @param name the symbol name
+			 * @param value the symbol value
+			 * @param annotation the symbol annotation
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> T(
+				final String name,
+				final T value,
+				final Object annotation
+			) {
+				return E(Cfg.T(name, value, annotation));
+			}
+
+			/**
+			 * Add an expression which consists solely of the given terminal
+			 * symbol.
+			 *
+			 * @param name the symbol name
+			 * @param value the symbol value
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> T(final String name, final T value) {
+				return E(Cfg.T(name, value));
+			}
+
+			/**
+			 * Add an expression which consists solely of the given terminal
+			 * symbol.
+			 *
+			 * @param name the symbol name
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> T(final T name) {
+				return E(Cfg.T(name.toString(), name));
+			}
+
+			/**
+			 * Sets the rule annotation.
+			 *
+			 * @param annotation the rule annotation
+			 * @return {@code this} builder for method chaining
+			 */
+			public Builder<T> at(Object annotation) {
+				this.annotation = annotation;
+				return this;
+			}
+
+			/**
+			 * Create a new rule object.
+			 *
+			 * @return a new rule object
+			 */
+			public Rule<T> build() {
+				return new Rule<>(start, expressions, annotation);
+			}
+
+		}
+
 	}
+
+	/* *************************************************************************
+	 * CFG implementation.
+	 * ************************************************************************/
+
+	private final List<NonTerminal<T>> nonTerminals;
+	private final List<Terminal<T>> terminals;
+	private final List<Rule<T>> rules;
+	private final NonTerminal<T> start;
 
 	/**
 	 * Create a new <em>context-free</em> grammar object.
@@ -249,8 +576,16 @@ public record Cfg<T>(
 	 *         start symbol points to a missing rule or the rules uses symbols
 	 *         not defined in the list of {@link #nonTerminals()} or
 	 *         {@link #terminals()}
+	 * @deprecated This constructor will be removed, use {@link #of(Rule[])} or
+	 *             {@link #of(List)} instead.
 	 */
-	public Cfg {
+	@Deprecated(forRemoval = true, since = "!__version__!")
+	public Cfg(
+		List<NonTerminal<T>> nonTerminals,
+		List<Terminal<T>> terminals,
+		List<Rule<T>> rules,
+		NonTerminal<T> start
+	) {
 		if (rules.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The given list of rules must not be empty."
@@ -267,7 +602,7 @@ public record Cfg<T>(
 
 		if (!duplicatedRules.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Found duplicate rule(s), " + duplicatedRules + "."
+				"Found duplicate rule: %s.".formatted(duplicatedRules)
 			);
 		}
 
@@ -285,10 +620,12 @@ public record Cfg<T>(
 		// in the list of non-terminals and terminals.
 		final Set<Symbol<T>> required = rules.stream()
 			.flatMap(Cfg::ruleSymbols)
+			.map(s -> s.at(null))
 			.collect(Collectors.toUnmodifiableSet());
 
 		final Set<Symbol<T>> available = Stream
 			.concat(nonTerminals.stream(), terminals.stream())
+			.map(s -> s.at(null))
 			.collect(Collectors.toUnmodifiableSet());
 
 		final var missing = new HashSet<>(required);
@@ -317,10 +654,48 @@ public record Cfg<T>(
 			));
 		}
 
-		nonTerminals = List.copyOf(nonTerminals);
-		terminals = List.copyOf(terminals);
-		rules = List.copyOf(rules);
-		requireNonNull(start);
+		this.nonTerminals = List.copyOf(nonTerminals);
+		this.terminals = List.copyOf(terminals);
+		this.rules = List.copyOf(rules);
+		this.start = requireNonNull(start);
+	}
+
+	/**
+	 * Return the non-terminal symbols of {@code this} grammar. The returned
+	 * symbols have no annotation.
+	 *
+	 * @return the non-terminal symbols of {@code this} grammar
+	 */
+	public List<NonTerminal<T>> nonTerminals() {
+		return nonTerminals;
+	}
+
+	/**
+	 * Return the terminal symbols of {@code this} grammar. The returned
+	 * symbols have no annotation.
+	 *
+	 * @return the terminal symbols of {@code this} grammar
+	 */
+	public List<Terminal<T>> terminals() {
+		return terminals;
+	}
+
+	/**
+	 * Return the rules of {@code this} grammar.
+	 *
+	 * @return the rules of {@code this} grammar
+	 */
+	public List<Rule<T>> rules() {
+		return rules;
+	}
+
+	/**
+	 * Return the start symbol of {@code this} grammar.
+	 *
+	 * @return the start symbol of {@code this} grammar
+	 */
+	public NonTerminal<T> start() {
+		return start;
 	}
 
 	/**
@@ -350,7 +725,8 @@ public record Cfg<T>(
 	 * @return the mapped grammar
 	 * @throws NullPointerException if the given mapper is {@code null}
 	 */
-	public <A> Cfg<A> map(final Function<? super Terminal<T>, ? extends A> mapper) {
+	public <A> Cfg<A>
+	map(final Function<? super Terminal<? extends T>, ? extends A> mapper) {
 		requireNonNull(mapper);
 
 		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
@@ -364,8 +740,10 @@ public record Cfg<T>(
 				rule.alternatives().stream()
 					.map(expr -> new Expression<>(
 						expr.symbols().stream()
-							.map(sym -> sym instanceof Cfg.Terminal<T> t
-								? mapping.apply(t) : (Symbol<A>)sym)
+							.map(sym ->
+								sym instanceof Cfg.Terminal<T> t
+									? mapping.apply(t) : (Symbol<A>)sym
+							)
 							.toList()
 						))
 					.toList()
@@ -375,82 +753,98 @@ public record Cfg<T>(
 		return Cfg.of(rules);
 	}
 
+	@Override
+	public int hashCode() {
+		return rules.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Cfg<?> cfg && rules.equals(cfg.rules());
+	}
+
+	@Override
+	public String toString() {
+		return "Cfg[nonTerminals=%s, terminals=%s, rules=%s, start=%s]"
+			.formatted(nonTerminals, terminals, rules, start);
+	}
+
+
+	/* *************************************************************************
+	 * Factory methods
+	 * ************************************************************************/
+
 	/**
 	 * Create a grammar object with the given rules. Duplicated rules are merged
 	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
 	 * the start symbol of the created CFG
 	 *
 	 * @param rules the rules the grammar consists of
-	 * @throws IllegalArgumentException if the list of rules is empty
+	 * @throws IllegalArgumentException if the rule list is empty or a rule is
+	 *         defined more than once, the start symbol points to a missing rule
+	 *         or the rules uses symbols not defined in the list of
+	 *         {@link #nonTerminals()} or {@link #terminals()}
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
-	public static <T> Cfg<T> of(final List<Rule<T>> rules) {
-		if (rules.isEmpty()) {
+	public static <T> Cfg<T> of(final List<? extends Rule<? extends T>> rules) {
+		@SuppressWarnings("unchecked")
+		final var rules0 = (List<Rule<T>>)List.copyOf(rules);
+
+		// Rules must not be empty.
+		if (rules0.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The list of rules must not be empty."
 			);
 		}
 
-		final List<Rule<T>> normalizedRules = normalize(rules);
-
-		final List<Symbol<T>> symbols = normalizedRules.stream()
+		final List<Symbol<T>> symbols = rules0.stream()
 			.flatMap(Cfg::ruleSymbols)
 			.distinct()
 			.toList();
 
 		final List<NonTerminal<T>> nonTerminals = symbols.stream()
+			.map(rule -> rule.at(null))
+			.distinct()
 			.filter(NonTerminal.class::isInstance)
 			.map(nt -> (NonTerminal<T>)nt)
 			.toList();
 
 		final List<Terminal<T>> terminals = symbols.stream()
+			.map(rule -> rule.at(null))
+			.distinct()
 			.filter(Terminal.class::isInstance)
 			.map(nt -> (Terminal<T>)nt)
 			.toList();
 
+		final Set<Symbol<T>> allSymbols = new HashSet<>(symbols);
+		allSymbols.addAll(nonTerminals);
+		allSymbols.addAll(terminals);
+
 		return new Cfg<>(
-			nonTerminals,
-			terminals,
-			normalizedRules.stream()
-				.map(r -> rebuild(r, symbols))
+			nonTerminals.stream()
+				.map(s -> (NonTerminal<T>)select(s, allSymbols))
 				.toList(),
-			(NonTerminal<T>)select(normalizedRules.getFirst().start(), symbols)
+			terminals.stream()
+				.map(s -> (Terminal<T>)select(s, allSymbols))
+				.toList(),
+			rules0.stream()
+				.map(r -> rebuild(r, allSymbols))
+				.toList(),
+			(NonTerminal<T>)select(rules0.getFirst().start(), allSymbols)
 		);
 	}
 
 	/**
-	 * Create a grammar object with the given rules. Duplicated rules are merged
-	 * into one rule. The <em>start</em> symbol of the first rule is chosen as
-	 * the start symbol of the created CFG
+	 * Create a grammar object with the given rules.
 	 *
 	 * @param rules the rules the grammar consists of
-	 * @throws IllegalArgumentException if the list of rules is empty
+	 * @throws IllegalArgumentException if the list of rules is empty or there
+	 *         are duplicate rules
 	 * @throws NullPointerException if the list of rules is {@code null}
 	 */
 	@SafeVarargs
-	public static <T> Cfg<T> of(final Rule<T>... rules) {
+	public static <T> Cfg<T> of(final Rule<? extends T>... rules) {
 		return Cfg.of(List.of(rules));
-	}
-
-	private static <T> List<Rule<T>> normalize(final List<Rule<T>> rules) {
-		final Map<NonTerminal<T>, List<Rule<T>>> grouped = rules.stream()
-			.collect(groupingBy(
-				Rule::start,
-				LinkedHashMap::new,
-				toCollection(ArrayList::new)));
-
-		return grouped.entrySet().stream()
-			.map(entry -> merge(entry.getKey(), entry.getValue()))
-			.toList();
-	}
-
-	private static <T> Rule<T> merge(final NonTerminal<T> start, final List<Rule<T>> rules) {
-		return new Rule<>(
-			start,
-			rules.stream()
-				.flatMap(rule -> rule.alternatives().stream())
-				.toList()
-		);
 	}
 
 	private static <T> Stream<Symbol<T>> ruleSymbols(final Rule<T> rule) {
@@ -461,7 +855,10 @@ public record Cfg<T>(
 		);
 	}
 
-	private static <T> Rule<T> rebuild(final Rule<T> rule, final List<Symbol<T>> symbols) {
+	private static <T> Rule<T> rebuild(
+		final Rule<T> rule,
+		final Collection<Symbol<T>> symbols
+	) {
 		return new Rule<>(
 			(NonTerminal<T>)select(rule.start, symbols),
 			rule.alternatives.stream()
@@ -471,7 +868,7 @@ public record Cfg<T>(
 	}
 
 	private static <T> Expression<T>
-	rebuild(final Expression<T> expression, final List<Symbol<T>> symbols) {
+	rebuild(final Expression<T> expression, final Collection<Symbol<T>> symbols) {
 		return new Expression<>(
 			expression.symbols.stream()
 				.map(s -> select(s, symbols))
@@ -481,10 +878,10 @@ public record Cfg<T>(
 
 	private static <T> Symbol<T> select(
 		final Symbol<T> symbol,
-		final List<Symbol<T>> symbols
+		final Collection<Symbol<T>> symbols
 	) {
 		for (var s : symbols) {
-			if (s.name().equals(symbol.name())) {
+			if (s.equals(symbol)) {
 				return s;
 			}
 		}
@@ -498,7 +895,7 @@ public record Cfg<T>(
 
 
 	/* *************************************************************************
-	 * Static factory methods for rule creation.
+	 * Static factory methods for rule creation: DSL methods.
 	 * ************************************************************************/
 
 	/**
@@ -512,6 +909,26 @@ public record Cfg<T>(
 	 */
 	public static <T> Terminal<T> T(final String name, final T value) {
 		return new Terminal<>(name, value);
+	}
+
+	/**
+	 * Factory method for creating a terminal symbol with the given
+	 * {@code name} and {@code value}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param name the name of the terminal symbol
+	 * @param value the value of the terminal symbol
+	 * @param annotation the terminal annotation
+	 * @param <T> the terminal symbol value type
+	 * @return a new terminal symbol
+	 */
+	public static <T> Terminal<T> T(
+		final String name,
+		final T value,
+		final Object annotation
+	) {
+		return new Terminal<>(name, value, annotation);
 	}
 
 	/**
@@ -537,6 +954,23 @@ public record Cfg<T>(
 	}
 
 	/**
+	 * Factory method for creating non-terminal symbols.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param name the name of the symbol.
+	 * @param annotation the annotation of the symbol
+	 * @param <T> the terminal symbol value type
+	 * @return a new non-terminal symbol
+	 */
+	public static <T> NonTerminal<T> N(
+		final String name,
+		final Object annotation
+	) {
+		return new NonTerminal<>(name, annotation);
+	}
+
+	/**
 	 * Factory method for creating an expression with the given
 	 * {@code symbols}.
 	 *
@@ -552,10 +986,11 @@ public record Cfg<T>(
 	}
 
 	/**
-	 * Factory method for creating a new rule.
+	 * Factory method for creating a new rule. The {@code elements} array doesn't
+	 * allow {@link Rule} objects.
 	 *
 	 * @param name the name of start symbol of the rule
-	 * @param alternatives the list of alternative rule expressions
+	 * @param elements the list of alternative rule expressions
 	 * @throws IllegalArgumentException if the given list of
 	 *         {@code alternatives} is empty
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -565,9 +1000,133 @@ public record Cfg<T>(
 	@SafeVarargs
 	public static <T> Rule<T> R(
 		final String name,
+		final Element<T>... elements
+	) {
+		return R(new NonTerminal<>(name), elements);
+	}
+
+	/**
+	 * Factory method for creating a new rule. The {@code elements} array doesn't
+	 * allow {@link Rule} objects.
+	 *
+	 * @param name the name of start symbol of the rule
+	 * @param alternatives the list of alternative rule expressions
+	 * @throws IllegalArgumentException if the given list of
+	 *         {@code alternatives} is empty
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param <T> the terminal symbol value type
+	 * @return a new rule
+	 * @deprecated Will be removed, use {@link #R(String, Element[])} instead
+	 */
+	@Deprecated(forRemoval = true, since = "!__version__!")
+	@SafeVarargs
+	public static <T> Rule<T> R(
+		final String name,
 		final Expression<T>... alternatives
 	) {
-		return new Rule<>(new NonTerminal<>(name), List.of(alternatives));
+		return R(new NonTerminal<>(name), alternatives);
+	}
+
+	/**
+	 * Factory method for creating a new rule. The {@code elements} array doesn't
+	 * allow {@link Rule} objects.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param start the start symbol of the rule
+	 * @param elements the list of alternative rule expressions
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param <T> the terminal symbol value type
+	 * @return a new rule
+	 */
+	@SafeVarargs
+	public static <T> Rule<T> R(
+		final NonTerminal<T> start,
+		final Element<T>... elements
+	) {
+		return new Rule<>(
+			start,
+			Stream.of(elements)
+				.map(expression -> switch (expression) {
+					case Expression<T> e -> e;
+					case Symbol<T> s -> new Expression<>(List.of(s));
+				})
+				.toList()
+		);
+	}
+
+	/**
+	 * Builder class for building {@link Cfg} objects.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param <T> the terminal symbol value type
+	 */
+	public static final class Builder<T> {
+		private final List<Rule<T>> rules = new ArrayList<>();
+
+		private Builder() {
+		}
+
+		/**
+		 * Building a new rule for the CFG.
+		 *
+		 * @param start the rule start
+		 * @param builder the rule builder
+		 * @return {@code this} builder for method chaining
+		 */
+		public Builder<T> R(
+			final NonTerminal<T> start,
+			final Consumer<? super Rule.Builder<T>> builder
+		) {
+			final var rb = new Rule.Builder<T>(start);
+			builder.accept(rb);
+			rules.add(rb.build());
+
+			return this;
+		}
+
+		/**
+		 * Building a new rule for the CFG.
+		 *
+		 * @param name the rule name
+		 * @param builder the rule builder
+		 * @return {@code this} builder for method chaining
+		 */
+		public Builder<T> R(
+			final String name,
+			final Consumer<? super Rule.Builder<T>> builder
+		) {
+			return R(new NonTerminal<>(name), builder);
+		}
+
+		/**
+		 * Creates a new CFG object.
+		 *
+		 * @see #of(List)
+		 *
+		 * @throws IllegalArgumentException if the rule list is empty or a rule
+		 *         is defined more than once, the start symbol points to a
+		 *         missing rule or the rules uses symbols not defined in the
+		 *         list of {@link #nonTerminals()} or {@link #terminals()}
+		 * @return a newly created CFG object
+		 */
+		public Cfg<T> build() {
+			return Cfg.of(rules);
+		}
+
+	}
+
+	/**
+	 * Return a new CFG builder.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a new CFG builder
+	 * @param <T> the terminal symbol value type
+	 */
+	public static <T> Builder<T> builder() {
+		return new Builder<>();
 	}
 
 }
