@@ -21,8 +21,8 @@ package io.jenetics.gradle
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 8.2
+ * @version 8.2
  */
 object Constants {
 

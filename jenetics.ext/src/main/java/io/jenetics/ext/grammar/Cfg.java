@@ -86,7 +86,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
- * @version !__version__!
+ * @version 8.2
  */
 public final class Cfg<T> {
 
@@ -97,8 +97,8 @@ public final class Cfg<T> {
 	/**
 	 * Interface for annotatable CFG types.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
@@ -125,8 +125,8 @@ public final class Cfg<T> {
 	/**
 	 * Represents an element of a CFG
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
@@ -275,7 +275,7 @@ public final class Cfg<T> {
 		/**
 		 * Builder class for building rule expressions.
 		 *
-		 * @since !__version__!
+		 * @since 8.2
 		 *
 		 * @param <T> the terminal symbol value type
 		 */
@@ -425,7 +425,7 @@ public final class Cfg<T> {
 		/**
 		 * Builder class for building CFG rules.
 		 *
-		 * @since !__version__!
+		 * @since 8.2
 		 *
 		 * @param <T> the terminal symbol value type
 		 */
@@ -579,7 +579,7 @@ public final class Cfg<T> {
 	 * @deprecated This constructor will be removed, use {@link #of(Rule[])} or
 	 *             {@link #of(List)} instead.
 	 */
-	@Deprecated(forRemoval = true, since = "!__version__!")
+	@Deprecated(forRemoval = true, since = "8.2")
 	public Cfg(
 		List<NonTerminal<T>> nonTerminals,
 		List<Terminal<T>> terminals,
@@ -915,7 +915,7 @@ public final class Cfg<T> {
 	 * Factory method for creating a terminal symbol with the given
 	 * {@code name} and {@code value}.
 	 *
-	 * @since !__version__!
+	 * @since 8.2
 	 *
 	 * @param name the name of the terminal symbol
 	 * @param value the value of the terminal symbol
@@ -956,7 +956,7 @@ public final class Cfg<T> {
 	/**
 	 * Factory method for creating non-terminal symbols.
 	 *
-	 * @since !__version__!
+	 * @since 8.2
 	 *
 	 * @param name the name of the symbol.
 	 * @param annotation the annotation of the symbol
@@ -1018,7 +1018,7 @@ public final class Cfg<T> {
 	 * @return a new rule
 	 * @deprecated Will be removed, use {@link #R(String, Element[])} instead
 	 */
-	@Deprecated(forRemoval = true, since = "!__version__!")
+	@Deprecated(forRemoval = true, since = "8.2")
 	@SafeVarargs
 	public static <T> Rule<T> R(
 		final String name,
@@ -1031,7 +1031,7 @@ public final class Cfg<T> {
 	 * Factory method for creating a new rule. The {@code elements} array doesn't
 	 * allow {@link Rule} objects.
 	 *
-	 * @since !__version__!
+	 * @since 8.2
 	 *
 	 * @param start the start symbol of the rule
 	 * @param elements the list of alternative rule expressions
@@ -1058,7 +1058,7 @@ public final class Cfg<T> {
 	/**
 	 * Builder class for building {@link Cfg} objects.
 	 *
-	 * @since !__version__!
+	 * @since 8.2
 	 *
 	 * @param <T> the terminal symbol value type
 	 */
@@ -1120,7 +1120,7 @@ public final class Cfg<T> {
 	/**
 	 * Return a new CFG builder.
 	 *
-	 * @since !__version__!
+	 * @since 8.2
 	 *
 	 * @return a new CFG builder
 	 * @param <T> the terminal symbol value type
