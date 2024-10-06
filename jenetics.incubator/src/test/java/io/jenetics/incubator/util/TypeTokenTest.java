@@ -17,14 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.util;
+
+import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 /**
- * Probability density function.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@FunctionalInterface
-public interface Pdf {
-	double apply(double value);
+public class TypeTokenTest {
+
+	@Test
+	public void cast() {
+		final var string = new TypeToken<String>() {};
+		final var integer = new TypeToken<Integer>() {};
+
+		assertThatNoException().isThrownBy(() -> integer.cast(42));
+		assertThatNoException().isThrownBy(() -> string.cast("42"));
+
+		assertThatExceptionOfType(ClassCastException.class)
+			.isThrownBy(() -> integer.cast("42"));
+		assertThatExceptionOfType(ClassCastException.class)
+			.isThrownBy(() -> string.cast(42));
+	}
+
 }

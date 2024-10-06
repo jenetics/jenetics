@@ -17,14 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.gradle
 
 /**
- * Probability density function.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.2
+ * @version 8.2
  */
-@FunctionalInterface
-public interface Pdf {
-	double apply(double value);
+object Constants {
+
+	/**
+	 * The directory for the snippet classes used in the Javadoc.
+	 */
+	const val SNIPPET_DIR = "snippet-files"
+
 }
