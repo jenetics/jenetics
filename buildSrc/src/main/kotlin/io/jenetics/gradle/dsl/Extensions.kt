@@ -54,7 +54,8 @@ val Project.sourceSets: SourceSetContainer
  * Gets the module name of the project, as configured in the build file.
  */
 var Project.moduleName: String
-	get() = this.extra.get("moduleName")?.toString() ?: this.name
+	get() = if (this.isModule) this.extra.get("moduleName").toString()
+			else this.name
 	set(value) = this.extra.set("moduleName", value)
 
 /**
