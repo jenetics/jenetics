@@ -17,24 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.math;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.random.RandomGenerator;
+
+import org.assertj.core.data.Offset;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.1
  */
-@SuppressWarnings("module")
-module io.jenetics.incubator {
-	requires io.jenetics.base;
-	requires io.jenetics.ext;
-	requires io.jenetics.prog;
-	requires java.desktop;
+public class ErfcTest {
 
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.combinatorial;
-	exports io.jenetics.incubator.math;
-	exports io.jenetics.incubator.prog;
-	exports io.jenetics.incubator.util;
+	@Test
+	public void erfc() {
+		final var offset = Offset.offset(Math.pow(2, -50));
+		final var random = RandomGenerator.getDefault();
+
+		for (int i = 0; i < 1000; ++i) {
+			final double x = random.nextDouble(-100, 100);
+			final double expected = org.apache.commons.math3.special.Erf.erfc(x);
+
+			assertThat(Erfc.apply(x)).isCloseTo(expected, offset);
+		}
+	}
+
 }
