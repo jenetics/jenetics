@@ -28,6 +28,7 @@ module io.jenetics.incubator {
 	requires io.jenetics.ext;
 	requires io.jenetics.prog;
 	requires java.desktop;
+	requires commons.math3;
 
 	exports io.jenetics.incubator.beans.description;
 	exports io.jenetics.incubator.beans.property;

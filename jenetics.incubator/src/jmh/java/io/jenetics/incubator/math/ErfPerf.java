@@ -45,7 +45,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @Measurement(iterations = 15)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Benchmark)
-public class ErfcPerf {
+public class ErfPerf {
 
 	private double[] data;
 
@@ -70,7 +70,7 @@ public class ErfcPerf {
 	public void erfc(final Blackhole bh) {
 		double result = 0;
 		for (var x : data) {
-			result += Erfc.apply(x);
+			result += Erf.erfc(x);
 		}
 		bh.consume(result);
 	}

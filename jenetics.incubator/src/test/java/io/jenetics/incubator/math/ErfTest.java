@@ -29,7 +29,20 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ErfcTest {
+public class ErfTest {
+
+	@Test
+	public void erf() {
+		final var offset = Offset.offset(Math.pow(2, -50));
+		final var random = RandomGenerator.getDefault();
+
+		for (int i = 0; i < 1000; ++i) {
+			final double x = random.nextDouble(-100, 100);
+			final double expected = org.apache.commons.math3.special.Erf.erf(x);
+
+			assertThat(Erf.erf(x)).isCloseTo(expected, offset);
+		}
+	}
 
 	@Test
 	public void erfc() {
@@ -40,7 +53,7 @@ public class ErfcTest {
 			final double x = random.nextDouble(-100, 100);
 			final double expected = org.apache.commons.math3.special.Erf.erfc(x);
 
-			assertThat(Erfc.apply(x)).isCloseTo(expected, offset);
+			assertThat(Erf.erfc(x)).isCloseTo(expected, offset);
 		}
 	}
 
