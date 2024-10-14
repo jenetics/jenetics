@@ -17,25 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.util;
+
+import io.jenetics.Gene;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionParams;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.Problem;
 
 /**
+ * The continuation record.
+ *
+ * @param problem the optimization problem
+ * @param start the continuation start
+ * @param parameter the evolution parameters
+ * @param setup the engine setup
+ * @param <G> the gene type
+ * @param <C> the fitness type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.1
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.incubator {
-	requires io.jenetics.base;
-	requires io.jenetics.ext;
-	requires io.jenetics.prog;
-	requires java.desktop;
-	requires commons.math3;
+public record Continuation<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> (
+	Problem<?, G, C> problem,
+	EvolutionStart<G, C> start,
+	EvolutionParams<G, C> parameter,
+	Engine.Setup<G, C> setup
+) {
 
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.combinatorial;
-	exports io.jenetics.incubator.math;
-	exports io.jenetics.incubator.prog;
-	exports io.jenetics.incubator.util;
+	EvolutionStream<G, C> resume() {
+		return null;
+	}
+
 }

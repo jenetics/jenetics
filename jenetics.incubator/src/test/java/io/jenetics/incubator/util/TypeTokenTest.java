@@ -17,25 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.util;
+
+import org.testng.annotations.Test;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.1
  */
-@SuppressWarnings("module")
-module io.jenetics.incubator {
-	requires io.jenetics.base;
-	requires io.jenetics.ext;
-	requires io.jenetics.prog;
-	requires java.desktop;
-	requires commons.math3;
+public class TypeTokenTest {
 
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.combinatorial;
-	exports io.jenetics.incubator.math;
-	exports io.jenetics.incubator.prog;
-	exports io.jenetics.incubator.util;
+	@Test
+	public void cast() {
+		final var string = new TypeToken<String>() {};
+		final var integer = new TypeToken<Integer>() {};
+
+		assertThatNoException().isThrownBy(() -> integer.cast(42));
+		assertThatNoException().isThrownBy(() -> string.cast("42"));
+
+		assertThatExceptionOfType(ClassCastException.class)
+			.isThrownBy(() -> integer.cast("42"));
+		assertThatExceptionOfType(ClassCastException.class)
+			.isThrownBy(() -> string.cast(42));
+	}
+
 }
