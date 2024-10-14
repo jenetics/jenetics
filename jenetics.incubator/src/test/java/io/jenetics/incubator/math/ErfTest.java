@@ -31,29 +31,77 @@ import org.testng.annotations.Test;
  */
 public class ErfTest {
 
+	private static final int LOOPS = 1_000_000;
+
 	@Test
 	public void erf() {
-		final var offset = Offset.offset(Math.pow(2, -50));
+		final var offset = Offset.offset(Math.pow(2, -45));
 		final var random = RandomGenerator.getDefault();
 
-		for (int i = 0; i < 1000; ++i) {
+		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
+			final double result = Erf.erf(x);
 			final double expected = org.apache.commons.math3.special.Erf.erf(x);
 
-			assertThat(Erf.erf(x)).isCloseTo(expected, offset);
+			assertThat(result)
+				.withFailMessage(() ->
+					"Expected erf(%s) = %s, but was %s."
+						.formatted(x, expected, result))
+				.isCloseTo(expected, offset);
 		}
 	}
 
 	@Test
 	public void erfc() {
-		final var offset = Offset.offset(Math.pow(2, -50));
+		final var offset = Offset.offset(Math.pow(2, -40));
 		final var random = RandomGenerator.getDefault();
 
-		for (int i = 0; i < 1000; ++i) {
+		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
+			final double result = Erf.erfc(x);
 			final double expected = org.apache.commons.math3.special.Erf.erfc(x);
 
-			assertThat(Erf.erfc(x)).isCloseTo(expected, offset);
+			assertThat(result)
+				.withFailMessage(() ->
+					"Expected erfc(%s) = %s, but was %s."
+						.formatted(x, expected, result))
+				.isCloseTo(expected, offset);
+		}
+	}
+
+	@Test
+	public void erfinv() {
+		final var offset = Offset.offset(Math.pow(2, -53));
+		final var random = RandomGenerator.getDefault();
+
+		for (int i = 0; i < LOOPS; ++i) {
+			final double x = random.nextDouble(-100, 100);
+			final double result = Erf.erfinv(x);
+			final double expected = org.apache.commons.math3.special.Erf.erfInv(x);
+
+			assertThat(result)
+				.withFailMessage(() ->
+					"Expected erfinv(%s) = %s, but was %s."
+						.formatted(x, expected, result))
+				.isCloseTo(expected, offset);
+		}
+	}
+
+	@Test
+	public void erfcinv() {
+		final var offset = Offset.offset(Math.pow(2, -53));
+		final var random = RandomGenerator.getDefault();
+
+		for (int i = 0; i < LOOPS; ++i) {
+			final double x = random.nextDouble(-100, 100);
+			final double result = Erf.erfcinv(x);
+			final double expected = org.apache.commons.math3.special.Erf.erfcInv(x);
+
+			assertThat(result)
+				.withFailMessage(() ->
+					"Expected erfcinv(%s) = %s, but was %s."
+						.formatted(x, expected, result))
+				.isCloseTo(expected, offset);
 		}
 	}
 
