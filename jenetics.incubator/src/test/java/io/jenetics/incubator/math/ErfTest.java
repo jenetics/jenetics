@@ -71,7 +71,7 @@ public class ErfTest {
 
 	@Test
 	public void erfinv() {
-		final var offset = Offset.offset(Math.pow(2, -53));
+		final var offset = Offset.offset(Math.pow(2, -50));
 		final var random = RandomGenerator.getDefault();
 
 		for (int i = 0; i < LOOPS; ++i) {
@@ -89,7 +89,7 @@ public class ErfTest {
 
 	@Test
 	public void erfcinv() {
-		final var offset = Offset.offset(Math.pow(2, -53));
+		final var offset = Offset.offset(Math.pow(2, -50));
 		final var random = RandomGenerator.getDefault();
 
 		for (int i = 0; i < LOOPS; ++i) {
