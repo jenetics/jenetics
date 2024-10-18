@@ -168,7 +168,6 @@ public final class SentenceGenerator<T>
 		do {
 			proceed = false;
 
-
 			final ListIterator<Symbol<T>> sit = symbols.listIterator();
 			while (sit.hasNext() &&
 				(_expansion == Expansion.LEFT_TO_RIGHT || !proceed))
