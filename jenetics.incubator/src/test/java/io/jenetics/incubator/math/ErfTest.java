@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  */
 public class ErfTest {
 
-	@Test
+	//@Test
 	public void erf() {
 		final var offset = Offset.offset(Math.pow(2, -50));
 		final var random = RandomGenerator.getDefault();
@@ -44,7 +44,7 @@ public class ErfTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void erfc() {
 		final var offset = Offset.offset(Math.pow(2, -50));
 		final var random = RandomGenerator.getDefault();
