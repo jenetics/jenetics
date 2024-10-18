@@ -106,6 +106,19 @@ allprojects {
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
+
+	tasks.withType<JavaCompile>().configureEach {
+		options.compilerArgs.add("--enable-preview")
+	}
+
+	tasks.withType<Test>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
+	tasks.withType<JavaExec>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
 }
 
 subprojects {
@@ -116,7 +129,6 @@ subprojects {
 	}
 
 	plugins.withType<JavaPlugin> {
-
 		configure<JavaPluginExtension> {
 			modularity.inferModulePath.set(true)
 

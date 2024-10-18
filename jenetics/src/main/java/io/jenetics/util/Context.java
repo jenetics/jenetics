@@ -31,7 +31,9 @@ final class Context<T> {
 
 	private final T _default;
 	private final AtomicReference<Entry<T>> _entry;
-	private final ThreadLocal<Entry<T>> _threadLocalEntry = new ThreadLocal<>();
+	//private final ThreadLocal<Entry<T>> _threadLocalEntry = new ThreadLocal<>();
+
+	private final ScopedValue<Entry<T>> _value = ScopedValue.newInstance();
 
 	Context(final T defaultValue) {
 		_default = defaultValue;
@@ -39,15 +41,27 @@ final class Context<T> {
 	}
 
 	void set(final T value) {
+		if (_value.isBound()) {
+			_value.get().value = value;
+		} else {
+			_entry.set(new Entry<>(value));
+		}
+
+		/*
 		final Entry<T> e = _threadLocalEntry.get();
 
 		if (e != null) e.value = value;
 		else _entry.set(new Entry<>(value));
+		 */
 	}
 
 	T get() {
+		return _value.orElse(_entry.get()).value;
+
+		/*
 		final Entry<T> e = _threadLocalEntry.get();
 		return (e != null ? e : _entry.get()).value;
+		 */
 	}
 
 	void reset() {
@@ -55,6 +69,8 @@ final class Context<T> {
 	}
 
 	<S extends T, R> R with(final S value, final Function<S, R> f) {
+		return ScopedValue.getWhere(_value, new Entry<>(value), () -> f.apply(value));
+		/*
 		final Entry<T> e = _threadLocalEntry.get();
 		if (e != null) {
 			_threadLocalEntry.set(e.inner(value));
@@ -67,6 +83,7 @@ final class Context<T> {
 		} finally {
 			_threadLocalEntry.set(_threadLocalEntry.get().parent);
 		}
+		 */
 	}
 
 	/**
