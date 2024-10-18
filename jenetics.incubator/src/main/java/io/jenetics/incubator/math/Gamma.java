@@ -17,24 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.1
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.incubator {
-	requires io.jenetics.base;
-	requires io.jenetics.ext;
-	requires io.jenetics.prog;
-	requires java.desktop;
-
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.combinatorial;
-	exports io.jenetics.incubator.math;
-	exports io.jenetics.incubator.prog;
-	exports io.jenetics.incubator.util;
+public final class Gamma {
+	private Gamma() {
+	}
 }

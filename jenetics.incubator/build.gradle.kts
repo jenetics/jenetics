@@ -60,7 +60,7 @@ dependencies {
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*CsvSupportPerf.*")
+	includes.add(".*ErfcPerf.*")
 }
 
 tasks.javadoc {
