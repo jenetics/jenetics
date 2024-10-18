@@ -91,6 +91,18 @@ allprojects {
 		mavenCentral()
 	}
 
+	tasks.withType<JavaCompile>().configureEach {
+		options.compilerArgs.add("--enable-preview")
+	}
+
+	tasks.withType<Test>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
+	tasks.withType<JavaExec>().configureEach {
+		jvmArgs("--enable-preview")
+	}
+
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
