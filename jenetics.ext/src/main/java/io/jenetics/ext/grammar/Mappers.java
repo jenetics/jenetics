@@ -66,7 +66,6 @@ public final class Mappers {
 	 * grammar results. The codons are created by dividing the chromosome in
 	 * 8-bit junks, as described in <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
-	 *
 	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
@@ -104,7 +103,6 @@ public final class Mappers {
 	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
-	 *
 	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
@@ -143,7 +141,6 @@ public final class Mappers {
 	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
-	 *
 	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
@@ -202,7 +199,6 @@ public final class Mappers {
 	 *
 	 * The {@code length} function lets you defining the number of codons as
 	 * function of the rule the chromosome is encoding.
-	 *
 	 * {@snippet lang="java":
 	 * final Cfg<String> cfg = Bnf.parse(null); // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(

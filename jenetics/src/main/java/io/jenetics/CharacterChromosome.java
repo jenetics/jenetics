@@ -122,7 +122,6 @@ public class CharacterChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code char[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
 	 * {@snippet lang="java":
 	 * final CharacterChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);

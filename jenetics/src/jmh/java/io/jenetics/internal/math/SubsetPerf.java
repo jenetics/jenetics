@@ -76,7 +76,7 @@ public class SubsetPerf {
 
 	@Benchmark
 	public int[] next(final BenchmarkState state) {
-		return Subset.next(RANDOM, state.n, state.k);
+		return Subsets.next(RANDOM, state.n, state.k);
 	}
 
 }

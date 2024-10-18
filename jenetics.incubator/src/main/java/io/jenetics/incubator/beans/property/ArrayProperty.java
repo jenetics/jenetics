@@ -24,8 +24,6 @@ import static java.util.Collections.emptyIterator;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import io.jenetics.incubator.beans.Path;
-
 /**
  * Represents an array property.
  *
@@ -35,8 +33,8 @@ import io.jenetics.incubator.beans.Path;
  */
 public final class ArrayProperty extends IndexedProperty {
 
-	ArrayProperty(final Path path, final Value value) {
-		super(path, value);
+	ArrayProperty(final PropParam param) {
+		super(param);
 	}
 
 	/**
@@ -45,7 +43,7 @@ public final class ArrayProperty extends IndexedProperty {
 	 * @return the array values
 	 */
 	public Object[] array() {
-		return (Object[])value().value();
+		return (Object[])value();
 	}
 
 	@Override

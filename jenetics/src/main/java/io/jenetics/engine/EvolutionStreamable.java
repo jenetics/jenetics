@@ -119,7 +119,6 @@ public interface EvolutionStreamable<
 	 * {@link EvolutionResult}. The stream is initialized with the population
 	 * of the given {@code result} and its total generation
 	 * {@link EvolutionResult#totalGenerations()}.
-	 *
 	 * {@snippet lang="java":
 	 * private static final Problem<Double, DoubleGene, Double>
 	 * PROBLEM = Problem.of(

@@ -19,8 +19,8 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.clamp;
 import static java.lang.Math.nextDown;
-import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.random.RandomGenerator;
 
@@ -65,11 +65,11 @@ public class GaussianMutator<
 	private G mutate0(final G gene, final RandomGenerator random) {
 		final double min = gene.min().doubleValue();
 		final double max = gene.max().doubleValue();
-		final double std = (max - min)*0.25;
+		final double stddev = (max - min)*0.25;
 
 		final double value = gene.doubleValue();
-		final double gaussian = random.nextGaussian();
-		return gene.newInstance(clamp(gaussian*std + value, min, nextDown(max)));
+		final double gaussian = random.nextGaussian(value, stddev);
+		return gene.newInstance(clamp(gaussian, min, nextDown(max)));
 	}
 
 }

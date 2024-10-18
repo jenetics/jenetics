@@ -234,16 +234,16 @@ public final class DoubleGene
 
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max),
-	 * no exception is thrown. In this case the method
+	 * given range. If the {@code value} isn't within the interval
+	 * {@code [min, max)}, no exception is thrown. In this case the method
 	 * {@link DoubleGene#isValid()} returns {@code false}.
 	 *
 	 * @since 3.2
 	 *
-	 * @param allele the value of the gene.
+	 * @param allele the value of the gene
 	 * @param range the double range to use
 	 * @return a new random {@code DoubleGene}
-	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static DoubleGene of(final double allele, final DoubleRange range) {
 		return of(allele, range.min(), range.max());
@@ -251,10 +251,10 @@ public final class DoubleGene
 
 	/**
 	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
-	 * of the {@code DoubleGene} lies in the interval [min, max).
+	 * of the {@code DoubleGene} lies in the interval {@code [min, max)}.
 	 *
-	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (exclusively).
+	 * @param min the minimal valid value of this gene (inclusively)
+	 * @param max the maximal valid value of this gene (exclusively)
 	 * @return a new {@code DoubleGene} with the given parameter
 	 * @throws IllegalArgumentException if {@code min} is not finite,
 	 *         or {@code max} is not finite, or {@code min}
@@ -266,13 +266,13 @@ public final class DoubleGene
 
 	/**
 	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
-	 * of the {@code DoubleGene} lies in the interval [min, max).
+	 * of the {@code DoubleGene} lies in the interval {@code [min, max)}.
 	 *
 	 * @since 3.2
 	 *
 	 * @param range the double range to use
 	 * @return a new {@code DoubleGene} with the given parameter
-	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 * @throws IllegalArgumentException if {@code min} is not finite,
 	 *         or {@code max} is not finite, or {@code min}
 	 *         is greater than or equal to {@code max}

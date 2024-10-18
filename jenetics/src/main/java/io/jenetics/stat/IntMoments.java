@@ -100,7 +100,6 @@ public record IntMoments(
 	/**
 	 * Return a {@code Collector} which returns moments-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<Integer> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMoments moments = stream.collect(toIntMoments());
@@ -120,7 +119,6 @@ public record IntMoments(
 	 * Return a {@code Collector} which applies an int-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final IntMoments moments = stream

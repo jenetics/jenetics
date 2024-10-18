@@ -54,7 +54,7 @@ import io.jenetics.util.Factory;
  * {@link Phenotype} directly
  *
  * @apiNote
- * This class is part of the more advanced API and is not needed for default use
+ * This class is part of the more advanced API and is unnecessary for default use
  * cases.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -168,7 +168,7 @@ public final class RetryConstraint<
 	 *
 	 * @since 5.2
 	 *
-	 * @param codec the invertible codec used for simplify the needed
+	 * @param codec the invertible codec used for simplify the necessary
 	 *        validator
 	 * @param validator the phenotype validator
 	 * @param <T> the type of the <em>native</em> problem domain
@@ -217,7 +217,7 @@ public final class RetryConstraint<
 	 *
 	 * @since 5.2
 	 *
-	 * @param codec the invertible codec used for simplify the needed
+	 * @param codec the invertible codec used for simplify the necessary
 	 *        validator
 	 * @param validator the phenotype validator
 	 * @param retryLimit the limit of the phenotype creation retries. If more

@@ -20,17 +20,13 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
-
-import java.util.Random;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
-import io.jenetics.stat.MinMax;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -52,26 +48,16 @@ public class IntegerChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		using(new Random(12345), r -> {
-			final int min = 0;
-			final int max = 10000000;
+		final int min = 0;
+		final int max = 10000000;
 
-			final MinMax<Integer> mm = MinMax.of();
-			final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
+		final var histogram = Histogram.Builder.of(min, max, 20);
+		for (int i = 0; i < 1000; ++i) {
+			final var chromosome = IntegerChromosome.of(min, max, 500);
+			chromosome.forEach(g -> histogram.accept(g.allele()));
+		}
 
-			for (int i = 0; i < 1000; ++i) {
-				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
-
-				chromosome.forEach(g -> {
-					mm.accept(g.allele());
-					histogram.accept(g.allele());
-				});
-			}
-
-			Assert.assertTrue(mm.min().compareTo(0) >= 0);
-			Assert.assertTrue(mm.max().compareTo(100) < 100);
-			assertUniformDistribution(histogram);
-		});
+		assertThatObservation(histogram.build()).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

@@ -1,3 +1,5 @@
+import io.jenetics.gradle.dsl.moduleName
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -33,29 +35,32 @@ plugins {
 	alias(libs.plugins.jmh)
 }
 
+moduleName = "io.jenetics.incubator"
 description = "Jenetics Genetic Incubator"
-
-extra["moduleName"] = "io.jenetics.incubator"
 
 dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
-	//antlr("org.antlr:antlr4:4.9.3")
+	implementation(libs.commons.math)
 
 	testImplementation(libs.assertj)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.guava)
 	testImplementation(libs.testng)
 	testImplementation(libs.jpx)
-	//testImplementation("omds-domain:omds-domain")
+
+	jmh(libs.commons.csv)
+	jmh(libs.javacsv)
+	jmh(libs.opencsv)
+	jmh(libs.supercsv)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
-	includes.add(".*MathExprPerf.*")
+	includes.add(".*ErfcPerf.*")
 }
 
 tasks.javadoc {

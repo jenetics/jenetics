@@ -65,8 +65,8 @@ public interface Gene<A, G extends Gene<A, G>>
 	 * Return a new, random gene with the same type and with the same constraints
 	 * as this gene. For all genes returned by this method holds
 	 * {@code gene.getClass() == gene.newInstance().getClass()}. Implementations
-	 * of this method have to use the {@link java.util.Random} object which can
-	 * be fetched from the {@link io.jenetics.util.RandomRegistry}.
+	 * of this method have to use the {@link java.util.random.RandomGenerator}
+	 * object which can be fetched from the {@link io.jenetics.util.RandomRegistry}.
 	 */
 	@Override
 	G newInstance();

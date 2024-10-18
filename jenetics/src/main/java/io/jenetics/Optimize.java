@@ -60,7 +60,7 @@ public enum Optimize {
 	 * than the second. This compare method is {@code null}-hostile. If you need
 	 * to make it {@code null}-friendly, you can wrap it with the
 	 * {@link Comparator#nullsFirst(Comparator)} method.
-	 *
+	 * <p>
 	 * {@snippet lang="java":
 	 * final Comparator<Integer> comparator = nullsFirst(Optimize.MAXIMUM::compare);
 	 * assertEquals(comparator.compare(null, null), 0);
@@ -90,7 +90,7 @@ public enum Optimize {
 	 * collection of comparable objects with the returned comparator will be
 	 * sorted in <b>descending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
-	 *
+	 * <p>
 	 * {@snippet lang="java":
 	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>descending());
@@ -112,7 +112,7 @@ public enum Optimize {
 	 * collection of comparable objects with the returned comparator will be
 	 * sorted in <b>ascending</b> order, according to the given definition
 	 * of <i>better</i> and <i>worse</i>.
-	 *
+	 * <p>
 	 * {@snippet lang="java":
 	 * final Population<DoubleGene, Double> population = null; // @replace substring='null' replacement="..."
 	 * population.sort(Optimize.MINIMUM.<Double>ascending());

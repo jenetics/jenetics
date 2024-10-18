@@ -96,7 +96,7 @@ public class DoubleGenePermutationCodec {
 	 * The composite codec used for the evolution.
 	 */
 	private static final Codec<Points, DoubleGene> CODEC_4 = Codec
-		.of(CODEC_2, CODEC_3, Points::new);
+		.combine(CODEC_2, CODEC_3, Points::new);
 
 	// OK, maybe a little weird fitness function ;-)
 	private static double fitness(final Points points) {

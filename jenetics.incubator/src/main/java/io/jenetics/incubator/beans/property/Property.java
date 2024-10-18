@@ -19,222 +19,81 @@
  */
 package io.jenetics.incubator.beans.property;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Optional;
 
-import java.util.Objects;
-
-import io.jenetics.incubator.beans.PathValue;
-import io.jenetics.incubator.beans.description.Getter;
-import io.jenetics.incubator.beans.description.Setter;
+import io.jenetics.incubator.beans.Path;
 
 /**
  * Represents an object's property. A property might be defined as usual
  * <em>bean</em> property, with getter and setter, or as record component. The
  * following code shows how to create (a transitive) list of all properties from
  * a given root object.
- * {@snippet lang="java":
- * final var root = null; // @replace substring='null' replacement="..."
- * final List<Property> properties = Properties
- *     // Get all properties from the 'root' object which are defined
- *     // in the 'io.jenetics' package.
- *     .stream(root, "io.jenetics")
- *     .toList();
- * }
- * Only get string properties.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(property -> property.type() == String.class)
- *     .toList();
- * }
- * Only get the properties declared in the {@code MyBeanObject} class.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(property -> property.object().getClass() == MyBeanObject.class)
- *     .toList();
- * }
- * Only get properties with the name {@code index}. No matter where they defined
- * in the object hierarchy.
- * {@snippet lang="java":
- * final List<Property> properties = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(Property.pathMatcher("**index"))
- *     .toList();
- * }
- * Updates all "index" properties with value {@code -1} to zero and returns all
- * properties, which couldn't be updated, because the property was immutable.
- * {@snippet lang="java":
- * final List<Property> notUpdated = Properties
- *     .stream(root, "io.jenetics")
- *     .filter(Property.pathMatcher("**index"))
- *     .filter(property -> Objects.equals(property.value(), -1))
- *     .filter(property -> !property.write(0))
- *     .toList();
- * assert notUpdated.isEmpty();
- * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 public sealed interface Property
-	extends PathValue<Property.Value>
-	permits IndexedProperty, IndexProperty, SimpleProperty
+	permits SimpleProperty, IndexedProperty
 {
+
 	/**
-	 * The value type for the property. It contains the information about the
-	 * value, type of the property and the enclosure value.
+	 * Return the path of the property.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 7.2
-	 * @since 7.2
+	 * @return the path of the property
 	 */
-	sealed interface Value {
+	Path path();
 
-		/**
-		 * Returns the object which contains {@code this} node.
-		 *
-		 * @return the object which contains {@code this} node
-		 */
-		Object enclosure();
+	/**
+	 * Return the property name, or {@code <root>} if it is the property root.
+	 *
+	 * @return the name of the property
+	 */
+	default String name() {
+		final var element = path().element();
+		return element != null ? element.toString() :  "<root>";
+	}
 
-		/**
-		 * The value of the metaobject, may be {@code null}. This method always
-		 * returns the initial property value.
-		 *
-		 * @return the <em>original</em> value of the metaobject
-		 */
-		Object value();
+	/**
+	 * Returns the object which contains {@code this} node.
+	 *
+	 * @return the object which contains {@code this} node
+	 */
+	Object enclosure();
 
-		/**
-		 * The type of the property value, never {@code null}.
-		 *
-		 * @return the type of the property value
-		 */
-		Class<?> type();
+	/**
+	 * The value of the metaobject, may be {@code null}. This method always
+	 * returns the initial property value.
+	 *
+	 * @return the <em>original</em> value of the metaobject
+	 */
+	Object value();
 
-		/**
-		 * Reads the actual value of the property. This value may be
-		 * different from the initial, cached {@link #value()}.
-		 *
-		 * @return the actual value of the property
-		 */
-		default Object read() {
-			return value();
-		}
+	/**
+	 * The type of the property value, never {@code null}.
+	 *
+	 * @return the type of the property value
+	 */
+	Class<?> type();
 
-		/**
-		 * Represents an <em>immutable</em> property value.
-		 *
-		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version 7.2
-		 * @since 7.2
-		 */
-		record Immutable(Object enclosure, Object value, Class<?> type)
-			implements Value
-		{
-			@Override
-			public String toString() {
-				return "Immutable[value=%s, type=%s, enclosureType=%s]".formatted(
-					value(),
-					type().getName(),
-					enclosure().getClass().getName()
-				);
-			}
-		}
+	/**
+	 * Reads the actual value of the property. This value may be different from
+	 * the initial, cached {@link #value()}.
+	 *
+	 * @return the actual value of the property
+	 */
+	default Object read() {
+		return value();
+	}
 
-		/**
-		 * Represents a <em>mutable</em> property value.
-		 *
-		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-		 * @version 7.2
-		 * @since 7.2
-		 */
-		final class Mutable implements Value {
-
-			private final Object enclosure;
-			private final Object value;
-			private final Class<?> type;
-			private final Getter getter;
-			private final Setter setter;
-
-			Mutable(
-				final Object enclosure,
-				final Object value,
-				final Class<?> type,
-				final Getter getter,
-				final Setter setter
-			) {
-				this.enclosure = requireNonNull(enclosure);
-				this.value = value;
-				this.type = requireNonNull(type);
-				this.getter = requireNonNull(getter);
-				this.setter = requireNonNull(setter);
-			}
-
-			@Override
-			public Object enclosure() {
-				return enclosure;
-			}
-
-			@Override
-			public Object value() {
-				return value;
-			}
-
-			@Override
-			public Class<?> type() {
-				return type;
-			}
-
-			@Override
-			public Object read() {
-				return getter.get(enclosure);
-			}
-
-			/**
-			 * Writes a new value to the property.
-			 *
-			 * @param value the new property value
-			 * @return {@code true} if the new value has been written,
-			 *         {@code false} otherwise
-			 */
-			public boolean write(final Object value) {
-				try {
-					setter.set(enclosure, value);
-					return true;
-				} catch (VirtualMachineError|LinkageError e) {
-					throw e;
-				} catch (Throwable e) {
-					return false;
-				}
-			}
-
-			@Override
-			public int hashCode() {
-				return Objects.hash(enclosure, value, type);
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Mutable m &&
-					Objects.equals(enclosure, m.enclosure) &&
-					Objects.equals(value, m.value) &&
-					Objects.equals(type, m.type);
-			}
-
-			@Override
-			public String toString() {
-				return "Mutable[value=%s, type=%s, enclosureType=%s]".formatted(
-					value(),
-					type().getName(),
-					enclosure().getClass().getName()
-				);
-			}
-
-		}
+	/**
+	 * Return the writer which allows to update the property, or
+	 * {@link Optional#empty()} if the property is unmodifiable.
+	 *
+	 * @return the property writer
+	 */
+	default Optional<Writer> writer() {
+		return Optional.empty();
 	}
 
 }

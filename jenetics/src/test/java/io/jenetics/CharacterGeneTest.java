@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -34,7 +34,7 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 
@@ -62,7 +62,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
+			final var histogram = Histogram.Builder.of(0L, 10L, 10);
 
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
@@ -70,11 +70,11 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				assertThat(g1).isNotSameAs(g2);
 
-				histogram.accept(Long.valueOf(g1.allele().toString()));
-				histogram.accept(Long.valueOf(g2.allele().toString()));
+				histogram.accept(Long.parseLong(g1.allele().toString()));
+				histogram.accept(Long.parseLong(g2.allele().toString()));
 			}
 
-			assertUniformDistribution(histogram);
+			assertThatObservation(histogram.build()).isUniform();
 		});
 	}
 

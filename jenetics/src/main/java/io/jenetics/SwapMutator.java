@@ -84,6 +84,7 @@ public class SwapMutator<
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();
+
 			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),
 				mutations
