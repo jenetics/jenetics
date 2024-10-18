@@ -51,26 +51,24 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * Static methods for reading and writing objects using the Java serialization.
  * The methods of this class allow appending additional objects to an existing
  * file.
- *
  * {@snippet lang="java":
  * // Write three string objects to the given path and read them again.
  * Serializer.write(path, List.of("1", "2", "3"));
  * List<Object> objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3"));
  *
- * // Append another two string object to the same file.
+ * // Append another two-string object to the same file.
  * Serializer.write(path, List.of("4", "5"));
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("1", "2", "3", "4", "5"));
  *
- * // Truncates the the content of an existing file.
+ * // Truncates the content of an existing file.
  * Serializer.write(path, List.of("6", "7", "8"), TRUNCATE_EXISTING);
  * objects = Serializer.readAllObjects(path);
  * assert objects.equals(List.of("6", "7", "8"));
  * }
  *
  * It also allows reading object piecewise via a {@link Stream}.
- *
  * {@snippet lang="java":
  * try (Stream<Object> stream = Serializer.objects(Path.of("serialized-objects.bin"))) {
  *     stream.forEach(System.out::println);
@@ -215,7 +213,6 @@ public final class Serializer {
 	 * Writes the given {@code objects} to the given {@code output} stream,
 	 * using Java serialization. For the <em>first</em> objects to be written
 	 * to the stream, the {@code append} flag must be set to {@code false}.
-	 *
 	 * {@snippet lang="java":
 	 * final var output = new ByteArrayOutputStream();
 	 * Serializer.write(output, List.of("1", "2", "3"), false);
@@ -227,7 +224,6 @@ public final class Serializer {
 	 *
 	 * When writing additional objects to the same output stream, the
 	 * {@code append} must be set to {@code true}.
-	 *
 	 * {@snippet lang="java":
 	 * Serializer.write(output, List.of("4", "5"), true);
 	 * input = new ByteArrayInputStream(output.toByteArray());
@@ -289,17 +285,16 @@ public final class Serializer {
 	 * Java serialization. If the {@code path} already exists and the open
 	 * {@code options} contains {@link StandardOpenOption#APPEND}, the objects
 	 * are appended to the existing file.
-	 *
 	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is created if
-	 * // it not exists or appended if the file already exists.
+	 * // it does not exist or appended if the file already exists.
 	 * Serializer.write(path, List.of("1", "2", "3"));
 	 * }
 	 *
 	 * Truncating an existing file:
 	 * {@snippet lang="java":
 	 * // Write three string objects to the given file. The file is truncated if
-	 * // it exists or created if the file doesn't exists.
+	 * // it exists or created if the file doesn't exist.
 	 * Serializer.write(
 	 *     path, List.of("1", "2", "3"),
 	 *     StandardOpenOption.TRUNCATE_EXISTING
@@ -379,7 +374,6 @@ public final class Serializer {
 	 * The content is read lazily, object after object, and allows to read many
 	 * objects efficiently. Note that the caller is responsible for closing the
 	 * returned object stream, which also closes the given {@code input} stream.
-	 *
 	 * {@snippet lang="java":
 	 * final InputStream input = ...;
 	 * try (Stream<Object> stream = Serializer.objects(input)) {
@@ -400,7 +394,7 @@ public final class Serializer {
 		);
 
 		return result.get().onClose(() ->
-			result.uncheckedClose(UncheckedIOException::new)
+			result.release(UncheckedIOException::new)
 		);
 	}
 
@@ -413,11 +407,11 @@ public final class Serializer {
 			public synchronized Object get() {
 				try {
 					if (_oin == null) {
-						var in = resources.add(input);
+						var in = resources.use(input);
 						if (!(in instanceof BufferedInputStream)) {
-							in = resources.add(new BufferedInputStream(in));
+							in = resources.use(new BufferedInputStream(in));
 						}
-						_oin = resources.add(new ObjectInputStream(in));
+						_oin = resources.use(new ObjectInputStream(in));
 					}
 
 					return _oin.readObject();
@@ -439,7 +433,6 @@ public final class Serializer {
 	 * The file content is read lazily, object after object, and allows to
 	 * read huge files efficiently. Note that the caller is responsible for
 	 * closing the returned object stream.
-	 *
 	 * {@snippet lang="java":
 	 * try (Stream<Object> stream = Serializer.objects(path)) {
 	 *     stream.forEach(System.out::println);
@@ -460,7 +453,7 @@ public final class Serializer {
 		);
 
 		return result.get().onClose(() ->
-			result.uncheckedClose(UncheckedIOException::new)
+			result.release(UncheckedIOException::new)
 		);
 	}
 

@@ -122,14 +122,12 @@ public final class Bnf {
 	}
 
 	private static String format(final Cfg.Symbol<?> symbol) {
-		if (symbol instanceof Cfg.NonTerminal<?> nt) {
-			return String.format("<%s>", nt.name());
-		} else if (symbol instanceof Cfg.Terminal<?> t) {
-			return "'" + t.name()
-				.replace("\\", "\\\\")
-				.replace("'", "\\'") + "'";
-		}
-		throw new AssertionError();
+		return switch (symbol) {
+			case Cfg.NonTerminal<?> nt -> String.format("<%s>", nt.name());
+			case Cfg.Terminal<?> t -> "'" + t.name()
+					.replace("\\", "\\\\")
+					.replace("'", "\\'") + "'";
+		};
 	}
 
 }

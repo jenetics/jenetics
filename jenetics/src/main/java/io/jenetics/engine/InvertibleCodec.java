@@ -33,7 +33,6 @@ import io.jenetics.util.Factory;
  * the problem space to a corresponding {@link Genotype}, which is the
  * <em>inverse</em> functionality of the codec. The following example shows the
  * relation between <em>encoder</em> and <em>decoder</em> function must fulfill.
- *
  * {@snippet lang="java":
  * final InvertibleCodec<int[], IntegerGene> codec =
  *     Codecs.ofVector(IntRange.of(0, 100), 6);

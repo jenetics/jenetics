@@ -23,29 +23,18 @@
  * The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.property.Properties} object.
  *
- * {@snippet lang="java":
- * record Author(String forename, String surname) { }
- * record Book(String title, int pages, List<Author> authors) { }
+ * {@snippet class="PropertySnippets" region="walk(Object)"}
  *
- * final var object = new Book(
- *     "Oliver Twist",
- *     366,
- *     List.of(new Author("Charles", "Dickens"))
- * );
- *
- * Properties.walk(PathEntry.of(object))
- *     .forEach(System.out::println);
- * }
- *
- * The code snippet above will create the following output:
- *
- * {@snippet lang="java":
- * ListProperty[path=authors, value=Immutable[value=[Author[forename=Charles, surname=Dickens]], type=java.util.List, enclosureType=Book]]
- * IndexProperty[path=authors[0], value=Mutable[value=Author[forename=Charles, surname=Dickens], type=Author, enclosureType=java.util.ImmutableCollections$List12]]
- * SimpleProperty[path=authors[0].forename, value=Immutable[value=Charles, type=java.lang.String, enclosureType=Author]]
- * SimpleProperty[path=authors[0].surname, value=Immutable[value=Dickens, type=java.lang.String, enclosureType=Author]]
- * SimpleProperty[path=pages, value=Immutable[value=366, type=int, enclosureType=Book]]
- * SimpleProperty[path=title, value=Immutable[value=Oliver Twist, type=java.lang.String, enclosureType=Book]]
- * }
+ * The code snippet above will create the following output
+ * <pre>{@code
+ * SimpleProperty[path=title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=Book]
+ * SimpleProperty[path=pages, value=832, mutable=false, type=int, enclosure=Book]
+ * ListProperty[path=authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=Book]
+ * IndexProperty[path=authors[0], value=Author[Jonathan Franzen], mutable=true, type=Author, enclosure=java.util.ImmutableCollections$List12]
+ * SimpleProperty[path=authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=Author]
+ * SimpleProperty[path=authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=Author]
+ * ListProperty[path=authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=Author]
+ * }</pre>
  */
 package io.jenetics.incubator.beans.property;

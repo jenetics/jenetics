@@ -80,7 +80,7 @@ public final class BitChromosome extends Number
 	private final BitArray _genes;
 
 	/**
-	 * The ones probability of the randomly generated Chromosome.
+	 * The one's probability of the randomly generated Chromosome.
 	 */
 	private final double _p;
 
@@ -99,7 +99,7 @@ public final class BitChromosome extends Number
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @param p the ones probability
+	 * @param p the one's probability
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
 	 *         {@code start > bits.length*8}
 	 * @throws java.lang.IllegalArgumentException if {@code start > end}

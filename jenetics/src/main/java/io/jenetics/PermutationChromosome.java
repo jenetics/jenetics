@@ -35,7 +35,7 @@ import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
@@ -46,7 +46,6 @@ import io.jenetics.util.RandomRegistry;
 /**
  * This chromosome can be used to model permutations of a given (sub) set of
  * alleles.
- *
  * {@snippet lang="java":
  * final ISeq<String> alleles = ISeq.of("one", "two", "three", "four", "five");
  *
@@ -191,7 +190,7 @@ public final class PermutationChromosome<T>
 	 * desired length.
 	 * <p>
 	 * The following example shows how to create a {@code PermutationChromosome}
-	 * for encoding a sub-set problem (of a fixed {@code length}).
+	 * for encoding a subset problem (of a fixed {@code length}).
 	 * {@snippet lang="java":
 	 * final ISeq<String> basicSet = ISeq.of("a", "b", "c", "d", "e", "f");
 	 *
@@ -225,7 +224,7 @@ public final class PermutationChromosome<T>
 		}
 
 		final var rnd = RandomRegistry.random();
-		final int[] subset = Subset.next(rnd, alleles.size(), length);
+		final int[] subset = Subsets.next(rnd, alleles.size(), length);
 		shuffle(subset, rnd);
 
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)

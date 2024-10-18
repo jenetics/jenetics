@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Map.entry;
+import static java.util.Objects.checkIndex;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
@@ -60,7 +61,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 
 /**
- * This class contains factory methods for creating common  problem encodings.
+ * This class contains factory methods for creating common problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
@@ -293,7 +294,21 @@ public final class Codecs {
 
 	/**
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
-	 * values are restricted by the same domain.
+	 * values are restricted by the same domain. Use the following code if you
+	 * want to create {@code int[]} arrays and still using {@link DoubleGene}.
+	 * The {@code int[]} array elements are created by casting the {@code double}
+	 * values to {@code int} values.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .map(ArrayConversions::doubleToIntArray);
+	 * }
+	 * If you want round the double values, you can use the following code.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
+	 * }
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -573,6 +588,54 @@ public final class Codecs {
 	}
 
 	/**
+	 * Create a vector ({@link ISeq}) of domain objects, which are created with
+	 * the given {@code codec}.
+	 * {@snippet lang=java:
+	 * // Domain model of solution space.
+	 * record Path(WayPoint[] stops) {}
+	 *
+	 * // Codec fora single GPS point (latitude, longitude).
+	 * final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
+	 *     Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+	 *     Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	 *     WayPoint::of
+	 * );
+	 *
+	 * // Codec for the path object.
+	 * final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+	 *     .map(points -> points.toArray(WayPoint[]::new))
+	 *     .map(Path::new);
+	 *
+	 * final Path path = pc.decode(pc.encoding().newInstance());
+	 * }
+	 *
+	 * @since 8.1
+	 *
+	 * @param codec the codec for the <em>domain</em> object
+	 * @param length the length of the vector.
+	 * @return a codec for a sequence of domain objects
+	 * @param <S> the type of the domain object
+	 * @param <G> the encoding gene type
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 * @throws IllegalArgumentException if the length is smaller than 1
+	 */
+	@SuppressWarnings("unchecked")
+	public static <S, G extends Gene<?, G>> Codec<ISeq<S>, G>
+	ofVector(final Codec<? extends S, G> codec, final int length) {
+		requireNonNull(codec);
+		if (length <= 0) {
+			throw new IllegalArgumentException("Length must be positive: " + length);
+		}
+
+		return Codec.combine(
+			IntStream.range(0, length)
+				.mapToObj(__ -> codec)
+				.collect(ISeq.toISeq()),
+			objects -> ISeq.of((S[])objects)
+		);
+	}
+
+	/**
 	 * Create a permutation {@link InvertibleCodec} of integer in the range
 	 * {@code [0, length)}.
 	 *
@@ -786,7 +849,6 @@ public final class Codecs {
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
@@ -923,7 +985,6 @@ public final class Codecs {
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
 	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");

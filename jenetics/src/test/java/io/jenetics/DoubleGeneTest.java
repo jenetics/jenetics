@@ -23,21 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.Factory;
 
 /**
@@ -59,13 +57,13 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 	public void newInstanceDistribution() {
 		final double min = 0;
 		final double max = 100;
-		final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
 
-		using(new Random(12345), r -> IntStream.range(0, 200_000)
+		final var builder = Histogram.Builder.of(min, max, 20);
+		IntStream.range(0, 200_000)
 			.mapToObj(i -> DoubleGene.of(min, max).allele())
-			.forEach(histogram));
+			.forEach(builder::accept);
 
-		assertUniformDistribution(histogram);
+		assertThatObservation(builder.build()).isUniform();
 	}
 
 	@Test

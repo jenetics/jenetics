@@ -28,7 +28,7 @@ import io.jenetics.util.RandomRegistry;
 
 /**
  * This alterer takes two chromosomes (treating it as vectors) and creates a
- * linear combination of these vectors as a result. The  line-recombination depends
+ * linear combination of these vectors as a result. The line-recombination depends
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the

@@ -35,7 +35,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * Represents a mapping of a finite set of integers to symbol indexes. If more
- * indexes are needed, the values are read from the beginning again. You have
+ * indexes are necessary, the values are read from the beginning again. You have
  * the possibility to create a {@code Codons} object from different chromosome
  * types.
  * {@snippet lang="java":
@@ -122,7 +122,6 @@ public final class Codons implements SymbolIndex {
 
 	/**
 	 * Creates a new <em>codons</em> object from the given int-genes.
-	 *
 	 * {@snippet lang="java":
 	 * final var chromosome = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
 	 * final var codons = Codons.ofIntegerGenes(chromosome);

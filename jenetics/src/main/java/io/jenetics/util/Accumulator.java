@@ -33,7 +33,6 @@ import java.util.stream.Collector;
  * type {@code R}.  In contrast to a {@link Collector} an {@code Accumulator}
  * can deliver intermediate results while accumulating. An accumulator can be
  * created from any {@link Collector} with the ({@link #of(Collector)}) method.
- *
  * {@snippet lang="java":
  * final Accumulator<Integer, ?, List<Integer>> accu =
  *     Accumulator.of(Collectors.toList());
@@ -155,7 +154,6 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Create a new accumulator from the given {@code collector}.
-	 *
 	 * {@snippet lang="java":
 	 * final Accumulator<Integer, ?, ISeq<Integer>> accu =
 	 *     Accumulator.of(ISeq.toISeq());

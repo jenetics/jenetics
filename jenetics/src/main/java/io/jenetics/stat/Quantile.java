@@ -424,7 +424,6 @@ public class Quantile implements DoubleConsumer {
 	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns quantiles for the resulting
 	 * values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final Quantile quantile = stream
@@ -458,7 +457,6 @@ public class Quantile implements DoubleConsumer {
 	 * Return a {@code Collector} which applies a double-producing mapping
 	 * function to each input element, and returns the median for the resulting
 	 * values.
-	 *
 	 * {@snippet lang="java":
 	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final Quantile median = stream.collect(toMedian(v -> v.doubleValue()));

@@ -107,7 +107,6 @@ public final class Limits {
 	 * Return a predicate, which will truncate the evolution stream if no
 	 * better phenotype could be found after the given number of
 	 * {@code generations}.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
@@ -134,7 +133,6 @@ public final class Limits {
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as a safety net, for guaranteed stream truncation.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
@@ -161,7 +159,6 @@ public final class Limits {
 	 * Return a predicate, which will truncate the evolution stream if the GA
 	 * execution exceeds a given time duration. This predicate is (normally)
 	 * used as a safety net, for guaranteed stream truncation.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream after 5 "steady" generations.
@@ -191,7 +188,6 @@ public final class Limits {
 	 * predicate also stops the evolution if the best fitness in the current
 	 * population becomes greater than the user-specified fitness threshold when
 	 * the objective is to maximize the fitness.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *      // Truncate the evolution stream if the best fitness is higher than
@@ -221,7 +217,6 @@ public final class Limits {
 	 * Return a predicate, which will truncate the evolution stream if the
 	 * fitness is converging. Two filters of different lengths are used to
 	 * smooth the best fitness across the generations.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
@@ -274,7 +269,6 @@ public final class Limits {
 	 * fitness from the long filter is less than a user-specified percentage
 	 * away from the smoothed best fitness from the short filter, the fitness is
 	 * deemed as converged and the evolution terminates.
-	 *
 	 * {@snippet lang="java":
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
 	 *     .limit(byFitnessConvergence(5, 15, 10E-4))

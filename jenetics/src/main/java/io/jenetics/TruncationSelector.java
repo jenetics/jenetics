@@ -31,7 +31,7 @@ import io.jenetics.util.Seq;
  * In truncation selection, individuals are sorted according to their fitness.
  * Only the n  best individuals are selected. The truncation selection is a very
  * basic selection algorithm. It has its strength in fast selecting individuals
- * in large populations, but is not very often used in practice.
+ * in large populations, but is seldom used in practice.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Truncation_selection">
  *          Wikipedia: Truncation selection

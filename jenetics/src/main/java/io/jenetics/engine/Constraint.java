@@ -129,7 +129,7 @@ import io.jenetics.util.Factory;
  * @see #constrain(Factory)
  *
  * @apiNote
- * This class is part of the more advanced API and is not needed for default use
+ * This class is part of the more advanced API and is unnecessary for default use
  * cases. If the {@link Engine} is created with an explicit constraint
  * ({@link Engine.Builder#constraint(Constraint)}), the <em>default</em>
  * validation mechanism via {@link Phenotype#isValid()} is overridden. Also keep
@@ -304,11 +304,11 @@ public interface Constraint<
 	/**
 	 * Return a new constraint object with the given {@code validator} and
 	 * {@code repairer}. The given invertible codec allows simplifying the
-	 * needed validator and repairer.
+	 * necessary validator and repairer.
 	 *
 	 * @since 5.2
 	 *
-	 * @param codec the invertible codec used for simplify the needed
+	 * @param codec the invertible codec used for simplify the necessary
 	 *        validator and repairer
 	 * @param validator the phenotype validator used by the constraint
 	 * @param repairer the phenotype repairer used by the constraint

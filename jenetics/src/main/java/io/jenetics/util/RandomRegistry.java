@@ -21,6 +21,8 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -104,7 +106,6 @@ import java.util.random.RandomGeneratorFactory;
  *
  * You can temporarily (and locally) change the implementation of the PRNG. E.g.,
  * for initialize the engine stream with the same initial population.
- *
  * {@snippet lang="java":
  * public class GA {
  *     public static void main(final String[] args) {
@@ -143,7 +144,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 7.0
+ * @version 8.0
  */
 public final class RandomRegistry {
 	private RandomRegistry() {}
@@ -234,7 +235,6 @@ public final class RandomRegistry {
 
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(new Random(123), r -> {
@@ -265,7 +265,6 @@ public final class RandomRegistry {
 
 	/**
 	 * Executes the consumer code using the given {@code random} generator.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(RandomGeneratorFactory.getDefault(), r -> {
@@ -297,7 +296,6 @@ public final class RandomRegistry {
 	/**
 	 * Executes the consumer code using the given {@code random} generator
 	 * supplier.
-	 *
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
 	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());
@@ -383,6 +381,7 @@ public final class RandomRegistry {
 			r -> function.apply(r.get())
 		);
 	}
+
 	/**
 	 * Opens a new <em>scope</em> with the given random generator supplier and
 	 * executes the given function within it.
@@ -404,7 +403,6 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-
 	public static <R extends RandomGenerator, T> T with(
 		final Supplier<? extends R> supplier,
 		final Function<? super R, ? extends T> function
@@ -417,14 +415,43 @@ public final class RandomRegistry {
 
 	@SuppressWarnings("removal")
 	private static final class Env {
+
 		private static final String defaultRandomGenerator =
 			java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<String>)() ->
-					System.getProperty(
-						"io.jenetics.util.defaultRandomGenerator",
-						"L64X256MixRandom"
-					)
+				(java.security.PrivilegedAction<String>)Env::get
 			);
+
+		private static String get() {
+			return getConfigured()
+				.or(Env::getDefault)
+				.orElseGet(Env::getBest);
+		}
+
+		private static Optional<String> getConfigured() {
+			return Optional.ofNullable(
+				System.getProperty("io.jenetics.util.defaultRandomGenerator")
+			);
+		}
+
+		private static Optional<String> getDefault() {
+			return RandomGeneratorFactory.all()
+				.map(RandomGeneratorFactory::name)
+				.filter("L64X256MixRandom"::equals)
+				.findFirst();
+		}
+
+		private static String getBest() {
+			final var highestStateBits = Comparator
+				.<RandomGeneratorFactory<?>>comparingInt(RandomGeneratorFactory::stateBits)
+				.reversed();
+
+			return RandomGeneratorFactory.all()
+				.sorted(highestStateBits)
+				.map(RandomGeneratorFactory::name)
+				.findFirst()
+				.orElse("Random");
+		}
+
 	}
 
 }

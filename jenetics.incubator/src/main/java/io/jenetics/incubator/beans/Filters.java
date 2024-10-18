@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  *             Path::toString,
  *             Filters.ofGlob(include)
  *         )
- *     )
+ *     );
  * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

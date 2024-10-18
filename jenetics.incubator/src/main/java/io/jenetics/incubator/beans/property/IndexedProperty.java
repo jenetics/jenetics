@@ -21,7 +21,6 @@ package io.jenetics.incubator.beans.property;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -35,26 +34,39 @@ import io.jenetics.incubator.beans.Path;
  * @since 7.2
  */
 public abstract sealed class IndexedProperty
-	implements Iterable<Object>, Property
+	implements Property, Iterable<Object>
 	permits OptionalProperty, ArrayProperty, ListProperty
 {
 
-	private final Path path;
-	private final Value value;
+	private final PropParam param;
 
-	IndexedProperty(final Path path, final Value value) {
-		this.path = requireNonNull(path);
-		this.value = requireNonNull(value);
+	IndexedProperty(final PropParam param) {
+		this.param = requireNonNull(param);
 	}
 
 	@Override
 	public Path path() {
-		return path;
+		return param.path();
 	}
 
 	@Override
-	public Value value() {
-		return value;
+	public Object enclosure() {
+		return param.enclosure();
+	}
+
+	@Override
+	public Object value() {
+		return param.value();
+	}
+
+	@Override
+	public Class<?> type() {
+		return param.type();
+	}
+
+	@Override
+	public Object read() {
+		return param.getter().get(enclosure());
 	}
 
 	/**
@@ -79,19 +91,6 @@ public abstract sealed class IndexedProperty
 	 */
 	public Stream<Object> stream() {
 		return StreamSupport.stream(spliterator(), false);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(path, value);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IndexedProperty ip &&
-			path.equals(ip.path) &&
-			value.equals(ip.value);
 	}
 
 	@Override

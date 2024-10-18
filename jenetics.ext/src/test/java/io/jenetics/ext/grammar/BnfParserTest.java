@@ -57,9 +57,9 @@ public class BnfParserTest {
 		);
 	}
 
-	@Test
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void parseWithDuplicateRules() {
-		final var cfg1 = Bnf.parse("""
+		Bnf.parse("""
 			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
 			<op>   ::= + | - | * | /
 			<var>  ::= x
@@ -68,15 +68,6 @@ public class BnfParserTest {
 			<num>  ::= 5 | 6 | 7 | 8 | 9
 			"""
 		);
-		final var cfg2 = Bnf.parse("""
-			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-			<op>   ::= + | - | * | /
-			<var>  ::= x | y
-			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-			"""
-		);
-
-		assertThat(cfg1).isEqualTo(cfg2);
 	}
 
 	@Test(invocationCount = 30)

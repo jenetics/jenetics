@@ -27,10 +27,9 @@ import io.jenetics.Phenotype;
 /**
  * This class allows forcing a reevaluation of the fitness function. A
  * reevaluation is necessary if the fitness function changes. Changing the
- * fitness function is not the usual use case, but is necessary for some
+ * fitness function is not the usual use case but is necessary for some
  * problems, like symbolic regression analyses with changing input data (time
  * series).
- *
  * {@snippet lang="java":
  * final var nullifier = new FitnessNullifier<DoubleGene, Double>();
  *
@@ -46,7 +45,7 @@ import io.jenetics.Phenotype;
  *
  * @implNote
  * This interceptor is thread-safe and can be used from different threads. No
- * additional synchronization is needed.
+ * additional synchronization is necessary.
  *
  * @see Phenotype#nullifyFitness()
  *

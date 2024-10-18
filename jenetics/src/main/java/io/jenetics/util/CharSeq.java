@@ -36,7 +36,6 @@ import io.jenetics.internal.collection.CharStore;
  * {@link io.jenetics.CharacterGene}. It is not a character sequence in the
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
- *
  * {@snippet lang="java":
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
