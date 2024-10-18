@@ -19,9 +19,7 @@
  */
 package io.jenetics.ext.grammar;
 
-import static java.lang.StringTemplate.RAW;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.ext.grammar.Cfg.BNF;
 
 import java.util.random.RandomGenerator;
 
@@ -104,37 +102,6 @@ public class BnfParserTest {
 			}
 		}
 		record Const(int a) implements Expr {}
-	}
-
-	@Test
-	public void template() {
-		final var cfg = BNF."""
-			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-			<op>   ::= \{Cfg.T("+", new Expr.Add())}
-			         | \{Cfg.T("-", new Expr.Sub())}
-			         | \{Cfg.T("*", new Expr.Mult())}
-			         | \{Cfg.T("/", new Expr.Div())}
-			<var>  ::= x | y
-			<num>  ::= \{Cfg.T("0", new Expr.Const(0))}
-					 | \{Cfg.T("1", new Expr.Const(1))}
-					 | \{Cfg.T("2", new Expr.Const(2))}
-					 | \{Cfg.T("3", new Expr.Const(3))}
-					 | \{Cfg.T("4", new Expr.Const(4))}
-					 | \{Cfg.T("5", new Expr.Const(5))}
-					 | \{Cfg.T("6", new Expr.Const(6))}
-					 | \{Cfg.T("7", new Expr.Const(7))}
-					 | \{Cfg.T("8", new Expr.Const(8))}
-					 | \{Cfg.T("9", new Expr.Const(9))}
-			""";
-
-		System.out.println(cfg);
-	}
-
-	@Test
-	public void foo() {
-		int x = 43;
-		var t = RAW."asdf";
-		System.out.println(t.fragments() + ", " + t.values());
 	}
 
 }
