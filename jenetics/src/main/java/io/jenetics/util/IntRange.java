@@ -183,8 +183,7 @@ public final /*record*/ class IntRange implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntRange other &&
+		return obj instanceof IntRange other &&
 			_min == other._min &&
 			_max == other._max;
 	}

@@ -138,8 +138,7 @@ public final /*record*/ class DoubleRange implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleRange other &&
+		return obj instanceof DoubleRange other &&
 			Double.compare(_min, other._min) == 0 &&
 			Double.compare(_max, other._max) == 0;
 	}
