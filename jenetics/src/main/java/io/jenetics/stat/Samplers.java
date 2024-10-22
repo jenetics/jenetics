@@ -70,9 +70,9 @@ public final class Samplers {
 		}
 
 		if (Double.compare(mean, 0) == 0) {
-			return (random, range) -> Range.MIN;
+			return (random, range) -> range.min();
 		} else if (mean == Range.MAX) {
-			return (random, range) -> Range.MAX* range.max();
+			return (random, range) -> Math.nextDown(range.max());
 		}
 
 		final double b, m;
