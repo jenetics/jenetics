@@ -177,8 +177,8 @@ public record Histogram(
 		 *
 		 * @param min the minimum range value of the returned histogram.
 		 * @param max the maximum range value of the returned histogram.
-		 * @param nclasses the number of classes of the returned histogram. The
-		 *        number of separators will be {@code nclasses - 1}.
+		 * @param nclasses the number of histogram classes, where the number of
+		 *        separators will be {@code nclasses - 1}.
 		 * @return a new <i>histogram</i> for {@link Double} values.
 		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
