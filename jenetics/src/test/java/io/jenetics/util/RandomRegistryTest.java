@@ -57,10 +57,10 @@ public class RandomRegistryTest {
 	}
 
 	@Test(invocationCount = 10)
-	public void setDefault() {
-		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+	public void setDefault() throws Exception {
+		try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 			for (int i = 0; i < 10; ++i) {
-				executor.submit(() -> {
+				scope.fork(() -> {
 					RandomRegistry.reset();
 					final var devault = RandomRegistry.random();
 					Assert.assertNotNull(devault);
@@ -72,18 +72,13 @@ public class RandomRegistryTest {
 
 					RandomRegistry.reset();
 					assertSame(RandomRegistry.random(), devault);
-					sleep();
+					Thread.sleep(10);;
+					return null;
 				});
 			}
-		}
-	}
 
-	private static void sleep() {
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			throw new CancellationException(e.getMessage());
+			scope.join();
+			scope.throwIfFailed();
 		}
 	}
 
