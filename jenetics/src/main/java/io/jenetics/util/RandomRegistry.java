@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Random;
@@ -29,6 +27,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * This class holds the {@link RandomGenerator} engine used for the GA. The
@@ -170,13 +170,18 @@ public final class RandomRegistry {
 		}
 
 		@Override
-		protected synchronized R initialValue() {
+		protected R initialValue() {
 			return _factory.get();
 		}
 	}
 
-	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
-		new TLR<>(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
+	private static Supplier<RandomGenerator>
+	wrapper(final Supplier<? extends RandomGenerator> factory) {
+		return new TLR<>(factory);
+	}
+
+	private static final Supplier<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+		wrapper(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
 	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
@@ -193,7 +198,11 @@ public final class RandomRegistry {
 	/**
 	 * Set a new {@link RandomGenerator} for the <em>global</em> scope. The given
 	 * {@link RandomGenerator} <b>must</b> be thread safe, which is the case for
-	 * the Java {@link Random} class.
+	 * the Java {@link Random} class. Each thread will get the <em>same</em>
+	 * random generator, when optaining one with the {@link #random()} method.
+	 *
+	 * @implSpec
+	 * The given {@code random} generator <b>must</b> be thread safe.
 	 *
 	 * @see #random(RandomGeneratorFactory)
 	 *
@@ -208,6 +217,9 @@ public final class RandomRegistry {
 
 	/**
 	 * Set a new {@link RandomGeneratorFactory} for the <em>global</em> scope.
+	 * When setting a random generator <em>factory</em> instead of the
+	 * generator directly, every thread gets its own generator. It is not
+	 * necessary, that the created random generators must be thread-safe.
 	 *
 	 * @param factory the random generator factory
 	 * @throws NullPointerException if the {@code factory} object is {@code null}.
@@ -215,12 +227,18 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final RandomGeneratorFactory<? extends R> factory) {
 		requireNonNull(factory);
-		CONTEXT.set(new TLR<>(factory::create));
+		CONTEXT.set(wrapper(factory::create));
 	}
 
 	/**
 	 * Set a new {@link Supplier} of {@link RandomGenerator} for the
 	 * <em>global</em> scope.
+	 * When setting a random generator <em>supplier</em> instead of the
+	 * generator directly, every thread gets its own generator, as returned by
+	 * the supplier. It is not necessary, that the created random generators must
+	 * be thread-safe.
+	 *
+	 * @see #random(RandomGeneratorFactory)
 	 *
 	 * @param supplier the random generator supplier
 	 * @throws NullPointerException if the {@code supplier} object is {@code null}.
@@ -228,7 +246,7 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final Supplier<? extends R> supplier) {
 		requireNonNull(supplier);
-		CONTEXT.set(new TLR<>(supplier));
+		CONTEXT.set(wrapper(supplier));
 	}
 
 	/**
@@ -289,7 +307,7 @@ public final class RandomRegistry {
 		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(
-			new TLR<>(factory::create),
+			wrapper(factory::create),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -320,7 +338,7 @@ public final class RandomRegistry {
 		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(
-			new TLR<>(supplier),
+			wrapper(supplier),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -388,7 +406,7 @@ public final class RandomRegistry {
 		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(
-			new TLR<>(factory::create),
+			wrapper(factory::create),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -423,7 +441,7 @@ public final class RandomRegistry {
 		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(
-			new TLR<>(supplier),
+			wrapper(supplier),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();

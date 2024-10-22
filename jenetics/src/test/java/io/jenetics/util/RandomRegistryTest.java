@@ -32,6 +32,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
@@ -87,12 +88,14 @@ public class RandomRegistryTest {
 	}
 
 	@Test(invocationCount = 10)
-	public void setRandom() {
+	public void setRandom() throws Exception {
+		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
+		RandomRegistry.random(factory);
 		final var devault = RandomRegistry.random();
 
-		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+		try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 			for (int i = 0; i < 10; ++i) {
-				executor.submit(() -> {
+				scope.fork(() -> {
 					assertThat(RandomRegistry.random()).isNotSameAs(devault);
 
 					final var innerDefault = RandomRegistry.random();
@@ -103,8 +106,12 @@ public class RandomRegistryTest {
 
 					RandomRegistry.reset();
 					assertThat(RandomRegistry.random()).isNotSameAs(innerDefault);
+					return "";
 				});
 			}
+
+			scope.join();
+			scope.throwIfFailed();
 		}
 
 		assertThat(RandomRegistry.random()).isSameAs(devault);
@@ -115,16 +122,18 @@ public class RandomRegistryTest {
 	public void setRandomFactory() throws InterruptedException {
 		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
 		RandomRegistry.random(factory);
+		final var devault = RandomRegistry.random();
 
-		final var random = RandomRegistry.random();
 		for (int i = 0; i < 10; ++i) {
-			assertThat(random).isSameAs(RandomRegistry.random());
+			assertThat(devault).isSameAs(RandomRegistry.random());
 		}
 
 		final var exception = new AtomicReference<AssertionError>();
-		final var thread = new Thread(() ->
-			assertThat(random).isNotSameAs(RandomRegistry.random())
-		);
+		System.out.println(Thread.currentThread().getName());
+		final var thread = new Thread(() -> {
+			System.out.println(Thread.currentThread().getName());
+			assertThat(devault).isNotSameAs(RandomRegistry.random());
+		});
 		thread.setUncaughtExceptionHandler((_, e) -> exception.set((AssertionError)e));
 		thread.start();
 		thread.join();
