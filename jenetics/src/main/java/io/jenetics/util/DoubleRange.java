@@ -50,7 +50,7 @@ public final /*record*/ class DoubleRange implements Serializable {
 	private final double _max;
 
 	private DoubleRange(final double min, final double max) {
-		if (min > max) {
+		if (!Double.isFinite(min) || !Double.isFinite(max) || min > max) {
 			throw new IllegalArgumentException(format(
 				"Min greater than max: %s > %s", min, max
 			));
@@ -89,7 +89,8 @@ public final /*record*/ class DoubleRange implements Serializable {
 	 *         {@code [min, max)}, {@code false} otherwise
 	 */
 	public boolean contains(final double value) {
-		return Double.compare(value, _min) >= 0 &&
+		return Double.isFinite(value) &&
+			Double.compare(value, _min) >= 0 &&
 			Double.compare(value, _max) < 0;
 	}
 
