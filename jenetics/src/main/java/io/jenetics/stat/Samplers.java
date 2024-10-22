@@ -52,7 +52,7 @@ public final class Samplers {
 	 *         within the range {@code [0, 1)}
 	 */
 	public static Sampler linear(final double mean) {
-		if (mean < 0 || mean >= 1) {
+		if (mean < 0 || mean >= 1 || !Double.isFinite(mean)) {
 			throw new IllegalArgumentException(
 				"Mean value not within allowed range [0, 1): %f."
 					.formatted(mean)
@@ -70,9 +70,9 @@ public final class Samplers {
 		}
 
 		if (Double.compare(mean, 0) == 0) {
-			return (random, range) -> Range.MIN;
+			return (random, range) -> range.min();
 		} else if (mean == Range.MAX) {
-			return (random, range) -> Range.MAX* range.max();
+			return (random, range) -> Math.nextDown(range.max());
 		}
 
 		final double b, m;
@@ -126,7 +126,8 @@ public final class Samplers {
 	 */
 	public static Sampler
 	triangular(final double a, final double c, final double b) {
-		if (a < 0 || b < 0 || c < 0  ||
+		if (!Double.isFinite(a) || !Double.isFinite(b) || !Double.isFinite(c) ||
+			a < 0 || b < 0 || c < 0  ||
 			a > 1 || b > 1 || c > 1 ||
 			b <= a || c > b || c < a)
 		{
