@@ -413,13 +413,9 @@ public final class RandomRegistry {
 		);
 	}
 
-	@SuppressWarnings("removal")
 	private static final class Env {
 
-		private static final String defaultRandomGenerator =
-			java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<String>)Env::get
-			);
+		private static final String defaultRandomGenerator = get();
 
 		private static String get() {
 			return getConfigured()
