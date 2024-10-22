@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Random;
@@ -29,6 +27,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * This class holds the {@link RandomGenerator} engine used for the GA. The
@@ -112,7 +112,7 @@ import java.util.random.RandomGeneratorFactory;
  *         // Create a reproducible list of genotypes.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes =
- *             with(factory.create(123), r ->
+ *             RandomRegistry.with(factory.create(123), _ ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -139,15 +139,20 @@ import java.util.random.RandomGeneratorFactory;
  *          com.foo.bar.MyJeneticsApp
  * }</pre>
  *
+ * @implNote
+ * This class uses the functionality of the {@link ScopedValue}.
+ *
  * @see RandomGenerator
  * @see RandomGeneratorFactory
+ * @see ScopedValue
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 8.0
+ * @version !__version__!
  */
 public final class RandomRegistry {
-	private RandomRegistry() {}
+	private RandomRegistry() {
+	}
 
 	/**
 	 * Thread local wrapper for a random generator supplier (factory).
@@ -165,13 +170,18 @@ public final class RandomRegistry {
 		}
 
 		@Override
-		protected synchronized R initialValue() {
+		protected R initialValue() {
 			return _factory.get();
 		}
 	}
 
-	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
-		new TLR<>(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
+	private static Supplier<RandomGenerator>
+	wrapper(final Supplier<? extends RandomGenerator> factory) {
+		return new TLR<>(factory);
+	}
+
+	private static final Supplier<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+		wrapper(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
 	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
@@ -188,7 +198,11 @@ public final class RandomRegistry {
 	/**
 	 * Set a new {@link RandomGenerator} for the <em>global</em> scope. The given
 	 * {@link RandomGenerator} <b>must</b> be thread safe, which is the case for
-	 * the Java {@link Random} class.
+	 * the Java {@link Random} class. Each thread will get the <em>same</em>
+	 * random generator, when optaining one with the {@link #random()} method.
+	 *
+	 * @implSpec
+	 * The given {@code random} generator <b>must</b> be thread safe.
 	 *
 	 * @see #random(RandomGeneratorFactory)
 	 *
@@ -203,6 +217,9 @@ public final class RandomRegistry {
 
 	/**
 	 * Set a new {@link RandomGeneratorFactory} for the <em>global</em> scope.
+	 * When setting a random generator <em>factory</em> instead of the
+	 * generator directly, every thread gets its own generator. It is not
+	 * necessary, that the created random generators must be thread-safe.
 	 *
 	 * @param factory the random generator factory
 	 * @throws NullPointerException if the {@code factory} object is {@code null}.
@@ -210,12 +227,18 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final RandomGeneratorFactory<? extends R> factory) {
 		requireNonNull(factory);
-		CONTEXT.set(new TLR<>(factory::create));
+		CONTEXT.set(wrapper(factory::create));
 	}
 
 	/**
 	 * Set a new {@link Supplier} of {@link RandomGenerator} for the
 	 * <em>global</em> scope.
+	 * When setting a random generator <em>supplier</em> instead of the
+	 * generator directly, every thread gets its own generator, as returned by
+	 * the supplier. It is not necessary, that the created random generators must
+	 * be thread-safe.
+	 *
+	 * @see #random(RandomGeneratorFactory)
 	 *
 	 * @param supplier the random generator supplier
 	 * @throws NullPointerException if the {@code supplier} object is {@code null}.
@@ -223,7 +246,7 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final Supplier<? extends R> supplier) {
 		requireNonNull(supplier);
-		CONTEXT.set(new TLR<>(supplier));
+		CONTEXT.set(wrapper(supplier));
 	}
 
 	/**
@@ -237,9 +260,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(new Random(123), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(new Random(123), _ -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -259,7 +280,7 @@ public final class RandomRegistry {
 	) {
 		CONTEXT.with(
 			() -> random,
-			r -> { consumer.accept(random); return null; }
+			() -> { consumer.accept(random); return null; }
 		);
 	}
 
@@ -267,9 +288,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(RandomGeneratorFactory.getDefault(), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(RandomGeneratorFactory.getDefault(), _ -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -288,8 +307,13 @@ public final class RandomRegistry {
 		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(
-			new TLR<>(factory::create),
-			r -> { consumer.accept(r.get()); return null; }
+			wrapper(factory::create),
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				consumer.accept(random);
+				return null;
+			}
 		);
 	}
 
@@ -298,7 +322,7 @@ public final class RandomRegistry {
 	 * supplier.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());
+	 * using(() -> new MyRandomGenerator(), _ -> seq.shuffle());
 	 * }
 	 *
 	 * @since 7.0
@@ -314,8 +338,13 @@ public final class RandomRegistry {
 		final Consumer<? super R> consumer
 	) {
 		CONTEXT.with(
-			new TLR<>(supplier),
-			r -> { consumer.accept(r.get()); return null; }
+			wrapper(supplier),
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				consumer.accept(random);
+				return null;
+			}
 		);
 	}
 
@@ -325,7 +354,7 @@ public final class RandomRegistry {
 	 * reproducible list of genotypes:
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(new LCG64ShiftRandom(123), r ->
+	 *     with(new LCG64ShiftRandom(123), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -347,7 +376,7 @@ public final class RandomRegistry {
 	) {
 		return CONTEXT.with(
 			() -> random,
-			s -> function.apply(random)
+			() -> function.apply(random)
 		);
 	}
 
@@ -356,7 +385,7 @@ public final class RandomRegistry {
 	 * executes the given function within it.
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(RandomGeneratorFactory.getDefault(), random ->
+	 *     with(RandomGeneratorFactory.getDefault(), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -377,8 +406,12 @@ public final class RandomRegistry {
 		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(
-			new TLR<>(factory::create),
-			r -> function.apply(r.get())
+			wrapper(factory::create),
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				return function.apply(random);
+			}
 		);
 	}
 
@@ -387,7 +420,7 @@ public final class RandomRegistry {
 	 * executes the given function within it.
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(() -> new MyRandomGenerator(), random ->
+	 *     with(() -> new MyRandomGenerator(), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -408,8 +441,12 @@ public final class RandomRegistry {
 		final Function<? super R, ? extends T> function
 	) {
 		return CONTEXT.with(
-			new TLR<>(supplier),
-			r -> function.apply(r.get())
+			wrapper(supplier),
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				return function.apply(random);
+			}
 		);
 	}
 
