@@ -32,7 +32,6 @@ plugins {
 
 rootProject.version = Jenetics.VERSION
 
-
 alljavadoc {
 	modules.set(listOf(
 		"jenetics",

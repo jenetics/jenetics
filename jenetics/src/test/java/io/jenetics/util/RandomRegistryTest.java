@@ -19,17 +19,17 @@
  */
 package io.jenetics.util;
 
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
-import static io.jenetics.util.RandomRegistry.using;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,12 +39,11 @@ import java.util.random.RandomGenerator.StreamableGenerator;
 import java.util.random.RandomGeneratorFactory;
 import java.util.stream.IntStream;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.DoubleChromosome;
-import io.jenetics.DoubleGene;
-import io.jenetics.Genotype;
+import static io.jenetics.util.RandomRegistry.using;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -52,25 +51,65 @@ import io.jenetics.Genotype;
 public class RandomRegistryTest {
 
 	@Test
+	public void getDefault() {
+		assertThat(RandomRegistry.random()).isNotNull();
+	}
+
+	@Test(invocationCount = 10)
 	public void setDefault() {
-		RandomRegistry.reset();
-		final var devault = RandomRegistry.random();
-		Assert.assertNotNull(devault);
+		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+			for (int i = 0; i < 10; ++i) {
+				executor.submit(() -> {
+					RandomRegistry.reset();
+					final var devault = RandomRegistry.random();
+					Assert.assertNotNull(devault);
 
-		RandomRegistry.random(new Random());
-		Assert.assertNotNull(RandomRegistry.random());
-		RandomRegistry.reset();
+					final var random = new Random();
+					RandomRegistry.random(random);
+					assertThat(RandomRegistry.random()).isNotNull();
+					assertThat(RandomRegistry.random()).isSameAs(random);
 
-		assertSame(RandomRegistry.random(), devault);
+					RandomRegistry.reset();
+					assertSame(RandomRegistry.random(), devault);
+					sleep();
+				});
+			}
+		}
 	}
 
-	@Test
+	private static void sleep() {
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new CancellationException(e.getMessage());
+		}
+	}
+
+	@Test(invocationCount = 10)
 	public void setRandom() {
-		final Random random = new Random();
-		RandomRegistry.random(random);
+		final var devault = RandomRegistry.random();
 
-		assertSame(RandomRegistry.random(), random);
+		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+			for (int i = 0; i < 10; ++i) {
+				executor.submit(() -> {
+					assertThat(RandomRegistry.random()).isNotSameAs(devault);
+
+					final var innerDefault = RandomRegistry.random();
+
+					final Random random = new Random();
+					RandomRegistry.random(random);
+					assertSame(RandomRegistry.random(), random);
+
+					RandomRegistry.reset();
+					assertThat(RandomRegistry.random()).isNotSameAs(innerDefault);
+				});
+			}
+		}
+
+		assertThat(RandomRegistry.random()).isSameAs(devault);
 	}
+
 
 	@Test
 	public void setRandomFactory() throws InterruptedException {
@@ -86,7 +125,7 @@ public class RandomRegistryTest {
 		final var thread = new Thread(() ->
 			assertThat(random).isNotSameAs(RandomRegistry.random())
 		);
-		thread.setUncaughtExceptionHandler((t, e) -> exception.set((AssertionError)e));
+		thread.setUncaughtExceptionHandler((_, e) -> exception.set((AssertionError)e));
 		thread.start();
 		thread.join();
 
@@ -114,11 +153,11 @@ public class RandomRegistryTest {
 		thread.join();
 	}
 
-	@Test
+	@Test(invocationCount = 10)
 	public void setRandomSupplierStream() throws InterruptedException {
 		final Iterator<RandomGenerator> randoms = StreamableGenerator.of("L128X1024MixRandom")
 			.rngs()
-			.peek(System.out::println)
+			//.peek(System.out::println)
 			.iterator();
 
 		final Supplier<RandomGenerator> supplier = randoms::next;
@@ -136,25 +175,22 @@ public class RandomRegistryTest {
 		thread.join();
 	}
 
-	@Test
+	@Test(invocationCount = 10)
 	public void setRandomThreading()
 		throws ExecutionException, InterruptedException
 	{
 		final Random random = new Random();
 		RandomRegistry.random(random);
 
-		final ExecutorService executor = Executors.newFixedThreadPool(10);
-		try {
+		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 			final var futures = IntStream.range(0, 500)
-				.mapToObj(i -> executor
+				.mapToObj(_ -> executor
 					.submit(() -> assertSame(RandomRegistry.random(), random)))
 				.toList();
 
 			for (Future<?> future : futures) {
 				future.get();
 			}
-		} finally {
-			executor.shutdown();
 		}
 	}
 
@@ -181,9 +217,9 @@ public class RandomRegistryTest {
 		final var random = RandomRegistry.random();
 
 		final Random random1 = new Random();
-		using(random1, r1 -> {
+		using(random1, _ -> {
 			final Random random2 = new Random();
-			using(random2, r2 -> assertSame(RandomRegistry.random(), random2));
+			using(random2, _ -> assertSame(RandomRegistry.random(), random2));
 			assertSame(RandomRegistry.random(), random1);
 		});
 
@@ -237,13 +273,13 @@ public class RandomRegistryTest {
 	@Test
 	public void withScope() {
 		final List<Genotype<DoubleGene>> genotypes1 =
-			RandomRegistry.with(new Random(123), random ->
+			RandomRegistry.with(new Random(123), _ ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())
 			);
 		final List<Genotype<DoubleGene>> genotypes2 =
-			RandomRegistry.with(new Random(123), random ->
+			RandomRegistry.with(new Random(123), _ ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())

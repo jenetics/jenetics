@@ -21,69 +21,108 @@ package io.jenetics.util;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
+ * This class serves as wrapper around the {@link ScopedValue} implementation of
+ * the JDK. It enriches the functionality, so it is possible to change the
+ * context value within the same thread, without the need of opening a new
+ * {@link ScopedValue#where(ScopedValue, Object)} scope.
+ *
+ * @see ScopedValue
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.0
+ * @version !__version__!
  * @since 2.0
  */
 final class Context<T> {
 
 	private final T _default;
 	private final AtomicReference<Entry<T>> _entry;
-	//private final ThreadLocal<Entry<T>> _threadLocalEntry = new ThreadLocal<>();
-
 	private final ScopedValue<Entry<T>> _value = ScopedValue.newInstance();
 
+	/**
+	 * Create a new <em>context</em> object with the given default value. The
+	 * given {@code value} is the initial value of the <em>global</em> context.
+	 *
+	 * @param defaultValue the default value of the context, may be {@code null}
+	 */
 	Context(final T defaultValue) {
 		_default = defaultValue;
-		_entry = new AtomicReference<>(new Entry<>(defaultValue));
+		_entry = new AtomicReference<>(new Entry<>(_default));
 	}
 
+	/**
+	 * Return the default value of the context.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the default value of the context
+	 */
+	T devault() {
+		return _default;
+	}
+
+	/**
+	 * Checks whether the context value is <em>global</em>.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return {@code true} if the context value is <em>global</em> or
+	 *         {@code false} if it is <em>scoped</em>
+	 */
+	boolean isGlobal() {
+		return !_value.isBound();
+	}
+
+	/**
+	 * Set the {@code value} for the <em>global</em> scope of the context.
+	 *
+	 * @param value the new <em>global</em> context value.
+	 */
 	void set(final T value) {
 		if (_value.isBound()) {
 			_value.get().value = value;
 		} else {
 			_entry.set(new Entry<>(value));
 		}
-
-		/*
-		final Entry<T> e = _threadLocalEntry.get();
-
-		if (e != null) e.value = value;
-		else _entry.set(new Entry<>(value));
-		 */
 	}
 
+	/**
+	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
+	 * value, if called within a {@link #with(Object, Function)} <em>scoped</em>
+	 * function.
+	 *
+	 * @return the context value, either <em>global</em> or <em>scoped</em>
+	 */
 	T get() {
-		return _value.orElse(_entry.get()).value;
+		final var entry = _entry.get();
+		assert entry != null;
 
-		/*
-		final Entry<T> e = _threadLocalEntry.get();
-		return (e != null ? e : _entry.get()).value;
-		 */
+		return _value.orElse(entry).value;
 	}
 
+	/**
+	 * Reste the value of the <em>global</em> context to the default value.
+	 */
 	void reset() {
 		set(_default);
 	}
 
-	<S extends T, R> R with(final S value, final Function<S, R> f) {
-		return ScopedValue.getWhere(_value, new Entry<>(value), () -> f.apply(value));
-		/*
-		final Entry<T> e = _threadLocalEntry.get();
-		if (e != null) {
-			_threadLocalEntry.set(e.inner(value));
-		} else {
-			_threadLocalEntry.set(new Entry<>(value, Thread.currentThread()));
-		}
-
-		try {
-			return f.apply(value);
-		} finally {
-			_threadLocalEntry.set(_threadLocalEntry.get().parent);
-		}
-		 */
+	/**
+	 * Return the result of the {@code supplier}, which is executed with the
+	 * given context {@code value}.
+	 *
+	 * @param value the contexte value the {@code supplier} sees
+	 * @param supplier the supplier executed using the given context {@code value}
+	 * @return the suppplier value
+	 * @param <S> the context value
+	 * @param <R> the supplier result
+	 */
+	<S extends T, R> R with(final S value, final Supplier<? extends R> supplier) {
+		return ScopedValue
+			.where(_value, new Entry<>(value))
+			.get(supplier);
 	}
 
 	/**
@@ -92,29 +131,10 @@ final class Context<T> {
 	 * @since 2.0
 	 */
 	private static final class Entry<T> {
-		final Thread thread;
-		final Entry<T> parent;
 		T value;
-
-		Entry(final T value, final Entry<T> parent, final Thread thread) {
-			this.value = value;
-			this.parent = parent;
-			this.thread = thread;
-		}
-
-		Entry(final T value, final Thread thread) {
-			this(value, null, thread);
-		}
-
 		Entry(final T value) {
-			this(value, null, null);
+			this.value = value;
 		}
-
-		Entry<T> inner(final T value) {
-			assert thread == Thread.currentThread();
-			return new Entry<>(value, this, thread);
-		}
-
 	}
 
 }

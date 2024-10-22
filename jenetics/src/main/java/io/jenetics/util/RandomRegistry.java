@@ -112,7 +112,7 @@ import java.util.random.RandomGeneratorFactory;
  *         // Create a reproducible list of genotypes.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes =
- *             with(factory.create(123), r ->
+ *             RandomRegistry.with(factory.create(123), _ ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -139,15 +139,20 @@ import java.util.random.RandomGeneratorFactory;
  *          com.foo.bar.MyJeneticsApp
  * }</pre>
  *
+ * @implNote
+ * This class uses the functionality of the {@link ScopedValue}.
+ *
  * @see RandomGenerator
  * @see RandomGeneratorFactory
+ * @see ScopedValue
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 8.0
+ * @version !__version__!
  */
 public final class RandomRegistry {
-	private RandomRegistry() {}
+	private RandomRegistry() {
+	}
 
 	/**
 	 * Thread local wrapper for a random generator supplier (factory).
@@ -237,9 +242,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(new Random(123), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(new Random(123), _ -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -259,7 +262,7 @@ public final class RandomRegistry {
 	) {
 		CONTEXT.with(
 			() -> random,
-			r -> { consumer.accept(random); return null; }
+			() -> { consumer.accept(random); return null; }
 		);
 	}
 
@@ -267,9 +270,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(RandomGeneratorFactory.getDefault(), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(RandomGeneratorFactory.getDefault(), _ -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -289,7 +290,12 @@ public final class RandomRegistry {
 	) {
 		CONTEXT.with(
 			new TLR<>(factory::create),
-			r -> { consumer.accept(r.get()); return null; }
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				consumer.accept(random);
+				return null;
+			}
 		);
 	}
 
@@ -298,7 +304,7 @@ public final class RandomRegistry {
 	 * supplier.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(() -> new MyRandomGenerator(), r -> seq.shuffle());
+	 * using(() -> new MyRandomGenerator(), _ -> seq.shuffle());
 	 * }
 	 *
 	 * @since 7.0
@@ -315,7 +321,12 @@ public final class RandomRegistry {
 	) {
 		CONTEXT.with(
 			new TLR<>(supplier),
-			r -> { consumer.accept(r.get()); return null; }
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				consumer.accept(random);
+				return null;
+			}
 		);
 	}
 
@@ -325,7 +336,7 @@ public final class RandomRegistry {
 	 * reproducible list of genotypes:
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(new LCG64ShiftRandom(123), r ->
+	 *     with(new LCG64ShiftRandom(123), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -347,7 +358,7 @@ public final class RandomRegistry {
 	) {
 		return CONTEXT.with(
 			() -> random,
-			s -> function.apply(random)
+			() -> function.apply(random)
 		);
 	}
 
@@ -356,7 +367,7 @@ public final class RandomRegistry {
 	 * executes the given function within it.
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(RandomGeneratorFactory.getDefault(), random ->
+	 *     with(RandomGeneratorFactory.getDefault(), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -378,7 +389,11 @@ public final class RandomRegistry {
 	) {
 		return CONTEXT.with(
 			new TLR<>(factory::create),
-			r -> function.apply(r.get())
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				return function.apply(random);
+			}
 		);
 	}
 
@@ -387,7 +402,7 @@ public final class RandomRegistry {
 	 * executes the given function within it.
 	 * {@snippet lang="java":
 	 * final List<Genotype<DoubleGene>> genotypes =
-	 *     with(() -> new MyRandomGenerator(), random ->
+	 *     with(() -> new MyRandomGenerator(), _ ->
 	 *         Genotype.of(DoubleChromosome.of(0, 10)).instances()
 	 *            .limit(50)
 	 *            .collect(toList())
@@ -409,7 +424,11 @@ public final class RandomRegistry {
 	) {
 		return CONTEXT.with(
 			new TLR<>(supplier),
-			r -> function.apply(r.get())
+			() -> {
+				@SuppressWarnings("unchecked")
+				final var random = (R)random();
+				return function.apply(random);
+			}
 		);
 	}
 
