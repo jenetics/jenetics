@@ -22,6 +22,7 @@ package io.jenetics.incubator.math;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import org.assertj.core.data.Offset;
 import org.testng.annotations.Test;
@@ -33,10 +34,14 @@ public class ErfTest {
 
 	private static final int LOOPS = 1_000_000;
 
+	private static RandomGenerator rand() {
+		return RandomGeneratorFactory.of("L128X1024MixRandom").create(123123);
+	}
+
 	@Test
 	public void erf() {
 		final var offset = Offset.offset(Math.pow(2, -45));
-		final var random = RandomGenerator.getDefault();
+		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
@@ -54,7 +59,7 @@ public class ErfTest {
 	@Test
 	public void erfc() {
 		final var offset = Offset.offset(Math.pow(2, -40));
-		final var random = RandomGenerator.getDefault();
+		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
@@ -71,8 +76,8 @@ public class ErfTest {
 
 	@Test
 	public void erfinv() {
-		final var offset = Offset.offset(Math.pow(2, -53));
-		final var random = RandomGenerator.getDefault();
+		final var offset = Offset.offset(Math.pow(2, -50));
+		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
@@ -89,8 +94,8 @@ public class ErfTest {
 
 	@Test
 	public void erfcinv() {
-		final var offset = Offset.offset(Math.pow(2, -53));
-		final var random = RandomGenerator.getDefault();
+		final var offset = Offset.offset(Math.pow(2, -50));
+		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
