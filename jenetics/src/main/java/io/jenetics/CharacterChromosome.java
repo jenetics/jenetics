@@ -161,8 +161,7 @@ public class CharacterChromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
+		return obj != null &&
 			getClass() == obj.getClass() &&
 			Objects.equals(_validCharacters, ((CharacterChromosome)obj)._validCharacters) &&
 			super.equals(obj);

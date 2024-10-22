@@ -198,8 +198,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntegerGene other &&
+		return obj instanceof IntegerGene other &&
 			other._allele == _allele &&
 			other._min == _min &&
 			other._max == _max;
