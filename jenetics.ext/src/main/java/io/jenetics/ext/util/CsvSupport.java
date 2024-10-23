@@ -529,7 +529,8 @@ public final class CsvSupport {
 	 *
 	 * @apiNote
 	 * This reader obeys <em>escaped</em> line breaks according
-	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
+	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. It is
+	 * thread-safe and can be shared between different reading threads.
 	 *
 	 * @version 8.1
 	 * @since 8.1
