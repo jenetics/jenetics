@@ -25,6 +25,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
 
 import io.jenetics.ext.util.CsvSupport;
@@ -32,14 +33,16 @@ import io.jenetics.ext.util.CsvSupport;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class RecordParser {
+public interface RecordParser<T> {
+
+	T parse(final String[] columns);
+
+	/*
+	private static final Map<Class<?>, Function<String, ?>> CONVERTERS = Map.of(
+		byte.class, Byte::parseByte
+	);
 
 	record Rec(String first, String last, String date) {
-		/*
-		Rec(String... row) {
-			this(row[0], row[1], row[2]);
-		}
-		 */
 	}
 
 	<R extends Record> Function<String[], R> to(Class<R> type) {
@@ -70,7 +73,8 @@ public class RecordParser {
 		final var rsc = "/io/jenetics/ext/util/customers-100.csv";
 
 		final var reader = new CsvSupport.LineReader();
-		final var splitter = new CsvSupport.LineSplitter(new CsvSupport.ColumnIndexes(3, 2, 10));
+		final var projection = new CsvSupport.ColumnIndexes(3, 2, 10);
+		final var splitter = new CsvSupport.LineSplitter(projection);
 
 		try (var in = getClass().getResourceAsStream(rsc);
 		     var isr = new InputStreamReader(in))
@@ -82,5 +86,18 @@ public class RecordParser {
 				.forEach(System.out::println);
 		}
 	}
+
+	static <R extends Record> Constructor<R> constructor(final Class<R> type) {
+		try {
+			return type.getDeclaredConstructor(
+				Arrays.stream(type.getRecordComponents())
+					.map(RecordComponent::getType)
+					.toArray(Class[]::new)
+			);
+		} catch (NoSuchMethodException e) {
+			throw new AssertionError(e);
+		}
+	}
+	 */
 
 }
