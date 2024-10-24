@@ -529,7 +529,8 @@ public final class CsvSupport {
 	 *
 	 * @apiNote
 	 * This reader obeys <em>escaped</em> line breaks according
-	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>.
+	 * <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>. It is
+	 * thread-safe and can be shared between different reading threads.
 	 *
 	 * @version 8.1
 	 * @since 8.1
@@ -659,6 +660,10 @@ public final class CsvSupport {
 	 * <b>Projecting and re-ordering columns</b>
 	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
+	 * @implNote
+	 * The split {@code String[]} array will never contain {@code null} values.
+	 * Empty columns will be returned as empty strings.
+	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
 	 * different threads.
@@ -754,8 +759,16 @@ public final class CsvSupport {
 			this(Separator.DEFAULT, Quote.DEFAULT, ColumnIndexes.ALL);
 		}
 
+		public LineSplitter copy() {
+			return new LineSplitter(separator, quote, columns.projection);
+		}
+
 		/**
 		 * Splitting the given CSV {@code line} into its columns.
+		 *
+		 * @implNote
+		 * The split {@code String[]} array will never contain {@code null} values.
+		 * Empty columns will be returned as empty strings.
 		 *
 		 * @param line the CSV line to split
 		 * @return the split CSV columns
@@ -787,10 +800,10 @@ public final class CsvSupport {
 							} else {
 								if (next != -1 && separator.value != next) {
 									throw new IllegalArgumentException("""
-                                        Only separator character, '%s', allowed \
-                                        after quote, but found '%c'.
-                                        %s
-                                        """.formatted(
+										Only separator character, '%s', allowed \
+										after quote, but found '%c'.
+										%s
+										""".formatted(
 											separator.value,
 											next,
 											toErrorDesc(line, i + 1)
@@ -806,10 +819,10 @@ public final class CsvSupport {
 					} else {
 						if (previous != -1 && separator.value != previous) {
 							throw new IllegalArgumentException("""
-                                Only separator character, '%s', allowed before \
-                                quote, but found '%c'.
-                                %s
-                                """.formatted(
+								Only separator character, '%s', allowed before \
+								quote, but found '%c'.
+								%s
+								""".formatted(
 									separator.value,
 									previous,
 									toErrorDesc(line, Math.max(i - 1, 0))
@@ -872,9 +885,9 @@ public final class CsvSupport {
 
 		private static String toErrorDesc(final CharSequence line, final int pos) {
 			return """
-                %s
-                %s
-                """.formatted(
+				%s
+				%s
+				""".formatted(
 					line.toString().stripTrailing(),
 					" ".repeat(pos) + "^"
 				);
