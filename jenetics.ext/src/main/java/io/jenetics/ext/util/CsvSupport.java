@@ -759,6 +759,10 @@ public final class CsvSupport {
 			this(Separator.DEFAULT, Quote.DEFAULT, ColumnIndexes.ALL);
 		}
 
+		public LineSplitter copy() {
+			return new LineSplitter(separator, quote, columns.projection);
+		}
+
 		/**
 		 * Splitting the given CSV {@code line} into its columns.
 		 *

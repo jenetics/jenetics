@@ -37,6 +37,7 @@ import java.util.function.Function;
 public class Row {
 
 	private static final Map<Class<?>, Function<String, ?>> CONVERTERS = Map.ofEntries(
+		Map.entry(String.class, Function.identity()),
 		Map.entry(boolean.class, Boolean::parseBoolean),
 		Map.entry(Boolean.class, Boolean::parseBoolean),
 		Map.entry(byte.class, Byte::parseByte),
@@ -60,9 +61,14 @@ public class Row {
 		Map.entry(OffsetDateTime.class, OffsetDateTime::parse)
 	);
 
+	private final Map<Class<?>, Function<String, ?>> converters;
 	private final String[] columns;
 
-	public Row(final String[] columns) {
+	private Row(
+		final Map<Class<?>, Function<String, ?>> converters,
+		final String[] columns
+	) {
+		this.converters = requireNonNull(converters);
 		this.columns = requireNonNull(columns);
 	}
 
@@ -156,7 +162,10 @@ public class Row {
 			return null;
 		}
 
-		final Function<String, ?> converter = CONVERTERS.get(type);
+		Function<String, ?> converter = converters.get(type);
+		if (converter == null) {
+			converter = CONVERTERS.get(type);
+		}
 		if (converter == null) {
 			throw new IllegalArgumentException(
 				"Unsupported type '%s' at index %d."
@@ -165,7 +174,26 @@ public class Row {
 		}
 
 		final String value = stringAt(index);
-		return type.cast(converter.apply(value));
+		@SuppressWarnings("unchecked")
+		final T result = (T)converter.apply(value);
+		return result;
+	}
+
+	public static Row of(final String[] columns) {
+		return new Row(Map.of(), columns);
+	}
+
+	public static Row of(
+		final Map<Class<?>, Function<String, ?>> converters,
+		final String[] columns
+	) {
+		return new Row(converters, columns);
+	}
+
+	public static Function<String[], Row>
+	withConverters(final Map<Class<?>, Function<String, ?>> converters) {
+		requireNonNull(converters);
+		return columns -> new Row(converters, columns);
 	}
 
 }
