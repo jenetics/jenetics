@@ -660,6 +660,10 @@ public final class CsvSupport {
 	 * <b>Projecting and re-ordering columns</b>
 	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
+	 * @implNote
+	 * The split {@code String[]} array will never contain {@code null} values.
+	 * Empty columns will be returned as empty strings.
+	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
 	 * different threads.
@@ -757,6 +761,10 @@ public final class CsvSupport {
 
 		/**
 		 * Splitting the given CSV {@code line} into its columns.
+		 *
+		 * @implNote
+		 * The split {@code String[]} array will never contain {@code null} values.
+		 * Empty columns will be returned as empty strings.
 		 *
 		 * @param line the CSV line to split
 		 * @return the split CSV columns
