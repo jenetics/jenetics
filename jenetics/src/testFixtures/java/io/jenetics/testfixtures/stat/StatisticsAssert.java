@@ -39,7 +39,7 @@ public final class StatisticsAssert {
 	public static final class DistributionAssert {
 		private final Histogram _observation;
 
-		private HypothesisTester _tester = PearsonChi2Tester.P_001;
+		private HypothesisTester _tester = PearsonChi2Tester.P_0001;
 
 		private DistributionAssert(final Histogram observation) {
 			_observation = requireNonNull(observation);
