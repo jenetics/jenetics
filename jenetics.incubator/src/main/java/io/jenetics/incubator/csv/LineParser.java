@@ -24,17 +24,14 @@ import java.util.function.Function;
 import io.jenetics.ext.util.CsvSupport;
 
 /**
- * Parser function for parsing a {@code String} line to an object of type
- * {@code T}.
- *
- * @param <T> the target type
+ * Parser function for parsing a {@code String} line to a {@code String[]} array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface LineParser<T> extends Function<String, T> {
+public interface LineParser extends Function<String, String[]> {
 
 	/**
 	 * Parses the {@code value} to an object of type {@code T}.
@@ -46,15 +43,11 @@ public interface LineParser<T> extends Function<String, T> {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
-	T parse(String value);
+	String[] parse(String value);
 
 	@Override
-	default T apply(final String line) {
+	default String[] apply(final String line) {
 		return parse(line);
-	}
-
-	static LineParser<String[]> of(final Function<? super String, ? extends String[]> fn) {
-		return fn::apply;
 	}
 
 }

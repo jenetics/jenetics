@@ -32,9 +32,9 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-record RowRecord(String[] columns, Converter converter) implements Row {
+record ColumnsRow(String[] columns, Converter converter) implements Row {
 
-	public RowRecord {
+	public ColumnsRow {
 		requireNonNull(columns);
 		requireNonNull(converter);
 	}
@@ -44,7 +44,7 @@ record RowRecord(String[] columns, Converter converter) implements Row {
 	 *
 	 * @param columns the row values
 	 */
-	public RowRecord(String[] columns) {
+	public ColumnsRow(String[] columns) {
 		this(columns, Converter.DEFAULT);
 	}
 

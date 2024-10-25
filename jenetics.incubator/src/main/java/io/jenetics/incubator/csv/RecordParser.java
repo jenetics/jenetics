@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * Parser function for parsing a {@link RowRecord} to an object of type {@code T}.
+ * Parser function for parsing a {@link ColumnsRow} to an object of type {@code T}.
  *
  * @param <T> the target type
  *

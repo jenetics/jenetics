@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.csv;
 
+import io.jenetics.ext.util.CsvSupport.*;
 import io.jenetics.ext.util.CsvSupport.LineReader;
 
 import org.testng.annotations.Test;
@@ -41,6 +42,9 @@ public class RecordParserTest {
 			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
 			""";
 
+		final var projection = new ColumnIndexes(4, 1, 0);
+		final var splitter = new LineSplitter(projection);
+
 		record Entry(int population, String city, String country) {
 			static final RecordParser<Entry> PARSER = RecordParser.of(Entry.class);
 
@@ -54,6 +58,7 @@ public class RecordParserTest {
 
 		try (var lines = new LineReader().read(new StringReader(csv))) {
 			lines.skip(1)
+				.map(splitter.copy()::split)
 				//.map(Entry.PARSER)
 				.forEach(System.out::println);
 		}
