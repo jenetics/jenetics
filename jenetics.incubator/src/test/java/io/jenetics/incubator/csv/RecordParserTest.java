@@ -19,17 +19,24 @@
  */
 package io.jenetics.incubator.csv;
 
-import io.jenetics.ext.util.CsvSupport.*;
-import io.jenetics.ext.util.CsvSupport.LineReader;
+import java.io.StringReader;
+import java.util.function.Supplier;
 
 import org.testng.annotations.Test;
 
-import java.io.StringReader;
+import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
+import io.jenetics.ext.util.CsvSupport.LineReader;
+import io.jenetics.ext.util.CsvSupport.LineSplitter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class RecordParserTest {
+
+	private static final Supplier<ColumnsParser> COLS_PARSER =
+		ColumnsParser.of(new LineSplitter(new ColumnIndexes(4, 1, 0)));
+
+	private static final RowParser ROW_PARSER = RowParser.of(Converter.DEFAULT);
 
 	@Test
 	public void parse() {
@@ -42,24 +49,15 @@ public class RecordParserTest {
 			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
 			""";
 
-		final var projection = new ColumnIndexes(4, 1, 0);
-		final var splitter = new LineSplitter(projection);
-
 		record Entry(int population, String city, String country) {
 			static final RecordParser<Entry> PARSER = RecordParser.of(Entry.class);
-
-			/*
-			static final Function<String, Entry> PARSER =
-				RowParser.of(Entry.class)
-					.compose(ColumnParser.DEFAULT_ROW_PARSER)
-					.compose(new LineSplitter(new ColumnIndexes(4, 1, 0))::split);
-			 */
 		}
 
 		try (var lines = new LineReader().read(new StringReader(csv))) {
 			lines.skip(1)
-				.map(splitter.copy()::split)
-				//.map(Entry.PARSER)
+				.map(COLS_PARSER.get())
+				.map(ROW_PARSER)
+				.map(Entry.PARSER)
 				.forEach(System.out::println);
 		}
 	}

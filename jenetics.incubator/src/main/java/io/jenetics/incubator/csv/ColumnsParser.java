@@ -19,7 +19,12 @@
  */
 package io.jenetics.incubator.csv;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import io.jenetics.ext.util.CsvSupport;
 
 /**
  * Parser function for parsing a {@code String} line to a {@code String[]} array.
@@ -46,6 +51,11 @@ public interface ColumnsParser extends Function<String, String[]> {
 	@Override
 	default String[] apply(final String line) {
 		return parse(line);
+	}
+
+	static Supplier<ColumnsParser> of(final CsvSupport.LineSplitter splitter) {
+		requireNonNull(splitter);
+		return () -> splitter.copy()::split;
 	}
 
 }

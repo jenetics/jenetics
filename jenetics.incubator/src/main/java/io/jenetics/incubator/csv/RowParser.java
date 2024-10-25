@@ -62,7 +62,7 @@ public interface RowParser extends Function<String[], Row> {
 	 * @param converter the converter used for the {@link ColumnsRow} object
 	 * @return a {@link ColumnsRow} column-parser using the given {@code converter}
 	 */
-	static RowParser with(final Converter converter) {
+	static RowParser of(final Converter converter) {
 		requireNonNull(converter);
 		return value -> new ColumnsRow(value, converter);
 	}

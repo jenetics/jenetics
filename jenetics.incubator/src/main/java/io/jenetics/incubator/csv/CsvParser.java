@@ -1,4 +1,10 @@
 package io.jenetics.incubator.csv;
 
-public interface CsvParser {
+import java.io.Reader;
+import java.util.List;
+
+public interface CsvParser<T> {
+
+	List<T> parse(Reader reader);
+
 }
