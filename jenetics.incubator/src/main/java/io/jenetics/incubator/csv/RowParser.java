@@ -24,23 +24,20 @@ import java.util.function.Function;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Parser function for parsing a {@code String[]} array to an object of type
- * {@code T}.
- *
- * @param <T> the target type
+ * Parser function for parsing a {@code String[]} array to a {@link Row}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface ColumnParser<T> extends Function<String[], T> {
+public interface RowParser extends Function<String[], Row> {
 
 	/**
 	 * Row column-parser with the <em>default</em> {@link Converter#DEFAULT}
 	 * converter.
 	 */
-	ColumnParser<RowRecord> DEFAULT_ROW_PARSER = RowRecord::new;
+	RowParser DEFAULT = RowRecord::new;
 
 	/**
 	 * Parses the {@code value} to an object of type {@code T}.
@@ -52,10 +49,10 @@ public interface ColumnParser<T> extends Function<String[], T> {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
-	T parse(final String[] value);
+	Row parse(final String[] value);
 
 	@Override
-	default T apply(final String[] columns) {
+	default Row apply(final String[] columns) {
 		return parse(columns);
 	}
 
@@ -65,7 +62,7 @@ public interface ColumnParser<T> extends Function<String[], T> {
 	 * @param converter the converter used for the {@link RowRecord} object
 	 * @return a {@link RowRecord} column-parser using the given {@code converter}
 	 */
-	static ColumnParser<RowRecord> withConverter(final Converter converter) {
+	static RowParser with(final Converter converter) {
 		requireNonNull(converter);
 		return value -> new RowRecord(value, converter);
 	}
