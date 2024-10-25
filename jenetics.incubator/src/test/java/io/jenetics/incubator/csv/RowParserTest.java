@@ -19,15 +19,13 @@
  */
 package io.jenetics.incubator.csv;
 
-import java.io.StringReader;
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
+import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
+import io.jenetics.ext.util.CsvSupport.LineReader;
+import io.jenetics.ext.util.CsvSupport.LineSplitter;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.CsvSupport;
+import java.io.StringReader;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,29 +44,15 @@ public class RowParserTest {
 			""";
 
 		record Entry(int population, String city, String country) {
+			static final Function<String, Entry> PARSER =
+				RowParser.of(Entry.class)
+					.compose(ColumnParser.DEFAULT_ROW_PARSER)
+					.compose(new LineSplitter(new ColumnIndexes(4, 1, 0))::split);
 		}
 
-		final var reader = new CsvSupport.LineReader();
-		final var projection = new CsvSupport.ColumnIndexes(4, 1, 0);
-		final var splitter = new CsvSupport.LineSplitter(projection);
-		final var parser = RowParser.of(Entry.class);
-
-		final Function<String, Entry> p = LineParser.of(splitter)
-			.andThen(ColumnParser.of())
-			.andThen(RowParser.of(Entry.class));
-
-		final Map<Class<?>, Function<String, ?>> converters = Map.of(
-			LocalDateTime.class, LocalDateTime::parse
-		);
-
-		try (Stream<String> lines = reader.read(new StringReader(csv))) {
-			lines
-				.skip(1)
-				.map(
-					RowParser.of(Entry.class)
-						.compose(ColumnParser.of())
-						.compose(LineParser.of(splitter))
-				)
+		try (var lines = new LineReader().read(new StringReader(csv))) {
+			lines.skip(1)
+				.map(Entry.PARSER)
 				.forEach(System.out::println);
 		}
 	}

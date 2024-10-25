@@ -21,179 +21,180 @@ package io.jenetics.incubator.csv;
 
 import static java.util.Objects.requireNonNull;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.util.Map;
-import java.util.function.Function;
-
 /**
+ * Combines the column values with the convert used for converting the strings
+ * into concrete data types.
+ *
+ * @param columns the underlying column values of the row
+ * @param converter the used column value converter
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class Row {
+public record Row(String[] columns, Converter converter) {
 
-	private static final Map<Class<?>, Function<String, ?>> CONVERTERS = Map.ofEntries(
-		Map.entry(String.class, Function.identity()),
-		Map.entry(boolean.class, Boolean::parseBoolean),
-		Map.entry(Boolean.class, Boolean::parseBoolean),
-		Map.entry(byte.class, Byte::parseByte),
-		Map.entry(Byte.class, Byte::parseByte),
-		Map.entry(short.class, Short::parseShort),
-		Map.entry(Short.class, Short::parseShort),
-		Map.entry(int.class, Integer::parseInt),
-		Map.entry(Integer.class, Integer::parseInt),
-		Map.entry(long.class, Long::parseLong),
-		Map.entry(Long.class, Long::parseLong),
-		Map.entry(float.class, Float::parseFloat),
-		Map.entry(Float.class, Float::parseFloat),
-		Map.entry(double.class, Double::parseDouble),
-		Map.entry(Double.class, Double::parseDouble),
-		Map.entry(BigInteger.class, BigInteger::new),
-		Map.entry(BigDecimal.class, BigDecimal::new),
-		Map.entry(LocalDate.class, LocalDate::parse),
-		Map.entry(LocalTime.class, LocalTime::parse),
-		Map.entry(LocalDateTime.class, LocalDateTime::parse),
-		Map.entry(OffsetTime.class, OffsetTime::parse),
-		Map.entry(OffsetDateTime.class, OffsetDateTime::parse)
-	);
-
-	private final Map<Class<?>, Function<String, ?>> converters;
-	private final String[] columns;
-
-	private Row(
-		final Map<Class<?>, Function<String, ?>> converters,
-		final String[] columns
-	) {
-		this.converters = requireNonNull(converters);
-		this.columns = requireNonNull(columns);
+	public Row {
+		requireNonNull(columns);
+		requireNonNull(converter);
 	}
 
-	public boolean isEmpty(final int index) {
+	/**
+	 * Wraps the given column values with the {@link Converter#DEFAULT} converter.
+	 *
+	 * @param columns the row values
+	 */
+	public Row(String[] columns) {
+		this(columns, Converter.DEFAULT);
+	}
+
+	/**
+	 * Return the of row values.
+	 *
+	 * @return the number of row values
+	 */
+	public int size() {
+		return columns.length;
+	}
+
+	/**
+	 * Checks if the value at the given {@code index} is empty.
+	 *
+	 * @param index the column index
+	 * @return {@code true} if the value at the given {@code index} is empty,
+	 *         {@code false} otherwise
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	public boolean isEmptyAt(final int index) {
 		return columns[index] == null || columns[index].isEmpty();
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public String stringAt(final int index) {
 		return columns[index];
 	}
 
-	public Byte byteAt(final int index) {
-		return isEmpty(index) ? null : Byte.parseByte(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public byte byteAt(final int index, final byte defaultValue) {
-		return isEmpty(index) ? defaultValue : Byte.parseByte(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Byte.class));
 	}
 
-	public Short shortAt(final int index) {
-		return isEmpty(index) ? null : Short.parseShort(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public short shortAt(final int index, final short defaultValue) {
-		return isEmpty(index) ? defaultValue : Short.parseShort(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Short.class));
 	}
 
-	public Integer intAt(final int index) {
-		return isEmpty(index) ? null : Integer.parseInt(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public int intAt(final int index, final int defaultValue) {
-		return isEmpty(index) ? defaultValue : Integer.parseInt(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Integer.class));
 	}
 
-	public Long longAt(final int index) {
-		return isEmpty(index) ? null : Long.parseLong(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public long longAt(final int index, final long defaultValue) {
-		return isEmpty(index) ? defaultValue : Long.parseLong(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Long.class));
 	}
 
-	public Float floatAt(final int index) {
-		return isEmpty(index) ? null : Float.parseFloat(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public float floatAt(final int index, final float defaultValue) {
-		return isEmpty(index) ? defaultValue : Float.parseFloat(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Float.class));
 	}
 
-	public Double doubleAt(final int index) {
-		return isEmpty(index) ? null : Double.parseDouble(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	public double doubleAt(final int index, final double defaultValue) {
-		return isEmpty(index) ? defaultValue : Double.parseDouble(columns[index]);
+		return isEmptyAt(index)
+			? defaultValue
+			: requireNonNull(converter.convert(columns[index], Double.class));
 	}
 
-	public BigInteger bigIntegerAt(final int index) {
-		return isEmpty(index) ? null : new BigInteger(columns[index]);
-	}
-
-	public BigDecimal bigDecimalAt(final int index) {
-		return isEmpty(index) ? null : new BigDecimal(columns[index]);
-	}
-
-	public LocalDate localDateAt(final int index) {
-		return isEmpty(index) ? null : LocalDate.parse(columns[index]);
-	}
-
-	public LocalTime localTimeAt(final int index) {
-		return isEmpty(index) ? null : LocalTime.parse(columns[index]);
-	}
-
-	public LocalDateTime localDateTimeAt(final int index) {
-		return isEmpty(index) ? null : LocalDateTime.parse(columns[index]);
-	}
-
-	public OffsetTime offsetTimeAt(final int index) {
-		return isEmpty(index) ? null : OffsetTime.parse(columns[index]);
-	}
-
-	public OffsetDateTime offsetDateTimeAt(final int index) {
-		return isEmpty(index) ? null : OffsetDateTime.parse(columns[index]);
-	}
-
+	/**
+	 * Return the value at the given {@code index} and tries to convert it into
+	 * the given {@code type}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @param type the target type
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @param <T> the target type
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 * @throws UnsupportedOperationException if the conversion target {@code type}
+	 *         is not supported
+	 * @throws RuntimeException if the {@code value} can't be converted. This is
+	 *         the exception thrown by the registered converter function.
+	 */
 	public <T> T objectAt(final int index, final Class<T> type) {
 		requireNonNull(type);
-		if (isEmpty(index)) {
+		if (isEmptyAt(index)) {
 			return null;
 		}
 
-		Function<String, ?> converter = converters.get(type);
-		if (converter == null) {
-			converter = CONVERTERS.get(type);
-		}
-		if (converter == null) {
-			throw new IllegalArgumentException(
-				"Unsupported type '%s' at index %d."
-					.formatted(type.getName(), index)
-			);
-		}
-
-		final String value = stringAt(index);
-		@SuppressWarnings("unchecked")
-		final T result = (T)converter.apply(value);
-		return result;
-	}
-
-	public static Row of(final String[] columns) {
-		return new Row(Map.of(), columns);
-	}
-
-	public static Row of(
-		final Map<Class<?>, Function<String, ?>> converters,
-		final String[] columns
-	) {
-		return new Row(converters, columns);
-	}
-
-	public static Function<String[], Row>
-	withConverters(final Map<Class<?>, Function<String, ?>> converters) {
-		requireNonNull(converters);
-		return columns -> new Row(converters, columns);
+		return converter.convert(columns[index], type);
 	}
 
 }

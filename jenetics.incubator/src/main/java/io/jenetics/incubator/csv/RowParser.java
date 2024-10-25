@@ -22,34 +22,45 @@ package io.jenetics.incubator.csv;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
+ * Parser function for parsing a {@link Row} to an object of type {@code T}.
+ *
+ * @param <T> the target type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
+@FunctionalInterface
 public interface RowParser<T> extends Function<Row, T> {
 
-	T parse(final Row row);
+	/**
+	 * Parses the {@code value} to an object of type {@code T}.
+	 *
+	 * @param value the value to parse
+	 * @return the parsed value
+	 * @throws UnsupportedOperationException if the conversion target uses an
+	 *         unsupported target type
+	 * @throws RuntimeException if the {@code value} can't be converted. This is
+	 *         the exception thrown by the <em>primitve</em> converter functions.
+	 */
+	T parse(final Row value);
 
 	@Override
 	default T apply(final Row row) {
 		return parse(row);
 	}
 
-	default ColumnParser<T> with(final Map<Class<?>, Function<String, ?>> converters) {
-		return columns -> parse(Row.of(converters, columns));
-	}
-
-	default ColumnParser<T> columns() {
-		return with(Map.of());
-	}
-
-	default ColumnParser<T> compos(Function<? super String[], ? extends Row> fn) {
-		return columns -> parse(fn.apply(columns));
-	}
-
+	/**
+	 * Creates a new row-parser for the given record {@code type}.
+	 *
+	 * @param type the record type
+	 * @return a new row-parser for the given record {@code type}
+	 * @param <T> the record type
+	 */
 	static <T extends Record> RowParser<T> of(final Class<T> type) {
 		final RecordComponent[] components = type.getRecordComponents();
 		final Constructor<T> ctor = ctor(type);
