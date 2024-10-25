@@ -40,7 +40,7 @@ public interface ColumnParser<T> extends Function<String[], T> {
 	 * Row column-parser with the <em>default</em> {@link Converter#DEFAULT}
 	 * converter.
 	 */
-	ColumnParser<Row> DEFAULT_ROW_PARSER = Row::new;
+	ColumnParser<RowRecord> DEFAULT_ROW_PARSER = RowRecord::new;
 
 	/**
 	 * Parses the {@code value} to an object of type {@code T}.
@@ -60,14 +60,14 @@ public interface ColumnParser<T> extends Function<String[], T> {
 	}
 
 	/**
-	 * Create a {@link Row} column-parser using the given {@code converter}.
+	 * Create a {@link RowRecord} column-parser using the given {@code converter}.
 	 *
-	 * @param converter the converter used for the {@link Row} object
-	 * @return a {@link Row} column-parser using the given {@code converter}
+	 * @param converter the converter used for the {@link RowRecord} object
+	 * @return a {@link RowRecord} column-parser using the given {@code converter}
 	 */
-	static ColumnParser<Row> withConverter(final Converter converter) {
+	static ColumnParser<RowRecord> withConverter(final Converter converter) {
 		requireNonNull(converter);
-		return value -> new Row(value, converter);
+		return value -> new RowRecord(value, converter);
 	}
 
 }
