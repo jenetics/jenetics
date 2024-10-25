@@ -21,8 +21,6 @@ package io.jenetics.incubator.csv;
 
 import java.util.function.Function;
 
-import io.jenetics.ext.util.CsvSupport;
-
 /**
  * Parser function for parsing a {@code String} line to a {@code String[]} array.
  *
@@ -31,10 +29,10 @@ import io.jenetics.ext.util.CsvSupport;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface LineParser extends Function<String, String[]> {
+public interface ColumnsParser extends Function<String, String[]> {
 
 	/**
-	 * Parses the {@code value} to an object of type {@code T}.
+	 * Parses the {@code value} to a {@code String[]} array.
 	 *
 	 * @param value the value to parse
 	 * @return the parsed value
