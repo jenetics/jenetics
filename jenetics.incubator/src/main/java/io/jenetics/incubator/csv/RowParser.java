@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface RowParser<T> extends Function<RowRecord, T> {
+public interface RowParser<T> extends Function<Row, T> {
 
 	/**
 	 * Parses the {@code value} to an object of type {@code T}.
@@ -47,10 +47,10 @@ public interface RowParser<T> extends Function<RowRecord, T> {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
-	T parse(final RowRecord value);
+	T parse(final Row value);
 
 	@Override
-	default T apply(final RowRecord row) {
+	default T apply(final Row row) {
 		return parse(row);
 	}
 

@@ -44,15 +44,19 @@ public class RowParserTest {
 			""";
 
 		record Entry(int population, String city, String country) {
+			static final RowParser<Entry> PARSER = RowParser.of(Entry.class);
+
+			/*
 			static final Function<String, Entry> PARSER =
 				RowParser.of(Entry.class)
 					.compose(ColumnParser.DEFAULT_ROW_PARSER)
 					.compose(new LineSplitter(new ColumnIndexes(4, 1, 0))::split);
+			 */
 		}
 
 		try (var lines = new LineReader().read(new StringReader(csv))) {
 			lines.skip(1)
-				.map(Entry.PARSER)
+				//.map(Entry.PARSER)
 				.forEach(System.out::println);
 		}
 	}

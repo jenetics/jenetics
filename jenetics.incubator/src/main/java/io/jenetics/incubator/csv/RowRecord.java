@@ -32,7 +32,7 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-public record RowRecord(String[] columns, Converter converter) {
+record RowRecord(String[] columns, Converter converter) implements Row {
 
 	public RowRecord {
 		requireNonNull(columns);
@@ -48,146 +48,64 @@ public record RowRecord(String[] columns, Converter converter) {
 		this(columns, Converter.DEFAULT);
 	}
 
-	/**
-	 * Return the of row values.
-	 *
-	 * @return the number of row values
-	 */
+	@Override
 	public int size() {
 		return columns.length;
 	}
 
-	/**
-	 * Checks if the value at the given {@code index} is empty.
-	 *
-	 * @param index the column index
-	 * @return {@code true} if the value at the given {@code index} is empty,
-	 *         {@code false} otherwise
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public boolean isEmptyAt(final int index) {
 		return columns[index] == null || columns[index].isEmpty();
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public String stringAt(final int index) {
 		return columns[index];
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public byte byteAt(final int index, final byte defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Byte.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public short shortAt(final int index, final short defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Short.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public int intAt(final int index, final int defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Integer.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public long longAt(final int index, final long defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Long.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public float floatAt(final int index, final float defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Float.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
+	@Override
 	public double doubleAt(final int index, final double defaultValue) {
 		return isEmptyAt(index)
 			? defaultValue
 			: requireNonNull(converter.convert(columns[index], Double.class));
 	}
 
-	/**
-	 * Return the value at the given {@code index} and tries to convert it into
-	 * the given {@code type}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @param type the target type
-	 * @return the value at the given {@code index}, or {@code null} if the
-	 *         value at the given {@code index} is empty
-	 * @param <T> the target type
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 * @throws UnsupportedOperationException if the conversion target {@code type}
-	 *         is not supported
-	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the registered converter function.
-	 */
+	@Override
 	public <T> T objectAt(final int index, final Class<T> type) {
 		requireNonNull(type);
 		if (isEmptyAt(index)) {
