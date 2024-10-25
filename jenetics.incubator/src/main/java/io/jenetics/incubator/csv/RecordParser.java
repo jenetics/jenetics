@@ -66,8 +66,9 @@ public interface RecordParser<T> extends Function<Row, T> {
 		final Constructor<T> ctor = ctor(type);
 
 		return row -> {
+			final int length = Math.min(components.length, row.size());
 			final Object[] values = new Object[components.length];
-			for (int i = 0; i < components.length; ++i) {
+			for (int i = 0; i < length; ++i) {
 				values[i] = row.objectAt(i, components[i].getType());
 			}
 			return create(ctor, values);

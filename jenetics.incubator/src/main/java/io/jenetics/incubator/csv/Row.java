@@ -54,7 +54,7 @@ public interface Row {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
 	 */
-	String stringAt(int index);
+	String at(int index);
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -139,5 +139,17 @@ public interface Row {
 	 *         the exception thrown by the registered converter function.
 	 */
 	<T> T objectAt(int index, Class<T> type);
+
+	/**
+	 * Return a new {@code Row} object from the given {@code columns} and
+	 * type {@code converter}.
+	 *
+	 * @param columns the columns of the row
+	 * @param converter the type converter
+	 * @return a new {@code Row} object
+	 */
+	static Row of(final String[] columns, final Converter converter) {
+		return new ColumnsRow(columns, converter);
+	}
 
 }

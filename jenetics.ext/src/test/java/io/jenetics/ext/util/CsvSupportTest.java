@@ -21,7 +21,11 @@ package io.jenetics.ext.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.testng.annotations.DataProvider;
@@ -328,6 +332,24 @@ public class CsvSupportTest {
 		final String expected = csv.replace(",\"\",", ",,");
 
 		assertThat(merged).isEqualToNormalizingNewlines(expected);
+	}
+
+	//@Test
+	public void performance() throws IOException {
+		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
+
+		for (int i = 0; i < 10; ++i) {
+			try (var reader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1)) {
+				final var start = System.currentTimeMillis();
+
+				final var count = CsvSupport.lines(reader).count();
+
+				final var time = System.currentTimeMillis() - start;
+				System.out.println("Count: " + count);
+				System.out.println("Time: " + time); // Time: 2030
+				System.setProperty("output", Long.toString(count));
+			}
+		}
 	}
 
 }

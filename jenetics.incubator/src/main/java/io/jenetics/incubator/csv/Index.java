@@ -17,25 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.csv;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.1
- */
-@SuppressWarnings("module")
-module io.jenetics.incubator {
-	requires io.jenetics.base;
-	requires io.jenetics.ext;
-	requires io.jenetics.prog;
-	requires java.desktop;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.combinatorial;
-	exports io.jenetics.incubator.csv;
-	exports io.jenetics.incubator.math;
-	exports io.jenetics.incubator.prog;
-	exports io.jenetics.incubator.util;
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Target({ElementType.RECORD_COMPONENT})
+public @interface Index {
+	int value();
 }

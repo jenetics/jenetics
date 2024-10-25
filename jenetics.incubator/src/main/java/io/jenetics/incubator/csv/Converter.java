@@ -37,7 +37,7 @@ import java.util.function.Function;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Converter class for converting strings to object of the given type.
+ * Converter class for converting strings to an object of the given type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

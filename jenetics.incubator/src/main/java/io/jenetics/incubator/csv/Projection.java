@@ -19,43 +19,33 @@
  */
 package io.jenetics.incubator.csv;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import io.jenetics.ext.util.CsvSupport;
 
 /**
- * Parser function for parsing a {@code String} line to a {@code String[]} array.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface ColumnsParser extends Function<String, String[]> {
-
-	/**
-	 * Parses the {@code value} to a {@code String[]} array.
-	 *
-	 * @param value the value to parse
-	 * @return the parsed value
-	 * @throws UnsupportedOperationException if the conversion target uses an
-	 *         unsupported target type
-	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the <em>primitive</em> converter functions.
-	 */
-	String[] parse(String value);
-
-	@Override
-	default String[] apply(final String line) {
-		return parse(line);
+final class Projection {
+	private Projection() {
 	}
 
-	static Supplier<ColumnsParser> of(final CsvSupport.LineSplitter splitter) {
-		requireNonNull(splitter);
-		return () -> splitter.copy()::split;
+	static CsvSupport.ColumnIndexes of(final Class<? extends Record> type) {
+		final var components = type.getRecordComponents();
+		final int[] projection = IntStream.range(0, components.length)
+			.map(i -> {
+				final var index = components[i].getAnnotation(Index.class);
+				if (index != null) {
+					return index.value();
+				} else {
+					return i;
+				}
+			})
+			.toArray();
+
+		return new CsvSupport.ColumnIndexes(projection);
 	}
 
 }

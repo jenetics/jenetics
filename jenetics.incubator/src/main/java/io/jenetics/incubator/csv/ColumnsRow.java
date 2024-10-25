@@ -59,7 +59,7 @@ record ColumnsRow(String[] columns, Converter converter) implements Row {
 	}
 
 	@Override
-	public String stringAt(final int index) {
+	public String at(final int index) {
 		return columns[index];
 	}
 

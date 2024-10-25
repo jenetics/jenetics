@@ -19,24 +19,12 @@
  */
 package io.jenetics.incubator.csv;
 
-import java.io.StringReader;
-import java.util.function.Supplier;
-
 import org.testng.annotations.Test;
-
-import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
-import io.jenetics.ext.util.CsvSupport.LineReader;
-import io.jenetics.ext.util.CsvSupport.LineSplitter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class RecordParserTest {
-
-	private static final Supplier<ColumnsParser> COLS_PARSER =
-		ColumnsParser.of(new LineSplitter(new ColumnIndexes(4, 1, 0)));
-
-	private static final RowParser ROW_PARSER = RowParser.of(Converter.DEFAULT);
+public class CsvReaderTest {
 
 	@Test
 	public void parse() {
@@ -44,22 +32,22 @@ public class RecordParserTest {
 			Country,City,AccentCity,Region,Population,Latitude,Longitude
 			ad,aixas,Aixàs,06,123123,42.4833333,1.4666667
 			ad,aixirivali,Aixirivali,06,234234,42.4666667,1.5
-			ad,aixirivall,Aixirivall,06,456,42.4666667,1.5
+			ad,aixirivall,Aixirivall,06,456,42.4666667
 			ad,aixirvall,Aixirvall,06,678,42.4666667,1.5
 			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
 			""";
 
-		record Entry(int population, String city, String country) {
-			static final RecordParser<Entry> PARSER = RecordParser.of(Entry.class);
-		}
+		record Entry(
+			@Index(4) int population,
+			@Index(1) String city,
+			@Index(0) String country
+		) {}
 
-		try (var lines = new LineReader().read(new StringReader(csv))) {
-			lines.skip(1)
-				.map(COLS_PARSER.get())
-				.map(ROW_PARSER)
-				.map(Entry.PARSER)
-				.forEach(System.out::println);
-		}
+		final CsvReader<Entry> reader = CsvReader.builder()
+			.headers(1)
+			.build(Entry.class);
+
+		reader.parse(csv).forEach(System.out::println);
 	}
 
 }
