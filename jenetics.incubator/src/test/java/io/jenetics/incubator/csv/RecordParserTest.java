@@ -19,18 +19,16 @@
  */
 package io.jenetics.incubator.csv;
 
-import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
 import io.jenetics.ext.util.CsvSupport.LineReader;
-import io.jenetics.ext.util.CsvSupport.LineSplitter;
+
 import org.testng.annotations.Test;
 
 import java.io.StringReader;
-import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class RowParserTest {
+public class RecordParserTest {
 
 	@Test
 	public void parse() {
@@ -44,7 +42,7 @@ public class RowParserTest {
 			""";
 
 		record Entry(int population, String city, String country) {
-			static final RowParser<Entry> PARSER = RowParser.of(Entry.class);
+			static final RecordParser<Entry> PARSER = RecordParser.of(Entry.class);
 
 			/*
 			static final Function<String, Entry> PARSER =
