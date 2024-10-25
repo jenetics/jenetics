@@ -3,8 +3,8 @@ package io.jenetics.incubator.csv;
 import java.io.Reader;
 import java.util.List;
 
-public interface CsvParser<T> {
+public interface CsvReader<T> {
 
-	List<T> parse(Reader reader);
+	List<T> read(Reader reader);
 
 }
