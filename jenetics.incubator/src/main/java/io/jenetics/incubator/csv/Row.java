@@ -86,7 +86,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
@@ -101,7 +101,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
@@ -116,7 +116,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
@@ -131,7 +131,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
@@ -146,7 +146,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
@@ -161,7 +161,7 @@ public record Row(String[] columns, Converter converter) {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code devaultValue}
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})

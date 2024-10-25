@@ -45,7 +45,7 @@ public interface RowParser<T> extends Function<Row, T> {
 	 * @throws UnsupportedOperationException if the conversion target uses an
 	 *         unsupported target type
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the <em>primitve</em> converter functions.
+	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
 	T parse(final Row value);
 
