@@ -334,19 +334,22 @@ public class CsvSupportTest {
 		assertThat(merged).isEqualToNormalizingNewlines(expected);
 	}
 
-	//@Test
+	@Test
 	public void performance() throws IOException {
 		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
 
 		for (int i = 0; i < 10; ++i) {
 			try (var reader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1)) {
 				final var start = System.currentTimeMillis();
+				final var splitter = new LineSplitter(Quote.ZERO);
 
-				final var count = CsvSupport.lines(reader).count();
+				final var count = CsvSupport.lines(reader)
+					.map(splitter::split)
+					.count();
 
 				final var time = System.currentTimeMillis() - start;
 				System.out.println("Count: " + count);
-				System.out.println("Time: " + time); // Time: 2030
+				System.out.println("Time: " + time); // Time: 1350
 				System.setProperty("output", Long.toString(count));
 			}
 		}

@@ -21,11 +21,9 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -73,7 +71,7 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.1
+ * @version !__version__!
  * @since 8.1
  */
 public final class CsvSupport {
@@ -352,7 +350,7 @@ public final class CsvSupport {
 		requireNonNull(csv);
 		requireNonNull(mapper);
 
-		try (var rows = rows(new CharSeqReader(csv))) {
+		try (var rows = rows(new CharSequenceReader(csv))) {
 			return rows
 				.map(mapper)
 				.collect(Collectors.toUnmodifiableList());
@@ -576,14 +574,13 @@ public final class CsvSupport {
 			requireNonNull(reader);
 
 			final var result = new IOValue<>(resources -> {
-				final var br = reader instanceof BufferedReader r
-					? resources.use(r)
-					: resources.use(new BufferedReader(reader));
+				final var rdr = resources.use(reader);
+				final var rcc = new ReaderCursor(rdr);
 
-				final var line = new StringBuilder();
+				final var line = new CharAppender();
 				final Supplier<String> nextLine = () -> {
 					try {
-						return nextLine(br, line) ? line.toString() : null;
+						return nextLine(rcc, line) ? line.toString() : null;
 					} catch (IOException e) {
 						throw new UncheckedIOException(e);
 					}
@@ -598,10 +595,10 @@ public final class CsvSupport {
 			);
 		}
 
-		private boolean nextLine(final Reader reader, final StringBuilder line)
+		private boolean nextLine(final ReaderCursor chars, final CharAppender line)
 			throws IOException
 		{
-			line.setLength(0);
+			line.reset();
 
 			boolean quoted = false;
 			boolean escaped = false;
@@ -610,7 +607,7 @@ public final class CsvSupport {
 			int next = -2;
 			int i = 0;
 
-			while (next >= 0 || (i = reader.read()) != -1) {
+			while (next >= 0 || (i = chars.next()) != -1) {
 				final char current = next != -2 ? (char)next : (char)i;
 				next = -2;
 
@@ -622,7 +619,7 @@ public final class CsvSupport {
 					}
 				} else if (current == quote.value) {
 					if (quoted) {
-						if (!escaped && (next = reader.read()) == quote.value) {
+						if (!escaped && (next = chars.next()) == quote.value) {
 							escaped = true;
 						} else {
 							if (escaped) {
@@ -641,13 +638,13 @@ public final class CsvSupport {
 
 				if (eol) {
 					eol = false;
-					if (!line.isEmpty()) {
+					if (line.nonEmpty()) {
 						return true;
 					}
 				}
 			}
 
-			return !line.isEmpty();
+			return line.nonEmpty();
 		}
 	}
 
@@ -772,7 +769,7 @@ public final class CsvSupport {
 		 */
 		public String[] split(final CharSequence line) {
 			columns.clear();
-			final StringBuilder column = new StringBuilder();
+			final CharAppender column = new CharAppender();
 
 			boolean quoted = false;
 			boolean escaped = false;
@@ -870,9 +867,9 @@ public final class CsvSupport {
 			return columns.toArray();
 		}
 
-		private void add(final StringBuilder column) {
+		private void add(final CharAppender column) {
 			columns.add(column.toString());
-			column.setLength(0);
+			column.reset();
 		}
 
 		private boolean isTokenSeparator(final char c) {
@@ -894,8 +891,8 @@ public final class CsvSupport {
 	/**
 	 * Column collection, which is backed up by a string list.
 	 */
-	private static final class ColumnList {
-		private final List<String> columns = new ArrayList<>();
+	static final class ColumnList {
+		private final StringList columns = new StringList();
 		private final ColumnIndexes projection;
 
 		private int index = 0;
@@ -971,7 +968,7 @@ public final class CsvSupport {
 			for (int i = columns.size(); i < projection.values.length; ++i) {
 				columns.add(null);
 			}
-			return columns.toArray(String[]::new);
+			return columns.toArray();
 		}
 
 	}
@@ -1200,13 +1197,13 @@ public final class CsvSupport {
 	/**
 	 * Simple and fast char-sequence reader.
 	 */
-	static final class CharSeqReader extends Reader {
+	static final class CharSequenceReader extends Reader {
 		private static final int EOF = -1;
 
 		private final CharSequence seq;
 		private int idx;
 
-		CharSeqReader(final CharSequence seq) {
+		CharSequenceReader(final CharSequence seq) {
 			this.seq = requireNonNull(seq);
 		}
 
@@ -1246,6 +1243,147 @@ public final class CsvSupport {
 		@Override
 		public void close() {
 		}
+	}
+
+
+	/**
+	 * Cursor <em>view</em> on a reader. Ovoids locking when reading chars.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	final static class ReaderCursor {
+		private static final int SIZE = 1024;
+		private final char[] buffer = new char[SIZE];
+		private final Reader reader;
+
+		private int count;
+		private int index;
+
+		ReaderCursor(final Reader reader) {
+			this.reader = requireNonNull(reader);
+			index = count = 0;
+		}
+
+		public int next() throws IOException {
+			if (index >= count) {
+				fill();
+				if (index >= count) {
+					return -1;
+				}
+			}
+			return buffer[index++];
+		}
+
+		private void fill() throws IOException {
+			int n;
+			do {
+				n = reader.read(buffer, 0, buffer.length);
+			} while (n == 0);
+
+			if (n > 0) {
+				count = n;
+				index = 0;
+			}
+		}
+	}
+
+	/**
+	 * Allows appending chars in bulks to {@link StringBuilder}.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	static final class CharAppender {
+		private static final int SIZE = 512;
+		private final StringBuilder builder = new StringBuilder(SIZE);
+		private final char[] buffer = new char[SIZE];
+
+		private int index = 0;
+		private int count = 0;
+
+		CharAppender() {
+		}
+
+		boolean nonEmpty() {
+			return count != 0;
+		}
+
+		void append(final char c) {
+			if (index >= buffer.length) {
+				builder.append(buffer);
+				index = 0;
+			}
+
+			++count;
+			buffer[index++] = c;
+		}
+
+		@Override
+		public String toString() {
+			if (count <= buffer.length) {
+				return new String(buffer, 0, count);
+			}
+			if (index > 0) {
+				builder.append(buffer, 0, index);
+			}
+			return builder.toString();
+		}
+
+		void reset() {
+			index = 0;
+			count = 0;
+			builder.setLength(0);
+		}
+	}
+
+	/**
+	 * Simple growing list of strings.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	static final class StringList {
+		private static final int SIZE = 16;
+		private String[] elements;
+		private int size;
+
+		StringList() {
+			size = 0;
+			elements = new String[SIZE];
+		}
+
+		public int size() {
+			return size;
+		}
+
+		public void add(final String value) {
+			if (size == elements.length) {
+				increaseSize(elements.length*2);
+			}
+			elements[size++] = value;
+		}
+
+		public void set(final int index, final String value) {
+			elements[index] = value;
+		}
+
+		public void clear() {
+			size = 0;
+		}
+
+		public String[] toArray() {
+			final var result = new String[size];
+			System.arraycopy(elements, 0, result, 0, size);
+			return result;
+		}
+
+		private void increaseSize(final int newSize) {
+			final String[] newElements = new String[newSize];
+			System.arraycopy(elements, 0, newElements, 0, size);
+			elements = newElements;
+		}
+
 	}
 
 }
