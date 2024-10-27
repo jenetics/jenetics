@@ -334,7 +334,7 @@ public class CsvSupportTest {
 		assertThat(merged).isEqualToNormalizingNewlines(expected);
 	}
 
-	@Test
+	//@Test
 	public void performance() throws IOException {
 		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
 
