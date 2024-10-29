@@ -265,7 +265,6 @@ public final class Lifecycle {
 	 * interface but needs some cleanup work to do after usage. In the following
 	 * example the created {@code file} is automatically deleted when leaving the
 	 * {@code try} block.
-	 *
 	 * {@snippet lang="java":
 	 * // Create the closeable file.
 	 * final Value<Path, IOException> file = new Value<>(
@@ -317,7 +316,6 @@ public final class Lifecycle {
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
-		 *
 		 * {@snippet lang = "java":
 		 * final Value<Stream<Object>, IOException> result = new Value<>(resources -> {
 		 *     final var fin = resources.use(new FileInputStream(file.toFile()), Closeable::close);
@@ -384,7 +382,6 @@ public final class Lifecycle {
 		 * released, by calling the defined <em>release</em> method. The typical
 		 * use case for this method is when additional initialization of the
 		 * value is needed.
-		 *
 		 * {@snippet lang="java":
 		 * final var file = CloseableValue.of(
 		 *     Files.createFile(Path.of("some_file")),
@@ -395,7 +392,7 @@ public final class Lifecycle {
 		 * file.trying(f -> f.toFile().deleteOnExit());
 		 *
 		 * try (file) {
-		 *     // Do something with temp file.
+		 *     // Do something with the temp file.
 		 * }
 		 * }
 		 *
@@ -429,7 +426,6 @@ public final class Lifecycle {
 	 * interface but needs some cleanup work to do after usage. In the following
 	 * example the created {@code file} is automatically deleted when leaving the
 	 * {@code try} block.
-	 *
 	 * {@snippet lang="java":
 	 * // Create the closeable file.
 	 * final IOValue<Path> file = new IOValue<>(
@@ -472,7 +468,6 @@ public final class Lifecycle {
 		 * in the case of an error. If the <em>value</em> could be created, the
 		 * caller is responsible for closing the opened <em>resources</em> by
 		 * calling the {@link Value#close()} method.
-		 *
 		 * {@snippet lang = "java":
 		 * final IOValue<Stream<Object>> result = new IOValue<>(resources -> {
 		 *     final var fin = resources.use(new FileInputStream(file.toFile()));
@@ -527,7 +522,6 @@ public final class Lifecycle {
 	 * Using the {@code Resources} class can simplify the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
-	 *
 	 * {@snippet lang = "java":
 	 * try (var resources = new Resources<IOException>()) {
 	 *     final var fin = resources.use(new FileInputStream(file), Closeable::close);
@@ -627,7 +621,6 @@ public final class Lifecycle {
 	 * Using the {@code IOResources} class can simplify the creation of
 	 * dependent input streams, where it might be otherwise necessary to create
 	 * nested {@code try-with-resources} blocks.
-	 *
 	 * {@snippet lang = "java":
 	 * try (var resources = new IOResources()) {
 	 *     final var fin = resources.use(new FileInputStream(file));
@@ -702,7 +695,6 @@ public final class Lifecycle {
 	 * of the method invocations throws an exception. The first exception thrown
 	 * is rethrown after invoking the method on the remaining objects, all other
 	 * exceptions are swallowed.
-	 *
 	 * {@snippet lang="java":
 	 * final var streams = new ArrayList<InputStream>();
 	 * streams.add(new FileInputStream(file1));

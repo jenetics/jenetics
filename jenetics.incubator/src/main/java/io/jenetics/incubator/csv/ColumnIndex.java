@@ -25,9 +25,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target({ElementType.RECORD_COMPONENT})
-public @interface Index {
+public @interface ColumnIndex {
 	int value();
 }

@@ -54,7 +54,7 @@ public interface Row {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
 	 */
-	String at(int index);
+	String stringAt(int index);
 
 	/**
 	 * Return the value at the given {@code index}.

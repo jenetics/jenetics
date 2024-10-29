@@ -112,7 +112,9 @@ public final class Converter {
 	}
 
 	/**
-	 * Convert the given string {@code value} to the desired {@code type}.
+	 * Convert the given string {@code value} to the desired {@code type}. If
+	 * the given input {@code value} is {@code null}, the converter method
+	 * also returns {@code null}.
 	 *
 	 * @param value the string value to convert
 	 * @param type the target type

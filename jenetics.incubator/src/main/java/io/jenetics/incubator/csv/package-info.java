@@ -17,35 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.csv;
-
-import java.util.stream.IntStream;
-
-import io.jenetics.ext.util.CsvSupport;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * This package contains classes for reading and writing CSV data.
  */
-final class Projection {
-	private Projection() {
-	}
-
-	static CsvSupport.ColumnIndexes of(final Class<? extends Record> type) {
-		final var components = type.getRecordComponents();
-		final int[] projection = IntStream.range(0, components.length)
-			.map(i -> {
-				final var index = components[i].getAnnotation(ColumnIndex.class);
-				if (index != null) {
-					return index.value();
-				} else {
-					return i;
-				}
-			})
-			.toArray();
-
-		return new CsvSupport.ColumnIndexes(projection);
-	}
-
-}
+package io.jenetics.incubator.csv;

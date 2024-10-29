@@ -22,37 +22,32 @@ package io.jenetics.incubator.csv;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * Parser function for parsing a {@link ColumnsRow} to an object of type {@code T}.
+ * Constructor function for constructing a record of type {@code T} from a
+ * CSV {@link Row}.
  *
- * @param <T> the target type
+ * @param <T> the record type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface RecordParser<T> extends Function<Row, T> {
+public interface RecordCtor<T> {
 
 	/**
-	 * Parses the {@code value} to an object of type {@code T}.
+	 * Creates a new record of type {@code T} from the given {@link Row} value.
 	 *
-	 * @param value the value to parse
-	 * @return the parsed value
+	 * @param row the CSV row
+	 * @return the constructed record
 	 * @throws UnsupportedOperationException if the conversion target uses an
 	 *         unsupported target type
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
-	T parse(final Row value);
-
-	@Override
-	default T apply(final Row row) {
-		return parse(row);
-	}
+	T apply(final Row row);
 
 	/**
 	 * Creates a new row-parser for the given record {@code type}.
@@ -61,7 +56,7 @@ public interface RecordParser<T> extends Function<Row, T> {
 	 * @return a new row-parser for the given record {@code type}
 	 * @param <T> the record type
 	 */
-	static <T extends Record> RecordParser<T> of(final Class<T> type) {
+	static <T extends Record> RecordCtor<T> of(final Class<T> type) {
 		final RecordComponent[] components = type.getRecordComponents();
 		final Constructor<T> ctor = ctor(type);
 

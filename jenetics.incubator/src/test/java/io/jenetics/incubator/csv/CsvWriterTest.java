@@ -20,7 +20,6 @@
 package io.jenetics.incubator.csv;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,26 +33,10 @@ import io.jenetics.ext.util.CsvSupport;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CsvReaderTest {
-
-	record FullEntry(
-		String country,
-		String city,
-		String accentCity,
-		String region,
-		Integer population,
-		double latitude,
-		double longitude
-	) {}
-
-	record PartialEntry(
-		@ColumnIndex(4) Integer population,
-		@ColumnIndex(1) String city,
-		@ColumnIndex(0) String country
-	) {}
+public class CsvWriterTest {
 
 	@Test
-	public void parse() {
+	public void write() {
 		final var csv = """
 			Country,City,AccentCity,Region,Population,Latitude,Longitude
 			ad,aixas,Aixàs,06,123123,42.4833333,1.4666667
@@ -63,39 +46,45 @@ public class CsvReaderTest {
 			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
 			""";
 
-		final CsvReader<PartialEntry> reader = CsvReader.builder()
+		final CsvReader<CsvReaderTest.PartialEntry> reader = CsvReader.builder()
 			.headers(1)
-			.build(PartialEntry.class);
+			.build(CsvReaderTest.PartialEntry.class);
 
-		final List<PartialEntry> entries = reader.parse(csv);
-		assertThat(entries).hasSize(5);
-		assertThat(entries.getFirst().population).isEqualTo(123123);
+		final List<CsvReaderTest.PartialEntry> records = reader.parse(csv);
+		records.forEach(System.out::println);
+
+		final CsvWriter<CsvReaderTest.PartialEntry> writer = CsvWriter.builder()
+			.header("Country", "City", "AccentCity", "Region", "Population",
+				"Latitude", "Longitude")
+			.embedding(4, 1, 0, 6)
+			.build(CsvReaderTest.PartialEntry.class);
+
+		writer.write(records, System.out);
 	}
 
 	@Test
-	public void performance() throws IOException {
-		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
+	public void processing() throws IOException {
+		final var sourcePath = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
+		final var targetPath = Path.of("/home/fwilhelm/Temp/worldcitiespop_target.txt");
+		Files.deleteIfExists(targetPath);
 
-		for (int i = 0; i < 10; ++i) {
-			try (var reader = Files.newBufferedReader(path, ISO_8859_1)) {
-				final var start = System.currentTimeMillis();
+		final CsvReader<CsvReaderTest.PartialEntry> reader = CsvReader.builder()
+			.headers(1)
+			.quote(CsvSupport.Quote.ZERO)
+			.build(CsvReaderTest.PartialEntry.class);
 
-				final var rdr = CsvReader.builder()
-					.headers(1)
-					.quote(CsvSupport.Quote.ZERO)
-					.build(FullEntry.class);
+		final CsvWriter<CsvReaderTest.PartialEntry> writer = CsvWriter.builder()
+			.header("Country", "City", "AccentCity", "Region", "Population",
+				"Latitude", "Longitude")
+			.embedding(4, 1, 0, 6)
+			.build(CsvReaderTest.PartialEntry.class);
 
-				final var count = rdr
-					.read(reader)
-					.count();
-
-				final var time = System.currentTimeMillis() - start;
-
-				System.out.println("Count: " + count);
-				System.out.println("Time: " + time);
-				System.setProperty("output", Long.toString(count));
-			}
+		try (var in = Files.newBufferedReader(sourcePath, ISO_8859_1);
+			var out = Files.newBufferedWriter(targetPath, ISO_8859_1))
+		{
+			writer.write(reader.read(in), out);
 		}
+
 	}
 
 }
