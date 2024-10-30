@@ -134,7 +134,7 @@ public final class Converter {
 			);
 		}
 
-		if (value == null) {
+		if (value == null || value.isEmpty()) {
 			return null;
 		}
 

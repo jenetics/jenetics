@@ -24,13 +24,40 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 
+/**
+ * Interface for deconstructing records into CSV rows.
+ *
+ * @param <T> the record type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
 public interface RecordDtor<T> {
 
+	/**
+	 * Deconstructs the given {@code record} into its stringified components.
+	 *
+	 * @param record the record to deconstruct
+	 * @return the deconstructed record
+	 */
 	String[] unapply(T record);
 
+	/**
+	 * Creates a new record deconstructor for the given record {@code type} and
+	 * {@code converter}.
+	 *
+	 * @param type the record type
+	 * @param formatter the formatter to use for converting the record components
+	 *        to CSV row columns
+	 * @return a new record deconstructor
+	 * @param <T> the record type
+	 */
 	static <T extends Record> RecordDtor<T>
 	of(final Class<T> type, final Formatter formatter) {
+		requireNonNull(type);
 		requireNonNull(formatter);
+
 		final RecordComponent[] components = type.getRecordComponents();
 
 		return record -> {
@@ -41,10 +68,6 @@ public interface RecordDtor<T> {
 			}
 			return values;
 		};
-	}
-
-	static <T extends Record> RecordDtor<T> of(final Class<T> type) {
-		return of(type, Formatter.DEFAULT);
 	}
 
 	private static Object get(RecordComponent component, Object record) {

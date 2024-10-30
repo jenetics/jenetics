@@ -35,18 +35,52 @@ import io.jenetics.ext.util.CsvSupport.Quote;
 import io.jenetics.ext.util.CsvSupport.Separator;
 
 /**
+ * Writes records in CSV format.
  *
- * @param <T>
+ * @param <T> the record type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface CsvWriter<T> {
 
-	long write(final Stream<T> stream, final Appendable writer);
+	/**
+	 * CSV writer with the given <em>default</em> values:
+	 * <ul>
+	 *     <li><b>Quote:</b> {@code "}</li>
+	 *     <li><b>Separator:</b> {@code ,}</li>
+	 *     <li><b>Headers:</b> {@code null}</li>
+	 * </ul>
+	 */
+	CsvWriter<String[]> DEFAULT = CsvWriter.builder().build();
 
-	default int write(final List<T> stream, final Appendable writer) {
-		return (int)write(stream.stream(), writer);
+	/**
+	 * Write the given {@code records} to the given {@code writer}.
+	 *
+	 * @param records the records to write
+	 * @param writer the record sink
+	 * @return the number of written records
+	 */
+	long write(final Stream<? extends T> records, final Appendable writer);
+
+	/**
+	 * Write the given {@code records} to the given {@code writer}.
+	 *
+	 * @param records the records to write
+	 * @param writer the record sink
+	 * @return the number of written records
+	 */
+	default int write(final List<? extends T> records, final Appendable writer) {
+		return (int)write(records.stream(), writer);
 	}
 
+	/**
+	 * Create a new CSV writer builder.
+	 *
+	 * @return a new CSV writer builder
+	 */
 	static Builder builder() {
 		return new Builder();
 	}
@@ -58,9 +92,10 @@ public interface CsvWriter<T> {
 		private Separator separator = Separator.DEFAULT;
 		private Quote quote = Quote.DEFAULT;
 		private ColumnIndexes embedding = ColumnIndexes.ALL;
-		private Formatter formatter = Formatter.DEFAULT;
 		private String[] header = null;
 
+		private Builder() {
+		}
 
 		/**
 		 * Set the CSV quote character.
@@ -129,17 +164,6 @@ public interface CsvWriter<T> {
 		}
 
 		/**
-		 * The record element formatter.
-		 *
-		 * @param formatter the record element formatter
-		 * @return {@code this} builder
-		 */
-		public Builder formatter(final Formatter formatter) {
-			this.formatter = requireNonNull(formatter);
-			return this;
-		}
-
-		/**
 		 * The number of header lines, which will be skipped.
 		 *
 		 * @param header the number of header lines to be skipped
@@ -151,7 +175,7 @@ public interface CsvWriter<T> {
 		}
 
 		/**
-		 * Builds a CSV reader, which reads the rows as {@code String[]} columns.
+		 * Builds a CSV writer, which writes {@code String[]} columns.
 		 *
 		 * @return {@code String[]} columns reader
 		 */
@@ -181,40 +205,43 @@ public interface CsvWriter<T> {
 			};
 		}
 
+		/**
+		 * CSV writer which deconstructs and writes records of type {@code T}.
+		 *
+		 * @param dtor the record deconstructor
+		 * @return a new CSV writer
+		 * @param <T> the record type
+		 */
 		public <T> CsvWriter<T> build(final RecordDtor<? super T> dtor) {
 			requireNonNull(dtor);
 
-			final var header = this.header;
-			final var separator = this.separator;
-			final var quote = this.quote;
-			final var embedding = this.embedding;
-			final var joiner = new ColumnJoiner(separator, quote, embedding);
-
-			return (values, writer) -> {
-				final var count = new AtomicLong();
-
-				final Stream<String> hdr = header != null
-					? Stream.ofNullable(new ColumnJoiner(separator, quote).join(header))
-					: Stream.empty();
-
-				Stream.concat(
-						hdr,
-						values
-							.map(dtor::unapply)
-							.map(joiner::join)
-					)
-					.forEach(line -> {
-						writeln(line, writer);
-						count.getAndIncrement();
-					});
-
-				flush(writer);
-				return count.get();
-			};
+			final var base = build();
+			return (values, writer) ->
+				base.write(values.map(dtor::unapply), writer);
 		}
 
-		public <T extends Record> CsvWriter<T> build(final Class<T> type) {
+		/**
+		 * CSV writer which deconstructs and writes records of type {@code T}.
+		 *
+		 * @param type the record type
+		 * @param formatter the string formatter used for record deconstruction
+		 * @return a new CSV writer
+		 * @param <T> the record type
+		 */
+		public <T extends Record> CsvWriter<T>
+		build(final Class<T> type, final Formatter formatter) {
 			return build(RecordDtor.of(type, formatter));
+		}
+
+		/**
+		 * CSV writer which deconstructs and writes records of type {@code T}.
+		 *
+		 * @param type the record type
+		 * @return a new CSV writer
+		 * @param <T> the record type
+		 */
+		public <T extends Record> CsvWriter<T> build(final Class<T> type) {
+			return build(type, Formatter.DEFAULT);
 		}
 
 	}

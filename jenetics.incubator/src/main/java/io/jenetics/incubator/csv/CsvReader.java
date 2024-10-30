@@ -21,8 +21,7 @@ package io.jenetics.incubator.csv;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Reader;
-import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -34,6 +33,8 @@ import io.jenetics.ext.util.CsvSupport.Separator;
 
 /**
  * Reads a CSV as a list of objects.
+ *
+ * @param <T> the record type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -63,7 +64,7 @@ public interface CsvReader<T> {
 	 * @param reader the CSV source reader
 	 * @return the lazy record stream
 	 */
-	Stream<T> read(Reader reader);
+	Stream<T> read(Readable reader);
 
 	/**
 	 * Reads the CSV records as {@link List} from the given {@code reader}.
@@ -71,7 +72,7 @@ public interface CsvReader<T> {
 	 * @param reader the CSV source reader
 	 * @return the record list
 	 */
-	default List<T> readAll(Reader reader) {
+	default List<T> readAll(Readable reader) {
 		try (var lines = read(reader)) {
 			return lines.toList();
 		}
@@ -84,7 +85,7 @@ public interface CsvReader<T> {
 	 * @return the parsed CSV records
 	 */
 	default List<T> parse(String csv) {
-		return readAll(new StringReader(csv));
+		return readAll(CharBuffer.wrap(csv));
 	}
 
 	/**
@@ -103,9 +104,11 @@ public interface CsvReader<T> {
 		private Separator separator = Separator.DEFAULT;
 		private Quote quote = Quote.DEFAULT;
 		private ColumnIndexes projection = ColumnIndexes.ALL;
-		private Converter converter = Converter.DEFAULT;
 		private String comment = "";
 		private int headers = 0;
+
+		private Builder() {
+		}
 
 		/**
 		 * Set the CSV quote character.
@@ -174,17 +177,6 @@ public interface CsvReader<T> {
 		}
 
 		/**
-		 * The column type converter.
-		 *
-		 * @param converter the type converter
-		 * @return {@code this} builder
-		 */
-		public Builder converter(final Converter converter) {
-			this.converter = requireNonNull(converter);
-			return this;
-		}
-
-		/**
 		 * Lines, starting with this string will be skipped.
 		 *
 		 * @param comment the comment string
@@ -243,12 +235,29 @@ public interface CsvReader<T> {
 		 * @param <T> the record type
 		 */
 		public <T> CsvReader<T> build(final RecordCtor<? extends T> ctor) {
-			final var converter = this.converter;
-			final var base = build();
+			requireNonNull(ctor);
 
-			return reader -> base.read(reader)
-				.map(columns -> Row.of(columns, converter))
-				.map(ctor::apply);
+			final var base = build();
+			return reader -> base.read(reader).map(ctor::apply);
+		}
+
+		/**
+		 * Return a CSV reader, which parses the rows with the given row
+		 * {@code type}. The row type must be a {@link Record} for being parsed
+		 * automatically.
+		 *
+		 * @param type the record type
+		 * @param converter the converter to use for converting the string
+		 *        columns of the CSV row
+		 * @return a new record CSV reader
+		 * @param <T> the record type
+		 */
+		public <T extends Record> CsvReader<T>
+		build(final Class<T> type, final Converter converter) {
+			if (projection.equals(ColumnIndexes.ALL)) {
+				projection(Projection.of(type));
+			}
+			return build(RecordCtor.of(type, converter));
 		}
 
 		/**
@@ -261,11 +270,9 @@ public interface CsvReader<T> {
 		 * @param <T> the record type
 		 */
 		public <T extends Record> CsvReader<T> build(final Class<T> type) {
-			if (projection.equals(ColumnIndexes.ALL)) {
-				projection(Projection.of(type));
-			}
-			return build(RecordCtor.of(type));
+			return build(type, Converter.DEFAULT);
 		}
+
 
 	}
 

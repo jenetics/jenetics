@@ -37,8 +37,8 @@ import java.util.function.Function;
 public final class Formatter {
 
 	private static final Map<Class<?>, Function<?, String>> DEFAULT_CONVERTERS =
-		Map.ofEntries(
-			Map.entry(Object.class, Objects::toString)
+		Map.of(
+			Object.class, Objects::toString
 		);
 
 	/**
@@ -85,18 +85,21 @@ public final class Formatter {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the registered converter function.
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> String format(final T value) {
 		if (value == null) {
 			return null;
 		}
 
-		@SuppressWarnings("unchecked")
-		final var formatter = (Function<T, String>)formatters.get(value.getClass());
+		var formatter = (Function<T, String>)formatters.get(value.getClass());
 		if (formatter == null) {
-			return value.toString();
-		} else {
-			return formatter.apply(value);
+			formatter = (Function<T, String>)formatters.get(Object.class);
+			if (formatter == null) {
+				formatter = Object::toString;
+			}
 		}
+
+		return formatter.apply(value);
 	}
 
 	/**
@@ -137,11 +140,8 @@ public final class Formatter {
 		 * @param <T> the target type
 		 */
 		public <T> Builder
-		add(Class<T> type, Function<? super T, String> formatter) {
-			requireNonNull(type);
-			requireNonNull(formatter);
-
-			formatters.put(type, formatter);
+		add(final Class<T> type, final Function<? super T, String> formatter) {
+			formatters.put(requireNonNull(type), requireNonNull(formatter));
 			return this;
 		}
 

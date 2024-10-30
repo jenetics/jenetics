@@ -20,5 +20,9 @@
 
 /**
  * This package contains classes for reading and writing CSV data.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 package io.jenetics.incubator.csv;

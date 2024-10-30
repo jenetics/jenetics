@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.csv;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
@@ -26,7 +28,7 @@ import java.util.stream.Stream;
 
 /**
  * Constructor function for constructing a record of type {@code T} from a
- * CSV {@link Row}.
+ * CSV {@code String[]} row.
  *
  * @param <T> the record type
  *
@@ -38,7 +40,8 @@ import java.util.stream.Stream;
 public interface RecordCtor<T> {
 
 	/**
-	 * Creates a new record of type {@code T} from the given {@link Row} value.
+	 * Constructs a new record of type {@code T} from the given {@code String[]}
+	 * array row.
 	 *
 	 * @param row the CSV row
 	 * @return the constructed record
@@ -47,24 +50,31 @@ public interface RecordCtor<T> {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the <em>primitive</em> converter functions.
 	 */
-	T apply(final Row row);
+	T apply(final String[] row);
 
 	/**
-	 * Creates a new row-parser for the given record {@code type}.
+	 * Creates a new record constructor for the given record {@code type} and
+	 * {@code converter}.
 	 *
 	 * @param type the record type
+	 * @param converter the converter to use for converting the string
+	 *        columns of the CSV row
 	 * @return a new row-parser for the given record {@code type}
 	 * @param <T> the record type
 	 */
-	static <T extends Record> RecordCtor<T> of(final Class<T> type) {
+	static <T extends Record> RecordCtor<T>
+	of(final Class<T> type, final Converter converter) {
+		requireNonNull(type);
+		requireNonNull(converter);
+
 		final RecordComponent[] components = type.getRecordComponents();
 		final Constructor<T> ctor = ctor(type);
 
 		return row -> {
-			final int length = Math.min(components.length, row.size());
+			final int length = Math.min(components.length, row.length);
 			final Object[] values = new Object[components.length];
 			for (int i = 0; i < length; ++i) {
-				values[i] = row.objectAt(i, components[i].getType());
+				values[i] = converter.convert(row[i], components[i].getType());
 			}
 			return create(ctor, values);
 		};

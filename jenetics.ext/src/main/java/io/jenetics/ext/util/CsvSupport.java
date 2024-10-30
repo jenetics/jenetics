@@ -22,8 +22,8 @@ package io.jenetics.ext.util;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.UncheckedIOException;
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -252,14 +252,14 @@ public final class CsvSupport {
 	 * The returned stream must be closed by the caller, which also closes the
 	 * CSV {@code reader}.
 	 *
-	 * @see #readAllLines(Reader)
+	 * @see #readAllLines(Readable)
 	 *
 	 * @param reader the CSV source reader. The reader is automatically closed
 	 *        when the returned line stream is closed.
 	 * @return the stream of CSV lines
 	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 */
-	public static Stream<String> lines(final Reader reader) {
+	public static Stream<String> lines(final Readable reader) {
 		return LineReader.DEFAULT.read(reader);
 	}
 
@@ -274,14 +274,14 @@ public final class CsvSupport {
 	 * The returned stream must be closed by the caller, which also closes the
 	 * CSV {@code reader}.
 	 *
-	 * @see #readAllRows(Reader)
+	 * @see #readAllRows(Readable)
 	 *
 	 * @param reader the CSV source reader. The reader is automatically closed
 	 *        when the returned line stream is closed.
 	 * @return the stream of CSV rows
 	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 */
-	public static Stream<String[]> rows(final Reader reader) {
+	public static Stream<String[]> rows(final Readable reader) {
 		final var splitter = new LineSplitter();
 		return lines(reader).map(splitter::split);
 	}
@@ -292,14 +292,14 @@ public final class CsvSupport {
 	 * part of a quoted column. For reading the CSV lines, the default quote
 	 * character, {@link Quote#DEFAULT}, is used.
 	 *
-	 * @see #lines(Reader)
+	 * @see #lines(Readable)
 	 *
 	 * @param reader the reader stream to split into CSV lines
 	 * @return the list of CSV lines
 	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 * @throws IOException if reading the CSV lines fails
 	 */
-	public static List<String> readAllLines(final Reader reader)
+	public static List<String> readAllLines(final Readable reader)
 		throws IOException
 	{
 		try (var lines = lines(reader)) {
@@ -316,14 +316,14 @@ public final class CsvSupport {
 	 * character, {@link Quote#DEFAULT}, is used. Then each line is split into
 	 * its columns using the default separator character.
 	 *
-	 * @see #rows(Reader)
+	 * @see #rows(Readable)
 	 *
 	 * @param reader the reader stream to split into CSV lines
 	 * @return the list of CSV rows
 	 * @throws NullPointerException if the given {@code reader} is {@code null}
 	 * @throws IOException if reading the CSV lines fails
 	 */
-	public static List<String[]> readAllRows(final Reader reader)
+	public static List<String[]> readAllRows(final Readable reader)
 		throws IOException
 	{
 		try (var rows = rows(reader)) {
@@ -350,7 +350,7 @@ public final class CsvSupport {
 		requireNonNull(csv);
 		requireNonNull(mapper);
 
-		try (var rows = rows(new CharSequenceReader(csv))) {
+		try (var rows = rows(CharBuffer.wrap(csv))) {
 			return rows
 				.map(mapper)
 				.collect(Collectors.toUnmodifiableList());
@@ -520,7 +520,7 @@ public final class CsvSupport {
 	 *     """;
 	 *
 	 * final var reader = new LineReader(new Quote('"'));
-	 * try (Stream<String> lines = reader.read(new StringReader(csv))) {
+	 * try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
 	 *     lines.forEach(System.out::println);
 	 * }
 	 * }
@@ -567,20 +567,35 @@ public final class CsvSupport {
 		 * similar control structure to ensure that the stream's open file is
 		 * closed promptly after the stream's operations have completed.
 		 *
-		 * @param reader the reader from which to read the CSV content
+		 * @param readable the readable from which to read the CSV content
 		 * @return the CSV lines from the file as a {@code Stream}
 		 */
-		public Stream<String> read(final Reader reader) {
-			requireNonNull(reader);
+		public Stream<String> read(final Readable readable) {
+			requireNonNull(readable);
 
-			final var result = new IOValue<>(resources -> {
-				final var rdr = resources.use(reader);
-				final var rcc = new ReaderCursor(rdr);
+			final IOValue<Stream<String>> result = new IOValue<>(resources -> {
+				final Readable rdr = resources.use(
+					readable,
+					resource -> {
+						if (resource instanceof AutoCloseable closeable) {
+							try {
+								closeable.close();
+							} catch (IOException | RuntimeException | Error e) {
+								throw e;
+							} catch (Exception e) {
+								throw new IOException(e);
+							}
+						}
+					}
+				);
 
+				final var source = CharCursor.of(rdr);
 				final var line = new CharAppender();
+
 				final Supplier<String> nextLine = () -> {
+					line.reset();
 					try {
-						return nextLine(rcc, line) ? line.toString() : null;
+						return nextLine(source, line) ? line.toString() : null;
 					} catch (IOException e) {
 						throw new UncheckedIOException(e);
 					}
@@ -595,11 +610,9 @@ public final class CsvSupport {
 			);
 		}
 
-		private boolean nextLine(final ReaderCursor chars, final CharAppender line)
+		private boolean nextLine(final CharCursor chars, final CharAppender line)
 			throws IOException
 		{
-			line.reset();
-
 			boolean quoted = false;
 			boolean escaped = false;
 			boolean eol = false;
@@ -644,7 +657,18 @@ public final class CsvSupport {
 				}
 			}
 
+			if (quoted) {
+				throw new IllegalArgumentException(
+					"Unbalanced quote character: '%s'."
+						.formatted(toString(line))
+				);
+			}
 			return line.nonEmpty();
+		}
+
+		private static String toString(final Object value) {
+			final var line = value.toString();
+			return line.length() > 15 ? line.substring(0, 15) + "..." : line;
 		}
 	}
 
@@ -669,10 +693,11 @@ public final class CsvSupport {
 	 * @since 8.1
 	 */
 	public static final class LineSplitter {
-
-		private final ColumnList columns;
 		private final Separator separator;
 		private final Quote quote;
+
+		private final ColumnList columns;
+		private final CharAppender column = new CharAppender();
 
 		/**
 		 * Create a new line splitter with the given parameters.
@@ -695,9 +720,9 @@ public final class CsvSupport {
 				);
 			}
 
-			this.columns = new ColumnList(projection);
 			this.separator = separator;
 			this.quote = quote;
+			this.columns = new ColumnList(projection);
 		}
 
 		/**
@@ -769,7 +794,7 @@ public final class CsvSupport {
 		 */
 		public String[] split(final CharSequence line) {
 			columns.clear();
-			final CharAppender column = new CharAppender();
+			column.reset();
 
 			boolean quoted = false;
 			boolean escaped = false;
@@ -794,11 +819,11 @@ public final class CsvSupport {
 								if (next != -1 && separator.value != next) {
 									throw new IllegalArgumentException("""
 										Only separator character, '%s', allowed \
-										after quote, but found '%c'.
+										after quote, but found '%c':
 										%s
 										""".formatted(
 											separator.value,
-											next,
+										next,
 											toErrorDesc(line, i + 1)
 										)
 									);
@@ -813,15 +838,16 @@ public final class CsvSupport {
 						if (previous != -1 && separator.value != previous) {
 							throw new IllegalArgumentException("""
 								Only separator character, '%s', allowed before \
-								quote, but found '%c'.
+								quote, but found '%c':
 								%s
 								""".formatted(
 									separator.value,
-									previous,
+								previous,
 									toErrorDesc(line, Math.max(i - 1, 0))
 								)
 							);
 						}
+
 						quoted = true;
 						quoteIndex = i;
 					}
@@ -833,17 +859,17 @@ public final class CsvSupport {
 						full = columns.isFull();
 					}
 				} else {
-					int j = i;
-
 					// Read till the next token separator.
+					int j = i;
 					char c;
-					while (j < n && !isTokenSeparator(c = line.charAt(j))) {
+					while (j < line.length() && !isTokenSeparator(c = line.charAt(j))) {
 						column.append(c);
 						++j;
 					}
-					if (j != i) {
+					if (j != i - 1) {
 						i = j - 1;
 					}
+
 					if (!quoted) {
 						add(column);
 						full = columns.isFull();
@@ -1194,97 +1220,132 @@ public final class CsvSupport {
 		}
 	}
 
-	/**
-	 * Simple and fast char-sequence reader.
-	 */
-	static final class CharSequenceReader extends Reader {
-		private static final int EOF = -1;
+	static final class CharSequenceCursor {
+		private final CharSequence chars;
 
-		private final CharSequence seq;
-		private int idx;
+		int previous;
+		char current;
+		int next;
+		int index = 0;
 
-		CharSequenceReader(final CharSequence seq) {
-			this.seq = requireNonNull(seq);
+		private CharSequenceCursor(final CharSequence chars) {
+			this.chars = requireNonNull(chars);
 		}
 
-		@Override
-		public int read() {
-			return idx >= seq.length() ? EOF : seq.charAt(idx++);
+		boolean hasNext() {
+			return index < chars.length();
 		}
 
-		@Override
-		public int read(final char[] cbuf, final int offset, final int length) {
-			requireNonNull(cbuf);
-
-			if (idx >= seq.length()) {
-				return EOF;
-			} else if (length >= 0 && offset >= 0 && offset + length <= cbuf.length) {
-				int count = 0;
-
-				for(int i = 0; i < length; ++i) {
-					int c = read();
-					if (c == EOF) {
-						return count;
-					}
-
-					cbuf[offset + i] = (char)c;
-					++count;
-				}
-
-				return count;
+		void advance() {
+			if (index == 0) {
+				previous = -1;
+				current = chars.charAt(0);
+				next = 1 < chars.length() ? chars.charAt(1) : -1;
+				++index;
 			} else {
-				throw new IndexOutOfBoundsException(
-					"Buffer size=%d, offset=%d, length=%d."
-						.formatted(cbuf.length, offset, length)
-				);
+				previous = current;
+				current = (char)next;
+				++index;
+				next = index < chars.length() ? chars.charAt(index) : -1;
 			}
 		}
 
-		@Override
-		public void close() {
+		void set(int i) {
+			previous = i > 0 ? chars.charAt(i - 1) : -1;
+			current = chars.charAt(i);
+			next = i + 1 < chars.length() ? chars.charAt(i + 1) : -1;
+			index = i + 1;
 		}
 	}
 
-
 	/**
-	 * Cursor <em>view</em> on a reader. Ovoids locking when reading chars.
+	 * Character source interface.
 	 *
 	 * @since !__version__!
 	 * @version !__version__!
 	 */
-	final static class ReaderCursor {
+	sealed interface CharCursor {
+		/**
+		 * Return the next character or -1 if there is no one.
+		 *
+		 * @return the next character or -1 if there is no one
+		 * @throws IOException if reading the next character failed
+		 */
+		int next() throws IOException;
+
+		/**
+		 * Return the correct kind of {@code CharCursor}, depending on the
+		 * given {@code readable} type
+		 *
+		 * @param readable the character source
+		 * @return a new character cursor
+		 */
+		static CharCursor of(final Readable readable) {
+			return readable instanceof CharBuffer cb
+				? new CharBufferCharCursor(cb)
+				: new ReadableCharCursor(readable);
+		}
+	}
+
+	/**
+	 * Cursor <em>view</em> on a readable object.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	static final class ReadableCharCursor implements CharCursor {
 		private static final int SIZE = 1024;
-		private final char[] buffer = new char[SIZE];
-		private final Reader reader;
+		private final Readable readable;
+		private final CharBuffer buffer;
 
-		private int count;
-		private int index;
-
-		ReaderCursor(final Reader reader) {
-			this.reader = requireNonNull(reader);
-			index = count = 0;
+		ReadableCharCursor(final Readable readable) {
+			this.readable = requireNonNull(readable);
+			this.buffer = CharBuffer.allocate(SIZE).flip();
 		}
 
+		@Override
 		public int next() throws IOException {
-			if (index >= count) {
-				fill();
-				if (index >= count) {
+			if (!buffer.hasRemaining()) {
+				if (!fill()) {
 					return -1;
 				}
 			}
-			return buffer[index++];
+
+			return buffer.get();
 		}
 
-		private void fill() throws IOException {
+		private boolean fill() throws IOException {
 			int n;
+			int i = 0;
+			buffer.clear();
 			do {
-				n = reader.read(buffer, 0, buffer.length);
-			} while (n == 0);
+				n = readable.read(buffer);
+			} while (n == 0 && i++ < 1000); // Make sure re-read will terminate.
+			buffer.flip();
 
-			if (n > 0) {
-				count = n;
-				index = 0;
+			return n > 0;
+		}
+	}
+
+	/**
+	 * Cursor <em>view</em> on a character buffer.
+	 *
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	static final class CharBufferCharCursor implements CharCursor {
+		private final CharBuffer buffer;
+
+		CharBufferCharCursor(final CharBuffer buffer) {
+			this.buffer = requireNonNull(buffer);
+		}
+
+		@Override
+		public int next() {
+			if (!buffer.hasRemaining()) {
+				return -1;
 			}
+			return buffer.get();
 		}
 	}
 
@@ -1295,45 +1356,39 @@ public final class CsvSupport {
 	 * @version !__version__!
 	 */
 	static final class CharAppender {
-		private static final int SIZE = 512;
-		private final StringBuilder builder = new StringBuilder(SIZE);
-		private final char[] buffer = new char[SIZE];
+		private static final int SIZE = 32;
 
+		private char[] buffer = new char[SIZE];
 		private int index = 0;
-		private int count = 0;
 
 		CharAppender() {
 		}
 
 		boolean nonEmpty() {
-			return count != 0;
+			return index != 0;
 		}
 
 		void append(final char c) {
-			if (index >= buffer.length) {
-				builder.append(buffer);
-				index = 0;
+			if (index == buffer.length) {
+				increaseSize(buffer.length*2);
 			}
 
-			++count;
 			buffer[index++] = c;
 		}
 
 		@Override
 		public String toString() {
-			if (count <= buffer.length) {
-				return new String(buffer, 0, count);
-			}
-			if (index > 0) {
-				builder.append(buffer, 0, index);
-			}
-			return builder.toString();
+			return String.valueOf(buffer, 0, index);
 		}
 
 		void reset() {
 			index = 0;
-			count = 0;
-			builder.setLength(0);
+		}
+
+		private void increaseSize(final int newSize) {
+			final char[] newBuffer = new char[newSize];
+			System.arraycopy(buffer, 0, newBuffer, 0, index);
+			buffer = newBuffer;
 		}
 	}
 
