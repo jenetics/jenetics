@@ -70,7 +70,7 @@ public class CsvReaderTest {
 		final List<PartialEntry> entries = reader.parse(csv);
 		entries.forEach(System.out::println);
 		assertThat(entries).hasSize(5);
-		//assertThat(entries.getFirst().population).isEqualTo(123123);
+		assertThat(entries.getFirst().population).isEqualTo(123123);
 	}
 
 	//@Test
