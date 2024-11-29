@@ -125,4 +125,29 @@ public class HistogramSeparatorsTest {
 		Histogram.Separators.of(1,2, 0);
 	}
 
+	@Test
+	public void slice() {
+		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		assertThat(seps.slice(2, -2).values())
+			.isEqualTo(new double[] {2, 3, 4, 5, 6, 7, 8});
+	}
+
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void invalidSlice() {
+		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		seps.slice(-1);
+	}
+
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void invalidSlice2() {
+		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		seps.slice(1, 100);
+	}
+
+	@Test(expectedExceptions = IndexOutOfBoundsException.class)
+	public void invalidSlice3() {
+		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		seps.slice(1, -100);
+	}
+
 }

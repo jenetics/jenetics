@@ -19,10 +19,11 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.internal.util.Requires;
+import static java.util.Objects.requireNonNull;
+
 import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.internal.util.Requires;
 
 /**
  *
