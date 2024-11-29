@@ -43,13 +43,16 @@ dependencies {
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
-	implementation(libs.commons.math)
+	implementation(libs.commons.math4)
+	implementation(libs.commons.statistics.distribution)
 
 	testImplementation(libs.assertj)
+	testImplementation(libs.commons.numbers.combinatorics)
+	testImplementation(libs.commons.numbers.gamma)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.guava)
-	testImplementation(libs.testng)
 	testImplementation(libs.jpx)
+	testImplementation(libs.testng)
 
 	jmh(libs.commons.csv)
 	jmh(libs.javacsv)
@@ -62,6 +65,12 @@ tasks.test { dependsOn(tasks.compileJmhJava) }
 jmh {
 	includes.add(".*ErfcPerf.*")
 }
+
+/*
+tasks.withType<JavaCompile> {
+	options.compilerArgs.add("--add-modules ALL-MODULE-PATH")
+}
+*/
 
 tasks.javadoc {
 	val doclet = options as StandardJavadocDocletOptions

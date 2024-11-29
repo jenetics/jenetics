@@ -17,17 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.stat.HypothesisTester.Accept;
+import io.jenetics.incubator.stat.HypothesisTester.Reject;
+import io.jenetics.util.DoubleRange;
+import org.apache.commons.math4.legacy.stat.inference.ChiSquareTest;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
-
-import io.jenetics.testfixtures.stat.HypothesisTester.Accept;
-import io.jenetics.testfixtures.stat.HypothesisTester.Reject;
-import io.jenetics.util.DoubleRange;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

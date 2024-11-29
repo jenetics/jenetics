@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

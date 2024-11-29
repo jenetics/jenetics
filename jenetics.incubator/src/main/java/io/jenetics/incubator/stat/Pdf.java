@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 /**
- * The cumulative distribution function.
+ * Probability density function.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 @FunctionalInterface
-public interface Cdf {
+public interface Pdf {
 	double apply(double value);
 }

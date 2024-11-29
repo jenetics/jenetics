@@ -17,13 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
-
-import static java.util.Objects.requireNonNull;
-
-import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+package io.jenetics.incubator.stat;
 
 import io.jenetics.internal.util.Requires;
+import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  *
@@ -83,7 +82,7 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 	}
 
 	double maxChi2(final int degreesOfFreedom) {
-		return new ChiSquaredDistribution(degreesOfFreedom)
+		return ChiSquaredDistribution.of(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - p);
 	}
 
