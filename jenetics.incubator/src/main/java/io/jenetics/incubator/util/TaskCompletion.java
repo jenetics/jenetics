@@ -42,7 +42,6 @@ import java.util.stream.Stream;
  * This execution service executes the tasks in exactly the same order as they
  * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
  * <em>concurrently</em>.
- *
  * {@snippet lang="java":
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
  * final var results = new ArrayList<Integer>();

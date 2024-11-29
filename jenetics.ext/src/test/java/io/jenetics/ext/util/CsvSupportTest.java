@@ -21,7 +21,11 @@ package io.jenetics.ext.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.testng.annotations.DataProvider;
@@ -304,6 +308,51 @@ public class CsvSupportTest {
 			third,4.0,35
 			fourth,5.0,33
 			""");
+	}
+
+	@Test
+	public void correctness() {
+		final var csv = """
+			Year,Make,Model,Description,Price
+			1997,Ford,E350,"ac, abs, moon",3000.00
+			1999,Chevy,"Venture ""Extended Edition""\","",4900.00
+			1996,Jeep,Grand Cherokee,"MUST SELL!
+			air, moon roof, loaded",4799.00
+			1999,Chevy,"Venture ""Extended Edition, Very Large""\",,5000.00
+			,,"Venture ""Extended Edition""\","",4900.00
+			""";
+
+		final List<String[]> parsed = CsvSupport.parse(csv);
+		assertThat(parsed).hasSize(6);
+		parsed.forEach(row -> assertThat(row).hasSize(5));
+
+		final String merged = parsed.stream()
+			.map(CsvSupport::join)
+			.collect(CsvSupport.toCsv());
+		final String expected = csv.replace(",\"\",", ",,");
+
+		assertThat(merged).isEqualToNormalizingNewlines(expected);
+	}
+
+	//@Test
+	public void performance() throws IOException {
+		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
+
+		for (int i = 0; i < 10; ++i) {
+			try (var reader = Files.newBufferedReader(path, StandardCharsets.ISO_8859_1)) {
+				final var start = System.currentTimeMillis();
+				final var splitter = new LineSplitter(Quote.ZERO);
+
+				final var count = CsvSupport.lines(reader)
+					.map(splitter::split)
+					.count();
+
+				final var time = System.currentTimeMillis() - start;
+				System.out.println("Count: " + count);
+				System.out.println("Time: " + time); // Time: 1350
+				System.setProperty("output", Long.toString(count));
+			}
+		}
 	}
 
 }

@@ -60,7 +60,7 @@ open class Lyx2PDFTask : DefaultTask() {
 		)
 		builder.directory(workingDir)
 		builder.redirectErrorStream(true)
-		logger.debug("${workingDir}/${documentName}")
+		logger.debug("{}/{}", workingDir, documentName)
 
 		try {
 			val process = builder.start()
@@ -93,8 +93,8 @@ open class Lyx2PDFTask : DefaultTask() {
 			val builder = ProcessBuilder(BINARY, "-version")
 
 			return try {
-				val process = builder.start();
-				process.waitFor() == 0;
+				val process = builder.start()
+				process.waitFor() == 0
 			} catch (e: IOException) {
 				false
 			} catch (e: InterruptedException) {

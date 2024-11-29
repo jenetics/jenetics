@@ -213,8 +213,7 @@ public final class DoubleAdder
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleAdder other &&
+		return obj instanceof DoubleAdder other &&
 			Double.compare(doubleValue(), other.doubleValue()) == 0;
 	}
 

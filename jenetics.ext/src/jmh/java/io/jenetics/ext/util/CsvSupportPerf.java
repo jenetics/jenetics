@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.csv;
+package io.jenetics.ext.util;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
@@ -49,8 +49,6 @@ import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
-
-import io.jenetics.ext.util.CsvSupport;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -230,4 +228,16 @@ CsvSupportPerf.parseSuperCSV    avgt   20  30.959 ± 0.043  ms/op
 CsvSupportPerf.read             avgt   20   3.911 ± 0.011  ms/op
 CsvSupportPerf.scan             avgt   20  15.739 ± 0.042  ms/op
 CsvSupportPerf.split            avgt   20  17.168 ± 0.088  ms/op
+ */
+/*
+-- 2024.10.27
+Benchmark                       Mode  Cnt   Score   Error  Units
+CsvSupportPerf.parseCommonsCSV  avgt   20  86.489 ± 0.575  ms/op
+CsvSupportPerf.parseCsvSupport  avgt   20  25.611 ± 0.499  ms/op
+CsvSupportPerf.parseJavaCSV     avgt   20  26.151 ± 0.671  ms/op
+CsvSupportPerf.parseOpenCSV     avgt   20  29.932 ± 0.586  ms/op
+CsvSupportPerf.parseSuperCSV    avgt   20  30.921 ± 0.126  ms/op
+CsvSupportPerf.read             avgt   20   4.125 ± 0.059  ms/op
+CsvSupportPerf.scan             avgt   20  16.098 ± 0.205  ms/op
+CsvSupportPerf.split            avgt   20  16.725 ± 0.204  ms/op
  */
