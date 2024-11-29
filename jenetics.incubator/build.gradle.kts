@@ -42,9 +42,9 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
-	implementation("com.fasterxml.jackson.core:jackson-databind:2.14.0")
 	implementation(libs.commons.math4)
 	implementation(libs.commons.statistics.distribution)
+	implementation(libs.jackson.databind)
 
 	testImplementation(libs.assertj)
 	testImplementation(libs.commons.numbers.combinatorics)
