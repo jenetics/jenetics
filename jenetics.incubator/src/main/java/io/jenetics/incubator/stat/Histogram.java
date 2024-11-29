@@ -195,31 +195,29 @@ public record Histogram(
 
 
 	/**
-	 * This class represents the bucket separators of the histogram.
+	 * This class represents the bucket <em>separators</em> of a histogram. The
+	 * graph below shows the separators and the associated buckets.
 	 * <pre>{@code
-	 * min                                          max
-	 *  +----+----+----+----+----+----+----+----+----+
-	 *  0    1    2    3    4    5    6    7    8    9
+	 * -Ꝏ     min                                          max    Ꝏ
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *       0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10    Buckets
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *          0    1    2    3    4    5    6    7    8    9       Separators
 	 * }</pre>
+	 * The number of buckets is the number of separators plus one.
 	 */
 	public static final class Separators {
-
 		private final double[] _separators;
 
 		/**
 		 * Create a new {@code Separators} object from the given {@code separators}.
+		 * If no separator is given, this object defines only one bucket.
 		 *
 		 * @param separators the separator values
-		 * @throws IllegalArgumentException if {@code separators.length < 3},
-		 *         the separator values are not finite or not unique
+		 * @throws IllegalArgumentException if the separator values are not
+		 *         finite or not unique
 		 */
 		public Separators(final double... separators) {
-			if (separators.length < 3) {
-				throw new IllegalArgumentException("""
-					At least three separators, which form two buckets are \
-					required, but found %d.""".formatted(separators.length)
-				);
-			}
 			for (var separator : separators) {
 				if (!Double.isFinite(separator)) {
 					throw new IllegalArgumentException(
@@ -241,25 +239,33 @@ public record Histogram(
 				}
 			}
 
-			_separators = result;
+			_separators = result.clone();
 		}
 
 		/**
-		 * Return the minimal separator value.
+		 * Return the minimal separator value. If no separator is defined,
+		 * -{@link Double#MAX_VALUE} is returned.
 		 *
-		 * @return the minimal separator value
+		 * @return the minimal separator value or -{@link Double#MAX_VALUE}
+		 *         if no separator value is defined
 		 */
 		public double min() {
-			return _separators[0];
+			return _separators.length > 0
+				? _separators[0]
+				: -Double.MAX_VALUE;
 		}
 
 		/**
-		 * Return the maximal separator value.
+		 * Return the maximal separator value. If no separator is defined,
+		 * {@link Double#MAX_VALUE} is returned.
 		 *
-		 * @return the maximal separator value
+		 * @return the maximal separator value {@link Double#MAX_VALUE}
+		 * 		  if no separator value is defined
 		 */
 		public double max() {
-			return _separators[_separators.length - 1];
+			return _separators.length > 0
+				? _separators[_separators.length - 1]
+				: Double.MAX_VALUE;
 		}
 
 		/**
@@ -291,12 +297,18 @@ public record Histogram(
 		}
 
 		/**
-		 * Do binary search for the bucket index of the given value.
+		 * Return the bucket index for the given value. A binary search is
+		 * performed for finding the bucket index. If no separator is defined,
+		 * this method will return zero, since there is only one big bucket.
 		 *
 		 * @param value the value to search
 		 * @return the bucket index
 		 */
 		public int bucketIndexOf(final double value) {
+			if (_separators.length == 0) {
+				return 0;
+			}
+
 			int low = 0;
 			int high = length() - 1;
 
@@ -338,22 +350,26 @@ public record Histogram(
 		/**
 		 * Return a new separator object with the given <em>finite</em>
 		 * {@code min} and {@code max} separator values and given number of
-		 * classes.
+		 * classes between minimal and maximal values.
 		 * <pre>{@code
-		 *        min                                           max
-		 *         +----+----+----+----+----+----+----+  ~  +----+
-		 *           1    2    3    4     5   6    7          nc
+		 * -Ꝏ     min                                          max    Ꝏ
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *       0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10    Buckets
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *          0    1    2    3    4    5    6    7    8    9       Separators
 		 * }</pre>
 		 * The length of the created {@code Separator} class will be
 		 * {@code nclasses + 1} with equally spaced separators of
-		 * {@code (max - min)/nclasses}.
+		 * {@code (max - min)/nclasses}. {@code nclasses} will also define
+		 * {@code nclasses + 1} buckets.
 		 *
 		 * @param min the minimum separator value, inclusively
 		 * @param max the maximum separator value, exclusively
-		 * @param nclasses the number of classes
+		 * @param nclasses the number of classes between the {@code min} and
+		 *        {@code max} values
 		 * @return a new separator object
 		 * @throws IllegalArgumentException if {@code min >= max} or {@code min}
-		 *         or {@code max} are not finite or {@code nclasses < 2}
+		 *         or {@code max} are not finite or {@code nclasses < 1}
 		 */
 		public static Separators of(
 			final double min,
@@ -365,9 +381,9 @@ public record Histogram(
 					"Invalid border: [min=%f, max=%f].".formatted(min, max)
 				);
 			}
-			if (nclasses < 2) {
+			if (nclasses < 1) {
 				throw new IllegalArgumentException(
-					"Number of classes must at least two: %d."
+					"Number of classes must at least one: %d."
 						.formatted(nclasses)
 				);
 			}
@@ -386,7 +402,7 @@ public record Histogram(
 	}
 
 	/**
-	 * Represents the actual frequency data of the histogram.
+	 * Represents the actual frequency data for each bucket of the histogram.
 	 * <pre>{@code
 	 * -Ꝏ     min                                          max    Ꝏ
 	 *     -----+----+----+----+----+----+----+----+----+----+-----
