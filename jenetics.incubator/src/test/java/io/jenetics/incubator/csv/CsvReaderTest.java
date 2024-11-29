@@ -73,7 +73,7 @@ public class CsvReaderTest {
 		//assertThat(entries.getFirst().population).isEqualTo(123123);
 	}
 
-	@Test
+	//@Test
 	public void performance() throws IOException {
 		final var path = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
 

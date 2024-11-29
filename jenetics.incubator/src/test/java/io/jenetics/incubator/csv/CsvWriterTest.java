@@ -62,7 +62,7 @@ public class CsvWriterTest {
 		writer.write(records, System.out);
 	}
 
-	@Test
+	//@Test
 	public void processing() throws IOException {
 		final var sourcePath = Path.of("/home/fwilhelm/Workspace/Datasets/worldcitiespop.txt");
 		final var targetPath = Path.of("/home/fwilhelm/Temp/worldcitiespop_target.txt");
