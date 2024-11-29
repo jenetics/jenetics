@@ -206,28 +206,27 @@ public record Histogram(
 	 * }</pre>
 	 * The number of buckets is the number of separators plus one.
 	 */
-	public static final class Separators {
-		private final double[] _separators;
+	public record Separators(double... values) {
 
 		/**
 		 * Create a new {@code Separators} object from the given {@code separators}.
 		 * If no separator is given, this object defines only one bucket.
 		 *
-		 * @param separators the separator values
+		 * @param values the separator values
 		 * @throws IllegalArgumentException if the separator values are not
 		 *         finite or not unique
 		 */
-		public Separators(final double... separators) {
-			for (var separator : separators) {
+		public Separators {
+			for (var separator : values) {
 				if (!Double.isFinite(separator)) {
 					throw new IllegalArgumentException(
 						"All separator values must be finite: %s."
-							.formatted(Arrays.toString(separators))
+							.formatted(Arrays.toString(values))
 					);
 				}
 			}
 
-			final var result = separators.clone();
+			final var result = values.clone();
 			Arrays.sort(result);
 
 			for (int i = 1; i < result.length; ++i) {
@@ -239,7 +238,12 @@ public record Histogram(
 				}
 			}
 
-			_separators = result.clone();
+			values = result.clone();
+		}
+
+		@Override
+		public double[] values() {
+			return values.clone();
 		}
 
 		/**
@@ -250,9 +254,7 @@ public record Histogram(
 		 *         if no separator value is defined
 		 */
 		public double min() {
-			return _separators.length > 0
-				? _separators[0]
-				: -Double.MAX_VALUE;
+			return values.length > 0 ? values[0] : -Double.MAX_VALUE;
 		}
 
 		/**
@@ -263,18 +265,7 @@ public record Histogram(
 		 * 		  if no separator value is defined
 		 */
 		public double max() {
-			return _separators.length > 0
-				? _separators[_separators.length - 1]
-				: Double.MAX_VALUE;
-		}
-
-		/**
-		 * Return the minimal and maximal separator values.
-		 *
-		 * @return the minimal and maximal separator values
-		 */
-		public DoubleRange range() {
-			return DoubleRange.of(min(), max());
+			return values.length > 0 ? values[values.length - 1] : Double.MAX_VALUE;
 		}
 
 		/**
@@ -283,7 +274,7 @@ public record Histogram(
 		 * @return the number of separators
 		 */
 		public int length() {
-			return _separators.length;
+			return values.length;
 		}
 
 		/**
@@ -293,7 +284,7 @@ public record Histogram(
 		 * @return the separator at the given index.
 		 */
 		public double at(final int index) {
-			return _separators[index];
+			return values[index];
 		}
 
 		/**
@@ -305,7 +296,7 @@ public record Histogram(
 		 * @return the bucket index
 		 */
 		public int bucketIndexOf(final double value) {
-			if (_separators.length == 0) {
+			if (values.length == 0) {
 				return 0;
 			}
 
@@ -313,17 +304,17 @@ public record Histogram(
 			int high = length() - 1;
 
 			while (low <= high) {
-				if (value < at(low)) {
+				if (value < values[low]) {
 					return low;
 				}
-				if (value >= at(high)) {
+				if (value >= values[high]) {
 					return high + 1;
 				}
 
 				final int mid = (low + high) >>> 1;
-				if (value < at(mid)) {
+				if (value < values[mid]) {
 					high = mid;
-				} else if (value >= at(mid)) {
+				} else if (value >= values[mid]) {
 					low = mid + 1;
 				}
 			}
@@ -333,18 +324,18 @@ public record Histogram(
 
 		@Override
 		public int hashCode() {
-			return Arrays.hashCode(_separators);
+			return Arrays.hashCode(values);
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
 			return obj instanceof Separators sep &&
-				Arrays.equals(_separators, sep._separators);
+				Arrays.equals(values, sep.values);
 		}
 
 		@Override
 		public String toString() {
-			return Arrays.toString(_separators);
+			return Arrays.toString(values);
 		}
 
 		/**
@@ -558,7 +549,7 @@ public record Histogram(
 	 * @return the closed range of the histogram
 	 */
 	public DoubleRange range() {
-		return separators.range();
+		return DoubleRange.of(separators.min(), separators.max());
 	}
 
 	/**
