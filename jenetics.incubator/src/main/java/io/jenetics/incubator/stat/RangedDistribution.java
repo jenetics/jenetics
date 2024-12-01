@@ -17,17 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.util;
+package io.jenetics.incubator.stat;
 
-import org.testng.ITestResult;
-import org.testng.util.RetryAnalyzerCount;
+import io.jenetics.stat.Sampler;
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class RetryOnce extends RetryAnalyzerCount {
+record RangedDistribution(Distribution distribution, DoubleRange range)
+	implements Distribution
+{
 	@Override
-	public boolean retryMethod(ITestResult result) {
-		return getCount() <= 1;
+	public Sampler sampler() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Cdf cdf() {
+		final var origin = distribution.cdf();
+
+		return x -> {
+			if (x < range.min()) {
+				return 0;
+			}
+			if (x >= range.max()) {
+				return 1;
+			}
+
+			return origin.apply(x);
+		};
+	}
+
+	@Override
+	public Pdf pdf() {
+		return distribution.pdf();
 	}
 }

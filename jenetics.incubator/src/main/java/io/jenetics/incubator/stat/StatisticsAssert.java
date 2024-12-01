@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
+import org.apache.commons.math4.legacy.stat.inference.ChiSquareTest;
 
-import io.jenetics.testfixtures.stat.HypothesisTester.Accept;
-import io.jenetics.testfixtures.stat.HypothesisTester.Reject;
+import io.jenetics.incubator.stat.HypothesisTester.Accept;
+import io.jenetics.incubator.stat.HypothesisTester.Reject;
 import io.jenetics.util.DoubleRange;
 
 /**
@@ -61,12 +61,12 @@ public final class StatisticsAssert {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, Double.MIN_VALUE))
 				.toArray();
-			final long[] hist = _observation.frequencies().histogram();
+			final long[] hist = _observation.frequencies().slice(1, -1).values();
 
 			final var maxChi2 = PearsonChi2Tester.P_001
 				.maxChi2(hist.length - 1);
 			final var chi2 = new ChiSquareTest()
-				.chiSquare(exp, _observation.frequencies().histogram());
+				.chiSquare(exp, hist);
 
 			if (chi2 > maxChi2) {
 				throw new AssertionError(

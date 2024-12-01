@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -26,6 +26,8 @@ import static java.util.Objects.requireNonNull;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -94,142 +96,54 @@ public record Histogram(
 {
 
 	/**
-	 * Histogram build class.
-	 */
-	public static final class Builder implements DoubleConsumer {
-		private final Separators _separators;
-		private final long[] _frequencies;
-		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
-
-		/**
-		 * Create a <i>histogram</i> builder with the given {@code separators}.
-		 * The created <i>histogram</i> will have the following structure:
-		 * <pre>{@code
-		 * -Ꝏ     min                                          max    Ꝏ
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *       0    1    2    3    4    5    6    7    8    9    10
-		 * }</pre>
-		 *
-		 * @throws NullPointerException if {@code separators} is {@code null}.
-		 */
-		public Builder(Separators separators) {
-			_separators = requireNonNull(separators);
-			_frequencies = new long[separators.length() + 1];
-		}
-
-		@Override
-		public void accept(double value) {
-			++_frequencies[_separators.bucketIndexOf(value)];
-			_statistics.accept(value);
-		}
-
-		/**
-		 * Combine the given {@code other} histogram with {@code this} one.
-		 *
-		 * @param other the histogram to add.
-		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
-		 *         separators of {@code this} and the given {@code histogram} are
-		 *         different.
-		 * @throws NullPointerException if the given {@code histogram} is
-		 *         {@code null}.
-		 */
-		public void combine(final Builder other) {
-			if (!_separators.equals(other._separators)) {
-				throw new IllegalArgumentException(
-					"The histogram separators are not equals."
-				);
-			}
-
-			for (int i = other._frequencies.length; --i >= 0;) {
-				_frequencies[i] += other._frequencies[i];
-			}
-			_statistics.combine(other._statistics);
-		}
-
-		/**
-		 * Create a new <em>immutable</em> histogram object from the current
-		 * values.
-		 *
-		 * @return a new <em>immutable</em> histogram
-		 */
-		public Histogram build() {
-			return new Histogram(
-				_separators,
-				new Frequencies(_frequencies),
-				DoubleMoments.of(_statistics)
-			);
-		}
-
-		/**
-		 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
-		 * array of the returned {@link Histogram} will look like this:
-		 * <pre>{@code
-		 *  -Ꝏ   min                                           max   Ꝏ
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 * }</pre>
-		 * The range of all classes will be equal {@code (max - min)/nclasses} and
-		 * an open bin at the beginning and end is added. This leads to a
-		 * {@link #bucketCount()} of {@code nclasses + 2}.
-		 *
-		 * @param min the minimum range value of the returned histogram.
-		 * @param max the maximum range value of the returned histogram.
-		 * @param nclasses the number of histogram classes, where the number of
-		 *        separators will be {@code nclasses - 1}.
-		 * @return a new <i>histogram</i> for {@link Double} values.
-		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-		 *         not finite or {@code nclasses < 2}
-		 */
-		public static Builder of(
-			final double min,
-			final double max,
-			final int nclasses
-		) {
-			return new Builder(Separators.of(min, max, nclasses));
-		}
-	}
-
-
-	/**
-	 * This class represents the bucket separators of the histogram.
+	 * This class represents the bucket <em>separators</em> of a histogram. The
+	 * graph below shows the separators and the associated buckets.
 	 * <pre>{@code
-	 * min                                          max
-	 *  +----+----+----+----+----+----+----+----+----+
-	 *  0    1    2    3    4    5    6    7    8    9
+	 * -Ꝏ     min                                          max    Ꝏ
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *       0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10    Buckets
+	 *     -----+----+----+----+----+----+----+----+----+----+-----
+	 *          0    1    2    3    4    5    6    7    8    9       Separators
 	 * }</pre>
+	 * The number of buckets is the number of separators plus one.
 	 */
 	public static final class Separators {
+		private final double[] values;
+		private final int start;
+		private final int end;
 
-		private final double[] _separators;
+		private Separators(final double[] values, final int start, final int end) {
+			Objects.checkFromIndexSize(start, end - start, values.length);
+			Objects.checkFromToIndex(start, end, values.length);
+
+			this.values = values;
+			this.start = start;
+			this.end = end;
+		}
 
 		/**
 		 * Create a new {@code Separators} object from the given {@code separators}.
+		 * If no separator is given, this object defines only one bucket.
 		 *
-		 * @param separators the separator values
-		 * @throws IllegalArgumentException if {@code separators.length < 3},
-		 *         the separator values are not finite or not unique
+		 * @param values the separator values
+		 * @throws IllegalArgumentException if the separator values are not
+		 *         finite or not unique
 		 */
-		public Separators(final double... separators) {
-			if (separators.length < 3) {
-				throw new IllegalArgumentException("""
-					At least three separators, which form two buckets are \
-					required, but found %d.""".formatted(separators.length)
-				);
-			}
-			for (var separator : separators) {
+		public Separators(final double... values) {
+			this(check(values), 0, values.length);
+		}
+
+		private static double[] check(final double[] values) {
+			for (var separator : values) {
 				if (!Double.isFinite(separator)) {
 					throw new IllegalArgumentException(
 						"All separator values must be finite: %s."
-							.formatted(Arrays.toString(separators))
+							.formatted(Arrays.toString(values))
 					);
 				}
 			}
 
-			final var result = separators.clone();
+			final var result = values.clone();
 			Arrays.sort(result);
 
 			for (int i = 1; i < result.length; ++i) {
@@ -241,34 +155,74 @@ public record Histogram(
 				}
 			}
 
-			_separators = result;
+			return result;
 		}
 
 		/**
-		 * Return the minimal separator value.
+		 * Return a copy of the separator values.
 		 *
-		 * @return the minimal separator value
+		 * @return a copy of the separator values
+		 */
+		public double[] values() {
+			return Arrays.copyOfRange(values, start, end);
+		}
+
+		/**
+		 * Create a new {@link Separators} object with the values from the given
+		 * {@code start} index.
+		 *
+		 * @param start the start index of the separator values
+		 * @return a new separators object from the given {@code start} index
+		 * @throws IndexOutOfBoundsException if the indexes are out of range
+		 */
+		public Separators slice(final int start) {
+			return new Separators(values, start, end);
+		}
+
+		/**
+		 * Create a new {@link Separators} object with the values from the given
+		 * {@code start} and {@code end} index. Negative {@code end} indexes
+		 * indicates that the separator values are trimmed from the <em>end</em>.
+		 * {@snippet lang="java":
+		 * final var separators = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 9, 10);
+		 * System.out.println(separators.slice(1, -1));
+		 * }
+		 * The snippet above will print
+		 * <pre>
+		 * [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
+		 * </pre>
+		 *
+		 * @param start the start index of the separator values (inclusively)
+		 * @param end the end index of the separator values (exclusively). If
+		 *        the index is negative, the values will be trimmed from the
+		 *        other side of the array
+		 * @return a new separators object from the given {@code start} index
+		 * @throws IndexOutOfBoundsException if the indexes are out of range
+		 */
+		public Separators slice(final int start, final int end) {
+			return new Separators(values, start, end < 0 ? this.end + end : end);
+		}
+
+		/**
+		 * Return the minimal separator value. If no separator is defined,
+		 * {@link Double#NEGATIVE_INFINITY} is returned.
+		 *
+		 * @return the minimal separator value or {@link Double#NEGATIVE_INFINITY}
+		 *         if no separator value is defined
 		 */
 		public double min() {
-			return _separators[0];
+			return length() > 0 ? at(0) : Double.NEGATIVE_INFINITY;
 		}
 
 		/**
-		 * Return the maximal separator value.
+		 * Return the maximal separator value. If no separator is defined,
+		 * {@link Double#POSITIVE_INFINITY} is returned.
 		 *
-		 * @return the maximal separator value
+		 * @return the maximal separator value {@link Double#POSITIVE_INFINITY}
+		 * 		  if no separator value is defined
 		 */
 		public double max() {
-			return _separators[_separators.length - 1];
-		}
-
-		/**
-		 * Return the minimal and maximal separator values.
-		 *
-		 * @return the minimal and maximal separator values
-		 */
-		public DoubleRange range() {
-			return DoubleRange.of(min(), max());
+			return length() > 0 ? at(length() - 1) : Double.POSITIVE_INFINITY;
 		}
 
 		/**
@@ -277,7 +231,7 @@ public record Histogram(
 		 * @return the number of separators
 		 */
 		public int length() {
-			return _separators.length;
+			return end - start;
 		}
 
 		/**
@@ -287,16 +241,32 @@ public record Histogram(
 		 * @return the separator at the given index.
 		 */
 		public double at(final int index) {
-			return _separators[index];
+			Objects.checkIndex(index, length());
+			return values[start + index];
 		}
 
 		/**
-		 * Do binary search for the bucket index of the given value.
+		 * Return the bucket index for the given value. A binary search is
+		 * performed for finding the bucket index. If no separator is defined,
+		 * this method will return zero, since there is only one big bucket.
 		 *
 		 * @param value the value to search
 		 * @return the bucket index
 		 */
 		public int bucketIndexOf(final double value) {
+			if (Double.isNaN(value)) {
+				throw new IllegalArgumentException("NaN");
+			}
+			if (length() == 0) {
+				return 0;
+			}
+			if (value == Double.NEGATIVE_INFINITY) {
+				return length() - 1;
+			}
+			if (value == Double.POSITIVE_INFINITY) {
+				return 0;
+			}
+
 			int low = 0;
 			int high = length() - 1;
 
@@ -321,39 +291,61 @@ public record Histogram(
 
 		@Override
 		public int hashCode() {
-			return Arrays.hashCode(_separators);
+			int result = 1;
+			for (int i = start; i < end; ++i) {
+				final var element = values[i];
+				result = 31 * result + Double.hashCode(element);
+			}
+			return result;
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
 			return obj instanceof Separators sep &&
-				Arrays.equals(_separators, sep._separators);
+				Arrays.equals(values, start, end, sep.values, sep.start, sep.end);
 		}
 
 		@Override
 		public String toString() {
-			return Arrays.toString(_separators);
+			int max = length() - 1;
+			if (max == -1) {
+				return "[]";
+			}
+
+			final var b = new StringBuilder();
+			b.append('[');
+			for (int i = 0; ; ++i) {
+				b.append(at(i));
+				if (i == max) {
+					return b.append(']').toString();
+				}
+				b.append(", ");
+			}
 		}
 
 		/**
 		 * Return a new separator object with the given <em>finite</em>
 		 * {@code min} and {@code max} separator values and given number of
-		 * classes.
+		 * classes between minimal and maximal values.
 		 * <pre>{@code
-		 *        min                                           max
-		 *         +----+----+----+----+----+----+----+  ~  +----+
-		 *           1    2    3    4     5   6    7          nc
+		 * -Ꝏ     min                                          max    Ꝏ
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *       0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10    Buckets
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *          0    1    2    3    4    5    6    7    8    9       Separators
 		 * }</pre>
 		 * The length of the created {@code Separator} class will be
 		 * {@code nclasses + 1} with equally spaced separators of
-		 * {@code (max - min)/nclasses}.
+		 * {@code (max - min)/nclasses}. {@code nclasses} will also define
+		 * {@code nclasses + 1} buckets.
 		 *
 		 * @param min the minimum separator value, inclusively
 		 * @param max the maximum separator value, exclusively
-		 * @param nclasses the number of classes
+		 * @param nclasses the number of classes between the {@code min} and
+		 *        {@code max} values
 		 * @return a new separator object
 		 * @throws IllegalArgumentException if {@code min >= max} or {@code min}
-		 *         or {@code max} are not finite or {@code nclasses < 2}
+		 *         or {@code max} are not finite or {@code nclasses < 1}
 		 */
 		public static Separators of(
 			final double min,
@@ -365,9 +357,9 @@ public record Histogram(
 					"Invalid border: [min=%f, max=%f].".formatted(min, max)
 				);
 			}
-			if (nclasses < 2) {
+			if (nclasses < 1) {
 				throw new IllegalArgumentException(
-					"Number of classes must at least two: %d."
+					"Number of classes must at least one: %d."
 						.formatted(nclasses)
 				);
 			}
@@ -386,34 +378,38 @@ public record Histogram(
 	}
 
 	/**
-	 * Represents the actual frequency data of the histogram.
-	 * <pre>{@code
-	 * -Ꝏ     min                                          max    Ꝏ
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-	 *     -----+----+----+----+----+----+----+----+----+----+-----
-	 *       0    1    2    3    4    5    6    7    8    9    10
-	 * }</pre>
+	 * Represents the actual frequency data for each bucket of the histogram.
 	 */
 	public static final class Frequencies {
-		private final long[] _frequencies;
+		private final long[] values;
+		private final int start;
+		private final int end;
+
+		private Frequencies(final long[] values, final int start, final int end) {
+			Objects.checkFromIndexSize(start, end - start, values.length);
+			Objects.checkFromToIndex(start, end, values.length);
+
+			this.values = values;
+			this.start = start;
+			this.end = end;
+		}
 
 		/**
 		 * Create a new frequency object from the given {@code frequency} values.
 		 *
-		 * @param frequencies the frequency values
+		 * @param values the frequency values
 		 * @throws IllegalArgumentException if the given array has less than
-		 *         four elements
+		 *         one element
 		 */
-		public Frequencies(final long... frequencies) {
-			if (frequencies.length < 4) {
+		public Frequencies(final long... values) {
+			this(values.clone(), 0, values.length);
+
+			if (values.length < 1) {
 				throw new IllegalArgumentException(
-					"Frequency array length must be at least 4, but was %d."
-						.formatted(frequencies.length)
+					"Frequency array length must be at least one, but was %d."
+						.formatted(values.length)
 				);
 			}
-
-			_frequencies = frequencies.clone();
 		}
 
 		/**
@@ -422,44 +418,15 @@ public record Histogram(
 		 * @return the sample count
 		 */
 		public long sampleCount() {
-			return io.jenetics.internal.util.Arrays.sum(_frequencies);
+			long sum = 0;
+			for (var value : values) {
+				sum += value;
+			}
+			return sum;
 		}
 
-		/**
-		 * Return the frequency values as {@code long[]} array.
-		 * <pre>{@code
-		 * -Ꝏ     min                                          max    Ꝏ
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *       0    1    2    3    4    5    6    7    8    9    10
-		 * }</pre>
-		 *
-		 * @see #histogram()
-		 *
-		 * @return the frequency values.
-		 */
 		public long[] values() {
-			return _frequencies.clone();
-		}
-
-		/**
-		 * Return the histogram values, which are the frequency values with the
-		 * first and last element removed.
-		 * <pre>{@code
-		 * min                                          max
-		 *  +----+----+----+----+----+----+----+----+----+
-		 *  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |
-		 *  +----+----+----+----+----+----+----+----+----+
-		 *    0    1    2    3    4    5    6    7    8
-		 * }</pre>
-		 *
-		 * @see #values()
-		 *
-		 * @return the histogram values
-		 */
-		public long[] histogram() {
-			return Arrays.copyOfRange(_frequencies, 1, length() - 2);
+			return Arrays.copyOfRange(values, start, end);
 		}
 
 		/**
@@ -468,7 +435,7 @@ public record Histogram(
 		 * @return the length of the frequency array
 		 */
 		public int length() {
-			return _frequencies.length;
+			return end - start;
 		}
 
 		/**
@@ -478,23 +445,77 @@ public record Histogram(
 		 * @return the frequency value at the given {@code index}
 		 */
 		public long at(final int index) {
-			return _frequencies[index];
+			return values[start + index];
+		}
+
+		/**
+		 * Create a new {@link Frequencies} object with the values from the given
+		 * {@code start} index.
+		 *
+		 * @param start the start index of the frequency values
+		 * @return a new frequency object from the given {@code start} index
+		 * @throws IndexOutOfBoundsException if the indexes are out of range
+		 */
+		public Frequencies slice(final int start) {
+			return new Frequencies(values, start, end);
+		}
+
+		/**
+		 * Create a new {@link Frequencies} object with the values from the given
+		 * {@code start} and {@code end} index. Negative {@code end} indexes
+		 * indicates that the frequency values are trimmed from the <em>end</em>.
+		 * {@snippet lang="java":
+		 * final var frequencies = new Frequencies(0, 1, 2, 3, 4, 5, 6, 7, 9, 10);
+		 * System.out.println(frequencies.slice(1, -1));
+		 * }
+		 * The snippet above will print
+		 * <pre>
+		 * [1, 2, 3, 4, 5, 6, 7, 8, 9]
+		 * </pre>
+		 *
+		 * @param start the start index of the separator values (inclusively)
+		 * @param end the end index of the separator values (exclusively). If
+		 *        the index is negative, the values will be trimmed from the
+		 *        other side of the array
+		 * @return a new separators object from the given {@code start} index
+		 * @throws IndexOutOfBoundsException if the indexes are out of range
+		 */
+		public Frequencies slice(final int start, final int end) {
+			return new Frequencies(values, start, end < 0 ? this.end + end : end);
 		}
 
 		@Override
 		public int hashCode() {
-			return Arrays.hashCode(_frequencies);
+			int result = 1;
+			for (int i = start; i < end; ++i) {
+				final var element = values[i];
+				result = 31 * result + Long.hashCode(element);
+			}
+			return result;
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj instanceof Frequencies frequencies &&
-				Arrays.equals(_frequencies, frequencies._frequencies);
+			return obj instanceof Frequencies f &&
+				Arrays.equals(values, start, end, f.values, f.start, f.end);
 		}
 
 		@Override
 		public String toString() {
-			return Arrays.toString(_frequencies);
+			int max = length() - 1;
+			if (max == -1) {
+				return "[]";
+			}
+
+			final var b = new StringBuilder();
+			b.append('[');
+			for (int i = 0; ; ++i) {
+				b.append(at(i));
+				if (i == max) {
+					return b.append(']').toString();
+				}
+				b.append(", ");
+			}
 		}
 	}
 
@@ -542,7 +563,7 @@ public record Histogram(
 	 * @return the closed range of the histogram
 	 */
 	public DoubleRange range() {
-		return separators.range();
+		return DoubleRange.of(separators.min(), separators.max());
 	}
 
 	/**
@@ -665,6 +686,14 @@ public record Histogram(
 		);
 	}
 
+	public static <T extends Number> Collector<T, ?, Histogram> toHistogram(
+		final double min,
+		final double max,
+		final int nclasses
+	) {
+		return toHistogram(min, max, nclasses, Number::doubleValue);
+	}
+
 	private static final class Printer {
 		private static final String FULL = "██ ";
 		private static final String EMPTY = "   ";
@@ -676,7 +705,7 @@ public record Histogram(
 		}
 
 		void print(PrintStream out, Histogram histogram) {
-			final long[] values = histogram.frequencies().histogram();
+			final long[] values = histogram.frequencies().slice(1, -1).values();
 			final long max = LongStream.of(values).max().orElse(0);
 			final var stepSize = round(max/(double)_frequencyStepCount);
 
@@ -838,6 +867,116 @@ public record Histogram(
 		}
 
 		return partition;
+	}
+
+
+
+	/**
+	 * Histogram builder class.
+	 */
+	public static final class Builder implements DoubleConsumer {
+		private final Separators _separators;
+		private final long[] _frequencies;
+		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
+
+		/**
+		 * Create a <i>histogram</i> builder with the given {@code separators}.
+		 * The created <i>histogram</i> will have the following structure:
+		 * <pre>{@code
+		 * -Ꝏ     min                                          max    Ꝏ
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+		 *     -----+----+----+----+----+----+----+----+----+----+-----
+		 *       0    1    2    3    4    5    6    7    8    9    10
+		 * }</pre>
+		 *
+		 * @throws NullPointerException if {@code separators} is {@code null}.
+		 */
+		public Builder(Separators separators) {
+			_separators = requireNonNull(separators);
+			_frequencies = new long[separators.length() + 1];
+		}
+
+		@Override
+		public void accept(double value) {
+			++_frequencies[_separators.bucketIndexOf(value)];
+			_statistics.accept(value);
+		}
+
+		/**
+		 * Combine the given {@code other} histogram with {@code this} one.
+		 *
+		 * @param other the histogram to add.
+		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
+		 *         separators of {@code this} and the given {@code histogram} are
+		 *         different.
+		 * @throws NullPointerException if the given {@code histogram} is
+		 *         {@code null}.
+		 */
+		public void combine(final Builder other) {
+			if (!_separators.equals(other._separators)) {
+				throw new IllegalArgumentException(
+					"The histogram separators are not equals: %s != %s."
+						.formatted(_separators, other._separators)
+				);
+			}
+
+			for (int i = other._frequencies.length; --i >= 0;) {
+				_frequencies[i] += other._frequencies[i];
+			}
+			_statistics.combine(other._statistics);
+		}
+
+		/**
+		 * Create a new <em>immutable</em> histogram object from the current
+		 * values.
+		 *
+		 * @return a new <em>immutable</em> histogram
+		 */
+		public Histogram build() {
+			return new Histogram(
+				_separators,
+				new Frequencies(_frequencies),
+				DoubleMoments.of(_statistics)
+			);
+		}
+
+		public Histogram build(final Consumer<? super DoubleConsumer> samples) {
+			samples.accept(this);
+			return build();
+		}
+
+		/**
+		 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
+		 * array of the returned {@link Histogram} will look like this:
+		 * <pre>{@code
+		 *  -Ꝏ   min                                           max   Ꝏ
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 * }</pre>
+		 * The range of all classes will be equal {@code (max - min)/nclasses} and
+		 * an open bin at the beginning and end is added. This leads to a
+		 * {@link #bucketCount()} of {@code nclasses + 2}.
+		 *
+		 * @see Separators#of(double, double, int)
+		 *
+		 * @param min the minimum range value of the returned histogram.
+		 * @param max the maximum range value of the returned histogram.
+		 * @param nclasses the number of histogram classes, where the number of
+		 *        separators will be {@code nclasses - 1}.
+		 * @return a new <i>histogram</i> for {@link Double} values.
+		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+		 *         not finite or {@code nclasses < 2}
+		 */
+		public static Builder of(
+			final double min,
+			final double max,
+			final int nclasses
+		) {
+			return new Builder(Separators.of(min, max, nclasses));
+		}
 	}
 
 }

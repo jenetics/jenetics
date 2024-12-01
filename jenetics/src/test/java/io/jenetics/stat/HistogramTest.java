@@ -27,7 +27,7 @@ import java.util.random.RandomGenerator;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
 
 /**

@@ -22,7 +22,7 @@ package io.jenetics.stat;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.UniformDistribution;
+import io.jenetics.incubator.stat.UniformDistribution;
 import io.jenetics.util.DoubleRange;
 
 /**

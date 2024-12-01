@@ -17,12 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 import java.util.NoSuchElementException;
 
-import org.apache.commons.math3.special.Erf;
-
+import io.jenetics.incubator.math.Erf;
 import io.jenetics.stat.Sampler;
 
 /**
