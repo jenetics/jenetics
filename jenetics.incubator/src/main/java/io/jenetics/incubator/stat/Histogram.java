@@ -19,13 +19,14 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
@@ -52,7 +53,7 @@ import io.jenetics.util.DoubleRange;
  * <p>
  * The defined separators must all be finite. A {@code [-Ꝏ, min)} and a
  * {@code [max, Ꝏ)} bin is automatically added at the beginning and the end
- * of the frequency {@link #frequencies()}.
+ * of the frequency.
  * <p>
  * <b>Histogram creation from double stream</b>
  * {@snippet lang="java":
@@ -87,13 +88,7 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record Histogram(
-	Separators separators,
-	Frequencies frequencies,
-	DoubleMoments moments
-)
-	implements Iterable<Histogram.Bucket>
-{
+public record Histogram(List<Bucket> buckets) {
 
 	/**
 	 * This class represents the bucket <em>separators</em> of a histogram. The
@@ -549,12 +544,17 @@ public record Histogram(
 	}
 
 	public Histogram {
-		if (frequencies.length() != separators.length() + 1) {
-			throw new IllegalArgumentException(
-				"Frequencies length must be separator length + 1: %d != %d."
-					.formatted(frequencies.length(), separators.length() + 1)
-			);
+//		if (frequencies.length() != separators.length() + 1) {
+//			throw new IllegalArgumentException(
+//				"Frequencies length must be separator length + 1: %d != %d."
+//					.formatted(frequencies.length(), separators.length() + 1)
+//			);
+//		}
+
+		if (buckets.isEmpty()) {
+			throw new IllegalArgumentException("Buckets list must not be empty.");
 		}
+		buckets = List.copyOf(buckets);
 	}
 
 	/**
@@ -563,46 +563,51 @@ public record Histogram(
 	 * @return the closed range of the histogram
 	 */
 	public DoubleRange range() {
-		return DoubleRange.of(separators.min(), separators.max());
+		return DoubleRange.of(buckets.getFirst().min(), buckets.getLast().max());
 	}
 
-	/**
-	 * Return the elements of {@code this} {@code Buckets} object.
-	 *
-	 * @return a new bucket stream
-	 */
-	public Stream<Bucket> stream() {
-		return IntStream.range(0, frequencies.length())
-			.mapToObj(i -> new Bucket(
-				i == 0 ? NEGATIVE_INFINITY : separators.at(i - 1),
-				i == frequencies.length() - 1 ? POSITIVE_INFINITY : separators.at(i),
-				frequencies.at(i)
-			));
-	}
+//	/**
+//	 * Return the elements of {@code this} {@code Buckets} object.
+//	 *
+//	 * @return a new bucket stream
+//	 */
+//	public Stream<Bucket> stream() {
+//		return IntStream.range(0, frequencies.length())
+//			.mapToObj(i -> new Bucket(
+//				i == 0 ? NEGATIVE_INFINITY : separators.at(i - 1),
+//				i == frequencies.length() - 1 ? POSITIVE_INFINITY : separators.at(i),
+//				frequencies.at(i)
+//			));
+//	}
 
-	@Override
-	public Iterator<Bucket> iterator() {
-		return stream().iterator();
-	}
-
-	/**
-	 * Return the number histogram bins, which is defined at
-	 * {@code frequencies().length}.
-	 *
-	 * @return the number histogram bins
-	 */
-	public int bucketCount() {
-		return frequencies.length();
-	}
+//	/**
+//	 * Return the number histogram bins, which is defined at
+//	 * {@code frequencies().length}.
+//	 *
+//	 * @return the number histogram bins
+//	 */
+//	public int bucketCount() {
+//		return frequencies.length();
+//	}
 
 	/**
 	 * Return the <em>degrees of freedom</em> of the histogram, which is
-	 * {@link #bucketCount()} - 1.
+	 * {@code #buckets().size() - 1}.
 	 *
 	 * @return the degrees of freedom
 	 */
 	public int degreesOfFreedom() {
-		return bucketCount() - 1;
+		return buckets.size() - 1;
+	}
+
+	public Histogram slice(final int start, final int end) {
+		return new Histogram(buckets.subList(start, end < 0 ? buckets.size() + end : end));
+	}
+
+	public long[] frequencies() {
+		return buckets.stream()
+			.mapToLong(Bucket::count)
+			.toArray();
 	}
 
 	/**
@@ -611,7 +616,9 @@ public record Histogram(
 	 * @return the number of samples
 	 */
 	public long sampleCount() {
-		return frequencies.sampleCount();
+		return buckets.stream()
+			.mapToLong(Bucket::count)
+			.sum();
 	}
 
 	/**
@@ -659,6 +666,7 @@ public record Histogram(
 
 	@Override
 	public String toString() {
+		/*
 		return """
 			Histogram[
 			    separators=%s,
@@ -670,6 +678,8 @@ public record Histogram(
 					frequencies,
 					moments
 				);
+		 */
+		return buckets.toString();
 	}
 
 	public static <T> Collector<T, ?, Histogram> toHistogram(
@@ -705,6 +715,7 @@ public record Histogram(
 		}
 
 		void print(PrintStream out, Histogram histogram) {
+			/*
 			final long[] values = histogram.frequencies().slice(1, -1).values();
 			final long max = LongStream.of(values).max().orElse(0);
 			final var stepSize = round(max/(double)_frequencyStepCount);
@@ -769,6 +780,7 @@ public record Histogram(
 					" S=%.4f".formatted(histogram.moments.skewness())
 				}
 			});
+			 */
 		}
 
 		private static long round(final double value) {
@@ -907,7 +919,7 @@ public record Histogram(
 		 * Combine the given {@code other} histogram with {@code this} one.
 		 *
 		 * @param other the histogram to add.
-		 * @throws IllegalArgumentException if the {@link #bucketCount()} and the
+		 * @throws IllegalArgumentException if the {@code #bucketCount()} and the
 		 *         separators of {@code this} and the given {@code histogram} are
 		 *         different.
 		 * @throws NullPointerException if the given {@code histogram} is
@@ -934,11 +946,17 @@ public record Histogram(
 		 * @return a new <em>immutable</em> histogram
 		 */
 		public Histogram build() {
-			return new Histogram(
-				_separators,
-				new Frequencies(_frequencies),
-				DoubleMoments.of(_statistics)
-			);
+			final var buckets = IntStream.range(0, _frequencies.length)
+				.mapToObj(i -> new Bucket(
+					i == 0 ? -MAX_VALUE : _separators.at(i - 1),
+					i == _frequencies.length - 1
+						? MAX_VALUE
+						: _separators.at(i),
+					_frequencies[i]
+				))
+				.toList();
+
+			return new Histogram(buckets);
 		}
 
 		public Histogram build(final Consumer<? super DoubleConsumer> samples) {
@@ -957,7 +975,7 @@ public record Histogram(
 		 * }</pre>
 		 * The range of all classes will be equal {@code (max - min)/nclasses} and
 		 * an open bin at the beginning and end is added. This leads to a
-		 * {@link #bucketCount()} of {@code nclasses + 2}.
+		 * {@code #bucketCount()} of {@code nclasses + 2}.
 		 *
 		 * @see Separators#of(double, double, int)
 		 *

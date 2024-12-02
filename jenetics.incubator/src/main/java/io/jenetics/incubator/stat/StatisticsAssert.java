@@ -59,9 +59,9 @@ public final class StatisticsAssert {
 
 		public void isLike(double[] expected) {
 			final double[] exp = Arrays.stream(expected)
-				.map(v -> Math.max(v, Double.MIN_VALUE))
+				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = _observation.frequencies().slice(1, -1).values();
+			final long[] hist = _observation.frequencies();
 
 			final var maxChi2 = PearsonChi2Tester.P_001
 				.maxChi2(hist.length - 1);
@@ -96,7 +96,7 @@ public final class StatisticsAssert {
 	}
 
 	public static DistributionAssert assertThatObservation(Histogram observation) {
-		return new DistributionAssert(observation);
+		return new DistributionAssert(observation.slice(1, -1));
 	}
 
 }

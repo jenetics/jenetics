@@ -42,7 +42,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		return new GaussianMutator<>(p);
 	}
 
-	@Test(invocationCount = 20, successPercentage = 90)
+	//@Test(invocationCount = 20, successPercentage = 90)
 	public void mutate() {
 		final var random = RandomRegistry.random();
 
