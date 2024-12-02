@@ -17,16 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.incubator.stat;
 
 import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.PearsonChi2Tester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
