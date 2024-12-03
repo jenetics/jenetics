@@ -37,7 +37,7 @@ public class HistogramSeparatorsTest {
 
 	@Test(dataProvider = "data")
 	void bucketIndexOf(TestData data) {
-		final var separators = new Histogram.Separators(data.separators);
+		final var separators = new Separators(data.separators);
 
 		assertThat(data.values.length).isEqualTo(data.indexes.length);
 
@@ -103,17 +103,17 @@ public class HistogramSeparatorsTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nanSeparator() {
-		new Histogram.Separators(1, 2, 3, Double.NaN);
+		new Separators(1, 2, 3, Double.NaN);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void duplicateSeparator() {
-		new Histogram.Separators(1, 2, 3, 2);
+		new Separators(1, 2, 3, 2);
 	}
 
 	@Test
 	public void of() {
-		final var sep = Histogram.Separators.of(1, 2, 1);
+		final var sep = Separators.of(1, 2, 1);
 
 		assertThat(sep.bucketIndexOf(0)).isEqualTo(0);
 		assertThat(sep.bucketIndexOf(1)).isEqualTo(1);
@@ -122,31 +122,31 @@ public class HistogramSeparatorsTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void ofZeroClasses() {
-		Histogram.Separators.of(1,2, 0);
+		Separators.of(1,2, 0);
 	}
 
 	@Test
 	public void slice() {
-		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		assertThat(seps.slice(2, -2).values())
 			.isEqualTo(new double[] {2, 3, 4, 5, 6, 7, 8});
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void invalidSlice() {
-		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		seps.slice(-1);
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void invalidSlice2() {
-		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		seps.slice(1, 100);
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void invalidSlice3() {
-		final var seps = new Histogram.Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		seps.slice(1, -100);
 	}
 
