@@ -102,7 +102,7 @@ public record Histogram(List<Bucket> buckets) {
 	 * }</pre>
 	 * The number of buckets is the number of separators plus one.
 	 */
-	public static final class Separators {
+	static final class Separators {
 		private final double[] values;
 		private final int start;
 		private final int end;
@@ -375,7 +375,7 @@ public record Histogram(List<Bucket> buckets) {
 	/**
 	 * Represents the actual frequency data for each bucket of the histogram.
 	 */
-	public static final class Frequencies {
+	static final class Frequencies {
 		private final long[] values;
 		private final int start;
 		private final int end;
