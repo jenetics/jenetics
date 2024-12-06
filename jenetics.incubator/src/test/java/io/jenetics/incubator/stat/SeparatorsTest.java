@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class HistogramSeparatorsTest {
+public class SeparatorsTest {
 
 	record TestData(
 		double[] separators,
@@ -97,6 +97,13 @@ public class HistogramSeparatorsTest {
 					new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100},
 					new int[]    {0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4}
 				)
+			},
+			{
+				new TestData(
+					new double[] {2, 5, 7, 10},
+					new double[] {Double.NEGATIVE_INFINITY, 1, 2, 3, 4, 5, 6, 7, 8, 9, Double.POSITIVE_INFINITY},
+					new int[]    {0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4}
+				)
 			}
 		};
 	}
@@ -128,14 +135,8 @@ public class HistogramSeparatorsTest {
 	@Test
 	public void slice() {
 		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-		assertThat(seps.slice(2, -2).values())
+		assertThat(seps.slice(2, -2).toArray())
 			.isEqualTo(new double[] {2, 3, 4, 5, 6, 7, 8});
-	}
-
-	@Test(expectedExceptions = IndexOutOfBoundsException.class)
-	public void invalidSlice() {
-		final var seps = new Separators(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-		seps.slice(-1);
 	}
 
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)

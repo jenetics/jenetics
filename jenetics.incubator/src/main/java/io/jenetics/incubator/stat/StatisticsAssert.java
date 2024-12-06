@@ -61,7 +61,9 @@ public final class StatisticsAssert {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = _observation.frequencies();
+			final long[] hist = _observation.buckets().stream()
+				.mapToLong(Histogram.Bucket::count)
+				.toArray();
 
 			final var maxChi2 = PearsonChi2Tester.P_001
 				.maxChi2(hist.length - 1);
@@ -82,7 +84,11 @@ public final class StatisticsAssert {
 		}
 
 		public void isUniform() {
-			follows(new UniformDistribution(_observation.range()));
+			final var range = DoubleRange.of(
+				Math.max(_observation.buckets().getFirst().min(), -Double.MAX_VALUE),
+				Math.min(_observation.buckets().getLast().max(), Double.MAX_VALUE)
+			);
+			follows(new UniformDistribution(range));
 		}
 
 		public void isNormal(double mean, double stddev) {

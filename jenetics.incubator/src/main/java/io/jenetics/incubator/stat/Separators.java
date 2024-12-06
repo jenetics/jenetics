@@ -38,7 +38,7 @@ import java.util.Objects;
  * @version !__version__!
  * @since !__version__!
  */
-final class Separators {
+public final class Separators {
 	private final double[] values;
 	private final int start;
 	private final int end;
@@ -60,7 +60,7 @@ final class Separators {
 	 * @throws IllegalArgumentException if the separator values are not finite
 	 * or not unique
 	 */
-	Separators(final double... values) {
+	public Separators(final double... values) {
 		this(check(values), 0, values.length);
 	}
 
@@ -94,20 +94,8 @@ final class Separators {
 	 *
 	 * @return a copy of the separator values
 	 */
-	double[] values() {
+	public double[] toArray() {
 		return Arrays.copyOfRange(values, start, end);
-	}
-
-	/**
-	 * Create a new {@link Separators} object with the values from the given
-	 * {@code start} index.
-	 *
-	 * @param start the start index of the separator values
-	 * @return a new separators object from the given {@code start} index
-	 * @throws IndexOutOfBoundsException if the indexes are out of range
-	 */
-	 Separators slice(final int start) {
-		return new Separators(values, start, end);
 	}
 
 	/**
@@ -121,6 +109,15 @@ final class Separators {
      * <pre>
      * [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
      * </pre>
+	 *
+	 * <b>Negative array indexes</b>
+	 * <pre>{@code
+	 *       0    1    2    3    4    5    6    7    8    9     Indexes
+	 *     +----+----+----+----+----+----+----+----+----+----+
+	 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
+	 *     +----+----+----+----+----+----+----+----+----+----+
+	 *      -10   -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
+	 * }</pre>
      *
      * @param start the start index of the separator values (inclusively)
      * @param end the end index of the separator values (exclusively). If the
@@ -130,29 +127,10 @@ final class Separators {
      * @throws IndexOutOfBoundsException if the indexes are out of range
      */
     public Separators slice(final int start, final int end) {
-        return new Separators(values, start, end < 0 ? this.end + end : end);
-    }
+	    final var s = start < 0 ? length() + start : start;
+	    final var e = end < 0 ? length() + end : end;
 
-    /**
-     * Return the minimal separator value. If no separator is defined,
-     * {@link Double#NEGATIVE_INFINITY} is returned.
-     *
-     * @return the minimal separator value or {@link Double#NEGATIVE_INFINITY}
-     * if no separator value is defined
-     */
-    public double min() {
-        return length() > 0 ? at(0) : Double.NEGATIVE_INFINITY;
-    }
-
-    /**
-     * Return the maximal separator value. If no separator is defined,
-     * {@link Double#POSITIVE_INFINITY} is returned.
-     *
-     * @return the maximal separator value {@link Double#POSITIVE_INFINITY} if
-     * no separator value is defined
-     */
-    public double max() {
-        return length() > 0 ? at(length() - 1) : Double.POSITIVE_INFINITY;
+        return new Separators(values, s, e);
     }
 
     /**
@@ -183,17 +161,11 @@ final class Separators {
      * @param value the value to search
      * @return the bucket index
      */
-	int bucketIndexOf(final double value) {
+	public int bucketIndexOf(final double value) {
         if (Double.isNaN(value)) {
             throw new IllegalArgumentException("NaN");
         }
         if (length() == 0) {
-            return 0;
-        }
-        if (value == Double.NEGATIVE_INFINITY) {
-            return length() - 1;
-        }
-        if (value == Double.POSITIVE_INFINITY) {
             return 0;
         }
 
@@ -263,43 +235,46 @@ final class Separators {
      *       0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10    Buckets
      *     -----+----+----+----+----+----+----+----+----+----+-----
      *          0    1    2    3    4    5    6    7    8    9       Separators
+     *            |                                        |
+     *            +----------------------------------------+
+     *                            Classes
      * }</pre>
      * The length of the created {@code Separator} class will be
-     * {@code nclasses + 1} with equally spaced separators of
+     * {@code classes + 1} with equally spaced separators of
      * {@code (max - min)/nclasses}. {@code nclasses} will also define
-     * {@code nclasses + 1} buckets.
+     * {@code classes + 1} buckets.
      *
      * @param min the minimum separator value, inclusively
      * @param max the maximum separator value, exclusively
-     * @param nclasses the number of classes between the {@code min} and
-     * {@code max} values
+     * @param classes the number of classes between the {@code min} and
+     *        {@code max} values
      * @return a new separator object
      * @throws IllegalArgumentException if {@code min >= max} or {@code min} or
-     * {@code max} are not finite or {@code nclasses < 1}
+     *        {@code max} are not finite or {@code classes < 1}
      */
-	static Separators of(
+	public static Separators of(
         final double min,
         final double max,
-        final int nclasses
+        final int classes
     ) {
         if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
             throw new IllegalArgumentException(
                 "Invalid border: [min=%f, max=%f].".formatted(min, max)
             );
         }
-        if (nclasses < 1) {
+        if (classes < 1) {
             throw new IllegalArgumentException(
                 "Number of classes must at least one: %d."
-                    .formatted(nclasses)
+                    .formatted(classes)
             );
         }
 
-        final var stride = (max - min ) /nclasses;
-        final var separators = new double[nclasses + 1];
+        final var stride = (max - min)/classes;
+        final var separators = new double[classes + 1];
 
         separators[0] = min;
         separators[separators.length - 1] = max;
-        for (int i = 1; i < nclasses; ++i) {
+        for (int i = 1; i < classes; ++i) {
             separators[i] = separators[i - 1] + stride;
         }
 

@@ -72,7 +72,7 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 		final var chi2 = observation.buckets().stream()
 			.map(bucket -> new double[] {
 					bucket.count()*bucket.count(),
-					bucket.probability(cdf)*count
+					probability(cdf, bucket)*count
 				}
 			)
 			.filter(values -> values[0] != 0.0)
@@ -85,6 +85,10 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 	double maxChi2(final int degreesOfFreedom) {
 		return ChiSquaredDistribution.of(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - p);
+	}
+
+	static double probability(final Cdf cdf, final Histogram.Bucket bucket) {
+		return cdf.apply(bucket.max()) - cdf.apply(bucket.min());
 	}
 
 }

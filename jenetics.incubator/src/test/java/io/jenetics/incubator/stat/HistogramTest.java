@@ -42,7 +42,11 @@ public class HistogramTest {
 
 		var histogram = Histogram.Builder.of(begin, end, elements).build();
 		assertThat(histogram.buckets().size()).isEqualTo(elements + 2);
-		assertThat(histogram.frequencies())
+		assertThat(
+			histogram.buckets().stream()
+				.mapToLong(Histogram.Bucket::count)
+				.toArray()
+		)
 			.isEqualTo(new long[elements + 2]);
 	}
 
@@ -63,7 +67,9 @@ public class HistogramTest {
 		Arrays.fill(expected, 1000);
 		expected[0] = 0;
 		expected[expected.length - 1] = 0;
-		assertThat(histogram.frequencies())
+		assertThat(histogram.buckets().stream()
+			.mapToLong(Histogram.Bucket::count)
+			.toArray())
 			.isEqualTo(expected);
 		System.out.println(histogram);
 	}

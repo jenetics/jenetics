@@ -31,11 +31,10 @@ import java.util.stream.Collector;
 import java.util.stream.IntStream;
 
 import io.jenetics.stat.DoubleMomentStatistics;
-import io.jenetics.util.DoubleRange;
 
 /**
  * This class lets you create a histogram from {@code double} sample data. The
- * following graph shows the structure of the histogram.
+ * following graph shows the structure (buckets) of the histogram.
  * <pre>{@code
  * -Ꝏ     min                                          max    Ꝏ
  *     -----+----+----+----+----+----+----+----+----+----+-----
@@ -86,10 +85,14 @@ import io.jenetics.util.DoubleRange;
 public record Histogram(List<Bucket> buckets) {
 
 	/**
-	 * Represents on histogram bin.
+	 * Represents on histogram bin. For <em>open</em> buckets, the {@link #min()}
+	 * value might be {@link Double#NEGATIVE_INFINITY} and the {@link #max()}
+	 * value might be {@link Double#POSITIVE_INFINITY}.
 	 *
-	 * @param min the minimal value of the bin range, inclusively
-	 * @param max the maximal value of the bin range, exclusively
+	 * @param min the minimal value of the bin range, inclusively. Might be
+	 *        {@link Double#NEGATIVE_INFINITY}
+	 * @param max the maximal value of the bin range, exclusively. Might be
+	 *        {@link Double#POSITIVE_INFINITY}
 	 * @param count the bin count
 	 */
 	public record Bucket(double min, double max, long count) {
@@ -101,27 +104,16 @@ public record Histogram(List<Bucket> buckets) {
 				);
 			}
 		}
-
-		/**
-		 * Return the expected property of the bin, defined by the given
-		 * {@code cdf}.
-		 *
-		 * @param cdf the CDF used for calculating the expected property
-		 * @return the expected property
-		 */
-		public double probability(final Cdf cdf) {
-			return cdf.apply(max) - cdf.apply(min);
-		}
 	}
 
+	/**
+	 * Create a new histogram with the given {@code buckets}. The bucket list
+	 * must be not empty.
+	 *
+	 * @param buckets the histogram buckets
+	 * @throws IllegalArgumentException if the bucket list is empty
+	 */
 	public Histogram {
-//		if (frequencies.length() != separators.length() + 1) {
-//			throw new IllegalArgumentException(
-//				"Frequencies length must be separator length + 1: %d != %d."
-//					.formatted(frequencies.length(), separators.length() + 1)
-//			);
-//		}
-
 		if (buckets.isEmpty()) {
 			throw new IllegalArgumentException("Buckets list must not be empty.");
 		}
@@ -129,17 +121,11 @@ public record Histogram(List<Bucket> buckets) {
 	}
 
 	/**
-	 * Return the <em>closed</em> range of the histogram.
-	 *
-	 * @return the closed range of the histogram
-	 */
-	public DoubleRange range() {
-		return DoubleRange.of(buckets.getFirst().min(), buckets.getLast().max());
-	}
-
-	/**
 	 * Return the <em>degrees of freedom</em> of the histogram, which is
 	 * {@code #buckets().size() - 1}.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">
+	 *     Degrees of freedom</a>
 	 *
 	 * @return the degrees of freedom
 	 */
@@ -147,14 +133,22 @@ public record Histogram(List<Bucket> buckets) {
 		return buckets.size() - 1;
 	}
 
+	/**
+	 * Create a new histogram from the defined buckets slice. This method allows
+	 * negative indexes like <em>Python</em> arrays.
+	 *
+	 * @param start the start index, inclusively
+	 * @param end the end index, exclusively
+	 * @return the new histogram from the given buckets slice
+	 * @throws IndexOutOfBoundsException if the given start and end indexes
+	 *         are out of bounds
+	 * @throws IllegalArgumentException if the bucket slice is empty
+	 */
 	public Histogram slice(final int start, final int end) {
-		return new Histogram(buckets.subList(start, end < 0 ? buckets.size() + end : end));
-	}
+		final var s = start < 0 ? buckets.size() + start : start;
+		final var e = end < 0 ? buckets.size() + end : end;
 
-	public long[] frequencies() {
-		return buckets.stream()
-			.mapToLong(Bucket::count)
-			.toArray();
+		return new Histogram(buckets.subList(s, e));
 	}
 
 	/**
