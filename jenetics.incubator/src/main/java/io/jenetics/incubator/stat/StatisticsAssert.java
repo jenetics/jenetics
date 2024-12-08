@@ -85,8 +85,8 @@ public final class StatisticsAssert {
 
 		public void isUniform() {
 			final var range = DoubleRange.of(
-				Math.max(_observation.buckets().getFirst().min(), -Double.MAX_VALUE),
-				Math.min(_observation.buckets().getLast().max(), Double.MAX_VALUE)
+				Math.max(_observation.buckets().first().min(), -Double.MAX_VALUE),
+				Math.min(_observation.buckets().last().max(), Double.MAX_VALUE)
 			);
 			follows(new UniformDistribution(range));
 		}

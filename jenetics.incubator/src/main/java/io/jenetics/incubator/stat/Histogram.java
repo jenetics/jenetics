@@ -20,15 +20,19 @@
 package io.jenetics.incubator.stat;
 
 import static java.lang.Double.MAX_VALUE;
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
 import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.jenetics.stat.DoubleMomentStatistics;
 
@@ -82,7 +86,7 @@ import io.jenetics.stat.DoubleMomentStatistics;
  * @version !__version__!
  * @since !__version__!
  */
-public record Histogram(List<Bucket> buckets) {
+public record Histogram(Buckets buckets) {
 
 	/**
 	 * Represents on histogram bin. For <em>open</em> buckets, the {@link #min()}
@@ -95,29 +99,149 @@ public record Histogram(List<Bucket> buckets) {
 	 *        {@link Double#POSITIVE_INFINITY}
 	 * @param count the bin count
 	 */
-	public record Bucket(double min, double max, long count) {
+	public record Bucket(double min, double max, long count)
+		implements Comparable<Bucket>
+	{
 		public Bucket {
-			if (min >= max || count < 0) {
+			if (Double.isNaN(min) || Double.isNaN(max) || min >= max || count < 0) {
 				throw new IllegalArgumentException(
 					"Invalid Bin[min=%f, max=%f, count=%d]."
 						.formatted(min, max, count)
 				);
 			}
 		}
+
+		public Bucket(double min, double max) {
+			this(min, max, 0);
+		}
+
+		public Bucket add(final long count) {
+			return new Bucket(min, max, this.count + count);
+		}
+
+		/**
+		 * Tests whether the given {@code value} fits into {@code this} bucket.
+		 *
+		 * @param value the value to test
+		 * @return {@code true} if the {@code value} fits in the bucket,
+		 *         {@code false} otherwise
+		 */
+		boolean contains(final double value) {
+			return value >= min && value < max;
+		}
+
+		boolean overlaps(final Bucket other) {
+			return
+				min >= other.min && min < other.max ||
+				max > other.min && max < other.max ||
+				other.min >= min && other.min < max ||
+				other.max > min && other.max < max;
+		}
+
+		@Override
+		public int compareTo(final Bucket other) {
+			return Double.compare(min, other.min);
+		}
+
+		int compareTo(final double value) {
+			if (value < min) {
+				return -1;
+			} else if (value >= max) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
 	}
 
-	/**
-	 * Create a new histogram with the given {@code buckets}. The bucket list
-	 * must be not empty.
-	 *
-	 * @param buckets the histogram buckets
-	 * @throws IllegalArgumentException if the bucket list is empty
-	 */
-	public Histogram {
-		if (buckets.isEmpty()) {
-			throw new IllegalArgumentException("Buckets list must not be empty.");
+	public static final class Buckets implements Iterable<Bucket> {
+		private final List<Bucket> buckets;
+
+		public Buckets(final List<Bucket> buckets) {
+			if (buckets.isEmpty()) {
+				throw new IllegalArgumentException(
+					"Buckets list must not be empty."
+				);
+			}
+			this.buckets = List.copyOf(buckets);
 		}
-		buckets = List.copyOf(buckets);
+
+		public Buckets(final Bucket... buckets) {
+			this(List.of(buckets));
+		}
+
+		public int size() {
+			return buckets.size();
+		}
+
+		public Bucket get(final int index) {
+			return buckets.get(index);
+		}
+
+		public Bucket first() {
+			return buckets.getFirst();
+		}
+
+		public Bucket last() {
+			return buckets.getLast();
+		}
+
+		@Override
+		public Iterator<Bucket> iterator() {
+			return buckets.iterator();
+		}
+
+		public Stream<Bucket> stream() {
+			return buckets.stream();
+		}
+
+		int indexOf(final double value) {
+			if (Double.isNaN(value)) {
+				return -1;
+			}
+
+			int low = 0;
+			int high = size() - 1;
+
+			while (low <= high) {
+				if (get(low).compareTo(value) < 0 ||
+					get(high).compareTo(value) > 0)
+				{
+					return -1;
+				}
+
+				final int mid = (low + high) >>> 1;
+				final int cpm = get(mid).compareTo(value);
+
+				if (cpm == 0) {
+					return mid;
+				}
+
+				if (cpm < 0) {
+					high = mid;
+				} else {
+					low = mid + 1;
+				}
+			}
+
+			return -1;
+		}
+
+		boolean equalRanges(final Buckets other) {
+			if (buckets.size() != other.buckets.size()) {
+				return false;
+			}
+			for (int i = 0; i < buckets.size(); ++i) {
+				if (buckets.get(i).min != other.buckets.get(i).min ||
+					buckets.get(i).max != other.buckets.get(i).max)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 	}
 
 	/**
@@ -148,7 +272,7 @@ public record Histogram(List<Bucket> buckets) {
 		final var s = start < 0 ? buckets.size() + start : start;
 		final var e = end < 0 ? buckets.size() + end : end;
 
-		return new Histogram(buckets.subList(s, e));
+		return new Histogram(new Buckets(buckets.buckets.subList(s, e)));
 	}
 
 	/**
@@ -210,7 +334,7 @@ public record Histogram(List<Bucket> buckets) {
 	 * Histogram builder class.
 	 */
 	public static final class Builder implements DoubleConsumer {
-		private final Separators _separators;
+		private final Buckets _buckets;
 		private final long[] _frequencies;
 		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
 
@@ -227,15 +351,18 @@ public record Histogram(List<Bucket> buckets) {
 		 *
 		 * @throws NullPointerException if {@code separators} is {@code null}.
 		 */
-		public Builder(Separators separators) {
-			_separators = requireNonNull(separators);
-			_frequencies = new long[separators.length() + 1];
+		public Builder(final Buckets buckets) {
+			_buckets = requireNonNull(buckets);
+			_frequencies = new long[buckets.size()];
 		}
 
 		@Override
 		public void accept(double value) {
-			++_frequencies[_separators.bucketIndexOf(value)];
-			_statistics.accept(value);
+			final var index = _buckets.indexOf(value);
+			if (index != -1) {
+				++_frequencies[index];
+				_statistics.accept(value);
+			}
 		}
 
 		/**
@@ -249,15 +376,14 @@ public record Histogram(List<Bucket> buckets) {
 		 *         {@code null}.
 		 */
 		public void combine(final Builder other) {
-			if (!_separators.equals(other._separators)) {
+			if (!_buckets.equalRanges(other._buckets)) {
 				throw new IllegalArgumentException(
-					"The histogram separators are not equals: %s != %s."
-						.formatted(_separators, other._separators)
+					"The histogram separators are not equals."
 				);
 			}
 
 			for (int i = other._frequencies.length; --i >= 0;) {
-				_frequencies[i] += other._frequencies[i];
+				_frequencies[i] += other._frequencies[i] + other._buckets.get(i).count;
 			}
 			_statistics.combine(other._statistics);
 		}
@@ -270,16 +396,10 @@ public record Histogram(List<Bucket> buckets) {
 		 */
 		public Histogram build() {
 			final var buckets = IntStream.range(0, _frequencies.length)
-				.mapToObj(i -> new Bucket(
-					i == 0 ? -MAX_VALUE : _separators.at(i - 1),
-					i == _frequencies.length - 1
-						? MAX_VALUE
-						: _separators.at(i),
-					_frequencies[i]
-				))
+				.mapToObj(i -> _buckets.get(i).add(_frequencies[i]))
 				.toList();
 
-			return new Histogram(buckets);
+			return new Histogram(new Buckets(buckets));
 		}
 
 		public Histogram build(final Consumer<? super DoubleConsumer> samples) {
@@ -293,7 +413,7 @@ public record Histogram(List<Bucket> buckets) {
 		 * <pre>{@code
 		 *  -Ꝏ   min                                           max   Ꝏ
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     | nc |
+		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |cls |
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
 		 * }</pre>
 		 * The range of all classes will be equal {@code (max - min)/nclasses} and
@@ -304,20 +424,45 @@ public record Histogram(List<Bucket> buckets) {
 		 *
 		 * @param min the minimum range value of the returned histogram.
 		 * @param max the maximum range value of the returned histogram.
-		 * @param nclasses the number of histogram classes, where the number of
+		 * @param classes the number of histogram classes, where the number of
 		 *        separators will be {@code nclasses - 1}.
 		 * @return a new <i>histogram</i> for {@link Double} values.
 		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-		 *         not finite or {@code nclasses < 2}
+		 *         not finite or {@code classes < 2}
 		 */
 		public static Builder of(
 			final double min,
 			final double max,
-			final int nclasses
+			final int classes
 		) {
-			return new Builder(Separators.of(min, max, nclasses));
+			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid border: [min=%f, max=%f].".formatted(min, max)
+				);
+			}
+			if (classes < 1) {
+				throw new IllegalArgumentException(
+					"Number of classes must at least one: %d."
+						.formatted(classes)
+				);
+			}
+
+			final var stride = (max - min)/classes;
+			final var buckets = new Bucket[classes + 2];
+			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
+			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
+
+			for (int i = 1; i < buckets.length - 1; ++i) {
+				buckets[i] = new Bucket(
+					buckets[i - 1].max,
+					buckets[i - 1].max + stride
+				);
+			}
+
+			return new Builder(new Buckets(buckets));
 		}
+
 	}
 
 }
