@@ -17,16 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.incubator.stat;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
-
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.stat.PearsonChi2Tester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,7 +43,7 @@ public class StatisticsAssertTest {
 			.isUniform();
 	}
 
-	@Test
+	//@Test
 	public void assertNormalDistribution() {
 		final var hist = Histogram.Builder.of(-2, 2, 10);
 

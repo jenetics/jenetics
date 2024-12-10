@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -351,7 +351,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		);
 		printv(writer);
 
-		println(writer, "# %-76s#", format("Selector distributions (opt=%s, npop=%d, loops=%d):", opt, populationCount, loops));
+		println(
+			writer,
+			"# %-76s#",
+			format("Selector distributions (opt=%s, npop=%d, loops=%d):",
+				opt,
+				populationCount,
+				loops
+			)
+		);
 		for (Selector<?, ?> selector : selectors) {
 			println(writer, "# %-76s#", format("   - %s", selector));
 		}
@@ -365,7 +373,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		writer.println(header);
 
 		final double[][] array = histograms.stream()
-			.map(hist -> Basics.normalize(hist.frequencies().values()))
+			.map(hist -> Basics.normalize(
+				hist.buckets().stream()
+					.mapToLong(Histogram.Bucket::count)
+					.toArray()
+			))
 			.toArray(double[][]::new);
 
 		for (int i = 0; i < array[0].length; ++i) {

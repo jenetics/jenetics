@@ -21,15 +21,14 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.RetryOnce;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -60,10 +59,7 @@ public class MeanAltererTest extends AltererTester {
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
 
-	@Test(
-		dataProvider = "alterProbabilityParameters",
-		retryAnalyzer = RetryOnce.class
-	)
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,

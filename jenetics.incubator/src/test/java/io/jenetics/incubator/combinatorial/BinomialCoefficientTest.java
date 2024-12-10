@@ -21,7 +21,6 @@ package io.jenetics.incubator.combinatorial;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.testng.annotations.Test;
 
 /**
@@ -34,7 +33,7 @@ public class BinomialCoefficientTest {
 		for (int n = 0; n < 62; ++n) {
 			for (int k = 0; k <= n; ++k) {
 				assertThat(BinomialCoefficient.apply(n, k))
-					.isEqualTo(CombinatoricsUtils.binomialCoefficient(n, k));
+					.isEqualTo(org.apache.commons.numbers.combinatorics.BinomialCoefficient.value(n, k));
 			}
 		}
 	}

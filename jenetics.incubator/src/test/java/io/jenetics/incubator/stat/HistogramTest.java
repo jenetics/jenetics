@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.incubator.stat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +27,6 @@ import java.util.random.RandomGenerator;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
-import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 
 /**
@@ -42,9 +41,13 @@ public class HistogramTest {
 		final int elements = 10;
 
 		var histogram = Histogram.Builder.of(begin, end, elements).build();
-		assertThat(histogram.bucketCount()).isEqualTo(elements + 2);
-		assertThat(histogram.frequencies())
-			.isEqualTo(new Histogram.Frequencies(new long[elements + 2]));
+		assertThat(histogram.buckets().size()).isEqualTo(elements + 2);
+		assertThat(
+			histogram.buckets().stream()
+				.mapToLong(Histogram.Bucket::count)
+				.toArray()
+		)
+			.isEqualTo(new long[elements + 2]);
 	}
 
 	@Test
@@ -64,8 +67,10 @@ public class HistogramTest {
 		Arrays.fill(expected, 1000);
 		expected[0] = 0;
 		expected[expected.length - 1] = 0;
-		assertThat(histogram.frequencies())
-			.isEqualTo(new Histogram.Frequencies(expected));
+		assertThat(histogram.buckets().stream()
+			.mapToLong(Histogram.Bucket::count)
+			.toArray())
+			.isEqualTo(expected);
 		System.out.println(histogram);
 	}
 
@@ -82,6 +87,22 @@ public class HistogramTest {
 			.build();
 
 		assertThat(observation.sampleCount()).isEqualTo(sampleCount);
+	}
+
+	@Test
+	public void build() {
+		final double[] values = RandomGenerator.getDefault()
+			.doubles(10000, -5, 5)
+			.toArray();
+
+		final var histogram = Histogram.Builder.of(-5, 5, 10)
+			.build(samples -> {
+				for (double value : values) {
+					samples.accept(value);
+				}
+			});
+
+		System.out.println(histogram);
 	}
 
 	@Test

@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.TestData;
 
 /**

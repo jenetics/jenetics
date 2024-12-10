@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
-import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
 
 import io.jenetics.internal.util.Requires;
 
@@ -69,10 +69,10 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 		final var count = observation.sampleCount();
 		final var cdf = hypothesis.cdf();
 
-		final var chi2 = observation.stream()
+		final var chi2 = observation.buckets().stream()
 			.map(bucket -> new double[] {
 					bucket.count()*bucket.count(),
-					bucket.probability(cdf)*count
+					probability(cdf, bucket)*count
 				}
 			)
 			.filter(values -> values[0] != 0.0)
@@ -83,8 +83,12 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 	}
 
 	double maxChi2(final int degreesOfFreedom) {
-		return new ChiSquaredDistribution(degreesOfFreedom)
+		return ChiSquaredDistribution.of(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - p);
+	}
+
+	static double probability(final Cdf cdf, final Histogram.Bucket bucket) {
+		return cdf.apply(bucket.max()) - cdf.apply(bucket.min());
 	}
 
 }
