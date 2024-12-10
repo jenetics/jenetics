@@ -580,16 +580,21 @@ public record Histogram(Buckets buckets) {
 			}
 
 			final var stride = (max - min)/classes;
+
 			final var buckets = new Bucket[classes + 2];
 			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
 			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
 
-			for (int i = 1; i < buckets.length - 1; ++i) {
+			for (int i = 1; i < buckets.length - 2; ++i) {
 				buckets[i] = new Bucket(
 					buckets[i - 1].max,
 					buckets[i - 1].max + stride
 				);
 			}
+			buckets[buckets.length - 2] = new Bucket(
+				buckets[buckets.length - 3].max,
+				max
+			);
 
 			return new Builder(new Buckets(buckets));
 		}
