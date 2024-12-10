@@ -91,11 +91,18 @@ public class HistogramTest {
 
 	@Test
 	public void build() {
-		Histogram.Builder.of(0, 10, 20)
-			.build(values -> {
-				RandomGenerator.getDefault().doubles(10000)
-					.forEach(values);
+		final double[] values = RandomGenerator.getDefault()
+			.doubles(10000, -5, 5)
+			.toArray();
+
+		final var histogram = Histogram.Builder.of(-5, 5, 10)
+			.build(samples -> {
+				for (double value : values) {
+					samples.accept(value);
+				}
 			});
+
+		System.out.println(histogram);
 	}
 
 	@Test

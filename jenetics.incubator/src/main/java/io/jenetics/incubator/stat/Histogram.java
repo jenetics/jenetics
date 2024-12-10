@@ -143,8 +143,7 @@ public record Histogram(Buckets buckets) {
 		 * @param max the maximal value of the bin range, exclusively. Might be
 		 *        {@link Double#POSITIVE_INFINITY}
 		 * @throws IllegalArgumentException if the {@code min} and {@code max}
-		 *         values are {@link Double#NaN}, {@code min >= max} or
-		 *         {@code count < 0}
+		 *         values are {@link Double#NaN} or {@code min >= max}
 		 */
 		public Bucket(double min, double max) {
 			this(min, max, 0);
@@ -158,6 +157,17 @@ public record Histogram(Buckets buckets) {
 		 */
 		public Bucket add(final long count) {
 			return new Bucket(min, max, this.count + count);
+		}
+
+		/**
+		 * Return a new bucket with the same range and the given {@code count}.
+		 *
+		 * @param count the count of the new bucket
+		 * @return a new bucket with the same range and the given {@code count}
+		 * @throws IllegalArgumentException if {@code count < 0}
+		 */
+		public Bucket withCount(final long count) {
+			return new Bucket(min, min, count);
 		}
 
 		boolean overlaps(final Bucket other) {
@@ -266,6 +276,33 @@ public record Histogram(Buckets buckets) {
 			return buckets.getLast();
 		}
 
+		/**
+		 * Create a new buckets slice. This method allows negative indexes like
+		 * <em>Python</em> arrays.
+		 * <p>
+		 * <b>Negative array indexes</b>
+		 * <pre>{@code
+		 *       0    1    2    3    4    5    6    7    8    9     Indexes
+		 *     +----+----+----+----+----+----+----+----+----+----+
+		 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
+		 *     +----+----+----+----+----+----+----+----+----+----+
+		 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
+		 * }</pre>
+		 *
+		 * @param start the start index, inclusively
+		 * @param end the end index, exclusively
+		 * @return the new histogram from the given buckets slice
+		 * @throws IndexOutOfBoundsException if the given start and end indexes
+		 *         are out of bounds
+		 * @throws IllegalArgumentException if the bucket slice is empty
+		 */
+		public Buckets slice(final int start, final int end) {
+			final var s = start < 0 ? buckets.size() + start : start;
+			final var e = end < 0 ? buckets.size() + end : end;
+
+			return new Buckets(buckets.subList(s, e));
+		}
+
 		@Override
 		public Iterator<Bucket> iterator() {
 			return buckets.iterator();
@@ -342,6 +379,62 @@ public record Histogram(Buckets buckets) {
 			return buckets.toString();
 		}
 
+		/**
+		 * Return a new bucktes object with the given {@code min} and {@code max}
+		 * values and number {@code classes}. The buckets will consist of
+		 * {@code classes + 2} elements. The <em>inner</em> elements will be in
+		 * the range {@code [min, max)} and consist of the defined {@code classes}.
+		 * <pre>{@code
+		 *  -Ꝏ   min                                           max   Ꝏ
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
+		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+		 * }</pre>
+		 *
+		 * @param min the minimal value of the inner elements
+		 * @param max the maximal value of the inner elements
+		 * @param classes the number of classes between {@code [min, max)}
+		 * @return a new buckets object
+		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+		 *         not finite or {@code classes < 1}
+		 */
+		public static Buckets of(
+			final double min,
+			final double max,
+			final int classes
+		) {
+			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid border: [min=%f, max=%f].".formatted(min, max)
+				);
+			}
+			if (classes < 1) {
+				throw new IllegalArgumentException(
+					"Number of classes must at least one: %d."
+						.formatted(classes)
+				);
+			}
+
+			final var stride = (max - min)/classes;
+
+			final var buckets = new Bucket[classes + 2];
+			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
+			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
+
+			for (int i = 1; i < buckets.length - 2; ++i) {
+				buckets[i] = new Bucket(
+					buckets[i - 1].max,
+					buckets[i - 1].max + stride
+				);
+			}
+			buckets[buckets.length - 2] = new Bucket(
+				buckets[buckets.length - 3].max,
+				max
+			);
+
+			return new Buckets(buckets);
+		}
+
 	}
 
 	/**
@@ -388,10 +481,7 @@ public record Histogram(Buckets buckets) {
 	 * @throws IllegalArgumentException if the bucket slice is empty
 	 */
 	public Histogram slice(final int start, final int end) {
-		final var s = start < 0 ? buckets.size() + start : start;
-		final var e = end < 0 ? buckets.size() + end : end;
-
-		return new Histogram(new Buckets(buckets.buckets.subList(s, e)));
+		return new Histogram(buckets.slice(start, end));
 	}
 
 	/**
@@ -410,10 +500,20 @@ public record Histogram(Buckets buckets) {
 	}
 
 	/**
+	 * Return a new builder with the buckets (inclusively bucket counts).
+	 *
+	 * @return a new histogram builder with the buckets of {@code this}
+	 *         histogram
+	 */
+	public Builder toBuilder() {
+		return new Builder(buckets);
+	}
+
+	/**
 	 * Return a histogram collector with the given {@code min} and {@code max}
 	 * values and number {@code classes}. The histogram, created by the
 	 * collector will consist of {@code classes + 2} buckets. The <em>inner</em>
-	 * buckets will be in the range {@code [min, max)}} and consist of the
+	 * buckets will be in the range {@code [min, max)} and consist of the
 	 * defined {@code classes}.
 	 * <pre>{@code
 	 *  -Ꝏ   min                                           max   Ꝏ
@@ -537,6 +637,25 @@ public record Histogram(Buckets buckets) {
 			return new Histogram(new Buckets(buckets));
 		}
 
+		/**
+		 * Create a new <em>immutable</em> histogram from the given {@code sample}
+		 * block.
+		 * {@snippet lang="java":
+		 * final double[] values = RandomGenerator.getDefault()
+		 *     .doubles(10000, -5, 5)
+		 *     .toArray();
+		 *
+		 * final var histogram = Histogram.Builder.of(-5, 5, 10)
+		 *     .build(samples -> {
+		 * 	        for (double value : values) {
+		 * 	            samples.accept(value);
+		 * 	        }
+		 * 	    });
+		 * }
+		 *
+		 * @param samples the samples consumer
+		 * @return a new histogram
+		 */
 		public Histogram build(final Consumer<? super DoubleConsumer> samples) {
 			samples.accept(this);
 			return build();
@@ -546,7 +665,7 @@ public record Histogram(Buckets buckets) {
 		 * Return a histogram builder with the given {@code min} and {@code max}
 		 * values and number {@code classes}. The histogram, created by the
 		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
-		 * buckets will be in the range {@code [min, max)}} and consist of the
+		 * buckets will be in the range {@code [min, max)} and consist of the
 		 * defined {@code classes}.
 		 * <pre>{@code
 		 *  -Ꝏ   min                                           max   Ꝏ
@@ -555,48 +674,17 @@ public record Histogram(Buckets buckets) {
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
 		 * }</pre>
 		 *
+		 * @see Buckets#of(double, double, int)
+		 *
 		 * @param min the minimal value of the inner buckets
 		 * @param max the maximal value of the inner buckets
 		 * @param classes the number of classes between {@code [min, max)}
-		 * @return a new histogram collector
+		 * @return a new histogram builder
 		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
 		 *         not finite or {@code classes < 1}
 		 */
-		public static Builder of(
-			final double min,
-			final double max,
-			final int classes
-		) {
-			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
-				throw new IllegalArgumentException(
-					"Invalid border: [min=%f, max=%f].".formatted(min, max)
-				);
-			}
-			if (classes < 1) {
-				throw new IllegalArgumentException(
-					"Number of classes must at least one: %d."
-						.formatted(classes)
-				);
-			}
-
-			final var stride = (max - min)/classes;
-
-			final var buckets = new Bucket[classes + 2];
-			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
-			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
-
-			for (int i = 1; i < buckets.length - 2; ++i) {
-				buckets[i] = new Bucket(
-					buckets[i - 1].max,
-					buckets[i - 1].max + stride
-				);
-			}
-			buckets[buckets.length - 2] = new Bucket(
-				buckets[buckets.length - 3].max,
-				max
-			);
-
-			return new Builder(new Buckets(buckets));
+		public static Builder of(final double min, final double max, final int classes) {
+			return new Builder(Buckets.of(min, max, classes));
 		}
 
 	}
