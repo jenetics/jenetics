@@ -90,6 +90,15 @@ public class HistogramTest {
 	}
 
 	@Test
+	public void build() {
+		Histogram.Builder.of(0, 10, 20)
+			.build(values -> {
+				RandomGenerator.getDefault().doubles(10000)
+					.forEach(values);
+			});
+	}
+
+	@Test
 	public void print() {
 		final var builder = Histogram.Builder.of(0, 10, 23);
 		final var random = RandomGenerator.getDefault();

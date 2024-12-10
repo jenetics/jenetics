@@ -19,12 +19,14 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -82,6 +84,8 @@ import io.jenetics.stat.DoubleMomentStatistics;
  * final Histogram observations = builder.build();
  * }
  *
+ * @param buckets the {@link Bucket} list, the histogram consists of
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -91,17 +95,36 @@ public record Histogram(Buckets buckets) {
 	/**
 	 * Represents on histogram bin. For <em>open</em> buckets, the {@link #min()}
 	 * value might be {@link Double#NEGATIVE_INFINITY} and the {@link #max()}
-	 * value might be {@link Double#POSITIVE_INFINITY}.
+	 * value might be {@link Double#POSITIVE_INFINITY}. Buckets have range
+	 * {@code [min, max)} and a {@code count} value. The following example shows
+	 * <em>closed</em>, <em>half open</em> and <em>open</em> buckets.
+	 * <pre>{@code
+	 *    min   max       -Ꝏ    max   min   Ꝏ        -Ꝏ     Ꝏ
+	 *     +----+            -----+     +-----             ------
+	 *     | 12 |              20 |     | 18                 20
+	 *     +----+            -----+     +-----             ------
+	 * }</pre>
 	 *
 	 * @param min the minimal value of the bin range, inclusively. Might be
 	 *        {@link Double#NEGATIVE_INFINITY}
 	 * @param max the maximal value of the bin range, exclusively. Might be
 	 *        {@link Double#POSITIVE_INFINITY}
-	 * @param count the bin count
+	 * @param count the bucket count
 	 */
-	public record Bucket(double min, double max, long count)
-		implements Comparable<Bucket>
-	{
+	public record Bucket(double min, double max, long count) {
+
+		/**
+		 * Create a new bucket with the given values.
+		 *
+		 * @param min the minimal value of the bin range, inclusively. Might be
+		 *        {@link Double#NEGATIVE_INFINITY}
+		 * @param max the maximal value of the bin range, exclusively. Might be
+		 *        {@link Double#POSITIVE_INFINITY}
+		 * @param count the bucket count
+		 * @throws IllegalArgumentException if the {@code min} and {@code max}
+		 *         values are {@link Double#NaN}, {@code min >= max} or
+		 *         {@code count < 0}
+		 */
 		public Bucket {
 			if (Double.isNaN(min) || Double.isNaN(max) || min >= max || count < 0) {
 				throw new IllegalArgumentException(
@@ -111,23 +134,30 @@ public record Histogram(Buckets buckets) {
 			}
 		}
 
+		/**
+		 * Create a new bucket with the given {@code min} and {@code max} values.
+		 * The {@link Bucket#count()} value is set to zero.
+		 *
+		 * @param min the minimal value of the bin range, inclusively. Might be
+		 *        {@link Double#NEGATIVE_INFINITY}
+		 * @param max the maximal value of the bin range, exclusively. Might be
+		 *        {@link Double#POSITIVE_INFINITY}
+		 * @throws IllegalArgumentException if the {@code min} and {@code max}
+		 *         values are {@link Double#NaN}, {@code min >= max} or
+		 *         {@code count < 0}
+		 */
 		public Bucket(double min, double max) {
 			this(min, max, 0);
 		}
 
+		/**
+		 * Create a new bucket with the given {@code count} value added.
+		 *
+		 * @param count the count value to be added
+		 * @return a new bucket with the given {@code count} value added
+		 */
 		public Bucket add(final long count) {
 			return new Bucket(min, max, this.count + count);
-		}
-
-		/**
-		 * Tests whether the given {@code value} fits into {@code this} bucket.
-		 *
-		 * @param value the value to test
-		 * @return {@code true} if the {@code value} fits in the bucket,
-		 *         {@code false} otherwise
-		 */
-		boolean contains(final double value) {
-			return value >= min && value < max;
 		}
 
 		boolean overlaps(final Bucket other) {
@@ -136,11 +166,6 @@ public record Histogram(Buckets buckets) {
 				max > other.min && max < other.max ||
 				other.min >= min && other.min < max ||
 				other.max > min && other.max < max;
-		}
-
-		@Override
-		public int compareTo(final Bucket other) {
-			return Double.compare(min, other.min);
 		}
 
 		int compareTo(final double value) {
@@ -155,34 +180,88 @@ public record Histogram(Buckets buckets) {
 
 	}
 
+	/**
+	 * Represents a list of buckets which forms a histogram.
+	 */
 	public static final class Buckets implements Iterable<Bucket> {
 		private final List<Bucket> buckets;
 
-		public Buckets(final List<Bucket> buckets) {
+		/**
+		 * Create a new buckets object from the given, non-overlapping, buckets.
+		 *
+		 * @param buckets the bucket list
+		 * @throws IllegalArgumentException if the given {@code buckets} contains
+		 *         overlapping elements or is empty.
+		 */
+		public Buckets(final Collection<Bucket> buckets) {
 			if (buckets.isEmpty()) {
 				throw new IllegalArgumentException(
 					"Buckets list must not be empty."
 				);
 			}
-			this.buckets = List.copyOf(buckets);
+
+			final var list = new ArrayList<>(buckets);
+			list.sort(Comparator.comparingDouble(Bucket::min));
+			for (int i = 1; i < list.size(); ++i) {
+				final var a = list.get(i - 1);
+				final var b = list.get(i);
+
+				if (a.overlaps(b)) {
+					throw new IllegalArgumentException(
+						"Found overlapping buckets: %s ∩ %s.".formatted( a, b)
+					);
+				}
+			}
+
+			this.buckets = List.copyOf(list);
 		}
 
+		/**
+		 * reate a new buckets object from the given, non-overlapping, buckets.
+		 *
+		 * @param buckets the bucket list
+		 * @throws IllegalArgumentException if the given {@code buckets} contains
+		 *         overlapping elements or is empty.
+		 */
 		public Buckets(final Bucket... buckets) {
 			this(List.of(buckets));
 		}
 
+		/**
+		 * Return the number ob bucket elements.
+		 *
+		 * @return the number of buckets
+		 */
 		public int size() {
 			return buckets.size();
 		}
 
+		/**
+		 * Returns the bucket at the specified position.
+		 *
+		 * @param index index of the element to return
+		 * @return the bucket at the specified position
+		 * @throws IndexOutOfBoundsException if the index is out of range
+		 *         ({@code index < 0 || index >= size()})
+		 */
 		public Bucket get(final int index) {
 			return buckets.get(index);
 		}
 
+		/**
+		 * Return the first bucket.
+		 *
+		 * @return the first bucket
+		 */
 		public Bucket first() {
 			return buckets.getFirst();
 		}
 
+		/**
+		 * Return the last bucket.
+		 *
+		 * @return the last bucket
+		 */
 		public Bucket last() {
 			return buckets.getLast();
 		}
@@ -192,6 +271,11 @@ public record Histogram(Buckets buckets) {
 			return buckets.iterator();
 		}
 
+		/**
+		 * Return the bucket elements as stream.
+		 *
+		 * @return the bucket elements as stream
+		 */
 		public Stream<Bucket> stream() {
 			return buckets.stream();
 		}
@@ -242,6 +326,32 @@ public record Histogram(Buckets buckets) {
 			return true;
 		}
 
+		@Override
+		public int hashCode() {
+			return buckets.hashCode();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof Buckets b &&
+				buckets.equals(b.buckets);
+		}
+
+		@Override
+		public String toString() {
+			return buckets.toString();
+		}
+
+	}
+
+	/**
+	 * Create a new histogram consisting of the given buckets.
+	 *
+	 * @param buckets the histogram buckets
+	 * @throws NullPointerException if the given {@code buckets} is {@code null}
+	 */
+	public Histogram {
+		requireNonNull(buckets);
 	}
 
 	/**
@@ -260,6 +370,15 @@ public record Histogram(Buckets buckets) {
 	/**
 	 * Create a new histogram from the defined buckets slice. This method allows
 	 * negative indexes like <em>Python</em> arrays.
+	 * <p>
+	 * <b>Negative array indexes</b>
+	 * <pre>{@code
+	 *       0    1    2    3    4    5    6    7    8    9     Indexes
+	 *     +----+----+----+----+----+----+----+----+----+----+
+	 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
+	 *     +----+----+----+----+----+----+----+----+----+----+
+	 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
+	 * }</pre>
 	 *
 	 * @param start the start index, inclusively
 	 * @param end the end index, exclusively
@@ -290,45 +409,69 @@ public record Histogram(Buckets buckets) {
 		new HistogramFormat(15).print(output, this);
 	}
 
-	@Override
-	public String toString() {
-		/*
-		return """
-			Histogram[
-			    separators=%s,
-			    table=%s,
-			    %s
-			]
-			""".formatted(
-					separators,
-					frequencies,
-					moments
-				);
-		 */
-		return buckets.toString();
-	}
-
+	/**
+	 * Return a histogram collector with the given {@code min} and {@code max}
+	 * values and number {@code classes}. The histogram, created by the
+	 * collector will consist of {@code classes + 2} buckets. The <em>inner</em>
+	 * buckets will be in the range {@code [min, max)}} and consist of the
+	 * defined {@code classes}.
+	 * <pre>{@code
+	 *  -Ꝏ   min                                           max   Ꝏ
+	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+	 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
+	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+	 * }</pre>
+	 *
+	 * @see Histogram.Builder#of(double, double, int)
+	 *
+	 * @param min the minimal value of the inner buckets
+	 * @param max the maximal value of the inner buckets
+	 * @param classes the number of classes between {@code [min, max)}
+	 * @param fn the function converting the elements to double values
+	 * @return a new histogram collector
+	 * @param <T> the stream element type
+	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+	 *         not finite or {@code classes < 1}
+	 * @throws NullPointerException if {@code fn} is {@code null}
+	 */
 	public static <T> Collector<T, ?, Histogram> toHistogram(
 		final double min,
 		final double max,
-		final int nclasses,
+		final int classes,
 		final ToDoubleFunction<? super T> fn
 	) {
+		requireNonNull(fn);
+
 		return Collector.of(
-			() -> Histogram.Builder.of(min, max, nclasses),
+			() -> Histogram.Builder.of(min, max, classes),
 			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
 			(a, b) -> { a.combine(b); return a; },
 			Histogram.Builder::build
 		);
 	}
 
+	/**
+	 * Return a histogram collector with the given {@code min} and {@code max}
+	 * values and number {@code classes}.
+	 *
+	 * @see #toHistogram(double, double, int, ToDoubleFunction)
+	 *
+	 * @param min the minimal value of the inner buckets
+	 * @param max the maximal value of the inner buckets
+	 * @param classes the number of classes between {@code [min, max)}
+	 * @return a new histogram collector
+	 * @param <T> the stream element type
+	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+	 *         not finite or {@code classes < 1}
+	 */
 	public static <T extends Number> Collector<T, ?, Histogram> toHistogram(
 		final double min,
 		final double max,
-		final int nclasses
+		final int classes
 	) {
-		return toHistogram(min, max, nclasses, Number::doubleValue);
+		return toHistogram(min, max, classes, Number::doubleValue);
 	}
+
 
 	/**
 	 * Histogram builder class.
@@ -339,17 +482,9 @@ public record Histogram(Buckets buckets) {
 		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
 
 		/**
-		 * Create a <i>histogram</i> builder with the given {@code separators}.
-		 * The created <i>histogram</i> will have the following structure:
-		 * <pre>{@code
-		 * -Ꝏ     min                                          max    Ꝏ
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
-		 *     -----+----+----+----+----+----+----+----+----+----+-----
-		 *       0    1    2    3    4    5    6    7    8    9    10
-		 * }</pre>
+		 * Create a <i>histogram</i> builder with the given {@code buckets}.
 		 *
-		 * @throws NullPointerException if {@code separators} is {@code null}.
+		 * @throws NullPointerException if the {@code buckets} is {@code null}.
 		 */
 		public Builder(final Buckets buckets) {
 			_buckets = requireNonNull(buckets);
@@ -408,28 +543,24 @@ public record Histogram(Buckets buckets) {
 		}
 
 		/**
-		 * Return a <i>histogram</i> for {@link Double} values. The <i>histogram</i>
-		 * array of the returned {@link Histogram} will look like this:
+		 * Return a histogram builder with the given {@code min} and {@code max}
+		 * values and number {@code classes}. The histogram, created by the
+		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
+		 * buckets will be in the range {@code [min, max)}} and consist of the
+		 * defined {@code classes}.
 		 * <pre>{@code
 		 *  -Ꝏ   min                                           max   Ꝏ
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |cls |
+		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
 		 * }</pre>
-		 * The range of all classes will be equal {@code (max - min)/nclasses} and
-		 * an open bin at the beginning and end is added. This leads to a
-		 * {@code #bucketCount()} of {@code nclasses + 2}.
 		 *
-		 * @see Separators#of(double, double, int)
-		 *
-		 * @param min the minimum range value of the returned histogram.
-		 * @param max the maximum range value of the returned histogram.
-		 * @param classes the number of histogram classes, where the number of
-		 *        separators will be {@code nclasses - 1}.
-		 * @return a new <i>histogram</i> for {@link Double} values.
-		 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+		 * @param min the minimal value of the inner buckets
+		 * @param max the maximal value of the inner buckets
+		 * @param classes the number of classes between {@code [min, max)}
+		 * @return a new histogram collector
 		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-		 *         not finite or {@code classes < 2}
+		 *         not finite or {@code classes < 1}
 		 */
 		public static Builder of(
 			final double min,
