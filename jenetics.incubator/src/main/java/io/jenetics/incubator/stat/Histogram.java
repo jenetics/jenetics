@@ -42,7 +42,7 @@ import io.jenetics.stat.DoubleMomentStatistics;
  * This class lets you create a histogram from {@code double} sample data. The
  * following graph shows the structure (buckets) of the histogram.
  * <pre>{@code
- * -Ꝏ     min                                          max    Ꝏ
+ *  -Ꝏ    min                                          max   Ꝏ
  *     -----+----+----+----+----+----+----+----+----+----+-----
  *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
  *     -----+----+----+----+----+----+----+----+----+----+-----
@@ -99,7 +99,7 @@ public record Histogram(Buckets buckets) {
 	 * {@code [min, max)} and a {@code count} value. The following example shows
 	 * <em>closed</em>, <em>half open</em> and <em>open</em> buckets.
 	 * <pre>{@code
-	 *    min   max       -Ꝏ    max   min   Ꝏ        -Ꝏ     Ꝏ
+	 *    min  max        -Ꝏ    max   min   Ꝏ         -Ꝏ    Ꝏ
 	 *     +----+            -----+     +-----             ------
 	 *     | 12 |              20 |     | 18                 20
 	 *     +----+            -----+     +-----             ------
@@ -227,7 +227,7 @@ public record Histogram(Buckets buckets) {
 		}
 
 		/**
-		 * reate a new buckets object from the given, non-overlapping, buckets.
+		 * Create a new buckets object from the given, non-overlapping, buckets.
 		 *
 		 * @param buckets the bucket list
 		 * @throws IllegalArgumentException if the given {@code buckets} contains
@@ -380,7 +380,7 @@ public record Histogram(Buckets buckets) {
 		}
 
 		/**
-		 * Return a new bucktes object with the given {@code min} and {@code max}
+		 * Return a new buckets object with the given {@code min} and {@code max}
 		 * values and number {@code classes}. The buckets will consist of
 		 * {@code classes + 2} elements. The <em>inner</em> elements will be in
 		 * the range {@code [min, max)} and consist of the defined {@code classes}.
@@ -449,7 +449,7 @@ public record Histogram(Buckets buckets) {
 
 	/**
 	 * Return the <em>degrees of freedom</em> of the histogram, which is
-	 * {@code #buckets().size() - 1}.
+	 * {@link #buckets().size()} - 1.
 	 *
 	 * @see <a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">
 	 *     Degrees of freedom</a>
