@@ -449,7 +449,7 @@ public record Histogram(Buckets buckets) {
 
 	/**
 	 * Return the <em>degrees of freedom</em> of the histogram, which is
-	 * {@link #buckets().size()} - 1.
+	 * {@code buckets().size() - 1}.
 	 *
 	 * @see <a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">
 	 *     Degrees of freedom</a>
@@ -496,7 +496,7 @@ public record Histogram(Buckets buckets) {
 	}
 
 	public void print(PrintStream output) {
-		new HistogramFormat(15).print(output, this);
+		new HistogramFormat(15).format(this, output);
 	}
 
 	/**

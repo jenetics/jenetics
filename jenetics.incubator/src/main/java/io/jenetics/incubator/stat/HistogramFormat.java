@@ -21,11 +21,12 @@ package io.jenetics.incubator.stat;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.stream.LongStream;
 
 /**
  * Prints a graphical representation of the histogram to the given
  * {@code output}.
- * {@snippet lang="java":
+ * {@snippet lang = "java":
  * final var builder = Histogram.Builder.of(0, 10, 20);
  * final var random = RandomGenerator.getDefault();
  * for (int i = 0; i < 10_000; ++i) {
@@ -34,7 +35,7 @@ import java.util.Arrays;
  *
  * final Histogram observation = builder.build();
  * observation.print(System.out);
- * }
+ *}
  * <p>
  * The code snippet above will lead to the following output.
  * <p>
@@ -59,11 +60,12 @@ import java.util.Arrays;
  *     0.0                                                         10.0
  * }</pre>
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz
+ * Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class HistogramFormat {
+public class HistogramFormat {
 	private static final String FULL = "██ ";
 	private static final String EMPTY = "   ";
 
@@ -73,73 +75,68 @@ final class HistogramFormat {
 		_frequencyStepCount = frequencyStepCount;
 	}
 
-	void print(PrintStream out, Histogram histogram) {
-        /*
-        final long[] values = histogram.frequencies().slice(1, -1).values();
-        final long max = LongStream.of(values).max().orElse(0);
-        final var stepSize = round(max/(double)_frequencyStepCount);
+	public void format(Histogram histogram, PrintStream out) {
+		final long[] values = histogram.buckets().slice(1, -1).stream()
+			.mapToLong(Histogram.Bucket::count)
+			.toArray();
+		final long max = LongStream.of(values).max().orElse(0);
+		final var stepSize = round(max / (double) _frequencyStepCount);
 
-        final var maxStringLength = (int)Math.ceil(Math.log10(stepSize*_frequencyStepCount));
-        final var formatString = "%" + maxStringLength + "d ┤ ";
+		final var maxStringLength = (int) Math.ceil(Math.log10(stepSize * _frequencyStepCount));
+		final var formatString = "%" + maxStringLength + "d ┤ ";
 
-        final int margin = maxStringLength + 1;
-        final int length = values.length*FULL.length() + 4;
+		final int margin = maxStringLength + 1;
+		final int length = values.length * FULL.length() + 4;
 
-        // Print histogram
-        out.print(" ".repeat(maxStringLength + 1));
-        out.print("┌");
-        for (int i = 0; i < values.length; i++) {
-            out.print("───");
-        }
-        out.println("──┐");
+		// Print histogram
+		out.print(" ".repeat(maxStringLength + 1));
+		out.print("┌");
+		for (int i = 0; i < values.length; i++) {
+			out.print("───");
+		}
+		out.println("──┐");
 
-        for (int i = _frequencyStepCount - 1; i >= 0; --i) {
-            out.format(formatString, (i + 1)*stepSize);
+		for (int i = _frequencyStepCount - 1; i >= 0; --i) {
+			out.format(formatString, (i + 1) * stepSize);
 
-for (long value : values) {
-if (value - 0.5*stepSize >= i*stepSize) {
-out.print(FULL);
-} else {
-out.print(EMPTY);
-}
-}
-            out.println(" │");
-        }
+			for (long value : values) {
+				if (value - 0.5 * stepSize >= i * stepSize) {
+					out.print(FULL);
+				} else {
+					out.print(EMPTY);
+				}
+			}
+			out.println(" │");
+		}
 
-        out.print(" ".repeat(maxStringLength + 1));
-        out.print("└──");
-        for (int i = 0; i < values.length; i++) {
-            out.print("─┬─");
-        }
-        out.println("┘");
+		out.print(" ".repeat(maxStringLength + 1));
+		out.print("└──");
+		for (int i = 0; i < values.length; i++) {
+			out.print("─┬─");
+		}
+		out.println("┘");
 
-        out.print(" ".repeat(maxStringLength));
-        out.print(histogram.separators().at(0));
+		out.print(" ".repeat(maxStringLength));
+		out.print(histogram.buckets().first().max());
 
-        final var spaces =
-            maxStringLength +
-            EMPTY.length()*(histogram.bucketCount() - 2) -
-            Double.toString(histogram.separators().min()).length() -
-            Double.toString(histogram.separators().max()).length();
+		final var spaces = maxStringLength + EMPTY.length() *
+			(histogram.buckets().size() - 1) -
+			Double.toString(
+				histogram.buckets().first().max()).length() -
+			Double.toString(histogram.buckets().last().min()).length();
 
-        out.print(" ".repeat(spaces));
-        out.print(histogram.separators().at(histogram.separators().length() - 1));
-        out.println();
+		out.print(" ".repeat(spaces));
+		out.print(histogram.buckets().last().min());
+		out.println();
 
-        // Print statistics.
-        table(out, margin, length, new String[][] {
-            {
-                " N=%d".formatted(histogram.moments.count()),
-                " ∧=%.3f".formatted(histogram.moments.min()),
-                " ∨=%.3f".formatted(histogram.moments.max())
-            },
-            {
-                " μ=%.4f".formatted(histogram.moments.mean()),
-                " s²=%.4f".formatted(histogram.moments.variance()),
-                " S=%.4f".formatted(histogram.moments.skewness())
-            }
-        });
-         */
+		// Print statistics.
+//		table(out, margin, length, new String[][]{
+//			{" N=%d".formatted(histogram.moments.count()), " ∧=%.3f".formatted(histogram.moments.min()),
+//				" ∨=%.3f".formatted(histogram.moments.max())},
+//			{" μ=%.4f".formatted(histogram.moments.mean()),
+//				" s²=%.4f".formatted(histogram.moments.variance()),
+//				" S=%.4f".formatted(histogram.moments.skewness())}}
+//		);
 	}
 
 	private static long round(final double value) {
@@ -148,12 +145,7 @@ out.print(EMPTY);
 		return size * count;
 	}
 
-	private static void table(
-		PrintStream out,
-		int margin,
-		int length,
-		String[][] table
-	) {
+	private static void table(PrintStream out, int margin, int length, String[][] table) {
 		if (table.length >= 1) {
 			final int cols = table[0].length;
 			top(out, margin, length, cols);
@@ -226,8 +218,8 @@ out.print(EMPTY);
 	private static int[] partition(final int size, final int parts) {
 		final int[] partition = new int[parts];
 
-		final int bulk = size/parts;
-		final int rest = size%parts;
+		final int bulk = size / parts;
+		final int rest = size % parts;
 
 		Arrays.fill(partition, bulk);
 		for (int i = 0; i < rest; ++i) {
