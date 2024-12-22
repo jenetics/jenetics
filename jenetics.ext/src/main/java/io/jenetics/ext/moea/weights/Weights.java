@@ -17,24 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.moea.weights;
+
+import java.util.List;
+
+import io.jenetics.util.BaseSeq;
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.moea.Vec;
 
 /**
+ * Methods for calculating reference points (weights) on the hyper-plane.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.ext {
-	requires transitive io.jenetics.base;
+public record Weights(BaseSeq<Vec<double[]>> values)
+	implements BaseSeq<Vec<double[]>>
+{
 
-    exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.grammar;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.moea.nsga3;
-	exports io.jenetics.ext.moea.weights;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
+	@Override
+	public int length() {
+		return values().length();
+	}
 
-	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
-	exports io.jenetics.ext.internal.util to io.jenetics.prog;
+	@Override
+	public Vec<double[]> get(final int index) {
+		return values().get(index);
+	}
+
+	public static Weights of(final List<double[]> weights) {
+		return new Weights(ISeq.of(weights.stream().map(Vec::of).toList()));
+	}
+
 }
