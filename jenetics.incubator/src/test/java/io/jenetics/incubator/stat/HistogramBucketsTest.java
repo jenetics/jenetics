@@ -99,4 +99,18 @@ public class HistogramBucketsTest {
 		return new Buckets(buckets);
 	}
 
+	@Test
+	public void create() {
+		/*
+		new Bucket(0, 1).split(10)
+			.add(new Bucket(1, 10).split(10));
+
+		final Histogram histogram = new Histogram.Builder(new Bucket(0, 10).split(100))
+			.build(samples -> {
+
+			});
+
+		 */
+	}
+
 }

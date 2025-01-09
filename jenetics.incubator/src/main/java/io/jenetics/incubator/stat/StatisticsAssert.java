@@ -102,7 +102,7 @@ public final class StatisticsAssert {
 	}
 
 	public static DistributionAssert assertThatObservation(Histogram observation) {
-		return new DistributionAssert(observation.slice(1, -1));
+		return new DistributionAssert(observation);
 	}
 
 }

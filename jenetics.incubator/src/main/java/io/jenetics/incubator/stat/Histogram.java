@@ -19,11 +19,8 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -31,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
+import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
@@ -128,8 +126,7 @@ public record Histogram(Buckets buckets) {
 		public Bucket {
 			if (Double.isNaN(min) || Double.isNaN(max) || min >= max || count < 0) {
 				throw new IllegalArgumentException(
-					"Invalid Bin[min=%f, max=%f, count=%d]."
-						.formatted(min, max, count)
+					"Invalid bucket: %s.".formatted(this)
 				);
 			}
 		}
@@ -170,12 +167,81 @@ public record Histogram(Buckets buckets) {
 			return new Bucket(min, min, count);
 		}
 
-		boolean overlaps(final Bucket other) {
-			return
-				min >= other.min && min < other.max ||
-				max > other.min && max < other.max ||
-				other.min >= min && other.min < max ||
-				other.max > min && other.max < max;
+		/**
+		 * Return the <em>next</em> bucket to {@code this} one with zero gaps
+		 * and the given {@code width}.
+		 *
+		 * @param width the width of the next bucket
+		 * @return a new bucket, next to {@code this}, with the given
+		 *        {@code width}
+		 */
+		public Bucket next(final double width) {
+			return new Bucket(max, max + width);
+		}
+
+		/**
+		 * Return the <em>previous</em> bucket to {@code this} one with zero
+		 * gaps and the given {@code width}.
+		 *
+		 * @param width the width of the previous bucket
+		 * @return a new bucket, previous to {@code this}, with the given
+		 *        {@code width}
+		 */
+		public Bucket previous(final double width) {
+			return new Bucket(min - width, min);
+		}
+
+		/**
+		 * Tests whether {@code this} bucket overlaps the {@code other} one.
+		 *
+		 * @param other the other bucket used for overlap test
+		 * @return {@code true} if the {@code other} bucket overlaps with
+		 *         {@code this} one, {@code false} otherwise
+		 */
+		public boolean isOverlapping(final Bucket other) {
+			if (other.min <= min) {
+				return other.max > min;
+			} else {
+				return other.min < max;
+			}
+		}
+
+		/**
+		 * Splits {@code this} bucket into the given number of {@code parts},
+		 * with no gaps in between. The count of the split buckets is set to
+		 * zero.
+		 *
+		 * @param parts the number of split buckets
+		 * @return the split buckets
+		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
+		 *         bucket or the number of {@code parts} is {@code < 1}
+		 */
+		public Buckets split(final int parts) {
+			if (!Double.isFinite(min) || !Double.isFinite(max)) {
+				throw new IllegalArgumentException(
+					"Open buckets can't be split: %s.".formatted(this)
+				);
+			}
+			if (parts < 1) {
+				throw new IllegalArgumentException(
+					"Number of parts must at least one: %d."
+						.formatted(parts)
+				);
+			}
+
+			final var stride = (max - min)/parts;
+
+			final var buckets = new Bucket[parts];
+			buckets[0] = new Bucket(min, min + stride);
+			for (int i = 1; i < parts; ++i) {
+				if (i < parts - 1) {
+					buckets[i] = buckets[i -1].next(stride);
+				} else {
+					buckets[i] = new Bucket(buckets[i - 1].max(), max);
+				}
+			}
+
+			return new Buckets(buckets);
 		}
 
 		int compareTo(final double value) {
@@ -191,7 +257,23 @@ public record Histogram(Buckets buckets) {
 	}
 
 	/**
-	 * Represents a list of buckets which forms a histogram.
+	 * Represents a list of buckets which forms a histogram. The buckets of this
+	 * object must be non-overlapping and will usually have no gaps like shown
+	 * in the following example.
+	 * <pre>{@code
+	 *    min                                     max
+	 *     +----+----+----+----+----+----+----+----+
+	 *     | 1  | 2  | 3  | 4  |  5 | 6  | 7  |  8 |
+	 *     +----+----+----+----+----+----+----+----+
+	 * }</pre>
+	 * Although no overlapping buckets are allowed, it is possible to have gaps
+	 * in the bucket list.
+	 * <pre>{@code
+	 *    min                                      max
+	 *     +----+----+----+   +----+----+ +----+----+
+	 *     | 1  | 2  | 3  |   | 4  | 5  | | 6  |  7 |
+	 *     +----+----+----+   +----+----+ +----+----+
+	 * }</pre>
 	 */
 	public static final class Buckets implements Iterable<Bucket> {
 		private final List<Bucket> buckets;
@@ -216,7 +298,7 @@ public record Histogram(Buckets buckets) {
 				final var a = list.get(i - 1);
 				final var b = list.get(i);
 
-				if (a.overlaps(b)) {
+				if (a.isOverlapping(b)) {
 					throw new IllegalArgumentException(
 						"Found overlapping buckets: %s ∩ %s.".formatted( a, b)
 					);
@@ -277,6 +359,41 @@ public record Histogram(Buckets buckets) {
 		}
 
 		/**
+		 * Add the given bucket to the end of the bucket list.
+		 *
+		 * @param bucket the bucket to add
+		 * @return a new buckets object with the given element appended
+		 * @throws IllegalArgumentException if adding the element makes the
+		 *         {@code Buckets} object invalid
+		 * @throws NullPointerException if the given {@code bucket} is null
+		 */
+		public Buckets add(final Bucket bucket) {
+			final var list = new ArrayList<>(buckets);
+			list.add(bucket);
+			return new Buckets(list);
+		}
+
+		/**
+		 * Add the given bucket at the given {@code index} of the bucket list.
+		 *
+		 * @param bucket the bucket to add
+		 * @param index the bucket index
+		 * @return a new buckets object with the given element appended
+		 * @throws IllegalArgumentException if adding the element makes the
+		 *         {@code Buckets} object invalid
+		 * @throws NullPointerException if the given {@code bucket} is null
+		 */
+		public Buckets add(final int index, final Bucket bucket) {
+			final var list = new ArrayList<>(buckets);
+			list.add(index, bucket);
+			return new Buckets(list);
+		}
+
+		public Buckets open() {
+			return this;
+		}
+
+		/**
 		 * Create a new buckets slice. This method allows negative indexes like
 		 * <em>Python</em> arrays.
 		 * <p>
@@ -317,7 +434,15 @@ public record Histogram(Buckets buckets) {
 			return buckets.stream();
 		}
 
-		int indexOf(final double value) {
+		/**
+		 * Return the bucket index for the given {@code value}. If no bucket
+		 * for the {@code value} is available, {@code -1} is returned.
+		 *
+		 * @param value the bucket value
+		 * @return the bucket index for the given {@code value}, or {@code -1}
+		 *         if no bucket is available
+		 */
+		public int indexOf(final double value) {
 			if (Double.isNaN(value)) {
 				return -1;
 			}
@@ -417,20 +542,30 @@ public record Histogram(Buckets buckets) {
 
 			final var stride = (max - min)/classes;
 
-			final var buckets = new Bucket[classes + 2];
-			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
-			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
-
-			for (int i = 1; i < buckets.length - 2; ++i) {
-				buckets[i] = new Bucket(
-					buckets[i - 1].max,
-					buckets[i - 1].max + stride
-				);
+			final var buckets = new Bucket[classes];
+			buckets[0] = new Bucket(min, min + stride);
+			for (int i = 1; i < classes; ++i) {
+				if (i < classes - 1) {
+					buckets[i] = buckets[i -1].next(stride);
+				} else {
+					buckets[i] = new Bucket(buckets[i - 1].max(), max);
+				}
 			}
-			buckets[buckets.length - 2] = new Bucket(
-				buckets[buckets.length - 3].max,
-				max
-			);
+
+//			final var buckets = new Bucket[classes + 2];
+//			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
+//			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
+//
+//			for (int i = 1; i < buckets.length - 2; ++i) {
+//				buckets[i] = new Bucket(
+//					buckets[i - 1].max,
+//					buckets[i - 1].max + stride
+//				);
+//			}
+//			buckets[buckets.length - 2] = new Bucket(
+//				buckets[buckets.length - 3].max,
+//				max
+//			);
 
 			return new Buckets(buckets);
 		}
@@ -493,10 +628,6 @@ public record Histogram(Buckets buckets) {
 		return buckets.stream()
 			.mapToLong(Bucket::count)
 			.sum();
-	}
-
-	public void print(PrintStream output) {
-		new HistogramFormat(15).format(this, output);
 	}
 
 	/**

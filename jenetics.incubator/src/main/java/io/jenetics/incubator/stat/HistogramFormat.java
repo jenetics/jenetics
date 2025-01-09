@@ -19,7 +19,11 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.stream.LongStream;
 
@@ -56,7 +60,7 @@ import java.util.stream.LongStream;
  *  204 ┤       ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██     │
  *  136 ┤       ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██  │
  *   68 ┤ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██  │
- *      └───┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬─┘
+ *    0 └───┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬─┘
  *     0.0                                                         10.0
  * }</pre>
  *
@@ -66,12 +70,15 @@ import java.util.stream.LongStream;
  * @since !__version__!
  */
 public class HistogramFormat {
+
+	public static final HistogramFormat DEFAULT = new HistogramFormat(20);
+
 	private static final String FULL = "██ ";
 	private static final String EMPTY = "   ";
 
 	private final int _frequencyStepCount;
 
-	HistogramFormat(final int frequencyStepCount) {
+	public HistogramFormat(final int frequencyStepCount) {
 		_frequencyStepCount = frequencyStepCount;
 	}
 
@@ -228,5 +235,58 @@ public class HistogramFormat {
 
 		return partition;
 	}
+
+}
+
+final class Raster {
+	private final char[][] data;
+
+	private Raster(final char[][] data) {
+		this.data = requireNonNull(data);
+	}
+
+	Raster(final int width, final int height) {
+		this(new char[width][height]);
+	}
+
+	int width() {
+		return data.length;
+	}
+
+	int height() {
+		return data[0].length;
+	}
+
+	void set(final int x, final int y, final char value) {
+		data[x][y] = value;
+	}
+
+	char get(final int x, final int y) {
+		return data[x][y];
+	}
+
+	void print(final Appendable out) {
+		try {
+			for (var line : data) {
+				for (var c : line) {
+					out.append(c != 0 ? c : ' ');
+				}
+				out.append('\n');
+			}
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	@Override
+	public String toString() {
+		final var out = new StringBuilder();
+		print(out);
+		return out.toString();
+	}
+
+}
+
+final class Axis {
 
 }

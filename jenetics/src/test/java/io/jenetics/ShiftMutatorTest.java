@@ -27,6 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.HistogramFormat;
 import io.jenetics.stat.Samplers;
 import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.DoubleRange;
@@ -167,12 +168,12 @@ public class ShiftMutatorTest extends MutatorTester {
 			histogram.accept(distribution.sample(random, range));
 		}
 
-		histogram.build().print(System.out);
+		HistogramFormat.DEFAULT.format(histogram.build(), System.out);
 
-final var lengthSampler = Samplers.linear(0.3);
-final var indexSampler = Samplers.linear(0.5);
-final var random1 = ShiftMutator.RangeRandom.of(lengthSampler, indexSampler);
-final var mutator = new ShiftMutator<DoubleGene, Double>(random1);
+		final var lengthSampler = Samplers.linear(0.3);
+		final var indexSampler = Samplers.linear(0.5);
+		final var random1 = ShiftMutator.RangeRandom.of(lengthSampler, indexSampler);
+		final var mutator = new ShiftMutator<DoubleGene, Double>(random1);
 
 		new ShuffleMutator<>();
 	}

@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.lang.Double.POSITIVE_INFINITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -27,6 +28,8 @@ import java.util.random.RandomGenerator;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
+import io.jenetics.incubator.stat.Histogram.Bucket;
+import io.jenetics.incubator.stat.Histogram.Buckets;
 import io.jenetics.util.ISeq;
 
 /**
@@ -41,13 +44,13 @@ public class HistogramTest {
 		final int elements = 10;
 
 		var histogram = Histogram.Builder.of(begin, end, elements).build();
-		assertThat(histogram.buckets().size()).isEqualTo(elements + 2);
+		assertThat(histogram.buckets().size()).isEqualTo(elements);
 		assertThat(
 			histogram.buckets().stream()
-				.mapToLong(Histogram.Bucket::count)
+				.mapToLong(Bucket::count)
 				.toArray()
 		)
-			.isEqualTo(new long[elements + 2]);
+			.isEqualTo(new long[elements]);
 	}
 
 	@Test
@@ -63,12 +66,10 @@ public class HistogramTest {
 		}
 
 		final var histogram = builder.build();
-		final long[] expected = new long[binCount + 2];
+		final long[] expected = new long[binCount];
 		Arrays.fill(expected, 1000);
-		expected[0] = 0;
-		expected[expected.length - 1] = 0;
 		assertThat(histogram.buckets().stream()
-			.mapToLong(Histogram.Bucket::count)
+			.mapToLong(Bucket::count)
 			.toArray())
 			.isEqualTo(expected);
 		System.out.println(histogram);
@@ -114,7 +115,7 @@ public class HistogramTest {
 		}
 
 		final Histogram observation = builder.build();
-		observation.print(System.out);
+		HistogramFormat.DEFAULT.format(observation, System.out);
 	}
 
 	@Test
@@ -128,6 +129,36 @@ public class HistogramTest {
 		final Histogram observations = genes.stream()
 			.collect(Histogram.toHistogram(0, 10, 15, DoubleGene::doubleValue));
 		assertThat(observations.sampleCount()).isEqualTo(1000);
+	}
+
+	@Test
+	public void foo() {
+		/*
+		final var buckets = Buckets.of(0,1, 10)
+			.append(new Bucket(POSITIVE_INFINITY, 0)
+			.prepend(POSITIVE_INFINITY);
+		buckets.append(last -> last.next(POSITIVE_INFINITY));
+		 */
+
+		/*
+		new Histogram.Builder(Histogram.Buckets.of(0, 1, 5).open());
+
+		Histogram.Builder.of(0,1, 10).open()
+
+		final var buckets = Histogram.Buckets.of(0, 1, 10)
+			.open()
+			.leftOpen()
+			.rightOpen();
+
+		buckets.leftOpen();
+		buckets.rightOpen();
+		buckets.open();
+
+		buckets.prepend(Double.NEGATIVE_INFINITY);
+		buckets.append(Double.POSITIVE_INFINITY);
+
+		buckets.prepend(new Bucket(Double.NEGATIVE_INFINITY, 0));
+		*/
 	}
 
 }
