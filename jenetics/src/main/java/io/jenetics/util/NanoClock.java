@@ -99,8 +99,7 @@ public final class NanoClock extends Clock implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof NanoClock other &&
+		return obj instanceof NanoClock other &&
 			other._zone.equals(_zone);
 	}
 

@@ -149,8 +149,7 @@ public final class CharacterGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof CharacterGene other &&
+		return obj instanceof CharacterGene other &&
 			other._allele == _allele &&
 			Objects.equals(other._validCharacters, _validCharacters);
 	}
