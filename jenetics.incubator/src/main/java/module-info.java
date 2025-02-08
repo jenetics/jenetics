@@ -28,12 +28,15 @@ module io.jenetics.incubator {
 	requires io.jenetics.ext;
 	requires io.jenetics.prog;
 	requires java.desktop;
+    requires java.logging;
 
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.beans.description;
+    exports io.jenetics.incubator.beans.description;
 	exports io.jenetics.incubator.beans.property;
 	exports io.jenetics.incubator.beans.reflect;
+	exports io.jenetics.incubator.beans;
 	exports io.jenetics.incubator.combinatorial;
+	exports io.jenetics.incubator.csv;
+	exports io.jenetics.incubator.math;
 	exports io.jenetics.incubator.prog;
 	exports io.jenetics.incubator.util;
 }
