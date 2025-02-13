@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.lang.Double.doubleToLongBits;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
-import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
@@ -91,9 +91,147 @@ import io.jenetics.stat.DoubleMomentStatistics;
 public record Histogram(Buckets buckets) {
 
 	/**
-	 * Represents on histogram bin. For <em>open</em> buckets, the {@link #min()}
-	 * value might be {@link Double#NEGATIVE_INFINITY} and the {@link #max()}
-	 * value might be {@link Double#POSITIVE_INFINITY}. Buckets have range
+	 * Defines a double range.
+	 *
+	 * @param min the minimal range value (inclusively)
+	 * @param max the maximal range value (exclusively)
+	 */
+	public record Range(double min, double max) {
+
+		/**
+		 * Create a new bucket with the given values.
+		 *
+		 * @param min the minimal value of the bin range, inclusively. Might be
+		 *        {@link Double#NEGATIVE_INFINITY}
+		 * @param max the maximal value of the bin range, exclusively. Might be
+		 *        {@link Double#POSITIVE_INFINITY}
+		 * @throws IllegalArgumentException if the {@code min} and {@code max}
+		 *         values are {@link Double#NaN} or {@code min >= max}
+		 */
+		public Range {
+			if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid range: %s.".formatted(this)
+				);
+			}
+		}
+
+		/**
+		 * Return the <em>next</em> range to {@code this} one with zero gaps
+		 * and the given {@code width}.
+		 *
+		 * @param width the width of the next bucket
+		 * @return a new range, next to {@code this}, with the given
+		 *        {@code width}
+		 */
+		public Range next(final double width) {
+			return new Range(max, max + width);
+		}
+
+		/**
+		 * Return the <em>previous</em> range to {@code this} one with zero
+		 * gaps and the given {@code width}.
+		 *
+		 * @param width the width of the previous range
+		 * @return a new bucket, previous to {@code this}, with the given
+		 *        {@code width}
+		 */
+		public Range previous(final double width) {
+			return new Range(min - width, min);
+		}
+
+		/**
+		 * Tests whether {@code this} range overlaps the {@code other} one.
+		 *
+		 * @param other the other range used for overlap test
+		 * @return {@code true} if the {@code other} range overlaps with
+		 *         {@code this} one, {@code false} otherwise
+		 */
+		public boolean isOverlapping(final Range other) {
+			if (other.min <= min) {
+				return other.max > min;
+			} else {
+				return other.min < max;
+			}
+		}
+
+		/**
+		 * Test whether the given {@code value} lies within, below or above
+		 * {@code this} range.
+		 *
+		 * @param value the value to test
+		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
+		 *          lies below, within or above {@code this} range
+		 */
+		public int compareTo(final double value) {
+			if (value < min) {
+				return -1;
+			} else if (value >= max) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+		/**
+		 * Splits {@code this} range into the given number of {@code parts},
+		 * with no gaps in between.
+		 *
+		 * @param parts the number of split ranges
+		 * @return the split ranges
+		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
+		 *         bucket or the number of {@code parts} is {@code < 1}
+		 */
+		public List<Range> split(final int parts) {
+			if (!Double.isFinite(min) || !Double.isFinite(max)) {
+				throw new IllegalArgumentException(
+					"Open ranges can't be split: %s.".formatted(this)
+				);
+			}
+			if (parts < 1) {
+				throw new IllegalArgumentException(
+					"Number of parts must at least one: %d."
+						.formatted(parts)
+				);
+			}
+			final long size = size();
+			if (size < parts) {
+				throw new IllegalArgumentException(
+					"%s contains only %d number. Can't split it into %d parts."
+						.formatted(this, size, parts)
+				);
+			}
+
+			final var stride = (max - min)/parts;
+			assert stride > 0.0;
+
+			final var ranges = new Range[parts];
+			ranges[0] = new Range(min, min + stride);
+			for (int i = 1; i < parts; ++i) {
+				if (i < parts - 1) {
+					ranges[i] = ranges[i -1].next(stride);
+				} else {
+					ranges[i] = new Range(ranges[i - 1].max(), max);
+				}
+			}
+
+			return List.of(ranges);
+		}
+
+		/**
+		 * Return the number of <em>distinct</em> {@code double} values
+		 * {@code this} range can <em>hold</em>.
+		 *
+		 * @return the number of distinct double values of {@code this} range
+		 */
+		long size() {
+			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
+		}
+
+	}
+
+	/**
+	 * Represents on histogram bin. For <em>open</em> buckets. Buckets have range
 	 * {@code [min, max)} and a {@code count} value. The following example shows
 	 * <em>closed</em>, <em>half open</em> and <em>open</em> buckets.
 	 * <pre>{@code
@@ -103,47 +241,34 @@ public record Histogram(Buckets buckets) {
 	 *     +----+            -----+     +-----             ------
 	 * }</pre>
 	 *
-	 * @param min the minimal value of the bin range, inclusively. Might be
-	 *        {@link Double#NEGATIVE_INFINITY}
-	 * @param max the maximal value of the bin range, exclusively. Might be
-	 *        {@link Double#POSITIVE_INFINITY}
+	 * @param range the range of the bucket
 	 * @param count the bucket count
 	 */
-	public record Bucket(double min, double max, long count) {
+	public record Bucket(Range range, long count) {
 
 		/**
 		 * Create a new bucket with the given values.
 		 *
-		 * @param min the minimal value of the bin range, inclusively. Might be
-		 *        {@link Double#NEGATIVE_INFINITY}
-		 * @param max the maximal value of the bin range, exclusively. Might be
-		 *        {@link Double#POSITIVE_INFINITY}
+		 * @param range the bucket range
 		 * @param count the bucket count
-		 * @throws IllegalArgumentException if the {@code min} and {@code max}
-		 *         values are {@link Double#NaN}, {@code min >= max} or
-		 *         {@code count < 0}
+		 * @throws IllegalArgumentException if {@code count < 0}
 		 */
 		public Bucket {
-			if (Double.isNaN(min) || Double.isNaN(max) || min >= max || count < 0) {
+			if (count < 0) {
 				throw new IllegalArgumentException(
-					"Invalid bucket: %s.".formatted(this)
+					"Bucket count must not be negative: %s.".formatted(count)
 				);
 			}
 		}
 
 		/**
-		 * Create a new bucket with the given {@code min} and {@code max} values.
-		 * The {@link Bucket#count()} value is set to zero.
+		 * Create a new bucket with the given {@code range}. The
+		 * {@link Bucket#count()} value is set to zero.
 		 *
-		 * @param min the minimal value of the bin range, inclusively. Might be
-		 *        {@link Double#NEGATIVE_INFINITY}
-		 * @param max the maximal value of the bin range, exclusively. Might be
-		 *        {@link Double#POSITIVE_INFINITY}
-		 * @throws IllegalArgumentException if the {@code min} and {@code max}
-		 *         values are {@link Double#NaN} or {@code min >= max}
+		 * @param range the bucket range
 		 */
-		public Bucket(double min, double max) {
-			this(min, max, 0);
+		public Bucket(final Range range) {
+			this(range, 0);
 		}
 
 		/**
@@ -153,105 +278,7 @@ public record Histogram(Buckets buckets) {
 		 * @return a new bucket with the given {@code count} value added
 		 */
 		public Bucket add(final long count) {
-			return new Bucket(min, max, this.count + count);
-		}
-
-		/**
-		 * Return a new bucket with the same range and the given {@code count}.
-		 *
-		 * @param count the count of the new bucket
-		 * @return a new bucket with the same range and the given {@code count}
-		 * @throws IllegalArgumentException if {@code count < 0}
-		 */
-		public Bucket withCount(final long count) {
-			return new Bucket(min, min, count);
-		}
-
-		/**
-		 * Return the <em>next</em> bucket to {@code this} one with zero gaps
-		 * and the given {@code width}.
-		 *
-		 * @param width the width of the next bucket
-		 * @return a new bucket, next to {@code this}, with the given
-		 *        {@code width}
-		 */
-		public Bucket next(final double width) {
-			return new Bucket(max, max + width);
-		}
-
-		/**
-		 * Return the <em>previous</em> bucket to {@code this} one with zero
-		 * gaps and the given {@code width}.
-		 *
-		 * @param width the width of the previous bucket
-		 * @return a new bucket, previous to {@code this}, with the given
-		 *        {@code width}
-		 */
-		public Bucket previous(final double width) {
-			return new Bucket(min - width, min);
-		}
-
-		/**
-		 * Tests whether {@code this} bucket overlaps the {@code other} one.
-		 *
-		 * @param other the other bucket used for overlap test
-		 * @return {@code true} if the {@code other} bucket overlaps with
-		 *         {@code this} one, {@code false} otherwise
-		 */
-		public boolean isOverlapping(final Bucket other) {
-			if (other.min <= min) {
-				return other.max > min;
-			} else {
-				return other.min < max;
-			}
-		}
-
-		/**
-		 * Splits {@code this} bucket into the given number of {@code parts},
-		 * with no gaps in between. The count of the split buckets is set to
-		 * zero.
-		 *
-		 * @param parts the number of split buckets
-		 * @return the split buckets
-		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
-		 *         bucket or the number of {@code parts} is {@code < 1}
-		 */
-		public Buckets split(final int parts) {
-			if (!Double.isFinite(min) || !Double.isFinite(max)) {
-				throw new IllegalArgumentException(
-					"Open buckets can't be split: %s.".formatted(this)
-				);
-			}
-			if (parts < 1) {
-				throw new IllegalArgumentException(
-					"Number of parts must at least one: %d."
-						.formatted(parts)
-				);
-			}
-
-			final var stride = (max - min)/parts;
-
-			final var buckets = new Bucket[parts];
-			buckets[0] = new Bucket(min, min + stride);
-			for (int i = 1; i < parts; ++i) {
-				if (i < parts - 1) {
-					buckets[i] = buckets[i -1].next(stride);
-				} else {
-					buckets[i] = new Bucket(buckets[i - 1].max(), max);
-				}
-			}
-
-			return new Buckets(buckets);
-		}
-
-		int compareTo(final double value) {
-			if (value < min) {
-				return -1;
-			} else if (value >= max) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return new Bucket(range, this.count + count);
 		}
 
 	}
@@ -293,12 +320,12 @@ public record Histogram(Buckets buckets) {
 			}
 
 			final var list = new ArrayList<>(buckets);
-			list.sort(Comparator.comparingDouble(Bucket::min));
+			list.sort(Comparator.comparingDouble(b -> b.range.min));
 			for (int i = 1; i < list.size(); ++i) {
 				final var a = list.get(i - 1);
 				final var b = list.get(i);
 
-				if (a.isOverlapping(b)) {
+				if (a.range.isOverlapping(b.range)) {
 					throw new IllegalArgumentException(
 						"Found overlapping buckets: %s ∩ %s.".formatted( a, b)
 					);
@@ -451,14 +478,14 @@ public record Histogram(Buckets buckets) {
 			int high = size() - 1;
 
 			while (low <= high) {
-				if (get(low).compareTo(value) < 0 ||
-					get(high).compareTo(value) > 0)
+				if (get(low).range.compareTo(value) < 0 ||
+					get(high).range.compareTo(value) > 0)
 				{
 					return -1;
 				}
 
 				final int mid = (low + high) >>> 1;
-				final int cpm = get(mid).compareTo(value);
+				final int cpm = get(mid).range.compareTo(value);
 
 				if (cpm == 0) {
 					return mid;
@@ -479,12 +506,11 @@ public record Histogram(Buckets buckets) {
 				return false;
 			}
 			for (int i = 0; i < buckets.size(); ++i) {
-				if (buckets.get(i).min != other.buckets.get(i).min ||
-					buckets.get(i).max != other.buckets.get(i).max)
-				{
+				if (!buckets.get(i).range.equals(other.buckets.get(i).range)) {
 					return false;
 				}
 			}
+
 			return true;
 		}
 
@@ -523,51 +549,12 @@ public record Histogram(Buckets buckets) {
 		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
 		 *         not finite or {@code classes < 1}
 		 */
-		public static Buckets of(
-			final double min,
-			final double max,
-			final int classes
-		) {
-			if (!Double.isFinite(min) || !Double.isFinite(max) || min >= max) {
-				throw new IllegalArgumentException(
-					"Invalid border: [min=%f, max=%f].".formatted(min, max)
-				);
-			}
-			if (classes < 1) {
-				throw new IllegalArgumentException(
-					"Number of classes must at least one: %d."
-						.formatted(classes)
-				);
-			}
-
-			final var stride = (max - min)/classes;
-
-			final var buckets = new Bucket[classes];
-			buckets[0] = new Bucket(min, min + stride);
-			for (int i = 1; i < classes; ++i) {
-				if (i < classes - 1) {
-					buckets[i] = buckets[i -1].next(stride);
-				} else {
-					buckets[i] = new Bucket(buckets[i - 1].max(), max);
-				}
-			}
-
-//			final var buckets = new Bucket[classes + 2];
-//			buckets[0] = new Bucket(NEGATIVE_INFINITY, min);
-//			buckets[buckets.length - 1] = new Bucket(max, POSITIVE_INFINITY);
-//
-//			for (int i = 1; i < buckets.length - 2; ++i) {
-//				buckets[i] = new Bucket(
-//					buckets[i - 1].max,
-//					buckets[i - 1].max + stride
-//				);
-//			}
-//			buckets[buckets.length - 2] = new Bucket(
-//				buckets[buckets.length - 3].max,
-//				max
-//			);
-
-			return new Buckets(buckets);
+		public static Buckets of(final double min, final double max, final int classes) {
+			return new Buckets(
+				new Range(min, max).split(classes).stream()
+					.map(Bucket::new)
+					.toList()
+			);
 		}
 
 	}
