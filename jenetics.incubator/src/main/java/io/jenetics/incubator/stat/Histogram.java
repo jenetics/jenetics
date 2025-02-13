@@ -196,10 +196,15 @@ public record Histogram(Buckets buckets) {
 			}
 			final long size = size();
 			if (size < parts) {
-				throw new IllegalArgumentException(
-					"%s contains only %d number. Can't split it into %d parts."
-						.formatted(this, size, parts)
+				throw new IllegalArgumentException("""
+					%s can hold only %d distinct double values. \
+					"Can't split it into %d parts.
+					""".formatted(this, size, parts)
 				);
+			}
+
+			if (parts == 1) {
+				return List.of(this);
 			}
 
 			final var stride = (max - min)/parts;
@@ -207,15 +212,36 @@ public record Histogram(Buckets buckets) {
 
 			final var ranges = new Range[parts];
 			ranges[0] = new Range(min, min + stride);
-			for (int i = 1; i < parts; ++i) {
-				if (i < parts - 1) {
-					ranges[i] = ranges[i -1].next(stride);
-				} else {
-					ranges[i] = new Range(ranges[i - 1].max(), max);
-				}
+			for (int i = 1; i < parts - 1; ++i) {
+				ranges[i] = ranges[i -1].next(stride);
 			}
+			ranges[parts - 1] = new Range(ranges[parts - 2].max(), max);
 
 			return List.of(ranges);
+		}
+
+		public List<Range> splitOpen(final int parts) {
+			final var ranges = new ArrayList<Range>();
+			ranges.add(previous(Double.POSITIVE_INFINITY));
+			ranges.addAll(split(parts));
+			ranges.add(next(Double.POSITIVE_INFINITY));
+
+			return List.copyOf(ranges);
+		}
+
+		public List<Range> splitLeftOpen(final int parts) {
+			final var ranges = new ArrayList<Range>();
+			ranges.add(previous(Double.POSITIVE_INFINITY));
+			ranges.addAll(split(parts));
+
+			return List.copyOf(ranges);
+		}
+
+		public List<Range> splitRightOpen(final int parts) {
+			final var ranges = new ArrayList<Range>(split(parts));
+			ranges.add(next(Double.POSITIVE_INFINITY));
+
+			return List.copyOf(ranges);
 		}
 
 		/**

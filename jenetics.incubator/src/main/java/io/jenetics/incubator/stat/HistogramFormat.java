@@ -124,17 +124,17 @@ public class HistogramFormat {
 		out.println("┘");
 
 		out.print(" ".repeat(maxStringLength));
-		out.print(histogram.buckets().first().max());
+		//out.print(histogram.buckets().first().max());
 
-		final var spaces = maxStringLength + EMPTY.length() *
-			(histogram.buckets().size() - 1) -
-			Double.toString(
-				histogram.buckets().first().max()).length() -
-			Double.toString(histogram.buckets().last().min()).length();
-
-		out.print(" ".repeat(spaces));
-		out.print(histogram.buckets().last().min());
-		out.println();
+//		final var spaces = maxStringLength + EMPTY.length() *
+//			(histogram.buckets().size() - 1) -
+//			Double.toString(
+//				histogram.buckets().first().max()).length() -
+//			Double.toString(histogram.buckets().last().min()).length();
+//
+//		out.print(" ".repeat(spaces));
+//		out.print(histogram.buckets().last().min());
+//		out.println();
 
 		// Print statistics.
 //		table(out, margin, length, new String[][]{

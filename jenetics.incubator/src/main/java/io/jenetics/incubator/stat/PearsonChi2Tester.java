@@ -88,7 +88,7 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 	}
 
 	static double probability(final Cdf cdf, final Histogram.Bucket bucket) {
-		return cdf.apply(bucket.max()) - cdf.apply(bucket.min());
+		return 0; //cdf.apply(bucket.max()) - cdf.apply(bucket.min());
 	}
 
 }
