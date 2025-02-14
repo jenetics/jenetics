@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.POSITIVE_INFINITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.incubator.stat.Histogram.Bucket;
-import io.jenetics.incubator.stat.Histogram.Buckets;
 import io.jenetics.util.ISeq;
 
 /**

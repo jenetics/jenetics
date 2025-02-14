@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.doubleToLongBits;
 import static java.util.Objects.requireNonNull;
 
@@ -29,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
+import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
@@ -83,12 +86,14 @@ import io.jenetics.stat.DoubleMomentStatistics;
  * }
  *
  * @param buckets the {@link Bucket} list, the histogram consists of
+ * @param residual the <em>residual</em> buckets, which complete the whole
+ *                 {@code double} range (-Ꝏ, Ꝏ)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record Histogram(Buckets buckets) {
+public record Histogram(Buckets buckets, Buckets residual) {
 
 	/**
 	 * Defines a double range.
@@ -222,16 +227,16 @@ public record Histogram(Buckets buckets) {
 
 		public List<Range> splitOpen(final int parts) {
 			final var ranges = new ArrayList<Range>();
-			ranges.add(previous(Double.POSITIVE_INFINITY));
+			ranges.add(previous(POSITIVE_INFINITY));
 			ranges.addAll(split(parts));
-			ranges.add(next(Double.POSITIVE_INFINITY));
+			ranges.add(next(POSITIVE_INFINITY));
 
 			return List.copyOf(ranges);
 		}
 
 		public List<Range> splitLeftOpen(final int parts) {
 			final var ranges = new ArrayList<Range>();
-			ranges.add(previous(Double.POSITIVE_INFINITY));
+			ranges.add(previous(POSITIVE_INFINITY));
 			ranges.addAll(split(parts));
 
 			return List.copyOf(ranges);
@@ -239,7 +244,7 @@ public record Histogram(Buckets buckets) {
 
 		public List<Range> splitRightOpen(final int parts) {
 			final var ranges = new ArrayList<Range>(split(parts));
-			ranges.add(next(Double.POSITIVE_INFINITY));
+			ranges.add(next(POSITIVE_INFINITY));
 
 			return List.copyOf(ranges);
 		}
@@ -252,6 +257,21 @@ public record Histogram(Buckets buckets) {
 		 */
 		long size() {
 			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
+		}
+
+		/**
+		 * Returns a range list, which <em>completes</em> the given ranges.
+		 *
+		 * @param ranges the ranges to <em>complete</em>
+		 * @return the residual ranges
+		 * @throws NullPointerException if the given {@code ranges} is {@code null}
+		 */
+		public static List<Range> residualOf(final List<Range> ranges) {
+			if (ranges.isEmpty()) {
+				return List.of(new Range(NEGATIVE_INFINITY, POSITIVE_INFINITY));
+			}
+
+			return List.of();
 		}
 
 	}
@@ -310,17 +330,16 @@ public record Histogram(Buckets buckets) {
 	}
 
 	/**
-	 * Represents a list of buckets which forms a histogram. The buckets of this
-	 * object must be non-overlapping and will usually have no gaps like shown
-	 * in the following example.
+	 * Represents a list of buckets which are part of a histogram. The buckets
+	 * of this object must be non-overlapping and will usually have no gaps,
+	 * although they are allowed, like shown in the following example.
 	 * <pre>{@code
 	 *    min                                     max
 	 *     +----+----+----+----+----+----+----+----+
 	 *     | 1  | 2  | 3  | 4  |  5 | 6  | 7  |  8 |
 	 *     +----+----+----+----+----+----+----+----+
 	 * }</pre>
-	 * Although no overlapping buckets are allowed, it is possible to have gaps
-	 * in the bucket list.
+	 * This example shows non overlapping buckets with gaps.
 	 * <pre>{@code
 	 *    min                                      max
 	 *     +----+----+----+   +----+----+ +----+----+
@@ -442,10 +461,6 @@ public record Histogram(Buckets buckets) {
 			return new Buckets(list);
 		}
 
-		public Buckets open() {
-			return this;
-		}
-
 		/**
 		 * Create a new buckets slice. This method allows negative indexes like
 		 * <em>Python</em> arrays.
@@ -531,13 +546,11 @@ public record Histogram(Buckets buckets) {
 			if (buckets.size() != other.buckets.size()) {
 				return false;
 			}
-			for (int i = 0; i < buckets.size(); ++i) {
-				if (!buckets.get(i).range.equals(other.buckets.get(i).range)) {
-					return false;
-				}
-			}
 
-			return true;
+			return IntStream.range(0, buckets.size())
+				.allMatch(i ->
+					buckets.get(i).range.equals(other.buckets.get(i).range)
+				);
 		}
 
 		@Override
@@ -583,6 +596,22 @@ public record Histogram(Buckets buckets) {
 			);
 		}
 
+		/**
+		 *
+		 * @param buckets
+		 * @return
+		 */
+		public static Buckets residualOf(final Buckets buckets) {
+			final List<Range> ranges = buckets.buckets.stream()
+				.map(Bucket::range)
+				.toList();
+
+			return new Buckets(
+				Range.residualOf(ranges).stream()
+					.map(Bucket::new)
+					.toList()
+			);
+		}
 	}
 
 	/**
@@ -593,6 +622,7 @@ public record Histogram(Buckets buckets) {
 	 */
 	public Histogram {
 		requireNonNull(buckets);
+		requireNonNull(residual);
 	}
 
 	/**
@@ -608,29 +638,29 @@ public record Histogram(Buckets buckets) {
 		return buckets.size() - 1;
 	}
 
-	/**
-	 * Create a new histogram from the defined buckets slice. This method allows
-	 * negative indexes like <em>Python</em> arrays.
-	 * <p>
-	 * <b>Negative array indexes</b>
-	 * <pre>{@code
-	 *       0    1    2    3    4    5    6    7    8    9     Indexes
-	 *     +----+----+----+----+----+----+----+----+----+----+
-	 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
-	 *     +----+----+----+----+----+----+----+----+----+----+
-	 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
-	 * }</pre>
-	 *
-	 * @param start the start index, inclusively
-	 * @param end the end index, exclusively
-	 * @return the new histogram from the given buckets slice
-	 * @throws IndexOutOfBoundsException if the given start and end indexes
-	 *         are out of bounds
-	 * @throws IllegalArgumentException if the bucket slice is empty
-	 */
-	public Histogram slice(final int start, final int end) {
-		return new Histogram(buckets.slice(start, end));
-	}
+//	/**
+//	 * Create a new histogram from the defined buckets slice. This method allows
+//	 * negative indexes like <em>Python</em> arrays.
+//	 * <p>
+//	 * <b>Negative array indexes</b>
+//	 * <pre>{@code
+//	 *       0    1    2    3    4    5    6    7    8    9     Indexes
+//	 *     +----+----+----+----+----+----+----+----+----+----+
+//	 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
+//	 *     +----+----+----+----+----+----+----+----+----+----+
+//	 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
+//	 * }</pre>
+//	 *
+//	 * @param start the start index, inclusively
+//	 * @param end the end index, exclusively
+//	 * @return the new histogram from the given buckets slice
+//	 * @throws IndexOutOfBoundsException if the given start and end indexes
+//	 *         are out of bounds
+//	 * @throws IllegalArgumentException if the bucket slice is empty
+//	 */
+//	public Histogram slice(final int start, final int end) {
+//		return new Histogram(buckets.slice(start, end));
+//	}
 
 	/**
 	 * Return the number of samples, which generated the histogram.
@@ -778,7 +808,7 @@ public record Histogram(Buckets buckets) {
 				.mapToObj(i -> _buckets.get(i).add(_frequencies[i]))
 				.toList();
 
-			return new Histogram(new Buckets(buckets));
+			return new Histogram(new Buckets(buckets), new Buckets());
 		}
 
 		/**
