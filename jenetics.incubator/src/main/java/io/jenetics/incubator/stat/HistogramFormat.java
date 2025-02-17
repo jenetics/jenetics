@@ -83,7 +83,7 @@ public class HistogramFormat {
 	}
 
 	public void format(Histogram histogram, PrintStream out) {
-		final long[] values = histogram.buckets().slice(1, -1).stream()
+		final long[] values = histogram.buckets().stream()
 			.mapToLong(Histogram.Bucket::count)
 			.toArray();
 		final long max = LongStream.of(values).max().orElse(0);

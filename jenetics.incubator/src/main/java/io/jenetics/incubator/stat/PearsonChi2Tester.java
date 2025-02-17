@@ -66,7 +66,7 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 	double chi2(final Histogram observation, final Distribution hypothesis) {
 		requireNonNull(observation);
 
-		final var count = observation.sampleCount();
+		final var count = observation.samples();
 		final var cdf = hypothesis.cdf();
 
 		final var chi2 = observation.buckets().stream()

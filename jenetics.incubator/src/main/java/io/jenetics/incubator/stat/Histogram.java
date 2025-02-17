@@ -31,7 +31,6 @@ import java.util.function.DoubleConsumer;
 import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -91,37 +90,37 @@ import io.jenetics.stat.DoubleMomentStatistics;
  * @version !__version__!
  * @since !__version__!
  */
-public record Histogram(Buckets buckets, Buckets residual) {
+public record Histogram(Buckets buckets, Residual residual) {
 
 	/**
-	 * Defines a double range.
+	 * Defines a double interval.
 	 *
-	 * @param min the minimal range value (inclusively)
-	 * @param max the maximal range value (exclusively)
+	 * @param min the lower bound of the interval (inclusively)
+	 * @param max the upper bound of the interval (exclusively)
 	 */
-	public record Range(double min, double max) {
+	public record Interval(double min, double max) {
 
 		/**
-		 * Create a new bucket with the given values.
+		 * Create a new interval with the given values.
 		 *
-		 * @param min the minimal value of the bin range, inclusively. Might be
+		 * @param min the minimal value of the interval, inclusively. Might be
 		 *        {@link Double#NEGATIVE_INFINITY}
-		 * @param max the maximal value of the bin range, exclusively. Might be
+		 * @param max the maximal value of the interval, exclusively. Might be
 		 *        {@link Double#POSITIVE_INFINITY}
 		 * @throws IllegalArgumentException if the {@code min} and {@code max}
 		 *         values are {@link Double#NaN} or {@code min >= max}
 		 */
-		public Range {
+		public Interval {
 			if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
 				throw new IllegalArgumentException(
-					"Invalid range: %s.".formatted(this)
+					"Invalid interval: %s.".formatted(this)
 				);
 			}
 		}
 
 		/**
 		 * Test whether the given {@code value} lies within, below or above
-		 * {@code this} range.
+		 * {@code this} interval.
 		 *
 		 * @param value the value to test
 		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
@@ -139,9 +138,9 @@ public record Histogram(Buckets buckets, Buckets residual) {
 
 		/**
 		 * Return the number of <em>distinct</em> {@code double} values
-		 * {@code this} range can <em>hold</em>.
+		 * {@code this} interval can <em>hold</em>.
 		 *
-		 * @return the number of distinct double values of {@code this} range
+		 * @return the number of distinct double values of {@code this} interval
 		 */
 		long size() {
 			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
@@ -155,11 +154,12 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 * @param interval the overall partition interval
 	 * @param separators the interval separators
 	 */
-	public record Partition(Range interval, double... separators)
-		implements Iterable<Range>
+	public record Partition(Interval interval, double... separators)
+		implements Iterable<Interval>
 	{
 		public Partition {
 			requireNonNull(interval);
+			requireNonNull(separators);
 
 			double value = interval.min();
 			for (var separator : separators) {
@@ -191,13 +191,13 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			return separators.clone();
 		}
 
-		public Range get(final int index) {
+		public Interval get(final int index) {
 			Objects.checkIndex(index, separators.length + 1);
 
 			if (separators.length == 0) {
 				return interval;
 			} else {
-				return new Range(
+				return new Interval(
 					index == 0 ? interval.min() : separators[index - 1],
 					index == separators.length - 1 ? interval.max() : separators[index]
 				);
@@ -209,11 +209,11 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		}
 
 		@Override
-		public ListIterator<Range> iterator() {
+		public ListIterator<Interval> iterator() {
 			return new ReadOnlyListIterator<>(size(), this::get);
 		}
 
-		public Stream<Range> stream() {
+		public Stream<Interval> stream() {
 			return StreamSupport.stream(spliterator(), false);
 		}
 
@@ -270,7 +270,7 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 * @param parts the number of sub-intervals
 		 * @return a new partition
 		 */
-		public static Partition of(final Range internal, final int parts) {
+		public static Partition of(final Interval internal, final int parts) {
 			if (!Double.isFinite(internal.min) || !Double.isFinite(internal.max)) {
 				throw new IllegalArgumentException(
 					"Open ranges can't be split: %s.".formatted(internal)
@@ -309,54 +309,27 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	}
 
 	/**
-	 * Represents on histogram bin. For <em>open</em> buckets. Buckets have range
-	 * {@code [min, max)} and a {@code count} value. The following example shows
-	 * <em>closed</em>, <em>half open</em> and <em>open</em> buckets.
-	 * <pre>{@code
-	 *    min  max        -Ꝏ    max   min   Ꝏ         -Ꝏ    Ꝏ
-	 *     +----+            -----+     +-----             ------
-	 *     | 12 |              20 |     | 18                 20
-	 *     +----+            -----+     +-----             ------
-	 * }</pre>
+	 * Represents a bucket of a histogram.
 	 *
-	 * @param range the range of the bucket
-	 * @param count the bucket count
+	 * @param interval the interval of the bucket
+	 * @param count the sample count of the bucket
 	 */
-	public record Bucket(Range range, long count) {
+	public record Bucket(Interval interval, long count) {
 
 		/**
 		 * Create a new bucket with the given values.
 		 *
-		 * @param range the bucket range
+		 * @param interval the bucket range
 		 * @param count the bucket count
 		 * @throws IllegalArgumentException if {@code count < 0}
 		 */
 		public Bucket {
+			requireNonNull(interval);
 			if (count < 0) {
 				throw new IllegalArgumentException(
-					"Bucket count must not be negative: %s.".formatted(count)
+					"Sample count must not be negative: %s.".formatted(count)
 				);
 			}
-		}
-
-		/**
-		 * Create a new bucket with the given {@code range}. The
-		 * {@link Bucket#count()} value is set to zero.
-		 *
-		 * @param range the bucket range
-		 */
-		public Bucket(final Range range) {
-			this(range, 0);
-		}
-
-		/**
-		 * Create a new bucket with the given {@code count} value added.
-		 *
-		 * @param count the count value to be added
-		 * @return a new bucket with the given {@code count} value added
-		 */
-		public Bucket add(final long count) {
-			return new Bucket(range, this.count + count);
 		}
 
 	}
@@ -385,6 +358,8 @@ public record Histogram(Buckets buckets, Buckets residual) {
 
 		public Buckets {
 			requireNonNull(partition);
+			requireNonNull(frequencies);
+
 			if (partition.size() != frequencies.length) {
 				throw new IllegalArgumentException(
 					"Partition size does not match frequencies: %s != %s"
@@ -456,6 +431,18 @@ public record Histogram(Buckets buckets, Buckets residual) {
 
 	}
 
+	public record Residual(long lower, long upper) {
+		public static final Residual EMPTY = new Residual(0, 0);
+
+		public Residual {
+			if (lower < 0 || upper < 0) {
+				throw new IllegalArgumentException(
+					"Invalid residual values: %s.".formatted(this)
+				);
+			}
+		}
+	}
+
 	/**
 	 * Create a new histogram consisting of the given buckets.
 	 *
@@ -485,10 +472,12 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 *
 	 * @return the number of samples
 	 */
-	public long sampleCount() {
-		return buckets.stream()
-			.mapToLong(Bucket::count)
-			.sum();
+	public long samples() {
+		long result = 0;
+		for (long sample : buckets.frequencies) {
+			result += sample;
+		}
+		return result;
 	}
 
 	/**
@@ -514,11 +503,7 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
 	 * }</pre>
 	 *
-	 * @see Histogram.Builder#of(double, double, int)
-	 *
-	 * @param min the minimal value of the inner buckets
-	 * @param max the maximal value of the inner buckets
-	 * @param classes the number of classes between {@code [min, max)}
+	 * @param partition the histogram partition
 	 * @param fn the function converting the elements to double values
 	 * @return a new histogram collector
 	 * @param <T> the stream element type
@@ -527,15 +512,13 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 * @throws NullPointerException if {@code fn} is {@code null}
 	 */
 	public static <T> Collector<T, ?, Histogram> toHistogram(
-		final double min,
-		final double max,
-		final int classes,
+		final Partition partition,
 		final ToDoubleFunction<? super T> fn
 	) {
 		requireNonNull(fn);
 
 		return Collector.of(
-			() -> Histogram.Builder.of(min, max, classes),
+			() -> new Histogram.Builder(partition),
 			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
 			(a, b) -> { a.combine(b); return a; },
 			Histogram.Builder::build
@@ -546,22 +529,15 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 * Return a histogram collector with the given {@code min} and {@code max}
 	 * values and number {@code classes}.
 	 *
-	 * @see #toHistogram(double, double, int, ToDoubleFunction)
-	 *
-	 * @param min the minimal value of the inner buckets
-	 * @param max the maximal value of the inner buckets
-	 * @param classes the number of classes between {@code [min, max)}
+	 * @param partition the histogram partition
 	 * @return a new histogram collector
 	 * @param <T> the stream element type
 	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
 	 *         not finite or {@code classes < 1}
 	 */
-	public static <T extends Number> Collector<T, ?, Histogram> toHistogram(
-		final double min,
-		final double max,
-		final int classes
-	) {
-		return toHistogram(min, max, classes, Number::doubleValue);
+	public static <T extends Number> Collector<T, ?, Histogram>
+	toHistogram(final Partition partition) {
+		return toHistogram(partition, Number::doubleValue);
 	}
 
 
@@ -582,6 +558,10 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			this.partition = buckets.partition();
 			this.frequencies = buckets.frequencies();
 			this.statistics = new DoubleMomentStatistics();
+		}
+
+		public Builder(final Partition partition) {
+			this(new Buckets(partition));
 		}
 
 		@Override
@@ -651,26 +631,26 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			return build();
 		}
 
-		/**
-		 * Return a histogram builder with the given {@code min} and {@code max}
-		 * values and number {@code classes}. The histogram, created by the
-		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
-		 * buckets will be in the range {@code [min, max)} and consist of the
-		 * defined {@code classes}.
-		 * <pre>{@code
-		 *  -Ꝏ   min                                           max   Ꝏ
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 * }</pre>
-		 *
-		 * @param min the minimal value of the inner buckets
-		 * @param max the maximal value of the inner buckets
-		 * @param classes the number of classes between {@code [min, max)}
-		 * @return a new histogram builder
-		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-		 *         not finite or {@code classes < 1}
-		 */
+//		/**
+//		 * Return a histogram builder with the given {@code min} and {@code max}
+//		 * values and number {@code classes}. The histogram, created by the
+//		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
+//		 * buckets will be in the range {@code [min, max)} and consist of the
+//		 * defined {@code classes}.
+//		 * <pre>{@code
+//		 *  -Ꝏ   min                                           max   Ꝏ
+//		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+//		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
+//		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+//		 * }</pre>
+//		 *
+//		 * @param min the minimal value of the inner buckets
+//		 * @param max the maximal value of the inner buckets
+//		 * @param classes the number of classes between {@code [min, max)}
+//		 * @return a new histogram builder
+//		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+//		 *         not finite or {@code classes < 1}
+//		 */
 		public static Builder of(final double min, final double max, final int classes) {
 			return null; //new Builder(Buckets.of(min, max, classes));
 		}

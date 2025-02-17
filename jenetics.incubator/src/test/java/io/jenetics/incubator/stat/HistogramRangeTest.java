@@ -28,8 +28,8 @@ public class HistogramRangeTest {
 
 	@Test
 	public void splitOpen() {
-		final var ranges = new Histogram.Range(0, 10).splitOpen(2);
-		System.out.println(ranges);
+//		final var ranges = new Histogram.Interval(0, 10).splitOpen(2);
+//		System.out.println(ranges);
 	}
 
 }

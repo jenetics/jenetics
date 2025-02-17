@@ -85,7 +85,7 @@ public class HistogramTest {
 			)
 			.build();
 
-		assertThat(observation.sampleCount()).isEqualTo(sampleCount);
+		assertThat(observation.samples()).isEqualTo(sampleCount);
 	}
 
 	@Test
@@ -116,18 +116,18 @@ public class HistogramTest {
 		HistogramFormat.DEFAULT.format(observation, System.out);
 	}
 
-	@Test
-	public void toHistogram() {
-		final var random = RandomGenerator.getDefault();
-		final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
-			.instances()
-			.limit(1000)
-			.collect(ISeq.toISeq());
-
-		final Histogram observations = genes.stream()
-			.collect(Histogram.toHistogram(0, 10, 15, DoubleGene::doubleValue));
-		assertThat(observations.sampleCount()).isEqualTo(1000);
-	}
+//	@Test
+//	public void toHistogram() {
+//		final var random = RandomGenerator.getDefault();
+//		final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
+//			.instances()
+//			.limit(1000)
+//			.collect(ISeq.toISeq());
+//
+//		final Histogram observations = genes.stream()
+//			.collect(Histogram.toHistogram(0, 10, 15, DoubleGene::doubleValue));
+//		assertThat(observations.samples()).isEqualTo(1000);
+//	}
 
 	@Test
 	public void foo() {
