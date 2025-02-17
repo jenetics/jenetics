@@ -25,17 +25,23 @@ import static java.lang.Double.doubleToLongBits;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import io.jenetics.stat.DoubleMomentStatistics;
 
@@ -96,6 +102,152 @@ import io.jenetics.stat.DoubleMomentStatistics;
 public record Histogram(Buckets buckets, Buckets residual) {
 
 	/**
+	 * A partition divides an <em>interval</em> into sub-intervals.
+	 *
+	 * @param interval the overall partition interval
+	 * @param separators the interval separators
+	 */
+	public record Partition(Range interval, double... separators)
+		implements Iterable<Range>
+	{
+		public Partition {
+			requireNonNull(interval);
+
+			double value = interval.min();
+			for (var separator : separators) {
+				if (Double.isNaN(separator)) {
+					throw new IllegalArgumentException(
+						"Separators contains NaN: %s.".formatted(this)
+					);
+				}
+				if (value >= separator) {
+					throw new IllegalArgumentException(
+						"Separators are not strictly monotone increasing: %s."
+							.formatted(this)
+					);
+				}
+
+				value = separator;
+			}
+			if (value >= interval.max()) {
+				throw new IllegalArgumentException(
+					"Separators greater than interval: %s.".formatted(this)
+				);
+			}
+
+			separators = separators.clone();
+		}
+
+		public Range get(final int index) {
+			Objects.checkIndex(index, separators.length + 1);
+
+			if (separators.length == 0) {
+				return interval;
+			} else {
+				return new Range(
+					index == 0 ? interval.min() : separators[index - 1],
+					index == separators.length - 1 ? interval.max() : separators[index]
+				);
+			}
+		}
+
+		public int size() {
+			return separators.length + 1;
+		}
+
+		@Override
+		public ListIterator<Range> iterator() {
+			return new ReadOnlyListIterator<>(size(), this::get);
+		}
+
+		public Stream<Range> stream() {
+			return StreamSupport.stream(spliterator(), false);
+		}
+
+		public int indexOf(final double value) {
+			if (Double.isNaN(value)) {
+				return -1;
+			}
+
+			int low = 0;
+			int high = separators.length - 1;
+
+			while (low <= high) {
+				if (value < separators[low]) {
+					return low;
+				}
+				if (value >= separators[high]) {
+					return high + 1;
+				}
+
+				final int mid = (low + high) >>> 1;
+				if (value < separators[mid]) {
+					high = mid;
+				} else if (value >= separators[mid]) {
+					low = mid + 1;
+				}
+			}
+
+			throw new AssertionError("This line will never be reached.");
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(interval, Arrays.hashCode(separators));
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof Partition(var i, var s) &&
+				interval.equals(i) &&
+				Arrays.equals(separators, s);
+		}
+
+		@Override
+		public String toString() {
+			return "Partition[interval=%s, separators=%s]"
+				.formatted(interval, separators);
+		}
+
+		public static Partition of(final Range internal, final int parts) {
+			if (!Double.isFinite(internal.min) || !Double.isFinite(internal.max)) {
+				throw new IllegalArgumentException(
+					"Open ranges can't be split: %s.".formatted(internal)
+				);
+			}
+			if (parts < 1) {
+				throw new IllegalArgumentException(
+					"Number of parts must at least one: %d."
+						.formatted(parts)
+				);
+			}
+			final long size = internal.size();
+			if (size < parts) {
+				throw new IllegalArgumentException("""
+					%s can hold only %d distinct double values. \
+					"Can't split it into %d parts.
+					""".formatted(internal, size, parts)
+				);
+			}
+
+			if (parts == 1) {
+				return new Partition(internal);
+			}
+
+			final var stride = (internal.max - internal.min)/parts;
+			assert stride > 0.0;
+
+			final var separators = new double[parts - 1];
+			separators[0] = internal.min + stride;
+			for (int i = 1; i < separators.length; ++i) {
+				separators[i] = separators[i - 1] + stride;
+			}
+
+			return new Partition(internal, separators);
+		}
+	}
+
+	/**
 	 * Defines a double range.
 	 *
 	 * @param min the minimal range value (inclusively)
@@ -121,44 +273,44 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			}
 		}
 
-		/**
-		 * Return the <em>next</em> range to {@code this} one with zero gaps
-		 * and the given {@code width}.
-		 *
-		 * @param width the width of the next bucket
-		 * @return a new range, next to {@code this}, with the given
-		 *        {@code width}
-		 */
-		public Range next(final double width) {
-			return new Range(max, max + width);
-		}
-
-		/**
-		 * Return the <em>previous</em> range to {@code this} one with zero
-		 * gaps and the given {@code width}.
-		 *
-		 * @param width the width of the previous range
-		 * @return a new bucket, previous to {@code this}, with the given
-		 *        {@code width}
-		 */
-		public Range previous(final double width) {
-			return new Range(min - width, min);
-		}
-
-		/**
-		 * Tests whether {@code this} range overlaps the {@code other} one.
-		 *
-		 * @param other the other range used for overlap test
-		 * @return {@code true} if the {@code other} range overlaps with
-		 *         {@code this} one, {@code false} otherwise
-		 */
-		public boolean isOverlapping(final Range other) {
-			if (other.min <= min) {
-				return other.max > min;
-			} else {
-				return other.min < max;
-			}
-		}
+//		/**
+//		 * Return the <em>next</em> range to {@code this} one with zero gaps
+//		 * and the given {@code width}.
+//		 *
+//		 * @param width the width of the next bucket
+//		 * @return a new range, next to {@code this}, with the given
+//		 *        {@code width}
+//		 */
+//		public Range next(final double width) {
+//			return new Range(max, max + width);
+//		}
+//
+//		/**
+//		 * Return the <em>previous</em> range to {@code this} one with zero
+//		 * gaps and the given {@code width}.
+//		 *
+//		 * @param width the width of the previous range
+//		 * @return a new bucket, previous to {@code this}, with the given
+//		 *        {@code width}
+//		 */
+//		public Range previous(final double width) {
+//			return new Range(min - width, min);
+//		}
+//
+//		/**
+//		 * Tests whether {@code this} range overlaps the {@code other} one.
+//		 *
+//		 * @param other the other range used for overlap test
+//		 * @return {@code true} if the {@code other} range overlaps with
+//		 *         {@code this} one, {@code false} otherwise
+//		 */
+//		public boolean isOverlapping(final Range other) {
+//			if (other.min <= min) {
+//				return other.max > min;
+//			} else {
+//				return other.min < max;
+//			}
+//		}
 
 		/**
 		 * Test whether the given {@code value} lies within, below or above
@@ -178,76 +330,76 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			}
 		}
 
-		/**
-		 * Splits {@code this} range into the given number of {@code parts},
-		 * with no gaps in between.
-		 *
-		 * @param parts the number of split ranges
-		 * @return the split ranges
-		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
-		 *         bucket or the number of {@code parts} is {@code < 1}
-		 */
-		public List<Range> split(final int parts) {
-			if (!Double.isFinite(min) || !Double.isFinite(max)) {
-				throw new IllegalArgumentException(
-					"Open ranges can't be split: %s.".formatted(this)
-				);
-			}
-			if (parts < 1) {
-				throw new IllegalArgumentException(
-					"Number of parts must at least one: %d."
-						.formatted(parts)
-				);
-			}
-			final long size = size();
-			if (size < parts) {
-				throw new IllegalArgumentException("""
-					%s can hold only %d distinct double values. \
-					"Can't split it into %d parts.
-					""".formatted(this, size, parts)
-				);
-			}
-
-			if (parts == 1) {
-				return List.of(this);
-			}
-
-			final var stride = (max - min)/parts;
-			assert stride > 0.0;
-
-			final var ranges = new Range[parts];
-			ranges[0] = new Range(min, min + stride);
-			for (int i = 1; i < parts - 1; ++i) {
-				ranges[i] = ranges[i -1].next(stride);
-			}
-			ranges[parts - 1] = new Range(ranges[parts - 2].max(), max);
-
-			return List.of(ranges);
-		}
-
-		public List<Range> splitOpen(final int parts) {
-			final var ranges = new ArrayList<Range>();
-			ranges.add(previous(POSITIVE_INFINITY));
-			ranges.addAll(split(parts));
-			ranges.add(next(POSITIVE_INFINITY));
-
-			return List.copyOf(ranges);
-		}
-
-		public List<Range> splitLeftOpen(final int parts) {
-			final var ranges = new ArrayList<Range>();
-			ranges.add(previous(POSITIVE_INFINITY));
-			ranges.addAll(split(parts));
-
-			return List.copyOf(ranges);
-		}
-
-		public List<Range> splitRightOpen(final int parts) {
-			final var ranges = new ArrayList<Range>(split(parts));
-			ranges.add(next(POSITIVE_INFINITY));
-
-			return List.copyOf(ranges);
-		}
+//		/**
+//		 * Splits {@code this} range into the given number of {@code parts},
+//		 * with no gaps in between.
+//		 *
+//		 * @param parts the number of split ranges
+//		 * @return the split ranges
+//		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
+//		 *         bucket or the number of {@code parts} is {@code < 1}
+//		 */
+//		public List<Range> split(final int parts) {
+//			if (!Double.isFinite(min) || !Double.isFinite(max)) {
+//				throw new IllegalArgumentException(
+//					"Open ranges can't be split: %s.".formatted(this)
+//				);
+//			}
+//			if (parts < 1) {
+//				throw new IllegalArgumentException(
+//					"Number of parts must at least one: %d."
+//						.formatted(parts)
+//				);
+//			}
+//			final long size = size();
+//			if (size < parts) {
+//				throw new IllegalArgumentException("""
+//					%s can hold only %d distinct double values. \
+//					"Can't split it into %d parts.
+//					""".formatted(this, size, parts)
+//				);
+//			}
+//
+//			if (parts == 1) {
+//				return List.of(this);
+//			}
+//
+//			final var stride = (max - min)/parts;
+//			assert stride > 0.0;
+//
+//			final var ranges = new Range[parts];
+//			ranges[0] = new Range(min, min + stride);
+//			for (int i = 1; i < parts - 1; ++i) {
+//				ranges[i] = ranges[i -1].next(stride);
+//			}
+//			ranges[parts - 1] = new Range(ranges[parts - 2].max(), max);
+//
+//			return List.of(ranges);
+//		}
+//
+//		public List<Range> splitOpen(final int parts) {
+//			final var ranges = new ArrayList<Range>();
+//			ranges.add(previous(POSITIVE_INFINITY));
+//			ranges.addAll(split(parts));
+//			ranges.add(next(POSITIVE_INFINITY));
+//
+//			return List.copyOf(ranges);
+//		}
+//
+//		public List<Range> splitLeftOpen(final int parts) {
+//			final var ranges = new ArrayList<Range>();
+//			ranges.add(previous(POSITIVE_INFINITY));
+//			ranges.addAll(split(parts));
+//
+//			return List.copyOf(ranges);
+//		}
+//
+//		public List<Range> splitRightOpen(final int parts) {
+//			final var ranges = new ArrayList<Range>(split(parts));
+//			ranges.add(next(POSITIVE_INFINITY));
+//
+//			return List.copyOf(ranges);
+//		}
 
 		/**
 		 * Return the number of <em>distinct</em> {@code double} values
@@ -259,20 +411,20 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
 		}
 
-		/**
-		 * Returns a range list, which <em>completes</em> the given ranges.
-		 *
-		 * @param ranges the ranges to <em>complete</em>
-		 * @return the residual ranges
-		 * @throws NullPointerException if the given {@code ranges} is {@code null}
-		 */
-		public static List<Range> residualOf(final List<Range> ranges) {
-			if (ranges.isEmpty()) {
-				return List.of(new Range(NEGATIVE_INFINITY, POSITIVE_INFINITY));
-			}
-
-			return List.of();
-		}
+//		/**
+//		 * Returns a range list, which <em>completes</em> the given ranges.
+//		 *
+//		 * @param ranges the ranges to <em>complete</em>
+//		 * @return the residual ranges
+//		 * @throws NullPointerException if the given {@code ranges} is {@code null}
+//		 */
+//		public static List<Range> residualOf(final List<Range> ranges) {
+//			if (ranges.isEmpty()) {
+//				return List.of(new Range(NEGATIVE_INFINITY, POSITIVE_INFINITY));
+//			}
+//
+//			return List.of();
+//		}
 
 	}
 
@@ -347,48 +499,17 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 *     +----+----+----+   +----+----+ +----+----+
 	 * }</pre>
 	 */
-	public static final class Buckets implements Iterable<Bucket> {
-		private final List<Bucket> buckets;
+	public record Buckets(Partition partition, long... frequencies)
+		implements Iterable<Bucket>
+	{
 
-		/**
-		 * Create a new buckets object from the given, non-overlapping, buckets.
-		 *
-		 * @param buckets the bucket list
-		 * @throws IllegalArgumentException if the given {@code buckets} contains
-		 *         overlapping elements or is empty.
-		 */
-		public Buckets(final Collection<Bucket> buckets) {
-			if (buckets.isEmpty()) {
+		public Buckets {
+			if (partition.size() != frequencies.length) {
 				throw new IllegalArgumentException(
-					"Buckets list must not be empty."
+					"Partition size does not match frequencies: %s != %s"
+						.formatted(partition.separators, frequencies.length)
 				);
 			}
-
-			final var list = new ArrayList<>(buckets);
-			list.sort(Comparator.comparingDouble(b -> b.range.min));
-			for (int i = 1; i < list.size(); ++i) {
-				final var a = list.get(i - 1);
-				final var b = list.get(i);
-
-				if (a.range.isOverlapping(b.range)) {
-					throw new IllegalArgumentException(
-						"Found overlapping buckets: %s ∩ %s.".formatted( a, b)
-					);
-				}
-			}
-
-			this.buckets = List.copyOf(list);
-		}
-
-		/**
-		 * Create a new buckets object from the given, non-overlapping, buckets.
-		 *
-		 * @param buckets the bucket list
-		 * @throws IllegalArgumentException if the given {@code buckets} contains
-		 *         overlapping elements or is empty.
-		 */
-		public Buckets(final Bucket... buckets) {
-			this(List.of(buckets));
 		}
 
 		/**
@@ -397,7 +518,7 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 * @return the number of buckets
 		 */
 		public int size() {
-			return buckets.size();
+			return partition.size();
 		}
 
 		/**
@@ -409,56 +530,8 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 *         ({@code index < 0 || index >= size()})
 		 */
 		public Bucket get(final int index) {
-			return buckets.get(index);
-		}
-
-		/**
-		 * Return the first bucket.
-		 *
-		 * @return the first bucket
-		 */
-		public Bucket first() {
-			return buckets.getFirst();
-		}
-
-		/**
-		 * Return the last bucket.
-		 *
-		 * @return the last bucket
-		 */
-		public Bucket last() {
-			return buckets.getLast();
-		}
-
-		/**
-		 * Add the given bucket to the end of the bucket list.
-		 *
-		 * @param bucket the bucket to add
-		 * @return a new buckets object with the given element appended
-		 * @throws IllegalArgumentException if adding the element makes the
-		 *         {@code Buckets} object invalid
-		 * @throws NullPointerException if the given {@code bucket} is null
-		 */
-		public Buckets add(final Bucket bucket) {
-			final var list = new ArrayList<>(buckets);
-			list.add(bucket);
-			return new Buckets(list);
-		}
-
-		/**
-		 * Add the given bucket at the given {@code index} of the bucket list.
-		 *
-		 * @param bucket the bucket to add
-		 * @param index the bucket index
-		 * @return a new buckets object with the given element appended
-		 * @throws IllegalArgumentException if adding the element makes the
-		 *         {@code Buckets} object invalid
-		 * @throws NullPointerException if the given {@code bucket} is null
-		 */
-		public Buckets add(final int index, final Bucket bucket) {
-			final var list = new ArrayList<>(buckets);
-			list.add(index, bucket);
-			return new Buckets(list);
+			Objects.checkIndex(index, partition.size());
+			return new Bucket(partition.get(index), frequencies[index]);
 		}
 
 		/**
@@ -751,26 +824,27 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	 * Histogram builder class.
 	 */
 	public static final class Builder implements DoubleConsumer {
-		private final Buckets _buckets;
-		private final long[] _frequencies;
-		private final DoubleMomentStatistics _statistics = new DoubleMomentStatistics();
+		private final Partition partition;
+		private final long[] frequencies;
+		private final DoubleMomentStatistics statistics;
 
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code buckets}.
 		 *
 		 * @throws NullPointerException if the {@code buckets} is {@code null}.
 		 */
-		public Builder(final Buckets buckets) {
-			_buckets = requireNonNull(buckets);
-			_frequencies = new long[buckets.size()];
+		public Builder(final Partition partition) {
+			this.partition = requireNonNull(partition);
+			this.frequencies = new long[partition.size()];
+			this.statistics = new DoubleMomentStatistics();
 		}
 
 		@Override
 		public void accept(double value) {
-			final var index = _buckets.indexOf(value);
+			final var index = partition.indexOf(value);
 			if (index != -1) {
-				++_frequencies[index];
-				_statistics.accept(value);
+				++frequencies[index];
+				statistics.accept(value);
 			}
 		}
 
@@ -785,16 +859,17 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 *         {@code null}.
 		 */
 		public void combine(final Builder other) {
-			if (!_buckets.equalRanges(other._buckets)) {
+			if (!partition.equals(other.partition)) {
 				throw new IllegalArgumentException(
-					"The histogram separators are not equals."
+					"Can't combine multiple buckets with different partitions: %s != %s."
+						.formatted(partition, other.partition)
 				);
 			}
 
-			for (int i = other._frequencies.length; --i >= 0;) {
-				_frequencies[i] += other._frequencies[i] + other._buckets.get(i).count;
+			for (int i = other.frequencies.length; --i >= 0;) {
+				frequencies[i] += other.frequencies[i];
 			}
-			_statistics.combine(other._statistics);
+			statistics.combine(other.statistics);
 		}
 
 		/**
@@ -859,6 +934,88 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 */
 		public static Builder of(final double min, final double max, final int classes) {
 			return new Builder(Buckets.of(min, max, classes));
+		}
+
+	}
+
+
+	/* *************************************************************************
+	 * Some private helper classes
+	 * ************************************************************************/
+
+	private static final class ReadOnlyListIterator<T> implements ListIterator<T> {
+		private final int size;
+		private final IntFunction<T> getter;
+
+		private int cursor = 0;
+		private int lastElement = -1;
+
+		private ReadOnlyListIterator(final int size, final IntFunction<T> getter) {
+			this.size = size;
+			this.getter = getter;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return cursor != size;
+		}
+
+		@Override
+		public T next() {
+			final int i = cursor;
+			if (cursor >= size) {
+				throw new NoSuchElementException();
+			}
+
+			cursor = i + 1;
+			return getter.apply(lastElement = i);
+		}
+
+		@Override
+		public int nextIndex() {
+			return cursor;
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			return cursor != 0;
+		}
+
+		@Override
+		public T previous() {
+			final int i = cursor - 1;
+			if (i < 0) {
+				throw new NoSuchElementException();
+			}
+
+			cursor = i;
+			return getter.apply(lastElement = i);
+		}
+
+		@Override
+		public int previousIndex() {
+			return cursor - 1;
+		}
+
+		@Override
+		public void set(final T value) {
+			throw new UnsupportedOperationException(
+				"Iterator is immutable."
+			);
+		}
+
+		@Override
+		public void add(final T value) {
+			throw new UnsupportedOperationException(
+				"Can't change Iterator size."
+			);
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException(
+				"Can't change Iterator size."
+			);
 		}
 
 	}
