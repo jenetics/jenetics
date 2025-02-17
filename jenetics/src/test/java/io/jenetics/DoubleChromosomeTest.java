@@ -20,8 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.DoubleAdder.sum;
 import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.internal.math.DoubleAdder.sum;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -50,18 +50,21 @@ public class DoubleChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final double min = 0;
-		final double max = 100;
+		final var interval = new Histogram.Interval(0.0, 100.0);
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = DoubleChromosome.of(min, max, 500);
-			for (var gene : chromosome) {
-				histogram.accept(gene.allele());
-			}
-		}
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 1000; ++i) {
+					final var chromosome = DoubleChromosome.of(
+						interval.min(), interval.max(), 500
+					);
+					for (var gene : chromosome) {
+						samples.accept(gene.allele());
+					}
+				}
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

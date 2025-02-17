@@ -29,7 +29,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -55,15 +54,17 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final double min = 0;
-		final double max = 100;
+		final var interval = new Histogram.Interval(0.0, 100.0);
 
-		final var builder = Histogram.Builder.of(min, max, 20);
-		IntStream.range(0, 200_000)
-			.mapToObj(i -> DoubleGene.of(min, max).allele())
-			.forEach(builder::accept);
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 200_000; ++i) {
+					var gene = DoubleGene.of(interval.min(), interval.max());
+					samples.accept(gene.doubleValue());
+				}
+			});
 
-		assertThatObservation(builder.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test

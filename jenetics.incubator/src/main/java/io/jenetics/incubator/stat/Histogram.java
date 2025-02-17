@@ -219,7 +219,13 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 		public int indexOf(final double value) {
 			if (Double.isNaN(value)) {
+				throw new IllegalArgumentException("Value is NaN.");
+			}
+			if (value < interval.min()) {
 				return -1;
+			}
+			if (value >= interval.max() && value != Double.POSITIVE_INFINITY) {
+				return size();
 			}
 
 			int low = 0;
@@ -366,8 +372,20 @@ public record Histogram(Buckets buckets, Residual residual) {
 						.formatted(partition.separators, frequencies.length)
 				);
 			}
+			for (var frequency : frequencies) {
+				if (frequency < 0) {
+					throw new IllegalArgumentException(
+						"Frequencies must not be negative: %s."
+							.formatted(Arrays.toString(frequencies))
+					);
+				}
+			}
 
 			frequencies = frequencies.clone();
+		}
+
+		public Buckets(final Partition partition) {
+			this(partition, new long[partition.size()]);
 		}
 
 		@Override
@@ -651,8 +669,8 @@ public record Histogram(Buckets buckets, Residual residual) {
 //		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
 //		 *         not finite or {@code classes < 1}
 //		 */
-		public static Builder of(final double min, final double max, final int classes) {
-			return null; //new Builder(Buckets.of(min, max, classes));
+		public static Builder of(final Interval interval, final int classes) {
+			return new Builder(Partition.of(interval, classes));
 		}
 
 	}
