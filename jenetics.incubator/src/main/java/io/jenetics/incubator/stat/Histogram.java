@@ -19,23 +19,15 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.doubleToLongBits;
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -102,6 +94,62 @@ import io.jenetics.stat.DoubleMomentStatistics;
 public record Histogram(Buckets buckets, Buckets residual) {
 
 	/**
+	 * Defines a double range.
+	 *
+	 * @param min the minimal range value (inclusively)
+	 * @param max the maximal range value (exclusively)
+	 */
+	public record Range(double min, double max) {
+
+		/**
+		 * Create a new bucket with the given values.
+		 *
+		 * @param min the minimal value of the bin range, inclusively. Might be
+		 *        {@link Double#NEGATIVE_INFINITY}
+		 * @param max the maximal value of the bin range, exclusively. Might be
+		 *        {@link Double#POSITIVE_INFINITY}
+		 * @throws IllegalArgumentException if the {@code min} and {@code max}
+		 *         values are {@link Double#NaN} or {@code min >= max}
+		 */
+		public Range {
+			if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
+				throw new IllegalArgumentException(
+					"Invalid range: %s.".formatted(this)
+				);
+			}
+		}
+
+		/**
+		 * Test whether the given {@code value} lies within, below or above
+		 * {@code this} range.
+		 *
+		 * @param value the value to test
+		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
+		 *          lies below, within or above {@code this} range
+		 */
+		public int compareTo(final double value) {
+			if (value < min) {
+				return -1;
+			} else if (value >= max) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+		/**
+		 * Return the number of <em>distinct</em> {@code double} values
+		 * {@code this} range can <em>hold</em>.
+		 *
+		 * @return the number of distinct double values of {@code this} range
+		 */
+		long size() {
+			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
+		}
+
+	}
+
+	/**
 	 * A partition divides an <em>interval</em> into sub-intervals.
 	 *
 	 * @param interval the overall partition interval
@@ -136,6 +184,11 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			}
 
 			separators = separators.clone();
+		}
+
+		@Override
+		public double[] separators() {
+			return separators.clone();
 		}
 
 		public Range get(final int index) {
@@ -209,6 +262,14 @@ public record Histogram(Buckets buckets, Buckets residual) {
 				.formatted(interval, separators);
 		}
 
+		/**
+		 * Create a partition from the given {@code interval} by splitting it
+		 * into the given number of {@code parts}.
+		 *
+		 * @param internal the interval to partition
+		 * @param parts the number of sub-intervals
+		 * @return a new partition
+		 */
 		public static Partition of(final Range internal, final int parts) {
 			if (!Double.isFinite(internal.min) || !Double.isFinite(internal.max)) {
 				throw new IllegalArgumentException(
@@ -245,187 +306,6 @@ public record Histogram(Buckets buckets, Buckets residual) {
 
 			return new Partition(internal, separators);
 		}
-	}
-
-	/**
-	 * Defines a double range.
-	 *
-	 * @param min the minimal range value (inclusively)
-	 * @param max the maximal range value (exclusively)
-	 */
-	public record Range(double min, double max) {
-
-		/**
-		 * Create a new bucket with the given values.
-		 *
-		 * @param min the minimal value of the bin range, inclusively. Might be
-		 *        {@link Double#NEGATIVE_INFINITY}
-		 * @param max the maximal value of the bin range, exclusively. Might be
-		 *        {@link Double#POSITIVE_INFINITY}
-		 * @throws IllegalArgumentException if the {@code min} and {@code max}
-		 *         values are {@link Double#NaN} or {@code min >= max}
-		 */
-		public Range {
-			if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
-				throw new IllegalArgumentException(
-					"Invalid range: %s.".formatted(this)
-				);
-			}
-		}
-
-//		/**
-//		 * Return the <em>next</em> range to {@code this} one with zero gaps
-//		 * and the given {@code width}.
-//		 *
-//		 * @param width the width of the next bucket
-//		 * @return a new range, next to {@code this}, with the given
-//		 *        {@code width}
-//		 */
-//		public Range next(final double width) {
-//			return new Range(max, max + width);
-//		}
-//
-//		/**
-//		 * Return the <em>previous</em> range to {@code this} one with zero
-//		 * gaps and the given {@code width}.
-//		 *
-//		 * @param width the width of the previous range
-//		 * @return a new bucket, previous to {@code this}, with the given
-//		 *        {@code width}
-//		 */
-//		public Range previous(final double width) {
-//			return new Range(min - width, min);
-//		}
-//
-//		/**
-//		 * Tests whether {@code this} range overlaps the {@code other} one.
-//		 *
-//		 * @param other the other range used for overlap test
-//		 * @return {@code true} if the {@code other} range overlaps with
-//		 *         {@code this} one, {@code false} otherwise
-//		 */
-//		public boolean isOverlapping(final Range other) {
-//			if (other.min <= min) {
-//				return other.max > min;
-//			} else {
-//				return other.min < max;
-//			}
-//		}
-
-		/**
-		 * Test whether the given {@code value} lies within, below or above
-		 * {@code this} range.
-		 *
-		 * @param value the value to test
-		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
-		 *          lies below, within or above {@code this} range
-		 */
-		public int compareTo(final double value) {
-			if (value < min) {
-				return -1;
-			} else if (value >= max) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-
-//		/**
-//		 * Splits {@code this} range into the given number of {@code parts},
-//		 * with no gaps in between.
-//		 *
-//		 * @param parts the number of split ranges
-//		 * @return the split ranges
-//		 * @throws IllegalArgumentException if {@code this} is not a <em>closed</em>
-//		 *         bucket or the number of {@code parts} is {@code < 1}
-//		 */
-//		public List<Range> split(final int parts) {
-//			if (!Double.isFinite(min) || !Double.isFinite(max)) {
-//				throw new IllegalArgumentException(
-//					"Open ranges can't be split: %s.".formatted(this)
-//				);
-//			}
-//			if (parts < 1) {
-//				throw new IllegalArgumentException(
-//					"Number of parts must at least one: %d."
-//						.formatted(parts)
-//				);
-//			}
-//			final long size = size();
-//			if (size < parts) {
-//				throw new IllegalArgumentException("""
-//					%s can hold only %d distinct double values. \
-//					"Can't split it into %d parts.
-//					""".formatted(this, size, parts)
-//				);
-//			}
-//
-//			if (parts == 1) {
-//				return List.of(this);
-//			}
-//
-//			final var stride = (max - min)/parts;
-//			assert stride > 0.0;
-//
-//			final var ranges = new Range[parts];
-//			ranges[0] = new Range(min, min + stride);
-//			for (int i = 1; i < parts - 1; ++i) {
-//				ranges[i] = ranges[i -1].next(stride);
-//			}
-//			ranges[parts - 1] = new Range(ranges[parts - 2].max(), max);
-//
-//			return List.of(ranges);
-//		}
-//
-//		public List<Range> splitOpen(final int parts) {
-//			final var ranges = new ArrayList<Range>();
-//			ranges.add(previous(POSITIVE_INFINITY));
-//			ranges.addAll(split(parts));
-//			ranges.add(next(POSITIVE_INFINITY));
-//
-//			return List.copyOf(ranges);
-//		}
-//
-//		public List<Range> splitLeftOpen(final int parts) {
-//			final var ranges = new ArrayList<Range>();
-//			ranges.add(previous(POSITIVE_INFINITY));
-//			ranges.addAll(split(parts));
-//
-//			return List.copyOf(ranges);
-//		}
-//
-//		public List<Range> splitRightOpen(final int parts) {
-//			final var ranges = new ArrayList<Range>(split(parts));
-//			ranges.add(next(POSITIVE_INFINITY));
-//
-//			return List.copyOf(ranges);
-//		}
-
-		/**
-		 * Return the number of <em>distinct</em> {@code double} values
-		 * {@code this} range can <em>hold</em>.
-		 *
-		 * @return the number of distinct double values of {@code this} range
-		 */
-		long size() {
-			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
-		}
-
-//		/**
-//		 * Returns a range list, which <em>completes</em> the given ranges.
-//		 *
-//		 * @param ranges the ranges to <em>complete</em>
-//		 * @return the residual ranges
-//		 * @throws NullPointerException if the given {@code ranges} is {@code null}
-//		 */
-//		public static List<Range> residualOf(final List<Range> ranges) {
-//			if (ranges.isEmpty()) {
-//				return List.of(new Range(NEGATIVE_INFINITY, POSITIVE_INFINITY));
-//			}
-//
-//			return List.of();
-//		}
-
 	}
 
 	/**
@@ -504,12 +384,20 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	{
 
 		public Buckets {
+			requireNonNull(partition);
 			if (partition.size() != frequencies.length) {
 				throw new IllegalArgumentException(
 					"Partition size does not match frequencies: %s != %s"
 						.formatted(partition.separators, frequencies.length)
 				);
 			}
+
+			frequencies = frequencies.clone();
+		}
+
+		@Override
+		public long[] frequencies() {
+			return frequencies.clone();
 		}
 
 		/**
@@ -534,36 +422,9 @@ public record Histogram(Buckets buckets, Buckets residual) {
 			return new Bucket(partition.get(index), frequencies[index]);
 		}
 
-		/**
-		 * Create a new buckets slice. This method allows negative indexes like
-		 * <em>Python</em> arrays.
-		 * <p>
-		 * <b>Negative array indexes</b>
-		 * <pre>{@code
-		 *       0    1    2    3    4    5    6    7    8    9     Indexes
-		 *     +----+----+----+----+----+----+----+----+----+----+
-		 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
-		 *     +----+----+----+----+----+----+----+----+----+----+
-		 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
-		 * }</pre>
-		 *
-		 * @param start the start index, inclusively
-		 * @param end the end index, exclusively
-		 * @return the new histogram from the given buckets slice
-		 * @throws IndexOutOfBoundsException if the given start and end indexes
-		 *         are out of bounds
-		 * @throws IllegalArgumentException if the bucket slice is empty
-		 */
-		public Buckets slice(final int start, final int end) {
-			final var s = start < 0 ? buckets.size() + start : start;
-			final var e = end < 0 ? buckets.size() + end : end;
-
-			return new Buckets(buckets.subList(s, e));
-		}
-
 		@Override
-		public Iterator<Bucket> iterator() {
-			return buckets.iterator();
+		public ListIterator<Bucket> iterator() {
+			return new ReadOnlyListIterator<>(size(), this::get);
 		}
 
 		/**
@@ -572,119 +433,27 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 * @return the bucket elements as stream
 		 */
 		public Stream<Bucket> stream() {
-			return buckets.stream();
-		}
-
-		/**
-		 * Return the bucket index for the given {@code value}. If no bucket
-		 * for the {@code value} is available, {@code -1} is returned.
-		 *
-		 * @param value the bucket value
-		 * @return the bucket index for the given {@code value}, or {@code -1}
-		 *         if no bucket is available
-		 */
-		public int indexOf(final double value) {
-			if (Double.isNaN(value)) {
-				return -1;
-			}
-
-			int low = 0;
-			int high = size() - 1;
-
-			while (low <= high) {
-				if (get(low).range.compareTo(value) < 0 ||
-					get(high).range.compareTo(value) > 0)
-				{
-					return -1;
-				}
-
-				final int mid = (low + high) >>> 1;
-				final int cpm = get(mid).range.compareTo(value);
-
-				if (cpm == 0) {
-					return mid;
-				}
-
-				if (cpm < 0) {
-					high = mid;
-				} else {
-					low = mid + 1;
-				}
-			}
-
-			return -1;
-		}
-
-		boolean equalRanges(final Buckets other) {
-			if (buckets.size() != other.buckets.size()) {
-				return false;
-			}
-
-			return IntStream.range(0, buckets.size())
-				.allMatch(i ->
-					buckets.get(i).range.equals(other.buckets.get(i).range)
-				);
+			return StreamSupport.stream(spliterator(), false);
 		}
 
 		@Override
 		public int hashCode() {
-			return buckets.hashCode();
+			return Objects.hash(partition, Arrays.hashCode(frequencies));
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj instanceof Buckets b &&
-				buckets.equals(b.buckets);
+			return obj instanceof Buckets(var p, var f) &&
+				partition.equals(p) &&
+				Arrays.equals(frequencies, f);
 		}
 
 		@Override
 		public String toString() {
-			return buckets.toString();
+			return "Buckets[partition=%s, frequencies=%s]"
+				.formatted(partition, frequencies);
 		}
 
-		/**
-		 * Return a new buckets object with the given {@code min} and {@code max}
-		 * values and number {@code classes}. The buckets will consist of
-		 * {@code classes + 2} elements. The <em>inner</em> elements will be in
-		 * the range {@code [min, max)} and consist of the defined {@code classes}.
-		 * <pre>{@code
-		 *  -Ꝏ   min                                           max   Ꝏ
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
-		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-		 * }</pre>
-		 *
-		 * @param min the minimal value of the inner elements
-		 * @param max the maximal value of the inner elements
-		 * @param classes the number of classes between {@code [min, max)}
-		 * @return a new buckets object
-		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-		 *         not finite or {@code classes < 1}
-		 */
-		public static Buckets of(final double min, final double max, final int classes) {
-			return new Buckets(
-				new Range(min, max).split(classes).stream()
-					.map(Bucket::new)
-					.toList()
-			);
-		}
-
-		/**
-		 *
-		 * @param buckets
-		 * @return
-		 */
-		public static Buckets residualOf(final Buckets buckets) {
-			final List<Range> ranges = buckets.buckets.stream()
-				.map(Bucket::range)
-				.toList();
-
-			return new Buckets(
-				Range.residualOf(ranges).stream()
-					.map(Bucket::new)
-					.toList()
-			);
-		}
 	}
 
 	/**
@@ -710,30 +479,6 @@ public record Histogram(Buckets buckets, Buckets residual) {
 	public int degreesOfFreedom() {
 		return buckets.size() - 1;
 	}
-
-//	/**
-//	 * Create a new histogram from the defined buckets slice. This method allows
-//	 * negative indexes like <em>Python</em> arrays.
-//	 * <p>
-//	 * <b>Negative array indexes</b>
-//	 * <pre>{@code
-//	 *       0    1    2    3    4    5    6    7    8    9     Indexes
-//	 *     +----+----+----+----+----+----+----+----+----+----+
-//	 *     | 0  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |  Array elements
-//	 *     +----+----+----+----+----+----+----+----+----+----+
-//	 *      -10  -9   -8   -7   -6   -5   -4   -3   -2   -1    Negative indexes
-//	 * }</pre>
-//	 *
-//	 * @param start the start index, inclusively
-//	 * @param end the end index, exclusively
-//	 * @return the new histogram from the given buckets slice
-//	 * @throws IndexOutOfBoundsException if the given start and end indexes
-//	 *         are out of bounds
-//	 * @throws IllegalArgumentException if the bucket slice is empty
-//	 */
-//	public Histogram slice(final int start, final int end) {
-//		return new Histogram(buckets.slice(start, end));
-//	}
 
 	/**
 	 * Return the number of samples, which generated the histogram.
@@ -833,14 +578,14 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 *
 		 * @throws NullPointerException if the {@code buckets} is {@code null}.
 		 */
-		public Builder(final Partition partition) {
-			this.partition = requireNonNull(partition);
-			this.frequencies = new long[partition.size()];
+		public Builder(final Buckets buckets) {
+			this.partition = buckets.partition();
+			this.frequencies = buckets.frequencies();
 			this.statistics = new DoubleMomentStatistics();
 		}
 
 		@Override
-		public void accept(double value) {
+		public void accept(final double value) {
 			final var index = partition.indexOf(value);
 			if (index != -1) {
 				++frequencies[index];
@@ -879,11 +624,7 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 * @return a new <em>immutable</em> histogram
 		 */
 		public Histogram build() {
-			final var buckets = IntStream.range(0, _frequencies.length)
-				.mapToObj(i -> _buckets.get(i).add(_frequencies[i]))
-				.toList();
-
-			return new Histogram(new Buckets(buckets), new Buckets());
+			return new Histogram(new Buckets(partition, frequencies), null);
 		}
 
 		/**
@@ -923,8 +664,6 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
 		 * }</pre>
 		 *
-		 * @see Buckets#of(double, double, int)
-		 *
 		 * @param min the minimal value of the inner buckets
 		 * @param max the maximal value of the inner buckets
 		 * @param classes the number of classes between {@code [min, max)}
@@ -933,7 +672,7 @@ public record Histogram(Buckets buckets, Buckets residual) {
 		 *         not finite or {@code classes < 1}
 		 */
 		public static Builder of(final double min, final double max, final int classes) {
-			return new Builder(Buckets.of(min, max, classes));
+			return null; //new Builder(Buckets.of(min, max, classes));
 		}
 
 	}
