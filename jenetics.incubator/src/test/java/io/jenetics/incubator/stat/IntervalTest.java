@@ -19,9 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -29,6 +26,9 @@ import static java.lang.Math.nextDown;
 import static java.lang.Math.nextUp;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

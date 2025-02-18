@@ -19,13 +19,14 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.incubator.stat.Histogram.Partition;
-import org.testng.annotations.Test;
-
 import static java.lang.Double.NaN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import org.testng.annotations.Test;
+
+import io.jenetics.incubator.stat.Histogram.Partition;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
