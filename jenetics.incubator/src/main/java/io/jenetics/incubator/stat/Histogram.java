@@ -20,6 +20,8 @@
 package io.jenetics.incubator.stat;
 
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.System.arraycopy;
+import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -33,8 +35,6 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import io.jenetics.stat.DoubleMomentStatistics;
 
 /**
  * This class lets you create a histogram from {@code double} sample data. The
@@ -320,14 +320,14 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * Create a partition from the given {@code interval} by splitting it
 		 * into the given number of {@code parts}.
 		 *
-		 * @param internal the interval to partition
+		 * @param interval the interval to partition
 		 * @param parts the number of subintervals
 		 * @return a new partition
 		 */
-		public static Partition of(final Interval internal, final int parts) {
-			if (!Double.isFinite(internal.min) || !Double.isFinite(internal.max)) {
+		public static Partition of(final Interval interval, final int parts) {
+			if (!Double.isFinite(interval.min) || !Double.isFinite(interval.max)) {
 				throw new IllegalArgumentException(
-					"Open ranges can't be split: %s.".formatted(internal)
+					"Open ranges can't be split: %s.".formatted(interval)
 				);
 			}
 			if (parts < 1) {
@@ -336,29 +336,29 @@ public record Histogram(Buckets buckets, Residual residual) {
 						.formatted(parts)
 				);
 			}
-			final long size = internal.size();
+			final long size = interval.size();
 			if (size < parts) {
 				throw new IllegalArgumentException("""
 					%s can hold only %d distinct double values. \
 					"Can't split it into %d parts.
-					""".formatted(internal, size, parts)
+					""".formatted(interval, size, parts)
 				);
 			}
 
 			if (parts == 1) {
-				return new Partition(internal);
+				return new Partition(interval);
 			}
 
-			final var stride = (internal.max - internal.min)/parts;
+			final var stride = (interval.max - interval.min)/parts;
 			assert stride > 0.0;
 
 			final var separators = new double[parts - 1];
-			separators[0] = internal.min + stride;
+			separators[0] = interval.min + stride;
 			for (int i = 1; i < separators.length; ++i) {
 				separators[i] = separators[i - 1] + stride;
 			}
 
-			return new Partition(internal, separators);
+			return new Partition(interval, separators);
 		}
 	}
 
@@ -528,35 +528,61 @@ public record Histogram(Buckets buckets, Residual residual) {
 	}
 
 	/**
-	 * Histogram builder class.
+	 * Histogram builder.
 	 */
 	public static final class Builder implements DoubleConsumer {
 		private final Partition partition;
 		private final long[] frequencies;
-		private final DoubleMomentStatistics statistics;
+
+		/**
+		 * Create a <i>histogram</i> builder with the given {@code buckets} and
+		 * {@code residual}.
+		 *
+		 * @param buckets the buckets, which defines the histogram partition
+		 *        and initial samples, which allows to continue the
+		 *        <em>sampling</em>
+		 * @param residual the initial residual of the histogram builder
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
+		public Builder(final Buckets buckets, final Residual residual) {
+			requireNonNull(buckets);
+			requireNonNull(residual);
+
+			this.partition = buckets.partition();
+			this.frequencies = new long[buckets.size() + 2];
+			this.frequencies[0] = residual.left;
+			this.frequencies[this.frequencies.length - 1] = residual.right;
+			arraycopy(
+				buckets.frequencies, 0,
+				this.frequencies, 1, buckets.size()
+			);
+		}
 
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code buckets}.
 		 *
+		 * @param buckets the buckets, which defines the histogram partition
+		 *        and initial samples, which allows to continue the
+		 *        <em>sampling</em>
 		 * @throws NullPointerException if the {@code buckets} is {@code null}.
 		 */
 		public Builder(final Buckets buckets) {
-			this.partition = buckets.partition();
-			this.frequencies = buckets.frequencies();
-			this.statistics = new DoubleMomentStatistics();
+			this(buckets, Residual.EMPTY);
 		}
 
+		/**
+		 * Create a <i>histogram</i> builder with the given {@code partition}.
+		 *
+		 * @param partition the histogram partition
+		 * @throws NullPointerException if the {@code partition} is {@code null}.
+		 */
 		public Builder(final Partition partition) {
 			this(new Buckets(partition));
 		}
 
 		@Override
 		public void accept(final double value) {
-			final var index = partition.indexOf(value);
-			if (index != -1) {
-				++frequencies[index];
-				statistics.accept(value);
-			}
+			++frequencies[partition.indexOf(value) + 1];
 		}
 
 		/**
@@ -580,17 +606,25 @@ public record Histogram(Buckets buckets, Residual residual) {
 			for (int i = other.frequencies.length; --i >= 0;) {
 				frequencies[i] += other.frequencies[i];
 			}
-			statistics.combine(other.statistics);
 		}
 
 		/**
 		 * Create a new <em>immutable</em> histogram object from the current
 		 * values.
 		 *
-		 * @return a new <em>immutable</em> histogram
+		 * @return a new <em>immutable</em> histogram object
 		 */
 		public Histogram build() {
-			return new Histogram(new Buckets(partition, frequencies), null);
+			final var buckets = new Buckets(
+				partition,
+				copyOfRange(frequencies, 1, frequencies.length - 1)
+			);
+			final var residuals = new Residual(
+				frequencies[0],
+				frequencies[frequencies.length - 1]
+			);
+
+			return new Histogram(buckets, residuals);
 		}
 
 		/**
@@ -601,7 +635,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 *     .doubles(10000, -5, 5)
 		 *     .toArray();
 		 *
-		 * final var histogram = Histogram.Builder.of(-5, 5, 10)
+		 * final var histogram = new Builder(new Interval(-5, 5), 10)
 		 *     .build(samples -> {
 		 * 	        for (double value : values) {
 		 * 	            samples.accept(value);
