@@ -61,7 +61,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 			final var interval = new Interval(0, characters.length());
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final var observation = Histogram.Builder.of(interval, 20)
+			final var observation = Histogram.Builder.of(interval, 10)
 				.build(samples -> {
 					final int count = 100000;
 					for (int i = 0; i < count; ++i) {

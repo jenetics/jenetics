@@ -84,11 +84,13 @@ public final class StatisticsAssert {
 		}
 
 		public void isUniform() {
-//			final var range = DoubleRange.of(
-//				Math.max(_observation.buckets().first().min(), -Double.MAX_VALUE),
-//				Math.min(_observation.buckets().last().max(), Double.MAX_VALUE)
-//			);
-//			follows(new UniformDistribution(range));
+			/*
+			final var range = new Interval(
+				Math.max(_observation.buckets().first().min(), -Double.MAX_VALUE),
+				Math.min(_observation.buckets().last().max(), Double.MAX_VALUE)
+			);
+			 */
+			follows(new UniformDistribution(_observation.buckets().partition().interval()));
 		}
 
 		public void isNormal(double mean, double stddev) {

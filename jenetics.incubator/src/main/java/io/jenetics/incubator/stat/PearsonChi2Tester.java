@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
 
+import io.jenetics.incubator.stat.Histogram.Bucket;
 import io.jenetics.internal.util.Requires;
 
 /**
@@ -87,8 +88,9 @@ public record PearsonChi2Tester(double p) implements HypothesisTester {
 			.inverseCumulativeProbability(1 - p);
 	}
 
-	static double probability(final Cdf cdf, final Histogram.Bucket bucket) {
-		return 0; //cdf.apply(bucket.max()) - cdf.apply(bucket.min());
+	static double probability(final Cdf cdf, final Bucket bucket) {
+		final var interval = bucket.interval();
+		return cdf.apply(interval.max()) - cdf.apply(interval.min());
 	}
 
 }

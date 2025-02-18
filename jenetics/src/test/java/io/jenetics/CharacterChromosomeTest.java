@@ -47,7 +47,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		final var interval = new Interval(0, characters.length());
 		final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-		final var observation = Histogram.Builder.of(interval, 20)
+		final var observation = Histogram.Builder.of(interval, 10)
 			.build(samples -> {
 				final var chromosome = CharacterChromosome.of(characters, 10_000);
 				chromosome.stream()
