@@ -55,7 +55,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
 		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(1.0, 10.0, 10);
+		final var histogram = Histogram.Builder.of(new Histogram.Interval(1, 10), 10);
 
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();

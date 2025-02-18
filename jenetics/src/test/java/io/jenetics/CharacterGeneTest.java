@@ -19,24 +19,22 @@
  */
 package io.jenetics;
 
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.Factory;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.testng.annotations.Test;
+
+import java.util.Random;
+
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.util.RandomRegistry.using;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
-import static io.jenetics.util.RandomRegistry.using;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
-import java.util.Random;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.util.CharSeq;
-import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -59,22 +57,23 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	public void newInstanceDistribution() {
 		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
-
+			final var interval = new Histogram.Interval(0, characters.length());
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-			final var histogram = Histogram.Builder.of(0L, 10L, 10);
+			final var observation = Histogram.Builder.of(interval, 20)
+				.build(samples -> {
+					final int count = 100000;
+					for (int i = 0; i < count; ++i) {
+						final CharacterGene g1 = factory.newInstance();
+						final CharacterGene g2 = factory.newInstance();
+						assertThat(g1).isNotSameAs(g2);
 
-			final int samples = 100000;
-			for (int i = 0; i < samples; ++i) {
-				final CharacterGene g1 = factory.newInstance();
-				final CharacterGene g2 = factory.newInstance();
-				assertThat(g1).isNotSameAs(g2);
+						samples.accept(Long.parseLong(g1.allele().toString()));
+						samples.accept(Long.parseLong(g2.allele().toString()));
+					}
+				});
 
-				histogram.accept(Long.parseLong(g1.allele().toString()));
-				histogram.accept(Long.parseLong(g2.allele().toString()));
-			}
-
-			assertThatObservation(histogram.build()).isUniform();
+			assertThatObservation(observation).isUniform();
 		});
 	}
 

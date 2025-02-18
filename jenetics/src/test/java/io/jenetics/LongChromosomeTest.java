@@ -19,17 +19,16 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,18 +48,21 @@ public class LongChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final long min = 0;
-		final long max = 10000000;
+		final var interval = new Histogram.Interval(0.0, 10000000);
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = LongChromosome.of(min, max, 500);
-			for (var gene : chromosome) {
-				histogram.accept(gene.allele());
-			}
-		}
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 1000; ++i) {
+					final var chromosome = LongChromosome.of(
+						(long)interval.min(), (long)interval.max(), 500
+					);
+					for (var gene : chromosome) {
+						samples.accept(gene.allele());
+					}
+				}
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

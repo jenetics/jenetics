@@ -306,7 +306,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		final var hist = Histogram.Builder.of(MIN, MAX, CLASS_COUNT);
+		final var hist = Histogram.Builder.of(new Histogram.Interval(MIN, MAX), CLASS_COUNT);
 		IntStream.range(0, loops).parallel()
 			.forEach(j -> {
 

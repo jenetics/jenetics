@@ -143,7 +143,18 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * @return the number of distinct double values of {@code this} interval
 		 */
 		long size() {
-			return doubleToLongBits(max) - doubleToLongBits(min) - 1;
+			if (Double.isInfinite(min) || Double.isInfinite(max)) {
+				return Long.MAX_VALUE;
+			}
+
+			long left = min < 0
+				? Long.MIN_VALUE - doubleToLongBits(min)
+				: doubleToLongBits(min);
+			long right = max < 0
+				? Long.MIN_VALUE - doubleToLongBits(max)
+				: doubleToLongBits(max);
+
+			return right - left;
 		}
 
 	}
@@ -152,11 +163,20 @@ public record Histogram(Buckets buckets, Residual residual) {
 	 * A partition divides an <em>interval</em> into sub-intervals.
 	 *
 	 * @param interval the overall partition interval
-	 * @param separators the interval separators
+	 * @param separators the interval separators, doesn't include the endpoints
+	 *        of the {@code interval}
 	 */
 	public record Partition(Interval interval, double... separators)
 		implements Iterable<Interval>
 	{
+		/**
+		 * Create a new partition with the given parameter
+		 *
+		 * @param interval the overall partition interval
+		 * @param separators the interval separators
+		 * @throws IllegalArgumentException if the {@code separators} are not
+		 *         strictly monotone increasing or not part of the {@code interval}
+		 */
 		public Partition {
 			requireNonNull(interval);
 			requireNonNull(separators);
@@ -191,6 +211,15 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return separators.clone();
 		}
 
+		/**
+		 * Return the number of sub-intervals of {@code this} partition.
+		 *
+		 * @return the number of sub-intervals
+		 */
+		public int size() {
+			return separators.length + 1;
+		}
+
 		public Interval get(final int index) {
 			Objects.checkIndex(index, separators.length + 1);
 
@@ -199,13 +228,9 @@ public record Histogram(Buckets buckets, Residual residual) {
 			} else {
 				return new Interval(
 					index == 0 ? interval.min() : separators[index - 1],
-					index == separators.length - 1 ? interval.max() : separators[index]
+					index == separators.length ? interval.max() : separators[index]
 				);
 			}
-		}
-
-		public int size() {
-			return separators.length + 1;
 		}
 
 		@Override
@@ -213,10 +238,25 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return new ReadOnlyListIterator<>(size(), this::get);
 		}
 
+		/**
+		 * Return the intervals of {@code this} stream as stream.
+		 *
+		 * @return the interval stream of {@code this} partition
+		 */
 		public Stream<Interval> stream() {
 			return StreamSupport.stream(spliterator(), false);
 		}
 
+		/**
+		 * Return the index of the interval the given {@code value} belongs to.
+		 * If the value is smaller than the partition interval, -1 is returned.
+		 * If it is greater than the partition interval, {@link #size()} is
+		 * returned.
+		 *
+		 * @param value the value to test
+		 * @return the interval index
+		 * @throws IllegalArgumentException if the value is {@link Double#NaN}
+		 */
 		public int indexOf(final double value) {
 			if (Double.isNaN(value)) {
 				throw new IllegalArgumentException("Value is NaN.");
@@ -226,6 +266,10 @@ public record Histogram(Buckets buckets, Residual residual) {
 			}
 			if (value >= interval.max() && value != Double.POSITIVE_INFINITY) {
 				return size();
+			}
+
+			if (separators.length == 0) {
+				return interval.compareTo(value);
 			}
 
 			int low = 0;

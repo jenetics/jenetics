@@ -145,7 +145,7 @@ public class SubsetsTest {
 		final int n = 100_000;
 
 		final var random = new Random();
-		final var histogram = Histogram.Builder.of(0, n, 13);
+		final var histogram = Histogram.Builder.of(new Histogram.Interval(0, n), 13);
 
 		IntStream.range(0, 10_000)
 			.flatMap(i -> IntStream.of(Subsets.next(random, n, 3)))

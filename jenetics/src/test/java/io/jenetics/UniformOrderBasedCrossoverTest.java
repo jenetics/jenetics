@@ -103,7 +103,7 @@ public class UniformOrderBasedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final var histogram = Histogram.Builder.of(min, max, 10);
+		final var histogram = Histogram.Builder.of(new Histogram.Interval(min, max), 10);
 		final var variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

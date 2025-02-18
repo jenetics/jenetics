@@ -41,7 +41,7 @@ public class HistogramTest {
 		final double end = 123;
 		final int elements = 10;
 
-		var histogram = Histogram.Builder.of(begin, end, elements).build();
+		var histogram = Histogram.Builder.of(new Histogram.Interval(begin, end), elements).build();
 		assertThat(histogram.buckets().size()).isEqualTo(elements);
 		assertThat(
 			histogram.buckets().stream()
@@ -57,7 +57,7 @@ public class HistogramTest {
 		final long end = 10;
 		final int binCount = 9;
 
-		final var builder = Histogram.Builder.of(begin, end, binCount);
+		final var builder = Histogram.Builder.of(new Histogram.Interval(begin, end), binCount);
 		for (int i = 0; i < binCount*1000; ++i) {
 			final var value = i%binCount + 1;
 			builder.accept(value);
@@ -79,7 +79,7 @@ public class HistogramTest {
 		Histogram observation = RandomGenerator.getDefault()
 			.doubles(sampleCount)
 			.collect(
-				() -> Histogram.Builder.of(0,1, 20),
+				() -> Histogram.Builder.of(new Histogram.Interval(0, 1), 20),
 				Histogram.Builder::accept,
 				Histogram.Builder::combine
 			)
@@ -94,7 +94,7 @@ public class HistogramTest {
 			.doubles(10000, -5, 5)
 			.toArray();
 
-		final var histogram = Histogram.Builder.of(-5, 5, 10)
+		final var histogram = Histogram.Builder.of(new Histogram.Interval(-5, 5), 10)
 			.build(samples -> {
 				for (double value : values) {
 					samples.accept(value);
@@ -106,7 +106,7 @@ public class HistogramTest {
 
 	@Test
 	public void print() {
-		final var builder = Histogram.Builder.of(0, 10, 23);
+		final var builder = Histogram.Builder.of(new Histogram.Interval(0, 10), 23);
 		final var random = RandomGenerator.getDefault();
 		for (int i = 0; i < 10_000; ++i) {
 			builder.accept(random.nextGaussian(5, 2));

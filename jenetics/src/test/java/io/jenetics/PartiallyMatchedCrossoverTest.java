@@ -103,18 +103,21 @@ public class PartiallyMatchedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
+		final var interval = new Histogram.Interval(min, max);
 
-		final var histogram = Histogram.Builder.of(min, max, 10);
 		final var statistics = new LongMomentStatistics();
+		final var observation = Histogram.Builder.of(interval, 10)
+			.build(samples -> {
+				for (int i = 0; i < N; ++i) {
+					final long alterations = crossover
+						.alter(population, 1)
+						.alterations();
 
-		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover
-				.alter(population, 1)
-				.alterations();
+					samples.accept(alterations);
+					statistics.accept(alterations);
+				}
+			});
 
-			histogram.accept(alterations);
-			statistics.accept(alterations);
-		}
 
 		//assertThatObservation(histogram.build())
 		//	.isNormal(mean, Math.sqrt(statistics.variance()), DoubleRange.of(min, max));

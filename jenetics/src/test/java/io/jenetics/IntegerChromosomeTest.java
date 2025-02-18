@@ -19,16 +19,15 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
-
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,16 +47,21 @@ public class IntegerChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final int min = 0;
-		final int max = 10000000;
+		final var interval = new Histogram.Interval(0.0, 10000000);
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = IntegerChromosome.of(min, max, 500);
-			chromosome.forEach(g -> histogram.accept(g.allele()));
-		}
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 1000; ++i) {
+					final var chromosome = IntegerChromosome.of(
+						(int)interval.min(), (int)interval.max(), 500
+					);
+					for (var gene : chromosome) {
+						samples.accept(gene.allele());
+					}
+				}
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test(dataProvider = "chromosomes")

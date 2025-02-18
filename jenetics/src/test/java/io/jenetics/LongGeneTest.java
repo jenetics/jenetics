@@ -19,20 +19,17 @@
  */
 package io.jenetics;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
-
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.util.Factory;
 import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.math.BigInteger;
-import java.util.stream.IntStream;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.util.Factory;
+import java.math.BigInteger;
+
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -51,15 +48,17 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var min = 0L;
-		final var max = Integer.MAX_VALUE;
-		final var histogram = Histogram.Builder.of(min, max, 20);
+		final var interval = new Histogram.Interval(0.0, Integer.MAX_VALUE);
 
-		IntStream.range(0, 200_000)
-			.mapToObj(i -> LongGene.of(min, max).allele())
-			.forEach(histogram::accept);
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 200_000; ++i) {
+					var gene = LongGene.of((long)interval.min(), (long)interval.max());
+					samples.accept(gene.doubleValue());
+				}
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test

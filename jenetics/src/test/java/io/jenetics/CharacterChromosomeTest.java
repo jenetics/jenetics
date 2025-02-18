@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -41,15 +42,19 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var characters = new CharSeq("0123456789");
-		final var chromosome = CharacterChromosome.of(characters, 10_000);
+		final CharSeq characters = new CharSeq("0123456789");
+		final var interval = new Histogram.Interval(0, characters.length());
+		final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-		final var histogram = Histogram.Builder.of(0L, 10L, 10);
-		chromosome.stream()
-			.map(g -> Long.parseLong(g.allele().toString()))
-			.forEach(histogram::accept);
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				final var chromosome = CharacterChromosome.of(characters, 10_000);
+				chromosome.stream()
+					.map(g -> Long.parseLong(g.allele().toString()))
+					.forEach(samples::accept);
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
     }
 
 	@Test(dataProvider = "genes")
