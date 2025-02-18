@@ -128,7 +128,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 *
 		 * @param value the value to test
 		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
-		 *          lies below, within or above {@code this} range
+		 *          lies below, within or above {@code this} interval
 		 */
 		public int compareTo(final double value) {
 			if (value < min) {
