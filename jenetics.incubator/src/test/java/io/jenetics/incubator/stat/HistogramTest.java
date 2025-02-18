@@ -20,15 +20,17 @@
 package io.jenetics.incubator.stat;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.util.Arrays;
-import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.DoubleGene;
-import io.jenetics.incubator.stat.Histogram.Bucket;
-import io.jenetics.util.ISeq;
+import io.jenetics.incubator.stat.Histogram.Buckets;
+import io.jenetics.incubator.stat.Histogram.Interval;
+import io.jenetics.incubator.stat.Histogram.Partition;
+import io.jenetics.incubator.stat.Histogram.Residual;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,126 +39,46 @@ public class HistogramTest {
 
 	@Test
 	public void create() {
-		final double begin = 12;
-		final double end = 123;
-		final int elements = 10;
+		final var partition = Partition.of(new Interval(12, 123), 10);
+		final var buckets = new Buckets(partition);
+		final var residual = new Residual(10, 5);
 
-		var histogram = Histogram.Builder.of(new Histogram.Interval(begin, end), elements).build();
-		assertThat(histogram.buckets().size()).isEqualTo(elements);
-		assertThat(
-			histogram.buckets().stream()
-				.mapToLong(Bucket::count)
-				.toArray()
-		)
-			.isEqualTo(new long[elements]);
+		assertThatNoException().isThrownBy(() -> new Histogram(buckets, residual));
 	}
 
 	@Test
-	public void accumulate() {
-		final long begin = 0;
-		final long end = 10;
-		final int binCount = 9;
-
-		final var builder = Histogram.Builder.of(new Histogram.Interval(begin, end), binCount);
-		for (int i = 0; i < binCount*1000; ++i) {
-			final var value = i%binCount + 1;
-			builder.accept(value);
-		}
-
-		final var histogram = builder.build();
-		final long[] expected = new long[binCount];
-		Arrays.fill(expected, 1000);
-		assertThat(histogram.buckets().stream()
-			.mapToLong(Bucket::count)
-			.toArray())
-			.isEqualTo(expected);
-		System.out.println(histogram);
+	public void createWithNullBuckets() {
+		assertThatExceptionOfType(NullPointerException.class)
+			.isThrownBy(() -> new Histogram(null));
 	}
 
 	@Test
-	public void streaming() {
-		final long sampleCount = 100_000;
-		Histogram observation = RandomGenerator.getDefault()
-			.doubles(sampleCount)
-			.collect(
-				() -> Histogram.Builder.of(new Histogram.Interval(0, 1), 20),
-				Histogram.Builder::accept,
-				Histogram.Builder::combine
-			)
-			.build();
+	public void createWithNullResidual() {
+		final var partition = Partition.of(new Interval(12, 123), 10);
+		final var buckets = new Buckets(partition);
 
-		assertThat(observation.samples()).isEqualTo(sampleCount);
+		assertThatExceptionOfType(NullPointerException.class)
+			.isThrownBy(() -> new Histogram(buckets, null));
 	}
 
 	@Test
-	public void build() {
-		final double[] values = RandomGenerator.getDefault()
-			.doubles(10000, -5, 5)
-			.toArray();
+	public void degreesOfFreedom() {
+		final var partition = Partition.of(new Interval(12, 123), 10);
+		final var buckets = new Buckets(partition);
+		final var histogram = new Histogram(buckets);
 
-		final var histogram = Histogram.Builder.of(new Histogram.Interval(-5, 5), 10)
-			.build(samples -> {
-				for (double value : values) {
-					samples.accept(value);
-				}
-			});
-
-		System.out.println(histogram);
+		assertThat(histogram.degreesOfFreedom()).isEqualTo(buckets.size() - 1);
 	}
 
 	@Test
-	public void print() {
-		final var builder = Histogram.Builder.of(new Histogram.Interval(0, 10), 23);
-		final var random = RandomGenerator.getDefault();
-		for (int i = 0; i < 10_000; ++i) {
-			builder.accept(random.nextGaussian(5, 2));
-		}
+	public void samples() {
+		final var partition = Partition.of(new Interval(12, 123), 10);
+		final var frequencies = new long[partition.size()];
+		Arrays.fill(frequencies, 123);
+		final var buckets = new Buckets(partition, frequencies);
+		final var histogram = new Histogram(buckets, new Residual(10, 5));
 
-		final Histogram observation = builder.build();
-		HistogramFormat.DEFAULT.format(observation, System.out);
-	}
-
-//	@Test
-//	public void toHistogram() {
-//		final var random = RandomGenerator.getDefault();
-//		final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
-//			.instances()
-//			.limit(1000)
-//			.collect(ISeq.toISeq());
-//
-//		final Histogram observations = genes.stream()
-//			.collect(Histogram.toHistogram(0, 10, 15, DoubleGene::doubleValue));
-//		assertThat(observations.samples()).isEqualTo(1000);
-//	}
-
-	@Test
-	public void foo() {
-		/*
-		final var buckets = Buckets.of(0,1, 10)
-			.append(new Bucket(POSITIVE_INFINITY, 0)
-			.prepend(POSITIVE_INFINITY);
-		buckets.append(last -> last.next(POSITIVE_INFINITY));
-		 */
-
-		/*
-		new Histogram.Builder(Histogram.Buckets.of(0, 1, 5).open());
-
-		Histogram.Builder.of(0,1, 10).open()
-
-		final var buckets = Histogram.Buckets.of(0, 1, 10)
-			.open()
-			.leftOpen()
-			.rightOpen();
-
-		buckets.leftOpen();
-		buckets.rightOpen();
-		buckets.open();
-
-		buckets.prepend(Double.NEGATIVE_INFINITY);
-		buckets.append(Double.POSITIVE_INFINITY);
-
-		buckets.prepend(new Bucket(Double.NEGATIVE_INFINITY, 0));
-		*/
+		assertThat(histogram.samples()).isEqualTo(frequencies.length*123L);
 	}
 
 }

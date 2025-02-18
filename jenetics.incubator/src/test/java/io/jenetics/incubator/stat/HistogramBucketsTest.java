@@ -19,98 +19,92 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.NaN;
-import static java.lang.Double.POSITIVE_INFINITY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import java.util.ArrayList;
-
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram.Bucket;
 import io.jenetics.incubator.stat.Histogram.Buckets;
+import io.jenetics.incubator.stat.Histogram.Interval;
+import io.jenetics.incubator.stat.Histogram.Partition;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class HistogramBucketsTest {
 
-	//@Test(dataProvider = "buckets")
-	public void indexOf(final Buckets buckets, final double value, final int index) {
-		//assertThat(buckets.indexOf(value)).isEqualTo(index);
-	}
-
-	@DataProvider
-	public Object[][] buckets() {
-		return new Object[][] {
-			{buckets(1, 2), NaN, -1},
-			{buckets(1, 2), NEGATIVE_INFINITY, -1},
-			{buckets(1, 2), POSITIVE_INFINITY, -1},
-			{buckets(NEGATIVE_INFINITY, 2), NEGATIVE_INFINITY, 0},
-			{buckets(1, 2), 1.5, 0},
-			{buckets(1, 2), 0.5, -1},
-			{buckets(1, 2), 2, -1},
-
-			{buckets(1, 2, 2, 3), NEGATIVE_INFINITY, -1},
-			{buckets(1, 2, 2, 3), POSITIVE_INFINITY, -1},
-			{buckets(1, 2, 2, 3), 1.5, 0},
-			{buckets(1, 2, 2, 3), 2.5, 1},
-			{buckets(1, 2, 2, 3), 3.5, -1},
-			{buckets(1, 2, 2, 3), 0.5, -1},
-
-			{buckets(1, 2, 3, 4), NEGATIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4), POSITIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4), 1.5, 0},
-			{buckets(1, 2, 3, 4), 3.5, 1},
-			{buckets(1, 2, 3, 4), 4.5, -1},
-			{buckets(1, 2, 3, 4), 0.5, -1},
-			{buckets(1, 2, 3, 4), 2.5, -1},
-
-			{buckets(1, 2, 3, 4, 4, 5), NEGATIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4, 4, 5), POSITIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4, 4, 5), 1.5, 0},
-			{buckets(1, 2, 3, 4, 4, 5), 3.5, 1},
-			{buckets(1, 2, 3, 4, 4, 5), 4.5, 2},
-			{buckets(1, 2, 3, 4, 4, 5), 5.5, -1},
-			{buckets(1, 2, 3, 4, 4, 5), 0.5, -1},
-			{buckets(1, 2, 3, 4, 4, 5), 2.5, -1},
-
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), NEGATIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), POSITIVE_INFINITY, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 1.5, 0},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 3.5, 1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 4.5, 2},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 7.5, 3},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 5.5, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 5.0, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 0.5, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 2.5, -1},
-			{buckets(1, 2, 3, 4, 4, 5, 7, 8), 8.0, -1}
-		};
-	}
-
-	static Buckets buckets(final double... values) {
-		final var buckets = new ArrayList<Bucket>();
-		for (int i = 0; i < values.length; i += 2) {
-			//buckets.add(new Bucket(values[i], values[i + 1]));
-		}
-		return null; //new Buckets(buckets);
+	@Test
+	public void create() {
+		assertThatNoException()
+			.isThrownBy(() -> new Buckets(Partition.of(new Interval(0, 10), 5)));
 	}
 
 	@Test
-	public void create() {
-		/*
-		new Bucket(0, 1).split(10)
-			.add(new Bucket(1, 10).split(10));
+	public void createNullPartition() {
+		assertThatExceptionOfType(NullPointerException.class)
+			.isThrownBy(() -> new Buckets(null, 5));
+	}
 
-		final Histogram histogram = new Histogram.Builder(new Bucket(0, 10).split(100))
-			.build(samples -> {
+	@Test
+	public void createWrongFrequencySize() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() ->
+				new Buckets(Partition.of(new Interval(0, 10), 5), 5));
+	}
 
-			});
+	@Test
+	public void createNegativeFrequency() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() ->
+				new Buckets(Partition.of(new Interval(0, 10), 3), 5, 5, -1));
+	}
 
-		 */
+	@Test
+	public void size() {
+		var buckets = new Buckets(Partition.of(new Interval(0, 10), 3));
+		assertThat(buckets.size()).isEqualTo(3);
+		assertThat(buckets).hasSize(3);
+	}
+
+	@Test
+	public void get() {
+		var buckets = new Buckets(new Partition(
+			new Interval(0, 10), 1, 2, 3, 4, 5, 6, 7, 8, 9
+		));
+		assertThat(buckets.size()).isEqualTo(10);
+
+		for (int i = 0; i < buckets.size(); ++i) {
+			var bucket = buckets.get(i);
+			assertThat(bucket.interval()).isEqualTo(new Interval(i, i + 1));
+			assertThat(bucket.count()).isZero();
+		}
+	}
+
+	@Test
+	public void iterator() {
+		var buckets = new Buckets(new Partition(
+			new Interval(0, 10), 1, 2, 3, 4, 5, 6, 7, 8, 9
+		));
+		assertThat(buckets.size()).isEqualTo(10);
+
+		int i = 0;
+		for (var bucket : buckets) {
+			assertThat(bucket.interval()).isEqualTo(new Interval(i, i + 1));
+			assertThat(bucket.count()).isZero();
+			++i;
+		}
+	}
+
+	@Test
+	public void stream() {
+		var buckets = new Buckets(new Partition(
+			new Interval(0, 10), 1, 2, 3, 4, 5, 6, 7, 8, 9
+		));
+		assertThat(buckets.size()).isEqualTo(10);
+
+		var bucks = buckets.stream().toList();
+		assertThat(bucks).hasSize(10);
 	}
 
 }

@@ -130,4 +130,15 @@ public class HistogramPartitionTest {
 		assertThat(partition.indexOf(6)).isEqualTo(1);
 	}
 
+	@Test
+	public void ofEqualIntervals() {
+		var partition = Partition.of(new Interval(0, 10), 10);
+		assertThat(partition).hasSize(10);
+
+		for (var interval : partition) {
+			assertThat(interval.max() - interval.min())
+				.isEqualTo(1);
+		}
+	}
+
 }

@@ -92,6 +92,10 @@ import io.jenetics.stat.DoubleMomentStatistics;
  */
 public record Histogram(Buckets buckets, Residual residual) {
 
+	/* *************************************************************************
+	 * Histogram support classes.
+	 * ************************************************************************/
+
 	/**
 	 * Defines a double interval.
 	 *
@@ -163,7 +167,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 	 * A partition divides an <em>interval</em> into sub-intervals.
 	 *
 	 * @param interval the overall partition interval
-	 * @param separators the interval separators, doesn't include the endpoints
+	 * @param separators the interval separators doesn't include the endpoints
 	 *        of the {@code interval}
 	 */
 	public record Partition(Interval interval, double... separators)
@@ -212,9 +216,9 @@ public record Histogram(Buckets buckets, Residual residual) {
 		}
 
 		/**
-		 * Return the number of sub-intervals of {@code this} partition.
+		 * Return the number of subintervals of {@code this} partition.
 		 *
-		 * @return the number of sub-intervals
+		 * @return the number of subintervals
 		 */
 		public int size() {
 			return separators.length + 1;
@@ -309,7 +313,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		@Override
 		public String toString() {
 			return "Partition[interval=%s, separators=%s]"
-				.formatted(interval, separators);
+				.formatted(interval, Arrays.toString(separators));
 		}
 
 		/**
@@ -317,7 +321,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * into the given number of {@code parts}.
 		 *
 		 * @param internal the interval to partition
-		 * @param parts the number of sub-intervals
+		 * @param parts the number of subintervals
 		 * @return a new partition
 		 */
 		public static Partition of(final Interval internal, final int parts) {
@@ -493,115 +497,35 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 	}
 
-	public record Residual(long lower, long upper) {
+	/**
+	 * Contains the <em>left</em> and <em>right</em> residual counts for
+	 * histograms with <em>finite</em> interval.
+	 *
+	 * @param left the left (lower) residual count. This value is increased if
+	 *        a sample value is smaller than the histogram interval.
+	 * @param right the right (upper) residual count. This value is increased if
+	 *        a sample value is greater or equal than the histogram interval.
+	 */
+	public record Residual(long left, long right) {
 		public static final Residual EMPTY = new Residual(0, 0);
 
+		/**
+		 * Create a new residual count object.
+		 *
+		 * @param left the left (lower) residual count. This value is increased if
+		 *        a sample value is smaller than the histogram interval.
+		 * @param right the right (upper) residual count. This value is increased if
+		 *        a sample value is greater or equal than the histogram interval.
+		 * @throws IllegalArgumentException if one of the arguments is negative
+		 */
 		public Residual {
-			if (lower < 0 || upper < 0) {
+			if (left < 0 || right < 0) {
 				throw new IllegalArgumentException(
-					"Invalid residual values: %s.".formatted(this)
+					"Residual values must not be negative: %s.".formatted(this)
 				);
 			}
 		}
 	}
-
-	/**
-	 * Create a new histogram consisting of the given buckets.
-	 *
-	 * @param buckets the histogram buckets
-	 * @throws NullPointerException if the given {@code buckets} is {@code null}
-	 */
-	public Histogram {
-		requireNonNull(buckets);
-		requireNonNull(residual);
-	}
-
-	/**
-	 * Return the <em>degrees of freedom</em> of the histogram, which is
-	 * {@code buckets().size() - 1}.
-	 *
-	 * @see <a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">
-	 *     Degrees of freedom</a>
-	 *
-	 * @return the degrees of freedom
-	 */
-	public int degreesOfFreedom() {
-		return buckets.size() - 1;
-	}
-
-	/**
-	 * Return the number of samples, which generated the histogram.
-	 *
-	 * @return the number of samples
-	 */
-	public long samples() {
-		long result = 0;
-		for (long sample : buckets.frequencies) {
-			result += sample;
-		}
-		return result;
-	}
-
-	/**
-	 * Return a new builder with the buckets (inclusively bucket counts).
-	 *
-	 * @return a new histogram builder with the buckets of {@code this}
-	 *         histogram
-	 */
-	public Builder toBuilder() {
-		return new Builder(buckets);
-	}
-
-	/**
-	 * Return a histogram collector with the given {@code min} and {@code max}
-	 * values and number {@code classes}. The histogram, created by the
-	 * collector will consist of {@code classes + 2} buckets. The <em>inner</em>
-	 * buckets will be in the range {@code [min, max)} and consist of the
-	 * defined {@code classes}.
-	 * <pre>{@code
-	 *  -Ꝏ   min                                           max   Ꝏ
-	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-	 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
-	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-	 * }</pre>
-	 *
-	 * @param partition the histogram partition
-	 * @param fn the function converting the elements to double values
-	 * @return a new histogram collector
-	 * @param <T> the stream element type
-	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-	 *         not finite or {@code classes < 1}
-	 * @throws NullPointerException if {@code fn} is {@code null}
-	 */
-	public static <T> Collector<T, ?, Histogram> toHistogram(
-		final Partition partition,
-		final ToDoubleFunction<? super T> fn
-	) {
-		requireNonNull(fn);
-
-		return Collector.of(
-			() -> new Histogram.Builder(partition),
-			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
-			(a, b) -> { a.combine(b); return a; },
-			Histogram.Builder::build
-		);
-	}
-
-	/**
-	 * Return a histogram collector with the given {@code min} and {@code max}
-	 * values and number {@code classes}.
-	 *
-	 * @param partition the histogram partition
-	 * @return a new histogram collector
-	 * @param <T> the stream element type
-	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-	 *         not finite or {@code classes < 1}
-	 */
-	public static <T extends Number> Collector<T, ?, Histogram>
-	toHistogram(final Partition partition) {
-		return toHistogram(partition, Number::doubleValue);
-	}
-
 
 	/**
 	 * Histogram builder class.
@@ -693,7 +617,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return build();
 		}
 
-//		/**
+		//		/**
 //		 * Return a histogram builder with the given {@code min} and {@code max}
 //		 * values and number {@code classes}. The histogram, created by the
 //		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
@@ -717,6 +641,119 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return new Builder(Partition.of(interval, classes));
 		}
 
+	}
+
+	/* *************************************************************************
+	 * Histogram implementation.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new histogram consisting of the given buckets.
+	 *
+	 * @param buckets the histogram buckets
+	 * @param residual the histogram's residual counts
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public Histogram {
+		requireNonNull(buckets);
+		requireNonNull(residual);
+	}
+
+	/**
+	 * Create a new histogram consisting of the given buckets.
+	 *
+	 * @param buckets the histogram buckets
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public Histogram(final Buckets buckets) {
+		this(buckets, Residual.EMPTY);
+	}
+
+	/**
+	 * Return the <em>degrees of freedom</em> of the histogram, which is
+	 * {@code buckets().size() - 1}.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">
+	 *     Degrees of freedom</a>
+	 *
+	 * @return the degrees of freedom
+	 */
+	public int degreesOfFreedom() {
+		return buckets.size() - 1;
+	}
+
+	/**
+	 * Return the number of samples, which generated the histogram, without the
+	 * residuals.
+	 *
+	 * @return the number of samples, without residuals
+	 */
+	public long samples() {
+		long result = 0;
+		for (long sample : buckets.frequencies) {
+			result += sample;
+		}
+		return result;
+	}
+
+	/**
+	 * Return a new builder with the buckets (inclusively bucket counts).
+	 *
+	 * @return a new histogram builder with the buckets of {@code this}
+	 *         histogram
+	 */
+	public Builder toBuilder() {
+		return new Builder(buckets);
+	}
+
+	/**
+	 * Return a histogram collector with the given {@code min} and {@code max}
+	 * values and number {@code classes}. The histogram, created by the
+	 * collector will consist of {@code classes + 2} buckets. The <em>inner</em>
+	 * buckets will be in the range {@code [min, max)} and consist of the
+	 * defined {@code classes}.
+	 * <pre>{@code
+	 *  -Ꝏ   min                                           max   Ꝏ
+	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+	 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
+	 *     ----+----+----+----+----+----+----+----+  ~  +----+----
+	 * }</pre>
+	 *
+	 * @param partition the histogram partition
+	 * @param fn the function converting the elements to double values
+	 * @return a new histogram collector
+	 * @param <T> the stream element type
+	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+	 *         not finite or {@code classes < 1}
+	 * @throws NullPointerException if {@code fn} is {@code null}
+	 */
+	public static <T> Collector<T, ?, Histogram> toHistogram(
+		final Partition partition,
+		final ToDoubleFunction<? super T> fn
+	) {
+		requireNonNull(fn);
+
+		return Collector.of(
+			() -> new Histogram.Builder(partition),
+			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
+			(a, b) -> { a.combine(b); return a; },
+			Histogram.Builder::build
+		);
+	}
+
+	/**
+	 * Return a histogram collector with the given {@code min} and {@code max}
+	 * values and number {@code classes}.
+	 *
+	 * @param partition the histogram partition
+	 * @return a new histogram collector
+	 * @param <T> the stream element type
+	 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+	 *         not finite or {@code classes < 1}
+	 */
+	public static <T extends Number> Collector<T, ?, Histogram>
+	toHistogram(final Partition partition) {
+		return toHistogram(partition, Number::doubleValue);
 	}
 
 
