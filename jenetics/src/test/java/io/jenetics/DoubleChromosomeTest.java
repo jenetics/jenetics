@@ -28,6 +28,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -50,7 +51,7 @@ public class DoubleChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var interval = new Histogram.Interval(0.0, 100.0);
+		final var interval = new Interval(0.0, 100.0);
 
 		final var observation = Histogram.Builder.of(interval, 20)
 			.build(samples -> {

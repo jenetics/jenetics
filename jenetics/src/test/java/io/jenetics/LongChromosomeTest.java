@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -48,7 +49,7 @@ public class LongChromosomeTest
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var interval = new Histogram.Interval(0.0, 10000000);
+		final var interval = new Interval(0.0, 10000000);
 
 		final var observation = Histogram.Builder.of(interval, 20)
 			.build(samples -> {

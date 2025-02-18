@@ -38,6 +38,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.incubator.stat.Histogram;
@@ -306,7 +307,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		final var hist = Histogram.Builder.of(new Histogram.Interval(MIN, MAX), CLASS_COUNT);
+		final var hist = Histogram.Builder.of(new Interval(MIN, MAX), CLASS_COUNT);
 		IntStream.range(0, loops).parallel()
 			.forEach(j -> {
 

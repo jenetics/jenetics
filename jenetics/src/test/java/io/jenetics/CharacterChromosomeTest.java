@@ -27,6 +27,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 
@@ -43,7 +44,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final CharSeq characters = new CharSeq("0123456789");
-		final var interval = new Histogram.Interval(0, characters.length());
+		final var interval = new Interval(0, characters.length());
 		final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
 		final var observation = Histogram.Builder.of(interval, 20)

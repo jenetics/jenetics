@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.incubator.stat.Histogram.Interval;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class HistogramIntervalTest {
+public class IntervalTest {
 
 	@Test
 	public void creation() {

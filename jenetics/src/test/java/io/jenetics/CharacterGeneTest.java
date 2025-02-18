@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -57,7 +58,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	public void newInstanceDistribution() {
 		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
-			final var interval = new Histogram.Interval(0, characters.length());
+			final var interval = new Interval(0, characters.length());
 			final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
 			final var observation = Histogram.Builder.of(interval, 20)

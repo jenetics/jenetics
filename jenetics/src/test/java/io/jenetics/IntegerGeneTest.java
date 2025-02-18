@@ -29,6 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.Factory;
 
 /**
@@ -48,7 +49,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var interval = new Histogram.Interval(0.0, Integer.MAX_VALUE);
+		final var interval = new Interval(0.0, Integer.MAX_VALUE);
 
 		final var observation = Histogram.Builder.of(interval, 20)
 			.build(samples -> {

@@ -32,7 +32,7 @@ public class StatisticsAssertTest {
 
 	@Test
 	public void assertUniformDistribution() {
-		final var hist = Histogram.Builder.of(new Histogram.Interval(0, 1), 20);
+		final var hist = Histogram.Builder.of(new Interval(0, 1), 20);
 
 		final var random = RandomGenerator.getDefault();
 		random.doubles(10_000).forEach(hist);
@@ -45,7 +45,7 @@ public class StatisticsAssertTest {
 
 	//@Test
 	public void assertNormalDistribution() {
-		final var hist = Histogram.Builder.of(new Histogram.Interval(-2, 2), 10);
+		final var hist = Histogram.Builder.of(new Interval(-2, 2), 10);
 
 		final var random = RandomGenerator.getDefault();
 		for (int i = 0; i < 100_000; ++i) {

@@ -27,6 +27,7 @@ import java.util.random.RandomGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.DoubleRange;
@@ -55,7 +56,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
 		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(new Histogram.Interval(1, 10), 10);
+		final var histogram = Histogram.Builder.of(new Interval(1, 10), 10);
 
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();

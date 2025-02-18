@@ -26,6 +26,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
@@ -103,7 +104,7 @@ public class PartiallyMatchedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final var interval = new Histogram.Interval(min, max);
+		final var interval = new Interval(min, max);
 
 		final var statistics = new LongMomentStatistics();
 		final var observation = Histogram.Builder.of(interval, 10)

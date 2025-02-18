@@ -28,7 +28,6 @@ import java.util.Arrays;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram.Buckets;
-import io.jenetics.incubator.stat.Histogram.Interval;
 import io.jenetics.incubator.stat.Histogram.Partition;
 import io.jenetics.incubator.stat.Histogram.Residual;
 

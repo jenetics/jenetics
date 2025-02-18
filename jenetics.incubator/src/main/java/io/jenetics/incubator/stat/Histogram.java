@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
@@ -95,73 +94,6 @@ public record Histogram(Buckets buckets, Residual residual) {
 	/* *************************************************************************
 	 * Histogram support classes.
 	 * ************************************************************************/
-
-	/**
-	 * Defines a double interval.
-	 *
-	 * @param min the lower bound of the interval (inclusively)
-	 * @param max the upper bound of the interval (exclusively)
-	 */
-	public record Interval(double min, double max) {
-
-		/**
-		 * Create a new interval with the given values.
-		 *
-		 * @param min the minimal value of the interval, inclusively. Might be
-		 *        {@link Double#NEGATIVE_INFINITY}
-		 * @param max the maximal value of the interval, exclusively. Might be
-		 *        {@link Double#POSITIVE_INFINITY}
-		 * @throws IllegalArgumentException if the {@code min} and {@code max}
-		 *         values are {@link Double#NaN} or {@code min >= max}
-		 */
-		public Interval {
-			if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
-				throw new IllegalArgumentException(
-					"Invalid interval: %s.".formatted(this)
-				);
-			}
-		}
-
-		/**
-		 * Test whether the given {@code value} lies within, below or above
-		 * {@code this} interval.
-		 *
-		 * @param value the value to test
-		 * @return {@code -1}, {@code 0} or {@code 1} if the given {@code value}
-		 *          lies below, within or above {@code this} interval
-		 */
-		public int compareTo(final double value) {
-			if (value < min) {
-				return -1;
-			} else if (value >= max) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-
-		/**
-		 * Return the number of <em>distinct</em> {@code double} values
-		 * {@code this} interval can <em>hold</em>.
-		 *
-		 * @return the number of distinct double values of {@code this} interval
-		 */
-		long size() {
-			if (Double.isInfinite(min) || Double.isInfinite(max)) {
-				return Long.MAX_VALUE;
-			}
-
-			long left = min < 0
-				? Long.MIN_VALUE - doubleToLongBits(min)
-				: doubleToLongBits(min);
-			long right = max < 0
-				? Long.MIN_VALUE - doubleToLongBits(max)
-				: doubleToLongBits(max);
-
-			return right - left;
-		}
-
-	}
 
 	/**
 	 * A partition divides an <em>interval</em> into sub-intervals.
@@ -325,7 +257,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * @return a new partition
 		 */
 		public static Partition of(final Interval interval, final int parts) {
-			if (!Double.isFinite(interval.min) || !Double.isFinite(interval.max)) {
+			if (!Double.isFinite(interval.min()) || !Double.isFinite(interval.max())) {
 				throw new IllegalArgumentException(
 					"Open ranges can't be split: %s.".formatted(interval)
 				);
@@ -349,11 +281,11 @@ public record Histogram(Buckets buckets, Residual residual) {
 				return new Partition(interval);
 			}
 
-			final var stride = (interval.max - interval.min)/parts;
+			final var stride = (interval.max() - interval.min())/parts;
 			assert stride > 0.0;
 
 			final var separators = new double[parts - 1];
-			separators[0] = interval.min + stride;
+			separators[0] = interval.min() + stride;
 			for (int i = 1; i < separators.length; ++i) {
 				separators[i] = separators[i - 1] + stride;
 			}

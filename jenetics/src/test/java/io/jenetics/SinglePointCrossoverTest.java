@@ -25,6 +25,7 @@ import static io.jenetics.util.RandomRegistry.using;
 import java.io.Serial;
 import java.util.Random;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.LongRange;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -143,7 +144,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 		final long max = nallgenes;
 		final var domain = LongRange.of(min, max);
 
-		final var histogram = Histogram.Builder.of(new Histogram.Interval(min, max), 10);
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

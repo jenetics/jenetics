@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.incubator.stat.Histogram.Interval;
 import io.jenetics.incubator.stat.Histogram.Partition;
 import org.testng.annotations.Test;
 

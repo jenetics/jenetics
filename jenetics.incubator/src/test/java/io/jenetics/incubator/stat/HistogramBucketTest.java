@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram.Bucket;
-import io.jenetics.incubator.stat.Histogram.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
