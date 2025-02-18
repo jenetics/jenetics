@@ -21,6 +21,8 @@ package io.jenetics.incubator.stat;
 
 import static java.lang.Double.doubleToLongBits;
 
+import java.util.Optional;
+
 /**
  * Defines a double interval.
  *
@@ -82,6 +84,28 @@ public record Interval(double min, double max) {
 		long right = max < 0 ? Long.MIN_VALUE - doubleToLongBits(max) : doubleToLongBits(max);
 
 		return right - left;
+	}
+
+	/**
+	 * Return the intersection of {@code this} interval with the {@code other}.
+	 *
+	 * @param other the intersection interval or {@link Optional#empty()} if
+	 *        there is none
+	 * @return the intersection interval
+	 */
+	public Optional<Interval> intersect(final Interval other) {
+		if (Double.compare(max, other.min) <= 0 ||
+			Double.compare(min, other.max) >= 0)
+		{
+			return Optional.empty();
+		} else {
+			return Optional.of(
+				new Interval(
+					Math.max(min, other.min),
+					Math.min(max, other.max)
+				)
+			);
+		}
 	}
 
 }

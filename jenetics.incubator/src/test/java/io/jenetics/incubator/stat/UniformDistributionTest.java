@@ -17,13 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.incubator.stat;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.stat.UniformDistribution;
-import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -32,7 +29,7 @@ public class UniformDistributionTest {
 
 	@Test
 	public void pdf() {
-		final var dist = new UniformDistribution(DoubleRange.of(0.0, 10.0));
+		final var dist = new UniformDistribution(new Interval(0.0, 10.0));
 		final var pdf = dist.pdf();
 
 		Assert.assertEquals(pdf.apply(0.00), 0.1);
@@ -49,7 +46,7 @@ public class UniformDistributionTest {
 
 	@Test
 	public void cdf() {
-		final var dist = new UniformDistribution(DoubleRange.of(0.0, 10.0));
+		final var dist = new UniformDistribution(new Interval(0.0, 10.0));
 		final var cdf = dist.cdf();
 
 		Assert.assertEquals(cdf.apply(-9.0), 0.0);

@@ -33,7 +33,7 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record UniformDistribution(DoubleRange domain) implements Distribution {
+public record UniformDistribution(Interval domain) implements Distribution {
 
 	/**
 	 * Return a sampler class, which creates uniformly distributed values within
@@ -47,7 +47,7 @@ public record UniformDistribution(DoubleRange domain) implements Distribution {
 	@Override
 	public Sampler sampler() {
 		return (random, range) -> {
-			final var rng = domain.intersect(range);
+			final var rng = domain.intersect(new Interval(range.min(), range.max()));
 			if (rng.isEmpty()) {
 				throw new NoSuchElementException("""
 					The domain of the distribution and the given range have no \
