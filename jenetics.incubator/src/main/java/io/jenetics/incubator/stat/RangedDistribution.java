@@ -19,19 +19,12 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.stat.Sampler;
-import io.jenetics.util.DoubleRange;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-record RangedDistribution(Distribution distribution, DoubleRange range)
+record RangedDistribution(Distribution distribution, Interval range)
 	implements Distribution
 {
-	@Override
-	public Sampler sampler() {
-		throw new UnsupportedOperationException();
-	}
 
 	@Override
 	public Cdf cdf() {

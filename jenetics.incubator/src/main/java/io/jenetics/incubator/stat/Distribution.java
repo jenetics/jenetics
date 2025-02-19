@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.stat.Sampler;
-
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
  * distribution.
@@ -28,14 +26,6 @@ import io.jenetics.stat.Sampler;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public interface Distribution {
-
-	/**
-	 * Return a sampler for creating sample points which follows {@code this}
-	 * distribution.
-	 *
-	 * @return a sampler for {@code this} distribution
-	 */
-	Sampler sampler();
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).

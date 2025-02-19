@@ -25,9 +25,6 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
-import io.jenetics.stat.Sampler;
-import io.jenetics.util.DoubleRange;
-
 /**
  * <p>This distribution has the following cdf.</p>
  * <p><img src="doc-files/LinearDistribution.png" alt="Distribution"></p>
@@ -63,7 +60,7 @@ import io.jenetics.util.DoubleRange;
  */
 public class LinearDistribution implements Distribution {
 
-	private final DoubleRange _domain;
+	private final Interval _domain;
 
 	private final double _x1;
 	private final double _x2;
@@ -72,7 +69,7 @@ public class LinearDistribution implements Distribution {
 	private final double _k;
 	private final double _d;
 
-	public LinearDistribution(final DoubleRange domain, final double y1) {
+	public LinearDistribution(final Interval domain, final double y1) {
 		_domain = requireNonNull(domain);
 
 		_y1 = Math.max(y1, 0.0);
@@ -92,13 +89,8 @@ public class LinearDistribution implements Distribution {
 		return -((x2 - x1)*y1 - 2)/(x2 - x1);
 	}
 
-	public DoubleRange domain() {
+	public Interval domain() {
 		return _domain;
-	}
-
-	@Override
-	public Sampler sampler() {
-		throw new UnsupportedOperationException();
 	}
 
 	/**

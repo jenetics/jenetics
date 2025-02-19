@@ -22,8 +22,8 @@ package io.jenetics.stat;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.incubator.stat.LinearDistribution;
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ObjectTester;
 import io.jenetics.util.RandomRegistry;
@@ -43,13 +43,13 @@ public class LinearDistributionTest
 			final double min = random.nextInt(100) + 100;
 			final double max = random.nextInt(100) + 100 + min;
 			final double y2 = random.nextDouble();
-			return new LinearDistribution(DoubleRange.of(min, max), y2);
+			return new LinearDistribution(new Interval(min, max), y2);
 		};
 	}
 
 	@Test
 	public void pdf() {
-		final var domain = DoubleRange.of(0.0, 1.0);
+		final var domain = new Interval(0.0, 1.0);
 		final var dist = new LinearDistribution(domain, 0);
 		final var pdf = dist.pdf();
 
@@ -61,7 +61,7 @@ public class LinearDistributionTest
 
 	@Test
 	public void cdf() {
-		final var domain = DoubleRange.of(0.0, 1.0);
+		final var domain = new Interval(0.0, 1.0);
 		final var dist = new LinearDistribution(domain, 0);
 		final var cdf = dist.cdf();
 

@@ -27,10 +27,9 @@ import java.util.random.RandomGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.incubator.stat.Interval;
 import io.jenetics.stat.DoubleMomentStatistics;
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -65,7 +64,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		}
 
 		assertThatObservation(histogram.build())
-			.isNormal(5, Math.sqrt(var), DoubleRange.of(min, max));
+			.isNormal(5, Math.sqrt(var), new Interval(min, max));
 	}
 
 	@Test
