@@ -21,16 +21,15 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.util.Factory;
 
 /**
@@ -50,16 +49,17 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
-		final var min = 0;
-		final var max = Integer.MAX_VALUE;
-		final var histogram = Histogram.Builder.of(min, max, 20);
+		final var interval = new Interval(0.0, Integer.MAX_VALUE);
 
-		IntStream.range(0, 200_000)
-			.mapToObj(i -> IntegerGene.of(min, max).allele())
-			.mapToDouble(Integer::doubleValue)
-			.forEach(histogram);
+		final var observation = Histogram.Builder.of(interval, 20)
+			.build(samples -> {
+				for (int i = 0; i < 200_000; ++i) {
+					var gene = IntegerGene.of((int)interval.min(), (int)interval.max());
+					samples.accept(gene.doubleValue());
+				}
+			});
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
 	@Test

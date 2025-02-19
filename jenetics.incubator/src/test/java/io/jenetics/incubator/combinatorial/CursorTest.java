@@ -21,8 +21,6 @@ package io.jenetics.incubator.combinatorial;
 
 import java.util.Arrays;
 
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

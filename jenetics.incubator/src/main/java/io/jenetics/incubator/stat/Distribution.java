@@ -17,41 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.util;
-
-import static io.jenetics.internal.util.Hashes.hash;
-
-import java.util.Objects;
+package io.jenetics.incubator.stat;
 
 /**
+ * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
+ * distribution.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-class Tuple2<T1, T2> {
+public interface Distribution {
 
-	final T1 _1;
-	final T2 _2;
+	/**
+	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">CDF</a>
+	 *
+	 * @return the <i>Cumulative Distribution Function</i>.
+	 */
+	Cdf cdf();
 
-	public Tuple2(final T1 t1, final T2 t2) {
-		_1 = t1;
-		_2 = t2;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_1, hash(_2));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Tuple2<?, ?> other &&
-			Objects.equals(_1, other._1) &&
-			Objects.equals(_2, other._2);
-	}
-
-	@Override
-	public String toString() {
-		return "(" + _1 + ", " + _2 + ")";
-	}
+	/**
+	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">PDF</a>
+	 *
+	 * @return the <i>Probability Density Function</i>.
+	 */
+	Pdf pdf();
 
 }

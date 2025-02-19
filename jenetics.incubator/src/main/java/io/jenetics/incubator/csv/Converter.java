@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.csv;
 
+import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -33,8 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Converter class for converting strings to an object of the given type.

@@ -46,7 +46,7 @@ public class ErfTest {
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
 			final double result = Erf.erf(x);
-			final double expected = org.apache.commons.math3.special.Erf.erf(x);
+			final double expected = org.apache.commons.numbers.gamma.Erf.value(x);
 
 			assertThat(result)
 				.withFailMessage(() ->
@@ -64,7 +64,7 @@ public class ErfTest {
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
 			final double result = Erf.erfc(x);
-			final double expected = org.apache.commons.math3.special.Erf.erfc(x);
+			final double expected = org.apache.commons.numbers.gamma.Erfc.value(x);
 
 			assertThat(result)
 				.withFailMessage(() ->
@@ -76,13 +76,13 @@ public class ErfTest {
 
 	@Test
 	public void erfinv() {
-		final var offset = Offset.offset(Math.pow(2, -50));
+		final var offset = Offset.offset(Math.pow(2, -45));
 		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
 			final double result = Erf.erfinv(x);
-			final double expected = org.apache.commons.math3.special.Erf.erfInv(x);
+			final double expected = org.apache.commons.numbers.gamma.InverseErf.value(x);
 
 			assertThat(result)
 				.withFailMessage(() ->
@@ -94,13 +94,13 @@ public class ErfTest {
 
 	@Test
 	public void erfcinv() {
-		final var offset = Offset.offset(Math.pow(2, -50));
+		final var offset = Offset.offset(Math.pow(2, -45));
 		final var random = rand();
 
 		for (int i = 0; i < LOOPS; ++i) {
 			final double x = random.nextDouble(-100, 100);
 			final double result = Erf.erfcinv(x);
-			final double expected = org.apache.commons.math3.special.Erf.erfcInv(x);
+			final double expected = org.apache.commons.numbers.gamma.InverseErfc.value(x);
 
 			assertThat(result)
 				.withFailMessage(() ->

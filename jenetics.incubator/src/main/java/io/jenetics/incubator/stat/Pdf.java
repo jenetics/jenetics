@@ -17,17 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.util;
-
-import org.testng.ITestResult;
-import org.testng.util.RetryAnalyzerCount;
+package io.jenetics.incubator.stat;
 
 /**
+ * Probability density function.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public final class RetryOnce extends RetryAnalyzerCount {
-	@Override
-	public boolean retryMethod(ITestResult result) {
-		return getCount() <= 1;
-	}
+@FunctionalInterface
+public interface Pdf {
+	double apply(double value);
 }

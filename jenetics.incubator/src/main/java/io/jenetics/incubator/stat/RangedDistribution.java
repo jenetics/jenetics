@@ -17,14 +17,35 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 /**
- * The cumulative distribution function.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-@FunctionalInterface
-public interface Cdf {
-	double apply(double value);
+record RangedDistribution(Distribution distribution, Interval range)
+	implements Distribution
+{
+
+	@Override
+	public Cdf cdf() {
+		final var origin = distribution.cdf();
+
+		return x -> {
+			if (x < range.min()) {
+				return 0;
+			}
+			if (x >= range.max()) {
+				return 1;
+			}
+
+			return origin.apply(x);
+		};
+	}
+
+	@Override
+	public Pdf pdf() {
+		return distribution.pdf();
+	}
 }

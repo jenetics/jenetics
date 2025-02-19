@@ -17,40 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
-
-import io.jenetics.stat.Sampler;
-import io.jenetics.util.DoubleRange;
 
 /**
+ * This package contains descriptive statistical classes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-record RangedDistribution(Distribution distribution, DoubleRange range)
-	implements Distribution
-{
-	@Override
-	public Sampler sampler() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Cdf cdf() {
-		final var origin = distribution.cdf();
-
-		return x -> {
-			if (x < range.min()) {
-				return 0;
-			}
-			if (x >= range.max()) {
-				return 1;
-			}
-
-			return origin.apply(x);
-		};
-	}
-
-	@Override
-	public Pdf pdf() {
-		return distribution.pdf();
-	}
-}
+package io.jenetics.incubator.stat;

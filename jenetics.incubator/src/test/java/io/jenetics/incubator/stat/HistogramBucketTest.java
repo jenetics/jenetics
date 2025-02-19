@@ -17,30 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.stat;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Histogram.Bucket;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TypeTokenTest {
+public class HistogramBucketTest {
 
 	@Test
-	public void cast() {
-		final var string = new TypeToken<String>() {};
-		final var integer = new TypeToken<Integer>() {};
+	public void create() {
+		assertThatNoException()
+			.isThrownBy(() -> new Bucket(new Interval(0, 1), 234));
+	}
 
-		assertThatNoException().isThrownBy(() -> integer.cast(42));
-		assertThatNoException().isThrownBy(() -> string.cast("42"));
+	@Test
+	public void createInvalidCount() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> new Bucket(new Interval(0, 1), -1));
+	}
 
-		assertThatExceptionOfType(ClassCastException.class)
-			.isThrownBy(() -> integer.cast("42"));
-		assertThatExceptionOfType(ClassCastException.class)
-			.isThrownBy(() -> string.cast(42));
+	@Test
+	public void createNullInterval() {
+		assertThatExceptionOfType(NullPointerException.class)
+			.isThrownBy(() -> new Bucket(null, 10));
 	}
 
 }

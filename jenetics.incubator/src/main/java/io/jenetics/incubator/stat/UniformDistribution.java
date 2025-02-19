@@ -17,13 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
-
-import java.util.NoSuchElementException;
-import java.util.random.RandomGenerator;
-
-import io.jenetics.stat.Sampler;
-import io.jenetics.util.DoubleRange;
+package io.jenetics.incubator.stat;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
@@ -32,33 +26,10 @@ import io.jenetics.util.DoubleRange;
  * @see LinearDistribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public record UniformDistribution(DoubleRange domain) implements Distribution {
-
-	/**
-	 * Return a sampler class, which creates uniformly distributed values within
-	 * the allowed {@link #domain()}. The returned sample may throw a
-	 * {@link NoSuchElementException} if the range, the
-	 * {@link Sampler#sample(RandomGenerator, DoubleRange)} method is called
-	 * with and the distribution's {@link #domain()} have no intersection.
-	 *
-	 * @return a uniform distribution sample
-	 */
-	@Override
-	public Sampler sampler() {
-		return (random, range) -> {
-			final var rng = domain.intersect(range);
-			if (rng.isEmpty()) {
-				throw new NoSuchElementException("""
-					The domain of the distribution and the given range have no \
-					intersection: %s ∩ %s == Ø.
-					""".formatted(domain, random)
-				);
-			} else {
-				return random.nextDouble(rng.get().min(), rng.get().max());
-			}
-		};
-	}
+public record UniformDistribution(Interval domain) implements Distribution {
 
 	/**
 	 * Return a new PDF object.

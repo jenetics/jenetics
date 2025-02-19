@@ -17,20 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.testfixtures.stat;
+package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
+import org.apache.commons.math4.legacy.stat.inference.ChiSquareTest;
 
-import io.jenetics.testfixtures.stat.HypothesisTester.Accept;
-import io.jenetics.testfixtures.stat.HypothesisTester.Reject;
-import io.jenetics.util.DoubleRange;
+import io.jenetics.incubator.stat.HypothesisTester.Accept;
+import io.jenetics.incubator.stat.HypothesisTester.Reject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class StatisticsAssert {
 	private StatisticsAssert() {
@@ -59,14 +60,16 @@ public final class StatisticsAssert {
 
 		public void isLike(double[] expected) {
 			final double[] exp = Arrays.stream(expected)
-				.map(v -> Math.max(v, Double.MIN_VALUE))
+				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = _observation.frequencies().histogram();
+			final long[] hist = _observation.buckets().stream()
+				.mapToLong(Histogram.Bucket::count)
+				.toArray();
 
 			final var maxChi2 = PearsonChi2Tester.P_001
 				.maxChi2(hist.length - 1);
 			final var chi2 = new ChiSquareTest()
-				.chiSquare(exp, _observation.frequencies().histogram());
+				.chiSquare(exp, hist);
 
 			if (chi2 > maxChi2) {
 				throw new AssertionError(
@@ -82,14 +85,20 @@ public final class StatisticsAssert {
 		}
 
 		public void isUniform() {
-			follows(new UniformDistribution(_observation.range()));
+			/*
+			final var range = new Interval(
+				Math.max(_observation.buckets().first().min(), -Double.MAX_VALUE),
+				Math.min(_observation.buckets().last().max(), Double.MAX_VALUE)
+			);
+			 */
+			follows(new UniformDistribution(_observation.buckets().partition().interval()));
 		}
 
 		public void isNormal(double mean, double stddev) {
 			follows(new NormalDistribution(mean, stddev));
 		}
 
-		public void isNormal(double mean, double stddev, DoubleRange range) {
+		public void isNormal(double mean, double stddev, Interval range) {
 			follows(new RangedDistribution(new NormalDistribution(mean, stddev), range));
 		}
 
