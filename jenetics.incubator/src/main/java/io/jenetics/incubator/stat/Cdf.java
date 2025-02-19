@@ -23,6 +23,8 @@ package io.jenetics.incubator.stat;
  * The cumulative distribution function.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface Cdf {

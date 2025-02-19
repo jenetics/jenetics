@@ -26,6 +26,8 @@ package io.jenetics.incubator.stat;
  * @see LinearDistribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public record UniformDistribution(Interval domain) implements Distribution {
 

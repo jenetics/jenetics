@@ -26,6 +26,8 @@ import static java.util.Objects.requireNonNull;
  * given as histogram, follows a given distribution, the zero-hypothesis.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface HypothesisTester {

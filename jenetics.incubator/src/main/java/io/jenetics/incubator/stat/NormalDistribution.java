@@ -28,11 +28,12 @@ import io.jenetics.incubator.math.Erf;
  * @param stddev the standard deviation of the distribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public record NormalDistribution(double mean, double stddev)
 	implements Distribution
 {
-	private static final int MAX_SAMPLER_ITERATION = 10_000;
 	private static final double SQRT2 = Math.sqrt(2);
 	private static final double HALF_LOG_TAU = 0.5*Math.log(Math.TAU);
 

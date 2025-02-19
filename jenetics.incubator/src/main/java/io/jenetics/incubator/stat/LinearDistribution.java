@@ -57,6 +57,8 @@ import java.util.Objects;
  *  </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public class LinearDistribution implements Distribution {
 
