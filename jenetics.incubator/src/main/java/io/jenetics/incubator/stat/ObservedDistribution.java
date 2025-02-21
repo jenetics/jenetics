@@ -19,40 +19,31 @@
  */
 package io.jenetics.incubator.stat;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-
-import java.util.random.RandomGenerator;
-
-import org.testng.annotations.Test;
+import static java.util.Objects.requireNonNull;
 
 /**
+ * Distribution object, based on an observation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class StatisticsAssertTest {
+public final class ObservedDistribution implements Distribution {
 
-	@Test
-	public void assertUniformDistribution() {
-		final var hist = Histogram.Builder.of(new Interval(0, 1), 20);
+	private final Histogram observation;
 
-		final var random = RandomGenerator.getDefault();
-		random.doubles(10_000).forEach(hist::add);
-
-		assertThatObservation(hist.build()).isUniform();
-		assertThatObservation(hist.build())
-			.usingHypothesisTester(new PearsonsChiSquared(0.0005))
-			.isUniform();
+	public ObservedDistribution(final Histogram observation) {
+		this.observation = requireNonNull(observation);
 	}
 
-	//@Test
-	public void assertNormalDistribution() {
-		final var hist = Histogram.Builder.of(new Interval(-2, 2), 10);
+	@Override
+	public Cdf cdf() {
+		return null;
+	}
 
-		final var random = RandomGenerator.getDefault();
-		for (int i = 0; i < 100_000; ++i) {
-			hist.add(random.nextGaussian(0, 1));
-		}
-
-		assertThatObservation(hist.build()).isNormal(0, 1);
+	@Override
+	public Pdf pdf() {
+		return null;
 	}
 
 }

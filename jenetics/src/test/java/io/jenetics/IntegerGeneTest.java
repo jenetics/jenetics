@@ -55,7 +55,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			.build(samples -> {
 				for (int i = 0; i < 200_000; ++i) {
 					var gene = IntegerGene.of((int)interval.min(), (int)interval.max());
-					samples.accept(gene.doubleValue());
+					samples.add(gene.doubleValue());
 				}
 			});
 

@@ -114,7 +114,7 @@ public class PartiallyMatchedCrossoverTest {
 						.alter(population, 1)
 						.alterations();
 
-					samples.accept(alterations);
+					samples.add(alterations);
 					statistics.accept(alterations);
 				}
 			});

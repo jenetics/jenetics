@@ -68,7 +68,7 @@ public class HistogramBuilderTest {
 		final var count = 100;
 		for (int i = 0; i < count; ++i) {
 			for (double value : values) {
-				builder.accept(value);
+				builder.add(value);
 			}
 		}
 
@@ -79,8 +79,8 @@ public class HistogramBuilderTest {
 		}
 
 		for (int i = 0; i < count; ++i) {
-			builder.accept(-1);
-			builder.accept(100);
+			builder.add(-1);
+			builder.add(100);
 		}
 
 		histogram = builder.build();
@@ -99,13 +99,13 @@ public class HistogramBuilderTest {
 		final var histogram = new Builder(partition).build(samples -> {
 			for (int i = 0; i < count; ++i) {
 				for (double value : values) {
-					samples.accept(value);
+					samples.add(value);
 				}
 			}
 
 			for (int i = 0; i < count; ++i) {
-				samples.accept(-1);
-				samples.accept(100);
+				samples.add(-1);
+				samples.add(100);
 			}
 		});
 
@@ -118,13 +118,13 @@ public class HistogramBuilderTest {
 			.build(samples -> {
 				for (int i = 0; i < count; ++i) {
 					for (double value : values) {
-						samples.accept(value);
+						samples.add(value);
 					}
 				}
 
 				for (int i = 0; i < count; ++i) {
-					samples.accept(-1);
-					samples.accept(100);
+					samples.add(-1);
+					samples.add(100);
 				}
 			});
 

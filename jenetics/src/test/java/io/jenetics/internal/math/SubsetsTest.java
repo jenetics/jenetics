@@ -150,7 +150,7 @@ public class SubsetsTest {
 
 		IntStream.range(0, 10_000)
 			.flatMap(i -> IntStream.of(Subsets.next(random, n, 3)))
-			.forEach(histogram::accept);
+			.forEach(histogram::add);
 
 		assertThatObservation(histogram.build()).isUniform();
 	}

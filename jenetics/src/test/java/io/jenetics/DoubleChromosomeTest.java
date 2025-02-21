@@ -29,9 +29,11 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.incubator.stat.Interval;
+import io.jenetics.incubator.stat.PearsonsChiSquared;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,23 +51,24 @@ public class DoubleChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
+	@Test
 	public void newInstanceDistribution() {
-		final var interval = new Interval(0.0, 100.0);
+		final double min = 0;
+		final double max = 100;
 
-		final var observation = Histogram.Builder.of(interval, 20)
-			.build(samples -> {
-				for (int i = 0; i < 1000; ++i) {
-					final var chromosome = DoubleChromosome.of(
-						interval.min(), interval.max(), 500
-					);
-					for (var gene : chromosome) {
-						samples.accept(gene.allele());
+		StableRandoms.using(12123, () -> {
+			assertThatObservation(samples -> {
+					for (int i = 0; i < 1_000; ++i) {
+						var chromosome = DoubleChromosome.of(min, max, 500);
+						for (var gene : chromosome) {
+							samples.add(gene.allele());
+						}
 					}
-				}
-			});
-
-		assertThatObservation(observation).isUniform();
+				})
+				.usingPartitioning(min, max, 20)
+				.usingHypothesisTester(PearsonsChiSquared.P0_05)
+				.isUniform();
+		});
 	}
 
 	@Test(dataProvider = "chromosomes")

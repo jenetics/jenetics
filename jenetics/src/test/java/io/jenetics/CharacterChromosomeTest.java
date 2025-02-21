@@ -52,7 +52,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 				final var chromosome = CharacterChromosome.of(characters, 10_000);
 				chromosome.stream()
 					.map(g -> Long.parseLong(g.allele().toString()))
-					.forEach(samples::accept);
+					.forEach(samples::add);
 			});
 
 		assertThatObservation(observation).isUniform();

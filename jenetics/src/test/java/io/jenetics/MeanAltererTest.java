@@ -87,7 +87,7 @@ public class MeanAltererTest extends AltererTester {
 			final long alterations = crossover
 				.alter(population, 1)
 				.alterations();
-			histogram.accept(alterations);
+			histogram.add(alterations);
 			statistics.accept(alterations);
 		}
 

@@ -58,7 +58,7 @@ public class LongChromosomeTest
 						(long)interval.min(), (long)interval.max(), 500
 					);
 					for (var gene : chromosome) {
-						samples.accept(gene.allele());
+						samples.add(gene.allele());
 					}
 				}
 			});

@@ -55,16 +55,17 @@ public class GaussianMutatorTest extends MutatorTester {
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
 		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(new Interval(1, 10), 10);
+		final var histogram = Histogram.Builder.of(new Interval(0, 10), 10);
 
-		for (int i = 0; i < 10000; ++i) {
+		for (int i = 0; i < 100_000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();
 			statistics.accept(value);
-			histogram.accept(value);
+			histogram.add(value);
 		}
 
 		assertThatObservation(histogram.build())
-			.isNormal(5, Math.sqrt(var), new Interval(min, max));
+			.withinRange(min, max)
+			.isNormal(5, Math.sqrt(var));
 	}
 
 	@Test

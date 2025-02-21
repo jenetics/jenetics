@@ -111,7 +111,7 @@ public class UniformOrderBasedCrossoverTest {
 			final long alterations = crossover
 				.alter(population, 1)
 				.alterations();
-			histogram.accept(alterations);
+			histogram.add(alterations);
 			variance.accept(alterations);
 		}
 

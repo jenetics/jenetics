@@ -57,7 +57,7 @@ public class IntegerChromosomeTest
 						(int)interval.min(), (int)interval.max(), 500
 					);
 					for (var gene : chromosome) {
-						samples.accept(gene.allele());
+						samples.add(gene.allele());
 					}
 				}
 			});

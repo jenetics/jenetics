@@ -55,7 +55,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 			.build(samples -> {
 				for (int i = 0; i < 200_000; ++i) {
 					var gene = LongGene.of((long)interval.min(), (long)interval.max());
-					samples.accept(gene.doubleValue());
+					samples.add(gene.doubleValue());
 				}
 			});
 

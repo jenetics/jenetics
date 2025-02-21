@@ -63,9 +63,16 @@ import io.jenetics.internal.util.Requires;
  */
 public record PearsonsChiSquared(double p) implements HypothesisTester {
 
-	public static final PearsonsChiSquared P_001 = new PearsonsChiSquared(0.01);
+	/**
+	 * A Pearson's chi-squared tester with the most commonly used p-value of
+	 * <em>0.05</em>.
+	 */
+	public static final PearsonsChiSquared P0_05 = new PearsonsChiSquared(0.05);
 
-	public static final PearsonsChiSquared P_0001 = new PearsonsChiSquared(0.001);
+	/**
+	 * A Pearson's chi-squared tester with a p-value of <em>0.01</em>
+	 */
+	public static final PearsonsChiSquared P0_01 = new PearsonsChiSquared(0.01);
 
 	/**
 	 * Create a new Pearson's chi-squared tester.

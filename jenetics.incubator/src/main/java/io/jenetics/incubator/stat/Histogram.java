@@ -28,7 +28,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
 import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -462,7 +461,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 	/**
 	 * Histogram builder.
 	 */
-	public static final class Builder implements DoubleConsumer {
+	public static final class Builder implements Samples {
 		private final Partition partition;
 		private final long[] frequencies;
 
@@ -513,7 +512,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		}
 
 		@Override
-		public void accept(final double value) {
+		public void add(final double value) {
 			++frequencies[partition.indexOf(value) + 1];
 		}
 
@@ -575,11 +574,11 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * 	    });
 		 * }
 		 *
-		 * @param samples the samples consumer
+		 * @param sampling the samples consumer
 		 * @return a new histogram
 		 */
-		public Histogram build(final Consumer<? super DoubleConsumer> samples) {
-			samples.accept(this);
+		public Histogram build(final Sampling sampling) {
+			sampling.run(this);
 			return build();
 		}
 
@@ -701,7 +700,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 		return Collector.of(
 			() -> new Histogram.Builder(partition),
-			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
+			(hist, val) -> hist.add(fn.applyAsDouble(val)),
 			(a, b) -> { a.combine(b); return a; },
 			Histogram.Builder::build
 		);
