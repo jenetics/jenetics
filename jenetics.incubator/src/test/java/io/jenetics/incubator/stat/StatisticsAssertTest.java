@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.stat;
 
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import java.util.random.RandomGenerator;
 
@@ -39,7 +39,7 @@ public class StatisticsAssertTest {
 
 		assertThatObservation(hist.build()).isUniform();
 		assertThatObservation(hist.build())
-			.withTester(new PearsonChi2Tester(0.0005))
+			.withTester(new PearsonsChiSquared(0.0005))
 			.isUniform();
 	}
 

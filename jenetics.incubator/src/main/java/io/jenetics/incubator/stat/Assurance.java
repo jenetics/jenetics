@@ -33,28 +33,28 @@ import io.jenetics.incubator.stat.HypothesisTester.Reject;
  * @version !__version__!
  * @since !__version__!
  */
-public final class StatisticsAssert {
-	private StatisticsAssert() {
+public final class Assurance {
+	private Assurance() {
 	}
 
 	public static final class DistributionAssert {
-		private final Histogram _observation;
+		private final Histogram observation;
 
-		private HypothesisTester _tester = PearsonChi2Tester.P_0001;
+		private HypothesisTester tester = PearsonsChiSquared.P_0001;
 
 		private DistributionAssert(final Histogram observation) {
-			_observation = requireNonNull(observation);
+			this.observation = requireNonNull(observation);
 		}
 
 		public DistributionAssert withTester(HypothesisTester tester) {
-			_tester = requireNonNull(tester);
+			this.tester = requireNonNull(tester);
 			return this;
 		}
 
 		public void follows(final Distribution hypothesis) {
-			switch (_tester.test(_observation, hypothesis)) {
-				case Accept r -> System.out.println(r.message());
+			switch (tester.test(observation, hypothesis)) {
 				case Reject r -> throw new AssertionError(r.message());
+				case Accept __ -> {}
 			}
 		}
 
@@ -62,11 +62,11 @@ public final class StatisticsAssert {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = _observation.buckets().stream()
+			final long[] hist = observation.buckets().stream()
 				.mapToLong(Histogram.Bucket::count)
 				.toArray();
 
-			final var maxChi2 = PearsonChi2Tester.P_001
+			final var maxChi2 = PearsonsChiSquared.P_001
 				.maxChi2(hist.length - 1);
 			final var chi2 = new ChiSquareTest()
 				.chiSquare(exp, hist);
@@ -91,7 +91,7 @@ public final class StatisticsAssert {
 				Math.min(_observation.buckets().last().max(), Double.MAX_VALUE)
 			);
 			 */
-			follows(new UniformDistribution(_observation.buckets().partition().interval()));
+			follows(new UniformDistribution(observation.buckets().partition().interval()));
 		}
 
 		public void isNormal(double mean, double stddev) {

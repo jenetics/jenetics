@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 import java.util.Random;
 
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;

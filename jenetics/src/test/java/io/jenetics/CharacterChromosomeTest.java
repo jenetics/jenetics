@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.Assert;

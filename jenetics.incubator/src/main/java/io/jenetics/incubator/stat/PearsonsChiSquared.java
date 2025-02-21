@@ -61,18 +61,18 @@ import io.jenetics.internal.util.Requires;
  * @version !__version__!
  * @since !__version__!
  */
-public record PearsonChi2Tester(double p) implements HypothesisTester {
+public record PearsonsChiSquared(double p) implements HypothesisTester {
 
-	public static final PearsonChi2Tester P_001 = new PearsonChi2Tester(0.01);
+	public static final PearsonsChiSquared P_001 = new PearsonsChiSquared(0.01);
 
-	public static final PearsonChi2Tester P_0001 = new PearsonChi2Tester(0.001);
+	public static final PearsonsChiSquared P_0001 = new PearsonsChiSquared(0.001);
 
 	/**
 	 * Create a new Pearson's chi-squared tester.
 	 *
 	 * @param p the p-value used for the hypothesis tester
 	 */
-	public PearsonChi2Tester {
+	public PearsonsChiSquared {
 		Requires.probability(p);
 	}
 
