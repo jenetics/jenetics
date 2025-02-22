@@ -64,7 +64,7 @@ public final class Assurance {
 		 * @param logger the check result logger
 		 * @return {@code this} assertion object
 		 */
-		public DistributionAssert withLogger(final Consumer<String> logger) {
+		public DistributionAssert usingLogger(final Consumer<String> logger) {
 			this.logger = requireNonNull(logger);
 			return this;
 		}
@@ -195,6 +195,16 @@ public final class Assurance {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
+	public static DistributionAssert assertThatObservation(Observer observation) {
+		return new DistributionAssert(observation);
+	}
+
+	/**
+	 * Return a new distribution assertion object for the given observation.
+	 *
+	 * @param observation the observation to check.
+	 * @return a new distribution assertion object
+	 */
 	public static DistributionAssert assertThatObservation(Histogram observation) {
 		return new DistributionAssert(() -> observation);
 	}
@@ -202,11 +212,6 @@ public final class Assurance {
 	public static SamplesAssert assertThatObservation(final Sampling sampling) {
 		return new SamplesAssert(sampling);
 	}
-
-	public static DistributionAssert assertThat(Observation observation) {
-		return null;
-	}
-
 
 
 }

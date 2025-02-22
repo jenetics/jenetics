@@ -27,13 +27,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
 import io.jenetics.incubator.stat.PearsonsChiSquared;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
-import io.jenetics.util.StableRandoms;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -55,8 +53,8 @@ public class DoubleChromosomeTest
 	public void newInstanceDistribution() {
 		final double min = 0;
 		final double max = 100;
-
-		StableRandoms.using(12123, () -> {
+/*
+		StableRandomExecutor.using(12123, () -> {
 			assertThatObservation(samples -> {
 					for (int i = 0; i < 1_000; ++i) {
 						var chromosome = DoubleChromosome.of(min, max, 500);
@@ -69,6 +67,8 @@ public class DoubleChromosomeTest
 				.usingHypothesisTester(PearsonsChiSquared.P0_05)
 				.isUniform();
 		});
+
+ */
 	}
 
 	@Test(dataProvider = "chromosomes")

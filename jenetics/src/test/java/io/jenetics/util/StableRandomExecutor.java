@@ -19,6 +19,9 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.Executor;
 import java.util.random.RandomGeneratorFactory;
 
 /**
@@ -26,23 +29,14 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class StableRandoms {
+public record StableRandomExecutor(long seed) implements Executor {
+	@Override
+	public void execute(Runnable command) {
+		requireNonNull(command);
 
-	private StableRandoms() {
-	}
-
-	/**
-	 * Executes the given {@code task} with a registered random generator with
-	 * the given {@code seed}. This will make randomized tests reproducible.
-	 *
-	 * @param seed the seed used for the random generator
-	 * @param task the test task
-	 */
-	public static void using(final long seed, final Runnable task) {
 		RandomRegistry.using(
-			RandomGeneratorFactory.getDefault().create(seed),
-			r -> task.run()
+			RandomGeneratorFactory.of("L32X64MixRandom").create(seed),
+			r -> command.run()
 		);
 	}
-
 }

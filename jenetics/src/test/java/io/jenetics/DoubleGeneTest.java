@@ -23,29 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.incubator.stat.Assurance.assertThat;
 import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-import static io.jenetics.util.StableRandoms.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Assurance;
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.incubator.stat.Observation;
+import io.jenetics.incubator.stat.Histogram.Partition;
+import io.jenetics.incubator.stat.Observer;
 import io.jenetics.incubator.stat.PearsonsChiSquared;
-import io.jenetics.incubator.stat.Samples;
-import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -67,48 +60,21 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double min = 0;
 		final double max = 100;
 
-		/*
-		final var observation = new Observation(
+		final var observation = new Observer(
 			samples -> {
-				for (int i = 0; i < 200_000; ++i) {
-					var gene = DoubleGene.of(min, max);
-					samples.accept(gene.doubleValue());
-				}
-			},
-			Histogram.Partition.of(new Interval(min, max), 20)
-		);
-		 */
-
-		Sampling sampling = samples -> {
-			for (int i = 0; i < 200_000; ++i) {
-				var gene = DoubleGene.of(min, max);
-				samples.add(gene.doubleValue());
-			}
-		};
-
-		assertThat(DoubleChromosome.of(min, max, 500)).hasSize(500);
-		assertThat(new Observation(
-			samples -> {
-				for (int i = 0; i < 200_000; ++i) {
-					var gene = DoubleGene.of(min, max);
-					samples.accept(gene.doubleValue());
-				}
-			},
-			Histogram.Partition.of(new Interval(min, max), 20)
-		));
-
-		using(
-			123456789,
-			() -> assertThatObservation(samples -> {
 				for (int i = 0; i < 200_000; ++i) {
 					var gene = DoubleGene.of(min, max);
 					samples.add(gene.doubleValue());
 				}
-			})
-			.usingPartitioning(min, max, 20)
-			.usingHypothesisTester(PearsonsChiSquared.P0_05)
-			.isUniform()
+			},
+			Partition.of(min, max, 20),
+			new StableRandomExecutor(234234)
 		);
+
+		assertThatObservation(observation)
+			.usingHypothesisTester(PearsonsChiSquared.P0_05)
+			.usingLogger(System.out::println)
+			.isUniform();
 	}
 
 	@Test

@@ -291,6 +291,10 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 			return new Partition(interval, separators);
 		}
+
+		public static Partition of(final double min, final double max, final int parts) {
+			return of(new Interval(min, max), parts);
+		}
 	}
 
 	/**
