@@ -43,17 +43,21 @@ public final class Assurance {
 	private Assurance() {
 	}
 
+	/* *************************************************************************
+	 * Observation asserts.
+	 * ************************************************************************/
+
 	/**
 	 * Assertion class for statistical distribution testing.
 	 */
-	public static final class DistributionAssert {
+	public static final class ObservationAssert {
 		private final Supplier<Histogram> observation;
 
 		private Interval range = new Interval(NEGATIVE_INFINITY, POSITIVE_INFINITY);
 		private HypothesisTester tester = PearsonsChiSquared.P0_05;
 		private Consumer<String> logger = message -> {};
 
-		private DistributionAssert(final Supplier<Histogram> observation) {
+		private ObservationAssert(final Supplier<Histogram> observation) {
 			this.observation = requireNonNull(observation);
 		}
 
@@ -64,7 +68,7 @@ public final class Assurance {
 		 * @param logger the check result logger
 		 * @return {@code this} assertion object
 		 */
-		public DistributionAssert usingLogger(final Consumer<String> logger) {
+		public ObservationAssert usingLogger(final Consumer<String> logger) {
 			this.logger = requireNonNull(logger);
 			return this;
 		}
@@ -75,7 +79,7 @@ public final class Assurance {
 		 * @param tester the hypothesis tester to use
 		 * @return {@code this} assertion object
 		 */
-		public DistributionAssert usingHypothesisTester(HypothesisTester tester) {
+		public ObservationAssert usingHypothesisTester(HypothesisTester tester) {
 			this.tester = requireNonNull(tester);
 			return this;
 		}
@@ -86,7 +90,7 @@ public final class Assurance {
 		 * @param range the distribution range to test
 		 * @return {@code this} assertion object
 		 */
-		public DistributionAssert withinRange(Interval range) {
+		public ObservationAssert withinRange(Interval range) {
 			this.range = requireNonNull(range);
 			return this;
 		}
@@ -98,7 +102,7 @@ public final class Assurance {
 		 * @param max the maximal value of the distribution range
 		 * @return {@code this} assertion object
 		 */
-		public DistributionAssert withinRange(final double min, final double max) {
+		public ObservationAssert withinRange(final double min, final double max) {
 			return withinRange(new Interval(min, max));
 		}
 
@@ -114,6 +118,27 @@ public final class Assurance {
 				case Reject r -> throw new AssertionError(r.message());
 				case Accept a -> logger.accept(a.message());
 			}
+		}
+
+		/**
+		 * Checks if the observation is uniformly distributed.
+		 */
+		public void isUniform() {
+			final var interval = observation.get()
+				.buckets().partition().interval();
+			follows(new UniformDistribution(interval));
+		}
+
+		/**
+		 * Checks if the observation follows a normal distribution with the
+		 * given {@code mean} and standard deviation.
+		 *
+		 * @param mean the mean value of the expected normal distribution
+		 * @param stddev the standard deviation of the expected normal
+		 *        distribution
+		 */
+		public void isNormal(double mean, double stddev) {
+			follows(new NormalDistribution(mean, stddev));
 		}
 
 		/**
@@ -142,51 +167,6 @@ public final class Assurance {
 			}
 		}
 
-		/**
-		 * Checks if the observation is uniformly distributed.
-		 */
-		public void isUniform() {
-			final var interval = observation.get()
-				.buckets().partition().interval();
-			follows(new UniformDistribution(interval));
-		}
-
-		/**
-		 * Checks if the observation follows a normal distribution with the
-		 * given {@code mean} and standard deviation.
-		 *
-		 * @param mean the mean value of the expected normal distribution
-		 * @param stddev the standard deviation of the expected normal
-		 *        distribution
-		 */
-		public void isNormal(double mean, double stddev) {
-			follows(new NormalDistribution(mean, stddev));
-		}
-
-	}
-
-	public static final class SamplesAssert {
-		private final Sampling sampling;
-
-		private SamplesAssert(final Sampling sampling) {
-			this.sampling = requireNonNull(sampling);
-		}
-
-		public DistributionAssert usingPartitioning(final Histogram.Partition partition) {
-			final Supplier<Histogram> observation =
-				() -> new Histogram.Builder(partition).build(sampling);
-
-			return new DistributionAssert(observation);
-		}
-
-		public DistributionAssert usingPartitioning(final Interval interval, final int classes) {
-			return usingPartitioning(Histogram.Partition.of(interval, classes));
-		}
-
-		public DistributionAssert usingPartitioning(final double min, final double max, final int classes) {
-			return usingPartitioning(new Interval(min, max), classes);
-		}
-
 	}
 
 	/**
@@ -195,8 +175,9 @@ public final class Assurance {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static DistributionAssert assertThatObservation(Observer observation) {
-		return new DistributionAssert(observation);
+	public static ObservationAssert
+	assertThatObservation(Supplier<Histogram> observation) {
+		return new ObservationAssert(observation);
 	}
 
 	/**
@@ -205,13 +186,44 @@ public final class Assurance {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static DistributionAssert assertThatObservation(Histogram observation) {
-		return new DistributionAssert(() -> observation);
+	public static ObservationAssert assertThatObservation(Histogram observation) {
+		return new ObservationAssert(() -> observation);
 	}
 
-	public static SamplesAssert assertThatObservation(final Sampling sampling) {
-		return new SamplesAssert(sampling);
-	}
+//	/* *************************************************************************
+//	 * Sampling asserts.
+//	 * ************************************************************************/
+//
+//	/**
+//	 * Assertion class for double sampling tests.
+//	 */
+//	public static final class SamplingAssert {
+//		private final Sampling sampling;
+//
+//		private SamplingAssert(final Sampling sampling) {
+//			this.sampling = requireNonNull(sampling);
+//		}
+//
+//		public ObservationAssert usingPartitioning(final Histogram.Partition partition) {
+//			final Supplier<Histogram> observation =
+//				() -> new Histogram.Builder(partition).build(sampling);
+//
+//			return new ObservationAssert(observation);
+//		}
+//
+//		public ObservationAssert usingPartitioning(final Interval interval, final int classes) {
+//			return usingPartitioning(Histogram.Partition.of(interval, classes));
+//		}
+//
+//		public ObservationAssert usingPartitioning(final double min, final double max, final int classes) {
+//			return usingPartitioning(new Interval(min, max), classes);
+//		}
+//
+//	}
+//
+//	public static SamplingAssert assertThatObservation(final Sampling sampling) {
+//		return new SamplingAssert(sampling);
+//	}
 
 
 }
