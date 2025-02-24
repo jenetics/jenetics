@@ -21,7 +21,6 @@ package io.jenetics.incubator.stat;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
-import static java.util.Objects.hash;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -47,18 +46,15 @@ public final class Assurance {
 	 * Observation asserts.
 	 * ************************************************************************/
 
-	/**
-	 * Assertion class for statistical distribution testing.
-	 */
-	public static final class ObservationAssert {
-		private final Observation observation;
+	public static class HistogramAssert {
+		private final Histogram histogram;
 
 		private Interval range = new Interval(NEGATIVE_INFINITY, POSITIVE_INFINITY);
 		private HypothesisTester tester = PearsonsChiSquared.P0_05;
 		private Consumer<String> logger = message -> {};
 
-		private ObservationAssert(final Observation observation) {
-			this.observation = requireNonNull(observation);
+		private HistogramAssert(final Histogram histogram) {
+			this.histogram = requireNonNull(histogram);
 		}
 
 		/**
@@ -68,7 +64,7 @@ public final class Assurance {
 		 * @param logger the check result logger
 		 * @return {@code this} assertion object
 		 */
-		public ObservationAssert usingLogger(final Consumer<String> logger) {
+		public HistogramAssert usingLogger(final Consumer<String> logger) {
 			this.logger = requireNonNull(logger);
 			return this;
 		}
@@ -79,7 +75,7 @@ public final class Assurance {
 		 * @param tester the hypothesis tester to use
 		 * @return {@code this} assertion object
 		 */
-		public ObservationAssert usingHypothesisTester(HypothesisTester tester) {
+		public HistogramAssert usingHypothesisTester(HypothesisTester tester) {
 			this.tester = requireNonNull(tester);
 			return this;
 		}
@@ -90,7 +86,7 @@ public final class Assurance {
 		 * @param range the distribution range to test
 		 * @return {@code this} assertion object
 		 */
-		public ObservationAssert withinRange(Interval range) {
+		public HistogramAssert withinRange(Interval range) {
 			this.range = requireNonNull(range);
 			return this;
 		}
@@ -102,7 +98,7 @@ public final class Assurance {
 		 * @param max the maximal value of the distribution range
 		 * @return {@code this} assertion object
 		 */
-		public ObservationAssert withinRange(final double min, final double max) {
+		public HistogramAssert withinRange(final double min, final double max) {
 			return withinRange(new Interval(min, max));
 		}
 
@@ -113,8 +109,7 @@ public final class Assurance {
 		 */
 		public void follows(final Distribution hypothesis) {
 			final var distribution = new RangedDistribution(hypothesis, range);
-
-			switch (tester.test(observation.histogram(), distribution)) {
+			switch (tester.test(histogram, distribution)) {
 				case Reject r -> throw new AssertionError(r.message());
 				case Accept a -> logger.accept(a.message());
 			}
@@ -124,7 +119,7 @@ public final class Assurance {
 		 * Checks if the observation is uniformly distributed.
 		 */
 		public void isUniform() {
-			follows(new UniformDistribution(observation.histogram().interval()));
+			follows(new UniformDistribution(histogram.interval()));
 		}
 
 		/**
@@ -148,7 +143,7 @@ public final class Assurance {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = observation.histogram().buckets().stream()
+			final long[] hist = histogram.buckets().stream()
 				.mapToLong(Histogram.Bucket::count)
 				.toArray();
 
@@ -168,14 +163,16 @@ public final class Assurance {
 	}
 
 	/**
-	 * Return a new distribution assertion object for the given observation.
-	 *
-	 * @param observation the observation to check.
-	 * @return a new distribution assertion object
+	 * Assertion class for statistical distribution testing.
 	 */
-	public static ObservationAssert
-	assertThatObservation(Observation observation) {
-		return new ObservationAssert(observation);
+	public static final class ObservationAssert extends HistogramAssert {
+		private final Observation observation;
+
+		private ObservationAssert(final Observation observation) {
+			super(observation.histogram());
+			this.observation = requireNonNull(observation);
+		}
+
 	}
 
 	/**
@@ -184,8 +181,19 @@ public final class Assurance {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static ObservationAssert assertThatObservation(Histogram observation) {
-		return new ObservationAssert(Observation.of(observation, Statistics.EMPTY));
+	public static HistogramAssert assertThatObservation(Histogram observation) {
+		return new HistogramAssert(observation);
+	}
+
+	/**
+	 * Return a new distribution assertion object for the given observation.
+	 *
+	 * @param observation the observation to check.
+	 * @return a new distribution assertion object
+	 */
+	public static ObservationAssert
+	assertThatObservation(Observation observation) {
+		return new ObservationAssert(observation);
 	}
 
 }

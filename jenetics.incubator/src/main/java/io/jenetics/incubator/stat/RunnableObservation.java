@@ -27,19 +27,20 @@ import java.util.NoSuchElementException;
 import io.jenetics.incubator.stat.Histogram.Partition;
 
 /**
- * Task object for evaluating a histogram from a given sampling function.
+ * This object allows evaluating a given sampling within a given execution
+ * environment, which might be useful for creating reproducible results.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class RunnableObservation implements Observation, Runnable {
+public final class RunnableObservation implements Runnable, Observation {
 	private final Sampling sampling;
 	private final Partition partition;
 
-	private volatile boolean evaluated = false;
 	private Histogram histogram;
 	private Statistics statistics;
+	private volatile boolean evaluated = false;
 
 	/**
 	 * Create a new sampling observation task.
