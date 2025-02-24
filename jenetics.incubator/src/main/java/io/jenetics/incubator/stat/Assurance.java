@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.apache.commons.math4.legacy.stat.inference.ChiSquareTest;
 
@@ -51,13 +50,13 @@ public final class Assurance {
 	 * Assertion class for statistical distribution testing.
 	 */
 	public static final class ObservationAssert {
-		private final Supplier<Histogram> observation;
+		private final Observation observation;
 
 		private Interval range = new Interval(NEGATIVE_INFINITY, POSITIVE_INFINITY);
 		private HypothesisTester tester = PearsonsChiSquared.P0_05;
 		private Consumer<String> logger = message -> {};
 
-		private ObservationAssert(final Supplier<Histogram> observation) {
+		private ObservationAssert(final Observation observation) {
 			this.observation = requireNonNull(observation);
 		}
 
@@ -114,7 +113,7 @@ public final class Assurance {
 		public void follows(final Distribution hypothesis) {
 			final var distribution = new RangedDistribution(hypothesis, range);
 
-			switch (tester.test(observation.get(), distribution)) {
+			switch (tester.test(observation.histogram(), distribution)) {
 				case Reject r -> throw new AssertionError(r.message());
 				case Accept a -> logger.accept(a.message());
 			}
@@ -124,9 +123,7 @@ public final class Assurance {
 		 * Checks if the observation is uniformly distributed.
 		 */
 		public void isUniform() {
-			final var interval = observation.get()
-				.buckets().partition().interval();
-			follows(new UniformDistribution(interval));
+			follows(new UniformDistribution(observation.histogram().interval()));
 		}
 
 		/**
@@ -150,7 +147,7 @@ public final class Assurance {
 			final double[] exp = Arrays.stream(expected)
 				.map(v -> Math.max(v, -Double.MAX_VALUE))
 				.toArray();
-			final long[] hist = observation.get().buckets().stream()
+			final long[] hist = observation.histogram().buckets().stream()
 				.mapToLong(Histogram.Bucket::count)
 				.toArray();
 
@@ -176,7 +173,7 @@ public final class Assurance {
 	 * @return a new distribution assertion object
 	 */
 	public static ObservationAssert
-	assertThatObservation(Supplier<Histogram> observation) {
+	assertThatObservation(Observation observation) {
 		return new ObservationAssert(observation);
 	}
 

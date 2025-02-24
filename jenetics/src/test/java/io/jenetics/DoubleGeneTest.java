@@ -29,14 +29,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram.Partition;
-import io.jenetics.incubator.stat.Observer;
-import io.jenetics.incubator.stat.PearsonsChiSquared;
+import io.jenetics.incubator.stat.ObservationTask;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -55,12 +55,12 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		EqualsVerifier.forClass(DoubleGene.class).verify();
 	}
 
-	@Test
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new Observer(
+		final var observation = new ObservationTask(
 			samples -> {
 				for (int i = 0; i < 200_000; ++i) {
 					var gene = DoubleGene.of(min, max);
@@ -68,13 +68,17 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 				}
 			},
 			Partition.of(min, max, 20),
-			new StableRandomExecutor(234234)
+			new StableRandomExecutor(seed)
 		);
 
-		assertThatObservation(observation)
-			.usingHypothesisTester(PearsonsChiSquared.P0_05)
-			.usingLogger(System.out::println)
-			.isUniform();
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test

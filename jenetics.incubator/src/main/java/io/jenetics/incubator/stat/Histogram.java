@@ -666,6 +666,24 @@ public record Histogram(Buckets buckets, Residual residual) {
 	}
 
 	/**
+	 * Return the partition of {@code this} histogram.
+	 *
+	 * @return the partition of {@code this} histogram
+	 */
+	public Partition partition() {
+		return buckets.partition();
+	}
+
+	/**
+	 * Return the interval of {@code this} histogram.
+	 *
+	 * @return the interval of {@code this} histogram
+	 */
+	public Interval interval() {
+		return partition().interval();
+	}
+
+	/**
 	 * Return a new builder with the buckets (inclusively bucket counts).
 	 *
 	 * @return a new histogram builder with the buckets of {@code this}

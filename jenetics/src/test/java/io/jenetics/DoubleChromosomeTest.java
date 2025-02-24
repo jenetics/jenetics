@@ -23,11 +23,14 @@ import static java.lang.String.format;
 import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static io.jenetics.internal.math.DoubleAdder.sum;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.PearsonsChiSquared;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.ObservationTask;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -49,26 +52,31 @@ public class DoubleChromosomeTest
 		return _factory;
 	}
 
-	@Test
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final double min = 0;
 		final double max = 100;
-/*
-		StableRandomExecutor.using(12123, () -> {
-			assertThatObservation(samples -> {
-					for (int i = 0; i < 1_000; ++i) {
-						var chromosome = DoubleChromosome.of(min, max, 500);
-						for (var gene : chromosome) {
-							samples.add(gene.allele());
-						}
-					}
-				})
-				.usingPartitioning(min, max, 20)
-				.usingHypothesisTester(PearsonsChiSquared.P0_05)
-				.isUniform();
-		});
 
- */
+		final var observation = new ObservationTask(
+			samples -> {
+				for (int i = 0; i < 1_000; ++i) {
+					DoubleChromosome.of(min, max, 500).stream()
+						.mapToDouble(DoubleGene::doubleValue)
+						.forEach(samples::add);
+				}
+			},
+			Histogram.Partition.of(min, max, 20),
+			new StableRandomExecutor(seed)
+		);
+
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(12345678).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")
