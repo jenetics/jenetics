@@ -86,9 +86,9 @@ public class MeanAltererTest extends AltererTester {
 					statistics.accept(alterations);
 				}
 			},
-			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20),
-			new StableRandomExecutor(123456789)
+			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
 		);
+		new StableRandomExecutor(123456789).execute(observation);
 
 		assertThatObservation(observation)
 			.isNormal(npopulation*p, sqrt(statistics.variance()));

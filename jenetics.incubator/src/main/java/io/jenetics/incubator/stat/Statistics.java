@@ -19,37 +19,28 @@
  */
 package io.jenetics.incubator.stat;
 
-import static java.util.Objects.requireNonNull;
-
 /**
+ * Holds the statistical values as produced by the
+ * {@link java.util.DoubleSummaryStatistics} class.
+ *
+ * @see java.util.DoubleSummaryStatistics
+ *
+ * @param count the number of samples
+ * @param min the minimum sample value
+ * @param max the maximum sample value
+ * @param sum the sum of the sample values
+ * @param mean the average of the sample values
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Observation {
-
-	/**
-	 * Return the histogram of the observation.
-	 *
-	 * @return the  histogram of the observation
-	 */
-	Histogram histogram();
-
-	/**
-	 * Return the statics of the sample values.
-	 *
-	 * @return the statistics of the sample values
-	 */
-	Statistics statistics();
-
-	static Observation of(final Histogram histogram, final Statistics statistics) {
-		record SimpleObservation(Histogram histogram, Statistics statistics)
-			implements Observation {}
-
-		return new SimpleObservation(
-			requireNonNull(histogram),
-			requireNonNull(statistics)
-		);
-	}
-
+public record Statistics(
+	long count,
+	double min,
+	double max,
+	double sum,
+	double mean
+) {
+	public static final Statistics EMPTY = new Statistics(0, 0, 0, 0, 0);
 }

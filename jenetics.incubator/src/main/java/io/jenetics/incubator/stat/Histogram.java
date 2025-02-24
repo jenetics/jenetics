@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -469,6 +469,8 @@ public record Histogram(Buckets buckets, Residual residual) {
 		private final Partition partition;
 		private final long[] frequencies;
 
+		private DoubleConsumer observer = value -> {};
+
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code buckets} and
 		 * {@code residual}.
@@ -515,9 +517,23 @@ public record Histogram(Buckets buckets, Residual residual) {
 			this(new Buckets(partition));
 		}
 
+		/**
+		 * Set an additional value observer.
+		 *
+		 * @param observer the value observer
+		 * @throws NullPointerException if the given {@code observer} is
+		 *         {@code null}.
+		 * @return {@code this} builder
+		 */
+		public Builder observer(final DoubleConsumer observer) {
+			this.observer = requireNonNull(observer);
+			return this;
+		}
+
 		@Override
 		public void add(final double value) {
 			++frequencies[partition.indexOf(value) + 1];
+			observer.accept(value);
 		}
 
 		/**

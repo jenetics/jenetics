@@ -21,10 +21,8 @@ package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
+import java.util.DoubleSummaryStatistics;
+import java.util.NoSuchElementException;
 
 import io.jenetics.incubator.stat.Histogram.Partition;
 
@@ -35,29 +33,13 @@ import io.jenetics.incubator.stat.Histogram.Partition;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObservationTask implements Observation {
+public final class ObservationTask implements Observation, Runnable {
 	private final Sampling sampling;
 	private final Partition partition;
-	private final Executor executor;
 
+	private volatile boolean evaluated = false;
 	private Histogram histogram;
-
-	/**
-	 * Create a new sampling observation task.
-	 *
-	 * @param sampling the sampling function
-	 * @param partition the partition used for the created histogram
-	 * @param executor the executor used for creating the histogram
-	 */
-	public ObservationTask(
-		final Sampling sampling,
-		final Partition partition,
-		final Executor executor
-	) {
-		this.sampling = requireNonNull(sampling);
-		this.partition = requireNonNull(partition);
-		this.executor = requireNonNull(executor);
-	}
+	private Statistics statistics;
 
 	/**
 	 * Create a new sampling observation task.
@@ -66,35 +48,49 @@ public final class ObservationTask implements Observation {
 	 * @param partition the partition used for the created histogram
 	 */
 	public ObservationTask(final Sampling sampling, final Partition partition) {
-		this(sampling, partition, Runnable::run);
+		this.sampling = requireNonNull(sampling);
+		this.partition = requireNonNull(partition);
+	}
+
+	@Override
+	public void run() {
+		if (!evaluated) {
+			evaluate();
+		}
+	}
+
+	private synchronized void evaluate() {
+		final var summary = new DoubleSummaryStatistics();
+
+		histogram = new Histogram.Builder(partition)
+			.observer(summary)
+			.build(sampling);
+
+		statistics = new Statistics(
+			summary.getCount(),
+			summary.getMin(),
+			summary.getMax(),
+			summary.getSum(),
+			summary.getAverage()
+		);
+
+		evaluated = true;
 	}
 
 	@Override
 	public synchronized Histogram histogram() {
-		if (histogram == null) {
-			try {
-				histogram = CompletableFuture
-					.supplyAsync(this::build, executor)
-					.get();
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				throw new CancellationException(e.getMessage());
-			} catch (ExecutionException e) {
-				switch (e.getCause()) {
-					case RuntimeException rte -> throw rte;
-					case Error err -> throw err;
-					case Exception exp -> throw new IllegalStateException(exp);
-					case null -> throw new RuntimeException(e);
-					default -> throw new RuntimeException(e.getCause());
-				}
-			}
+		if (!evaluated) {
+			throw new NoSuchElementException();
 		}
-
 		return histogram;
 	}
 
-	private Histogram build() {
-		return new Histogram.Builder(partition).build(sampling);
+	@Override
+	public Statistics statistics() {
+		if (!evaluated) {
+			throw new NoSuchElementException();
+		}
+		return statistics;
 	}
 
 }

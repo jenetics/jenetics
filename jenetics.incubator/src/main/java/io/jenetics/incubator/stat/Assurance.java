@@ -21,6 +21,7 @@ package io.jenetics.incubator.stat;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
+import static java.util.Objects.hash;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -184,43 +185,7 @@ public final class Assurance {
 	 * @return a new distribution assertion object
 	 */
 	public static ObservationAssert assertThatObservation(Histogram observation) {
-		return new ObservationAssert(() -> observation);
+		return new ObservationAssert(Observation.of(observation, Statistics.EMPTY));
 	}
-
-//	/* *************************************************************************
-//	 * Sampling asserts.
-//	 * ************************************************************************/
-//
-//	/**
-//	 * Assertion class for double sampling tests.
-//	 */
-//	public static final class SamplingAssert {
-//		private final Sampling sampling;
-//
-//		private SamplingAssert(final Sampling sampling) {
-//			this.sampling = requireNonNull(sampling);
-//		}
-//
-//		public ObservationAssert usingPartitioning(final Histogram.Partition partition) {
-//			final Supplier<Histogram> observation =
-//				() -> new Histogram.Builder(partition).build(sampling);
-//
-//			return new ObservationAssert(observation);
-//		}
-//
-//		public ObservationAssert usingPartitioning(final Interval interval, final int classes) {
-//			return usingPartitioning(Histogram.Partition.of(interval, classes));
-//		}
-//
-//		public ObservationAssert usingPartitioning(final double min, final double max, final int classes) {
-//			return usingPartitioning(new Interval(min, max), classes);
-//		}
-//
-//	}
-//
-//	public static SamplingAssert assertThatObservation(final Sampling sampling) {
-//		return new SamplingAssert(sampling);
-//	}
-
 
 }

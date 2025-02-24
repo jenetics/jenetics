@@ -65,9 +65,9 @@ public class DoubleChromosomeTest
 						.forEach(samples::add);
 				}
 			},
-			Histogram.Partition.of(min, max, 20),
-			new StableRandomExecutor(seed)
+			Histogram.Partition.of(min, max, 20)
 		);
+		new StableRandomExecutor(seed).execute(observation);
 
 		assertThatObservation(observation).isUniform();
 	}
