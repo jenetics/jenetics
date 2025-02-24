@@ -36,7 +36,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram.Partition;
-import io.jenetics.incubator.stat.ObservationTask;
+import io.jenetics.incubator.stat.RunnableObservation;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -60,7 +60,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new ObservationTask(
+		final var observation = new RunnableObservation(
 			samples -> {
 				for (int i = 0; i < 200_000; ++i) {
 					var gene = DoubleGene.of(min, max);

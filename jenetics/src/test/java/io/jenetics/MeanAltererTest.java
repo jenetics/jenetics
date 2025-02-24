@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.ObservationTask;
+import io.jenetics.incubator.stat.RunnableObservation;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -76,7 +76,7 @@ public class MeanAltererTest extends AltererTester {
 
 		final var statistics = new LongMomentStatistics();
 
-		final var observation = new ObservationTask(
+		final var observation = new RunnableObservation(
 			samples -> {
 				for (int i = 0; i < 100; ++i) {
 					final long alterations = crossover

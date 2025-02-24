@@ -33,7 +33,7 @@ import io.jenetics.incubator.stat.Histogram.Partition;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObservationTask implements Observation, Runnable {
+public final class RunnableObservation implements Observation, Runnable {
 	private final Sampling sampling;
 	private final Partition partition;
 
@@ -47,7 +47,7 @@ public final class ObservationTask implements Observation, Runnable {
 	 * @param sampling the sampling function
 	 * @param partition the partition used for the created histogram
 	 */
-	public ObservationTask(final Sampling sampling, final Partition partition) {
+	public RunnableObservation(final Sampling sampling, final Partition partition) {
 		this.sampling = requireNonNull(sampling);
 		this.partition = requireNonNull(partition);
 	}

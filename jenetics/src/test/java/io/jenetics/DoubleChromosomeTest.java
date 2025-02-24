@@ -30,7 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.ObservationTask;
+import io.jenetics.incubator.stat.RunnableObservation;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -57,7 +57,7 @@ public class DoubleChromosomeTest
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new ObservationTask(
+		final var observation = new RunnableObservation(
 			samples -> {
 				for (int i = 0; i < 1_000; ++i) {
 					DoubleChromosome.of(min, max, 500).stream()
