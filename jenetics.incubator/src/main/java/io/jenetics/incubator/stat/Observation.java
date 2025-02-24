@@ -19,12 +19,14 @@
  */
 package io.jenetics.incubator.stat;
 
+import java.util.DoubleSummaryStatistics;
+import java.util.Optional;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
 public interface Observation {
 
 	/**
@@ -33,4 +35,7 @@ public interface Observation {
 	 * @return the possible lazily evaluated histogram of the observation
 	 */
 	Histogram histogram();
+
+	Optional<DoubleSummaryStatistics> statistics();
+
 }
