@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class StatisticsAssertTest {
+public class AssuranceTest {
 
 	@Test
 	public void assertUniformDistribution() {
