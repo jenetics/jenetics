@@ -25,6 +25,7 @@ import static io.jenetics.internal.math.DoubleAdder.sum;
 
 import java.util.Random;
 
+import io.jenetics.incubator.stat.Sampling;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -58,13 +59,11 @@ public class DoubleChromosomeTest
 		final double max = 100;
 
 		final var observation = new RunnableObservation(
-			samples -> {
-				for (int i = 0; i < 1_000; ++i) {
-					DoubleChromosome.of(min, max, 500).stream()
-						.mapToDouble(DoubleGene::doubleValue)
-						.forEach(samples::add);
-				}
-			},
+			Sampling.repeat(1_000, samples ->
+				DoubleChromosome.of(min, max, 500).stream()
+					.mapToDouble(DoubleGene::doubleValue)
+					.forEach(samples::add)
+			),
 			Histogram.Partition.of(min, max, 20)
 		);
 		new StableRandomExecutor(seed).execute(observation);

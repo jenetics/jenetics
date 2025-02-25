@@ -26,5 +26,15 @@ package io.jenetics.incubator.stat;
  */
 @FunctionalInterface
 public interface Sampling {
+
 	void run(final Samples samples);
+
+	static Sampling repeat(final int count, final Sampling sampling) {
+		return samples -> {
+			for (int i = 0; i < count; ++i) {
+				sampling.run(samples);
+			}
+		};
+	}
+
 }

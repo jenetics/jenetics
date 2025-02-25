@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.stat;
 
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -26,5 +29,23 @@ package io.jenetics.incubator.stat;
  */
 @FunctionalInterface
 public interface Samples {
+
 	void add(double sample);
+
+	default void add(final Number sample) {
+		add(sample.doubleValue());
+	}
+
+	default void addAll(final Iterable<? extends Number> samples) {
+		samples.forEach(this::add);
+	}
+
+	default void addAll(final DoubleStream samples) {
+		samples.forEach(this::add);
+	}
+
+	default void addAll(final Stream<? extends Number> samples) {
+		samples.forEach(this::add);
+	}
+
 }

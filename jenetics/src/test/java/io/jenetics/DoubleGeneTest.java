@@ -25,6 +25,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
+import io.jenetics.incubator.stat.Sampling;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
@@ -61,12 +62,10 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double max = 100;
 
 		final var observation = new RunnableObservation(
-			samples -> {
-				for (int i = 0; i < 200_000; ++i) {
-					var gene = DoubleGene.of(min, max);
-					samples.add(gene.doubleValue());
-				}
-			},
+			Sampling.repeat(200_000,samples -> {
+				var gene = DoubleGene.of(min, max);
+				samples.add(gene.doubleValue());
+			}),
 			Partition.of(min, max, 20)
 		);
 		new StableRandomExecutor(seed).execute(observation);
