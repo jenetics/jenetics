@@ -39,14 +39,14 @@ public class AssuranceTest {
 		observation.run();
 
 		assertThatObservation(observation)
-			.usingHypothesisTester(new PearsonsChiSquared(0.0005))
+			.usingHypothesisTester(new PearsonsChiSquared(0.5))
 			.isUniform();
 	}
 
 	@Test
 	public void assertNormalDistribution() {
 		final var random = new Random(123);
-		final var interval = new Interval(-5, 5);
+		final var interval = new Interval(-10, 10);
 
 		final var observation = new RunnableObservation(
 			Sampling.repeat(1_000_000, samples ->
@@ -57,7 +57,7 @@ public class AssuranceTest {
 		observation.run();
 
 		assertThatObservation(observation)
-			.usingHypothesisTester(new PearsonsChiSquared(0.0005))
+			.usingHypothesisTester(new PearsonsChiSquared(0.5))
 			.withinRange(interval)
 			.isNormal(0, 1);
 	}
