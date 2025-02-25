@@ -19,16 +19,21 @@
  */
 package io.jenetics;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
+import static java.lang.String.format;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-import static java.lang.String.format;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,23 +51,29 @@ public class IntegerChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		final var interval = new Interval(0.0, 10000000);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final int min = 0;
+		final int max = Integer.MAX_VALUE;
 
-		final var observation = Histogram.Builder.of(interval, 20)
-			.build(samples -> {
-				for (int i = 0; i < 1000; ++i) {
-					final var chromosome = IntegerChromosome.of(
-						(int)interval.min(), (int)interval.max(), 500
-					);
-					for (var gene : chromosome) {
-						samples.add(gene.allele());
-					}
-				}
-			});
+		final var observation = new RunnableObservation(
+			Sampling.repeat(1_000, samples ->
+				IntegerChromosome.of(min, max, 500).stream()
+					.mapToDouble(IntegerGene::doubleValue)
+					.forEach(samples::add)
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
 		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")

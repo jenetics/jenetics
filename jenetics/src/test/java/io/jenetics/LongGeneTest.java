@@ -19,18 +19,24 @@
  */
 package io.jenetics;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.util.Factory;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import java.math.BigInteger;
-
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+import java.math.BigInteger;
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -47,19 +53,27 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		EqualsVerifier.forClass(LongGene.class).verify();
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		final var interval = new Interval(0.0, Integer.MAX_VALUE);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final long min = 0;
+		final long max = Integer.MAX_VALUE;
 
-		final var observation = Histogram.Builder.of(interval, 20)
-			.build(samples -> {
-				for (int i = 0; i < 200_000; ++i) {
-					var gene = LongGene.of((long)interval.min(), (long)interval.max());
-					samples.add(gene.doubleValue());
-				}
-			});
+		final var observation = new RunnableObservation(
+			Sampling.repeat(200_000, samples ->
+				samples.add(LongGene.of(min, max).doubleValue())
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
 		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456782).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test

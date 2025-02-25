@@ -36,7 +36,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -141,20 +144,29 @@ public class SubsetsTest {
 		return sorted;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void subSetDistribution() {
-		final int n = 100_000;
+	@Test(dataProvider = "seeds")
+	public void subSetDistribution(final long seed) {
+		final int min = 0;
+		final int max = 100_000;
 
-		final var random = new Random();
-		final var histogram = Histogram.Builder.of(new Interval(0, n), 13);
+		final var observation = new RunnableObservation(
+			Sampling.repeat(10_000, samples ->
+				IntStream.of(Subsets.next(RandomRegistry.random(), max, 3))
+					.forEach(samples::add)
+				),
+			Histogram.Partition.of(min, max, 15)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Subsets.next(random, n, 3)))
-			.forEach(histogram::add);
-
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
+	}
 
 	private static int[] subset(
 		final int n,
