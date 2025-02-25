@@ -22,7 +22,6 @@ package io.jenetics.incubator.stat;
 import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import java.util.Random;
-import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
@@ -34,8 +33,7 @@ public class AssuranceTest {
 	@Test
 	public void assertUniformDistribution() {
 		final var observation = new RunnableObservation(
-			samples -> samples.addAll(new Random(123).doubles(100_000))
-			,
+			samples -> samples.addAll(new Random(123).doubles(100_000)),
 			Histogram.Partition.of(0, 1, 20)
 		);
 		observation.run();
@@ -45,16 +43,23 @@ public class AssuranceTest {
 			.isUniform();
 	}
 
-	//@Test
+	@Test
 	public void assertNormalDistribution() {
-		final var hist = Histogram.Builder.of(new Interval(-2, 2), 10);
+		final var random = new Random(123);
+		final var interval = new Interval(-5, 5);
 
-		final var random = RandomGenerator.getDefault();
-		for (int i = 0; i < 100_000; ++i) {
-			hist.add(random.nextGaussian(0, 1));
-		}
+		final var observation = new RunnableObservation(
+			Sampling.repeat(1_000_000, samples ->
+				samples.add(random.nextGaussian())
+			),
+			Histogram.Partition.of(interval, 20)
+		);
+		observation.run();
 
-		assertThatObservation(hist.build()).isNormal(0, 1);
+		assertThatObservation(observation)
+			.usingHypothesisTester(new PearsonsChiSquared(0.0005))
+			.withinRange(interval)
+			.isNormal(0, 1);
 	}
 
 }

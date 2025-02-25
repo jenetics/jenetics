@@ -53,6 +53,39 @@ public interface Samples {
 	 *
 	 * @param samples the sample values
 	 */
+	default void addAll(final int... samples) {
+		for (var sample : samples) {
+			add(sample);
+		}
+	}
+
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
+	default void addAll(final long... samples) {
+		for (var sample : samples) {
+			add(sample);
+		}
+	}
+
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
+	default void addAll(final double... samples) {
+		for (var sample : samples) {
+			add(sample);
+		}
+	}
+
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
 	default void addAll(final Iterable<? extends Number> samples) {
 		samples.forEach(this::add);
 	}

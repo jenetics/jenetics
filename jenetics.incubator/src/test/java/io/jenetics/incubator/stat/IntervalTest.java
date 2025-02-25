@@ -76,7 +76,7 @@ public class IntervalTest {
 	}
 
 	@Test(dataProvider = "intervals")
-	public void size(Interval interval, int size) {
+	public void size(Interval interval, long size) {
 		assertThat(interval.size()).isEqualTo(size);
 	}
 
@@ -117,7 +117,9 @@ public class IntervalTest {
 			{new Interval(down(100.0, 2), up(100.0, 2)), 4},
 			{new Interval(down(100.0, 3), up(100.0, 3)), 6},
 			{new Interval(down(100.0, 5), up(100.0, 5)), 10},
-			{new Interval(down(100.0, 20), up(100.0, 20)), 40}
+			{new Interval(down(100.0, 20), up(100.0, 20)), 40},
+
+			{new Interval(-2, 2), Long.MAX_VALUE}
 		};
 	}
 

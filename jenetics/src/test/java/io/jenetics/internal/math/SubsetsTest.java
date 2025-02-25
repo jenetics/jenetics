@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.random.RandomGenerator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.testng.Assert;
@@ -151,9 +150,8 @@ public class SubsetsTest {
 
 		final var observation = new RunnableObservation(
 			Sampling.repeat(10_000, samples ->
-				IntStream.of(Subsets.next(RandomRegistry.random(), max, 3))
-					.forEach(samples::add)
-				),
+				samples.addAll(Subsets.next(RandomRegistry.random(), max, 3))
+			),
 			Histogram.Partition.of(min, max, 15)
 		);
 		new StableRandomExecutor(seed).execute(observation);

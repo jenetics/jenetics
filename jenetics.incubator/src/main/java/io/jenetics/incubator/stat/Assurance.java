@@ -173,10 +173,29 @@ public final class Assurance {
 			this.observation = requireNonNull(observation);
 		}
 
-		/**
-		 * Checks if the observation follows a normal distribution with the
-		 * given {@code mean} and standard deviation.
-		 */
+		@Override
+		public ObservationAssert usingLogger(final Consumer<String> logger) {
+			super.usingLogger(logger);
+			return this;
+		}
+
+		@Override
+		public ObservationAssert usingHypothesisTester(HypothesisTester tester) {
+			super.usingHypothesisTester(tester);
+			return this;
+		}
+
+		@Override
+		public ObservationAssert withinRange(Interval range) {
+			super.withinRange(range);
+			return this;
+		}
+
+		@Override
+		public ObservationAssert withinRange(final double min, final double max) {
+			return withinRange(new Interval(min, max));
+		}
+
 		public void isNormal() {
 			final var statistics = observation.statistics();
 			follows(new NormalDistribution(

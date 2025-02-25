@@ -83,7 +83,9 @@ public record Interval(double min, double max) {
 		long left = min < 0 ? Long.MIN_VALUE - doubleToLongBits(min) : doubleToLongBits(min);
 		long right = max < 0 ? Long.MIN_VALUE - doubleToLongBits(max) : doubleToLongBits(max);
 
-		return right - left;
+		// Overflow safe subtraction.
+		final long result = right - left;
+		return ((right^left) & (right^result)) < 0 ? Long.MAX_VALUE : result;
 	}
 
 	/**
