@@ -21,6 +21,7 @@ package io.jenetics.incubator.stat;
 
 import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
+import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
@@ -32,13 +33,14 @@ public class StatisticsAssertTest {
 
 	@Test
 	public void assertUniformDistribution() {
-		final var hist = Histogram.Builder.of(new Interval(0, 1), 20);
+		final var observation = new RunnableObservation(
+			samples -> samples.addAll(new Random(123).doubles(100_000))
+			,
+			Histogram.Partition.of(0, 1, 20)
+		);
+		observation.run();
 
-		final var random = RandomGenerator.getDefault();
-		random.doubles(10_000).forEach(hist::add);
-
-		assertThatObservation(hist.build()).isUniform();
-		assertThatObservation(hist.build())
+		assertThatObservation(observation)
 			.usingHypothesisTester(new PearsonsChiSquared(0.0005))
 			.isUniform();
 	}
