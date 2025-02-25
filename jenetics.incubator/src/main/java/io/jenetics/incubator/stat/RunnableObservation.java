@@ -21,10 +21,11 @@ package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.DoubleSummaryStatistics;
 import java.util.NoSuchElementException;
 
 import io.jenetics.incubator.stat.Histogram.Partition;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.DoubleMoments;
 
 /**
  * This object allows evaluating a given sampling within a given execution
@@ -39,7 +40,7 @@ public final class RunnableObservation implements Runnable, Observation {
 	private final Partition partition;
 
 	private Histogram histogram;
-	private Statistics statistics;
+	private DoubleMoments statistics;
 	private volatile boolean evaluated = false;
 
 	/**
@@ -61,19 +62,13 @@ public final class RunnableObservation implements Runnable, Observation {
 	}
 
 	private synchronized void evaluate() {
-		final var summary = new DoubleSummaryStatistics();
+		final var summary = new DoubleMomentStatistics();
 
 		histogram = new Histogram.Builder(partition)
 			.observer(summary)
 			.build(sampling);
 
-		statistics = new Statistics(
-			summary.getCount(),
-			summary.getMin(),
-			summary.getMax(),
-			summary.getSum(),
-			summary.getAverage()
-		);
+		statistics = summary.result();
 
 		evaluated = true;
 	}
@@ -87,7 +82,7 @@ public final class RunnableObservation implements Runnable, Observation {
 	}
 
 	@Override
-	public Statistics statistics() {
+	public DoubleMoments statistics() {
 		if (!evaluated) {
 			throw new NoSuchElementException();
 		}

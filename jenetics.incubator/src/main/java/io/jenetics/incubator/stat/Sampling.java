@@ -20,6 +20,8 @@
 package io.jenetics.incubator.stat;
 
 /**
+ * This functional interface represents a sampling task.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -27,8 +29,21 @@ package io.jenetics.incubator.stat;
 @FunctionalInterface
 public interface Sampling {
 
+	/**
+	 * Runs {@code this} sampling task. The sampling values are added to the
+	 * given {@code samples} value <em>sink</em>.
+	 *
+	 * @param samples the sample value <em>sink</em>
+	 */
 	void run(final Samples samples);
 
+	/**
+	 * Create a new sampling object which repeats the given sub{@code sampling}
+	 *
+	 * @param count number of times to repeat
+	 * @param sampling the subsampling to be repeated
+	 * @return a new sampling
+	 */
 	static Sampling repeat(final int count, final Sampling sampling) {
 		return samples -> {
 			for (int i = 0; i < count; ++i) {

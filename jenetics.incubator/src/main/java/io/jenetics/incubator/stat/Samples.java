@@ -23,6 +23,8 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 /**
+ * This functional interface serves as a sink for sample values.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -30,20 +32,45 @@ import java.util.stream.Stream;
 @FunctionalInterface
 public interface Samples {
 
+	/**
+	 * Adding a new sample value.
+	 *
+	 * @param sample the sample value
+	 */
 	void add(double sample);
 
+	/**
+	 * Adding a new sample value.
+	 *
+	 * @param sample the sample value
+	 */
 	default void add(final Number sample) {
 		add(sample.doubleValue());
 	}
 
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
 	default void addAll(final Iterable<? extends Number> samples) {
 		samples.forEach(this::add);
 	}
 
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
 	default void addAll(final DoubleStream samples) {
 		samples.forEach(this::add);
 	}
 
+	/**
+	 * Adding a new sample values.
+	 *
+	 * @param samples the sample values
+	 */
 	default void addAll(final Stream<? extends Number> samples) {
 		samples.forEach(this::add);
 	}

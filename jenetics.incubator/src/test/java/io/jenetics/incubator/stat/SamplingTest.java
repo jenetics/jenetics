@@ -19,28 +19,30 @@
  */
 package io.jenetics.incubator.stat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.Test;
+
 /**
- * Holds the statistical values as produced by the
- * {@link java.util.DoubleSummaryStatistics} class.
- *
- * @see java.util.DoubleSummaryStatistics
- *
- * @param count the number of samples
- * @param min the minimum sample value
- * @param max the maximum sample value
- * @param sum the sum of the sample values
- * @param mean the average of the sample values
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public record Statistics(
-	long count,
-	double min,
-	double max,
-	double sum,
-	double mean
-) {
-	public static final Statistics EMPTY = new Statistics(0, 0, 0, 0, 0);
+public class SamplingTest {
+
+	@Test
+	public void repeat() {
+		final var sampling = Sampling.repeat(100, samples ->
+			samples.addAll(IntStream.range(0, 100).boxed())
+		);
+
+		final var statistics = new DoubleSummaryStatistics();
+		sampling.run(statistics::accept);
+
+		assertThat(statistics.getCount()).isEqualTo(100*100);
+		assertThat(statistics.getMin()).isEqualTo(0);
+		assertThat(statistics.getMax()).isEqualTo(99);
+	}
+
 }

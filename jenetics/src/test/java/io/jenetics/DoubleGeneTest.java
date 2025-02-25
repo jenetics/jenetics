@@ -62,10 +62,9 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double max = 100;
 
 		final var observation = new RunnableObservation(
-			Sampling.repeat(200_000,samples -> {
-				var gene = DoubleGene.of(min, max);
-				samples.add(gene.doubleValue());
-			}),
+			Sampling.repeat(200_000, samples ->
+				samples.add(DoubleGene.of(min, max).doubleValue())
+			),
 			Partition.of(min, max, 20)
 		);
 		new StableRandomExecutor(seed).execute(observation);

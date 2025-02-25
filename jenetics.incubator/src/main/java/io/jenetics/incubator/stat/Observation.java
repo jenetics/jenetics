@@ -21,6 +21,8 @@ package io.jenetics.incubator.stat;
 
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.stat.DoubleMoments;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -40,10 +42,10 @@ public interface Observation {
 	 *
 	 * @return the statistics of the sample values
 	 */
-	Statistics statistics();
+	DoubleMoments statistics();
 
-	static Observation of(final Histogram histogram, final Statistics statistics) {
-		record SimpleObservation(Histogram histogram, Statistics statistics)
+	static Observation of(final Histogram histogram, final DoubleMoments statistics) {
+		record SimpleObservation(Histogram histogram, DoubleMoments statistics)
 			implements Observation {}
 
 		return new SimpleObservation(

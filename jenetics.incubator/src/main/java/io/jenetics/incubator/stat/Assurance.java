@@ -173,6 +173,18 @@ public final class Assurance {
 			this.observation = requireNonNull(observation);
 		}
 
+		/**
+		 * Checks if the observation follows a normal distribution with the
+		 * given {@code mean} and standard deviation.
+		 */
+		public void isNormal() {
+			final var statistics = observation.statistics();
+			follows(new NormalDistribution(
+				statistics.mean(),
+				Math.sqrt(statistics.variance())
+			));
+		}
+
 	}
 
 	/**
@@ -191,8 +203,7 @@ public final class Assurance {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static ObservationAssert
-	assertThatObservation(Observation observation) {
+	public static ObservationAssert assertThatObservation(Observation observation) {
 		return new ObservationAssert(observation);
 	}
 

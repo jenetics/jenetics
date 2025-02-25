@@ -19,20 +19,20 @@
  */
 package io.jenetics;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
-import io.jenetics.util.StableRandomExecutor;
+import static io.jenetics.TestUtils.diff;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static io.jenetics.TestUtils.diff;
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-import static java.lang.Math.sqrt;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -71,27 +71,18 @@ public class MeanAltererTest extends AltererTester {
 		final ISeq<Phenotype<DoubleGene, Double>> population =
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
-		// The mutator to test.
-		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(p);
-
-		final var statistics = new LongMomentStatistics();
-
 		final var observation = new RunnableObservation(
-			samples -> {
-				for (int i = 0; i < 100; ++i) {
-					final long alterations = crossover
-						.alter(population, 1)
-						.alterations();
-					samples.add(alterations);
-					statistics.accept(alterations);
-				}
-			},
+			Sampling.repeat(100, samples -> {
+				final long alterations = new MeanAlterer<DoubleGene, Double>(p)
+					.alter(population, 1)
+					.alterations();
+				samples.add(alterations);
+			}),
 			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
 		);
 		new StableRandomExecutor(123456789).execute(observation);
 
-		assertThatObservation(observation)
-			.isNormal(npopulation*p, sqrt(statistics.variance()));
+		assertThatObservation(observation).isNormal();
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")
