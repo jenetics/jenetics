@@ -33,6 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.ObservedDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -112,9 +113,15 @@ public class RouletteWheelSelectorTest
 			POPULATION_COUNT,
 			50
 		);
-		new StableRandomExecutor(123).execute(observation);
+		new StableRandomExecutor(1234561).execute(observation);
 
-		assertThatObservation(observation).isLike(expected.value);
+		final var distribution = ObservedDistribution.of(
+			observation.histogram().partition(),
+			expected.value
+		);
+
+		assertThatObservation(observation)
+			.follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

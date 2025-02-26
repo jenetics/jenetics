@@ -23,10 +23,7 @@ import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
-
-import org.apache.commons.math4.legacy.stat.inference.ChiSquareTest;
 
 import io.jenetics.incubator.stat.HypothesisTester.Accept;
 import io.jenetics.incubator.stat.HypothesisTester.Reject;
@@ -132,33 +129,6 @@ public final class Assurance {
 		 */
 		public void isNormal(double mean, double stddev) {
 			follows(new NormalDistribution(mean, stddev));
-		}
-
-		/**
-		 * Checks if the observation is like the {@code expected} values.
-		 *
-		 * @param expected the expected values
-		 */
-		public void isLike(double[] expected) {
-			final double[] exp = Arrays.stream(expected)
-				.map(v -> Math.max(v, -Double.MAX_VALUE))
-				.toArray();
-			final long[] hist = histogram.buckets().stream()
-				.mapToLong(Histogram.Bucket::count)
-				.toArray();
-
-			final var maxChi2 = PearsonsChiSquared.P0_01
-				.maxChi2(hist.length - 1);
-
-			final var chi2 = new ChiSquareTest()
-				.chiSquare(exp, hist);
-
-			if (chi2 > maxChi2) {
-				throw new AssertionError(
-					"Data doesn't follow the expected distribution: [max-chi2=%f, chi2=%f]."
-						.formatted(maxChi2, chi2)
-				);
-			}
 		}
 
 	}
