@@ -61,7 +61,7 @@ public class ExponentialRankSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final var distribution = SelectorTester.distribution(
+		final var distribution = SelectorTester.observation(
 			new ExponentialRankSelector<>(c),
 			opt,
 			POPULATION_COUNT,

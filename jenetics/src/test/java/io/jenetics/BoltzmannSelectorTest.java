@@ -74,7 +74,7 @@ public class BoltzmannSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final var distribution = SelectorTester.distribution(
+		final var distribution = SelectorTester.observation(
 			new BoltzmannSelector<>(b),
 			opt,
 			POPULATION_COUNT,

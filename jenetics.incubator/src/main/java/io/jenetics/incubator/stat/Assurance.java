@@ -149,6 +149,7 @@ public final class Assurance {
 
 			final var maxChi2 = PearsonsChiSquared.P0_01
 				.maxChi2(hist.length - 1);
+
 			final var chi2 = new ChiSquareTest()
 				.chiSquare(exp, hist);
 

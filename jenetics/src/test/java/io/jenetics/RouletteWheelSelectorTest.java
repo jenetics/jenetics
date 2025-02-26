@@ -34,9 +34,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Named;
-import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -104,19 +104,17 @@ public class RouletteWheelSelectorTest
 		});
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 10, successPercentage = 70
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final Histogram distribution = SelectorTester.distribution(
+		final var observation = SelectorTester.observation(
 			new RouletteWheelSelector<>(),
 			opt,
 			POPULATION_COUNT,
 			50
 		);
+		new StableRandomExecutor(123).execute(observation);
 
-		assertThatObservation(distribution).isLike(expected.value);
+		assertThatObservation(observation).isLike(expected.value);
 	}
 
 	@DataProvider(name = "expectedDistribution")

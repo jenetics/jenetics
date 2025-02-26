@@ -66,7 +66,7 @@ public class LinearRankSelectorTest
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final var distribution = SelectorTester.distribution(
+		final var distribution = SelectorTester.observation(
 			new LinearRankSelector<>(nminus),
 			opt,
 			POPULATION_COUNT,

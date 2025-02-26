@@ -427,7 +427,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		@Override
 		public String toString() {
 			return "Buckets[partition=%s, frequencies=%s]"
-				.formatted(partition, frequencies);
+				.formatted(partition, Arrays.toString(frequencies));
 		}
 
 	}

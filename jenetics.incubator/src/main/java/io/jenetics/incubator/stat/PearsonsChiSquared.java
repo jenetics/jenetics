@@ -117,7 +117,7 @@ public record PearsonsChiSquared(double p) implements HypothesisTester {
 					probability(cdf, bucket)*count
 				}
 			)
-			.filter(values -> values[0] != 0.0)
+			.filter(values -> values[1] != 0.0)
 			.mapToDouble(values -> values[0]/values[1])
 			.sum();
 

@@ -83,7 +83,7 @@ public class StochasticUniversalSelectorTest
 		invocationCount = 10, successPercentage = 70
 	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final var distribution = SelectorTester.distribution(
+		final var distribution = SelectorTester.observation(
 			new StochasticUniversalSelector<>(),
 			opt,
 			POPULATION_COUNT,

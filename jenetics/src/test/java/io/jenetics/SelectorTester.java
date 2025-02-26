@@ -38,10 +38,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.incubator.stat.Interval;
+import io.jenetics.incubator.stat.Observation;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
-import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -242,13 +245,17 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final List<Histogram> histograms = distributions(
+		final List<RunnableObservation> observations = observations(
 			parameters,
 			selector,
 			opt,
 			populationCount,
 			loops
 		);
+		final List<Histogram> histograms = observations.stream()
+			.peek(RunnableObservation::run)
+			.map(Observation::histogram)
+			.toList();
 
 		final List<Selector<?, ?>> selectors = parameters.stream()
 			.map(selector)
@@ -268,16 +275,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param <P> the parameter type
 	 * @return the selector distributions
 	 */
-	public static <P> List<Histogram> distributions(
+	public static <P> List<RunnableObservation> observations(
 		final List<P> parameters,
 		final Function<P, Selector<DoubleGene, Double>> selector,
 		final Optimize opt,
 		final int populationCount,
 		final int loops
 	) {
-
 		return parameters.stream()
-			.map(p -> distribution(selector.apply(p), opt, populationCount, loops))
+			.map(p -> observation(selector.apply(p), opt, populationCount, loops))
 			.toList();
 	}
 
@@ -291,28 +297,22 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param populationCount the number of in used for determining the
 	 *        selector distribution.
 	 * @param loops the number of selections performed for one population
-	 * @return the selectors selection distribution
+	 * @return the selector selection observation
 	 */
-	public static Histogram distribution(
+	public static RunnableObservation observation(
 		final Selector<DoubleGene, Double> selector,
 		final Optimize opt,
 		final int populationCount,
 		final int loops
 	) {
-		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.gene().allele();
-
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(MIN, MAX));
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		final var hist = Histogram.Builder.of(new Interval(MIN, MAX), CLASS_COUNT);
-		IntStream.range(0, loops).parallel()
-			.forEach(j -> {
-
-
-				final ISeq<Phenotype<DoubleGene, Double>> population =
+		return new RunnableObservation(
+			Sampling.repeat(loops, samples -> {
+				final var population =
 					IntStream.range(0, populationCount)
 						.mapToObj(i -> ptf.newInstance())
 						.collect(ISeq.toISeq());
@@ -320,10 +320,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 				selector.select(population, selectionCount, opt).stream()
 					.map(pt -> pt.genotype().gene().allele())
-					.forEach(hist::add);
-			});
-
-		return hist.build();
+					.forEach(samples::add);
+			}),
+			Histogram.Partition.of(new Interval(MIN, MAX), CLASS_COUNT)
+		);
 	}
 
 	/**
