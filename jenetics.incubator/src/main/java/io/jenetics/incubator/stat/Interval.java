@@ -52,6 +52,15 @@ public record Interval(double min, double max) {
 	}
 
 	/**
+	 * Return the interval size, {@code max - min}.
+	 *
+	 * @return {@code max - min}
+	 */
+	public double size() {
+		return max - min;
+	}
+
+	/**
 	 * Test whether the given {@code value} lies within, below or above
 	 * {@code this} interval.
 	 *
@@ -75,7 +84,7 @@ public record Interval(double min, double max) {
 	 *
 	 * @return the number of distinct double values of {@code this} interval
 	 */
-	long size() {
+	long elements() {
 		if (Double.isInfinite(min) || Double.isInfinite(max)) {
 			return Long.MAX_VALUE;
 		}

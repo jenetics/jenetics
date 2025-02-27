@@ -36,11 +36,35 @@ import io.jenetics.internal.math.DoubleAdder;
  */
 public final class ObservedDistribution implements Distribution {
 	private final Histogram observation;
-	private final long samples;
 
+	private final long samples;
+	private final double[] sums;
+
+	/**
+	 * Create a new distribution object from the given {@code observation}.
+	 *
+	 * @param observation the observed distribution as histogram
+	 */
 	public ObservedDistribution(final Histogram observation) {
 		this.observation = requireNonNull(observation);
 		this.samples = observation.samples();
+
+		final var buckets = observation.buckets();
+		this.sums = new double[buckets.size()];
+		double sum = 0;
+		for (int i = 0; i < buckets.size(); ++i) {
+			this.sums[i] = sum;
+			sum += buckets.get(i).count();
+		}
+	}
+
+	/**
+	 * Return the observed distribution.
+	 *
+	 * @return the observed distribution
+	 */
+	public Histogram observation() {
+		return observation;
 	}
 
 	@Override
@@ -54,17 +78,12 @@ public final class ObservedDistribution implements Distribution {
 				return 1;
 			}
 
-			final double base = observation.buckets().stream()
-				.limit(index)
-				.mapToLong(Histogram.Bucket::count)
-				.sum();
-
 			final var bucket = observation.buckets().get(index);
 			final var itv = bucket.interval();
 			final var rest = (value - itv.min())/
 				(itv.max() - itv.min())*bucket.count();
 
-			return (base + rest)/samples;
+			return (sums[index] + rest)/samples;
 		};
 	}
 
@@ -80,6 +99,33 @@ public final class ObservedDistribution implements Distribution {
 		};
 	}
 
+	@Override
+	public int hashCode() {
+		return observation.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof ObservedDistribution dist &&
+			dist.observation.equals(observation);
+	}
+
+	@Override
+	public String toString() {
+		return "ObservedDistribution[observation=%s]".formatted(observation);
+	}
+
+	/**
+	 * Create a new <em>observed</em> distribution object for the given
+	 * {@code partition} and the {@code expected} frequencies.
+	 *
+	 * @param partition the partition of the observation
+	 * @param expected the observed frequencies
+	 * @return a newly created distribution object
+	 * @throws IllegalArgumentException if {@code partition.size() != expected.length}
+	 *         or the frequencies are not {@link Double#isInfinite(double)} or
+	 *         smaller than zero
+	 */
 	public static ObservedDistribution of(
 		final Partition partition,
 		final double[] expected
@@ -91,6 +137,11 @@ public final class ObservedDistribution implements Distribution {
 			);
 		}
 		for (var value : expected) {
+			if (!Double.isFinite(value)) {
+				throw new IllegalArgumentException(
+					"Expected values must be finite: %s."
+						.formatted(Arrays.toString(expected)));
+			}
 			if (value < 0) {
 				throw new IllegalArgumentException(
 					"Expected values must be non-negative: %s."
@@ -109,10 +160,18 @@ public final class ObservedDistribution implements Distribution {
 			.toArray();
 		final var histogram = new Histogram(new Buckets(partition, frequencies));
 
-
 		return new ObservedDistribution(histogram);
 	}
 
+	/**
+	 * Create a new distribution within the given {@code interval} and the
+	 * {@code expected} frequencies within the interval. The number of
+	 * subintervals is determined by the length of the frequency array.
+	 *
+	 * @param interval the overall distribution interval
+	 * @param expected the expected frequencies
+	 * @return a new distribution object
+	 */
 	public static ObservedDistribution of(
 		final Interval interval,
 		final double[] expected

@@ -267,7 +267,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 						.formatted(parts)
 				);
 			}
-			final long size = interval.size();
+			final long size = interval.elements();
 			if (size < parts) {
 				throw new IllegalArgumentException("""
 					%s can hold only %d distinct double values. \
