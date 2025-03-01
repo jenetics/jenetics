@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
 
-import io.jenetics.incubator.stat.Histogram.Bucket;
 import io.jenetics.internal.util.Requires;
 
 /**
@@ -109,16 +108,18 @@ public record PearsonsChiSquared(double p) implements HypothesisTester {
 		requireNonNull(observation);
 
 		final var count = observation.samples();
+		if (count == 0) {
+			return Double.POSITIVE_INFINITY;
+		}
+
 		final var cdf = hypothesis.cdf();
 
 		final var chi2 = observation.buckets().stream()
-			.map(bucket -> new double[] {
-					bucket.count()*bucket.count(),
-					probability(cdf, bucket)*count
-				}
-			)
-			.filter(values -> values[1] != 0.0)
-			.mapToDouble(values -> values[0]/values[1])
+			.mapToDouble(bucket -> {
+				final double a = bucket.count()*bucket.count();
+				final double b = cdf.probability(bucket.interval())*count;
+				return a/b;
+			})
 			.sum();
 
 		return chi2 - count;
@@ -127,11 +128,6 @@ public record PearsonsChiSquared(double p) implements HypothesisTester {
 	double maxChi2(final int degreesOfFreedom) {
 		return ChiSquaredDistribution.of(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - p);
-	}
-
-	static double probability(final Cdf cdf, final Bucket bucket) {
-		final var interval = bucket.interval();
-		return cdf.apply(interval.max()) - cdf.apply(interval.min());
 	}
 
 }

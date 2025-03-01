@@ -36,4 +36,15 @@ public interface Cdf {
 	 * @return the cumulative value
 	 */
 	double apply(double value);
+
+	/**
+	 * Return the probability of the CDF for the given {@code interval}.
+	 *
+	 * @param interval the interval
+	 * @return the probability for the given {@code interval}
+	 */
+	default double probability(final Interval interval) {
+		return apply(interval.max()) - apply(interval.min());
+	}
+
 }

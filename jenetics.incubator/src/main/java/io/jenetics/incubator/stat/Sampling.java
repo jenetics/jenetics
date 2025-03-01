@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.stat;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * This functional interface represents a sampling task.
  *
@@ -45,6 +47,7 @@ public interface Sampling {
 	 * @return a new sampling
 	 */
 	static Sampling repeat(final int count, final Sampling sampling) {
+		requireNonNull(sampling);
 		return samples -> {
 			for (int i = 0; i < count; ++i) {
 				sampling.run(samples);
