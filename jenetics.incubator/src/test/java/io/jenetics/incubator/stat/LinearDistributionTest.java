@@ -17,13 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.incubator.stat;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.incubator.stat.LinearDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
