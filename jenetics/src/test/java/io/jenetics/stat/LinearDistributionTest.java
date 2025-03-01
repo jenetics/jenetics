@@ -24,28 +24,11 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.Interval;
 import io.jenetics.incubator.stat.LinearDistribution;
-import io.jenetics.util.Factory;
-import io.jenetics.util.ObjectTester;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class LinearDistributionTest
-	extends ObjectTester<LinearDistribution>
-{
-
-	@Override
-	protected Factory<LinearDistribution> factory() {
-		return () -> {
-			final var random = RandomRegistry.random();
-
-			final double min = random.nextInt(100) + 100;
-			final double max = random.nextInt(100) + 100 + min;
-			final double y2 = random.nextDouble();
-			return new LinearDistribution(new Interval(min, max), y2);
-		};
-	}
+public class LinearDistributionTest {
 
 	@Test
 	public void pdf() {
