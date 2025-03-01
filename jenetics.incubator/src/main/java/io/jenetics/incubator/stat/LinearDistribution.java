@@ -60,7 +60,7 @@ import java.util.Objects;
  * @version !__version__!
  * @since !__version__!
  */
-public class LinearDistribution implements Distribution {
+public final class LinearDistribution implements Distribution {
 
 	private final Interval _domain;
 

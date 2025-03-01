@@ -43,6 +43,9 @@ public final class Assurance {
 	 * Observation asserts.
 	 * ************************************************************************/
 
+	/**
+	 * Assertion class for histogram testing.
+	 */
 	public static class HistogramAssert {
 		private final Histogram histogram;
 

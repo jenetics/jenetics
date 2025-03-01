@@ -19,21 +19,35 @@
  */
 package io.jenetics.incubator.stat;
 
-/**
- * Probability density function.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
- */
-@FunctionalInterface
-public interface Pdf {
+import java.util.random.RandomGenerator;
 
-	/**
-	 * Calculate the probability density value.
-	 *
-	 * @param value the input value
-	 * @return the probability density
-	 */
-	double apply(double value);
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
+final class StatSnippets {
+	private StatSnippets() {
+	}
+
+	static final class HistogramSnippets {
+
+		void creation() {
+			// @start region="Histogram.builder"
+			// The range of the observed values.
+			final Interval interval = new Interval(-5, 5);
+
+			// The value source.
+			final var random = RandomGenerator.getDefault();
+
+			// Building the histogram
+			final Histogram observation = Histogram.Builder.of(interval, 20)
+				.build(samples -> {
+					for (int i = 0; i < 1_000_000; ++i) {
+						samples.add(random.nextGaussian());
+					}
+				});
+			// @end
+		}
+
+	}
+
 }

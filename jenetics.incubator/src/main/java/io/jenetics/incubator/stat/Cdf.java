@@ -28,5 +28,12 @@ package io.jenetics.incubator.stat;
  */
 @FunctionalInterface
 public interface Cdf {
+
+	/**
+	 * Calculates the cumulative distribution value for the given input.
+	 *
+	 * @param value the value to calculate the cumulative distribution value for
+	 * @return the cumulative value
+	 */
 	double apply(double value);
 }

@@ -38,47 +38,20 @@ import java.util.stream.StreamSupport;
  * This class lets you create a histogram from {@code double} sample data. The
  * following graph shows the structure (buckets) of the histogram.
  * <pre>{@code
- *  -Ꝏ    min                                          max   Ꝏ
- *     -----+----+----+----+----+----+----+----+----+----+-----
- *      20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
- *     -----+----+----+----+----+----+----+----+----+----+-----
- *       0    1    2    3    4    5    6    7    8    9    10
+ *    -Ꝏ    min                                          max   Ꝏ
+ *       -----+----+----+----+----+----+----+----+----+----+-----
+ *        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+ *       -----+----+----+----+----+----+----+----+----+----+-----
+ *       left   0    1    2    3    4    5    6    7    8    right
+ *   residual                                                residual
  * }</pre>
  * <p>
- * The defined separators must all be finite. A {@code [-Ꝏ, min)} and a
- * {@code [max, Ꝏ)} bin is automatically added at the beginning and the end
- * of the frequency.
+ * The defined buckets must all be finite. A {@code [-Ꝏ, min)} and a
+ * {@code [max, Ꝏ)} residual bin is automatically added and available via the
+ * {@link #residual()} component.
  * <p>
  * <b>Histogram creation from double stream</b>
- * {@snippet lang="java":
- * final Histogram observation = RandomGenerator.getDefault()
- *     .doubles(10_000)
- *     .collect(
- *         () -> Histogram.Builder.of(0, 1, 20),
- *         Histogram.Builder::accept,
- *         Histogram.Builder::combine
- *     )
- *     .build();
- * }
- * <b>Histogram creation from object stream</b>
- * {@snippet lang="java":
- * final ISeq<DoubleGene> genes = DoubleGene.of(0, 10)
- *     .instances().limit(1000)
- *     .collect(ISeq.toISeq());
- *
- * final Histogram observations = genes.stream()
- *     .collect(Histogram.toHistogram(0, 10, 20, DoubleGene::doubleValue));
- * }
- * <p>
- * <b>Histogram creation from array</b>
- * {@snippet lang="java":
- * final double[] data = null; // @replace substring='null' replacement="..."
- * final var builder = Histogram.Builder.of(0.0, 1.0, 20);
- * for (var d : data) {
- *     builder.accept(d);
- * }
- * final Histogram observations = builder.build();
- * }
+ * {@snippet class="StatSnippets" region="Histogram.builder"}
  *
  * @param buckets the {@link Bucket} list, the histogram consists of
  * @param residual the <em>residual</em> buckets, which complete the whole
@@ -325,20 +298,12 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 	/**
 	 * Represents a list of buckets which are part of a histogram. The buckets
-	 * of this object must be non-overlapping and will usually have no gaps,
-	 * although they are allowed, like shown in the following example.
+	 * of this object are non-overlapping and have no gaps.
 	 * <pre>{@code
 	 *    min                                     max
 	 *     +----+----+----+----+----+----+----+----+
 	 *     | 1  | 2  | 3  | 4  |  5 | 6  | 7  |  8 |
 	 *     +----+----+----+----+----+----+----+----+
-	 * }</pre>
-	 * This example shows non overlapping buckets with gaps.
-	 * <pre>{@code
-	 *    min                                      max
-	 *     +----+----+----+   +----+----+ +----+----+
-	 *     | 1  | 2  | 3  |   | 4  | 5  | | 6  |  7 |
-	 *     +----+----+----+   +----+----+ +----+----+
 	 * }</pre>
 	 */
 	public record Buckets(Partition partition, long... frequencies)
@@ -435,6 +400,15 @@ public record Histogram(Buckets buckets, Residual residual) {
 	/**
 	 * Contains the <em>left</em> and <em>right</em> residual counts for
 	 * histograms with <em>finite</em> interval.
+	 *
+	 * <pre>{@code
+	 *    -Ꝏ    min                                          max   Ꝏ
+	 *       -----+----+----+----+----+----+----+----+----+----+-----
+	 *        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+	 *       -----+----+----+----+----+----+----+----+----+----+-----
+	 *       left   0    1    2    3    4    5    6    7    8    right
+	 *   residual                                                residual
+	 * }</pre>
 	 *
 	 * @param left the left (lower) residual count. This value is increased if
 	 *        a sample value is smaller than the histogram interval.
@@ -581,18 +555,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		/**
 		 * Create a new <em>immutable</em> histogram from the given {@code sample}
 		 * block.
-		 * {@snippet lang="java":
-		 * final double[] values = RandomGenerator.getDefault()
-		 *     .doubles(10000, -5, 5)
-		 *     .toArray();
-		 *
-		 * final var histogram = new Builder(new Interval(-5, 5), 10)
-		 *     .build(samples -> {
-		 * 	        for (double value : values) {
-		 * 	            samples.accept(value);
-		 * 	        }
-		 * 	    });
-		 * }
+		 * {@snippet class="StatSnippets" region="Histogram.builder"}
 		 *
 		 * @param sampling the samples consumer
 		 * @return a new histogram
@@ -602,28 +565,42 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return build();
 		}
 
-		//		/**
-//		 * Return a histogram builder with the given {@code min} and {@code max}
-//		 * values and number {@code classes}. The histogram, created by the
-//		 * builder will consist of {@code classes + 2} buckets. The <em>inner</em>
-//		 * buckets will be in the range {@code [min, max)} and consist of the
-//		 * defined {@code classes}.
-//		 * <pre>{@code
-//		 *  -Ꝏ   min                                           max   Ꝏ
-//		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-//		 *         | 1  | 2  | 3  | 4  |  5 | 6  | 7  |     |  c |
-//		 *     ----+----+----+----+----+----+----+----+  ~  +----+----
-//		 * }</pre>
-//		 *
-//		 * @param min the minimal value of the inner buckets
-//		 * @param max the maximal value of the inner buckets
-//		 * @param classes the number of classes between {@code [min, max)}
-//		 * @return a new histogram builder
-//		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
-//		 *         not finite or {@code classes < 1}
-//		 */
+		/**
+		 * Return a histogram builder with the given {@code min} and {@code max}
+		 * values and number {@code classes}.
+		 * <pre>{@code
+		 *    -Ꝏ    min                                          max   Ꝏ
+		 *       -----+----+----+----+----+----+----+----+----+----+-----
+		 *        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 | 18
+		 *       -----+----+----+----+----+----+----+----+----+----+-----
+		 *       left   0    1    2    3    4    5    6    7    8    right
+		 *   residual                                                residual
+		 * }</pre>
+		 *
+		 * @param interval the range of the observed values
+		 * @param classes the number of classes between {@code [min, max)}
+		 * @return a new histogram builder
+		 * @throws IllegalArgumentException if {@code classes < 1}
+		 */
 		public static Builder of(final Interval interval, final int classes) {
 			return new Builder(Partition.of(interval, classes));
+		}
+
+		/**
+		 * Return a histogram builder with the given {@code min} and {@code max}
+		 * values and number {@code classes}.
+		 *
+		 * @see #of(Interval, int)
+		 *
+		 * @param min the minimal value of the inner buckets
+		 * @param max the maximal value of the inner buckets
+		 * @param classes the number of classes between {@code [min, max)}
+		 * @return a new histogram builder
+		 * @throws IllegalArgumentException if {@code min >= max} or min or max are
+		 *         not finite or {@code classes < 1}
+		 */
+		public static Builder of(final double min, final double max, final int classes) {
+			return new Builder(Partition.of(new Interval(min, max), classes));
 		}
 
 	}
@@ -706,7 +683,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 	 *         histogram
 	 */
 	public Builder toBuilder() {
-		return new Builder(buckets);
+		return new Builder(buckets, residual);
 	}
 
 	/**
