@@ -19,11 +19,33 @@
  */
 package io.jenetics.incubator.stat;
 
+import static io.jenetics.incubator.stat.PearsonsChiSquared.sqr;
+
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.internal.util.Requires;
 
 /**
+ * Implements the Yates's chi-squared test.
+ * <blockquote>
+ * In statistics, Yates's correction for continuity (or Yates's chi-squared test)
+ * is used in certain situations when testing for independence in a contingency
+ * table. It aims at correcting the error introduced by assuming that the
+ * discrete probabilities of frequencies in the table can be approximated by a
+ * continuous distribution (chi-squared). Unlike the standard Pearson chi-squared
+ * statistic, it is approximately unbiased.
+ * <br>
+ * The effect of Yates's correction is to prevent overestimation of statistical
+ * significance for small data. This formula is chiefly used when at least one
+ * cell of the table has an expected count smaller than 5.
+ * <em>Wikipedia: <a
+ * href="https://en.wikipedia.org/wiki/Yates%27s_correction_for_continuity">
+ * Yates's correction for continuity</a></em>
+ * </blockquote>
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Yates%27s_correction_for_continuity">
+ *     Wikipedia: Yates's correction for continuity</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -31,7 +53,18 @@ import io.jenetics.internal.util.Requires;
 public record YatesChiSquared(double pValue) implements ChiSquared {
 
 	/**
-	 * Create a new Pearson's chi-squared tester.
+	 * A Yates's chi-squared tester with the most commonly used p-value of
+	 * <em>0.05</em>.
+	 */
+	public static final YatesChiSquared P0_05 = new YatesChiSquared(0.05);
+
+	/**
+	 * A Yates's chi-squared tester with a p-value of <em>0.01</em>
+	 */
+	public static final YatesChiSquared P0_01 = new YatesChiSquared(0.01);
+
+	/**
+	 * Create a new Yates's chi-squared tester.
 	 *
 	 * @param pValue the p-value used for the hypothesis tester
 	 */
@@ -47,19 +80,22 @@ public record YatesChiSquared(double pValue) implements ChiSquared {
 		requireNonNull(observation);
 		requireNonNull(hypothesis);
 
-		final var count = observation.samples();
-		if (count == 0) {
+		final var samples = observation.samples();
+		if (samples == 0) {
 			return Double.POSITIVE_INFINITY;
 		}
 
+		final double epsilon = 1.0/samples;
 		final var cdf = hypothesis.cdf();
 
-		return observation.buckets().stream()
+		final var result = observation.buckets().stream()
 			.mapToDouble(bucket -> {
-				final var e = cdf.probability(bucket.interval());
-				final var o = (double)bucket.count()/count;
-				return Math.pow(Math.abs(o - e) - 0.5, 2)/e;
+				final var e = cdf.probability(bucket.interval())*samples;
+				final var o = bucket.count();
+				return e > epsilon ? sqr(Math.abs(o - e) - 0.5)/e : 0;
 			})
 			.sum();
+
+		return Double.isFinite(result) ? result : Double.POSITIVE_INFINITY;
 	}
 }

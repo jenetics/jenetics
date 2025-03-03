@@ -32,13 +32,16 @@ import io.jenetics.internal.util.Requires;
  * chi-squared tests (e.g., Yates, likelihood ratio, portmanteau test in time
  * series, etc.) – statistical procedures whose results are evaluated by
  * reference to the chi-squared distribution. Its properties were first
- * investigated by Karl Pearson in 1900.[1] In contexts where it is important to
+ * investigated by Karl Pearson in 1900. In contexts where it is important to
  * improve a distinction between the test statistic and its distribution, names
  * similar to Pearson χ-squared test or statistic are used.
  * <em>Wikipedia: <a
  * href="https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test">
  * Pearson's chi-squared test</a></em>
  * </blockquote>
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test">
+ *     Wikipedia: Pearson's chi-squared test</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -75,22 +78,27 @@ public record PearsonsChiSquared(double pValue) implements ChiSquared {
 		requireNonNull(observation);
 		requireNonNull(hypothesis);
 
-		final var count = observation.samples();
-		if (count == 0) {
+		final var samples = observation.samples();
+		if (samples == 0) {
 			return Double.POSITIVE_INFINITY;
 		}
 
+		final double epsilon = 1.0/samples;
 		final var cdf = hypothesis.cdf();
 
-		final var chi2 = observation.buckets().stream()
+		final var result = observation.buckets().stream()
 			.mapToDouble(bucket -> {
-				final double a = bucket.count()*bucket.count();
-				final double b = cdf.probability(bucket.interval())*count;
-				return a/b;
+				final var e = cdf.probability(bucket.interval())*samples;
+				final var o = bucket.count();
+				return e > epsilon ? sqr(o - e)/e : 0;
 			})
 			.sum();
 
-		return chi2 - count;
+		return Double.isFinite(result) ? result : Double.POSITIVE_INFINITY;
+	}
+
+	static double sqr(final double x) {
+		return x*x;
 	}
 
 }

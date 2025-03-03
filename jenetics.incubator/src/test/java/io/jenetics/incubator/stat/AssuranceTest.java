@@ -23,6 +23,7 @@ import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import java.util.Random;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -30,26 +31,32 @@ import org.testng.annotations.Test;
  */
 public class AssuranceTest {
 
-	@Test
-	public void assertUniformDistribution() {
+	@Test(dataProvider = "tester")
+	public void assertUniformDistribution(
+		final HypothesisTester tester,
+		final int count
+	) {
 		final var observation = new RunnableObservation(
-			samples -> samples.addAll(new Random(123).doubles(100_000)),
+			samples -> samples.addAll(new Random(123).doubles(count)),
 			Histogram.Partition.of(0, 1, 20)
 		);
 		observation.run();
 
 		assertThatObservation(observation)
-			.usingHypothesisTester(new PearsonsChiSquared(0.5))
+			.usingHypothesisTester(tester)
 			.isUniform();
 	}
 
-	@Test
-	public void assertNormalDistribution() {
-		final var random = new Random(123);
+	@Test(dataProvider = "tester")
+	public void assertNormalDistribution(
+		final HypothesisTester tester,
+		final int count
+	) {
+		final var random = new Random(1234);
 		final var interval = new Interval(-10, 10);
 
 		final var observation = new RunnableObservation(
-			Sampling.repeat(1_000_000, samples ->
+			Sampling.repeat(count, samples ->
 				samples.add(random.nextGaussian())
 			),
 			Histogram.Partition.of(interval, 20)
@@ -57,9 +64,17 @@ public class AssuranceTest {
 		observation.run();
 
 		assertThatObservation(observation)
-			.usingHypothesisTester(new PearsonsChiSquared(0.5))
+			.usingHypothesisTester(tester)
 			.withinRange(interval)
 			.isNormal(0, 1);
+	}
+
+	@DataProvider
+	public Object[][] tester() {
+		return new Object[][] {
+			{new PearsonsChiSquared(0.5), 1_000_000},
+			{new YatesChiSquared(0.05), 1_000},
+		};
 	}
 
 }
