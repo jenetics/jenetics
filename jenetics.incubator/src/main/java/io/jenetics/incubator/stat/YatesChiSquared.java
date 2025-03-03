@@ -40,7 +40,7 @@ public record YatesChiSquared(double pValue) implements ChiSquared {
 	}
 
 	@Override
-	public double chi2(
+	public double chiSquared(
 		final Histogram observation,
 		final Distribution hypothesis
 	) {

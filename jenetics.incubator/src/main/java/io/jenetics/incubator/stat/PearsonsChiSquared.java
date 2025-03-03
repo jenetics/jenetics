@@ -39,19 +39,6 @@ import io.jenetics.internal.util.Requires;
  * href="https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test">
  * Pearson's chi-squared test</a></em>
  * </blockquote>
- * This tester takes the p-value as parameter.
- * <blockquote>
- * The p-value is the probability of obtaining test results at least as extreme
- * as the result actually observed, under the assumption that the null
- * hypothesis is correct. A very small p-value means that such an extreme
- * observed outcome would be very unlikely under the null hypothesis. Even
- * though reporting p-values of statistical tests is common practice in academic
- * publications of many quantitative fields, misinterpretation and misuse of
- * p-values is widespread and has been a major topic in mathematics and
- * metascience.
- * <em>Wikipedia: <a href="https://en.wikipedia.org/wiki/P-value">
- * p-value</a></em>
- * </blockquote>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -81,7 +68,7 @@ public record PearsonsChiSquared(double pValue) implements ChiSquared {
 	}
 
 	@Override
-	public double chi2(
+	public double chiSquared(
 		final Histogram observation,
 		final Distribution hypothesis
 	) {
