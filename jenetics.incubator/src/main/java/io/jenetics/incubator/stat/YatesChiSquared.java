@@ -92,7 +92,7 @@ public record YatesChiSquared(double pValue) implements ChiSquared {
 			.mapToDouble(bucket -> {
 				final var e = cdf.probability(bucket.interval())*samples;
 				final var o = bucket.count();
-				return e > epsilon ? sqr(Math.abs(o - e) - 0.5)/e : 0;
+				return e > epsilon || o > 1 ? sqr(Math.abs(o - e) - 0.5)/e : 0;
 			})
 			.sum();
 

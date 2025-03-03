@@ -90,7 +90,7 @@ public record PearsonsChiSquared(double pValue) implements ChiSquared {
 			.mapToDouble(bucket -> {
 				final var e = cdf.probability(bucket.interval())*samples;
 				final var o = bucket.count();
-				return e > epsilon ? sqr(o - e)/e : 0;
+				return e > epsilon || o > 1 ? sqr(o - e)/e : 0;
 			})
 			.sum();
 
