@@ -21,17 +21,21 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import java.util.stream.IntStream;
+import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,18 +52,27 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		EqualsVerifier.forClass(IntegerGene.class).verify();
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		final var min = 0;
-		final var max = Integer.MAX_VALUE;
-		final var histogram = Histogram.Builder.of(min, max, 20);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final int min = 0;
+		final int max = Integer.MAX_VALUE;
 
-		IntStream.range(0, 200_000)
-			.mapToObj(i -> IntegerGene.of(min, max).allele())
-			.mapToDouble(Integer::doubleValue)
-			.forEach(histogram);
+		final var observation = new RunnableObservation(
+			Sampling.repeat(200_000, samples ->
+				samples.add(IntegerGene.of(min, max).doubleValue())
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456782).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test

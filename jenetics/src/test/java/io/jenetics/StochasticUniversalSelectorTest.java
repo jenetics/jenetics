@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,9 +31,11 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.ObservedDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -83,14 +85,21 @@ public class StochasticUniversalSelectorTest
 		invocationCount = 10, successPercentage = 70
 	)
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final var distribution = SelectorTester.distribution(
+		final var observation = SelectorTester.observation(
 			new StochasticUniversalSelector<>(),
 			opt,
 			POPULATION_COUNT,
 			50
 		);
+		new StableRandomExecutor(123456).execute(observation);
 
-		assertThatObservation(distribution).isLike(expected.value);
+		final var distribution = ObservedDistribution.of(
+			observation.histogram().partition(),
+			expected.value
+		);
+
+		assertThatObservation(observation)
+			.follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

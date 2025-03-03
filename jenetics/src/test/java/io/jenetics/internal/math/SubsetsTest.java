@@ -21,21 +21,24 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.random.RandomGenerator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -140,20 +143,28 @@ public class SubsetsTest {
 		return sorted;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void subSetDistribution() {
-		final int n = 100_000;
+	@Test(dataProvider = "seeds")
+	public void subSetDistribution(final long seed) {
+		final int min = 0;
+		final int max = 100_000;
 
-		final var random = new Random();
-		final var histogram = Histogram.Builder.of(0, n, 13);
+		final var observation = new RunnableObservation(
+			Sampling.repeat(10_000, samples ->
+				samples.addAll(Subsets.next(RandomRegistry.random(), max, 3))
+			),
+			Histogram.Partition.of(min, max, 15)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(Subsets.next(random, n, 3)))
-			.forEach(histogram::accept);
-
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
 	}
 
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
+	}
 
 	private static int[] subset(
 		final int n,
