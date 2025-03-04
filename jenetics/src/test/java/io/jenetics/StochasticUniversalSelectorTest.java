@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.ObservedDistribution;
+import io.jenetics.incubator.stat.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -93,7 +93,7 @@ public class StochasticUniversalSelectorTest
 		);
 		new StableRandomExecutor(123456).execute(observation);
 
-		final var distribution = ObservedDistribution.of(
+		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
 			expected.value
 		);

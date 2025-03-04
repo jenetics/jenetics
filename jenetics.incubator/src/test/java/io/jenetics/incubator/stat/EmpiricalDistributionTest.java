@@ -32,7 +32,7 @@ import io.jenetics.internal.math.DoubleAdder;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ObservedDistributionTest {
+public class EmpiricalDistributionTest {
 
 	@Test
 	public void pdf() {
@@ -46,7 +46,7 @@ public class ObservedDistributionTest {
 
 		final var sum = DoubleAdder.sum(frequencies);
 
-		final var distribution = ObservedDistribution.of(
+		final var distribution = EmpiricalDistribution.of(
 			interval, frequencies
 		);
 
@@ -67,7 +67,7 @@ public class ObservedDistributionTest {
 			.map(Math::sin)
 			.toArray();
 
-		final var distribution = ObservedDistribution.of(
+		final var distribution = EmpiricalDistribution.of(
 			interval, frequencies
 		);
 

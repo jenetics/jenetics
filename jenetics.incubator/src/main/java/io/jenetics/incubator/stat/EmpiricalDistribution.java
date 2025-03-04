@@ -34,7 +34,7 @@ import io.jenetics.internal.math.DoubleAdder;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ObservedDistribution implements Distribution {
+public final class EmpiricalDistribution implements Distribution {
 	private final Histogram observation;
 
 	private final long samples;
@@ -45,7 +45,7 @@ public final class ObservedDistribution implements Distribution {
 	 *
 	 * @param observation the observed distribution as histogram
 	 */
-	public ObservedDistribution(final Histogram observation) {
+	public EmpiricalDistribution(final Histogram observation) {
 		this.observation = requireNonNull(observation);
 		this.samples = observation.samples();
 
@@ -106,7 +106,7 @@ public final class ObservedDistribution implements Distribution {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof ObservedDistribution dist &&
+		return obj instanceof EmpiricalDistribution dist &&
 			dist.observation.equals(observation);
 	}
 
@@ -126,7 +126,7 @@ public final class ObservedDistribution implements Distribution {
 	 *         or the frequencies are not {@link Double#isInfinite(double)} or
 	 *         smaller than zero
 	 */
-	public static ObservedDistribution of(
+	public static EmpiricalDistribution of(
 		final Partition partition,
 		final double[] expected
 	) {
@@ -160,7 +160,7 @@ public final class ObservedDistribution implements Distribution {
 			.toArray();
 		final var histogram = new Histogram(new Buckets(partition, frequencies));
 
-		return new ObservedDistribution(histogram);
+		return new EmpiricalDistribution(histogram);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public final class ObservedDistribution implements Distribution {
 	 * @param expected the expected frequencies
 	 * @return a new distribution object
 	 */
-	public static ObservedDistribution of(
+	public static EmpiricalDistribution of(
 		final Interval interval,
 		final double[] expected
 	) {
