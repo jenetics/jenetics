@@ -377,25 +377,29 @@ tasks.register(assemblePkg) {
 			into("${exportDir}/project")
 		}
 
-		// Copy external JAR files.
+		// Collect all external JAR files.
+		val files = mutableSetOf<File>()
 		allprojects {
-			val project = this
-
 			plugins.withType<JavaPlugin> {
 				configurations.all {
 					if (isCanBeResolved) {
-						resolvedConfiguration.files.forEach {
+						files.forEach {
 							if (it.name.endsWith(".jar") &&
 								!it.name.startsWith("jenetics"))
 							{
-								project.copy {
-									from(it)
-									into("${exportDir}/project/buildSrc/lib")
-								}
+								files.add(it)
 							}
 						}
 					}
 				}
+			}
+		}
+
+		// Copy external JAR files.
+		files.forEach {
+			project.copy {
+				from(it)
+				into("${exportDir}/project/buildSrc/lib")
 			}
 		}
 

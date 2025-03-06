@@ -32,16 +32,12 @@ public abstract class NumericChromosomeTester<
 	extends ChromosomeTester<G>
 {
 
-
 	@Test
 	public void minMax() {
 		@SuppressWarnings("unchecked")
-		final NumericChromosome<N, G>
-			c1 = (NumericChromosome<N, G>) factory().newInstance();
-
+		final var c1 = (NumericChromosome<N, G>)factory().newInstance();
 		@SuppressWarnings("unchecked")
-		final NumericChromosome<N, G>
-			c2 = (NumericChromosome<N, G>) factory().newInstance();
+		final var c2 = (NumericChromosome<N, G>)factory().newInstance();
 
 
 		assertMinMax(c1, c2);
@@ -52,8 +48,7 @@ public abstract class NumericChromosomeTester<
 	@Test
 	public void geneMinMax() {
 		@SuppressWarnings("unchecked")
-		final NumericChromosome<N, G>
-			c = (NumericChromosome<N, G>) factory().newInstance();
+		final var c = (NumericChromosome<N, G>)factory().newInstance();
 
 		for (G gene : c) {
 			Assert.assertEquals(gene.min(), c.min());
@@ -64,8 +59,7 @@ public abstract class NumericChromosomeTester<
 	@Test
 	public void primitiveTypeAccess() {
 		@SuppressWarnings("unchecked")
-		final NumericChromosome<N, G>
-			c = (NumericChromosome<N, G>) factory().newInstance();
+		final var c = (NumericChromosome<N, G>)factory().newInstance();
 
 		Assert.assertEquals(c.byteValue(), c.byteValue(0));
 		Assert.assertEquals(c.shortValue(), c.shortValue(0));

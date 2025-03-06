@@ -42,7 +42,9 @@ dependencies {
 	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.testng)
-	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
+	testImplementation(gradle.rootProject.project(":jenetics").sourceSets["test"].output)
+
+	gradle.rootProject.project(":jenetics")
 
 	jmh(libs.commons.csv)
 	jmh(libs.javacsv)
