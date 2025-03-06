@@ -71,7 +71,7 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  * @see <a href="https://tools.ietf.org/html/rfc4180">RFC-4180</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.2
  * @since 8.1
  */
 public final class CsvSupport {
@@ -1261,8 +1261,8 @@ public final class CsvSupport {
 	/**
 	 * Character source interface.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 */
 	sealed interface CharCursor {
 		/**
@@ -1290,8 +1290,8 @@ public final class CsvSupport {
 	/**
 	 * Cursor <em>view</em> on a readable object.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 */
 	static final class ReadableCharCursor implements CharCursor {
 		private static final int SIZE = 1024;
@@ -1330,8 +1330,8 @@ public final class CsvSupport {
 	/**
 	 * Cursor <em>view</em> on a character buffer.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 */
 	static final class CharBufferCharCursor implements CharCursor {
 		private final CharBuffer buffer;
@@ -1352,8 +1352,8 @@ public final class CsvSupport {
 	/**
 	 * Allows appending chars in bulks to {@link StringBuilder}.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 */
 	static final class CharAppender {
 		private static final int SIZE = 32;
@@ -1395,8 +1395,8 @@ public final class CsvSupport {
 	/**
 	 * Simple growing list of strings.
 	 *
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.2
+	 * @version 8.2
 	 */
 	static final class StringList {
 		private static final int SIZE = 16;

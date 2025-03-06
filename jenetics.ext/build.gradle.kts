@@ -1,4 +1,5 @@
 import io.jenetics.gradle.dsl.moduleName
+import io.jenetics.gradle.dsl.testClasses
 
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
@@ -42,9 +43,7 @@ dependencies {
 	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.testng)
-	testImplementation(gradle.rootProject.project(":jenetics").sourceSets["test"].output)
-
-	gradle.rootProject.project(":jenetics")
+	testImplementation(project.testClasses(":jenetics"))
 
 	jmh(libs.commons.csv)
 	jmh(libs.javacsv)

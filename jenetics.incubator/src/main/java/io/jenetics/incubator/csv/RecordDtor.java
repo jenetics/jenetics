@@ -30,8 +30,8 @@ import java.lang.reflect.RecordComponent;
  * @param <T> the record type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public interface RecordDtor<T> {
 

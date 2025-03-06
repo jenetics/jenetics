@@ -23,8 +23,8 @@ package io.jenetics.incubator.csv;
  * Abstracts the typed access to the values of a CSV row.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public interface Row {
 

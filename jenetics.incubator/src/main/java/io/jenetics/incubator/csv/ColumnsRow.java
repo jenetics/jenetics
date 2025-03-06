@@ -29,8 +29,8 @@ import static java.util.Objects.requireNonNull;
  * @param converter the used column value converter
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 record ColumnsRow(String[] columns, Converter converter) implements Row {
 
