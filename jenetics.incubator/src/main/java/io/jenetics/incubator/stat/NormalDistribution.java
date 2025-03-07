@@ -28,8 +28,8 @@ import io.jenetics.incubator.math.Erf;
  * @param stddev the standard deviation of the distribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public record NormalDistribution(double mean, double stddev)
 	implements Distribution

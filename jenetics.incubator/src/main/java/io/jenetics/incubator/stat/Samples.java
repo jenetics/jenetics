@@ -26,8 +26,8 @@ import java.util.stream.Stream;
  * This functional interface serves as a sink for sample values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 @FunctionalInterface
 public interface Samples {

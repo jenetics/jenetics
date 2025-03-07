@@ -64,4 +64,11 @@ public class UniformDistributionTest {
 		Assert.assertEquals(cdf.apply(19.0), 1.0);
 	}
 
+	@Test
+	public void icdf() {
+		final var dist = new UniformDistribution(new Interval(0.0, 10.0));
+		final var icdf = dist.icdf();
+		System.out.println(icdf.apply(0.9));
+	}
+
 }

@@ -19,15 +19,23 @@
  */
 package io.jenetics.incubator.stat;
 
+import java.util.function.DoubleUnaryOperator;
+
+import io.jenetics.incubator.math.BrentSolver;
+
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
  * distribution.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public interface Distribution {
+
+	default Interval domain() {
+		return new Interval(-Double.MAX_VALUE, Double.MAX_VALUE);
+	}
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
@@ -37,6 +45,11 @@ public interface Distribution {
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
 	Cdf cdf();
+
+	default Icdf icdf() {
+		final var cdf = cdf();
+		return p -> BrentSolver.DEFAULT.root(x -> cdf.apply(x) - p, domain());
+	}
 
 	/**
 	 * Return a new instance of the <i>Probability Density Function</i> (PDF).

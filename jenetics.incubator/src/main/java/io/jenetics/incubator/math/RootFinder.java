@@ -19,14 +19,18 @@
  */
 package io.jenetics.incubator.math;
 
-import java.util.OptionalDouble;
 import java.util.function.DoubleUnaryOperator;
+
+import io.jenetics.incubator.stat.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.2
  * @since 8.2
  */
-public interface Solver {
-	OptionalDouble solve(DoubleUnaryOperator fn, double min, double max);
+@FunctionalInterface
+public interface RootFinder {
+
+	double root(DoubleUnaryOperator fn, Interval interval);
+
 }

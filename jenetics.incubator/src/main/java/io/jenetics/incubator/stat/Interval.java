@@ -30,8 +30,8 @@ import java.util.Optional;
  * @param max the upper bound of the interval (exclusively)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public record Interval(double min, double max) {
 
@@ -47,7 +47,9 @@ public record Interval(double min, double max) {
 	 */
 	public Interval {
 		if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
-			throw new IllegalArgumentException("Invalid interval: %s.".formatted(this));
+			throw new IllegalArgumentException(
+				"Invalid interval: %s.".formatted(this)
+			);
 		}
 	}
 

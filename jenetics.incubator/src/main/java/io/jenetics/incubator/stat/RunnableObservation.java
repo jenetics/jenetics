@@ -32,8 +32,8 @@ import io.jenetics.stat.DoubleMoments;
  * environment, which might be useful for creating reproducible results.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public final class RunnableObservation implements Runnable, Observation {
 	private final Sampling sampling;

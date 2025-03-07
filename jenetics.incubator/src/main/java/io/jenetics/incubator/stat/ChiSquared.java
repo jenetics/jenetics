@@ -28,8 +28,8 @@ import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
  *     Wikipedia: Chi-squared test</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public interface ChiSquared extends HypothesisTester {
 

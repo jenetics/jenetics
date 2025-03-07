@@ -32,8 +32,8 @@ import io.jenetics.incubator.stat.HypothesisTester.Reject;
  * Entry point for statistical assertion methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.2
+ * @since 8.2
  */
 public final class Assurance {
 	private Assurance() {
