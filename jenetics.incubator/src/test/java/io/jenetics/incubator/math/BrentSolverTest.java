@@ -42,7 +42,7 @@ public class BrentSolverTest {
 		final DoubleUnaryOperator func = Math::sin;
 		final var solver = BrentSolver.DEFAULT;
 
-		assertThat(solver.root(func, interval))
+		assertThat(solver.solve(func, interval))
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
 	}
 
@@ -59,7 +59,7 @@ public class BrentSolverTest {
 		final DoubleUnaryOperator func = x -> (x - 1)*(x - 0.5)*x*(x + 0.5)*(x + 1);
 		final var solver = BrentSolver.DEFAULT;
 
-		assertThat(solver.root(func, interval))
+		assertThat(solver.solve(func, interval))
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
 	}
 

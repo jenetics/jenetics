@@ -31,6 +31,6 @@ import io.jenetics.incubator.stat.Interval;
 @FunctionalInterface
 public interface RootFinder {
 
-	double root(DoubleUnaryOperator fn, Interval interval);
+	double solve(DoubleUnaryOperator fn, Interval interval);
 
 }

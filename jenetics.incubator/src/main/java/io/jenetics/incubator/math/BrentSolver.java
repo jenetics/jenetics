@@ -40,6 +40,9 @@ public record BrentSolver(double epsilon, int maxIterations)
 	implements RootFinder
 {
 
+	public record Root(double value, double error, int iterations) {
+	}
+
 	/**
 	 * Default Brent's solver.
 	 */
@@ -67,17 +70,21 @@ public record BrentSolver(double epsilon, int maxIterations)
 	}
 
 	@Override
-	public double root(final DoubleUnaryOperator fn, final Interval interval) {
+	public double solve(final DoubleUnaryOperator fn, final Interval interval) {
+		return root(fn, interval).value();
+	}
+
+	public Root root(final DoubleUnaryOperator fn, final Interval interval) {
 		final double m = 0.5*interval.min() + 0.5*interval.max();
 
 		final var fm = fn.applyAsDouble(m);
 		if (abs(fm) < epsilon) {
-			return m;
+			return new Root(m, abs(fm), 0);
 		}
 
 		final var fa = fn.applyAsDouble(interval.min());
 		if (abs(fa) < epsilon) {
-			return interval.min();
+			return new Root(interval.min(), abs(fa), 0);
 		}
 		if (Double.compare(fm*fa, 0.0) < 0) {
 			return brent(fn, new Interval(interval.min(), m));
@@ -85,7 +92,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 
 		final var fb = fn.applyAsDouble(interval.max());
 		if (abs(fb) < epsilon) {
-			return interval.max();
+			return new Root(interval.max(), abs(fb), 0);
 		}
 		if (Double.compare(fm*fb, 0.0) < 0) {
 			return brent(fn, new Interval(m, interval.max()));
@@ -94,7 +101,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 		throw new ArithmeticException("No root between interval " + interval);
 	}
 
-	private double brent(final DoubleUnaryOperator fn, final Interval interval) {
+	private Root brent(final DoubleUnaryOperator fn, final Interval interval) {
 		requireNonNull(fn);
 		requireNonNull(interval);
 
@@ -105,7 +112,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 
 		// Implementation and notation based on Chapter 4 in "Algorithms for
 		// Minimization without Derivatives" by Richard Brent.
-		double c, d, e, fa, fb, fc, tol, m, p, q, r, s;
+		double c, d, e, fa, fb, fc, tol, m, p, q, r, s, err;
 
 		fa = fn.applyAsDouble(a);
 		fb = fn.applyAsDouble(b);
@@ -122,7 +129,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 			}
 
 			tol = 2.0*t*abs(b) + t;
-			m = 0.5*(c - b);
+			err = m = 0.5*(c - b);
 
 			// Exact comparison with 0 is OK here.
 			if (abs(m) > tol && fb != 0.0) {
@@ -166,7 +173,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 					b -= tol;
 				}
 				if (iteration == maxIterations) {
-					return b;
+					return new Root(b, err, iteration);
 				}
 
 				fb = fn.applyAsDouble(b);
@@ -174,7 +181,7 @@ public record BrentSolver(double epsilon, int maxIterations)
 					c = a; fc = fa; d = e = b - a;
 				}
 			} else {
-				return b;
+				return new Root(b, err, iteration);
 			}
 		}
 	}
