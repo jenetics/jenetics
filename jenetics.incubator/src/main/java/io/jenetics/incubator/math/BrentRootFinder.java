@@ -36,7 +36,7 @@ import io.jenetics.incubator.stat.Interval;
  * @version 8.2
  * @since 8.2
  */
-public record BrentSolver(double epsilon, int maxIterations)
+public record BrentRootFinder(double epsilon, int maxIterations)
 	implements RootFinder
 {
 
@@ -46,9 +46,9 @@ public record BrentSolver(double epsilon, int maxIterations)
 	/**
 	 * Default Brent's solver.
 	 */
-	public static final BrentSolver DEFAULT = new BrentSolver();
+	public static final BrentRootFinder DEFAULT = new BrentRootFinder();
 
-	public BrentSolver {
+	public BrentRootFinder {
 		if (epsilon <= 0) {
 			throw new IllegalArgumentException(
 				"Epsilon must be positive: " + epsilon
@@ -61,11 +61,11 @@ public record BrentSolver(double epsilon, int maxIterations)
 		}
 	}
 
-	public BrentSolver(final double epsilon) {
+	public BrentRootFinder(final double epsilon) {
 		this(epsilon, 1024);
 	}
 
-	public BrentSolver() {
+	public BrentRootFinder() {
 		this(1e-7);
 	}
 

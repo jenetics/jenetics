@@ -32,7 +32,7 @@ import io.jenetics.incubator.stat.Interval;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class BrentSolverTest {
+public class BrentRootFinderTest {
 
 	private static final Offset<Double> DEFAULT_ABSOLUTE_ACCURACY =
 		Offset.offset(1e-6);
@@ -40,7 +40,7 @@ public class BrentSolverTest {
 	@Test(dataProvider = "testSinZeroParameters")
 	void testSinZero(double result, Interval interval) {
 		final DoubleUnaryOperator func = Math::sin;
-		final var solver = BrentSolver.DEFAULT;
+		final var solver = BrentRootFinder.DEFAULT;
 
 		assertThat(solver.solve(func, interval))
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
@@ -57,7 +57,7 @@ public class BrentSolverTest {
 	@Test(dataProvider = "testQuinticZeroParameters")
 	void testQuinticZero(double result, Interval interval) {
 		final DoubleUnaryOperator func = x -> (x - 1)*(x - 0.5)*x*(x + 0.5)*(x + 1);
-		final var solver = BrentSolver.DEFAULT;
+		final var solver = BrentRootFinder.DEFAULT;
 
 		assertThat(solver.solve(func, interval))
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);

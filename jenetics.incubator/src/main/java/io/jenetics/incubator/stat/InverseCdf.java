@@ -19,43 +19,12 @@
  */
 package io.jenetics.incubator.stat;
 
-import io.jenetics.incubator.math.BrentRootFinder;
-
 /**
- * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
- * distribution.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.2
  * @since 8.2
  */
-public interface Distribution {
-
-	default Interval domain() {
-		return new Interval(-Double.MAX_VALUE, Double.MAX_VALUE);
-	}
-
-	/**
-	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
-	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">PDF</a>
-	 *
-	 * @return the <i>Probability Density Function</i>.
-	 */
-	Pdf pdf();
-
-	/**
-	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
-	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">CDF</a>
-	 *
-	 * @return the <i>Cumulative Distribution Function</i>.
-	 */
-	Cdf cdf();
-
-	default InverseCdf icdf() {
-		final var cdf = cdf();
-		return p -> BrentRootFinder.DEFAULT.solve(x -> cdf.apply(x) - p, domain());
-	}
-
+@FunctionalInterface
+public interface InverseCdf {
+	double apply(double value);
 }
