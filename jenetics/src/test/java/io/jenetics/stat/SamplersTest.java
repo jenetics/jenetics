@@ -19,9 +19,12 @@
  */
 package io.jenetics.stat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.DoubleSummaryStatistics;
 import java.util.random.RandomGenerator;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.DoubleRange;
@@ -44,6 +47,56 @@ public class SamplersTest {
 		}
 
 		//System.out.println(stat);
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearBoundaryMinValue(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+		final var sampler = Samplers.linear(0.0);
+
+		assertThat(sampler.sample(random, range))
+			.isEqualTo(range.min());
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearBoundaryMaxValue(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+		final var sampler = Samplers.linear(Math.nextDown(1.0));
+
+		assertThat(sampler.sample(random, range))
+			.isEqualTo(Math.nextDown(range.max()));
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearSamples(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+
+		double previous = 0;
+		for (int i = 0; i < 100_000; ++i) {
+			final var sampler = Samplers.linear(random.nextDouble());
+			final var sample = sampler.sample(random, range);
+
+			assertThat(sample).isNotEqualTo(previous);
+
+			assertThat(sample)
+				.isGreaterThanOrEqualTo(range.min())
+				.isLessThan(range.max());
+
+			previous = sample;
+		}
+	}
+
+	@DataProvider
+	public Object[][] ranges() {
+		return new Object[][] {
+			{DoubleRange.of(0, 1)},
+			{DoubleRange.of(1, 2)},
+			{DoubleRange.of(1, 22)},
+			{DoubleRange.of(10, 23)},
+			{DoubleRange.of(-1, 2)},
+			{DoubleRange.of(-110, -2)},
+			{DoubleRange.of(-11, -5)}
+		};
 	}
 
 }

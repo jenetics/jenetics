@@ -20,9 +20,10 @@
 package io.jenetics.ext.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
@@ -52,9 +53,27 @@ public class CsvSupportLineReaderTest {
 			""";
 
 		final var reader = new LineReader();
-		try (Stream<String> lines = reader.read(new StringReader(csv))) {
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
 			final var count = lines.count();
 			assertThat(count).isEqualTo(11);
+		}
+	}
+
+	@Test
+	public void readQuotedNotClosed() {
+		final var csv = """
+			0.0,"0.0000
+			0.1,0.0740
+			""";
+
+		final var reader = new LineReader();
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThatExceptionOfType(IllegalArgumentException.class)
+				.isThrownBy(() -> {
+					final var count = lines.count();
+					assertThat(count).isEqualTo(0);
+				})
+				.withMessageContaining("Unbalanced quote character");
 		}
 	}
 

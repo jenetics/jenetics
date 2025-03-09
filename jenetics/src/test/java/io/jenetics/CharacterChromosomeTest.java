@@ -19,15 +19,20 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,18 +44,29 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		return () -> CharacterChromosome.of(500);
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		final var characters = new CharSeq("0123456789");
-		final var chromosome = CharacterChromosome.of(characters, 10_000);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final CharSeq characters = new CharSeq("0123456789");
 
-		final var histogram = Histogram.Builder.of(0L, 10L, 10);
-		chromosome.stream()
-			.map(g -> Long.parseLong(g.allele().toString()))
-			.forEach(histogram::accept);
+		final var observation = new RunnableObservation(
+			Sampling.repeat(10, samples ->
+				CharacterChromosome.of(characters, 10_000).stream()
+					.map(g -> Long.parseLong(g.allele().toString()))
+					.forEach(samples::add)
+			),
+			Histogram.Partition.of(0, characters.length(), 10)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
     }
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456781).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
+	}
 
 	@Test(dataProvider = "genes")
 	public void newCharacterChromosome(final String genes) {

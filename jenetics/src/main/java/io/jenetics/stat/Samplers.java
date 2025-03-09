@@ -22,6 +22,8 @@ package io.jenetics.stat;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+import java.util.random.RandomGenerator;
+
 import io.jenetics.util.DoubleRange;
 
 /**
@@ -38,19 +40,19 @@ public final class Samplers {
 
 	/**
 	 * Return a new sampler for a <em>linear</em> distribution with the given
-	 * {@code mean} value, when creating sample points for the range
-	 * {@code [0, 1)}.
+	 * {@code mean} value, when creating sample points for the <em>normalized</em>
+	 * range {@code [0, 1)}.
 	 * <p>
 	 *	<img src="doc-files/LinearDistributionPDF.svg" width="450"
 	 *	     alt="Linear distribution sampler" >
 	 *
-	 * @param mean the mean value of the samplers distribution
+	 * @param mean the mean value of the sampler distribution
 	 * @return a new linear sampler with the given {@code mean} value
 	 * @throws IllegalArgumentException if the given {@code mean} value is not
 	 *         within the range {@code [0, 1)}
 	 */
 	public static Sampler linear(final double mean) {
-		if (mean < 0 || mean >= 1) {
+		if (mean < 0 || mean >= 1 || !Double.isFinite(mean)) {
 			throw new IllegalArgumentException(
 				"Mean value not within allowed range [0, 1): %f."
 					.formatted(mean)
@@ -68,9 +70,9 @@ public final class Samplers {
 		}
 
 		if (Double.compare(mean, 0) == 0) {
-			return (random, range) -> Range.MIN;
+			return (random, range) -> range.min();
 		} else if (mean == Range.MAX) {
-			return (random, range) -> Range.MAX* range.max();
+			return (random, range) -> Math.nextDown(range.max());
 		}
 
 		final double b, m;
@@ -105,23 +107,27 @@ public final class Samplers {
 
 	/**
 	 * Create a new sampler for a triangle distribution with the given
-	 * parameters. All parameters must be within the range {@code [0, 1]}.
+	 * parameters. All parameters must be within the <em>normalized</em> range
+	 * {@code [0, 1]}. The sample value, returned by the
+	 * {@link Sampler#sample(RandomGenerator, DoubleRange)} method, is then
+	 * <em>stretched</em> to the desired range.
 	 * <p>
 	 *	<img src="doc-files/TriangularDistributionPDF.svg" width="450"
 	 *	     alt="Triangle distribution sampler" >
 	 *
 	 * @see #triangular(double)
 	 *
-	 * @param a the start point of the triangle
-	 * @param c the middle point of the triangle
-	 * @param b the end point of the triangle
+	 * @param a the <em>normalized</em> start point of the triangle
+	 * @param c the <em>normalized</em> middle point of the triangle
+	 * @param b the <em>normalized</em> end point of the triangle
 	 * @return a new triangle distribution sampler
 	 * @throws IllegalArgumentException if one of the parameters is not within
 	 *         the range {@code [0, 1]} or {@code b <= a || c > b || c < a}
 	 */
 	public static Sampler
 	triangular(final double a, final double c, final double b) {
-		if (a < 0 || b < 0 || c < 0  ||
+		if (!Double.isFinite(a) || !Double.isFinite(b) || !Double.isFinite(c) ||
+			a < 0 || b < 0 || c < 0  ||
 			a > 1 || b > 1 || c > 1 ||
 			b <= a || c > b || c < a)
 		{
@@ -154,7 +160,7 @@ public final class Samplers {
 	 *
 	 * @see #triangular(double, double, double)
 	 *
-	 * @param c the middle point of the triangle within the range {@code [0, 1}
+	 * @param c the middle point of the triangle within the range {@code [0, 1]}
 	 * @return a new triangle distribution sampler
 	 * @throws IllegalArgumentException if c not within {@code [0, 1]}
 	 */

@@ -21,17 +21,18 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.RetryOnce;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -60,10 +61,7 @@ public class MeanAltererTest extends AltererTester {
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
 
-	@Test(
-		dataProvider = "alterProbabilityParameters",
-		retryAnalyzer = RetryOnce.class
-	)
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
@@ -73,29 +71,18 @@ public class MeanAltererTest extends AltererTester {
 		final ISeq<Phenotype<DoubleGene, Double>> population =
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
-		// The mutator to test.
-		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(p);
+		final var observation = new RunnableObservation(
+			Sampling.repeat(100, samples -> {
+				final long alterations = new MeanAlterer<DoubleGene, Double>(p)
+					.alter(population, 1)
+					.alterations();
+				samples.add(alterations);
+			}),
+			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
+		);
+		new StableRandomExecutor(123456789).execute(observation);
 
-		final long nallgenes = ngenes*nchromosomes*npopulation;
-		final long N = 100;
-		final double mean = npopulation*p;
-
-		final long min = 0;
-		final long max = nallgenes;
-
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		final var statistics = new LongMomentStatistics();
-
-		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover
-				.alter(population, 1)
-				.alterations();
-			histogram.accept(alterations);
-			statistics.accept(alterations);
-		}
-
-		assertThatObservation(histogram.build())
-			.isNormal(mean, Math.sqrt(statistics.variance()));
+		assertThatObservation(observation).isNormal();
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

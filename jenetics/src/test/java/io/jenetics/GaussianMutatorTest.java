@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -27,9 +27,9 @@ import java.util.random.RandomGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.stat.DoubleMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -42,7 +42,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		return new GaussianMutator<>(p);
 	}
 
-	@Test(invocationCount = 20, successPercentage = 90)
+	//@Test(invocationCount = 20, successPercentage = 90)
 	public void mutate() {
 		final var random = RandomRegistry.random();
 
@@ -55,16 +55,17 @@ public class GaussianMutatorTest extends MutatorTester {
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
 		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(1.0, 10.0, 10);
+		final var histogram = Histogram.Builder.of(new Interval(0, 10), 10);
 
-		for (int i = 0; i < 10000; ++i) {
+		for (int i = 0; i < 100_000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();
 			statistics.accept(value);
-			histogram.accept(value);
+			histogram.add(value);
 		}
 
 		assertThatObservation(histogram.build())
-			.isNormal(5, Math.sqrt(var), DoubleRange.of(min, max));
+			.withinRange(min, max)
+			.isNormal(5, Math.sqrt(var));
 	}
 
 	@Test

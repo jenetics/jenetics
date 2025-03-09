@@ -20,15 +20,20 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,18 +51,29 @@ public class IntegerChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final int min = 0;
-		final int max = 10000000;
+		final int max = Integer.MAX_VALUE;
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = IntegerChromosome.of(min, max, 500);
-			chromosome.forEach(g -> histogram.accept(g.allele()));
-		}
+		final var observation = new RunnableObservation(
+			Sampling.repeat(1_000, samples ->
+				IntegerChromosome.of(min, max, 500).stream()
+					.mapToDouble(IntegerGene::doubleValue)
+					.forEach(samples::add)
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")

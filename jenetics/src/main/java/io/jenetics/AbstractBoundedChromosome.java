@@ -92,8 +92,7 @@ abstract class AbstractBoundedChromosome<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
+		return obj != null &&
 			getClass() == obj.getClass() &&
 			Objects.equals(_min, ((AbstractBoundedChromosome<?, ?>)obj)._min) &&
 			Objects.equals(_max, ((AbstractBoundedChromosome<?, ?>)obj)._max) &&

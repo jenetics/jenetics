@@ -19,7 +19,8 @@
  */
 package io.jenetics;
 
-import org.testng.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.testng.annotations.Test;
 
 /**
@@ -38,7 +39,7 @@ public abstract class NumericGeneTester<
 			final G gene1 = factory().newInstance();
 			final G gene2 = gene1.newInstance(gene1.allele());
 
-			Assert.assertEquals(gene2, gene1);
+			assertThat(gene2).isEqualTo(gene1);
 		}
 	}
 
@@ -47,12 +48,8 @@ public abstract class NumericGeneTester<
 		for (int i = 0; i < 1000; ++i) {
 			final G gene = factory().newInstance();
 
-			Assert.assertTrue(gene.allele().compareTo(gene.min()) >= 0);
-			if (gene instanceof DoubleGene) {
-				Assert.assertTrue(gene.allele().compareTo(gene.max()) < 0);
-			} else {
-				Assert.assertTrue(gene.allele().compareTo(gene.max()) <= 0);
-			}
+			assertThat(gene.allele()).isGreaterThanOrEqualTo(gene.min());
+			assertThat(gene.allele()).isLessThan(gene.max());
 		}
 	}
 
@@ -63,11 +60,11 @@ public abstract class NumericGeneTester<
 			final G gene2 = factory().newInstance();
 
 			if (gene1.allele().compareTo(gene2.allele()) > 0) {
-				Assert.assertTrue(gene1.compareTo(gene2) > 0);
+				assertThat(gene1).isGreaterThan(gene2);
 			} else if (gene1.allele().compareTo(gene2.allele()) < 0) {
-				Assert.assertTrue(gene1.compareTo(gene2) < 0);
+				assertThat(gene1).isLessThan(gene2);
 			} else {
-				Assert.assertEquals(0, gene1.compareTo(gene2));
+				assertThat(gene1).isEqualTo(gene2);
 			}
 		}
 	}
