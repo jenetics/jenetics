@@ -40,6 +40,14 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 	implements RootFinder
 {
 
+	/**
+	 * Represents the found root value plus error estimation and performed
+	 * iterations.
+	 *
+	 * @param value the found root value
+	 * @param error the error estimate
+	 * @param iterations the performed iterations
+	 */
 	public record Root(double value, double error, int iterations) {
 	}
 
@@ -62,11 +70,11 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 	}
 
 	public BrentRootFinder(final double epsilon) {
-		this(epsilon, 1024);
+		this(epsilon, 1_000_000);
 	}
 
 	public BrentRootFinder() {
-		this(1e-7);
+		this(0x1.0p-52);
 	}
 
 	@Override
@@ -132,7 +140,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 			err = m = 0.5*(c - b);
 
 			// Exact comparison with 0 is OK here.
-			if (abs(m) > tol && fb != 0.0) {
+			if (abs(m) > tol && nonZero(fb)) {
 				// See if bisection is forced.
 				if (abs(e) < tol || abs(fa) <= abs(fb)) {
 					d = e = m;
@@ -177,13 +185,19 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 				}
 
 				fb = fn.applyAsDouble(b);
-				if ((fb > 0.0 && fc > 0.0) || (fb <= 0.0 && fc <= 0.0)) {
+				if ((fb > 0.0 && fc > 0.0) ||
+					(fb <= 0.0 && fc <= 0.0))
+				{
 					c = a; fc = fa; d = e = b - a;
 				}
 			} else {
 				return new Root(b, err, iteration);
 			}
 		}
+	}
+
+	private static boolean nonZero(final double value) {
+		return abs(value) > Double.MIN_VALUE;
 	}
 
 }

@@ -55,7 +55,8 @@ public interface Distribution {
 
 	default InverseCdf icdf() {
 		final var cdf = cdf();
-		return p -> BrentRootFinder.DEFAULT.solve(x -> cdf.apply(x) - p, domain());
+		final var solver = BrentRootFinder.DEFAULT;
+		return p -> solver.solve(x -> cdf.apply(x) - p, domain());
 	}
 
 }

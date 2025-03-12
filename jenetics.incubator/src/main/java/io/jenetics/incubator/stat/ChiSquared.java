@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.stat;
 
-import org.apache.commons.statistics.distribution.ChiSquaredDistribution;
-
 /**
  * Common interface for 𝜒<sup>2</sup> hypothesis tester.
  *
@@ -92,8 +90,13 @@ public interface ChiSquared extends HypothesisTester {
 	 * @return the maximal allowed chi-squared value
 	 */
 	default double maxChiSquared(final int degreesOfFreedom) {
+		final var gd = new GammaDistribution(degreesOfFreedom/2.0, 2.0);
+		return gd.icdf().apply(1 - pValue());
+/*
 		return ChiSquaredDistribution.of(degreesOfFreedom)
 			.inverseCumulativeProbability(1 - pValue());
+
+ */
 	}
 
 }
