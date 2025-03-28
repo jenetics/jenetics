@@ -27,13 +27,16 @@ module io.jenetics.incubator {
 	requires io.jenetics.base;
 	requires io.jenetics.ext;
 	requires io.jenetics.prog;
+
 	requires java.desktop;
-    requires java.logging;
+	requires java.net.http;
+
+	requires com.fasterxml.jackson.databind;
 	requires org.apache.commons.math4.legacy;
 	requires org.apache.commons.statistics.distribution;
     requires org.apache.commons.numbers.gamma;
 
-    exports io.jenetics.incubator.beans.description;
+	exports io.jenetics.incubator.beans.description;
 	exports io.jenetics.incubator.beans.property;
 	exports io.jenetics.incubator.beans.reflect;
 	exports io.jenetics.incubator.beans;
