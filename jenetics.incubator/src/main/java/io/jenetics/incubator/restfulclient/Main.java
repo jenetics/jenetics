@@ -40,8 +40,18 @@ public class Main {
 	static final Parameter.Value ID = Parameter.Path.key("id");
 
 	public static void main(String[] args) throws Exception {
-		final Client client = new Client();
+		final DefaultClient client = new DefaultClient("https://jsonplaceholder.typicode.com/");
 
+		final var TODOS = Resource
+			.of("/todos/{id}/", Todo.class);
+
+		final var result = TODOS
+			.params(ID.value("1"))
+			.GET(client::callReactive);
+
+		System.out.println(result.block());
+
+		/*
 		final Response<String> person = PERSON
 			.params(ID.value("2323"))
 			.PUT("body-content", client::call);
@@ -61,6 +71,20 @@ public class Main {
 			.flatMap(p -> DOCUMENT.PUT(p, client::call))
 			.flatMap(d -> BOOK.PUT(d, client::call))
 			.map(Integer::parseInt);
+		 */
+	}
+
+	/**
+	 * <pre>{@code
+	 * {
+	 *   "userId": 1,
+	 *   "id": 1,
+	 *   "title": "delectus aut autem",
+	 *   "completed": false
+	 * }
+	 * }</pre>
+	 */
+	record Todo(int userId, int id, String title, boolean completed) {
 	}
 
 }

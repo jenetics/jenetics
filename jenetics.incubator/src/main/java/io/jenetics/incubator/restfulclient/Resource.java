@@ -1,25 +1,29 @@
 package io.jenetics.incubator.restfulclient;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.restfulclient.Method.DELETE;
+import static io.jenetics.incubator.restfulclient.Method.GET;
+import static io.jenetics.incubator.restfulclient.Method.POST;
+import static io.jenetics.incubator.restfulclient.Method.PUT;
 
-import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class Resource<T> {
-
-	private final Class<T> type;
-	private final String path;
+public final class Resource<T> implements Rest<T> {
+	private final Class<? extends T> type;
+	private final Path path;
 	private final List<Parameter> parameters;
 	private final Object body;
 	private final Method method;
 
 	private Resource(
-		final Class<T> type,
-		final String path,
+		final Class<? extends T> type,
+		final Path path,
 		final Collection<Parameter> parameters,
 		final Object body,
 		final Method method
@@ -31,12 +35,42 @@ public final class Resource<T> {
 		this.method = requireNonNull(method);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<T> type() {
-		return type;
+		return (Class<T>)type;
 	}
 
 	public String path() {
-		return path;
+		return path.path();
+	}
+
+	public String resolvedPath() {
+		final var result = parameters.stream()
+			.filter(p -> p instanceof Parameter.Path)
+			.map(Parameter.Path.class::cast)
+			.reduce(path, Path::resolve,
+				(a, b) -> {
+					throw new AssertionError("No parallel resolve allowed.");
+				}
+			);
+
+		final var unresolved = result.paramNames();
+		if (!unresolved.isEmpty()) {
+			throw new IllegalStateException("Unresolved parameters: " + unresolved);
+		}
+
+		final var queries = parameters.stream()
+			.filter(p -> p instanceof Parameter.Query)
+			.map(Parameter.Query.class::cast)
+			.map(Resource::encodeQuery)
+			.collect(Collectors.joining("&", "?", ""));
+
+		return result.path() + queries;
+	}
+
+	private static String encodeQuery(final Parameter.Query query) {
+		return URLEncoder.encode(query.key(), UTF_8) + "=" +
+			URLEncoder.encode(query.value(), UTF_8);
 	}
 
 	public List<Parameter> parameters() {
@@ -51,10 +85,6 @@ public final class Resource<T> {
 		return method;
 	}
 
-	private Resource<T> method(final Method method) {
-		return new Resource<>(type, path, parameters, body, method);
-	}
-
 	public Resource<T> params(Parameter... parameters) {
 		final var params = parameters().stream()
 			.collect(Collectors.toMap(Parameter::key, Function.identity()));
@@ -63,38 +93,55 @@ public final class Resource<T> {
 		}
 
 		return new Resource<>(type, path, params.values(), body, method);
-	};
-
-	private Resource<T> body(Object body) {
-		return new Resource<>(type, path, parameters, body, method);
 	}
 
-	public URI toURI() {
-		return null;
+	@Override
+	public <C> C GET(final Caller<? super T, ? extends C> caller) {
+		var rsc = new Resource<T>(type, path, parameters, null, GET);
+		return caller.call(rsc);
 	}
 
-	public <C> C GET(final Caller<T, C> caller) {
-		return method(Method.GET).call(caller);
+	@Override
+	public <C> C PUT(final Object body, final Caller<? super T, ? extends C> caller) {
+		var rsc = new Resource<T>(type, path, parameters, body, PUT);
+		return caller.call(rsc);
 	}
 
-	public <C> C PUT(final Object body, final Caller<T, C> caller) {
-		return method(Method.PUT).body(body).call(caller);
+	@Override
+	public <C> C POST(final Object body, final Caller<? super T, ? extends C> caller) {
+		var rsc = new Resource<T>(type, path, parameters, body, POST);
+		return caller.call(rsc);
 	}
 
-	public <C> C POST(final Object body, final Caller<T, C> caller) {
-		return method(Method.POST).body(body).call(caller);
+	@Override
+	public <C> C DELETE(final Caller<? super T, ? extends C> caller) {
+		var rsc = new Resource<T>(type, path, parameters, null, DELETE);
+		return caller.call(rsc);
 	}
 
-	public <C> C DELETE(final Caller<T, C> caller) {
-		return method(Method.DELETE).call(caller);
+	public Rest<T> rest() {
+		return new Rest<>() {
+			@Override
+			public <C> C GET(Caller<? super T, ? extends C> caller) {
+				return Resource.this.GET(caller);
+			}
+			@Override
+			public <C> C PUT(Object body, Caller<? super T, ? extends C> caller) {
+				return Resource.this.PUT(body, caller);
+			}
+			@Override
+			public <C> C POST(Object body, Caller<? super T, ? extends C> caller) {
+				return Resource.this.POST(body, caller);
+			}
+			@Override
+			public <C> C DELETE(Caller<? super T, ? extends C> caller) {
+				return Resource.this.DELETE(caller);
+			}
+		};
 	}
 
-	private <C> C call(Caller<T, C> caller) {
-		return caller.call(this);
-	}
-
-	public static <T> Resource<T> of(String path, Class<T> type) {
-		return new Resource<>(type, path, List.of(), null, Method.GET);
+	public static <T> Resource<T> of(String path, Class<? extends T> type) {
+		return new Resource<>(type, Path.of(path), List.of(), null, GET);
 	}
 
 }
