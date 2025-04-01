@@ -1,6 +1,6 @@
 package io.jenetics.incubator.restfulclient;
 
-import java.util.concurrent.CompletableFuture;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main {
 
@@ -40,7 +40,13 @@ public class Main {
 	static final Parameter.Value ID = Parameter.Path.key("id");
 
 	public static void main(String[] args) throws Exception {
-		final DefaultClient client = new DefaultClient("https://jsonplaceholder.typicode.com/");
+		final var mapper = new ObjectMapper();
+
+		final DefaultClient client = new DefaultClient(
+			"https://jsonplaceholder.typicode.com/",
+			mapper::readValue,
+			mapper::writeValue
+		);
 
 		final var TODOS = Resource
 			.of("/todos/{id}/", Todo.class);

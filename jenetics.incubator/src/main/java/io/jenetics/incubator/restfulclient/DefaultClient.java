@@ -1,69 +1,57 @@
 package io.jenetics.incubator.restfulclient;
 
-import static java.util.Objects.requireNonNull;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Flow;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 public final class DefaultClient {
 
 	private final URI host;
 	private final HttpClient client;
-	private final ObjectMapper mapper;
+	private final Reader reader;
+	private final Writer writer;
 
 	public DefaultClient(
 		final URI host,
 		final HttpClient client,
-		final ObjectMapper mapper
+		final Reader reader,
+		final Writer writer
 	) {
 		this.host = host.normalize();
 		this.client = requireNonNull(client);
-		this.mapper = requireNonNull(mapper);
+		this.reader = requireNonNull(reader);
+		this.writer = requireNonNull(writer);
 	}
 
-	public DefaultClient(String host) {
-		this(URI.create(host), HttpClient.newHttpClient(), new ObjectMapper());
+	public DefaultClient(
+		final String host,
+		final Reader reader,
+		final Writer writer
+	) {
+		this(URI.create(host), HttpClient.newHttpClient(), reader, writer);
 	}
 
-	public <T> Response<T> call(Resource<? extends T> resource) {
+	public <T> Response<T> call(final Resource<? extends T> resource) {
 		try {
-			final HttpResponse<?> result = client.send(
+			final HttpResponse<ServerResponse<T>> result = client.send(
 				toRequest(resource),
-				BodyHandlers.jackson(mapper, resource.type())
+				new ServerBodyHandler<T>(reader, resource.type())
 			);
 
-			if (result.body() instanceof ErrorInfo error) {
-				return new Response.Failure<>(
-					result.statusCode(),
-					result.headers(),
-					resource,
-					error
-				);
-			} else {
-				return new Response.Success<>(
-					result.statusCode(),
-					result.headers(),
-					resource,
-					resource.type().cast(result.body())
-				);
-			}
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
+			return result.body().toResponse(resource, result);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			throw new CancellationException(e.getMessage());
+			return new Response.ClientError<>(resource, e);
+		} catch (Exception e) {
+			return new Response.ClientError<>(resource, e);
 		}
 	}
 
@@ -77,70 +65,72 @@ public final class DefaultClient {
 
 		switch (resource.method()) {
 			case GET -> builder.GET();
-			case POST -> builder.POST(BodyPublishers.jackson(resource.body().orElse(null), mapper));
-			case PUT -> builder.PUT(BodyPublishers.jackson(resource.body().orElse(null), mapper));
+			case POST -> builder.POST(new ClientBodyPublisher(
+				writer,
+				resource.body().orElse(null)
+			));
+			case PUT -> builder.PUT(new ClientBodyPublisher(
+				writer,
+				resource.body().orElse(null)
+			));
 			case DELETE -> builder.DELETE();
 		}
 
 		return builder.build();
 	}
 
-	public <T> CompletableFuture<Response<T>> callAsync(Resource<? extends T> resource) {
-		final CompletableFuture<? extends HttpResponse<?>> res =
+	public <T> CompletableFuture<Response.Success<T>>
+	callAsync(final Resource<? extends T> resource) {
+		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
 			client.sendAsync(
 				toRequest(resource),
-				BodyHandlers.jackson(mapper, resource.type())
+				new ServerBodyHandler<T>(reader, resource.type())
 			);
 
-		return res.thenApply(response -> {
-			if (response.body() instanceof ErrorInfo error) {
-				return new Response.Failure<>(
-					response.statusCode(),
-					response.headers(),
-					resource,
-					error
-				);
-			} else {
-				return new Response.Success<>(
-					response.statusCode(),
-					response.headers(),
-					resource,
-					resource.type().cast(response.body())
-				);
-			}
-		});
+		return response
+			.thenCompose(result ->
+				switch (result.body().toResponse(resource, result)) {
+					case Response.Success<T> success -> completedFuture(success);
+					case Response.Failure<T> failure -> {
+						final var exception = new ResponseException(failure);
+						yield CompletableFuture.failedFuture(exception);
+					}
+				}
+			)
+			.exceptionallyCompose(throwable -> {
+				final var error = new Response.ClientError<>(resource, throwable);
+				final var exception = new ResponseException(error);
+				return CompletableFuture.failedFuture(exception);
+			});
 	}
 
-	public <T> Mono<T> callReactive(Resource<? extends T> resource) {
+	public <T> Mono<Response.Success<T>>
+	callReactive(final Resource<? extends T> resource) {
 		return Mono.create(sink -> {
-			final var subscriber = new Flow.Subscriber<List<ByteBuffer>>() {
-				Flow.Subscription subscription;
-				@Override
-				public void onSubscribe(Flow.Subscription subscription) {
-					this.subscription = subscription;
-					subscription.request(1);
-				}
-				@Override
-				public void onNext(List<ByteBuffer> item) {
-					subscription.request(1);
-					//sink.success(item);
-				}
-				@Override
-				public void onError(Throwable throwable) {
-					subscription.cancel();
-					sink.error(throwable);
-				}
-				@Override
-				public void onComplete() {
-					subscription.cancel();
-				}
-			};
+			final var result = callAsync(resource);
 
-			client.sendAsync(
-				toRequest(resource),
-				HttpResponse.BodyHandlers.fromSubscriber(subscriber)
-			);
-		});
+			final var cancelled = new AtomicBoolean(false);
+			sink.onCancel(() -> {
+				result.cancel(true);
+				cancelled.set(true);
+			});
+
+			result
+				.whenComplete((value, error) -> {
+					if (error != null) {
+						if (!cancelled.get()) {
+							sink.error(error);
+						}
+					} else if (value != null) {
+						@SuppressWarnings("unchecked")
+						final var success = (Response.Success<T>)value;
+						sink.success(success);
+					} else {
+						sink.success();
+					}
+				});
+			}
+		);
 	}
 
 }
