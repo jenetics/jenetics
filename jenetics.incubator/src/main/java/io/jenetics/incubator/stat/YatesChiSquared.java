@@ -19,9 +19,8 @@
  */
 package io.jenetics.incubator.stat;
 
-import static io.jenetics.incubator.stat.PearsonsChiSquared.sqr;
-
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.stat.PearsonsChiSquared.sqr;
 
 import io.jenetics.internal.util.Requires;
 

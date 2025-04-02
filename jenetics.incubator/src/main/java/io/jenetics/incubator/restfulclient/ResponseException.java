@@ -22,6 +22,10 @@ package io.jenetics.incubator.restfulclient;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * This class wraps a failure object into an exception. This exception is used
+ * for asynchronous calls, which returns {@link java.util.concurrent.CompletableFuture}
+ * objects. Such calls will transport the error state via exceptions.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
@@ -39,6 +43,11 @@ public final class ResponseException extends RuntimeException {
 		this.failure = requireNonNull(failure);
 	}
 
+	/**
+	 * Return the wrapped failure response.
+	 *
+	 * @return the wrapped failure response
+	 */
 	public Response.Failure<?> failure() {
 		return failure;
 	}

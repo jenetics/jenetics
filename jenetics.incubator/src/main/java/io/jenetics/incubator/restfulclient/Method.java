@@ -20,10 +20,15 @@
 package io.jenetics.incubator.restfulclient;
 
 /**
+ * Supported HTTP methods.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
 public enum Method {
-	GET, POST, PUT, DELETE;
+	GET,
+	PUT,
+	POST,
+	DELETE;
 }

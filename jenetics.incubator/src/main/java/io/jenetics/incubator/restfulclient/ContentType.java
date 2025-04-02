@@ -19,13 +19,15 @@
  */
 package io.jenetics.incubator.restfulclient;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.http.HttpHeaders;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.Objects.requireNonNull;
-
 /**
+ * Content type header parameters.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
@@ -44,10 +46,12 @@ public enum ContentType implements Parameter.Header {
 		this.value = requireNonNull(value);
 	}
 
+	@Override
 	public String key() {
 		return CONTENT_TYPE_KEY;
 	}
 
+	@Override
 	public String value() {
 		return value;
 	}

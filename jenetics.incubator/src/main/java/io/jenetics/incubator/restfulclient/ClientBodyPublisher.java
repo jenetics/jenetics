@@ -19,13 +19,13 @@
  */
 package io.jenetics.incubator.restfulclient;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Flow;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -44,7 +44,7 @@ final class ClientBodyPublisher implements HttpRequest.BodyPublisher{
 		} else {
 			this.delegate = HttpRequest.BodyPublishers.ofInputStream(() -> {
 				final var in = new RestPipedInputStream(new PipedInputStream());
-				final var thread = Thread.ofVirtual().factory().newThread(() -> {
+				Thread.ofVirtual().start(() -> {
 					try (var out = new PipedOutputStream()) {
 						in.connect(out);
 						writer.write(out, body);
@@ -53,11 +53,7 @@ final class ClientBodyPublisher implements HttpRequest.BodyPublisher{
 					}
 				});
 
-				try {
-					return in;
-				} finally {
-					thread.start();
-				}
+				return in;
 			});
 		}
 	}

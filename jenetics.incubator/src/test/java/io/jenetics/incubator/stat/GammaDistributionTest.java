@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.random.RandomGenerator;
 
 import org.assertj.core.data.Offset;
-import org.assertj.core.data.Percentage;
 import org.testng.annotations.Test;
 
 public class GammaDistributionTest {

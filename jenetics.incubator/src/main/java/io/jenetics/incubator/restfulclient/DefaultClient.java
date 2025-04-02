@@ -19,19 +19,23 @@
  */
 package io.jenetics.incubator.restfulclient;
 
-import reactor.core.publisher.Mono;
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.failedFuture;
 
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.CompletableFuture.completedFuture;
+import java.util.concurrent.Flow;
+import java.util.concurrent.SubmissionPublisher;
 
 /**
+ * The default client implementation which uses the Java {@link HttpClient}.
+ * {@snippet class="RestfulClientSnippets" region="DefaultClient.usage"}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
@@ -63,6 +67,15 @@ public final class DefaultClient {
 		this(URI.create(host), HttpClient.newHttpClient(), reader, writer);
 	}
 
+	/**
+	 * Calls the given {@code resource} and returns its result. This method
+	 * call blocks until the result has been read.
+	 *
+	 * @param resource the resource to call
+	 * @return the call response
+	 * @param <T> the response body type
+	 * @throws NullPointerException if the given {@code resource} is {@code null}
+	 */
 	public <T> Response<T> call(final Resource<? extends T> resource) {
 		try {
 			final HttpResponse<ServerResponse<T>> result = client.send(
@@ -74,6 +87,8 @@ public final class DefaultClient {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			return new Response.ClientError<>(resource, e);
+		} catch (UncheckedIOException e) {
+			return new Response.ClientError<>(resource, e.getCause());
 		} catch (Exception e) {
 			return new Response.ClientError<>(resource, e);
 		}
@@ -103,6 +118,14 @@ public final class DefaultClient {
 		return builder.build();
 	}
 
+	/**
+	 * Calls the given {@code resource} and returns its result.
+	 *
+	 * @param resource the resource to call
+	 * @return the call response
+	 * @param <T> the response body type
+	 * @throws NullPointerException if the given {@code resource} is {@code null}
+	 */
 	public <T> CompletableFuture<Response.Success<T>>
 	callAsync(final Resource<? extends T> resource) {
 		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
@@ -117,44 +140,49 @@ public final class DefaultClient {
 					case Response.Success<T> success -> completedFuture(success);
 					case Response.Failure<T> failure -> {
 						final var exception = new ResponseException(failure);
-						yield CompletableFuture.failedFuture(exception);
+						yield failedFuture(exception);
 					}
 				}
 			)
 			.exceptionallyCompose(throwable -> {
-				final var error = new Response.ClientError<>(resource, throwable);
+				final var error = new Response.ClientError<>(
+					resource,
+					switch (throwable) {
+						case UncheckedIOException e -> e.getCause();
+						case Throwable e -> e;
+					}
+				);
 				final var exception = new ResponseException(error);
-				return CompletableFuture.failedFuture(exception);
+				return failedFuture(exception);
 			});
 	}
 
-	public <T> Mono<Response.Success<T>>
+	/**
+	 * Calls the given {@code resource} and returns its result.
+	 *
+	 * @param resource the resource to call
+	 * @return the call response
+	 * @param <T> the response body type
+	 * @throws NullPointerException if the given {@code resource} is {@code null}
+	 */
+	public <T> Flow.Publisher<Response.Success<T>>
 	callReactive(final Resource<? extends T> resource) {
-		return Mono.create(sink -> {
-			final var result = callAsync(resource);
+		var publisher = new SubmissionPublisher<Response.Success<T>>(
+			Runnable::run,
+			1
+		);
 
-			final var cancelled = new AtomicBoolean(false);
-			sink.onCancel(() -> {
-				result.cancel(true);
-				cancelled.set(true);
+		this.<T>callAsync(resource)
+			.whenComplete((response, error) -> {
+				if (error != null) {
+					publisher.closeExceptionally(error);
+				} else {
+					publisher.submit(response);
+					publisher.close();
+				}
 			});
 
-			result
-				.whenComplete((value, error) -> {
-					if (error != null) {
-						if (!cancelled.get()) {
-							sink.error(error);
-						}
-					} else if (value != null) {
-						@SuppressWarnings("unchecked")
-						final var success = (Response.Success<T>)value;
-						sink.success(success);
-					} else {
-						sink.success();
-					}
-				});
-			}
-		);
+		return publisher;
 	}
 
 }

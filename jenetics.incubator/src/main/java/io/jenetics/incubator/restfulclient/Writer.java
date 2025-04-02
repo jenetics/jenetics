@@ -23,11 +23,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * Writer interface for writing (serializing) a given object to an output stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
 @FunctionalInterface
 public interface Writer {
-	void write(OutputStream out, Object value) throws IOException;
+
+	/**
+	 * Writes the given {@code value} to the data sink.
+	 *
+	 * @param sink the output stream where the value is written to
+	 * @param value the value to write
+	 * @throws IOException if writing the value fails
+	 */
+	void write(OutputStream sink, Object value) throws IOException;
+
 }

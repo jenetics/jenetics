@@ -2,6 +2,7 @@ package io.jenetics.incubator.restfulclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.testng.annotations.Test;
 
 public class ProblemDetailTest {

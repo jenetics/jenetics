@@ -31,13 +31,11 @@ module io.jenetics.incubator {
 	requires java.desktop;
 	requires java.net.http;
 
-	requires com.fasterxml.jackson.databind;
 	requires org.apache.commons.math4.legacy;
 	requires org.apache.commons.statistics.distribution;
     requires org.apache.commons.numbers.gamma;
-    requires reactor.core;
+	requires com.fasterxml.jackson.databind;
 
-    exports io.jenetics.incubator.beans.description;
 	exports io.jenetics.incubator.beans.property;
 	exports io.jenetics.incubator.beans.reflect;
 	exports io.jenetics.incubator.beans;
@@ -45,6 +43,8 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.csv;
 	exports io.jenetics.incubator.math;
 	exports io.jenetics.incubator.prog;
+	exports io.jenetics.incubator.restfulclient;
 	exports io.jenetics.incubator.stat;
 	exports io.jenetics.incubator.util;
+    exports io.jenetics.incubator.beans.description;
 }

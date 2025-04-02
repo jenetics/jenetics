@@ -19,30 +19,79 @@
  */
 package io.jenetics.incubator.restfulclient;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.net.http.HttpHeaders;
 import java.util.function.Function;
 
-import static java.util.Objects.requireNonNull;
-
 /**
+ * Represents the resource response.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public sealed interface Response<T> {
+public sealed interface Response<T> extends Serializable {
+
+	/**
+	 * Return the original resource object. The type of the original resource
+	 * is not known, since the response type might have been changed by one
+	 * of the mapping methods.
+	 *
+	 * @return the original resource object
+	 */
 	Resource<?> resource();
 
+	/**
+	 * The HTTP status code of the response.
+	 *
+	 * @return the HTTP status code
+	 */
+	int status();
+
+	/**
+	 * The success response object.
+	 *
+	 * @param resource the original resource object
+	 * @param headers the response headers
+	 * @param status the response status
+	 * @param body the response body
+	 * @param <T> the body type
+	 */
 	record Success<T>(
 		Resource<?> resource,
 		HttpHeaders headers,
 		int status,
 		T body
-	) implements Response<T> { }
+	)
+		implements Response<T>
+	{
+		public Success {
+			requireNonNull(resource);
+			requireNonNull(headers);
+		}
+	}
 
+	/**
+	 * The failure response. An error might be caused by the client, e.g., an
+	 * {@link IOException} thrown while calling the resource. This will lead to
+	 * a {@link ClientError}. If the service returns a status code greater than
+	 * 200, a {@link ServerError} is created.
+	 *
+	 * @param <T> the body type
+	 */
 	sealed interface Failure<T> extends Response<T> { }
 
+	/**
+	 * A client error, caused by an exception while accessing the server.
+	 *
+	 * @param resource the original resource object
+	 * @param error the thrown exception
+	 * @param <T> the body type
+	 */
 	record ClientError<T>(Resource<?> resource, Throwable error)
 		implements Failure<T>
 	{
@@ -51,7 +100,13 @@ public sealed interface Response<T> {
 			requireNonNull(error);
 		}
 
-		public int statusCode() {
+		/**
+		 * Standard mapping of the error class to a status code.
+		 *
+		 * @return the default status code associated with the exception type
+		 */
+		@Override
+		public int status() {
 			return switch (error) {
 				case IOException e -> 503;
 				case UncheckedIOException e -> 503;
@@ -60,23 +115,59 @@ public sealed interface Response<T> {
 		}
 	}
 
+	/**
+	 * Error returned by the server.
+	 *
+	 * @param resource the original resource object
+	 * @param headers the response headers
+	 * @param status the response status
+	 * @param detail the detailed error detail, if available
+	 * @param <T> the body type
+	 */
 	record ServerError<T>(
 		Resource<?> resource,
 		HttpHeaders headers,
 		int status,
 		ProblemDetail detail
-	) implements Failure<T> { }
+	)
+		implements Failure<T>
+	{
+		public ServerError {
+			requireNonNull(resource);
+			requireNonNull(headers);
+		}
+	}
 
+	/**
+	 * Applies the mapping function to the (success) response object. Errors are
+	 * returned unchanged.
+	 *
+	 * @param fn the mapping function
+	 * @return the mapped response object
+	 * @param <A> the new response body type
+	 */
 	@SuppressWarnings("unchecked")
 	default <A> Response<A> map(final Function<? super T, ? extends A> fn) {
+		requireNonNull(fn);
+
 		return switch (this) {
 			case Success(var s, var h, var r, var b) -> new Success<>(s, h, r, fn.apply(b));
 			case Response.Failure<T> f -> (Failure<A>)f;
 		};
 	}
 
+	/**
+	 * Applies the mapping function to the (success) response object. Errors are
+	 * returned unchanged.
+	 *
+	 * @param fn the mapping function
+	 * @return the mapped response object
+	 * @param <A> the new response body type
+	 */
 	@SuppressWarnings("unchecked")
 	default  <A> Response<A> flatMap(final Function<? super T, Response<? extends A>> fn) {
+		requireNonNull(fn);
+
 		return (Response<A>)switch (this) {
 			case Response.Success<T> s -> fn.apply(s.body());
 			case Response.Failure<T> f -> f;

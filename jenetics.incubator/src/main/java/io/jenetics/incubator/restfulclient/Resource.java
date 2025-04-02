@@ -29,11 +29,17 @@ import static io.jenetics.incubator.restfulclient.Method.PUT;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * This object represents a REST endpoint. It is immutable and can be reused
+ * and shared between different threads.
+ *
+ * @param <T> the resource return type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
@@ -59,15 +65,31 @@ public final class Resource<T> implements Rest<T> {
 		this.method = requireNonNull(method);
 	}
 
+	/**
+	 * Return the resource result type.
+	 *
+	 * @return the resource result type
+	 */
 	@SuppressWarnings("unchecked")
 	public Class<T> type() {
 		return (Class<T>)type;
 	}
 
+	/**
+	 * Return the resource path.
+	 *
+	 * @return the resource path
+	 */
 	public String path() {
 		return path.path();
 	}
 
+	/**
+	 * Return the resolved resource path. The path parameter will be replaced by
+	 * the real values, if defined.
+	 *
+	 * @return the resolved path
+	 */
 	public String resolvedPath() {
 		final var result = parameters.stream()
 			.filter(p -> p instanceof Parameter.Path)
@@ -97,18 +119,44 @@ public final class Resource<T> implements Rest<T> {
 			URLEncoder.encode(query.value(), UTF_8);
 	}
 
+	/**
+	 * Return the parameter list associated with this resource.
+	 *
+	 * @return the parameter list
+	 */
 	public List<Parameter> parameters() {
 		return parameters;
 	}
 
+	/**
+	 * Return the resource body. The body will be set by the
+	 * {@link #PUT(Object, Caller)} and {@link #POST(Object, Caller)} methods
+	 * and is then available for the {@link Caller}.
+	 *
+	 * @return the resource body
+	 */
 	public Optional<?> body() {
 		return Optional.ofNullable(body);
 	}
 
+	/**
+	 * Return the resource method. The method will be set by the
+	 * {@link #GET(Caller)}, {@link #PUT(Object, Caller)},
+	 * {@link #POST(Object, Caller)} and {@link #DELETE(Caller)} methods
+	 * and is then available for the {@link Caller}.
+	 *
+	 * @return the resource method
+	 */
 	public Method method() {
 		return method;
 	}
 
+	/**
+	 * Set the resource parameters: path, query, and header.
+	 *
+	 * @param parameters the resource parameters
+	 * @return a new resource
+	 */
 	public Resource<T> params(Parameter... parameters) {
 		final var params = parameters().stream()
 			.collect(Collectors.toMap(Parameter::key, Function.identity()));
@@ -164,6 +212,36 @@ public final class Resource<T> implements Rest<T> {
 		};
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, path, parameters, body, method);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Resource<?> rsc &&
+			Objects.equals(type, rsc.type) &&
+			Objects.equals(path, rsc.path) &&
+			Objects.equals(parameters, rsc.parameters) &&
+			Objects.equals(body, rsc.body) &&
+			Objects.equals(method, rsc.method);
+	}
+
+	@Override
+	public String toString() {
+		return "Resource[type=%s, path=%s, parameters=%s]"
+			.formatted(type, path, parameters);
+	}
+
+	/**
+	 * Create a new resource object from the given {@code path} a return
+	 * {@code type}.
+	 *
+	 * @param path the (local) resource path
+	 * @param type the resource return type
+	 * @return a new resource
+	 * @param <T> the resource type
+	 */
 	public static <T> Resource<T> of(String path, Class<? extends T> type) {
 		return new Resource<>(type, Path.of(path), List.of(), null, GET);
 	}

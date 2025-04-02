@@ -31,7 +31,7 @@ sealed interface ServerResponse<T> {
 	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
 
 	default Response<T> toResponse(
-		Resource<? extends T> resource,
+		final Resource<? extends T> resource,
 		final HttpResponse<ServerResponse<T>> result
 	) {
 		return switch (this) {

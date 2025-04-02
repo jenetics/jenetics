@@ -19,14 +19,15 @@
  */
 package io.jenetics.incubator.restfulclient;
 
+import static java.util.Objects.requireNonNull;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * The canonical model for problem details. When serialized in a JSON document,
@@ -52,7 +53,7 @@ import static java.util.Objects.requireNonNull;
  * }
  * }</pre>
  *
- * @see <a href="RFC 9457">https://datatracker.ietf.org/doc/html/rfc9457</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc9457">RFC 9457</a>
  *
  * @param type A URI reference that identifies the problem type. The type field
  *        is used to identify the error type and provide a link to the
@@ -82,7 +83,9 @@ public record ProblemDetail(
 	@JsonAnyGetter
 	@JsonAnySetter
 	Map<String, Object> extensions
-) {
+)
+	implements Serializable
+{
 	public static final URI BLANK = URI.create("about:blank");
 
 	public ProblemDetail {

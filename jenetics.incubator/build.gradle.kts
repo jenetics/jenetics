@@ -42,17 +42,20 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
-	api("io.projectreactor:reactor-core:3.7.4")
 	implementation(libs.commons.math4)
 	implementation(libs.commons.statistics.distribution)
-	implementation(libs.jackson.databind)
+	implementation(libs.jackson.annotations)
+
+	compileOnly(libs.jackson.databind)
 
 	testImplementation(libs.assertj)
 	testImplementation(libs.commons.numbers.combinatorics)
 	testImplementation(libs.commons.numbers.gamma)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.guava)
+	testImplementation(libs.jackson.databind)
 	testImplementation(libs.jpx)
+	testImplementation(libs.reactor.core)
 	testImplementation(libs.testng)
 
 	jmh(libs.commons.csv)

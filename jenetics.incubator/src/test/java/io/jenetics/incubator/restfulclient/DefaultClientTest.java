@@ -19,7 +19,10 @@
  */
 package io.jenetics.incubator.restfulclient;
 
+import static java.util.Objects.requireNonNull;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
 import org.testng.annotations.Test;
 
@@ -43,10 +46,12 @@ public class DefaultClientTest {
 			this.value = value;
 		}
 
+		@Override
 		public String key() {
 			return name;
 		}
 
+		@Override
 		public String value() {
 			return value;
 		}
@@ -76,12 +81,10 @@ public class DefaultClientTest {
 			mapper::writeValue
 		);
 
-		final var TODOS = Resource
-			.of("/todos/{id}/", Todo.class);
-
-		final var result = TODOS
+		final Mono<Response.Success<Todo>> result = Resource
+			.of("/todos/{id}/", Todo.class)
 			.params(ID.value("1"))
-			.GET(client::callReactive);
+			.GET(MonoCaller.of(client));
 
 		System.out.println(result.block());
 	}

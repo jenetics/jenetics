@@ -23,11 +23,25 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * Reader interface for reading values from a given input stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-@FunctionalInterface
-interface Reader {
+@FunctionalInterface()
+public interface Reader {
+
+	/**
+	 * Reads a value, of type {@code T}, from the given {@code input} stream.
+	 *
+	 * @param input the input stream the value is read from
+	 * @param type the type of the read object
+	 * @return the read (deserialized) value
+	 * @param <T> the value type
+	 * @throws IOException if reading the value fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	<T> T read(final InputStream input, Class<T> type) throws IOException;
+
 }
