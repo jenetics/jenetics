@@ -1,8 +1,35 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.incubator.restfulclient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Main {
+import org.testng.annotations.Test;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
+public class DefaultClientTest {
+
+	record Todo(int userId, int id, String title, boolean completed) {
+	}
 
 	public enum Account implements Parameter.Header {
 		FOO("x-account", "foo"),
@@ -39,7 +66,8 @@ public class Main {
 
 	static final Parameter.Value ID = Parameter.Path.key("id");
 
-	public static void main(String[] args) throws Exception {
+	@Test
+	public void call() {
 		final var mapper = new ObjectMapper();
 
 		final DefaultClient client = new DefaultClient(
@@ -56,41 +84,6 @@ public class Main {
 			.GET(client::callReactive);
 
 		System.out.println(result.block());
-
-		/*
-		final Response<String> person = PERSON
-			.params(ID.value("2323"))
-			.PUT("body-content", client::call);
-
-		final CompletableFuture<Response<String>> person2 = PERSON
-			.params(ID.value("32"))
-			.PUT("body-content", client::callAsync);
-
-		final Resource<String> document = DOCUMENT
-			.params(Account.BAR, ID.value("23"));
-
-		final Resource<String> book = BOOK
-			.params(Account.BAR)
-			.params(ID.value("23"));
-
-		final Response<Integer> count = person
-			.flatMap(p -> DOCUMENT.PUT(p, client::call))
-			.flatMap(d -> BOOK.PUT(d, client::call))
-			.map(Integer::parseInt);
-		 */
-	}
-
-	/**
-	 * <pre>{@code
-	 * {
-	 *   "userId": 1,
-	 *   "id": 1,
-	 *   "title": "delectus aut autem",
-	 *   "completed": false
-	 * }
-	 * }</pre>
-	 */
-	record Todo(int userId, int id, String title, boolean completed) {
 	}
 
 }
