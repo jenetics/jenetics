@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
 import reactor.core.publisher.Mono;
 
@@ -69,7 +69,7 @@ public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>>
 		);
 	}
 
-	public static <T> MonoCaller<T> of(final DefaultClient client) {
+	public static <T> MonoCaller<T> of(final Client client) {
 		return new MonoCaller<>(client);
 	}
 

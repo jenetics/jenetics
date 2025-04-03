@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;

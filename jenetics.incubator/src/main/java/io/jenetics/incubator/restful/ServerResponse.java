@@ -17,18 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
+
+import java.net.http.HttpResponse;
 
 /**
- * Supported HTTP methods.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public enum Method {
-	GET,
-	PUT,
-	POST,
-	DELETE;
+sealed interface ServerResponse<T> {
+	record OK<T> (T value) implements ServerResponse<T> {}
+	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
+
+	default Response<T> toResponse(
+		final Resource<? extends T> resource,
+		final HttpResponse<ServerResponse<T>> result
+	) {
+		return switch (this) {
+			case ServerResponse.OK(var body) -> new Response.Success<>(
+				resource,
+				result.headers(),
+				result.statusCode(),
+				resource.type().cast(body)
+			);
+			case ServerResponse.NOK(var detail) -> new Response.ServerError<>(
+				resource,
+				result.headers(),
+				result.statusCode(),
+				detail
+			);
+		};
+	}
+
 }

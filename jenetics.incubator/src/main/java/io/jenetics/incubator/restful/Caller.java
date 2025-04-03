@@ -17,13 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
-
-import static java.util.Objects.requireNonNull;
+package io.jenetics.incubator.restful;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Flow;
-import java.util.function.Function;
 
 /**
  * This interface is responsible for calling the given {@code resource} and
@@ -56,15 +53,5 @@ public interface Caller<T, C> {
 	 * @return the call result
 	 */
 	C call(Resource<? extends T> resource);
-
-	static <C, C1, T> Caller<T, C1> map(
-		final Caller<? super T, ? extends C> caller,
-		final Function<? super C, ? extends C1> fn
-	) {
-		requireNonNull(caller);
-		requireNonNull(fn);
-
-		return resource -> fn.apply(caller.call(resource));
-	}
 
 }

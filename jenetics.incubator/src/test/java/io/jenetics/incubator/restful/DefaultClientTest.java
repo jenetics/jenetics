@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
 import static java.util.Objects.requireNonNull;
 
@@ -75,7 +75,7 @@ public class DefaultClientTest {
 	public void call() {
 		final var mapper = new ObjectMapper();
 
-		final DefaultClient client = new DefaultClient(
+		final Client client = new DefaultClient(
 			"https://jsonplaceholder.typicode.com/",
 			mapper::readValue,
 			mapper::writeValue

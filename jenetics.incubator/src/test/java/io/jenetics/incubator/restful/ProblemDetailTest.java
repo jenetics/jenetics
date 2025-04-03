@@ -1,4 +1,4 @@
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

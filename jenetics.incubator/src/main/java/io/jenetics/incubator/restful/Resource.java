@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.restfulclient.Method.DELETE;
-import static io.jenetics.incubator.restfulclient.Method.GET;
-import static io.jenetics.incubator.restfulclient.Method.POST;
-import static io.jenetics.incubator.restfulclient.Method.PUT;
+import static io.jenetics.incubator.restful.Method.DELETE;
+import static io.jenetics.incubator.restful.Method.GET;
+import static io.jenetics.incubator.restful.Method.POST;
+import static io.jenetics.incubator.restful.Method.PUT;
 
 import java.net.URLEncoder;
 import java.util.Collection;

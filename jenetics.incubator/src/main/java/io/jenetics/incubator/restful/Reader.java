@@ -17,39 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restfulclient;
+package io.jenetics.incubator.restful;
 
-import static java.util.Objects.requireNonNull;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * This class wraps a failure object into an exception. This exception is used
- * for asynchronous calls, which returns {@link java.util.concurrent.CompletableFuture}
- * objects. Such calls will transport the error state via exceptions.
+ * Reader interface for reading values from a given input stream.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public final class ResponseException extends RuntimeException {
-
-	private final Response.Failure<?> failure;
-
-	public ResponseException(final Response.Failure<?> failure) {
-		this.failure = requireNonNull(failure);
-	}
-
-	public ResponseException(final String message, final Response.Failure<?> failure) {
-		super(message);
-		this.failure = requireNonNull(failure);
-	}
+@FunctionalInterface()
+public interface Reader {
 
 	/**
-	 * Return the wrapped failure response.
+	 * Reads a value, of type {@code T}, from the given {@code input} stream.
 	 *
-	 * @return the wrapped failure response
+	 * @param input the input stream the value is read from
+	 * @param type the type of the read object
+	 * @return the read (deserialized) value
+	 * @param <T> the value type
+	 * @throws IOException if reading the value fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public Response.Failure<?> failure() {
-		return failure;
-	}
+	<T> T read(final InputStream input, Class<T> type) throws IOException;
 
 }
