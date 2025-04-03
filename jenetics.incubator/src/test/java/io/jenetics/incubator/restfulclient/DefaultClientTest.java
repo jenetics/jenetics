@@ -81,6 +81,13 @@ public class DefaultClientTest {
 			mapper::writeValue
 		);
 
+		final var result0 = Resource
+			.of("/todos/{id}/", Todo.class)
+			.params(ID.value("1"))
+			.GET(client.sync());
+
+		System.out.println(result0);
+
 		final Mono<Response.Success<Todo>> result = Resource
 			.of("/todos/{id}/", Todo.class)
 			.params(ID.value("1"))

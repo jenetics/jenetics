@@ -48,7 +48,7 @@ final class RestfulClientSnippets {
 			final Response<Todo> result = Resource
 				.of("/todos/{id}/", Todo.class)
 				.params(Parameter.path("id", "123"))
-				.GET(client::call);
+				.GET(client.sync());
 
 			// Print the result.
 			switch (result) {

@@ -21,6 +21,8 @@ package io.jenetics.incubator.restfulclient;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Flow;
 import java.util.function.Function;
 
 /**
@@ -38,6 +40,14 @@ import java.util.function.Function;
  */
 @FunctionalInterface
 public interface Caller<T, C> {
+
+	interface Sync<T> extends Caller<T, Response<T>> {}
+	interface Async<T> extends Caller<T, CompletableFuture<Response.Success<T>>> {}
+	interface Publishing<T> extends Caller<T, Flow.Publisher<Response.Success<T>>> {}
+
+	interface Factory {
+		<T, C> Caller<T, C> create();
+	}
 
 	/**
 	 * Calls the given {@code resource} and returns its result.

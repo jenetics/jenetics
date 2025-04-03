@@ -19,18 +19,16 @@
  */
 package io.jenetics.incubator.restfulclient;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.concurrent.CompletableFuture.completedFuture;
-import static java.util.concurrent.CompletableFuture.failedFuture;
-
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Flow;
-import java.util.concurrent.SubmissionPublisher;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.failedFuture;
 
 /**
  * The default client implementation which uses the Java {@link HttpClient}.
@@ -40,7 +38,7 @@ import java.util.concurrent.SubmissionPublisher;
  * @since 8.2
  * @version 8.2
  */
-public final class DefaultClient {
+public final class DefaultClient implements Client {
 
 	private final URI host;
 	private final HttpClient client;
@@ -68,57 +66,6 @@ public final class DefaultClient {
 	}
 
 	/**
-	 * Calls the given {@code resource} and returns its result. This method
-	 * call blocks until the result has been read.
-	 *
-	 * @param resource the resource to call
-	 * @return the call response
-	 * @param <T> the response body type
-	 * @throws NullPointerException if the given {@code resource} is {@code null}
-	 */
-	public <T> Response<T> call(final Resource<? extends T> resource) {
-		try {
-			final HttpResponse<ServerResponse<T>> result = client.send(
-				toRequest(resource),
-				new ServerBodyHandler<T>(reader, resource.type())
-			);
-
-			return result.body().toResponse(resource, result);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return new Response.ClientError<>(resource, e);
-		} catch (UncheckedIOException e) {
-			return new Response.ClientError<>(resource, e.getCause());
-		} catch (Exception e) {
-			return new Response.ClientError<>(resource, e);
-		}
-	}
-
-	private <T> HttpRequest toRequest(final Resource<? extends T> resource) {
-		final var builder = HttpRequest.newBuilder()
-			.uri(host.resolve(resource.resolvedPath().substring(1)));
-
-		resource.parameters().stream()
-			.filter(p -> p instanceof Parameter.Header)
-			.forEach(header -> builder.header(header.key(), header.value()));
-
-		switch (resource.method()) {
-			case GET -> builder.GET();
-			case POST -> builder.POST(new ClientBodyPublisher(
-				writer,
-				resource.body().orElse(null)
-			));
-			case PUT -> builder.PUT(new ClientBodyPublisher(
-				writer,
-				resource.body().orElse(null)
-			));
-			case DELETE -> builder.DELETE();
-		}
-
-		return builder.build();
-	}
-
-	/**
 	 * Calls the given {@code resource} and returns its result.
 	 *
 	 * @param resource the resource to call
@@ -126,8 +73,9 @@ public final class DefaultClient {
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
+
 	public <T> CompletableFuture<Response.Success<T>>
-	callAsync(final Resource<? extends T> resource) {
+	call(final Resource<? extends T> resource) {
 		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
 			client.sendAsync(
 				toRequest(resource),
@@ -157,32 +105,28 @@ public final class DefaultClient {
 			});
 	}
 
-	/**
-	 * Calls the given {@code resource} and returns its result.
-	 *
-	 * @param resource the resource to call
-	 * @return the call response
-	 * @param <T> the response body type
-	 * @throws NullPointerException if the given {@code resource} is {@code null}
-	 */
-	public <T> Flow.Publisher<Response.Success<T>>
-	callReactive(final Resource<? extends T> resource) {
-		var publisher = new SubmissionPublisher<Response.Success<T>>(
-			Runnable::run,
-			1
-		);
+	private <T> HttpRequest toRequest(final Resource<? extends T> resource) {
+		final var builder = HttpRequest.newBuilder()
+			.uri(host.resolve(resource.resolvedPath().substring(1)));
 
-		this.<T>callAsync(resource)
-			.whenComplete((response, error) -> {
-				if (error != null) {
-					publisher.closeExceptionally(error);
-				} else {
-					publisher.submit(response);
-					publisher.close();
-				}
-			});
+		resource.parameters().stream()
+			.filter(p -> p instanceof Parameter.Header)
+			.forEach(header -> builder.header(header.key(), header.value()));
 
-		return publisher;
+		switch (resource.method()) {
+			case GET -> builder.GET();
+			case POST -> builder.POST(new ClientBodyPublisher(
+				writer,
+				resource.body().orElse(null)
+			));
+			case PUT -> builder.PUT(new ClientBodyPublisher(
+				writer,
+				resource.body().orElse(null)
+			));
+			case DELETE -> builder.DELETE();
+		}
+
+		return builder.build();
 	}
 
 }

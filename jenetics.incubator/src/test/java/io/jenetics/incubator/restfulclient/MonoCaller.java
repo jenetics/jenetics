@@ -19,13 +19,11 @@
  */
 package io.jenetics.incubator.restfulclient;
 
-import static java.util.Objects.requireNonNull;
-
-import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collector;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Wraps the default client into a caller which returns {@link Mono} objects
@@ -36,48 +34,18 @@ import java.util.stream.Collector;
  * @version 8.2
  */
 public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>> {
-	private final DefaultClient client;
+	private final Client client;
 
-	private MonoCaller(final DefaultClient client) {
+	private MonoCaller(final Client client) {
 		this.client = requireNonNull(client);
 	}
 
 	@Override
 	public Mono<Response.Success<T>> call(final Resource<? extends T> resource) {
-		return JdkFlowAdapter
-			.flowPublisherToFlux(client.<T>callReactive(resource))
-			.collect(toMono());
-	}
-
-	public static <T> MonoCaller<T> of(final DefaultClient client) {
-		return new MonoCaller<>(client);
-	}
-
-	public static <T> Collector<Response.Success<T>, ?, Response.Success<T>> toMono() {
-		return Collector.of(
-			AtomicReference<Response.Success<T>>::new,
-			(ref, value) -> ref.accumulateAndGet(
-				value,
-				(pre, cur) -> {
-					if (pre != null) {
-						throw new IllegalStateException("Duplicate value: " + pre);
-					} else {
-						return cur;
-					}
-				}
-			),
-			(a, b) -> { throw new IllegalStateException("No parallel streams"); },
-			AtomicReference::get
-		);
-	}
-
-	/*
-	public <T> Mono<Response.Success<T>>
-	callReactive(final Resource<? extends T> resource) {
 		return Mono.create(sink -> {
-			final var result = callAsync(resource);
-
+			final var result = client.call(resource);
 			final var cancelled = new AtomicBoolean(false);
+
 			sink.onCancel(() -> {
 				result.cancel(true);
 				cancelled.set(true);
@@ -100,6 +68,9 @@ public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>>
 			}
 		);
 	}
-	 */
+
+	public static <T> MonoCaller<T> of(final DefaultClient client) {
+		return new MonoCaller<>(client);
+	}
 
 }
