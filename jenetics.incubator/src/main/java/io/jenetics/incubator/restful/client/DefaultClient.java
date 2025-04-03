@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.restful.client;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.completedFuture;
@@ -29,6 +29,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
+
+import io.jenetics.incubator.restful.Parameter;
+import io.jenetics.incubator.restful.Resource;
+import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.ResponseException;
 
 /**
  * The default client implementation which uses the Java {@link HttpClient}.

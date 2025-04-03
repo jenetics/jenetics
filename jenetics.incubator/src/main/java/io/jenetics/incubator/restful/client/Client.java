@@ -17,12 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.restful.client;
 
 import java.io.UncheckedIOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.SubmissionPublisher;
+
+import io.jenetics.incubator.restful.Caller;
+import io.jenetics.incubator.restful.Resource;
+import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.ResponseException;
 
 /**
  * Rest client interface. Clients are inherently asynchronous.

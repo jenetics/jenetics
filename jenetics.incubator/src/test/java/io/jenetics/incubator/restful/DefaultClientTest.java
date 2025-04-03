@@ -26,6 +26,9 @@ import reactor.core.publisher.Mono;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.restful.client.Client;
+import io.jenetics.incubator.restful.client.DefaultClient;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

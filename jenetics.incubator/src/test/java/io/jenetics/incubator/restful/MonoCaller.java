@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.incubator.restful.client.Client;
+
 /**
  * Wraps the default client into a caller which returns {@link Mono} objects
  * instead of {@link java.util.concurrent.Flow.Publisher} objects.

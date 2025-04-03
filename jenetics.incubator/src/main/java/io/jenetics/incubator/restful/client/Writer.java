@@ -17,37 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.restful.client;
 
-import java.net.http.HttpResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
+ * Writer interface for writing (serializing) a given object to an output stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-sealed interface ServerResponse<T> {
-	record OK<T> (T value) implements ServerResponse<T> {}
-	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
+@FunctionalInterface
+public interface Writer {
 
-	default Response<T> toResponse(
-		final Resource<? extends T> resource,
-		final HttpResponse<ServerResponse<T>> result
-	) {
-		return switch (this) {
-			case ServerResponse.OK(var body) -> new Response.Success<>(
-				resource,
-				result.headers(),
-				result.statusCode(),
-				resource.type().cast(body)
-			);
-			case ServerResponse.NOK(var detail) -> new Response.ServerError<>(
-				resource,
-				result.headers(),
-				result.statusCode(),
-				detail
-			);
-		};
-	}
+	/**
+	 * Writes the given {@code value} to the data sink.
+	 *
+	 * @param sink the output stream where the value is written to
+	 * @param value the value to write
+	 * @throws IOException if writing the value fails
+	 */
+	void write(OutputStream sink, Object value) throws IOException;
 
 }

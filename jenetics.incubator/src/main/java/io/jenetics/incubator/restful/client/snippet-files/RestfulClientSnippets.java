@@ -17,9 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.restful.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.jenetics.incubator.restful.Parameter;
+import io.jenetics.incubator.restful.Resource;
+import io.jenetics.incubator.restful.Response;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

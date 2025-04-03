@@ -47,4 +47,5 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.stat;
 	exports io.jenetics.incubator.util;
     exports io.jenetics.incubator.beans.description;
+	exports io.jenetics.incubator.restful.client;
 }
