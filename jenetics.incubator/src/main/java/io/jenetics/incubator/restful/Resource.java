@@ -21,10 +21,10 @@ package io.jenetics.incubator.restful;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.restful.Method.DELETE;
-import static io.jenetics.incubator.restful.Method.GET;
-import static io.jenetics.incubator.restful.Method.POST;
-import static io.jenetics.incubator.restful.Method.PUT;
+import static io.jenetics.incubator.restful.MethodType.DELETE;
+import static io.jenetics.incubator.restful.MethodType.GET;
+import static io.jenetics.incubator.restful.MethodType.POST;
+import static io.jenetics.incubator.restful.MethodType.PUT;
 
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -44,19 +44,19 @@ import java.util.stream.Collectors;
  * @since 8.2
  * @version 8.2
  */
-public final class Resource<T> implements Rest<T> {
+public final class Resource<T> {
 	private final Class<? extends T> type;
 	private final Path path;
 	private final List<Parameter> parameters;
 	private final Object body;
-	private final Method method;
+	private final MethodType method;
 
 	private Resource(
 		final Class<? extends T> type,
 		final Path path,
 		final Collection<Parameter> parameters,
 		final Object body,
-		final Method method
+		final MethodType method
 	) {
 		this.type = requireNonNull(type);
 		this.path = requireNonNull(path);
@@ -147,7 +147,7 @@ public final class Resource<T> implements Rest<T> {
 	 *
 	 * @return the resource method
 	 */
-	public Method method() {
+	public MethodType method() {
 		return method;
 	}
 
@@ -167,49 +167,54 @@ public final class Resource<T> implements Rest<T> {
 		return new Resource<>(type, path, params.values(), body, method);
 	}
 
-	@Override
+	/**
+	 * Executes the HTTP GET method.
+	 *
+	 * @param caller the resource caller
+	 * @return the GET caller result
+	 * @param <C> the caller result type
+	 */
 	public <C> C GET(final Caller<? super T, ? extends C> caller) {
 		var rsc = new Resource<T>(type, path, parameters, null, GET);
 		return caller.call(rsc);
 	}
 
-	@Override
+	/**
+	 * Executes the HTTP PUT method.
+	 *
+	 * @param body the request body
+	 * @param caller the resource caller
+	 * @return the PUT caller result
+	 * @param <C> the caller result type
+	 */
 	public <C> C PUT(final Object body, final Caller<? super T, ? extends C> caller) {
 		var rsc = new Resource<T>(type, path, parameters, body, PUT);
 		return caller.call(rsc);
 	}
 
-	@Override
+	/**
+	 * Executes the HTTP POST method.
+	 *
+	 * @param body the request body
+	 * @param caller the resource caller
+	 * @return the POST caller result
+	 * @param <C> the caller result type
+	 */
 	public <C> C POST(final Object body, final Caller<? super T, ? extends C> caller) {
 		var rsc = new Resource<T>(type, path, parameters, body, POST);
 		return caller.call(rsc);
 	}
 
-	@Override
+	/**
+	 * Executes the HTTP DELETE method.
+	 *
+	 * @param caller the resource caller
+	 * @return the DELETE caller result
+	 * @param <C> the caller result type
+	 */
 	public <C> C DELETE(final Caller<? super T, ? extends C> caller) {
 		var rsc = new Resource<T>(type, path, parameters, null, DELETE);
 		return caller.call(rsc);
-	}
-
-	public Rest<T> rest() {
-		return new Rest<>() {
-			@Override
-			public <C> C GET(Caller<? super T, ? extends C> caller) {
-				return Resource.this.GET(caller);
-			}
-			@Override
-			public <C> C PUT(Object body, Caller<? super T, ? extends C> caller) {
-				return Resource.this.PUT(body, caller);
-			}
-			@Override
-			public <C> C POST(Object body, Caller<? super T, ? extends C> caller) {
-				return Resource.this.POST(body, caller);
-			}
-			@Override
-			public <C> C DELETE(Caller<? super T, ? extends C> caller) {
-				return Resource.this.DELETE(caller);
-			}
-		};
 	}
 
 	@Override

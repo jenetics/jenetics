@@ -17,18 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.restful.api;
+
+import java.time.LocalDate;
+
+import io.jenetics.incubator.restful.Parameter;
+import io.jenetics.incubator.restful.Resource;
 
 /**
- * Supported HTTP methods.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public enum Method {
-	GET,
-	PUT,
-	POST,
-	DELETE;
+public interface Path<T> {
+
+	Resource<T> resource();
+
+	default Method.Get<T> get(LocalDate startDate, int page, int limit) {
+		final var resource = resource()
+			.params(Parameter.query("startDate", startDate.toString()))
+			.params(Parameter.query("page", Integer.toString(page)))
+			.params(Parameter.query("limit", Integer.toString(limit)));
+
+		return resource::GET;
+	}
+
 }

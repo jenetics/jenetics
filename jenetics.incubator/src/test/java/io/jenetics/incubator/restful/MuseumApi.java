@@ -17,8 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.restful;
 
 /**
- * The classes and interfaces in this package allow you to model a RESTful API.
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.2
+ * @version 8.2
  */
-package io.jenetics.incubator.restful;
+public final class MuseumApi {
+
+	public static final Resource<String> MUSEUM_HOURS = Resource
+		.of("/museum-hours", String.class);
+
+	public static final Parameter.Value START_DATE =
+		Parameter.Query.key("startDate");
+
+	public static final Parameter.Value PAGE =
+		Parameter.Query.key("page");
+
+	public static final Parameter.Value LIMIT =
+		Parameter.Query.key("limit");
+
+	private MuseumApi() {
+	}
+}

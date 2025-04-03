@@ -34,11 +34,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 8.2
  * @version 8.2
  */
-final class RestPipedInputStream extends InputStream {
+final class ErrorPropagatingPipedInputStream extends InputStream {
 	private final AtomicReference<Throwable> error = new AtomicReference<>();
 	private final PipedInputStream in;
 
-	RestPipedInputStream(PipedInputStream out) {
+	ErrorPropagatingPipedInputStream(PipedInputStream out) {
 		this.in = requireNonNull(out);
 	}
 

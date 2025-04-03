@@ -17,8 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.restful;
 
 /**
- * The classes and interfaces in this package allow you to model a RESTful API.
+ * Supported HTTP methods.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.2
+ * @version 8.2
  */
-package io.jenetics.incubator.restful;
+public enum MethodType {
+	GET,
+	PUT,
+	POST,
+	DELETE;
+}

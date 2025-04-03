@@ -107,7 +107,7 @@ public interface Client {
 	 * @return a reactive caller
 	 * @param <T> the response body type
 	 */
-	default <T> Caller.Publishing<T> publishing() {
+	default <T> Caller.Reactive<T> reactive() {
 		return resource -> {
 			var publisher = new SubmissionPublisher<Response.Success<T>>(
 				Runnable::run,

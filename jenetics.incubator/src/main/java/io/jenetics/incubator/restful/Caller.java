@@ -38,13 +38,26 @@ import java.util.concurrent.Flow;
 @FunctionalInterface
 public interface Caller<T, C> {
 
+	/**
+	 * Caller specialization for synchronous REST calls.
+	 *
+	 * @param <T> the result type
+	 */
 	interface Sync<T> extends Caller<T, Response<T>> {}
-	interface Async<T> extends Caller<T, CompletableFuture<Response.Success<T>>> {}
-	interface Publishing<T> extends Caller<T, Flow.Publisher<Response.Success<T>>> {}
 
-	interface Factory {
-		<T, C> Caller<T, C> create();
-	}
+	/**
+	 * Caller specialization for asynchronous REST calls.
+	 *
+	 * @param <T> the result type
+	 */
+	interface Async<T> extends Caller<T, CompletableFuture<Response.Success<T>>> {}
+
+	/**
+	 * Caller specialization for reactive REST calls.
+	 *
+	 * @param <T> the result type
+	 */
+	interface Reactive<T> extends Caller<T, Flow.Publisher<Response.Success<T>>> {}
 
 	/**
 	 * Calls the given {@code resource} and returns its result.

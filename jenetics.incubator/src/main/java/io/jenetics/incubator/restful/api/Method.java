@@ -17,8 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.restful.api;
+
+import io.jenetics.incubator.restful.Caller;
 
 /**
- * The classes and interfaces in this package allow you to model a RESTful API.
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.2
+ * @version 8.2
  */
-package io.jenetics.incubator.restful;
+public sealed interface Method<T> {
+
+	non-sealed interface Get<T> extends Method<T> {
+		<C> C call(final Caller<? super T, ? extends C> caller);
+	}
+
+	non-sealed interface Put<T> extends Method<T> {
+		<C> C call(final Object body,final Caller<? super T, ? extends C> caller);
+	}
+
+	non-sealed interface Pos<T> extends Method<T> {
+		<C> C call(final Object body,final Caller<? super T, ? extends C> caller);
+	}
+
+	non-sealed interface Delete<T> extends Method<T> {
+		<C> C call(final Caller<? super T, ? extends C> caller);
+	}
+
+}

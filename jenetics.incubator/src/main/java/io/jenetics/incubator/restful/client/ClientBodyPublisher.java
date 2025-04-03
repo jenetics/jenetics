@@ -43,7 +43,7 @@ final class ClientBodyPublisher implements HttpRequest.BodyPublisher{
 			this.delegate = HttpRequest.BodyPublishers.noBody();
 		} else {
 			this.delegate = HttpRequest.BodyPublishers.ofInputStream(() -> {
-				final var in = new RestPipedInputStream(new PipedInputStream());
+				final var in = new ErrorPropagatingPipedInputStream(new PipedInputStream());
 				Thread.ofVirtual().start(() -> {
 					try (var out = new PipedOutputStream()) {
 						in.connect(out);
