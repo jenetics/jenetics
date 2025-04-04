@@ -45,6 +45,8 @@ dependencies {
 	implementation(libs.commons.math4)
 	implementation(libs.commons.statistics.distribution)
 	implementation(libs.jackson.annotations)
+	implementation(libs.swagger.parser)
+	implementation(libs.swagger.models)
 
 	compileOnly(libs.jackson.databind)
 

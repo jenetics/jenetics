@@ -35,6 +35,8 @@ module io.jenetics.incubator {
 	requires org.apache.commons.statistics.distribution;
     requires org.apache.commons.numbers.gamma;
 	requires com.fasterxml.jackson.databind;
+	//requires swagger.parser.v3;
+	//requires swagger.parser.core;
 
 	exports io.jenetics.incubator.beans;
 	exports io.jenetics.incubator.beans.description;

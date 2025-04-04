@@ -17,18 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
-
-import java.time.LocalDate;
-
-import io.jenetics.incubator.restful.Parameter;
-import io.jenetics.incubator.restful.Resource;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * OpenAPI code generator.
  */
-public interface Path<T> {
-	Resource<T> resource();
-}
+package io.jenetics.incubator.restful.generator;
