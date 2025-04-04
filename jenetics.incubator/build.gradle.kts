@@ -48,8 +48,8 @@ dependencies {
 	implementation(libs.swagger.parser)
 	implementation(libs.swagger.models)
 
-	compileOnly(libs.jackson.databind)
 
+	testImplementation(libs.codemodel)
 	testImplementation(libs.assertj)
 	testImplementation(libs.commons.numbers.combinatorics)
 	testImplementation(libs.commons.numbers.gamma)

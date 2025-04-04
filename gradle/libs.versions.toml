@@ -5,6 +5,7 @@ jmh = { id = "me.champeau.jmh", version = "0.7.2" }
 [libraries]
 
 assertj = "org.assertj:assertj-core:3.26.3"
+codemodel = "org.glassfish.jaxb:codemodel:4.0.5"
 commons-csv = "org.apache.commons:commons-csv:1.11.0"
 commons-math = "org.apache.commons:commons-math3:3.6.1"
 commons-math4 = "org.apache.commons:commons-math4-legacy:4.0-beta1"

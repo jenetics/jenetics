@@ -265,6 +265,10 @@ components:
                       email:
                           $ref: "#/components/schemas/Email"
                 - $ref: "#/components/schemas/Ticket"
+        Message:
+            oneOf:
+                - $ref: "#/components/schemas/Ticket"
+                - $ref: "#/components/schemas/Email"
         TicketMessage:
             description: Confirmation message after a ticket purchase.
             type: string

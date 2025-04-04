@@ -19,41 +19,55 @@
  */
 package io.jenetics.incubator.restful.generator;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.parser.OpenAPIV3Parser;
-import io.swagger.v3.parser.core.models.SwaggerParseResult;
+import static java.util.Objects.requireNonNull;
 
-import javax.lang.model.type.ReferenceType;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import io.jenetics.incubator.restful.generator.model.Property;
+import io.jenetics.incubator.restful.generator.model.Struct;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 8.2
+ * @version 8.2
+ */
 public class Generator {
 
-	public static void main(String[] args) throws IOException {
-		var resource = "/io/jenetics/incubator/restful/museum-api.yaml";
+	private final Api api;
 
-		var parser = new OpenAPIV3Parser();
-		SwaggerParseResult result;
-		try (var in = Generator.class.getResourceAsStream(resource)) {
-			 result = parser.readContents(new String(in.readAllBytes()));
-		}
-
-		ReferenceType t;
-
-		OpenAPI api = result.getOpenAPI();
-		api.getComponents().getSchemas().entrySet().stream()
-			.filter(entry -> isPrimitive((Map.Entry<String, Schema<?>>)(Object)entry))
-			.forEach(entry -> System.out.println(entry.getKey()));
+	public Generator(final Api api) {
+		this.api = requireNonNull(api);
 	}
 
- 	static boolean isPrimitive(Map.Entry<String, Schema<?>> schema) {
-		var types = schema.getValue().getTypes();
-		String type = types != null && types.size() == 1
-			? schema.getValue().getTypes().iterator().next()
-			: null;
+	public static void main(String[] args) throws IOException {
+		final var resource = "/io/jenetics/incubator/restful/museum-api.yaml";
+		final var generator = new Generator(Api.of(resource));
 
-		return "string".equals(type);
+		final List<Struct> structs = generator.api.types().stream()
+			.peek(System.out::println)
+			.filter(t -> "Ticket".equals(t.name()))
+			.map(t -> (Struct)t)
+			.toList();
+
+		System.out.println(toString(structs.getFirst()));
+	}
+
+	static String toString(final Struct struct) {
+		var prop = struct.properties().stream()
+			.map(Generator::toString)
+			.collect(Collectors.joining(",\n"))
+			.indent(4);
+
+		return  """
+			public record %s(
+			%s) { }
+			""".formatted(struct.name(), prop);
+	}
+
+	static String toString(final Property property) {
+		return property.type() + " " + property.name();
 	}
 
 }
