@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,8 +31,11 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.EmpiricalDistribution;
+import io.jenetics.incubator.stat.PearsonsChiSquared;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -47,23 +50,28 @@ public class TournamentSelectorTest
 		return () -> new TournamentSelector<>(3);
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 10, successPercentage = 70
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final var distribution = SelectorTester.distribution(
+		final var observation = SelectorTester.observation(
 			new TournamentSelector<>(tournamentSize),
 			opt,
 			POPULATION_COUNT,
 			50
 		);
+		new StableRandomExecutor(123451).execute(observation);
 
-		assertThatObservation(distribution).isLike(expected.value);
+		final var distribution = EmpiricalDistribution.of(
+			observation.histogram().partition(),
+			expected.value
+		);
+
+		assertThatObservation(observation)
+			.usingHypothesisTester(new PearsonsChiSquared(0.00001))
+			.follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

@@ -34798,57 +34798,67 @@ status open
 
 \begin_layout Plain Layout
 
-final Cfg<String> cfg = Cfg.of(
+final var cfg = Cfg.<String>builder()
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("expr",
+    .R("expr", rule -> rule
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(N("num")), E(N("var")),
+        .N("num", "some annotation")
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(N("expr"), N("op"), N("expr"))
+        .N("var", "some other annotation")
 \end_layout
 
 \begin_layout Plain Layout
 
-    ),
+        .E(exp -> exp
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
+            .T("(")
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("var", E(T("x")), E(T("y"))),
+            .N("expr").N("op", 4).N("expr")
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("num",
+            .T(")")))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("1")), E(T("2")), E(T("3")),
+    .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("4")), E(T("5")), E(T("6")),
+    .R("var", rule -> rule.T("x").T("y"))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("7")), E(T("8")), E(T("9"))
+    .R("num", rule -> rule
+\end_layout
+
+\begin_layout Plain Layout
+
+        .T("0").T("1").T("2").T("3").T("4")
+\end_layout
+
+\begin_layout Plain Layout
+
+        .T("5").T("6").T("7").T("8").T("9")
 \end_layout
 
 \begin_layout Plain Layout
@@ -34858,7 +34868,7 @@ final Cfg<String> cfg = Cfg.of(
 
 \begin_layout Plain Layout
 
-);
+    .build();
 \end_layout
 
 \end_inset
@@ -34875,6 +34885,23 @@ noprefix "false"
 \end_inset
 
 .
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The CFG, created by the BNF representation doesn't allow to add annotations
+ to the CFG elements.
+ This is only possible when using the 
+\family typewriter
+Cfg.\SpecialChar softhyphen
+Builder
+\family default
+.
+ Such annotations can be used by the sentence generator.
+\end_layout
+
+\end_inset
+
  The code snippet below shows how to do this.
 \end_layout
 

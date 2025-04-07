@@ -19,14 +19,20 @@
  */
 package io.jenetics.gradle.dsl
 
+import io.jenetics.gradle.Constants.SNIPPET_DIR
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.get
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.io.path.isRegularFile
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,11 +52,16 @@ val SourceSetContainer.main: SourceSet
 val Project.sourceSets: SourceSetContainer
 	get() = this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
 
+fun Project.testClasses(projectName: String): SourceSetOutput {
+	return this.rootProject.project(projectName).sourceSets["test"].output
+}
+
 /**
  * Gets the module name of the project, as configured in the build file.
  */
 var Project.moduleName: String
-	get() = this.extra.get("moduleName")?.toString() ?: this.name
+	get() = if (this.isModule) this.extra.get("moduleName").toString()
+			else this.name
 	set(value) = this.extra.set("moduleName", value)
 
 /**
@@ -96,10 +107,37 @@ val Project.snippetPaths: Set<String>
 	get() = this.sourceDirs
 		.flatMap { dir ->
 			dir.walk()
-				.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
+				.filter { file -> file.isDirectory && file.endsWith(SNIPPET_DIR) }
 				.map { it.absolutePath }
 		}
 		.toSet()
+
+/**
+ * Gets the list of defined snippet files.
+ */
+val Project.snippetFiles: List<String>
+	get() = this.snippetPaths
+		.flatMap { dir -> Files.list(Path.of(dir)).toList() }
+		.filter { it.isRegularFile() }
+		.map { file -> file.toAbsolutePath().toString() }
+		.toList()
+
+/**
+ * Gets the list of snippet classes, including the path.
+ */
+val Project.snippetClasses: List<String>
+	get() = this.snippetFiles
+		.map { file ->
+			val index = file.lastIndexOf("/src/main/java/")
+			if (index != -1) {
+				file.substring(index + "/src/main/java/".length)
+					.replace("/$SNIPPET_DIR", "")
+					.replace(".java", "")
+			} else {
+				file
+			}
+		}
+		.toList()
 
 /**
  * Gets the _snippet_ path of a project as string.

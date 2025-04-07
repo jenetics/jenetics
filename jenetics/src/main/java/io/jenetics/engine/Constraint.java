@@ -182,7 +182,6 @@ public interface Constraint<
 	 * individuals obeying {@code this} constraint. The following code will
 	 * create an evolution engine, where also the genotype factory will only
 	 * create valid individuals.
-	 *
 	 * {@snippet lang="java":
 	 * final Constraint<DoubleGene, Double> constraint = null; // @replace substring='null' replacement="..."
 	 * final Factory<Genotype<DoubleGene>> gtf = null; // @replace substring='null' replacement="..."

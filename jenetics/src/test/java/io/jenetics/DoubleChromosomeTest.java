@@ -20,17 +20,22 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 import static io.jenetics.internal.math.DoubleAdder.sum;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
 
+import java.util.Random;
+
+import io.jenetics.incubator.stat.Sampling;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,20 +53,29 @@ public class DoubleChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final double min = 0;
 		final double max = 100;
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = DoubleChromosome.of(min, max, 500);
-			for (var gene : chromosome) {
-				histogram.accept(gene.allele());
-			}
-		}
+		final var observation = new RunnableObservation(
+			Sampling.repeat(1_000, samples ->
+				DoubleChromosome.of(min, max, 500).stream()
+					.mapToDouble(DoubleGene::doubleValue)
+					.forEach(samples::add)
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(12345678).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")
