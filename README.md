@@ -322,7 +322,7 @@ new StableRandomExecutor(seed).execute(observation);
 assertThatObservation(observation).isUniform();
 ```
 
-### Bugs
+#### Bugs
 
 * [#914](https://github.com/jenetics/jenetics/issues/#914): Fix `Samplers.linear(double)` factory.
 
@@ -348,7 +348,7 @@ final Codec<int[], DoubleGene> codec = Codecs
     .map(Conversions::doubleToIntArray);
 ```
 
-### Bugs
+#### Bugs
 
 * [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
 
