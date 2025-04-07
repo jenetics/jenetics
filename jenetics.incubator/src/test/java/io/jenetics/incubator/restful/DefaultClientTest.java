@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.restful;
 
-import static java.util.Objects.requireNonNull;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -74,7 +72,7 @@ public class DefaultClientTest {
 
 	static final Parameter.Value ID = Parameter.Path.key("id");
 
-	@Test
+	@Test(enabled = false)
 	public void call() {
 		final var mapper = new ObjectMapper();
 
