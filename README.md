@@ -284,6 +284,48 @@ Sandhya Avasthi, Shrishti Garg, Suman Lata Tripathi, Ritu Chauhan. <a href="http
 
 ## Release notes
 
+### [8.2.0](https://github.com/jenetics/jenetics/releases/tag/v8.2.0)
+
+#### Improvements
+
+* [#889](https://github.com/jenetics/jenetics/issues/889): Allow adding annotations to `Cfg` elements for _Grammatical Evolution_.
+```java
+final var cfg2 = Cfg.<String>builder()
+    .R("expr", rule -> rule
+        .N("num", "annotation 1")
+        .N("var", "annotation 2")
+        .E(exp -> exp
+            .T("(")
+            .N("expr").N("op", 4).N("expr")
+            .T(")")))
+    .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
+    .R("var", rule -> rule.T("x").T("y"))
+    .R("num", rule -> rule
+        .T("0").T("1").T("2").T("3").T("4")
+        .T("5").T("6").T("7").T("8").T("9")
+    )
+    .build();
+```
+* [#915](https://github.com/jenetics/jenetics/issues/915): Remove usage of `java.security.AccessController`.
+* [#921](https://github.com/jenetics/jenetics/issues/921): Remove `object == this` "optimization" in `equals` methods.
+* [#923](https://github.com/jenetics/jenetics/issues/923): Improve parsing performance of `CsvSupport`.
+* [#925](https://github.com/jenetics/jenetics/issues/925): _INCUBATION_: Implement statistical hypothesis tester. The statistical tests for the engine classes has been stabilized and can be written in the following way.
+```java
+final var observation = new RunnableObservation(
+    Sampling.repeat(200_000, samples ->
+        samples.add(DoubleGene.of(0, 20).doubleValue())
+    ),
+    Partition.of(0, 20, 20)
+);
+new StableRandomExecutor(seed).execute(observation);
+
+assertThatObservation(observation).isUniform();
+```
+
+### Bugs
+
+* [#914](https://github.com/jenetics/jenetics/issues/#914): Fix `Samplers.linear(double)` factory.
+
 ### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
 
 #### Improvements
