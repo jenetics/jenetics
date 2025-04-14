@@ -2,6 +2,13 @@ package io.jenetics.incubator.restful.generator;
 
 import static java.time.ZoneOffset.UTC;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.sun.codemodel.ClassType;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
@@ -9,8 +16,13 @@ import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 import com.sun.codemodel.writer.OutputStreamCodeWriter;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.processing.Generated;
 
@@ -52,4 +64,53 @@ public class CodeModel {
 		setter.body().directStatement("this." + name + " = " + name + ";");
 	}
 
+	void foo() {
+		Pet pet = null;
+		//pet.owner(sink -> sink.accept("owner"));
+
+		JsonNode node = JsonNodeFactory.instance.objectNode();
+		ArrayNode array = JsonNodeFactory.instance.arrayNode();
+		array.add(JsonNodeFactory.instance.textNode("Hello, World!"));
+	}
+
 }
+
+interface Owner {
+	Pet pet();
+}
+
+interface MutableOwner extends Owner {
+	MutableOwner pet(Pet pet);
+}
+
+@JsonTypeName("Pet")
+interface Pet {
+
+	@JsonGetter("name")
+	String name();
+
+	@JsonCreator
+	static Pet of() {
+		final Pet instance = (Pet)Proxy.newProxyInstance(
+			Pet.class.getClassLoader(),
+			new Class<?>[]{Pet.class},
+			(proxy, method, args) -> {
+				return switch (method.getName()) {
+					case "name" -> "foo";
+					default -> throw new IllegalStateException("Unexpected method: " + method);
+				};
+			}
+		);
+
+		return instance;
+	}
+}
+
+interface Dog extends Pet {
+	String wuff();
+}
+
+interface Cat extends Pet {
+	String meow();
+}
+
