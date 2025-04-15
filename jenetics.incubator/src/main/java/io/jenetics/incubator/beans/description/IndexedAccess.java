@@ -38,7 +38,7 @@ public sealed interface IndexedAccess {
 	IndexedGetter getter();
 
 	/**
-	 * Read only property access-object.
+	 * Read-only property access-object.
 	 *
 	 * @param getter the property getter
 	 */

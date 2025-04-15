@@ -87,7 +87,7 @@ public sealed interface Property
 	}
 
 	/**
-	 * Return the writer which allows to update the property, or
+	 * Return the writer which allows updating the property, or
 	 * {@link Optional#empty()} if the property is unmodifiable.
 	 *
 	 * @return the property writer

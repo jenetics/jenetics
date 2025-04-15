@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.property;
 
 /**
- * This property represents an element of an {@link IndexedProperty}.
+ * This property represents a single element of an {@link IndexedProperty}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2

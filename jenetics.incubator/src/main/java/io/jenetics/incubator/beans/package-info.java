@@ -19,7 +19,7 @@
  */
 
 /**
- * This package contains classes which allow to perform random access to the
+ * This package contains classes which allow performing random access to the
  * properties of an object graph. The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.ModelBean} object.
  */

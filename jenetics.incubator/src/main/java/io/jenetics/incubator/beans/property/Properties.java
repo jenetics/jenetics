@@ -49,7 +49,6 @@ import io.jenetics.incubator.beans.reflect.RecordType;
  * This class contains helper methods for extracting the properties from a given
  * root object. It is the main entry point for the extracting properties from
  * an object graph.
- *
  * {@snippet class="PropertySnippets" region="walk(Object)"}
  *
  * The code snippet above will create the following output
@@ -76,7 +75,6 @@ public final class Properties {
 	/**
 	 * This method extracts the direct properties of the given {@code root}
 	 * object.
-	 *
 	 * {@snippet class="PropertySnippets" region="list(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
@@ -168,7 +166,6 @@ public final class Properties {
 	/**
 	 * This method extracts the direct properties of the given {@code root}
 	 * object.
-	 *
 	 * {@snippet class="PropertySnippets" region="list(Object)"}
 	 *
 	 * The code snippet above will create the following output
@@ -240,7 +237,6 @@ public final class Properties {
 	/**
 	 * Return a {@code Stream} that is lazily populated with {@code Property}
 	 * by walking the object tree rooted at a given starting object.
-	 *
 	 * {@snippet class="PropertySnippets" region="walk(Object)"}
 	 *
 	 * The code snippet above will create the following output

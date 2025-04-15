@@ -98,12 +98,10 @@ public final class SimpleDescription
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			obj.getClass() == getClass() &&
-			((SimpleDescription)obj).path.equals(path) &&
-			((SimpleDescription)obj).type.getTypeName().equals(type.getTypeName()) &&
-			((SimpleDescription)obj).enclosure.equals(enclosure);
+		return obj instanceof SimpleDescription sd &&
+			sd.path.equals(path) &&
+			sd.type.getTypeName().equals(type.getTypeName()) &&
+			sd.enclosure.equals(enclosure);
 	}
 
 	@Override

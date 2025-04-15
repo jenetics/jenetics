@@ -100,8 +100,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public int compareTo(final Element other) {
-			if (other instanceof Name nme) {
-				return name.compareTo(nme.name);
+			if (other instanceof Name(String n)) {
+				return name.compareTo(n);
 			} else {
 				return 1;
 			}
@@ -122,8 +122,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public int compareTo(final Element other) {
-			if (other instanceof Index idx) {
-				return Integer.compare(index, idx.index);
+			if (other instanceof Index(int idx)) {
+				return Integer.compare(index, idx);
 			} else {
 				return -1;
 			}
@@ -324,7 +324,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 			out.append(element);
 
 			if (i < elements.size() - 1
-				&& !(elements.get(i + 1) instanceof Index)) 
+				&& !(elements.get(i + 1) instanceof Index))
 			{
 				out.append('.');
 			}

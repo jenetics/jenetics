@@ -34,7 +34,6 @@ import io.jenetics.incubator.beans.reflect.StructType;
  * This class contains methods for extracting the <em>static</em> bean property
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
- *
  * {@snippet class="DescriptionSnippets" region="walk(Type)"}
  *
  * The code snippet above will create the following output
@@ -59,7 +58,6 @@ public final class Descriptions {
 	/**
 	 * Lists the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
-	 *
 	 * {@snippet class="DescriptionSnippets" region="list(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
@@ -88,7 +86,6 @@ public final class Descriptions {
 	/**
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type}.
-	 *
 	 * {@snippet class="DescriptionSnippets" region="list(Type)"}
 	 *
 	 * The code snippet above will create the following output
@@ -125,7 +122,6 @@ public final class Descriptions {
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
-	 *
 	 * {@snippet class="DescriptionSnippets" region="walk(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
@@ -153,7 +149,6 @@ public final class Descriptions {
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
-	 *
 	 * {@snippet class="DescriptionSnippets" region="walk(Type)"}
 	 *
 	 * The code snippet above will create the following output

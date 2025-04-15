@@ -20,7 +20,7 @@
 package io.jenetics.incubator.beans.description;
 
 /**
- * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.
+ * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.,
  * array or {@code List} objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

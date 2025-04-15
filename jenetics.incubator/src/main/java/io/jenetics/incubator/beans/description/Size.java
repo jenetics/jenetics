@@ -30,7 +30,7 @@ package io.jenetics.incubator.beans.description;
 public interface Size {
 
 	/**
-	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.
+	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.,
 	 * array of {@code List}.
 	 *
 	 * @param object the <em>sizeable</em> object

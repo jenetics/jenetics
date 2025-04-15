@@ -22,7 +22,6 @@
  * This package contains class for reading <em>runtime</em> bean information.
  * The main entry point of this package is the
  * {@link io.jenetics.incubator.beans.property.Properties} object.
- *
  * {@snippet class="PropertySnippets" region="walk(Object)"}
  *
  * The code snippet above will create the following output

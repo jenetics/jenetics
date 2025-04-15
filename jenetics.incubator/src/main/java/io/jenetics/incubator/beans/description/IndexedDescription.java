@@ -96,12 +96,10 @@ public final class IndexedDescription implements Description {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			obj.getClass() == getClass() &&
-			((IndexedDescription)obj).path.equals(path) &&
-			((IndexedDescription)obj).type.getTypeName().equals(type.getTypeName()) &&
-			((IndexedDescription)obj).enclosure.equals(enclosure);
+		return obj instanceof IndexedDescription id &&
+			id.path.equals(path) &&
+			id.type.getTypeName().equals(type.getTypeName()) &&
+			id.enclosure.equals(enclosure);
 	}
 
 	@Override
