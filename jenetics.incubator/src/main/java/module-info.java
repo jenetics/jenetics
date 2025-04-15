@@ -38,13 +38,13 @@ module io.jenetics.incubator {
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;
 
-	exports io.jenetics.incubator.beans;
-	exports io.jenetics.incubator.beans.description;
-	exports io.jenetics.incubator.beans.property;
-	exports io.jenetics.incubator.beans.reflect;
 	exports io.jenetics.incubator.combinatorial;
 	exports io.jenetics.incubator.csv;
 	exports io.jenetics.incubator.math;
+	exports io.jenetics.incubator.metamodel;
+	exports io.jenetics.incubator.metamodel.description;
+	exports io.jenetics.incubator.metamodel.property;
+	exports io.jenetics.incubator.metamodel.reflect;
 	exports io.jenetics.incubator.prog;
 	exports io.jenetics.incubator.restful;
 	exports io.jenetics.incubator.restful.api;
