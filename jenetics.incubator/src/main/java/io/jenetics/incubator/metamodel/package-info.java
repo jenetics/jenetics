@@ -21,6 +21,6 @@
 /**
  * This package contains classes which allow performing random access to the
  * properties of an object graph. The main entry point of this package is the
- * {@link io.jenetics.incubator.metamodel.ModelBean} object.
+ * {@link io.jenetics.incubator.metamodel.MetaModel} object.
  */
 package io.jenetics.incubator.metamodel;

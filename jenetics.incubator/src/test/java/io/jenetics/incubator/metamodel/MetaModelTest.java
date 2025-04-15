@@ -34,7 +34,7 @@ import io.jenetics.jpx.GPX;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ModelBeanTest {
+public class MetaModelTest {
 
 	private static final GPX AUSTRIA = gpx();
 
@@ -42,6 +42,7 @@ public class ModelBeanTest {
 		try (var in = PropertiesTest.class
 			.getResourceAsStream("/io/jenetics/incubator/metamodel/Austria.gpx"))
 		{
+			assert in != null;
 			return GPX.Reader.DEFAULT.read(in);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -50,7 +51,7 @@ public class ModelBeanTest {
 
 	@Test(dataProvider = "objectPaths")
 	public void pathAt(final Object object, final Path expected) {
-		final var bean = ModelBean.of(AUSTRIA);
+		final var bean = MetaModel.of(AUSTRIA);
 
 		var path = bean.pathOf(object);
 		assertThat((Object)path.orElseThrow()).isEqualTo(expected);

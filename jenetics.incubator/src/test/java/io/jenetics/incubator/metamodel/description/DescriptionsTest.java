@@ -63,7 +63,7 @@ public class DescriptionsTest {
 		interface Data2 { @Anno_2 String value(); }
 		record DataRecord(@Anno_3 String value) implements Data1, Data2 { }
 
-		final var desc = Descriptions.list(DataRecord.class).toList().get(0);
+		final var desc = Descriptions.list(DataRecord.class).toList().getFirst();
 		assertThat(desc.annotations()).hasSize(3);
 		assertThat(desc.annotations().map(Annotation::annotationType).toArray())
 			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
