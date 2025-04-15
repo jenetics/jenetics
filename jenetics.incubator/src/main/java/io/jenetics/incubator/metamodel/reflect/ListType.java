@@ -22,6 +22,7 @@ package io.jenetics.incubator.metamodel.reflect;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,6 +71,11 @@ public record ListType(
 		} else {
 			throw new IllegalArgumentException("Not a list: " + object);
 		}
+	}
+
+	@Override
+	public boolean isMutable() {
+		return type == ArrayList.class;
 	}
 
 }

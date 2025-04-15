@@ -106,6 +106,12 @@ public class PropertiesTest {
 	}
 
 	@Test
+	public void listValuesOfType() {
+		Properties.listValuesOfType(String.class, PathValue.of(FRANZEN))
+			.forEach(System.out::println);
+	}
+
+	@Test
 	public void extractAuthor() {
 		final var properties = Properties.list(PathValue.of(FRANZEN))
 			.sorted(Comparator.comparing(Property::path))

@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
@@ -274,6 +275,40 @@ public final class Properties {
 			property.type().getName(),
 			property.enclosure().getClass().getName()
 		);
+	}
+
+	/**
+	 * Lists all properties of the given {@code root} element with the given
+	 * {@code type}.
+	 *
+	 * @param type the property value type
+	 * @param root the root object
+	 * @return a property value stream of the given {@code type}
+	 * @param <T> the property type
+	 */
+	public static <T> Stream<PathValue<T>>
+	listValuesOfType(final Class<? extends T> type, final PathValue<?> root) {
+		requireNonNull(type);
+		return list(root)
+			.filter(Filters.byType(type))
+			.map(p -> PathValue.of(p.path(), type.cast(p.value())));
+	}
+
+	/**
+	 * Lists all properties of the given {@code root} element with the given
+	 * {@code type}.
+	 *
+	 * @param type the property value type
+	 * @param root the root object
+	 * @return a property value stream of the given {@code type}
+	 * @param <T> the property type
+	 */
+	public static <T> Stream<PathValue<T>>
+	listValuesOfType(final Class<? extends T> type, final Object root) {
+		requireNonNull(type);
+		return list(root)
+			.filter(Filters.byType(type))
+			.map(p -> PathValue.of(p.path(), type.cast(p.value())));
 	}
 
 }

@@ -47,8 +47,10 @@ public record BeanType(Class<?> type) implements StructType {
 		try {
 			descriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
 		} catch (IntrospectionException e) {
-			throw new IllegalArgumentException("Can't introspect class '%s'."
-				.formatted(type), e);
+			throw new IllegalArgumentException(
+				"Can't introspect class '%s'.".formatted(type),
+				e
+			);
 		}
 
 		return Stream.of(descriptors)

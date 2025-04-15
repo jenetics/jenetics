@@ -146,6 +146,8 @@ public final class MetaModel implements Iterable<Property> {
 	/**
 	 * Return the property at the given {@code path}.
 	 *
+	 * @see #at(Path)
+	 *
 	 * @param path the path of the property
 	 * @return the property with the given path
 	 */
@@ -154,7 +156,23 @@ public final class MetaModel implements Iterable<Property> {
 	}
 
 	/**
+	 * Return the property with the given {@code path}.
+	 *
+	 * @see #get(Path)
+	 *
+	 * @param path the property path
+	 * @return the property with the given {@code path}
+	 * @throws java.util.NoSuchElementException if the property at the given
+	 *         {@code path} doesn't exist
+	 */
+	public Property at(final Path path) {
+		return get(path).orElseThrow();
+	}
+
+	/**
 	 * Return the property at the given {@code path}.
+	 *
+	 * @see #at(String)
 	 *
 	 * @param path the path of the property
 	 * @return the property with the given path
@@ -163,6 +181,16 @@ public final class MetaModel implements Iterable<Property> {
 		return get(Path.of(path));
 	}
 
+	/**
+	 * Return the property with the given {@code path}.
+	 *
+	 * @see #get(String)
+	 *
+	 * @param path the property path
+	 * @return the property with the given {@code path}
+	 * @throws java.util.NoSuchElementException if the property at the given
+	 *         {@code path} doesn't exist
+	 */
 	public Property at(final String path) {
 		return get(path).orElseThrow();
 	}
@@ -223,7 +251,7 @@ public final class MetaModel implements Iterable<Property> {
 	 *
 	 * @return all properties
 	 */
-	public Stream<Property> properties() {
+	public Stream<Property> stream() {
 		return data().properties.stream();
 	}
 
@@ -234,15 +262,14 @@ public final class MetaModel implements Iterable<Property> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof MetaModel mo &&
+		return obj instanceof MetaModel mo &&
 			model.equals(mo.model);
 	}
 
-    @Override
-    public String toString() {
-        return "ModelBean[" + "model=" + model + ']';
-    }
+	@Override
+	public String toString() {
+		return "ModelBean[" + "model=" + model + ']';
+	}
 
 
 	/**

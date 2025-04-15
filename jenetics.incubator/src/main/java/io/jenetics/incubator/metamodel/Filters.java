@@ -25,6 +25,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import io.jenetics.incubator.metamodel.property.Property;
+
 /**
  * Helper methods for creating filter predicates.
  * {@snippet lang="java":
@@ -201,5 +203,9 @@ public final class Filters {
 			return filter.test(v4);
 		};
     }
+
+	public static Predicate<Property> byType(final Class<?> type) {
+		return property -> property.type() == type;
+	}
 
 }

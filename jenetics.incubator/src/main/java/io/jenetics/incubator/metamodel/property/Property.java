@@ -22,6 +22,7 @@ package io.jenetics.incubator.metamodel.property;
 import java.util.Optional;
 
 import io.jenetics.incubator.metamodel.Path;
+import io.jenetics.incubator.metamodel.PathValue;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -33,7 +34,7 @@ import io.jenetics.incubator.metamodel.Path;
  * @version 7.2
  * @since 7.2
  */
-public sealed interface Property
+public sealed interface Property extends PathValue<Object>
 	permits SimpleProperty, IndexedProperty
 {
 
@@ -42,6 +43,7 @@ public sealed interface Property
 	 *
 	 * @return the path of the property
 	 */
+	@Override
 	Path path();
 
 	/**
@@ -49,6 +51,7 @@ public sealed interface Property
 	 *
 	 * @return the name of the property
 	 */
+	@Override
 	default String name() {
 		final var element = path().element();
 		return element != null ? element.toString() :  "<root>";
@@ -67,6 +70,7 @@ public sealed interface Property
 	 *
 	 * @return the <em>original</em> value of the metaobject
 	 */
+	@Override
 	Object value();
 
 	/**
