@@ -21,7 +21,9 @@ package io.jenetics.incubator.metamodel.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 
@@ -60,6 +62,11 @@ public sealed class SimpleProperty
 	@Override
 	public Class<?> type() {
 		return param.type();
+	}
+
+	@Override
+	public Stream<Annotation> annotations() {
+		return param.annotations().stream();
 	}
 
 	@Override

@@ -17,37 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.property;
-
-import static java.util.Objects.requireNonNull;
-
-import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.description.Getter;
-import io.jenetics.incubator.metamodel.description.Setter;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
+package io.jenetics.incubator.metamodel.reflect;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.3
+ * @since 8.3
  */
-record PropParam(
-	Path path,
-	Object enclosure,
-	Object value,
-	Class<?> type,
-	List<Annotation> annotations,
-	Getter getter,
-	Setter setter
-) {
+public sealed interface SizedType
+	extends PropertyType
+	permits CollectionType, MapType
+{
 
-	PropParam {
-		requireNonNull(path);
-		requireNonNull(enclosure);
-		requireNonNull(type);
-		requireNonNull(getter);
-	}
+	/**
+	 * Returns the length of the given indexed object, as an {@code int}.
+	 *
+	 * @param object the sized type
+	 * @return the length of the sized object
+	 * @throws NullPointerException if the specified object is {@code null}
+	 */
+	int size(final Object object);
 
 }

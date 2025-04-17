@@ -79,6 +79,7 @@ public final class Descriptions {
 			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
 			case ElementType t -> Stream.empty();
+			default -> null; // TODO: implement
 		};
 	}
 

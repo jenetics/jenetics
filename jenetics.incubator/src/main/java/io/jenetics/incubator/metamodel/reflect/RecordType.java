@@ -19,23 +19,24 @@
  */
 package io.jenetics.incubator.metamodel.reflect;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
  * Trait which represents a {@code Record} type.
  *
- * @param type the type object
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public record RecordType(Class<?> type) implements StructType {
+public final class RecordType implements StructType {
+	private final Class<?> type;
 
-	public RecordType {
+	RecordType(Class<?> type) {
 		if (!type.isRecord()) {
 			throw new IllegalArgumentException("Not a record type: " + type);
 		}
+		this.type = type;
 	}
 
 	/**
@@ -55,5 +56,27 @@ public record RecordType(Class<?> type) implements StructType {
 				null
 			));
 	}
+
+	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof RecordType rt &&
+			type.equals(rt.type);
+	}
+
+	@Override
+	public String toString() {
+		return "RecordType[type=%s]".formatted(type);
+	}
+
 
 }

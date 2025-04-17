@@ -22,29 +22,27 @@ package io.jenetics.incubator.metamodel.reflect;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Array;
+import java.util.Objects;
 
 /**
  * Trait which represents an array type.
- *
- * @param type the array type
- * @param componentType the array component type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public record ArrayType(
-	Class<?> type,
-	Class<?> componentType
-)
-	implements IndexedType
-{
+public final class ArrayType implements IndexedType {
+	private final Class<?> type;
+	private final Class<?> componentType;
 
-	public ArrayType {
+
+	ArrayType(Class<?> type, Class<?> componentType) {
 		if (!type.isArray()) {
 			throw new IllegalArgumentException("Not an array type: " + type);
 		}
-		requireNonNull(componentType);
+
+		this.type = type;
+		this.componentType = requireNonNull(componentType);
 	}
 
 	@Override
@@ -60,6 +58,34 @@ public record ArrayType(
 	@Override
 	public void set(Object object, int index, Object value) {
 		Array.set(object, index, value);
+	}
+
+	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public Class<?> componentType() {
+		return componentType;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type, componentType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof ArrayType at &&
+			type.equals(at.type) &&
+			componentType.equals(at.componentType);
+	}
+
+	@Override
+	public String toString() {
+		return "ArrayType[type=%s, componentType=%s]"
+			.formatted(type, componentType);
 	}
 
 }

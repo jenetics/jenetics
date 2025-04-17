@@ -24,21 +24,21 @@ import static java.util.Objects.requireNonNull;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
  * Trait which represents a bean type.
  *
- * @param type the type object
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public record BeanType(Class<?> type) implements StructType {
+public final class BeanType implements StructType {
+	private final Class<?> type;
 
-	public BeanType {
-		requireNonNull(type);
+	BeanType(Class<?> type) {
+		this.type = requireNonNull(type);
 	}
 
 	@Override
@@ -64,5 +64,27 @@ public record BeanType(Class<?> type) implements StructType {
 				pd.getWriteMethod())
 			);
 	}
+
+	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof BeanType bt &&
+			type.equals(bt.type);
+	}
+
+	@Override
+	public String toString() {
+		return "BeanType[type=%s]".formatted(type);
+	}
+
 
 }

@@ -37,6 +37,7 @@ final class ReflectSnippets {
 				case OptionalType t -> "OptionalType";
 				case ArrayType t -> "ArrayType";
 				case ListType t -> "ListType";
+				default -> null; // TODO: implement
 			};
 
 			System.out.println(type);

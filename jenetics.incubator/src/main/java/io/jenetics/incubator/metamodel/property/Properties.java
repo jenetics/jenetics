@@ -114,6 +114,7 @@ public final class Properties {
 					enclosure,
 					desc.access().getter().get(root.value()),
 					toRawType(description.type()),
+					desc.annotations().toList(),
 					desc.access().getter(),
 					switch (desc.access()) {
 						case Access.Readonly access -> null;
@@ -128,6 +129,7 @@ public final class Properties {
 					case OptionalType t -> new OptionalProperty(param);
 					case ArrayType t -> new ArrayProperty(param);
 					case ListType t -> new ListProperty(param);
+					default -> null; // TODO: implement
 				};
 
 				yield Stream.of(prop);
@@ -150,6 +152,7 @@ public final class Properties {
 						enclosure,
 						desc.access().getter().get(enclosure, i),
 						type,
+						desc.annotations().toList(),
 						object -> desc.access().getter().get(object, i),
 						switch (desc.access()) {
 							case IndexedAccess.Readonly access -> null;

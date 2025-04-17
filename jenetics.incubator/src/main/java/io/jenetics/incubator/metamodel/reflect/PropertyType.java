@@ -37,8 +37,15 @@ import java.util.Optional;
  * @since 8.0
  */
 public sealed interface PropertyType
-	permits ElementType, StructType, IndexedType
+	permits ElementType, SizedType, StructType
 {
+
+	/**
+	 * Return the underlying property type.
+	 *
+	 * @return the underlying property type
+	 */
+	Type type();
 
 	/**
 	 * Creates a property type from the given {@code type}.
@@ -105,10 +112,8 @@ public sealed interface PropertyType
 		final Class<?> rawType = toRawType(type);
 
 		// 5) Check for ElementType.
-		if (rawType != null) {
-			if (isElementType(rawType)) {
-				return new ElementType(rawType);
-			}
+		if (rawType != null && isElementType(rawType)) {
+			return new ElementType(rawType);
 		}
 
 		// 5) Rest must be BeanType

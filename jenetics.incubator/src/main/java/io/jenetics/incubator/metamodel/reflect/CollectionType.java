@@ -17,37 +17,43 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.property;
-
-import static java.util.Objects.requireNonNull;
-
-import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.description.Getter;
-import io.jenetics.incubator.metamodel.description.Setter;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
+package io.jenetics.incubator.metamodel.reflect;
 
 /**
+ * Represents collection types. An indexed type is a container where its elements
+ * are accessible via index. Such types are arrays and lists.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.3
+ * @since 8.3
  */
-record PropParam(
-	Path path,
-	Object enclosure,
-	Object value,
-	Class<?> type,
-	List<Annotation> annotations,
-	Getter getter,
-	Setter setter
-) {
+public sealed interface CollectionType
+	extends SizedType
+	permits IndexedType, SetType
+{
 
-	PropParam {
-		requireNonNull(path);
-		requireNonNull(enclosure);
-		requireNonNull(type);
-		requireNonNull(getter);
+	/**
+	 * Return the container type, e.g., Array or List.
+	 *
+	 * @return the container type
+	 */
+	@Override
+	Class<?> type();
+
+	/**
+	 * Return the container element type.
+	 *
+	 * @return the container element type
+	 */
+	Class<?> componentType();
+
+	/**
+	 * Return {@code true} if {@code this} type is mutable.
+	 *
+	 * @return {@code true} if {@code this} type is mutable
+	 */
+	default boolean isMutable() {
+		return true;
 	}
 
 }

@@ -19,7 +19,9 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
@@ -79,6 +81,13 @@ public sealed interface Property extends PathValue<Object>
 	 * @return the type of the property value
 	 */
 	Class<?> type();
+
+	/**
+	 * Return a list of all annotations, available for property description.
+	 *
+	 * @return a list of all property annotations
+	 */
+	Stream<Annotation> annotations();
 
 	/**
 	 * Reads the actual value of the property. This value may be different from

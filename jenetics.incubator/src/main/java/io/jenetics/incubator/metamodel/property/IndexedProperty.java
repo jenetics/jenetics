@@ -21,6 +21,7 @@ package io.jenetics.incubator.metamodel.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.annotation.Annotation;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -62,6 +63,11 @@ public abstract sealed class IndexedProperty
 	@Override
 	public Class<?> type() {
 		return param.type();
+	}
+
+	@Override
+	public Stream<Annotation> annotations() {
+		return param.annotations().stream();
 	}
 
 	@Override

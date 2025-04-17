@@ -19,26 +19,26 @@
  */
 package io.jenetics.incubator.metamodel.reflect;
 
-import java.lang.constant.Constable;
+import java.util.Map;
 import java.util.Objects;
 
+import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a type, which doesn't contain any further properties, like
- * primitives, strings or instances of {@link Constable}
- * interfaces.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
- * @since 8.0
+ * @version 8.3
+ * @since 8.3
  */
-public final class ElementType implements PropertyType {
+public final class MapType implements SizedType {
 	private final Class<?> type;
+	private final Class<?> keyType;
+	private final Class<?> valueType;
 
-
-	ElementType(Class<?> type) {
+	MapType(Class<?> type, Class<?> keyType, Class<?> valueType) {
 		this.type = requireNonNull(type);
+		this.keyType = requireNonNull(keyType);
+		this.valueType = requireNonNull(valueType);
 	}
 
 	@Override
@@ -46,22 +46,24 @@ public final class ElementType implements PropertyType {
 		return type;
 	}
 
+	public Class<?> keyType() {
+		return keyType;
+	}
+
+	public Class<?> valueType() {
+		return valueType;
+	}
+
+	@Override
+	public int size(final Object object) {
+		return object instanceof Map<?, ?> map
+			? map.size()
+			: raise(new IllegalArgumentException("Not a map: " + object));
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(type);
+		return Objects.hash(type, keyType, valueType);
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof ElementType et &&
-			type.equals(et.type);
-	}
-
-	@Override
-	public String toString() {
-		return "ElementType[" +
-			"type=" + type + ']';
-	}
-
 
 }

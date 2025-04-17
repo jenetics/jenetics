@@ -22,21 +22,22 @@ package io.jenetics.incubator.metamodel.reflect;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Trait which represents an {@code Optional} type.
  *
- * @param componentType the optional component type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public record OptionalType(Class<?> componentType) implements IndexedType {
+public final class OptionalType implements IndexedType {
+	private final Class<?> componentType;
 
-	public OptionalType {
-		requireNonNull(componentType);
+
+	OptionalType(Class<?> componentType) {
+		this.componentType = requireNonNull(componentType);
 	}
 
 	@Override
@@ -66,5 +67,27 @@ public record OptionalType(Class<?> componentType) implements IndexedType {
 	public void set(Object object, int index, Object value) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public Class<?> componentType() {
+		return componentType;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(componentType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof OptionalType ot &&
+			componentType.equals(ot.componentType);
+	}
+
+	@Override
+	public String toString() {
+		return "OptionalType[componentType=%s]".formatted(componentType);
+	}
+
 
 }

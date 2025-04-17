@@ -28,32 +28,9 @@ package io.jenetics.incubator.metamodel.reflect;
  * @since 8.0
  */
 public sealed interface IndexedType
-	extends PropertyType
+	extends CollectionType
 	permits ArrayType, ListType, OptionalType
 {
-
-	/**
-	 * Return the container type, e.g., Array or List.
-	 *
-	 * @return the container type
-	 */
-	Class<?> type();
-
-	/**
-	 * Return the container element type.
-	 *
-	 * @return the container element type
-	 */
-	Class<?> componentType();
-
-	/**
-	 * Returns the length of the given indexed object, as an {@code int}.
-	 *
-	 * @param object the indexed type
-	 * @return the length of the array
-	 * @throws NullPointerException if the specified object is {@code null}
-	 */
-	int size(final Object object);
 
 	/**
 	 * Returns the value of the indexed object at the given index.
@@ -63,7 +40,7 @@ public sealed interface IndexedType
 	 * @return the value of the indexed object at the given index
 	 * @throws NullPointerException if the specified object is {@code null}
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 * ({@code index < 0 || index >= size()})
+	 *         ({@code index < 0 || index >= size()})
 	 */
 	Object get(final Object object, final int index);
 
@@ -74,19 +51,10 @@ public sealed interface IndexedType
 	 * @param index the index
 	 * @param value the new value of the indexed object
 	 * @throws NullPointerException if the specified object argument is
-	 * {@code null}
+	 *         {@code null}
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 * ({@code index < 0 || index >= size()})
+	 *         ({@code index < 0 || index >= size()})
 	 */
 	void set(final Object object, final int index, final Object value);
-
-	/**
-	 * Return {@code true} if {@code this} type is mutable.
-	 *
-	 * @return {@code true} if {@code this} type is mutable
-	 */
-	default boolean isMutable() {
-		return true;
-	}
 
 }
