@@ -34,7 +34,7 @@ import io.jenetics.incubator.metamodel.Path;
  * @since 7.2
  */
 public sealed interface Description
-	permits IndexedDescription, SimpleDescription
+	permits SizedDescription, SimpleDescription
 {
 
 	/**

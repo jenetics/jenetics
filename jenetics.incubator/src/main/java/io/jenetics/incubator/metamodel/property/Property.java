@@ -36,8 +36,9 @@ import io.jenetics.incubator.metamodel.PathValue;
  * @version 7.2
  * @since 7.2
  */
-public sealed interface Property extends PathValue<Object>
-	permits SimpleProperty, IndexedProperty
+public sealed interface Property
+	extends PathValue<Object>
+	permits SimpleProperty, SizedProperty
 {
 
 	/**

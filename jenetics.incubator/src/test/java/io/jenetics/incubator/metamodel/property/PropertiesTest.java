@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
+import io.jenetics.incubator.metamodel.description.Descriptions;
 import io.jenetics.incubator.metamodel.model.Author;
 import io.jenetics.incubator.metamodel.model.Book;
 import io.jenetics.incubator.metamodel.model.Library;
@@ -217,6 +219,15 @@ public class PropertiesTest {
 
 		Arrays.stream(properties).forEach(System.out::println);
 		assertThat(properties).isEqualTo(expected);
+	}
+
+	@Test
+	public void foo() {
+		enum Foo {
+			FIRST, SECOND, THIRD;
+		}
+		var set = EnumSet.allOf(Foo.class);
+		Properties.list(PathValue.of(Path.of("enum"), set)).forEach(System.out::println);
 	}
 
 }

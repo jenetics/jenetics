@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.restful.api;
 
-import io.jenetics.incubator.restful.Resource;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2

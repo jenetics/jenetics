@@ -23,8 +23,8 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Filters;
@@ -36,15 +36,18 @@ import io.jenetics.incubator.metamodel.description.Descriptions;
 import io.jenetics.incubator.metamodel.description.IndexedAccess;
 import io.jenetics.incubator.metamodel.description.IndexedDescription;
 import io.jenetics.incubator.metamodel.description.SimpleDescription;
+import io.jenetics.incubator.metamodel.description.SizedDescription;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.reflect.ArrayType;
 import io.jenetics.incubator.metamodel.reflect.BeanType;
 import io.jenetics.incubator.metamodel.reflect.ElementType;
 import io.jenetics.incubator.metamodel.reflect.ListType;
+import io.jenetics.incubator.metamodel.reflect.MapType;
 import io.jenetics.incubator.metamodel.reflect.OptionalType;
 import io.jenetics.incubator.metamodel.reflect.PropertyType;
 import io.jenetics.incubator.metamodel.reflect.RecordType;
+import io.jenetics.incubator.metamodel.reflect.SetType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -129,7 +132,8 @@ public final class Properties {
 					case OptionalType t -> new OptionalProperty(param);
 					case ArrayType t -> new ArrayProperty(param);
 					case ListType t -> new ListProperty(param);
-					default -> null; // TODO: implement
+					case SetType t -> new SetProperty(param);
+					case MapType t -> new MapProperty(param);
 				};
 
 				yield Stream.of(prop);
@@ -139,29 +143,51 @@ public final class Properties {
 					? root.path()
 					: root.path().append(desc.path().element());
 
-				final int size = desc.size().get(enclosure);
-
-				yield IntStream.range(0, size).mapToObj(i -> {
-					final Object value = desc.access().getter().get(enclosure, i);
+				final var i = new AtomicInteger(0);
+				yield desc.stream(enclosure).map(value -> {
 					final Class<?> type = value != null
 						? value.getClass()
 						: toRawType(desc.type());
 
 					final var param = new PropParam(
-						path.append(new Path.Index(i)),
+						path.append(new Path.Index(i.get())),
 						enclosure,
-						desc.access().getter().get(enclosure, i),
+						value,
 						type,
 						desc.annotations().toList(),
-						object -> desc.access().getter().get(object, i),
+						object -> desc.access().getter().get(object, i.get()),
 						switch (desc.access()) {
 							case IndexedAccess.Readonly access -> null;
 							case IndexedAccess.Writable access -> (object, val) ->
-								access.setter().set(object, i, val);
+								access.setter().set(object, i.get(), val);
 						}
 					);
 
-					return new IndexProperty(param, i);
+					return new IndexProperty(param, i.getAndIncrement());
+				});
+			}
+			case SizedDescription desc -> {
+				final var path = desc.path().element() instanceof Path.Index
+					? root.path()
+					: root.path().append(desc.path().element());
+
+				final var i = new AtomicInteger(0);
+				yield desc.stream(enclosure).map(value -> {
+					final Class<?> type = value != null
+						? value.getClass()
+						: toRawType(desc.type());
+
+					final var param = new PropParam(
+						path.append(new Path.Index(i.getAndIncrement())),
+						enclosure,
+						value,
+						type,
+						desc.annotations().toList(),
+						object -> value,
+						null
+					);
+
+					return new SimpleProperty(param);
 				});
 			}
 		};

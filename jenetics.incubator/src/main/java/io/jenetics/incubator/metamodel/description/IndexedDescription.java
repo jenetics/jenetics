@@ -22,6 +22,7 @@ package io.jenetics.incubator.metamodel.description;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.Objects;
 
 import io.jenetics.incubator.metamodel.Path;
@@ -34,12 +35,8 @@ import io.jenetics.incubator.metamodel.reflect.IndexedType;
  * @version 8.0
  * @since 8.0
  */
-public final class IndexedDescription implements Description {
+public final class IndexedDescription extends SizedDescription {
 
-    private final Path path;
-    private final Class<?> enclosure;
-    private final Type type;
-    private final Size size;
     private final IndexedAccess access;
 
     IndexedDescription(
@@ -49,35 +46,8 @@ public final class IndexedDescription implements Description {
 		final Size size,
 		final IndexedAccess access
     ) {
-        this.path = requireNonNull(path);
-        this.enclosure = requireNonNull(enclosure);
-        this.type = requireNonNull(type);
-        this.size = requireNonNull(size);
+        super(path, enclosure, type, size);
         this.access = requireNonNull(access);
-    }
-
-    @Override
-    public Path path() {
-        return path;
-    }
-
-    @Override
-    public Class<?> enclosure() {
-        return enclosure;
-    }
-
-    @Override
-    public Type type() {
-        return type;
-    }
-
-	/**
-	 * Return the size function of the description.
-	 *
-	 * @return the size function of the description
-	 */
-    public Size size() {
-        return size;
     }
 
 	/**
@@ -122,5 +92,4 @@ public final class IndexedDescription implements Description {
 				: new IndexedAccess.Readonly(type::get)
 		);
 	}
-
 }

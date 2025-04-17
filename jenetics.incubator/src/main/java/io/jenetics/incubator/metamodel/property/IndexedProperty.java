@@ -19,60 +19,21 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.annotation.Annotation;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import io.jenetics.incubator.metamodel.Path;
-
 /**
- * Base class for properties which consists of 0 to n objects.
+ * Base class for properties which consists of 0 to n objects and can be accessed
+ * via an element index.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 public abstract sealed class IndexedProperty
-	implements Property, Iterable<Object>
+	extends CollectionProperty
 	permits OptionalProperty, ArrayProperty, ListProperty
 {
 
-	private final PropParam param;
-
 	IndexedProperty(final PropParam param) {
-		this.param = requireNonNull(param);
-	}
-
-	@Override
-	public Path path() {
-		return param.path();
-	}
-
-	@Override
-	public Object enclosure() {
-		return param.enclosure();
-	}
-
-	@Override
-	public Object value() {
-		return param.value();
-	}
-
-	@Override
-	public Class<?> type() {
-		return param.type();
-	}
-
-	@Override
-	public Stream<Annotation> annotations() {
-		return param.annotations().stream();
-	}
-
-	@Override
-	public Object read() {
-		return param.getter().get(enclosure());
+		super(param);
 	}
 
 	/**
@@ -89,19 +50,5 @@ public abstract sealed class IndexedProperty
 	 * @return the property value at the given index
 	 */
 	public abstract Object get(final int index);
-
-	/**
-	 * Return the property values.
-	 *
-	 * @return the property values
-	 */
-	public Stream<Object> stream() {
-		return StreamSupport.stream(spliterator(), false);
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
-	}
 
 }

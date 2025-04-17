@@ -17,40 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.property;
+
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
+ * Base class for associative properties which consists of 0 to n objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public sealed interface SizedType
-	extends PropertyType
-	permits CollectionType, MapType
-{
+public final class MapProperty extends SizedProperty {
+
+	MapProperty(final PropParam param) {
+		super(param);
+	}
 
 	/**
-	 * Return the container type, e.g., Array or List.
+	 * Return the list values as {@code Map} object.
 	 *
-	 * @return the container type
+	 * @return the map values
 	 */
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> map() {
+		return (Map<Object, Object>)value();
+	}
+
 	@Override
-	Class<?> type();
+	public int size() {
+		return map() != null ? map().size() : 0;
+	}
 
-	/**
-	 * Return the container element type.
-	 *
-	 * @return the container element type
-	 */
-	Class<?> componentType();
-
-	/**
-	 * Returns the length of the given indexed object, as an {@code int}.
-	 *
-	 * @param object the sized type
-	 * @return the length of the sized object
-	 * @throws NullPointerException if the specified object is {@code null}
-	 */
-	int size(final Object object);
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<Object> iterator() {
+		return map() != null
+			? (Iterator<Object>)(Object)map().entrySet().iterator()
+			: emptyIterator();
+	}
 
 }

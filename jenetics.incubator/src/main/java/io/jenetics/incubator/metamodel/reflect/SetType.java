@@ -24,6 +24,7 @@ import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Type which represents a {@code List} class.
@@ -37,7 +38,7 @@ public final class SetType implements CollectionType {
 	private final Class<?> componentType;
 
 	SetType(Class<?> type, Class<?> componentType) {
-		if (!List.class.isAssignableFrom(type)) {
+		if (!Set.class.isAssignableFrom(type)) {
 			throw new IllegalArgumentException("Not a list type: " + type);
 		}
 
@@ -47,9 +48,9 @@ public final class SetType implements CollectionType {
 
 	@Override
 	public int size(final Object object) {
-		return object instanceof List<?> list
-			? list.size()
-			: raise(new IllegalArgumentException("Not a list: " + object));
+		return object instanceof Set<?> set
+			? set.size()
+			: raise(new IllegalArgumentException("Not a set: " + object));
 	}
 
 	@Override

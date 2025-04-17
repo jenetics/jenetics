@@ -17,40 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.property;
 
 /**
+ * Base class for properties which consists of 0 to n objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public sealed interface SizedType
-	extends PropertyType
-	permits CollectionType, MapType
+public abstract sealed class CollectionProperty
+	extends SizedProperty
+	permits IndexedProperty, SetProperty
 {
 
-	/**
-	 * Return the container type, e.g., Array or List.
-	 *
-	 * @return the container type
-	 */
-	@Override
-	Class<?> type();
-
-	/**
-	 * Return the container element type.
-	 *
-	 * @return the container element type
-	 */
-	Class<?> componentType();
-
-	/**
-	 * Returns the length of the given indexed object, as an {@code int}.
-	 *
-	 * @param object the sized type
-	 * @return the length of the sized object
-	 * @throws NullPointerException if the specified object is {@code null}
-	 */
-	int size(final Object object);
+	CollectionProperty(final PropParam param) {
+		super(param);
+	}
 
 }

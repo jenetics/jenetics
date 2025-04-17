@@ -21,12 +21,12 @@ package io.jenetics.incubator.metamodel.property;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.description.Getter;
 import io.jenetics.incubator.metamodel.description.Setter;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

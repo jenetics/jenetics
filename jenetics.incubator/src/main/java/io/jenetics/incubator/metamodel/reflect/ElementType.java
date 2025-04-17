@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.metamodel.reflect;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.constant.Constable;
 import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a type, which doesn't contain any further properties, like

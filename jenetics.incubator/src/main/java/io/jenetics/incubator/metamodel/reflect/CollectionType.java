@@ -33,21 +33,6 @@ public sealed interface CollectionType
 {
 
 	/**
-	 * Return the container type, e.g., Array or List.
-	 *
-	 * @return the container type
-	 */
-	@Override
-	Class<?> type();
-
-	/**
-	 * Return the container element type.
-	 *
-	 * @return the container element type
-	 */
-	Class<?> componentType();
-
-	/**
 	 * Return {@code true} if {@code this} type is mutable.
 	 *
 	 * @return {@code true} if {@code this} type is mutable

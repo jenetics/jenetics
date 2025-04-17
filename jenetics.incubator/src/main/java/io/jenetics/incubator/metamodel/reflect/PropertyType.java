@@ -26,7 +26,9 @@ import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Base interface used for matching {@link Type} objects.
@@ -104,19 +106,60 @@ public sealed interface PropertyType
 			return new ListType(listType, Object.class);
 		}
 
-		// 4) Check for RecordType.
+		// 4) Check for SetType.
+		if (type instanceof ParameterizedType parameterizedType &&
+			parameterizedType.getRawType() instanceof Class<?> setType &&
+			Set.class.isAssignableFrom(setType))
+		{
+			final var typeArguments = parameterizedType.getActualTypeArguments();
+			if (typeArguments.length == 1 &&
+				toRawType(typeArguments[0]) != null)
+			{
+				return new SetType(setType, toRawType(typeArguments[0]) );
+			}
+		}
+		if (type instanceof Class<?> setType &&
+			Set.class.isAssignableFrom(setType))
+		{
+			return new SetType(setType, Object.class);
+		}
+
+		// 5) Check for MapType.
+		if (type instanceof ParameterizedType parameterizedType &&
+			parameterizedType.getRawType() instanceof Class<?> mapType &&
+			Map.class.isAssignableFrom(mapType))
+		{
+			final var typeArguments = parameterizedType.getActualTypeArguments();
+			if (typeArguments.length == 2 &&
+				toRawType(typeArguments[0]) != null &&
+				toRawType(typeArguments[1]) != null)
+			{
+				return new MapType(
+					mapType,
+					toRawType(typeArguments[0]),
+					toRawType(typeArguments[1])
+				);
+			}
+		}
+		if (type instanceof Class<?> mapType &&
+			Map.class.isAssignableFrom(mapType))
+		{
+			return new MapType(mapType, Object.class, Object.class);
+		}
+
+		// 6) Check for RecordType.
 		if (type instanceof Class<?> cls && cls.isRecord()) {
 			return new RecordType(cls);
 		}
 
 		final Class<?> rawType = toRawType(type);
 
-		// 5) Check for ElementType.
+		// 7) Check for ElementType.
 		if (rawType != null && isElementType(rawType)) {
 			return new ElementType(rawType);
 		}
 
-		// 5) Rest must be BeanType
+		// 8) Rest must be BeanType
 		if (rawType != null) {
 			return new BeanType(rawType);
 		}

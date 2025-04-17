@@ -17,40 +17,50 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.property;
+
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
+ * Represents a set property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public sealed interface SizedType
-	extends PropertyType
-	permits CollectionType, MapType
-{
+public final class SetProperty extends CollectionProperty {
+
+	SetProperty(final PropParam param) {
+		super(param);
+	}
 
 	/**
-	 * Return the container type, e.g., Array or List.
+	 * Return the list values as {@code Set} object.
 	 *
-	 * @return the container type
+	 * @return the set values
 	 */
+	@SuppressWarnings("unchecked")
+	public Set<Object> set() {
+		return (Set<Object>)value();
+	}
+
 	@Override
-	Class<?> type();
+	public int size() {
+		return set() != null ? set().size() : 0;
+	}
 
-	/**
-	 * Return the container element type.
-	 *
-	 * @return the container element type
-	 */
-	Class<?> componentType();
+	@Override
+	public Iterator<Object> iterator() {
+		return set() != null ? set().iterator() : emptyIterator();
+	}
 
-	/**
-	 * Returns the length of the given indexed object, as an {@code int}.
-	 *
-	 * @param object the sized type
-	 * @return the length of the sized object
-	 * @throws NullPointerException if the specified object is {@code null}
-	 */
-	int size(final Object object);
+	@Override
+	public Stream<Object> stream() {
+		return set().stream();
+	}
 
 }

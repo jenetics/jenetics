@@ -19,11 +19,11 @@
  */
 package io.jenetics.incubator.metamodel.reflect;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
+
 import java.util.Map;
 import java.util.Objects;
-
-import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -44,6 +44,11 @@ public final class MapType implements SizedType {
 	@Override
 	public Class<?> type() {
 		return type;
+	}
+
+	@Override
+	public Class<?> componentType() {
+		return Map.Entry.class;
 	}
 
 	public Class<?> keyType() {
