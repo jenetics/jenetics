@@ -76,8 +76,7 @@ public final class Descriptions {
 		}
 
 		return switch (PropertyType.of(type.value())) {
-			case StructType t ->  t.components()
-				.map(c -> SimpleDescription.of(type.path(), c));
+			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
 			case ElementType t -> Stream.empty();
 		};

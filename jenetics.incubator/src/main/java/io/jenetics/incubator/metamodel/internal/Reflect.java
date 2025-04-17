@@ -85,7 +85,7 @@ public final class Reflect {
 	/**
 	 * Return all annotations of the given method, inclusively the inherited one.
 	 *
-	 * @param method the method for which to fetch the annotations
+	 * @param method the method by which to fetch the annotations
 	 * @return all annotations of the given method
 	 */
 	public static Stream<Annotation> getAnnotations(final Method method) {
