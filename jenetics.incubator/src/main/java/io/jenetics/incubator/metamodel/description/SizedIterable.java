@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.description;
+
+import java.util.Iterator;
 
 /**
+ * This interface allows the iteration over <em>sized</em> objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.3
+ * @since 8.3
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+public interface SizedIterable {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	Iterator<Object> iterator(final Object object);
 
 }

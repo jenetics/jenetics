@@ -17,19 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.reflect;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+final class ReflectSnippets {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	static class ReflectPackageSnippet {
+
+		public static void main(String[] args) {
+			// @start region="PropertyType"
+			record Author(String forename, String surname) { }
+
+			final var type = switch (MetaModelType.of(Author.class)) {
+				case ElementType t -> "ElementType";
+				case RecordType t -> "RecordType";
+				case BeanType t -> "BeanType";
+				case OptionalType t -> "OptionalType";
+				case ArrayType t -> "ArrayType";
+				case ListType t -> "ListType";
+				default -> null; // TODO: implement
+			};
+
+			System.out.println(type);
+			// > RecordType
+			// @end
+		}
+
 	}
 
 }

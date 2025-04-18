@@ -17,19 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
 
 /**
+ * Base class for properties which consists of 0 to n objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.3
+ * @since 8.3
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+public abstract sealed class CollectionProperty
+	extends SizedProperty
+	permits IndexedProperty, SetProperty
+{
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	CollectionProperty(final PropParam param) {
+		super(param);
 	}
 
 }

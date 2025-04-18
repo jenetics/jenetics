@@ -17,19 +17,48 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.description;
+
+import static java.util.Objects.requireNonNull;
 
 /**
+ * This interface holds property getter and, optionally, property setter.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.0
+ * @since 8.0
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public sealed interface Access {
+
+	/**
+	 * Return the property getter, never {@code null}.
+	 *
+	 * @return the property getter
+	 */
+	Getter getter();
+
+	/**
+	 * Read-only property access-object.
+	 *
+	 * @param getter the property getter
+	 */
+	record Readonly(Getter getter) implements Access {
+		public Readonly {
+			requireNonNull(getter);
+		}
 	}
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	/**
+	 * Writable property access-object.
+	 *
+	 * @param getter the property getter
+	 * @param setter the property setter
+	 */
+	record Writable(Getter getter, Setter setter) implements Access {
+		public Writable {
+			requireNonNull(getter);
+			requireNonNull(setter);
+		}
 	}
 
 }

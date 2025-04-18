@@ -17,19 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
 
 /**
+ * Base class for properties which consists of 0 to n objects and can be accessed
+ * via an element index.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public abstract sealed class IndexedProperty
+	extends CollectionProperty
+	permits OptionalProperty, ArrayProperty, ListProperty
+{
+
+	IndexedProperty(final PropParam param) {
+		super(param);
 	}
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	/**
+	 * Return the size of the <em>indexed</em> property.
+	 *
+	 * @return the size of the <em>indexed</em> property
+	 */
+	public abstract int size();
+
+	/**
+	 * Return the property value at the given {@code index}.
+	 *
+	 * @param index the property index
+	 * @return the property value at the given index
+	 */
+	public abstract Object get(final int index);
 
 }

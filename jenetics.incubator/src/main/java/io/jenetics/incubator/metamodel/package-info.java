@@ -17,19 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * This package contains classes which allow performing random access to the
+ * properties of an object graph. The main entry point of this package is the
+ * {@link io.jenetics.incubator.metamodel.MetaModel} object.
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
-
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
-
-}
+package io.jenetics.incubator.metamodel;

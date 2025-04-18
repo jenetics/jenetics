@@ -17,19 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
 
 /**
+ * This property represents a single element of an {@link IndexedProperty}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public final class IndexProperty extends SimpleProperty {
+
+    private final int index;
+
+	IndexProperty(final PropParam param, final int index) {
+		super(param);
+		this.index = index;
 	}
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	/**
+	 * Return the actual index of the property.
+	 *
+	 * @return the actual index of the property
+	 */
+    public int index() {
+        return index;
+    }
+
+	@Override
+	public String toString() {
+		return Properties.toString(IndexProperty.class.getSimpleName(), this);
 	}
 
 }

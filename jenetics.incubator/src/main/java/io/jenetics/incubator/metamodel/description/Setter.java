@@ -17,19 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.description;
 
 /**
+ * This interface represents the <em>setter</em> function of a property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+@FunctionalInterface
+public interface Setter {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	/**
+	 * Sets the property {@code value} to the given <em>parent</em> {@code object}.
+	 *
+	 * @param object the object for which the property is set
+	 * @param value the new property value
+	 */
+	void set(final Object object, Object value);
 
 }

@@ -17,19 +17,50 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
+
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
+ * Represents a set property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.3
+ * @since 8.3
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public final class SetProperty extends CollectionProperty {
+
+	SetProperty(final PropParam param) {
+		super(param);
 	}
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	/**
+	 * Return the list values as {@code Set} object.
+	 *
+	 * @return the set values
+	 */
+	@SuppressWarnings("unchecked")
+	public Set<Object> set() {
+		return (Set<Object>)value();
+	}
+
+	@Override
+	public int size() {
+		return set() != null ? set().size() : 0;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return set() != null ? set().iterator() : emptyIterator();
+	}
+
+	@Override
+	public Stream<Object> stream() {
+		return set().stream();
 	}
 
 }

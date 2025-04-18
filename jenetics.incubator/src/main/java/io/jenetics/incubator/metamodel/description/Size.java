@@ -17,19 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.description;
 
 /**
+ * Represents the <em>size</em> function for a <em>sizeable</em> object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+@FunctionalInterface
+public interface Size {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	/**
+	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.,
+	 * array of {@code List}.
+	 *
+	 * @param object the <em>sizeable</em> object
+	 * @return the object size
+	 */
+	int get(final Object object);
 
 }

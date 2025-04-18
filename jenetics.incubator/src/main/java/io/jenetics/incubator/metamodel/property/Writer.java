@@ -17,19 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
 
 /**
+ * Property writer interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+@FunctionalInterface
+public interface Writer {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	/**
+	 * Writes (changes) the value of a property.
+	 *
+	 * @param value the new property value
+	 * @return {@code true} if the new value could be written, {@code false}
+	 *         otherwise
+	 */
+	boolean write(final Object value);
 
 }

@@ -17,19 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
+
+import static java.util.Collections.emptyIterator;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
+ * Base class for associative properties which consists of 0 to n objects.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.3
+ * @since 8.3
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public final class MapProperty extends SizedProperty {
+
+	MapProperty(final PropParam param) {
+		super(param);
 	}
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	/**
+	 * Return the list values as {@code Map} object.
+	 *
+	 * @return the map values
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> map() {
+		return (Map<Object, Object>)value();
+	}
+
+	@Override
+	public int size() {
+		return map() != null ? map().size() : 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<Object> iterator() {
+		return map() != null
+			? (Iterator<Object>)(Object)map().entrySet().iterator()
+			: emptyIterator();
 	}
 
 }

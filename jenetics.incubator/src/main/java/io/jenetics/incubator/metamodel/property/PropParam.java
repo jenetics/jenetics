@@ -17,19 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.property;
+
+import static java.util.Objects.requireNonNull;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+
+import io.jenetics.incubator.metamodel.Path;
+import io.jenetics.incubator.metamodel.description.Getter;
+import io.jenetics.incubator.metamodel.description.Setter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+record PropParam(
+	Path path,
+	Object enclosure,
+	Object value,
+	Class<?> type,
+	List<Annotation> annotations,
+	Getter getter,
+	Setter setter
+) {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
+	PropParam {
+		requireNonNull(path);
+		requireNonNull(enclosure);
+		requireNonNull(type);
+		requireNonNull(getter);
 	}
 
 }

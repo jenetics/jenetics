@@ -17,19 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.model;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
+public record Book(String title, int pages, List<Author> authors) {
+	@Override
+	public String toString() {
+		return "Book[%s]".formatted(title);
 	}
-
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
-
 }

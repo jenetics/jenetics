@@ -17,19 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.metamodel.description;
 
 /**
+ * This interface represents the <em>getter</em> function of a property.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 7.2
+ * @since 7.2
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
+@FunctionalInterface
+public interface Getter {
 
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
+	/**
+	 * Return the property value from a given <em>parent</em> {@code object}.
+	 *
+	 * @param object the object from which the property is read
+	 * @return the property value
+	 */
+	Object get(final Object object);
 
 }

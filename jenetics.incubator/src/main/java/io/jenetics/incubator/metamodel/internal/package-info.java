@@ -17,19 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
 
 /**
+ * Contains internal classes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @version 8.0
+ * @since 8.0
  */
-public final class ApiProxy {
-	private ApiProxy() {
-	}
-
-	public static <T, P extends ApiPath<T>> P of(Class<P> type) {
-		return null;
-	}
-
-}
+package io.jenetics.incubator.metamodel.internal;
