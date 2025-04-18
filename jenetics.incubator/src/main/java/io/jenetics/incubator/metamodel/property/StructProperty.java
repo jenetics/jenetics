@@ -25,8 +25,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.reflect.MetaModelType;
-import io.jenetics.incubator.metamodel.reflect.StructType;
+import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * Represents a <em>struct</em> property, like records or beans.

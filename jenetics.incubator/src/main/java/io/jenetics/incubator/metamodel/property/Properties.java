@@ -39,15 +39,15 @@ import io.jenetics.incubator.metamodel.description.ElementDescription;
 import io.jenetics.incubator.metamodel.description.CollectionDescription;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
-import io.jenetics.incubator.metamodel.reflect.ArrayType;
-import io.jenetics.incubator.metamodel.reflect.BeanType;
-import io.jenetics.incubator.metamodel.reflect.ElementType;
-import io.jenetics.incubator.metamodel.reflect.ListType;
-import io.jenetics.incubator.metamodel.reflect.MapType;
-import io.jenetics.incubator.metamodel.reflect.OptionalType;
-import io.jenetics.incubator.metamodel.reflect.MetaModelType;
-import io.jenetics.incubator.metamodel.reflect.RecordType;
-import io.jenetics.incubator.metamodel.reflect.SetType;
+import io.jenetics.incubator.metamodel.type.ArrayType;
+import io.jenetics.incubator.metamodel.type.BeanType;
+import io.jenetics.incubator.metamodel.type.ElementType;
+import io.jenetics.incubator.metamodel.type.ListType;
+import io.jenetics.incubator.metamodel.type.MapType;
+import io.jenetics.incubator.metamodel.type.OptionalType;
+import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.RecordType;
+import io.jenetics.incubator.metamodel.type.SetType;
 
 /**
  * This class contains helper methods for extracting the properties from a given

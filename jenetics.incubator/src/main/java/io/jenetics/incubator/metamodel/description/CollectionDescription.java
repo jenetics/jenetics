@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.reflect.CollectionType;
+import io.jenetics.incubator.metamodel.type.CollectionType;
 
 /**
  * his class represents sized objects like arrays, sets, maps and lists.

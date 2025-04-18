@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.type;
 
 /**
  * Represents collection types. Collection types have a size and are abel to

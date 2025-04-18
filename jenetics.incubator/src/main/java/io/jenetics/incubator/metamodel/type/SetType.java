@@ -17,27 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
-import java.lang.reflect.Array;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * Trait which represents an array type.
+ * Type which represents a {@code List} class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
- * @since 8.0
+ * @version 8.3
+ * @since 8.3
  */
-public final class ArrayType implements IndexedType {
+public final class SetType implements CollectionType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 
-	ArrayType(final Class<?> type, final Class<?> componentType) {
-		if (!type.isArray()) {
-			throw new IllegalArgumentException("Not an array type: " + type);
+	SetType(Class<?> type, Class<?> componentType) {
+		if (!Set.class.isAssignableFrom(type)) {
+			throw new IllegalArgumentException("Not a list type: " + type);
 		}
 
 		this.type = type;
@@ -55,30 +57,25 @@ public final class ArrayType implements IndexedType {
 	}
 
 	@Override
-	public Object get(Object object, int index) {
-		return Array.get(object, index);
-	}
-
-	@Override
-	public void set(Object object, int index, Object value) {
-		if (value != null && componentType.isAssignableFrom(value.getClass())) {
-			throw new IllegalArgumentException(
-				"Value is not from component type: %s instanceof %s."
-					.formatted(value, value.getClass().getName())
-			);
-		}
-
-		Array.set(object, index, value);
-	}
-
-	@Override
-	public int size(Object object) {
-		return Array.getLength(object);
+	public int size(final Object object) {
+		return object instanceof Set<?> set
+			? set.size()
+			: raise(new IllegalArgumentException("Not a set: " + object));
 	}
 
 	@Override
 	public boolean isMutable() {
-		return true;
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Object> iterable(final Object object) {
+		if (object instanceof Set<?> set) {
+			return () -> (Iterator<Object>)set.iterator();
+		} else {
+			throw new IllegalArgumentException("Not a set: " + object);
+		}
 	}
 
 	@Override
@@ -88,14 +85,14 @@ public final class ArrayType implements IndexedType {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof ArrayType at &&
-			type.equals(at.type) &&
-			componentType.equals(at.componentType);
+		return obj instanceof SetType st &&
+			type.equals(st.type) &&
+			componentType.equals(st.componentType);
 	}
 
 	@Override
 	public String toString() {
-		return "ArrayType[type=%s, componentType=%s]"
+		return "SetType[type=%s, componentType=%s]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

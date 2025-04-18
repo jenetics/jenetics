@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.internal.Reflect;
-import io.jenetics.incubator.metamodel.reflect.StructType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * This class represents <em>non</em>-indexed property descriptions.

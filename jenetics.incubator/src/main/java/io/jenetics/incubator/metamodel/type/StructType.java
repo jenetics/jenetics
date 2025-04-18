@@ -17,9 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
-
-import io.jenetics.incubator.metamodel.internal.Reflect;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
 

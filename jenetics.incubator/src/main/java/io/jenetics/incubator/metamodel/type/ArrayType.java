@@ -17,31 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
 import java.util.Objects;
 
 /**
- * Type which represents a {@code List} class.
+ * Trait which represents an array type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-public final class ListType implements IndexedType {
+public final class ArrayType implements IndexedType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 
-	ListType(Class<?> type, Class<?> componentType) {
-		if (!List.class.isAssignableFrom(type)) {
-			throw new IllegalArgumentException("Not a list type: " + type);
+	ArrayType(final Class<?> type, final Class<?> componentType) {
+		if (!type.isArray()) {
+			throw new IllegalArgumentException("Not an array type: " + type);
 		}
 
 		this.type = type;
@@ -59,21 +55,11 @@ public final class ListType implements IndexedType {
 	}
 
 	@Override
-	public int size(final Object object) {
-		return object instanceof List<?> list
-			? list.size()
-			: raise(new IllegalArgumentException("Not a list: " + object));
+	public Object get(Object object, int index) {
+		return Array.get(object, index);
 	}
 
 	@Override
-	public Object get(final Object object, final int index) {
-		return object instanceof List<?> list
-			? list.get(index)
-			: raise(new IllegalArgumentException("Not a list: " + object));
-	}
-
-	@Override
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void set(Object object, int index, Object value) {
 		if (value != null && componentType.isAssignableFrom(value.getClass())) {
 			throw new IllegalArgumentException(
@@ -82,27 +68,17 @@ public final class ListType implements IndexedType {
 			);
 		}
 
-		if (object instanceof List list) {
-			list.set(index, value);
-		} else {
-			throw new IllegalArgumentException("Not a list: " + object);
-		}
+		Array.set(object, index, value);
+	}
+
+	@Override
+	public int size(Object object) {
+		return Array.getLength(object);
 	}
 
 	@Override
 	public boolean isMutable() {
-		return type == ArrayList.class ||
-			type == LinkedList.class;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<Object> iterable(final Object object) {
-		if (object instanceof List<?> list) {
-			return () -> (Iterator<Object>)list.iterator();
-		} else {
-			throw new IllegalArgumentException("Not a list: " + object);
-		}
+		return true;
 	}
 
 	@Override
@@ -112,16 +88,15 @@ public final class ListType implements IndexedType {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof ListType lt &&
-			type.equals(lt.type) &&
-			componentType.equals(lt.componentType);
+		return obj instanceof ArrayType at &&
+			type.equals(at.type) &&
+			componentType.equals(at.componentType);
 	}
 
 	@Override
 	public String toString() {
-		return "ListType[type=%s, componentType=%s]"
+		return "ArrayType[type=%s, componentType=%s]"
 			.formatted(type.getName(), componentType.getName());
 	}
-
 
 }

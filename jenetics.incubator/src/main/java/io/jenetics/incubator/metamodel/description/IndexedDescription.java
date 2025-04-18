@@ -22,7 +22,7 @@ package io.jenetics.incubator.metamodel.description;
 import java.util.Objects;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.reflect.IndexedType;
+import io.jenetics.incubator.metamodel.type.IndexedType;
 
 /**
  * This class represents indexed objects like arrays and lists.

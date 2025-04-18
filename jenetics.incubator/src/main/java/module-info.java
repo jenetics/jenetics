@@ -44,7 +44,7 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.metamodel;
 	exports io.jenetics.incubator.metamodel.description;
 	exports io.jenetics.incubator.metamodel.property;
-	exports io.jenetics.incubator.metamodel.reflect;
+	exports io.jenetics.incubator.metamodel.type;
 	exports io.jenetics.incubator.prog;
 	exports io.jenetics.incubator.restful;
 	exports io.jenetics.incubator.restful.api;

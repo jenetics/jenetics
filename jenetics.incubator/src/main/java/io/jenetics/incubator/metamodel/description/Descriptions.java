@@ -25,11 +25,11 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
-import io.jenetics.incubator.metamodel.reflect.CollectionType;
-import io.jenetics.incubator.metamodel.reflect.ElementType;
-import io.jenetics.incubator.metamodel.reflect.IndexedType;
-import io.jenetics.incubator.metamodel.reflect.MetaModelType;
-import io.jenetics.incubator.metamodel.reflect.StructType;
+import io.jenetics.incubator.metamodel.type.CollectionType;
+import io.jenetics.incubator.metamodel.type.ElementType;
+import io.jenetics.incubator.metamodel.type.IndexedType;
+import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 import static java.util.Objects.requireNonNull;
 

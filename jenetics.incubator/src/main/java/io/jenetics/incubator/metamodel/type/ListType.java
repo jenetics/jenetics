@@ -17,28 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.reflect;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Type which represents a {@code List} class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.3
- * @since 8.3
+ * @version 8.0
+ * @since 8.0
  */
-public final class SetType implements CollectionType {
+public final class ListType implements IndexedType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 
-	SetType(Class<?> type, Class<?> componentType) {
-		if (!Set.class.isAssignableFrom(type)) {
+	ListType(Class<?> type, Class<?> componentType) {
+		if (!List.class.isAssignableFrom(type)) {
 			throw new IllegalArgumentException("Not a list type: " + type);
 		}
 
@@ -58,23 +60,48 @@ public final class SetType implements CollectionType {
 
 	@Override
 	public int size(final Object object) {
-		return object instanceof Set<?> set
-			? set.size()
-			: raise(new IllegalArgumentException("Not a set: " + object));
+		return object instanceof List<?> list
+			? list.size()
+			: raise(new IllegalArgumentException("Not a list: " + object));
+	}
+
+	@Override
+	public Object get(final Object object, final int index) {
+		return object instanceof List<?> list
+			? list.get(index)
+			: raise(new IllegalArgumentException("Not a list: " + object));
+	}
+
+	@Override
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public void set(Object object, int index, Object value) {
+		if (value != null && componentType.isAssignableFrom(value.getClass())) {
+			throw new IllegalArgumentException(
+				"Value is not from component type: %s instanceof %s."
+					.formatted(value, value.getClass().getName())
+			);
+		}
+
+		if (object instanceof List list) {
+			list.set(index, value);
+		} else {
+			throw new IllegalArgumentException("Not a list: " + object);
+		}
 	}
 
 	@Override
 	public boolean isMutable() {
-		return false;
+		return type == ArrayList.class ||
+			type == LinkedList.class;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Object> iterable(final Object object) {
-		if (object instanceof Set<?> set) {
-			return () -> (Iterator<Object>)set.iterator();
+		if (object instanceof List<?> list) {
+			return () -> (Iterator<Object>)list.iterator();
 		} else {
-			throw new IllegalArgumentException("Not a set: " + object);
+			throw new IllegalArgumentException("Not a list: " + object);
 		}
 	}
 
@@ -85,15 +112,16 @@ public final class SetType implements CollectionType {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof SetType st &&
-			type.equals(st.type) &&
-			componentType.equals(st.componentType);
+		return obj instanceof ListType lt &&
+			type.equals(lt.type) &&
+			componentType.equals(lt.componentType);
 	}
 
 	@Override
 	public String toString() {
-		return "SetType[type=%s, componentType=%s]"
+		return "ListType[type=%s, componentType=%s]"
 			.formatted(type.getName(), componentType.getName());
 	}
+
 
 }

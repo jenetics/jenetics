@@ -17,13 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.incubator.metamodel.type;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 
 /**
- * This package contains all categories of property types.
- * {@snippet class="ReflectSnippets" region="PropertyType"}
+ * Represents a type, which doesn't contain any further properties, like
+ * primitives, strings or instances of {@link java.lang.constant.Constable}
+ * interfaces.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
  * @since 8.0
  */
-package io.jenetics.incubator.metamodel.reflect;
+public final class ElementType implements MetaModelType {
+	private final Class<?> type;
+
+	ElementType(Class<?> type) {
+		this.type = requireNonNull(type);
+	}
+
+	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof ElementType et &&
+			type.equals(et.type);
+	}
+
+	@Override
+	public String toString() {
+		return "ElementType[type=%s]".formatted(type.getName());
+	}
+
+}
