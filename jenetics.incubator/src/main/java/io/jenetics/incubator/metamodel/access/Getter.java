@@ -17,27 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.access;
 
 /**
- * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.,
- * array or {@code List} objects.
+ * This interface represents the <em>getter</em> function of a property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 @FunctionalInterface
-public interface IndexedGetter {
+public interface Getter {
 
 	/**
-	 * Return the value from a given <em>indexed</em> {@code object} with the
-	 * given {@code index}.
+	 * Return the property value from a given <em>parent</em> {@code object}.
 	 *
-	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
-	 * @param index the array/list index
-	 * @return the value at the given {@code index}
+	 * @param object the object from which the property is read
+	 * @return the property value
 	 */
-	Object get(final Object object, final int index);
+	Object get(final Object object);
 
 }

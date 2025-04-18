@@ -47,7 +47,7 @@ public final class BeanType implements StructType {
 	}
 
 	@Override
-	public Stream<Component> components() {
+	public Stream<PropertyType> components() {
 		final PropertyDescriptor[] descriptors;
 		try {
 			descriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
@@ -61,9 +61,9 @@ public final class BeanType implements StructType {
 		return Stream.of(descriptors)
 			.filter(pd -> pd.getReadMethod() != null)
 			.filter(pd -> pd.getReadMethod().getReturnType() != Class.class)
-			.map(pd -> new Component(
-				pd.getReadMethod().getDeclaringClass(),
+			.map(pd -> new PropertyType(
 				pd.getName(),
+				this,
 				pd.getReadMethod().getGenericReturnType(),
 				pd.getReadMethod(),
 				pd.getWriteMethod())

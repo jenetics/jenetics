@@ -65,7 +65,8 @@ public sealed abstract class StructProperty
 		return MetaModelType.of(type()) instanceof StructType st
 			? st.components().map(component -> new Component(
 					component.name(),
-					read(component.getter())
+					null
+					//read(component.getter())
 				))
 			: Stream.empty();
 	}

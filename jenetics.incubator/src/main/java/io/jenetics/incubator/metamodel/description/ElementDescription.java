@@ -28,8 +28,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.internal.Reflect;
-import io.jenetics.incubator.metamodel.type.StructType;
+import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.type.PropertyType;
 
 /**
  * This class represents <em>non</em>-indexed property descriptions.
@@ -121,19 +121,19 @@ public final class ElementDescription implements Description {
 	 */
 	static ElementDescription of(
 		final Path path,
-		final StructType.Component component
+		final PropertyType component
 	) {
-		final var getter = Methods.toGetter(component.getter());
-		final var setter = Methods.toSetter(component.setter());
+		//final var getter = Methods.toGetter(component.getter());
+		//final var setter = Methods.toSetter(component.setter());
 
 		return new ElementDescription(
 			path.append(component.name()),
-			component.enclosure(),
-			component.value(),
-			() -> Reflect.getAnnotations(component.getter()),
-			setter != null
-				? new Access.Writable(getter, setter)
-				: new Access.Readonly(getter)
+			null, //component.enclosure(),
+			null, //component.value(),
+			null, //() -> Reflect.getAnnotations(component.getter()),
+			null //setter != null
+				//? new Access.Writable(getter, setter)
+				//: new Access.Readonly(getter)
 		);
 	}
 

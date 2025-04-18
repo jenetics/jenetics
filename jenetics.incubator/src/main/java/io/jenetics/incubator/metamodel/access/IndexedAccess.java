@@ -17,27 +17,50 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.access;
+
+import static java.util.Objects.requireNonNull;
 
 /**
- * Represents the <em>setter</em> function for <em>indexed</em> objects, e.g.,
- * array or {@code List} objects.
+ * This interface holds property getter and, optionally, property setter.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.0
+ * @since 8.0
  */
-@FunctionalInterface
-public interface IndexedSetter {
+public sealed interface IndexedAccess {
 
 	/**
-	 * Set a new value to the given <em>indexed</em> {@code object} for the
-	 * given {@code index}.
+	 * Return the property getter, never {@code null}.
 	 *
-	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
-	 * @param index the array/list index
-	 * @param value the new value
+	 * @return the property getter
 	 */
-	void set(final Object object, final int index, final Object value);
+	IndexedGetter getter();
+
+	/**
+	 * Read-only property access-object.
+	 *
+	 * @param getter the property getter
+	 */
+	record Readonly(IndexedGetter getter) implements IndexedAccess {
+		public Readonly {
+			requireNonNull(getter);
+		}
+	}
+
+	/**
+	 * Writable property access-object.
+	 *
+	 * @param getter the property getter
+	 * @param setter the property setter
+	 */
+	record Writable(IndexedGetter getter, IndexedSetter setter)
+		implements IndexedAccess
+	{
+		public Writable {
+			requireNonNull(getter);
+			requireNonNull(setter);
+		}
+	}
 
 }

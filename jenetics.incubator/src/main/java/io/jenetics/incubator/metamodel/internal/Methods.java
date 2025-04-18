@@ -17,12 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.internal;
 
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import io.jenetics.incubator.metamodel.access.Getter;
+import io.jenetics.incubator.metamodel.access.Setter;
 
 /**
  * Conversion methods for converting {@link Method} objects to getter und
@@ -32,16 +35,16 @@ import java.lang.reflect.Method;
  * @version 7.2
  * @since 7.2
  */
-final class Methods {
+public final class Methods {
 	private Methods() {
 	}
 
-	static Getter toGetter(final Method method) {
+	public static Getter toGetter(final Method method) {
 		requireNonNull(method);
 		return object -> invoke(method, object);
 	}
 
-	static Setter toSetter(final Method method) {
+	public static Setter toSetter(final Method method) {
 		return method != null
 			? (object, value) -> invoke(method, object, value)
 			: null;

@@ -25,8 +25,8 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.description.Getter;
-import io.jenetics.incubator.metamodel.description.Setter;
+import io.jenetics.incubator.metamodel.access.Getter;
+import io.jenetics.incubator.metamodel.access.Setter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

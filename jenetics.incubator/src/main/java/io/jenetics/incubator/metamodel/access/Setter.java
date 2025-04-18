@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.access;
 
 /**
- * This interface represents the <em>getter</em> function of a property.
+ * This interface represents the <em>setter</em> function of a property.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 @FunctionalInterface
-public interface Getter {
+public interface Setter {
 
 	/**
-	 * Return the property value from a given <em>parent</em> {@code object}.
+	 * Sets the property {@code value} to the given <em>parent</em> {@code object}.
 	 *
-	 * @param object the object from which the property is read
-	 * @return the property value
+	 * @param object the object for which the property is set
+	 * @param value the new property value
 	 */
-	Object get(final Object object);
+	void set(final Object object, Object value);
 
 }

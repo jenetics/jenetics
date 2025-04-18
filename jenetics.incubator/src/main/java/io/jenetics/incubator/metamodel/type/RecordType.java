@@ -45,12 +45,12 @@ public final class RecordType implements StructType {
 	 * @return the record components of {@code this} record type
 	 */
 	@Override
-	public Stream<Component> components() {
+	public Stream<PropertyType> components() {
 		return Stream.of(type.getRecordComponents())
 			.filter(comp -> comp.getAccessor().getReturnType() != Class.class)
-			.map(rc -> new Component(
-				rc.getDeclaringRecord(),
+			.map(rc -> new PropertyType(
 				rc.getName(),
+				this,
 				rc.getAccessor().getGenericReturnType(),
 				rc.getAccessor(),
 				null

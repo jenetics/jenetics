@@ -17,48 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
-
-import static java.util.Objects.requireNonNull;
+package io.jenetics.incubator.metamodel.access;
 
 /**
- * This interface holds property getter and, optionally, property setter.
+ * Represents the <em>size</em> function for a <em>sizeable</em> object.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
- * @since 8.0
+ * @version 7.2
+ * @since 7.2
  */
-public sealed interface Access {
+@FunctionalInterface
+public interface Size {
 
 	/**
-	 * Return the property getter, never {@code null}.
+	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.,
+	 * array of {@code List}.
 	 *
-	 * @return the property getter
+	 * @param object the <em>sizeable</em> object
+	 * @return the object size
 	 */
-	Getter getter();
-
-	/**
-	 * Read-only property access-object.
-	 *
-	 * @param getter the property getter
-	 */
-	record Readonly(Getter getter) implements Access {
-		public Readonly {
-			requireNonNull(getter);
-		}
-	}
-
-	/**
-	 * Writable property access-object.
-	 *
-	 * @param getter the property getter
-	 * @param setter the property setter
-	 */
-	record Writable(Getter getter, Setter setter) implements Access {
-		public Writable {
-			requireNonNull(getter);
-			requireNonNull(setter);
-		}
-	}
+	int get(final Object object);
 
 }

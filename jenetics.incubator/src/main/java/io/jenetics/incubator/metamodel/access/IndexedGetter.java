@@ -17,25 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.access;
 
 /**
- * Represents the <em>size</em> function for a <em>sizeable</em> object.
+ * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.,
+ * array or {@code List} objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
 @FunctionalInterface
-public interface Size {
+public interface IndexedGetter {
 
 	/**
-	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.,
-	 * array of {@code List}.
+	 * Return the value from a given <em>indexed</em> {@code object} with the
+	 * given {@code index}.
 	 *
-	 * @param object the <em>sizeable</em> object
-	 * @return the object size
+	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
+	 * @param index the array/list index
+	 * @return the value at the given {@code index}
 	 */
-	int get(final Object object);
+	Object get(final Object object, final int index);
 
 }
