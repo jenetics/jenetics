@@ -19,43 +19,23 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import io.jenetics.incubator.metamodel.access.IterableFactory;
-import io.jenetics.incubator.metamodel.access.Size;
-
 /**
- * Represents collection types. Collection types have a size and are able to
- * iterate over its element. The iterator elements are from instances of
- * {@link #componentType()}.
+ * A container type is a type that contains another type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public sealed interface CollectionType
-	extends ContainerType
-	permits IndexedType, SetType, MapType
+public sealed interface ContainerType
+	extends MetaModelType
+	permits CollectionType, OptionalType
 {
 
 	/**
-	 * Return the component type, e.g., Array, List, Set or Optional.
+	 * Return the container element type.
 	 *
-	 * @return the container type
+	 * @return the container element type
 	 */
-	@Override
-	Class<?> type();
-
-	/**
-	 * The collection size.
-	 *
-	 * @return the collection size
-	 */
-	Size size();
-
-	/**
-	 * The element iterable.
-	 *
-	 * @return the element iterable
-	 */
-	IterableFactory iterable();
+	Class<?> componentType();
 
 }

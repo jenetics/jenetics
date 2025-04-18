@@ -40,7 +40,7 @@ import java.util.Set;
  * @since 8.0
  */
 public sealed interface MetaModelType
-	permits ElementType, StructType, CollectionType
+	permits ElementType, ContainerType, StructType, EnclosedType
 {
 
 	/**

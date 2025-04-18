@@ -22,7 +22,6 @@ package io.jenetics.incubator.metamodel.description;
 import java.util.Objects;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.access.IndexedAccess;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 
 /**
@@ -41,16 +40,16 @@ public final class IndexedDescription extends CollectionDescription {
         super(path, type);
     }
 
-	/**
-	 * Return the access object for the description.
-	 *
-	 * @return the access object for the description
-	 */
-    public IndexedAccess access() {
-        return type.isMutable()
-			? new IndexedAccess.Writable(((IndexedType)type)::get, ((IndexedType)type)::set)
-			: new IndexedAccess.Readonly(((IndexedType)type)::get);
-    }
+//	/**
+//	 * Return the access object for the description.
+//	 *
+//	 * @return the access object for the description
+//	 */
+//    public IndexedAccess access() {
+//        return type.isMutable()
+//			? new IndexedAccess.Writable(((IndexedType)type)::get, ((IndexedType)type)::set)
+//			: new IndexedAccess.Readonly(((IndexedType)type)::get);
+//    }
 
 	@Override
 	public int hashCode() {

@@ -19,11 +19,6 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -37,30 +32,6 @@ public sealed interface StructType
 	extends MetaModelType
 	permits BeanType, RecordType
 {
-
-//	/**
-//	 * Component information for the <em>structural</em> trait
-//	 *
-//	 * @param enclosure the enclosing type
-//	 * @param name the component name
-//	 * @param value the component type
-//	 * @param getter the getter method
-//	 * @param setter the setter method, may be {@code null}
-//	 */
-//	record Component(
-//		Class<?> enclosure,
-//		String name,
-//		Type value,
-//		Method getter,
-//		Method setter
-//	) {
-//		public Component {
-//			requireNonNull(enclosure);
-//			requireNonNull(name);
-//			requireNonNull(value);
-//			requireNonNull(getter);
-//		}
-//	}
 
 	/**
 	 * Return the record components of {@code this} struct trait.

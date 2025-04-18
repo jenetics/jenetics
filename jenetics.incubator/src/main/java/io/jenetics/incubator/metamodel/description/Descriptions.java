@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.metamodel.description;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
@@ -27,11 +29,11 @@ import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.CollectionType;
 import io.jenetics.incubator.metamodel.type.ElementType;
+import io.jenetics.incubator.metamodel.type.EnclosedType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.OptionalType;
 import io.jenetics.incubator.metamodel.type.StructType;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains methods for extracting the <em>static</em> bean property
@@ -81,9 +83,11 @@ public final class Descriptions {
 
 		return switch (MetaModelType.of(type.value())) {
 			case ElementType t -> Stream.empty();
-			case StructType t ->  t.components().map(c -> ElementDescription.of(type.path(), c));
+			case OptionalType t -> Stream.empty(); // TODO:
+			case StructType t ->  t.components().map(p -> PropertyDescription.of(type.path(), p));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
 			case CollectionType t -> Stream.of(CollectionDescription.of(type.path(), t));
+			case EnclosedType t -> throw new IllegalArgumentException();
 		};
 	}
 

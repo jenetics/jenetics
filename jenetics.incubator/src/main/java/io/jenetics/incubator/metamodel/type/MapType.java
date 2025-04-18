@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
+import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Size;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
@@ -61,15 +64,23 @@ public final class MapType implements CollectionType {
 	}
 
 	@Override
-	public int size(final Object object) {
+	public Size size() {
+		return this::size;
+	}
+
+	private int size(final Object object) {
 		return object instanceof Map<?, ?> map
 			? map.size()
 			: raise(new IllegalArgumentException("Not a map: " + object));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<Object> iterable(final Object object) {
+	public IterableFactory iterable() {
+		return this::iterable;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Iterable<Object> iterable(final Object object) {
 		if (object instanceof Map<?, ?> map) {
 			return () -> (Iterator<Object>)(Object)map.entrySet().iterator();
 		} else {

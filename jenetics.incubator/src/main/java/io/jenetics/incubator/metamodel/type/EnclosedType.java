@@ -19,43 +19,33 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import io.jenetics.incubator.metamodel.access.IterableFactory;
-import io.jenetics.incubator.metamodel.access.Size;
+import io.jenetics.incubator.metamodel.access.Access;
 
 /**
- * Represents collection types. Collection types have a size and are able to
- * iterate over its element. The iterator elements are from instances of
- * {@link #componentType()}.
+ * An enclosed type is embedded in another type. This allows accessing (read
+ * and write) the value of this type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public sealed interface CollectionType
-	extends ContainerType
-	permits IndexedType, SetType, MapType
+public sealed interface EnclosedType
+	extends MetaModelType
+	permits PropertyType, IndexType
 {
 
 	/**
-	 * Return the component type, e.g., Array, List, Set or Optional.
+	 * Return the enclosing structure type of the property.
 	 *
-	 * @return the container type
+	 * @return the enclosing structure type of the property
 	 */
-	@Override
-	Class<?> type();
+	MetaModelType enclosure();
 
 	/**
-	 * The collection size.
+	 * Return the access object for accessing (read and write) the value.
 	 *
-	 * @return the collection size
+	 * @return the access object for accessing (read and write) the value
 	 */
-	Size size();
-
-	/**
-	 * The element iterable.
-	 *
-	 * @return the element iterable
-	 */
-	IterableFactory iterable();
+	Access access();
 
 }

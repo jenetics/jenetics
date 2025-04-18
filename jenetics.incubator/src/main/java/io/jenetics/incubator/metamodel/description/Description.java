@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
+import io.jenetics.incubator.metamodel.type.MetaModelType;
 
 /**
  * This interface describes the <em>static</em> type information for a property,
@@ -34,7 +35,7 @@ import io.jenetics.incubator.metamodel.Path;
  * @since 7.2
  */
 public sealed interface Description
-	permits CollectionDescription, ElementDescription
+	permits CollectionDescription, PropertyDescription
 {
 
 	/**
@@ -49,7 +50,7 @@ public sealed interface Description
 	 *
 	 * @return the enclosure type
 	 */
-	Class<?> enclosure();
+	MetaModelType enclosure();
 
 	/**
 	 * Return the <em>static</em> type of the property description.

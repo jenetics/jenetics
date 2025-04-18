@@ -40,4 +40,8 @@ public interface IndexedSetter {
 	 */
 	void set(final Object object, final int index, final Object value);
 
+	default Setter curry(final int index) {
+		return (object, value) -> set(object, index, value);
+	}
+
 }

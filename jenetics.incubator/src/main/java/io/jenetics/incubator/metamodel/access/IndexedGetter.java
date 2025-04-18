@@ -40,4 +40,8 @@ public interface IndexedGetter {
 	 */
 	Object get(final Object object, final int index);
 
+	default Getter curry(final int index) {
+		return object -> get(object, index);
+	}
+
 }

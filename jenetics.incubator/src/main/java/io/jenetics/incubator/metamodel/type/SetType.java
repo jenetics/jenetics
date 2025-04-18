@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
+import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Size;
+
 /**
  * Type which represents a {@code List} class.
  *
@@ -57,20 +60,23 @@ public final class SetType implements CollectionType {
 	}
 
 	@Override
-	public int size(final Object object) {
+	public Size size() {
+		return this::size;
+	}
+
+	private int size(final Object object) {
 		return object instanceof Set<?> set
 			? set.size()
 			: raise(new IllegalArgumentException("Not a set: " + object));
 	}
 
 	@Override
-	public boolean isMutable() {
-		return false;
+	public IterableFactory iterable() {
+		return this::iterable;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<Object> iterable(final Object object) {
+	private Iterable<Object> iterable(final Object object) {
 		if (object instanceof Set<?> set) {
 			return () -> (Iterator<Object>)set.iterator();
 		} else {

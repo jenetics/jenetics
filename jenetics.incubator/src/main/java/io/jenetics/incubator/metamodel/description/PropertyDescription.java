@@ -21,15 +21,13 @@ package io.jenetics.incubator.metamodel.description;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.access.Access;
 import io.jenetics.incubator.metamodel.type.PropertyType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * This class represents <em>non</em>-indexed property descriptions.
@@ -38,25 +36,16 @@ import io.jenetics.incubator.metamodel.type.PropertyType;
  * @version 8.0
  * @since 8.0
  */
-public final class ElementDescription implements Description {
+public final class PropertyDescription implements Description {
     private final Path path;
-    private final Class<?> enclosure;
-    private final Type type;
-    private final Access access;
-	private final Supplier<Stream<Annotation>> annotations;
+    private final PropertyType type;
 
-	ElementDescription(
+	PropertyDescription(
 		final Path path,
-		final Class<?> enclosure,
-		final Type type,
-		final Supplier<Stream<Annotation>> annotations,
-		final Access access
+		final PropertyType type
     ) {
         this.path = requireNonNull(path);
-        this.enclosure = requireNonNull(enclosure);
         this.type = requireNonNull(type);
-        this.access = requireNonNull(access);
-		this.annotations = requireNonNull(annotations);
     }
 
     @Override
@@ -65,19 +54,14 @@ public final class ElementDescription implements Description {
     }
 
     @Override
-    public Class<?> enclosure() {
-        return enclosure;
+    public StructType enclosure() {
+        return type.enclosure();
     }
 
     @Override
     public Type type() {
-        return type;
+        return type.type();
     }
-
-	@Override
-	public Stream<Annotation> annotations() {
-		return annotations.get();
-	}
 
 	/**
 	 * Return the access object for the description.
@@ -85,29 +69,27 @@ public final class ElementDescription implements Description {
 	 * @return the access object for the description
 	 */
     public Access access() {
-        return access;
+        return type.access();
     }
-
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(path, enclosure, type.getTypeName());
+		return Objects.hash(path, type);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof ElementDescription sd &&
-			sd.path.equals(path) &&
-			sd.type.getTypeName().equals(type.getTypeName()) &&
-			sd.enclosure.equals(enclosure);
+		return obj instanceof PropertyDescription pd &&
+			pd.path.equals(path) &&
+			pd.type.equals(type);
 	}
 
 	@Override
 	public String toString() {
 		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
 			path,
-			type instanceof Class<?> cls ? cls.getName() : type,
-			enclosure.getName()
+			type().getTypeName(),
+			enclosure().type().getTypeName()
 		);
 	}
 
@@ -116,24 +98,16 @@ public final class ElementDescription implements Description {
 	 * {@code component}.
 	 *
 	 * @param path the description path
-	 * @param component the struct component
+	 * @param type the struct type
 	 * @return a new simple description object
 	 */
-	static ElementDescription of(
+	static PropertyDescription of(
 		final Path path,
-		final PropertyType component
+		final PropertyType type
 	) {
-		//final var getter = Methods.toGetter(component.getter());
-		//final var setter = Methods.toSetter(component.setter());
-
-		return new ElementDescription(
-			path.append(component.name()),
-			null, //component.enclosure(),
-			null, //component.value(),
-			null, //() -> Reflect.getAnnotations(component.getter()),
-			null //setter != null
-				//? new Access.Writable(getter, setter)
-				//: new Access.Readonly(getter)
+		return new PropertyDescription(
+			path.append(type.name()),
+			type
 		);
 	}
 

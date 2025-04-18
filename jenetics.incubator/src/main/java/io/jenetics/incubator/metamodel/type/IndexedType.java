@@ -22,6 +22,10 @@ package io.jenetics.incubator.metamodel.type;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.access.IndexedGetter;
+import io.jenetics.incubator.metamodel.access.IterableFactory;
+
 /**
  * Represents indexed types. An indexed type is a container where its elements
  * are accessible via index. Such types are arrays and lists.
@@ -32,38 +36,22 @@ import java.util.NoSuchElementException;
  */
 public sealed interface IndexedType
 	extends CollectionType
-	permits ArrayType, ListType, OptionalType
+	permits ArrayType, ListType
 {
 
 	/**
-	 * Returns the value of the indexed object at the given index.
+	 * Return the element access object.
 	 *
-	 * @param object the indexed type
-	 * @param index the index
-	 * @return the value of the indexed object at the given index
-	 * @throws NullPointerException if the specified object is {@code null}
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
+	 * @return the element access object
 	 */
-	Object get(final Object object, final int index);
-
-	/**
-	 * Sets the value of the indexed object at the given index.
-	 *
-	 * @param object the indexed object
-	 * @param index the index
-	 * @param value the new value of the indexed object
-	 * @throws NullPointerException if the specified object argument is
-	 *         {@code null}
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	void set(final Object object, final int index, final Object value);
+	IndexedAccess access();
 
 	@Override
-	default Iterable<Object> iterable(final Object object) {
-		return () -> new Iterator<>() {
-			private final int size = size(object);
+	default IterableFactory iterable() {
+		return collection -> () -> new Iterator<>() {
+			private final IndexedGetter getter = access().getter();
+			private final int size = size().get(collection);
+
 			private int cursor = 0;
 
 			@Override
@@ -79,7 +67,7 @@ public sealed interface IndexedType
 				}
 
 				cursor = i + 1;
-				return get(object, i);
+				return getter.get(collection, i);
 			}
 		};
 	}

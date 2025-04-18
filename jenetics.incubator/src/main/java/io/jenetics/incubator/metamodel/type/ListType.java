@@ -28,6 +28,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Size;
+
 /**
  * Type which represents a {@code List} class.
  *
@@ -59,22 +63,38 @@ public final class ListType implements IndexedType {
 	}
 
 	@Override
-	public int size(final Object object) {
+	public Size size() {
+		return this::size;
+	}
+
+	@Override
+	public IndexedAccess access() {
+		if (isMutable()) {
+			return new IndexedAccess.Writable(this::get, this::set);
+		} else {
+			return new IndexedAccess.Readonly(this::get);
+		}
+	}
+
+	private boolean isMutable() {
+		return type == ArrayList.class ||
+			type == LinkedList.class;
+	}
+
+	private int size(final Object object) {
 		return object instanceof List<?> list
 			? list.size()
 			: raise(new IllegalArgumentException("Not a list: " + object));
 	}
 
-	@Override
-	public Object get(final Object object, final int index) {
+	private Object get(final Object object, final int index) {
 		return object instanceof List<?> list
 			? list.get(index)
 			: raise(new IllegalArgumentException("Not a list: " + object));
 	}
 
-	@Override
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void set(Object object, int index, Object value) {
+	private void set(Object object, int index, Object value) {
 		if (value != null && componentType.isAssignableFrom(value.getClass())) {
 			throw new IllegalArgumentException(
 				"Value is not from component type: %s instanceof %s."
@@ -90,14 +110,12 @@ public final class ListType implements IndexedType {
 	}
 
 	@Override
-	public boolean isMutable() {
-		return type == ArrayList.class ||
-			type == LinkedList.class;
+	public IterableFactory iterable() {
+		return this::iterable;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<Object> iterable(final Object object) {
+	private Iterable<Object> iterable(final Object object) {
 		if (object instanceof List<?> list) {
 			return () -> (Iterator<Object>)list.iterator();
 		} else {

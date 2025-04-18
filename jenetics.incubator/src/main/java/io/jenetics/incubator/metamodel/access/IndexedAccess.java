@@ -22,7 +22,7 @@ package io.jenetics.incubator.metamodel.access;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This interface holds property getter and, optionally, property setter.
+ * This interface holds a property getter and, optionally, property setter.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.0
@@ -36,6 +36,30 @@ public sealed interface IndexedAccess {
 	 * @return the property getter
 	 */
 	IndexedGetter getter();
+
+	/**
+	 * Currying this indexed access object with the given index.
+	 *
+	 * @param index the currying index
+	 * @return the curried access object
+	 */
+	default Access curry(int index) {
+		if (index < 0) {
+			throw new IllegalArgumentException(
+				"Index must be >= 0: %d".formatted(index)
+			);
+		}
+
+		return switch (this) {
+			case IndexedAccess.Readonly(var g) -> new Access.Readonly(
+				g.curry(index)
+			);
+			case IndexedAccess.Writable(var g, var s) -> new Access.Writable(
+				g.curry(index),
+				s.curry(index)
+			);
+		};
+	}
 
 	/**
 	 * Read-only property access-object.

@@ -24,6 +24,9 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Array;
 import java.util.Objects;
 
+import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.access.Size;
+
 /**
  * Trait which represents an array type.
  *
@@ -36,12 +39,11 @@ public final class ArrayType implements IndexedType {
 	private final Class<?> componentType;
 
 	ArrayType(final Class<?> type, final Class<?> componentType) {
+		this.type = requireNonNull(type);
+		this.componentType = requireNonNull(componentType);
 		if (!type.isArray()) {
 			throw new IllegalArgumentException("Not an array type: " + type);
 		}
-
-		this.type = type;
-		this.componentType = requireNonNull(componentType);
 	}
 
 	@Override
@@ -55,30 +57,13 @@ public final class ArrayType implements IndexedType {
 	}
 
 	@Override
-	public Object get(Object object, int index) {
-		return Array.get(object, index);
+	public Size size() {
+		return Array::getLength;
 	}
 
 	@Override
-	public void set(Object object, int index, Object value) {
-		if (value != null && componentType.isAssignableFrom(value.getClass())) {
-			throw new IllegalArgumentException(
-				"Value is not from component type: %s instanceof %s."
-					.formatted(value, value.getClass().getName())
-			);
-		}
-
-		Array.set(object, index, value);
-	}
-
-	@Override
-	public int size(Object object) {
-		return Array.getLength(object);
-	}
-
-	@Override
-	public boolean isMutable() {
-		return true;
+	public IndexedAccess.Writable access() {
+		return new IndexedAccess.Writable(Array::get, Array::set);
 	}
 
 	@Override

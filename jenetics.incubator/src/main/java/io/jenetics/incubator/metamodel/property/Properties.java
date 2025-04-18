@@ -31,12 +31,12 @@ import io.jenetics.incubator.metamodel.Filters;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.description.CollectionDescription;
 import io.jenetics.incubator.metamodel.description.Description;
 import io.jenetics.incubator.metamodel.description.Descriptions;
-import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.description.PropertyDescription;
 import io.jenetics.incubator.metamodel.description.IndexedDescription;
-import io.jenetics.incubator.metamodel.description.ElementDescription;
-import io.jenetics.incubator.metamodel.description.CollectionDescription;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
@@ -44,8 +44,9 @@ import io.jenetics.incubator.metamodel.type.BeanType;
 import io.jenetics.incubator.metamodel.type.ElementType;
 import io.jenetics.incubator.metamodel.type.ListType;
 import io.jenetics.incubator.metamodel.type.MapType;
-import io.jenetics.incubator.metamodel.type.OptionalType;
 import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.OptionalType;
+import io.jenetics.incubator.metamodel.type.PropertyType;
 import io.jenetics.incubator.metamodel.type.RecordType;
 import io.jenetics.incubator.metamodel.type.SetType;
 
@@ -111,7 +112,7 @@ public final class Properties {
 		final var enclosure = root.value();
 
 		return switch (description) {
-			case ElementDescription desc -> {
+			case PropertyDescription desc -> {
 				final var param = new PropParam(
 					root.path().append(desc.path().element()),
 					enclosure,
@@ -134,6 +135,7 @@ public final class Properties {
 					case ListType t -> new ListProperty(param);
 					case SetType t -> new SetProperty(param);
 					case MapType t -> new MapProperty(param);
+					case PropertyType t -> throw new IllegalArgumentException();
 				};
 
 				yield Stream.of(prop);

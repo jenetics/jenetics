@@ -25,6 +25,8 @@ import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.jenetics.incubator.metamodel.access.Access;
+
 /**
  * Trait which represents an {@code Optional} type.
  *
@@ -32,9 +34,8 @@ import java.util.Optional;
  * @version 8.0
  * @since 8.0
  */
-public final class OptionalType implements IndexedType {
+public final class OptionalType implements ContainerType {
 	private final Class<?> componentType;
-
 
 	OptionalType(Class<?> componentType) {
 		this.componentType = requireNonNull(componentType);
@@ -46,31 +47,18 @@ public final class OptionalType implements IndexedType {
 	}
 
 	@Override
-	public boolean isMutable() {
-		return false;
+	public Class<?> componentType() {
+		return componentType;
 	}
 
-	@Override
-	public int size(Object object) {
-		return object instanceof Optional<?> optional ? optional.isPresent()
-			? 1 : 0 : raise(new IllegalArgumentException("Not an Optional: " + object));
+	public Access.Readonly access() {
+		return new Access.Readonly(this::get);
 	}
 
-	@Override
-	public Object get(Object object, int index) {
+	private Object get(Object object) {
 		return object instanceof Optional<?> optional
 			? optional.orElseThrow()
 			: raise(new IllegalArgumentException("Not an Optional: " + object));
-	}
-
-	@Override
-	public void set(Object object, int index, Object value) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Class<?> componentType() {
-		return componentType;
 	}
 
 	@Override

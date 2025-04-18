@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.access.Size;
 import io.jenetics.incubator.metamodel.type.CollectionType;
+import io.jenetics.incubator.metamodel.type.MetaModelType;
 
 /**
  * his class represents sized objects like arrays, sets, maps and lists.
@@ -59,7 +60,7 @@ public sealed class CollectionDescription
 	}
 
 	@Override
-	public Class<?> enclosure() {
+	public MetaModelType enclosure() {
 		return type.type();
 	}
 

@@ -20,10 +20,7 @@
 package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.metamodel.internal.Methods.toGetter;
-import static io.jenetics.incubator.metamodel.internal.Methods.toSetter;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
@@ -36,38 +33,28 @@ import io.jenetics.incubator.metamodel.access.Access;
  * @version 8.3
  * @since 8.3
  */
-public final class PropertyType implements EnclosedType {
-	private final String name;
-	private final StructType enclosure;
+public final class IndexType implements EnclosedType {
+	private final int index;
+	private final IndexedType enclosure;
 	private final Type type;
-	private final Method getter;
-	private final Method setter;
 
-	PropertyType(
-		final String name,
-		final StructType enclosure,
-		final Type type,
-		final Method getter,
-		final Method setter
-	) {
-		this.name = requireNonNull(name);
+	IndexType(int index, IndexedType enclosure, Type type) {
+		this.index = index;
 		this.enclosure = requireNonNull(enclosure);
 		this.type = requireNonNull(type);
-		this.getter = requireNonNull(getter);
-		this.setter = setter;
 	}
 
 	/**
-	 * Return the name of the property.
+	 * The index of where {@code this} type is embedded in the enclosing type.
 	 *
-	 * @return the name of the property
+	 * @return the index of the embedding index type
 	 */
-	public String name() {
-		return name;
+	public int index() {
+		return index;
 	}
 
 	@Override
-	public StructType enclosure() {
+	public IndexedType enclosure() {
 		return enclosure;
 	}
 
@@ -78,30 +65,28 @@ public final class PropertyType implements EnclosedType {
 
 	@Override
 	public Access access() {
-		return setter != null
-			? new Access.Writable(toGetter(getter), toSetter(setter))
-			: new Access.Readonly(toGetter(getter));
+		return enclosure.access().curry(index);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, enclosure, type);
+		return Objects.hash(index, enclosure, type);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof PropertyType pt &&
-			pt.name.equals(name) &&
-			pt.enclosure.equals(enclosure) &&
-			pt.type.equals(type);
+		return obj instanceof IndexType it &&
+			it.index == index &&
+			it.enclosure.equals(enclosure) &&
+			it.type.equals(type);
 	}
 
 	@Override
 	public String toString() {
-		return "PropertyType[name=%s, enclosure=%s, type=%s]".formatted(
-			name,
+		return "IndexType[index=%d, enclosure=%s, type=%s]".formatted(
+			index,
 			enclosure,
-			type
+			type.getTypeName()
 		);
 	}
 
