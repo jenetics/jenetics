@@ -21,7 +21,6 @@ package io.jenetics.incubator.metamodel.description;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.reflect.SizedType;
+import io.jenetics.incubator.metamodel.reflect.CollectionType;
 
 /**
  * his class represents sized objects like arrays, sets, maps and lists.
@@ -38,25 +37,19 @@ import io.jenetics.incubator.metamodel.reflect.SizedType;
  * @version 8.3
  * @since 8.3
  */
-public sealed class SizedDescription
+public sealed class CollectionDescription
 	implements Description, SizedIterable
 	permits IndexedDescription
 {
 	final Path path;
-	final Class<?> enclosure;
-	final Type type;
-	final Size size;
+	final CollectionType type;
 
-	SizedDescription(
+	CollectionDescription(
 		final Path path,
-		final Class<?> enclosure,
-		final Type type,
-		final Size size
+		final CollectionType type
 	) {
 		this.path = requireNonNull(path);
-		this.enclosure = requireNonNull(enclosure);
 		this.type = requireNonNull(type);
-		this.size = requireNonNull(size);
 	}
 
 	@Override
@@ -66,12 +59,12 @@ public sealed class SizedDescription
 
 	@Override
 	public Class<?> enclosure() {
-		return enclosure;
+		return type.type();
 	}
 
 	@Override
-	public Type type() {
-		return type;
+	public Class<?> type() {
+		return type.componentType();
 	}
 
 	/**
@@ -80,22 +73,12 @@ public sealed class SizedDescription
 	 * @return the size function of the description
 	 */
 	public Size size() {
-		return size;
+		return type::size;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<Object> iterator(final Object object) {
-		requireNonNull(object);
-
-		return (Iterator<Object>)switch (object) {
-			case Collection<?> collection -> collection.iterator();
-			case Map<?, ?> map -> map.entrySet().iterator();
-			case Optional<?> optional -> optional.stream().iterator();
-			default -> throw new IllegalArgumentException(
-				"Unsupported type: " + object.getClass().getName()
-			);
-		};
+		return type.iterable(object).iterator();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,18 +99,13 @@ public sealed class SizedDescription
 	public String toString() {
 		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
 			path,
-			type instanceof Class<?> cls ? cls.getName() : type,
-			enclosure.getName()
+			type().getName(),
+			enclosure().getName()
 		);
 	}
 
-	static SizedDescription of(final Path path, final SizedType type) {
-		return new SizedDescription(
-			path.append(new Path.Index(0)),
-			type.type(),
-			type.componentType(),
-			type::size
-		);
+	static CollectionDescription of(final Path path, final CollectionType type) {
+		return new CollectionDescription(path.append(new Path.Index(0)), type);
 	}
 
 }

@@ -37,8 +37,13 @@ import java.util.stream.Stream;
 public final class BeanType implements StructType {
 	private final Class<?> type;
 
-	BeanType(Class<?> type) {
+	BeanType(final Class<?> type) {
 		this.type = requireNonNull(type);
+	}
+
+	@Override
+	public Class<?> type() {
+		return type;
 	}
 
 	@Override
@@ -63,11 +68,6 @@ public final class BeanType implements StructType {
 				pd.getReadMethod(),
 				pd.getWriteMethod())
 			);
-	}
-
-	@Override
-	public Class<?> type() {
-		return type;
 	}
 
 	@Override

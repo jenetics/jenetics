@@ -19,10 +19,6 @@
  */
 package io.jenetics.incubator.metamodel.description;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.reflect.Type;
-import java.util.Iterator;
 import java.util.Objects;
 
 import io.jenetics.incubator.metamodel.Path;
@@ -35,19 +31,13 @@ import io.jenetics.incubator.metamodel.reflect.IndexedType;
  * @version 8.0
  * @since 8.0
  */
-public final class IndexedDescription extends SizedDescription {
-
-    private final IndexedAccess access;
+public final class IndexedDescription extends CollectionDescription {
 
     IndexedDescription(
 		final Path path,
-		final Class<?> enclosure,
-		final Type type,
-		final Size size,
-		final IndexedAccess access
+		final IndexedType type
     ) {
-        super(path, enclosure, type, size);
-        this.access = requireNonNull(access);
+        super(path, type);
     }
 
 	/**
@@ -56,40 +46,24 @@ public final class IndexedDescription extends SizedDescription {
 	 * @return the access object for the description
 	 */
     public IndexedAccess access() {
-        return access;
+        return type.isMutable()
+			? new IndexedAccess.Writable(((IndexedType)type)::get, ((IndexedType)type)::set)
+			: new IndexedAccess.Readonly(((IndexedType)type)::get);
     }
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(path, enclosure, type.getTypeName());
+		return Objects.hash(path, type);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof IndexedDescription id &&
 			id.path.equals(path) &&
-			id.type.getTypeName().equals(type.getTypeName()) &&
-			id.enclosure.equals(enclosure);
-	}
-
-	@Override
-	public String toString() {
-		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
-			path,
-			type instanceof Class<?> cls ? cls.getName() : type,
-			enclosure.getName()
-		);
+			id.type.equals(type);
 	}
 
 	static IndexedDescription of(final Path path, final IndexedType type) {
-		return new IndexedDescription(
-			path.append(new Path.Index(0)),
-			type.type(),
-			type.componentType(),
-			type::size,
-			type.isMutable()
-				? new IndexedAccess.Writable(type::get, type::set)
-				: new IndexedAccess.Readonly(type::get)
-		);
+		return new IndexedDescription(path.append(new Path.Index(0)), type);
 	}
 }

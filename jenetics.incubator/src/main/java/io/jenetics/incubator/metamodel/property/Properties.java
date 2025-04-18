@@ -35,8 +35,8 @@ import io.jenetics.incubator.metamodel.description.Description;
 import io.jenetics.incubator.metamodel.description.Descriptions;
 import io.jenetics.incubator.metamodel.description.IndexedAccess;
 import io.jenetics.incubator.metamodel.description.IndexedDescription;
-import io.jenetics.incubator.metamodel.description.SimpleDescription;
-import io.jenetics.incubator.metamodel.description.SizedDescription;
+import io.jenetics.incubator.metamodel.description.ElementDescription;
+import io.jenetics.incubator.metamodel.description.CollectionDescription;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.reflect.ArrayType;
@@ -111,7 +111,7 @@ public final class Properties {
 		final var enclosure = root.value();
 
 		return switch (description) {
-			case SimpleDescription desc -> {
+			case ElementDescription desc -> {
 				final var param = new PropParam(
 					root.path().append(desc.path().element()),
 					enclosure,
@@ -166,7 +166,7 @@ public final class Properties {
 					return new IndexProperty(param, i.getAndIncrement());
 				});
 			}
-			case SizedDescription desc -> {
+			case CollectionDescription desc -> {
 				final var path = desc.path().element() instanceof Path.Index
 					? root.path()
 					: root.path().append(desc.path().element());

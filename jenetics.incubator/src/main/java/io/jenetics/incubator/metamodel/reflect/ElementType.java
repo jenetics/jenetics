@@ -21,12 +21,11 @@ package io.jenetics.incubator.metamodel.reflect;
 
 import static java.util.Objects.requireNonNull;
 
-import java.lang.constant.Constable;
 import java.util.Objects;
 
 /**
  * Represents a type, which doesn't contain any further properties, like
- * primitives, strings or instances of {@link Constable}
+ * primitives, strings or instances of {@link java.lang.constant.Constable}
  * interfaces.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,7 +34,6 @@ import java.util.Objects;
  */
 public final class ElementType implements MetaModelType {
 	private final Class<?> type;
-
 
 	ElementType(Class<?> type) {
 		this.type = requireNonNull(type);
@@ -59,9 +57,7 @@ public final class ElementType implements MetaModelType {
 
 	@Override
 	public String toString() {
-		return "ElementType[" +
-			"type=" + type + ']';
+		return "ElementType[type=%s]".formatted(type);
 	}
-
 
 }

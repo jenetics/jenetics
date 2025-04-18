@@ -38,16 +38,14 @@ import io.jenetics.incubator.metamodel.reflect.StructType;
  * @version 8.0
  * @since 8.0
  */
-public final class SimpleDescription
-	implements Description
-{
+public final class ElementDescription implements Description {
     private final Path path;
     private final Class<?> enclosure;
     private final Type type;
     private final Access access;
 	private final Supplier<Stream<Annotation>> annotations;
 
-	SimpleDescription(
+	ElementDescription(
 		final Path path,
 		final Class<?> enclosure,
 		final Type type,
@@ -98,7 +96,7 @@ public final class SimpleDescription
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof SimpleDescription sd &&
+		return obj instanceof ElementDescription sd &&
 			sd.path.equals(path) &&
 			sd.type.getTypeName().equals(type.getTypeName()) &&
 			sd.enclosure.equals(enclosure);
@@ -121,14 +119,14 @@ public final class SimpleDescription
 	 * @param component the struct component
 	 * @return a new simple description object
 	 */
-	static SimpleDescription of(
+	static ElementDescription of(
 		final Path path,
 		final StructType.Component component
 	) {
 		final var getter = Methods.toGetter(component.getter());
 		final var setter = Methods.toSetter(component.setter());
 
-		return new SimpleDescription(
+		return new ElementDescription(
 			path.append(component.name()),
 			component.enclosure(),
 			component.value(),

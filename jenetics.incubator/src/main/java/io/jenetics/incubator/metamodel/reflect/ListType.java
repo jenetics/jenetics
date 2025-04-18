@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +49,16 @@ public final class ListType implements IndexedType {
 	}
 
 	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public Class<?> componentType() {
+		return componentType;
+	}
+
+	@Override
 	public int size(final Object object) {
 		return object instanceof List<?> list
 			? list.size()
@@ -64,6 +75,13 @@ public final class ListType implements IndexedType {
 	@Override
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void set(Object object, int index, Object value) {
+		if (value != null && componentType.isAssignableFrom(value.getClass())) {
+			throw new IllegalArgumentException(
+				"Value is not from component type: %s instanceof %s."
+					.formatted(value, value.getClass().getName())
+			);
+		}
+
 		if (object instanceof List list) {
 			list.set(index, value);
 		} else {
@@ -77,14 +95,14 @@ public final class ListType implements IndexedType {
 			type == LinkedList.class;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Class<?> type() {
-		return type;
-	}
-
-	@Override
-	public Class<?> componentType() {
-		return componentType;
+	public Iterable<Object> iterable(final Object object) {
+		if (object instanceof List<?> list) {
+			return () -> (Iterator<Object>)list.iterator();
+		} else {
+			throw new IllegalArgumentException("Not a list: " + object);
+		}
 	}
 
 	@Override

@@ -22,6 +22,7 @@ package io.jenetics.incubator.metamodel.reflect;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,12 +31,12 @@ import java.util.Objects;
  * @version 8.3
  * @since 8.3
  */
-public final class MapType implements SizedType {
+public final class MapType implements CollectionType {
 	private final Class<?> type;
 	private final Class<?> keyType;
 	private final Class<?> valueType;
 
-	MapType(Class<?> type, Class<?> keyType, Class<?> valueType) {
+	MapType(final Class<?> type, final Class<?> keyType, final Class<?> valueType) {
 		this.type = requireNonNull(type);
 		this.keyType = requireNonNull(keyType);
 		this.valueType = requireNonNull(valueType);
@@ -66,9 +67,33 @@ public final class MapType implements SizedType {
 			: raise(new IllegalArgumentException("Not a map: " + object));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Object> iterable(final Object object) {
+		if (object instanceof Map<?, ?> map) {
+			return () -> (Iterator<Object>)(Object)map.entrySet().iterator();
+		} else {
+			throw new IllegalArgumentException("Not a map: " + object);
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(type, keyType, valueType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof MapType st &&
+			type.equals(st.type) &&
+			keyType().equals(st.keyType()) &&
+			valueType().equals(st.valueType);
+	}
+
+	@Override
+	public String toString() {
+		return "MapType[type=%s, keyType=%s, valueType=%s]"
+			.formatted(type, keyType, valueType);
 	}
 
 }

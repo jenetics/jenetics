@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.metamodel.reflect;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Represents indexed types. An indexed type is a container where its elements
  * are accessible via index. Such types are arrays and lists.
@@ -56,5 +59,29 @@ public sealed interface IndexedType
 	 *         ({@code index < 0 || index >= size()})
 	 */
 	void set(final Object object, final int index, final Object value);
+
+	@Override
+	default Iterable<Object> iterable(final Object object) {
+		return () -> new Iterator<>() {
+			private final int size = size(object);
+			private int cursor = 0;
+
+			@Override
+			public boolean hasNext() {
+				return cursor != size;
+			}
+
+			@Override
+			public Object next() {
+				final int i = cursor;
+				if (cursor >= size) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i + 1;
+				return get(object, i);
+			}
+		};
+	}
 
 }

@@ -35,29 +35,13 @@ public final class ArrayType implements IndexedType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 
-
-	ArrayType(Class<?> type, Class<?> componentType) {
+	ArrayType(final Class<?> type, final Class<?> componentType) {
 		if (!type.isArray()) {
 			throw new IllegalArgumentException("Not an array type: " + type);
 		}
 
 		this.type = type;
 		this.componentType = requireNonNull(componentType);
-	}
-
-	@Override
-	public int size(Object object) {
-		return Array.getLength(object);
-	}
-
-	@Override
-	public Object get(Object object, int index) {
-		return Array.get(object, index);
-	}
-
-	@Override
-	public void set(Object object, int index, Object value) {
-		Array.set(object, index, value);
 	}
 
 	@Override
@@ -68,6 +52,33 @@ public final class ArrayType implements IndexedType {
 	@Override
 	public Class<?> componentType() {
 		return componentType;
+	}
+
+	@Override
+	public Object get(Object object, int index) {
+		return Array.get(object, index);
+	}
+
+	@Override
+	public void set(Object object, int index, Object value) {
+		if (value != null && componentType.isAssignableFrom(value.getClass())) {
+			throw new IllegalArgumentException(
+				"Value is not from component type: %s instanceof %s."
+					.formatted(value, value.getClass().getName())
+			);
+		}
+
+		Array.set(object, index, value);
+	}
+
+	@Override
+	public int size(Object object) {
+		return Array.getLength(object);
+	}
+
+	@Override
+	public boolean isMutable() {
+		return true;
 	}
 
 	@Override

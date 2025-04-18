@@ -22,7 +22,7 @@ package io.jenetics.incubator.metamodel.reflect;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,6 +47,16 @@ public final class SetType implements CollectionType {
 	}
 
 	@Override
+	public Class<?> type() {
+		return type;
+	}
+
+	@Override
+	public Class<?> componentType() {
+		return componentType;
+	}
+
+	@Override
 	public int size(final Object object) {
 		return object instanceof Set<?> set
 			? set.size()
@@ -58,14 +68,14 @@ public final class SetType implements CollectionType {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Class<?> type() {
-		return type;
-	}
-
-	@Override
-	public Class<?> componentType() {
-		return componentType;
+	public Iterable<Object> iterable(final Object object) {
+		if (object instanceof Set<?> set) {
+			return () -> (Iterator<Object>)set.iterator();
+		} else {
+			throw new IllegalArgumentException("Not a set: " + object);
+		}
 	}
 
 	@Override
