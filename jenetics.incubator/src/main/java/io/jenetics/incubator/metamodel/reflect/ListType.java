@@ -120,7 +120,7 @@ public final class ListType implements IndexedType {
 	@Override
 	public String toString() {
 		return "ListType[type=%s, componentType=%s]"
-			.formatted(type, componentType);
+			.formatted(type.getName(), componentType.getName());
 	}
 
 

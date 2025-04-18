@@ -31,6 +31,8 @@ import io.jenetics.incubator.metamodel.reflect.IndexedType;
 import io.jenetics.incubator.metamodel.reflect.MetaModelType;
 import io.jenetics.incubator.metamodel.reflect.StructType;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * This class contains methods for extracting the <em>static</em> bean property
  * information from a given object. It is the main entry point for the extracting
@@ -72,7 +74,8 @@ public final class Descriptions {
 	 * @return the <em>directly</em> available property descriptions
 	 */
 	public static Stream<Description> list(final PathValue<? extends Type> type) {
-		if (type == null || type.value() == null) {
+		requireNonNull(type);
+		if (type.value() == null) {
 			return Stream.empty();
 		}
 

@@ -93,7 +93,7 @@ public final class MapType implements CollectionType {
 	@Override
 	public String toString() {
 		return "MapType[type=%s, keyType=%s, valueType=%s]"
-			.formatted(type, keyType, valueType);
+			.formatted(type.getName(), keyType.getName(), valueType.getName());
 	}
 
 }

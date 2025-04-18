@@ -96,7 +96,7 @@ public final class ArrayType implements IndexedType {
 	@Override
 	public String toString() {
 		return "ArrayType[type=%s, componentType=%s]"
-			.formatted(type, componentType);
+			.formatted(type.getName(), componentType.getName());
 	}
 
 }

@@ -83,7 +83,7 @@ public final class BeanType implements StructType {
 
 	@Override
 	public String toString() {
-		return "BeanType[type=%s]".formatted(type);
+		return "BeanType[type=%s]".formatted(type.getName());
 	}
 
 

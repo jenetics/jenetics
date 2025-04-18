@@ -57,7 +57,7 @@ public final class ElementType implements MetaModelType {
 
 	@Override
 	public String toString() {
-		return "ElementType[type=%s]".formatted(type);
+		return "ElementType[type=%s]".formatted(type.getName());
 	}
 
 }

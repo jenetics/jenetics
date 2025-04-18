@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.isElementType;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
+import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -57,6 +58,13 @@ public sealed interface MetaModelType
 	 */
 	static MetaModelType of(final Type type) {
 		requireNonNull(type);
+
+		// 0) Check for ElementType.
+		if (type instanceof Class<?> cls &&
+			Constable.class.isAssignableFrom(cls))
+		{
+			return new ElementType(cls);
+		}
 
 		// 1) Check for ArrayType.
 		if (type instanceof Class<?> arrayType && arrayType.isArray()) {

@@ -86,7 +86,8 @@ public final class OptionalType implements IndexedType {
 
 	@Override
 	public String toString() {
-		return "OptionalType[componentType=%s]".formatted(componentType);
+		return "OptionalType[componentType=%s]"
+			.formatted(componentType.getName());
 	}
 
 

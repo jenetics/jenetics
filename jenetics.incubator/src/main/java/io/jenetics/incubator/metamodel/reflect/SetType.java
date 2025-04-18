@@ -93,8 +93,7 @@ public final class SetType implements CollectionType {
 	@Override
 	public String toString() {
 		return "SetType[type=%s, componentType=%s]"
-			.formatted(type, componentType);
+			.formatted(type.getName(), componentType.getName());
 	}
-
 
 }

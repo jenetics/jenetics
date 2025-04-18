@@ -75,7 +75,7 @@ public final class RecordType implements StructType {
 
 	@Override
 	public String toString() {
-		return "RecordType[type=%s]".formatted(type);
+		return "RecordType[type=%s]".formatted(type.getName());
 	}
 
 
