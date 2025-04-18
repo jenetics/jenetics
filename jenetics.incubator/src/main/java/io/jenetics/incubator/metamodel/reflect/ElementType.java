@@ -33,7 +33,7 @@ import java.util.Objects;
  * @version 8.0
  * @since 8.0
  */
-public final class ElementType implements PropertyType {
+public final class ElementType implements MetaModelType {
 	private final Class<?> type;
 
 

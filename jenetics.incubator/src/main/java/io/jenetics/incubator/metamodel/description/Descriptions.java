@@ -27,7 +27,7 @@ import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.reflect.ElementType;
 import io.jenetics.incubator.metamodel.reflect.IndexedType;
-import io.jenetics.incubator.metamodel.reflect.PropertyType;
+import io.jenetics.incubator.metamodel.reflect.MetaModelType;
 import io.jenetics.incubator.metamodel.reflect.SizedType;
 import io.jenetics.incubator.metamodel.reflect.StructType;
 
@@ -76,7 +76,7 @@ public final class Descriptions {
 			return Stream.empty();
 		}
 
-		return switch (PropertyType.of(type.value())) {
+		return switch (MetaModelType.of(type.value())) {
 			case ElementType t -> Stream.empty();
 			case StructType t ->  t.components().map(c -> SimpleDescription.of(type.path(), c));
 			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));

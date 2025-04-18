@@ -33,7 +33,7 @@ import java.util.stream.Stream;
  * @since 8.0
  */
 public sealed interface StructType
-	extends PropertyType
+	extends MetaModelType
 	permits BeanType, RecordType
 {
 

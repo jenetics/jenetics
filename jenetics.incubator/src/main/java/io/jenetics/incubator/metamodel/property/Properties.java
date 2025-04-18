@@ -45,7 +45,7 @@ import io.jenetics.incubator.metamodel.reflect.ElementType;
 import io.jenetics.incubator.metamodel.reflect.ListType;
 import io.jenetics.incubator.metamodel.reflect.MapType;
 import io.jenetics.incubator.metamodel.reflect.OptionalType;
-import io.jenetics.incubator.metamodel.reflect.PropertyType;
+import io.jenetics.incubator.metamodel.reflect.MetaModelType;
 import io.jenetics.incubator.metamodel.reflect.RecordType;
 import io.jenetics.incubator.metamodel.reflect.SetType;
 
@@ -125,7 +125,7 @@ public final class Properties {
 					}
 				);
 
-				final Property prop = switch (PropertyType.of(desc.type())) {
+				final Property prop = switch (MetaModelType.of(desc.type())) {
 					case ElementType t -> new SimpleProperty(param);
 					case RecordType t -> new RecordProperty(param);
 					case BeanType t -> new BeanProperty(param);

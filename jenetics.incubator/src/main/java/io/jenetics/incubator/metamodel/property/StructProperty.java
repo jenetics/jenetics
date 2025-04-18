@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.reflect.PropertyType;
+import io.jenetics.incubator.metamodel.reflect.MetaModelType;
 import io.jenetics.incubator.metamodel.reflect.StructType;
 
 /**
@@ -62,7 +62,7 @@ public sealed abstract class StructProperty
 	 * @return the struct components
 	 */
 	public Stream<Component> components() {
-		return PropertyType.of(type()) instanceof StructType st
+		return MetaModelType.of(type()) instanceof StructType st
 			? st.components().map(component -> new Component(
 					component.name(),
 					read(component.getter())

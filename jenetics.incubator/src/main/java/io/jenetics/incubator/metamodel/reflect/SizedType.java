@@ -25,7 +25,7 @@ package io.jenetics.incubator.metamodel.reflect;
  * @since 8.3
  */
 public sealed interface SizedType
-	extends PropertyType
+	extends MetaModelType
 	permits CollectionType, MapType
 {
 
