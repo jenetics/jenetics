@@ -36,7 +36,7 @@ import io.jenetics.incubator.metamodel.Path;
  */
 public abstract sealed class SizedProperty
 	implements Iterable<Object>, Property
-	permits CollectionProperty, MapProperty
+	permits MapProperty
 {
 
 	final PropParam param;
@@ -72,7 +72,7 @@ public abstract sealed class SizedProperty
 
 	@Override
 	public Object read() {
-		return param.access().getter().get(enclosure());
+		return param.accessor().getter().get();
 	}
 
 	/**

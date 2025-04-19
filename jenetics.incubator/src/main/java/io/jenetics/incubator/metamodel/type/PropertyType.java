@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.access.Curryer;
 
 /**
  * Represents a <em>property</em>.
@@ -83,10 +84,15 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public Access access() {
+	public Curryer<Accessor> access() {
 		return setter != null
-			? new Access.Writable(toGetter(getter), toSetter(setter))
-			: new Access.Readonly(toGetter(getter));
+			? object -> new Accessor.Writable(
+					toGetter(getter).curry(object),
+					toSetter(setter).curry(object)
+				)
+			: object -> new Accessor.Readonly(
+					toGetter(getter).curry(object)
+				);
 	}
 
 	@Override

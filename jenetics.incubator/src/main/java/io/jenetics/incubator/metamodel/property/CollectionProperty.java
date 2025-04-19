@@ -26,13 +26,9 @@ package io.jenetics.incubator.metamodel.property;
  * @version 8.3
  * @since 8.3
  */
-public abstract sealed class CollectionProperty
-	extends SizedProperty
+public sealed interface CollectionProperty
+	extends EnclosingProperty, Iterable<Object>
 	permits IndexedProperty, SetProperty
 {
-
-	CollectionProperty(final PropParam param) {
-		super(param);
-	}
 
 }

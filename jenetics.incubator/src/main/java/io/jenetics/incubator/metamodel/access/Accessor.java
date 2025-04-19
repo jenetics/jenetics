@@ -19,14 +19,46 @@
  */
 package io.jenetics.incubator.metamodel.access;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * Represents a <em>property</em>.
+ * This interface holds a property getter and, optionally, property setter.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.3
- * @since 8.3
+ * @version 8.0
+ * @since 8.0
  */
-@FunctionalInterface
-public interface IterableFactory {
-	Iterable<Object> iterable(final Object object);
+public sealed interface Accessor {
+
+	/**
+	 * Return the property getter, never {@code null}.
+	 *
+	 * @return the property getter
+	 */
+	Getter getter();
+
+	/**
+	 * Read-only property access-object.
+	 *
+	 * @param getter the property getter
+	 */
+	record Readonly(Getter getter) implements Accessor {
+		public Readonly {
+			requireNonNull(getter);
+		}
+	}
+
+	/**
+	 * Writable property access-object.
+	 *
+	 * @param getter the property getter
+	 * @param setter the property setter
+	 */
+	record Writable(Getter getter, Setter setter) implements Accessor {
+		public Writable {
+			requireNonNull(getter);
+			requireNonNull(setter);
+		}
+	}
+
 }

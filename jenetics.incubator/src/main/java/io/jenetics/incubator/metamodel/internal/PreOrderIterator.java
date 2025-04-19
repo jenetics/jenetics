@@ -87,7 +87,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects, returned by this function are used for identifying
+	 * @param identity objects returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops
 	 */
 	public PreOrderIterator(
@@ -154,7 +154,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects, returned by this function are used for identifying
+	 * @param identity objects returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops
 	 * @return an <em>recursive</em> extractor function
 	 * @param <S> the source object type

@@ -19,7 +19,8 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.access.Curryer;
 
 /**
  * An enclosed type is embedded in another type. This allows accessing (read
@@ -46,6 +47,6 @@ public sealed interface EnclosedType
 	 *
 	 * @return the access object for accessing (read and write) the value
 	 */
-	Access access();
+	Curryer<Accessor> access();
 
 }

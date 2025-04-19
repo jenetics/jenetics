@@ -33,9 +33,8 @@ public interface Size {
 	 * Return the size of the given <em>sizeable</em> {@code object}, e.g.,
 	 * array of {@code List}.
 	 *
-	 * @param object the <em>sizeable</em> object
 	 * @return the object size
 	 */
-	int get(final Object object);
+	int get();
 
 }

@@ -24,7 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Array;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.IndexedAccess;
+import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.IndexedAccessor;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -57,13 +58,16 @@ public final class ArrayType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Size size() {
-		return Array::getLength;
+	public Curryer<Size> size() {
+		return object -> () -> Array.getLength(object);
 	}
 
 	@Override
-	public IndexedAccess.Writable access() {
-		return new IndexedAccess.Writable(Array::get, Array::set);
+	public Curryer<IndexedAccessor.Writable> access() {
+		return object -> new IndexedAccessor.Writable(
+			index -> Array.get(object, index),
+			(index, value) -> Array.set(object, index, value)
+		);
 	}
 
 	@Override

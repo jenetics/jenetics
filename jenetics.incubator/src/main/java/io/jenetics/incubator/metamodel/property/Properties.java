@@ -31,7 +31,7 @@ import java.util.stream.StreamSupport;
 import io.jenetics.incubator.metamodel.Filters;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
-import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
@@ -115,10 +115,10 @@ public final class Properties {
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
-					pt.access().getter().get(root.value()),
+					pt.access().curry(enclosure).getter().get(),
 					toRawType(description.type()),
 					pt.annotations().toList(),
-					pt.access()
+					pt.access().curry(enclosure)
 				);
 
 				final Property property = switch (MetaModelType.of(pt.type())) {
@@ -144,7 +144,7 @@ public final class Properties {
 				final var i = new AtomicInteger(0);
 
 				final Stream<Object> values = StreamSupport.stream(
-					it.iterable().iterable(enclosure).spliterator(),
+					it.iterable().curry(enclosure).spliterator(),
 					false
 				);
 
@@ -159,7 +159,7 @@ public final class Properties {
 						value,
 						type,
 						it.annotations().toList(),
-						it.access().curry(i.get())
+						it.access().curry(value).curry(i.get())
 					);
 
 					return new IndexProperty(param, i.getAndIncrement());
@@ -173,7 +173,7 @@ public final class Properties {
 				final var i = new AtomicInteger(0);
 
 				final Stream<Object> values = StreamSupport.stream(
-					ct.iterable().iterable(enclosure).spliterator(),
+					ct.iterable().curry(enclosure).spliterator(),
 					false
 				);
 
@@ -188,7 +188,7 @@ public final class Properties {
 						value,
 						type,
 						ct.annotations().toList(),
-						new Access.Readonly(object -> value)
+						new Accessor.Readonly(() -> value)
 					);
 
 					return new SimpleProperty(param);
@@ -199,7 +199,7 @@ public final class Properties {
 					? root.path()
 					: root.path().append(description.path().element());
 
-				var value = ot.access().getter().get(enclosure);
+				var value = ot.access().curry(enclosure).getter().get();
 				if (value != null) {
 					final var param = new PropParam(
 						path.append(new Path.Index(0)),
@@ -207,7 +207,7 @@ public final class Properties {
 						value,
 						value.getClass(),
 						ot.annotations().toList(),
-						ot.access()
+						ot.access().curry(enclosure)
 					);
 
 					yield Stream.of(new IndexProperty(param, 0));

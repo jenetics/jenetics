@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Curryer;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -64,8 +64,8 @@ public final class MapType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public Size size() {
-		return this::size;
+	public Curryer<Size> size() {
+		return object -> () -> size(object);
 	}
 
 	private int size(final Object object) {
@@ -75,7 +75,7 @@ public final class MapType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public IterableFactory iterable() {
+	public Curryer<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 

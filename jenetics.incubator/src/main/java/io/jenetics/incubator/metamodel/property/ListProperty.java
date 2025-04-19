@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @version 7.2
  * @since 7.2
  */
-public final class ListProperty extends IndexedProperty {
+public final class ListProperty extends AbstractProperty implements IndexedProperty {
 
 	ListProperty(final PropParam param) {
 		super(param);
@@ -66,9 +66,14 @@ public final class ListProperty extends IndexedProperty {
 		return list() != null ? list().iterator() : emptyIterator();
 	}
 
-	@Override
+	//@Override
 	public Stream<Object> stream() {
 		return list().stream();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(ListProperty.class.getSimpleName(), this);
 	}
 
 }

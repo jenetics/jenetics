@@ -24,11 +24,10 @@ import static java.util.Objects.requireNonNull;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.metamodel.internal.Reflect;
 
 /**
  * Trait which represents a bean type.
@@ -63,7 +62,7 @@ public final class BeanType implements StructType, ConcreteType {
 
 		return Stream.of(descriptors)
 			.filter(pd -> pd.getReadMethod() != null)
-			.filter(pd -> pd.getReadMethod().getReturnType() != Class.class)
+			.filter(pd -> !pd.getReadMethod().getName().equals("getClass"))
 			.map(pd ->
 				new PropertyType(
 					pd.getName(),
@@ -71,19 +70,9 @@ public final class BeanType implements StructType, ConcreteType {
 					pd.getReadMethod().getGenericReturnType(),
 					pd.getReadMethod(),
 					pd.getWriteMethod(),
-					annotations(pd)
+					Reflect.getAnnotations(pd).toList()
 				)
 			);
-	}
-
-	private static List<Annotation> annotations(final PropertyDescriptor desc) {
-		final var annotations = new ArrayList<Annotation>();
-		annotations.addAll(List.of(desc.getReadMethod().getAnnotations()));
-		if (desc.getWriteMethod() != null) {
-			annotations.addAll(List.of(desc.getWriteMethod().getAnnotations()));
-		}
-
-		return annotations;
 	}
 
 	@Override

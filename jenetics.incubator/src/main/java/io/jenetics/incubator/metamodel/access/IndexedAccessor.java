@@ -28,7 +28,7 @@ import static java.util.Objects.requireNonNull;
  * @version 8.0
  * @since 8.0
  */
-public sealed interface IndexedAccess {
+public sealed interface IndexedAccessor {
 
 	/**
 	 * Return the property getter, never {@code null}.
@@ -43,7 +43,7 @@ public sealed interface IndexedAccess {
 	 * @param index the currying index
 	 * @return the curried access object
 	 */
-	default Access curry(int index) {
+	default Accessor curry(int index) {
 		if (index < 0) {
 			throw new IllegalArgumentException(
 				"Index must be >= 0: %d".formatted(index)
@@ -51,10 +51,10 @@ public sealed interface IndexedAccess {
 		}
 
 		return switch (this) {
-			case IndexedAccess.Readonly(var g) -> new Access.Readonly(
+			case IndexedAccessor.Readonly(var g) -> new Accessor.Readonly(
 				g.curry(index)
 			);
-			case IndexedAccess.Writable(var g, var s) -> new Access.Writable(
+			case IndexedAccessor.Writable(var g, var s) -> new Accessor.Writable(
 				g.curry(index),
 				s.curry(index)
 			);
@@ -66,7 +66,7 @@ public sealed interface IndexedAccess {
 	 *
 	 * @param getter the property getter
 	 */
-	record Readonly(IndexedGetter getter) implements IndexedAccess {
+	record Readonly(IndexedGetter getter) implements IndexedAccessor {
 		public Readonly {
 			requireNonNull(getter);
 		}
@@ -79,7 +79,7 @@ public sealed interface IndexedAccess {
 	 * @param setter the property setter
 	 */
 	record Writable(IndexedGetter getter, IndexedSetter setter)
-		implements IndexedAccess
+		implements IndexedAccessor
 	{
 		public Writable {
 			requireNonNull(getter);

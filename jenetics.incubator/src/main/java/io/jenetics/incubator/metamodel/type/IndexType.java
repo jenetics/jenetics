@@ -24,7 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.access.Curryer;
 
 /**
  * Represents a <em>property</em>.
@@ -64,8 +65,8 @@ public final class IndexType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public Access access() {
-		return enclosure.access().curry(index);
+	public Curryer<Accessor> access() {
+		return object -> enclosure.access().curry(object).curry(index);
 	}
 
 	@Override

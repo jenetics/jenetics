@@ -32,9 +32,8 @@ public interface Getter {
 	/**
 	 * Return the property value from a given <em>parent</em> {@code object}.
 	 *
-	 * @param object the object from which the property is read
 	 * @return the property value
 	 */
-	Object get(final Object object);
+	Object get();
 
 }

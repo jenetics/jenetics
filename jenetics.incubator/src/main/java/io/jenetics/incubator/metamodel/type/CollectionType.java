@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Curryer;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -49,13 +49,13 @@ public sealed interface CollectionType
 	 *
 	 * @return the collection size
 	 */
-	Size size();
+	Curryer<Size> size();
 
 	/**
 	 * The element iterable.
 	 *
 	 * @return the element iterable
 	 */
-	IterableFactory iterable();
+	Curryer<Iterable<Object>> iterable();
 
 }

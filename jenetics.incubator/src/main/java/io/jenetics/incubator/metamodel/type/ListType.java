@@ -28,8 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.IndexedAccess;
-import io.jenetics.incubator.metamodel.access.IterableFactory;
+import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.IndexedAccessor;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -63,16 +63,21 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Size size() {
-		return this::size;
+	public Curryer<Size> size() {
+		return object -> () -> size(object);
 	}
 
 	@Override
-	public IndexedAccess access() {
+	public Curryer<IndexedAccessor> access() {
 		if (isMutable()) {
-			return new IndexedAccess.Writable(this::get, this::set);
+			return object -> new IndexedAccessor.Writable(
+				index -> get(object, index),
+				(index, value) -> set(object, index, value)
+			);
 		} else {
-			return new IndexedAccess.Readonly(this::get);
+			return object -> new IndexedAccessor.Readonly(
+				index -> get(object, index)
+			);
 		}
 	}
 
@@ -110,7 +115,7 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public IterableFactory iterable() {
+	public Curryer<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 

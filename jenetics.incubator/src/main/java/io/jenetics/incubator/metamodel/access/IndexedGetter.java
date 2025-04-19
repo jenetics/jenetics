@@ -34,14 +34,13 @@ public interface IndexedGetter {
 	 * Return the value from a given <em>indexed</em> {@code object} with the
 	 * given {@code index}.
 	 *
-	 * @param object the <em>indexed</em> object ({@code Object[]} or {@code List}
 	 * @param index the array/list index
 	 * @return the value at the given {@code index}
 	 */
-	Object get(final Object object, final int index);
+	Object get(final int index);
 
 	default Getter curry(final int index) {
-		return object -> get(object, index);
+		return () -> get(index);
 	}
 
 }

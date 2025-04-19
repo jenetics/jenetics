@@ -25,7 +25,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import io.jenetics.incubator.metamodel.Path;
-import io.jenetics.incubator.metamodel.access.Access;
+import io.jenetics.incubator.metamodel.access.Accessor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,14 +38,14 @@ record PropParam(
 	Object value,
 	Class<?> type,
 	List<Annotation> annotations,
-	Access access
+	Accessor accessor
 ) {
 
 	PropParam {
 		requireNonNull(path);
 		requireNonNull(enclosure);
 		requireNonNull(type);
-		requireNonNull(access);
+		requireNonNull(accessor);
 	}
 
 }

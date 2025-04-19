@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @version 8.3
  * @since 8.3
  */
-public final class SetProperty extends CollectionProperty {
+public final class SetProperty extends AbstractProperty implements CollectionProperty {
 
 	SetProperty(final PropParam param) {
 		super(param);
@@ -58,7 +58,7 @@ public final class SetProperty extends CollectionProperty {
 		return set() != null ? set().iterator() : emptyIterator();
 	}
 
-	@Override
+	//@Override
 	public Stream<Object> stream() {
 		return set().stream();
 	}

@@ -39,7 +39,7 @@ import io.jenetics.incubator.metamodel.access.Writer;
  */
 public sealed interface Property
 	extends PathValue<Object>
-	permits SimpleProperty, SizedProperty
+	permits EnclosedProperty, EnclosingProperty, SimpleProperty, SizedProperty
 {
 
 	/**

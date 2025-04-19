@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.internal;
 
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.constant.Constable;
 import java.lang.reflect.Method;
@@ -99,6 +100,15 @@ public final class Reflect {
 			.flatMap(cls -> Stream.of(cls.getMethods()))
 			.filter(m -> equals(m, method))
 			.flatMap(m -> Stream.of(m.getAnnotations()));
+	}
+
+	public static Stream<Annotation> getAnnotations(final PropertyDescriptor desc) {
+		return Stream.concat(
+			Reflect.getAnnotations(desc.getReadMethod()),
+			desc.getWriteMethod() != null
+				? Reflect.getAnnotations(desc.getWriteMethod())
+				: Stream.empty()
+		);
 	}
 
 	private static boolean equals(final Method a, final Method b) {

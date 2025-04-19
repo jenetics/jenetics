@@ -31,7 +31,10 @@ import java.util.Iterator;
  * @version 7.2
  * @since 7.2
  */
-public final class ArrayProperty extends IndexedProperty {
+public final class ArrayProperty
+	extends AbstractProperty
+	implements IndexedProperty
+{
 
 	ArrayProperty(final PropParam param) {
 		super(param);
@@ -58,6 +61,14 @@ public final class ArrayProperty extends IndexedProperty {
 		}
 
 		return array()[index];
+	}
+
+	public void set(final int index, final Object value) {
+		if (array() == null) {
+			throw new IndexOutOfBoundsException("Array is null.");
+		}
+
+		array()[index] = value;
 	}
 
 	@Override

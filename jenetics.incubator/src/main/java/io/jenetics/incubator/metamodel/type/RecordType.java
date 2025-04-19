@@ -19,9 +19,10 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import io.jenetics.incubator.metamodel.internal.Reflect;
 
 /**
  * Trait which represents a {@code Record} type.
@@ -48,14 +49,14 @@ public final class RecordType implements StructType, ConcreteType {
 	@Override
 	public Stream<PropertyType> components() {
 		return Stream.of(type.getRecordComponents())
-			.filter(comp -> comp.getAccessor().getReturnType() != Class.class)
+			.filter(comp -> !comp.getAccessor().getName().equals("getClass"))
 			.map(rc -> new PropertyType(
 				rc.getName(),
 				this,
 				rc.getAccessor().getGenericReturnType(),
 				rc.getAccessor(),
 				null,
-				List.of(rc.getAccessor().getAnnotations())
+				Reflect.getAnnotations(rc.getAccessor()).toList()
 			));
 	}
 

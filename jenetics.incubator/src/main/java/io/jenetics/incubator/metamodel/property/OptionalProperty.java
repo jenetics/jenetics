@@ -30,7 +30,7 @@ import java.util.Optional;
  * @version 7.2
  * @since 7.2
  */
-public final class OptionalProperty extends IndexedProperty {
+public final class OptionalProperty extends AbstractProperty implements IndexedProperty {
 
 	OptionalProperty(final PropParam param) {
 		super(param);
@@ -65,5 +65,10 @@ public final class OptionalProperty extends IndexedProperty {
 	@Override
 	public Iterator<Object> iterator() {
 		return optional().stream().iterator();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(OptionalProperty.class.getSimpleName(), this);
 	}
 }
