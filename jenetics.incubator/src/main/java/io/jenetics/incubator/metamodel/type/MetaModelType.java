@@ -58,7 +58,9 @@ public sealed interface MetaModelType
 	 * @return the annotations of the underlying property type
 	 */
 	default Stream<Annotation> annotations() {
-		return Stream.empty();
+		return type() instanceof Class<?> cls
+			? Stream.of(cls.getAnnotations())
+			: Stream.empty();
 	}
 
 	/**
