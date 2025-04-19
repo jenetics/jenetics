@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
-import io.jenetics.incubator.metamodel.description.Descriptions;
 import io.jenetics.incubator.metamodel.model.Author;
 import io.jenetics.incubator.metamodel.model.Book;
 import io.jenetics.incubator.metamodel.model.Library;
