@@ -57,7 +57,7 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 
 	private Object get(Object object) {
 		return object instanceof Optional<?> optional
-			? optional.orElseThrow()
+			? optional.orElse(null)
 			: raise(new IllegalArgumentException("Not an Optional: " + object));
 	}
 

@@ -196,6 +196,27 @@ public final class Properties {
 					return new SimpleProperty(param);
 				});
 			}
+			case OptionalType ot -> {
+				final var path = description.path().element() instanceof Path.Index
+					? root.path()
+					: root.path().append(description.path().element());
+
+				var value = ot.access().getter().get(enclosure);
+				if (value != null) {
+					final var param = new PropParam(
+						path.append(new Path.Index(0)),
+						enclosure,
+						value,
+						value.getClass(),
+						List.of(), // desc.annotations().toList(),
+						ot.access()
+					);
+
+					yield Stream.of(new IndexProperty(param, 0));
+				} else {
+					yield Stream.empty();
+				}
+			}
 			default -> Stream.empty();
 		};
 	}

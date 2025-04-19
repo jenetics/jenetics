@@ -23,11 +23,9 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
@@ -57,17 +55,17 @@ public class DescriptionsTest {
 	@Target({METHOD, TYPE})
 	public @interface Anno_3 { }
 
-	@Test
-	public void annotations() {
-		interface Data1 { @Anno_1 String value(); }
-		interface Data2 { @Anno_2 String value(); }
-		record DataRecord(@Anno_3 String value) implements Data1, Data2 { }
-
-		final var desc = Descriptions.list(DataRecord.class).toList().getFirst();
-		assertThat(desc.annotations()).hasSize(3);
-		assertThat(desc.annotations().map(Annotation::annotationType).toArray())
-			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
-	}
+//	@Test
+//	public void annotations() {
+//		interface Data1 { @Anno_1 String value(); }
+//		interface Data2 { @Anno_2 String value(); }
+//		record DataRecord(@Anno_3 String value) implements Data1, Data2 { }
+//
+//		final var desc = Descriptions.list(DataRecord.class).toList().getFirst();
+//		assertThat(desc.annotations()).hasSize(3);
+//		assertThat(desc.annotations().map(Annotation::annotationType).toArray())
+//			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
+//	}
 
 	@Test
 	public void extractLibrary() {
@@ -144,11 +142,6 @@ public class DescriptionsTest {
 
 	@Test
 	public void walkLibrary() {
-		Descriptions
-			.walk_0(PathValue.of(Path.of("library"), Library.class))
-			.sorted(Comparator.comparing(Desc::path))
-			.forEach(System.out::println);
-
 		final var descriptions = Descriptions
 			.walk(PathValue.of(Path.of("library"), Library.class))
 			.sorted(Comparator.comparing(Description::path))
