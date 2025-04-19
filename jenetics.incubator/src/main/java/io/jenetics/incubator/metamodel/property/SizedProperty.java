@@ -72,7 +72,7 @@ public abstract sealed class SizedProperty
 
 	@Override
 	public Object read() {
-		return param.getter().get(enclosure());
+		return param.access().getter().get(enclosure());
 	}
 
 	/**

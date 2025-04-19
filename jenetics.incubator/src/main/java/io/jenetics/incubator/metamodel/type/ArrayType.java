@@ -34,7 +34,7 @@ import io.jenetics.incubator.metamodel.access.Size;
  * @version 8.0
  * @since 8.0
  */
-public final class ArrayType implements IndexedType {
+public final class ArrayType implements IndexedType, ConcreteType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 

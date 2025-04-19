@@ -33,7 +33,7 @@ import io.jenetics.incubator.metamodel.access.Access;
  * @version 8.3
  * @since 8.3
  */
-public final class IndexType implements EnclosedType {
+public final class IndexType implements EnclosedType, ConcreteType {
 	private final int index;
 	private final IndexedType enclosure;
 	private final Type type;

@@ -36,7 +36,7 @@ import io.jenetics.incubator.metamodel.access.Access;
  * @version 8.3
  * @since 8.3
  */
-public final class PropertyType implements EnclosedType {
+public final class PropertyType implements EnclosedType, ConcreteType {
 	private final String name;
 	private final StructType enclosure;
 	private final Type type;

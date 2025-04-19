@@ -32,7 +32,7 @@ import io.jenetics.incubator.metamodel.access.Size;
  * @since 8.3
  */
 public sealed interface CollectionType
-	extends ContainerType
+	extends EnclosingType
 	permits IndexedType, SetType, MapType
 {
 

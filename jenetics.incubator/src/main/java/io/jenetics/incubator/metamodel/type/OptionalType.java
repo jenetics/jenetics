@@ -34,7 +34,7 @@ import io.jenetics.incubator.metamodel.access.Access;
  * @version 8.0
  * @since 8.0
  */
-public final class OptionalType implements ContainerType {
+public final class OptionalType implements EnclosingType, ConcreteType {
 	private final Class<?> componentType;
 
 	OptionalType(Class<?> componentType) {

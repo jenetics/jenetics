@@ -40,7 +40,7 @@ import java.util.Set;
  * @since 8.0
  */
 public sealed interface MetaModelType
-	permits ElementType, ContainerType, StructType, EnclosedType
+	permits ElementType, EnclosingType, StructType, EnclosedType
 {
 
 	/**
@@ -56,7 +56,7 @@ public sealed interface MetaModelType
 	 * @param type the java type
 	 * @return the converted property type
 	 */
-	static MetaModelType of(final Type type) {
+	static ConcreteType of(final Type type) {
 		requireNonNull(type);
 
 		// 0) Check for ElementType.

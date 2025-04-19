@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @version 8.0
  * @since 8.0
  */
-public final class RecordType implements StructType {
+public final class RecordType implements StructType, ConcreteType {
 	private final Class<?> type;
 
 	RecordType(Class<?> type) {

@@ -24,15 +24,14 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Type;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
-import io.jenetics.incubator.metamodel.type.CollectionType;
 import io.jenetics.incubator.metamodel.type.ElementType;
 import io.jenetics.incubator.metamodel.type.EnclosedType;
-import io.jenetics.incubator.metamodel.type.IndexedType;
+import io.jenetics.incubator.metamodel.type.EnclosingType;
 import io.jenetics.incubator.metamodel.type.MetaModelType;
-import io.jenetics.incubator.metamodel.type.OptionalType;
 import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
@@ -83,11 +82,15 @@ public final class Descriptions {
 
 		return switch (MetaModelType.of(type.value())) {
 			case ElementType t -> Stream.empty();
-			case OptionalType t -> Stream.empty(); // TODO:
-			case StructType t ->  t.components().map(p -> PropertyDescription.of(type.path(), p));
-			case IndexedType t -> Stream.of(IndexedDescription.of(type.path(), t));
-			case CollectionType t -> Stream.of(CollectionDescription.of(type.path(), t));
-			case EnclosedType t -> throw new IllegalArgumentException();
+			case StructType t -> t.components().map(p -> new Description(
+				type.path().append(p.name()),
+				p.type(), p.enclosure().type(), p
+			));
+			case EnclosingType t -> Stream.of(new Description(
+				type.path().append(new Path.Index(0)),
+				t.componentType(), t.type(), t
+			));
+			case EnclosedType t -> Stream.empty();
 		};
 	}
 
@@ -114,14 +117,16 @@ public final class Descriptions {
 		final PathValue<? extends Type> root,
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
-		final Dtor<? super PathValue<? extends Type>, Description>
+		final Dtor<? super PathValue<? extends Type>, ? extends Description>
 			recursiveDtor = PreOrderIterator.dtor(
 				dtor,
-				desc -> PathValue.of(desc.path(), desc.type()),
+				tp -> PathValue.of(tp.path(), tp.type()),
 				PathValue::value
 			);
 
-		return recursiveDtor.unapply(root);
+		@SuppressWarnings("unchecked")
+		var result =  (Stream<Description>)recursiveDtor.unapply(root);
+		return result;
 	}
 
 	/**

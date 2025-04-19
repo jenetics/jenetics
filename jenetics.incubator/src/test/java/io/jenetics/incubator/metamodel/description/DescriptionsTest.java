@@ -144,6 +144,11 @@ public class DescriptionsTest {
 
 	@Test
 	public void walkLibrary() {
+		Descriptions
+			.walk_0(PathValue.of(Path.of("library"), Library.class))
+			.sorted(Comparator.comparing(Desc::path))
+			.forEach(System.out::println);
+
 		final var descriptions = Descriptions
 			.walk(PathValue.of(Path.of("library"), Library.class))
 			.sorted(Comparator.comparing(Description::path))

@@ -17,19 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
-
-import java.util.Iterator;
+package io.jenetics.incubator.metamodel.type;
 
 /**
- * This interface allows the iteration over <em>sized</em> objects.
+ * A container type is a type that contains another type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public interface SizedIterable {
+public sealed interface EnclosingType
+	extends MetaModelType
+	permits CollectionType, OptionalType
+{
 
-	Iterator<Object> iterator(final Object object);
+	/**
+	 * Return the container element type.
+	 *
+	 * @return the container element type
+	 */
+	Class<?> componentType();
 
 }

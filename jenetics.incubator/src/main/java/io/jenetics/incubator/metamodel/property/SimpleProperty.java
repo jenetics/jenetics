@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
+import io.jenetics.incubator.metamodel.access.Access;
 
 /**
  * Represents a simple property value.
@@ -71,12 +72,12 @@ public sealed class SimpleProperty
 
 	@Override
 	public Object read() {
-		return param.getter().get(enclosure());
+		return param.access().getter().get(enclosure());
 	}
 
 	@Override
 	public Optional<Writer> writer() {
-		return param.setter() != null
+		return param.access() instanceof Access.Writable
 			? Optional.of(this::write)
 			: Optional.empty();
 	}
@@ -90,8 +91,12 @@ public sealed class SimpleProperty
 	 */
 	private boolean write(final Object value) {
 		try {
-			param.setter().set(enclosure(), value);
-			return true;
+			if (param.access() instanceof Access.Writable(var getter, var setter)) {
+				setter.set(enclosure(), value);
+				return true;
+			} else {
+				return false;
+			}
 		} catch (VirtualMachineError | LinkageError e) {
 			throw e;
 		} catch (Throwable e) {

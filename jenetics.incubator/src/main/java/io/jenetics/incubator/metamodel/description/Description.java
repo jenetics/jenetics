@@ -19,53 +19,46 @@
  */
 package io.jenetics.incubator.metamodel.description;
 
-import java.lang.annotation.Annotation;
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Type;
-import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.type.MetaModelType;
 
 /**
- * This interface describes the <em>static</em> type information for a property,
- * together with its path in the object graph.
+ * Adds path information to a {@link MetaModelType}.
+ *
+ * @param path the path for a given model type
+ * @param type the actual property type
+ * @param enclosure the enclosing type for the model property
+ * @param model the model type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.2
  * @since 7.2
  */
-public sealed interface Description
-	permits CollectionDescription, PropertyDescription
-{
+public record Description(
+	Path path,
+	Type type,
+	Type enclosure,
+	MetaModelType model
+)  {
 
-	/**
-	 * Return the path of the description.
-	 *
-	 * @return the path of the description
-	 */
-	Path path();
+	public Description {
+		requireNonNull(path);
+		requireNonNull(type);
+		requireNonNull(enclosure);
+		requireNonNull(model);
+	}
 
-	/**
-	 * Returns the enclosure type.
-	 *
-	 * @return the enclosure type
-	 */
-	MetaModelType enclosure();
-
-	/**
-	 * Return the <em>static</em> type of the property description.
-	 *
-	 * @return the <em>static</em> type of the property description
-	 */
-	Type type();
-
-	/**
-	 * Return a list of all annotations, available for property description.
-	 *
-	 * @return a list of all property annotations
-	 */
-	default Stream<Annotation> annotations() {
-		return Stream.empty();
+	@Override
+	public String toString() {
+		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
+			path,
+			type.getTypeName(),
+			enclosure.getTypeName()
+		);
 	}
 
 }

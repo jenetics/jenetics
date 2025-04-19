@@ -23,25 +23,26 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import io.jenetics.incubator.metamodel.Filters;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Access;
-import io.jenetics.incubator.metamodel.access.IndexedAccess;
-import io.jenetics.incubator.metamodel.description.CollectionDescription;
 import io.jenetics.incubator.metamodel.description.Description;
 import io.jenetics.incubator.metamodel.description.Descriptions;
-import io.jenetics.incubator.metamodel.description.PropertyDescription;
-import io.jenetics.incubator.metamodel.description.IndexedDescription;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
 import io.jenetics.incubator.metamodel.type.BeanType;
+import io.jenetics.incubator.metamodel.type.CollectionType;
 import io.jenetics.incubator.metamodel.type.ElementType;
+import io.jenetics.incubator.metamodel.type.IndexType;
+import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.ListType;
 import io.jenetics.incubator.metamodel.type.MapType;
 import io.jenetics.incubator.metamodel.type.MetaModelType;
@@ -111,22 +112,18 @@ public final class Properties {
 	) {
 		final var enclosure = root.value();
 
-		return switch (description) {
-			case PropertyDescription desc -> {
+		return switch (description.model()) {
+			case PropertyType pt -> {
 				final var param = new PropParam(
-					root.path().append(desc.path().element()),
+					root.path().append(description.path().element()),
 					enclosure,
-					desc.access().getter().get(root.value()),
+					pt.access().getter().get(root.value()),
 					toRawType(description.type()),
-					desc.annotations().toList(),
-					desc.access().getter(),
-					switch (desc.access()) {
-						case Access.Readonly access -> null;
-						case Access.Writable access -> access.setter();
-					}
+					List.of(), // prop.annotations().toList(),
+					pt.access()
 				);
 
-				final Property prop = switch (MetaModelType.of(desc.type())) {
+				final Property property = switch (MetaModelType.of(pt.type())) {
 					case ElementType t -> new SimpleProperty(param);
 					case RecordType t -> new RecordProperty(param);
 					case BeanType t -> new BeanProperty(param);
@@ -135,63 +132,71 @@ public final class Properties {
 					case ListType t -> new ListProperty(param);
 					case SetType t -> new SetProperty(param);
 					case MapType t -> new MapProperty(param);
-					case PropertyType t -> throw new IllegalArgumentException();
+					case IndexType t -> new IndexProperty(param, t.index());
+					case PropertyType t -> new SimpleProperty(param);
 				};
 
-				yield Stream.of(prop);
+				yield Stream.of(property);
 			}
-			case IndexedDescription desc -> {
-				final var path = desc.path().element() instanceof Path.Index
+			case IndexedType it -> {
+				final var path = description.path().element() instanceof Path.Index
 					? root.path()
-					: root.path().append(desc.path().element());
+					: root.path().append(description.path().element());
 
 				final var i = new AtomicInteger(0);
-				yield desc.stream(enclosure).map(value -> {
+
+				final Stream<Object> values = StreamSupport.stream(
+					it.iterable().iterable(enclosure).spliterator(),
+					false
+				);
+
+				yield values.map(value -> {
 					final Class<?> type = value != null
 						? value.getClass()
-						: toRawType(desc.type());
+						: toRawType(it.type());
 
 					final var param = new PropParam(
 						path.append(new Path.Index(i.get())),
 						enclosure,
 						value,
 						type,
-						desc.annotations().toList(),
-						object -> desc.access().getter().get(object, i.get()),
-						switch (desc.access()) {
-							case IndexedAccess.Readonly access -> null;
-							case IndexedAccess.Writable access -> (object, val) ->
-								access.setter().set(object, i.get(), val);
-						}
+						List.of(), // desc.annotations().toList(),
+						it.access().curry(i.get())
 					);
 
 					return new IndexProperty(param, i.getAndIncrement());
 				});
 			}
-			case CollectionDescription desc -> {
-				final var path = desc.path().element() instanceof Path.Index
+			case CollectionType ct -> {
+				final var path = description.path().element() instanceof Path.Index
 					? root.path()
-					: root.path().append(desc.path().element());
+					: root.path().append(description.path().element());
 
 				final var i = new AtomicInteger(0);
-				yield desc.stream(enclosure).map(value -> {
+
+				final Stream<Object> values = StreamSupport.stream(
+					ct.iterable().iterable(enclosure).spliterator(),
+					false
+				);
+
+				yield values.map(value -> {
 					final Class<?> type = value != null
 						? value.getClass()
-						: toRawType(desc.type());
+						: toRawType(ct.type());
 
 					final var param = new PropParam(
 						path.append(new Path.Index(i.getAndIncrement())),
 						enclosure,
 						value,
 						type,
-						desc.annotations().toList(),
-						object -> value,
-						null
+						List.of(), // desc.annotations().toList(),
+						new Access.Readonly(object -> value)
 					);
 
 					return new SimpleProperty(param);
 				});
 			}
+			default -> Stream.empty();
 		};
 	}
 

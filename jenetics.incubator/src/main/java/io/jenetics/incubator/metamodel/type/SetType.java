@@ -36,7 +36,7 @@ import io.jenetics.incubator.metamodel.access.Size;
  * @version 8.3
  * @since 8.3
  */
-public final class SetType implements CollectionType {
+public final class SetType implements CollectionType, ConcreteType {
 	private final Class<?> type;
 	private final Class<?> componentType;
 

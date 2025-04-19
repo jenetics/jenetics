@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * @version 8.0
  * @since 8.0
  */
-public final class BeanType implements StructType {
+public final class BeanType implements StructType, ConcreteType {
 	private final Class<?> type;
 
 	BeanType(final Class<?> type) {
