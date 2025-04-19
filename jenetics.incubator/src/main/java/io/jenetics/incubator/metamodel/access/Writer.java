@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.property;
+package io.jenetics.incubator.metamodel.access;
 
 /**
  * Property writer interface.

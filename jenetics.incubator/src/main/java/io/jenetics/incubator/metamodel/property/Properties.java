@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -119,7 +118,7 @@ public final class Properties {
 					enclosure,
 					pt.access().getter().get(root.value()),
 					toRawType(description.type()),
-					List.of(), // prop.annotations().toList(),
+					pt.annotations().toList(),
 					pt.access()
 				);
 
@@ -160,7 +159,7 @@ public final class Properties {
 						enclosure,
 						value,
 						type,
-						List.of(), // desc.annotations().toList(),
+						it.annotations().toList(),
 						it.access().curry(i.get())
 					);
 
@@ -189,7 +188,7 @@ public final class Properties {
 						enclosure,
 						value,
 						type,
-						List.of(), // desc.annotations().toList(),
+						ct.annotations().toList(),
 						new Access.Readonly(object -> value)
 					);
 
@@ -208,7 +207,7 @@ public final class Properties {
 						enclosure,
 						value,
 						value.getClass(),
-						List.of(), // desc.annotations().toList(),
+						ot.annotations().toList(),
 						ot.access()
 					);
 

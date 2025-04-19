@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -53,7 +54,8 @@ public final class RecordType implements StructType, ConcreteType {
 				this,
 				rc.getAccessor().getGenericReturnType(),
 				rc.getAccessor(),
-				null
+				null,
+				List.of(rc.getAccessor().getAnnotations())
 			));
 	}
 

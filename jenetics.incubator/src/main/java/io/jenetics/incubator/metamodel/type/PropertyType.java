@@ -23,9 +23,12 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Methods.toGetter;
 import static io.jenetics.incubator.metamodel.internal.Methods.toSetter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.access.Access;
 
@@ -42,19 +45,22 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 	private final Type type;
 	private final Method getter;
 	private final Method setter;
+	private final List<Annotation> annotations;
 
 	PropertyType(
 		final String name,
 		final StructType enclosure,
 		final Type type,
 		final Method getter,
-		final Method setter
+		final Method setter,
+		final List<Annotation> annotations
 	) {
 		this.name = requireNonNull(name);
 		this.enclosure = requireNonNull(enclosure);
 		this.type = requireNonNull(type);
 		this.getter = requireNonNull(getter);
 		this.setter = setter;
+		this.annotations = List.copyOf(annotations);
 	}
 
 	/**
@@ -81,6 +87,11 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 		return setter != null
 			? new Access.Writable(toGetter(getter), toSetter(setter))
 			: new Access.Readonly(toGetter(getter));
+	}
+
+	@Override
+	public Stream<Annotation> annotations() {
+		return annotations.stream();
 	}
 
 	@Override

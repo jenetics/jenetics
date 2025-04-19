@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.isElementType;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
+import java.lang.annotation.Annotation;
 import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Base interface used for matching {@link Type} objects.
@@ -40,7 +42,7 @@ import java.util.Set;
  * @since 8.0
  */
 public sealed interface MetaModelType
-	permits ElementType, EnclosingType, StructType, EnclosedType
+	permits ConcreteType, ElementType, EnclosedType, EnclosingType, StructType
 {
 
 	/**
@@ -49,6 +51,15 @@ public sealed interface MetaModelType
 	 * @return the underlying property type
 	 */
 	Type type();
+
+	/**
+	 * Return the annotations of the underlying property type.
+	 *
+	 * @return the annotations of the underlying property type
+	 */
+	default Stream<Annotation> annotations() {
+		return Stream.empty();
+	}
 
 	/**
 	 * Creates a property type from the given {@code type}.

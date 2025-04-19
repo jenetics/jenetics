@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
+import io.jenetics.incubator.metamodel.access.Writer;
 
 /**
  * Represents an object's property. A property might be defined as usual
