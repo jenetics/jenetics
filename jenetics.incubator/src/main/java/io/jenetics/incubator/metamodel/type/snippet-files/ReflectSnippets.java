@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
+import java.util.List;
+
+import io.jenetics.incubator.metamodel.PathValue;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -43,6 +47,54 @@ final class ReflectSnippets {
 			System.out.println(type);
 			// > RecordType
 			// @end
+		}
+
+	}
+
+	static class DescriptionsSnippets {
+
+		static void listType() {
+			// @start region="list(Type)"
+			record Author(String forename, String surname) { }
+			record Book(String title, int pages, List<Author> authors) { }
+
+			Description.list(Book.class)
+				.forEach(System.out::println);
+			// @end
+		}
+
+		static void listPathValue() {
+			// @start region="list(PathValue)"
+			record Author(String forename, String surname) { }
+			record Book(String title, int pages, List<Author> authors) { }
+
+			Description.list(PathValue.of(io.jenetics.incubator.metamodel.Path.of("book"), Book.class))
+				.forEach(System.out::println);
+			// @end
+		}
+
+		static void walkType() {
+			// @start region="walk(Type)"
+			record Author(String forename, String surname) { }
+			record Book(String title, int pages, List<Author> authors) { }
+
+			Description.walk(Book.class)
+				.forEach(System.out::println);
+			// @end
+		}
+
+		static void walkPathValue() {
+			// @start region="walk(PathValue)"
+			record Author(String forename, String surname) { }
+			record Book(String title, int pages, List<Author> authors) { }
+
+			Description.walk(PathValue.of(io.jenetics.incubator.metamodel.Path.of("library"), Book.class))
+				.forEach(System.out::println);
+			// @end
+		}
+
+		public static void main(String[] args) {
+			listType();
 		}
 
 	}

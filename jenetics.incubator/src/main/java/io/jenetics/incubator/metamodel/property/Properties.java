@@ -32,13 +32,12 @@ import io.jenetics.incubator.metamodel.Filters;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Access;
-import io.jenetics.incubator.metamodel.description.Description;
-import io.jenetics.incubator.metamodel.description.Descriptions;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
 import io.jenetics.incubator.metamodel.type.BeanType;
 import io.jenetics.incubator.metamodel.type.CollectionType;
+import io.jenetics.incubator.metamodel.type.Description;
 import io.jenetics.incubator.metamodel.type.ElementType;
 import io.jenetics.incubator.metamodel.type.IndexType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
@@ -99,7 +98,7 @@ public final class Properties {
 		}
 
 		final var type = PathValue.<Type>of(root.value().getClass());
-		final var descriptions = Descriptions.list(type);
+		final var descriptions = Description.list(type);
 
 		return descriptions
 			.flatMap(description -> list(root, description));

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -41,7 +41,7 @@ import io.jenetics.jpx.GPX;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class DescriptionsTest {
+public class DescriptionTest {
 
 	@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 	@Target({METHOD, TYPE})
@@ -61,7 +61,7 @@ public class DescriptionsTest {
 //		interface Data2 { @Anno_2 String value(); }
 //		record DataRecord(@Anno_3 String value) implements Data1, Data2 { }
 //
-//		final var desc = Descriptions.list(DataRecord.class).toList().getFirst();
+//		final var desc = Description.list(DataRecord.class).toList().getFirst();
 //		assertThat(desc.annotations()).hasSize(3);
 //		assertThat(desc.annotations().map(Annotation::annotationType).toArray())
 //			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
@@ -69,7 +69,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void extractLibrary() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.list(PathValue.of(Path.of("library"), Library.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
@@ -85,7 +85,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void extractBook() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.list(PathValue.of(Book.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
@@ -103,7 +103,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void extractAuthor() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.list(PathValue.of(Author.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
@@ -121,7 +121,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void extractGPX() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.list(PathValue.of(GPX.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
@@ -142,7 +142,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void walkLibrary() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.walk(PathValue.of(Path.of("library"), Library.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
@@ -168,7 +168,7 @@ public class DescriptionsTest {
 
 	@Test
 	public void walkGPX() {
-		final var descriptions = Descriptions
+		final var descriptions = Description
 			.walk(PathValue.of(Path.of("gpx"), GPX.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)

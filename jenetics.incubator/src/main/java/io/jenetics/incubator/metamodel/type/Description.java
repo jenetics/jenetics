@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.description;
+package io.jenetics.incubator.metamodel.type;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,18 +28,13 @@ import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
-import io.jenetics.incubator.metamodel.type.ElementType;
-import io.jenetics.incubator.metamodel.type.EnclosedType;
-import io.jenetics.incubator.metamodel.type.EnclosingType;
-import io.jenetics.incubator.metamodel.type.MetaModelType;
-import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * Adds path information to a {@link MetaModelType}.
  * This class contains methods for extracting the <em>static</em> bean property
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
- * {@snippet class="DescriptionSnippets" region="walk(Type)"}
+ * {@snippet class="ReflectSnippets" region="walk(Type)"}
  *
  * The code snippet above will create the following output
  * <pre>{@code
@@ -87,7 +82,7 @@ public record Description(
 	/**
 	 * Lists the <em>directly</em> available property descriptions for the
 	 * given {@code type} and start path, {@link PathValue#path()}.
-	 * {@snippet class="DescriptionSnippets" region="list(PathValue)"}
+	 * {@snippet class="ReflectSnippets" region="list(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -122,7 +117,7 @@ public record Description(
 	/**
 	 * Extracts the <em>directly</em> available property descriptions for the
 	 * given {@code type}.
-	 * {@snippet class="DescriptionSnippets" region="list(Type)"}
+	 * {@snippet class="ReflectSnippets" region="list(Type)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -160,7 +155,7 @@ public record Description(
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
-	 * {@snippet class="DescriptionSnippets" region="walk(PathValue)"}
+	 * {@snippet class="ReflectSnippets" region="walk(PathValue)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
@@ -187,7 +182,7 @@ public record Description(
 	 * given starting {@code root} object. Only the <em>statically</em>
 	 * available property descriptions are returned, and the property
 	 * descriptions from Java classes are not part of the result.
-	 * {@snippet class="DescriptionSnippets" region="walk(Type)"}
+	 * {@snippet class="ReflectSnippets" region="walk(Type)"}
 	 *
 	 * The code snippet above will create the following output
 	 * <pre>{@code
