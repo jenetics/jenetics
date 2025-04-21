@@ -47,6 +47,6 @@ public sealed interface EnclosedType
 	 *
 	 * @return the access object for accessing (read and write) the value
 	 */
-	Curryer<Accessor> access();
+	Curryer<Accessor> accessor();
 
 }

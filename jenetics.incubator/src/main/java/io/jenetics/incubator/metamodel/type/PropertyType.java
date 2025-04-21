@@ -84,7 +84,7 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Accessor> access() {
+	public Curryer<Accessor> accessor() {
 		return setter != null
 			? object -> new Accessor.Writable(
 					toGetter(getter).curry(object),

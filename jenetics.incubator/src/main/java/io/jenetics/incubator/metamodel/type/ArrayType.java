@@ -63,7 +63,7 @@ public final class ArrayType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<IndexedAccessor.Writable> access() {
+	public Curryer<IndexedAccessor.Writable> accessor() {
 		return object -> new IndexedAccessor.Writable(
 			index -> Array.get(object, index),
 			(index, value) -> Array.set(object, index, value)

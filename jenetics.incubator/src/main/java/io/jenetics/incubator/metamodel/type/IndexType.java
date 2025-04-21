@@ -65,8 +65,8 @@ public final class IndexType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Accessor> access() {
-		return object -> enclosure.access().curry(object).curry(index);
+	public Curryer<Accessor> accessor() {
+		return object -> enclosure.accessor().curry(object).curry(index);
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<IndexedAccessor> access() {
+	public Curryer<IndexedAccessor> accessor() {
 		if (isMutable()) {
 			return object -> new IndexedAccessor.Writable(
 				index -> get(object, index),

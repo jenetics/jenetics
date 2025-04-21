@@ -44,12 +44,12 @@ public sealed interface IndexedType
 	 *
 	 * @return the element access object
 	 */
-	Curryer<? extends IndexedAccessor> access();
+	Curryer<? extends IndexedAccessor> accessor();
 
 	@Override
 	default Curryer<Iterable<Object>> iterable() {
 		return collection -> () -> new Iterator<>() {
-			private final IndexedGetter getter = access().curry(collection).getter();
+			private final IndexedGetter getter = accessor().curry(collection).getter();
 			private final int size = size().curry(collection).get();
 
 			private int cursor = 0;

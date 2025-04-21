@@ -115,10 +115,10 @@ public final class Properties {
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
-					pt.access().curry(enclosure).getter().get(),
+					pt.accessor().curry(enclosure).getter().get(),
 					toRawType(description.type()),
 					pt.annotations().toList(),
-					pt.access().curry(enclosure)
+					pt.accessor().curry(enclosure)
 				);
 
 				final Property property = switch (MetaModelType.of(pt.type())) {
@@ -159,7 +159,7 @@ public final class Properties {
 						value,
 						type,
 						it.annotations().toList(),
-						it.access().curry(value).curry(i.get())
+						it.accessor().curry(value).curry(i.get())
 					);
 
 					return new IndexProperty(param, i.getAndIncrement());
