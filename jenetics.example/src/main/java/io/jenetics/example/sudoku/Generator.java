@@ -24,12 +24,11 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.RandomAdapter;
 import io.jenetics.util.RandomRegistry;
 
 /**
  * Generates individuals for sudoku, Each row in a sudoku board is represented
- * through a chromosome (So an individual for a 9x9 sudoku board, contains 9
+ * through a chromosome (So an individual for a 9x9 sudoku board contains 9
  * chromosomes.) Each chromosome is composed only with the non-fixed cells.
  *
  * @author José Alejandro Cornejo Acosta
@@ -53,8 +52,6 @@ final public class Generator {
 	}
 
 	private static IntegerChromosome createChromosome(final Board board, int iChromosome) {
-		final var random = RandomAdapter.of(RandomRegistry.random());
-
 		List<Integer> changes = new ArrayList<>();
 		List<Integer> inputs = new ArrayList<>();
 
@@ -65,7 +62,7 @@ final public class Generator {
 			}
 		}
 		changes.removeAll(inputs);
-		Collections.shuffle(changes, random);
+		Collections.shuffle(changes, RandomRegistry.random());
 
 		List<IntegerGene> genes = new ArrayList<>();
 		for (int j = 0; j < Board.SIZE; j++) {

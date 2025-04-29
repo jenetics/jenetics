@@ -37,10 +37,14 @@ import java.util.stream.LongStream;
  * final var bi = new BigInteger(100, RandomAdapter.of(random));
  * }
  *
+ * @deprecated Will be removed in the next major version. Use the
+ *            {@link Random#from(RandomGenerator)} method instead.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
  * @version 7.0
  */
+@Deprecated(since = "8.3", forRemoval = true)
 public final class RandomAdapter extends Random {
 
 	@Serial
