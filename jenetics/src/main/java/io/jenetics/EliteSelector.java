@@ -37,7 +37,6 @@ import io.jenetics.util.Seq;
  * Elitism is also related to memory: remember the best solution found so far.
  * A problem with elitism is that it may cause the GA to converge to a local
  * optimum, so pure elitism is a race to the nearest local optimum.
- *
  * {@snippet lang="java":
  * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
  *     // Number of the best individuals preserved for the next generation: elites

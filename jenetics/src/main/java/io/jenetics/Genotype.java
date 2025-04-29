@@ -49,7 +49,6 @@ import io.jenetics.util.Verifiable;
  * It is only required that all genes are from the same type and the genes within
  * a chromosome have the same constraints; e.g., the same min- and max values
  * for the genes value.
- *
  * {@snippet lang="java":
  * final Genotype<DoubleGene> genotype = Genotype.of(
  *     DoubleChromosome.of(0.0, 1.0, 8),
