@@ -133,10 +133,9 @@ public abstract class Reader<T> {
 
 	/**
 	 * Read the given type from the underlying XML stream {@code reader}.
-	 *
 	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
-	 *     // Move XML stream to first the element.
+	 *     // Move the XML stream to the first element.
 	 *     xml.next();
 	 *     return reader.read(xml);
 	 * }
@@ -431,7 +430,7 @@ final class TextReader extends Reader<String> {
 }
 
 /**
- * Reader implementation for reading list of elements.
+ * Reader implementation for a reading list of elements.
  *
  * @param <T> the element type
  *
