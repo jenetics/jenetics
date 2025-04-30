@@ -133,6 +133,21 @@ gradle.projectsEvaluated {
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
 		}
+
+		// Enforcing the library version defined in the version catalogs.
+		val catalogs = extensions.getByType<VersionCatalogsExtension>()
+		val libraries = catalogs.catalogNames
+			.map { catalogs.named(it) }
+			.flatMap { catalog -> catalog.libraryAliases.map { alias -> Pair(catalog, alias) } }
+			.map { it.first.findLibrary(it.second).get().get() }
+			.filter { it.version != null }
+			.map { it.toString() }
+			.toTypedArray()
+
+		configurations.all {
+			resolutionStrategy.preferProjectModules()
+			resolutionStrategy.force(*libraries)
+		}
 	}
 }
 
