@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 8.1
+ * @version 8.3
  */
 plugins {
 	base
@@ -132,6 +132,21 @@ gradle.projectsEvaluated {
 	subprojects {
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
+		}
+
+		// Enforcing the library version defined in the version catalogs.
+		val catalogs = extensions.getByType<VersionCatalogsExtension>()
+		val libraries = catalogs.catalogNames
+			.map { catalogs.named(it) }
+			.flatMap { catalog -> catalog.libraryAliases.map { alias -> Pair(catalog, alias) } }
+			.map { it.first.findLibrary(it.second).get().get() }
+			.filter { it.version != null }
+			.map { it.toString() }
+			.toTypedArray()
+
+		configurations.all {
+			resolutionStrategy.preferProjectModules()
+			resolutionStrategy.force(*libraries)
 		}
 	}
 }
@@ -383,11 +398,11 @@ tasks.register(assemblePkg) {
 			plugins.withType<JavaPlugin> {
 				configurations.all {
 					if (isCanBeResolved) {
-						files.forEach {
-							if (it.name.endsWith(".jar") &&
-								!it.name.startsWith("jenetics"))
+						resolvedConfiguration.resolvedArtifacts.forEach {
+							if (it.file.name.endsWith(".jar") &&
+								!it.file.name.startsWith("jenetics"))
 							{
-								files.add(it)
+								files.add(it.file)
 							}
 						}
 					}
