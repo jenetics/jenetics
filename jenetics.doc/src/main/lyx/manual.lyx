@@ -19462,7 +19462,7 @@ status open
 
 \begin_layout Plain Layout
 
-final DoubleRange domain = DoubleRange.of(0, 2*PI);
+final DoubleRange domain = new DoubleRange(0, 2*PI);
 \end_layout
 
 \begin_layout Plain Layout
@@ -23468,7 +23468,7 @@ Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
 
 \begin_layout Plain Layout
 
-                    .of(v, DoubleRange.of(0, 1)))
+                    .of(v, new DoubleRange(0, 1)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -23591,7 +23591,7 @@ final InvertibleCodec<Double, DoubleGene> codec =
 
 \begin_layout Plain Layout
 
-    Codecs.ofScalar(DoubleRange.of(0, 10));
+    Codecs.ofScalar(new DoubleRange(0, 10));
 \end_layout
 
 \begin_layout Plain Layout
@@ -23693,7 +23693,7 @@ final Codec<Double, DoubleGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofScalar(DoubleRange.of(0, 10))
+    .ofScalar(new DoubleRange(0, 10))
 \end_layout
 
 \begin_layout Plain Layout
@@ -32808,12 +32808,12 @@ final Problem<double[], DoubleGene, Vec<double[]>> problem =
 
 \begin_layout Plain Layout
 
-            DoubleRange.of(0, 1),
+            new DoubleRange(0, 1),
 \end_layout
 
 \begin_layout Plain Layout
 
-            DoubleRange.of(0, 2*PI)
+            new DoubleRange(0, 2*PI)
 \end_layout
 
 \begin_layout Plain Layout
@@ -41981,7 +41981,7 @@ final Codec<Solution, DoubleGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofVector(DoubleRange.of(0, 100), 10)
+    .ofVector(new DoubleRange(0, 100), 10)
 \end_layout
 
 \begin_layout Plain Layout
@@ -42063,12 +42063,12 @@ final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
 
 \begin_layout Plain Layout
 
-	Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+	Codecs.ofScalar(new DoubleRange(30, 50)), // latitude
 \end_layout
 
 \begin_layout Plain Layout
 
-	Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	Codecs.ofScalar(new DoubleRange(69, 72)), // longitude
 \end_layout
 
 \begin_layout Plain Layout
@@ -42315,7 +42315,7 @@ final Codec<LocalTime, DoubleGene> ltc = Codecs
 
 \begin_layout Plain Layout
 
-	.ofScalar(DoubleRange.of(0, Duration.ofHours(24).toSeconds()))
+	.ofScalar(new DoubleRange(0, Duration.ofHours(24).toSeconds()))
 \end_layout
 
 \begin_layout Plain Layout
@@ -42386,7 +42386,7 @@ final Codec<WayPoint[], DoubleGene> wpc = Codecs
 
 \begin_layout Plain Layout
 
-	.ofVector(DoubleRange.of(0, 1), points.length) // (1)
+	.ofVector(new DoubleRange(0, 1), points.length) // (1)
 \end_layout
 
 \begin_layout Plain Layout

@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -34,48 +33,33 @@ import java.util.Optional;
 /**
  * Double range class.
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param min the minimum value of the range
+ * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.2
  */
-public final /*record*/ class DoubleRange implements Serializable {
+public record DoubleRange(double min, double max) implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 2L;
 
-	private final double _min;
-	private final double _max;
-
-	private DoubleRange(final double min, final double max) {
+	/**
+	 * Create a new {@code DoubleRange} object with the given {@code min} and
+	 * {@code max} values.
+	 *
+	 * @param min the lower bound of the double range
+	 * @param max the upper bound of the double range
+	 * @throws IllegalArgumentException if {@code min > max} or one of the
+	 *         parameters is not finite
+	 */
+	public DoubleRange {
 		if (!Double.isFinite(min) || !Double.isFinite(max) || min > max) {
 			throw new IllegalArgumentException(format(
 				"Min greater than max: %s > %s", min, max
 			));
 		}
-
-		_min = min;
-		_max = max;
-	}
-
-	/**
-	 * Return the minimum value of the double range.
-	 *
-	 * @return the minimum value of the double range
-	 */
-	public double min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the double range.
-	 *
-	 * @return the maximum value of the double range
-	 */
-	public double max() {
-		return _max;
 	}
 
 	/**
@@ -90,8 +74,8 @@ public final /*record*/ class DoubleRange implements Serializable {
 	 */
 	public boolean contains(final double value) {
 		return Double.isFinite(value) &&
-			Double.compare(value, _min) >= 0 &&
-			Double.compare(value, _max) < 0;
+			Double.compare(value, min) >= 0 &&
+			Double.compare(value, max) < 0;
 	}
 
 	/**
@@ -104,15 +88,15 @@ public final /*record*/ class DoubleRange implements Serializable {
 	 * @return the range intersection
 	 */
 	public Optional<DoubleRange> intersect(final DoubleRange other) {
-		if (Double.compare(_max, other._min) <= 0 ||
-			Double.compare(_min, other._max) >= 0)
+		if (Double.compare(max, other.min) <= 0 ||
+			Double.compare(min, other.max) >= 0)
 		{
 			return Optional.empty();
 		} else {
 			return Optional.of(
-				DoubleRange.of(
-					Math.max(_min, other._min),
-					Math.min(_max, other._max)
+				new DoubleRange(
+					Math.max(min, other.min),
+					Math.min(max, other.max)
 				)
 			);
 		}
@@ -126,26 +110,19 @@ public final /*record*/ class DoubleRange implements Serializable {
 	 * @param max the upper bound of the double range
 	 * @return a new {@code DoubleRange} object
 	 * @throws IllegalArgumentException if {@code min > max}
+	 *
+	 * @deprecated Class is a record now, and this factory method will be
+	 *             removed in the next major version. Use
+	 *             {@link #DoubleRange(double, double)} instead.
 	 */
+	@Deprecated(since = "8.2", forRemoval = true)
 	public static DoubleRange of(final double min, final double max) {
 		return new DoubleRange(min, max);
 	}
 
 	@Override
-	public int hashCode() {
-		return hash(_min, hash(_max));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof DoubleRange other &&
-			Double.compare(_min, other._min) == 0 &&
-			Double.compare(_max, other._max) == 0;
-	}
-
-	@Override
 	public String toString() {
-		return "[" + _min + ", " + _max + "]";
+		return "[" + min + ", " + max + "]";
 	}
 
 
@@ -166,12 +143,12 @@ public final /*record*/ class DoubleRange implements Serializable {
 	}
 
 	void write(final DataOutput out) throws IOException {
-		out.writeDouble(_min);
-		out.writeDouble(_max);
+		out.writeDouble(min);
+		out.writeDouble(max);
 	}
 
 	static DoubleRange read(final DataInput in) throws IOException {
-		return of(in.readDouble(), in.readDouble());
+		return new DoubleRange(in.readDouble(), in.readDouble());
 	}
 
 }

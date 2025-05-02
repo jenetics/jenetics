@@ -121,7 +121,7 @@ public class DoubleChromosome
 	public DoubleChromosome map(final Function<? super double[], double[]> f) {
 		requireNonNull(f);
 
-		final var range = DoubleRange.of(_min, _max);
+		final var range = new DoubleRange(_min, _max);
 		final var genes = DoubleStream.of(f.apply(toArray()))
 			.mapToObj(v -> DoubleGene.of(v, range))
 			.collect(ISeq.toISeq());

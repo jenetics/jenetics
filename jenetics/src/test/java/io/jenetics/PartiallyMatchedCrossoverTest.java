@@ -121,7 +121,7 @@ public class PartiallyMatchedCrossoverTest {
 
 
 		//assertThatObservation(histogram.build())
-		//	.isNormal(mean, Math.sqrt(statistics.variance()), DoubleRange.of(min, max));
+		//	.isNormal(mean, Math.sqrt(statistics.variance()), new DoubleRange(min, max));
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

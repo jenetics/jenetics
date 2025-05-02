@@ -35,7 +35,7 @@ public class CodecTest {
 	@Test
 	public void map() {
 		final Codec<double[], DoubleGene> codec = Codecs
-			.ofVector(DoubleRange.of(0, 1), 10)
+			.ofVector(new DoubleRange(0, 1), 10)
 			.map(v -> {
 				for (int i = 0; i < v.length; ++i) {
 					v[i] = v[i]/2.0;
@@ -45,7 +45,7 @@ public class CodecTest {
 
 		for (int i = 0; i < 100; ++i) {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(
-				DoubleGene.of(i, DoubleRange.of(0, 100))
+				DoubleGene.of(i, new DoubleRange(0, 100))
 			));
 
 			Assert.assertEquals(codec.decode(gt), new double[]{i/2.0});

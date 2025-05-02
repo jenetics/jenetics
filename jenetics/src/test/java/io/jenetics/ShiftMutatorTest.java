@@ -154,7 +154,7 @@ public class ShiftMutatorTest extends MutatorTester {
 
 //	public static void main(String[] args) throws IOException {
 //		final var random = RandomGenerator.getDefault();
-//		final var range = DoubleRange.of(0, 5);
+//		final var range = new DoubleRange(0, 5);
 //		final var histogram = Histogram.Builder.of(range.min(), range.max(), 20);
 //		final var distribution = Samplers.triangular(0.2);
 //

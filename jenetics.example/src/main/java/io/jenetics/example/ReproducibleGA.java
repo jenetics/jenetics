@@ -44,7 +44,7 @@ import io.jenetics.util.RandomRegistry;
 public class ReproducibleGA {
 
 	private static final Codec<Double, DoubleGene>
-	CODEC = Codecs.ofScalar(DoubleRange.of(0, 1));
+	CODEC = Codecs.ofScalar(new DoubleRange(0, 1));
 
 	public static void main(final String[] args) {
 		final var random = RandomGeneratorFactory.getDefault();

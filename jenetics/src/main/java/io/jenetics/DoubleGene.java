@@ -108,7 +108,7 @@ public final class DoubleGene
 	 * @return the range of {@code this} gene
 	 */
 	public DoubleRange range() {
-		return DoubleRange.of(_min, _max);
+		return new DoubleRange(_min, _max);
 	}
 
 	@Override

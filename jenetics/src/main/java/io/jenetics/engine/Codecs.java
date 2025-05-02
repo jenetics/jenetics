@@ -300,13 +300,13 @@ public final class Codecs {
 	 * values to {@code int} values.
 	 * {@snippet lang=java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
-	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .ofVector(new DoubleRange(0, 100), 100)
 	 *     .map(ArrayConversions::doubleToIntArray);
 	 * }
 	 * If you want round the double values, you can use the following code.
 	 * {@snippet lang=java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
-	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .ofVector(new DoubleRange(0, 100), 100)
 	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
 	 * }
 	 *
@@ -596,8 +596,8 @@ public final class Codecs {
 	 *
 	 * // Codec fora single GPS point (latitude, longitude).
 	 * final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
-	 *     Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
-	 *     Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	 *     Codecs.ofScalar(new DoubleRange(30, 50)), // latitude
+	 *     Codecs.ofScalar(new DoubleRange(69, 72)), // longitude
 	 *     WayPoint::of
 	 * );
 	 *

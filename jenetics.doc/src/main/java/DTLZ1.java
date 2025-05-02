@@ -26,7 +26,7 @@ public class DTLZ1 {
 	static final Problem<double[], DoubleGene, Vec<double[]>>
 	PROBLEM = Problem.of(
 		DTLZ1::f,
-		Codecs.ofVector(DoubleRange.of(0, 1.0), VARIABLES)
+		Codecs.ofVector(new DoubleRange(0, 1.0), VARIABLES)
 	);
 
 	static Vec<double[]> f(final double[] x) {

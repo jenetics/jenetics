@@ -134,7 +134,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.
@@ -166,7 +166,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.

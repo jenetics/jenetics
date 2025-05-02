@@ -206,7 +206,7 @@ public record IntRange(int min, int max) implements Serializable {
 	}
 
 	static IntRange read(final DataInput in) throws IOException {
-		return of(readInt(in), readInt(in));
+		return new IntRange(readInt(in), readInt(in));
 	}
 
 }
