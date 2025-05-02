@@ -20,15 +20,7 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.SerialIO.readInt;
-import static io.jenetics.internal.util.SerialIO.writeInt;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -44,9 +36,6 @@ import java.util.stream.IntStream;
  * @since 3.2
  */
 public record IntRange(int min, int max) implements Serializable {
-
-	@Serial
-	private static final long serialVersionUID = 2L;
 
 	/**
 	 * Create a new range instance.
@@ -181,32 +170,6 @@ public record IntRange(int min, int max) implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + min + ", " + max + "]";
-	}
-
-
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-
-	@Serial
-	private Object writeReplace() {
-		return new SerialProxy(SerialProxy.INT_RANGE, this);
-	}
-
-	@Serial
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	void write(final DataOutput out) throws IOException {
-		writeInt(min, out);
-		writeInt(max, out);
-	}
-
-	static IntRange read(final DataInput in) throws IOException {
-		return new IntRange(readInt(in), readInt(in));
 	}
 
 }

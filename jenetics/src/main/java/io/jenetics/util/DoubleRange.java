@@ -21,12 +21,6 @@ package io.jenetics.util;
 
 import static java.lang.String.format;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -41,9 +35,6 @@ import java.util.Optional;
  * @since 3.2
  */
 public record DoubleRange(double min, double max) implements Serializable {
-
-	@Serial
-	private static final long serialVersionUID = 2L;
 
 	/**
 	 * Create a new {@code DoubleRange} object with the given {@code min} and
@@ -123,32 +114,6 @@ public record DoubleRange(double min, double max) implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + min + ", " + max + "]";
-	}
-
-
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-
-	@Serial
-	private Object writeReplace() {
-		return new SerialProxy(SerialProxy.DOUBLE_RANGE, this);
-	}
-
-	@Serial
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	void write(final DataOutput out) throws IOException {
-		out.writeDouble(min);
-		out.writeDouble(max);
-	}
-
-	static DoubleRange read(final DataInput in) throws IOException {
-		return new DoubleRange(in.readDouble(), in.readDouble());
 	}
 
 }
