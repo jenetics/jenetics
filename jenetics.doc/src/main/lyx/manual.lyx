@@ -2915,7 +2915,7 @@ IntegerChromosome chromosome = IntegerChromosome.of(
 
 \begin_layout Plain Layout
 
-    0, 1_000, IntRange.of(5, 9)
+    0, 1_000, new IntRange(5, 9)
 \end_layout
 
 \begin_layout Plain Layout
@@ -19752,7 +19752,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-            .builder(Main::fitness, ofScalar(IntRange.of(0, 100)))
+            .builder(Main::fitness, ofScalar(new IntRange(0, 100)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -20011,7 +20011,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-                ofVector(IntRange.of(0, 100), 10))
+                ofVector(new IntRange(0, 100), 10))
 \end_layout
 
 \begin_layout Plain Layout
@@ -32693,7 +32693,7 @@ final ISeq<Phenotype<DoubleGene, Vec<double[]>>> paretoSet =
 
 \begin_layout Plain Layout
 
-        .collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+        .collect(MOEA.toParetoSet(new IntRange(30, 50)));
 \end_layout
 
 \end_inset
@@ -35132,7 +35132,7 @@ var bcodons = Codons.ofBitGenes(bch);
 
 \begin_layout Plain Layout
 
-var ich = IntegerChromosome.of(IntRange.of(0, 256), 100);
+var ich = IntegerChromosome.of(new IntRange(0, 256), 100);
 \end_layout
 
 \begin_layout Plain Layout
@@ -35626,7 +35626,7 @@ final Codec<List<Terminal<String>>, IntegerGene> codec =
 
 \begin_layout Plain Layout
 
-        IntRange.of(0, 256),
+        new IntRange(0, 256),
 \end_layout
 
 \begin_layout Plain Layout
@@ -35712,7 +35712,7 @@ final Codec<List<Terminal<String>>, IntegerGene> codec =
 
 \begin_layout Plain Layout
 
-        rule -> IntRange.of(rule.alternatives().size()*25),
+        rule -> new IntRange(rule.alternatives().size()*25),
 \end_layout
 
 \begin_layout Plain Layout
@@ -35790,22 +35790,22 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 3), 3*25), // <expr>
+    IntegerChromosome.of(new IntRange(0, 3), 3*25), // <expr>
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 4), 4*25), // <op>
+    IntegerChromosome.of(new IntRange(0, 4), 4*25), // <op>
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 2), 2*25), // var
+    IntegerChromosome.of(new IntRange(0, 2), 2*25), // var
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 9), 9*25)  // <num>
+    IntegerChromosome.of(new IntRange(0, 9), 9*25)  // <num>
 \end_layout
 
 \begin_layout Plain Layout
@@ -35822,7 +35822,7 @@ As you can see, the number range for each rule chromosome reflects the number
  constant chromosome lengths.
  Just use a length function like this:
 \family typewriter
- rule -> IntRange.of(1_000)
+ rule -> new IntRange(1_000)
 \family default
 .
 \end_layout
@@ -41917,7 +41917,7 @@ final Codec<Solution, IntegerGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofVector(IntRange.of(0, 100), 10)
+    .ofVector(new IntRange(0, 100), 10)
 \end_layout
 
 \begin_layout Plain Layout

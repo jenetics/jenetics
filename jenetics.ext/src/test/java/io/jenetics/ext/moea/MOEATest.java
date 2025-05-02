@@ -72,14 +72,14 @@ public class MOEATest {
 
 		final List<Vec<double[]>> pop = new ArrayList<>();
 
-		final var accu = Accumulator.of(MOEA.<DoubleGene, double[], Vec<double[]>>toParetoSet(IntRange.of(20, 25)));
+		final var accu = Accumulator.of(MOEA.<DoubleGene, double[], Vec<double[]>>toParetoSet(new IntRange(20, 25)));
 
 		final ISeq<Vec<double[]>> result = engine.stream()
 			.limit(100)
 			.peek(accu)
 			.peek(er -> pop.addAll(er.population()
 				.map(Phenotype::fitness).asList()))
-			.collect(MOEA.toParetoSet(IntRange.of(20, 25)))
+			.collect(MOEA.toParetoSet(new IntRange(20, 25)))
 			.map(Phenotype::fitness);
 
 		Assert.assertTrue(result.size() >= 10, "Expected >= 10, got " + result.size());

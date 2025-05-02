@@ -274,7 +274,7 @@ public class CharacterChromosome
 		final CharSeq validCharacters,
 		final int length
 	) {
-		return of(validCharacters, IntRange.of(length));
+		return of(validCharacters, new IntRange(length));
 	}
 
 	/**
@@ -307,7 +307,7 @@ public class CharacterChromosome
 			genes.set(i, CharacterGene.of(alleles.charAt(i), validChars));
 		}
 
-		return new CharacterChromosome(genes.toISeq(), IntRange.of(alleles.length()));
+		return new CharacterChromosome(genes.toISeq(), new IntRange(alleles.length()));
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class CharacterChromosome
 	}
 
 	static CharacterChromosome read(final DataInput in) throws IOException {
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var validCharacters = new CharSeq(readString(in));
 		final var chars = readString(in);
 

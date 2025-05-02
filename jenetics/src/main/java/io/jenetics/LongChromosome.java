@@ -194,7 +194,7 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		checkGeneRange(Stream.of(genes).map(LongGene::range));
-		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new LongChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class LongChromosome
 	public static LongChromosome of(final Iterable<LongGene> genes) {
 		final ISeq<LongGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(LongGene::range));
-		return new LongChromosome(values, IntRange.of(values.length()));
+		return new LongChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class LongChromosome
 		final long max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -363,7 +363,7 @@ public class LongChromosome
 
 	static LongChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = readLong(in);
 		final var max = readLong(in);
 

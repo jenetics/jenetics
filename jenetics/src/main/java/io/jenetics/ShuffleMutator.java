@@ -124,8 +124,8 @@ public class ShuffleMutator<
 					);
 				}
 
-				final int lng = lengthSampler.sample(random, IntRange.of(1, size));
-				final int a = indexSampler.sample(random, IntRange.of(0, size - lng));
+				final int lng = lengthSampler.sample(random, new IntRange(1, size));
+				final int a = indexSampler.sample(random, new IntRange(0, size - lng));
 				final int b = a + lng;
 
 				return new Range(a, b);

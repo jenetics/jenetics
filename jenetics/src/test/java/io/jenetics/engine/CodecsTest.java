@@ -69,12 +69,12 @@ public class CodecsTest {
 	@DataProvider(name = "intScalarData")
 	public Object[][] intScalarData() {
 		return new Object[][] {
-			{IntRange.of(0, 1)},
-			{IntRange.of(0, 10)},
-			{IntRange.of(1, 2)},
-			{IntRange.of(0, 100)},
-			{IntRange.of(10, 1000)},
-			{IntRange.of(1000, 10000)}
+			{new IntRange(0, 1)},
+			{new IntRange(0, 10)},
+			{new IntRange(1, 2)},
+			{new IntRange(0, 100)},
+			{new IntRange(10, 1000)},
+			{new IntRange(1000, 10000)}
 		};
 	}
 
@@ -154,12 +154,12 @@ public class CodecsTest {
 	@DataProvider(name = "intVectorData")
 	public Object[][] intVectorData() {
 		return new Object[][] {
-			{IntRange.of(0, 1), 1},
-			{IntRange.of(0, 10), 2},
-			{IntRange.of(1, 2), 10},
-			{IntRange.of(0, 100), 100},
-			{IntRange.of(10, 1000), 3},
-			{IntRange.of(1000, 10000), 100}
+			{new IntRange(0, 1), 1},
+			{new IntRange(0, 10), 2},
+			{new IntRange(1, 2), 10},
+			{new IntRange(0, 100), 100},
+			{new IntRange(10, 1000), 3},
+			{new IntRange(1000, 10000), 100}
 		};
 	}
 
@@ -258,12 +258,12 @@ public class CodecsTest {
 	@DataProvider(name = "intVectorDataVector")
 	public Object[][] intVectorDataVector() {
 		return new Object[][] {
-			{new IntRange[]{IntRange.of(0, 1)}},
-			{new IntRange[]{IntRange.of(0, 10), IntRange.of(0, 1)}},
-			{new IntRange[]{IntRange.of(1, 2), IntRange.of(1000, 10000), IntRange.of(1000, 10000)}},
-			{new IntRange[]{IntRange.of(0, 100), IntRange.of(0, 1), IntRange.of(1000, 10000)}},
-			{new IntRange[]{IntRange.of(10, 1000), IntRange.of(0, 1), IntRange.of(1000, 10000), IntRange.of(10, 100)}},
-			{new IntRange[]{IntRange.of(1000, 10000), IntRange.of(0, 1)}}
+			{new IntRange[]{new IntRange(0, 1)}},
+			{new IntRange[]{new IntRange(0, 10), new IntRange(0, 1)}},
+			{new IntRange[]{new IntRange(1, 2), new IntRange(1000, 10000), new IntRange(1000, 10000)}},
+			{new IntRange[]{new IntRange(0, 100), new IntRange(0, 1), new IntRange(1000, 10000)}},
+			{new IntRange[]{new IntRange(10, 1000), new IntRange(0, 1), new IntRange(1000, 10000), new IntRange(10, 100)}},
+			{new IntRange[]{new IntRange(1000, 10000), new IntRange(0, 1)}}
 		};
 	}
 
@@ -346,7 +346,7 @@ public class CodecsTest {
 		final int rows = 10;
 		final int cols = 15;
 		final Codec<int[][], IntegerGene> codec = Codecs.ofMatrix(
-			IntRange.of(0, 1_000),
+			new IntRange(0, 1_000),
 			rows, cols
 		);
 
@@ -619,22 +619,22 @@ public class CodecsTest {
 	@DataProvider
 	public Object[][] invertibleCodecs() {
 		return new Object[][] {
-			{Codecs.ofScalar(IntRange.of(10, 10_000)), true},
+			{Codecs.ofScalar(new IntRange(10, 10_000)), true},
 			{Codecs.ofScalar(LongRange.of(10, 100_000)), true},
 			{Codecs.ofScalar(DoubleRange.of(10, 10_000)), true},
 
-			{Codecs.ofVector(IntRange.of(10, 10_000), 10), true},
+			{Codecs.ofVector(new IntRange(10, 10_000), 10), true},
 			{Codecs.ofVector(LongRange.of(10, 100_000), 10), true},
 			{Codecs.ofVector(DoubleRange.of(10, 10_000), 10), true},
 
-			{Codecs.ofVector(IntRange.of(10, 10_000), IntRange.of(60, 100), IntRange.of(1, 10)), true},
+			{Codecs.ofVector(new IntRange(10, 10_000), new IntRange(60, 100), new IntRange(1, 10)), true},
 			{Codecs.ofVector(LongRange.of(10, 10_000), LongRange.of(60, 100), LongRange.of(1, 10)), true},
 			{Codecs.ofVector(DoubleRange.of(10, 10_000), DoubleRange.of(60, 100), DoubleRange.of(1, 10)), true},
 
 			{Codecs.ofPermutation(100), true},
 			{Codecs.ofPermutation(ISeq.of("a", "b", "c", "d", "e", "f", "end")), true},
 
-			{Codecs.ofMatrix(IntRange.of(10, 10_000), 10, 100), true},
+			{Codecs.ofMatrix(new IntRange(10, 10_000), 10, 100), true},
 			{Codecs.ofMatrix(LongRange.of(10, 10_000), 10, 100), true},
 			{Codecs.ofMatrix(DoubleRange.of(10, 10_000), 10, 100), true},
 

@@ -83,7 +83,7 @@ Before developing your own `Codec`, have a look at the `Codecs` class, which con
 ```java
 record Solution(int[] values) {}
 final Codec<Solution, IntegerGene> codec = Codecs
-    .ofVector(IntRange.of(0, 100), 10)
+    .ofVector(new IntRange(0, 100), 10)
     .map(Solution::new);
 ```
 

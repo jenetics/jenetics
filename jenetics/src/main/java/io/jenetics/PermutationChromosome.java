@@ -296,7 +296,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		return ofInteger(IntRange.of(start, end), end - start);
+		return ofInteger(new IntRange(start, end), end - start);
 	}
 
 	/**

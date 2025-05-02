@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
@@ -37,48 +36,41 @@ import java.util.stream.IntStream;
 /**
  * Integer range class.
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param min the minimum value of the range
+ * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.2
  */
-public final /*record*/ class IntRange implements Serializable {
+public record IntRange(int min, int max) implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 2L;
 
-	private final int _min;
-	private final int _max;
-
-	private IntRange(final int min, final int max) {
+	/**
+	 * Create a new range instance.
+	 *
+	 * @param min the minimum value of the range
+	 * @param max the maximum value of the range
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
+	public IntRange {
 		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"Min greater than max: %s > %s", min, max
 			));
 		}
-
-		_min = min;
-		_max = max;
 	}
 
 	/**
-	 * Return the minimum value of the integer range.
+	 * Create a new (half-open) range, which contains only the given value:
+	 * {@code [value, value + 1)}.
 	 *
-	 * @return the minimum value of the integer range
+	 * @param value the value of the created (half-open) integer range
 	 */
-	public int min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the integer range.
-	 *
-	 * @return the maximum value of the integer range
-	 */
-	public int max() {
-		return _max;
+	public IntRange(final int value) {
+		this(value, value + 1);
 	}
 
 	/**
@@ -92,7 +84,7 @@ public final /*record*/ class IntRange implements Serializable {
 	 *         {@code [min, max)}, {@code false} otherwise
 	 */
 	public boolean contains(final int value) {
-		return value >= _min && value < _max;
+		return value >= min && value < max;
 	}
 
 	/**
@@ -105,13 +97,13 @@ public final /*record*/ class IntRange implements Serializable {
 	 * @return the range intersection
 	 */
 	public Optional<IntRange> intersect(final IntRange other) {
-		if (_max <= other._min || _min >= other._max) {
+		if (max <= other.min || min >= other.max) {
 			return Optional.empty();
 		} else {
 			return Optional.of(
-				IntRange.of(
-					Math.max(_min, other._min),
-					Math.min(_max, other._max)
+				new IntRange(
+					Math.max(min, other.min),
+					Math.min(max, other.max)
 				)
 			);
 		}
@@ -125,7 +117,7 @@ public final /*record*/ class IntRange implements Serializable {
 	 * @return the size of the int range
 	 */
 	public int size() {
-		return _max - _min;
+		return max - min;
 	}
 
 	/**
@@ -147,7 +139,7 @@ public final /*record*/ class IntRange implements Serializable {
 	 *         elements
 	 */
 	public IntStream stream() {
-		return IntStream.range(_min, _max);
+		return IntStream.range(min, max);
 	}
 
 	/**
@@ -158,7 +150,12 @@ public final /*record*/ class IntRange implements Serializable {
 	 * @param max the upper bound of the integer range
 	 * @return a new {@code IntRange} object
 	 * @throws IllegalArgumentException if {@code min > max}
+	 *
+	 * @deprecated Class is a record now, and this factory method will be
+	 *             removed in the next major version. Use {@link #IntRange(int, int)}
+	 *             instead.
 	 */
+	@Deprecated(since = "8.2", forRemoval = true)
 	public static IntRange of(final int min, final int max) {
 		return new IntRange(min, max);
 	}
@@ -171,26 +168,19 @@ public final /*record*/ class IntRange implements Serializable {
 	 *
 	 * @param value the value of the created (half-open) integer range
 	 * @return a new (half-open) range, which contains only the given value
+	 *
+	 * @deprecated Class is a record now, and this factory method will be
+	 *             removed in the next major version. Use {@link #IntRange(int)}
+	 *             instead.
 	 */
+	@Deprecated(since = "8.2", forRemoval = true)
 	public static IntRange of(final int value) {
 		return of(value, value + 1);
 	}
 
 	@Override
-	public int hashCode() {
-		return hash(_min, hash(_max));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof IntRange other &&
-			_min == other._min &&
-			_max == other._max;
-	}
-
-	@Override
 	public String toString() {
-		return "[" + _min + ", " + _max + "]";
+		return "[" + min + ", " + max + "]";
 	}
 
 
@@ -211,8 +201,8 @@ public final /*record*/ class IntRange implements Serializable {
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(_min, out);
-		writeInt(_max, out);
+		writeInt(min, out);
+		writeInt(max, out);
 	}
 
 	static IntRange read(final DataInput in) throws IOException {

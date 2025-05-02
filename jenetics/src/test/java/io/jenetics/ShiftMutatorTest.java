@@ -63,7 +63,7 @@ public class ShiftMutatorTest extends MutatorTester {
 	public void mutate() {
 		final var mutator =  new ShiftMutator<EnumGene<Integer>, Integer>(0.1);
 
-		final var values = IntRange.of(0, 10).stream().boxed().collect(ISeq.toISeq());
+		final var values = new IntRange(0, 10).stream().boxed().collect(ISeq.toISeq());
 		final var genes = values.stream()
 			.map(i -> EnumGene.of(i, values))
 			.collect(ISeq.toISeq());

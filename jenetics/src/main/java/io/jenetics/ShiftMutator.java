@@ -167,9 +167,9 @@ public class ShiftMutator<
 					);
 				}
 
-				final int lng = lengthSampler.sample(random, IntRange.of(2, size));
-				final int a = indexSampler.sample(random, IntRange.of(0, size - lng));
-				final int b = indexSampler.sample(random, IntRange.of(a + 1, lng - 1));
+				final int lng = lengthSampler.sample(random, new IntRange(2, size));
+				final int a = indexSampler.sample(random, new IntRange(0, size - lng));
+				final int b = indexSampler.sample(random, new IntRange(a + 1, lng - 1));
 				final int c = a + lng;
 
 				return new Range(a, b, c);

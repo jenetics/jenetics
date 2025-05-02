@@ -35,7 +35,7 @@ import io.jenetics.util.Factory;
  * relation between <em>encoder</em> and <em>decoder</em> function must fulfill.
  * {@snippet lang="java":
  * final InvertibleCodec<int[], IntegerGene> codec =
- *     Codecs.ofVector(IntRange.of(0, 100), 6);
+ *     Codecs.ofVector(new IntRange(0, 100), 6);
  * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
  * final Genotype<IntegerGene> gt = codec.encode(value);
  * assert Arrays.equals(value, codec.decode(gt));
@@ -67,7 +67,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * can be converted into a {@link Genotype} and transformed back.
 	 * {@snippet lang="java":
 	 * final InvertibleCodec<int[], IntegerGene> codec =
-	 *     Codecs.ofVector(IntRange.of(0, 100), 6);
+	 *     Codecs.ofVector(new IntRange(0, 100), 6);
 	 * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
 	 * final Genotype<IntegerGene> gt = codec.encode(value);
 	 * assert Arrays.equals(value, codec.decode(gt));

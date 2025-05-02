@@ -205,7 +205,7 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -256,7 +256,7 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -321,7 +321,7 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**

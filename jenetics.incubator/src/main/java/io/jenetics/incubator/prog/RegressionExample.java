@@ -68,7 +68,7 @@ public class RegressionExample {
 	private static final Codec<Tree<? extends Op<Double>, ?>, IntegerGene> CODEC =
 		Mappers.multiIntegerChromosomeMapper(
 				CFG,
-				rule -> IntRange.of(rule.alternatives().size()*10),
+				rule -> new IntRange(rule.alternatives().size()*10),
 				index -> new SentenceGenerator<>(index, 1000)
 			)
 			.map(s -> {
@@ -134,7 +134,7 @@ public class RegressionExample {
 	public static void main(final String[] args) {
 		Codec<List<Terminal<String>>, IntegerGene> foo = Mappers.multiIntegerChromosomeMapper(
 			CFG,
-			rule -> IntRange.of(rule.alternatives().size()*10),
+			rule -> new IntRange(rule.alternatives().size()*10),
 			index -> new SentenceGenerator<>(index, 1000)
 		);
 

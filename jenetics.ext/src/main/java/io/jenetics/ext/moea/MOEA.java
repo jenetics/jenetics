@@ -67,7 +67,7 @@ import io.jenetics.util.IntRange;
  */
 public final class MOEA {
 
-	private static final IntRange DEFAULT_SET_RANGE = IntRange.of(75, 100);
+	private static final IntRange DEFAULT_SET_RANGE = new IntRange(75, 100);
 
 	private MOEA() {
 	}

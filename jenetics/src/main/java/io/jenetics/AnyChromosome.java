@@ -222,7 +222,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
-		return of(supplier, alleleValidator, alleleSeqValidator, IntRange.of(length));
+		return of(supplier, alleleValidator, alleleSeqValidator, new IntRange(length));
 	}
 
 	/**

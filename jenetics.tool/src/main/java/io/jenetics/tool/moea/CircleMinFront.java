@@ -82,7 +82,7 @@ public class CircleMinFront {
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> front = engine.stream()
 			.limit(Limits.byFixedGeneration(100))
-			.collect(MOEA.toParetoSet(IntRange.of(100, 150)));
+			.collect(MOEA.toParetoSet(new IntRange(100, 150)));
 
 		final StringBuilder out = new StringBuilder();
 		out.append("#x y\n");

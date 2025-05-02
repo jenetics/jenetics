@@ -64,7 +64,7 @@ public class DTLZ1 {
 	public static void main(final String[] args) {
 		final ISeq<Vec<double[]>> front = ENGINE.stream()
 			.limit(2500)
-			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
+			.collect(MOEA.toParetoSet(new IntRange(1000, 1100)))
 			.map(Phenotype::fitness);
 	}
 
