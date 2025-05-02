@@ -22091,17 +22091,17 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 100)),
+        Codecs.ofScalar(new LongRange(0, 100)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 1000)),
+        Codecs.ofScalar(new LongRange(0, 1000)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 10000))),
+        Codecs.ofScalar(new LongRange(0, 10000))),
 \end_layout
 
 \begin_layout Plain Layout

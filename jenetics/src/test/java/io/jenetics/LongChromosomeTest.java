@@ -92,12 +92,12 @@ public class LongChromosomeTest
 	public Object[][] chromosomes() {
 		return new Object[][] {
 			{LongChromosome.of(0, 1000), new IntRange(1)},
-			{LongChromosome.of(LongRange.of(0, 1000)), new IntRange(1)},
+			{LongChromosome.of(new LongRange(0, 1000)), new IntRange(1)},
 			{LongChromosome.of(0, 1000, 1), new IntRange(1)},
 			{LongChromosome.of(0, 1000, 2), new IntRange(2)},
 			{LongChromosome.of(0, 1000, 20), new IntRange(20)},
 			{LongChromosome.of(0, 1000, new IntRange(2, 10)), new IntRange(2, 10)},
-			{LongChromosome.of(LongRange.of(0, 1000), new IntRange(2, 10)), new IntRange(2, 10)}
+			{LongChromosome.of(new LongRange(0, 1000), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

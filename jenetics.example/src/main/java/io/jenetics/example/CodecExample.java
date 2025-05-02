@@ -132,7 +132,7 @@ public class CodecExample {
 //	public static void main(final String[] args) {
 //		// The domain of your fitness function.
 //		final IntRange domain1 = new IntRange(0, 100);
-//		final LongRange domain2 = LongRange.of(0, 1_000_000_000_000L);
+//		final LongRange domain2 = new LongRange(0, 1_000_000_000_000L);
 //		final DoubleRange domain3 = new DoubleRange(0, 1);
 //
 //		// The problem domain encoder/decoder.

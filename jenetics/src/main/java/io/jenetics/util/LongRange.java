@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
 
@@ -37,48 +36,42 @@ import java.util.stream.LongStream;
 /**
  * Long range class.
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param min the minimum value of the range
+ * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.2
  */
-public final /*record*/ class LongRange implements Serializable {
+public record LongRange(long min, long max) implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 2L;
 
-	private final long _min;
-	private final long _max;
-
-	private LongRange(final long min, final long max) {
+	/**
+	 * Create a new {@code LongRange} object with the given {@code min} and
+	 * {@code max} values.
+	 *
+	 * @param min the lower bound of the long range
+	 * @param max the upper bound of the long range
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
+	public LongRange {
 		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"Min greater than max: %s > %s", min, max
 			));
 		}
-
-		_min = min;
-		_max = max;
 	}
 
 	/**
-	 * Return the minimum value of the long range.
+	 * Create a new (half-open) range, which contains only the given value:
+	 * {@code [value, value + 1)}.
 	 *
-	 * @return the minimum value of the long range
+	 * @param value the value of the created (half-open) integer range
 	 */
-	public long min() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the long range.
-	 *
-	 * @return the maximum value of the long range
-	 */
-	public long max() {
-		return _max;
+	public LongRange(final long value) {
+		this(value, value + 1);
 	}
 
 	/**
@@ -92,7 +85,7 @@ public final /*record*/ class LongRange implements Serializable {
 	 *         {@code [min, max)}, {@code false} otherwise
 	 */
 	public boolean contains(final long value) {
-		return value >= _min && value < _max;
+		return value >= min && value < max;
 	}
 
 	/**
@@ -105,13 +98,13 @@ public final /*record*/ class LongRange implements Serializable {
 	 * @return the range intersection
 	 */
 	public Optional<LongRange> intersect(final LongRange other) {
-		if (_max <= other._min || _min >= other._max) {
+		if (max <= other.min || min >= other.max) {
 			return Optional.empty();
 		} else {
 			return Optional.of(
-				LongRange.of(
-					Math.max(_min, other._min),
-					Math.min(_max, other._max)
+				new LongRange(
+					Math.max(min, other.min),
+					Math.min(max, other.max)
 				)
 			);
 		}
@@ -136,7 +129,7 @@ public final /*record*/ class LongRange implements Serializable {
 	 *         elements
 	 */
 	public LongStream stream() {
-		return LongStream.range(_min, _max);
+		return LongStream.range(min, max);
 	}
 
 	/**
@@ -147,7 +140,12 @@ public final /*record*/ class LongRange implements Serializable {
 	 * @param max the upper bound of the long range
 	 * @return a new {@code LongRange} object
 	 * @throws IllegalArgumentException if {@code min > max}
+	 *
+	 * @deprecated Class is a record now, and this factory method will be
+	 *             removed in the next major version. Use
+	 *             {@link #LongRange(long, long)} instead.
 	 */
+	@Deprecated(since = "8.2", forRemoval = true)
 	public static LongRange of(final long min, final long max) {
 		return new LongRange(min, max);
 	}
@@ -160,26 +158,19 @@ public final /*record*/ class LongRange implements Serializable {
 	 *
 	 * @param value the value of the created (half-open) integer range
 	 * @return a new (half-open) range, which contains only the given value
+	 *
+	 * @deprecated Class is a record now, and this factory method will be
+	 *             removed in the next major version. Use {@link #LongRange(long)}
+	 *             instead.
 	 */
+	@Deprecated(since = "8.2", forRemoval = true)
 	public static LongRange of(final long value) {
 		return of(value, value + 1);
 	}
 
 	@Override
-	public int hashCode() {
-		return hash(_min, hash(_max, hash(getClass())));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof LongRange other &&
-			_min == other._min &&
-			_max == other._max;
-	}
-
-	@Override
 	public String toString() {
-		return "[" + _min + ", " + _max + "]";
+		return "[" + min + ", " + max + "]";
 	}
 
 
@@ -200,12 +191,12 @@ public final /*record*/ class LongRange implements Serializable {
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeLong(_min, out);
-		writeLong(_max, out);
+		writeLong(min, out);
+		writeLong(max, out);
 	}
 
 	static LongRange read(final DataInput in) throws IOException {
-		return of(readLong(in), readLong(in));
+		return new LongRange(readLong(in), readLong(in));
 	}
 
 }

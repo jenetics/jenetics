@@ -123,7 +123,7 @@ public class LongChromosome
 	public LongChromosome map(final Function<? super long[], long[]> f) {
 		requireNonNull(f);
 
-		final var range = LongRange.of(_min, _max);
+		final var range = new LongRange(_min, _max);
 		final var genes = LongStream.of(f.apply(toArray()))
 			.mapToObj(v -> LongGene.of(v, range))
 			.collect(ISeq.toISeq());
