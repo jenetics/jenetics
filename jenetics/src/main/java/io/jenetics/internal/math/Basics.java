@@ -118,7 +118,6 @@ public final class Basics {
 	/**
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
-	 *
 	 * {@snippet lang="java":
 	 * double a = 0.0;
 	 * for (int i = 0; i < 10; ++i) {
