@@ -116,7 +116,7 @@ public class ShiftMutator<
 	public interface RangeRandom {
 
 		/**
-		 * Random shift range generator, which creates shifter with uniformly
+		 * Random shift range generator, which creates a shifter with uniformly
 		 * distributed shifting points. Both the length and the shift indexes
 		 * are chosen uniformly.
 		 */

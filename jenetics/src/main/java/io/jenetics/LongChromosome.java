@@ -98,7 +98,6 @@ public class LongChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code long[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
 	 * {@snippet lang="java":
 	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);

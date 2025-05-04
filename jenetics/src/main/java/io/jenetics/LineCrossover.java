@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
  * be located anywhere on the line, even somewhat outside the hypercube.
  * <p>
- * Points outside the allowed numeric range are rejected and the original
+ * Points outside the allowed numeric range are rejected, and the original
  * value is used instead. The strategy on how out-of-range points are handled,
  * is the difference to the very similar {@link IntermediateCrossover}.
  *

@@ -236,7 +236,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Return the double value this BitChromosome represents.
 	 *
-	 * @return double value this BitChromosome represents.
+	 * @return double the value this BitChromosome represents.
 	 */
 	@Override
 	public double doubleValue() {

@@ -34,7 +34,7 @@ public final class Basics {
 	private Basics() {}
 
 	/**
-	 * Normalize the given double array, so that it sums to one. The
+	 * Normalize the given double array so that it sums to one. The
 	 * normalization is performed in place and the same {@code values} are
 	 * returned.
 	 *

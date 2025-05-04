@@ -25,7 +25,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * The shuffle mutation, changes the order of the genes between two randomly
+ * The shuffle mutation changes the order of the genes between two randomly
  * chosen positions. The genes between the positions are shuffled. This mutation
  * operator can also be used for combinatorial problems, where no duplicated
  * genes within a chromosome are allowed, e.g., for the TSP.
