@@ -92,13 +92,13 @@ public class DoubleChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{DoubleChromosome.of(0, 1), IntRange.of(1)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1)), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 1), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 2), IntRange.of(2)},
-			{DoubleChromosome.of(0, 1, 20), IntRange.of(20)},
-			{DoubleChromosome.of(0, 1, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{DoubleChromosome.of(0, 1), new IntRange(1)},
+			{DoubleChromosome.of(new DoubleRange(0, 1)), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 1), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 2), new IntRange(2)},
+			{DoubleChromosome.of(0, 1, 20), new IntRange(20)},
+			{DoubleChromosome.of(0, 1, new IntRange(2, 10)), new IntRange(2, 10)},
+			{DoubleChromosome.of(new DoubleRange(0, 1), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

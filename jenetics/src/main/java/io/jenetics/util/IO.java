@@ -72,7 +72,7 @@ public abstract class IO {
 		{
 			final ObjectOutputStream oout = new ObjectOutputStream(out);
 			oout.writeObject(object);
-			out.flush();
+			oout.flush();
 		}
 
 		@Override
@@ -160,7 +160,7 @@ public abstract class IO {
 		throws IOException;
 
 	/**
-	 * Creates a, previously serialized, object from the given {@code byte[]}
+	 * Creates a previously serialized, object from the given {@code byte[]}
 	 * array.
 	 *
 	 * @since 4.1

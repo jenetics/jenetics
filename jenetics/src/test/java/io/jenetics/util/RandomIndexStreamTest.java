@@ -87,7 +87,7 @@ public class RandomIndexStreamTest {
 		final double var = n*p*(1 - p);
 
 		final var random = new Random();
-		final var domain = LongRange.of(0L, n.longValue());
+		final var domain = new LongRange(0L, n.longValue());
 
 		final var histogram = Histogram.Builder.of(new Interval(domain.min(), domain.max()), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();

@@ -40,7 +40,7 @@ public class SamplersTest {
 		final var random = RandomGenerator.getDefault();
 		final var stat = new DoubleSummaryStatistics();
 
-		final var range = DoubleRange.of(10, 100);
+		final var range = new DoubleRange(10, 100);
 		for (int i = 0; i < 100000; ++i) {
 			final var value = dist.sample(random, range);
 			stat.accept(value);
@@ -89,13 +89,13 @@ public class SamplersTest {
 	@DataProvider
 	public Object[][] ranges() {
 		return new Object[][] {
-			{DoubleRange.of(0, 1)},
-			{DoubleRange.of(1, 2)},
-			{DoubleRange.of(1, 22)},
-			{DoubleRange.of(10, 23)},
-			{DoubleRange.of(-1, 2)},
-			{DoubleRange.of(-110, -2)},
-			{DoubleRange.of(-11, -5)}
+			{new DoubleRange(0, 1)},
+			{new DoubleRange(1, 2)},
+			{new DoubleRange(1, 22)},
+			{new DoubleRange(10, 23)},
+			{new DoubleRange(-1, 2)},
+			{new DoubleRange(-110, -2)},
+			{new DoubleRange(-11, -5)}
 		};
 	}
 

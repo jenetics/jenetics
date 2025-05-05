@@ -45,7 +45,7 @@ public class EnginePoolTest {
 	private static final Problem<double[], DoubleGene, Double> PROBLEM =
 		Problem.of(
 			DoubleAdder::sum,
-			Codecs.ofVector(DoubleRange.of(0, 10), 5)
+			Codecs.ofVector(new DoubleRange(0, 10), 5)
 		);
 
 	private final Engine.Builder<DoubleGene, Double> _builder = Engine.builder(PROBLEM)

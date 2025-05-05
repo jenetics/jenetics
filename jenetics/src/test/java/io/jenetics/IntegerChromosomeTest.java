@@ -90,13 +90,13 @@ public class IntegerChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{IntegerChromosome.of(0, 1000), IntRange.of(1)},
-			{IntegerChromosome.of(IntRange.of(0, 1000)), IntRange.of(1)},
-			{IntegerChromosome.of(0, 1000, 1), IntRange.of(1)},
-			{IntegerChromosome.of(0, 1000, 2), IntRange.of(2)},
-			{IntegerChromosome.of(0, 1000, 20), IntRange.of(20)},
-			{IntegerChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{IntegerChromosome.of(IntRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{IntegerChromosome.of(0, 1000), new IntRange(1)},
+			{IntegerChromosome.of(new IntRange(0, 1000)), new IntRange(1)},
+			{IntegerChromosome.of(0, 1000, 1), new IntRange(1)},
+			{IntegerChromosome.of(0, 1000, 2), new IntRange(2)},
+			{IntegerChromosome.of(0, 1000, 20), new IntRange(20)},
+			{IntegerChromosome.of(0, 1000, new IntRange(2, 10)), new IntRange(2, 10)},
+			{IntegerChromosome.of(new IntRange(0, 1000), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

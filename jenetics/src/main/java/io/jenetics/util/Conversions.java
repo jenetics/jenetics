@@ -35,7 +35,7 @@ import java.util.function.LongToIntFunction;
  * unify numerical gene codecs, e.g.:
  * {@snippet lang = java:
  * final Codec<int[], DoubleGene> codec = Codecs
- *     .ofVector(DoubleRange.of(0, 100), 100)
+ *     .ofVector(new DoubleRange(0, 100), 100)
  *     .map(Conversions::doubleToIntArray);
  *}
  *
@@ -252,7 +252,7 @@ public class Conversions {
 	 * every array element.
 	 * {@snippet lang = java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
-	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .ofVector(new DoubleRange(0, 100), 100)
 	 *     .map(Conversions.doubleToIntArray(v -> (int)Math.round(v)));
 	 *}
 	 *

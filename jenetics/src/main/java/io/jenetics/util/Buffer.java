@@ -31,7 +31,7 @@ import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
- * This class is a bounded buffer, which can store only a given amount of
+ * This class is a bounded buffer, which can store only a given number of
  * elements. If the buffer is full, it starts <em>overwriting</em> previously
  * inserted elements at the beginning of the buffer. A <em>full</em> buffer
  * neither blocks the insertion of new elements, nor does it throw an exception.

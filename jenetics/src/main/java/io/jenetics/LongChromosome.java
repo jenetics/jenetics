@@ -98,7 +98,6 @@ public class LongChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code long[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
 	 * {@snippet lang="java":
 	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);
@@ -123,7 +122,7 @@ public class LongChromosome
 	public LongChromosome map(final Function<? super long[], long[]> f) {
 		requireNonNull(f);
 
-		final var range = LongRange.of(_min, _max);
+		final var range = new LongRange(_min, _max);
 		final var genes = LongStream.of(f.apply(toArray()))
 			.mapToObj(v -> LongGene.of(v, range))
 			.collect(ISeq.toISeq());
@@ -194,7 +193,7 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		checkGeneRange(Stream.of(genes).map(LongGene::range));
-		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new LongChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -211,7 +210,7 @@ public class LongChromosome
 	public static LongChromosome of(final Iterable<LongGene> genes) {
 		final ISeq<LongGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(LongGene::range));
-		return new LongChromosome(values, IntRange.of(values.length()));
+		return new LongChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -258,7 +257,7 @@ public class LongChromosome
 		final long max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -363,7 +362,7 @@ public class LongChromosome
 
 	static LongChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = readLong(in);
 		final var max = readLong(in);
 

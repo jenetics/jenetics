@@ -142,7 +142,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final var domain = LongRange.of(min, max);
+		final var domain = new LongRange(min, max);
 
 		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
