@@ -28,6 +28,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
 	base
 	id("alljavadoc")
+	id("nl.littlerobots.version-catalog-update") version "1.0.0"
 }
 
 rootProject.version = providers.gradleProperty("jenetics.version").get()

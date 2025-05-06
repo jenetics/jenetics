@@ -50,7 +50,7 @@ dependencies {
 
 
 	testImplementation(libs.codemodel)
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.commons.numbers.combinatorics)
 	testImplementation(libs.commons.numbers.gamma)
 	testImplementation(libs.equalsverifier)
