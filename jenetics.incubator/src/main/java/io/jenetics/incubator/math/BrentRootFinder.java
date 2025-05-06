@@ -139,7 +139,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 			tol = 2.0*t*abs(b) + t;
 			err = m = 0.5*(c - b);
 
-			// Exact comparison with 0 is OK here.
+			// The exact comparison with 0 is OK here.
 			if (abs(m) > tol && nonZero(fb)) {
 				// See if bisection is forced.
 				if (abs(e) < tol || abs(fa) <= abs(fb)) {

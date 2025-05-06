@@ -114,7 +114,7 @@ public final class Gamma {
 			}
 			double result = num/den + 1.0;
 
-			// Apply correction if argument was not initially in (1,2)
+			// Apply correction if the argument was not initially in (1, 2)
 			if (x < 1.0) {
 				// Use identity gamma(z) = gamma(z+1)/z
 				// The variable "result" now holds gamma of the original y + 1
