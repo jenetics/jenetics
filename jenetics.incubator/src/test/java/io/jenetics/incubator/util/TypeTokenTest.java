@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.util;
 
-import org.testng.annotations.Test;
-
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

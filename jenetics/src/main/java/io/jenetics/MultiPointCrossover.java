@@ -89,7 +89,7 @@ public class MultiPointCrossover<
 	}
 
 	/**
-	 * Create a new crossover instance with default crossover probability of
+	 * Create a new crossover instance with a default crossover probability of
 	 * 0.05.
 	 *
 	 * @param n the number of crossover points.

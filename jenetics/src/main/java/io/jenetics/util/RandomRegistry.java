@@ -35,7 +35,7 @@ import java.util.random.RandomGeneratorFactory;
  * {@code RandomRegistry} is thread safe and is initialized with the
  * {@link RandomGeneratorFactory#getDefault()} PRNG.
  *
- * <h2>Setup the PRNG used for the evolution process</h2>
+ * <h2>Set up the PRNG used for the evolution process</h2>
  * There are several ways on how to set the {@link RandomGenerator} used during
  * the evolution process.
  * <p>
@@ -150,7 +150,7 @@ public final class RandomRegistry {
 	private RandomRegistry() {}
 
 	/**
-	 * Thread local wrapper for a random generator supplier (factory).
+	 * Thread-local wrapper for a random generator supplier (factory).
 	 *
 	 * @param <R> the type of the random generator
 	 */
@@ -237,9 +237,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(new Random(123), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(new Random(123), r -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -267,9 +265,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(RandomGeneratorFactory.getDefault(), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(RandomGeneratorFactory.getDefault(), r -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -413,13 +409,9 @@ public final class RandomRegistry {
 		);
 	}
 
-	@SuppressWarnings("removal")
 	private static final class Env {
 
-		private static final String defaultRandomGenerator =
-			java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<String>)Env::get
-			);
+		private static final String defaultRandomGenerator = get();
 
 		private static String get() {
 			return getConfigured()

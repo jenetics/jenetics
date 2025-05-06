@@ -27,7 +27,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.io.Serial;
 
 /**
- * This class implements the the
+ * This class implements the
  * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">Kahan
  * summation algorithm</a>, which significantly reduces the numerical error when
  * adding double values.
@@ -213,8 +213,7 @@ public final class DoubleAdder
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleAdder other &&
+		return obj instanceof DoubleAdder other &&
 			Double.compare(doubleValue(), other.doubleValue()) == 0;
 	}
 

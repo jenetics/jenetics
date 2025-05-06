@@ -212,7 +212,6 @@ public final class BitArray implements Copyable<BitArray> {
 	/**
 	 * Return the signum of the number, represented by this bit-array (-1 for
 	 * negative, 0 for zero, 1 for positive).
-	 *
 	 * {@snippet lang="java":
 	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final BigInteger i = bits.toBigInteger();
@@ -234,7 +233,6 @@ public final class BitArray implements Copyable<BitArray> {
 	 * Return the value of this bit-array as {@link BigInteger} value. This
 	 * bit-array can be recreated by the returned {@code BigInteger} value. But
 	 * only with the same {@link #length()} of {@code this} bit-array.
-	 *
 	 * {@snippet lang="java":
 	 * final var bits = BitArray.of("1111111010100110010110110010011110110101");
 	 * final var bint = bits.toBigInteger();
@@ -278,7 +276,6 @@ public final class BitArray implements Copyable<BitArray> {
 	/**
 	 * Return the {@code byte[]} array, which represents the state of the state
 	 * of {@code this} bit-array.
-	 *
 	 * {@snippet lang="java":
 	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final byte[] bytes = bits.toByteArray();
@@ -355,7 +352,6 @@ public final class BitArray implements Copyable<BitArray> {
 	 * represent the given {@link BigInteger}, as long as the {@code length}
 	 * is big enough to store the whole value. If the length is shorter than
 	 * required, the higher order bits will be truncated.
-	 *
 	 * {@snippet lang="java":
 	 * final var length = 2048;
 	 * final var bint = BigInteger.probablePrime(length, new Random());
@@ -447,7 +443,6 @@ public final class BitArray implements Copyable<BitArray> {
 	 * Creates a new bit-array from the given string {@code value}. The string,
 	 * created by the {@link #toString()} method, will be equals to the given
 	 * input {@code value}.
-	 *
 	 * {@snippet lang="java":
 	 * final var string = "11111110101001100101101100100111101101011101";
 	 * final var bits = BitArray.of(string);
@@ -532,7 +527,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * probability {@code p}.
 	 *
 	 * @param length the number of bits, the returned bit-array can store.
-	 * @param p the ones probability of the returned byte array.
+	 * @param p the one's probability of the returned byte array.
 	 * @return the new byte array.s
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */

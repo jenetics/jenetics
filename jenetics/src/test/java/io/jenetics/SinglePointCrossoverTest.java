@@ -22,15 +22,17 @@ package io.jenetics;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
 import static io.jenetics.util.RandomRegistry.using;
 
+import java.io.Serial;
 import java.util.Random;
 
+import io.jenetics.incubator.stat.Interval;
+import io.jenetics.util.LongRange;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.Range;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -41,6 +43,7 @@ import io.jenetics.util.MSeq;
 public class SinglePointCrossoverTest extends AltererTester {
 
 	private static final class ConstRandom extends Random {
+		@Serial
 		private static final long serialVersionUID = 1L;
 		private final int _value;
 
@@ -139,16 +142,16 @@ public class SinglePointCrossoverTest extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
+		final var domain = new LongRange(min, max);
 
-		final var histogram = Histogram.Builder.of(min, max, 10);
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover
 				.alter(population, 1)
 				.alterations();
-			histogram.accept(alterations);
+			histogram.add(alterations);
 			variance.accept(alterations);
 		}
 

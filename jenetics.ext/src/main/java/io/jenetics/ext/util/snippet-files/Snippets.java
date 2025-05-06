@@ -24,6 +24,7 @@ import static java.lang.Double.parseDouble;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -147,7 +148,7 @@ final class Snippets {
 			final var reader = new LineReader();
 			final var splitter = new LineSplitter(new Separator(',')); // @highlight
 			final List<String[]> rows;
-			try (Stream<String> lines = reader.read(new StringReader(csv))) {
+			try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
 				rows = lines
 					.map(splitter::split) // @highlight
 					.toList();
@@ -182,7 +183,7 @@ final class Snippets {
 			// and make it return only the specified columns in the defined order.
 			final var splitter = new LineSplitter(projection); // @highlight
 
-			try (Stream<String> lines = reader.read(new StringReader(csv))) {
+			try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
 				final var result = lines
 					.map(splitter::split) // @highlight
 					.map(Arrays::toString)

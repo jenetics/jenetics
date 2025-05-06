@@ -26,7 +26,9 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.SourceSetOutput
 import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.get
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -49,6 +51,10 @@ val SourceSetContainer.main: SourceSet
  */
 val Project.sourceSets: SourceSetContainer
 	get() = this.extensions.getByType(JavaPluginExtension::class.java).sourceSets
+
+fun Project.testClasses(projectName: String): SourceSetOutput {
+	return this.rootProject.project(projectName).sourceSets["test"].output
+}
 
 /**
  * Gets the module name of the project, as configured in the build file.

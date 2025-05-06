@@ -19,9 +19,12 @@
  */
 package io.jenetics.stat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.DoubleSummaryStatistics;
 import java.util.random.RandomGenerator;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.DoubleRange;
@@ -37,13 +40,63 @@ public class SamplersTest {
 		final var random = RandomGenerator.getDefault();
 		final var stat = new DoubleSummaryStatistics();
 
-		final var range = DoubleRange.of(10, 100);
+		final var range = new DoubleRange(10, 100);
 		for (int i = 0; i < 100000; ++i) {
 			final var value = dist.sample(random, range);
 			stat.accept(value);
 		}
 
 		//System.out.println(stat);
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearBoundaryMinValue(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+		final var sampler = Samplers.linear(0.0);
+
+		assertThat(sampler.sample(random, range))
+			.isEqualTo(range.min());
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearBoundaryMaxValue(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+		final var sampler = Samplers.linear(Math.nextDown(1.0));
+
+		assertThat(sampler.sample(random, range))
+			.isEqualTo(Math.nextDown(range.max()));
+	}
+
+	@Test(dataProvider = "ranges")
+	public void linearSamples(final DoubleRange range) {
+		final var random = RandomGenerator.getDefault();
+
+		double previous = 0;
+		for (int i = 0; i < 100_000; ++i) {
+			final var sampler = Samplers.linear(random.nextDouble());
+			final var sample = sampler.sample(random, range);
+
+			assertThat(sample).isNotEqualTo(previous);
+
+			assertThat(sample)
+				.isGreaterThanOrEqualTo(range.min())
+				.isLessThan(range.max());
+
+			previous = sample;
+		}
+	}
+
+	@DataProvider
+	public Object[][] ranges() {
+		return new Object[][] {
+			{new DoubleRange(0, 1)},
+			{new DoubleRange(1, 2)},
+			{new DoubleRange(1, 22)},
+			{new DoubleRange(10, 23)},
+			{new DoubleRange(-1, 2)},
+			{new DoubleRange(-110, -2)},
+			{new DoubleRange(-11, -5)}
+		};
 	}
 
 }

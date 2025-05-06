@@ -26,8 +26,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.incubator.stat.Interval;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
 
 /**
@@ -76,7 +77,7 @@ public abstract class MutatorTester extends AltererTester {
 		final long min = 0;
 		final long max = nallgenes;
 
-		final var histogram = Histogram.Builder.of(min, max, 10);
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final var variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
@@ -84,7 +85,7 @@ public abstract class MutatorTester extends AltererTester {
 				.alter(population.copy(), 1)
 				.alterations();
 
-			histogram.accept(alterations);
+			histogram.add(alterations);
 			variance.accept(alterations);
 		}
 

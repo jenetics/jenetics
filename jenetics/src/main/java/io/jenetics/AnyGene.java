@@ -34,10 +34,9 @@ import io.jenetics.util.MSeq;
 /**
  * {@code Gene} implementation, which allows creating genes without explicit
  * implementing the {@code Gene} interface.
- *
  * {@snippet lang="java":
  * class Main {
- *     // First monday of 2015.
+ *     // First Monday of 2015.
  *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
  *
  *     // Supplier of random 'LocalDate' objects. The implementation is responsible
@@ -111,8 +110,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof AnyGene<?> other &&
+		return obj instanceof AnyGene<?> other &&
 			Objects.equals(other._allele, _allele);
 	}
 

@@ -52,7 +52,7 @@ import io.jenetics.util.RandomRegistry;
  *     C2 = 987|345|3210
  * </pre>
  * Chromosome {@code C1} contains value 6 twice and misses value
- * 3. On the other side chromosome {@code C2} contains the value 3 twice and
+ * 3. On the other side chromosome {@code C2} contains value 3 twice and
  * misses value 6. We can observe that this crossover is equivalent
  * to the exchange of the values {@code 3 -> 6}, {@code 4 -> 5} and
  * {@code 5 -> 4}. To repair the two chromosomes, we have to apply this exchange

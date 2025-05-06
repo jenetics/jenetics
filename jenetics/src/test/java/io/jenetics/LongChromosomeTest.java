@@ -20,16 +20,21 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.incubator.stat.Histogram;
+import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.incubator.stat.Sampling;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -47,20 +52,29 @@ public class LongChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final long min = 0;
-		final long max = 10000000;
+		final long max = Integer.MAX_VALUE;
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = LongChromosome.of(min, max, 500);
-			for (var gene : chromosome) {
-				histogram.accept(gene.allele());
-			}
-		}
+		final var observation = new RunnableObservation(
+			Sampling.repeat(1_000, samples ->
+				LongChromosome.of(min, max, 500).stream()
+					.mapToDouble(LongGene::doubleValue)
+					.forEach(samples::add)
+			),
+			Histogram.Partition.of(min, max, 20)
+		);
+		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThatObservation(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(12345672).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")
@@ -77,13 +91,13 @@ public class LongChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{LongChromosome.of(0, 1000), IntRange.of(1)},
-			{LongChromosome.of(LongRange.of(0, 1000)), IntRange.of(1)},
-			{LongChromosome.of(0, 1000, 1), IntRange.of(1)},
-			{LongChromosome.of(0, 1000, 2), IntRange.of(2)},
-			{LongChromosome.of(0, 1000, 20), IntRange.of(20)},
-			{LongChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{LongChromosome.of(LongRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{LongChromosome.of(0, 1000), new IntRange(1)},
+			{LongChromosome.of(new LongRange(0, 1000)), new IntRange(1)},
+			{LongChromosome.of(0, 1000, 1), new IntRange(1)},
+			{LongChromosome.of(0, 1000, 2), new IntRange(2)},
+			{LongChromosome.of(0, 1000, 20), new IntRange(20)},
+			{LongChromosome.of(0, 1000, new IntRange(2, 10)), new IntRange(2, 10)},
+			{LongChromosome.of(new LongRange(0, 1000), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

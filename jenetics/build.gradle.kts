@@ -27,7 +27,6 @@ import io.jenetics.gradle.dsl.moduleName
  */
 plugins {
 	`java-library`
-	`java-test-fixtures`
 	`maven-publish`
 	alias(libs.plugins.jmh)
 }
@@ -44,11 +43,7 @@ dependencies {
 	testImplementation(libs.jpx)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
-	testImplementation(testFixtures(project(":jenetics")))
-
-	testFixturesApi(libs.assertj)
-	testFixturesApi(libs.commons.math)
-	testFixturesApi(libs.testng)
+	testImplementation(project(":jenetics.incubator"))
 
 	jmh(libs.prngine)
 }
