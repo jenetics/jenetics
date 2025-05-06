@@ -30,7 +30,7 @@ plugins {
 	id("alljavadoc")
 }
 
-rootProject.version = Jenetics.VERSION
+rootProject.version = providers.gradleProperty("jenetics.version").get()
 
 
 alljavadoc {
@@ -81,7 +81,7 @@ tasks.named<Wrapper>("wrapper") {
  */
 allprojects {
 	group =  Jenetics.GROUP
-	version = Jenetics.VERSION
+	version = providers.gradleProperty("jenetics.version").get()
 
 	repositories {
 		flatDir {
@@ -157,11 +157,11 @@ gradle.projectsEvaluated {
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
-		"Implementation-Version" to Jenetics.VERSION,
+		"Implementation-Version" to providers.gradleProperty("jenetics.version").get(),
 		"Implementation-URL" to Jenetics.URL,
 		"Implementation-Vendor" to Jenetics.NAME,
 		"ProjectName" to Jenetics.NAME,
-		"Version" to Jenetics.VERSION,
+		"Version" to providers.gradleProperty("jenetics.version").get(),
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
 		"Project-Version" to project.version,
@@ -246,7 +246,7 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
-val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+val identifier = "${Jenetics.ID}-${providers.gradleProperty("jenetics.version").get()}"
 
 /**
  * Setup of the Maven publishing.
