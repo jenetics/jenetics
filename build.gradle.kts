@@ -72,12 +72,12 @@ alljavadoc {
 
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.13"
+	gradleVersion = "8.14"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
 /**
- * Project configuration *before* the projects has been evaluated.
+ * Project configuration *before* the projects have been evaluated.
  */
 allprojects {
 	group =  Jenetics.GROUP
