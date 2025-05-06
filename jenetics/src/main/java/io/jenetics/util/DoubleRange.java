@@ -31,7 +31,7 @@ import java.util.Optional;
  * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.3
  * @since 3.2
  */
 public record DoubleRange(double min, double max) implements Serializable {

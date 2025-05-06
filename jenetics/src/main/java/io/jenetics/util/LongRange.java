@@ -32,7 +32,7 @@ import java.util.stream.LongStream;
  * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.3
  * @since 3.2
  */
 public record LongRange(long min, long max) implements Serializable {
