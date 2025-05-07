@@ -1,5 +1,4 @@
 [versions]
-
 assertj = "3.27.3"
 codemodel = "4.0.5"
 commons-csv = "1.14.0"
@@ -26,16 +25,14 @@ rxjava = "2.2.21"
 supercsv = "2.4.0"
 swagger-models = "2.2.30"
 swagger-parser = "2.1.26"
-testng = "7.10.2"
+testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
 [plugins]
-
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 
 [libraries]
-
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
