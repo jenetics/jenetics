@@ -82,7 +82,7 @@ tasks.named<Wrapper>("wrapper") {
  */
 allprojects {
 	group =  Jenetics.GROUP
-	version = providers.gradleProperty("jenetics.version").get()
+	version = rootProject.version
 
 	repositories {
 		flatDir {
@@ -107,7 +107,7 @@ subprojects {
 	plugins.withType<JavaPlugin> {
 
 		configure<JavaPluginExtension> {
-			modularity.inferModulePath.set(true)
+			modularity.inferModulePath = true
 
 			sourceCompatibility = JavaVersion.VERSION_21
 			targetCompatibility = JavaVersion.VERSION_21
@@ -122,7 +122,7 @@ subprojects {
 	}
 
 	tasks.withType<JavaCompile> {
-		modularity.inferModulePath.set(true)
+		modularity.inferModulePath = true
 
 		options.compilerArgs.add("-Xlint:${xlint()}")
 	}
@@ -158,11 +158,11 @@ gradle.projectsEvaluated {
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
-		"Implementation-Version" to providers.gradleProperty("jenetics.version").get(),
+		"Implementation-Version" to project.version,
 		"Implementation-URL" to Jenetics.URL,
 		"Implementation-Vendor" to Jenetics.NAME,
 		"ProjectName" to Jenetics.NAME,
-		"Version" to providers.gradleProperty("jenetics.version").get(),
+		"Version" to project.version,
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
 		"Project-Version" to project.version,
