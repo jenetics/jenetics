@@ -37,7 +37,7 @@ import java.util.stream.StreamSupport;
 /**
  * Preorder iterator which <em>recursively</em> traverses the object graph. It
  * also tracks already visited nodes to prevent infinite loops in the traversal.
- * The following code example shows how to recursively travers the properties of
+ * The following code example shows how to recursively traverse the properties of
  * a simple domain model:
  * {@snippet lang="java":
  * record Author(String forename, String surname) { }

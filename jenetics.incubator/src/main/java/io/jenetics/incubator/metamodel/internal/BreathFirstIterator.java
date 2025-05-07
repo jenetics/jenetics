@@ -37,7 +37,7 @@ import java.util.stream.StreamSupport;
 /**
  * Breath-first iterator which <em>recursively</em> traverses the object graph.
  * It also tracks already visited nodes to prevent infinite loops in the traversal.
- * The following code example shows how to recursively travers the properties of
+ * The following code example shows how to recursively traverse the properties of
  * a simple domain model:
  * {@snippet lang="java":
  * record Author(String forename, String surname) { }
@@ -87,7 +87,7 @@ public class BreathFirstIterator<S, T> implements Iterator<T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects, returned by this function are used for identifying
+	 * @param identity objects returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops
 	 */
 	public BreathFirstIterator(
@@ -154,7 +154,7 @@ public class BreathFirstIterator<S, T> implements Iterator<T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects, returned by this function are used for identifying
+	 * @param identity objects returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops
 	 * @return an <em>recursive</em> extractor function
 	 * @param <S> the source object type

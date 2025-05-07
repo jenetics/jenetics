@@ -10,7 +10,7 @@ public final class Splitter {
 	private final Quote quote = Quote.DEFAULT;
 	private final Separator separator = Separator.DEFAULT;
 
-	final class Quoted implements CharProcessor{
+	static final class Quoted implements CharProcessor{
 		@Override
 		public void process(char ch) {
 		}
