@@ -31,7 +31,6 @@ module io.jenetics.incubator {
 	requires java.desktop;
 	requires java.net.http;
 
-	requires org.apache.commons.math4.legacy;
 	requires org.apache.commons.statistics.distribution;
     requires org.apache.commons.numbers.gamma;
 	requires com.fasterxml.jackson.databind;

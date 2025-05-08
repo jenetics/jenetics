@@ -2,12 +2,11 @@
 assertj = "3.27.3"
 codemodel = "4.0.5"
 commons-csv = "1.14.0"
-commons-math = "3.6.1"
-commons-math4 = "4.0-beta1"
 commons-numbers-combinatorics = "1.2"
 commons-numbers-gamma = "1.2"
 commons-rng-sampling = "1.6"
 commons-rng-simple = "1.6"
+commons-statistics-descriptive = "1.1"
 commons-statistics-distribution = "1.1"
 equalsverifier = "4.0"
 guava = "33.4.8-jre"
@@ -37,12 +36,11 @@ version-catalog-update = { id = "nl.littlerobots.version-catalog-update", versio
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
-commons-math = { module = "org.apache.commons:commons-math3", version.ref = "commons-math" }
-commons-math4 = { module = "org.apache.commons:commons-math4-legacy", version.ref = "commons-math4" }
 commons-numbers-combinatorics = { module = "org.apache.commons:commons-numbers-combinatorics", version.ref = "commons-numbers-combinatorics" }
 commons-numbers-gamma = { module = "org.apache.commons:commons-numbers-gamma", version.ref = "commons-numbers-gamma" }
 commons-rng-sampling = { module = "org.apache.commons:commons-rng-sampling", version.ref = "commons-rng-sampling" }
 commons-rng-simple = { module = "org.apache.commons:commons-rng-simple", version.ref = "commons-rng-simple" }
+commons-statistics-descriptive = { module = "org.apache.commons:commons-statistics-descriptive", version.ref = "commons-statistics-descriptive" }
 commons-statistics-distribution = { module = "org.apache.commons:commons-statistics-distribution", version.ref = "commons-statistics-distribution" }
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
