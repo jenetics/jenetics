@@ -20,33 +20,18 @@
 package io.jenetics.incubator.metamodel.access;
 
 /**
- * Represents the <em>getter</em> function for <em>indexed</em> objects, e.g.,
- * array or {@code List} objects.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 7.2
- * @since 7.2
+ * @version 8.3
+ * @since 8.3
  */
-@FunctionalInterface
-public interface IndexedGetter {
+public interface Indexed<T> {
 
 	/**
-	 * Return the value from a given <em>indexed</em> {@code object} with the
-	 * given {@code index}.
+	 * Return the value at the given {@code index}.
 	 *
-	 * @param index the array/list index
+	 * @param index the value index
 	 * @return the value at the given {@code index}
 	 */
-	Object get(final int index);
-
-	/**
-	 * Currying this indexed getter object with the given index.
-	 *
-	 * @param index the currying index
-	 * @return the curried getter object
-	 */
-	default Getter curry(final int index) {
-		return () -> get(index);
-	}
+	T at(int index);
 
 }

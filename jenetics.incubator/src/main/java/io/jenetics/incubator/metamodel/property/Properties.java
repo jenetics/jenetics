@@ -115,10 +115,10 @@ public final class Properties {
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
-					pt.accessor().curry(enclosure).getter().get(),
+					pt.accessor().of(enclosure).getter().get(),
 					toRawType(description.type()),
 					pt.annotations().toList(),
-					pt.accessor().curry(enclosure)
+					pt.accessor().of(enclosure)
 				);
 
 				final Property property = switch (MetaModelType.of(pt.type())) {
@@ -144,7 +144,7 @@ public final class Properties {
 				final var i = new AtomicInteger(0);
 
 				final Stream<Object> values = StreamSupport.stream(
-					it.iterable().curry(enclosure).spliterator(),
+					it.iterable().of(enclosure).spliterator(),
 					false
 				);
 
@@ -159,7 +159,7 @@ public final class Properties {
 						value,
 						type,
 						it.annotations().toList(),
-						it.accessor().curry(value).curry(i.get())
+						it.accessor().of(value).at(i.get())
 					);
 
 					return new IndexProperty(param, i.getAndIncrement());
@@ -173,7 +173,7 @@ public final class Properties {
 				final var i = new AtomicInteger(0);
 
 				final Stream<Object> values = StreamSupport.stream(
-					ct.iterable().curry(enclosure).spliterator(),
+					ct.iterable().of(enclosure).spliterator(),
 					false
 				);
 
@@ -199,7 +199,7 @@ public final class Properties {
 					? root.path()
 					: root.path().append(description.path().element());
 
-				var value = ot.access().curry(enclosure).getter().get();
+				var value = ot.access().of(enclosure).getter().get();
 				if (value != null) {
 					final var param = new PropParam(
 						path.append(new Path.Index(0)),
@@ -207,7 +207,7 @@ public final class Properties {
 						value,
 						value.getClass(),
 						ot.annotations().toList(),
-						ot.access().curry(enclosure)
+						ot.access().of(enclosure)
 					);
 
 					yield Stream.of(new IndexProperty(param, 0));

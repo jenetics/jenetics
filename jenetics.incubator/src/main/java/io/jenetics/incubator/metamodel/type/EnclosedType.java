@@ -20,7 +20,7 @@
 package io.jenetics.incubator.metamodel.type;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
-import io.jenetics.incubator.metamodel.access.Carrier;
+import io.jenetics.incubator.metamodel.access.Carried;
 
 /**
  * An enclosed type is embedded in another type. This allows accessing (read
@@ -47,6 +47,6 @@ public sealed interface EnclosedType
 	 *
 	 * @return the access object for accessing (read and write) the value
 	 */
-	Carrier<Accessor> accessor();
+	Carried<Accessor> accessor();
 
 }

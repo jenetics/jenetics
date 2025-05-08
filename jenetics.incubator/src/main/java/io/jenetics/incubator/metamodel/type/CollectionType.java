@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import io.jenetics.incubator.metamodel.access.Carrier;
+import io.jenetics.incubator.metamodel.access.Carried;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -49,13 +49,13 @@ public sealed interface CollectionType
 	 *
 	 * @return the collection size
 	 */
-	Carrier<Size> size();
+	Carried<Size> size();
 
 	/**
 	 * The element iterable.
 	 *
 	 * @return the element iterable
 	 */
-	Carrier<Iterable<Object>> iterable();
+	Carried<Iterable<Object>> iterable();
 
 }

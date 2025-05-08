@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.Carrier;
+import io.jenetics.incubator.metamodel.access.Carried;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -64,7 +64,7 @@ public final class MapType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public Carrier<Size> size() {
+	public Carried<Size> size() {
 		return object -> () -> size(object);
 	}
 
@@ -75,7 +75,7 @@ public final class MapType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public Carrier<Iterable<Object>> iterable() {
+	public Carried<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 

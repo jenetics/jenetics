@@ -24,16 +24,20 @@ package io.jenetics.incubator.metamodel.access;
  * value.
  *
  * @param <T> the type of the carried value
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.3
+ * @since 8.3
  */
 @FunctionalInterface
-public interface Carrier<T> {
+public interface Carried<T> {
 
 	/**
-	 * Return an object with the <em>curried</em> {@code value}.
+	 * Return the value on a given carrier object.
 	 *
-	 * @param value the currying value
+	 * @param carrier the currying value
 	 * @return the curried value
 	 */
-	T curry(final Object value);
+	T of(final Object carrier);
 
 }
