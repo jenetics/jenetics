@@ -39,6 +39,12 @@ public interface IndexedSetter {
 	 */
 	void set(final int index, final Object value);
 
+	/**
+	 * Currying this indexed setter object with the given index.
+	 *
+	 * @param index the currying index
+	 * @return the curried setter object
+	 */
 	default Setter curry(final int index) {
 		return value -> set(index, value);
 	}

@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 import io.jenetics.incubator.metamodel.access.IndexedAccessor;
 import io.jenetics.incubator.metamodel.access.Size;
 
@@ -63,12 +63,12 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Size> size() {
+	public Carrier<Size> size() {
 		return object -> () -> size(object);
 	}
 
 	@Override
-	public Curryer<IndexedAccessor> accessor() {
+	public Carrier<IndexedAccessor> accessor() {
 		if (isMutable()) {
 			return object -> new IndexedAccessor.Writable(
 				index -> get(object, index),
@@ -115,7 +115,7 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Iterable<Object>> iterable() {
+	public Carrier<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 

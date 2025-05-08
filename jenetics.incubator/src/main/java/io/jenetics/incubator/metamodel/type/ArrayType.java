@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Array;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 import io.jenetics.incubator.metamodel.access.IndexedAccessor;
 import io.jenetics.incubator.metamodel.access.Size;
 
@@ -58,12 +58,12 @@ public final class ArrayType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Size> size() {
+	public Carrier<Size> size() {
 		return object -> () -> Array.getLength(object);
 	}
 
 	@Override
-	public Curryer<IndexedAccessor.Writable> accessor() {
+	public Carrier<IndexedAccessor.Writable> accessor() {
 		return object -> new IndexedAccessor.Writable(
 			index -> Array.get(object, index),
 			(index, value) -> Array.set(object, index, value)

@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 
 /**
  * Trait which represents an {@code Optional} type.
@@ -52,7 +52,7 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 		return componentType;
 	}
 
-	public Curryer<Accessor.Readonly> access() {
+	public Carrier<Accessor.Readonly> access() {
 		return object -> new Accessor.Readonly(() -> get(object));
 	}
 

@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 
 /**
  * Represents a <em>property</em>.
@@ -84,7 +84,7 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Accessor> accessor() {
+	public Carrier<Accessor> accessor() {
 		return setter != null
 			? object -> new Accessor.Writable(
 					toGetter(getter).curry(object),

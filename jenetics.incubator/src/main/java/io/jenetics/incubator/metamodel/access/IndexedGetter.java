@@ -39,6 +39,12 @@ public interface IndexedGetter {
 	 */
 	Object get(final int index);
 
+	/**
+	 * Currying this indexed getter object with the given index.
+	 *
+	 * @param index the currying index
+	 * @return the curried getter object
+	 */
 	default Getter curry(final int index) {
 		return () -> get(index);
 	}

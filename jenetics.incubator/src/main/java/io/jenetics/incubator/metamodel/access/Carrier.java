@@ -19,7 +19,21 @@
  */
 package io.jenetics.incubator.metamodel.access;
 
+/**
+ * Functional interface which <em>carries</em> an additional function parameter
+ * value.
+ *
+ * @param <T> the type of the carried value
+ */
 @FunctionalInterface
-public interface Curryer<T> {
+public interface Carrier<T> {
+
+	/**
+	 * Return an object with the <em>curried</em> {@code value}.
+	 *
+	 * @param value the currying value
+	 * @return the curried value
+	 */
 	T curry(final Object value);
+
 }

@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 import io.jenetics.incubator.metamodel.access.Getter;
 import io.jenetics.incubator.metamodel.access.Setter;
 
@@ -40,12 +40,12 @@ public final class Methods {
 	private Methods() {
 	}
 
-	public static Curryer<Getter> toGetter(final Method method) {
+	public static Carrier<Getter> toGetter(final Method method) {
 		requireNonNull(method);
 		return object -> () -> invoke(method, object);
 	}
 
-	public static Curryer<Setter> toSetter(final Method method) {
+	public static Carrier<Setter> toSetter(final Method method) {
 		return method != null
 			? object -> value -> invoke(method, object, value)
 			: null;

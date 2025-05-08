@@ -22,7 +22,7 @@ package io.jenetics.incubator.metamodel.type;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carrier;
 import io.jenetics.incubator.metamodel.access.IndexedAccessor;
 import io.jenetics.incubator.metamodel.access.IndexedGetter;
 
@@ -44,10 +44,10 @@ public sealed interface IndexedType
 	 *
 	 * @return the element access object
 	 */
-	Curryer<? extends IndexedAccessor> accessor();
+	Carrier<? extends IndexedAccessor> accessor();
 
 	@Override
-	default Curryer<Iterable<Object>> iterable() {
+	default Carrier<Iterable<Object>> iterable() {
 		return collection -> () -> new Iterator<>() {
 			private final IndexedGetter getter = accessor().curry(collection).getter();
 			private final int size = size().curry(collection).get();
