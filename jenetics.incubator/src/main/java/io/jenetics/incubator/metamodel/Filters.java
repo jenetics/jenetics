@@ -172,7 +172,7 @@ public final class Filters {
 	 * @param extractor1 the first extractor function
 	 * @param extractor2 the second extractor function
 	 * @param extractor3 the third extractor function
-	 * @param extractor4 the forth extractor function
+	 * @param extractor4 the fourth extractor function
 	 * @param filter the {@code Predicate} used for testing the key
 	 * @return a predicate for testing a key
 	 * @param <A> the type of the object to test with the given filter

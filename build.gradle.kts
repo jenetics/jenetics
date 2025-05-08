@@ -193,7 +193,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.11"
+		toolVersion = libs.jacoco.agent.get().version.toString()
 	}
 
 	project.tasks {
@@ -343,7 +343,7 @@ fun setupPublishing(project: Project) {
 			}
 		}
 
-		// Exclude test fixtures from publication, as we use it only internally
+		// Exclude test fixtures from publication, as we use them only internally
 		plugins.withId("org.gradle.java-test-fixtures") {
 			val component = components["java"] as AdhocComponentWithVariants
 			component.withVariantsFromConfiguration(configurations["testFixturesApiElements"]) { skip() }

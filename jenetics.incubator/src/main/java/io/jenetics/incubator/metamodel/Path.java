@@ -346,8 +346,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	}
 
 	/**
-	 * Create a new property path form the given string {@code value}. A
-	 * valid path consists of a names, which must be a valid Java identifier,
+	 * Create a new property path from the given string {@code value}. A
+	 * valid path consists of a name, which must be a valid Java identifier,
 	 * and indexes, separated by a dot, '.'. A valid path with three elements
 	 * will look like this:
 	 * {@snippet lang="java":

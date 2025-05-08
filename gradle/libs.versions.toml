@@ -1,5 +1,4 @@
 [versions]
-
 assertj = "3.27.3"
 codemodel = "4.0.5"
 commons-csv = "1.14.0"
@@ -13,6 +12,7 @@ commons-statistics-distribution = "1.1"
 equalsverifier = "4.0"
 guava = "33.4.8-jre"
 jackson = "2.19.0"
+jacoco-agent = "0.8.13"
 javacsv = "2.0"
 jexl = "3.5.0"
 jmh = "0.7.3"
@@ -26,16 +26,14 @@ rxjava = "2.2.21"
 supercsv = "2.4.0"
 swagger-models = "2.2.30"
 swagger-parser = "2.1.26"
-testng = "7.10.2"
+testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
 [plugins]
-
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 
 [libraries]
-
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
@@ -50,6 +48,7 @@ equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
 javacsv = { module = "net.sourceforge.javacsv:javacsv", version.ref = "javacsv" }
 jexl = { module = "org.apache.commons:commons-jexl3", version.ref = "jexl" }
 jpx = { module = "io.jenetics:jpx", version.ref = "jpx" }
