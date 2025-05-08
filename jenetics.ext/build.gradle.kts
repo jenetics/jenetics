@@ -40,7 +40,6 @@ dependencies {
 	api(project(":jenetics"))
 
 	testImplementation(libs.assertj.core)
-	testImplementation(libs.commons.math)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.testng)
 	testImplementation(project.testClasses(":jenetics"))

@@ -42,7 +42,6 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
-	implementation(libs.commons.math4)
 	implementation(libs.commons.statistics.distribution)
 	implementation(libs.jackson.annotations)
 	implementation(libs.swagger.parser)

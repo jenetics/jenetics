@@ -36,9 +36,9 @@ description = "Jenetics - Java Genetic Algorithm Library"
 
 dependencies {
 	testImplementation(libs.assertj.core)
-	testImplementation(libs.commons.math)
 	testImplementation(libs.commons.rng.sampling)
 	testImplementation(libs.commons.rng.simple)
+	testImplementation(libs.commons.statistics.descriptive)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.jpx)
 	testImplementation(libs.prngine)
