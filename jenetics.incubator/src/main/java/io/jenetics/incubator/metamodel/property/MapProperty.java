@@ -31,7 +31,10 @@ import java.util.Map;
  * @version 8.3
  * @since 8.3
  */
-public final class MapProperty extends SizedProperty {
+public final class MapProperty
+	extends CollectionProperty
+	implements ConcreteProperty
+{
 
 	MapProperty(final PropParam param) {
 		super(param);

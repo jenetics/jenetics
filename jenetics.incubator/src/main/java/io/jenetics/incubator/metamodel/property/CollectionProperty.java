@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * Base class for properties which consists of 0 to n objects.
  *
@@ -26,9 +29,40 @@ package io.jenetics.incubator.metamodel.property;
  * @version 8.3
  * @since 8.3
  */
-public sealed interface CollectionProperty
-	extends EnclosingProperty, Iterable<Object>
-	permits IndexedProperty, SetProperty
+public abstract sealed class CollectionProperty
+	extends AbstractProperty
+	implements EnclosingProperty, Iterable<Object>
+	permits IndexedProperty, SetProperty, MapProperty
 {
+
+	CollectionProperty(final PropParam param) {
+		super(param);
+	}
+
+	@Override
+	public Object read() {
+		return param.accessor().getter().get();
+	}
+
+	/**
+	 * Return the property values.
+	 *
+	 * @return the property values
+	 */
+	public Stream<Object> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
+	}
+
+	/**
+	 * Return the size of the property.
+	 *
+	 * @return the size of the property
+	 */
+	//abstract int size();
 
 }

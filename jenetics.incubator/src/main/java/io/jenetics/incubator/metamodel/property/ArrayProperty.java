@@ -32,8 +32,8 @@ import java.util.Iterator;
  * @since 7.2
  */
 public final class ArrayProperty
-	extends AbstractProperty
-	implements IndexedProperty
+	extends IndexedProperty
+	implements ConcreteProperty
 {
 
 	ArrayProperty(final PropParam param) {

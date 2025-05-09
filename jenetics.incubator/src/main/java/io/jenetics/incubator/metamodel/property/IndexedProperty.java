@@ -30,42 +30,47 @@ import java.util.NoSuchElementException;
  * @version 7.2
  * @since 7.2
  */
-public sealed interface IndexedProperty
+public abstract sealed class IndexedProperty
 	extends CollectionProperty
-	permits OptionalProperty, ArrayProperty, ListProperty
+	permits ArrayProperty, ListProperty
 {
+
+	IndexedProperty(PropParam param) {
+		super(param);
+	}
 
 	/**
 	 * Return the property value at the given {@code index}.
 	 *
 	 * @param index the property index
 	 * @return the property value at the given index
+	 * @return the property value at the given index
 	 */
-	Object get(final int index);
+	abstract Object get(final int index);
 
-	@Override
-	default Iterator<Object> iterator() {
-		return new Iterator<>() {
-			private final int size = size();
-
-			private int cursor = 0;
-
-			@Override
-			public boolean hasNext() {
-				return cursor != size;
-			}
-
-			@Override
-			public Object next() {
-				final int i = cursor;
-				if (cursor >= size) {
-					throw new NoSuchElementException();
-				}
-
-				cursor = i + 1;
-				return get(i);
-			}
-		};
-	}
+//	@Override
+//	default Iterator<Object> iterator() {
+//		return new Iterator<>() {
+//			private final int size = size();
+//
+//			private int cursor = 0;
+//
+//			@Override
+//			public boolean hasNext() {
+//				return cursor != size;
+//			}
+//
+//			@Override
+//			public Object next() {
+//				final int i = cursor;
+//				if (cursor >= size) {
+//					throw new NoSuchElementException();
+//				}
+//
+//				cursor = i + 1;
+//				return get(i);
+//			}
+//		};
+//	}
 
 }

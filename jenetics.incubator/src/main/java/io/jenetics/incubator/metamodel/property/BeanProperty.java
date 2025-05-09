@@ -26,7 +26,10 @@ package io.jenetics.incubator.metamodel.property;
  * @version 8.0
  * @since 8.0
  */
-public final class BeanProperty extends StructProperty {
+public final class BeanProperty
+	extends StructProperty
+	implements ConcreteProperty
+{
 
 	BeanProperty(final PropParam param) {
 		super(param);

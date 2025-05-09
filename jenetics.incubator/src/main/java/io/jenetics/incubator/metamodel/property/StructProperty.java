@@ -19,13 +19,11 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import static java.util.Objects.requireNonNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
@@ -36,21 +34,10 @@ import io.jenetics.incubator.metamodel.type.StructType;
  * @since 8.0
  */
 public sealed abstract class StructProperty
-	extends SimpleProperty
+	extends AbstractProperty
+	implements Property
 	permits BeanProperty, RecordProperty
 {
-
-	/**
-	 * The components of a struct property.
-	 *
-	 * @param name the property name
-	 * @param value the property value
-	 */
-	public record Component(String name, Object value) {
-		public Component {
-			requireNonNull(name);
-		}
-	}
 
 	StructProperty(final PropParam param) {
 		super(param);
@@ -61,10 +48,10 @@ public sealed abstract class StructProperty
 	 *
 	 * @return the struct components
 	 */
-	public Stream<Component> components() {
-		return MetaModelType.of(type()) instanceof StructType st
-			? st.components().map(component -> new Component(
-					component.name(),
+	public Stream<ComponentProperty> components() {
+		return ModelType.of(type()) instanceof StructType st
+			? st.components().map(component -> new ComponentProperty(
+					//component.name(),
 					null
 					//read(component.getter())
 				))

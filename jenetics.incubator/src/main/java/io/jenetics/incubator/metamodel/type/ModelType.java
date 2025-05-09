@@ -41,7 +41,7 @@ import java.util.stream.Stream;
  * @version 8.0
  * @since 8.0
  */
-public sealed interface MetaModelType
+public sealed interface ModelType
 	permits ConcreteType, ElementType, EnclosedType, EnclosingType, StructType
 {
 

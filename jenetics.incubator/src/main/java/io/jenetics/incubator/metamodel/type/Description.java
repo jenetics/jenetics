@@ -30,7 +30,7 @@ import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 
 /**
- * Adds path information to a {@link MetaModelType}.
+ * Adds path information to a {@link ModelType}.
  * This class contains methods for extracting the <em>static</em> bean property
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
@@ -59,7 +59,7 @@ public record Description(
 	Path path,
 	Type type,
 	Type enclosure,
-	MetaModelType model
+	ModelType model
 ) {
 
 	public Description {
@@ -100,7 +100,7 @@ public record Description(
 			return Stream.empty();
 		}
 
-		return switch (MetaModelType.of(type.value())) {
+		return switch (ModelType.of(type.value())) {
 			case ElementType t -> Stream.empty();
 			case StructType t -> t.components().map(p -> new Description(
 				type.path().append(p.name()),

@@ -19,13 +19,8 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import static java.util.Objects.requireNonNull;
-
-import java.lang.annotation.Annotation;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.access.Writer;
 
@@ -36,45 +31,13 @@ import io.jenetics.incubator.metamodel.access.Writer;
  * @version 7.2
  * @since 7.2
  */
-public sealed class SimpleProperty
-	implements Property
-	permits IndexProperty, StructProperty
+public final class ElementProperty
+	extends AbstractProperty
+	implements Property, ConcreteProperty
 {
-	private final PropParam param;
-
-	SimpleProperty(final PropParam param) {
-        this.param = requireNonNull(param);
+	ElementProperty(final PropParam param) {
+        super(param);
     }
-
-	@Override
-	public Path path() {
-		return param.path();
-	}
-
-	@Override
-	public Object enclosure() {
-		return param.enclosure();
-	}
-
-	@Override
-	public Object value() {
-		return param.value();
-	}
-
-	@Override
-	public Class<?> type() {
-		return param.type();
-	}
-
-	@Override
-	public Stream<Annotation> annotations() {
-		return param.annotations().stream();
-	}
-
-	@Override
-	public Object read() {
-		return param.accessor().getter().get();
-	}
 
 	@Override
 	public Optional<Writer> writer() {

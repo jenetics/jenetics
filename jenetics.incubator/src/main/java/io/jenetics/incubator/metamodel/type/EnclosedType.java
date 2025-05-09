@@ -31,8 +31,8 @@ import io.jenetics.incubator.metamodel.access.Carried;
  * @since 8.3
  */
 public sealed interface EnclosedType
-	extends MetaModelType
-	permits PropertyType, IndexType
+	extends ModelType
+	permits ComponentType, IndexType
 {
 
 	/**
@@ -40,7 +40,7 @@ public sealed interface EnclosedType
 	 *
 	 * @return the enclosing structure type of the property
 	 */
-	MetaModelType enclosure();
+	ModelType enclosure();
 
 	/**
 	 * Return the access object for accessing (read and write) the value.

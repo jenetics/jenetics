@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @since 8.0
  */
 public sealed interface StructType
-	extends MetaModelType
+	extends ModelType
 	permits BeanType, RecordType
 {
 
@@ -38,6 +38,6 @@ public sealed interface StructType
 	 *
 	 * @return the record components of {@code this} struct trait
 	 */
-	Stream<PropertyType> components();
+	Stream<ComponentType> components();
 
 }

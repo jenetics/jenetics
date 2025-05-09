@@ -24,6 +24,7 @@ package io.jenetics.incubator.metamodel.access;
  * @version 8.3
  * @since 8.3
  */
+@FunctionalInterface
 public interface Indexed<T> {
 
 	/**

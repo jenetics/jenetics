@@ -26,7 +26,10 @@ package io.jenetics.incubator.metamodel.property;
  * @version 7.2
  * @since 7.2
  */
-public final class IndexProperty extends SimpleProperty {
+public final class IndexProperty
+	extends AbstractProperty
+	implements EnclosedProperty, ConcreteProperty
+{
 
     private final int index;
 

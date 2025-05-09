@@ -40,7 +40,7 @@ import io.jenetics.incubator.metamodel.access.Carried;
  * @version 8.3
  * @since 8.3
  */
-public final class PropertyType implements EnclosedType, ConcreteType {
+public final class ComponentType implements EnclosedType, ConcreteType {
 	private final String name;
 	private final StructType enclosure;
 	private final Type type;
@@ -48,7 +48,7 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 	private final Method setter;
 	private final List<Annotation> annotations;
 
-	PropertyType(
+	ComponentType(
 		final String name,
 		final StructType enclosure,
 		final Type type,
@@ -107,7 +107,7 @@ public final class PropertyType implements EnclosedType, ConcreteType {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof PropertyType pt &&
+		return obj instanceof ComponentType pt &&
 			pt.name.equals(name) &&
 			pt.enclosure.equals(enclosure) &&
 			pt.type.equals(type);

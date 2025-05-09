@@ -43,9 +43,9 @@ import io.jenetics.incubator.metamodel.type.IndexType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.ListType;
 import io.jenetics.incubator.metamodel.type.MapType;
-import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.OptionalType;
-import io.jenetics.incubator.metamodel.type.PropertyType;
+import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.RecordType;
 import io.jenetics.incubator.metamodel.type.SetType;
 
@@ -111,7 +111,7 @@ public final class Properties {
 		final var enclosure = root.value();
 
 		return switch (description.model()) {
-			case PropertyType pt -> {
+			case ComponentType pt -> {
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
@@ -121,8 +121,8 @@ public final class Properties {
 					pt.accessor().of(enclosure)
 				);
 
-				final Property property = switch (MetaModelType.of(pt.type())) {
-					case ElementType t -> new SimpleProperty(param);
+				final Property property = switch (ModelType.of(pt.type())) {
+					case ElementType t -> new ElementProperty(param);
 					case RecordType t -> new RecordProperty(param);
 					case BeanType t -> new BeanProperty(param);
 					case OptionalType t -> new OptionalProperty(param);
@@ -131,7 +131,7 @@ public final class Properties {
 					case SetType t -> new SetProperty(param);
 					case MapType t -> new MapProperty(param);
 					case IndexType t -> new IndexProperty(param, t.index());
-					case PropertyType t -> new SimpleProperty(param);
+					case ComponentType t -> new ElementProperty(param);
 				};
 
 				yield Stream.of(property);
@@ -191,7 +191,7 @@ public final class Properties {
 						new Accessor.Readonly(() -> value)
 					);
 
-					return new SimpleProperty(param);
+					return new ElementProperty(param);
 				});
 			}
 			case OptionalType ot -> {

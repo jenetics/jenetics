@@ -32,7 +32,7 @@ import java.util.Objects;
  * @version 8.0
  * @since 8.0
  */
-public final class ElementType implements MetaModelType, ConcreteType {
+public final class ElementType implements ModelType, ConcreteType {
 	private final Class<?> type;
 
 	ElementType(Class<?> type) {

@@ -32,7 +32,10 @@ import java.util.stream.Stream;
  * @version 7.2
  * @since 7.2
  */
-public final class ListProperty extends AbstractProperty implements IndexedProperty {
+public final class ListProperty
+	extends IndexedProperty
+	implements ConcreteProperty
+{
 
 	ListProperty(final PropParam param) {
 		super(param);
