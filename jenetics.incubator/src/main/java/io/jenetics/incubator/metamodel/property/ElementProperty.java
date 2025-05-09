@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.access.Writer;
+import io.jenetics.incubator.metamodel.type.ElementType;
 
 /**
  * Represents a simple property value.
@@ -38,6 +39,11 @@ public final class ElementProperty
 	ElementProperty(final PropParam param) {
         super(param);
     }
+
+	@Override
+	public ElementType type() {
+		return (ElementType)param.type();
+	}
 
 	@Override
 	public Optional<Writer> writer() {

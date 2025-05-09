@@ -19,9 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.stream.Stream;
+import java.util.List;
 
 import io.jenetics.incubator.metamodel.type.StructType;
 
@@ -32,37 +30,26 @@ import io.jenetics.incubator.metamodel.type.StructType;
  * @version 8.0
  * @since 8.0
  */
-public sealed abstract class StructProperty
-	extends PropertyDelegates
-	implements Property
+public sealed interface StructProperty
+	extends Property
 	permits BeanProperty, RecordProperty
 {
 
-	StructProperty(final PropParam param) {
-		super(param);
-	}
+	@Override
+	StructType type();
 
 	/**
 	 * Returns the components of the property.
 	 *
 	 * @return the struct components
 	 */
-	public Stream<ComponentProperty> components() {
-		return type() instanceof StructType st
-			? st.components().map(component -> new ComponentProperty(
-					//component.name(),
-					null
-					//read(component.getter())
-				))
-			: Stream.empty();
-	}
-
-	private Object read(final Method method) {
-		try {
-			return value() != null ? method.invoke(value()) : null;
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
-		}
+	default List<ComponentProperty> components() {
+		/*
+		type().components().stream()
+			.map(c -> c.accessor().of(read()).get())
+			.map(c -> new ComponentProperty())
+		 */
+		return List.of();
 	}
 
 }

@@ -22,7 +22,6 @@ package io.jenetics.incubator.metamodel.type;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Type;
-import java.util.Objects;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.access.Carried;
@@ -36,13 +35,11 @@ import io.jenetics.incubator.metamodel.access.Carried;
  */
 public final class IndexType implements EnclosedType, ConcreteType {
 	private final int index;
-	private final IndexedType enclosure;
-	private final Type type;
+	private final EnclosingType enclosure;
 
-	IndexType(int index, IndexedType enclosure, Type type) {
+	public IndexType(int index, EnclosingType enclosure) {
 		this.index = index;
 		this.enclosure = requireNonNull(enclosure);
-		this.type = requireNonNull(type);
 	}
 
 	/**
@@ -55,31 +52,22 @@ public final class IndexType implements EnclosedType, ConcreteType {
 	}
 
 	@Override
-	public IndexedType enclosure() {
+	public EnclosingType enclosure() {
 		return enclosure;
 	}
 
 	@Override
 	public Type type() {
-		return type;
+		return enclosure.type();
 	}
 
 	@Override
 	public Carried<Accessor> accessor() {
-		return object -> enclosure.accessor().of(object).at(index);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(index, enclosure, type);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof IndexType it &&
-			it.index == index &&
-			it.enclosure.equals(enclosure) &&
-			it.type.equals(type);
+		return switch (enclosure) {
+			case IndexedType ct -> object -> ct.accessor().of(object).at(index);
+			case OptionalType ot -> object -> ot.access().of(object);
+			default -> throw new IllegalArgumentException();
+		};
 	}
 
 	@Override
@@ -87,7 +75,7 @@ public final class IndexType implements EnclosedType, ConcreteType {
 		return "IndexType[index=%d, enclosure=%s, type=%s]".formatted(
 			index,
 			enclosure,
-			type.getTypeName()
+			type().getTypeName()
 		);
 	}
 

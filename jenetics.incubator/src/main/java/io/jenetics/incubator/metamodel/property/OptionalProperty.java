@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import io.jenetics.incubator.metamodel.type.OptionalType;
+
 /**
  * Represents an optional property.
  *
@@ -39,6 +41,11 @@ public final class OptionalProperty
 		super(param);
 	}
 
+	@Override
+	public OptionalType type() {
+		return (OptionalType)param.type();
+	}
+
 	/**
 	 * Return the optional value as {@code Optional} object.
 	 *
@@ -47,11 +54,6 @@ public final class OptionalProperty
 	@SuppressWarnings("unchecked")
 	public Optional<Object> optional() {
 		return (Optional<Object>)value();
-	}
-
-	@Override
-	public int size() {
-		return optional().isPresent() ? 1 : 0;
 	}
 
 	//@Override
@@ -72,6 +74,6 @@ public final class OptionalProperty
 
 	@Override
 	public String toString() {
-		return Properties.toString(OptionalProperty.class.getSimpleName(), this);
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 }

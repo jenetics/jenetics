@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.type.ModelType;
+
 /**
  * An enclosed property is embedded in another property.
  *
@@ -30,4 +33,14 @@ public sealed interface EnclosedProperty
 	extends Property
 	permits ComponentProperty, IndexProperty
 {
+
+	ModelType enclosureType();
+
+	/**
+	 * Return the access object for accessing (read and write) the value.
+	 *
+	 * @return the access object for accessing (read and write) the value
+	 */
+	Accessor accessor();
+
 }

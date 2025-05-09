@@ -31,11 +31,4 @@ public sealed interface EnclosingProperty
 	permits CollectionProperty, OptionalProperty
 {
 
-	/**
-	 * Return the size of the property.
-	 *
-	 * @return the size of the property
-	 */
-	int size();
-
 }

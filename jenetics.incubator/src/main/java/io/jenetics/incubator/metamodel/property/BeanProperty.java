@@ -19,6 +19,11 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.metamodel.type.BeanType;
+
 /**
  * Represents a <em>classical</em> bean property.
  *
@@ -27,12 +32,22 @@ package io.jenetics.incubator.metamodel.property;
  * @since 8.0
  */
 public final class BeanProperty
-	extends StructProperty
-	implements ConcreteProperty
+	extends PropertyDelegates
+	implements StructProperty, ConcreteProperty
 {
 
 	BeanProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public BeanType type() {
+		return (BeanType)param.type();
+	}
+
+	@Override
+	public List<ComponentProperty> components() {
+		return List.of();
 	}
 
 	@Override

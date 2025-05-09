@@ -48,6 +48,7 @@ import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.OptionalType;
 import io.jenetics.incubator.metamodel.type.RecordType;
 import io.jenetics.incubator.metamodel.type.SetType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -126,9 +127,12 @@ public final class Properties {
 				final Property property = switch (modelType) {
 					case ArrayType t -> new ArrayProperty(param);
 					case BeanType t -> new BeanProperty(param);
-					case ComponentType t -> new ElementProperty(param);
+					case ComponentType t -> new ComponentProperty(
+						param,
+						(StructType)ModelType.of(enclosure.getClass())
+					);
 					case ElementType t -> new ElementProperty(param);
-					case IndexType t -> new IndexProperty(param, t.index());
+					case IndexType t -> new IndexProperty(param, t);
 					case ListType t -> new ListProperty(param);
 					case MapType t -> new MapProperty(param);
 					case OptionalType t -> new OptionalProperty(param);
@@ -155,16 +159,18 @@ public final class Properties {
 						? value.getClass()
 						: toRawType(it.type());
 
+					final int index = i.getAndIncrement();
+
 					final var param = new PropParam(
-						path.append(new Path.Index(i.get())),
+						path.append(new Path.Index(index)),
 						enclosure,
 						value,
 						ModelType.of(type),
 						it.annotations().toList(),
-						it.accessor().of(value).at(i.get())
+						it.accessor().of(value).at(index)
 					);
 
-					return new IndexProperty(param, i.getAndIncrement());
+					return new IndexProperty(param, new IndexType(index, it));
 				});
 			}
 			case CollectionType ct -> {
@@ -212,7 +218,7 @@ public final class Properties {
 						ot.access().of(enclosure)
 					);
 
-					yield Stream.of(new IndexProperty(param, 0));
+					yield Stream.of(new IndexProperty(param, new IndexType(0, ot)));
 				} else {
 					yield Stream.empty();
 				}

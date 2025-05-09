@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.metamodel.type.ListType;
+
 /**
  * Represents a list property.
  *
@@ -33,12 +35,17 @@ import java.util.stream.Stream;
  * @since 7.2
  */
 public final class ListProperty
-	extends IndexedProperty
-	implements ConcreteProperty
+	extends PropertyDelegates
+	implements IndexedProperty, ConcreteProperty
 {
 
 	ListProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public ListType type() {
+		return (ListType)param.type();
 	}
 
 	/**
@@ -76,7 +83,7 @@ public final class ListProperty
 
 	@Override
 	public String toString() {
-		return Properties.toString(ListProperty.class.getSimpleName(), this);
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

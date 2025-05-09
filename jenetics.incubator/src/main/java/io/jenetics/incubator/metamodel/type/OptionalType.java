@@ -57,11 +57,19 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 	}
 
 	private Object get(Object object) {
-		return object instanceof Optional<?> optional
+		final var result = object instanceof Optional<?> optional
 			? optional.orElse(null)
 			: raise(new IllegalArgumentException("Not an Optional: " + object));
+
+		if (result != null && !componentType.isAssignableFrom(result.getClass())) {
+			throw new IllegalArgumentException(
+				"Optional value is not of type " + componentType + ": " + result
+			);
+		}
+		return result;
 	}
 
+	/*
 	@Override
 	public int hashCode() {
 		return Objects.hash(componentType);
@@ -72,6 +80,7 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 		return obj instanceof OptionalType ot &&
 			componentType.equals(ot.componentType);
 	}
+	 */
 
 	@Override
 	public String toString() {

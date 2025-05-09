@@ -19,6 +19,14 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.type.EnclosingType;
+import io.jenetics.incubator.metamodel.type.IndexType;
+import io.jenetics.incubator.metamodel.type.IndexedType;
+import io.jenetics.incubator.metamodel.type.ModelType;
+
 /**
  * This property represents a single element of an {@link IndexedProperty}.
  *
@@ -31,11 +39,16 @@ public final class IndexProperty
 	implements EnclosedProperty, ConcreteProperty
 {
 
-    private final int index;
+    private final IndexType indexType;
 
-	IndexProperty(final PropParam param, final int index) {
+	IndexProperty(final PropParam param, final IndexType indexType) {
 		super(param);
-		this.index = index;
+		this.indexType = requireNonNull(indexType);
+	}
+
+	@Override
+	public EnclosingType enclosureType() {
+		return indexType.enclosure();
 	}
 
 	/**
@@ -43,13 +56,18 @@ public final class IndexProperty
 	 *
 	 * @return the actual index of the property
 	 */
-    public int index() {
-        return index;
+    public IndexType indexType() {
+        return indexType;
     }
 
 	@Override
+	public Accessor accessor() {
+		return null; //indexType.enclosure().accessor().of(read()).at(indexType().index());
+	}
+
+	@Override
 	public String toString() {
-		return Properties.toString(IndexProperty.class.getSimpleName(), this);
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

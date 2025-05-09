@@ -102,10 +102,11 @@ public record Description(
 
 		return switch (ModelType.of(type.value())) {
 			case ElementType t -> Stream.empty();
-			case StructType t -> t.components().map(p -> new Description(
-				type.path().append(p.name()),
-				p.type(), p.enclosure().type(), p
-			));
+			case StructType t -> t.components().stream()
+				.map(p -> new Description(
+					type.path().append(p.name()),
+					p.type(), p.enclosure().type(), p
+				));
 			case EnclosingType t -> Stream.of(new Description(
 				type.path().append(new Path.Index(0)),
 				t.componentType(), t.type(), t

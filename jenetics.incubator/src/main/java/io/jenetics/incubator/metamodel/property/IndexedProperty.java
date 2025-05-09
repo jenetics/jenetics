@@ -19,8 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import io.jenetics.incubator.metamodel.type.IndexedType;
 
 /**
  * Base class for properties which consists of 0 to n objects and can be accessed
@@ -30,47 +29,19 @@ import java.util.NoSuchElementException;
  * @version 7.2
  * @since 7.2
  */
-public abstract sealed class IndexedProperty
+public sealed interface IndexedProperty
 	extends CollectionProperty
 	permits ArrayProperty, ListProperty
 {
-
-	IndexedProperty(PropParam param) {
-		super(param);
-	}
 
 	/**
 	 * Return the property value at the given {@code index}.
 	 *
 	 * @param index the property index
 	 * @return the property value at the given index
-	 * @return the property value at the given index
 	 */
-	abstract Object get(final int index);
-
-//	@Override
-//	default Iterator<Object> iterator() {
-//		return new Iterator<>() {
-//			private final int size = size();
-//
-//			private int cursor = 0;
-//
-//			@Override
-//			public boolean hasNext() {
-//				return cursor != size;
-//			}
-//
-//			@Override
-//			public Object next() {
-//				final int i = cursor;
-//				if (cursor >= size) {
-//					throw new NoSuchElementException();
-//				}
-//
-//				cursor = i + 1;
-//				return get(i);
-//			}
-//		};
-//	}
+	default Object get(final int index) {
+		return ((IndexedType)type()).accessor().of(read()).at(index);
+	}
 
 }

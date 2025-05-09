@@ -35,7 +35,19 @@ import io.jenetics.incubator.metamodel.type.ModelType;
  * @version 8.3
  * @since 8.3
  */
-abstract class PropertyDelegates {
+sealed abstract class PropertyDelegates
+	permits
+		ArrayProperty,
+		BeanProperty,
+		ComponentProperty,
+		ElementProperty,
+		IndexProperty,
+		ListProperty,
+		MapProperty,
+		OptionalProperty,
+		RecordProperty,
+		SetProperty
+{
 
 	final PropParam param;
 
