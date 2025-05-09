@@ -26,6 +26,7 @@ import java.util.List;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.type.ModelType;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,7 +37,7 @@ record PropParam(
 	Path path,
 	Object enclosure,
 	Object value,
-	Class<?> type,
+	ModelType type,
 	List<Annotation> annotations,
 	Accessor accessor
 ) {

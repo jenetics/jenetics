@@ -31,7 +31,7 @@ import java.util.Optional;
  * @since 7.2
  */
 public final class OptionalProperty
-	extends AbstractProperty
+	extends PropertyDelegates
 	implements EnclosingProperty, ConcreteProperty
 {
 

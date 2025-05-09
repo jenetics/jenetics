@@ -35,4 +35,9 @@ public final class BeanProperty
 		super(param);
 	}
 
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
+	}
+
 }

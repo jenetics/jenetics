@@ -30,7 +30,7 @@ import java.util.stream.StreamSupport;
  * @since 8.3
  */
 public abstract sealed class CollectionProperty
-	extends AbstractProperty
+	extends PropertyDelegates
 	implements EnclosingProperty, Iterable<Object>
 	permits IndexedProperty, SetProperty, MapProperty
 {

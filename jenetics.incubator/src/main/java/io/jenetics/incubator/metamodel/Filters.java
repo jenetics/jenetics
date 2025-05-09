@@ -205,7 +205,7 @@ public final class Filters {
     }
 
 	public static Predicate<Property> byType(final Class<?> type) {
-		return property -> property.type() == type;
+		return property -> property.type().type() == type;
 	}
 
 }

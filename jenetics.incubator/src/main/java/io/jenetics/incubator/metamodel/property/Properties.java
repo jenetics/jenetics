@@ -37,6 +37,7 @@ import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
 import io.jenetics.incubator.metamodel.type.BeanType;
 import io.jenetics.incubator.metamodel.type.CollectionType;
+import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.Description;
 import io.jenetics.incubator.metamodel.type.ElementType;
 import io.jenetics.incubator.metamodel.type.IndexType;
@@ -45,7 +46,6 @@ import io.jenetics.incubator.metamodel.type.ListType;
 import io.jenetics.incubator.metamodel.type.MapType;
 import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.OptionalType;
-import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.RecordType;
 import io.jenetics.incubator.metamodel.type.SetType;
 
@@ -108,30 +108,32 @@ public final class Properties {
 		final PathValue<?> root,
 		final Description description
 	) {
-		final var enclosure = root.value();
+		final Object enclosure = root.value();
 
 		return switch (description.model()) {
-			case ComponentType pt -> {
+			case ComponentType type -> {
+				final var modelType = ModelType.of(description.type());
+
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
-					pt.accessor().of(enclosure).getter().get(),
-					toRawType(description.type()),
-					pt.annotations().toList(),
-					pt.accessor().of(enclosure)
+					type.accessor().of(enclosure).getter().get(),
+					modelType,
+					type.annotations().toList(),
+					type.accessor().of(enclosure)
 				);
 
-				final Property property = switch (ModelType.of(pt.type())) {
-					case ElementType t -> new ElementProperty(param);
-					case RecordType t -> new RecordProperty(param);
-					case BeanType t -> new BeanProperty(param);
-					case OptionalType t -> new OptionalProperty(param);
+				final Property property = switch (modelType) {
 					case ArrayType t -> new ArrayProperty(param);
-					case ListType t -> new ListProperty(param);
-					case SetType t -> new SetProperty(param);
-					case MapType t -> new MapProperty(param);
-					case IndexType t -> new IndexProperty(param, t.index());
+					case BeanType t -> new BeanProperty(param);
 					case ComponentType t -> new ElementProperty(param);
+					case ElementType t -> new ElementProperty(param);
+					case IndexType t -> new IndexProperty(param, t.index());
+					case ListType t -> new ListProperty(param);
+					case MapType t -> new MapProperty(param);
+					case OptionalType t -> new OptionalProperty(param);
+					case RecordType t -> new RecordProperty(param);
+					case SetType t -> new SetProperty(param);
 				};
 
 				yield Stream.of(property);
@@ -157,7 +159,7 @@ public final class Properties {
 						path.append(new Path.Index(i.get())),
 						enclosure,
 						value,
-						type,
+						ModelType.of(type),
 						it.annotations().toList(),
 						it.accessor().of(value).at(i.get())
 					);
@@ -186,7 +188,7 @@ public final class Properties {
 						path.append(new Path.Index(i.getAndIncrement())),
 						enclosure,
 						value,
-						type,
+						ModelType.of(type),
 						ct.annotations().toList(),
 						new Accessor.Readonly(() -> value)
 					);
@@ -205,7 +207,7 @@ public final class Properties {
 						path.append(new Path.Index(0)),
 						enclosure,
 						value,
-						value.getClass(),
+						ModelType.of(value.getClass()),
 						ot.annotations().toList(),
 						ot.access().of(enclosure)
 					);
@@ -327,7 +329,7 @@ public final class Properties {
 			property.path(),
 			property.value(),
 			property.writer().isPresent(),
-			property.type().getName(),
+			toRawType(property.type().type()).getName(),
 			property.enclosure().getClass().getName()
 		);
 	}

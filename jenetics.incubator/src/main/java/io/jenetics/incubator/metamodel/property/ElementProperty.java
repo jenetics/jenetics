@@ -32,7 +32,7 @@ import io.jenetics.incubator.metamodel.access.Writer;
  * @since 7.2
  */
 public final class ElementProperty
-	extends AbstractProperty
+	extends PropertyDelegates
 	implements Property, ConcreteProperty
 {
 	ElementProperty(final PropParam param) {

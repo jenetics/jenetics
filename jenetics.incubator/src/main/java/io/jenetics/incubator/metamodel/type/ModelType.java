@@ -42,7 +42,12 @@ import java.util.stream.Stream;
  * @since 8.0
  */
 public sealed interface ModelType
-	permits ConcreteType, ElementType, EnclosedType, EnclosingType, StructType
+	permits
+		ConcreteType,
+		ElementType,
+		EnclosedType,
+		EnclosingType,
+		StructType
 {
 
 	/**

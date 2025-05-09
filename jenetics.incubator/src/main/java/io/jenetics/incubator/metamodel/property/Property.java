@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Writer;
+import io.jenetics.incubator.metamodel.type.ModelType;
 
 /**
  * Represents an object's property. A property might be defined as usual
@@ -39,8 +40,12 @@ import io.jenetics.incubator.metamodel.access.Writer;
  */
 public sealed interface Property
 	extends PathValue<Object>
-	permits ConcreteProperty, EnclosedProperty,
-		EnclosingProperty, ElementProperty, StructProperty
+	permits
+		ConcreteProperty,
+		ElementProperty,
+		EnclosedProperty,
+		EnclosingProperty,
+		StructProperty
 {
 
 	/**
@@ -83,7 +88,7 @@ public sealed interface Property
 	 *
 	 * @return the type of the property value
 	 */
-	Class<?> type();
+	ModelType type();
 
 	/**
 	 * Return a list of all annotations, available for property description.

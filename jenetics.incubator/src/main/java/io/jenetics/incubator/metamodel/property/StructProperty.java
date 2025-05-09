@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
@@ -34,7 +33,7 @@ import io.jenetics.incubator.metamodel.type.StructType;
  * @since 8.0
  */
 public sealed abstract class StructProperty
-	extends AbstractProperty
+	extends PropertyDelegates
 	implements Property
 	permits BeanProperty, RecordProperty
 {
@@ -49,7 +48,7 @@ public sealed abstract class StructProperty
 	 * @return the struct components
 	 */
 	public Stream<ComponentProperty> components() {
-		return ModelType.of(type()) instanceof StructType st
+		return type() instanceof StructType st
 			? st.components().map(component -> new ComponentProperty(
 					//component.name(),
 					null
