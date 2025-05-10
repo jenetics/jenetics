@@ -37,6 +37,7 @@ import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.model.Author;
 import io.jenetics.incubator.metamodel.model.Book;
 import io.jenetics.incubator.metamodel.model.Library;
+import io.jenetics.incubator.metamodel.model.Rating;
 
 import io.jenetics.jpx.GPX;
 
@@ -104,6 +105,22 @@ public class PropertiesTest {
 		STEPHENSON.books().add(SNOW_CRASH);
 		STEPHENSON.books().add(ANATHEM);
 		STEPHENSON.books().add(CRYPTONOMICON);
+	}
+
+	@Test
+	public void recordProperty() {
+		var rating = new Rating(SNOW_CRASH, 4);
+		final var properties = Properties.list(PathValue.of(Path.of("root"), rating))
+			.sorted(Comparator.comparing(Property::path))
+			.map(Property::toString)
+			.toArray(String[]::new);
+
+		final var expected = """
+			RecordProperty[path=root.book, value=Book[Snow Crash], mutable=false, type=io.jenetics.incubator.metamodel.model.Book, enclosure=io.jenetics.incubator.metamodel.model.Rating]
+			ElementProperty[path=root.rating, value=4, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Rating]
+			""".split("\n");;
+
+		assertThat(properties).isEqualTo(expected);
 	}
 
 	@Test

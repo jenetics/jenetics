@@ -124,54 +124,7 @@ public final class Properties {
 					type.accessor().of(enclosure)
 				);
 
-				final Property property = switch (modelType) {
-					case ArrayType t -> new ArrayProperty(param);
-					case BeanType t -> new BeanProperty(param);
-					case ComponentType t -> new ComponentProperty(
-						param,
-						(StructType)ModelType.of(enclosure.getClass())
-					);
-					case ElementType t -> new ElementProperty(param);
-					case IndexType t -> new IndexProperty(param, t);
-					case ListType t -> new ListProperty(param);
-					case MapType t -> new MapProperty(param);
-					case OptionalType t -> new OptionalProperty(param);
-					case RecordType t -> new RecordProperty(param);
-					case SetType t -> new SetProperty(param);
-				};
-
-				yield Stream.of(property);
-			}
-			case IndexedType it -> {
-				final var path = description.path().element() instanceof Path.Index
-					? root.path()
-					: root.path().append(description.path().element());
-
-				final var i = new AtomicInteger(0);
-
-				final Stream<Object> values = StreamSupport.stream(
-					it.iterable().of(enclosure).spliterator(),
-					false
-				);
-
-				yield values.map(value -> {
-					final Class<?> type = value != null
-						? value.getClass()
-						: toRawType(it.type());
-
-					final int index = i.getAndIncrement();
-
-					final var param = new PropParam(
-						path.append(new Path.Index(index)),
-						enclosure,
-						value,
-						ModelType.of(type),
-						it.annotations().toList(),
-						it.accessor().of(value).at(index)
-					);
-
-					return new IndexProperty(param, new IndexType(index, it));
-				});
+				yield Stream.of(toProperty(param));
 			}
 			case CollectionType ct -> {
 				final var path = description.path().element() instanceof Path.Index
@@ -185,21 +138,30 @@ public final class Properties {
 					false
 				);
 
+
 				yield values.map(value -> {
 					final Class<?> type = value != null
 						? value.getClass()
 						: toRawType(ct.type());
 
+					final ModelType modelType = ModelType.of(type);
+					final int index = i.getAndIncrement();
+
 					final var param = new PropParam(
-						path.append(new Path.Index(i.getAndIncrement())),
+						path.append(new Path.Index(index)),
 						enclosure,
 						value,
-						ModelType.of(type),
+						modelType,
 						ct.annotations().toList(),
-						new Accessor.Readonly(() -> value)
+						ct instanceof IndexedType it
+							? it.accessor().of(value).at(index)
+							: new Accessor.Readonly(() -> value)
 					);
 
-					return new ElementProperty(param);
+					return ct instanceof IndexedType it
+						? new IndexProperty(param, new IndexType(index, it))
+						//: new IndexProperty(param, new IndexType(index, it));
+						: toProperty(param);
 				});
 			}
 			case OptionalType ot -> {
@@ -223,7 +185,37 @@ public final class Properties {
 					yield Stream.empty();
 				}
 			}
-			default -> Stream.empty();
+			/*
+			case BeanType beanType -> Stream.empty();
+			case ElementType elementType -> Stream.empty();
+			case IndexType indexType -> Stream.empty();
+			case RecordType recordType -> Stream.empty();
+			case StructType structType -> Stream.empty();
+			 */
+			default -> throw new IllegalArgumentException("" + description.model());
+		};
+	}
+
+	private static Property toProperty(final PropParam param) {
+		if (ModelType.of(param.enclosure().getClass()) instanceof StructType st) {
+			//return new ComponentProperty(param, st);
+			System.out.println(param);
+		}
+
+		return switch (param.type()) {
+			case ArrayType t -> new ArrayProperty(param);
+			case BeanType t -> new BeanProperty(param);
+			case ComponentType t -> new ComponentProperty(
+				param,
+				(StructType)ModelType.of(param.enclosure().getClass())
+			);
+			case ElementType t -> new ElementProperty(param);
+			case IndexType t -> new IndexProperty(param, t);
+			case ListType t -> new ListProperty(param);
+			case MapType t -> new MapProperty(param);
+			case OptionalType t -> new OptionalProperty(param);
+			case RecordType t -> new RecordProperty(param);
+			case SetType t -> new SetProperty(param);
 		};
 	}
 

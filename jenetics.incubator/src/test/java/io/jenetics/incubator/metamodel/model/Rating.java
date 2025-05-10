@@ -19,21 +19,8 @@
  */
 package io.jenetics.incubator.metamodel.model;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public record Author(
-	String forename,
-	String surname,
-	LocalDate birthDate,
-	List<Book> books
-) {
-	@Override
-	public String toString() {
-		return "Author[%s %s]".formatted(forename, surname);
-	}
+public record Rating(Book book, int rating) {
 }

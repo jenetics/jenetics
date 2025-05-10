@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.type.EnclosingType;
 import io.jenetics.incubator.metamodel.type.IndexType;
-import io.jenetics.incubator.metamodel.type.IndexedType;
-import io.jenetics.incubator.metamodel.type.ModelType;
 
 /**
  * This property represents a single element of an {@link IndexedProperty}.
@@ -62,7 +60,7 @@ public final class IndexProperty
 
 	@Override
 	public Accessor accessor() {
-		return null; //indexType.enclosure().accessor().of(read()).at(indexType().index());
+		return indexType.accessor().of(read());
 	}
 
 	@Override
