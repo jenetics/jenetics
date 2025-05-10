@@ -141,7 +141,7 @@ public final class ListType implements IndexedType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "ListType[type=%s, componentType=%s]"
+		return "ListType[%s[%s]]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

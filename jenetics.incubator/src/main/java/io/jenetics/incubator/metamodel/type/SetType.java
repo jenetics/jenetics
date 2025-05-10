@@ -98,7 +98,7 @@ public final class SetType implements CollectionType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "SetType[type=%s, componentType=%s]"
+		return "SetType[%s[%s]]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

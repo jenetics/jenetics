@@ -71,10 +71,9 @@ public record Description(
 
 	@Override
 	public String toString() {
-		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
+		return "Description[path=%s, type=%s]".formatted(
 			path,
-			type.getTypeName(),
-			enclosure.getTypeName()
+			model
 		);
 	}
 
@@ -101,16 +100,22 @@ public record Description(
 		}
 
 		return switch (ModelType.of(type.value())) {
-			case ElementType t -> Stream.empty();
-			case StructType t -> t.components().stream()
-				.map(p -> new Description(
-					type.path().append(p.name()),
-					p.type(), p.enclosure().type(), p
+			case StructType structType -> structType.components().stream()
+				.map(componentType -> new Description(
+					type.path().append(componentType.name()),
+					componentType.type(),
+					componentType.enclosure().type(),
+					componentType
 				));
-			case EnclosingType t -> Stream.of(new Description(
-				type.path().append(new Path.Index(0)),
-				t.componentType(), t.type(), t
-			));
+			case EnclosingType enclosingType -> Stream.of(
+				new Description(
+					type.path().append(new Path.Index(0)),
+					enclosingType.componentType(),
+					enclosingType.type(),
+					enclosingType
+				)
+			);
+			case ElementType t -> Stream.empty();
 			case EnclosedType t -> Stream.empty();
 		};
 	}

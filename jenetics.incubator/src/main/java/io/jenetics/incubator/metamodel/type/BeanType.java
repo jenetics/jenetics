@@ -99,7 +99,7 @@ public final class BeanType implements StructType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "BeanType[type=%s]".formatted(type.getName());
+		return "BeanType[%s]".formatted(type.getName());
 	}
 
 

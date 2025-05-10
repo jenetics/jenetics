@@ -57,7 +57,7 @@ public final class ElementType implements ModelType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "ElementType[type=%s]".formatted(type.getName());
+		return "ElementType[%s]".formatted(type.getName());
 	}
 
 }

@@ -115,10 +115,10 @@ public final class ComponentType implements EnclosedType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "PropertyType[name=%s, enclosure=%s, type=%s]".formatted(
+		return "ComponentType[name=%s, type=%s, enclosure=%s]".formatted(
 			name,
-			enclosure,
-			type
+			type.getTypeName(),
+			enclosure
 		);
 	}
 

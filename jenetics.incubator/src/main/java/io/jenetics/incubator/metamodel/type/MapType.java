@@ -103,7 +103,7 @@ public final class MapType implements CollectionType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "MapType[type=%s, keyType=%s, valueType=%s]"
+		return "MapType[%s[%s, %s]]"
 			.formatted(type.getName(), keyType.getName(), valueType.getName());
 	}
 

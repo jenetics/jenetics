@@ -84,8 +84,7 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "OptionalType[componentType=%s]"
-			.formatted(componentType.getName());
+		return "OptionalType[%s]".formatted(componentType.getName());
 	}
 
 

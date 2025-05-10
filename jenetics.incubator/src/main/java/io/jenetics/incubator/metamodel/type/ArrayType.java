@@ -85,7 +85,7 @@ public final class ArrayType implements IndexedType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "ArrayType[type=%s, componentType=%s]"
+		return "ArrayType[%s[%s]]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

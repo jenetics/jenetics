@@ -89,7 +89,7 @@ public final class RecordType implements StructType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "RecordType[type=%s]".formatted(type.getName());
+		return "RecordType[%s]".formatted(type.getName());
 	}
 
 
