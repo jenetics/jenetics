@@ -110,6 +110,7 @@ public record Description(
 			case EnclosingType enclosingType -> Stream.of(
 				new Description(
 					type.path().append(new Path.Index(0)),
+					//type.path().append("_"),
 					enclosingType.componentType(),
 					enclosingType.type(),
 					enclosingType

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -168,6 +169,8 @@ public class PropertiesTest {
 			.sorted(Comparator.comparing(Property::path))
 			.map(Property::toString)
 			.toArray(String[]::new);
+
+		//Stream.of(properties).forEach(System.out::println);
 
 		final var expected = """
 			ListProperty[path=books, value=[Book[The Corrections], Book[Crossroads], Book[Snow Crash], Book[Cryptonomicon], Book[Anathem]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Library]

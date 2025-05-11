@@ -39,7 +39,7 @@ import java.util.stream.StreamSupport;
 public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	private static final Pattern PATH_ELEMENT_PATTERN =
-		Pattern.compile("\\b[_a-zA-Z][_a-zA-Z0-9]*\\b|\\[[0-9^]+]");
+		Pattern.compile("\\b[_a-zA-Z]\\w*\\b|\\[[0-9^]+]|\\{[_a-zA-Z]\\w*}");
 
 	/**
 	 * Represents the path element.
@@ -58,8 +58,13 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 							.formatted(value)
 					);
 				}
+			} else if (value.startsWith("{") && value.endsWith("}")) {
+				return new Field(
+					value.substring(1, value.length() - 1),
+					true
+				);
 			} else {
-				return new Name(value);
+				return new Field(value);
 			}
 		}
 	}
@@ -69,14 +74,18 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 *
 	 * @param name the property name
 	 */
-	public record Name(String name) implements Element {
+	public record Field(String name, boolean enclosed) implements Element {
 
-		public Name {
+		public Field {
 			if (!isValid(name)) {
 				throw new IllegalArgumentException(
 					"'%s' is not a valid field name.".formatted(name)
 				);
 			}
+		}
+
+		public Field(final String name) {
+			this(name, false);
 		}
 
 		private static boolean isValid(final String name) {
@@ -100,8 +109,19 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public int compareTo(final Element other) {
-			if (other instanceof Name(String n)) {
-				return name.compareTo(n);
+			if (other instanceof Field(var n, var ecl)) {
+				var result = name.compareTo(n);
+				if (result == 0) {
+					if (enclosed == ecl) {
+						return 0;
+					} else if (enclosed) {
+						return 1;
+					} else {
+						return -1;
+					}
+				} else {
+					return result;
+				}
 			} else {
 				return 1;
 			}
@@ -109,7 +129,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public String toString() {
-			return name;
+			return enclosed ? "{" + name + "}" : name;
 		}
 	}
 
@@ -254,7 +274,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	public Path append(final String... names) {
 		final var list = new ArrayList<>(this.elements);
 		for (var name : names) {
-			list.add(new Name(name));
+			list.add(new Field(name));
 		}
 		return new Path(list);
 	}
@@ -366,7 +386,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		final var matcher = PATH_ELEMENT_PATTERN.matcher(value);
 		final var elements = new ArrayList<Element>();
 		while (matcher.find()) {
-			elements.add(Element.parse(matcher.group()));
+			var group = matcher.group();
+			elements.add(Element.parse(group));
 		}
 
 		if (!toString(elements).equals(value)) {

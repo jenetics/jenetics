@@ -124,7 +124,25 @@ public final class Properties {
 					type.accessor().of(enclosure)
 				);
 
-				yield Stream.of(toProperty(param));
+				final var property = toProperty(param);
+				if (property instanceof CollectionProperty cp) {
+					var p = new ComponentProperty(
+						new PropParam(
+							root.path().append(description.path().element()),
+							enclosure,
+							type.accessor().of(enclosure).getter().get(),
+							type,
+							type.annotations().toList(),
+							type.accessor().of(enclosure)
+						),
+						(StructType)ModelType.of(enclosure.getClass())
+					);
+
+					//yield Stream.of(property, p);
+					yield Stream.of(property);
+				}
+
+				yield Stream.of(property);
 			}
 			case CollectionType ct -> {
 				final var path = description.path().element() instanceof Path.Index
@@ -199,7 +217,7 @@ public final class Properties {
 	private static Property toProperty(final PropParam param) {
 		if (ModelType.of(param.enclosure().getClass()) instanceof StructType st) {
 			//return new ComponentProperty(param, st);
-			System.out.println(param);
+			//System.out.println(param);
 		}
 
 		return switch (param.type()) {

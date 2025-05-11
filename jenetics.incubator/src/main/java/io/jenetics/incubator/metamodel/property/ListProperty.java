@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.type.ListType;
 
 /**
@@ -41,6 +42,29 @@ public final class ListProperty
 
 	ListProperty(final PropParam param) {
 		super(param);
+	}
+
+	private static PropParam fix(final PropParam param) {
+		var path = param.path().parent();
+		if (path == null) {
+			path = Path.of("");
+		}
+		if (param.path().element() instanceof Path.Field(var n, var e)) {
+			if (!e) {
+				path = path.append(new Path.Field(n, true));
+			} else {
+				path = param.path();
+			}
+		}
+
+		return new PropParam(
+			path,
+			param.enclosure(),
+			param.value(),
+			param.type(),
+			param.annotations(),
+			param.accessor()
+		);
 	}
 
 	@Override
