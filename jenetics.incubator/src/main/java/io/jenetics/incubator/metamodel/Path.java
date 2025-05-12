@@ -58,11 +58,6 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 							.formatted(value)
 					);
 				}
-			} else if (value.startsWith("{") && value.endsWith("}")) {
-				return new Field(
-					value.substring(1, value.length() - 1),
-					true
-				);
 			} else {
 				return new Field(value);
 			}
@@ -74,7 +69,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	 *
 	 * @param name the property name
 	 */
-	public record Field(String name, boolean enclosed) implements Element {
+	public record Field(String name) implements Element {
 
 		public Field {
 			if (!isValid(name)) {
@@ -82,10 +77,6 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 					"'%s' is not a valid field name.".formatted(name)
 				);
 			}
-		}
-
-		public Field(final String name) {
-			this(name, false);
 		}
 
 		private static boolean isValid(final String name) {
@@ -109,19 +100,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public int compareTo(final Element other) {
-			if (other instanceof Field(var n, var ecl)) {
-				var result = name.compareTo(n);
-				if (result == 0) {
-					if (enclosed == ecl) {
-						return 0;
-					} else if (enclosed) {
-						return 1;
-					} else {
-						return -1;
-					}
-				} else {
-					return result;
-				}
+			if (other instanceof Field(String n)) {
+				return name.compareTo(n);
 			} else {
 				return 1;
 			}
@@ -129,7 +109,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public String toString() {
-			return enclosed ? "{" + name + "}" : name;
+			return name;
 		}
 	}
 
