@@ -125,8 +125,8 @@ public final class Properties {
 				);
 
 				final var property = toProperty(param);
-				if (property instanceof CollectionProperty cp) {
-					var p = new ComponentProperty(
+				if (property instanceof EnclosingProperty) {
+					var enclosing = new ComponentProperty(
 						new PropParam(
 							root.path().append(description.path().element()),
 							enclosure,
@@ -147,7 +147,7 @@ public final class Properties {
 			case CollectionType ct -> {
 				final var path = description.path().element() instanceof Path.Index
 					? root.path()
-					: root.path().append(description.path().element());
+					: PropParam.declosed(root.path().append(description.path().element()));
 
 				final var i = new AtomicInteger(0);
 
@@ -155,7 +155,6 @@ public final class Properties {
 					ct.iterable().of(enclosure).spliterator(),
 					false
 				);
-
 
 				yield values.map(value -> {
 					final Class<?> type = value != null
@@ -166,7 +165,7 @@ public final class Properties {
 					final int index = i.getAndIncrement();
 
 					final var param = new PropParam(
-						path.append(new Path.Index(index)),
+						PropParam.declosed(path).append(new Path.Index(index)),
 						enclosure,
 						value,
 						modelType,
@@ -177,8 +176,7 @@ public final class Properties {
 					);
 
 					return ct instanceof IndexedType it
-						? new IndexProperty(param, new IndexType(index, it))
-						//: new IndexProperty(param, new IndexType(index, it));
+						? new IndexProperty(param.declosed(), new IndexType(index, it))
 						: toProperty(param);
 				});
 			}
@@ -199,6 +197,7 @@ public final class Properties {
 					);
 
 					yield Stream.of(new IndexProperty(param, new IndexType(0, ot)));
+					//yield Stream.of(toProperty(param));
 				} else {
 					yield Stream.empty();
 				}
@@ -215,25 +214,20 @@ public final class Properties {
 	}
 
 	private static Property toProperty(final PropParam param) {
-		if (ModelType.of(param.enclosure().getClass()) instanceof StructType st) {
-			//return new ComponentProperty(param, st);
-			//System.out.println(param);
-		}
-
 		return switch (param.type()) {
-			case ArrayType t -> new ArrayProperty(param);
-			case BeanType t -> new BeanProperty(param);
+			case ArrayType t -> new ArrayProperty(param.enclosing());
+			case BeanType t -> new BeanProperty(param.declosed());
 			case ComponentType t -> new ComponentProperty(
-				param,
+				param.declosed(),
 				(StructType)ModelType.of(param.enclosure().getClass())
 			);
-			case ElementType t -> new ElementProperty(param);
-			case IndexType t -> new IndexProperty(param, t);
-			case ListType t -> new ListProperty(param);
-			case MapType t -> new MapProperty(param);
-			case OptionalType t -> new OptionalProperty(param);
-			case RecordType t -> new RecordProperty(param);
-			case SetType t -> new SetProperty(param);
+			case ElementType t -> new ElementProperty(param.declosed());
+			case IndexType t -> new IndexProperty(param.declosed(), t);
+			case ListType t -> new ListProperty(param.enclosing());
+			case MapType t -> new MapProperty(param.enclosing());
+			case OptionalType t -> new OptionalProperty(param.enclosing());
+			case RecordType t -> new RecordProperty(param.declosed());
+			case SetType t -> new SetProperty(param.enclosing());
 		};
 	}
 

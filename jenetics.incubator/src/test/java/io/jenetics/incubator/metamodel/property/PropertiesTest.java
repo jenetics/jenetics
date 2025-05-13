@@ -170,7 +170,7 @@ public class PropertiesTest {
 			.map(Property::toString)
 			.toArray(String[]::new);
 
-		//Stream.of(properties).forEach(System.out::println);
+		Stream.of(properties).forEach(System.out::println);
 
 		final var expected = """
 			ListProperty[path=books, value=[Book[The Corrections], Book[Crossroads], Book[Snow Crash], Book[Cryptonomicon], Book[Anathem]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Library]

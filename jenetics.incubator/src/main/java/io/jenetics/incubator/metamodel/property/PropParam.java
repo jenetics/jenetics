@@ -49,4 +49,42 @@ record PropParam(
 		requireNonNull(accessor);
 	}
 
+	PropParam enclosing() {
+		return new PropParam(
+			enclosed(path),
+			enclosure,
+			value,
+			type,
+			annotations,
+			accessor
+		);
+	}
+
+	PropParam declosed() {
+		return new PropParam(
+			declosed(path),
+			enclosure,
+			value,
+			type,
+			annotations,
+			accessor
+		);
+	}
+
+	static Path enclosed(final Path path) {
+		if (!path.isEmpty() && path.element() instanceof Path.Field field) {
+			return path.replace(new Path.EnclosingField(field.name()));
+		} else {
+			return path;
+		}
+	}
+
+	static Path declosed(final Path path) {
+		if (!path.isEmpty() && path.element() instanceof Path.EnclosingField field) {
+			return path.replace(new Path.Field(field.name()));
+		} else {
+			return path;
+		}
+	}
+
 }
