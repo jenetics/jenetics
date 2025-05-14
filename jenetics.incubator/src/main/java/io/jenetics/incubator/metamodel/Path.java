@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.metamodel;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -43,9 +45,36 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		Pattern.compile("\\b[_a-zA-Z]\\w*\\b|\\[[0-9^]+]|\\{[_a-zA-Z]+}");
 
 	/**
-	 * Represents the path element.
+	 * Base interface of a path element.
 	 */
 	public sealed interface Element extends Comparable<Element> {
+
+		@Override
+		default int compareTo(final Element other) {
+			requireNonNull(other);
+
+			return switch (this) {
+				case Index e -> switch (other) {
+					case Index oe -> Integer.compare(e.index, oe.index);
+					case Field oe -> -1;
+				};
+				case Field e -> switch (other) {
+					case Field oe -> {
+						final var cmp = e.name().compareTo(oe.name());
+						if (cmp == 0) {
+							yield Boolean.compare(
+								oe instanceof EnclosingField,
+								e instanceof EnclosingField
+							);
+						} else {
+							yield cmp;
+						}
+					}
+					case Index oe -> 1;
+				};
+			};
+		}
+
 		private static Element parse(final String value) {
 			if (value.startsWith("[") && value.endsWith("]")) {
 				try {
@@ -75,7 +104,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	public static sealed class Field implements Element {
 		private final String name;
 
-		public Field(String name) {
+		public Field(final String name) {
 			if (!isValid(name)) {
 				throw new IllegalArgumentException(
 					"'%s' is not a valid field name.".formatted(name)
@@ -104,26 +133,18 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 			return true;
 		}
 
+		/**
+		 * Return the name of the path field.
+		 *
+		 * @return the name of the path field
+		 */
 		public String name() {
 			return name;
 		}
 
 		@Override
-		public int compareTo(final Element other) {
-			if (other instanceof Field field) {
-				var result = name.compareTo(field.name);
-				if (result == 0 && other instanceof EnclosingField) {
-					result = 1;
-				}
-				return result;
-			} else {
-				return 1;
-			}
-		}
-
-		@Override
 		public int hashCode() {
-			return Objects.hash(name);
+			return Objects.hash(getClass(), name);
 		}
 
 		@Override
@@ -139,34 +160,19 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		}
 	}
 
+	/**
+	 * Path element which represents an enclosing property, like List, Set or
+	 * Optional.
+	 */
 	public static final class EnclosingField extends Field {
 		public EnclosingField(String name) {
 			super(name);
 		}
 
 		@Override
-		public int compareTo(final Element other) {
-			if (other instanceof Field field) {
-				var result = name().compareTo(field.name());
-				if (result == 0 && !(other instanceof EnclosingField)) {
-					result = -1;
-				}
-				return result;
-			} else {
-				return 1;
-			}
+		public String toString() {
+			return "{" + name() + "}";
 		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return obj instanceof EnclosingField field &&
-				Objects.equals(name(), field.name());
-		}
-
-//		@Override
-//		public String toString() {
-//			return "{" + name() + "}";
-//		}
 	}
 
 	/**
@@ -187,7 +193,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public String toString() {
-			return "[%d]".formatted(index);
+			return "[" + index + "]";
 		}
 	}
 
@@ -315,7 +321,15 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		return new Path(list);
 	}
 
+	/**
+	 * Replaces the head element of the path, if not empty.
+	 *
+	 * @param element the new head element of the path
+	 * @return a new path object with the replaced head element
+	 */
 	public Path replace(final Element element) {
+		requireNonNull(element);
+
 		if (!isEmpty()) {
 			final var list = new ArrayList<>(elements);
 			list.set(list.size() - 1, element);
@@ -372,8 +386,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Path path &&
+		return obj instanceof Path path &&
 			elements.equals(path.elements);
 	}
 

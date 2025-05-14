@@ -40,6 +40,7 @@ import io.jenetics.incubator.metamodel.type.CollectionType;
 import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.Description;
 import io.jenetics.incubator.metamodel.type.ElementType;
+import io.jenetics.incubator.metamodel.type.EnclosingType;
 import io.jenetics.incubator.metamodel.type.IndexType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.ListType;
@@ -94,7 +95,9 @@ public final class Properties {
 	 * @return all direct properties of the given {@code root} object
 	 */
 	public static Stream<Property> list(final PathValue<?> root) {
-		if (root == null || root.value() == null) {
+		requireNonNull(root);
+
+		if (root.value() == null) {
 			return Stream.empty();
 		}
 
@@ -125,7 +128,7 @@ public final class Properties {
 				);
 
 				final var property = toProperty(param);
-				if (property instanceof EnclosingProperty) {
+				if (property instanceof CollectionProperty) {
 					var enclosing = new ComponentProperty(
 						new PropParam(
 							root.path().append(description.path().element()),
@@ -138,8 +141,7 @@ public final class Properties {
 						(StructType)ModelType.of(enclosure.getClass())
 					);
 
-					//yield Stream.of(property, p);
-					yield Stream.of(property);
+					yield Stream.of(property, enclosing);
 				}
 
 				yield Stream.of(property);
@@ -147,7 +149,7 @@ public final class Properties {
 			case CollectionType ct -> {
 				final var path = description.path().element() instanceof Path.Index
 					? root.path()
-					: PropParam.declosed(root.path().append(description.path().element()));
+					: root.path().append(description.path().element());
 
 				final var i = new AtomicInteger(0);
 
@@ -197,7 +199,6 @@ public final class Properties {
 					);
 
 					yield Stream.of(new IndexProperty(param, new IndexType(0, ot)));
-					//yield Stream.of(toProperty(param));
 				} else {
 					yield Stream.empty();
 				}
@@ -214,20 +215,24 @@ public final class Properties {
 	}
 
 	private static Property toProperty(final PropParam param) {
+		final var prm = param.type() instanceof CollectionType
+			? param.enclosed()
+			: param.declosed();
+
 		return switch (param.type()) {
-			case ArrayType t -> new ArrayProperty(param.enclosing());
-			case BeanType t -> new BeanProperty(param.declosed());
+			case ArrayType t -> new ArrayProperty(prm);
+			case BeanType t -> new BeanProperty(prm);
 			case ComponentType t -> new ComponentProperty(
-				param.declosed(),
-				(StructType)ModelType.of(param.enclosure().getClass())
+				prm,
+				(StructType)ModelType.of(prm.getClass())
 			);
-			case ElementType t -> new ElementProperty(param.declosed());
-			case IndexType t -> new IndexProperty(param.declosed(), t);
-			case ListType t -> new ListProperty(param.enclosing());
-			case MapType t -> new MapProperty(param.enclosing());
-			case OptionalType t -> new OptionalProperty(param.enclosing());
-			case RecordType t -> new RecordProperty(param.declosed());
-			case SetType t -> new SetProperty(param.enclosing());
+			case ElementType t -> new ElementProperty(prm);
+			case IndexType t -> new IndexProperty(prm, t);
+			case ListType t -> new ListProperty(prm);
+			case MapType t -> new MapProperty(prm);
+			case OptionalType t -> new OptionalProperty(prm);
+			case RecordType t -> new RecordProperty(prm);
+			case SetType t -> new SetProperty(prm);
 		};
 	}
 

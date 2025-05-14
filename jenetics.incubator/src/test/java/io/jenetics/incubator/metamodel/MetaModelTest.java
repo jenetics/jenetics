@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.metamodel.property.PropertiesTest;
@@ -51,16 +52,16 @@ public class MetaModelTest {
 
 	@Test(dataProvider = "objectPaths")
 	public void pathAt(final Object object, final Path expected) {
-		final var bean = MetaModel.of(AUSTRIA);
+		final var model = MetaModel.of(AUSTRIA);
 
-		var path = bean.pathOf(object);
+		var path = model.pathOf(object);
 		assertThat((Object)path.orElseThrow()).isEqualTo(expected);
 	}
 
 	@DataProvider
 	public Object[][] objectPaths() {
 		return new Object[][] {
-			{AUSTRIA.getWayPoints(), Path.of("wayPoints")},
+			{AUSTRIA.getWayPoints(), Path.of("{wayPoints}")},
 			{AUSTRIA.getWayPoints().get(10), Path.of("wayPoints[10]")},
 			{AUSTRIA.getWayPoints().get(12), Path.of("wayPoints[12]")},
 			{AUSTRIA.getWayPoints().get(24), Path.of("wayPoints[24]")}

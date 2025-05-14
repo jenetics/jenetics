@@ -24,12 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -116,6 +114,8 @@ public class PropertiesTest {
 			.map(Property::toString)
 			.toArray(String[]::new);
 
+		//Stream.of(properties).forEach(System.out::println);
+
 		final var expected = """
 			RecordProperty[path=root.book, value=Book[Snow Crash], mutable=false, type=io.jenetics.incubator.metamodel.model.Book, enclosure=io.jenetics.incubator.metamodel.model.Rating]
 			ElementProperty[path=root.rating, value=4, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Rating]
@@ -137,9 +137,12 @@ public class PropertiesTest {
 			.map(Property::toString)
 			.toArray(String[]::new);
 
+		//Stream.of(properties).forEach(System.out::println);
+
 		final var expected = """
 			ElementProperty[path=birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=io.jenetics.incubator.metamodel.model.Author]
-			ListProperty[path=books, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ListProperty[path={books}, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ComponentProperty[path=books, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			ElementProperty[path=forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			ElementProperty[path=surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			""".split("\n");
@@ -154,8 +157,11 @@ public class PropertiesTest {
 			.map(Property::toString)
 			.toArray(String[]::new);
 
+		//Stream.of(properties).forEach(System.out::println);
+
 		final var expected = """
-			ListProperty[path=authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path={authors}, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=pages, value=576, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=title, value=Snow Crash, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			""".split("\n");
@@ -170,37 +176,45 @@ public class PropertiesTest {
 			.map(Property::toString)
 			.toArray(String[]::new);
 
-		Stream.of(properties).forEach(System.out::println);
+		//Stream.of(properties).forEach(System.out::println);
 
 		final var expected = """
-			ListProperty[path=books, value=[Book[The Corrections], Book[Crossroads], Book[Snow Crash], Book[Cryptonomicon], Book[Anathem]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Library]
+			ListProperty[path={books}, value=[Book[The Corrections], Book[Crossroads], Book[Snow Crash], Book[Cryptonomicon], Book[Anathem]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Library]
+			ComponentProperty[path=books, value=[Book[The Corrections], Book[Crossroads], Book[Snow Crash], Book[Cryptonomicon], Book[Anathem]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Library]
 			IndexProperty[path=books[0], value=Book[The Corrections], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
-			ListProperty[path=books[0].authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path=books[0].{authors}, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=books[0].authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[0].authors[0], value=Author[Jonathan Franzen], mutable=true, type=io.jenetics.incubator.metamodel.model.Author, enclosure=java.util.ArrayList]
 			ElementProperty[path=books[0].authors[0].birthDate, value=1959-08-17, mutable=false, type=java.time.LocalDate, enclosure=io.jenetics.incubator.metamodel.model.Author]
-			ListProperty[path=books[0].authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ListProperty[path=books[0].authors[0].{books}, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ComponentProperty[path=books[0].authors[0].books, value=[], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			ElementProperty[path=books[0].authors[0].forename, value=Jonathan, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			ElementProperty[path=books[0].authors[0].surname, value=Franzen, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			ElementProperty[path=books[0].pages, value=672, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=books[0].title, value=The Corrections, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[1], value=Book[Crossroads], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
-			ListProperty[path=books[1].authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path=books[1].{authors}, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=books[1].authors, value=[Author[Jonathan Franzen]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[1].authors[0], value=Author[Jonathan Franzen], mutable=true, type=io.jenetics.incubator.metamodel.model.Author, enclosure=java.util.ArrayList]
 			ElementProperty[path=books[1].pages, value=832, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=books[1].title, value=Crossroads, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[2], value=Book[Snow Crash], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
-			ListProperty[path=books[2].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path=books[2].{authors}, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=books[2].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[2].authors[0], value=Author[Neal Stephenson], mutable=true, type=io.jenetics.incubator.metamodel.model.Author, enclosure=java.util.ArrayList]
 			ElementProperty[path=books[2].authors[0].birthDate, value=1959-10-31, mutable=false, type=java.time.LocalDate, enclosure=io.jenetics.incubator.metamodel.model.Author]
-			ListProperty[path=books[2].authors[0].books, value=[Book[Snow Crash], Book[Anathem], Book[Cryptonomicon]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ListProperty[path=books[2].authors[0].{books}, value=[Book[Snow Crash], Book[Anathem], Book[Cryptonomicon]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
+			ComponentProperty[path=books[2].authors[0].books, value=[Book[Snow Crash], Book[Anathem], Book[Cryptonomicon]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Author]
 			IndexProperty[path=books[2].authors[0].books[0], value=Book[Snow Crash], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
 			IndexProperty[path=books[2].authors[0].books[1], value=Book[Anathem], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
-			ListProperty[path=books[2].authors[0].books[1].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path=books[2].authors[0].books[1].{authors}, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=books[2].authors[0].books[1].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[2].authors[0].books[1].authors[0], value=Author[Neal Stephenson], mutable=true, type=io.jenetics.incubator.metamodel.model.Author, enclosure=java.util.ArrayList]
 			ElementProperty[path=books[2].authors[0].books[1].pages, value=981, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=books[2].authors[0].books[1].title, value=Anathem, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[2].authors[0].books[2], value=Book[Cryptonomicon], mutable=true, type=io.jenetics.incubator.metamodel.model.Book, enclosure=java.util.ArrayList]
-			ListProperty[path=books[2].authors[0].books[2].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ListProperty[path=books[2].authors[0].books[2].{authors}, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
+			ComponentProperty[path=books[2].authors[0].books[2].authors, value=[Author[Neal Stephenson]], mutable=false, type=java.util.List, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			IndexProperty[path=books[2].authors[0].books[2].authors[0], value=Author[Neal Stephenson], mutable=true, type=io.jenetics.incubator.metamodel.model.Author, enclosure=java.util.ArrayList]
 			ElementProperty[path=books[2].authors[0].books[2].pages, value=931, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Book]
 			ElementProperty[path=books[2].authors[0].books[2].title, value=Cryptonomicon, mutable=false, type=java.lang.String, enclosure=io.jenetics.incubator.metamodel.model.Book]
@@ -236,7 +250,8 @@ public class PropertiesTest {
 			.map(Objects::toString)
 			.toArray(String[]::new);
 
-		Arrays.stream(properties).forEach(System.out::println);
+		//Stream.of(properties).forEach(System.out::println);
+
 		assertThat(properties).isEqualTo(expected);
 	}
 

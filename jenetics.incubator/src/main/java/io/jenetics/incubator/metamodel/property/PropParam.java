@@ -49,7 +49,7 @@ record PropParam(
 		requireNonNull(accessor);
 	}
 
-	PropParam enclosing() {
+	PropParam enclosed() {
 		return new PropParam(
 			enclosed(path),
 			enclosure,
@@ -71,7 +71,7 @@ record PropParam(
 		);
 	}
 
-	static Path enclosed(final Path path) {
+	private static Path enclosed(final Path path) {
 		if (!path.isEmpty() && path.element() instanceof Path.Field field) {
 			return path.replace(new Path.EnclosingField(field.name()));
 		} else {

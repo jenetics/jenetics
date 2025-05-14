@@ -69,7 +69,8 @@ public class PathTest {
 		final var path = Path.of(value);
 		final var file = java.nio.file.Path.of(value.replace('.', '/'));
 
-		assertThat(path.head().toString()).isEqualTo(file.getFileName().toString());
+		assertThat(path.head().toString())
+			.isEqualTo(file.getFileName().toString());
 	}
 
 	@Test(dataProvider = "paths")
@@ -103,7 +104,7 @@ public class PathTest {
 			{"a.b"},
 			{"a[5].b[1]"},
 			{"a.b.c"},
-			//{"a.b[4].{c}"},
+			{"a.b[4].{c}"},
 			{"a.b[3][3].c[0][1][2]"}
 		};
 	}

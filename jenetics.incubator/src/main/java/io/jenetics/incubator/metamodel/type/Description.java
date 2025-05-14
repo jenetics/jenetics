@@ -100,20 +100,21 @@ public record Description(
 		}
 
 		return switch (ModelType.of(type.value())) {
-			case StructType structType -> structType.components().stream()
-				.map(componentType -> new Description(
-					type.path().append(componentType.name()),
-					componentType.type(),
-					componentType.enclosure().type(),
-					componentType
-				));
-			case EnclosingType enclosingType -> Stream.of(
+			case StructType tpe -> tpe.components().stream()
+				.map(componentType ->
+					new Description(
+						type.path().append(componentType.name()),
+						componentType.type(),
+						componentType.enclosure().type(),
+						componentType
+					)
+				);
+			case EnclosingType tpe -> Stream.of(
 				new Description(
 					type.path().append(new Path.Index(0)),
-					//type.path().append("_"),
-					enclosingType.componentType(),
-					enclosingType.type(),
-					enclosingType
+					tpe.componentType(),
+					tpe.type(),
+					tpe
 				)
 			);
 			case ElementType t -> Stream.empty();
