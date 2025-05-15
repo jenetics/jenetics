@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
+import io.jenetics.incubator.metamodel.internal.Props;
 import io.jenetics.incubator.metamodel.model.Author;
 import io.jenetics.incubator.metamodel.model.Book;
 import io.jenetics.incubator.metamodel.model.Library;
@@ -104,6 +105,12 @@ public class PropertiesTest {
 		STEPHENSON.books().add(SNOW_CRASH);
 		STEPHENSON.books().add(ANATHEM);
 		STEPHENSON.books().add(CRYPTONOMICON);
+	}
+
+	@Test
+	public void propsList() {
+		Props.list(PathValue.of(LIBRARY))
+			.forEach(System.out::println);
 	}
 
 	@Test

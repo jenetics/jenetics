@@ -60,7 +60,12 @@ public final class Reflect {
 	public static boolean isElementType(final Class<?> type) {
 		return type.isPrimitive() ||
 			Constable.class.isAssignableFrom(type) ||
-			TemporalAccessor.class.isAssignableFrom(type);
+			TemporalAccessor.class.isAssignableFrom(type) ||
+			isPrimitiveArrayType(type);
+	}
+
+	private static boolean isPrimitiveArrayType(final Class<?> type) {
+		return type.isArray() && type.getComponentType().isPrimitive();
 	}
 
 	/**

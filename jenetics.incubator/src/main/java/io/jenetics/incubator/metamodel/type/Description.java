@@ -146,14 +146,15 @@ public record Description(
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
 		final Dtor<? super PathValue<? extends Type>, ? extends Description>
-			recursiveDtor = PreOrderIterator.dtor(
-			dtor,
-			tp -> PathValue.of(tp.path(), tp.type()),
-			PathValue::value
-		);
+			transitiveDtor =
+			PreOrderIterator.dtor(
+				dtor,
+				tp -> PathValue.of(tp.path(), tp.type()),
+				PathValue::value
+			);
 
 		@SuppressWarnings("unchecked")
-		var result =  (Stream<Description>)recursiveDtor.unapply(root);
+		final var result =  (Stream<Description>)transitiveDtor.unapply(root);
 		return result;
 	}
 

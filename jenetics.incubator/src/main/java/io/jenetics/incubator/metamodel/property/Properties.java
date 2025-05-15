@@ -261,14 +261,15 @@ public final class Properties {
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
-		final Dtor<? super PathValue<?>, Property> recursiveDtor =
+		final Dtor<? super PathValue<?>, Property>
+			transitiveDtor =
 			PreOrderIterator.dtor(
 				dtor,
 				property -> PathValue.of(property.path(), property.value()),
 				PathValue::value
 			);
 
-		return recursiveDtor.unapply(root);
+		return transitiveDtor.unapply(root);
 	}
 
 	/**

@@ -78,9 +78,7 @@ public sealed interface ModelType
 		requireNonNull(type);
 
 		// 0) Check for ElementType.
-		if (type instanceof Class<?> cls &&
-			Constable.class.isAssignableFrom(cls))
-		{
+		if (type instanceof Class<?> cls && isElementType(cls)) {
 			return new ElementType(cls);
 		}
 
