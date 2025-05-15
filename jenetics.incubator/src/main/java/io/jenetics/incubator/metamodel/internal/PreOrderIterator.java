@@ -165,9 +165,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
-		return source -> new PreOrderIterator<S, T>(
-			source, dtor, mapper, identity
-		).stream();
+		return source -> new PreOrderIterator<S, T>(source, dtor, mapper, identity).stream();
 	}
 
 }

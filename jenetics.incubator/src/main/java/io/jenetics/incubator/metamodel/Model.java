@@ -17,41 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.property;
-
-import java.util.List;
-
-import io.jenetics.incubator.metamodel.type.BeanType;
+package io.jenetics.incubator.metamodel;
 
 /**
- * Represents a <em>classical</em> bean property.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
- * @since 8.0
+ * @version 8.3
+ * @since 8.3
  */
-public final class BeanProperty
-	extends PropertyDelegates
-	implements StructProperty, ConcreteProperty
-{
-
-	BeanProperty(final PropParam param) {
-		super(param);
-	}
-
-	@Override
-	public BeanType type() {
-		return (BeanType)param.type();
-	}
-
-	@Override
-	public List<ComponentProperty> components() {
-		return List.of();
-	}
-
-	@Override
-	public String toString() {
-		return Properties.toString(getClass().getSimpleName(), this);
-	}
-
+public interface Model {
 }

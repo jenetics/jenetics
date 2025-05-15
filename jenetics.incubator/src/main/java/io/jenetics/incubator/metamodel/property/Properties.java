@@ -40,7 +40,6 @@ import io.jenetics.incubator.metamodel.type.CollectionType;
 import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.Description;
 import io.jenetics.incubator.metamodel.type.ElementType;
-import io.jenetics.incubator.metamodel.type.EnclosingType;
 import io.jenetics.incubator.metamodel.type.IndexType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.ListType;

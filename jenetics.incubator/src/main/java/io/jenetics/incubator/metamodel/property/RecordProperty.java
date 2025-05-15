@@ -20,7 +20,6 @@
 package io.jenetics.incubator.metamodel.property;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.type.RecordType;
 

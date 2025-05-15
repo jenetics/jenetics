@@ -22,7 +22,6 @@ package io.jenetics.incubator.metamodel.type;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
