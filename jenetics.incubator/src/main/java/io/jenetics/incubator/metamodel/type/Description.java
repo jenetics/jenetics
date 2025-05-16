@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
+import io.jenetics.incubator.metamodel.internal.OrderIterator;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 
 /**
@@ -145,17 +146,15 @@ public record Description(
 		final PathValue<? extends Type> root,
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
-		final Dtor<? super PathValue<? extends Type>, ? extends Description>
-			transitiveDtor =
-			PreOrderIterator.dtor(
+		final OrderIterator<PathValue<? extends Type>, Description> iterator =
+			new PreOrderIterator<>(
+				root,
 				dtor,
 				tp -> PathValue.of(tp.path(), tp.type()),
 				PathValue::value
 			);
 
-		@SuppressWarnings("unchecked")
-		final var result =  (Stream<Description>)transitiveDtor.unapply(root);
-		return result;
+		return iterator.asStream();
 	}
 
 	/**

@@ -19,9 +19,6 @@
  */
 package io.jenetics.incubator.metamodel.internal;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
-
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -29,10 +26,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.Spliterator;
 import java.util.function.Function;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Preorder iterator which <em>recursively</em> traverses the object graph. It
@@ -66,11 +60,7 @@ import java.util.stream.StreamSupport;
  * @version 7.2
  * @since 7.2
  */
-public final class PreOrderIterator<S, T> implements Iterator<T> {
-
-	private final Dtor<? super S, ? extends T> dtor;
-	private final Function<? super T, ? extends S> mapper;
-	private final Function<? super S, ?> identity;
+public final class PreOrderIterator<S, T> extends OrderIterator<S, T> {
 
 	private final Deque<Iterator<? extends T>> deque = new ArrayDeque<>();
 
@@ -96,9 +86,7 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		final Function<? super T, ? extends S> mapper,
 		final Function<? super S, ?> identity
 	) {
-		this.dtor = requireNonNull(dtor);
-		this.mapper = requireNonNull(mapper);
-		this.identity = requireNonNull(identity);
+		super(dtor, mapper, identity);
 
 		deque.push(dtor.unapply(object).iterator());
 		visited.add(identity.apply(object));
@@ -133,39 +121,6 @@ public final class PreOrderIterator<S, T> implements Iterator<T> {
 		}
 
 		return node;
-	}
-
-	/**
-	 * Creates a {@code Stream} from {@code this} iterator.
-	 *
-	 * @return a {@code Stream} from {@code this} iterator
-	 */
-	public Stream<T> stream() {
-		return StreamSupport.stream(
-			spliteratorUnknownSize(this, Spliterator.SIZED),
-			false
-		);
-	}
-
-	/**
-	 * Create an <em>recursive</em> extractor function from the given arguments.
-	 *
-	 * @param dtor the extractor function which extracts the direct
-	 *        extractable properties
-	 * @param mapper mapper function for creating the source object for the
-	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects returned by this function are used for identifying
-	 *        already visited source objects, for preventing infinite loops
-	 * @return an <em>recursive</em> extractor function
-	 * @param <S> the source object type
-	 * @param <T> the type of the extracted objects
-	 */
-	public static <S, T> Dtor<S, T> dtor(
-		final Dtor<? super S, ? extends T> dtor,
-		final Function<? super T, ? extends S> mapper,
-		final Function<? super S, ?> identity
-	) {
-		return source -> new PreOrderIterator<S, T>(source, dtor, mapper, identity).stream();
 	}
 
 }

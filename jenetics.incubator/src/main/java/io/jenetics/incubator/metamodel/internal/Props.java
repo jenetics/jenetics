@@ -53,7 +53,7 @@ public final class Props {
 				PathValue::value
 			);
 
-		return iterator.stream();
+		return iterator.asStream();
 	}
 
 	public static Stream<PathValue<?>> deconstruct(final PathValue<?> root) {

@@ -33,6 +33,7 @@ import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.internal.Dtor;
+import io.jenetics.incubator.metamodel.internal.OrderIterator;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
 import io.jenetics.incubator.metamodel.type.BeanType;
@@ -261,15 +262,15 @@ public final class Properties {
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
-		final Dtor<? super PathValue<?>, Property>
-			transitiveDtor =
-			PreOrderIterator.dtor(
+		final OrderIterator<? super PathValue<?>, Property> iterator =
+			new PreOrderIterator<>(
+				root,
 				dtor,
 				property -> PathValue.of(property.path(), property.value()),
 				PathValue::value
 			);
 
-		return transitiveDtor.unapply(root);
+		return iterator.asStream();
 	}
 
 	/**
