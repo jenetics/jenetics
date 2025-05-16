@@ -31,10 +31,14 @@ module io.jenetics.incubator {
 	requires java.desktop;
 	requires java.net.http;
 
-	requires org.apache.commons.statistics.distribution;
-    requires org.apache.commons.numbers.gamma;
 	requires com.fasterxml.jackson.databind;
+	requires com.fasterxml.jackson.datatype.jsr310;
+	requires jakarta.annotation;
+	requires jakarta.validation;
 	requires java.logging;
+	requires org.apache.commons.statistics.distribution;
+	requires org.openapitools.jackson.nullable;
+    requires org.apache.commons.numbers.gamma;
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;
 

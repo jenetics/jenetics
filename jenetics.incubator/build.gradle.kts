@@ -96,19 +96,26 @@ openApiGenerate {
 	)
 	globalProperties = mapOf(
 		"models" to "",
-		"supportingFiles" to "JSON.java,RFC3339DateFormat.java"
+		//"importMappings" to "ArrayList=java.util.ArrayList",
+		"supportingFiles" to "JSON.java,RFC3339DateFormat.java," +
+			"AbstractOpenApiSchema.java," +
+			"ApiClient.java," +
+			"Pair.java," +
+			"RFC3339JavaTimeModule.java," +
+			"RFC3339InstantDeserializer.java"
 	)
 
 	generatorName = "java"
 	library = "native"
+	generateAliasAsModel = false
 	generateApiTests = false
 	generateApiDocumentation = false
 	generateModelTests = false
 	generateModelDocumentation = false
 
 	modelPackage = "io.jenetics.incubator.museum.api"
-	//apiPackage = "io.jenetics.incubator.museum.api"
-	//invokerPackage = "io.jenetics.incubator.museum.api.invoker"
+	apiPackage = "io.jenetics.incubator.museum.api"
+	invokerPackage = "io.jenetics.incubator.museum.api.invoker"
 }
 
 sourceSets.main {
@@ -125,12 +132,6 @@ tasks.named<JavaCompile>("compileJava") {
 tasks.withType<JavaCompile> {
 	options.compilerArgs.add("-Xlint:none")
 }
-
-/*
-tasks.withType<JavaCompile> {
-	options.compilerArgs.add("--add-modules ALL-MODULE-PATH")
-}
-*/
 
 tasks.javadoc {
 	val doclet = options as StandardJavadocDocletOptions
