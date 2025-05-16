@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.metamodel.property.PropertiesTest;

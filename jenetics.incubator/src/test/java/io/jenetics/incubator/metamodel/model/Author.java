@@ -21,7 +21,6 @@ package io.jenetics.incubator.metamodel.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

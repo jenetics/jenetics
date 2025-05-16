@@ -27,8 +27,8 @@ import java.util.stream.Stream;
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
-import io.jenetics.incubator.metamodel.internal.TraverseIterator;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
+import io.jenetics.incubator.metamodel.internal.TraverseIterator;
 
 /**
  * Adds path information to a {@link ModelType}.

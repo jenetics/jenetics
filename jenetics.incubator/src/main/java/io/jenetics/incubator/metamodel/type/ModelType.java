@@ -24,7 +24,6 @@ import static io.jenetics.incubator.metamodel.internal.Reflect.isElementType;
 import static io.jenetics.incubator.metamodel.internal.Reflect.toRawType;
 
 import java.lang.annotation.Annotation;
-import java.lang.constant.Constable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
