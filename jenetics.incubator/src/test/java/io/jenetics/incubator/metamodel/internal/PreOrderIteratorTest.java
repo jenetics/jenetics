@@ -34,13 +34,11 @@ public class PreOrderIteratorTest {
 	@Test
 	public void iterate() {
 		final var value = "abcdefghij";
-		final OrderIterator<String, String> iterator =
-			new PreOrderIterator<>(
-				value,
-				BreathOrderIteratorTest::split,
-				Function.identity(),
-				Function.identity()
-			);
+		final var iterator = PreOrderIterator.of(
+			value,
+			BreathOrderIteratorTest::split,
+			Function.identity()
+		);
 
 		assertThat(iterator.asStream().toList()).isEqualTo(
 			List.of(

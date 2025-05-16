@@ -33,20 +33,20 @@ import java.util.stream.StreamSupport;
  * @version 8.3
  * @since 8.3
  */
-public abstract class OrderIterator<S, T> implements Iterator<T>  {
+public abstract class TraverseIterator<S, T> implements Iterator<T>  {
 
 	final Dtor<? super S, ? extends T> dtor;
 	final Function<? super T, ? extends S> mapper;
-	final Function<? super S, ?> identity;
+	final Function<? super S, ?> unwrapper;
 
-	OrderIterator(
+	TraverseIterator(
 		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
-		final Function<? super S, ?> identity
+		final Function<? super S, ?> unwrapper
 	) {
 		this.dtor = requireNonNull(dtor);
 		this.mapper = requireNonNull(mapper);
-		this.identity = requireNonNull(identity);
+		this.unwrapper = requireNonNull(unwrapper);
 	}
 
 	/**

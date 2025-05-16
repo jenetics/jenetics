@@ -60,7 +60,7 @@ import java.util.function.Function;
  * @version 7.2
  * @since 7.2
  */
-public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
+public class BreathFirstIterator<S, T> extends TraverseIterator<S, T> {
 
 	private final Queue<Iterator<? extends T>> queue = new ArrayDeque<>();
 
@@ -77,19 +77,21 @@ public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects returned by this function are used for identifying
-	 *        already visited source objects, for preventing infinite loops
+	 * @param unwrapper objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops. This
+	 *        method <em>unwraps</em> the object if {@code A} is a
+	 *        <em>box</em>-type.
 	 */
 	public BreathFirstIterator(
 		final S object,
 		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
-		final Function<? super S, ?> identity
+		final Function<? super S, ?> unwrapper
 	) {
-		super(dtor, mapper, identity);
+		super(dtor, mapper, unwrapper);
 
 		queue.add(dtor.destruct(object).iterator());
-		visited.add(identity.apply(object));
+		visited.add(unwrapper.apply(object));
 	}
 
 	@Override
@@ -111,7 +113,7 @@ public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
 		}
 
 		final S source = mapper.apply(node);
-		final var exists = !visited.add(identity.apply(source));
+		final var exists = !visited.add(unwrapper.apply(source));
 		final Iterator<? extends T> children = exists
 			? Collections.emptyIterator()
 			: dtor.destruct(source).iterator();
@@ -130,16 +132,18 @@ public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
 	 * @param object the root object of the model
 	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
-	 * @param identity objects returned by this function are used for identifying
-	 *        already visited source objects, for preventing infinite loops
+	 * @param unwrapper objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops. This
+	 *        method <em>unwraps</em> the object if {@code A} is a
+	 *        <em>box</em>-type.
 	 * @return a new pre-order iterator for the given arguments
 	 */
 	public static <A> BreathFirstIterator<A, A> of(
 		final A object,
 		final Dtor<? super A, ? extends A> dtor,
-		final Function<? super A, ?> identity
+		final Function<? super A, ?> unwrapper
 	) {
-		return new BreathFirstIterator<A, A>(object, dtor, Function.identity(), identity);
+		return new BreathFirstIterator<A, A>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }

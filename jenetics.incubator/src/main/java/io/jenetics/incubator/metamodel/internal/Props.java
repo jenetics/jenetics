@@ -32,6 +32,8 @@ import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 
 /**
+ * Simple property listing implementation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
@@ -40,15 +42,21 @@ public final class Props {
 	private Props() {
 	}
 
+	/**
+	 * Return a stream of all properties of the given {@code root} object,
+	 * including transitive properties.
+	 *
+	 * @param root the root object for which the properties should be listed.
+	 * @return the stream of all properties of the given {@code root} object
+	 */
 	public static Stream<PathValue<?>> list(final PathValue<?> root) {
+		requireNonNull(root);
 		return PreOrderIterator
 			.<PathValue<?>>of(root, Props::destruct, PathValue::value)
 			.asStream();
 	}
 
 	private static Stream<PathValue<?>> destruct(final PathValue<?> root) {
-		requireNonNull(root);
-
 		return switch (root.value()) {
 			case null -> Stream.empty();
 			case Object element when isElement(element) -> Stream.empty();

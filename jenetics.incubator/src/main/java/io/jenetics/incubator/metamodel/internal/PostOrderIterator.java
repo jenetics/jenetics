@@ -59,7 +59,7 @@ import java.util.function.Function;
  * @version 7.2
  * @since 7.2
  */
-public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
+public class PostOrderIterator<S, T> extends TraverseIterator<S, T> {
 
 	private final Iterator<? extends T> children;
 
@@ -78,17 +78,19 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 	 *        extractable properties
 	 * @param mapper mapper function for creating the source object for the
 	 *        next level from the extracted objects of type {@code T}
-	 * @param identity objects returned by this function are used for identifying
-	 *        already visited source objects, for preventing infinite loops
+	 * @param unwrapper objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops. This
+	 *        method <em>unwraps</em> the object if {@code A} is a
+	 *        <em>box</em>-type.
 	 */
 	public PostOrderIterator(
 		final S object,
 		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
-		final Function<? super S, ?> identity
+		final Function<? super S, ?> unwrapper
 	) {
 		this(
-			object, null, dtor, mapper, identity,
+			object, null, dtor, mapper, unwrapper,
 			Collections.newSetFromMap(new IdentityHashMap<>())
 		);
 	}
@@ -98,15 +100,15 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 		final T root,
 		final Dtor<? super S, ? extends T> dtor,
 		final Function<? super T, ? extends S> mapper,
-		final Function<? super S, ?> identity,
+		final Function<? super S, ?> unwrapper,
 		final Set<Object> visited
 	) {
-		super(dtor, mapper, identity);
+		super(dtor, mapper, unwrapper);
 		this.visited = requireNonNull(visited);
 
 		this.root = root;
 
-		final var id = identity.apply(object);
+		final var id = unwrapper.apply(object);
 		final var exists = !visited.add(id);
 		children = exists
 			? Collections.emptyIterator()
@@ -129,7 +131,7 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 			final T next = children.next();
 
 			subtree = new PostOrderIterator<>(
-				mapper.apply(next), next, dtor, mapper, identity, visited
+				mapper.apply(next), next, dtor, mapper, unwrapper, visited
 			);
 
 			result = subtree.next();
@@ -148,16 +150,18 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 	 * @param object the root object of the model
 	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
-	 * @param identity objects returned by this function are used for identifying
-	 *        already visited source objects, for preventing infinite loops
+	 * @param unwrapper objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops. This
+	 *        method <em>unwraps</em> the object if {@code A} is a
+	 *        <em>box</em>-type.
 	 * @return a new pre-order iterator for the given arguments
 	 */
 	public static <A> PostOrderIterator<A, A> of(
 		final A object,
 		final Dtor<? super A, ? extends A> dtor,
-		final Function<? super A, ?> identity
+		final Function<? super A, ?> unwrapper
 	) {
-		return new PostOrderIterator<A, A>(object, dtor, Function.identity(), identity);
+		return new PostOrderIterator<A, A>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }
