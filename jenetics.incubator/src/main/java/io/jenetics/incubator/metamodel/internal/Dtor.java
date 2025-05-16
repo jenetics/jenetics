@@ -44,7 +44,7 @@ public interface Dtor<S, T> {
 	 * @param source the source object
 	 * @return the stream of deconstructed object components
 	 */
-	Stream<T> unapply(final S source);
+	Stream<T> destruct(final S source);
 
 	/**
 	 * Create a new {@code Extractor} by filtering the source object. If the
@@ -57,7 +57,7 @@ public interface Dtor<S, T> {
 	 */
 	default Dtor<S, T> sourceFilter(final Predicate<? super S> predicate) {
 		requireNonNull(predicate);
-		return source -> predicate.test(source) ? unapply(source) : Stream.empty();
+		return source -> predicate.test(source) ? destruct(source) : Stream.empty();
 	}
 
 	/**
@@ -71,7 +71,7 @@ public interface Dtor<S, T> {
 	 */
 	default Dtor<S, T> targetFilter(final Predicate<? super T> predicate) {
 		requireNonNull(predicate);
-		return source -> unapply(source).filter(predicate);
+		return source -> destruct(source).filter(predicate);
 	}
 
 }

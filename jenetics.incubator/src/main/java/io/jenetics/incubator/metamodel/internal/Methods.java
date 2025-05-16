@@ -51,7 +51,7 @@ public final class Methods {
 			: null;
 	}
 
-	private static Object invoke(
+	static Object invoke(
 		final Method method,
 		final Object object,
 		final Object... value

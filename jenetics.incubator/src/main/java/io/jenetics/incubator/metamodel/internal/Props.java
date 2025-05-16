@@ -19,15 +19,13 @@
  */
 package io.jenetics.incubator.metamodel.internal;
 
+import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.metamodel.internal.Methods.invoke;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
@@ -43,29 +41,21 @@ public final class Props {
 	}
 
 	public static Stream<PathValue<?>> list(final PathValue<?> root) {
-		requireNonNull(root);
-
-		final PreOrderIterator<PathValue<?>, PathValue<?>> iterator =
-			new PreOrderIterator<>(
-				root,
-				Props::deconstruct,
-				Function.identity(),
-				PathValue::value
-			);
-
-		return iterator.asStream();
+		return PreOrderIterator
+			.<PathValue<?>>of(root, Props::destruct, PathValue::value)
+			.asStream();
 	}
 
-	public static Stream<PathValue<?>> deconstruct(final PathValue<?> root) {
+	private static Stream<PathValue<?>> destruct(final PathValue<?> root) {
 		requireNonNull(root);
 
 		return switch (root.value()) {
 			case null -> Stream.empty();
 			case Object element when isElement(element) -> Stream.empty();
-			case Record record -> deconstruct(root.path(), record);
-			case Collection<?> coll -> deconstruct(root.path(), coll);
-			case Object[] array -> deconstruct(root.path(), Arrays.asList(array));
-			case Object value -> deconstruct(root.path(), value);
+			case Collection<?> coll -> destruct(root.path(), coll);
+			case Object[] array -> destruct(root.path(), asList(array));
+			case Record record -> destruct(root.path(), record);
+			case Object bean -> destruct(root.path(), bean);
 		};
 	}
 
@@ -73,29 +63,21 @@ public final class Props {
 		return Reflect.isElementType(value.getClass());
 	}
 
-	private static Stream<PathValue<?>> deconstruct(Path path, Collection<?> col) {
+	private static Stream<PathValue<?>> destruct(Path path, Collection<?> col) {
 		final int[] i = new int[] {0};
 		return  col.stream()
 			.map(value -> PathValue.of(path.append(new Path.Index(i[0]++)), value));
 	}
 
-	private static Stream<PathValue<?>> deconstruct(Path path, Record record) {
+	private static Stream<PathValue<?>> destruct(Path path, Record record) {
 		return Stream.of(record.getClass().getRecordComponents())
 			.map(comp -> {
-				final var value = get(comp.getAccessor(), record);
+				final var value = invoke(comp.getAccessor(), record);
 				return PathValue.of(path.append(comp.getName()), value);
 			});
 	}
 
-	private static Object get(Method method, Object object) {
-		try {
-			return method.invoke(object);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			return null;
-		}
-	}
-
-	private static Stream<PathValue<?>> deconstruct(Path path, Object bean) {
+	private static Stream<PathValue<?>> destruct(Path path, Object bean) {
 		try {
 			final var descriptors = Introspector
 				.getBeanInfo(bean.getClass())
@@ -103,7 +85,7 @@ public final class Props {
 
 			return Stream.of(descriptors)
 				.map(desc -> {
-					final var value = get(desc.getReadMethod(), bean);
+					final var value = invoke(desc.getReadMethod(), bean);
 					return PathValue.of(path.append(desc.getName()), value);
 				});
 		} catch (IntrospectionException e) {

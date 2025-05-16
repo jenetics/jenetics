@@ -88,7 +88,7 @@ public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
 	) {
 		super(dtor, mapper, identity);
 
-		queue.add(dtor.unapply(object).iterator());
+		queue.add(dtor.destruct(object).iterator());
 		visited.add(identity.apply(object));
 	}
 
@@ -114,13 +114,32 @@ public class BreathFirstIterator<S, T> extends OrderIterator<S, T> {
 		final var exists = !visited.add(identity.apply(source));
 		final Iterator<? extends T> children = exists
 			? Collections.emptyIterator()
-			: dtor.unapply(source).iterator();
+			: dtor.destruct(source).iterator();
 
 		if (children.hasNext()) {
 			queue.add(children);
 		}
 
 		return node;
+	}
+
+	/**
+	 * Create a new (<em>property</em>) post-order iterator from the given
+	 * arguments.
+	 *
+	 * @param object the root object of the model
+	 * @param dtor the extractor function which extracts the direct
+	 *        extractable properties
+	 * @param identity objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops
+	 * @return a new pre-order iterator for the given arguments
+	 */
+	public static <A> BreathFirstIterator<A, A> of(
+		final A object,
+		final Dtor<? super A, ? extends A> dtor,
+		final Function<? super A, ?> identity
+	) {
+		return new BreathFirstIterator<A, A>(object, dtor, Function.identity(), identity);
 	}
 
 }

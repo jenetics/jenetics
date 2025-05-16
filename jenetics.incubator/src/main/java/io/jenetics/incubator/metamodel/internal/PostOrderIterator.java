@@ -110,7 +110,7 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 		final var exists = !visited.add(id);
 		children = exists
 			? Collections.emptyIterator()
-			: dtor.unapply(object).iterator();
+			: dtor.destruct(object).iterator();
 
 		subtree = Collections.emptyIterator();
 	}
@@ -139,6 +139,25 @@ public class PostOrderIterator<S, T> extends OrderIterator<S, T> {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Create a new (<em>property</em>) post-order iterator from the given
+	 * arguments.
+	 *
+	 * @param object the root object of the model
+	 * @param dtor the extractor function which extracts the direct
+	 *        extractable properties
+	 * @param identity objects returned by this function are used for identifying
+	 *        already visited source objects, for preventing infinite loops
+	 * @return a new pre-order iterator for the given arguments
+	 */
+	public static <A> PostOrderIterator<A, A> of(
+		final A object,
+		final Dtor<? super A, ? extends A> dtor,
+		final Function<? super A, ?> identity
+	) {
+		return new PostOrderIterator<A, A>(object, dtor, Function.identity(), identity);
 	}
 
 }
