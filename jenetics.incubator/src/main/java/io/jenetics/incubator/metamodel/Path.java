@@ -54,8 +54,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 			requireNonNull(other);
 
 			return switch (this) {
-				case Index e -> switch (other) {
-					case Index oe -> Integer.compare(e.index, oe.index);
+				case Index(var i) -> switch (other) {
+					case Index(var oi) -> Integer.compare(i, oi);
 					case Field oe -> -1;
 				};
 				case Field e -> switch (other) {

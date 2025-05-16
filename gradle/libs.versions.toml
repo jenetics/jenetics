@@ -11,25 +11,31 @@ commons-statistics-distribution = "1.1"
 equalsverifier = "4.0"
 guava = "33.4.8-jre"
 jackson = "2.19.0"
+jackson-databind-nullable = "0.2.6"
+jackson-datatype-jsr310 = "2.19.0"
 jacoco-agent = "0.8.13"
+jakarta-annotation-api = "2.1.1"
+jakarta-validation-api = "3.1.1"
 javacsv = "2.0"
 jexl = "3.5.0"
 jmh = "0.7.3"
 jpx = "3.2.1"
 mvel = "2.5.2.Final"
 nashorn = "15.6"
+openapi-generator = "7.13.0"
 opencsv = "5.11"
 prngine = "2.0.0"
-reactor-core = "3.7.5"
+reactor-core = "3.7.6"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
-swagger-models = "2.2.30"
-swagger-parser = "2.1.26"
+swagger-models = "2.2.32"
+swagger-parser = "2.1.27"
 testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 
 [libraries]
@@ -46,7 +52,11 @@ equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation-api" }
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-api" }
 javacsv = { module = "net.sourceforge.javacsv:javacsv", version.ref = "javacsv" }
 jexl = { module = "org.apache.commons:commons-jexl3", version.ref = "jexl" }
 jpx = { module = "io.jenetics:jpx", version.ref = "jpx" }
