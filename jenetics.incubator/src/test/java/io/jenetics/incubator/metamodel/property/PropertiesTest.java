@@ -265,7 +265,7 @@ public class PropertiesTest {
 	@Test
 	public void foo() {
 		enum Foo {
-			FIRST, SECOND, THIRD;
+			FIRST, SECOND, THIRD
 		}
 		var set = EnumSet.allOf(Foo.class);
 		Properties.list(PathValue.of(Path.of("enum"), set)).forEach(System.out::println);

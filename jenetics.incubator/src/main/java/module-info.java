@@ -33,11 +33,11 @@ module io.jenetics.incubator {
 
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.datatype.jsr310;
-	requires jakarta.annotation;
-	requires jakarta.validation;
+//	requires jakarta.annotation;
+//	requires jakarta.validation;
 	requires java.logging;
 	requires org.apache.commons.statistics.distribution;
-	requires org.openapitools.jackson.nullable;
+//	requires org.openapitools.jackson.nullable;
     requires org.apache.commons.numbers.gamma;
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;

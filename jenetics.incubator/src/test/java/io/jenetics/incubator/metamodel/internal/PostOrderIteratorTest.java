@@ -36,7 +36,7 @@ public class PostOrderIteratorTest {
 		final var value = "abcdefghij";
 		final var iterator = PostOrderIterator.of(
 			value,
-			BreathOrderIteratorTest::split,
+			BreathFirstIteratorTest::split,
 			Function.identity()
 		);
 

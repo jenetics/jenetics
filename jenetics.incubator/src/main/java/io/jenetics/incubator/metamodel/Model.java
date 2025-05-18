@@ -19,10 +19,73 @@
  */
 package io.jenetics.incubator.metamodel;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import io.jenetics.incubator.metamodel.internal.Props;
+import io.jenetics.internal.util.Lazy;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public interface Model {
+public class Model {
+
+	private final PathValue<?> value;
+	private final List<Model> children = new CopyOnWriteArrayList<>();
+
+	private final Supplier<Map<Path, PathValue<?>>> fields;
+
+	public Model(final PathValue<?> value) {
+		this.value = requireNonNull(value);
+
+		this.fields = Lazy.of(() ->
+			Props.list(this.value)
+				.collect(toMap(PathValue::path, a -> a, (a, b) -> a, TreeMap::new))
+		);
+	}
+
+	public void add(final Model model) {
+		children.add(requireNonNull(model));
+	}
+
+	public Stream<PathValue<?>> fields() {
+		return Stream.concat(
+			fields.get().values().stream(),
+			children.stream().flatMap(Model::fields)
+		);
+	}
+
+	public Stream<PathValue<?>> fields(final Matcher<? super Object> matcher) {
+		requireNonNull(matcher);
+		return fields().filter(matcher::matches);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> Stream<PathValue<T>> fieldsOfType(final Class<? extends T> type) {
+		requireNonNull(type);
+
+		return fields()
+			.filter(pv -> type.isInstance(pv.value()))
+			.map(pv -> (PathValue<T>)pv);
+	}
+
+	public <T> Stream<PathValue<T>> fieldsOfType(
+		final Class<? extends T> type,
+		final Matcher<? super T> matcher
+	) {
+		@SuppressWarnings("unchecked")
+		final var typ = (Class<T>)requireNonNull(type);
+		return fieldsOfType(typ).filter(matcher::matches);
+	}
+
 }
+

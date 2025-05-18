@@ -30,14 +30,14 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class BreathOrderIteratorTest {
+public class BreathFirstIteratorTest {
 
 	@Test
 	public void iterate() {
 		final var value = "abcdefghij";
 		final var iterator = BreathFirstIterator.of(
 			value,
-			BreathOrderIteratorTest::split,
+			BreathFirstIteratorTest::split,
 			Function.identity()
 		);
 

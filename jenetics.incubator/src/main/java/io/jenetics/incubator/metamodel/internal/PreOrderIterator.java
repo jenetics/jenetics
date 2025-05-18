@@ -132,7 +132,7 @@ public final class PreOrderIterator<S, T> extends TraverseIterator<S, T> {
 	 * @param object the root object of the model
 	 * @param dtor the extractor function which extracts the direct
 	 *        extractable properties
-	 * @param unwarpper objects returned by this function are used for identifying
+	 * @param unwrapper objects returned by this function are used for identifying
 	 *        already visited source objects, for preventing infinite loops. This
 	 *        method <em>unwraps</em> the object if {@code A} is a
 	 *        <em>box</em>-type.
@@ -141,9 +141,9 @@ public final class PreOrderIterator<S, T> extends TraverseIterator<S, T> {
 	public static <A> PreOrderIterator<A, A> of(
 		final A object,
 		final Dtor<? super A, ? extends A> dtor,
-		final Function<? super A, ?> unwarpper
+		final Function<? super A, ?> unwrapper
 	) {
-		return new PreOrderIterator<A, A>(object, dtor, Function.identity(), unwarpper);
+		return new PreOrderIterator<A, A>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }

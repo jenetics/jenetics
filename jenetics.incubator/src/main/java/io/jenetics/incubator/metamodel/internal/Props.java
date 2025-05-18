@@ -26,6 +26,7 @@ import static io.jenetics.incubator.metamodel.internal.Methods.invoke;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
@@ -46,25 +47,31 @@ public final class Props {
 	 * Return a stream of all properties of the given {@code root} object,
 	 * including transitive properties.
 	 *
-	 * @param root the root object for which the properties should be listed.
+	 * @param value the root object for which the properties should be listed.
 	 * @return the stream of all properties of the given {@code root} object
 	 */
-	public static Stream<PathValue<?>> list(final PathValue<?> root) {
-		requireNonNull(root);
+	public static Stream<PathValue<?>> list(final PathValue<?> value) {
+		requireNonNull(value);
 		return PreOrderIterator
-			.<PathValue<?>>of(root, Props::destruct, PathValue::value)
+			.<PathValue<?>>of(value, Props::destruct, PathValue::value)
 			.asStream();
 	}
 
-	private static Stream<PathValue<?>> destruct(final PathValue<?> root) {
-		return switch (root.value()) {
+	private static Stream<PathValue<?>> destruct(final PathValue<?> value) {
+		return switch (unwrap(value.value())) {
 			case null -> Stream.empty();
 			case Object element when isElement(element) -> Stream.empty();
-			case Collection<?> coll -> destruct(root.path(), coll);
-			case Object[] array -> destruct(root.path(), asList(array));
-			case Record record -> destruct(root.path(), record);
-			case Object bean -> destruct(root.path(), bean);
+			case Collection<?> coll -> destruct(value.path(), coll);
+			case Object[] array -> destruct(value.path(), asList(array));
+			case Record record -> destruct(value.path(), record);
+			case Object bean -> destruct(value.path(), bean);
 		};
+	}
+
+	private static Object unwrap(final Object value) {
+		return value instanceof Optional<?> opt
+			? opt.orElse(null)
+			: value;
 	}
 
 	private static boolean isElement(final Object value) {
@@ -74,13 +81,15 @@ public final class Props {
 	private static Stream<PathValue<?>> destruct(Path path, Collection<?> col) {
 		final int[] i = new int[] {0};
 		return  col.stream()
-			.map(value -> PathValue.of(path.append(new Path.Index(i[0]++)), value));
+			.map(value ->
+				PathValue.of(path.append(new Path.Index(i[0]++)), unwrap(value))
+			);
 	}
 
 	private static Stream<PathValue<?>> destruct(Path path, Record record) {
 		return Stream.of(record.getClass().getRecordComponents())
 			.map(comp -> {
-				final var value = invoke(comp.getAccessor(), record);
+				final var value = unwrap(invoke(comp.getAccessor(), record));
 				return PathValue.of(path.append(comp.getName()), value);
 			});
 	}
@@ -93,7 +102,7 @@ public final class Props {
 
 			return Stream.of(descriptors)
 				.map(desc -> {
-					final var value = invoke(desc.getReadMethod(), bean);
+					final var value = unwrap(invoke(desc.getReadMethod(), bean));
 					return PathValue.of(path.append(desc.getName()), value);
 				});
 		} catch (IntrospectionException e) {

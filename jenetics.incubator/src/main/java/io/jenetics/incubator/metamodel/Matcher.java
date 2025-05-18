@@ -17,51 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.metamodel.internal;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.function.Function;
-
-import org.testng.annotations.Test;
+package io.jenetics.incubator.metamodel;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 8.3
+ * @since 8.3
  */
-public class PreOrderIteratorTest {
+@FunctionalInterface
+public interface Matcher<T> {
 
-	@Test
-	public void iterate() {
-		final var value = "abcdefghij";
-		final var iterator = PreOrderIterator.of(
-			value,
-			BreathFirstIteratorTest::split,
-			Function.identity()
-		);
-
-		assertThat(iterator.asStream().toList()).isEqualTo(
-			List.of(
-				"abcde",
-				"ab",
-				"a",
-				"b",
-				"cde",
-				"c",
-				"de",
-				"d",
-				"e",
-				"fghij",
-				"fg",
-				"f",
-				"g",
-				"hij",
-				"h",
-				"ij",
-				"i",
-				"j"
-			)
-		);
-	}
+	boolean matches(PathValue<? extends T> value);
 
 }

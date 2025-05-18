@@ -35,7 +35,6 @@ import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.model.Author;
 import io.jenetics.incubator.metamodel.model.Book;
 import io.jenetics.incubator.metamodel.model.Library;
-import io.jenetics.incubator.museum.api.BuyMuseumTickets;
 
 import io.jenetics.jpx.GPX;
 
@@ -68,26 +67,26 @@ public class DescriptionTest {
 //			.containsAll(List.of(Anno_1.class, Anno_2.class, Anno_3.class));
 //	}
 
-	@Test
-	public void museumMessage() {
-		final var descriptions = Description
-			.list(PathValue.of(Path.of("tickets"), BuyMuseumTickets.class))
-			.sorted(Comparator.comparing(Description::path))
-			.map(Description::toString)
-			.toArray(String[]::new);
-
-		//Stream.of(descriptions).forEach(System.out::println);
-
-		final var expected = """
-			Description[path=tickets.email, type=ComponentType[name=email, type=java.lang.String, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
-			Description[path=tickets.eventId, type=ComponentType[name=eventId, type=java.util.UUID, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
-			Description[path=tickets.ticketDate, type=ComponentType[name=ticketDate, type=java.time.LocalDate, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
-			Description[path=tickets.ticketId, type=ComponentType[name=ticketId, type=java.util.UUID, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
-			Description[path=tickets.ticketType, type=ComponentType[name=ticketType, type=io.jenetics.incubator.museum.api.TicketType, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
-			""".split("\n");
-
-		assertThat(descriptions).isEqualTo(expected);
-	}
+//	@Test
+//	public void museumMessage() {
+//		final var descriptions = Description
+//			.list(PathValue.of(Path.of("tickets"), BuyMuseumTickets.class))
+//			.sorted(Comparator.comparing(Description::path))
+//			.map(Description::toString)
+//			.toArray(String[]::new);
+//
+//		//Stream.of(descriptions).forEach(System.out::println);
+//
+//		final var expected = """
+//			Description[path=tickets.email, type=ComponentType[name=email, type=java.lang.String, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
+//			Description[path=tickets.eventId, type=ComponentType[name=eventId, type=java.util.UUID, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
+//			Description[path=tickets.ticketDate, type=ComponentType[name=ticketDate, type=java.time.LocalDate, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
+//			Description[path=tickets.ticketId, type=ComponentType[name=ticketId, type=java.util.UUID, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
+//			Description[path=tickets.ticketType, type=ComponentType[name=ticketType, type=io.jenetics.incubator.museum.api.TicketType, enclosure=BeanType[io.jenetics.incubator.museum.api.BuyMuseumTickets]]]
+//			""".split("\n");
+//
+//		assertThat(descriptions).isEqualTo(expected);
+//	}
 
 	@Test
 	public void extractLibrary() {

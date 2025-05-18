@@ -59,7 +59,7 @@ import java.util.function.Function;
  * @version 7.2
  * @since 7.2
  */
-public class PostOrderIterator<S, T> extends TraverseIterator<S, T> {
+public final class PostOrderIterator<S, T> extends TraverseIterator<S, T> {
 
 	private final Iterator<? extends T> children;
 
@@ -154,7 +154,7 @@ public class PostOrderIterator<S, T> extends TraverseIterator<S, T> {
 	 *        already visited source objects, for preventing infinite loops. This
 	 *        method <em>unwraps</em> the object if {@code A} is a
 	 *        <em>box</em>-type.
-	 * @return a new pre-order iterator for the given arguments
+	 * @return a new post-order iterator for the given arguments
 	 */
 	public static <A> PostOrderIterator<A, A> of(
 		final A object,
