@@ -19,24 +19,25 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-import static io.jenetics.util.RandomRegistry.using;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import io.jenetics.incubator.stat.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.util.RandomRegistry.using;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -47,7 +48,7 @@ public class StochasticUniversalSelectorTest
 
 	@Override
 	protected boolean isSorted() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -78,6 +79,32 @@ public class StochasticUniversalSelectorTest
 
 		final ISeq<Phenotype<IntegerGene, Integer>> selection =
 			selector.select(population, 50, Optimize.MINIMUM);
+	}
+
+	@Test
+	public void selectExpectedPopulation() {
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			ISeq.of(0.7, 0.2, 0.1)
+				.map(value ->
+					Phenotype.of(
+						Genotype.of(
+							DoubleChromosome.of(DoubleRange.of(0, 1), 1)
+						),
+						50,
+						value
+					)
+				);
+
+		// gives double equal to 1 on the first resolve
+		final Random random = new Random(43328395);
+		using(random, r -> {
+			final StochasticUniversalSelector<DoubleGene, Double> selector = factory().newInstance();
+			final ISeq<Phenotype<DoubleGene, Double>> selectedPop =
+				selector.select(population, population.size(), Optimize.MAXIMUM);
+			Assert.assertEquals(selectedPop.get(0).fitness(), 0.7);
+			Assert.assertEquals(selectedPop.get(1).fitness(), 0.7);
+			Assert.assertEquals(selectedPop.get(2).fitness(), 0.1);
+		});
 	}
 
 	@Test(

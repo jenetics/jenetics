@@ -56,7 +56,7 @@ public class StochasticUniversalSelector<
 {
 
 	public StochasticUniversalSelector() {
-		super(true);
+		super(false);
 	}
 
 	/**
@@ -83,30 +83,26 @@ public class StochasticUniversalSelector<
 
 		final MSeq<Phenotype<G, N>> selection = MSeq.ofLength(count);
 
-		final Seq<Phenotype<G, N>> pop = _sorted
-			? population.asISeq().copy().sort(POPULATION_COMPARATOR)
-			: population;
-
-		final double[] probabilities = probabilities(pop, count, opt);
-		assert pop.size() == probabilities.length;
+		final double[] probabilities = probabilities(population, count, opt);
+		assert population.size() == probabilities.length;
 
 		//Calculating the equal spaces random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
 		points[0] = RandomRegistry.random().nextDouble()*delta;
 		for (int i = 1; i < count; ++i) {
-			points[i] = delta*i;
+			points[i] = points[i - 1] + delta;
 		}
 
 		int j = 0;
-		double prop = 0;
+		double cumProb = probabilities[0];
 		for (int i = 0; i < count; ++i) {
-			while (points[i] > prop) {
-				prop += probabilities[j];
+			while (points[i] > cumProb) {
 				++j;
+				cumProb += probabilities[j%population.size()];
 			}
 
-			selection.set(i, pop.get(j%pop.size()));
+			selection.set(i, population.get(j%population.size()));
 		}
 
 		return selection.toISeq();
