@@ -34,7 +34,7 @@ import io.jenetics.jpx.GPX;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class MetaModelTest {
+public class MetamodelTest {
 
 	private static final GPX AUSTRIA = gpx();
 
@@ -51,7 +51,7 @@ public class MetaModelTest {
 
 	@Test(dataProvider = "objectPaths")
 	public void pathAt(final Object object, final Path expected) {
-		final var model = MetaModel.of(AUSTRIA);
+		final var model = Metamodel.of(AUSTRIA);
 
 		var path = model.pathOf(object);
 		assertThat((Object)path.orElseThrow()).isEqualTo(expected);

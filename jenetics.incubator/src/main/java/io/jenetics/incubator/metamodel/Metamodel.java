@@ -49,7 +49,7 @@ import io.jenetics.incubator.metamodel.property.Property;
  * @version 7.2
  * @since 7.2
  */
-public final class MetaModel implements Iterable<Property> {
+public final class Metamodel implements Iterable<Property> {
 
     private final Object model;
 
@@ -103,7 +103,7 @@ public final class MetaModel implements Iterable<Property> {
 	 * @param model the object to wrap
 	 * @throws NullPointerException if the argument is {@code null}
 	 */
-    private MetaModel(Object model) {
+    private Metamodel(Object model) {
         this.model = requireNonNull(model);
     }
 
@@ -262,7 +262,7 @@ public final class MetaModel implements Iterable<Property> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof MetaModel mo &&
+		return obj instanceof Metamodel mo &&
 			model.equals(mo.model);
 	}
 
@@ -279,8 +279,8 @@ public final class MetaModel implements Iterable<Property> {
 	 * @return a new model-bean for the given {@code model} object
 	 * @throws NullPointerException if the given {@code model} is {@code null}
 	 */
-	public static MetaModel of(final Object model) {
-		return new MetaModel(model);
+	public static Metamodel of(final Object model) {
+		return new Metamodel(model);
 	}
 
 }
