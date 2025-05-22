@@ -203,9 +203,6 @@ public class DescriptionTest {
 			.walk(PathValue.of(Path.of("gpx"), GPX.class))
 			.sorted(Comparator.comparing(Description::path))
 			.map(Description::toString)
-			.filter(d ->
-				!d.contains("gpx.routes[0].points[0].time") &&
-				!d.contains("gpx.routes[0].points[0].elevation"))
 			.toArray(String[]::new);
 
 		//Stream.of(descriptions).forEach(System.out::println);
@@ -250,23 +247,6 @@ public class DescriptionTest {
 			Description[path=gpx.metadata[0].author[0].link, type=ComponentType[name=link, type=java.util.Optional<io.jenetics.jpx.Link>, enclosure=BeanType[io.jenetics.jpx.Person]]]
 			Description[path=gpx.metadata[0].author[0].link[0], type=OptionalType[io.jenetics.jpx.Link]]
 			Description[path=gpx.metadata[0].author[0].link[0].href, type=ComponentType[name=href, type=java.net.URI, enclosure=BeanType[io.jenetics.jpx.Link]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.absolute, type=ComponentType[name=absolute, type=boolean, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.authority, type=ComponentType[name=authority, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.fragment, type=ComponentType[name=fragment, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.host, type=ComponentType[name=host, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.opaque, type=ComponentType[name=opaque, type=boolean, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.path, type=ComponentType[name=path, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.port, type=ComponentType[name=port, type=int, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.query, type=ComponentType[name=query, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawAuthority, type=ComponentType[name=rawAuthority, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawFragment, type=ComponentType[name=rawFragment, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawPath, type=ComponentType[name=rawPath, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawQuery, type=ComponentType[name=rawQuery, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawSchemeSpecificPart, type=ComponentType[name=rawSchemeSpecificPart, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.rawUserInfo, type=ComponentType[name=rawUserInfo, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.scheme, type=ComponentType[name=scheme, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.schemeSpecificPart, type=ComponentType[name=schemeSpecificPart, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
-			Description[path=gpx.metadata[0].author[0].link[0].href.userInfo, type=ComponentType[name=userInfo, type=java.lang.String, enclosure=BeanType[java.net.URI]]]
 			Description[path=gpx.metadata[0].author[0].link[0].text, type=ComponentType[name=text, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.Link]]]
 			Description[path=gpx.metadata[0].author[0].link[0].text[0], type=OptionalType[java.lang.String]]
 			Description[path=gpx.metadata[0].author[0].link[0].type, type=ComponentType[name=type, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.Link]]]
@@ -321,23 +301,14 @@ public class DescriptionTest {
 			Description[path=gpx.routes[0].points[0].DGPSID[0], type=OptionalType[io.jenetics.jpx.DGPSStation]]
 			Description[path=gpx.routes[0].points[0].ageOfGPSData, type=ComponentType[name=ageOfGPSData, type=java.util.Optional<java.time.Duration>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].ageOfGPSData[0], type=OptionalType[java.time.Duration]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].nano, type=ComponentType[name=nano, type=int, enclosure=BeanType[java.time.Duration]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].negative, type=ComponentType[name=negative, type=boolean, enclosure=BeanType[java.time.Duration]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].positive, type=ComponentType[name=positive, type=boolean, enclosure=BeanType[java.time.Duration]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].seconds, type=ComponentType[name=seconds, type=long, enclosure=BeanType[java.time.Duration]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units, type=ComponentType[name=units, type=java.util.List<java.time.temporal.TemporalUnit>, enclosure=BeanType[java.time.Duration]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units[0], type=ListType[java.util.List[java.time.temporal.TemporalUnit]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units[0].dateBased, type=ComponentType[name=dateBased, type=boolean, enclosure=BeanType[java.time.temporal.TemporalUnit]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units[0].duration, type=ComponentType[name=duration, type=java.time.Duration, enclosure=BeanType[java.time.temporal.TemporalUnit]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units[0].durationEstimated, type=ComponentType[name=durationEstimated, type=boolean, enclosure=BeanType[java.time.temporal.TemporalUnit]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].units[0].timeBased, type=ComponentType[name=timeBased, type=boolean, enclosure=BeanType[java.time.temporal.TemporalUnit]]]
-			Description[path=gpx.routes[0].points[0].ageOfGPSData[0].zero, type=ComponentType[name=zero, type=boolean, enclosure=BeanType[java.time.Duration]]]
 			Description[path=gpx.routes[0].points[0].comment, type=ComponentType[name=comment, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].comment[0], type=OptionalType[java.lang.String]]
 			Description[path=gpx.routes[0].points[0].course, type=ComponentType[name=course, type=java.util.Optional<io.jenetics.jpx.Degrees>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].course[0], type=OptionalType[io.jenetics.jpx.Degrees]]
 			Description[path=gpx.routes[0].points[0].description, type=ComponentType[name=description, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].description[0], type=OptionalType[java.lang.String]]
+			Description[path=gpx.routes[0].points[0].elevation, type=ComponentType[name=elevation, type=java.util.Optional<io.jenetics.jpx.Length>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
+			Description[path=gpx.routes[0].points[0].elevation[0], type=OptionalType[io.jenetics.jpx.Length]]
 			Description[path=gpx.routes[0].points[0].extensions, type=ComponentType[name=extensions, type=java.util.Optional<org.w3c.dom.Document>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].extensions[0], type=OptionalType[org.w3c.dom.Document]]
 			Description[path=gpx.routes[0].points[0].fix, type=ComponentType[name=fix, type=java.util.Optional<io.jenetics.jpx.Fix>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
@@ -364,6 +335,8 @@ public class DescriptionTest {
 			Description[path=gpx.routes[0].points[0].speed[0], type=OptionalType[io.jenetics.jpx.Speed]]
 			Description[path=gpx.routes[0].points[0].symbol, type=ComponentType[name=symbol, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].symbol[0], type=OptionalType[java.lang.String]]
+			Description[path=gpx.routes[0].points[0].time, type=ComponentType[name=time, type=java.util.Optional<java.time.Instant>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
+			Description[path=gpx.routes[0].points[0].time[0], type=OptionalType[java.time.Instant]]
 			Description[path=gpx.routes[0].points[0].type, type=ComponentType[name=type, type=java.util.Optional<java.lang.String>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
 			Description[path=gpx.routes[0].points[0].type[0], type=OptionalType[java.lang.String]]
 			Description[path=gpx.routes[0].points[0].vdop, type=ComponentType[name=vdop, type=java.util.Optional<java.lang.Double>, enclosure=BeanType[io.jenetics.jpx.WayPoint]]]
@@ -405,9 +378,6 @@ public class DescriptionTest {
 
 		assertThat(descriptions).isEqualTo(
 			Stream.of(expected)
-				.filter(d ->
-					!d.contains("gpx.routes[0].points[0].time") &&
-					!d.contains("gpx.routes[0].points[0].elevation"))
 				.toArray(String[]::new)
 		);
 	}

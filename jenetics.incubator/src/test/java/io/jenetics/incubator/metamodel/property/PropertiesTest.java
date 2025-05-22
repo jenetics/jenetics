@@ -254,6 +254,7 @@ public class PropertiesTest {
 
 		final var properties = Properties
 			.walk(PathValue.of(Path.of("austria"), gpx))
+			.sorted(Comparator.comparing(Property::path))
 			.map(Objects::toString)
 			.toArray(String[]::new);
 
