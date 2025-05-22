@@ -161,7 +161,7 @@ public final class PostOrderIterator<S, T> extends TraverseIterator<S, T> {
 		final Dtor<? super A, ? extends A> dtor,
 		final Function<? super A, ?> unwrapper
 	) {
-		return new PostOrderIterator<A, A>(object, dtor, Function.identity(), unwrapper);
+		return new PostOrderIterator<>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }

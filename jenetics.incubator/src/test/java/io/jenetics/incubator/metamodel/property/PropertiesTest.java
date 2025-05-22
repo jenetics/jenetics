@@ -126,7 +126,7 @@ public class PropertiesTest {
 		final var expected = """
 			RecordProperty[path=root.book, value=Book[Snow Crash], mutable=false, type=io.jenetics.incubator.metamodel.model.Book, enclosure=io.jenetics.incubator.metamodel.model.Rating]
 			ElementProperty[path=root.rating, value=4, mutable=false, type=int, enclosure=io.jenetics.incubator.metamodel.model.Rating]
-			""".split("\n");;
+			""".split("\n");
 
 		assertThat(properties).isEqualTo(expected);
 	}

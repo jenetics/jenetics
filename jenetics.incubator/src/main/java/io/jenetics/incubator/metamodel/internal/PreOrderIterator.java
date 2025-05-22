@@ -143,7 +143,7 @@ public final class PreOrderIterator<S, T> extends TraverseIterator<S, T> {
 		final Dtor<? super A, ? extends A> dtor,
 		final Function<? super A, ?> unwrapper
 	) {
-		return new PreOrderIterator<A, A>(object, dtor, Function.identity(), unwrapper);
+		return new PreOrderIterator<>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }

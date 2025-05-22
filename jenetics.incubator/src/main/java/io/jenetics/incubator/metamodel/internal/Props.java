@@ -26,7 +26,9 @@ import static io.jenetics.incubator.metamodel.internal.Methods.invoke;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.metamodel.Path;
@@ -40,6 +42,9 @@ import io.jenetics.incubator.metamodel.PathValue;
  * @since 8.3
  */
 public final class Props {
+
+	private static final Set<String> OBJECT_PROPERTIES = Set.of("class");
+
 	private Props() {
 	}
 
@@ -62,6 +67,7 @@ public final class Props {
 			case null -> Stream.empty();
 			case Object element when isElement(element) -> Stream.empty();
 			case Collection<?> coll -> destruct(value.path(), coll);
+			case Map<?, ?> map -> destruct(value.path(), map);
 			case Object[] array -> destruct(value.path(), asList(array));
 			case Record record -> destruct(value.path(), record);
 			case Object bean -> destruct(value.path(), bean);
@@ -69,9 +75,11 @@ public final class Props {
 	}
 
 	private static Object unwrap(final Object value) {
-		return value instanceof Optional<?> opt
-			? opt.orElse(null)
-			: value;
+		return switch (value) {
+			case Optional<?> optional -> optional.orElse(null);
+			case Map.Entry<?, ?> entry-> entry.getValue();
+			case null, default -> value;
+		};
 	}
 
 	private static boolean isElement(final Object value) {
@@ -84,6 +92,13 @@ public final class Props {
 			.map(value ->
 				PathValue.of(path.append(new Path.Index(i[0]++)), unwrap(value))
 			);
+	}
+
+	private static Stream<PathValue<?>> destruct(Path path, Map<?, ?> map) {
+		final int[] i = new int[] {0};
+		return  map.entrySet().stream()
+			.map(entry ->
+				PathValue.of(path.append(new Path.Index(i[0]++)), unwrap(entry)));
 	}
 
 	private static Stream<PathValue<?>> destruct(Path path, Record record) {
@@ -101,6 +116,8 @@ public final class Props {
 				.getPropertyDescriptors();
 
 			return Stream.of(descriptors)
+				.filter(desc -> desc.getReadMethod() != null)
+				.filter(desc -> !OBJECT_PROPERTIES.contains(desc.getName()))
 				.map(desc -> {
 					final var value = unwrap(invoke(desc.getReadMethod(), bean));
 					return PathValue.of(path.append(desc.getName()), value);

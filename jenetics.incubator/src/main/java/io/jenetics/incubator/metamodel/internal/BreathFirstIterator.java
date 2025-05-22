@@ -143,7 +143,7 @@ public final class BreathFirstIterator<S, T> extends TraverseIterator<S, T> {
 		final Dtor<? super A, ? extends A> dtor,
 		final Function<? super A, ?> unwrapper
 	) {
-		return new BreathFirstIterator<A, A>(object, dtor, Function.identity(), unwrapper);
+		return new BreathFirstIterator<>(object, dtor, Function.identity(), unwrapper);
 	}
 
 }
