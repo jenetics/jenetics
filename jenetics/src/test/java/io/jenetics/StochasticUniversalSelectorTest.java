@@ -19,25 +19,28 @@
  */
 package io.jenetics;
 
+import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.util.RandomRegistry.using;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import io.jenetics.incubator.stat.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-import static io.jenetics.util.RandomRegistry.using;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -88,7 +91,7 @@ public class StochasticUniversalSelectorTest
 				.map(value ->
 					Phenotype.of(
 						Genotype.of(
-							DoubleChromosome.of(DoubleRange.of(0, 1), 1)
+							DoubleChromosome.of(new DoubleRange(0, 1), 1)
 						),
 						50,
 						value
@@ -107,10 +110,7 @@ public class StochasticUniversalSelectorTest
 		});
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 10, successPercentage = 70
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final var observation = SelectorTester.observation(
 			new StochasticUniversalSelector<>(),
@@ -118,7 +118,7 @@ public class StochasticUniversalSelectorTest
 			POPULATION_COUNT,
 			50
 		);
-		new StableRandomExecutor(123456).execute(observation);
+		new StableRandomExecutor(1).execute(observation);
 
 		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
@@ -152,11 +152,11 @@ public class StochasticUniversalSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final Random random = new Random();
+		final RandomGenerator random = RandomRegistry.random();
 		using(random, r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-			final int loops = 100_000;
+			final int loops = 1_000_000;
 
 			printDistributions(
 				System.out,

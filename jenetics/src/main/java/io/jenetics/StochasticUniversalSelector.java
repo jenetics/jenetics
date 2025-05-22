@@ -86,7 +86,7 @@ public class StochasticUniversalSelector<
 		final double[] probabilities = probabilities(population, count, opt);
 		assert population.size() == probabilities.length;
 
-		//Calculating the equal spaces random points.
+		//Calculating the equal spaces of random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
 		points[0] = RandomRegistry.random().nextDouble()*delta;
