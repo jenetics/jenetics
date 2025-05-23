@@ -29,7 +29,7 @@ reactor-core = "3.7.6"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
 swagger-models = "2.2.32"
-swagger-parser = "2.1.27"
+swagger-parser = "2.1.28"
 testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
