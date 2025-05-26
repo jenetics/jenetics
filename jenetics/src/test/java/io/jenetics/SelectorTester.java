@@ -38,11 +38,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.incubator.stat.Observation;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.Observation;
+import io.jenetics.distassert.RunnableObservation;
+import io.jenetics.distassert.Sampling;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.Factory;

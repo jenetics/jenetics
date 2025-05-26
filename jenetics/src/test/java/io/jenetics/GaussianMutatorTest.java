@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -27,8 +27,8 @@ import java.util.random.RandomGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.Interval;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.RandomRegistry;
 

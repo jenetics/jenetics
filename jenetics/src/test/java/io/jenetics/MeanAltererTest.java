@@ -21,15 +21,15 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.RunnableObservation;
+import io.jenetics.distassert.Sampling;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.StableRandomExecutor;

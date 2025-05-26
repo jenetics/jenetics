@@ -20,18 +20,18 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 import static io.jenetics.internal.math.DoubleAdder.sum;
 
 import java.util.Random;
 
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.Sampling;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.RunnableObservation;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;

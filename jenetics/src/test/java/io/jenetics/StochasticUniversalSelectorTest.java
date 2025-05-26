@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.EmpiricalDistribution;
+import io.jenetics.distassert.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;

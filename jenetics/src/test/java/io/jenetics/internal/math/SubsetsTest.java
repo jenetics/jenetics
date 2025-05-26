@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,9 +34,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.RunnableObservation;
+import io.jenetics.distassert.Sampling;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
