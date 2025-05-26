@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.stat;
+package io.jenetics.distassert;
 
 import static java.util.Objects.requireNonNull;
 
@@ -44,8 +44,8 @@ import io.jenetics.internal.util.Requires;
  *     Wikipedia: Pearson's chi-squared test</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public record PearsonsChiSquared(double pValue) implements ChiSquared {
 

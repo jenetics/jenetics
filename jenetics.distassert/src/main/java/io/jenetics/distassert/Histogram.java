@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.stat;
+package io.jenetics.distassert;
 
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
@@ -58,8 +58,8 @@ import java.util.stream.StreamSupport;
  *                 {@code double} range (-Ꝏ, Ꝏ)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public record Histogram(Buckets buckets, Residual residual) {
 

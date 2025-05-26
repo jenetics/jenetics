@@ -37,5 +37,8 @@ description = "Statistical distribution assertion"
 
 dependencies {
 	implementation(libs.commons.statistics.distribution)
+
+	testImplementation(libs.assertj.core)
+	testImplementation(libs.testng)
 }
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.stat;
+package io.jenetics.distassert;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.stat.PearsonsChiSquared.sqr;
@@ -46,8 +46,8 @@ import io.jenetics.internal.util.Requires;
  *     Wikipedia: Yates's correction for continuity</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public record YatesChiSquared(double pValue) implements ChiSquared {
 

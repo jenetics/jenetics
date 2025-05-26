@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.stat;
+package io.jenetics.distassert;
 
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
@@ -26,8 +26,8 @@ import java.util.stream.Stream;
  * This functional interface serves as a sink for sample values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface Samples {

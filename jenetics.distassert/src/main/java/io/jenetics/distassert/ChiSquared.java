@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.stat;
+package io.jenetics.distassert;
 
 /**
  * Common interface for 𝜒<sup>2</sup> hypothesis tester.
@@ -26,8 +26,8 @@ package io.jenetics.incubator.stat;
  *     Wikipedia: Chi-squared test</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public interface ChiSquared extends HypothesisTester {
 
