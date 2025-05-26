@@ -25,13 +25,13 @@ import static io.jenetics.internal.math.DoubleAdder.sum;
 
 import java.util.Random;
 
-import io.jenetics.distassert.Sampling;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.distassert.Histogram;
 import io.jenetics.distassert.RunnableObservation;
+import io.jenetics.distassert.Sampling;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;

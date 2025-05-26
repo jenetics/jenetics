@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.statistics.descriptive.DoubleStatistics;
 import org.apache.commons.statistics.descriptive.LongStatistics;
 import org.apache.commons.statistics.descriptive.Statistic;
 import org.testng.Assert;

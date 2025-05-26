@@ -25,16 +25,16 @@ import static io.jenetics.util.RandomRegistry.using;
 import java.io.Serial;
 import java.util.Random;
 
-import io.jenetics.distassert.Interval;
-import io.jenetics.util.LongRange;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.distassert.Histogram;
+import io.jenetics.distassert.Interval;
+import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
 
 /**

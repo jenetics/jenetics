@@ -25,7 +25,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static io.jenetics.distassert.Assurance.assertThatObservation;
 
-import io.jenetics.distassert.Sampling;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigDecimal;
@@ -38,6 +37,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.Histogram.Partition;
 import io.jenetics.distassert.RunnableObservation;
+import io.jenetics.distassert.Sampling;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 

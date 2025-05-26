@@ -29,11 +29,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.Histogram;
 import io.jenetics.distassert.Interval;
 import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.distassert.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
