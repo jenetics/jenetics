@@ -20,7 +20,6 @@ import io.jenetics.gradle.dsl.moduleName
  *
  * Author:
  *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
- *
  */
 
 /**
@@ -33,7 +32,7 @@ plugins {
 }
 
 moduleName = "io.jenetics.distassert"
-description = "Statistical distribution assertion"
+description = "Statistical distribution assertion library"
 
 dependencies {
 	implementation(libs.commons.numbers.core)
