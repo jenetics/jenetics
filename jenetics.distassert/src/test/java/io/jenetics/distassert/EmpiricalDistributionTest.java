@@ -24,10 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
+import org.apache.commons.numbers.core.Sum;
 import org.assertj.core.data.Offset;
 import org.testng.annotations.Test;
-
-import io.jenetics.internal.math.DoubleAdder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -44,7 +43,7 @@ public class EmpiricalDistributionTest {
 			.map(Math::sin)
 			.toArray();
 
-		final var sum = DoubleAdder.sum(frequencies);
+		final var sum = Sum.of(frequencies).getAsDouble();
 
 		final var distribution = EmpiricalDistribution.of(
 			interval, frequencies

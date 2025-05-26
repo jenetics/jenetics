@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert;
 
-import io.jenetics.incubator.math.BrentRootFinder;
+import org.apache.commons.numbers.rootfinder.BrentSolver;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
@@ -55,8 +55,8 @@ public interface Distribution {
 
 	default InverseCdf icdf() {
 		final var cdf = cdf();
-		final var solver = BrentRootFinder.DEFAULT;
-		return p -> solver.solve(x -> cdf.apply(x) - p, domain());
+		final var solver = new BrentSolver(0x1.0p-52, 0x1.0p-52, 0x1.0p-52);
+		return p -> solver.findRoot(x -> cdf.apply(x) - p, domain().min(), domain().max());
 	}
 
 }

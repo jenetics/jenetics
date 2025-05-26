@@ -21,7 +21,6 @@ package io.jenetics.distassert;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
@@ -64,27 +63,27 @@ public final class LinearDistribution implements Distribution {
 
 	private final Interval _domain;
 
-	private final double _x1;
-	private final double _x2;
-	private final double _y1;
-	private final double _y2;
-	private final double _k;
-	private final double _d;
+	private final double x1;
+	private final double x2;
+	private final double y1;
+	private final double y2;
+	private final double k;
+	private final double d;
 
 	public LinearDistribution(final Interval domain, final double y1) {
 		_domain = requireNonNull(domain);
 
-		_y1 = Math.max(y1, 0.0);
-		_x1 = domain.min();
-		_y2 = Math.max(y2(_x1, domain.max(), y1), 0.0);
-		if (_y2 == 0) {
-			_x2 = 2.0/_y1 + _x1;
+		this.y1 = Math.max(y1, 0.0);
+		x1 = domain.min();
+		y2 = Math.max(y2(x1, domain.max(), y1), 0.0);
+		if (y2 == 0) {
+			x2 = 2.0/ this.y1 + x1;
 		} else {
-			_x2 = domain.max();
+			x2 = domain.max();
 		}
 
-		_k = (_y2 - _y1)/(_x2 - _x1);
-		_d = _y1 - _k*_x1;
+		k = (y2 - this.y1)/(x2 - x1);
+		d = this.y1 - k * x1;
 	}
 
 	private static double y2(final double x1, final double x2, final double y1) {
@@ -111,12 +110,12 @@ public final class LinearDistribution implements Distribution {
 	public Cdf cdf() {
 		return x -> {
 			double result = 0;
-			if (x < _x1) {
+			if (x < x1) {
 				result = 0.0;
-			} else if (x > _x2) {
+			} else if (x > x2) {
 				result = 1.0;
 			} else {
-				result = _k*x*x/2.0 + _d*x;
+				result = k *x*x/2.0 + d *x;
 			}
 
 			return result;
@@ -141,8 +140,8 @@ public final class LinearDistribution implements Distribution {
 	public Pdf pdf() {
 		return x -> {
 			double result = 0.0;
-			if (x >= _x1 && x <= _x2) {
-				result = _k*x + _d;
+			if (x >= x1 && x <= x2) {
+				result = k *x + d;
 			}
 			return result;
 		};
@@ -150,14 +149,7 @@ public final class LinearDistribution implements Distribution {
 
 	@Override
 	public int hashCode() {
-		return
-			hash(_domain,
-			hash(_d,
-			hash(_k,
-			hash(_x1,
-			hash(_x2,
-			hash(_y1,
-			hash(_y2)))))));
+		return Objects.hash(_domain, d, k, x1, x2, y1, y2);
 	}
 
 	@Override
@@ -165,19 +157,18 @@ public final class LinearDistribution implements Distribution {
 		return obj == this ||
 			obj instanceof LinearDistribution other &&
 			Objects.equals(_domain, other._domain) &&
-			Double.compare(_d, other._d) == 0 &&
-			Double.compare(_k, other._k) == 0 &&
-			Double.compare(_x1, other._x1) == 0 &&
-			Double.compare(_x2, other._x2) == 0 &&
-			Double.compare(_y1, other._y1) == 0 &&
-			Double.compare(_y2, other._y2) == 0;
+			Double.compare(d, other.d) == 0 &&
+			Double.compare(k, other.k) == 0 &&
+			Double.compare(x1, other.x1) == 0 &&
+			Double.compare(x2, other.x2) == 0 &&
+			Double.compare(y1, other.y1) == 0 &&
+			Double.compare(y2, other.y2) == 0;
 	}
 
 	@Override
 	public String toString() {
 		return format(
-			"LinearDistribution[(%f, %f), (%f, %f)]",
-			_x1, _y1, _x2, _y2
+			"LinearDistribution[(%f, %f), (%f, %f)]", x1, y1, x2, y2
 		) ;
 	}
 

@@ -19,9 +19,8 @@
  */
 package io.jenetics.distassert;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-
-import io.jenetics.internal.util.Requires;
 
 /**
  * Implements the Pearson's chi-squared test.
@@ -67,7 +66,11 @@ public record PearsonsChiSquared(double pValue) implements ChiSquared {
 	 * @param pValue the p-value used for the hypothesis tester
 	 */
 	public PearsonsChiSquared {
-		Requires.probability(pValue);
+		if (pValue < 0.0 || pValue > 1.0) {
+			throw new IllegalArgumentException(format(
+				"The given p-value is not in the range [0, 1]: %f", pValue
+			));
+		}
 	}
 
 	@Override

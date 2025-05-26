@@ -3,7 +3,9 @@ assertj = "3.27.3"
 codemodel = "4.0.5"
 commons-csv = "1.14.0"
 commons-numbers-combinatorics = "1.2"
+commons-numbers-core = "1.2"
 commons-numbers-gamma = "1.2"
+commons-numbers-rootfinder = "1.2"
 commons-rng-sampling = "1.6"
 commons-rng-simple = "1.6"
 commons-statistics-descriptive = "1.1"
@@ -29,7 +31,7 @@ reactor-core = "3.7.6"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
 swagger-models = "2.2.32"
-swagger-parser = "2.1.28"
+swagger-parser = "2.1.29"
 testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
@@ -43,7 +45,9 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
 commons-numbers-combinatorics = { module = "org.apache.commons:commons-numbers-combinatorics", version.ref = "commons-numbers-combinatorics" }
+commons-numbers-core = { module = "org.apache.commons:commons-numbers-core", version.ref = "commons-numbers-core" }
 commons-numbers-gamma = { module = "org.apache.commons:commons-numbers-gamma", version.ref = "commons-numbers-gamma" }
+commons-numbers-rootfinder = { module = "org.apache.commons:commons-numbers-rootfinder", version.ref = "commons-numbers-rootfinder" }
 commons-rng-sampling = { module = "org.apache.commons:commons-rng-sampling", version.ref = "commons-rng-sampling" }
 commons-rng-simple = { module = "org.apache.commons:commons-rng-simple", version.ref = "commons-rng-simple" }
 commons-statistics-descriptive = { module = "org.apache.commons:commons-statistics-descriptive", version.ref = "commons-statistics-descriptive" }

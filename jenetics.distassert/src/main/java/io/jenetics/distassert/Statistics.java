@@ -19,43 +19,31 @@
  */
 package io.jenetics.distassert;
 
-import static java.util.Objects.requireNonNull;
-
 /**
+ * Statistical data.
+ *
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
+ * 	      no values have been recorded.
+ * @param max the maximum value recorded, or {@link Double#NEGATIVE_INFINITY} if
+ * 	      no values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been
+ * 	      recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
+ * @param variance the variance of values recorded, or {@link Double#NaN} if no
+ * 	      values have been recorded
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Observation {
-
-	/**
-	 * Return the histogram of the observation.
-	 *
-	 * @return the histogram of the observation
-	 */
-	Histogram histogram();
-
-	/**
-	 * Return the statics of the sample values.
-	 *
-	 * @return the statistics of the sample values
-	 */
-	Statistics statistics();
-
-	static Observation of(
-		final Histogram histogram,
-		final Statistics statistics
-	) {
-		record SimpleObservation(Histogram histogram, Statistics statistics)
-			implements Observation
-		{
-			public SimpleObservation {
-				requireNonNull(histogram);
-				requireNonNull(statistics);
-			}
-		}
-
-		return new SimpleObservation(histogram, statistics);
-	}
-
+public record Statistics(
+	long count,
+	double min,
+	double max,
+	double sum,
+	double mean,
+	double variance
+) {
 }

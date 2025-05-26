@@ -19,10 +19,9 @@
  */
 package io.jenetics.distassert;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.stat.PearsonsChiSquared.sqr;
-
-import io.jenetics.internal.util.Requires;
+import static io.jenetics.distassert.PearsonsChiSquared.sqr;
 
 /**
  * Implements the Yates's chi-squared test.
@@ -68,7 +67,11 @@ public record YatesChiSquared(double pValue) implements ChiSquared {
 	 * @param pValue the p-value used for the hypothesis tester
 	 */
 	public YatesChiSquared {
-		Requires.probability(pValue);
+		if (pValue < 0.0 || pValue > 1.0) {
+			throw new IllegalArgumentException(format(
+				"The given p-value is not in the range [0, 1]: %f", pValue
+			));
+		}
 	}
 
 	@Override

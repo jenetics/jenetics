@@ -25,8 +25,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Consumer;
 
-import io.jenetics.incubator.stat.HypothesisTester.Accept;
-import io.jenetics.incubator.stat.HypothesisTester.Reject;
+import io.jenetics.distassert.HypothesisTester.Accept;
+import io.jenetics.distassert.HypothesisTester.Reject;
 
 /**
  * Entry point for statistical assertion methods.

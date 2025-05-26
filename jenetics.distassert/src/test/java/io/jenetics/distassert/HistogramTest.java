@@ -23,18 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram.Buckets;
-import io.jenetics.incubator.stat.Histogram.Builder;
-import io.jenetics.incubator.stat.Histogram.Partition;
-import io.jenetics.incubator.stat.Histogram.Residual;
+import io.jenetics.distassert.Histogram.Buckets;
+import io.jenetics.distassert.Histogram.Partition;
+import io.jenetics.distassert.Histogram.Residual;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -83,28 +78,6 @@ public class HistogramTest {
 		final var histogram = new Histogram(buckets, new Residual(10, 5));
 
 		assertThat(histogram.samples()).isEqualTo(frequencies.length*123L);
-	}
-
-	@Test
-	public void serialization() throws IOException {
-		final var mapper = new ObjectMapper();
-
-		final Interval interval = new Interval(-5, 5);
-		final var random = RandomGenerator.getDefault();
-		final Histogram observation = Builder.of(interval, 20)
-			.build(samples -> {
-				for (int i = 0; i < 1_000_000; ++i) {
-					samples.add(random.nextGaussian());
-				}
-			});
-
-		final var json = mapper
-			.writerWithDefaultPrettyPrinter()
-			.writeValueAsString(observation);
-
-		final var deserialized = mapper.readValue(json, Histogram.class);
-		assertThat(deserialized).isNotSameAs(observation);
-		assertThat(deserialized).isEqualTo(observation);
 	}
 
 }

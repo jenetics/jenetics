@@ -36,9 +36,13 @@ moduleName = "io.jenetics.distassert"
 description = "Statistical distribution assertion"
 
 dependencies {
-	implementation(libs.commons.statistics.distribution)
+	implementation(libs.commons.numbers.core)
+	implementation(libs.commons.numbers.gamma)
+	implementation(libs.commons.numbers.rootfinder)
+	implementation(libs.commons.statistics.descriptive)
 
 	testImplementation(libs.assertj.core)
+	testImplementation(libs.commons.statistics.distribution)
 	testImplementation(libs.testng)
 }
 

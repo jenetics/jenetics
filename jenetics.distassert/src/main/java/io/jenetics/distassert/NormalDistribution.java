@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert;
 
-import io.jenetics.incubator.math.Erf;
+import org.apache.commons.numbers.gamma.Erfc;
 
 /**
  * Gaussian distribution implementation.
@@ -68,7 +68,8 @@ public record NormalDistribution(double mean, double stddev)
 		if (Math.abs(dev) > 40.0*stddev) {
 			return dev < 0.0 ? 0.0 : 1.0;
 		} else {
-			return 0.5 * Erf.erfc(-dev/(stddev*SQRT2));
+			//return 0.5*Erf.erfc(-dev/(stddev*SQRT2));
+			return 0.5*Erfc.value(-dev/(stddev*SQRT2));
 		}
 	}
 

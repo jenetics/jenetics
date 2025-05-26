@@ -52,7 +52,6 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.restful;
 	exports io.jenetics.incubator.restful.api;
 	exports io.jenetics.incubator.restful.client;
-	exports io.jenetics.incubator.stat;
 	exports io.jenetics.incubator.util;
     exports io.jenetics.incubator.metamodel.access;
 	exports io.jenetics.incubator.metamodel.internal;

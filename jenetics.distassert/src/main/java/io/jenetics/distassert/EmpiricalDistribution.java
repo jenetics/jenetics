@@ -23,9 +23,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 
-import io.jenetics.incubator.stat.Histogram.Buckets;
-import io.jenetics.incubator.stat.Histogram.Partition;
-import io.jenetics.internal.math.DoubleAdder;
+import org.apache.commons.numbers.core.Sum;
+
+import io.jenetics.distassert.Histogram.Buckets;
+import io.jenetics.distassert.Histogram.Partition;
 
 /**
  * Distribution object, based on an observation.
@@ -149,7 +150,7 @@ public final class EmpiricalDistribution implements Distribution {
 			}
 		}
 
-		final var sum = DoubleAdder.sum(expected);
+		final var sum = Sum.of(expected).getAsDouble();
 		final var normalized = expected.clone();
 		for (int i = 0; i < normalized.length; ++i) {
 			normalized[i] /= sum;

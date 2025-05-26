@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.Assurance.assertThatObservation;
 
 import java.util.Random;
 
