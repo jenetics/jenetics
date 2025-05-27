@@ -17,9 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
 
 import org.apache.commons.numbers.rootfinder.BrentSolver;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability

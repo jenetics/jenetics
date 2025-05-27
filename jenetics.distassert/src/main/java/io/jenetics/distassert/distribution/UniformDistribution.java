@@ -17,7 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">

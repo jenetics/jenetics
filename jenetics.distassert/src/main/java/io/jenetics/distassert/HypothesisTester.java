@@ -21,6 +21,8 @@ package io.jenetics.distassert;
 
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.distassert.distribution.Distribution;
+
 /**
  * Interface for statistical hypothesis testers. It checks if a given observation,
  * given as histogram, follows a given distribution, the zero-hypothesis.

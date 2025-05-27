@@ -17,12 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * <p>This distribution has the following cdf.</p>

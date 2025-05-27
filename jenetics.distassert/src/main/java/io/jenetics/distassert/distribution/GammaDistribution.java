@@ -17,9 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
 
 import org.apache.commons.numbers.gamma.RegularizedGamma;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * Implementation of the gamma distribution.

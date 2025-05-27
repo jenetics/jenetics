@@ -22,6 +22,8 @@ package io.jenetics.distassert;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.distassert.distribution.Distribution;
+
 /**
  * Implements the Pearson's chi-squared test.
  * <blockquote>

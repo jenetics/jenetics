@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,8 +25,10 @@ import java.util.Arrays;
 
 import org.apache.commons.numbers.core.Sum;
 
+import io.jenetics.distassert.Histogram;
 import io.jenetics.distassert.Histogram.Buckets;
 import io.jenetics.distassert.Histogram.Partition;
+import io.jenetics.distassert.Interval;
 
 /**
  * Distribution object, based on an observation.

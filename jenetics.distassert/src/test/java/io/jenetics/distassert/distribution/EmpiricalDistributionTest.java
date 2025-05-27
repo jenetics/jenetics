@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,6 +27,8 @@ import java.util.stream.IntStream;
 import org.apache.commons.numbers.core.Sum;
 import org.assertj.core.data.Offset;
 import org.testng.annotations.Test;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

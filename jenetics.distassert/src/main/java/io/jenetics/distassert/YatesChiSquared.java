@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.distassert.PearsonsChiSquared.sqr;
 
+import io.jenetics.distassert.distribution.Distribution;
+
 /**
  * Implements the Yates's chi-squared test.
  * <blockquote>

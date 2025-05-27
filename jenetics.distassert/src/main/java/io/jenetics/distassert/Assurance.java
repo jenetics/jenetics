@@ -27,6 +27,10 @@ import java.util.function.Consumer;
 
 import io.jenetics.distassert.HypothesisTester.Accept;
 import io.jenetics.distassert.HypothesisTester.Reject;
+import io.jenetics.distassert.distribution.Distribution;
+import io.jenetics.distassert.distribution.NormalDistribution;
+import io.jenetics.distassert.distribution.RangedDistribution;
+import io.jenetics.distassert.distribution.UniformDistribution;
 
 /**
  * Entry point for statistical assertion methods.

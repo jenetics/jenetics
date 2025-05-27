@@ -19,6 +19,9 @@
  */
 package io.jenetics.distassert;
 
+import io.jenetics.distassert.distribution.Distribution;
+import io.jenetics.distassert.distribution.GammaDistribution;
+
 /**
  * Common interface for 𝜒<sup>2</sup> hypothesis tester.
  *

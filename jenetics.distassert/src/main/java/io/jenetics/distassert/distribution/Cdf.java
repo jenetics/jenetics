@@ -17,23 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.distribution;
+
+import io.jenetics.distassert.Interval;
 
 /**
- * Probability density function.
+ * The cumulative distribution function.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Pdf {
+public interface Cdf {
 
 	/**
-	 * Calculate the probability density value.
+	 * Calculates the cumulative distribution value for the given input.
 	 *
-	 * @param value the input value
-	 * @return the probability density
+	 * @param value the value to calculate the cumulative distribution value for
+	 * @return the cumulative value
 	 */
 	double apply(double value);
+
+	/**
+	 * Return the probability of the CDF for the given {@code interval}.
+	 *
+	 * @param interval the interval
+	 * @return the probability for the given {@code interval}
+	 */
+	default double probability(final Interval interval) {
+		return apply(interval.max()) - apply(interval.min());
+	}
+
 }

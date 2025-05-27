@@ -24,6 +24,7 @@
  */
 module io.jenetics.distassert {
 	exports io.jenetics.distassert;
+	exports io.jenetics.distassert.distribution;
 
 	requires org.apache.commons.numbers.core;
 	requires org.apache.commons.numbers.gamma;

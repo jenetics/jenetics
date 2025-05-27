@@ -33,7 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.EmpiricalDistribution;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
