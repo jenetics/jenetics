@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.distassert.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assurance.assertThatObservation;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

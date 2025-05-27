@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.assertion;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -25,8 +25,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Consumer;
 
-import io.jenetics.distassert.HypothesisTester.Accept;
-import io.jenetics.distassert.HypothesisTester.Reject;
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.assertion.HypothesisTester.Accept;
+import io.jenetics.distassert.assertion.HypothesisTester.Reject;
 import io.jenetics.distassert.distribution.Distribution;
 import io.jenetics.distassert.distribution.NormalDistribution;
 import io.jenetics.distassert.distribution.RangedDistribution;

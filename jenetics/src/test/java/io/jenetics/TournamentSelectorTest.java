@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.distassert.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assurance.assertThatObservation;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.PearsonsChiSquared;
+import io.jenetics.distassert.assertion.PearsonsChiSquared;
 import io.jenetics.distassert.distribution.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;

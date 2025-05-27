@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.assertion;
 
 import io.jenetics.distassert.distribution.Distribution;
 import io.jenetics.distassert.distribution.GammaDistribution;

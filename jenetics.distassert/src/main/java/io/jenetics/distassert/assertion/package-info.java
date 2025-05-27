@@ -19,17 +19,10 @@
  */
 
 /**
+ * This package contains assertion classes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
  * @since !__version__!
  */
-module io.jenetics.distassert {
-	exports io.jenetics.distassert;
-	exports io.jenetics.distassert.distribution;
-	exports io.jenetics.distassert.observation;
-	exports io.jenetics.distassert.assertion;
-
-	requires org.apache.commons.numbers.core;
-	requires org.apache.commons.numbers.gamma;
-	requires org.apache.commons.numbers.rootfinder;
-	requires org.apache.commons.statistics.descriptive;
-}
+package io.jenetics.distassert.assertion;

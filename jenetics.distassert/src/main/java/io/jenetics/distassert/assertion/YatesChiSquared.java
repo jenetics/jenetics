@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.assertion;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.distassert.PearsonsChiSquared.sqr;
+import static io.jenetics.distassert.assertion.PearsonsChiSquared.sqr;
 
 import io.jenetics.distassert.distribution.Distribution;
 import io.jenetics.distassert.observation.Histogram;

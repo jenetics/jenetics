@@ -17,15 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.assertion;
 
-import static io.jenetics.distassert.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assurance.assertThatObservation;
 
 import java.util.Random;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.RunnableObservation;
 import io.jenetics.distassert.observation.Sampling;
