@@ -21,7 +21,6 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;

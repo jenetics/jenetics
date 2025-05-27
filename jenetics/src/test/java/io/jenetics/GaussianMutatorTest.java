@@ -19,8 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
