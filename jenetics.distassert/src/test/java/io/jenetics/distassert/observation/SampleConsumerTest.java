@@ -29,16 +29,16 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SamplesTest {
+public class SampleConsumerTest {
 
 	@Test
 	public void addNumber() {
 		final var statistics = new DoubleSummaryStatistics();
-		final Samples samples = statistics::accept;
+		final var samples = SampleConsumer.of(statistics);
 
 		for (int i = 0; i < 100; ++i) {
 			final Number sample = (long)i;
-			samples.add(sample);
+			samples.accept(sample);
 		}
 
 		assertThat(statistics.getCount()).isEqualTo(100);
@@ -49,10 +49,10 @@ public class SamplesTest {
 	@Test
 	public void addAllNumberIterable() {
 		final var statistics = new DoubleSummaryStatistics();
-		final Samples samples = statistics::accept;
+		final var samples = SampleConsumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).boxed().toList();
-		samples.addAll(values);
+		samples.acceptAll(values);
 
 		assertThat(statistics.getCount()).isEqualTo(100);
 		assertThat(statistics.getMin()).isEqualTo(0);
@@ -62,10 +62,10 @@ public class SamplesTest {
 	@Test
 	public void addAllDoubleStream() {
 		final var statistics = new DoubleSummaryStatistics();
-		final Samples samples = statistics::accept;
+		final var samples = SampleConsumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).mapToDouble(i -> (double)i);
-		samples.addAll(values);
+		samples.acceptAll(values);
 
 		assertThat(statistics.getCount()).isEqualTo(100);
 		assertThat(statistics.getMin()).isEqualTo(0);
@@ -75,10 +75,10 @@ public class SamplesTest {
 	@Test
 	public void addAllNumberStream() {
 		final var statistics = new DoubleSummaryStatistics();
-		final Samples samples = statistics::accept;
+		final var samples = SampleConsumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).boxed();
-		samples.addAll(values);
+		samples.acceptAll(values);
 
 		assertThat(statistics.getCount()).isEqualTo(100);
 		assertThat(statistics.getMin()).isEqualTo(0);

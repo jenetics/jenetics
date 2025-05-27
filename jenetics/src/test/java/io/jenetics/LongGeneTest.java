@@ -60,7 +60,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 		final var observation = new RunnableObservation(
 			Sampling.repeat(200_000, samples ->
-				samples.add(LongGene.of(min, max).doubleValue())
+				samples.accept(LongGene.of(min, max).doubleValue())
 			),
 			Histogram.Partition.of(min, max, 20)
 		);

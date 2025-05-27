@@ -34,11 +34,11 @@ public class SamplingTest {
 	@Test
 	public void repeat() {
 		final Sampling sampling = Sampling.repeat(100, samples ->
-			samples.addAll(IntStream.range(0, 100).boxed())
+			samples.acceptAll(IntStream.range(0, 100).boxed())
 		);
 
 		final var statistics = new DoubleSummaryStatistics();
-		sampling.run(statistics::accept);
+		sampling.writeTo(SampleConsumer.of(statistics));
 
 		assertThat(statistics.getCount()).isEqualTo(100*100);
 		assertThat(statistics.getMin()).isEqualTo(0);

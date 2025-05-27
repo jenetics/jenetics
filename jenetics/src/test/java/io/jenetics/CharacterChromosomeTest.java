@@ -52,7 +52,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			Sampling.repeat(10, samples ->
 				CharacterChromosome.of(characters, 10_000).stream()
 					.map(g -> Long.parseLong(g.allele().toString()))
-					.forEach(samples::add)
+					.forEach(samples::accept)
 			),
 			Histogram.Partition.of(0, characters.length(), 10)
 		);

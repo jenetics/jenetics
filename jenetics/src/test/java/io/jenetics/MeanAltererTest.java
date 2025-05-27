@@ -76,7 +76,7 @@ public class MeanAltererTest extends AltererTester {
 				final long alterations = new MeanAlterer<DoubleGene, Double>(p)
 					.alter(population, 1)
 					.alterations();
-				samples.add(alterations);
+				samples.accept(alterations);
 			}),
 			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
 		);

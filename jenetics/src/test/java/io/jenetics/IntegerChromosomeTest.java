@@ -60,7 +60,7 @@ public class IntegerChromosomeTest
 			Sampling.repeat(1_000, samples ->
 				IntegerChromosome.of(min, max, 500).stream()
 					.mapToDouble(IntegerGene::doubleValue)
-					.forEach(samples::add)
+					.forEach(samples::accept)
 			),
 			Histogram.Partition.of(min, max, 20)
 		);

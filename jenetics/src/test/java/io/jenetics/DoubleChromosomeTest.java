@@ -62,7 +62,7 @@ public class DoubleChromosomeTest
 			Sampling.repeat(1_000, samples ->
 				DoubleChromosome.of(min, max, 500).stream()
 					.mapToDouble(DoubleGene::doubleValue)
-					.forEach(samples::add)
+					.forEach(samples::accept)
 			),
 			Histogram.Partition.of(min, max, 20)
 		);

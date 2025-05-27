@@ -150,7 +150,7 @@ public class SubsetsTest {
 
 		final var observation = new RunnableObservation(
 			Sampling.repeat(10_000, samples ->
-				samples.addAll(Subsets.next(RandomRegistry.random(), max, 3))
+				samples.acceptAll(Subsets.next(RandomRegistry.random(), max, 3))
 			),
 			Histogram.Partition.of(min, max, 15)
 		);

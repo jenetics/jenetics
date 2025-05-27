@@ -61,7 +61,7 @@ public class LongChromosomeTest
 			Sampling.repeat(1_000, samples ->
 				LongChromosome.of(min, max, 500).stream()
 					.mapToDouble(LongGene::doubleValue)
-					.forEach(samples::add)
+					.forEach(samples::accept)
 			),
 			Histogram.Partition.of(min, max, 20)
 		);

@@ -94,7 +94,7 @@ public class RandomIndexStreamTest {
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);
 
-			histogram.add(k);
+			histogram.accept(k);
 			variance.accept(k);
 		}
 

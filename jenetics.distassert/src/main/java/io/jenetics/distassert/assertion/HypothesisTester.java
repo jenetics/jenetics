@@ -48,9 +48,9 @@ public interface HypothesisTester {
 		Distribution hypothesis();
 
 		/**
-		 * Return the observation to test.
+		 * Return the observation to be tested.
 		 *
-		 * @return the observation to test
+		 * @return the observation to be tested
 		 */
 		Histogram observation();
 
@@ -65,7 +65,7 @@ public interface HypothesisTester {
 	/**
 	 * This object is returned if the hypothesis has been accepted.
 	 *
-	 * @param observation the observation to test
+	 * @param observation the observation to be tested
 	 * @param hypothesis the zero-hypothesis
 	 * @param message the result message
 	 */
@@ -82,7 +82,7 @@ public interface HypothesisTester {
 	/**
 	 * This object is returned if the hypothesis has been rejected.
 	 *
-	 * @param observation the observation to test
+	 * @param observation the observation to be tested
 	 * @param hypothesis the zero-hypothesis
 	 * @param message the result message
 	 */
@@ -99,7 +99,7 @@ public interface HypothesisTester {
 	/**
 	 * Testing an <em>observation</em> against a given zero-<em>hypothesis</em>.
 	 *
-	 * @param observation the observation to test
+	 * @param observation the observation to be tested
 	 * @param hypothesis the zero-hypothesis
 	 * @return the hypothesis test result
 	 */

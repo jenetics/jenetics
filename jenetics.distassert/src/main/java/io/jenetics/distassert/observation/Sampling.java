@@ -34,12 +34,11 @@ import static java.util.Objects.requireNonNull;
 public interface Sampling {
 
 	/**
-	 * Runs {@code this} sampling task. The sampling values are added to the
-	 * given {@code samples} value <em>sink</em>.
+	 * Writes {@code this} sampling to the given consumer.
 	 *
-	 * @param samples the sample value <em>sink</em>
+	 * @param consumer the sample value <em>sink</em>
 	 */
-	void run(final Samples samples);
+	void writeTo(final SampleConsumer consumer);
 
 	/**
 	 * Create a new sampling object which repeats the given sub{@code sampling}
@@ -50,9 +49,9 @@ public interface Sampling {
 	 */
 	static Sampling repeat(final int count, final Sampling sampling) {
 		requireNonNull(sampling);
-		return samples -> {
+		return consumer -> {
 			for (int i = 0; i < count; ++i) {
-				sampling.run(samples);
+				sampling.writeTo(consumer);
 			}
 		};
 	}

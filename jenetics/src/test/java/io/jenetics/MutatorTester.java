@@ -85,7 +85,7 @@ public abstract class MutatorTester extends AltererTester {
 				.alter(population.copy(), 1)
 				.alterations();
 
-			histogram.add(alterations);
+			histogram.accept(alterations);
 			variance.accept(alterations);
 		}
 

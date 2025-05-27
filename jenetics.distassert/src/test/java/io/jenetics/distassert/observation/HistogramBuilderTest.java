@@ -69,7 +69,7 @@ public class HistogramBuilderTest {
 		final var count = 100;
 		for (int i = 0; i < count; ++i) {
 			for (double value : values) {
-				builder.add(value);
+				builder.accept(value);
 			}
 		}
 
@@ -80,8 +80,8 @@ public class HistogramBuilderTest {
 		}
 
 		for (int i = 0; i < count; ++i) {
-			builder.add(-1);
-			builder.add(100);
+			builder.accept(-1);
+			builder.accept(100);
 		}
 
 		histogram = builder.build();
@@ -97,18 +97,20 @@ public class HistogramBuilderTest {
 		final var values = new double[] {1, 11, 21, 31, 41, 51, 61, 71, 81, 91};
 		final var partition = Partition.of(new Interval(0, 100), 10);
 
-		final var histogram = new Builder(partition).build(samples -> {
-			for (int i = 0; i < count; ++i) {
-				for (double value : values) {
-					samples.add(value);
+		final var histogram = new Builder(partition)
+			.accept(samples -> {
+				for (int i = 0; i < count; ++i) {
+					for (double value : values) {
+						samples.accept(value);
+					}
 				}
-			}
 
-			for (int i = 0; i < count; ++i) {
-				samples.add(-1);
-				samples.add(100);
-			}
-		});
+				for (int i = 0; i < count; ++i) {
+					samples.accept(-1);
+					samples.accept(100);
+				}
+			})
+			.build();
 
 		assertThat(histogram.residual()).isEqualTo(new Residual(count, count));
 		for (var bucket : histogram.buckets()) {
@@ -116,18 +118,19 @@ public class HistogramBuilderTest {
 		}
 
 		final var histogram2 = new Builder(histogram.buckets(), histogram.residual())
-			.build(samples -> {
+			.accept(samples -> {
 				for (int i = 0; i < count; ++i) {
 					for (double value : values) {
-						samples.add(value);
+						samples.accept(value);
 					}
 				}
 
 				for (int i = 0; i < count; ++i) {
-					samples.add(-1);
-					samples.add(100);
+					samples.accept(-1);
+					samples.accept(100);
 				}
-			});
+			})
+			.build();
 
 		assertThat(histogram2.residual()).isEqualTo(new Residual(2*count, 2*count));
 		for (var bucket : histogram2.buckets()) {

@@ -73,7 +73,8 @@ public final class RunnableObservation implements Runnable, Observation {
 
 		histogram = new Histogram.Builder(partition)
 			.observer(summary)
-			.build(sampling);
+			.accept(sampling)
+			.build();
 
 		statistics = new Statistics(
 			summary.getCount(),

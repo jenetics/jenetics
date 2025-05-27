@@ -108,13 +108,13 @@ public class PartiallyMatchedCrossoverTest {
 
 		final var statistics = new LongMomentStatistics();
 		final var observation = Histogram.Builder.of(interval, 10)
-			.build(samples -> {
+			.accept(samples -> {
 				for (int i = 0; i < N; ++i) {
 					final long alterations = crossover
 						.alter(population, 1)
 						.alterations();
 
-					samples.add(alterations);
+					samples.accept(alterations);
 					statistics.accept(alterations);
 				}
 			});

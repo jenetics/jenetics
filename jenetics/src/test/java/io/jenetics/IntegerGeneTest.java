@@ -59,7 +59,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 		final var observation = new RunnableObservation(
 			Sampling.repeat(200_000, samples ->
-				samples.add(IntegerGene.of(min, max).doubleValue())
+				samples.accept(IntegerGene.of(min, max).doubleValue())
 			),
 			Histogram.Partition.of(min, max, 20)
 		);

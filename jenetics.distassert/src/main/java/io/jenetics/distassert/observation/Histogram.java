@@ -442,7 +442,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 	/**
 	 * Histogram builder.
 	 */
-	public static final class Builder implements Samples {
+	public static final class Builder implements SampleConsumer {
 		private final Partition partition;
 		private final long[] frequencies;
 
@@ -508,9 +508,23 @@ public record Histogram(Buckets buckets, Residual residual) {
 		}
 
 		@Override
-		public void add(final double value) {
+		public Builder accept(final double value) {
 			++frequencies[partition.indexOf(value) + 1];
 			observer.accept(value);
+			return this;
+		}
+
+		/**
+		 * Create a new <em>immutable</em> histogram from the given {@code sample}
+		 * block.
+		 * {@snippet class="ObservationSnippets" region="Histogram.builder"}
+		 *
+		 * @param sampling the samples consumer
+		 * @return {@code this} samples object for method chaining
+		 */
+		public Builder accept(final Sampling sampling) {
+			sampling.writeTo(this);
+			return this;
 		}
 
 		/**
@@ -553,19 +567,6 @@ public record Histogram(Buckets buckets, Residual residual) {
 			);
 
 			return new Histogram(buckets, residuals);
-		}
-
-		/**
-		 * Create a new <em>immutable</em> histogram from the given {@code sample}
-		 * block.
-		 * {@snippet class="ObservationSnippets" region="Histogram.builder"}
-		 *
-		 * @param sampling the samples consumer
-		 * @return a new histogram
-		 */
-		public Histogram build(final Sampling sampling) {
-			sampling.run(this);
-			return build();
 		}
 
 		/**
@@ -718,7 +719,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 		return Collector.of(
 			() -> new Histogram.Builder(partition),
-			(hist, val) -> hist.add(fn.applyAsDouble(val)),
+			(hist, val) -> hist.accept(fn.applyAsDouble(val)),
 			(a, b) -> { a.combine(b); return a; },
 			Histogram.Builder::build
 		);

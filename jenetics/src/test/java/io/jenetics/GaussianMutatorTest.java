@@ -59,7 +59,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		for (int i = 0; i < 100_000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();
 			statistics.accept(value);
-			histogram.add(value);
+			histogram.accept(value);
 		}
 
 		Assertions.assertThat(histogram.build())

@@ -151,7 +151,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 			final long alterations = crossover
 				.alter(population, 1)
 				.alterations();
-			histogram.add(alterations);
+			histogram.accept(alterations);
 			variance.accept(alterations);
 		}
 

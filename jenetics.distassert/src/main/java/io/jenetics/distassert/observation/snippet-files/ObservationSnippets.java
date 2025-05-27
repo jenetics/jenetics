@@ -42,11 +42,12 @@ final class ObservationSnippets {
 
 			// Building the histogram
 			final Histogram observation = Histogram.Builder.of(interval, 20)
-				.build(samples -> {
+				.accept(samples -> {
 					for (int i = 0; i < 1_000_000; ++i) {
-						samples.add(random.nextGaussian());
+						samples.accept(random.nextGaussian());
 					}
-				});
+				})
+				.build();
 			// @end
 		}
 	}
@@ -57,11 +58,12 @@ final class ObservationSnippets {
 			// @start region="SamplingHistogram"
 			final var random = RandomGenerator.getDefault();
 			// Sampling of one point.
-			final Sampling point = samples -> samples.add(random.nextGaussian());
+			final Sampling point = samples -> samples.accept(random.nextGaussian());
 
 			var histogram = Histogram.Builder.of(new Interval(-4, 4), 20)
-				// Create a histogram from 1000 sample points.
-				.build(Sampling.repeat(1000, point));
+				// Add 1000 sample points to the histogram.
+				.accept(Sampling.repeat(1000, point))
+				.build();
 			// @end
 		}
 

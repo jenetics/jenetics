@@ -69,8 +69,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				assertThat(g1).isNotSameAs(g2);
 
-				samples.add(Long.parseLong(g1.allele().toString()));
-				samples.add(Long.parseLong(g2.allele().toString()));
+				samples.accept(Long.parseLong(g1.allele().toString()));
+				samples.accept(Long.parseLong(g2.allele().toString()));
 			}),
 			Histogram.Partition.of(0, characters.length(), 10)
 		);

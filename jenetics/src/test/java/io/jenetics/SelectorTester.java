@@ -320,7 +320,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 				selector.select(population, selectionCount, opt).stream()
 					.map(pt -> pt.genotype().gene().allele())
-					.forEach(samples::add);
+					.forEach(samples::accept);
 			}),
 			Histogram.Partition.of(new Interval(MIN, MAX), CLASS_COUNT)
 		);

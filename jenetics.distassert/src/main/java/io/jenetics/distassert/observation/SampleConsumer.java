@@ -19,6 +19,9 @@
  */
 package io.jenetics.distassert.observation;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.DoubleConsumer;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
@@ -30,82 +33,108 @@ import java.util.stream.Stream;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Samples {
+public interface SampleConsumer {
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param sample the sample value
+	 * @return {@code this} samples object for method chaining
 	 */
-	void add(double sample);
+	SampleConsumer accept(double sample);
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param sample the sample value
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void add(final Number sample) {
-		add(sample.doubleValue());
+	default SampleConsumer accept(final Number sample) {
+		accept(sample.doubleValue());
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final int... samples) {
+	default SampleConsumer acceptAll(final int... samples) {
 		for (var sample : samples) {
-			add(sample);
+			accept(sample);
 		}
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final long... samples) {
+	default SampleConsumer acceptAll(final long... samples) {
 		for (var sample : samples) {
-			add(sample);
+			accept(sample);
 		}
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final double... samples) {
+	default SampleConsumer acceptAll(final double... samples) {
 		for (var sample : samples) {
-			add(sample);
+			accept(sample);
 		}
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final Iterable<? extends Number> samples) {
-		samples.forEach(this::add);
+	default SampleConsumer acceptAll(final Iterable<? extends Number> samples) {
+		samples.forEach(this::accept);
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final DoubleStream samples) {
-		samples.forEach(this::add);
+	default SampleConsumer acceptAll(final DoubleStream samples) {
+		samples.forEach(this::accept);
+		return this;
 	}
 
 	/**
 	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
+	 * @return {@code this} samples object for method chaining
 	 */
-	default void addAll(final Stream<? extends Number> samples) {
-		samples.forEach(this::add);
+	default SampleConsumer acceptAll(final Stream<? extends Number> samples) {
+		samples.forEach(this::accept);
+		return this;
+	}
+
+	static SampleConsumer of(final DoubleConsumer consumer) {
+		requireNonNull(consumer);
+		return new SampleConsumer() {
+			@Override
+			public SampleConsumer accept(final double sample) {
+				consumer.accept(sample);
+				return this;
+			}
+		};
 	}
 
 }
