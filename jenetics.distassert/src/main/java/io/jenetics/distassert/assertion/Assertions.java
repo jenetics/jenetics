@@ -42,8 +42,8 @@ import io.jenetics.distassert.observation.Observation;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Assurance {
-	private Assurance() {
+public final class Assertions {
+	private Assertions() {
 	}
 
 	/* *************************************************************************

@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert.assertion;
 
-import static io.jenetics.distassert.assertion.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ import io.jenetics.distassert.observation.Sampling;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class AssuranceTest {
+public class AssertionsTest {
 
 	@Test(dataProvider = "tester")
 	public void assertUniformDistribution(
