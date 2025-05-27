@@ -47,36 +47,32 @@ public record GammaDistribution(double shape, double scale)
 
 	@Override
 	public Pdf pdf() {
-		return this::pdf;
-	}
-
-	private double pdf(final double x) {
-		if (x <= 0) {
-			if (x == 0 && shape <= 1) {
-				return shape == 1
-					? 1.0/scale
-					: Double.POSITIVE_INFINITY;
+		return x -> {
+			if (x <= 0) {
+				if (x == 0 && shape <= 1) {
+					return shape == 1
+						? 1.0/scale
+						: Double.POSITIVE_INFINITY;
+				} else {
+					return 0;
+				}
 			} else {
-				return 0;
+				return RegularizedGamma.P.derivative(shape, x/scale)/scale;
 			}
-		} else {
-			return RegularizedGamma.P.derivative(shape, x/scale)/scale;
-		}
+		};
 	}
 
 	@Override
 	public Cdf cdf() {
-		return this::cdf;
-	}
-
-	private double cdf(double x) {
-		if (x <= 0.0) {
-			return 0;
-		} else if (x >= Double.MAX_VALUE) {
-			return 1;
-		} else {
-			return RegularizedGamma.P.value(shape, x/scale);
-		}
+		return x -> {
+			if (x <= 0.0) {
+				return 0;
+			} else if (x >= Double.MAX_VALUE) {
+				return 1;
+			} else {
+				return RegularizedGamma.P.value(shape, x/scale);
+			}
+		};
 	}
 
 }

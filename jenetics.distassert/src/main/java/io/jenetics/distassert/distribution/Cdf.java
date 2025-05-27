@@ -24,6 +24,9 @@ import io.jenetics.distassert.Interval;
 /**
  * The cumulative distribution function.
  *
+ * @see <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">
+ *     Wikipedia: CDF</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

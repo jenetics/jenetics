@@ -17,27 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert.distribution;
 
 /**
- * Probability density function.
- *
- * @see <a href="https://en.wikipedia.org/wiki/Probability_density_function">
- *     Wikipedia: PDF</a>
+ * This package contains statistical distribution classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Pdf {
-
-	/**
-	 * Calculate the probability density value.
-	 *
-	 * @param value the input value
-	 * @return the probability density
-	 */
-	double apply(double value);
-
-}
+package io.jenetics.distassert.distribution;

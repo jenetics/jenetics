@@ -38,7 +38,7 @@ public record UniformDistribution(Interval domain) implements Distribution {
 	 *
 	 * <p>
 	 * <img
-	 *     src="doc-files/uniform-pdf.gif"
+	 *     src="../doc-files/uniform-pdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
 	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
@@ -60,7 +60,7 @@ public record UniformDistribution(Interval domain) implements Distribution {
 	 *
 	 * <p>
 	 * <img
-	 *     src="doc-files/uniform-cdf.gif"
+	 *     src="../doc-files/uniform-cdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
 	 *         0 & for & x < min \\
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\

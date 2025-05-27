@@ -20,11 +20,25 @@
 package io.jenetics.distassert.distribution;
 
 /**
+ * Defines the <em>inverse</em> cumulative distribution function.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">
+ *     Wikipedia: CDF</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
 public interface InverseCdf {
+
+	/**
+	 * Calculates the <em>inverse</em> cumulative distribution value for the
+	 * given input.
+	 *
+	 * @param value the value to calculate the <em>inverse</em> cumulative
+	 *         value for
+	 * @return the <em>inverse</em> cumulative value
+	 */
 	double apply(double value);
 }

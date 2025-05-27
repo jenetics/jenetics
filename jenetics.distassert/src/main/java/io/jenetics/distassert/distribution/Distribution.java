@@ -33,6 +33,12 @@ import io.jenetics.distassert.Interval;
  */
 public interface Distribution {
 
+	/**
+	 * Return the domain of the distribution. This is the interval, the
+	 * distribution is valid.
+	 *
+	 * @return the distribution domain.
+	 */
 	default Interval domain() {
 		return new Interval(-Double.MAX_VALUE, Double.MAX_VALUE);
 	}
@@ -55,6 +61,13 @@ public interface Distribution {
 	 */
 	Cdf cdf();
 
+	/**
+	 * Return the inverse CDF function. This function is created by using the
+	 * {@link #cdf()} and a root finding algorithm for finding the inverse of
+	 * a given CDF value.
+	 *
+	 * @return the inverse CDF function
+	 */
 	default InverseCdf icdf() {
 		final var cdf = cdf();
 		final var solver = new BrentSolver(0x1.0p-52, 0x1.0p-52, 0x1.0p-52);

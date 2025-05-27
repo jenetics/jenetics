@@ -31,7 +31,8 @@ import io.jenetics.distassert.Histogram.Partition;
 import io.jenetics.distassert.Interval;
 
 /**
- * Distribution object, based on an observation.
+ * Distribution object, based on an observation. The observation is defined by
+ * the {@link Histogram} of the distribution (quantized PDF).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
