@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
@@ -58,7 +58,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		);
 		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(observation).isUniform();
+		assertThat(observation).isUniform();
     }
 
 	@DataProvider

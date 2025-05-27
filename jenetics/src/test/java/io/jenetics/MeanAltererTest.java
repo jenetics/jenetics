@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -82,7 +82,7 @@ public class MeanAltererTest extends AltererTester {
 		);
 		new StableRandomExecutor(123456789).execute(observation);
 
-		assertThatObservation(observation).isNormal();
+		assertThat(observation).isNormal();
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

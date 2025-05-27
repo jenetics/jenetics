@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
@@ -66,7 +66,7 @@ public class IntegerChromosomeTest
 		);
 		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(observation).isUniform();
+		assertThat(observation).isUniform();
 	}
 
 	@DataProvider

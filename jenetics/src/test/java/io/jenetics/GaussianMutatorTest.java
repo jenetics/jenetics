@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -28,6 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.RandomRegistry;
@@ -63,7 +64,7 @@ public class GaussianMutatorTest extends MutatorTester {
 			histogram.add(value);
 		}
 
-		assertThatObservation(histogram.build())
+		Assertions.assertThat(histogram.build())
 			.withinRange(min, max)
 			.isNormal(5, Math.sqrt(var));
 	}

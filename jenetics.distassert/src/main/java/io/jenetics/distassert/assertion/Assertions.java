@@ -193,7 +193,7 @@ public final class Assertions {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static HistogramAssert assertThatObservation(Histogram observation) {
+	public static HistogramAssert assertThat(Histogram observation) {
 		return new HistogramAssert(observation);
 	}
 
@@ -203,7 +203,7 @@ public final class Assertions {
 	 * @param observation the observation to check.
 	 * @return a new distribution assertion object
 	 */
-	public static ObservationAssert assertThatObservation(Observation observation) {
+	public static ObservationAssert assertThat(Observation observation) {
 		return new ObservationAssert(observation);
 	}
 

@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class RouletteWheelSelectorTest
 			expected.value
 		);
 
-		assertThatObservation(observation)
+		assertThat(observation)
 			.follows(distribution);
 	}
 

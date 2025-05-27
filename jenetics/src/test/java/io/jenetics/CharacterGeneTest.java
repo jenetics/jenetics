@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -34,6 +34,7 @@ import java.util.Random;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.RunnableObservation;
 import io.jenetics.distassert.observation.Sampling;
@@ -76,7 +77,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		);
 		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(observation).isUniform();
+		Assertions.assertThat(observation).isUniform();
 	}
 
 	@DataProvider

@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,6 +34,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.RunnableObservation;
 import io.jenetics.distassert.observation.Sampling;
@@ -156,7 +157,7 @@ public class SubsetsTest {
 		);
 		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(observation).isUniform();
+		Assertions.assertThat(observation).isUniform();
 	}
 
 	@DataProvider

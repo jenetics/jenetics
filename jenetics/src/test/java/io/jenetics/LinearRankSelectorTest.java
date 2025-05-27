@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -79,7 +79,7 @@ public class LinearRankSelectorTest
 			expected.value
 		);
 
-		assertThatObservation(observation)
+		assertThat(observation)
 			.follows(distribution);
 	}
 

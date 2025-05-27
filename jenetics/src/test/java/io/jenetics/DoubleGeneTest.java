@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -35,6 +35,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram.Partition;
 import io.jenetics.distassert.observation.RunnableObservation;
 import io.jenetics.distassert.observation.Sampling;
@@ -69,7 +70,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		);
 		new StableRandomExecutor(seed).execute(observation);
 
-		assertThatObservation(observation).isUniform();
+		Assertions.assertThat(observation).isUniform();
 	}
 
 	@DataProvider

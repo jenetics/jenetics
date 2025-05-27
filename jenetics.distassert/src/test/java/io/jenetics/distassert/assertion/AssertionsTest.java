@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert.assertion;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
@@ -47,7 +47,7 @@ public class AssertionsTest {
 		);
 		observation.run();
 
-		assertThatObservation(observation)
+		assertThat(observation)
 			.usingHypothesisTester(tester)
 			.isUniform();
 	}
@@ -68,7 +68,7 @@ public class AssertionsTest {
 		);
 		observation.run();
 
-		assertThatObservation(observation)
+		assertThat(observation)
 			.usingHypothesisTester(tester)
 			.withinRange(interval)
 			.isNormal(0, 1);
