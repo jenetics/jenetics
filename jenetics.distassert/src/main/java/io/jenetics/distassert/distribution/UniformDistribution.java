@@ -88,4 +88,17 @@ public record UniformDistribution(Interval domain) implements Distribution {
 		};
 	}
 
+	@Override
+	public InverseCdf icdf() {
+		return p -> {
+			if (p < 0 || p > 1) {
+				throw new IllegalArgumentException(
+					"The probability value must be in the range [0, 1], but was: " + p
+				);
+			}
+
+			return (domain.max() - domain.min())*p + domain().min();
+		};
+	}
+
 }

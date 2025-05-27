@@ -28,12 +28,12 @@ import io.jenetics.distassert.Interval;
 
 /**
  * <p>This distribution has the following cdf.</p>
- * <p><img src="doc-files/LinearDistribution.png" alt="Distribution"></p>
+ * <p><img src="../doc-files/LinearDistribution.png" alt="Distribution"></p>
  * <p>
  * The only restriction is that the integral of the cdf must be one.
  * </p>
  * <p>
- * <img src="doc-files/linear-precondition.gif"
+ * <img src="../doc-files/linear-precondition.gif"
  *      alt="\int_{x_1}^{x_2}\left(
  *             \\underset{k} {\\underbrace {\frac{y_2-y_1}{x_2-x_1}}} \cdot x +
  *             \\underset{d}{\\underbrace {y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1}}
@@ -43,7 +43,7 @@ import io.jenetics.distassert.Interval;
  *
  *  Solving this integral leads to
  *  <p>
- *  <img src="doc-files/linear-precondition-y2.gif"
+ *  <img src="../doc-files/linear-precondition-y2.gif"
  *       alt="y_2 = -\frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
  *  >
  *  </p>
@@ -101,7 +101,7 @@ public final class LinearDistribution implements Distribution {
 	 *
 	 * <p>
 	 * <img
-	 *     src="doc-files/linear-cdf.gif"
+	 *     src="../doc-files/linear-cdf.gif"
 	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
 	 *      {2(x_2 - x_1)}"
 	 * >
@@ -111,7 +111,7 @@ public final class LinearDistribution implements Distribution {
 	@Override
 	public Cdf cdf() {
 		return x -> {
-			double result = 0;
+			double result;
 			if (x < x1) {
 				result = 0.0;
 			} else if (x > x2) {
@@ -129,7 +129,7 @@ public final class LinearDistribution implements Distribution {
 	 *
 	 * <p>
 	 * <img
-	 *     src="doc-files/linear-pdf.gif"
+	 *     src="../doc-files/linear-pdf.gif"
 	 *     alt="f(x) = \left(
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x +
 	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
@@ -156,8 +156,7 @@ public final class LinearDistribution implements Distribution {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof LinearDistribution other &&
+		return obj instanceof LinearDistribution other &&
 			Objects.equals(_domain, other._domain) &&
 			Double.compare(d, other.d) == 0 &&
 			Double.compare(k, other.k) == 0 &&

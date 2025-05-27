@@ -47,30 +47,25 @@ public record NormalDistribution(double mean, double stddev)
 
 	@Override
 	public Pdf pdf() {
-		return this::pdf;
-	}
-
-	public double pdf(final double x) {
-		final double x0 = x - mean;
-		final double x1 = x0/stddev;
-		final double x2 = -0.5*x1*x1 - Math.log(stddev) + HALF_LOG_TAU;
-		return Math.exp(x2);
+		return x -> {
+			final double x0 = x - mean;
+			final double x1 = x0/stddev;
+			final double x2 = -0.5*x1*x1 - Math.log(stddev) + HALF_LOG_TAU;
+			return Math.exp(x2);
+		};
 	}
 
 	@Override
 	public Cdf cdf() {
-		return this::cdf;
-	}
+		return x -> {
+			final double dev = x - mean;
 
-	public double cdf(final double x) {
-		final double dev = x - mean;
-
-		if (Math.abs(dev) > 40.0*stddev) {
-			return dev < 0.0 ? 0.0 : 1.0;
-		} else {
-			//return 0.5*Erf.erfc(-dev/(stddev*SQRT2));
-			return 0.5*Erfc.value(-dev/(stddev*SQRT2));
-		}
+			if (Math.abs(dev) > 40.0*stddev) {
+				return dev < 0.0 ? 0.0 : 1.0;
+			} else {
+				return 0.5*Erfc.value(-dev/(stddev*SQRT2));
+			}
+		};
 	}
 
 }

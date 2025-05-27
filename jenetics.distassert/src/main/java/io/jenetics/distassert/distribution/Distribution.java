@@ -71,7 +71,20 @@ public interface Distribution {
 	default InverseCdf icdf() {
 		final var cdf = cdf();
 		final var solver = new BrentSolver(0x1.0p-52, 0x1.0p-52, 0x1.0p-52);
-		return p -> solver.findRoot(x -> cdf.apply(x) - p, domain().min(), domain().max());
+
+		return p -> {
+			if (p < 0 || p > 1) {
+				throw new IllegalArgumentException(
+					"The probability value must be in the range [0, 1], but was: " + p
+				);
+			}
+
+			return solver.findRoot(
+				x -> cdf.apply(x) - p,
+				domain().min(),
+				domain().max()
+			);
+		};
 	}
 
 }
