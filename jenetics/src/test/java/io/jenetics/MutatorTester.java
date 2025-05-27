@@ -26,8 +26,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
 

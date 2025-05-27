@@ -33,7 +33,7 @@ public class SamplingTest {
 
 	@Test
 	public void repeat() {
-		final var sampling = Sampling.repeat(100, samples ->
+		final Sampling sampling = Sampling.repeat(100, samples ->
 			samples.addAll(IntStream.range(0, 100).boxed())
 		);
 

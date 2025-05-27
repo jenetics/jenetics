@@ -49,7 +49,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */
@@ -60,7 +60,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */
@@ -71,7 +71,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */
@@ -82,7 +82,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */
@@ -91,7 +91,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */
@@ -100,7 +100,7 @@ public interface Samples {
 	}
 
 	/**
-	 * Adding a new sample values.
+	 * Adding a new sample value.
 	 *
 	 * @param samples the sample values
 	 */

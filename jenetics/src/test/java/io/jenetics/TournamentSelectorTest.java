@@ -31,8 +31,8 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.distribution.EmpiricalDistribution;
 import io.jenetics.distassert.PearsonsChiSquared;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;

@@ -22,7 +22,9 @@ package io.jenetics.distassert.observation;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This functional interface represents a sampling task.
+ * This functional interface represents a sampling task. It is used for
+ * separating generation of the sample points from the actual execution.
+ * {@snippet class="ObservationSnippets" region="SamplingHistogram"}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

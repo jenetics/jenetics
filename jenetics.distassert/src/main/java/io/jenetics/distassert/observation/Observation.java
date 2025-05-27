@@ -22,6 +22,9 @@ package io.jenetics.distassert.observation;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * An observation contains of a {@link Histogram} and the descriptive
+ * {@link Statistics} values of the samples.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -42,6 +45,13 @@ public interface Observation {
 	 */
 	Statistics statistics();
 
+	/**
+	 * Create a new observation object from the given input.
+	 *
+	 * @param histogram the histogram of the sample points
+	 * @param statistics descriptive statistic values of the sample points
+	 * @return a new observation object
+	 */
 	static Observation of(
 		final Histogram histogram,
 		final Statistics statistics

@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-final class StatSnippets {
-	private StatSnippets() {
+final class ObservationSnippets {
+	private ObservationSnippets() {
 	}
 
 	static final class HistogramSnippets {
@@ -47,6 +47,21 @@ final class StatSnippets {
 						samples.add(random.nextGaussian());
 					}
 				});
+			// @end
+		}
+	}
+
+	static final class SamplingSnippets {
+
+		void sampling() {
+			// @start region="SamplingHistogram"
+			final var random = RandomGenerator.getDefault();
+			// Sampling of one point.
+			final Sampling point = samples -> samples.add(random.nextGaussian());
+
+			var histogram = Histogram.Builder.of(new Interval(-4, 4), 20)
+				// Create a histogram from 1000 sample points.
+				.build(Sampling.repeat(1000, point));
 			// @end
 		}
 

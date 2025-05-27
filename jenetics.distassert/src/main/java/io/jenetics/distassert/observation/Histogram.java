@@ -54,7 +54,7 @@ import io.jenetics.distassert.Interval;
  * {@link #residual()} component.
  * <p>
  * <b>Histogram creation from double stream</b>
- * {@snippet class="StatSnippets" region="Histogram.builder"}
+ * {@snippet class="ObservationSnippets" region="Histogram.builder"}
  *
  * @param buckets the {@link Bucket} list, the histogram consists of
  * @param residual the <em>residual</em> buckets, which complete the whole
@@ -558,7 +558,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		/**
 		 * Create a new <em>immutable</em> histogram from the given {@code sample}
 		 * block.
-		 * {@snippet class="StatSnippets" region="Histogram.builder"}
+		 * {@snippet class="ObservationSnippets" region="Histogram.builder"}
 		 *
 		 * @param sampling the samples consumer
 		 * @return a new histogram

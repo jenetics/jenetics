@@ -37,7 +37,7 @@ public class SamplesTest {
 		final Samples samples = statistics::accept;
 
 		for (int i = 0; i < 100; ++i) {
-			final Number sample = Long.valueOf(i);
+			final Number sample = (long)i;
 			samples.add(sample);
 		}
 
