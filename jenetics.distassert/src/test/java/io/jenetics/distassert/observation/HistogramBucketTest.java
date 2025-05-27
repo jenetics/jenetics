@@ -17,37 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
-import java.util.random.RandomGenerator;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import org.testng.annotations.Test;
+
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram.Bucket;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-final class StatSnippets {
-	private StatSnippets() {
+public class HistogramBucketTest {
+
+	@Test
+	public void create() {
+		assertThatNoException()
+			.isThrownBy(() -> new Bucket(new Interval(0, 1), 234));
 	}
 
-	static final class HistogramSnippets {
+	@Test
+	public void createInvalidCount() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> new Bucket(new Interval(0, 1), -1));
+	}
 
-		void creation() {
-			// @start region="Histogram.builder"
-			// The range of the observed values.
-			final Interval interval = new Interval(-5, 5);
-
-			// The value source.
-			final var random = RandomGenerator.getDefault();
-
-			// Building the histogram
-			final Histogram observation = Histogram.Builder.of(interval, 20)
-				.build(samples -> {
-					for (int i = 0; i < 1_000_000; ++i) {
-						samples.add(random.nextGaussian());
-					}
-				});
-			// @end
-		}
-
+	@Test
+	public void createNullInterval() {
+		assertThatExceptionOfType(NullPointerException.class)
+			.isThrownBy(() -> new Bucket(null, 10));
 	}
 
 }

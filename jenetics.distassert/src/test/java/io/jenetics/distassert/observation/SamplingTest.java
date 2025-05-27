@@ -17,33 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.Test;
 
 /**
- * Statistical data.
- *
- * @param count the count of values recorded
- * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
- * 	      no values have been recorded.
- * @param max the maximum value recorded, or {@link Double#NEGATIVE_INFINITY} if
- * 	      no values have been recorded
- * @param sum the sum of values recorded, or zero if no values have been
- * 	      recorded
- * @param mean the arithmetic mean of values recorded, or zero if no values have
- * 	      been recorded
- * @param variance the variance of values recorded, or {@link Double#NaN} if no
- * 	      values have been recorded
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public record Statistics(
-	long count,
-	double min,
-	double max,
-	double sum,
-	double mean,
-	double variance
-) {
+public class SamplingTest {
+
+	@Test
+	public void repeat() {
+		final var sampling = Sampling.repeat(100, samples ->
+			samples.addAll(IntStream.range(0, 100).boxed())
+		);
+
+		final var statistics = new DoubleSummaryStatistics();
+		sampling.run(statistics::accept);
+
+		assertThat(statistics.getCount()).isEqualTo(100*100);
+		assertThat(statistics.getMin()).isEqualTo(0);
+		assertThat(statistics.getMax()).isEqualTo(99);
+	}
+
 }

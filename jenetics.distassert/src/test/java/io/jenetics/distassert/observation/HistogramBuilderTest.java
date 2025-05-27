@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,10 +25,11 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Histogram.Buckets;
-import io.jenetics.distassert.Histogram.Builder;
-import io.jenetics.distassert.Histogram.Partition;
-import io.jenetics.distassert.Histogram.Residual;
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram.Buckets;
+import io.jenetics.distassert.observation.Histogram.Builder;
+import io.jenetics.distassert.observation.Histogram.Partition;
+import io.jenetics.distassert.observation.Histogram.Residual;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -22,12 +22,9 @@ package io.jenetics.distassert;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
-import static java.lang.Math.nextDown;
-import static java.lang.Math.nextUp;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -73,70 +70,6 @@ public class IntervalTest {
 		assertThat(interval.compareTo(0)).isEqualTo(0);
 		assertThat(interval.compareTo(50)).isEqualTo(0);
 		assertThat(interval.compareTo(101)).isEqualTo(1);
-	}
-
-	@Test(dataProvider = "intervals")
-	public void elements(Interval interval, long size) {
-		assertThat(interval.elements()).isEqualTo(size);
-	}
-
-	@DataProvider
-	public Object[][] intervals() {
-		return new Object[][] {
-			{new Interval(-100.0, up(-100.0, 1)), 1},
-			{new Interval(-100.0, up(-100.0, 2)), 2},
-			{new Interval(-100.0, up(-100.0, 3)), 3},
-			{new Interval(-100.0, up(-100.0, 5)), 5},
-			{new Interval(-100.0, up(-100.0, 20)), 20},
-
-			{new Interval(down(-100.0, 1), up(-100.0, 1)), 2},
-			{new Interval(down(-100.0, 2), up(-100.0, 2)), 4},
-			{new Interval(down(-100.0, 3), up(-100.0, 3)), 6},
-			{new Interval(down(-100.0, 5), up(-100.0, 5)), 10},
-			{new Interval(down(-100.0, 20), up(-100.0, 20)), 40},
-
-			{new Interval(0.0, up(0.0, 1)), 1},
-			{new Interval(0.0, up(0.0, 2)), 2},
-			{new Interval(0.0, up(0.0, 3)), 3},
-			{new Interval(0.0, up(0.0, 5)), 5},
-			{new Interval(0.0, up(0.0, 20)), 20},
-
-			{new Interval(down(0.0, 1), up(0.0, 1)), 2},
-			{new Interval(down(0.0, 2), up(0.0, 2)), 4},
-			{new Interval(down(0.0, 3), up(0.0, 3)), 6},
-			{new Interval(down(0.0, 5), up(0.0, 5)), 10},
-			{new Interval(down(0.0, 20), up(0.0, 20)), 40},
-
-			{new Interval(100.0, up(100.0, 1)), 1},
-			{new Interval(100.0, up(100.0, 2)), 2},
-			{new Interval(100.0, up(100.0, 3)), 3},
-			{new Interval(100.0, up(100.0, 5)), 5},
-			{new Interval(100.0, up(100.0, 20)), 20},
-
-			{new Interval(down(100.0, 1), up(100.0, 1)), 2},
-			{new Interval(down(100.0, 2), up(100.0, 2)), 4},
-			{new Interval(down(100.0, 3), up(100.0, 3)), 6},
-			{new Interval(down(100.0, 5), up(100.0, 5)), 10},
-			{new Interval(down(100.0, 20), up(100.0, 20)), 40},
-
-			{new Interval(-2, 2), Long.MAX_VALUE}
-		};
-	}
-
-	private static double up(double d, int steps) {
-		var result = d;
-		for (int i = 0; i < steps; ++i) {
-			result = nextUp(result);
-		}
-		return result;
-	}
-
-	private static double down(double d, int steps) {
-		var result = d;
-		for (int i = 0; i < steps; ++i) {
-			result = nextDown(result);
-		}
-		return result;
 	}
 
 }

@@ -19,40 +19,37 @@
  */
 package io.jenetics.distassert;
 
-import static java.util.Objects.requireNonNull;
+import java.util.random.RandomGenerator;
+
+import io.jenetics.distassert.observation.Histogram;
 
 /**
- * This functional interface represents a sampling task.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-@FunctionalInterface
-public interface Sampling {
+final class StatSnippets {
+	private StatSnippets() {
+	}
 
-	/**
-	 * Runs {@code this} sampling task. The sampling values are added to the
-	 * given {@code samples} value <em>sink</em>.
-	 *
-	 * @param samples the sample value <em>sink</em>
-	 */
-	void run(final Samples samples);
+	static final class HistogramSnippets {
 
-	/**
-	 * Create a new sampling object which repeats the given sub{@code sampling}
-	 *
-	 * @param count number of times to repeat
-	 * @param sampling the subsampling to be repeated
-	 * @return a new sampling
-	 */
-	static Sampling repeat(final int count, final Sampling sampling) {
-		requireNonNull(sampling);
-		return samples -> {
-			for (int i = 0; i < count; ++i) {
-				sampling.run(samples);
-			}
-		};
+		void creation() {
+			// @start region="Histogram.builder"
+			// The range of the observed values.
+			final Interval interval = new Interval(-5, 5);
+
+			// The value source.
+			final var random = RandomGenerator.getDefault();
+
+			// Building the histogram
+			final Histogram observation = Histogram.Builder.of(interval, 20)
+				.build(samples -> {
+					for (int i = 0; i < 1_000_000; ++i) {
+						samples.add(random.nextGaussian());
+					}
+				});
+			// @end
+		}
+
 	}
 
 }

@@ -17,45 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
 import static java.util.Objects.requireNonNull;
 
 /**
+ * This functional interface represents a sampling task.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Observation {
+@FunctionalInterface
+public interface Sampling {
 
 	/**
-	 * Return the histogram of the observation.
+	 * Runs {@code this} sampling task. The sampling values are added to the
+	 * given {@code samples} value <em>sink</em>.
 	 *
-	 * @return the histogram of the observation
+	 * @param samples the sample value <em>sink</em>
 	 */
-	Histogram histogram();
+	void run(final Samples samples);
 
 	/**
-	 * Return the statics of the sample values.
+	 * Create a new sampling object which repeats the given sub{@code sampling}
 	 *
-	 * @return the statistics of the sample values
+	 * @param count number of times to repeat
+	 * @param sampling the subsampling to be repeated
+	 * @return a new sampling
 	 */
-	Statistics statistics();
-
-	static Observation of(
-		final Histogram histogram,
-		final Statistics statistics
-	) {
-		record SimpleObservation(Histogram histogram, Statistics statistics)
-			implements Observation
-		{
-			public SimpleObservation {
-				requireNonNull(histogram);
-				requireNonNull(statistics);
+	static Sampling repeat(final int count, final Sampling sampling) {
+		requireNonNull(sampling);
+		return samples -> {
+			for (int i = 0; i < count; ++i) {
+				sampling.run(samples);
 			}
-		}
-
-		return new SimpleObservation(histogram, statistics);
+		};
 	}
 
 }

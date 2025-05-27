@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 import org.apache.commons.statistics.descriptive.DoubleStatistics;
 import org.apache.commons.statistics.descriptive.Statistic;
 
-import io.jenetics.distassert.Histogram.Partition;
+import io.jenetics.distassert.observation.Histogram.Partition;
 
 /**
  * This object allows evaluating a given sampling within a given execution

@@ -31,6 +31,8 @@ import io.jenetics.distassert.distribution.Distribution;
 import io.jenetics.distassert.distribution.NormalDistribution;
 import io.jenetics.distassert.distribution.RangedDistribution;
 import io.jenetics.distassert.distribution.UniformDistribution;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observation;
 
 /**
  * Entry point for statistical assertion methods.

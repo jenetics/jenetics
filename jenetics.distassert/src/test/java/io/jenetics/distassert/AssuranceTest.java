@@ -26,6 +26,10 @@ import java.util.Random;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.RunnableObservation;
+import io.jenetics.distassert.observation.Sampling;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

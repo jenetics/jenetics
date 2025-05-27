@@ -19,8 +19,6 @@
  */
 package io.jenetics.distassert;
 
-import static java.lang.Double.doubleToLongBits;
-
 import java.util.Optional;
 
 /**
@@ -78,25 +76,6 @@ public record Interval(double min, double max) {
 		} else {
 			return 0;
 		}
-	}
-
-	/**
-	 * Return the number of <em>distinct</em> {@code double} values {@code this}
-	 * interval can <em>hold</em>.
-	 *
-	 * @return the number of distinct double values of {@code this} interval
-	 */
-	long elements() {
-		if (Double.isInfinite(min) || Double.isInfinite(max)) {
-			return Long.MAX_VALUE;
-		}
-
-		long left = min < 0 ? Long.MIN_VALUE - doubleToLongBits(min) : doubleToLongBits(min);
-		long right = max < 0 ? Long.MIN_VALUE - doubleToLongBits(max) : doubleToLongBits(max);
-
-		// Overflow safe subtraction.
-		final long result = right - left;
-		return ((right^left) & (right^result)) < 0 ? Long.MAX_VALUE : result;
 	}
 
 	/**

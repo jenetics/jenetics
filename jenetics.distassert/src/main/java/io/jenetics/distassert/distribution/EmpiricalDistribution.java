@@ -25,9 +25,9 @@ import java.util.Arrays;
 
 import org.apache.commons.numbers.core.Sum;
 
-import io.jenetics.distassert.Histogram;
-import io.jenetics.distassert.Histogram.Buckets;
-import io.jenetics.distassert.Histogram.Partition;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Histogram.Buckets;
+import io.jenetics.distassert.observation.Histogram.Partition;
 import io.jenetics.distassert.Interval;
 
 /**

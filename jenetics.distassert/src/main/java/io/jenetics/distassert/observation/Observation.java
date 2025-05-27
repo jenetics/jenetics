@@ -17,32 +17,45 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.DoubleSummaryStatistics;
-import java.util.stream.IntStream;
-
-import org.testng.annotations.Test;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class SamplingTest {
+public interface Observation {
 
-	@Test
-	public void repeat() {
-		final var sampling = Sampling.repeat(100, samples ->
-			samples.addAll(IntStream.range(0, 100).boxed())
-		);
+	/**
+	 * Return the histogram of the observation.
+	 *
+	 * @return the histogram of the observation
+	 */
+	Histogram histogram();
 
-		final var statistics = new DoubleSummaryStatistics();
-		sampling.run(statistics::accept);
+	/**
+	 * Return the statics of the sample values.
+	 *
+	 * @return the statistics of the sample values
+	 */
+	Statistics statistics();
 
-		assertThat(statistics.getCount()).isEqualTo(100*100);
-		assertThat(statistics.getMin()).isEqualTo(0);
-		assertThat(statistics.getMax()).isEqualTo(99);
+	static Observation of(
+		final Histogram histogram,
+		final Statistics statistics
+	) {
+		record SimpleObservation(Histogram histogram, Statistics statistics)
+			implements Observation
+		{
+			public SimpleObservation {
+				requireNonNull(histogram);
+				requireNonNull(statistics);
+			}
+		}
+
+		return new SimpleObservation(histogram, statistics);
 	}
 
 }

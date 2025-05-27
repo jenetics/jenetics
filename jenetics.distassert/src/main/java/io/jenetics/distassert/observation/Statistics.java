@@ -17,36 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
-
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.Histogram.Bucket;
+package io.jenetics.distassert.observation;
 
 /**
+ * Statistical data.
+ *
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
+ * 	      no values have been recorded.
+ * @param max the maximum value recorded, or {@link Double#NEGATIVE_INFINITY} if
+ * 	      no values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been
+ * 	      recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
+ * @param variance the variance of values recorded, or {@link Double#NaN} if no
+ * 	      values have been recorded
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class HistogramBucketTest {
-
-	@Test
-	public void create() {
-		assertThatNoException()
-			.isThrownBy(() -> new Bucket(new Interval(0, 1), 234));
-	}
-
-	@Test
-	public void createInvalidCount() {
-		assertThatExceptionOfType(IllegalArgumentException.class)
-			.isThrownBy(() -> new Bucket(new Interval(0, 1), -1));
-	}
-
-	@Test
-	public void createNullInterval() {
-		assertThatExceptionOfType(NullPointerException.class)
-			.isThrownBy(() -> new Bucket(null, 10));
-	}
-
+public record Statistics(
+	long count,
+	double min,
+	double max,
+	double sum,
+	double mean,
+	double variance
+) {
 }

@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.distassert.distribution.Distribution;
+import io.jenetics.distassert.observation.Histogram;
 
 /**
  * Implements the Pearson's chi-squared test.

@@ -17,8 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.distassert;
+package io.jenetics.distassert.observation;
 
+import static java.lang.Double.doubleToLongBits;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
@@ -33,6 +34,8 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import io.jenetics.distassert.Interval;
 
 /**
  * This class lets you create a histogram from {@code double} sample data. The
@@ -240,7 +243,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 						.formatted(parts)
 				);
 			}
-			final long size = interval.elements();
+			final long size = elements(interval);
 			if (size < parts) {
 				throw new IllegalArgumentException("""
 					%s can hold only %d distinct double values. \
@@ -816,6 +819,34 @@ public record Histogram(Buckets buckets, Residual residual) {
 			);
 		}
 
+	}
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return the number of <em>distinct</em> {@code double} values {@code this}
+	 * interval can <em>hold</em>.
+	 *
+	 * @return the number of distinct double values of {@code this} interval
+	 */
+	static long elements(Interval interval) {
+		if (Double.isInfinite(interval.min()) || Double.isInfinite(interval.max())) {
+			return Long.MAX_VALUE;
+		}
+
+		long left = interval.min() < 0
+			? Long.MIN_VALUE - doubleToLongBits(interval.min())
+			: doubleToLongBits(interval.min());
+
+		long right = interval.max() < 0
+			? Long.MIN_VALUE - doubleToLongBits(interval.max())
+			: doubleToLongBits(interval.max());
+
+		// Overflow safe subtraction.
+		final long result = right - left;
+		return ((right^left) & (right^result)) < 0 ? Long.MAX_VALUE : result;
 	}
 
 }

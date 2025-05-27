@@ -22,6 +22,7 @@ package io.jenetics.distassert;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.distassert.distribution.Distribution;
+import io.jenetics.distassert.observation.Histogram;
 
 /**
  * Interface for statistical hypothesis testers. It checks if a given observation,
