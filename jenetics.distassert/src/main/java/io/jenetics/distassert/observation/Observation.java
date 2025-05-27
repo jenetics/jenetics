@@ -21,6 +21,11 @@ package io.jenetics.distassert.observation;
 
 import static java.util.Objects.requireNonNull;
 
+import org.apache.commons.statistics.descriptive.DoubleStatistics;
+import org.apache.commons.statistics.descriptive.Statistic;
+
+import io.jenetics.distassert.observation.Histogram.Partition;
+
 /**
  * An observation contains of a {@link Histogram} and the descriptive
  * {@link Statistics} values of the samples.
@@ -66,6 +71,38 @@ public interface Observation {
 		}
 
 		return new SimpleObservation(histogram, statistics);
+	}
+
+	/**
+	 * Create a new sampling observation task.
+	 *
+	 * @param sampling the sampling function
+	 * @param partition the partition used for the created histogram
+	 */
+	static Observation of(final Sampling sampling, final Partition partition) {
+		final var summary = DoubleStatistics.of(
+			Statistic.MIN,
+			Statistic.MAX,
+			Statistic.MEAN,
+			Statistic.SUM,
+			Statistic.VARIANCE
+		);
+
+		final var histogram = new Histogram.Builder(partition)
+			.observer(summary)
+			.accept(sampling)
+			.build();
+
+		final var statistics = new Statistics(
+			summary.getCount(),
+			summary.getAsDouble(Statistic.MIN),
+			summary.getAsDouble(Statistic.MAX),
+			summary.getAsDouble(Statistic.SUM),
+			summary.getAsDouble(Statistic.MEAN),
+			summary.getAsDouble(Statistic.VARIANCE)
+		);
+
+		return Observation.of(histogram, statistics);
 	}
 
 }

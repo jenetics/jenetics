@@ -32,6 +32,7 @@ import java.util.function.DoubleConsumer;
 import java.util.function.IntFunction;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -514,9 +515,50 @@ public record Histogram(Buckets buckets, Residual residual) {
 			return this;
 		}
 
+		@Override
+		public Builder accept(Number sample) {
+			SampleConsumer.super.accept(sample);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(int... samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(long... samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(double... samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(Iterable<? extends Number> samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(DoubleStream samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
+		@Override
+		public Builder acceptAll(Stream<? extends Number> samples) {
+			SampleConsumer.super.acceptAll(samples);
+			return this;
+		}
+
 		/**
-		 * Create a new <em>immutable</em> histogram from the given {@code sample}
-		 * block.
+		 * Add the given {@code sampling} to this histogram.
 		 * {@snippet class="ObservationSnippets" region="Histogram.builder"}
 		 *
 		 * @param sampling the samples consumer

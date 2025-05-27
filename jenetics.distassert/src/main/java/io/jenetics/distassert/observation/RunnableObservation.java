@@ -23,9 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.NoSuchElementException;
 
-import org.apache.commons.statistics.descriptive.DoubleStatistics;
-import org.apache.commons.statistics.descriptive.Statistic;
-
 import io.jenetics.distassert.observation.Histogram.Partition;
 
 /**
@@ -40,8 +37,7 @@ public final class RunnableObservation implements Runnable, Observation {
 	private final Sampling sampling;
 	private final Partition partition;
 
-	private Histogram histogram;
-	private Statistics statistics;
+	private Observation observation;
 	private volatile boolean evaluated = false;
 
 	/**
@@ -63,28 +59,7 @@ public final class RunnableObservation implements Runnable, Observation {
 	}
 
 	private synchronized void evaluate() {
-		final var summary = DoubleStatistics.of(
-			Statistic.MIN,
-			Statistic.MAX,
-			Statistic.MEAN,
-			Statistic.SUM,
-			Statistic.VARIANCE
-		);
-
-		histogram = new Histogram.Builder(partition)
-			.observer(summary)
-			.accept(sampling)
-			.build();
-
-		statistics = new Statistics(
-			summary.getCount(),
-			summary.getAsDouble(Statistic.MIN),
-			summary.getAsDouble(Statistic.MAX),
-			summary.getAsDouble(Statistic.SUM),
-			summary.getAsDouble(Statistic.MEAN),
-			summary.getAsDouble(Statistic.VARIANCE)
-		);
-
+		observation = Observation.of(sampling, partition);
 		evaluated = true;
 	}
 
@@ -93,12 +68,15 @@ public final class RunnableObservation implements Runnable, Observation {
 		if (!evaluated) {
 			throw new NoSuchElementException();
 		}
-		return histogram;
+		return observation.histogram();
 	}
 
 	@Override
-	public Statistics statistics() {
-		return statistics;
+	public synchronized Statistics statistics() {
+		if (!evaluated) {
+			throw new NoSuchElementException();
+		}
+		return observation.statistics();
 	}
 
 }

@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observation;
 import io.jenetics.distassert.observation.RunnableObservation;
 import io.jenetics.distassert.observation.Sampling;
 
@@ -41,11 +42,10 @@ public class AssertionsTest {
 		final HypothesisTester tester,
 		final int count
 	) {
-		final var observation = new RunnableObservation(
+		final var observation = Observation.of(
 			samples -> samples.acceptAll(new Random(123).doubles(count)),
 			Histogram.Partition.of(0, 1, 20)
 		);
-		observation.run();
 
 		assertThat(observation)
 			.usingHypothesisTester(tester)
@@ -60,13 +60,12 @@ public class AssertionsTest {
 		final var random = new Random(1234);
 		final var interval = new Interval(-10, 10);
 
-		final var observation = new RunnableObservation(
+		final var observation = Observation.of(
 			Sampling.repeat(count, samples ->
 				samples.accept(random.nextGaussian())
 			),
 			Histogram.Partition.of(interval, 20)
 		);
-		observation.run();
 
 		assertThat(observation)
 			.usingHypothesisTester(tester)
