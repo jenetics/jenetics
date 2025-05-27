@@ -25,10 +25,10 @@ import java.util.Arrays;
 
 import org.apache.commons.numbers.core.Sum;
 
+import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Histogram.Buckets;
 import io.jenetics.distassert.observation.Histogram.Partition;
-import io.jenetics.distassert.Interval;
 
 /**
  * Distribution object, based on an observation. The observation is defined by
