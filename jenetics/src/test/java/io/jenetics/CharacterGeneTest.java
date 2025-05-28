@@ -19,27 +19,25 @@
  */
 package io.jenetics;
 
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.util.Random;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
-import java.util.Random;
-
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.assertion.Assertions;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.CharSeq;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -63,18 +61,19 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		final CharSeq characters = new CharSeq("0123456789");
 		final Factory<CharacterGene> factory = CharacterGene.of(characters);
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(100_000, samples -> {
-				final CharacterGene g1 = factory.newInstance();
-				final CharacterGene g2 = factory.newInstance();
-				assertThat(g1).isNotSameAs(g2);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sampling.repeat(100_000, samples -> {
+					final CharacterGene g1 = factory.newInstance();
+					final CharacterGene g2 = factory.newInstance();
+					assertThat(g1).isNotSameAs(g2);
 
-				samples.accept(Long.parseLong(g1.allele().toString()));
-				samples.accept(Long.parseLong(g2.allele().toString()));
-			}),
-			Histogram.Partition.of(0, characters.length(), 10)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+					samples.accept(Long.parseLong(g1.allele().toString()));
+					samples.accept(Long.parseLong(g2.allele().toString()));
+				}),
+				Histogram.Partition.of(0, characters.length(), 10)
+			);
 
 		Assertions.assertThat(observation).isUniform();
 	}

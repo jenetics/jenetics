@@ -19,22 +19,22 @@
  */
 package io.jenetics.distassert.observation;
 
-import org.apache.commons.statistics.descriptive.DoubleStatistics;
-import org.apache.commons.statistics.descriptive.Statistic;
-
 import static java.util.Objects.requireNonNull;
 
 /**
- * An observation contains of a {@link Histogram} and the descriptive
- * {@link Statistics} values of the samples.
+ * Combines a data sampling with the partitioning of the observed data. This
+ * observable sampling is then executed by an {@link Observer} instance.
+ *
+ * @param sampling the sampling data
+ * @param partition the partitioning of the observation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record Observation(Histogram histogram, Statistics statistics) {
-	public Observation {
-		requireNonNull(histogram);
-		requireNonNull(statistics);
+public record Observable(Sampling sampling, Histogram.Partition partition) {
+	public Observable {
+		requireNonNull(sampling);
+		requireNonNull(partition);
 	}
 }

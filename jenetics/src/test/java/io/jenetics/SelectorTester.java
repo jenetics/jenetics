@@ -19,8 +19,21 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.util.RandomRegistry.using;
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observable;
+import io.jenetics.distassert.observation.Observation;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.internal.math.Basics;
+import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.ObjectTester;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -34,21 +47,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.Interval;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.Observation;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.internal.math.Basics;
-import io.jenetics.prngine.LCG64ShiftRandom;
-import io.jenetics.util.Factory;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
-import io.jenetics.util.ObjectTester;
+import static io.jenetics.util.RandomRegistry.using;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -245,21 +245,21 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final List<RunnableObservation> observations = observations(
+		final List<Observable> observables = observables(
 			parameters,
 			selector,
 			opt,
 			populationCount,
 			loops
 		);
-		final List<Histogram> histograms = observations.stream()
-			.peek(RunnableObservation::run)
+		final List<Histogram> histograms = observables.stream()
+			.map(Observer.DEFAULT::observe)
 			.map(Observation::histogram)
 			.toList();
 
 		final List<Selector<?, ?>> selectors = parameters.stream()
 			.map(selector)
-			.collect(Collectors.toList());
+			.collect(Collectors.toUnmodifiableList());
 
 		print(writer, opt, selectors, parameters, histograms, populationCount, loops);
 	}
@@ -275,7 +275,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param <P> the parameter type
 	 * @return the selector distributions
 	 */
-	public static <P> List<RunnableObservation> observations(
+	public static <P> List<Observable> observables(
 		final List<P> parameters,
 		final Function<P, Selector<DoubleGene, Double>> selector,
 		final Optimize opt,
@@ -283,7 +283,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int loops
 	) {
 		return parameters.stream()
-			.map(p -> observation(selector.apply(p), opt, populationCount, loops))
+			.map(p -> observable(selector.apply(p), opt, populationCount, loops))
 			.toList();
 	}
 
@@ -299,7 +299,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param loops the number of selections performed for one population
 	 * @return the selector selection observation
 	 */
-	public static RunnableObservation observation(
+	public static Observable observable(
 		final Selector<DoubleGene, Double> selector,
 		final Optimize opt,
 		final int populationCount,
@@ -310,7 +310,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		return new RunnableObservation(
+		return new Observable(
 			Sampling.repeat(loops, samples -> {
 				final var population =
 					IntStream.range(0, populationCount)

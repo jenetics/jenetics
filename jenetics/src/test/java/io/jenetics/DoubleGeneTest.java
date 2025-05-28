@@ -19,27 +19,25 @@
  */
 package io.jenetics;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
+import io.jenetics.distassert.observation.Histogram.Partition;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.assertion.Assertions;
-import io.jenetics.distassert.observation.Histogram.Partition;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -61,15 +59,16 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(200_000, samples ->
-				samples.accept(DoubleGene.of(min, max).doubleValue())
-			),
-			Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sampling.repeat(200_000, samples ->
+					samples.accept(DoubleGene.of(min, max).doubleValue())
+				),
+				Partition.of(min, max, 20)
+			);
 
-		Assertions.assertThat(observation).isUniform();
+		assertThat(observation).isUniform();
 	}
 
 	@DataProvider

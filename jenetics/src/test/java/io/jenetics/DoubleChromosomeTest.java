@@ -19,23 +19,22 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.internal.math.DoubleAdder.sum;
-
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.RunnableObservation;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.StableRandomExecutor;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.util.Random;
+
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+import static io.jenetics.internal.math.DoubleAdder.sum;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -58,15 +57,16 @@ public class DoubleChromosomeTest
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(1_000, samples ->
-				DoubleChromosome.of(min, max, 500).stream()
-					.mapToDouble(DoubleGene::doubleValue)
-					.forEach(samples::accept)
-			),
-			Histogram.Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sampling.repeat(1_000, samples ->
+					DoubleChromosome.of(min, max, 500).stream()
+						.mapToDouble(DoubleGene::doubleValue)
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
 		assertThat(observation).isUniform();
 	}

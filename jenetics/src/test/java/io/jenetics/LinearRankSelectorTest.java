@@ -19,23 +19,23 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.util.RandomRegistry.using;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.internal.util.Named;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
+import io.jenetics.util.TestData;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.distribution.EmpiricalDistribution;
-import io.jenetics.internal.util.Named;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
-import io.jenetics.util.TestData;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+import static io.jenetics.util.RandomRegistry.using;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,21 +66,23 @@ public class LinearRankSelectorTest
 		final Optimize opt
 	) {
 		final var seed = 14;
-		final var observation = SelectorTester.observation(
-			new LinearRankSelector<>(nminus),
-			opt,
-			POPULATION_COUNT,
-			50
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				SelectorTester.observable(
+					new LinearRankSelector<>(nminus),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
 
 		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
 			expected.value
 		);
 
-		assertThat(observation)
-			.follows(distribution);
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

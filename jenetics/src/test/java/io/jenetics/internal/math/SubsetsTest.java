@@ -19,8 +19,16 @@
  */
 package io.jenetics.internal.math;
 
-import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
+import io.jenetics.util.TestData;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,17 +37,8 @@ import java.util.Set;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.assertion.Assertions;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.StableRandomExecutor;
-import io.jenetics.util.TestData;
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -148,13 +147,14 @@ public class SubsetsTest {
 		final int min = 0;
 		final int max = 100_000;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(10_000, samples ->
-				samples.acceptAll(Subsets.next(RandomRegistry.random(), max, 3))
-			),
-			Histogram.Partition.of(min, max, 15)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sampling.repeat(10_000, samples ->
+					samples.acceptAll(Subsets.next(RandomRegistry.random(), max, 3))
+				),
+				Histogram.Partition.of(min, max, 15)
+			);
 
 		Assertions.assertThat(observation).isUniform();
 	}

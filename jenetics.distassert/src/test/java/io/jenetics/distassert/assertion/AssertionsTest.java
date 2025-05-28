@@ -19,18 +19,16 @@
  */
 package io.jenetics.distassert.assertion;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-
-import java.util.Random;
-
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.Observation;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
+import java.util.Random;
+
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,7 +40,7 @@ public class AssertionsTest {
 		final HypothesisTester tester,
 		final int count
 	) {
-		final var observation = Observation.of(
+		final var observation = Observer.DEFAULT.observe(
 			samples -> samples.acceptAll(new Random(123).doubles(count)),
 			Histogram.Partition.of(0, 1, 20)
 		);
@@ -60,7 +58,7 @@ public class AssertionsTest {
 		final var random = new Random(1234);
 		final var interval = new Interval(-10, 10);
 
-		final var observation = Observation.of(
+		final var observation = Observer.DEFAULT.observe(
 			Sampling.repeat(count, samples ->
 				samples.accept(random.nextGaussian())
 			),

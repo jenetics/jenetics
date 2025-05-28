@@ -19,24 +19,22 @@
  */
 package io.jenetics;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.math.BigInteger;
-import java.util.Random;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.assertion.Assertions;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.RunnableObservation;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
+import java.math.BigInteger;
+import java.util.Random;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -58,13 +56,14 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		final long min = 0;
 		final long max = Integer.MAX_VALUE;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(200_000, samples ->
-				samples.accept(LongGene.of(min, max).doubleValue())
-			),
-			Histogram.Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sampling.repeat(200_000, samples ->
+					samples.accept(LongGene.of(min, max).doubleValue())
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
 		Assertions.assertThat(observation).isUniform();
 	}
