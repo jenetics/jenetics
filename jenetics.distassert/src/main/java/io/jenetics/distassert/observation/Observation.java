@@ -19,9 +19,6 @@
  */
 package io.jenetics.distassert.observation;
 
-import org.apache.commons.statistics.descriptive.DoubleStatistics;
-import org.apache.commons.statistics.descriptive.Statistic;
-
 import static java.util.Objects.requireNonNull;
 
 /**

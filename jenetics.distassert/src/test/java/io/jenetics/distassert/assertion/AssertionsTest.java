@@ -19,17 +19,17 @@
  */
 package io.jenetics.distassert.assertion;
 
-import io.jenetics.distassert.Interval;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampler;
-import io.jenetics.distassert.observation.Sampling;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Sampler;
+import io.jenetics.distassert.observation.Sampling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
