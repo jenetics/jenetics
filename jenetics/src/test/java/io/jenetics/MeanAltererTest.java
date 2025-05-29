@@ -73,7 +73,7 @@ public class MeanAltererTest extends AltererTester {
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(123456789))
-			.run(
+			.observe(
 				Sampling.repeat(100, samples -> {
 					final long alterations = new MeanAlterer<DoubleGene, Double>(p)
 						.alter(population, 1)

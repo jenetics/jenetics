@@ -60,7 +60,7 @@ public class DoubleChromosomeTest
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.run(
+			.observe(
 				Sampling.repeat(1_000, samples ->
 					DoubleChromosome.of(min, max, 500).stream()
 						.mapToDouble(DoubleGene::doubleValue)

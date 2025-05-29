@@ -58,7 +58,7 @@ public class IntegerChromosomeTest
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.run(
+			.observe(
 				Sampling.repeat(1_000, samples ->
 					IntegerChromosome.of(min, max, 500).stream()
 						.mapToDouble(IntegerGene::doubleValue)

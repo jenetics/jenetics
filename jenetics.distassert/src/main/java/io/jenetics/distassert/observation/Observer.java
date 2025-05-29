@@ -29,8 +29,8 @@ import java.util.concurrent.FutureTask;
 import io.jenetics.distassert.observation.Histogram.Partition;
 
 /**
- * An observer is responsible for creating an observation from an observable
- * class.
+ * An observer runs a sampler with a given {@link Executor}, which allows
+ * creating reproducible observations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -44,7 +44,13 @@ public final class Observer {
 		this.executor = requireNonNull(executor);
 	}
 
-	public Observation run(final Sampler sampler) {
+	/**
+	 * Executes the given {@code sampler} with the observers {@link Executor}.
+	 *
+	 * @param sampler the sampler to be executed
+	 * @return return the sampler observation
+	 */
+	public Observation observe(final Sampler sampler) {
 		final var future = new FutureTask<>(sampler);
 		executor.execute(future);
 		try {
@@ -62,10 +68,24 @@ public final class Observer {
 		}
 	}
 
-	public Observation run(final Sampling sampling, final Partition partition) {
-		return run(new Sampler(sampling, partition));
+	/**
+	 * Executes the given {@code sampling} with the observers {@link Executor}.
+	 *
+	 * @param sampling the sampling data
+	 * @param partition the histogram partition to be used for the sampling.
+	 * @return the sampler observation
+	 */
+	public Observation observe(final Sampling sampling, final Partition partition) {
+		return observe(new Sampler(sampling, partition));
 	}
 
+	/**
+	 * Create a new observer using the given {@code executor}. The sampler will
+	 * be run on the given executor.
+	 *
+	 * @param executor the executor used for running the sampler.
+	 * @return a new observer using the given {@code executor}
+	 */
 	public static Observer using(Executor executor) {
 		return new Observer(executor);
 	}

@@ -115,7 +115,7 @@ public class StochasticUniversalSelectorTest
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final var observation = Observer
 			.using(new StableRandomExecutor(1))
-			.run(
+			.observe(
 				SelectorTester.sampler(
 					new StochasticUniversalSelector<>(),
 					opt,

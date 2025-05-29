@@ -69,7 +69,7 @@ public class LinearRankSelectorTest
 		final var seed = 14;
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.run(
+			.observe(
 				SelectorTester.sampler(
 					new LinearRankSelector<>(nminus),
 					opt,

@@ -110,7 +110,7 @@ public class RouletteWheelSelectorTest
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final var observation = Observer
 			.using(new StableRandomExecutor(1234561))
-			.run(
+			.observe(
 				SelectorTester.sampler(
 					new RouletteWheelSelector<>(),
 					opt,

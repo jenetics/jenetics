@@ -46,6 +46,11 @@ public record Sampler(Sampling sampling, Partition partition)
 		requireNonNull(partition);
 	}
 
+	/**
+	 * Executes the sampler and returns the resulting {@link Observation}.
+	 *
+	 * @return the resulting {@link Observation}
+	 */
 	@Override
 	public Observation call() {
 		final var summary = DoubleStatistics.of(
@@ -73,7 +78,17 @@ public record Sampler(Sampling sampling, Partition partition)
 		return new Observation(histogram, statistics);
 	}
 
-	public static Observation observe(final Sampling sampling, final Partition partition) {
+	/**
+	 * Executes the given sampling.
+	 *
+	 * @param sampling the data sampling to be observed
+	 * @param partition the partitioning of the observation data
+	 * @return the resulting {@link Observation}
+	 */
+	public static Observation observe(
+		final Sampling sampling,
+		final Partition partition
+	) {
 		return new Sampler(sampling, partition).call();
 	}
 
