@@ -21,7 +21,7 @@ package io.jenetics.distassert.distribution;
 
 import org.apache.commons.numbers.gamma.RegularizedGamma;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * Implementation of the gamma distribution.

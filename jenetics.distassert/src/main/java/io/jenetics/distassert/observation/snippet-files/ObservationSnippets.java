@@ -21,8 +21,6 @@ package io.jenetics.distassert.observation;
 
 import java.util.random.RandomGenerator;
 
-import io.jenetics.distassert.Interval;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

@@ -22,7 +22,7 @@ package io.jenetics.distassert.distribution;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

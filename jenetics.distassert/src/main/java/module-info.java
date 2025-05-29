@@ -25,7 +25,6 @@
  * @since !__version__!
  */
 module io.jenetics.distassert {
-	exports io.jenetics.distassert;
 	exports io.jenetics.distassert.assertion;
 	exports io.jenetics.distassert.distribution;
 	exports io.jenetics.distassert.observation;

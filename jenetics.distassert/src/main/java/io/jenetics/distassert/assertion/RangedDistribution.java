@@ -19,10 +19,10 @@
  */
 package io.jenetics.distassert.assertion;
 
-import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.distribution.Cdf;
 import io.jenetics.distassert.distribution.Distribution;
 import io.jenetics.distassert.distribution.Pdf;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

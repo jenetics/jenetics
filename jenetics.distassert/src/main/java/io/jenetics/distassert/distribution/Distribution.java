@@ -21,7 +21,7 @@ package io.jenetics.distassert.distribution;
 
 import org.apache.commons.numbers.rootfinder.BrentSolver;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability

@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram.Buckets;
 import io.jenetics.distassert.observation.Histogram.Builder;
 import io.jenetics.distassert.observation.Histogram.Partition;

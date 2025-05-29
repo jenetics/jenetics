@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert.distribution;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">

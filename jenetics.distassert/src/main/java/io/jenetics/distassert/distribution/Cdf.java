@@ -19,7 +19,7 @@
  */
 package io.jenetics.distassert.distribution;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * The cumulative distribution function.

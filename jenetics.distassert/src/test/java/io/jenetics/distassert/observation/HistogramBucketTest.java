@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram.Bucket;
 
 /**

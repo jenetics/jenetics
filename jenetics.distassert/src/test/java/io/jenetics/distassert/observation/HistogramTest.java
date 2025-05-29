@@ -30,7 +30,6 @@ import java.util.Arrays;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram.Buckets;
 import io.jenetics.distassert.observation.Histogram.Partition;
 import io.jenetics.distassert.observation.Histogram.Residual;

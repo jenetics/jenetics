@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * <p>This distribution has the following cdf.</p>

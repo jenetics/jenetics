@@ -28,7 +28,7 @@ import org.apache.commons.numbers.core.Sum;
 import org.assertj.core.data.Offset;
 import org.testng.annotations.Test;
 
-import io.jenetics.distassert.Interval;
+import io.jenetics.distassert.observation.Interval;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

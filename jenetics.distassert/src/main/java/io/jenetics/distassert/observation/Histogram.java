@@ -36,8 +36,6 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.distassert.Interval;
-
 /**
  * This class lets you create a histogram from {@code double} sample data. The
  * following graph shows the structure (buckets) of the histogram.
