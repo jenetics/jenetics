@@ -20,6 +20,7 @@
 package io.jenetics.distassert.distribution;
 
 import org.apache.commons.numbers.gamma.Erfc;
+import org.apache.commons.numbers.gamma.InverseErfc;
 
 /**
  * Gaussian distribution implementation.
@@ -65,6 +66,19 @@ public record NormalDistribution(double mean, double stddev)
 			} else {
 				return 0.5*Erfc.value(-dev/(stddev*SQRT2));
 			}
+		};
+	}
+
+	@Override
+	public InverseCdf icdf() {
+		return p -> {
+			if (p < 0 || p > 1) {
+				throw new IllegalArgumentException(
+					"The probability value must be in the range [0, 1], but was: " + p
+				);
+			}
+
+			return mean - stddev*SQRT2*InverseErfc.value(2*p);
 		};
 	}
 

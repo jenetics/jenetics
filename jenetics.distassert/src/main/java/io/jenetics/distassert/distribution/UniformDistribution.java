@@ -49,10 +49,8 @@ public record UniformDistribution(Interval domain) implements Distribution {
 	 */
 	@Override
 	public Pdf pdf() {
-		return x ->
-			(x >= domain.min() && x <= domain.max())
-				? 1.0/(domain.max() - domain.min())
-				: 0.0;
+		final var pdf = 1.0/domain.size();
+		return x -> (x >= domain.min() && x <= domain.max()) ? pdf : 0.0;
 	}
 
 	/**
@@ -97,7 +95,9 @@ public record UniformDistribution(Interval domain) implements Distribution {
 				);
 			}
 
-			return (domain.max() - domain.min())*p + domain().min();
+			return p == 1
+				? domain.max()
+				: (domain.max() - domain.min())*p + domain().min();
 		};
 	}
 
