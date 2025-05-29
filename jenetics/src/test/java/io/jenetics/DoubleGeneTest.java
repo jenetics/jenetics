@@ -19,25 +19,27 @@
  */
 package io.jenetics;
 
-import io.jenetics.distassert.observation.Histogram.Partition;
-import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.distassert.observation.Histogram.Partition;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

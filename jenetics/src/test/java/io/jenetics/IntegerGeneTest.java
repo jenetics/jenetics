@@ -19,21 +19,23 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.Random;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -19,16 +19,8 @@
  */
 package io.jenetics.internal.math;
 
-import io.jenetics.distassert.assertion.Assertions;
-import io.jenetics.distassert.observation.Histogram;
-import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
-import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.StableRandomExecutor;
-import io.jenetics.util.TestData;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,8 +29,17 @@ import java.util.Set;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
-import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
+import io.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

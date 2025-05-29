@@ -19,6 +19,20 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+import java.util.Random;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
@@ -26,18 +40,6 @@ import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.Random;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

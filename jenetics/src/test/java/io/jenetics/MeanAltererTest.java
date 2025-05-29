@@ -19,19 +19,20 @@
  */
 package io.jenetics;
 
+import static io.jenetics.TestUtils.diff;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.StableRandomExecutor;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import static io.jenetics.TestUtils.diff;
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

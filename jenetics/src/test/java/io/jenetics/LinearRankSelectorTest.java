@@ -19,23 +19,24 @@
  */
 package io.jenetics;
 
-import io.jenetics.distassert.distribution.EmpiricalDistribution;
-import io.jenetics.distassert.observation.Observer;
-import io.jenetics.internal.util.Named;
-import io.jenetics.util.Factory;
-import io.jenetics.util.StableRandomExecutor;
-import io.jenetics.util.TestData;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static java.lang.String.format;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.util.RandomRegistry.using;
-import static java.lang.String.format;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.internal.util.Named;
+import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
+import io.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

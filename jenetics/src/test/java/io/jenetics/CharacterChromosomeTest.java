@@ -19,19 +19,20 @@
  */
 package io.jenetics;
 
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.Random;
-
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
