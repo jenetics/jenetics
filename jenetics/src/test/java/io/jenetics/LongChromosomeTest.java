@@ -58,7 +58,7 @@ public class LongChromosomeTest
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
+			.run(
 				Sampling.repeat(1_000, samples ->
 					LongChromosome.of(min, max, 500).stream()
 						.mapToDouble(LongGene::doubleValue)

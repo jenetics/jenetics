@@ -109,8 +109,8 @@ public class RouletteWheelSelectorTest
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final var observation = Observer
 			.using(new StableRandomExecutor(1234561))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new RouletteWheelSelector<>(),
 					opt,
 					POPULATION_COUNT,

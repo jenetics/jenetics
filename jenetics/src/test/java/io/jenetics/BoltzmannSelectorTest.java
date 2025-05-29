@@ -77,8 +77,8 @@ public class BoltzmannSelectorTest
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new BoltzmannSelector<>(b),
 					opt,
 					POPULATION_COUNT,

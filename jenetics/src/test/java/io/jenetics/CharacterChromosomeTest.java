@@ -49,7 +49,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
+			.run(
 				Sampling.repeat(10, samples ->
 					CharacterChromosome.of(characters, 10_000).stream()
 						.map(g -> Long.parseLong(g.allele().toString()))

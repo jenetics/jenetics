@@ -58,8 +58,8 @@ public class TournamentSelectorTest
 	) {
 		final var observation = Observer
 			.using(new StableRandomExecutor(123451))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new TournamentSelector<>(tournamentSize),
 					opt,
 					POPULATION_COUNT,

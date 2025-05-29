@@ -58,7 +58,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
+			.run(
 				Sampling.repeat(200_000, samples ->
 					samples.accept(LongGene.of(min, max).doubleValue())
 				),

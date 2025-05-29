@@ -149,7 +149,7 @@ public class SubsetsTest {
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
+			.run(
 				Sampling.repeat(10_000, samples ->
 					samples.acceptAll(Subsets.next(RandomRegistry.random(), max, 3))
 				),

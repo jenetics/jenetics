@@ -63,8 +63,8 @@ public class ExponentialRankSelectorTest
 		final var seed = 67;
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new ExponentialRankSelector<>(c),
 					opt,
 					POPULATION_COUNT,

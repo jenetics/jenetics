@@ -22,6 +22,7 @@ package io.jenetics.distassert.assertion;
 import io.jenetics.distassert.Interval;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sampler;
 import io.jenetics.distassert.observation.Sampling;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,7 +41,7 @@ public class AssertionsTest {
 		final HypothesisTester tester,
 		final int count
 	) {
-		final var observation = Observer.DEFAULT.observe(
+		final var observation = Sampler.observe(
 			samples -> samples.acceptAll(new Random(123).doubles(count)),
 			Histogram.Partition.of(0, 1, 20)
 		);
@@ -58,7 +59,7 @@ public class AssertionsTest {
 		final var random = new Random(1234);
 		final var interval = new Interval(-10, 10);
 
-		final var observation = Observer.DEFAULT.observe(
+		final var observation = Sampler.observe(
 			Sampling.repeat(count, samples ->
 				samples.accept(random.nextGaussian())
 			),

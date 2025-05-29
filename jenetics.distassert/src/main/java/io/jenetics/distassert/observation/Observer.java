@@ -19,81 +19,55 @@
  */
 package io.jenetics.distassert.observation;
 
-import io.jenetics.distassert.observation.Histogram.Partition;
-import org.apache.commons.statistics.descriptive.DoubleStatistics;
-import org.apache.commons.statistics.descriptive.Statistic;
+import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.FutureTask;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.distassert.observation.Histogram.Partition;
 
 /**
  * An observer is responsible for creating an observation from an observable
  * class.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-@FunctionalInterface
-public interface Observer {
+public final class Observer {
 
-	Observer DEFAULT = using(Runnable::run);
+	private final Executor executor;
 
-	Observation observe(final Observable observable);
-
-	default Observation observe(final Sampling sampling, final Partition partition) {
-		return observe(new Observable(sampling, partition));
+	private Observer(final Executor executor) {
+		this.executor = requireNonNull(executor);
 	}
 
-	static Observer using(Executor executor) {
-		requireNonNull(executor);
-
-		return observable -> {
-			requireNonNull(observable);
-
-			final Callable<Observation> task = () -> {
-				final var summary = DoubleStatistics.of(
-					Statistic.MIN,
-					Statistic.MAX,
-					Statistic.MEAN,
-					Statistic.SUM,
-					Statistic.VARIANCE
+	public Observation run(final Sampler sampler) {
+		final var future = new FutureTask<>(sampler);
+		executor.execute(future);
+		try {
+			return future.get();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new CancellationException(e.getMessage());
+		} catch (ExecutionException e) {
+			throw switch (e.getCause()) {
+				case RuntimeException rte -> rte;
+				case Throwable t -> new IllegalStateException(
+					"Unexpected exception", t
 				);
-
-				final var histogram = new Histogram.Builder(observable.partition())
-					.observer(summary)
-					.accept(observable.sampling())
-					.build();
-
-				final var statistics = new Statistics(
-					summary.getCount(),
-					summary.getAsDouble(Statistic.MIN),
-					summary.getAsDouble(Statistic.MAX),
-					summary.getAsDouble(Statistic.SUM),
-					summary.getAsDouble(Statistic.MEAN),
-					summary.getAsDouble(Statistic.VARIANCE)
-				);
-
-				return new Observation(histogram, statistics);
 			};
+		}
+	}
 
-			final var future = new FutureTask<>(task);
-			executor.execute(future);
-			try {
-				return future.get();
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				throw new CancellationException(e.getMessage());
-			} catch (ExecutionException e) {
-				throw switch (e.getCause()) {
-					case RuntimeException rte -> rte;
-					case Throwable t -> new IllegalStateException(
-						"Unexpected exception", t
-					);
-				};
-			}
-		};
+	public Observation run(final Sampling sampling, final Partition partition) {
+		return run(new Sampler(sampling, partition));
+	}
+
+	public static Observer using(Executor executor) {
+		return new Observer(executor);
 	}
 
 }

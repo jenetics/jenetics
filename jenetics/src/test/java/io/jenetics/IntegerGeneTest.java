@@ -57,7 +57,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
+			.run(
 				Sampling.repeat(200_000, samples ->
 					samples.accept(IntegerGene.of(min, max).doubleValue())
 				),

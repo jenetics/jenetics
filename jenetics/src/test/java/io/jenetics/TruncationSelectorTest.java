@@ -79,8 +79,8 @@ public class TruncationSelectorTest
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
 		final var observation = Observer
 			.using(new StableRandomExecutor(123456))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new TruncationSelector<>(),
 					opt,
 					POPULATION_COUNT,

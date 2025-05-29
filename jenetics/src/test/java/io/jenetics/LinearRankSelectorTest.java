@@ -68,8 +68,8 @@ public class LinearRankSelectorTest
 		final var seed = 14;
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
-			.observe(
-				SelectorTester.observable(
+			.run(
+				SelectorTester.sampler(
 					new LinearRankSelector<>(nminus),
 					opt,
 					POPULATION_COUNT,
