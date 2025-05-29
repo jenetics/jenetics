@@ -42,9 +42,9 @@ final class ObservationSnippets {
 
 			// Building the histogram
 			final Histogram observation = Histogram.Builder.of(interval, 20)
-				.accept(samples -> {
+				.accept(consumer -> {
 					for (int i = 0; i < 1_000_000; ++i) {
-						samples.accept(random.nextGaussian());
+						consumer.accept(random.nextGaussian());
 					}
 				})
 				.build();

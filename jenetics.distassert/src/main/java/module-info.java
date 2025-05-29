@@ -19,14 +19,16 @@
  */
 
 /**
+ * This module allows performing statistical assertions on sample data.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  */
 module io.jenetics.distassert {
 	exports io.jenetics.distassert;
+	exports io.jenetics.distassert.assertion;
 	exports io.jenetics.distassert.distribution;
 	exports io.jenetics.distassert.observation;
-	exports io.jenetics.distassert.assertion;
 
 	requires org.apache.commons.numbers.core;
 	requires org.apache.commons.numbers.gamma;

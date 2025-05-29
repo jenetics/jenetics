@@ -39,6 +39,9 @@ import io.jenetics.distassert.observation.Histogram.Partition;
  * @since !__version__!
  */
 public final class EmpiricalDistribution implements Distribution {
+
+	private static final long MAX_SAMPLES = Long.MAX_VALUE/2;
+
 	private final Histogram observation;
 
 	private final long samples;
@@ -73,8 +76,8 @@ public final class EmpiricalDistribution implements Distribution {
 
 	@Override
 	public Cdf cdf() {
-		return value -> {
-			final int index = observation.partition().indexOf(value);
+		return x -> {
+			final int index = observation.partition().indexOf(x);
 			if (index < 0) {
 				return 0;
 			}
@@ -83,9 +86,8 @@ public final class EmpiricalDistribution implements Distribution {
 			}
 
 			final var bucket = observation.buckets().get(index);
-			final var itv = bucket.interval();
-			final var rest = (value - itv.min())/
-				(itv.max() - itv.min())*bucket.count();
+			final var interval = bucket.interval();
+			final var rest = (x - interval.min())/(interval.size())*bucket.count();
 
 			return (sums[index] + rest)/samples;
 		};
@@ -93,8 +95,8 @@ public final class EmpiricalDistribution implements Distribution {
 
 	@Override
 	public Pdf pdf() {
-		return value -> {
-			final int index = observation.partition().indexOf(value);
+		return x -> {
+			final int index = observation.partition().indexOf(x);
 			if (index < 0 || index >= observation.partition().size()) {
 				return 0;
 			}
@@ -160,10 +162,30 @@ public final class EmpiricalDistribution implements Distribution {
 		}
 
 		final var frequencies = Arrays.stream(normalized)
-			.mapToLong(v -> (long)(v*Integer.MAX_VALUE))
+			.mapToLong(v -> (long)(v*MAX_SAMPLES))
 			.toArray();
 		final var histogram = new Histogram(new Buckets(partition, frequencies));
 
+		return new EmpiricalDistribution(histogram);
+	}
+
+	/**
+	 * Create a new <em>observed</em> distribution object for the given
+	 * {@code partition} and the {@code expected} frequencies.
+	 *
+	 * @param partition the histogram partition
+	 * @param frequencies the histogram frequencies
+	 * @return a newly created distribution object
+	 * @throws IllegalArgumentException if the partition size and the length
+	 *         of the frequency array are not equal, or if any of the
+	 *         frequencies is negative
+	 */
+	public static EmpiricalDistribution of(
+		final Partition partition,
+		final long[] frequencies
+	) {
+		final var buckets = new Buckets(partition, frequencies);
+		final var histogram = new Histogram(buckets);
 		return new EmpiricalDistribution(histogram);
 	}
 

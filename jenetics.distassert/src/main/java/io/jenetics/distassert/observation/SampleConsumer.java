@@ -126,6 +126,12 @@ public interface SampleConsumer {
 		return this;
 	}
 
+	/**
+	 * Create a new sample consumer from the given double consumer.
+	 *
+	 * @param consumer the double consumer to be wrapped into a sample consumer
+	 * @return a new sample consumer wrapping the given double consumer
+	 */
 	static SampleConsumer of(final DoubleConsumer consumer) {
 		requireNonNull(consumer);
 		return new SampleConsumer() {

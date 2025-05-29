@@ -309,11 +309,23 @@ public record Histogram(Buckets buckets, Residual residual) {
 	 *     | 1  | 2  | 3  | 4  |  5 | 6  | 7  |  8 |
 	 *     +----+----+----+----+----+----+----+----+
 	 * }</pre>
+	 *
+	 * @param partition the histogram partition
+	 * @param frequencies the histogram frequencies
 	 */
 	public record Buckets(Partition partition, long... frequencies)
 		implements Iterable<Bucket>
 	{
 
+		/**
+		 * Create a new bucket list with the given {@code frequencies}.
+		 *
+		 * @param partition the histogram partition
+		 * @param frequencies the histogram frequencies
+		 * @throws IllegalArgumentException if the partition size and the length
+		 *         of the frequency array are not equal, or if any of the
+		 *         frequencies is negative
+		 */
 		public Buckets {
 			requireNonNull(partition);
 			requireNonNull(frequencies);

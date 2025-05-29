@@ -58,7 +58,9 @@ public record Sampler(Sampling sampling, Partition partition)
 			Statistic.MAX,
 			Statistic.MEAN,
 			Statistic.SUM,
-			Statistic.VARIANCE
+			Statistic.VARIANCE,
+			Statistic.SKEWNESS,
+			Statistic.KURTOSIS
 		);
 
 		final var histogram = new Histogram.Builder(partition)
@@ -72,7 +74,9 @@ public record Sampler(Sampling sampling, Partition partition)
 			summary.getAsDouble(Statistic.MAX),
 			summary.getAsDouble(Statistic.SUM),
 			summary.getAsDouble(Statistic.MEAN),
-			summary.getAsDouble(Statistic.VARIANCE)
+			summary.getAsDouble(Statistic.VARIANCE),
+			summary.getAsDouble(Statistic.SKEWNESS),
+			summary.getAsDouble(Statistic.KURTOSIS)
 		);
 
 		return new Observation(histogram, statistics);

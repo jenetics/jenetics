@@ -33,6 +33,12 @@ package io.jenetics.distassert.observation;
  * 	      been recorded
  * @param variance the variance of values recorded, or {@link Double#NaN} if no
  * 	      values have been recorded
+ * @param skewness the <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+ *        of values recorded, or {@link Double#NaN} if less than two values have
+ *        been recorded
+ * @param kurtosis the <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+ *        of values recorded, or {@link Double#NaN} if less than four values
+ *        have been recorded
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -44,6 +50,8 @@ public record Statistics(
 	double max,
 	double sum,
 	double mean,
-	double variance
+	double variance,
+	double skewness,
+	double kurtosis
 ) {
 }

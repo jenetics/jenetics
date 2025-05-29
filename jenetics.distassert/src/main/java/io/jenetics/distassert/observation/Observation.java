@@ -25,6 +25,9 @@ import static java.util.Objects.requireNonNull;
  * An observation contains of a {@link Histogram} and the descriptive
  * {@link Statistics} values of the samples.
  *
+ * @param histogram the observed histogram
+ * @param statistics the descriptive statistics of the samples in the histogram
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

@@ -75,7 +75,7 @@ public record UniformDistribution(Interval domain) implements Distribution {
 		return x -> {
 			final double divisor = domain.max() - domain.min();
 
-			double result = 0.0;
+			double result;
 			if (x < domain.min()) {
 				result = 0.0;
 			} else if (x > domain.max()) {

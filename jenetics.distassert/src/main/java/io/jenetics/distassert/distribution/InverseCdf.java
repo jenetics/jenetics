@@ -36,9 +36,11 @@ public interface InverseCdf {
 	 * Calculates the <em>inverse</em> cumulative distribution value for the
 	 * given input.
 	 *
-	 * @param value the value to calculate the <em>inverse</em> cumulative
-	 *         value for
+	 * @param probability the probability value to calculate the
+	 *        <em>inverse</em> cumulative value for
 	 * @return the <em>inverse</em> cumulative value
+	 * @throws IllegalArgumentException if the given {@code probability} value is
+	 *         not within the range {@code [0, 1]}
 	 */
-	double apply(double value);
+	double apply(double probability);
 }
