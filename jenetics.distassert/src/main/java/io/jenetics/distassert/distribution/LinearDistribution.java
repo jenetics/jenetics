@@ -92,8 +92,33 @@ public final class LinearDistribution implements Distribution {
 		return -((x2 - x1)*y1 - 2)/(x2 - x1);
 	}
 
+	@Override
 	public Interval domain() {
 		return _domain;
+	}
+
+	public double x1() {
+		return x1;
+	}
+
+	public double x2() {
+		return x2;
+	}
+
+	public double y1() {
+		return y1;
+	}
+
+	public double y2() {
+		return y2;
+	}
+
+	public double k() {
+		return k;
+	}
+
+	public double d() {
+		return d;
 	}
 
 	/**
@@ -151,19 +176,14 @@ public final class LinearDistribution implements Distribution {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_domain, d, k, x1, x2, y1, y2);
+		return Objects.hash(_domain, y1);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof LinearDistribution other &&
 			Objects.equals(_domain, other._domain) &&
-			Double.compare(d, other.d) == 0 &&
-			Double.compare(k, other.k) == 0 &&
-			Double.compare(x1, other.x1) == 0 &&
-			Double.compare(x2, other.x2) == 0 &&
-			Double.compare(y1, other.y1) == 0 &&
-			Double.compare(y2, other.y2) == 0;
+			Double.compare(y1, other.y1) == 0;
 	}
 
 	@Override

@@ -33,7 +33,7 @@ import io.jenetics.util.IntRange;
  * final var random = RandomGenerator.getDefault();
  * final var range = new DoubleRange(0, 1);
  * final var sampler = Sampler.linear(0.1);
- * // Create a new sample point, which obeys the given distribution.
+ * // Create a new sample point which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
  * final double value = sampler.sample(random, range);
  *}
