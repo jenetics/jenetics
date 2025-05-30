@@ -38,7 +38,7 @@ public class SampleTest {
 		);
 
 		final var statistics = new DoubleSummaryStatistics();
-		sample.writeTo(SampleConsumer.of(statistics));
+		sample.writeTo(Sample.Consumer.of(statistics));
 
 		assertThat(statistics.getCount()).isEqualTo(100*100);
 		assertThat(statistics.getMin()).isEqualTo(0);

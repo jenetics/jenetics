@@ -19,6 +19,10 @@
  */
 package io.jenetics.distassert.observation;
 
+import java.util.function.DoubleConsumer;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -38,7 +42,7 @@ public interface Sample {
 	 *
 	 * @param consumer the sample value <em>sink</em>
 	 */
-	void writeTo(final SampleConsumer consumer);
+	void writeTo(final Consumer consumer);
 
 	/**
 	 * Create a new sampling object which repeats the given sub{@code sampling}
@@ -56,4 +60,123 @@ public interface Sample {
 		};
 	}
 
+	/**
+	 * This functional interface serves as a sink for sample values.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	interface Consumer {
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param sample the sample value
+		 * @return {@code this} samples object for method chaining
+		 */
+		Consumer accept(double sample);
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param sample the sample value
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer accept(final Number sample) {
+			accept(sample.doubleValue());
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final int... samples) {
+			for (var sample : samples) {
+				accept(sample);
+			}
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final long... samples) {
+			for (var sample : samples) {
+				accept(sample);
+			}
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final double... samples) {
+			for (var sample : samples) {
+				accept(sample);
+			}
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final Iterable<? extends Number> samples) {
+			samples.forEach(this::accept);
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final DoubleStream samples) {
+			samples.forEach(this::accept);
+			return this;
+		}
+
+		/**
+		 * Adding a new sample value.
+		 *
+		 * @param samples the sample values
+		 * @return {@code this} samples object for method chaining
+		 */
+		default Consumer acceptAll(final Stream<? extends Number> samples) {
+			samples.forEach(this::accept);
+			return this;
+		}
+
+		/**
+		 * Create a new sample consumer from the given double consumer.
+		 *
+		 * @param consumer the double consumer to be wrapped into a sample consumer
+		 * @return a new sample consumer wrapping the given double consumer
+		 */
+		static Consumer of(final DoubleConsumer consumer) {
+			requireNonNull(consumer);
+			return new Consumer() {
+				@Override
+				public Consumer accept(final double sample) {
+					consumer.accept(sample);
+					return this;
+				}
+			};
+		}
+
+	}
 }

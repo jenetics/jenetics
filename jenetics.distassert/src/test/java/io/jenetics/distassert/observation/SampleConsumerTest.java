@@ -34,7 +34,7 @@ public class SampleConsumerTest {
 	@Test
 	public void addNumber() {
 		final var statistics = new DoubleSummaryStatistics();
-		final var samples = SampleConsumer.of(statistics);
+		final var samples = Sample.Consumer.of(statistics);
 
 		for (int i = 0; i < 100; ++i) {
 			final Number sample = (long)i;
@@ -49,7 +49,7 @@ public class SampleConsumerTest {
 	@Test
 	public void addAllNumberIterable() {
 		final var statistics = new DoubleSummaryStatistics();
-		final var samples = SampleConsumer.of(statistics);
+		final var samples = Sample.Consumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).boxed().toList();
 		samples.acceptAll(values);
@@ -62,7 +62,7 @@ public class SampleConsumerTest {
 	@Test
 	public void addAllDoubleStream() {
 		final var statistics = new DoubleSummaryStatistics();
-		final var samples = SampleConsumer.of(statistics);
+		final var samples = Sample.Consumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).mapToDouble(i -> (double)i);
 		samples.acceptAll(values);
@@ -75,7 +75,7 @@ public class SampleConsumerTest {
 	@Test
 	public void addAllNumberStream() {
 		final var statistics = new DoubleSummaryStatistics();
-		final var samples = SampleConsumer.of(statistics);
+		final var samples = Sample.Consumer.of(statistics);
 
 		final var values = IntStream.range(0, 100).boxed();
 		samples.acceptAll(values);

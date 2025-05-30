@@ -453,7 +453,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 	/**
 	 * Histogram builder.
 	 */
-	public static final class Builder implements SampleConsumer {
+	public static final class Builder implements Sample.Consumer {
 		private final Partition partition;
 		private final long[] frequencies;
 
@@ -527,43 +527,43 @@ public record Histogram(Buckets buckets, Residual residual) {
 
 		@Override
 		public Builder accept(Number sample) {
-			SampleConsumer.super.accept(sample);
+			Sample.Consumer.super.accept(sample);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(int... samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(long... samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(double... samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(Iterable<? extends Number> samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(DoubleStream samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
 		@Override
 		public Builder acceptAll(Stream<? extends Number> samples) {
-			SampleConsumer.super.acceptAll(samples);
+			Sample.Consumer.super.acceptAll(samples);
 			return this;
 		}
 
