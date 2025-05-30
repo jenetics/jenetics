@@ -1,6 +1,57 @@
-= `distassert`
+= Statistical distribution testing
 
 This module allows doing hypothesis testing of sample data. Jenetics uses these tests for verifying the statistical properties of the selector implementations.
+
+== Examples
+
+=== Basic usage
+
+[source,java]
+----
+final var random = RandomGenerator.getDefault();
+final Observation observation = Sampler.observe(
+    // The samples function, which creates the sample points.
+    samples -> samples.acceptAll(random.doubles(count)),
+    // The discrimination of the created histogram.
+    Histogram.Partition.of(0, 1, 20)
+);
+
+assertThat(observation)
+    // The hypothesis tester used for testing the distribution.
+    .usingHypothesisTester(PearsonsChiSquared.P0_05)
+    .isUniform();
+----
+
+Or testing for a specific distribution.
+
+[source,java]
+----
+var observation = Sampler.observe(
+    Sample.repeat(
+        1_000_000,
+        samples -> samples.accept(random.nextGaussian(mean, stddev))
+    ),
+    Histogram.Partition.of(0, 100, 20)
+);
+
+assertThat(observation)
+    .usingHypothesisTester(PearsonsChiSquared.P0_05)
+    .usingLogger(System.out::println)
+    .follows(new NormalDistribution(mean, stddev));
+----
+
+This will print the following output.
+
+[source]
+----
+Data follows RangedDistribution[\
+distribution=NormalDistribution[mean=50.0, stddev=10.0],\
+range=Interval[min=-Infinity, max=Infinity]\
+]: [max-𝜒²=30.143527, 𝜒²=13.502026].
+
+----
+
+=== Testing GA operators
 
 [source,java]
 ----
@@ -20,25 +71,63 @@ final Observation observation = Observer
 assertThat(observation).isUniform();
 ----
 
+Create an executable `Sample` function.
+[source,java]
+----
+final Sample sample = Sample.repeat(repetitions, samples -> {
+    final var population =
+        IntStream.range(0, populationCount)
+            .mapToObj(i -> ptf.newInstance())
+            .collect(ISeq.toISeq());
+
+    final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
+    selector.select(population, selectionCount, opt).stream()
+        .map(pt -> pt.genotype().gene().allele())
+        .forEach(samples::accept);
+});
+----
+
+Create a `Sampler` object, which can be executed more than once.
+
+[source,java]
+----
+final var sampler = new Sampler(
+    sample,
+    Histogram.Partition.of(new Interval(MIN, MAX), CLASS_COUNT)
+);
+----
+
+Create and test the observation.
+
 [source,java]
 ----
 final Observation observation = Observer
+    // Execute the sampler in a reproducible environment.
     .using(new StableRandomExecutor(seed))
-    .observe(
-        SelectorTester.sampler(
-            new BoltzmannSelector<>(b),
-            opt,
-            POPULATION_COUNT,
-            50
-        )
-    );
+    .observe(sampler);
 
 // Test against an empirical distribution with known histogram.
 final Distribution distribution = EmpiricalDistribution.of(
     observation.histogram().partition(),
-    expected.frequencies
+    frequencies // Expected distribution frequencies.
 );
 
 assertThat(observation).follows(distribution);
+----
+
+For Jenetics, a stable execution environment is implemented as follows:
+
+[source,java]
+----
+public record StableRandomExecutor(long seed) implements Executor {
+    @Override
+    public void execute(Runnable command) {
+        requireNonNull(command);
+        RandomRegistry.using(
+            RandomGeneratorFactory.of("L32X64MixRandom").create(seed),
+            r -> command.run()
+        );
+    }
+}
 ----
 
