@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
+import io.jenetics.distassert.observation.Sample;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -36,7 +37,6 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
@@ -151,7 +151,7 @@ public class SubsetsTest {
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(10_000, samples ->
+				Sample.repeat(10_000, samples ->
 					samples.acceptAll(Subsets.next(RandomRegistry.random(), max, 3))
 				),
 				Histogram.Partition.of(min, max, 15)

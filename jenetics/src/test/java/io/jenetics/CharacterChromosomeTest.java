@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
@@ -51,7 +51,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(10, samples ->
+				Sample.repeat(10, samples ->
 					CharacterChromosome.of(characters, 10_000).stream()
 						.map(g -> Long.parseLong(g.allele().toString()))
 						.forEach(samples::accept)

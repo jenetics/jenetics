@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
@@ -66,7 +66,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(100_000, samples -> {
+				Sample.repeat(100_000, samples -> {
 					final CharacterGene g1 = factory.newInstance();
 					final CharacterGene g2 = factory.newInstance();
 					assertThat(g1).isNotSameAs(g2);

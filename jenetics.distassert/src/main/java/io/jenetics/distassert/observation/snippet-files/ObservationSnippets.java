@@ -56,11 +56,11 @@ final class ObservationSnippets {
 			// @start region="SamplingHistogram"
 			final var random = RandomGenerator.getDefault();
 			// Sampling of one point.
-			final Sampling point = samples -> samples.accept(random.nextGaussian());
+			final Sample point = samples -> samples.accept(random.nextGaussian());
 
 			var histogram = Histogram.Builder.of(new Interval(-4, 4), 20)
 				// Add 1000 sample points to the histogram.
-				.accept(Sampling.repeat(1000, point))
+				.accept(Sample.repeat(1000, point))
 				.build();
 			// @end
 		}

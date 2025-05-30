@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -60,7 +60,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(200_000, samples ->
+				Sample.repeat(200_000, samples ->
 					samples.accept(IntegerGene.of(min, max).doubleValue())
 				),
 				Histogram.Partition.of(min, max, 20)

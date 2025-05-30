@@ -29,16 +29,16 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SamplingTest {
+public class SampleTest {
 
 	@Test
 	public void repeat() {
-		final Sampling sampling = Sampling.repeat(100, samples ->
+		final Sample sample = Sample.repeat(100, samples ->
 			samples.acceptAll(IntStream.range(0, 100).boxed())
 		);
 
 		final var statistics = new DoubleSummaryStatistics();
-		sampling.writeTo(SampleConsumer.of(statistics));
+		sample.writeTo(SampleConsumer.of(statistics));
 
 		assertThat(statistics.getCount()).isEqualTo(100*100);
 		assertThat(statistics.getMin()).isEqualTo(0);

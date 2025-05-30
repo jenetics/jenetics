@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
 import io.jenetics.distassert.observation.Sampler;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -60,7 +60,7 @@ public class AssertionsTest {
 		final var interval = new Interval(-10, 10);
 
 		final var observation = Sampler.observe(
-			Sampling.repeat(count, samples ->
+			Sample.repeat(count, samples ->
 				samples.accept(random.nextGaussian())
 			),
 			Histogram.Partition.of(interval, 20)

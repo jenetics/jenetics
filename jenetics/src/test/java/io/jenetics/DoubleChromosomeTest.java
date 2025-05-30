@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -61,7 +61,7 @@ public class DoubleChromosomeTest
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(1_000, samples ->
+				Sample.repeat(1_000, samples ->
 					DoubleChromosome.of(min, max, 500).stream()
 						.mapToDouble(DoubleGene::doubleValue)
 						.forEach(samples::accept)

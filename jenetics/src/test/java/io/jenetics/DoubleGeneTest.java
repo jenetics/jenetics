@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram.Partition;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -64,7 +64,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final var observation = Observer
 			.using(new StableRandomExecutor(seed))
 			.observe(
-				Sampling.repeat(200_000, samples ->
+				Sample.repeat(200_000, samples ->
 					samples.accept(DoubleGene.of(min, max).doubleValue())
 				),
 				Partition.of(min, max, 20)

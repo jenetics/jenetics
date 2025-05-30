@@ -71,12 +71,12 @@ public final class Observer {
 	/**
 	 * Executes the given {@code sampling} with the observers {@link Executor}.
 	 *
-	 * @param sampling the sampling data
+	 * @param sample the sampling data
 	 * @param partition the histogram partition to be used for the sampling.
 	 * @return the sampler observation
 	 */
-	public Observation observe(final Sampling sampling, final Partition partition) {
-		return observe(new Sampler(sampling, partition));
+	public Observation observe(final Sample sample, final Partition partition) {
+		return observe(new Sampler(sample, partition));
 	}
 
 	/**

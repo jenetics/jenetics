@@ -22,7 +22,7 @@ package io.jenetics.distassert.observation;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This functional interface represents a sampling task. It is used for
+ * This functional interface represents a data sample. It is used for
  * separating generation of the sample points from the actual execution.
  * {@snippet class="ObservationSnippets" region="SamplingHistogram"}
  *
@@ -31,7 +31,7 @@ import static java.util.Objects.requireNonNull;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Sampling {
+public interface Sample {
 
 	/**
 	 * Writes {@code this} sampling to the given consumer.
@@ -44,14 +44,14 @@ public interface Sampling {
 	 * Create a new sampling object which repeats the given sub{@code sampling}
 	 *
 	 * @param count number of times to repeat
-	 * @param sampling the subsampling to be repeated
+	 * @param sample the subsampling to be repeated
 	 * @return a new sampling
 	 */
-	static Sampling repeat(final int count, final Sampling sampling) {
-		requireNonNull(sampling);
+	static Sample repeat(final int count, final Sample sample) {
+		requireNonNull(sample);
 		return consumer -> {
 			for (int i = 0; i < count; ++i) {
-				sampling.writeTo(consumer);
+				sample.writeTo(consumer);
 			}
 		};
 	}

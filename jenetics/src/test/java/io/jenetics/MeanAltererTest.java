@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.StableRandomExecutor;
@@ -74,7 +74,7 @@ public class MeanAltererTest extends AltererTester {
 		final var observation = Observer
 			.using(new StableRandomExecutor(123456789))
 			.observe(
-				Sampling.repeat(100, samples -> {
+				Sample.repeat(100, samples -> {
 					final long alterations = new MeanAlterer<DoubleGene, Double>(p)
 						.alter(population, 1)
 						.alterations();

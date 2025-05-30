@@ -571,11 +571,11 @@ public record Histogram(Buckets buckets, Residual residual) {
 		 * Add the given {@code sampling} to this histogram.
 		 * {@snippet class="ObservationSnippets" region="Histogram.builder"}
 		 *
-		 * @param sampling the samples consumer
+		 * @param sample the samples consumer
 		 * @return {@code this} samples object for method chaining
 		 */
-		public Builder accept(final Sampling sampling) {
-			sampling.writeTo(this);
+		public Builder accept(final Sample sample) {
+			sample.writeTo(this);
 			return this;
 		}
 

@@ -31,18 +31,18 @@ import io.jenetics.distassert.observation.Histogram.Partition;
 /**
  * Combines a data sampling with the partitioning of the observed data.
  *
- * @param sampling the sampling data
+ * @param sample the sampling data
  * @param partition the partitioning of the observation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record Sampler(Sampling sampling, Partition partition)
+public record Sampler(Sample sample, Partition partition)
 	implements Callable<Observation>
 {
 	public Sampler {
-		requireNonNull(sampling);
+		requireNonNull(sample);
 		requireNonNull(partition);
 	}
 
@@ -65,7 +65,7 @@ public record Sampler(Sampling sampling, Partition partition)
 
 		final var histogram = new Histogram.Builder(partition)
 			.observer(summary)
-			.accept(sampling)
+			.accept(sample)
 			.build();
 
 		final var statistics = new Statistics(
@@ -85,15 +85,15 @@ public record Sampler(Sampling sampling, Partition partition)
 	/**
 	 * Executes the given sampling.
 	 *
-	 * @param sampling the data sampling to be observed
+	 * @param sample the data sampling to be observed
 	 * @param partition the partitioning of the observation data
 	 * @return the resulting {@link Observation}
 	 */
 	public static Observation observe(
-		final Sampling sampling,
+		final Sample sample,
 		final Partition partition
 	) {
-		return new Sampler(sampling, partition).call();
+		return new Sampler(sample, partition).call();
 	}
 
 }

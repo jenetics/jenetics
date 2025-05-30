@@ -42,7 +42,7 @@ import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
 import io.jenetics.distassert.observation.Observation;
 import io.jenetics.distassert.observation.Sampler;
-import io.jenetics.distassert.observation.Sampling;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.Factory;
@@ -311,7 +311,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		};
 
 		return new Sampler(
-			Sampling.repeat(loops, samples -> {
+			Sample.repeat(loops, samples -> {
 				final var population =
 					IntStream.range(0, populationCount)
 						.mapToObj(i -> ptf.newInstance())
