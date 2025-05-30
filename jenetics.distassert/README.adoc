@@ -1,0 +1,44 @@
+= `distassert`
+
+This module allows doing hypothesis testing of sample data. Jenetics uses these tests for verifying the statistical properties of the selector implementations.
+
+[source,java]
+----
+final Observation observation = Observer
+    // Ensure reproducible test results
+    .using(new StableRandomExecutor(seed))
+    .observe(
+        Sample.repeat(1_000, samples ->
+            DoubleChromosome.of(min, max, 500).stream()
+                .mapToDouble(DoubleGene::doubleValue)
+                .forEach(samples::accept)
+        ),
+        Histogram.Partition.of(min, max, 20)
+    );
+
+// Ensure that the generated values are uniformly distributed.
+assertThat(observation).isUniform();
+----
+
+[source,java]
+----
+final Observation observation = Observer
+    .using(new StableRandomExecutor(seed))
+    .observe(
+        SelectorTester.sampler(
+            new BoltzmannSelector<>(b),
+            opt,
+            POPULATION_COUNT,
+            50
+        )
+    );
+
+// Test against an empirical distribution with known histogram.
+final Distribution distribution = EmpiricalDistribution.of(
+    observation.histogram().partition(),
+    expected.frequencies
+);
+
+assertThat(observation).follows(distribution);
+----
+
