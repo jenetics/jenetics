@@ -134,7 +134,7 @@ public final class EmpiricalDistribution implements Distribution {
 	 */
 	public static EmpiricalDistribution of(
 		final Partition partition,
-		final double[] expected
+		final double... expected
 	) {
 		if (partition.size() != expected.length) {
 			throw new IllegalArgumentException(
@@ -182,7 +182,7 @@ public final class EmpiricalDistribution implements Distribution {
 	 */
 	public static EmpiricalDistribution of(
 		final Partition partition,
-		final long[] frequencies
+		final long... frequencies
 	) {
 		final var buckets = new Buckets(partition, frequencies);
 		final var histogram = new Histogram(buckets);
@@ -200,9 +200,25 @@ public final class EmpiricalDistribution implements Distribution {
 	 */
 	public static EmpiricalDistribution of(
 		final Interval interval,
-		final double[] expected
+		final double... expected
 	) {
 		return of(Partition.of(interval, expected.length), expected);
+	}
+
+	/**
+	 * Create a new distribution within the given {@code interval} and the
+	 * {@code expected} frequencies within the interval. The number of
+	 * subintervals is determined by the length of the frequency array.
+	 *
+	 * @param interval the overall distribution interval
+	 * @param frequencies the expected frequencies
+	 * @return a new distribution object
+	 */
+	public static EmpiricalDistribution of(
+		final Interval interval,
+		final long... frequencies
+	) {
+		return of(Partition.of(interval, frequencies.length), frequencies);
 	}
 
 }
