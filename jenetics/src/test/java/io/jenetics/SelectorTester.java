@@ -424,6 +424,6 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 	private static void println(final PrintStream writer, final String pattern, final Object... args) {
-		writer.println(format(pattern, args));
+		writer.printf(pattern + "%n", args);
 	}
 }
