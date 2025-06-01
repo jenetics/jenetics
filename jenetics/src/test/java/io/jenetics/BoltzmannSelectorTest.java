@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,7 +31,8 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.EmpiricalDistribution;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -74,21 +75,24 @@ public class BoltzmannSelectorTest
 		final Optimize opt
 	) {
 		final var seed = 9;
-		final var observation = SelectorTester.observation(
-			new BoltzmannSelector<>(b),
-			opt,
-			POPULATION_COUNT,
-			50
-		);
-		new StableRandomExecutor(seed).execute(observation);
+
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				SelectorTester.sampler(
+					new BoltzmannSelector<>(b),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
 
 		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
 			expected.value
 		);
 
-		assertThatObservation(observation)
-			.follows(distribution);
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

@@ -1,0 +1,57 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.distassert.observation;
+
+/**
+ * Statistical data.
+ *
+ * @param count the count of values recorded
+ * @param min the minimum value recorded, or {@link Double#POSITIVE_INFINITY} if
+ * 	      no values have been recorded.
+ * @param max the maximum value recorded, or {@link Double#NEGATIVE_INFINITY} if
+ * 	      no values have been recorded
+ * @param sum the sum of values recorded, or zero if no values have been
+ * 	      recorded
+ * @param mean the arithmetic mean of values recorded, or zero if no values have
+ * 	      been recorded
+ * @param variance the variance of values recorded, or {@link Double#NaN} if no
+ * 	      values have been recorded
+ * @param skewness the <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+ *        of values recorded, or {@link Double#NaN} if less than two values have
+ *        been recorded
+ * @param kurtosis the <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+ *        of values recorded, or {@link Double#NaN} if less than four values
+ *        have been recorded
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+public record Statistics(
+	long count,
+	double min,
+	double max,
+	double sum,
+	double mean,
+	double variance,
+	double skewness,
+	double kurtosis
+) {
+}

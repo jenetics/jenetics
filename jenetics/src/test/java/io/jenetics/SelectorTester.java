@@ -38,11 +38,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.incubator.stat.Observation;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
+import io.jenetics.distassert.observation.Observation;
+import io.jenetics.distassert.observation.Sampler;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.Factory;
@@ -245,21 +245,21 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final List<RunnableObservation> observations = observations(
+		final List<Sampler> samplers = samplers(
 			parameters,
 			selector,
 			opt,
 			populationCount,
 			loops
 		);
-		final List<Histogram> histograms = observations.stream()
-			.peek(RunnableObservation::run)
+		final List<Histogram> histograms = samplers.stream()
+			.map(Sampler::call)
 			.map(Observation::histogram)
 			.toList();
 
 		final List<Selector<?, ?>> selectors = parameters.stream()
 			.map(selector)
-			.collect(Collectors.toList());
+			.collect(Collectors.toUnmodifiableList());
 
 		print(writer, opt, selectors, parameters, histograms, populationCount, loops);
 	}
@@ -275,7 +275,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param <P> the parameter type
 	 * @return the selector distributions
 	 */
-	public static <P> List<RunnableObservation> observations(
+	public static <P> List<Sampler> samplers(
 		final List<P> parameters,
 		final Function<P, Selector<DoubleGene, Double>> selector,
 		final Optimize opt,
@@ -283,7 +283,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int loops
 	) {
 		return parameters.stream()
-			.map(p -> observation(selector.apply(p), opt, populationCount, loops))
+			.map(p -> sampler(selector.apply(p), opt, populationCount, loops))
 			.toList();
 	}
 
@@ -293,13 +293,13 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * with the given parameters.
 	 *
 	 * @param selector the selector for which to determine the distribution
-	 * @param opt the selectors optimization strategy
+	 * @param opt the selector optimization strategy
 	 * @param populationCount the number of in used for determining the
 	 *        selector distribution.
 	 * @param loops the number of selections performed for one population
 	 * @return the selector selection observation
 	 */
-	public static RunnableObservation observation(
+	public static Sampler sampler(
 		final Selector<DoubleGene, Double> selector,
 		final Optimize opt,
 		final int populationCount,
@@ -310,8 +310,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		return new RunnableObservation(
-			Sampling.repeat(loops, samples -> {
+		return new Sampler(
+			Sample.repeat(loops, samples -> {
 				final var population =
 					IntStream.range(0, populationCount)
 						.mapToObj(i -> ptf.newInstance())
@@ -320,7 +320,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 				selector.select(population, selectionCount, opt).stream()
 					.map(pt -> pt.genotype().gene().allele())
-					.forEach(samples::add);
+					.forEach(samples::accept);
 			}),
 			Histogram.Partition.of(new Interval(MIN, MAX), CLASS_COUNT)
 		);
@@ -424,6 +424,6 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 	private static void println(final PrintStream writer, final String pattern, final Object... args) {
-		writer.println(format(pattern, args));
+		writer.printf(pattern + "%n", args);
 	}
 }

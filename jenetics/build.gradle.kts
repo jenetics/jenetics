@@ -43,6 +43,7 @@ dependencies {
 	testImplementation(libs.jpx)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
+	testImplementation(project(":jenetics.distassert"))
 	testImplementation(project(":jenetics.incubator"))
 
 	jmh(libs.prngine)

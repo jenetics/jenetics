@@ -19,16 +19,15 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
-
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.RandomRegistry;
 
@@ -60,10 +59,10 @@ public class GaussianMutatorTest extends MutatorTester {
 		for (int i = 0; i < 100_000; ++i) {
 			final double value = mutator.mutate(gene, random).allele();
 			statistics.accept(value);
-			histogram.add(value);
+			histogram.accept(value);
 		}
 
-		assertThatObservation(histogram.build())
+		Assertions.assertThat(histogram.build())
 			.withinRange(min, max)
 			.isNormal(5, Math.sqrt(var));
 	}

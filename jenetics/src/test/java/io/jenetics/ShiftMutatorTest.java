@@ -15,19 +15,20 @@
  */
 package io.jenetics;
 
-import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
-import io.jenetics.util.MSeq;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>

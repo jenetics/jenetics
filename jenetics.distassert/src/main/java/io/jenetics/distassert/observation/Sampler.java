@@ -1,0 +1,99 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.distassert.observation;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.Callable;
+
+import org.apache.commons.statistics.descriptive.DoubleStatistics;
+import org.apache.commons.statistics.descriptive.Statistic;
+
+import io.jenetics.distassert.observation.Histogram.Partition;
+
+/**
+ * Combines a data sampling with the partitioning of the observed data.
+ *
+ * @param sample the sampling data
+ * @param partition the partitioning of the observation
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+public record Sampler(Sample sample, Partition partition)
+	implements Callable<Observation>
+{
+	public Sampler {
+		requireNonNull(sample);
+		requireNonNull(partition);
+	}
+
+	/**
+	 * Executes the sampler and returns the resulting {@link Observation}.
+	 *
+	 * @return the resulting {@link Observation}
+	 */
+	@Override
+	public Observation call() {
+		final var summary = DoubleStatistics.of(
+			Statistic.MIN,
+			Statistic.MAX,
+			Statistic.MEAN,
+			Statistic.SUM,
+			Statistic.VARIANCE,
+			Statistic.SKEWNESS,
+			Statistic.KURTOSIS
+		);
+
+		final var histogram = new Histogram.Builder(partition)
+			.observer(summary)
+			.accept(sample)
+			.build();
+
+		final var statistics = new Statistics(
+			summary.getCount(),
+			summary.getAsDouble(Statistic.MIN),
+			summary.getAsDouble(Statistic.MAX),
+			summary.getAsDouble(Statistic.SUM),
+			summary.getAsDouble(Statistic.MEAN),
+			summary.getAsDouble(Statistic.VARIANCE),
+			summary.getAsDouble(Statistic.SKEWNESS),
+			summary.getAsDouble(Statistic.KURTOSIS)
+		);
+
+		return new Observation(histogram, statistics);
+	}
+
+	/**
+	 * Executes the given sampling.
+	 *
+	 * @param sample the data sampling to be observed
+	 * @param partition the partitioning of the observation data
+	 * @return the resulting {@link Observation}
+	 */
+	public static Observation observe(
+		final Sample sample,
+		final Partition partition
+	) {
+		return new Sampler(sample, partition).call();
+	}
+
+}

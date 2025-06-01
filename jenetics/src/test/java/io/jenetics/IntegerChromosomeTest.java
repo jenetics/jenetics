@@ -20,17 +20,17 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
+import io.jenetics.distassert.observation.Sample;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.StableRandomExecutor;
@@ -56,17 +56,18 @@ public class IntegerChromosomeTest
 		final int min = 0;
 		final int max = Integer.MAX_VALUE;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(1_000, samples ->
-				IntegerChromosome.of(min, max, 500).stream()
-					.mapToDouble(IntegerGene::doubleValue)
-					.forEach(samples::add)
-			),
-			Histogram.Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(1_000, samples ->
+					IntegerChromosome.of(min, max, 500).stream()
+						.mapToDouble(IntegerGene::doubleValue)
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertThatObservation(observation).isUniform();
+		assertThat(observation).isUniform();
 	}
 
 	@DataProvider
