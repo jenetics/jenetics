@@ -65,7 +65,7 @@ public class GaussianMutator<
 	private G mutate0(final G gene, final RandomGenerator random) {
 		final double min = gene.min().doubleValue();
 		final double max = gene.max().doubleValue();
-		final double stddev = (max - min)*0.25;
+		final double stddev = (max - min)*0.1;
 
 		final double value = gene.doubleValue();
 		final double gaussian = random.nextGaussian(value, stddev);

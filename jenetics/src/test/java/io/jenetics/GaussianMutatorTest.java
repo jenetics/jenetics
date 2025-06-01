@@ -28,8 +28,10 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.assertion.Assertions;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
-import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,30 +43,28 @@ public class GaussianMutatorTest extends MutatorTester {
 		return new GaussianMutator<>(p);
 	}
 
-	//@Test(invocationCount = 20, successPercentage = 90)
+	@Test
 	public void mutate() {
-		final var random = RandomRegistry.random();
+		final var interval = new Interval(0, 10);
 
-		final double min = 0;
-		final double max = 10;
-		final double mean = 5;
-		final double var = Math.pow((max - min)/4.0, 2);
-
-		final DoubleGene gene = DoubleGene.of(mean, min, max);
+		final DoubleGene gene = DoubleGene.of(interval.min(), interval.max());
 		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
 
-		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(new Interval(0, 10), 10);
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				Sample.repeat(
+					1_000_000,
+					sample -> sample.accept(
+						mutator
+							.mutate(gene, RandomRegistry.random())
+							.allele()
+					)
+				),
+				Histogram.Partition.of(interval, 20)
+			);
 
-		for (int i = 0; i < 100_000; ++i) {
-			final double value = mutator.mutate(gene, random).allele();
-			statistics.accept(value);
-			histogram.accept(value);
-		}
-
-		Assertions.assertThat(histogram.build())
-			.withinRange(min, max)
-			.isNormal(5, Math.sqrt(var));
+		Assertions.assertThat(observation).isNormal();
 	}
 
 	@Test
