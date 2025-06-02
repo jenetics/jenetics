@@ -67,13 +67,17 @@ public class GaussianMutator<
 	 */
 	public record DistShape(double mean, double stddev) {
 		double next(final double min, final double max, final RandomGenerator random) {
-			final var factor = (max - min)/2.0;
-			return random.nextGaussian(mean*factor + factor, stddev*factor);
+			return random.nextGaussian(mean(min, max), stddev(min, max));
 		}
 
 		double mean(double min, double max) {
-			final var factor = (max - min)/2.0;
-			return factor*mean + factor;
+			final var scale = (max - min)/2.0;
+			return scale*mean + scale;
+		}
+
+		double stddev(double min, double max) {
+			final var scale = (max - min)/2.0;
+			return scale*stddev;
 		}
 	}
 

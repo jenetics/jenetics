@@ -49,10 +49,8 @@ public record NormalDistribution(double mean, double stddev)
 	@Override
 	public Pdf pdf() {
 		return x -> {
-			final double x0 = x - mean;
-			final double x1 = x0/stddev;
-			final double x2 = -0.5*x1*x1 - Math.log(stddev) + HALF_LOG_TAU;
-			return Math.exp(x2);
+			final double z = (x - mean)/stddev;
+			return Math.exp(-0.5*z*z)/(Math.sqrt(2*Math.PI)*stddev);
 		};
 	}
 

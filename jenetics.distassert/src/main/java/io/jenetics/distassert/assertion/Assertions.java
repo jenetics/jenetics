@@ -19,8 +19,6 @@
  */
 package io.jenetics.distassert.assertion;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Consumer;
@@ -55,7 +53,7 @@ public final class Assertions {
 	public static class HistogramAssert {
 		private final Histogram histogram;
 
-		private Interval range = new Interval(NEGATIVE_INFINITY, POSITIVE_INFINITY);
+		private Interval range;
 		private HypothesisTester tester = PearsonsChiSquared.P0_05;
 		private Consumer<String> logger = message -> {};
 
@@ -114,7 +112,11 @@ public final class Assertions {
 		 * @param hypothesis the expected distribution
 		 */
 		public void follows(final Distribution hypothesis) {
-			final var distribution = new RangedDistribution(hypothesis, range);
+			final var distribution = RangedDistribution.of(
+				hypothesis,
+				range != null ? range : hypothesis.domain()
+			);
+
 			switch (tester.test(histogram, distribution)) {
 				case Reject r -> throw new AssertionError(r.message());
 				case Accept a -> logger.accept(a.message());
