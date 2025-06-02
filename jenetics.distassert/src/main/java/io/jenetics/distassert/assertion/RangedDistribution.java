@@ -35,6 +35,7 @@ record RangedDistribution(Distribution distribution, Interval range)
 
 	@Override
 	public Cdf cdf() {
+
 		final var origin = distribution.cdf();
 
 		return x -> {

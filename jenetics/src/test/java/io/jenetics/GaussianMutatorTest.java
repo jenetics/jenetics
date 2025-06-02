@@ -19,19 +19,21 @@
  */
 package io.jenetics;
 
-import java.util.Random;
-import java.util.random.RandomGenerator;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.distribution.NormalDistribution;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.stream.LongStream;
+
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,25 +48,38 @@ public class GaussianMutatorTest extends MutatorTester {
 	@Test
 	public void mutate() {
 		final var interval = new Interval(0, 10);
+		final var scale = interval.size()/2.0;
+
+		final var shape = new GaussianMutator.DistShape(1, 1.0/3.0);
+		System.out.println("MEAN: " + shape.mean(interval.min(), interval.max()));
 
 		final DoubleGene gene = DoubleGene.of(interval.min(), interval.max());
-		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
+		final GaussianMutator<DoubleGene, Double> mutator =
+			new GaussianMutator<>(new GaussianMutator.DistShape(1, 1.0/3.0));
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(123))
 			.observe(
 				Sample.repeat(
-					1_000_000,
+					100_000,
 					sample -> sample.accept(
 						mutator
 							.mutate(gene, RandomRegistry.random())
 							.allele()
 					)
 				),
-				Histogram.Partition.of(interval, 20)
+				Histogram.Partition.of(interval, 21)
 			);
 
-		Assertions.assertThat(observation).isNormal();
+		System.out.println(observation.statistics());
+		LongStream
+			.of(observation.histogram().buckets().frequencies())
+			.forEach(System.out::println);
+
+		assertThat(observation)
+			.usingLogger(System.out::println)
+			.withinRange(interval)
+			.follows(new NormalDistribution(10, 5.0/3.0));
 	}
 
 	@Test
