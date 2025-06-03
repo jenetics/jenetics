@@ -19,13 +19,8 @@
  */
 package io.jenetics;
 
-import io.jenetics.util.DoubleRange;
-
-import static java.lang.Math.clamp;
-import static java.lang.Math.nextDown;
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 
 /**
@@ -41,10 +36,12 @@ import java.util.random.RandomGenerator;
  * </p>
  * The new value will be cropped to the gene's boundaries.
  *
+ * @param <G> the gene type
+ * @param <C> the allele type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 6.1
+ * @version !__version__!
  */
 public class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -61,23 +58,33 @@ public class GaussianMutator<
 	 * normal distribution. A gene with a range of {@code [0, 10]} and a desired
 	 * mean value of {@code 5}, will have a {@code DistShape} mean value of zero.
 	 *
-	 * @param mean the mean value of the <em>normal</em> standard distribution
-	 * @param stddev the expected standard deviation for the gene's boundary
+	 * @param shift the mean value of the <em>normal</em> standard distribution
+	 * @param sigmas the expected standard deviation for the gene's boundary
 	 *        (min and max) values
+	 * @since !__version__!
 	 */
-	public record DistShape(double mean, double stddev) {
+	public record DistShape(double shift, double sigmas) {
+
+		public DistShape {
+			if (sigmas <= 0) {
+				throw new IllegalArgumentException(
+					"Standard deviation must be greater than zero: " + sigmas
+				);
+			}
+		}
+
 		double next(final double min, final double max, final RandomGenerator random) {
 			return random.nextGaussian(mean(min, max), stddev(min, max));
 		}
 
-		double mean(double min, double max) {
-			final var scale = (max - min)/2.0;
-			return scale*mean + scale;
+		double stddev(double min, double max) {
+			final var sigma = (max - min)/2.0;
+			return sigma/sigmas;
 		}
 
-		double stddev(double min, double max) {
-			final var scale = (max - min)/2.0;
-			return scale*stddev;
+		double mean(double min, double max) {
+			final var mean = (max - min)/2.0;
+			return stddev(min, max)*shift + mean;
 		}
 	}
 
@@ -93,7 +100,7 @@ public class GaussianMutator<
 	}
 
 	public GaussianMutator(final double probability) {
-		this(probability, new DistShape(0, 1.0/3.0));
+		this(probability, new DistShape(0, 1.0/4.0));
 	}
 
 	public GaussianMutator() {
@@ -115,29 +122,11 @@ public class GaussianMutator<
 			next = shape.next(min, max, random);
 		}
 
-		//System.out.println("RETRY: " + retries);
-
 		if (retries < MAX_RETRIES) {
 			return gene.newInstance(next);
 		} else {
 			return gene;
 		}
-
-		/*
-		final double min = gene.min().doubleValue();
-		final double max = gene.max().doubleValue();
-		final double mean = (max - min)/2.0 + min;
-		// min =  6*stddev, für 3*stddev Abstand vom Mittelwert.
-		// min = 10*stddev, für 5*stddev Abstand vom Mittelwert.
-		final double stddev = (max - min)*0.1;
-
-		final double gaussian = random.nextGaussian(mean, (max - min)*stddev);
-		if (gaussian <= min || gaussian >= max) {
-			//System.out.println(count + ": " + gaussian + " --> " + value + ", " + this.stddev);
-			return gene;
-		}
-		return gene.newInstance(clamp(gaussian, min, nextDown(max)));
-		 */
 	}
 
 }

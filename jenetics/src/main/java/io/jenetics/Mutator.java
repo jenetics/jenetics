@@ -63,6 +63,9 @@ import io.jenetics.util.Seq;
  * <img src="doc-files/mutator-mean_m.svg" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" >
  * </p>
  *
+ * @param <G> the gene type
+ * @param <C> the allele type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

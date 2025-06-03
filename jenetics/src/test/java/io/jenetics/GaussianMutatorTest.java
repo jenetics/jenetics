@@ -41,9 +41,14 @@ public class GaussianMutatorTest extends MutatorTester {
 	}
 
 	@Test
+	public void shapeNext() {
+		final var shape = new GaussianMutator.DistShape(0, 2.0);
+	}
+
+	@Test
 	public void mutate() {
-		final var interval = new Interval(0, 10);
-		final var shape = new GaussianMutator.DistShape(1, 1.0/2.0);
+		final var interval = new Interval(-10, 10);
+		final var shape = new GaussianMutator.DistShape(0, 2.0);
 		final var mean = shape.mean(interval.min(), interval.max());
 		final var stddev = shape.stddev(interval.min(), interval.max());
 
@@ -56,13 +61,18 @@ public class GaussianMutatorTest extends MutatorTester {
 				Sample.repeat(
 					100_000,
 					sample -> sample.accept(
+						shape.next(interval.min(), interval.max(), RandomRegistry.random())
+						/*
 						mutator
 							.mutate(gene, RandomRegistry.random())
 							.allele()
+						 */
 					)
 				),
 				Histogram.Partition.of(interval, 21)
 			);
+
+		System.out.println(observation.statistics());
 
 		assertThat(observation)
 			.usingLogger(System.out::println)

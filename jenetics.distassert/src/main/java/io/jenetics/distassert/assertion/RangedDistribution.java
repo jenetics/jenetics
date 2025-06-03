@@ -19,6 +19,7 @@
  */
 package io.jenetics.distassert.assertion;
 
+import static java.lang.Math.clamp;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
@@ -46,12 +47,11 @@ import io.jenetics.distassert.observation.Interval;
  */
 final class RangedDistribution implements Distribution {
 
-	private static final int MAX_EVALUATIONS = 100_000;
+	private static final int MAX_EVALUATIONS = 1_000_000;
 
 	private final Distribution distribution;
 	private final Interval range;
 
-	//private final UnivariateIntegrator integrator = new SimpsonIntegrator();
 	private final Pdf distPdf;
 	private final double distPdfScale;
 
@@ -63,15 +63,18 @@ final class RangedDistribution implements Distribution {
 		this.range = requireNonNull(range);
 
 		distPdf = distribution.pdf();
-		distPdfScale = 1.0/integrate(distPdf::apply, range);
+		distPdfScale = 1.0/integrate(distPdf::apply, range.min(), range.max());
 	}
 
-	private double integrate(final DoubleUnaryOperator fn, final Interval interval) {
+	private double integrate(
+		final DoubleUnaryOperator fn,
+		final double min,
+		final double max
+	) {
 		return new SimpsonIntegrator().integrate(
 			MAX_EVALUATIONS,
 			fn::applyAsDouble,
-			interval.min(),
-			interval.max()
+			min, max
 		);
 	}
 
@@ -104,7 +107,7 @@ final class RangedDistribution implements Distribution {
 				return 1;
 			}
 
-			return integrate(pdf::apply, new Interval(range.min(), x));
+			return clamp(integrate(pdf::apply, range.min(), x), 0, 1);
 		};
 	}
 

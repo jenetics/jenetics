@@ -47,8 +47,6 @@ public class RangedDistributionTest {
 			interval.max()
 		);
 
-
-
 		System.out.println("AREA: " + area);
 		System.out.println("x0: " + cdf.apply(interval.min() + 0.0001));
 		System.out.println("x1: " + cdf.apply(interval.max() - 0.0001));
