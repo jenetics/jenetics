@@ -63,9 +63,9 @@ public class GaussianMutator<
 	 *        (min and max) values
 	 * @since !__version__!
 	 */
-	public record DistShape(double shift, double sigmas) implements Sampler {
+	public record Shape(double shift, double sigmas) implements Sampler {
 
-		public DistShape {
+		public Shape {
 			if (sigmas <= 0) {
 				throw new IllegalArgumentException(
 					"Standard deviation must be greater than zero: " + sigmas
@@ -94,16 +94,16 @@ public class GaussianMutator<
 
 	}
 
-	public GaussianMutator(final double probability, final DistShape shape) {
+	public GaussianMutator(final double probability, final Shape shape) {
 		super(probability, shape);
 	}
 
-	public GaussianMutator(final DistShape shape) {
+	public GaussianMutator(final Shape shape) {
 		this(DEFAULT_ALTER_PROBABILITY, shape);
 	}
 
 	public GaussianMutator(final double probability) {
-		this(probability, new DistShape(0, 1));
+		this(probability, new Shape(0, 1));
 	}
 
 	public GaussianMutator() {

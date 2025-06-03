@@ -43,14 +43,14 @@ public class GaussianMutatorTest extends MutatorTester {
 
 	@Test
 	public void shapeNext() {
-		final var shape = new GaussianMutator.DistShape(0, 2.0);
+		final var shape = new GaussianMutator.Shape(0, 2.0);
 	}
 
 	@Test
 	public void mutate() {
 		final var interval = new Interval(-10, 10);
 		final var range = new DoubleRange(interval.min(), interval.max());
-		final var shape = new GaussianMutator.DistShape(0, 1.0);
+		final var shape = new GaussianMutator.Shape(0, 1.0);
 		final var stddev = shape.stddev(range);
 		final var mean = shape.mean(range);
 

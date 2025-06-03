@@ -38,7 +38,7 @@ public class GaussianMutatorShapeTest {
 
 	@Test(dataProvider = "parameters")
 	public void next(final double shift, final double sigmas) {
-		final var shape = new GaussianMutator.DistShape(shift, sigmas);
+		final var shape = new GaussianMutator.Shape(shift, sigmas);
 		final var range = new DoubleRange(0.0, 10.0);
 		final var stddev = shape.stddev(range);
 		final var mean = shape.mean(range);
