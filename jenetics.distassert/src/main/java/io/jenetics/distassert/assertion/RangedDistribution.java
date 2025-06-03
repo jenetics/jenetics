@@ -147,6 +147,14 @@ final class RangedDistribution implements Distribution {
 			.formatted(distribution, range);
 	}
 
+	/**
+	 * Return a distribution, restricted to the given {@code range}. The
+	 * 
+	 *
+	 * @param distribution the distribution, where only a range is valid
+	 * @param range the range of the distribution
+	 * @return a distribution, restricted to the given {@code range}
+	 */
 	static Distribution of(final Distribution distribution, final Interval range) {
 		if (distribution.domain().equals(range)) {
 			return distribution;
