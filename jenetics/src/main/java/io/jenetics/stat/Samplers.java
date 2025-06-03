@@ -222,7 +222,7 @@ public final class Samplers {
 	 * @throws IllegalArgumentException if {@code maxRetries} is smaller than one
 	 */
 	public static Sampler gaussian(final double mean, final double stddev) {
-		return gaussian(mean, stddev, 25);
+		return gaussian(mean, stddev, 10_000);
 	}
 
 }

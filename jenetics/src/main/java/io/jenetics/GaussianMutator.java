@@ -19,9 +19,11 @@
  */
 package io.jenetics;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.random.RandomGenerator;
+
+import io.jenetics.stat.Sampler;
+import io.jenetics.stat.Samplers;
+import io.jenetics.util.DoubleRange;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
@@ -47,10 +49,8 @@ public class GaussianMutator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends Mutator<G, C>
+	extends SamplerMutator<G, C>
 {
-
-	private static final int MAX_RETRIES = 100;
 
 	/**
 	 * The parameters which define the <em>shape</em> of distribution of the
@@ -63,7 +63,7 @@ public class GaussianMutator<
 	 *        (min and max) values
 	 * @since !__version__!
 	 */
-	public record DistShape(double shift, double sigmas) {
+	public record DistShape(double shift, double sigmas) implements Sampler {
 
 		public DistShape {
 			if (sigmas <= 0) {
@@ -73,26 +73,29 @@ public class GaussianMutator<
 			}
 		}
 
-		double next(final double min, final double max, final RandomGenerator random) {
-			return random.nextGaussian(mean(min, max), stddev(min, max));
+		@Override
+		public double sample(final RandomGenerator random, final DoubleRange range) {
+			final var sigma = (range.max() - range.min())/2.0;
+			final var mean = sigma + sigma*shift;
+			final var stddev = sigma/sigmas;
+
+			return Samplers.gaussian(mean, stddev).sample(random, range);
 		}
 
-		double stddev(double min, double max) {
-			final var sigma = (max - min)/2.0;
+		double stddev(final DoubleRange range) {
+			final var sigma = (range.max() - range.min())/2.0;
 			return sigma/sigmas;
 		}
 
-		double mean(double min, double max) {
-			final var mean = (max - min)/2.0;
-			return stddev(min, max)*shift + mean;
+		double mean(final DoubleRange range) {
+			final var sigma = (range.max() - range.min())/2.0;
+			return sigma + sigma*shift;
 		}
+
 	}
 
-	private final DistShape shape;
-
 	public GaussianMutator(final double probability, final DistShape shape) {
-		super(probability);
-		this.shape = requireNonNull(shape);
+		super(probability, shape);
 	}
 
 	public GaussianMutator(final DistShape shape) {
@@ -100,7 +103,7 @@ public class GaussianMutator<
 	}
 
 	public GaussianMutator(final double probability) {
-		this(probability, new DistShape(0, 1.0/4.0));
+		this(probability, new DistShape(0, 1));
 	}
 
 	public GaussianMutator() {
@@ -113,20 +116,13 @@ public class GaussianMutator<
 	}
 
 	private G mutate0(final G gene, final RandomGenerator random) {
-		final double min = gene.min().doubleValue();
-		final double max = gene.max().doubleValue();
+		final var range = new DoubleRange(
+			gene.min().doubleValue(),
+			gene.max().doubleValue()
+		);
 
-		int retries = 0;
-		double next = shape.next(min, max, random);
-		while (retries++ < MAX_RETRIES && next < min || next >= max) {
-			next = shape.next(min, max, random);
-		}
-
-		if (retries < MAX_RETRIES) {
-			return gene.newInstance(next);
-		} else {
-			return gene;
-		}
+		final var next = sampler.sample(random, range);
+		return Double.isNaN(next) ? gene : gene.newInstance(next);
 	}
 
 }

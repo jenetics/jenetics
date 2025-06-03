@@ -21,14 +21,13 @@ package io.jenetics;
 
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
-import java.util.stream.LongStream;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sample;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -40,31 +39,25 @@ public class GaussianMutatorShapeTest {
 	@Test(dataProvider = "parameters")
 	public void next(final double shift, final double sigmas) {
 		final var shape = new GaussianMutator.DistShape(shift, sigmas);
-		final var min = 0.0;
-		final var max = 10.0;
-		final var stddev = shape.stddev(min, max);
-		System.out.println("var=" + stddev*stddev + ", mean=" + shape.mean(min, max));
-
+		final var range = new DoubleRange(0.0, 10.0);
+		final var stddev = shape.stddev(range);
+		final var mean = shape.mean(range);
 
 		final var observation = Observer
 			.using(new StableRandomExecutor(123))
 			.observe(
 				Sample.repeat(
 					1_000_000,
-					sample -> sample.accept(shape.next(min, max, RandomRegistry.random()))
+					sample -> sample.accept(
+						shape.sample(RandomRegistry.random(), range)
+					)
 				),
-				Histogram.Partition.of(min, max, 21)
+				Histogram.Partition.of(range.min(), range.max(), 21)
 			);
 
-		System.out.println(observation.statistics());
-
-		//LongStream.of(observation.histogram().buckets().frequencies())
-		//	.forEach(System.out::println);
-
 		assertThat(observation)
-			.usingLogger(System.out::println)
-			.withinRange(min, max)
-			.isNormal(shape.mean(min, max), shape.stddev(min, max));
+			.withinRange(range.min(), range.max())
+			.isNormal(mean, stddev);
 	}
 
 	@DataProvider
@@ -79,6 +72,11 @@ public class GaussianMutatorShapeTest {
 			{0.5, 1.5},
 			{0.5, 2.0},
 			{0.5, 3.0},
+
+			{1.0, 1.0},
+			{1.0, 1.5},
+			{1.0, 2.0},
+			{1.0, 3.0},
 
 			{1.5, 1.0},
 			{1.5, 1.5},

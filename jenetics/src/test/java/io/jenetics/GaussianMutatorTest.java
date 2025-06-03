@@ -27,6 +27,7 @@ import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.distassert.observation.Sample;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -48,9 +49,10 @@ public class GaussianMutatorTest extends MutatorTester {
 	@Test
 	public void mutate() {
 		final var interval = new Interval(-10, 10);
-		final var shape = new GaussianMutator.DistShape(0, 2.0);
-		final var mean = shape.mean(interval.min(), interval.max());
-		final var stddev = shape.stddev(interval.min(), interval.max());
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var shape = new GaussianMutator.DistShape(0, 1.0);
+		final var stddev = shape.stddev(range);
+		final var mean = shape.mean(range);
 
 		final var gene = DoubleGene.of(interval.min(), interval.max());
 		final var mutator = new GaussianMutator<DoubleGene, Double>(shape);
@@ -61,7 +63,7 @@ public class GaussianMutatorTest extends MutatorTester {
 				Sample.repeat(
 					100_000,
 					sample -> sample.accept(
-						shape.next(interval.min(), interval.max(), RandomRegistry.random())
+						shape.sample(RandomRegistry.random(), range)
 						/*
 						mutator
 							.mutate(gene, RandomRegistry.random())

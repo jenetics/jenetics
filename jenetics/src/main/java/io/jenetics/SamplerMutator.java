@@ -27,6 +27,8 @@ import io.jenetics.stat.Sampler;
 import io.jenetics.util.DoubleRange;
 
 /**
+ * A mutator which replaces a gene (mutates it) with a value created by a
+ * {@link Sampler}.
  *
  * @param <G> the gene type
  * @param <C> the allele type
@@ -44,15 +46,34 @@ public class SamplerMutator<
 
 	protected final Sampler sampler;
 
+	/**
+	 * Create a new mutator with the given mutation {@code probability} and
+	 * gene {@code sampler}.
+	 *
+	 * @param probability the mutation probability
+	 * @param sampler the gene sampler for creating new gene values
+	 */
 	public SamplerMutator(final double probability, final Sampler sampler) {
 		super(probability);
 		this.sampler = requireNonNull(sampler);
 	}
 
+	/**
+	 * Create a new mutator with the default mutation probability
+	 * {@link #DEFAULT_ALTER_PROBABILITY} and gene {@code sampler}.
+	 *
+	 * @param sampler the gene sampler for creating new gene values
+	 */
 	public SamplerMutator(final Sampler sampler) {
 		this(DEFAULT_ALTER_PROBABILITY, sampler);
 	}
 
+	/**
+	 * Create a new mutator with the given mutation {@code probability} and
+	 * uniform gene sample, {@link Sampler#UNIFORM}.
+	 *
+	 * @param probability the mutation probability
+	 */
 	public SamplerMutator(final double probability) {
 		this(probability, Sampler.UNIFORM);
 	}

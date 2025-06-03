@@ -19,6 +19,14 @@
  */
 package io.jenetics.stat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
+
+import java.util.random.RandomGenerator;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import io.jenetics.distassert.distribution.LinearDistribution;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
@@ -26,13 +34,6 @@ import io.jenetics.distassert.observation.Observer;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.random.RandomGenerator;
-
-import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
