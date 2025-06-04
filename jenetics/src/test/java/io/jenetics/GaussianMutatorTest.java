@@ -19,7 +19,10 @@
  */
 package io.jenetics;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
+
+import java.util.random.RandomGenerator;
 
 import org.testng.annotations.Test;
 
@@ -42,11 +45,6 @@ public class GaussianMutatorTest extends MutatorTester {
 	}
 
 	@Test
-	public void shapeNext() {
-		final var shape = new GaussianMutator.Shape(0, 2.0);
-	}
-
-	@Test
 	public void mutate() {
 		final var interval = new Interval(-10, 10);
 		final var range = new DoubleRange(interval.min(), interval.max());
@@ -63,18 +61,13 @@ public class GaussianMutatorTest extends MutatorTester {
 				Sample.repeat(
 					100_000,
 					sample -> sample.accept(
-						shape.sample(RandomRegistry.random(), range)
-						/*
 						mutator
 							.mutate(gene, RandomRegistry.random())
 							.allele()
-						 */
 					)
 				),
 				Histogram.Partition.of(interval, 21)
 			);
-
-		System.out.println(observation.statistics());
 
 		assertThat(observation)
 			.usingLogger(System.out::println)
@@ -82,49 +75,23 @@ public class GaussianMutatorTest extends MutatorTester {
 			.isNormal(mean, stddev);
 	}
 
-//	@Test
-//	public void mutateValidGene() {
-//		final var mutator = new GaussianMutator<DoubleGene, Double>() {
-//			public DoubleGene mutate(
-//				final DoubleGene gene,
-//				final RandomGenerator random
-//			) {
-//				return super.mutate(gene, random);
-//			}
-//		};
-//
-//		final var random = new Random() {
-//			@Override
-//			public double nextGaussian(double mean, double stddev) {
-//				return 1;
-//			}
-//		};
-//
-//		DoubleGene gene = DoubleGene.of(0.9, 0, 1);
-//		Assert.assertTrue(gene.isValid());
-//
-//		gene = mutator.mutate(gene, random);
-//		Assert.assertTrue(gene.isValid());
-//		Assert.assertEquals(gene.doubleValue(), Math.nextDown(1.0));
-//	}
+	@Test
+	public void mutateInvalidGene() {
+		final var mutator = new GaussianMutator<DoubleGene, Double>() {
+			public DoubleGene mutate(
+				final DoubleGene gene,
+				final RandomGenerator random
+			) {
+				return super.mutate(gene, random);
+			}
+		};
 
-//	@Test
-//	public void mutateInvalidGene() {
-//		final var mutator = new GaussianMutator<DoubleGene, Double>() {
-//			public DoubleGene mutate(
-//				final DoubleGene gene,
-//				final RandomGenerator random
-//			) {
-//				return super.mutate(gene, random);
-//			}
-//		};
-//
-//		final DoubleGene gene = DoubleGene.of(0.9, 5, 1);
-//		Assert.assertFalse(gene.isValid());
-//
-//		final DoubleGene gene1 = mutator.mutate(gene, new Random());
-//		Assert.assertSame(gene1, gene);
-//	}
+		final DoubleGene gene = DoubleGene.of(0.9, 5, 1);
+		assertThat(gene.isValid()).isFalse();
+
+		assertThat(mutator.mutate(gene, RandomRegistry.random()))
+			.isSameAs(gene);
+	}
 
 }
 

@@ -27,16 +27,11 @@ import io.jenetics.util.DoubleRange;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
- * This mutator picks a new value based on a Gaussian distribution around the
- * current value of the gene. The variance of the new value (before clipping to
- * the allowed gene range) will be
- * <p>
- * <img
- *     src="doc-files/gaussian-mutator-var.svg"
- *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
- * >
- * </p>
- * The new value will be cropped to the gene's boundaries.
+ * This mutator picks a new value based on a Gaussian distribution, defined by
+ * the {@link Shape} parameter of the mutator.
+ * <br>
+ * <img src="doc-files/gaussian-mutator-sigma.svg" alt="Sigma graph" width="500"/>
+ * <br>
  *
  * @param <G> the gene type
  * @param <C> the allele type
@@ -53,76 +48,122 @@ public class GaussianMutator<
 {
 
 	/**
-	 * The parameters which define the <em>shape</em> of distribution of the
-	 * created (mutated) values. The given values are given for a <em>standard</em>
-	 * normal distribution. A gene with a range of {@code [0, 10]} and a desired
-	 * mean value of {@code 5}, will have a {@code DistShape} mean value of zero.
+	 * The parameters which define the <em>shape</em> of gaussian distribution
+	 * of new gene values.
+	 * <p>
+	 * <b>shift</b><br>
+	 * The {@code shift} value shifts the mean value of the distribution. Positive
+	 * values shifts it right and negative values left. The {@code shift} value
+	 * must be within the range of {@code [-1, 1]}. From the {@code shift}
+	 * parameter the actual µ value is calculated as follows:
+	 * {@code µ = (max - min) + (max - min)*shift}.
+	 * <br>
+	 * <img src="doc-files/gaussian-mutator-shift.svg" alt="Shift graph" width="500"/>
+	 * <br>
+	 * <b>sigma</b><br>
+	 * The {@code sigma} value spreads <em>stretches</em> and <em>compresses</em>
+	 * the distribution. The {@code shift} value must be within the range of
+	 * {@code [0.1, 5]}. From the {@code sigma} parameter the actual σ value is
+	 * calculated as follows: {@code σ = (max - min)/sigma}.
+	 * <br>
+	 * <img src="doc-files/gaussian-mutator-sigma.svg" alt="Sigma graph" width="500"/>
+	 * <br>
 	 *
-	 * @param shift the mean value of the <em>normal</em> standard distribution
-	 * @param sigmas the expected standard deviation for the gene's boundary
-	 *        (min and max) values
+	 * @param shift the shift parameter, S, determining the mean value of the
+	 *         crated mutation value distribution
+	 * @param sigma the sigma parameter, Σ, determining the standard deviation of
+	 *        the created mutation value distribution
 	 * @since !__version__!
+	 * @version !__version__!
 	 */
-	public record Shape(double shift, double sigmas) implements Sampler {
+	public record Shape(double shift, double sigma) implements Sampler {
 
+		/**
+		 * Create a new mutation distribution shape.
+		 *
+		 * @param shift the shift parameter, S, determining the mean value of the
+		 *         crated mutation value distribution
+		 * @param sigma the sigma parameter, Σ, determining the standard deviation of
+		 *        the created mutation value distribution
+		 * @throws IllegalArgumentException if {@code shift < -1 || shift > 1} of
+		 *         {@code sigma < 0.1 || sigma > 5}
+		 */
 		public Shape {
-			if (sigmas <= 0) {
+			if (shift < -1 || shift > 1) {
 				throw new IllegalArgumentException(
-					"Standard deviation must be greater than zero: " + sigmas
+					"Shift must be  within the range [-1, 1]: " + shift
+				);
+			}
+			if (sigma < 0.1 || sigma > 5) {
+				throw new IllegalArgumentException(
+					"Sigma must be within the range [0.1, 5]: " + sigma
 				);
 			}
 		}
 
 		@Override
 		public double sample(final RandomGenerator random, final DoubleRange range) {
-			final var sigma = (range.max() - range.min())/2.0;
-			final var mean = sigma + sigma*shift;
-			final var stddev = sigma/sigmas;
+			final var sig = (range.max() - range.min())/2.0;
+			final var mean = sig + sig*shift;
+			final var stddev = sig/sigma;
 
 			return Samplers.gaussian(mean, stddev).sample(random, range);
 		}
 
 		double stddev(final DoubleRange range) {
-			final var sigma = (range.max() - range.min())/2.0;
-			return sigma/sigmas;
+			final var sig = (range.max() - range.min())/2.0;
+			return sig/sigma;
 		}
 
 		double mean(final DoubleRange range) {
-			final var sigma = (range.max() - range.min())/2.0;
-			return sigma + sigma*shift;
+			final var sig = (range.max() - range.min())/2.0;
+			return sig + sig*shift;
 		}
 
 	}
 
+	/**
+	 * The default shape of the mutator: {@code Shape[shift=0, sigma=1]}.
+	 */
+	public static final Shape DEFAULT_SHAPE = new Shape(0, 1);
+
+	/**
+	 * Create a new Gaussian mutator with the given parameter.
+	 *
+	 * @param probability the mutation probabilities
+	 * @param shape the <em>shape</em> of the mutation value distribution
+	 */
 	public GaussianMutator(final double probability, final Shape shape) {
 		super(probability, shape);
 	}
 
+	/**
+	 * Create a new Gaussian mutator with the given mutation value distribution
+	 * shape and the default mutation probability, {@link #DEFAULT_ALTER_PROBABILITY}.
+	 *
+	 * @param shape the mutation value distribution shape
+	 */
 	public GaussianMutator(final Shape shape) {
 		this(DEFAULT_ALTER_PROBABILITY, shape);
 	}
 
+	/**
+	 * Crate a new Gaussian mutator with the given mutation probability and the
+	 * default shape, {@link #DEFAULT_SHAPE}.
+	 *
+	 * @param probability the mutation probability
+	 */
 	public GaussianMutator(final double probability) {
-		this(probability, new Shape(0, 1));
+		this(probability, DEFAULT_SHAPE);
 	}
 
+	/**
+	 * Create a new Gaussian mutator with the default mutation probability,
+	 * {@link #DEFAULT_ALTER_PROBABILITY}, and default distribution shape,
+	 * {@link #DEFAULT_SHAPE}.
+	 */
 	public GaussianMutator() {
-		this(DEFAULT_ALTER_PROBABILITY);
-	}
-
-	@Override
-	protected G mutate(final G gene, final RandomGenerator random) {
-		return gene.isValid() ? mutate0(gene, random) : gene;
-	}
-
-	private G mutate0(final G gene, final RandomGenerator random) {
-		final var range = new DoubleRange(
-			gene.min().doubleValue(),
-			gene.max().doubleValue()
-		);
-
-		final var next = sampler.sample(random, range);
-		return Double.isNaN(next) ? gene : gene.newInstance(next);
+		this(DEFAULT_ALTER_PROBABILITY, DEFAULT_SHAPE);
 	}
 
 }

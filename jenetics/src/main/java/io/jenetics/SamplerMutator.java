@@ -80,12 +80,15 @@ public class SamplerMutator<
 
 	@Override
 	protected G mutate(final G gene, final RandomGenerator random) {
+		if (!gene.isValid()) {
+			return gene;
+		}
+
 		final var range = new DoubleRange(
 			gene.min().doubleValue(),
 			gene.max().doubleValue()
 		);
 		final var next = sampler.sample(random, range);
-
 		return Double.isNaN(next) ? gene : gene.newInstance(next);
 	}
 

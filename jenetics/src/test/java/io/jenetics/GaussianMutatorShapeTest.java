@@ -22,6 +22,7 @@ package io.jenetics;
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -70,39 +71,46 @@ public class GaussianMutatorShapeTest {
 	@DataProvider
 	public static Object[][] parameters() {
 		return new Object[][] {
+			{-1.0, 1.0},
+			{-1.0, 1.5},
+			{-1.0, 2.0},
+			{-1.0, 2.5},
+			{-1.0, 3.0},
+			{-1.0, 5.0},
+
 			{0.0, 1.0},
 			{0.0, 1.5},
 			{0.0, 2.0},
 			{0.0, 2.5},
 			{0.0, 3.0},
+			{0.0, 5.0},
 
 			{0.5, 1.0},
 			{0.5, 1.5},
 			{0.5, 2.0},
 			{0.5, 2.5},
 			{0.5, 3.0},
+			{0.5, 5.0},
 
 			{1.0, 1.0},
 			{1.0, 1.5},
 			{1.0, 2.0},
 			{1.0, 2.5},
 			{1.0, 3.0},
-
-			{1.5, 1.0},
-			{1.5, 1.5},
-			{1.5, 2.0},
-			{1.5, 2.5},
-			{1.5, 3.0},
+			{1.0, 5.0}
 		};
 	}
 
 	public static void main(String[] args) {
-		//sigmas();
-		shift();
+		sigmas();
+		//shift();
 	}
 
+	// distribution_sigmas.gp
 	private static void sigmas() {
-		final var sigmas = new double[] {0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0};
+		final var sigmas = IntStream.range(0, 10)
+			.mapToDouble(i -> 0.5 + i*0.5)
+			.toArray();
 
 		var data = DoubleStream.of(sigmas)
 			.mapToObj(sigma -> frequencies(0, sigma))
@@ -122,10 +130,11 @@ public class GaussianMutatorShapeTest {
 		System.out.println(csv);
 	}
 
+	// distribution_shift.gp
 	private static void shift() {
-		final var shifts = new double[] {
-			0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0
-		};
+		final var shifts = IntStream.range(0, 11)
+			.mapToDouble(i -> i/10.0)
+			.toArray();
 
 		var data = DoubleStream.of(shifts)
 			.map(i -> i*1)
@@ -154,7 +163,7 @@ public class GaussianMutatorShapeTest {
 		final var observation = Sampler
 			.observe(
 				Sample.repeat(
-					1_000_000,
+					5_000_000,
 					sample -> {
 						final var s = shape.sample(random, range);
 						if (!Double.isNaN(s)) {
