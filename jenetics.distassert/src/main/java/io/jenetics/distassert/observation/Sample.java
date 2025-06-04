@@ -31,8 +31,8 @@ import static java.util.Objects.requireNonNull;
  * {@snippet class="ObservationSnippets" region="SamplingHistogram"}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 @FunctionalInterface
 public interface Sample {
@@ -64,8 +64,8 @@ public interface Sample {
 	 * This functional interface serves as a sink for sample values.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 8.3
+	 * @since 8.3
 	 */
 	@FunctionalInterface
 	interface Consumer {

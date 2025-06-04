@@ -24,8 +24,8 @@ import io.jenetics.gradle.dsl.moduleName
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 8.3
+ * @version 8.3
  */
 plugins {
 	`java-library`

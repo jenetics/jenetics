@@ -34,8 +34,8 @@ import io.jenetics.util.DoubleRange;
  * @param <C> the allele type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 8.3
+ * @version 8.3
  */
 public class SamplerMutator<
 	G extends NumericGene<?, G>,

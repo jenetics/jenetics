@@ -30,7 +30,7 @@ import io.jenetics.util.DoubleRange;
  * This class defines some default samplers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 8.3
  * @since 8.0
  */
 public final class Samplers {
@@ -177,7 +177,7 @@ public final class Samplers {
 	 * returns {@link Double#NaN} if it is not possible to create a normal
 	 * distributed value within the desired range.
 	 *
-	 * @since !__version__!
+	 * @since 8.3
 	 *
 	 * @param mean the mean value of the <em>Gaussian</em> sampler
 	 * @param stddev the standard deviation of the <em>Gaussian</em> sampler
@@ -214,7 +214,7 @@ public final class Samplers {
 	 * returns {@link Double#NaN} if it is not possible to create a normal
 	 * distributed value within the desired range after 25 tries.
 	 *
-	 * @since !__version__!
+	 * @since 8.3
 	 *
 	 * @param mean the mean value of the <em>Gaussian</em> sampler
 	 * @param stddev the standard deviation of the <em>Gaussian</em> sampler

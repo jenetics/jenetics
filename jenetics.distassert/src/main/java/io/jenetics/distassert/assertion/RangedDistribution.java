@@ -42,8 +42,8 @@ import io.jenetics.distassert.observation.Interval;
  * </ul>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 final class RangedDistribution implements Distribution {
 
@@ -149,7 +149,7 @@ final class RangedDistribution implements Distribution {
 
 	/**
 	 * Return a distribution, restricted to the given {@code range}. The
-	 * 
+	 *
 	 *
 	 * @param distribution the distribution, where only a range is valid
 	 * @param range the range of the distribution

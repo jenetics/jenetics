@@ -70,7 +70,6 @@ public class GaussianMutatorTest extends MutatorTester {
 			);
 
 		assertThat(observation)
-			.usingLogger(System.out::println)
 			.withinRange(interval)
 			.isNormal(mean, stddev);
 	}

@@ -29,8 +29,8 @@ import static java.util.Objects.requireNonNull;
  * @param statistics the descriptive statistics of the samples in the histogram
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 public record Observation(Histogram histogram, Statistics statistics) {
 	public Observation {

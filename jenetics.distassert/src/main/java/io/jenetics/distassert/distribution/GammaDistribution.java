@@ -33,8 +33,8 @@ import io.jenetics.distassert.observation.Interval;
  * @param scale scale parameter
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 public record GammaDistribution(double shape, double scale)
 	implements Distribution

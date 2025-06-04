@@ -38,7 +38,7 @@ import io.jenetics.util.DoubleRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 8.3
  */
 public class GaussianMutator<
 	G extends NumericGene<?, G>,
@@ -73,8 +73,8 @@ public class GaussianMutator<
 	 *         crated mutation value distribution
 	 * @param sigma the sigma parameter, Σ, determining the standard deviation of
 	 *        the created mutation value distribution
-	 * @since !__version__!
-	 * @version !__version__!
+	 * @since 8.3
+	 * @version 8.3
 	 */
 	public record Shape(double shift, double sigma) implements Sampler {
 

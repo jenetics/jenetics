@@ -48,8 +48,8 @@ import io.jenetics.distassert.observation.Histogram;
  *     Wikipedia: Yates's correction for continuity</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 public record YatesChiSquared(double pValue) implements ChiSquared {
 

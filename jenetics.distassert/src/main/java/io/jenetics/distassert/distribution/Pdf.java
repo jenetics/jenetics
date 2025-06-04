@@ -26,8 +26,8 @@ package io.jenetics.distassert.distribution;
  *     Wikipedia: PDF</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 8.3
+ * @since 8.3
  */
 @FunctionalInterface
 public interface Pdf {

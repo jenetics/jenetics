@@ -7,8 +7,8 @@ import static java.lang.Math.abs;
  * operations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 8.3
+ * @version 8.3
  */
 final class NumericalContext {
 

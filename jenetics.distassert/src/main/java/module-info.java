@@ -22,7 +22,7 @@
  * This module allows performing statistical assertions on sample data.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
+ * @since 8.3
  */
 module io.jenetics.distassert {
 	exports io.jenetics.distassert.assertion;
