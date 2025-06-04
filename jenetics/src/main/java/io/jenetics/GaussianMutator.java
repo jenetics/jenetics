@@ -53,18 +53,19 @@ public class GaussianMutator<
 	 * <p>
 	 * <b>shift</b><br>
 	 * The {@code shift} value shifts the mean value of the distribution. Positive
-	 * values shifts it right and negative values left. The {@code shift} value
-	 * must be within the range of {@code [-1, 1]}. From the {@code shift}
-	 * parameter the actual µ value is calculated as follows:
-	 * {@code µ = (shift + 1)((max - min)/2)}.
+	 * values shifts it right and negative values left. Its value
+	 * must be within the range of {@code [-1, 1]}. This restriction ensures the
+	 * numerical stability of the mutator. From the {@code shift} parameter the
+	 * actual µ value is calculated as follows: {@code µ = (shift + 1)*((max - min)/2)}.
 	 * <br>
 	 * <img src="doc-files/gaussian-mutator-shift.svg" alt="Shift graph" width="500"/>
 	 * <br>
 	 * <b>sigma</b><br>
-	 * The {@code sigma} value spreads <em>stretches</em> and <em>compresses</em>
-	 * the distribution. The {@code shift} value must be within the range of
-	 * {@code [0.1, 5]}. From the {@code sigma} parameter the actual σ value is
-	 * calculated as follows: {@code σ = ((max - min)/2)/sigma}.
+	 * The {@code sigma} value <em>stretches</em> and <em>compresses</em>
+	 * the distribution and must be within the range of {@code [0.1, 5]}. This
+	 * restriction ensures the numerical stability of the mutator. From the
+	 * {@code sigma} parameter the actual σ value is calculated as follows:
+	 * {@code σ = ((max - min)/2)/sigma}.
 	 * <br>
 	 * <img src="doc-files/gaussian-mutator-sigma.svg" alt="Sigma graph" width="500"/>
 	 * <br>
