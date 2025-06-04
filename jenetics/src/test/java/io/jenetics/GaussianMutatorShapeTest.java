@@ -129,7 +129,7 @@ public class GaussianMutatorShapeTest {
 
 		var data = DoubleStream.of(shifts)
 			.map(i -> i*1)
-			.mapToObj(shift -> frequencies(shift, 3))
+			.mapToObj(shift -> frequencies(shift, 2))
 			.toArray(double[][]::new);
 
 		data = transpose(data);
