@@ -56,7 +56,7 @@ public class GaussianMutator<
 	 * values shifts it right and negative values left. The {@code shift} value
 	 * must be within the range of {@code [-1, 1]}. From the {@code shift}
 	 * parameter the actual µ value is calculated as follows:
-	 * {@code µ = (max - min) + (max - min)*shift}.
+	 * {@code µ = (shift + 1)((max - min)/2)}.
 	 * <br>
 	 * <img src="doc-files/gaussian-mutator-shift.svg" alt="Shift graph" width="500"/>
 	 * <br>
@@ -64,7 +64,7 @@ public class GaussianMutator<
 	 * The {@code sigma} value spreads <em>stretches</em> and <em>compresses</em>
 	 * the distribution. The {@code shift} value must be within the range of
 	 * {@code [0.1, 5]}. From the {@code sigma} parameter the actual σ value is
-	 * calculated as follows: {@code σ = (max - min)/sigma}.
+	 * calculated as follows: {@code σ = ((max - min)/2)/sigma}.
 	 * <br>
 	 * <img src="doc-files/gaussian-mutator-sigma.svg" alt="Sigma graph" width="500"/>
 	 * <br>
@@ -111,13 +111,11 @@ public class GaussianMutator<
 		}
 
 		double stddev(final DoubleRange range) {
-			final var sig = (range.max() - range.min())/2.0;
-			return sig/sigma;
+			return ((range.max() - range.min())/2.0)/sigma;
 		}
 
 		double mean(final DoubleRange range) {
-			final var sig = (range.max() - range.min())/2.0;
-			return sig + sig*shift;
+			return (shift + 1)*((range.max() - range.min())/2.0);
 		}
 
 	}
