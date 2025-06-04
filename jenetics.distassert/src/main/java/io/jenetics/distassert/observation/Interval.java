@@ -33,6 +33,11 @@ import java.util.Optional;
  */
 public record Interval(double min, double max) {
 
+	public static final Interval MAX = new Interval(
+		-Double.MAX_VALUE,
+		Double.MAX_VALUE
+	);
+
 	/**
 	 * Create a new interval with the given values.
 	 *
@@ -98,6 +103,11 @@ public record Interval(double min, double max) {
 				)
 			);
 		}
+	}
+
+	public boolean contains(final Interval other) {
+		return Double.compare(min, other.min) <= 0 &&
+			Double.compare(max, other.max) >= 0;
 	}
 
 }

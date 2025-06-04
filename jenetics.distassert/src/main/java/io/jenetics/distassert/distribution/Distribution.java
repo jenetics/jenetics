@@ -40,7 +40,7 @@ public interface Distribution {
 	 * @return the distribution domain.
 	 */
 	default Interval domain() {
-		return new Interval(-Double.MAX_VALUE, Double.MAX_VALUE);
+		return Interval.MAX;
 	}
 
 	/**

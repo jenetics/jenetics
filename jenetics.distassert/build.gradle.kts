@@ -39,6 +39,7 @@ dependencies {
 	implementation(libs.commons.numbers.gamma)
 	implementation(libs.commons.numbers.rootfinder)
 	implementation(libs.commons.statistics.descriptive)
+	implementation("org.apache.commons:commons-math4-legacy:4.0-beta1")
 
 	testImplementation(libs.assertj.core)
 	testImplementation(libs.commons.statistics.distribution)

@@ -20,14 +20,20 @@
 package io.jenetics.stat;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
-import java.util.DoubleSummaryStatistics;
 import java.util.random.RandomGenerator;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.distribution.LinearDistribution;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,18 +41,68 @@ import io.jenetics.util.DoubleRange;
 public class SamplersTest {
 
 	@Test
-	public void linear() {
-		final var dist = Samplers.linear(0.12);
-		final var random = RandomGenerator.getDefault();
-		final var stat = new DoubleSummaryStatistics();
+	public void linearMeanOneHalf() {
+		final var interval = new Interval(0, 10);
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var sampler = Samplers.linear(0.5);
 
-		final var range = new DoubleRange(10, 100);
-		for (int i = 0; i < 100000; ++i) {
-			final var value = dist.sample(random, range);
-			stat.accept(value);
-		}
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				consumer -> {
+					final var random = RandomRegistry.random();
+					for (int i = 0; i < 1_000_000; ++i) {
+						consumer.accept(sampler.sample(random, range));
+					}
+				},
+				Histogram.Partition.of(interval, 20)
+			);
 
-		//System.out.println(stat);
+		assertThat(observation).isUniform();
+	}
+
+	@Test
+	public void linearMeanSqrtTwoHalf() {
+		final var interval = new Interval(0, 10);
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var sampler = Samplers.linear(Math.sqrt(2)/2.0);
+
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				consumer -> {
+					final var random = RandomRegistry.random();
+					for (int i = 0; i < 1_000_000; ++i) {
+						consumer.accept(sampler.sample(random, range));
+					}
+				},
+				Histogram.Partition.of(interval, 20)
+			);
+
+		assertThat(observation)
+			.follows(new LinearDistribution(interval, 0));
+	}
+
+	@Test
+	public void linearOneMeanMinusSqrtTwoHalf() {
+		final var interval = new Interval(0, 10);
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var sampler = Samplers.linear(1 - Math.sqrt(2)/2.0);
+
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				consumer -> {
+					final var random = RandomRegistry.random();
+					for (int i = 0; i < 1_000_000; ++i) {
+						consumer.accept(sampler.sample(random, range));
+					}
+				},
+				Histogram.Partition.of(interval, 20)
+			);
+
+		assertThat(observation)
+			.follows(new LinearDistribution(interval, 2.0/interval.size()));
 	}
 
 	@Test(dataProvider = "ranges")
@@ -96,6 +152,38 @@ public class SamplersTest {
 			{new DoubleRange(-1, 2)},
 			{new DoubleRange(-110, -2)},
 			{new DoubleRange(-11, -5)}
+		};
+	}
+
+	@Test(dataProvider = "gaussianParameters")
+	public void gaussian(double mean, double stddev) {
+		final var interval = new Interval(0, 10);
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var sampler = Samplers.gaussian(mean, stddev);
+
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				consumer -> {
+					final var random = RandomRegistry.random();
+					for (int i = 0; i < 1_000_000; ++i) {
+						consumer.accept(sampler.sample(random, range));
+					}
+				},
+				Histogram.Partition.of(interval, 20)
+			);
+
+		assertThat(observation)
+			.withinRange(interval)
+			.isNormal(mean, stddev);
+	}
+
+	@DataProvider
+	public static Object[][] gaussianParameters() {
+		return new Object[][] {
+			{5.0, 2.0},
+			{2.0, 1.0},
+			{7.0, 5.0}
 		};
 	}
 

@@ -29,8 +29,10 @@ module io.jenetics.distassert {
 	exports io.jenetics.distassert.distribution;
 	exports io.jenetics.distassert.observation;
 
+	requires org.apache.commons.math4.legacy;
 	requires org.apache.commons.numbers.core;
 	requires org.apache.commons.numbers.gamma;
 	requires org.apache.commons.numbers.rootfinder;
 	requires org.apache.commons.statistics.descriptive;
+	requires org.apache.commons.statistics.distribution;
 }

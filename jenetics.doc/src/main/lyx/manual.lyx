@@ -5833,27 +5833,204 @@ Mutator!Gaussian mutator
 
 \begin_layout Standard
 The Gaussian mutator performs the mutation of number genes.
- This mutator picks a new value based on a Gaussian distribution around
- the current value of the gene.
- The variance of the new value (before clipping to the allowed gene range)
- will be
-\begin_inset Formula 
-\begin{equation}
-\hat{\sigma}^{2}=\left(\frac{g_{max}-g_{min}}{4}\right)^{2}
-\end{equation}
+ The values created by this mutator follows a Gaussian distribution, and
+ are guaranteed to lie within the range of the number genes.
+ The shape of the distribution can be determined by the 
+\family typewriter
+Gauss\SpecialChar softhyphen
+ian\SpecialChar softhyphen
+Mu\SpecialChar softhyphen
+ta\SpecialChar softhyphen
+tor\SpecialChar softhyphen
+.Sha\SpecialChar softhyphen
+pe
+\family default
+ class.
+ It allows to configure a 
+\family typewriter
+shift
+\family default
+ and a 
+\family typewriter
+sig\SpecialChar softhyphen
+ma
+\family default
+ parameter.
+ Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Gaussian-mutator-Shift-shape"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-where 
-\begin_inset Formula $g_{min}$
+ shows the distribution's probability density for 
+\family typewriter
+shift
+\family default
+ parameter, 
+\begin_inset Formula $S$
+\end_inset
+
+, between 
+\begin_inset Formula $0$
 \end_inset
 
  and 
-\begin_inset Formula $g_{max}$
+\begin_inset Formula $1$
 \end_inset
 
- are the valid minimum and maximum values of the number gene.
- The new value will be cropped to the gene's boundaries.
+.
+ The gene range is 
+\begin_inset Formula $\left[0,20\right].$
+\end_inset
+
+ The actual mean value, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, depends on the gene range and is set to 
+\begin_inset Formula $\mu=$
+\end_inset
+
+
+\begin_inset Formula $\left(S+1\right)D$
+\end_inset
+
+, where 
+\begin_inset Formula $D=$
+\end_inset
+
+
+\begin_inset Formula $\frac{g_{max}-g_{min}}{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/gaussian-mutator-shift.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gaussian-mutator-Shift-shape"
+
+\end_inset
+
+Gaussian mutator 
+\begin_inset Formula $S$
+\end_inset
+
+-shape
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Gaussian-mutator-Sigma-shape"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the distribution's probability density for sigma parameter, 
+\begin_inset Formula $\varSigma$
+\end_inset
+
+, between 
+\begin_inset Formula $0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $5$
+\end_inset
+
+.
+ The gene range is 
+\begin_inset Formula $\left[0,20\right].$
+\end_inset
+
+ The standard deviation, 
+\begin_inset Formula $\sigma$
+\end_inset
+
+, of the new mutation value depends on the gene range and is set to 
+\begin_inset Formula $\sigma=\frac{D}{\varSigma}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/gaussian-mutator-sigma.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gaussian-mutator-Sigma-shape"
+
+\end_inset
+
+Gaussian mutator 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+-shape
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
