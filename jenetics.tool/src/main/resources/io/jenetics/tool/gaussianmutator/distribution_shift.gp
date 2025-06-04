@@ -20,10 +20,10 @@ set zlabel "P(x)"
 set xtics autofreq
 set ytics autofreq
 set ztics autofreq
-set xrange [0.0:1.0]
-set yrange [0:20]
-set zrange [ 0 : * ]
-set view 80,90,1,1
+#set xrange [0.0:1.0]
+#set yrange [0:20]
+#set zrange [ 0 : * ]
+set view 70,68,1,1
 set grid
 set hidden3d
 set contour
@@ -53,6 +53,6 @@ $grid << EOD
 0.00423 0.00887 0.01636 0.02898 0.04634 0.06883 0.09557 0.12475 0.15375 0.18242 0.20788
 0.00197 0.00435 0.00923 0.01750 0.03021 0.04895 0.07321 0.10465 0.14116 0.18144 0.22493
 EOD
-splot '$grid' matrix with lines notitle
+splot '$grid' matrix u (($1)/10):2:3 with lines notitle
 
 # gnuplot -p distribution.gp > out.svg

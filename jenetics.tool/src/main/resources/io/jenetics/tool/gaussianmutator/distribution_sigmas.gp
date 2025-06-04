@@ -20,9 +20,9 @@ set zlabel "P(x)"
 set xtics autofreq
 set ytics autofreq
 set ztics autofreq
-set xrange [0.5:5]
-set yrange [0:20]
-set zrange [ 0 : * ]
+#set xrange [0.5:5]
+#set yrange [0:20]
+#set zrange [ 0 : * ]
 set view 70,68,1,1
 set grid
 set hidden3d
