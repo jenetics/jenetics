@@ -70,7 +70,7 @@ public class GaussianMutator<
 	 * <br>
 	 *
 	 * @param shift the shift parameter, S, determining the mean value of the
-	 *         crated mutation value distribution
+	 *         created mutation value distribution
 	 * @param sigma the sigma parameter, Σ, determining the standard deviation of
 	 *        the created mutation value distribution
 	 * @since 8.3
