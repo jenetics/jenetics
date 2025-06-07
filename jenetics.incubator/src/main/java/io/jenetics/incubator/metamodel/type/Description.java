@@ -28,9 +28,10 @@ import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
+import io.jenetics.incubator.metamodel.internal.TraverseIterator;
 
 /**
- * Adds path information to a {@link MetaModelType}.
+ * Adds path information to a {@link ModelType}.
  * This class contains methods for extracting the <em>static</em> bean property
  * information from a given object. It is the main entry point for the extracting
  * properties from an object graph.
@@ -59,7 +60,7 @@ public record Description(
 	Path path,
 	Type type,
 	Type enclosure,
-	MetaModelType model
+	ModelType model
 ) {
 
 	public Description {
@@ -71,10 +72,9 @@ public record Description(
 
 	@Override
 	public String toString() {
-		return "Description[path=%s, type=%s, enclosure=%s]".formatted(
+		return "Description[path=%s, type=%s]".formatted(
 			path,
-			type.getTypeName(),
-			enclosure.getTypeName()
+			model
 		);
 	}
 
@@ -100,16 +100,25 @@ public record Description(
 			return Stream.empty();
 		}
 
-		return switch (MetaModelType.of(type.value())) {
+		return switch (ModelType.of(type.value())) {
+			case StructType tpe -> tpe.components().stream()
+				.map(componentType ->
+					new Description(
+						type.path().append(componentType.name()),
+						componentType.type(),
+						componentType.enclosure().type(),
+						componentType
+					)
+				);
+			case EnclosingType tpe -> Stream.of(
+				new Description(
+					type.path().append(new Path.Index(0)),
+					tpe.componentType(),
+					tpe.type(),
+					tpe
+				)
+			);
 			case ElementType t -> Stream.empty();
-			case StructType t -> t.components().map(p -> new Description(
-				type.path().append(p.name()),
-				p.type(), p.enclosure().type(), p
-			));
-			case EnclosingType t -> Stream.of(new Description(
-				type.path().append(new Path.Index(0)),
-				t.componentType(), t.type(), t
-			));
 			case EnclosedType t -> Stream.empty();
 		};
 	}
@@ -137,16 +146,15 @@ public record Description(
 		final PathValue<? extends Type> root,
 		final Dtor<? super PathValue<? extends Type>, ? extends Description> dtor
 	) {
-		final Dtor<? super PathValue<? extends Type>, ? extends Description>
-			recursiveDtor = PreOrderIterator.dtor(
-			dtor,
-			tp -> PathValue.of(tp.path(), tp.type()),
-			PathValue::value
-		);
+		final TraverseIterator<PathValue<? extends Type>, Description> iterator =
+			new PreOrderIterator<>(
+				root,
+				dtor,
+				tp -> PathValue.of(tp.path(), tp.type()),
+				PathValue::value
+			);
 
-		@SuppressWarnings("unchecked")
-		var result =  (Stream<Description>)recursiveDtor.unapply(root);
-		return result;
+		return iterator.asStream();
 	}
 
 	/**

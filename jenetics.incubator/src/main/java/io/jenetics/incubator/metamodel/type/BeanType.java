@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -39,6 +40,8 @@ import io.jenetics.incubator.metamodel.internal.Reflect;
 public final class BeanType implements StructType, ConcreteType {
 	private final Class<?> type;
 
+	private List<ComponentType> components = null;
+
 	BeanType(final Class<?> type) {
 		this.type = requireNonNull(type);
 	}
@@ -49,7 +52,14 @@ public final class BeanType implements StructType, ConcreteType {
 	}
 
 	@Override
-	public Stream<PropertyType> components() {
+	public synchronized List<ComponentType> components() {
+		if (components == null) {
+			components = components0();
+		}
+		return components;
+	}
+
+	private List<ComponentType> components0() {
 		final PropertyDescriptor[] descriptors;
 		try {
 			descriptors = Introspector.getBeanInfo(type).getPropertyDescriptors();
@@ -64,7 +74,7 @@ public final class BeanType implements StructType, ConcreteType {
 			.filter(pd -> pd.getReadMethod() != null)
 			.filter(pd -> !pd.getReadMethod().getName().equals("getClass"))
 			.map(pd ->
-				new PropertyType(
+				new ComponentType(
 					pd.getName(),
 					this,
 					pd.getReadMethod().getGenericReturnType(),
@@ -72,7 +82,8 @@ public final class BeanType implements StructType, ConcreteType {
 					pd.getWriteMethod(),
 					Reflect.getAnnotations(pd).toList()
 				)
-			);
+			)
+			.toList();
 	}
 
 	@Override
@@ -88,7 +99,7 @@ public final class BeanType implements StructType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "BeanType[type=%s]".formatted(type.getName());
+		return "BeanType[%s]".formatted(type.getName());
 	}
 
 

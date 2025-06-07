@@ -28,8 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
-import io.jenetics.incubator.metamodel.access.IndexedAccessor;
+import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.access.Carried;
+import io.jenetics.incubator.metamodel.access.Indexed;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -63,21 +64,19 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Size> size() {
+	public Carried<Size> size() {
 		return object -> () -> size(object);
 	}
 
 	@Override
-	public Curryer<IndexedAccessor> accessor() {
+	public Carried<Indexed<Accessor>> accessor() {
 		if (isMutable()) {
-			return object -> new IndexedAccessor.Writable(
-				index -> get(object, index),
-				(index, value) -> set(object, index, value)
+			return object -> index -> new Accessor.Writable(
+				() -> get(object, index),
+				value -> set(object, index, value)
 			);
 		} else {
-			return object -> new IndexedAccessor.Readonly(
-				index -> get(object, index)
-			);
+			return object -> index -> new Accessor.Readonly(() -> get(object, index));
 		}
 	}
 
@@ -115,7 +114,7 @@ public final class ListType implements IndexedType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Iterable<Object>> iterable() {
+	public Carried<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 
@@ -142,7 +141,7 @@ public final class ListType implements IndexedType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "ListType[type=%s, componentType=%s]"
+		return "ListType[%s[%s]]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

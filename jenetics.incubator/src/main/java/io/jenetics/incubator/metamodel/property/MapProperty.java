@@ -24,6 +24,8 @@ import static java.util.Collections.emptyIterator;
 import java.util.Iterator;
 import java.util.Map;
 
+import io.jenetics.incubator.metamodel.type.MapType;
+
 /**
  * Base class for associative properties which consists of 0 to n objects.
  *
@@ -31,10 +33,18 @@ import java.util.Map;
  * @version 8.3
  * @since 8.3
  */
-public final class MapProperty extends SizedProperty {
+public final class MapProperty
+	extends PropertyDelegates
+	implements CollectionProperty, ConcreteProperty
+{
 
 	MapProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public MapType type() {
+		return (MapType)param.type();
 	}
 
 	/**
@@ -58,6 +68,11 @@ public final class MapProperty extends SizedProperty {
 		return map() != null
 			? (Iterator<Object>)(Object)map().entrySet().iterator()
 			: emptyIterator();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

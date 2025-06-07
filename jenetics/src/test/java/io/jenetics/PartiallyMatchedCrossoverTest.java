@@ -26,9 +26,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.incubator.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -108,13 +108,13 @@ public class PartiallyMatchedCrossoverTest {
 
 		final var statistics = new LongMomentStatistics();
 		final var observation = Histogram.Builder.of(interval, 10)
-			.build(samples -> {
+			.accept(samples -> {
 				for (int i = 0; i < N; ++i) {
 					final long alterations = crossover
 						.alter(population, 1)
 						.alterations();
 
-					samples.add(alterations);
+					samples.accept(alterations);
 					statistics.accept(alterations);
 				}
 			});

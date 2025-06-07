@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleUnaryOperator;
 
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.util.DoubleRange;
 
 /**
  * Brent root finding method.
@@ -78,11 +78,11 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 	}
 
 	@Override
-	public double solve(final DoubleUnaryOperator fn, final Interval interval) {
+	public double solve(final DoubleUnaryOperator fn, final DoubleRange interval) {
 		return root(fn, interval).value();
 	}
 
-	public Root root(final DoubleUnaryOperator fn, final Interval interval) {
+	public Root root(final DoubleUnaryOperator fn, final DoubleRange interval) {
 		final double m = 0.5*interval.min() + 0.5*interval.max();
 
 		final var fm = fn.applyAsDouble(m);
@@ -95,7 +95,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 			return new Root(interval.min(), abs(fa), 0);
 		}
 		if (Double.compare(fm*fa, 0.0) < 0) {
-			return brent(fn, new Interval(interval.min(), m));
+			return brent(fn, new DoubleRange(interval.min(), m));
 		}
 
 		final var fb = fn.applyAsDouble(interval.max());
@@ -103,13 +103,13 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 			return new Root(interval.max(), abs(fb), 0);
 		}
 		if (Double.compare(fm*fb, 0.0) < 0) {
-			return brent(fn, new Interval(m, interval.max()));
+			return brent(fn, new DoubleRange(m, interval.max()));
 		}
 
 		throw new ArithmeticException("No root between interval " + interval);
 	}
 
-	private Root brent(final DoubleUnaryOperator fn, final Interval interval) {
+	private Root brent(final DoubleUnaryOperator fn, final DoubleRange interval) {
 		requireNonNull(fn);
 		requireNonNull(interval);
 
@@ -139,7 +139,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 			tol = 2.0*t*abs(b) + t;
 			err = m = 0.5*(c - b);
 
-			// Exact comparison with 0 is OK here.
+			// The exact comparison with 0 is OK here.
 			if (abs(m) > tol && nonZero(fb)) {
 				// See if bisection is forced.
 				if (abs(e) < tol || abs(fa) <= abs(fb)) {

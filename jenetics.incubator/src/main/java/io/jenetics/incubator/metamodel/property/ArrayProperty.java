@@ -24,6 +24,8 @@ import static java.util.Collections.emptyIterator;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import io.jenetics.incubator.metamodel.type.ArrayType;
+
 /**
  * Represents an array property.
  *
@@ -32,12 +34,17 @@ import java.util.Iterator;
  * @since 7.2
  */
 public final class ArrayProperty
-	extends AbstractProperty
-	implements IndexedProperty
+	extends PropertyDelegates
+	implements IndexedProperty, ConcreteProperty
 {
 
 	ArrayProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public ArrayType type() {
+		return (ArrayType)param.type();
 	}
 
 	/**
@@ -76,6 +83,11 @@ public final class ArrayProperty
 		return array() != null
 			? Arrays.asList(array()).iterator()
 			: emptyIterator();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

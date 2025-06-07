@@ -34,20 +34,22 @@ import io.jenetics.incubator.metamodel.PathValue;
 import io.jenetics.incubator.metamodel.access.Accessor;
 import io.jenetics.incubator.metamodel.internal.Dtor;
 import io.jenetics.incubator.metamodel.internal.PreOrderIterator;
+import io.jenetics.incubator.metamodel.internal.TraverseIterator;
 import io.jenetics.incubator.metamodel.type.ArrayType;
 import io.jenetics.incubator.metamodel.type.BeanType;
 import io.jenetics.incubator.metamodel.type.CollectionType;
+import io.jenetics.incubator.metamodel.type.ComponentType;
 import io.jenetics.incubator.metamodel.type.Description;
 import io.jenetics.incubator.metamodel.type.ElementType;
 import io.jenetics.incubator.metamodel.type.IndexType;
 import io.jenetics.incubator.metamodel.type.IndexedType;
 import io.jenetics.incubator.metamodel.type.ListType;
 import io.jenetics.incubator.metamodel.type.MapType;
-import io.jenetics.incubator.metamodel.type.MetaModelType;
+import io.jenetics.incubator.metamodel.type.ModelType;
 import io.jenetics.incubator.metamodel.type.OptionalType;
-import io.jenetics.incubator.metamodel.type.PropertyType;
 import io.jenetics.incubator.metamodel.type.RecordType;
 import io.jenetics.incubator.metamodel.type.SetType;
+import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
  * This class contains helper methods for extracting the properties from a given
@@ -93,7 +95,9 @@ public final class Properties {
 	 * @return all direct properties of the given {@code root} object
 	 */
 	public static Stream<Property> list(final PathValue<?> root) {
-		if (root == null || root.value() == null) {
+		requireNonNull(root);
+
+		if (root.value() == null) {
 			return Stream.empty();
 		}
 
@@ -108,62 +112,39 @@ public final class Properties {
 		final PathValue<?> root,
 		final Description description
 	) {
-		final var enclosure = root.value();
+		final Object enclosure = root.value();
 
 		return switch (description.model()) {
-			case PropertyType pt -> {
+			case ComponentType type -> {
+				final var modelType = ModelType.of(description.type());
+
 				final var param = new PropParam(
 					root.path().append(description.path().element()),
 					enclosure,
-					pt.accessor().curry(enclosure).getter().get(),
-					toRawType(description.type()),
-					pt.annotations().toList(),
-					pt.accessor().curry(enclosure)
+					type.accessor().of(enclosure).getter().get(),
+					modelType,
+					type.annotations().toList(),
+					type.accessor().of(enclosure)
 				);
 
-				final Property property = switch (MetaModelType.of(pt.type())) {
-					case ElementType t -> new SimpleProperty(param);
-					case RecordType t -> new RecordProperty(param);
-					case BeanType t -> new BeanProperty(param);
-					case OptionalType t -> new OptionalProperty(param);
-					case ArrayType t -> new ArrayProperty(param);
-					case ListType t -> new ListProperty(param);
-					case SetType t -> new SetProperty(param);
-					case MapType t -> new MapProperty(param);
-					case IndexType t -> new IndexProperty(param, t.index());
-					case PropertyType t -> new SimpleProperty(param);
-				};
-
-				yield Stream.of(property);
-			}
-			case IndexedType it -> {
-				final var path = description.path().element() instanceof Path.Index
-					? root.path()
-					: root.path().append(description.path().element());
-
-				final var i = new AtomicInteger(0);
-
-				final Stream<Object> values = StreamSupport.stream(
-					it.iterable().curry(enclosure).spliterator(),
-					false
-				);
-
-				yield values.map(value -> {
-					final Class<?> type = value != null
-						? value.getClass()
-						: toRawType(it.type());
-
-					final var param = new PropParam(
-						path.append(new Path.Index(i.get())),
-						enclosure,
-						value,
-						type,
-						it.annotations().toList(),
-						it.accessor().curry(value).curry(i.get())
+				final var property = toProperty(param);
+				if (property instanceof CollectionProperty) {
+					var enclosing = new ComponentProperty(
+						new PropParam(
+							root.path().append(description.path().element()),
+							enclosure,
+							type.accessor().of(enclosure).getter().get(),
+							type,
+							type.annotations().toList(),
+							type.accessor().of(enclosure)
+						),
+						(StructType)ModelType.of(enclosure.getClass())
 					);
 
-					return new IndexProperty(param, i.getAndIncrement());
-				});
+					yield Stream.of(property, enclosing);
+				}
+
+				yield Stream.of(property);
 			}
 			case CollectionType ct -> {
 				final var path = description.path().element() instanceof Path.Index
@@ -173,7 +154,7 @@ public final class Properties {
 				final var i = new AtomicInteger(0);
 
 				final Stream<Object> values = StreamSupport.stream(
-					ct.iterable().curry(enclosure).spliterator(),
+					ct.iterable().of(enclosure).spliterator(),
 					false
 				);
 
@@ -182,16 +163,23 @@ public final class Properties {
 						? value.getClass()
 						: toRawType(ct.type());
 
+					final ModelType modelType = ModelType.of(type);
+					final int index = i.getAndIncrement();
+
 					final var param = new PropParam(
-						path.append(new Path.Index(i.getAndIncrement())),
+						PropParam.declosed(path).append(new Path.Index(index)),
 						enclosure,
 						value,
-						type,
+						modelType,
 						ct.annotations().toList(),
-						new Accessor.Readonly(() -> value)
+						ct instanceof IndexedType it
+							? it.accessor().of(value).at(index)
+							: new Accessor.Readonly(() -> value)
 					);
 
-					return new SimpleProperty(param);
+					return ct instanceof IndexedType it
+						? new IndexProperty(param.declosed(), new IndexType(index, it))
+						: toProperty(param);
 				});
 			}
 			case OptionalType ot -> {
@@ -199,23 +187,52 @@ public final class Properties {
 					? root.path()
 					: root.path().append(description.path().element());
 
-				var value = ot.access().curry(enclosure).getter().get();
+				var value = ot.access().of(enclosure).getter().get();
 				if (value != null) {
 					final var param = new PropParam(
 						path.append(new Path.Index(0)),
 						enclosure,
 						value,
-						value.getClass(),
+						ModelType.of(value.getClass()),
 						ot.annotations().toList(),
-						ot.access().curry(enclosure)
+						ot.access().of(enclosure)
 					);
 
-					yield Stream.of(new IndexProperty(param, 0));
+					yield Stream.of(new IndexProperty(param, new IndexType(0, ot)));
 				} else {
 					yield Stream.empty();
 				}
 			}
-			default -> Stream.empty();
+			/*
+			case BeanType beanType -> Stream.empty();
+			case ElementType elementType -> Stream.empty();
+			case IndexType indexType -> Stream.empty();
+			case RecordType recordType -> Stream.empty();
+			case StructType structType -> Stream.empty();
+			 */
+			default -> throw new IllegalArgumentException("" + description.model());
+		};
+	}
+
+	private static Property toProperty(final PropParam param) {
+		final var prm = param.type() instanceof CollectionType
+			? param.enclosed()
+			: param.declosed();
+
+		return switch (param.type()) {
+			case ArrayType t -> new ArrayProperty(prm);
+			case BeanType t -> new BeanProperty(prm);
+			case ComponentType t -> new ComponentProperty(
+				prm,
+				(StructType)ModelType.of(prm.getClass())
+			);
+			case ElementType t -> new ElementProperty(prm);
+			case IndexType t -> new IndexProperty(prm, t);
+			case ListType t -> new ListProperty(prm);
+			case MapType t -> new MapProperty(prm);
+			case OptionalType t -> new OptionalProperty(prm);
+			case RecordType t -> new RecordProperty(prm);
+			case SetType t -> new SetProperty(prm);
 		};
 	}
 
@@ -245,14 +262,15 @@ public final class Properties {
 		final PathValue<?> root,
 		final Dtor<? super PathValue<?>, ? extends Property> dtor
 	) {
-		final Dtor<? super PathValue<?>, Property> recursiveDtor =
-			PreOrderIterator.dtor(
+		final TraverseIterator<? super PathValue<?>, Property> iterator =
+			new PreOrderIterator<>(
+				root,
 				dtor,
 				property -> PathValue.of(property.path(), property.value()),
 				PathValue::value
 			);
 
-		return recursiveDtor.unapply(root);
+		return iterator.asStream();
 	}
 
 	/**
@@ -327,7 +345,7 @@ public final class Properties {
 			property.path(),
 			property.value(),
 			property.writer().isPresent(),
-			property.type().getName(),
+			toRawType(property.type().type()).getName(),
 			property.enclosure().getClass().getName()
 		);
 	}

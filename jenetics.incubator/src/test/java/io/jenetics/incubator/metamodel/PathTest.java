@@ -69,7 +69,8 @@ public class PathTest {
 		final var path = Path.of(value);
 		final var file = java.nio.file.Path.of(value.replace('.', '/'));
 
-		assertThat(path.head().toString()).isEqualTo(file.getFileName().toString());
+		assertThat(path.head().toString())
+			.isEqualTo(file.getFileName().toString());
 	}
 
 	@Test(dataProvider = "paths")
@@ -103,6 +104,7 @@ public class PathTest {
 			{"a.b"},
 			{"a[5].b[1]"},
 			{"a.b.c"},
+			{"a.b[4].{c}"},
 			{"a.b[3][3].c[0][1][2]"}
 		};
 	}
@@ -161,7 +163,7 @@ public class PathTest {
 
 		for (int i = 0; i < count; ++i) {
 			if (random.nextBoolean()) {
-				elements[i] = new Path.Name("name_" + random.nextInt(10, 1000));
+				elements[i] = new Path.Field("name_" + random.nextInt(10, 1000));
 			} else {
 				elements[i] = new Path.Index(random.nextInt(1000));
 			}

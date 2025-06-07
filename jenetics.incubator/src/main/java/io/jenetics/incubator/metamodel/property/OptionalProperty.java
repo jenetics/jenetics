@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import io.jenetics.incubator.metamodel.type.OptionalType;
+
 /**
  * Represents an optional property.
  *
@@ -30,10 +32,18 @@ import java.util.Optional;
  * @version 7.2
  * @since 7.2
  */
-public final class OptionalProperty extends AbstractProperty implements IndexedProperty {
+public final class OptionalProperty
+	extends PropertyDelegates
+	implements EnclosingProperty, ConcreteProperty
+{
 
 	OptionalProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public OptionalType type() {
+		return (OptionalType)param.type();
 	}
 
 	/**
@@ -46,12 +56,7 @@ public final class OptionalProperty extends AbstractProperty implements IndexedP
 		return (Optional<Object>)value();
 	}
 
-	@Override
-	public int size() {
-		return optional().isPresent() ? 1 : 0;
-	}
-
-	@Override
+	//@Override
 	public Object get(int index) {
 		if (optional().isPresent() && index == 0) {
 			return optional().orElseThrow();
@@ -62,13 +67,13 @@ public final class OptionalProperty extends AbstractProperty implements IndexedP
 		}
 	}
 
-	@Override
+	//@Override
 	public Iterator<Object> iterator() {
 		return optional().stream().iterator();
 	}
 
 	@Override
 	public String toString() {
-		return Properties.toString(OptionalProperty.class.getSimpleName(), this);
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 }

@@ -27,7 +27,7 @@ package io.jenetics.incubator.metamodel.type;
  * @since 8.3
  */
 public sealed interface EnclosingType
-	extends MetaModelType
+	extends ModelType
 	permits CollectionType, OptionalType
 {
 

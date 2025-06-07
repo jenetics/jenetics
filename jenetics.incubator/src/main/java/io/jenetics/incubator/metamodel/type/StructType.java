@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * Represents a <em>structural</em> type like a record or bean class.
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @since 8.0
  */
 public sealed interface StructType
-	extends MetaModelType
+	extends ModelType
 	permits BeanType, RecordType
 {
 
@@ -38,6 +38,6 @@ public sealed interface StructType
 	 *
 	 * @return the record components of {@code this} struct trait
 	 */
-	Stream<PropertyType> components();
+	List<ComponentType> components();
 
 }

@@ -26,6 +26,7 @@ import java.util.List;
 
 import io.jenetics.incubator.metamodel.Path;
 import io.jenetics.incubator.metamodel.access.Accessor;
+import io.jenetics.incubator.metamodel.type.ModelType;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,7 +37,7 @@ record PropParam(
 	Path path,
 	Object enclosure,
 	Object value,
-	Class<?> type,
+	ModelType type,
 	List<Annotation> annotations,
 	Accessor accessor
 ) {
@@ -46,6 +47,44 @@ record PropParam(
 		requireNonNull(enclosure);
 		requireNonNull(type);
 		requireNonNull(accessor);
+	}
+
+	PropParam enclosed() {
+		return new PropParam(
+			enclosed(path),
+			enclosure,
+			value,
+			type,
+			annotations,
+			accessor
+		);
+	}
+
+	PropParam declosed() {
+		return new PropParam(
+			declosed(path),
+			enclosure,
+			value,
+			type,
+			annotations,
+			accessor
+		);
+	}
+
+	private static Path enclosed(final Path path) {
+		if (!path.isEmpty() && path.element() instanceof Path.Field field) {
+			return path.replace(new Path.EnclosingField(field.name()));
+		} else {
+			return path;
+		}
+	}
+
+	static Path declosed(final Path path) {
+		if (!path.isEmpty() && path.element() instanceof Path.EnclosingField field) {
+			return path.replace(new Path.Field(field.name()));
+		} else {
+			return path;
+		}
 	}
 
 }

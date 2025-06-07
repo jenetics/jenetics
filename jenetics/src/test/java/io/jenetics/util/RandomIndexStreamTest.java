@@ -29,11 +29,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.incubator.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -94,7 +94,7 @@ public class RandomIndexStreamTest {
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);
 
-			histogram.add(k);
+			histogram.accept(k);
 			variance.accept(k);
 		}
 

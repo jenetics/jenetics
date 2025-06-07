@@ -31,10 +31,14 @@ module io.jenetics.incubator {
 	requires java.desktop;
 	requires java.net.http;
 
-	requires org.apache.commons.math4.legacy;
-	requires org.apache.commons.statistics.distribution;
-    requires org.apache.commons.numbers.gamma;
 	requires com.fasterxml.jackson.databind;
+	requires com.fasterxml.jackson.datatype.jsr310;
+//	requires jakarta.annotation;
+//	requires jakarta.validation;
+	requires java.logging;
+	requires org.apache.commons.statistics.distribution;
+//	requires org.openapitools.jackson.nullable;
+    requires org.apache.commons.numbers.gamma;
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;
 
@@ -48,7 +52,6 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.restful;
 	exports io.jenetics.incubator.restful.api;
 	exports io.jenetics.incubator.restful.client;
-	exports io.jenetics.incubator.stat;
 	exports io.jenetics.incubator.util;
     exports io.jenetics.incubator.metamodel.access;
 	exports io.jenetics.incubator.metamodel.internal;

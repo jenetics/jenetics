@@ -19,6 +19,12 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import io.jenetics.incubator.metamodel.type.CollectionType;
+
 /**
  * Base class for properties which consists of 0 to n objects.
  *
@@ -28,7 +34,20 @@ package io.jenetics.incubator.metamodel.property;
  */
 public sealed interface CollectionProperty
 	extends EnclosingProperty, Iterable<Object>
-	permits IndexedProperty, SetProperty
+	permits IndexedProperty, SetProperty, MapProperty
 {
+
+	default int size() {
+		return ((CollectionType)type()).size().of(read()).get();
+	}
+
+	@Override
+	default Iterator<Object> iterator() {
+		return ((CollectionType)type()).iterable().of(read()).iterator();
+	}
+
+	default Stream<Object> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
 
 }

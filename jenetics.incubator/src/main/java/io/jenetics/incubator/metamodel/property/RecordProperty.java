@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.util.List;
+
+import io.jenetics.incubator.metamodel.type.RecordType;
+
 /**
  * Represents a record property.
  *
@@ -26,10 +30,27 @@ package io.jenetics.incubator.metamodel.property;
  * @version 8.0
  * @since 8.0
  */
-public final class RecordProperty extends StructProperty {
+public final class RecordProperty
+	extends PropertyDelegates
+	implements StructProperty, ConcreteProperty
+{
 
 	RecordProperty(final PropParam param) {
 		super(param);
 	}
 
+	@Override
+	public RecordType type() {
+		return (RecordType)param.type();
+	}
+
+	@Override
+	public List<ComponentProperty> components() {
+		return List.of();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
+	}
 }

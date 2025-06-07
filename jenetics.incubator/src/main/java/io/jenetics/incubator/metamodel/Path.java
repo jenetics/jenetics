@@ -19,10 +19,13 @@
  */
 package io.jenetics.incubator.metamodel;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -39,12 +42,39 @@ import java.util.stream.StreamSupport;
 public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	private static final Pattern PATH_ELEMENT_PATTERN =
-		Pattern.compile("\\b[_a-zA-Z][_a-zA-Z0-9]*\\b|\\[[0-9^]+]");
+		Pattern.compile("\\b[_a-zA-Z]\\w*\\b|\\[[0-9^]+]|\\{[_a-zA-Z]+}");
 
 	/**
-	 * Represents the path element.
+	 * Base interface of a path element.
 	 */
 	public sealed interface Element extends Comparable<Element> {
+
+		@Override
+		default int compareTo(final Element other) {
+			requireNonNull(other);
+
+			return switch (this) {
+				case Index(var i) -> switch (other) {
+					case Index(var oi) -> Integer.compare(i, oi);
+					case Field oe -> -1;
+				};
+				case Field e -> switch (other) {
+					case Field oe -> {
+						final var cmp = e.name().compareTo(oe.name());
+						if (cmp == 0) {
+							yield Boolean.compare(
+								oe instanceof EnclosingField,
+								e instanceof EnclosingField
+							);
+						} else {
+							yield cmp;
+						}
+					}
+					case Index oe -> 1;
+				};
+			};
+		}
+
 		private static Element parse(final String value) {
 			if (value.startsWith("[") && value.endsWith("]")) {
 				try {
@@ -58,25 +88,29 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 							.formatted(value)
 					);
 				}
+
+			} else if (value.startsWith("{") && value.endsWith("}")) {
+				return new EnclosingField(value.substring(1, value.length() - 1));
 			} else {
-				return new Name(value);
+				return new Field(value);
 			}
 		}
+
 	}
 
 	/**
 	 * Path element which represents a property name.
-	 *
-	 * @param name the property name
 	 */
-	public record Name(String name) implements Element {
+	public static sealed class Field implements Element {
+		private final String name;
 
-		public Name {
+		public Field(final String name) {
 			if (!isValid(name)) {
 				throw new IllegalArgumentException(
 					"'%s' is not a valid field name.".formatted(name)
 				);
 			}
+			this.name = name;
 		}
 
 		private static boolean isValid(final String name) {
@@ -88,8 +122,9 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 				return false;
 			}
 			for (int i = Character.charCount(cp);
-				 i < name.length();
-				 i += Character.charCount(cp)) {
+			     i < name.length();
+				 i += Character.charCount(cp))
+			{
 				cp = name.codePointAt(i);
 				if (!Character.isJavaIdentifierPart(cp)) {
 					return false;
@@ -98,18 +133,45 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 			return true;
 		}
 
+		/**
+		 * Return the name of the path field.
+		 *
+		 * @return the name of the path field
+		 */
+		public String name() {
+			return name;
+		}
+
 		@Override
-		public int compareTo(final Element other) {
-			if (other instanceof Name(String n)) {
-				return name.compareTo(n);
-			} else {
-				return 1;
-			}
+		public int hashCode() {
+			return Objects.hash(getClass(), name);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj instanceof Field field &&
+				Objects.equals(getClass(), field.getClass()) &&
+				Objects.equals(name, field.name);
 		}
 
 		@Override
 		public String toString() {
 			return name;
+		}
+	}
+
+	/**
+	 * Path element which represents an enclosing property, like List, Set or
+	 * Optional.
+	 */
+	public static final class EnclosingField extends Field {
+		public EnclosingField(String name) {
+			super(name);
+		}
+
+		@Override
+		public String toString() {
+			return "{" + name() + "}";
 		}
 	}
 
@@ -131,7 +193,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 		@Override
 		public String toString() {
-			return "[%d]".formatted(index);
+			return "[" + index + "]";
 		}
 	}
 
@@ -254,9 +316,27 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	public Path append(final String... names) {
 		final var list = new ArrayList<>(this.elements);
 		for (var name : names) {
-			list.add(new Name(name));
+			list.add(Element.parse(name));
 		}
 		return new Path(list);
+	}
+
+	/**
+	 * Replaces the head element of the path, if not empty.
+	 *
+	 * @param element the new head element of the path
+	 * @return a new path object with the replaced head element
+	 */
+	public Path replace(final Element element) {
+		requireNonNull(element);
+
+		if (!isEmpty()) {
+			final var list = new ArrayList<>(elements);
+			list.set(list.size() - 1, element);
+			return new Path(list);
+		} else {
+			return this;
+		}
 	}
 
 	/**
@@ -306,8 +386,7 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Path path &&
+		return obj instanceof Path path &&
 			elements.equals(path.elements);
 	}
 
@@ -346,8 +425,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 	}
 
 	/**
-	 * Create a new property path form the given string {@code value}. A
-	 * valid path consists of a names, which must be a valid Java identifier,
+	 * Create a new property path from the given string {@code value}. A
+	 * valid path consists of a name, which must be a valid Java identifier,
 	 * and indexes, separated by a dot, '.'. A valid path with three elements
 	 * will look like this:
 	 * {@snippet lang="java":
@@ -366,7 +445,8 @@ public final class Path implements Iterable<Path>, Comparable<Path> {
 		final var matcher = PATH_ELEMENT_PATTERN.matcher(value);
 		final var elements = new ArrayList<Element>();
 		while (matcher.find()) {
-			elements.add(Element.parse(matcher.group()));
+			var group = matcher.group();
+			elements.add(Element.parse(group));
 		}
 
 		if (!toString(elements).equals(value)) {

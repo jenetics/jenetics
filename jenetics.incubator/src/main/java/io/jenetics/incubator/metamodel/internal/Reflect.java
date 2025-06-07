@@ -25,9 +25,11 @@ import java.lang.constant.Constable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -41,6 +43,16 @@ import java.util.stream.Stream;
  * @since 7.2
  */
 public final class Reflect {
+
+	private static final Set<String> JDK_PACKAGES = Set.of(
+		"java.",
+		"javax.",
+		"jdk.",
+		"sun.",
+		"oracle.",
+		"com.sun.",
+		"com.oracle."
+	);
 
 	private Reflect() {
 	}
@@ -58,9 +70,35 @@ public final class Reflect {
 	 *         {@code false} otherwise
 	 */
 	public static boolean isElementType(final Class<?> type) {
+		if (Collection.class.isAssignableFrom(type) ||
+			Map.class.isAssignableFrom(type) ||
+			isRefArrayType(type))
+		{
+			return false;
+		}
+
 		return type.isPrimitive() ||
+			isPrimitiveArrayType(type) ||
 			Constable.class.isAssignableFrom(type) ||
-			TemporalAccessor.class.isAssignableFrom(type);
+			isJdkType(type);
+	}
+
+	private static boolean isRefArrayType(final Class<?> type) {
+		return type.isArray() && !type.getComponentType().isPrimitive();
+	}
+
+	private static boolean isPrimitiveArrayType(final Class<?> type) {
+		return type.isArray() && type.getComponentType().isPrimitive();
+	}
+
+	private static boolean isJdkType(final Class<?> type) {
+		final var name = type.getPackageName();
+		for (var prefix : JDK_PACKAGES) {
+			if (name.startsWith(prefix)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -72,15 +110,11 @@ public final class Reflect {
 	 *         the type could not be resolved
 	 */
 	public static Class<?> toRawType(final Type type) {
-		if (type instanceof Class<?> cls) {
-			return cls;
-		} else if (type instanceof ParameterizedType pt &&
-			pt.getRawType() instanceof Class<?> cls)
-		{
-			return cls;
-		} else {
-			return null;
-		}
+		return switch (type) {
+			case Class<?> cls -> cls;
+			case ParameterizedType pt when pt.getRawType() instanceof Class<?> cls -> cls;
+			case null, default -> null;
+		};
 	}
 
 	/**

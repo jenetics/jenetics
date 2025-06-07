@@ -27,10 +27,11 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 plugins {
 	base
+	alias(libs.plugins.version.catalog.update)
 	id("alljavadoc")
 }
 
-rootProject.version = Jenetics.VERSION
+rootProject.version = providers.gradleProperty("jenetics.version").get()
 
 
 alljavadoc {
@@ -81,7 +82,7 @@ tasks.named<Wrapper>("wrapper") {
  */
 allprojects {
 	group =  Jenetics.GROUP
-	version = Jenetics.VERSION
+	version = rootProject.version
 
 	repositories {
 		flatDir {
@@ -118,7 +119,7 @@ subprojects {
 	plugins.withType<JavaPlugin> {
 
 		configure<JavaPluginExtension> {
-			modularity.inferModulePath.set(true)
+			modularity.inferModulePath = true
 
 			sourceCompatibility = JavaVersion.VERSION_24
 			targetCompatibility = JavaVersion.VERSION_24
@@ -133,7 +134,7 @@ subprojects {
 	}
 
 	tasks.withType<JavaCompile> {
-		modularity.inferModulePath.set(true)
+		modularity.inferModulePath = true
 
 		options.compilerArgs.add("-Xlint:${xlint()}")
 	}
@@ -169,11 +170,11 @@ gradle.projectsEvaluated {
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
-		"Implementation-Version" to Jenetics.VERSION,
+		"Implementation-Version" to project.version,
 		"Implementation-URL" to Jenetics.URL,
 		"Implementation-Vendor" to Jenetics.NAME,
 		"ProjectName" to Jenetics.NAME,
-		"Version" to Jenetics.VERSION,
+		"Version" to project.version,
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
 		"Project-Version" to project.version,
@@ -204,7 +205,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.11"
+		toolVersion = libs.jacoco.agent.get().version.toString()
 	}
 
 	project.tasks {
@@ -258,7 +259,7 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
-val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+val identifier = "${Jenetics.ID}-${providers.gradleProperty("jenetics.version").get()}"
 
 /**
  * Setup of the Maven publishing.
@@ -354,7 +355,7 @@ fun setupPublishing(project: Project) {
 			}
 		}
 
-		// Exclude test fixtures from publication, as we use it only internally
+		// Exclude test fixtures from publication, as we use them only internally
 		plugins.withId("org.gradle.java-test-fixtures") {
 			val component = components["java"] as AdhocComponentWithVariants
 			component.withVariantsFromConfiguration(configurations["testFixturesApiElements"]) { skip() }

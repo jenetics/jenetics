@@ -22,11 +22,10 @@ package io.jenetics.incubator.metamodel.type;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.metamodel.internal.Reflect.raise;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carried;
 
 /**
  * Trait which represents an {@code Optional} type.
@@ -52,16 +51,24 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 		return componentType;
 	}
 
-	public Curryer<Accessor.Readonly> access() {
+	public Carried<Accessor.Readonly> access() {
 		return object -> new Accessor.Readonly(() -> get(object));
 	}
 
 	private Object get(Object object) {
-		return object instanceof Optional<?> optional
+		final var result = object instanceof Optional<?> optional
 			? optional.orElse(null)
 			: raise(new IllegalArgumentException("Not an Optional: " + object));
+
+		if (result != null && !componentType.isAssignableFrom(result.getClass())) {
+			throw new IllegalArgumentException(
+				"Optional value is not of type " + componentType + ": " + result
+			);
+		}
+		return result;
 	}
 
+	/*
 	@Override
 	public int hashCode() {
 		return Objects.hash(componentType);
@@ -72,11 +79,11 @@ public final class OptionalType implements EnclosingType, ConcreteType {
 		return obj instanceof OptionalType ot &&
 			componentType.equals(ot.componentType);
 	}
+	 */
 
 	@Override
 	public String toString() {
-		return "OptionalType[componentType=%s]"
-			.formatted(componentType.getName());
+		return "OptionalType[%s]".formatted(componentType.getName());
 	}
 
 

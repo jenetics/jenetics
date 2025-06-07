@@ -27,16 +27,16 @@ package io.jenetics.incubator.metamodel.type;
  * @since 8.3
  */
 public sealed interface ConcreteType
-	extends MetaModelType
+	extends ModelType
 	permits
 		ArrayType,
 		BeanType,
+		ComponentType,
 		ElementType,
 		IndexType,
 		ListType,
 		MapType,
 		OptionalType,
-		PropertyType,
 		RecordType,
 		SetType
 {

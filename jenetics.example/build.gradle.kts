@@ -34,10 +34,10 @@ dependencies {
 	implementation(libs.jexl)
 	implementation(libs.jpx)
 	implementation(libs.mvel)
-	implementation(libs.nashorn)
+	implementation(libs.nashorn.core)
 	implementation(libs.prngine)
 	implementation(libs.rxjava)
 
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.testng)
 }

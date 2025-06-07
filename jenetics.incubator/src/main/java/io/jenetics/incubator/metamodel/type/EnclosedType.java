@@ -20,7 +20,7 @@
 package io.jenetics.incubator.metamodel.type;
 
 import io.jenetics.incubator.metamodel.access.Accessor;
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carried;
 
 /**
  * An enclosed type is embedded in another type. This allows accessing (read
@@ -31,8 +31,8 @@ import io.jenetics.incubator.metamodel.access.Curryer;
  * @since 8.3
  */
 public sealed interface EnclosedType
-	extends MetaModelType
-	permits PropertyType, IndexType
+	extends ModelType
+	permits ComponentType, IndexType
 {
 
 	/**
@@ -40,13 +40,13 @@ public sealed interface EnclosedType
 	 *
 	 * @return the enclosing structure type of the property
 	 */
-	MetaModelType enclosure();
+	ModelType enclosure();
 
 	/**
 	 * Return the access object for accessing (read and write) the value.
 	 *
 	 * @return the access object for accessing (read and write) the value
 	 */
-	Curryer<Accessor> accessor();
+	Carried<Accessor> accessor();
 
 }

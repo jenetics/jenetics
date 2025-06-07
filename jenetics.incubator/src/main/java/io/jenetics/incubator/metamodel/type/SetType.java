@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import io.jenetics.incubator.metamodel.access.Curryer;
+import io.jenetics.incubator.metamodel.access.Carried;
 import io.jenetics.incubator.metamodel.access.Size;
 
 /**
@@ -60,7 +60,7 @@ public final class SetType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Size> size() {
+	public Carried<Size> size() {
 		return object -> () -> size(object);
 	}
 
@@ -71,7 +71,7 @@ public final class SetType implements CollectionType, ConcreteType {
 	}
 
 	@Override
-	public Curryer<Iterable<Object>> iterable() {
+	public Carried<Iterable<Object>> iterable() {
 		return this::iterable;
 	}
 
@@ -98,7 +98,7 @@ public final class SetType implements CollectionType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "SetType[type=%s, componentType=%s]"
+		return "SetType[%s[%s]]"
 			.formatted(type.getName(), componentType.getName());
 	}
 

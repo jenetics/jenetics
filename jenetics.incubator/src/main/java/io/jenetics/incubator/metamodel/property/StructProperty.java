@@ -19,13 +19,8 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
-import static java.util.Objects.requireNonNull;
+import java.util.List;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.stream.Stream;
-
-import io.jenetics.incubator.metamodel.type.MetaModelType;
 import io.jenetics.incubator.metamodel.type.StructType;
 
 /**
@@ -35,48 +30,26 @@ import io.jenetics.incubator.metamodel.type.StructType;
  * @version 8.0
  * @since 8.0
  */
-public sealed abstract class StructProperty
-	extends SimpleProperty
+public sealed interface StructProperty
+	extends Property
 	permits BeanProperty, RecordProperty
 {
 
-	/**
-	 * The components of a struct property.
-	 *
-	 * @param name the property name
-	 * @param value the property value
-	 */
-	public record Component(String name, Object value) {
-		public Component {
-			requireNonNull(name);
-		}
-	}
-
-	StructProperty(final PropParam param) {
-		super(param);
-	}
+	@Override
+	StructType type();
 
 	/**
 	 * Returns the components of the property.
 	 *
 	 * @return the struct components
 	 */
-	public Stream<Component> components() {
-		return MetaModelType.of(type()) instanceof StructType st
-			? st.components().map(component -> new Component(
-					component.name(),
-					null
-					//read(component.getter())
-				))
-			: Stream.empty();
-	}
-
-	private Object read(final Method method) {
-		try {
-			return value() != null ? method.invoke(value()) : null;
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new IllegalStateException(e);
-		}
+	default List<ComponentProperty> components() {
+		/*
+		type().components().stream()
+			.map(c -> c.accessor().of(read()).get())
+			.map(c -> new ComponentProperty())
+		 */
+		return List.of();
 	}
 
 }

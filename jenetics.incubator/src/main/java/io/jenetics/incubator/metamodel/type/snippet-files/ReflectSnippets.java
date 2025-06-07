@@ -34,7 +34,7 @@ final class ReflectSnippets {
 			// @start region="PropertyType"
 			record Author(String forename, String surname) { }
 
-			final var type = switch (MetaModelType.of(Author.class)) {
+			final var type = switch (ModelType.of(Author.class)) {
 				case ElementType t -> "ElementType";
 				case RecordType t -> "RecordType";
 				case BeanType t -> "BeanType";

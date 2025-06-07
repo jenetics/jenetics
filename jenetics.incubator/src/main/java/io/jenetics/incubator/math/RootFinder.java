@@ -21,7 +21,7 @@ package io.jenetics.incubator.math;
 
 import java.util.function.DoubleUnaryOperator;
 
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -31,6 +31,6 @@ import io.jenetics.incubator.stat.Interval;
 @FunctionalInterface
 public interface RootFinder {
 
-	double solve(DoubleUnaryOperator fn, Interval interval);
+	double solve(DoubleUnaryOperator fn, DoubleRange interval);
 
 }

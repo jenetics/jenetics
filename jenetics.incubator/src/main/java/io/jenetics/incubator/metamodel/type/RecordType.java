@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.metamodel.type;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -34,6 +35,8 @@ import io.jenetics.incubator.metamodel.internal.Reflect;
 public final class RecordType implements StructType, ConcreteType {
 	private final Class<?> type;
 
+	private List<ComponentType> components = null;
+
 	RecordType(Class<?> type) {
 		if (!type.isRecord()) {
 			throw new IllegalArgumentException("Not a record type: " + type);
@@ -47,17 +50,25 @@ public final class RecordType implements StructType, ConcreteType {
 	 * @return the record components of {@code this} record type
 	 */
 	@Override
-	public Stream<PropertyType> components() {
+	public synchronized List<ComponentType> components() {
+		if (components == null) {
+			components = component0();
+		}
+		return components;
+	}
+
+	private List<ComponentType> component0() {
 		return Stream.of(type.getRecordComponents())
 			.filter(comp -> !comp.getAccessor().getName().equals("getClass"))
-			.map(rc -> new PropertyType(
+			.map(rc -> new ComponentType(
 				rc.getName(),
 				this,
 				rc.getAccessor().getGenericReturnType(),
 				rc.getAccessor(),
 				null,
 				Reflect.getAnnotations(rc.getAccessor()).toList()
-			));
+			))
+			.toList();
 	}
 
 	@Override
@@ -78,7 +89,7 @@ public final class RecordType implements StructType, ConcreteType {
 
 	@Override
 	public String toString() {
-		return "RecordType[type=%s]".formatted(type.getName());
+		return "RecordType[%s]".formatted(type.getName());
 	}
 
 

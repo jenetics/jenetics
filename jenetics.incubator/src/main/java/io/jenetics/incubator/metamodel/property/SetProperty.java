@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.metamodel.type.SetType;
+
 /**
  * Represents a set property.
  *
@@ -32,10 +34,18 @@ import java.util.stream.Stream;
  * @version 8.3
  * @since 8.3
  */
-public final class SetProperty extends AbstractProperty implements CollectionProperty {
+public final class SetProperty
+	extends PropertyDelegates
+	implements CollectionProperty, ConcreteProperty
+{
 
 	SetProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public SetType type() {
+		return (SetType)param.type();
 	}
 
 	/**
@@ -53,7 +63,7 @@ public final class SetProperty extends AbstractProperty implements CollectionPro
 		return set() != null ? set().size() : 0;
 	}
 
-	@Override
+	//@Override
 	public Iterator<Object> iterator() {
 		return set() != null ? set().iterator() : emptyIterator();
 	}
@@ -61,6 +71,11 @@ public final class SetProperty extends AbstractProperty implements CollectionPro
 	//@Override
 	public Stream<Object> stream() {
 		return set().stream();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

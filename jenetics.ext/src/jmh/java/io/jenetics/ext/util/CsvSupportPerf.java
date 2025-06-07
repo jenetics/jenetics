@@ -103,7 +103,7 @@ public class CsvSupportPerf {
 		try (final Reader in = newStringReader()) {
 			final CSVFormat format = CSVFormat.Builder.create()
 				.setSkipHeaderRecord(true)
-				.build();
+				.get();
 
             for (var record : format.parse(in)) {
                 count++;

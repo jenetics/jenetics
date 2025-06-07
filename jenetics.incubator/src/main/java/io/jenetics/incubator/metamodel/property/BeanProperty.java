@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.metamodel.property;
 
+import java.util.List;
+
+import io.jenetics.incubator.metamodel.type.BeanType;
+
 /**
  * Represents a <em>classical</em> bean property.
  *
@@ -26,10 +30,28 @@ package io.jenetics.incubator.metamodel.property;
  * @version 8.0
  * @since 8.0
  */
-public final class BeanProperty extends StructProperty {
+public final class BeanProperty
+	extends PropertyDelegates
+	implements StructProperty, ConcreteProperty
+{
 
 	BeanProperty(final PropParam param) {
 		super(param);
+	}
+
+	@Override
+	public BeanType type() {
+		return (BeanType)param.type();
+	}
+
+	@Override
+	public List<ComponentProperty> components() {
+		return List.of();
+	}
+
+	@Override
+	public String toString() {
+		return Properties.toString(getClass().getSimpleName(), this);
 	}
 
 }

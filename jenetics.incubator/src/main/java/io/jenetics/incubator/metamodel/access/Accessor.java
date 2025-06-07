@@ -37,6 +37,10 @@ public sealed interface Accessor {
 	 */
 	Getter getter();
 
+	default Object get() {
+		return getter().get();
+	}
+
 	/**
 	 * Read-only property access-object.
 	 *
@@ -58,6 +62,10 @@ public sealed interface Accessor {
 		public Writable {
 			requireNonNull(getter);
 			requireNonNull(setter);
+		}
+
+		public void set(final Object value) {
+			setter.set(value);
 		}
 	}
 

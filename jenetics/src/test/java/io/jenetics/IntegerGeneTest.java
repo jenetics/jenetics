@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
@@ -31,9 +30,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
 
@@ -57,15 +57,16 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		final int min = 0;
 		final int max = Integer.MAX_VALUE;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(200_000, samples ->
-				samples.add(IntegerGene.of(min, max).doubleValue())
-			),
-			Histogram.Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(200_000, samples ->
+					samples.accept(IntegerGene.of(min, max).doubleValue())
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertThatObservation(observation).isUniform();
+		Assertions.assertThat(observation).isUniform();
 	}
 
 	@DataProvider

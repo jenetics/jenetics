@@ -30,7 +30,7 @@ import io.jenetics.util.DoubleRange;
  * This class defines some default samplers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.0
+ * @version 8.3
  * @since 8.0
  */
 public final class Samplers {
@@ -170,6 +170,59 @@ public final class Samplers {
 
 	private static double stretch(final double sample, DoubleRange range) {
 		return range.min() + sample*(range.max() - range.min());
+	}
+
+	/**
+	 * Return a <em>Gaussian</em> sampler with the given parameter. The sampler
+	 * returns {@link Double#NaN} if it is not possible to create a normal
+	 * distributed value within the desired range.
+	 *
+	 * @since 8.3
+	 *
+	 * @param mean the mean value of the <em>Gaussian</em> sampler
+	 * @param stddev the standard deviation of the <em>Gaussian</em> sampler
+	 * @param maxRetries the maximal number of retries, if a generated value
+	 *        is not in the desired range.
+	 * @return a <em>Gaussian</em> sampler
+	 * @throws IllegalArgumentException if {@code maxRetries} is smaller than one
+	 */
+	public static Sampler gaussian(
+		final double mean,
+		final double stddev,
+		final int maxRetries
+	) {
+		if (maxRetries < 1) {
+			throw new IllegalArgumentException(
+				"Max retries must be greater than zero: %d."
+					.formatted(maxRetries)
+			);
+		}
+
+		return (random, range) -> {
+			double x = random.nextGaussian(mean, stddev);
+			int retries = 0;
+			while (!range.contains(x) && retries++ < maxRetries) {
+				x = random.nextGaussian(mean, stddev);
+			}
+
+			return retries <= maxRetries ? x : Double.NaN;
+		};
+	}
+
+	/**
+	 * Return a <em>Gaussian</em> sampler with the given parameter. The sampler
+	 * returns {@link Double#NaN} if it is not possible to create a normal
+	 * distributed value within the desired range after 25 tries.
+	 *
+	 * @since 8.3
+	 *
+	 * @param mean the mean value of the <em>Gaussian</em> sampler
+	 * @param stddev the standard deviation of the <em>Gaussian</em> sampler
+	 * @return a <em>Gaussian</em> sampler
+	 * @throws IllegalArgumentException if {@code maxRetries} is smaller than one
+	 */
+	public static Sampler gaussian(final double mean, final double stddev) {
+		return gaussian(mean, stddev, 10_000);
 	}
 
 }
