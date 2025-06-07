@@ -19,8 +19,9 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 /**
  * This class serves as wrapper around the {@link ScopedValue} implementation of
@@ -89,7 +90,7 @@ final class Context<T> {
 
 	/**
 	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link #with(Object, Supplier)} <em>scoped</em>
+	 * value, if called within a {@link #with(Object, ScopedValue.CallableOp)}  <em>scoped</em>
 	 * function.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
@@ -102,7 +103,7 @@ final class Context<T> {
 	}
 
 	/**
-	 * Reste the value of the <em>global</em> context to the default value.
+	 * Reset the value of the <em>global</em> context to the default value.
 	 */
 	void reset() {
 		set(_default);
@@ -113,15 +114,19 @@ final class Context<T> {
 	 * given context {@code value}.
 	 *
 	 * @param value the context value the {@code supplier} sees
-	 * @param supplier the supplier executed using the given context {@code value}
+	 * @param operation the operation executed using the given context {@code value}
 	 * @return the supplier value
 	 * @param <S> the context value
 	 * @param <R> the supplier result
 	 */
-	<S extends T, R> R with(final S value, final Supplier<? extends R> supplier) {
+	<S extends T, R> R with(
+		final S value,
+		final ScopedValue.CallableOp<? extends R, RuntimeException> operation
+	) {
+		requireNonNull(operation);
 		return ScopedValue
 			.where(_value, new Entry<>(value))
-			.call(supplier::get);
+			.call(operation);
 	}
 
 	/**

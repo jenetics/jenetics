@@ -101,7 +101,6 @@ public class RandomRegistryTest {
 		assertThat(RandomRegistry.random()).isSameAs(devault);
 	}
 
-
 	@Test
 	public void setRandomFactory() throws InterruptedException {
 		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");

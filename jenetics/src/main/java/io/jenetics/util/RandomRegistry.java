@@ -199,7 +199,7 @@ public final class RandomRegistry {
 	 * Set a new {@link RandomGenerator} for the <em>global</em> scope. The given
 	 * {@link RandomGenerator} <b>must</b> be thread safe, which is the case for
 	 * the Java {@link Random} class. Each thread will get the <em>same</em>
-	 * random generator, when optaining one with the {@link #random()} method.
+	 * random generator, when getting one with the {@link #random()} method.
 	 *
 	 * @implSpec
 	 * The given {@code random} generator <b>must</b> be thread safe.
