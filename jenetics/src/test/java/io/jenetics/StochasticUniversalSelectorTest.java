@@ -19,21 +19,28 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -45,7 +52,7 @@ public class StochasticUniversalSelectorTest
 
 	@Override
 	protected boolean isSorted() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -78,19 +85,51 @@ public class StochasticUniversalSelectorTest
 			selector.select(population, 50, Optimize.MINIMUM);
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 10, successPercentage = 70
-	)
+	@Test
+	public void selectExpectedPopulation() {
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			ISeq.of(0.7, 0.2, 0.1)
+				.map(value ->
+					Phenotype.of(
+						Genotype.of(
+							DoubleChromosome.of(new DoubleRange(0, 1), 1)
+						),
+						50,
+						value
+					)
+				);
+
+		// gives double equal to 1 on the first resolve
+		final Random random = new Random(43328395);
+		using(random, r -> {
+			final StochasticUniversalSelector<DoubleGene, Double> selector = factory().newInstance();
+			final ISeq<Phenotype<DoubleGene, Double>> selectedPop =
+				selector.select(population, population.size(), Optimize.MAXIMUM);
+			Assert.assertEquals(selectedPop.get(0).fitness(), 0.7);
+			Assert.assertEquals(selectedPop.get(1).fitness(), 0.7);
+			Assert.assertEquals(selectedPop.get(2).fitness(), 0.1);
+		});
+	}
+
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final var distribution = SelectorTester.distribution(
-			new StochasticUniversalSelector<>(),
-			opt,
-			POPULATION_COUNT,
-			50
+		final var observation = Observer
+			.using(new StableRandomExecutor(1))
+			.observe(
+				SelectorTester.sampler(
+					new StochasticUniversalSelector<>(),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
+
+		final var distribution = EmpiricalDistribution.of(
+			observation.histogram().partition(),
+			expected.value
 		);
 
-		assertThatObservation(distribution).isLike(expected.value);
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")
@@ -116,11 +155,11 @@ public class StochasticUniversalSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final Random random = new Random();
+		final RandomGenerator random = RandomRegistry.random();
 		using(random, r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
-			final int loops = 100_000;
+			final int loops = 1_000_000;
 
 			printDistributions(
 				System.out,

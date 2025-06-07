@@ -26,8 +26,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -103,7 +104,7 @@ public class UniformOrderBasedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final var histogram = Histogram.Builder.of(min, max, 10);
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final var variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

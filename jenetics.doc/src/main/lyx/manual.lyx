@@ -2915,7 +2915,7 @@ IntegerChromosome chromosome = IntegerChromosome.of(
 
 \begin_layout Plain Layout
 
-    0, 1_000, IntRange.of(5, 9)
+    0, 1_000, new IntRange(5, 9)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5833,27 +5833,204 @@ Mutator!Gaussian mutator
 
 \begin_layout Standard
 The Gaussian mutator performs the mutation of number genes.
- This mutator picks a new value based on a Gaussian distribution around
- the current value of the gene.
- The variance of the new value (before clipping to the allowed gene range)
- will be
-\begin_inset Formula 
-\begin{equation}
-\hat{\sigma}^{2}=\left(\frac{g_{max}-g_{min}}{4}\right)^{2}
-\end{equation}
+ The values created by this mutator follows a Gaussian distribution, and
+ are guaranteed to lie within the range of the number genes.
+ The shape of the distribution can be determined by the 
+\family typewriter
+Gauss\SpecialChar softhyphen
+ian\SpecialChar softhyphen
+Mu\SpecialChar softhyphen
+ta\SpecialChar softhyphen
+tor\SpecialChar softhyphen
+.Sha\SpecialChar softhyphen
+pe
+\family default
+ class.
+ It allows to configure a 
+\family typewriter
+shift
+\family default
+ and a 
+\family typewriter
+sig\SpecialChar softhyphen
+ma
+\family default
+ parameter.
+ Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Gaussian-mutator-Shift-shape"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
-where 
-\begin_inset Formula $g_{min}$
+ shows the distribution's probability density for 
+\family typewriter
+shift
+\family default
+ parameter, 
+\begin_inset Formula $S$
+\end_inset
+
+, between 
+\begin_inset Formula $0$
 \end_inset
 
  and 
-\begin_inset Formula $g_{max}$
+\begin_inset Formula $1$
 \end_inset
 
- are the valid minimum and maximum values of the number gene.
- The new value will be cropped to the gene's boundaries.
+.
+ The gene range is 
+\begin_inset Formula $\left[0,20\right].$
+\end_inset
+
+ The actual mean value, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, depends on the gene range and is set to 
+\begin_inset Formula $\mu=$
+\end_inset
+
+
+\begin_inset Formula $\left(S+1\right)D$
+\end_inset
+
+, where 
+\begin_inset Formula $D=$
+\end_inset
+
+
+\begin_inset Formula $\frac{g_{max}-g_{min}}{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/gaussian-mutator-shift.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gaussian-mutator-Shift-shape"
+
+\end_inset
+
+Gaussian mutator 
+\begin_inset Formula $S$
+\end_inset
+
+-shape
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Gaussian-mutator-Sigma-shape"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the distribution's probability density for sigma parameter, 
+\begin_inset Formula $\varSigma$
+\end_inset
+
+, between 
+\begin_inset Formula $0.5$
+\end_inset
+
+ and 
+\begin_inset Formula $5$
+\end_inset
+
+.
+ The gene range is 
+\begin_inset Formula $\left[0,20\right].$
+\end_inset
+
+ The standard deviation, 
+\begin_inset Formula $\sigma$
+\end_inset
+
+, of the new mutation value depends on the gene range and is set to 
+\begin_inset Formula $\sigma=\frac{D}{\varSigma}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/gaussian-mutator-sigma.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gaussian-mutator-Sigma-shape"
+
+\end_inset
+
+Gaussian mutator 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+-shape
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -19462,7 +19639,7 @@ status open
 
 \begin_layout Plain Layout
 
-final DoubleRange domain = DoubleRange.of(0, 2*PI);
+final DoubleRange domain = new DoubleRange(0, 2*PI);
 \end_layout
 
 \begin_layout Plain Layout
@@ -19752,7 +19929,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-            .builder(Main::fitness, ofScalar(IntRange.of(0, 100)))
+            .builder(Main::fitness, ofScalar(new IntRange(0, 100)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -20011,7 +20188,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-                ofVector(IntRange.of(0, 100), 10))
+                ofVector(new IntRange(0, 100), 10))
 \end_layout
 
 \begin_layout Plain Layout
@@ -22091,17 +22268,17 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 100)),
+        Codecs.ofScalar(new LongRange(0, 100)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 1000)),
+        Codecs.ofScalar(new LongRange(0, 1000)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        Codecs.ofScalar(LongRange.of(0, 10000))),
+        Codecs.ofScalar(new LongRange(0, 10000))),
 \end_layout
 
 \begin_layout Plain Layout
@@ -23468,7 +23645,7 @@ Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
 
 \begin_layout Plain Layout
 
-                    .of(v, DoubleRange.of(0, 1)))
+                    .of(v, new DoubleRange(0, 1)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -23591,7 +23768,7 @@ final InvertibleCodec<Double, DoubleGene> codec =
 
 \begin_layout Plain Layout
 
-    Codecs.ofScalar(DoubleRange.of(0, 10));
+    Codecs.ofScalar(new DoubleRange(0, 10));
 \end_layout
 
 \begin_layout Plain Layout
@@ -23693,7 +23870,7 @@ final Codec<Double, DoubleGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofScalar(DoubleRange.of(0, 10))
+    .ofScalar(new DoubleRange(0, 10))
 \end_layout
 
 \begin_layout Plain Layout
@@ -32693,7 +32870,7 @@ final ISeq<Phenotype<DoubleGene, Vec<double[]>>> paretoSet =
 
 \begin_layout Plain Layout
 
-        .collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+        .collect(MOEA.toParetoSet(new IntRange(30, 50)));
 \end_layout
 
 \end_inset
@@ -32808,12 +32985,12 @@ final Problem<double[], DoubleGene, Vec<double[]>> problem =
 
 \begin_layout Plain Layout
 
-            DoubleRange.of(0, 1),
+            new DoubleRange(0, 1),
 \end_layout
 
 \begin_layout Plain Layout
 
-            DoubleRange.of(0, 2*PI)
+            new DoubleRange(0, 2*PI)
 \end_layout
 
 \begin_layout Plain Layout
@@ -34798,57 +34975,67 @@ status open
 
 \begin_layout Plain Layout
 
-final Cfg<String> cfg = Cfg.of(
+final var cfg = Cfg.<String>builder()
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("expr",
+    .R("expr", rule -> rule
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(N("num")), E(N("var")),
+        .N("num", "some annotation")
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(N("expr"), N("op"), N("expr"))
+        .N("var", "some other annotation")
 \end_layout
 
 \begin_layout Plain Layout
 
-    ),
+        .E(exp -> exp
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("op", E(T("+")), E(T("-")), E(T("*")), E(T("/"))),
+            .T("(")
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("var", E(T("x")), E(T("y"))),
+            .N("expr").N("op", 4).N("expr")
 \end_layout
 
 \begin_layout Plain Layout
 
-    R("num",
+            .T(")")))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("1")), E(T("2")), E(T("3")),
+    .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("4")), E(T("5")), E(T("6")),
+    .R("var", rule -> rule.T("x").T("y"))
 \end_layout
 
 \begin_layout Plain Layout
 
-        E(T("7")), E(T("8")), E(T("9"))
+    .R("num", rule -> rule
+\end_layout
+
+\begin_layout Plain Layout
+
+        .T("0").T("1").T("2").T("3").T("4")
+\end_layout
+
+\begin_layout Plain Layout
+
+        .T("5").T("6").T("7").T("8").T("9")
 \end_layout
 
 \begin_layout Plain Layout
@@ -34858,7 +35045,7 @@ final Cfg<String> cfg = Cfg.of(
 
 \begin_layout Plain Layout
 
-);
+    .build();
 \end_layout
 
 \end_inset
@@ -34875,6 +35062,23 @@ noprefix "false"
 \end_inset
 
 .
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The CFG, created by the BNF representation doesn't allow to add annotations
+ to the CFG elements.
+ This is only possible when using the 
+\family typewriter
+Cfg.\SpecialChar softhyphen
+Builder
+\family default
+.
+ Such annotations can be used by the sentence generator.
+\end_layout
+
+\end_inset
+
  The code snippet below shows how to do this.
 \end_layout
 
@@ -35105,7 +35309,7 @@ var bcodons = Codons.ofBitGenes(bch);
 
 \begin_layout Plain Layout
 
-var ich = IntegerChromosome.of(IntRange.of(0, 256), 100);
+var ich = IntegerChromosome.of(new IntRange(0, 256), 100);
 \end_layout
 
 \begin_layout Plain Layout
@@ -35599,7 +35803,7 @@ final Codec<List<Terminal<String>>, IntegerGene> codec =
 
 \begin_layout Plain Layout
 
-        IntRange.of(0, 256),
+        new IntRange(0, 256),
 \end_layout
 
 \begin_layout Plain Layout
@@ -35685,7 +35889,7 @@ final Codec<List<Terminal<String>>, IntegerGene> codec =
 
 \begin_layout Plain Layout
 
-        rule -> IntRange.of(rule.alternatives().size()*25),
+        rule -> new IntRange(rule.alternatives().size()*25),
 \end_layout
 
 \begin_layout Plain Layout
@@ -35763,22 +35967,22 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 3), 3*25), // <expr>
+    IntegerChromosome.of(new IntRange(0, 3), 3*25), // <expr>
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 4), 4*25), // <op>
+    IntegerChromosome.of(new IntRange(0, 4), 4*25), // <op>
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 2), 2*25), // var
+    IntegerChromosome.of(new IntRange(0, 2), 2*25), // var
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntegerChromosome.of(IntRange.of(0, 9), 9*25)  // <num>
+    IntegerChromosome.of(new IntRange(0, 9), 9*25)  // <num>
 \end_layout
 
 \begin_layout Plain Layout
@@ -35795,7 +35999,7 @@ As you can see, the number range for each rule chromosome reflects the number
  constant chromosome lengths.
  Just use a length function like this:
 \family typewriter
- rule -> IntRange.of(1_000)
+ rule -> new IntRange(1_000)
 \family default
 .
 \end_layout
@@ -41890,7 +42094,7 @@ final Codec<Solution, IntegerGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofVector(IntRange.of(0, 100), 10)
+    .ofVector(new IntRange(0, 100), 10)
 \end_layout
 
 \begin_layout Plain Layout
@@ -41954,7 +42158,7 @@ final Codec<Solution, DoubleGene> codec = Codecs
 
 \begin_layout Plain Layout
 
-    .ofVector(DoubleRange.of(0, 100), 10)
+    .ofVector(new DoubleRange(0, 100), 10)
 \end_layout
 
 \begin_layout Plain Layout
@@ -42036,12 +42240,12 @@ final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
 
 \begin_layout Plain Layout
 
-	Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
+	Codecs.ofScalar(new DoubleRange(30, 50)), // latitude
 \end_layout
 
 \begin_layout Plain Layout
 
-	Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	Codecs.ofScalar(new DoubleRange(69, 72)), // longitude
 \end_layout
 
 \begin_layout Plain Layout
@@ -42288,7 +42492,7 @@ final Codec<LocalTime, DoubleGene> ltc = Codecs
 
 \begin_layout Plain Layout
 
-	.ofScalar(DoubleRange.of(0, Duration.ofHours(24).toSeconds()))
+	.ofScalar(new DoubleRange(0, Duration.ofHours(24).toSeconds()))
 \end_layout
 
 \begin_layout Plain Layout
@@ -42359,7 +42563,7 @@ final Codec<WayPoint[], DoubleGene> wpc = Codecs
 
 \begin_layout Plain Layout
 
-	.ofVector(DoubleRange.of(0, 1), points.length) // (1)
+	.ofVector(new DoubleRange(0, 1), points.length) // (1)
 \end_layout
 
 \begin_layout Plain Layout

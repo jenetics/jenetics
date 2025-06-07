@@ -108,7 +108,7 @@ public final class DoubleGene
 	 * @return the range of {@code this} gene
 	 */
 	public DoubleRange range() {
-		return DoubleRange.of(_min, _max);
+		return new DoubleRange(_min, _max);
 	}
 
 	@Override
@@ -196,8 +196,7 @@ public final class DoubleGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleGene other &&
+		return obj instanceof DoubleGene other &&
 			Double.compare(other._allele, _allele) == 0 &&
 			Double.compare(other._min, _min) == 0 &&
 			Double.compare(other._max, _max) == 0;

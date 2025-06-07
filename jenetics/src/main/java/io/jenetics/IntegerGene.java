@@ -109,7 +109,7 @@ public final class IntegerGene
 	 * @return the range of {@code this} gene
 	 */
 	public IntRange range() {
-		return IntRange.of(_min, _max);
+		return new IntRange(_min, _max);
 	}
 
 	@Override
@@ -198,8 +198,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntegerGene other &&
+		return obj instanceof IntegerGene other &&
 			other._allele == _allele &&
 			other._min == _min &&
 			other._max == _max;

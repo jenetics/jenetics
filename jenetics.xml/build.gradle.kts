@@ -38,7 +38,7 @@ description = "Jenetics XML-Marshalling"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
 

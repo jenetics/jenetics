@@ -19,13 +19,21 @@
  */
 package io.jenetics.stat;
 
+import static org.apache.commons.statistics.descriptive.Statistic.KURTOSIS;
+import static org.apache.commons.statistics.descriptive.Statistic.MAX;
+import static org.apache.commons.statistics.descriptive.Statistic.MEAN;
+import static org.apache.commons.statistics.descriptive.Statistic.MIN;
+import static org.apache.commons.statistics.descriptive.Statistic.SKEWNESS;
+import static org.apache.commons.statistics.descriptive.Statistic.SUM;
+import static org.apache.commons.statistics.descriptive.Statistic.VARIANCE;
 import static io.jenetics.stat.LongMomentStatistics.toLongMomentStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.statistics.descriptive.LongStatistics;
+import org.apache.commons.statistics.descriptive.Statistic;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -49,48 +57,42 @@ public class LongMomentStatisticsTest {
 	public void summary(final Integer sampleCounts, final Double epsilon) {
 		final List<Long> numbers = numbers(sampleCounts);
 
-		final DescriptiveStatistics expected = new DescriptiveStatistics();
-		numbers.forEach(expected::addValue);
+		final var expected = LongStatistics
+			.builder(Statistic.values())
+			.build(numbers.stream().mapToLong(Long::longValue).toArray());
 
 		final LongMomentStatistics summary = numbers.stream()
 			.collect(toLongMomentStatistics(Long::longValue));
 
 		Assert.assertEquals(summary.count(), numbers.size());
-		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
-		assertEqualsDouble(summary.mean(), expected.getMean(), epsilon);
-		assertEqualsDouble(summary.variance(), expected.getVariance(), epsilon);
-		assertEqualsDouble(summary.skewness(), expected.getSkewness(), epsilon);
-		assertEqualsDouble(summary.kurtosis(), expected.getKurtosis(), epsilon);
+		assertEqualsDouble(summary.min(), expected.getAsLong(MIN), 0.0);
+		assertEqualsDouble(summary.max(), expected.getAsLong(MAX), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getAsLong(SUM), epsilon);
+		assertEqualsDouble(summary.mean(), expected.getAsDouble(MEAN), epsilon);
+		assertEqualsDouble(summary.variance(), expected.getAsDouble(VARIANCE), epsilon);
+		assertEqualsDouble(summary.skewness(), expected.getAsDouble(SKEWNESS), epsilon);
+		assertEqualsDouble(summary.kurtosis(), expected.getAsDouble(KURTOSIS), epsilon);
 	}
 
 	@Test(dataProvider = "parallelSampleCounts")
 	public void parallelSummary(final Integer sampleCounts, final Double epsilon) {
 		final List<Long> numbers = numbers(sampleCounts);
 
-		final DescriptiveStatistics expected = new DescriptiveStatistics();
-		numbers.forEach(expected::addValue);
+		final var expected = LongStatistics
+			.builder(Statistic.values())
+			.build(numbers.stream().mapToLong(Long::longValue).toArray());
 
 		final LongMomentStatistics summary = numbers.stream()
 			.collect(toLongMomentStatistics(Long::longValue));
 
 		Assert.assertEquals(summary.count(), numbers.size());
-		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
-		assertEqualsDouble(summary.mean(), expected.getMean(), epsilon);
-		assertEqualsDouble(summary.variance(), expected.getVariance(), epsilon);
-		assertEqualsDouble(summary.skewness(), expected.getSkewness(), epsilon);
-		assertEqualsDouble(summary.kurtosis(), expected.getKurtosis(), epsilon);
-	}
-
-	private static double min(final long value) {
-		return value == Long.MAX_VALUE ? Double.NaN : value;
-	}
-
-	private static double max(final long value) {
-		return value == Long.MIN_VALUE ? Double.NaN : value;
+		assertEqualsDouble(summary.min(), expected.getAsLong(MIN), 0.0);
+		assertEqualsDouble(summary.max(), expected.getAsLong(MAX), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getAsLong(SUM), epsilon);
+		assertEqualsDouble(summary.mean(), expected.getAsDouble(MEAN), epsilon);
+		assertEqualsDouble(summary.variance(), expected.getAsDouble(VARIANCE), epsilon);
+		assertEqualsDouble(summary.skewness(), expected.getAsDouble(SKEWNESS), epsilon);
+		assertEqualsDouble(summary.kurtosis(), expected.getAsDouble(KURTOSIS), epsilon);
 	}
 
 	private static void assertEqualsDouble(final double a, final double b, final double e) {

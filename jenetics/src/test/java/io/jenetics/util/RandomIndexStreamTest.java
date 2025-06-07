@@ -29,11 +29,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.LongMomentStatistics;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.testfixtures.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -86,10 +86,10 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = new Random();
-		final Range<Long> domain = new Range<>(0L, n.longValue());
+		final var random = new Random();
+		final var domain = new LongRange(0L, n.longValue());
 
-		final var histogram = Histogram.Builder.of(domain.getMin(), domain.getMax(), 10);
+		final var histogram = Histogram.Builder.of(new Interval(domain.min(), domain.max()), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 		for (int i = 0; i < 2500; ++i) {
 			final long k = k(n, p, random);

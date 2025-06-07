@@ -27,7 +27,6 @@ import io.jenetics.gradle.dsl.moduleName
  */
 plugins {
 	`java-library`
-	`java-test-fixtures`
 	`maven-publish`
 	alias(libs.plugins.jmh)
 }
@@ -36,19 +35,16 @@ moduleName = "io.jenetics.base"
 description = "Jenetics - Java Genetic Algorithm Library"
 
 dependencies {
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.commons.rng.sampling)
 	testImplementation(libs.commons.rng.simple)
+	testImplementation(libs.commons.statistics.descriptive)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.jpx)
 	testImplementation(libs.prngine)
 	testImplementation(libs.testng)
-	testImplementation(testFixtures(project(":jenetics")))
-
-	testFixturesApi(libs.assertj)
-	testFixturesApi(libs.commons.math)
-	testFixturesApi(libs.testng)
+	testImplementation(project(":jenetics.distassert"))
+	testImplementation(project(":jenetics.incubator"))
 
 	jmh(libs.prngine)
 }

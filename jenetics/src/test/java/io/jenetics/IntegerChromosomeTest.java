@@ -20,15 +20,20 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
+import java.util.Random;
+
+import io.jenetics.distassert.observation.Sample;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.testfixtures.stat.Histogram;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -46,18 +51,30 @@ public class IntegerChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final int min = 0;
-		final int max = 10000000;
+		final int max = Integer.MAX_VALUE;
 
-		final var histogram = Histogram.Builder.of(min, max, 20);
-		for (int i = 0; i < 1000; ++i) {
-			final var chromosome = IntegerChromosome.of(min, max, 500);
-			chromosome.forEach(g -> histogram.accept(g.allele()));
-		}
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(1_000, samples ->
+					IntegerChromosome.of(min, max, 500).stream()
+						.mapToDouble(IntegerGene::doubleValue)
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertThatObservation(histogram.build()).isUniform();
+		assertThat(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456789).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")
@@ -74,13 +91,13 @@ public class IntegerChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{IntegerChromosome.of(0, 1000), IntRange.of(1)},
-			{IntegerChromosome.of(IntRange.of(0, 1000)), IntRange.of(1)},
-			{IntegerChromosome.of(0, 1000, 1), IntRange.of(1)},
-			{IntegerChromosome.of(0, 1000, 2), IntRange.of(2)},
-			{IntegerChromosome.of(0, 1000, 20), IntRange.of(20)},
-			{IntegerChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{IntegerChromosome.of(IntRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{IntegerChromosome.of(0, 1000), new IntRange(1)},
+			{IntegerChromosome.of(new IntRange(0, 1000)), new IntRange(1)},
+			{IntegerChromosome.of(0, 1000, 1), new IntRange(1)},
+			{IntegerChromosome.of(0, 1000, 2), new IntRange(2)},
+			{IntegerChromosome.of(0, 1000, 20), new IntRange(20)},
+			{IntegerChromosome.of(0, 1000, new IntRange(2, 10)), new IntRange(2, 10)},
+			{IntegerChromosome.of(new IntRange(0, 1000), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

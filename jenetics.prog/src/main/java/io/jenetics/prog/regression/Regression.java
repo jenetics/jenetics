@@ -44,7 +44,6 @@ import io.jenetics.prog.regression.Sampling.Result;
 /**
  * This class implements a <em>symbolic</em> regression problem. The example
  * below shows a typical usage of the {@code Regression} class.
- *
  * {@snippet lang="java":
  * public class SymbolicRegression {
  *     private static final ISeq<Op<Double>> OPERATIONS =

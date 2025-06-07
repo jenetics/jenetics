@@ -32,14 +32,14 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
 /**
- * In tournament selection the best individual from a random sample of <i>s</i>
+ * In tournament selection, the best individual from a random sample of <i>s</i>
  * individuals is chosen from the population <i>P<sub>g</sub></i>. The samples
  * are drawn with replacement. An individual will win a tournament only if its
  * fitness is greater than the fitness of the other <i>s-1</i>  competitors.
  * Note that the worst individual never survives, and the best individual wins
  * in all the tournaments it participates. The selection pressure can be varied
  * by changing the tournament size <i>s</i> . For large values of <i>s</i>, weak
- * individuals have less chance being selected.
+ * individuals have less chance of being selected.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  *
@@ -95,7 +95,7 @@ public class TournamentSelector<
 	}
 
 	/**
-	 * Create a tournament selector with sample size two.
+	 * Create a tournament selector with a sample size two.
 	 */
 	public TournamentSelector() {
 		this(Phenotype::compareTo,2);

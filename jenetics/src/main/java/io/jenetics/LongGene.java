@@ -110,7 +110,7 @@ public final class LongGene
 	 * @return the range of {@code this} gene
 	 */
 	public LongRange range() {
-		return LongRange.of(_min, _max);
+		return new LongRange(_min, _max);
 	}
 
 	@Override
@@ -199,8 +199,7 @@ public final class LongGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof LongGene other &&
+		return obj instanceof LongGene other &&
 			other._allele == _allele &&
 			other._min == _min &&
 			other._max == _max;

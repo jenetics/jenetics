@@ -120,7 +120,7 @@ public class PopulationConvergenceLimitTest {
 	public void initialPopulationConvergence() {
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			d -> 1.0,
-			Codecs.ofScalar(DoubleRange.of(0, 1))
+			Codecs.ofScalar(new DoubleRange(0, 1))
 		);
 
 		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();

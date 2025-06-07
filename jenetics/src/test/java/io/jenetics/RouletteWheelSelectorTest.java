@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.testfixtures.stat.StatisticsAssert.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.ArrayList;
@@ -33,10 +33,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
-import io.jenetics.testfixtures.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -104,19 +106,25 @@ public class RouletteWheelSelectorTest
 		});
 	}
 
-	@Test(
-		dataProvider = "expectedDistribution",
-		invocationCount = 10, successPercentage = 70
-	)
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final Histogram distribution = SelectorTester.distribution(
-			new RouletteWheelSelector<>(),
-			opt,
-			POPULATION_COUNT,
-			50
+		final var observation = Observer
+			.using(new StableRandomExecutor(1234561))
+			.observe(
+				SelectorTester.sampler(
+					new RouletteWheelSelector<>(),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
+
+		final var distribution = EmpiricalDistribution.of(
+			observation.histogram().partition(),
+			expected.value
 		);
 
-		assertThatObservation(distribution).isLike(expected.value);
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

@@ -34,7 +34,6 @@ public interface BoundedGeneCreator<A, G> {
 
 	/**
 	 * Create a new bounded gene from the given parameters.
-	 *
 	 * {@snippet lang="java":
 	 * final BoundedGeneCreator<Long, LongGene> creator = LongGene::of;
 	 * }

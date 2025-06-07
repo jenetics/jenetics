@@ -28,7 +28,6 @@ import io.jenetics.util.Seq;
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
  * {@link io.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
- *
  * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)

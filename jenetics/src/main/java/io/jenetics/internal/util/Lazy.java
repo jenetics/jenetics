@@ -123,8 +123,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Lazy<?> other &&
+		return obj instanceof Lazy<?> other &&
 			Objects.equals(other.get(), get());
     }
 

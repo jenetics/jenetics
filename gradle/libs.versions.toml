@@ -1,23 +1,76 @@
-[plugins]
+[versions]
+assertj = "3.27.3"
+codemodel = "4.0.5"
+commons-csv = "1.14.0"
+commons-numbers-combinatorics = "1.2"
+commons-numbers-core = "1.2"
+commons-numbers-gamma = "1.2"
+commons-numbers-rootfinder = "1.2"
+commons-rng-sampling = "1.6"
+commons-rng-simple = "1.6"
+commons-statistics-descriptive = "1.1"
+commons-statistics-distribution = "1.1"
+equalsverifier = "4.0"
+guava = "33.4.8-jre"
+jackson = "2.19.0"
+jackson-databind-nullable = "0.2.6"
+jackson-datatype-jsr310 = "2.19.0"
+jacoco-agent = "0.8.13"
+jakarta-annotation-api = "3.0.0"
+jakarta-validation-api = "3.1.1"
+javacsv = "2.0"
+jexl = "3.5.0"
+jmh = "0.7.3"
+jpx = "3.2.1"
+mvel = "2.5.2.Final"
+nashorn = "15.6"
+openapi-generator = "7.13.0"
+opencsv = "5.11"
+prngine = "2.0.0"
+reactor-core = "3.7.6"
+rxjava = "2.2.21"
+supercsv = "2.4.0"
+swagger-models = "2.2.32"
+swagger-parser = "2.1.29"
+testng = "7.11.0"
+version-catalog-update = "1.0.0"
 
-jmh = { id = "me.champeau.jmh", version = "0.7.2" }
+[plugins]
+jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 
 [libraries]
-
-assertj = "org.assertj:assertj-core:3.26.3"
-commons-csv = "org.apache.commons:commons-csv:1.11.0"
-commons-math = "org.apache.commons:commons-math3:3.6.1"
-commons-rng-sampling = "org.apache.commons:commons-rng-sampling:1.6"
-commons-rng-simple = "org.apache.commons:commons-rng-simple:1.6"
-equalsverifier = "nl.jqno.equalsverifier:equalsverifier:3.16.2"
-guava = "com.google.guava:guava:33.3.0-jre"
-javacsv = "net.sourceforge.javacsv:javacsv:2.0"
-jexl = "org.apache.commons:commons-jexl3:3.4.0"
-jpx = "io.jenetics:jpx:3.0.1"
-mvel = "org.mvel:mvel2:2.5.2.Final"
-nashorn = "org.openjdk.nashorn:nashorn-core:15.4"
-opencsv = "com.opencsv:opencsv:5.9"
-prngine = "io.jenetics:prngine:2.0.0"
-rxjava = "io.reactivex.rxjava2:rxjava:2.2.21"
-supercsv = "net.sf.supercsv:super-csv:2.4.0"
-testng = "org.testng:testng:7.10.2"
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
+commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
+commons-numbers-combinatorics = { module = "org.apache.commons:commons-numbers-combinatorics", version.ref = "commons-numbers-combinatorics" }
+commons-numbers-core = { module = "org.apache.commons:commons-numbers-core", version.ref = "commons-numbers-core" }
+commons-numbers-gamma = { module = "org.apache.commons:commons-numbers-gamma", version.ref = "commons-numbers-gamma" }
+commons-numbers-rootfinder = { module = "org.apache.commons:commons-numbers-rootfinder", version.ref = "commons-numbers-rootfinder" }
+commons-rng-sampling = { module = "org.apache.commons:commons-rng-sampling", version.ref = "commons-rng-sampling" }
+commons-rng-simple = { module = "org.apache.commons:commons-rng-simple", version.ref = "commons-rng-simple" }
+commons-statistics-descriptive = { module = "org.apache.commons:commons-statistics-descriptive", version.ref = "commons-statistics-descriptive" }
+commons-statistics-distribution = { module = "org.apache.commons:commons-statistics-distribution", version.ref = "commons-statistics-distribution" }
+equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
+jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation-api" }
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-api" }
+javacsv = { module = "net.sourceforge.javacsv:javacsv", version.ref = "javacsv" }
+jexl = { module = "org.apache.commons:commons-jexl3", version.ref = "jexl" }
+jpx = { module = "io.jenetics:jpx", version.ref = "jpx" }
+mvel = { module = "org.mvel:mvel2", version.ref = "mvel" }
+nashorn-core = { module = "org.openjdk.nashorn:nashorn-core", version.ref = "nashorn" }
+opencsv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
+prngine = { module = "io.jenetics:prngine", version.ref = "prngine" }
+reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactor-core" }
+rxjava = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava" }
+supercsv = { module = "net.sf.supercsv:super-csv", version.ref = "supercsv" }
+swagger-models = { module = "io.swagger.core.v3:swagger-models", version.ref = "swagger-models" }
+swagger-parser = { module = "io.swagger.parser.v3:swagger-parser", version.ref = "swagger-parser" }
+testng = { module = "org.testng:testng", version.ref = "testng" }

@@ -17,10 +17,8 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.in;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
-import java.io.IOException;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -28,10 +26,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Sampler;
-import io.jenetics.stat.Samplers;
-import io.jenetics.testfixtures.stat.Histogram;
-import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -70,7 +64,7 @@ public class ShiftMutatorTest extends MutatorTester {
 	public void mutate() {
 		final var mutator =  new ShiftMutator<EnumGene<Integer>, Integer>(0.1);
 
-		final var values = IntRange.of(0, 10).stream().boxed().collect(ISeq.toISeq());
+		final var values = new IntRange(0, 10).stream().boxed().collect(ISeq.toISeq());
 		final var genes = values.stream()
 			.map(i -> EnumGene.of(i, values))
 			.collect(ISeq.toISeq());
@@ -159,24 +153,24 @@ public class ShiftMutatorTest extends MutatorTester {
 		};
 	}
 
-	public static void main(String[] args) throws IOException {
-		final var random = RandomGenerator.getDefault();
-		final var range = DoubleRange.of(0, 5);
-		final var histogram = Histogram.Builder.of(range.min(), range.max(), 20);
-		final var distribution = Samplers.triangular(0.2);
-
-		for (int i = 0; i < 100_000; ++i) {
-			histogram.accept(distribution.sample(random, range));
-		}
-
-		histogram.build().print(System.out);
-
-final var lengthSampler = Samplers.linear(0.3);
-final var indexSampler = Samplers.linear(0.5);
-final var random1 = ShiftMutator.RangeRandom.of(lengthSampler, indexSampler);
-final var mutator = new ShiftMutator<DoubleGene, Double>(random1);
-
-		new ShuffleMutator<>();
-	}
+//	public static void main(String[] args) throws IOException {
+//		final var random = RandomGenerator.getDefault();
+//		final var range = new DoubleRange(0, 5);
+//		final var histogram = Histogram.Builder.of(range.min(), range.max(), 20);
+//		final var distribution = Samplers.triangular(0.2);
+//
+//		for (int i = 0; i < 100_000; ++i) {
+//			histogram.accept(distribution.sample(random, range));
+//		}
+//
+//		HistogramFormat.DEFAULT.format(histogram.build(), System.out);
+//
+//		final var lengthSampler = Samplers.linear(0.3);
+//		final var indexSampler = Samplers.linear(0.5);
+//		final var random1 = ShiftMutator.RangeRandom.of(lengthSampler, indexSampler);
+//		final var mutator = new ShiftMutator<DoubleGene, Double>(random1);
+//
+//		new ShuffleMutator<>();
+//	}
 
 }

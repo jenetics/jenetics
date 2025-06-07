@@ -55,9 +55,9 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * will be represented by the following {@link Genotype}
  * {@snippet lang="java":
  * Genotype.of(
- *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
- *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
- *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
+ *     IntegerChromosome.of(new IntRange(0, 2), length.apply(cfg.rules().get(0))),
+ *     IntegerChromosome.of(new IntRange(0, 4), length.apply(cfg.rules().get(1))),
+ *     IntegerChromosome.of(new IntRange(0, 5), length.apply(cfg.rules().get(2)))
  * )
  * }
  *
@@ -70,7 +70,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  *     cfg,
  *     // The chromosome length is 10 times the
  *     // number of rule alternatives.
- *     rule -> IntRange.of(rule.alternatives().size()*10),
+ *     rule -> new IntRange(rule.alternatives().size()*10),
  *     // Using the standard sentence generator
  *     // with a maximal sentence length of 5,000.
  *     index -> new SentenceGenerator<>(index, 5_000)
@@ -111,7 +111,7 @@ final class MultiIntegerChromosomeMapper<T, R> implements Codec<R, IntegerGene> 
 			cfg.rules().stream()
 				.map(rule ->
 					IntegerChromosome.of(
-						IntRange.of(0, rule.alternatives().size()),
+						new IntRange(0, rule.alternatives().size()),
 						length.apply(rule)
 					))
 				.collect(ISeq.toISeq())

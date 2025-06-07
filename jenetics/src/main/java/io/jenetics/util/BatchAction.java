@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.lang.Integer.getInteger;
 import static java.lang.Math.max;
 
 import java.io.Serial;
@@ -70,30 +71,18 @@ final class BatchAction extends RecursiveAction {
 	}
 
 	private static final class Env {
-
-		private static final int splitThreshold = max(splitThreshold(), 1);
+		private static final int splitThreshold =
+			max(splitThreshold(), 1);
 
 		private static final int maxSurplusQueuedTaskCount =
 			max(maxSurplusQueuedTaskCount(), 1);
 
-		@SuppressWarnings("removal")
 		private static int splitThreshold() {
-			return java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<Integer>)() -> Integer.getInteger(
-					"io.jenetics.concurrency.splitThreshold",
-					5
-				)
-			);
+			return getInteger("io.jenetics.concurrency.splitThreshold", 5);
 		}
 
-		@SuppressWarnings("removal")
 		private static int maxSurplusQueuedTaskCount() {
-			return java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<Integer>)() -> Integer.getInteger(
-					"io.jenetics.concurrency.maxSurplusQueuedTaskCount",
-					3
-				)
-			);
+			return getInteger("io.jenetics.concurrency.maxSurplusQueuedTaskCount", 3);
 		}
 	}
 

@@ -82,7 +82,7 @@ public class DoubleGenePermutationCodec {
 	 * sorting is not for free ;-)
 	 */
 	private static final Codec<int[], DoubleGene> CODEC_2 = Codecs
-		.ofVector(DoubleRange.of(0, 1), 100)
+		.ofVector(new DoubleRange(0, 1), 100)
 		.map(ProxySorter::sort);
 
 
@@ -90,7 +90,7 @@ public class DoubleGenePermutationCodec {
 	 * Codec used for the point values.
 	 */
 	private static final Codec<double[], DoubleGene> CODEC_3 = Codecs
-		.ofVector(DoubleRange.of(1, 10), 100);
+		.ofVector(new DoubleRange(1, 10), 100);
 
 	/*
 	 * The composite codec used for the evolution.

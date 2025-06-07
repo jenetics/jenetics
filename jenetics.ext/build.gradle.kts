@@ -1,4 +1,5 @@
 import io.jenetics.gradle.dsl.moduleName
+import io.jenetics.gradle.dsl.testClasses
 
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
@@ -38,11 +39,15 @@ description = "Jenetics Extension"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.testng)
-	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
+	testImplementation(project.testClasses(":jenetics"))
+
+	jmh(libs.commons.csv)
+	jmh(libs.javacsv)
+	jmh(libs.opencsv)
+	jmh(libs.supercsv)
 }
 
 tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
@@ -50,7 +55,7 @@ tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
 	//includes.add(".*TreePerf.*")
-	includes.add(".*SentenceGeneratorPerf.*")
+	includes.add(".*CsvSupportPerf.*")
 }
 
 tasks.javadoc {

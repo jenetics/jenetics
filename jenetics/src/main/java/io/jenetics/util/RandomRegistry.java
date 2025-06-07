@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
  * {@code RandomRegistry} is thread safe and is initialized with the
  * {@link RandomGeneratorFactory#getDefault()} PRNG.
  *
- * <h2>Setup the PRNG used for the evolution process</h2>
+ * <h2>Set up the PRNG used for the evolution process</h2>
  * There are several ways on how to set the {@link RandomGenerator} used during
  * the evolution process.
  * <p>
@@ -155,7 +155,7 @@ public final class RandomRegistry {
 	}
 
 	/**
-	 * Thread local wrapper for a random generator supplier (factory).
+	 * Thread-local wrapper for a random generator supplier (factory).
 	 *
 	 * @param <R> the type of the random generator
 	 */
@@ -450,13 +450,9 @@ public final class RandomRegistry {
 		);
 	}
 
-	@SuppressWarnings("removal")
 	private static final class Env {
 
-		private static final String defaultRandomGenerator =
-			java.security.AccessController.doPrivileged(
-				(java.security.PrivilegedAction<String>)Env::get
-			);
+		private static final String defaultRandomGenerator = get();
 
 		private static String get() {
 			return getConfigured()
