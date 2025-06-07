@@ -109,7 +109,7 @@ public final class IntegerGene
 	 * @return the range of {@code this} gene
 	 */
 	public IntRange range() {
-		return IntRange.of(_min, _max);
+		return new IntRange(_min, _max);
 	}
 
 	@Override

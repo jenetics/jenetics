@@ -45,6 +45,7 @@ import java.nio.file.Path;
  * IO.object.write(result.getPopulation(), file);
  *
  * // Reading the population from disk.
+ * @SuppressWarnings("unchecked)
  * ISeq<Phenotype<G, C>> population = (ISeq<Phenotype<G, C>>)IO.object.read(file);
  * EvolutionStream<DoubleGene, Double> stream = Engine
  *     .build(ff, gtf)
@@ -71,7 +72,7 @@ public abstract class IO {
 		{
 			final ObjectOutputStream oout = new ObjectOutputStream(out);
 			oout.writeObject(object);
-			out.flush();
+			oout.flush();
 		}
 
 		@Override
@@ -159,7 +160,7 @@ public abstract class IO {
 		throws IOException;
 
 	/**
-	 * Creates a, previously serialized, object from the given {@code byte[]}
+	 * Creates a previously serialized, object from the given {@code byte[]}
 	 * array.
 	 *
 	 * @since 4.1

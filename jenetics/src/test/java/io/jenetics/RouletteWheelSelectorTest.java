@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.ArrayList;
@@ -33,7 +33,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.EmpiricalDistribution;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -107,21 +108,23 @@ public class RouletteWheelSelectorTest
 
 	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final var observation = SelectorTester.observation(
-			new RouletteWheelSelector<>(),
-			opt,
-			POPULATION_COUNT,
-			50
-		);
-		new StableRandomExecutor(1234561).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(1234561))
+			.observe(
+				SelectorTester.sampler(
+					new RouletteWheelSelector<>(),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
 
 		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
 			expected.value
 		);
 
-		assertThatObservation(observation)
-			.follows(distribution);
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")

@@ -19,11 +19,11 @@
  */
 package io.jenetics.incubator.restful;
 
+import static java.util.Objects.requireNonNull;
+
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.util.Objects.requireNonNull;
 
 import io.jenetics.incubator.restful.client.Client;
 
