@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -90,7 +89,7 @@ final class Context<T> {
 
 	/**
 	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link #with(Object, Function)} <em>scoped</em>
+	 * value, if called within a {@link #with(Object, Supplier)} <em>scoped</em>
 	 * function.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
@@ -113,16 +112,16 @@ final class Context<T> {
 	 * Return the result of the {@code supplier}, which is executed with the
 	 * given context {@code value}.
 	 *
-	 * @param value the contexte value the {@code supplier} sees
+	 * @param value the context value the {@code supplier} sees
 	 * @param supplier the supplier executed using the given context {@code value}
-	 * @return the suppplier value
+	 * @return the supplier value
 	 * @param <S> the context value
 	 * @param <R> the supplier result
 	 */
 	<S extends T, R> R with(final S value, final Supplier<? extends R> supplier) {
 		return ScopedValue
 			.where(_value, new Entry<>(value))
-			.get(supplier);
+			.call(supplier::get);
 	}
 
 	/**
