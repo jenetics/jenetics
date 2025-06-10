@@ -180,10 +180,12 @@ public final class RandomRegistry {
 		return new TLR<>(factory);
 	}
 
-	private static final Supplier<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+	private static final Supplier<RandomGenerator>
+		DEFAULT_RANDOM_FACTORY =
 		wrapper(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
-	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
+	private static final Context<Supplier<? extends RandomGenerator>>
+		CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
 
 	/**
