@@ -19,85 +19,105 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 /**
+ * This class serves as wrapper around the {@link ScopedValue} implementation of
+ * the JDK. It enriches the functionality, so it is possible to change the
+ * context value within the same thread, without the need of opening a new
+ * {@link ScopedValue#where(ScopedValue, Object)} scope.
+ *
+ * @see ScopedValue
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.0
+ * @version !__version__!
  * @since 2.0
  */
 final class Context<T> {
 
-	private final T _default;
-	private final AtomicReference<Entry<T>> _entry;
-	private final ThreadLocal<Entry<T>> _threadLocalEntry = new ThreadLocal<>();
-
-	Context(final T defaultValue) {
-		_default = defaultValue;
-		_entry = new AtomicReference<>(new Entry<>(defaultValue));
-	}
-
-	void set(final T value) {
-		final Entry<T> e = _threadLocalEntry.get();
-
-		if (e != null) e.value = value;
-		else _entry.set(new Entry<>(value));
-	}
-
-	T get() {
-		final Entry<T> e = _threadLocalEntry.get();
-		return (e != null ? e : _entry.get()).value;
-	}
-
-	void reset() {
-		set(_default);
-	}
-
-	<S extends T, R> R with(final S value, final Function<S, R> f) {
-		final Entry<T> e = _threadLocalEntry.get();
-		if (e != null) {
-			_threadLocalEntry.set(e.inner(value));
-		} else {
-			_threadLocalEntry.set(new Entry<>(value, Thread.currentThread()));
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since 2.0
+	 */
+	private record Entry<T>(AtomicReference<T> value) {
+		private Entry(T value) {
+			this(new AtomicReference<>(value));
 		}
-
-		try {
-			return f.apply(value);
-		} finally {
-			_threadLocalEntry.set(_threadLocalEntry.get().parent);
+		T get() {
+			return value.get();
 		}
+		void set(T value) {
+			this.value.set(value);
+		}
+	}
+
+	private final T initial;
+	private final Entry<T> entry;
+	private final ScopedValue<Entry<T>> key = ScopedValue.newInstance();
+
+	/**
+	 * Create a new <em>context</em> object with the given default value. The
+	 * given {@code value} is the initial value of the <em>global</em> context.
+	 *
+	 * @param value the initial value of the context, may be {@code null}
+	 */
+	Context(final T value) {
+		initial = value;
+		entry = new Entry<>(initial);
+	}
+
+	private Entry<T> entry() {
+		return key.orElse(entry);
 	}
 
 	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 2.0
-	 * @since 2.0
+	 * Set the {@code value} for the <em>global</em> scope of the context.
+	 *
+	 * @param value the new <em>global</em> context value.
 	 */
-	private static final class Entry<T> {
-		final Thread thread;
-		final Entry<T> parent;
-		T value;
+	void set(final T value) {
+		entry().set(value);
+	}
 
-		Entry(final T value, final Entry<T> parent, final Thread thread) {
-			this.value = value;
-			this.parent = parent;
-			this.thread = thread;
-		}
+	/**
+	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
+	 * value, if called within a {@link #call(Object, ScopedValue.CallableOp)}
+	 * <em>scoped</em> function.
+	 *
+	 * @return the context value, either <em>global</em> or <em>scoped</em>
+	 */
+	T get() {
+		return entry().get();
+	}
 
-		Entry(final T value, final Thread thread) {
-			this(value, null, thread);
-		}
+	/**
+	 * Reset the value of the <em>global</em> context to the default value.
+	 */
+	void reset() {
+		set(initial);
+	}
 
-		Entry(final T value) {
-			this(value, null, null);
-		}
-
-		Entry<T> inner(final T value) {
-			assert thread == Thread.currentThread();
-			return new Entry<>(value, this, thread);
-		}
-
+	/**
+	 * Return the result of the {@code supplier}, which is executed with the
+	 * given context {@code value}.
+	 *
+	 * @param value the context value the {@code supplier} sees
+	 * @param operation the operation executed using the given context {@code value}
+	 * @return the supplier value
+	 * @param <S> the context value
+	 * @param <R> the supplier result
+	 */
+	<S extends T, R> R call(
+		final S value,
+		final ScopedValue.CallableOp<? extends R, RuntimeException> operation
+	) {
+		requireNonNull(operation);
+		return ScopedValue
+			.where(key, new Entry<>(value))
+			.call(operation);
 	}
 
 }
