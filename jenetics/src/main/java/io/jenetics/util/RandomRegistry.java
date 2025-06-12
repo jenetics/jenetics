@@ -147,7 +147,8 @@ import java.util.random.RandomGeneratorFactory;
  * @version 8.0
  */
 public final class RandomRegistry {
-	private RandomRegistry() {}
+	private RandomRegistry() {
+	}
 
 	/**
 	 * Thread-local wrapper for a random generator supplier (factory).
@@ -170,10 +171,12 @@ public final class RandomRegistry {
 		}
 	}
 
-	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+	private static final TLR<RandomGenerator>
+		DEFAULT_RANDOM_FACTORY =
 		new TLR<>(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
-	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
+	private static final Context<Supplier<? extends RandomGenerator>>
+		CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
 
 	/**
