@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
@@ -27,9 +27,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
@@ -48,17 +48,18 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	public void newInstanceDistribution(final long seed) {
 		final CharSeq characters = new CharSeq("0123456789");
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(10, samples ->
-				CharacterChromosome.of(characters, 10_000).stream()
-					.map(g -> Long.parseLong(g.allele().toString()))
-					.forEach(samples::add)
-			),
-			Histogram.Partition.of(0, characters.length(), 10)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(10, samples ->
+					CharacterChromosome.of(characters, 10_000).stream()
+						.map(g -> Long.parseLong(g.allele().toString()))
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(0, characters.length(), 10)
+			);
 
-		assertThatObservation(observation).isUniform();
+		assertThat(observation).isUniform();
     }
 
 	@DataProvider

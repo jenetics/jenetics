@@ -20,7 +20,6 @@
 package io.jenetics.gradle
 
 import Env
-import Jenetics
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -59,7 +58,7 @@ open class LyxPlugin : Plugin<Project> {
 						ReplaceTokens::class, "tokens" to mapOf(
 							"__version__" to project.version,
 							"__minor_version__" to Version.parse(project.version).minorVersionString(),
-							"__identifier__" to "${Jenetics.VERSION}-$BUILD_DATE",
+							"__identifier__" to "${project.version}-$BUILD_DATE",
 							"__year__" to Env.COPYRIGHT_YEAR
 						)
 					)

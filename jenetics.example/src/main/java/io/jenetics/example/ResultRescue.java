@@ -46,7 +46,7 @@ public final class ResultRescue {
 	private static final Problem<Double, DoubleGene, Double>
 	PROBLEM = Problem.of(
 		x -> cos(0.5 + sin(x))*cos(x),
-		Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+		Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 	);
 
 	private static final Engine<DoubleGene, Double>

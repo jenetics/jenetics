@@ -49,9 +49,8 @@ import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.XML;
 
 /**
- * This class contains static fields and methods, for creating chromosome- and
+ * This class contains static fields and methods for creating chromosome- and
  * genotype readers for different gene types.
- *
  * {@snippet lang="java":
  * final Reader<Genotype<BitGene>> bgr =
  *     Readers.Genotype.reader(Readers.BitChromosome.reader());

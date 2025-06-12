@@ -83,7 +83,7 @@ import io.jenetics.util.Factory;
  * an important characteristic of the repair function.
  *
  * {@snippet lang="java":
- * final InvertibleCodec<Double, DoubleGene> codec = Codecs.ofScalar(DoubleRange.of(0, 10));
+ * final InvertibleCodec<Double, DoubleGene> codec = Codecs.ofScalar(new DoubleRange(0, 10));
  * final Constraint<DoubleGene, Double> constraint = Constraint.of(
  *     codec,
  *     v -> v < 2 || v >= 8,
@@ -103,7 +103,7 @@ import io.jenetics.util.Factory;
  * repair method.
  * {@snippet lang="java":
  * final Codec<Double, DoubleGene> codec = Codecs
- *     .ofScalar(DoubleRange.of(0, 10))
+ *     .ofScalar(new DoubleRange(0, 10))
  *     .map(v -> {
  *             if (v >= 2 && v < 8) {
  *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
@@ -114,7 +114,7 @@ import io.jenetics.util.Factory;
  * The same example with an {@link InvertibleCodec} will look like this:
  * {@snippet lang="java":
  * final InvertibleCodec<Double, DoubleGene> codec = Codecs
- *     .ofScalar(DoubleRange.of(0, 10))
+ *     .ofScalar(new DoubleRange(0, 10))
  *     .map(v -> {
  *             if (v >= 2 && v < 8) {
  *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;

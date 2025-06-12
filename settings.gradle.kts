@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 8.0
+ * @version 8.3
  */
 pluginManagement {
 	repositories {
@@ -39,6 +39,7 @@ include("jenetics.prog")
 include("jenetics.xml")
 
 // Non-published modules.
+include("jenetics.distassert")
 include("jenetics.doc")
 include("jenetics.example")
 include("jenetics.tool")

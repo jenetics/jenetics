@@ -31,7 +31,6 @@ import io.jenetics.prog.op.Op;
  * program complexity ensures that simpler programs with similar loss function
  * values are preferred. It is part of the <em>overall</em> {@link Error}
  * function.
- *
  * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
  * }
