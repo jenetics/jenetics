@@ -218,7 +218,7 @@ public class RandomRegistryTest {
 		assertThat(RandomRegistry.random()).isSameAs(random);
 	}
 
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 20)
 	public void concurrentLocalContext() throws Exception {
 		try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
 			for (int i = 0; i < 25; ++i) {

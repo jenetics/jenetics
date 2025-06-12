@@ -37,42 +37,40 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 final class Context<T> {
 
-	private final T _default;
-	private final AtomicReference<Entry<T>> _entry;
-	private final ScopedValue<Entry<T>> _value = ScopedValue.newInstance();
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since 2.0
+	 */
+	private record Entry<T>(AtomicReference<T> value) {
+		private Entry(T value) {
+			this(new AtomicReference<>(value));
+		}
+		T get() {
+			return value.get();
+		}
+		void set(T value) {
+			this.value.set(value);
+		}
+	}
+
+	private final T initial;
+	private final Entry<T> entry;
+	private final ScopedValue<Entry<T>> key = ScopedValue.newInstance();
 
 	/**
 	 * Create a new <em>context</em> object with the given default value. The
 	 * given {@code value} is the initial value of the <em>global</em> context.
 	 *
-	 * @param defaultValue the default value of the context, may be {@code null}
+	 * @param value the initial value of the context, may be {@code null}
 	 */
-	Context(final T defaultValue) {
-		_default = defaultValue;
-		_entry = new AtomicReference<>(new Entry<>(_default));
+	Context(final T value) {
+		initial = value;
+		entry = new Entry<>(initial);
 	}
 
-	/**
-	 * Return the default value of the context.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return the default value of the context
-	 */
-	T devault() {
-		return _default;
-	}
-
-	/**
-	 * Checks whether the context value is <em>global</em>.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return {@code true} if the context value is <em>global</em> or
-	 *         {@code false} if it is <em>scoped</em>
-	 */
-	boolean isGlobal() {
-		return !_value.isBound();
+	private Entry<T> entry() {
+		return key.orElse(entry);
 	}
 
 	/**
@@ -81,32 +79,25 @@ final class Context<T> {
 	 * @param value the new <em>global</em> context value.
 	 */
 	void set(final T value) {
-		if (_value.isBound()) {
-			_value.get().value = value;
-		} else {
-			_entry.set(new Entry<>(value));
-		}
+		entry().set(value);
 	}
 
 	/**
 	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link #with(Object, ScopedValue.CallableOp)}  <em>scoped</em>
-	 * function.
+	 * value, if called within a {@link #call(Object, ScopedValue.CallableOp)}
+	 * <em>scoped</em> function.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
 	 */
 	T get() {
-		final var entry = _entry.get();
-		assert entry != null;
-
-		return _value.orElse(entry).value;
+		return entry().get();
 	}
 
 	/**
 	 * Reset the value of the <em>global</em> context to the default value.
 	 */
 	void reset() {
-		set(_default);
+		set(initial);
 	}
 
 	/**
@@ -119,26 +110,14 @@ final class Context<T> {
 	 * @param <S> the context value
 	 * @param <R> the supplier result
 	 */
-	<S extends T, R> R with(
+	<S extends T, R> R call(
 		final S value,
 		final ScopedValue.CallableOp<? extends R, RuntimeException> operation
 	) {
 		requireNonNull(operation);
 		return ScopedValue
-			.where(_value, new Entry<>(value))
+			.where(key, new Entry<>(value))
 			.call(operation);
-	}
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 2.0
-	 * @since 2.0
-	 */
-	private static final class Entry<T> {
-		T value;
-		Entry(final T value) {
-			this.value = value;
-		}
 	}
 
 }

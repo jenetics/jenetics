@@ -35,7 +35,8 @@ import java.util.stream.IntStream;
  * @version 7.0
  */
 public final class Randoms {
-	private Randoms() {}
+	private Randoms() {
+	}
 
 	public static byte nextByte(final RandomGenerator random) {
 		return (byte)random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1);

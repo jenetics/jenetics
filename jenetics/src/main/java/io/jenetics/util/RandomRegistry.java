@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Random;
@@ -27,8 +29,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class holds the {@link RandomGenerator} engine used for the GA. The
@@ -154,39 +154,22 @@ public final class RandomRegistry {
 	private RandomRegistry() {
 	}
 
-	/**
-	 * Thread-local wrapper for a random generator supplier (factory).
-	 *
-	 * @param <R> the type of the random generator
-	 */
-	private static final class TLR<R extends RandomGenerator>
-		extends ThreadLocal<R>
-		implements Supplier<R>
-	{
-		private final Supplier<? extends R> _factory;
-
-		TLR(final Supplier<? extends R> factory) {
-			_factory = requireNonNull(factory);
-		}
-
-		@Override
-		protected R initialValue() {
-			return _factory.get();
-		}
-	}
-
-	private static Supplier<RandomGenerator>
-	wrapper(final Supplier<? extends RandomGenerator> factory) {
-		return new TLR<>(factory);
-	}
-
 	private static final Supplier<RandomGenerator>
 		DEFAULT_RANDOM_FACTORY =
-		wrapper(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
+		toThreadLocalSupplier(() ->
+			RandomGeneratorFactory
+				.of(Env.defaultRandomGeneratorName)
+				.create()
+		);
 
-	private static final Context<Supplier<? extends RandomGenerator>>
+	private static final Context<Supplier<RandomGenerator>>
 		CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
+
+	private static Supplier<RandomGenerator>
+	toThreadLocalSupplier(final Supplier<? extends RandomGenerator> factory) {
+		return ThreadLocal.withInitial(factory)::get;
+	}
 
 	/**
 	 * Return the {@link RandomGenerator} of the current scope.
@@ -229,7 +212,7 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final RandomGeneratorFactory<? extends R> factory) {
 		requireNonNull(factory);
-		CONTEXT.set(wrapper(factory::create));
+		CONTEXT.set(toThreadLocalSupplier(factory::create));
 	}
 
 	/**
@@ -248,7 +231,7 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final Supplier<? extends R> supplier) {
 		requireNonNull(supplier);
-		CONTEXT.set(wrapper(supplier));
+		CONTEXT.set(toThreadLocalSupplier(supplier));
 	}
 
 	/**
@@ -256,6 +239,95 @@ public final class RandomRegistry {
 	 */
 	public static void reset() {
 		CONTEXT.reset();
+	}
+
+	/**
+	 * Runs the operation code using the given {@code random} generator.
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
+	 * run(new Random(123), seq::shuffle);
+	 * }
+	 *
+	 * The example above shuffles the given integer {@code seq} <i>using</i> the
+	 * given {@code Random(123)} engine.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param random the PRNG used within the consumer
+	 * @param op the operation which is executed with the <i>scope</i> of
+	 *        the given {@code random} engine.
+	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <R extends RandomGenerator> void
+	run(final R random, final Runnable op) {
+		requireNonNull(random);
+		requireNonNull(op);
+
+		CONTEXT.call(
+			() -> random,
+			() -> { op.run(); return null; }
+		);
+	}
+
+	/**
+	 * Run the operation code using the given {@code random} generator.
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
+	 * run(RandomGeneratorFactory.getDefault(), seq::shuffle);
+	 * }
+	 *
+	 * The example above shuffles the given integer {@code seq} <i>using</i> the
+	 * given {@link RandomGeneratorFactory#getDefault()} factory.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param factory the random generator factory used within the consumer
+	 * @param op the operation which is executed within the <i>scope</i> of
+	 *        the given random generator.
+	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <R extends RandomGenerator> void run(
+		final RandomGeneratorFactory<? extends R> factory,
+		final Runnable op
+	) {
+		requireNonNull(factory);
+		requireNonNull(op);
+
+		CONTEXT.call(
+			toThreadLocalSupplier(factory::create),
+			() -> { op.run(); return null; }
+		);
+	}
+
+	/**
+	 * Executes the consumer code using the given {@code random} generator
+	 * supplier.
+	 * {@snippet lang="java":
+	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
+	 * run(() -> new MyRandomGenerator(), seq::shuffle);
+	 * }
+	 *
+	 * @since !__version__!
+	 *
+	 * @param supplier the random generator supplier used within the consumer
+	 * @param op the operation which is executed within the <i>scope</i> of
+	 *        the given random generator.
+	 * @param <R> the type of the random engine
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <R extends RandomGenerator> void run(
+		final Supplier<? extends R> supplier,
+		final Runnable op
+	) {
+		requireNonNull(supplier);
+		requireNonNull(op);
+
+		CONTEXT.call(
+			toThreadLocalSupplier(supplier),
+			() -> { op.run(); return null; }
+		);
 	}
 
 	/**
@@ -280,7 +352,10 @@ public final class RandomRegistry {
 		final R random,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(
+		requireNonNull(random);
+		requireNonNull(consumer);
+
+		CONTEXT.call(
 			() -> random,
 			() -> { consumer.accept(random); return null; }
 		);
@@ -308,8 +383,11 @@ public final class RandomRegistry {
 		final RandomGeneratorFactory<? extends R> factory,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(
-			wrapper(factory::create),
+		requireNonNull(factory);
+		requireNonNull(consumer);
+
+		CONTEXT.call(
+			toThreadLocalSupplier(factory::create),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -339,8 +417,11 @@ public final class RandomRegistry {
 		final Supplier<? extends R> supplier,
 		final Consumer<? super R> consumer
 	) {
-		CONTEXT.with(
-			wrapper(supplier),
+		requireNonNull(supplier);
+		requireNonNull(consumer);
+
+		CONTEXT.call(
+			toThreadLocalSupplier(supplier),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -376,7 +457,10 @@ public final class RandomRegistry {
 		final R random,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(
+		requireNonNull(random);
+		requireNonNull(function);
+
+		return CONTEXT.call(
 			() -> random,
 			() -> function.apply(random)
 		);
@@ -407,8 +491,11 @@ public final class RandomRegistry {
 		final RandomGeneratorFactory<? extends R> factory,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(
-			wrapper(factory::create),
+		requireNonNull(factory);
+		requireNonNull(function);
+
+		return CONTEXT.call(
+			toThreadLocalSupplier(factory::create),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -442,8 +529,11 @@ public final class RandomRegistry {
 		final Supplier<? extends R> supplier,
 		final Function<? super R, ? extends T> function
 	) {
-		return CONTEXT.with(
-			wrapper(supplier),
+		requireNonNull(supplier);
+		requireNonNull(function);
+
+		return CONTEXT.call(
+			toThreadLocalSupplier(supplier),
 			() -> {
 				@SuppressWarnings("unchecked")
 				final var random = (R)random();
@@ -454,7 +544,7 @@ public final class RandomRegistry {
 
 	private static final class Env {
 
-		private static final String defaultRandomGenerator = get();
+		private static final String defaultRandomGeneratorName = get();
 
 		private static String get() {
 			return getConfigured()
