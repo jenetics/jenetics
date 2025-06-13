@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,38 +28,32 @@ import org.testng.annotations.Test;
  */
 public class ContextTest {
 
+	private static final Context<String> USER = new Context<>("default_user");
+	private static final Context<String> TOKEN = new Context<>("default_token");
+
 	@Test
-	public void setGet() {
-		final var context = new Context<>("A");
-		assertThat(context.get()).isEqualTo("A");
+	public void with() {
+		assertThat(USER.get()).isEqualTo("default_user");
+		assertThat(TOKEN.get()).isEqualTo("default_token");
 
-		context.set("B");
-		assertThat(context.get()).isEqualTo("B");
+		USER.set("martin");
+		TOKEN.set("other_token");
 
-		context.run("C", () -> {
-			assertThat(context.get()).isEqualTo("C");
-			context.set("D");
-			assertThat(context.get()).isEqualTo("D");
+		Context.with(USER.value("otto"), TOKEN.value("3973hj2l34i92j"))
+			.run(() -> {
+				assertThat(USER.get()).isEqualTo("otto");
+				assertThat(TOKEN.get()).isEqualTo("3973hj2l34i92j");
 
-			context.run("E", () -> {
-				assertThat(context.get()).isEqualTo("E");
-				context.set("F");
-				assertThat(context.get()).isEqualTo("F");
-			});
+				USER.set("peter");
+				TOKEN.set("other");
 
-			context.set("G");
-			assertThat(context.get()).isEqualTo("G");
+				assertThat(USER.get()).isEqualTo("peter");
+				assertThat(TOKEN.get()).isEqualTo("other");
+			}
+		);
 
-			context.run(() -> {
-				assertThat(context.get()).isEqualTo("G");
-				context.set("H");
-				assertThat(context.get()).isEqualTo("H");
-			});
-
-			assertThat(context.get()).isEqualTo("G");
-		});
-
-		assertThat(context.get()).isEqualTo("B");
+		assertThat(USER.get()).isEqualTo("martin");
+		assertThat(TOKEN.get()).isEqualTo("other_token");
 	}
 
 }

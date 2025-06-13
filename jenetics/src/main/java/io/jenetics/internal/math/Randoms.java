@@ -43,9 +43,9 @@ public final class Randoms {
 	}
 
 	public static char nextChar(final RandomGenerator random) {
-		record Limits() {
-			private static final int LEFT = '0';
-			private static final int RIGHT = 'z' + 1;
+		final class Limits {
+			static final int LEFT = '0';
+			static final int RIGHT = 'z' + 1;
 		}
 
 		char c = '\0';

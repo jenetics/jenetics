@@ -21,7 +21,10 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.ScopedValue.CallableOp;
+import java.lang.ScopedValue.Carrier;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * This class serves as wrapper around the {@link ScopedValue} implementation of
@@ -38,25 +41,91 @@ import java.util.concurrent.atomic.AtomicReference;
 final class Context<T> {
 
 	/**
+	 * Represents a value, associated with a context, but still not bound.
+	 *
+	 * @param <T> the value type
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version !__version__!
-	 * @since 2.0
+	 * @since !__version__!
 	 */
-	private record Entry<T>(AtomicReference<T> value) {
-		private Entry(T value) {
-			this(new AtomicReference<>(value));
+	static final class Value<T> {
+		private final ScopedValue<AtomicReference<T>> key;
+		private final T value;
+
+		private Value(
+			final ScopedValue<AtomicReference<T>> key,
+			final T value
+		) {
+			this.key = requireNonNull(key);
+			this.value = value;
 		}
+
+		/**
+		 * Return the context value.
+		 *
+		 * @return the context value
+		 */
 		T get() {
-			return value.get();
+			return value;
 		}
-		void set(T value) {
-			this.value.set(value);
+
+		private static <T> Carrier fold(Carrier carrier, Value<T> value) {
+			requireNonNull(value);
+
+			return carrier == null
+				? ScopedValue.where(value.key, new AtomicReference<>(value.value))
+				: carrier.where(value.key, new AtomicReference<>(value.value));
+		}
+	}
+
+	/**
+	 * Runs code with specifically bound context values. Is essentially a wrapper
+	 * around a {@link Carrier}.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	static final class Runner {
+		private final Carrier carrier;
+
+		private Runner(Carrier carrier) {
+			this.carrier = requireNonNull(carrier);
+		}
+
+		/**
+		 * Runs an operation with each context value in this mapping bound to
+		 * its value in the current thread.
+		 *
+		 * @see Carrier#run(Runnable)
+		 *
+		 * @param op the operation to run
+		 */
+		void run(Runnable op) {
+			carrier.run(op);
+		}
+
+		/**
+		 * Calls a value-returning operation with each context value in this
+		 * mapping bound to its value in the current thread.
+		 *
+		 * @see Carrier#call(CallableOp)
+		 *
+		 * @param op the operation to run
+		 * @param <R> the type of the result of the operation
+		 * @param <X> type of the exception thrown by the operation
+		 * @return the result
+		 * @throws X if {@code op} completes with an exception
+		 */
+		<R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
+			return carrier.call(op);
 		}
 	}
 
 	private final T initial;
-	private final Entry<T> entry;
-	private final ScopedValue<Entry<T>> key = ScopedValue.newInstance();
+	private final AtomicReference<T> entry;
+	private final ScopedValue<AtomicReference<T>> key = ScopedValue.newInstance();
 
 	/**
 	 * Create a new <em>context</em> object with the given default value. The
@@ -66,10 +135,28 @@ final class Context<T> {
 	 */
 	Context(final T value) {
 		initial = value;
-		entry = new Entry<>(initial);
+		entry = new AtomicReference<>(initial);
 	}
 
-	private Entry<T> entry() {
+	/**
+	 * Create a new context object with a {@code null} default value.
+	 */
+	Context() {
+		this(null);
+	}
+
+	/**
+	 * Create a context value, which can be bound to {@code this} context at a
+	 * later time.
+	 *
+	 * @param value the actual context value
+	 * @return a new (unbound) context value
+	 */
+	Value<T> value(final T value) {
+		return new Value<>(key, value);
+	}
+
+	private AtomicReference<T> entry() {
 		return key.orElse(entry);
 	}
 
@@ -84,8 +171,7 @@ final class Context<T> {
 
 	/**
 	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link #call(Object, ScopedValue.CallableOp)}
-	 * <em>scoped</em> function.
+	 * value, if called within a {@link Runner}.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
 	 */
@@ -98,26 +184,25 @@ final class Context<T> {
 	 */
 	void reset() {
 		set(initial);
+		entry.set(initial);
 	}
 
 	/**
-	 * Return the result of the {@code supplier}, which is executed with the
-	 * given context {@code value}.
+	 * Returns a new runner, which allows executing code with the given bound
+	 * values.
 	 *
-	 * @param value the context value the {@code supplier} sees
-	 * @param operation the operation executed using the given context {@code value}
-	 * @return the supplier value
-	 * @param <S> the context value
-	 * @param <R> the supplier result
+	 * @param values the values to bind to the contexts
+	 * @return a new runner with the bound context values
 	 */
-	<S extends T, R> R call(
-		final S value,
-		final ScopedValue.CallableOp<? extends R, RuntimeException> operation
-	) {
-		requireNonNull(operation);
-		return ScopedValue
-			.where(key, new Entry<>(value))
-			.call(operation);
+	static Runner with(final Value<?>... values) {
+		final Carrier carrier = Stream.of(values)
+			.reduce(
+				null,
+				Value::fold,
+				(_, _) -> { throw new IllegalStateException(); }
+			);
+
+		return new Runner(carrier);
 	}
 
 }

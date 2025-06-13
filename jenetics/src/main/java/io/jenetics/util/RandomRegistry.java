@@ -163,7 +163,7 @@ public final class RandomRegistry {
 		);
 
 	private static final Context<Supplier<RandomGenerator>>
-		CONTEXT =
+		RANDOM =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
 
 	private static Supplier<RandomGenerator>
@@ -177,7 +177,7 @@ public final class RandomRegistry {
 	 * @return the {@link RandomGenerator} of the current scope
 	 */
 	public static RandomGenerator random() {
-		return CONTEXT.get().get();
+		return RANDOM.get().get();
 	}
 
 	/**
@@ -197,7 +197,7 @@ public final class RandomRegistry {
 	 */
 	public static void random(final RandomGenerator random) {
 		requireNonNull(random);
-		CONTEXT.set(() -> random);
+		RANDOM.set(() -> random);
 	}
 
 	/**
@@ -212,7 +212,7 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final RandomGeneratorFactory<? extends R> factory) {
 		requireNonNull(factory);
-		CONTEXT.set(toThreadLocalSupplier(factory::create));
+		RANDOM.set(toThreadLocalSupplier(factory::create));
 	}
 
 	/**
@@ -231,14 +231,14 @@ public final class RandomRegistry {
 	public static <R extends RandomGenerator> void
 	random(final Supplier<? extends R> supplier) {
 		requireNonNull(supplier);
-		CONTEXT.set(toThreadLocalSupplier(supplier));
+		RANDOM.set(toThreadLocalSupplier(supplier));
 	}
 
 	/**
 	 * Set the random object to its default value.
 	 */
 	public static void reset() {
-		CONTEXT.reset();
+		RANDOM.reset();
 	}
 
 	/**
@@ -264,10 +264,7 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(op);
 
-		CONTEXT.call(
-			() -> random,
-			() -> { op.run(); return null; }
-		);
+		Context.with(RANDOM.value(() -> random)).run(op);
 	}
 
 	/**
@@ -295,10 +292,9 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(op);
 
-		CONTEXT.call(
-			toThreadLocalSupplier(factory::create),
-			() -> { op.run(); return null; }
-		);
+		Context
+			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+			.run(op);
 	}
 
 	/**
@@ -324,10 +320,9 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(op);
 
-		CONTEXT.call(
-			toThreadLocalSupplier(supplier),
-			() -> { op.run(); return null; }
-		);
+		Context
+			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+			.run(op);
 	}
 
 	/**
@@ -355,10 +350,9 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(consumer);
 
-		CONTEXT.call(
-			() -> random,
-			() -> { consumer.accept(random); return null; }
-		);
+		Context
+			.with(RANDOM.value(() -> random))
+			.run(() -> consumer.accept(random));
 	}
 
 	/**
@@ -379,6 +373,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator> void using(
 		final RandomGeneratorFactory<? extends R> factory,
 		final Consumer<? super R> consumer
@@ -386,15 +381,9 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(consumer);
 
-		CONTEXT.call(
-			toThreadLocalSupplier(factory::create),
-			() -> {
-				@SuppressWarnings("unchecked")
-				final var random = (R)random();
-				consumer.accept(random);
-				return null;
-			}
-		);
+		Context
+			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+			.run(() -> consumer.accept((R)random()));
 	}
 
 	/**
@@ -413,6 +402,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator> void using(
 		final Supplier<? extends R> supplier,
 		final Consumer<? super R> consumer
@@ -420,15 +410,9 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(consumer);
 
-		CONTEXT.call(
-			toThreadLocalSupplier(supplier),
-			() -> {
-				@SuppressWarnings("unchecked")
-				final var random = (R)random();
-				consumer.accept(random);
-				return null;
-			}
-		);
+		Context
+			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+			.run(() -> consumer.accept((R)random()));
 	}
 
 	/**
@@ -460,10 +444,9 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(function);
 
-		return CONTEXT.call(
-			() -> random,
-			() -> function.apply(random)
-		);
+		return Context
+			.with(RANDOM.value(() -> random))
+			.call(() -> function.apply(random));
 	}
 
 	/**
@@ -487,6 +470,7 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator, T> T with(
 		final RandomGeneratorFactory<? extends R> factory,
 		final Function<? super R, ? extends T> function
@@ -494,14 +478,9 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(function);
 
-		return CONTEXT.call(
-			toThreadLocalSupplier(factory::create),
-			() -> {
-				@SuppressWarnings("unchecked")
-				final var random = (R)random();
-				return function.apply(random);
-			}
-		);
+		return Context
+			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+			.call(() -> function.apply((R)random()));
 	}
 
 	/**
@@ -525,6 +504,7 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator, T> T with(
 		final Supplier<? extends R> supplier,
 		final Function<? super R, ? extends T> function
@@ -532,14 +512,9 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(function);
 
-		return CONTEXT.call(
-			toThreadLocalSupplier(supplier),
-			() -> {
-				@SuppressWarnings("unchecked")
-				final var random = (R)random();
-				return function.apply(random);
-			}
-		);
+		return Context
+			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+			.call(() -> function.apply((R)random()));
 	}
 
 	private static final class Env {
