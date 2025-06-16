@@ -83,11 +83,11 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerRangeLength() {
 		final PermutationChromosome<Integer> c1 = PermutationChromosome
-			.ofInteger(IntRange.of(0, 2000), 1000);
+			.ofInteger(new IntRange(0, 2000), 1000);
 		Assert.assertTrue(c1.isValid());
 
 		final PermutationChromosome<Integer> c2 = PermutationChromosome
-			.ofInteger(IntRange.of(0, 2000), 1000);
+			.ofInteger(new IntRange(0, 2000), 1000);
 		Assert.assertTrue(c2.isValid());
 
 		final MSeq<EnumGene<Integer>> m1 = MSeq.of(c1);

@@ -19,14 +19,12 @@
  */
 package io.jenetics.util;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,13 +36,8 @@ public class DoubleRangeTest extends ObjectTester<DoubleRange> {
 	protected Factory<DoubleRange> factory() {
 		return () -> {
 			final var random = RandomRegistry.random();
-			return DoubleRange.of(random.nextDouble(), random.nextDouble() + 1.1);
+			return new DoubleRange(random.nextDouble(), random.nextDouble() + 1.1);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(DoubleRange.class).verify();
 	}
 
 	@Test(dataProvider = "containsRanges")
@@ -55,11 +48,11 @@ public class DoubleRangeTest extends ObjectTester<DoubleRange> {
 	@DataProvider
 	public Object[][] containsRanges() {
 		return new Object[][] {
-			{DoubleRange.of(0, 10), 5, true},
-			{DoubleRange.of(0, 10), 0, true},
-			{DoubleRange.of(0, 10), 10, false},
-			{DoubleRange.of(0, 10), -5, false},
-			{DoubleRange.of(0, 10), 15, false}
+			{new DoubleRange(0, 10), 5, true},
+			{new DoubleRange(0, 10), 0, true},
+			{new DoubleRange(0, 10), 10, false},
+			{new DoubleRange(0, 10), -5, false},
+			{new DoubleRange(0, 10), 15, false}
 		};
 	}
 
@@ -71,13 +64,13 @@ public class DoubleRangeTest extends ObjectTester<DoubleRange> {
 	@DataProvider
 	public Object[][] rangeIntersectionPairs() {
 		return new Object[][] {
-			{DoubleRange.of(0, 10), DoubleRange.of(5, 20), Optional.of(DoubleRange.of(5, 10))},
-			{DoubleRange.of(6, 10), DoubleRange.of(5, 20), Optional.of(DoubleRange.of(6, 10))},
-			{DoubleRange.of(0, 10), DoubleRange.of(5, 7), Optional.of(DoubleRange.of(5, 7))},
-			{DoubleRange.of(0, 100), DoubleRange.of(5, 20), Optional.of(DoubleRange.of(5, 20))},
-			{DoubleRange.of(0, 10), DoubleRange.of(10, 20), Optional.empty()},
-			{DoubleRange.of(0, 10), DoubleRange.of(11, 20), Optional.empty()},
-			{DoubleRange.of(20, 100), DoubleRange.of(1, 5), Optional.empty()}
+			{new DoubleRange(0, 10), new DoubleRange(5, 20), Optional.of(new DoubleRange(5, 10))},
+			{new DoubleRange(6, 10), new DoubleRange(5, 20), Optional.of(new DoubleRange(6, 10))},
+			{new DoubleRange(0, 10), new DoubleRange(5, 7), Optional.of(new DoubleRange(5, 7))},
+			{new DoubleRange(0, 100), new DoubleRange(5, 20), Optional.of(new DoubleRange(5, 20))},
+			{new DoubleRange(0, 10), new DoubleRange(10, 20), Optional.empty()},
+			{new DoubleRange(0, 10), new DoubleRange(11, 20), Optional.empty()},
+			{new DoubleRange(20, 100), new DoubleRange(1, 5), Optional.empty()}
 		};
 	}
 

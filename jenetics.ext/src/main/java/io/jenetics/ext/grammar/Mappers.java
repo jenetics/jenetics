@@ -107,8 +107,8 @@ public final class Mappers {
 	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
-	 *     IntRange.of(0, 256), // Value range of chromosomes.
-	 *     IntRange.of(100),   // Length (range) ot the chromosome.
+	 *     new IntRange(0, 256), // Value range of chromosomes.
+	 *     new IntRange(100),   // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
 	 * }
@@ -145,7 +145,7 @@ public final class Mappers {
 	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
-	 *     IntRange.of(0, 256), // Value range of chromosomes.
+	 *     new IntRange(0, 256), // Value range of chromosomes.
 	 *     100,                 // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
@@ -168,7 +168,7 @@ public final class Mappers {
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
 		return singleIntegerChromosomeMapper(
-			cfg, range, IntRange.of(length), generator
+			cfg, range, new IntRange(length), generator
 		);
 	}
 
@@ -191,9 +191,9 @@ public final class Mappers {
 	 * will be represented by the following {@link Genotype}
 	 * {@snippet lang="java":
 	 * Genotype.of(
-	 *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
-	 *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
-	 *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
+	 *     IntegerChromosome.of(new IntRange(0, 2), length.apply(cfg.rules().get(0))),
+	 *     IntegerChromosome.of(new IntRange(0, 4), length.apply(cfg.rules().get(1))),
+	 *     IntegerChromosome.of(new IntRange(0, 5), length.apply(cfg.rules().get(2)))
 	 * )
 	 * }
 	 *
@@ -205,7 +205,7 @@ public final class Mappers {
 	 *     cfg,
 	 *     // The chromosome length is 25 times the
 	 *     // number of rule alternatives.
-	 *     rule -> IntRange.of(rule.alternatives().size()*25),
+	 *     rule -> new IntRange(rule.alternatives().size()*25),
 	 *     // Using the standard sentence generator
 	 *     // with a maximal sentence length of 500.
 	 *     index -> new SentenceGenerator<>(index, 500)

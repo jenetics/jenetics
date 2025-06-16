@@ -47,7 +47,6 @@ import io.jenetics.prog.op.Program;
 
 /**
  * Holds the nodes of the operation tree.
- *
  * {@snippet lang="java":
  * final int depth = 6;
  * final ISeq<Op<Double>> operations = ISeq.of(null); // @replace substring='null' replacement="..."
@@ -355,8 +354,7 @@ public class ProgramChromosome<A>
 	 * Create a new program chromosome from the given (flattened) program tree.
 	 * This method doesn't make any assumption about the validity of the given
 	 * operation tree. If the tree is not valid, it will repair it. This
-	 * behaviour allows the <em>safe</em> usage of all existing alterers.
-	 *
+	 * behavior allows the <em>safe</em> usage of all existing alterers.
 	 * {@snippet lang="java":
 	 * final ProgramChromosome<Double> ch = ProgramChromosome.of(
 	 *     genes,
