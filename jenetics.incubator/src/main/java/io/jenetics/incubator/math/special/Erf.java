@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.math;
+package io.jenetics.incubator.math.special;
 
 /**
  * This class contains helper methods related the error function.
@@ -102,7 +102,7 @@ public final class Erf {
 	 * Institute of Quantitative Finance, which was published in GPU Computing
 	 * Gems, volume 2, 2010. The source code is available
 	 * <a href="https://people.maths.ox.ac.uk/~gilesm/codes/erfinv/erfinv_DP_1.cu">
-	 *     here</a>.
+	 * here</a>.
 	 *
 	 * @see <a href="https://people.maths.ox.ac.uk/~gilesm/codes/erfinv/gems.pdf">
 	 * 	  Mike Giles: Approximating the erfinv function</a>

@@ -17,20 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.math;
-
-import java.util.function.DoubleUnaryOperator;
-
-import io.jenetics.util.DoubleRange;
+package io.jenetics.incubator.math.iterative;
 
 /**
+ * @param value
+ * @param error
+ * @param iterations
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
-@FunctionalInterface
-public interface RootFinder {
-
-	double solve(DoubleUnaryOperator fn, DoubleRange interval);
-
+public record Estimation(double value, double error, long iterations) {
 }
