@@ -19,6 +19,14 @@
  */
 package io.jenetics.distassert.internal.screen;
 
+import static io.jenetics.distassert.internal.screen.DrawChars.BLOCK_CHARS;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_DOWN_AND_LEFT;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_DOWN_AND_RIGHT;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_HORIZONTAL;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_UP_AND_LEFT;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_UP_AND_RIGHT;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_VERTICAL;
+
 import java.io.PrintStream;
 
 /**
@@ -43,19 +51,21 @@ public class Screen {
 		}
 	}
 
-	int width() {
+	public int width() {
 		return width;
 	}
 
-	int height() {
+	public int height() {
 		return height;
 	}
 
-	void set(int x, int y, char value) {
-		buffer[x][y] = value;
+	public void set(int x, int y, char value) {
+		if (x < width && y < height && x >= 0 && y >= 0) {
+			buffer[x][y] = value;
+		}
 	}
 
-	void print(PrintStream out) {
+	public void print(PrintStream out) {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				out.print((char)buffer[x][y]);
@@ -64,24 +74,33 @@ public class Screen {
 		}
 	}
 
-	void draw(final Rectangle rectangle) {
+	public void draw(final Rectangle rectangle) {
+		final int ox = rectangle.x();
+		final int oy = rectangle.y();
+
 		// Horizontal lines.
-		for (int i = rectangle.x(); i < rectangle.width(); ++i) {
-			set(i, rectangle.y(), BoxDrawing.BOX_CHARS[1]);
-			set(i, rectangle.height() - 1, BoxDrawing.BOX_CHARS[1]);
+		for (int i = 0; i < rectangle.width(); ++i) {
+			set(i + ox, oy, HEAVY_HORIZONTAL);
+			set(i + ox, rectangle.height() - 1 + oy, HEAVY_HORIZONTAL);
 		}
 
 		// Vertical lines.
-		for (int i = rectangle.y(); i < rectangle.height(); ++i) {
-			set(rectangle.x(), i, BoxDrawing.BOX_CHARS[3]);
-			set(rectangle.width() - 1, i, BoxDrawing.BOX_CHARS[3]);
+		for (int i = 0; i < rectangle.height(); ++i) {
+			set(ox, i + oy, HEAVY_VERTICAL);
+			set(rectangle.width() - 1 + ox, i + oy, HEAVY_VERTICAL);
 		}
 
 		// Edges.
-		set(rectangle.x(), rectangle.y(), BoxDrawing.BOX_CHARS[15]);
-		set(rectangle.x(), rectangle.height() - 1, BoxDrawing.BOX_CHARS[23]);
-		set(rectangle.width() - 1, rectangle.y(), BoxDrawing.BOX_CHARS[19]);
-		set(rectangle.width() - 1, rectangle.height() - 1, BoxDrawing.BOX_CHARS[27]);
+		set(ox, oy, HEAVY_DOWN_AND_RIGHT);
+		set(ox, rectangle.height() - 1 + oy, HEAVY_UP_AND_RIGHT);
+		set(rectangle.width() - 1 + ox, oy, HEAVY_DOWN_AND_LEFT);
+		set(rectangle.width() - 1 + ox, rectangle.height() - 1 + oy, HEAVY_UP_AND_LEFT);
+	}
+
+	public void draw(final Bar bar) {
+		for  (int y = 0; y < bar.height(); ++y) {
+			set(bar.x(), bar.y() - y, BLOCK_CHARS[8]);
+		}
 	}
 
 
@@ -90,8 +109,10 @@ public class Screen {
 
 	public static void main(String[] args) {
 		final var screen = new Screen(80, 20);
-		final var rectangle = new Rectangle(2, 2, 76, 16);
-		screen.draw(rectangle);
+		screen.draw(new Rectangle(2, 2, 76, 16));
+		screen.draw(new Rectangle(15, 7, 30, 30));
+		screen.draw(new Bar(30, 15, 10));
+		screen.draw(new Bar(31, 15, 12));
 
 		screen.print(System.out);
 	}
