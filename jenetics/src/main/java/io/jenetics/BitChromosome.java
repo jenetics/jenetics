@@ -99,7 +99,7 @@ public final class BitChromosome extends Number
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @param p the one's probability
+	 * @param p one's probability
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
 	 *         {@code start > bits.length*8}
 	 * @throws java.lang.IllegalArgumentException if {@code start > end}
@@ -236,7 +236,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Return the double value this BitChromosome represents.
 	 *
-	 * @return double value this BitChromosome represents.
+	 * @return double the value this BitChromosome represents.
 	 */
 	@Override
 	public double doubleValue() {

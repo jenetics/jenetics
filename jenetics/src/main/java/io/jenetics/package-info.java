@@ -24,7 +24,6 @@
  * data classes and don't implement any behavior. It also contains the Selector
  * and Alterer interfaces and its implementations. The classes in this package
  * are (almost) sufficient to implement an own GA.
- *
  * <b>Introduction</b>
  * <p><strong>Jenetics</strong> is an <strong>Genetic Algorithm</strong>,
  * respectively an <strong>Evolutionary Algorithm</strong>, library written in

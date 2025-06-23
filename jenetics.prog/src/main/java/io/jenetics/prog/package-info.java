@@ -53,7 +53,6 @@
  * search space, and the execution time for finding a solution. For our
  * <em>polynomial</em> example we will chose the following <em>operations</em>
  * and <em>terminals</em>.
- *
  * {@snippet lang="java":
  * static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
  *     MathOp.ADD,
@@ -75,7 +74,6 @@
  * <p>
  * In the next step define the fitness function for the GP, which will be an
  * error function we will minimize.
- *
  * {@snippet lang="java":
  * // The lookup table where the data points are stored.
  * static final double[][] SAMPLES = new double[][] {
@@ -109,7 +107,6 @@
  *
  * After we have defined the error function, we need to define the proper
  * {@code Codec}.
- *
  * {@snippet lang="java":
  * static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
  *     Codec.of(
@@ -139,7 +136,6 @@
  * </ol>
  *
  * Now we are ready to put everything together:
- *
  * {@snippet lang="java":
  * public static void main(final String[] args) {
  *     final Engine<ProgramGene<Double>, Double> engine = Engine

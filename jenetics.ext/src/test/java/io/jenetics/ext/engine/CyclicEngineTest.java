@@ -141,7 +141,7 @@ public class CyclicEngineTest {
 	public static void main(final String[] args) {
 		final Problem<double[], DoubleGene, Double> problem = Problem.of(
 			v -> Math.sin(v[0])*Math.cos(v[1]),
-			Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+			Codecs.ofVector(new DoubleRange(0, 2*Math.PI), 2)
 		);
 
 		final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)

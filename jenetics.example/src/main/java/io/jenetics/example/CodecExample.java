@@ -63,7 +63,7 @@ public class CodecExample {
 	 * final double bestValue = CODEC.decode(gt);
 	 */
 	private static final Codec<Double, DoubleGene> CODEC = Codecs
-		.ofScalar(DoubleRange.of(0, 10))
+		.ofScalar(new DoubleRange(0, 10))
 		.map((Double v) -> {
 				if (v >= 2 && v < 8) {
 					return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
@@ -117,8 +117,8 @@ public class CodecExample {
 	) {
 		return Codec.of(
 			Genotype.of(
-				DoubleChromosome.of(DoubleRange.of(v1Domain.min(), v1Domain.max())),
-				DoubleChromosome.of(DoubleRange.of(v2Domain.min(), v2Domain.max())),
+				DoubleChromosome.of(new DoubleRange(v1Domain.min(), v1Domain.max())),
+				DoubleChromosome.of(new DoubleRange(v2Domain.min(), v2Domain.max())),
 				DoubleChromosome.of(v3Domain)
 			),
 			gt -> new Tuple(
@@ -131,9 +131,9 @@ public class CodecExample {
 
 //	public static void main(final String[] args) {
 //		// The domain of your fitness function.
-//		final IntRange domain1 = IntRange.of(0, 100);
-//		final LongRange domain2 = LongRange.of(0, 1_000_000_000_000L);
-//		final DoubleRange domain3 = DoubleRange.of(0, 1);
+//		final IntRange domain1 = new IntRange(0, 100);
+//		final LongRange domain2 = new LongRange(0, 1_000_000_000_000L);
+//		final DoubleRange domain3 = new DoubleRange(0, 1);
 //
 //		// The problem domain encoder/decoder.
 //		final Codec<Tuple, DoubleGene> codec = codec(domain1, domain2, domain3);

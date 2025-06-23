@@ -15,19 +15,20 @@
  */
 package io.jenetics;
 
-import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
-import io.jenetics.util.MSeq;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
-import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:feichtenschlager10@gmail.com">Paul Feichtenschlager</a>
@@ -63,7 +64,7 @@ public class ShiftMutatorTest extends MutatorTester {
 	public void mutate() {
 		final var mutator =  new ShiftMutator<EnumGene<Integer>, Integer>(0.1);
 
-		final var values = IntRange.of(0, 10).stream().boxed().collect(ISeq.toISeq());
+		final var values = new IntRange(0, 10).stream().boxed().collect(ISeq.toISeq());
 		final var genes = values.stream()
 			.map(i -> EnumGene.of(i, values))
 			.collect(ISeq.toISeq());
@@ -154,7 +155,7 @@ public class ShiftMutatorTest extends MutatorTester {
 
 //	public static void main(String[] args) throws IOException {
 //		final var random = RandomGenerator.getDefault();
-//		final var range = DoubleRange.of(0, 5);
+//		final var range = new DoubleRange(0, 5);
 //		final var histogram = Histogram.Builder.of(range.min(), range.max(), 20);
 //		final var distribution = Samplers.triangular(0.2);
 //

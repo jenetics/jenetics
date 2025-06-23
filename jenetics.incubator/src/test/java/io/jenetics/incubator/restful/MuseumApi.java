@@ -22,9 +22,9 @@ package io.jenetics.incubator.restful;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import io.jenetics.incubator.restful.api.ApiPath;
 import io.jenetics.incubator.restful.api.ApiProxy;
 import io.jenetics.incubator.restful.api.Method;
-import io.jenetics.incubator.restful.api.ApiPath;
 import io.jenetics.incubator.restful.client.DefaultClient;
 
 /**

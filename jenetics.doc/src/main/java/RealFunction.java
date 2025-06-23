@@ -27,7 +27,7 @@ public class RealFunction {
 			// function and chromosome.
 			.builder(
 				RealFunction::fitness,
-				Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI)))
+				Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI)))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(

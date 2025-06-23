@@ -31,7 +31,6 @@ import static java.lang.String.format;
  * sample data set. If the predictions are totally off, the loss function will
  * output a higher value. If they're pretty good, it’ll output a lower number.
  * It is the essential part of the <em>overall</em> {@link Error} function.
- *
  * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse);
  * }
