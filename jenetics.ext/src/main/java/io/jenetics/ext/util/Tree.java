@@ -1229,8 +1229,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof Path other &&
+			return obj instanceof Path other &&
 				Arrays.equals(_path, other._path);
 		}
 

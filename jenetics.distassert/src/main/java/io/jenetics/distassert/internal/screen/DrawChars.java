@@ -20,8 +20,7 @@
 package io.jenetics.distassert.internal.screen;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz
- * Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */

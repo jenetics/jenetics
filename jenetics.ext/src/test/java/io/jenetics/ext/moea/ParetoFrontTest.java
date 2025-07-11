@@ -151,8 +151,7 @@ public class ParetoFrontTest {
 			}
 			@Override
 			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Entry other &&
+				return obj instanceof Entry other &&
 					random == other.random &&
 					Objects.equals(data, other.data);
 			}
