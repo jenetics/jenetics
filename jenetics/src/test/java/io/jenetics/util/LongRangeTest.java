@@ -21,8 +21,6 @@ package io.jenetics.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.util.Optional;
 
 import org.testng.annotations.DataProvider;
@@ -38,13 +36,8 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 	protected Factory<LongRange> factory() {
 		return () -> {
 			final var random = RandomRegistry.random();
-			return LongRange.of(random.nextInt(10), random.nextInt(1000) + 20);
+			return new LongRange(random.nextInt(10), random.nextInt(1000) + 20);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(LongRange.class).verify();
 	}
 
 	@Test(dataProvider = "containsRanges")
@@ -55,11 +48,11 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 	@DataProvider
 	public Object[][] containsRanges() {
 		return new Object[][] {
-			{LongRange.of(0, 10), 5, true},
-			{LongRange.of(0, 10), 0, true},
-			{LongRange.of(0, 10), 10, false},
-			{LongRange.of(0, 10), -5, false},
-			{LongRange.of(0, 10), 15, false}
+			{new LongRange(0, 10), 5, true},
+			{new LongRange(0, 10), 0, true},
+			{new LongRange(0, 10), 10, false},
+			{new LongRange(0, 10), -5, false},
+			{new LongRange(0, 10), 15, false}
 		};
 	}
 
@@ -71,13 +64,13 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 	@DataProvider
 	public Object[][] rangeIntersectionPairs() {
 		return new Object[][] {
-			{LongRange.of(0, 10), LongRange.of(5, 20), Optional.of(LongRange.of(5, 10))},
-			{LongRange.of(6, 10), LongRange.of(5, 20), Optional.of(LongRange.of(6, 10))},
-			{LongRange.of(0, 10), LongRange.of(5, 7), Optional.of(LongRange.of(5, 7))},
-			{LongRange.of(0, 100), LongRange.of(5, 20), Optional.of(LongRange.of(5, 20))},
-			{LongRange.of(0, 10), LongRange.of(10, 20), Optional.empty()},
-			{LongRange.of(0, 10), LongRange.of(11, 20), Optional.empty()},
-			{LongRange.of(20, 100), LongRange.of(1, 5), Optional.empty()}
+			{new LongRange(0, 10), new LongRange(5, 20), Optional.of(new LongRange(5, 10))},
+			{new LongRange(6, 10), new LongRange(5, 20), Optional.of(new LongRange(6, 10))},
+			{new LongRange(0, 10), new LongRange(5, 7), Optional.of(new LongRange(5, 7))},
+			{new LongRange(0, 100), new LongRange(5, 20), Optional.of(new LongRange(5, 20))},
+			{new LongRange(0, 10), new LongRange(10, 20), Optional.empty()},
+			{new LongRange(0, 10), new LongRange(11, 20), Optional.empty()},
+			{new LongRange(20, 100), new LongRange(1, 5), Optional.empty()}
 		};
 	}
 

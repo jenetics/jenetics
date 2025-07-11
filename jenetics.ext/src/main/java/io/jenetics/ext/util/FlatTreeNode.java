@@ -204,8 +204,7 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other == this ||
-			other instanceof FlatTreeNode<?> node &&
+		return other instanceof FlatTreeNode<?> node &&
 			node._index == _index &&
 			node._nodes == _nodes;
 	}
@@ -247,8 +246,7 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			(obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
+		return (obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
 			(obj instanceof Tree<?, ?> tree && Tree.equals(tree, this));
 	}
 

@@ -31,18 +31,18 @@ import io.jenetics.util.Seq;
 
 /**
  * <p>
- * An enhanced genetic algorithm (EGA) combine elements of existing solutions in
- * order to create a new solution, with some of the properties of each parent.
+ * An enhanced genetic algorithm (EGA) combine elements of existing solutions
+ * to create a new solution, with some properties of each parent.
  * Recombination creates a new chromosome by combining parts of two (or more)
  * parent chromosomes. This combination of chromosomes can be made by selecting
  * one or more crossover points, splitting these chromosomes on the selected
- * points, and merge those portions of different chromosomes to form new ones.
+ * points, and merging those portions of different chromosomes to form new ones.
  * </p>
  * <p>
  * The recombination probability <i>P(r)</i> determines the probability that a
  * given individual (genotype, not gene) of a population is selected for
- * recombination. The (<i>mean</i>) number of changed individuals depend on the
- * concrete implementation and can be vary from
+ * recombination. The (<i>mean</i>) number of changed individuals depends on the
+ * concrete implementation and can be varied from
  * <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
  * <i>P(r)</i>&middot;<i>N<sub>G</sub></i>&middot;<i>O<sub>R</sub></i>, where
  * <i>O<sub>R</sub></i> is the order of the recombination, which is the number

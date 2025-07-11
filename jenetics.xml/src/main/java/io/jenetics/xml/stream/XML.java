@@ -36,7 +36,7 @@ import javax.xml.stream.XMLStreamException;
  * Creating a new XML stream reader:
  * {@snippet lang="java":
  * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
- *     // Move XML stream to first element.
+ *     // Move the XML stream to the first element.
  *     xml.next();
  *     return reader.read(xml);
  * }
@@ -69,7 +69,6 @@ public final class XML {
 	 * <em>
 	 * The caller is responsible for closing the returned {@code XMLStreamReader}.
 	 * </em>
-	 *
 	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
 	 *     // Move XML stream to first element.
@@ -101,7 +100,6 @@ public final class XML {
 	 * <em>
 	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
-	 *
 	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, "    ")) {
 	 *     writer.write(value, xml);
@@ -137,7 +135,6 @@ public final class XML {
 	 * <em>
 	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
-	 *
 	 * {@snippet lang="java":
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
 	 *     writer.write(value, xml);

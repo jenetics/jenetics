@@ -108,8 +108,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TRS<?> other &&
+		return obj instanceof TRS<?> other &&
 			_rules.equals(other._rules);
 	}
 

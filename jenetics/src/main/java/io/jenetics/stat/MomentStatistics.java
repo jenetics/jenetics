@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 import io.jenetics.internal.math.DoubleAdder;
 
 /**
- * Base class for statistical moments calculation.
+ * Base class for statistical moments' calculation.
  *
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>

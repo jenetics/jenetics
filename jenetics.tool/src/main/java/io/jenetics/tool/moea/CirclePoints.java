@@ -50,8 +50,8 @@ public class CirclePoints {
 	static final Problem<double[], DoubleGene, Vec<double[]>> PROBLEM = Problem.of(
 		v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
 		Codecs.ofVector(
-			DoubleRange.of(0, 1),
-			DoubleRange.of(0, 2*PI)
+			new DoubleRange(0, 1),
+			new DoubleRange(0, 2*PI)
 		)
 	);
 

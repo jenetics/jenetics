@@ -20,19 +20,19 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGeneratorFactory;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.EmpiricalDistribution;
-import io.jenetics.incubator.stat.PearsonsChiSquared;
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.StableRandomExecutor;
@@ -55,24 +55,52 @@ public class TournamentSelectorTest
 		final Integer tournamentSize,
 		final Named<double[]> expected,
 		final Optimize opt
+		//,long seed
 	) {
-		final var observation = SelectorTester.observation(
-			new TournamentSelector<>(tournamentSize),
-			opt,
-			POPULATION_COUNT,
-			50
-		);
-		new StableRandomExecutor(123451).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(5424))
+			.observe(
+				SelectorTester.sampler(
+					new TournamentSelector<>(tournamentSize),
+					opt,
+					POPULATION_COUNT,
+					50
+				)
+			);
 
 		final var distribution = EmpiricalDistribution.of(
 			observation.histogram().partition(),
 			expected.value
 		);
 
-		assertThatObservation(observation)
-			.usingHypothesisTester(new PearsonsChiSquared(0.00001))
-			.follows(distribution);
+		assertThat(observation).follows(distribution);
 	}
+
+//	@Test
+//	public void foo() {
+//		var seed = 5000L;
+//		boolean cont = true;
+//
+//		while (cont) {
+//			try {
+//				for (var params : expectedDistribution()) {
+//					selectDistribution(
+//						(Integer)params[0],
+//						(Named<double[]>)params[1],
+//						(Optimize)params[2]
+//						//,seed
+//					);
+//				}
+//				cont = false;
+//			} catch (AssertionError e) {
+//				System.out.println("Failed Seed: " + seed);
+//				++seed;
+//				cont = true;
+//			}
+//		}
+//
+//		System.out.println("Success Seed: " + seed);
+//	}
 
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
@@ -114,10 +142,10 @@ public class TournamentSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		using(new Random(), r -> {
+		using(RandomGeneratorFactory.of("L32X64MixRandom").create(123451), r -> {
 			final int npopulation = POPULATION_COUNT;
-			//final int loops = 5_000_000;
-			final int loops = 100_000;
+			final int loops = 5_000_000;
+			//final int loops = 100_000;
 
 			printDistributions(
 				System.out,

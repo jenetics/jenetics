@@ -156,8 +156,7 @@ public final class Env implements Serializable  {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Env other &&
+		return obj instanceof Env other &&
 			_osName.equals(other._osName) &&
 			_osVersion.equals(other._osVersion) &&
 			_osArch.equals(other._osArch) &&

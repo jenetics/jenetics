@@ -40,7 +40,7 @@ import io.jenetics.util.Factory;
  * In this example, a point is considered as valid if it lies within the unit
  * circle.
  * {@snippet lang="java":
- * InvertibleCodec<double[], DoubleGene> codec = Codecs.ofVector(DoubleRange.of(-1, 1), 2);
+ * InvertibleCodec<double[], DoubleGene> codec = Codecs.ofVector(new DoubleRange(-1, 1), 2);
  * Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
  *     codec,
  *     p -> p[0]*p[0] + p[1]*p[1] <= 1

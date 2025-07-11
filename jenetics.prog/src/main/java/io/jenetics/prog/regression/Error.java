@@ -31,7 +31,6 @@ import io.jenetics.prog.op.Op;
  * This function calculates the <em>overall</em> error of a given program tree.
  * The error is calculated from the {@link LossFunction} and, if desired, the
  * program {@link Complexity}.
- *
  * {@snippet lang="java":
  * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
  * }
