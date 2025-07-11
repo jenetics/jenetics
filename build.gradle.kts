@@ -322,24 +322,10 @@ fun setupPublishing(project: Project) {
 		}
 		repositories {
 			maven {
-				url = if (version.toString().endsWith("SNAPSHOT")) {
-					uri(Maven.SNAPSHOT_URL)
-				} else {
-					uri(Maven.RELEASE_URL)
-				}
-
-				credentials {
-					username = if (extra.properties["nexus_username"] != null) {
-						extra.properties["nexus_username"] as String
-					} else {
-						"nexus_username"
-					}
-					password = if (extra.properties["nexus_password"] != null) {
-						extra.properties["nexus_password"] as String
-					} else {
-						"nexus_password"
-					}
-				}
+				url = if (version.toString().endsWith("SNAPSHOT"))
+						uri(layout.buildDirectory.dir("repos/releases"))
+					else
+						uri(layout.buildDirectory.dir("repos/snapshots"))
 			}
 		}
 
