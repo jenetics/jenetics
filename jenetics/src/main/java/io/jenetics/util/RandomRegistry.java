@@ -162,9 +162,9 @@ public final class RandomRegistry {
 				.create()
 		);
 
-	private static final Context<Supplier<RandomGenerator>>
+	private static final ScopedContext<Supplier<RandomGenerator>>
 		RANDOM =
-		new Context<>(DEFAULT_RANDOM_FACTORY);
+		new ScopedContext<>(DEFAULT_RANDOM_FACTORY);
 
 	private static Supplier<RandomGenerator>
 	toThreadLocalSupplier(final Supplier<? extends RandomGenerator> factory) {
@@ -264,7 +264,7 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(op);
 
-		Context.with(RANDOM.value(() -> random)).run(op);
+		ScopedContext.with(RANDOM.value(() -> random)).run(op);
 	}
 
 	/**
@@ -292,7 +292,7 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(op);
 
-		Context
+		ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
 			.run(op);
 	}
@@ -320,7 +320,7 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(op);
 
-		Context
+		ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
 			.run(op);
 	}
@@ -350,7 +350,7 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(consumer);
 
-		Context
+		ScopedContext
 			.with(RANDOM.value(() -> random))
 			.run(() -> consumer.accept(random));
 	}
@@ -381,7 +381,7 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(consumer);
 
-		Context
+		ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
 			.run(() -> consumer.accept((R)random()));
 	}
@@ -410,7 +410,7 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(consumer);
 
-		Context
+		ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
 			.run(() -> consumer.accept((R)random()));
 	}
@@ -444,7 +444,7 @@ public final class RandomRegistry {
 		requireNonNull(random);
 		requireNonNull(function);
 
-		return Context
+		return ScopedContext
 			.with(RANDOM.value(() -> random))
 			.call(() -> function.apply(random));
 	}
@@ -478,7 +478,7 @@ public final class RandomRegistry {
 		requireNonNull(factory);
 		requireNonNull(function);
 
-		return Context
+		return ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
 			.call(() -> function.apply((R)random()));
 	}
@@ -512,7 +512,7 @@ public final class RandomRegistry {
 		requireNonNull(supplier);
 		requireNonNull(function);
 
-		return Context
+		return ScopedContext
 			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
 			.call(() -> function.apply((R)random()));
 	}

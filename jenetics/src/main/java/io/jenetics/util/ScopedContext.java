@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since 2.0
  */
-final class Context<T> {
+final class ScopedContext<T> {
 
 	/**
 	 * Represents a value, associated with a context, but still not bound.
@@ -133,7 +133,7 @@ final class Context<T> {
 	 *
 	 * @param value the initial value of the context, may be {@code null}
 	 */
-	public Context(final T value) {
+	public ScopedContext(final T value) {
 		initial = value;
 		entry = new AtomicReference<>(initial);
 	}
@@ -141,7 +141,7 @@ final class Context<T> {
 	/**
 	 * Create a new context object with a {@code null} default value.
 	 */
-	public Context() {
+	public ScopedContext() {
 		this(null);
 	}
 
