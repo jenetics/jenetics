@@ -49,7 +49,7 @@ final class Context<T> {
 	 * @version !__version__!
 	 * @since !__version__!
 	 */
-	static final class Value<T> {
+	public static final class Value<T> {
 		private final ScopedValue<AtomicReference<T>> key;
 		private final T value;
 
@@ -66,7 +66,7 @@ final class Context<T> {
 		 *
 		 * @return the context value
 		 */
-		T get() {
+		public T get() {
 			return value;
 		}
 
@@ -87,7 +87,7 @@ final class Context<T> {
 	 * @version !__version__!
 	 * @since !__version__!
 	 */
-	static final class Runner {
+	public static final class Runner {
 		private final Carrier carrier;
 
 		private Runner(Carrier carrier) {
@@ -102,7 +102,7 @@ final class Context<T> {
 		 *
 		 * @param op the operation to run
 		 */
-		void run(Runnable op) {
+		public void run(Runnable op) {
 			carrier.run(op);
 		}
 
@@ -118,7 +118,7 @@ final class Context<T> {
 		 * @return the result
 		 * @throws X if {@code op} completes with an exception
 		 */
-		<R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
+		public <R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
 			return carrier.call(op);
 		}
 	}
@@ -133,7 +133,7 @@ final class Context<T> {
 	 *
 	 * @param value the initial value of the context, may be {@code null}
 	 */
-	Context(final T value) {
+	public Context(final T value) {
 		initial = value;
 		entry = new AtomicReference<>(initial);
 	}
@@ -141,7 +141,7 @@ final class Context<T> {
 	/**
 	 * Create a new context object with a {@code null} default value.
 	 */
-	Context() {
+	public Context() {
 		this(null);
 	}
 
@@ -152,7 +152,7 @@ final class Context<T> {
 	 * @param value the actual context value
 	 * @return a new (unbound) context value
 	 */
-	Value<T> value(final T value) {
+	public Value<T> value(final T value) {
 		return new Value<>(key, value);
 	}
 
@@ -165,7 +165,7 @@ final class Context<T> {
 	 *
 	 * @param value the new <em>global</em> context value.
 	 */
-	void set(final T value) {
+	public void set(final T value) {
 		entry().set(value);
 	}
 
@@ -175,14 +175,14 @@ final class Context<T> {
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
 	 */
-	T get() {
+	public T get() {
 		return entry().get();
 	}
 
 	/**
 	 * Reset the value of the <em>global</em> context to the default value.
 	 */
-	void reset() {
+	public void reset() {
 		set(initial);
 		entry.set(initial);
 	}
@@ -194,7 +194,7 @@ final class Context<T> {
 	 * @param values the values to bind to the contexts
 	 * @return a new runner with the bound context values
 	 */
-	static Runner with(final Value<?>... values) {
+	public static Runner with(final Value<?>... values) {
 		final Carrier carrier = Stream.of(values)
 			.reduce(
 				null,
