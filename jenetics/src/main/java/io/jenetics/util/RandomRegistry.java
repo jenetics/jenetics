@@ -112,7 +112,7 @@ import java.util.random.RandomGeneratorFactory;
  *         // Create a reproducible list of genotypes.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes =
- *             RandomRegistry.with(factory.create(123), _ ->
+ *             RandomRegistry.with(factory.create(123)).call(() ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -300,93 +300,6 @@ public final class RandomRegistry {
 			ScopedContext
 				.with(RANDOM.value(toThreadLocalSupplier(supplier)))
 		);
-	}
-
-	/**
-	 * Runs the operation code using the given {@code random} generator.
-	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * run(new Random(123), seq::shuffle);
-	 * }
-	 *
-	 * The example above shuffles the given integer {@code seq} <i>using</i> the
-	 * given {@code Random(123)} engine.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param random the PRNG used within the consumer
-	 * @param op the operation which is executed with the <i>scope</i> of
-	 *        the given {@code random} engine.
-	 * @param <R> the type of the random engine
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	@Deprecated(forRemoval = true, since = "9.0")
-	public static <R extends RandomGenerator> void
-	run(final R random, final Runnable op) {
-		requireNonNull(random);
-		requireNonNull(op);
-
-		ScopedContext.with(RANDOM.value(() -> random)).run(op);
-	}
-
-	/**
-	 * Run the operation code using the given {@code random} generator.
-	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * run(RandomGeneratorFactory.getDefault(), seq::shuffle);
-	 * }
-	 *
-	 * The example above shuffles the given integer {@code seq} <i>using</i> the
-	 * given {@link RandomGeneratorFactory#getDefault()} factory.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param factory the random generator factory used within the consumer
-	 * @param op the operation which is executed within the <i>scope</i> of
-	 *        the given random generator.
-	 * @param <R> the type of the random engine
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	@Deprecated(forRemoval = true, since = "9.0")
-	public static <R extends RandomGenerator> void run(
-		final RandomGeneratorFactory<? extends R> factory,
-		final Runnable op
-	) {
-		requireNonNull(factory);
-		requireNonNull(op);
-
-		ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
-			.run(op);
-	}
-
-	/**
-	 * Executes the consumer code using the given {@code random} generator
-	 * supplier.
-	 * {@snippet lang="java":
-	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * run(() -> new MyRandomGenerator(), seq::shuffle);
-	 * }
-	 *
-	 * @since !__version__!
-	 *
-	 * @param supplier the random generator supplier used within the consumer
-	 * @param op the operation which is executed within the <i>scope</i> of
-	 *        the given random generator.
-	 * @param <R> the type of the random engine
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	@Deprecated(forRemoval = true, since = "9.0")
-	public static <R extends RandomGenerator> void run(
-		final Supplier<? extends R> supplier,
-		final Runnable op
-	) {
-		requireNonNull(supplier);
-		requireNonNull(op);
-
-		ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
-			.run(op);
 	}
 
 	/**
