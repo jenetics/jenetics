@@ -151,6 +151,45 @@ import java.util.random.RandomGeneratorFactory;
  * @version !__version__!
  */
 public final class RandomRegistry {
+
+	/**
+	 * Runs code with a specifically random generator.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	public static final class Runner {
+		private final ScopedContext.Runner runner;
+
+		private Runner(ScopedContext.Runner runner) {
+			this.runner = requireNonNull(runner);
+		}
+
+		/**
+		 * Runs an operation with the specified random generator.
+		 *
+		 * @param op the operation to run
+		 */
+		public void run(Runnable op) {
+			runner.run(op);
+		}
+
+		/**
+		 * Calls a value-returning operation with the specified random generator.
+		 *
+		 * @param op the operation to run
+		 * @param <R> the type of the result of the operation
+		 * @param <X> type of the exception thrown by the operation
+		 * @return the result
+		 * @throws X if {@code op} completes with an exception
+		 */
+		public <R, X extends Throwable> R
+		call(ScopedValue.CallableOp<? extends R, X> op) throws X {
+			return runner.call(op);
+		}
+	}
+
 	private RandomRegistry() {
 	}
 
@@ -241,6 +280,28 @@ public final class RandomRegistry {
 		RANDOM.reset();
 	}
 
+
+	public static Runner with(final RandomGenerator random) {
+		requireNonNull(random);
+		return new Runner(ScopedContext.with(RANDOM.value(() -> random)));
+	}
+
+	public static  Runner with(final RandomGeneratorFactory<?> factory) {
+		requireNonNull(factory);
+		return new Runner(
+			ScopedContext
+				.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+		);
+	}
+
+	public static  Runner with(final Supplier<? extends RandomGenerator> supplier) {
+		requireNonNull(supplier);
+		return new Runner(
+			ScopedContext
+				.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+		);
+	}
+
 	/**
 	 * Runs the operation code using the given {@code random} generator.
 	 * {@snippet lang="java":
@@ -259,6 +320,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator> void
 	run(final R random, final Runnable op) {
 		requireNonNull(random);
@@ -285,6 +347,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator> void run(
 		final RandomGeneratorFactory<? extends R> factory,
 		final Runnable op
@@ -313,6 +376,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator> void run(
 		final Supplier<? extends R> supplier,
 		final Runnable op
@@ -343,6 +407,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator> void using(
 		final R random,
 		final Consumer<? super R> consumer
@@ -373,6 +438,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator> void using(
 		final RandomGeneratorFactory<? extends R> factory,
@@ -402,6 +468,7 @@ public final class RandomRegistry {
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator> void using(
 		final Supplier<? extends R> supplier,
@@ -437,6 +504,7 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator, T> T with(
 		final R random,
 		final Function<? super R, ? extends T> function
@@ -470,6 +538,7 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator, T> T with(
 		final RandomGeneratorFactory<? extends R> factory,
@@ -504,6 +573,7 @@ public final class RandomRegistry {
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
+	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
 	public static <R extends RandomGenerator, T> T with(
 		final Supplier<? extends R> supplier,

@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +34,7 @@ import io.jenetics.distassert.distribution.EmpiricalDistribution;
 import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
@@ -142,20 +142,22 @@ public class TournamentSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		using(RandomGeneratorFactory.of("L32X64MixRandom").create(123451), r -> {
-			final int npopulation = POPULATION_COUNT;
-			final int loops = 5_000_000;
-			//final int loops = 100_000;
+		RandomRegistry
+			.with(RandomGeneratorFactory.of("L32X64MixRandom").create(123451))
+			.run(() -> {
+				final int npopulation = POPULATION_COUNT;
+				final int loops = 5_000_000;
+				//final int loops = 100_000;
 
-			printDistributions(
-				System.out,
-				List.of(2, 3, 4, 5, 6, 7, 13, 23, 37),
-				TournamentSelector::new,
-				opt,
-				npopulation,
-				loops
-			);
-		});
+				printDistributions(
+					System.out,
+					List.of(2, 3, 4, 5, 6, 7, 13, 23, 37),
+					TournamentSelector::new,
+					opt,
+					npopulation,
+					loops
+				);
+			});
 	}
 
 

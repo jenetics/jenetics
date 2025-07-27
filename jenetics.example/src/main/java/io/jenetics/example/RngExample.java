@@ -54,13 +54,13 @@ public class RngExample {
 		// initial population. The original PRNG is restored after the 'with'
 		// block.
 		final List<Genotype<BitGene>> genotypes =
-			RandomRegistry.with(new Random(123), r -> {
-				assert RandomRegistry.random() == r;
-				return Genotype.of(BitChromosome.of(20, 0.15))
-					.instances()
-					.limit(50)
-					.toList();
-			});
+			RandomRegistry.with(new Random(123))
+				.call(() ->
+					Genotype.of(BitChromosome.of(20, 0.15))
+						.instances()
+						.limit(50)
+						.toList()
+				);
 
 		// The evolution process uses the global 'random' instance.
 		final Phenotype<BitGene, Integer> best = engine.stream(genotypes)

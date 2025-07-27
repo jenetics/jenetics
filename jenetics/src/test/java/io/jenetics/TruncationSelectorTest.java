@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +35,7 @@ import io.jenetics.internal.util.Named;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
@@ -121,7 +121,7 @@ public class TruncationSelectorTest
 
 	private static void writeDistributionData(final Optimize opt) {
 		final Random random = new Random();
-		using(random, r -> {
+		RandomRegistry.with(random).run(() -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
 			final int loops = 100_000;
