@@ -68,7 +68,7 @@ import java.util.function.Supplier;
  *
  * <p><b>Wrapping several closeable into one</b></p>
  * {@snippet lang = "java":
- * try (var __ = Releasable.of(c1, c2, c3)) {
+ * try (var _ = Releasable.of(c1, c2, c3)) {
  *     // ...
  * }
  *}
@@ -86,7 +86,7 @@ public final class Lifecycle {
 	/**
 	 * Runnable task/method, which might throw an exception {@code E}.
 	 *
-	 * @param <E> the exception which might be thrown
+	 * @param <E> the exception, which might be thrown
 	 */
 	@FunctionalInterface
 	public interface ThrowingRunnable<E extends Exception> {

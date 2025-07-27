@@ -111,8 +111,9 @@ import java.util.random.RandomGeneratorFactory;
  *     public static void main(final String[] args) {
  *         // Create a reproducible list of genotypes.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
- *         final List<Genotype<DoubleGene>> genotypes =
- *             RandomRegistry.with(factory.create(123)).call(() ->
+ *         final List<Genotype<DoubleGene>> genotypes = RandomRegistry
+ *             .with(factory.create(123))
+ *             .call(() ->
  *                 Genotype.of(DoubleChromosome.of(0, 10)).instances()
  *                     .limit(50)
  *                     .collect(toList())
@@ -248,8 +249,7 @@ public final class RandomRegistry {
 	 * @param factory the random generator factory
 	 * @throws NullPointerException if the {@code factory} object is {@code null}.
 	 */
-	public static <R extends RandomGenerator> void
-	random(final RandomGeneratorFactory<? extends R> factory) {
+	public static void random(final RandomGeneratorFactory<?> factory) {
 		requireNonNull(factory);
 		RANDOM.set(toThreadLocalSupplier(factory::create));
 	}
@@ -267,8 +267,7 @@ public final class RandomRegistry {
 	 * @param supplier the random generator supplier
 	 * @throws NullPointerException if the {@code supplier} object is {@code null}.
 	 */
-	public static <R extends RandomGenerator> void
-	random(final Supplier<? extends R> supplier) {
+	public static void random(final Supplier<? extends RandomGenerator> supplier) {
 		requireNonNull(supplier);
 		RANDOM.set(toThreadLocalSupplier(supplier));
 	}
@@ -319,6 +318,8 @@ public final class RandomRegistry {
 	 *        the given {@code random} engine.
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(RandomGenerator)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator> void using(
@@ -350,6 +351,8 @@ public final class RandomRegistry {
 	 *        the given random generator.
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(RandomGeneratorFactory)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
@@ -380,6 +383,8 @@ public final class RandomRegistry {
 	 *        the given random generator.
 	 * @param <R> the type of the random engine
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(Supplier)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
@@ -416,6 +421,8 @@ public final class RandomRegistry {
 	 * @param function the function to apply within the random scope
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(RandomGenerator)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	public static <R extends RandomGenerator, T> T with(
@@ -450,6 +457,8 @@ public final class RandomRegistry {
 	 * @param function the function to apply within the random scope
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(RandomGeneratorFactory)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
@@ -485,6 +494,8 @@ public final class RandomRegistry {
 	 * @param function the function to apply within the random scope
 	 * @return the object returned by the given function
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @deprecated Will be removed in a later version. Use
+	 *            {@link #with(Supplier)} instead.
 	 */
 	@Deprecated(forRemoval = true, since = "9.0")
 	@SuppressWarnings("unchecked")
