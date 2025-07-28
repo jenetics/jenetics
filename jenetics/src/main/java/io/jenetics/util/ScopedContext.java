@@ -79,50 +79,6 @@ final class ScopedContext<T> {
 		}
 	}
 
-	/**
-	 * Runs code with specifically bound context values. Is essentially a wrapper
-	 * around a {@link Carrier}.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
-	 */
-	public static final class Runner {
-		private final Carrier carrier;
-
-		private Runner(Carrier carrier) {
-			this.carrier = requireNonNull(carrier);
-		}
-
-		/**
-		 * Runs an operation with each context value in this mapping bound to
-		 * its value in the current thread.
-		 *
-		 * @see Carrier#run(Runnable)
-		 *
-		 * @param op the operation to run
-		 */
-		public void run(Runnable op) {
-			carrier.run(op);
-		}
-
-		/**
-		 * Calls a value-returning operation with each context value in this
-		 * mapping bound to its value in the current thread.
-		 *
-		 * @see Carrier#call(CallableOp)
-		 *
-		 * @param op the operation to run
-		 * @param <R> the type of the result of the operation
-		 * @param <X> type of the exception thrown by the operation
-		 * @return the result
-		 * @throws X if {@code op} completes with an exception
-		 */
-		public <R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
-			return carrier.call(op);
-		}
-	}
-
 	private final T initial;
 	private final AtomicReference<T> entry;
 	private final ScopedValue<AtomicReference<T>> key = ScopedValue.newInstance();
@@ -171,7 +127,7 @@ final class ScopedContext<T> {
 
 	/**
 	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link Runner}.
+	 * value, if called within a {@link ScopedRunner}.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
 	 */
@@ -194,7 +150,7 @@ final class ScopedContext<T> {
 	 * @param values the values to bind to the contexts
 	 * @return a new runner with the bound context values
 	 */
-	public static Runner with(final Value<?>... values) {
+	public static ScopedRunner with(final Value<?>... values) {
 		final Carrier carrier = Stream.of(values)
 			.reduce(
 				null,
@@ -202,7 +158,16 @@ final class ScopedContext<T> {
 				(_, _) -> { throw new IllegalStateException(); }
 			);
 
-		return new Runner(carrier);
+		return new ScopedRunner() {
+			@Override
+			public void run(Runnable op) {
+				carrier.run(op);
+			}
+			@Override
+			public <R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
+				return carrier.call(op);
+			}
+		};
 	}
 
 }
