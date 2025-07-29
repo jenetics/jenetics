@@ -32,10 +32,10 @@ import java.util.stream.Stream;
  * is bound to the context.
  * <p>
  * <b>Use a context value with its default</b>
- * {@snippet lang="java":
+ * {@snippet lang = "java":
  * // Create a scoped context with a default value.
- * static final ScopedContext<Random>
- *     RANDOM = new ScopedContext<>(new Random(123));
+ * static final ScopedVariable<Random>
+ *     RANDOM = new ScopedVariable<>(new Random(123));
  *
  *  // Context can be used without opening a scope. Using the default
  *  // value of the context.
@@ -43,13 +43,13 @@ import java.util.stream.Stream;
  * }
  * <p>
  * <b>Use a context value with a different, scoped value</b>
- * {@snippet lang="java":
+ * {@snippet lang = "java":
  * // Create a scoped context with a default value.
- * static final ScopedContext<Random>
- *     RANDOM = new ScopedContext<>(new Random(123));
+ * static final ScopedVariable<Random>
+ *     RANDOM = new ScopedVariable<>(new Random(123));
  *
  *  // Creating a random value with a different random instance with seed 456.
- *  final var value = ScopedContext
+ *  final var value = ScopedVariable
  *      .with(RANDOM.value(new Random(456)))
  *      .call(() -> RANDOM.get().nextDouble());
  * }
@@ -61,8 +61,8 @@ import java.util.stream.Stream;
  * }
  * <p>
  * <b>Changing the scoped value</b>
- * {@snippet lang="java":
- *  final var value = ScopedContext
+ * {@snippet lang = "java":
+ *  final var value = ScopedVariable
  *      .with(RANDOM.value(new Random(456)))
  *      .call(() -> {
  *           // Using the bound random generator.
@@ -81,7 +81,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ScopedContext<T> {
+public final class ScopedVariable<T> {
 
 	/**
 	 * Represents a value, associated with a context, but still not bound.
@@ -132,7 +132,7 @@ public final class ScopedContext<T> {
 	 *
 	 * @param value the initial value of the context, may be {@code null}
 	 */
-	public ScopedContext(final T value) {
+	public ScopedVariable(final T value) {
 		initial = value;
 		entry = new AtomicReference<>(initial);
 	}
@@ -140,7 +140,7 @@ public final class ScopedContext<T> {
 	/**
 	 * Create a new context object with a {@code null} default value.
 	 */
-	public ScopedContext() {
+	public ScopedVariable() {
 		this(null);
 	}
 

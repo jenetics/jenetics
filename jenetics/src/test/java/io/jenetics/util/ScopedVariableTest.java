@@ -26,10 +26,10 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ScopedContextTest {
+public class ScopedVariableTest {
 
-	private static final ScopedContext<String> USER = new ScopedContext<>("default_user");
-	private static final ScopedContext<String> TOKEN = new ScopedContext<>("default_token");
+	private static final ScopedVariable<String> USER = new ScopedVariable<>("default_user");
+	private static final ScopedVariable<String> TOKEN = new ScopedVariable<>("default_token");
 
 	@Test
 	public void with() {
@@ -39,7 +39,7 @@ public class ScopedContextTest {
 		USER.set("martin");
 		TOKEN.set("other_token");
 
-		ScopedContext.with(USER.value("otto"), TOKEN.value("3973hj2l34i92j"))
+		ScopedVariable.with(USER.value("otto"), TOKEN.value("3973hj2l34i92j"))
 			.run(() -> {
 				assertThat(USER.get()).isEqualTo("otto");
 				assertThat(TOKEN.get()).isEqualTo("3973hj2l34i92j");
