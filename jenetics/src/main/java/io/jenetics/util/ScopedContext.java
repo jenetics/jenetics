@@ -27,18 +27,61 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 /**
- * This class serves as wrapper around the {@link ScopedValue} implementation of
- * the JDK. It enriches the functionality, so it is possible to change the
- * context value within the same thread, without the need of opening a new
- * {@link ScopedValue#where(ScopedValue, Object)} scope.
+ * This class serves as wrapper around the {@link ScopedValue} implementation.
+ * It allows defining a <em>default</em> value, which is returned if no value
+ * is bound to the context.
+ * <p>
+ * <b>Use a context value with its default</b>
+ * {@snippet lang="java":
+ * // Create a scoped context with a default value.
+ * static final ScopedContext<Random>
+ *     RANDOM = new ScopedContext<>(new Random(123));
+ *
+ *  // Context can be used without opening a scope. Using the default
+ *  // value of the context.
+ *  final var value = RANDOM.get().nextDouble();
+ * }
+ * <p>
+ * <b>Use a context value with a different, scoped value</b>
+ * {@snippet lang="java":
+ * // Create a scoped context with a default value.
+ * static final ScopedContext<Random>
+ *     RANDOM = new ScopedContext<>(new Random(123));
+ *
+ *  // Creating a random value with a different random instance with seed 456.
+ *  final var value = ScopedContext
+ *      .with(RANDOM.value(new Random(456)))
+ *      .call(() -> RANDOM.get().nextDouble());
+ * }
+ * <p>
+ * <b>Changing the default value</b>
+ * {@snippet lang="java":
+ * // Create a scoped context with a default value.
+ * RANDOM.set(new Random(789));
+ * }
+ * <p>
+ * <b>Changing the scoped value</b>
+ * {@snippet lang="java":
+ *  final var value = ScopedContext
+ *      .with(RANDOM.value(new Random(456)))
+ *      .call(() -> {
+ *           // Using the bound random generator.
+ *           var value1 = RANDOM.get().nextDouble();
+ *
+ *           // Changing the value within this scope.
+ *           // This value is reset when the scope is closed.
+ *           RANDOM.set(new Random(321));
+ * 		     return RANDOM.get().nextDouble() + value1;
+ *       });
+ * }
  *
  * @see ScopedValue
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 2.0
+ * @since !__version__!
  */
-final class ScopedContext<T> {
+public final class ScopedContext<T> {
 
 	/**
 	 * Represents a value, associated with a context, but still not bound.
@@ -62,9 +105,9 @@ final class ScopedContext<T> {
 		}
 
 		/**
-		 * Return the context value.
+		 * Return the (unbound) context value.
 		 *
-		 * @return the context value
+		 * @return the (unbound) context value
 		 */
 		public T get() {
 			return value;
@@ -117,16 +160,26 @@ final class ScopedContext<T> {
 	}
 
 	/**
-	 * Set the {@code value} for the <em>global</em> scope of the context.
+	 * Return the initial value of {@code this} context.
 	 *
-	 * @param value the new <em>global</em> context value.
+	 * @return the initial context value
+	 */
+	public T initialValue() {
+		return initial;
+	}
+
+	/**
+	 * Set the {@code value} for the <em>current</em> scope of the context. This
+	 * might be <em>global</em> or <em>scoped</em>.
+	 *
+	 * @param value the new <em>current</em> scope value.
 	 */
 	public void set(final T value) {
 		entry().set(value);
 	}
 
 	/**
-	 * Return either the value of the <em>global</em> context, or the <em>scoped</em>
+	 * Return either the value of the <em>current</em> context, or the <em>scoped</em>
 	 * value, if called within a {@link ScopedRunner}.
 	 *
 	 * @return the context value, either <em>global</em> or <em>scoped</em>
@@ -136,10 +189,9 @@ final class ScopedContext<T> {
 	}
 
 	/**
-	 * Reset the value of the <em>global</em> context to the default value.
+	 * Reset the value of the <em>global</em> context to the initial value.
 	 */
 	public void reset() {
-		set(initial);
 		entry.set(initial);
 	}
 

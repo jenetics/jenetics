@@ -140,12 +140,8 @@ import java.util.random.RandomGeneratorFactory;
  *          com.foo.bar.MyJeneticsApp
  * }</pre>
  *
- * @implNote
- * This class uses the functionality of the {@link ScopedValue}.
- *
  * @see RandomGenerator
  * @see RandomGeneratorFactory
- * @see ScopedValue
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -156,21 +152,26 @@ public final class RandomRegistry {
 	private RandomRegistry() {
 	}
 
-	private static final Supplier<RandomGenerator>
+	private static final ThreadLocal<RandomGenerator>
 		DEFAULT_RANDOM_FACTORY =
-		toThreadLocalSupplier(() ->
+		toThreadLocal(() ->
 			RandomGeneratorFactory
 				.of(Env.defaultRandomGeneratorName)
 				.create()
 		);
 
-	private static final ScopedContext<Supplier<RandomGenerator>>
+	private static final ScopedContext<ThreadLocal<RandomGenerator>>
 		RANDOM =
 		new ScopedContext<>(DEFAULT_RANDOM_FACTORY);
 
-	private static Supplier<RandomGenerator>
-	toThreadLocalSupplier(final Supplier<? extends RandomGenerator> factory) {
-		return ThreadLocal.withInitial(factory)::get;
+	@SuppressWarnings("unchecked")
+	private static ThreadLocal<RandomGenerator>
+	toThreadLocal(final Supplier<? extends RandomGenerator> factory) {
+		if (factory instanceof ThreadLocal<?> tl) {
+			return (ThreadLocal<RandomGenerator>)tl;
+		} else {
+			return ThreadLocal.withInitial(factory);
+		}
 	}
 
 	/**
@@ -199,7 +200,7 @@ public final class RandomRegistry {
 	 */
 	public static void random(final RandomGenerator random) {
 		requireNonNull(random);
-		RANDOM.set(() -> random);
+		RANDOM.set(toThreadLocal(() -> random));
 	}
 
 	/**
@@ -213,7 +214,7 @@ public final class RandomRegistry {
 	 */
 	public static void random(final RandomGeneratorFactory<?> factory) {
 		requireNonNull(factory);
-		RANDOM.set(toThreadLocalSupplier(factory::create));
+		RANDOM.set(toThreadLocal(factory::create));
 	}
 
 	/**
@@ -231,7 +232,7 @@ public final class RandomRegistry {
 	 */
 	public static void random(final Supplier<? extends RandomGenerator> supplier) {
 		requireNonNull(supplier);
-		RANDOM.set(toThreadLocalSupplier(supplier));
+		RANDOM.set(toThreadLocal(supplier));
 	}
 
 	/**
@@ -242,19 +243,46 @@ public final class RandomRegistry {
 	}
 
 
+	/**
+	 * Return a scoped runner with the given {@code random} generator bound to
+	 * the {@link RandomRegistry}.
+	 *
+	 * @param random the {@code random} generator to bind
+	 * @return a new scoped runner object
+	 */
 	public static ScopedRunner with(final RandomGenerator random) {
 		requireNonNull(random);
-		return ScopedContext.with(RANDOM.value(() -> random));
+		return ScopedContext.with(RANDOM.value(toThreadLocal(() -> random)));
 	}
 
-	public static  ScopedRunner with(final RandomGeneratorFactory<?> factory) {
+	/**
+	 * Return a scoped runner with the given random generator {@code factory}
+	 * bound to the {@link RandomRegistry}. Every thread spawned in the returned
+	 * runner will use a new random generator, created by the factory.
+	 *
+	 * @param factory the random generator factory used for creating the desired
+	 *        random generator. Every thread gets its own random generator when
+	 *        calling {@link RandomRegistry#random()}.
+	 * @return a new scoped runner object
+	 */
+	public static ScopedRunner with(final RandomGeneratorFactory<?> factory) {
 		requireNonNull(factory);
-		return ScopedContext.with(RANDOM.value(toThreadLocalSupplier(factory::create)));
+		return ScopedContext.with(RANDOM.value(toThreadLocal(factory::create)));
 	}
 
-	public static  ScopedRunner with(final Supplier<? extends RandomGenerator> supplier) {
+	/**
+	 * Return a scoped runner with the given random generator {@code supplier}
+	 * bound to the {@link RandomRegistry}. Every thread spawned in the returned
+	 * runner will use a new random generator, returned by the supplier.
+	 *
+	 * @param factory the random generator factory used for creating the desired
+	 *        random generator. Every thread gets its own random generator when
+	 *        calling {@link RandomRegistry#random()}.
+	 * @return a new scoped runner object
+	 */
+	public static ScopedRunner with(final Supplier<? extends RandomGenerator> supplier) {
 		requireNonNull(supplier);
-		return ScopedContext.with(RANDOM.value(toThreadLocalSupplier(supplier)));
+		return ScopedContext.with(RANDOM.value(toThreadLocal(supplier)));
 	}
 
 	/**
@@ -286,7 +314,7 @@ public final class RandomRegistry {
 		requireNonNull(consumer);
 
 		ScopedContext
-			.with(RANDOM.value(() -> random))
+			.with(RANDOM.value(toThreadLocal(() -> random)))
 			.run(() -> consumer.accept(random));
 	}
 
@@ -320,7 +348,7 @@ public final class RandomRegistry {
 		requireNonNull(consumer);
 
 		ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+			.with(RANDOM.value(toThreadLocal(factory::create)))
 			.run(() -> consumer.accept((R)random()));
 	}
 
@@ -352,7 +380,7 @@ public final class RandomRegistry {
 		requireNonNull(consumer);
 
 		ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+			.with(RANDOM.value(toThreadLocal(supplier)))
 			.run(() -> consumer.accept((R)random()));
 	}
 
@@ -389,7 +417,7 @@ public final class RandomRegistry {
 		requireNonNull(function);
 
 		return ScopedContext
-			.with(RANDOM.value(() -> random))
+			.with(RANDOM.value(toThreadLocal(() -> random)))
 			.call(() -> function.apply(random));
 	}
 
@@ -426,7 +454,7 @@ public final class RandomRegistry {
 		requireNonNull(function);
 
 		return ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(factory::create)))
+			.with(RANDOM.value(toThreadLocal(factory::create)))
 			.call(() -> function.apply((R)random()));
 	}
 
@@ -463,12 +491,11 @@ public final class RandomRegistry {
 		requireNonNull(function);
 
 		return ScopedContext
-			.with(RANDOM.value(toThreadLocalSupplier(supplier)))
+			.with(RANDOM.value(toThreadLocal(supplier)))
 			.call(() -> function.apply((R)random()));
 	}
 
-	private static final class Env {
-
+	private record Env() {
 		private static final String defaultRandomGeneratorName = get();
 
 		private static String get() {
@@ -478,9 +505,9 @@ public final class RandomRegistry {
 		}
 
 		private static Optional<String> getConfigured() {
-			return Optional.ofNullable(
-				System.getProperty("io.jenetics.util.defaultRandomGenerator")
-			);
+			return Optional.ofNullable(System.getProperty(
+				"io.jenetics.util.defaultRandomGenerator"
+			));
 		}
 
 		private static Optional<String> getDefault() {
