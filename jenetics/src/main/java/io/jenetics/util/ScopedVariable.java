@@ -84,6 +84,56 @@ import java.util.stream.Stream;
 public final class ScopedVariable<T> {
 
 	/**
+	 * Runs code with specifically bound context values. Its extracts the
+	 * {@link Carrier#run(Runnable)} and
+	 * {@link Carrier#call(CallableOp)} method
+	 * into an interface.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	public static final class ScopedRunner {
+
+		private final Carrier carrier;
+
+		private ScopedRunner(final Carrier carrier) {
+			this.carrier = requireNonNull(carrier);
+		}
+
+		/**
+		 * Runs an operation with each context value in this mapping bound to
+		 * its value in the current thread.
+		 *
+		 * @see Carrier#run(Runnable)
+		 *
+		 * @param op the operation to run
+		 */
+		public void run(Runnable op) {
+			carrier.run(op);
+		}
+
+		/**
+		 * Calls a value-returning operation with each context value in this
+		 * mapping bound to its value in the current thread.
+		 *
+		 * @see Carrier#call(CallableOp)
+		 *
+		 * @param op the operation to run
+		 * @param <R> the type of the result of the operation
+		 * @param <X> type of the exception thrown by the operation
+		 * @return the result
+		 * @throws X if {@code op} completes with an exception
+		 */
+		public <R, X extends Throwable> R call(CallableOp<? extends R, X> op)
+			throws X
+		{
+			return carrier.call(op);
+		}
+
+	}
+
+	/**
 	 * Represents a value, associated with a context, but still not bound.
 	 *
 	 * @param <T> the value type
@@ -210,55 +260,8 @@ public final class ScopedVariable<T> {
 				(_, _) -> { throw new IllegalStateException(); }
 			);
 
-		return new ScopedRunner() {
-			@Override
-			public void run(Runnable op) {
-				carrier.run(op);
-			}
-			@Override
-			public <R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X {
-				return carrier.call(op);
-			}
-		};
+		return new ScopedRunner(carrier);
 	}
 
-	/**
-	 * Runs code with specifically bound context values. Its extracts the
-	 * {@link Carrier#run(Runnable)} and
-	 * {@link Carrier#call(CallableOp)} method
-	 * into an interface.
-	 *
-	 * @see Carrier
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
-	 */
-	public interface ScopedRunner {
 
-		/**
-		 * Runs an operation with each context value in this mapping bound to
-		 * its value in the current thread.
-		 *
-		 * @see Carrier#run(Runnable)
-		 *
-		 * @param op the operation to run
-		 */
-		void run(Runnable op);
-
-		/**
-		 * Calls a value-returning operation with each context value in this
-		 * mapping bound to its value in the current thread.
-		 *
-		 * @see Carrier#call(CallableOp)
-		 *
-		 * @param op the operation to run
-		 * @param <R> the type of the result of the operation
-		 * @param <X> type of the exception thrown by the operation
-		 * @return the result
-		 * @throws X if {@code op} completes with an exception
-		 */
-		<R, X extends Throwable> R call(CallableOp<? extends R, X> op) throws X;
-
-	}
 }
