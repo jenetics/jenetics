@@ -28,8 +28,8 @@ import org.testng.annotations.Test;
  */
 public class ScopedVariableTest {
 
-	private static final ScopedVariable<String> USER = new ScopedVariable<>("default_user");
-	private static final ScopedVariable<String> TOKEN = new ScopedVariable<>("default_token");
+	private static final ScopedVariable<String> USER = ScopedVariable.of("default_user");
+	private static final ScopedVariable<String> TOKEN = ScopedVariable.of("default_token");
 
 	@Test
 	public void with() {

@@ -22,6 +22,8 @@ package io.jenetics.util;
 import java.util.stream.Stream;
 
 /**
+ * Generic, functional factory interface.
+ *
  * @param <T> the object type this factory creates.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

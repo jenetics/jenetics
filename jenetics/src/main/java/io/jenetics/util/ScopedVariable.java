@@ -23,46 +23,44 @@ import static java.util.Objects.requireNonNull;
 
 import java.lang.ScopedValue.CallableOp;
 import java.lang.ScopedValue.Carrier;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 /**
  * This class serves as wrapper around the {@link ScopedValue} implementation.
- * It allows defining a <em>default</em> value, which is returned if no value
- * is bound to the context.
+ * It allows defining a <em>initial</em> value, which is returned if no value
+ * is bound to the scope.
  * <p>
- * <b>Use a context value with its default</b>
+ * <b>Use a scoped variable with its initial value</b>
  * {@snippet lang = "java":
  * // Create a scoped context with a default value.
- * static final ScopedVariable<Random>
- *     RANDOM = new ScopedVariable<>(new Random(123));
+ * static final ScopedVariable<Random> RANDOM = ScopedVariable.of(new Random(123));
  *
- *  // Context can be used without opening a scope. Using the default
- *  // value of the context.
- *  final var value = RANDOM.get().nextDouble();
+ * // Variable can be used without opening a scope. Using the initial value.
+ * final var value = RANDOM.get().nextDouble();
  * }
  * <p>
- * <b>Use a context value with a different, scoped value</b>
+ * <b>Use a scoped variable with a different, scoped, value</b>
  * {@snippet lang = "java":
  * // Create a scoped context with a default value.
- * static final ScopedVariable<Random>
- *     RANDOM = new ScopedVariable<>(new Random(123));
+ * static final ScopedVariable<Random> RANDOM = ScopedVariable.of(new Random(123));
  *
- *  // Creating a random value with a different random instance with seed 456.
- *  final var value = ScopedVariable
+ * // Creating a random value with a different random instance with seed 456.
+ * final var value = ScopedVariable
  *      .with(RANDOM.value(new Random(456)))
  *      .call(() -> RANDOM.get().nextDouble());
  * }
  * <p>
- * <b>Changing the default value</b>
+ * <b>Changing the initial value</b>
  * {@snippet lang="java":
- * // Create a scoped context with a default value.
+ * // Change the value of the scoped variable.
  * RANDOM.set(new Random(789));
  * }
  * <p>
- * <b>Changing the scoped value</b>
+ * <b>Changing the scoped variable</b>
  * {@snippet lang = "java":
- *  final var value = ScopedVariable
+ * final var value = ScopedVariable
  *      .with(RANDOM.value(new Random(456)))
  *      .call(() -> {
  *           // Using the bound random generator.
@@ -71,7 +69,7 @@ import java.util.stream.Stream;
  *           // Changing the value within this scope.
  *           // This value is reset when the scope is closed.
  *           RANDOM.set(new Random(321));
- * 		     return RANDOM.get().nextDouble() + value1;
+ *           return RANDOM.get().nextDouble() + value1;
  *       });
  * }
  *
@@ -81,10 +79,10 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ScopedVariable<T> {
+final class ScopedVariable<T> {
 
 	/**
-	 * Runs code with specifically bound context values. Its extracts the
+	 * Runs code with specifically bound scoped value. Its extracts the
 	 * {@link Carrier#run(Runnable)} and
 	 * {@link Carrier#call(CallableOp)} method
 	 * into an interface.
@@ -93,16 +91,16 @@ public final class ScopedVariable<T> {
 	 * @version !__version__!
 	 * @since !__version__!
 	 */
-	public static final class ScopedRunner {
+	public static final class Runner {
 
 		private final Carrier carrier;
 
-		private ScopedRunner(final Carrier carrier) {
+		private Runner(final Carrier carrier) {
 			this.carrier = requireNonNull(carrier);
 		}
 
 		/**
-		 * Runs an operation with each context value in this mapping bound to
+		 * Runs an operation with each scoped value in this mapping bound to
 		 * its value in the current thread.
 		 *
 		 * @see Carrier#run(Runnable)
@@ -114,7 +112,7 @@ public final class ScopedVariable<T> {
 		}
 
 		/**
-		 * Calls a value-returning operation with each context value in this
+		 * Calls a value-returning operation with each scoped value in this
 		 * mapping bound to its value in the current thread.
 		 *
 		 * @see Carrier#call(CallableOp)
@@ -134,7 +132,7 @@ public final class ScopedVariable<T> {
 	}
 
 	/**
-	 * Represents a value, associated with a context, but still not bound.
+	 * Represents a value, associated with a scope, but still not bound.
 	 *
 	 * @param <T> the value type
 	 *
@@ -155,9 +153,9 @@ public final class ScopedVariable<T> {
 		}
 
 		/**
-		 * Return the (unbound) context value.
+		 * Return the (unbound) scoped value.
 		 *
-		 * @return the (unbound) context value
+		 * @return the (unbound) scoped value
 		 */
 		public T get() {
 			return value;
@@ -177,29 +175,21 @@ public final class ScopedVariable<T> {
 	private final ScopedValue<AtomicReference<T>> key = ScopedValue.newInstance();
 
 	/**
-	 * Create a new <em>context</em> object with the given default value. The
-	 * given {@code value} is the initial value of the <em>global</em> context.
+	 * Create a new scoped variable with the given initial value.
 	 *
-	 * @param value the initial value of the context, may be {@code null}
+	 * @param value the initial value of the scope, may be {@code null}
 	 */
-	public ScopedVariable(final T value) {
-		initial = value;
+	private ScopedVariable(final T initial) {
+		this.initial = initial;
 		entry = new AtomicReference<>(initial);
 	}
 
 	/**
-	 * Create a new context object with a {@code null} default value.
-	 */
-	public ScopedVariable() {
-		this(null);
-	}
-
-	/**
-	 * Create a context value, which can be bound to {@code this} context at a
+	 * Create a scoped value, which can be bound to {@code this} scope at a
 	 * later time.
 	 *
-	 * @param value the actual context value
-	 * @return a new (unbound) context value
+	 * @param value the scoped value
+	 * @return a new (unbound) scoped value
 	 */
 	public Value<T> value(final T value) {
 		return new Value<>(key, value);
@@ -210,16 +200,16 @@ public final class ScopedVariable<T> {
 	}
 
 	/**
-	 * Return the initial value of {@code this} context.
+	 * Return the initial value of {@code this} variable.
 	 *
-	 * @return the initial context value
+	 * @return the initially scoped value
 	 */
-	public T initialValue() {
+	public T initial() {
 		return initial;
 	}
 
 	/**
-	 * Set the {@code value} for the <em>current</em> scope of the context. This
+	 * Set the {@code value} for the <em>current</em> scope. This
 	 * might be <em>global</em> or <em>scoped</em>.
 	 *
 	 * @param value the new <em>current</em> scope value.
@@ -229,17 +219,17 @@ public final class ScopedVariable<T> {
 	}
 
 	/**
-	 * Return either the value of the <em>current</em> context, or the <em>scoped</em>
-	 * value, if called within a {@link ScopedRunner}.
+	 * Return either the value of the <em>current</em> scope, or the <em>scoped</em>
+	 * value, if called within a {@link Runner}.
 	 *
-	 * @return the context value, either <em>global</em> or <em>scoped</em>
+	 * @return the scoped value
 	 */
 	public T get() {
 		return entry().get();
 	}
 
 	/**
-	 * Reset the value of the <em>global</em> context to the initial value.
+	 * Reset the value of the <em>global</em> scope to the initial value.
 	 */
 	public void reset() {
 		entry.set(initial);
@@ -248,11 +238,34 @@ public final class ScopedVariable<T> {
 	/**
 	 * Returns a new runner, which allows executing code with the given bound
 	 * values.
+	 * {@snippet lang = "java":
+	 * static final ScopedVariable<String> USER = ScopedVariable.of("initial_user");
+	 * static final ScopedVariable<String> TOKEN = ScopedVariable.of("initial_token");
 	 *
-	 * @param values the values to bind to the contexts
-	 * @return a new runner with the bound context values
+	 * assert USER.get().equals("initial_user");
+	 * assert TOKEN.get().equals("initial_token");
+	 *
+	 * ScopedVariable
+	 *     .with(USER.value("otto"), TOKEN.value("3973hj2l34i92j"))
+	 *     .run(() -> {
+	 *          assert USER.get().equals("otto");
+	 *          assert TOKEN.get().equals("3973hj2l34i92j");
+	 *     });
+	 *
+	 * assert USER.get().equals("initial_user");
+	 * assert TOKEN.get().equals("initial_token");
+	 * }
+	 *
+	 * @param values the values to bind to the scope
+	 * @return a new runner with the bound scoped-values
+	 * @throws IllegalArgumentException if the {@code values} array is empty
 	 */
-	public static ScopedRunner with(final Value<?>... values) {
+	public static Runner with(final Value<?>... values) {
+		if (values.length == 0) {
+			throw new IllegalArgumentException("No values specified.");
+		}
+		Stream.of(values).forEach(Objects::requireNonNull);
+
 		final Carrier carrier = Stream.of(values)
 			.reduce(
 				null,
@@ -260,8 +273,17 @@ public final class ScopedVariable<T> {
 				(_, _) -> { throw new IllegalStateException(); }
 			);
 
-		return new ScopedRunner(carrier);
+		return new Runner(carrier);
 	}
 
+	/**
+	 * Create a new scoped variable with the given initial value.
+	 *
+	 * @param initial the initial value of the scope, may be {@code null}
+	 * @return a new scoped variable with the given default value
+	 */
+	public static <T> ScopedVariable<T> of(final T initial) {
+		return new ScopedVariable<T>(initial);
+	}
 
 }

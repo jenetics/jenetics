@@ -149,6 +149,48 @@ import java.util.random.RandomGeneratorFactory;
  */
 public final class RandomRegistry {
 
+	/**
+	 * Runs code with specifically bound random generator.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	public static final class Runner {
+
+		private final ScopedVariable.Runner runner;
+
+		private Runner(final ScopedVariable.Runner runner) {
+			this.runner = requireNonNull(runner);
+		}
+
+		/**
+		 * Runs an operation with each scoped value in this mapping bound to
+		 * its value in the current thread.
+		 *
+		 * @param op the operation to run
+		 */
+		public void run(Runnable op) {
+			runner.run(op);
+		}
+
+		/**
+		 * Calls a value-returning operation with each scoped random generator.
+		 *
+		 * @param op the operation to run
+		 * @param <R> the type of the result of the operation
+		 * @param <X> type of the exception thrown by the operation
+		 * @return the result
+		 * @throws X if {@code op} completes with an exception
+		 */
+		public <R, X extends Throwable> R call(ScopedValue.CallableOp<? extends R, X> op)
+			throws X
+		{
+			return runner.call(op);
+		}
+
+	}
+
 	private RandomRegistry() {
 	}
 
@@ -162,7 +204,7 @@ public final class RandomRegistry {
 
 	private static final ScopedVariable<ThreadLocal<RandomGenerator>>
 		RANDOM =
-		new ScopedVariable<>(DEFAULT_RANDOM_FACTORY);
+		ScopedVariable.of(DEFAULT_RANDOM_FACTORY);
 
 	@SuppressWarnings("unchecked")
 	private static ThreadLocal<RandomGenerator>
@@ -250,9 +292,11 @@ public final class RandomRegistry {
 	 * @param random the {@code random} generator to bind
 	 * @return a new scoped runner object
 	 */
-	public static ScopedVariable.ScopedRunner with(final RandomGenerator random) {
+	public static Runner with(final RandomGenerator random) {
 		requireNonNull(random);
-		return ScopedVariable.with(RANDOM.value(toThreadLocal(() -> random)));
+		return new Runner(
+			ScopedVariable.with(RANDOM.value(toThreadLocal(() -> random)))
+		);
 	}
 
 	/**
@@ -265,9 +309,11 @@ public final class RandomRegistry {
 	 *        calling {@link RandomRegistry#random()}.
 	 * @return a new scoped runner object
 	 */
-	public static ScopedVariable.ScopedRunner with(final RandomGeneratorFactory<?> factory) {
+	public static Runner with(final RandomGeneratorFactory<?> factory) {
 		requireNonNull(factory);
-		return ScopedVariable.with(RANDOM.value(toThreadLocal(factory::create)));
+		return new Runner(
+			ScopedVariable.with(RANDOM.value(toThreadLocal(factory::create)))
+		);
 	}
 
 	/**
@@ -275,14 +321,17 @@ public final class RandomRegistry {
 	 * bound to the {@link RandomRegistry}. Every thread spawned in the returned
 	 * runner will use a new random generator, returned by the supplier.
 	 *
-	 * @param factory the random generator factory used for creating the desired
+	 * @param supplier the random generator supplier used for creating the desired
 	 *        random generator. Every thread gets its own random generator when
 	 *        calling {@link RandomRegistry#random()}.
 	 * @return a new scoped runner object
 	 */
-	public static ScopedVariable.ScopedRunner with(final Supplier<? extends RandomGenerator> supplier) {
+	public static Runner
+	with(final Supplier<? extends RandomGenerator> supplier) {
 		requireNonNull(supplier);
-		return ScopedVariable.with(RANDOM.value(toThreadLocal(supplier)));
+		return new Runner(
+			ScopedVariable.with(RANDOM.value(toThreadLocal(supplier)))
+		);
 	}
 
 	/**
