@@ -250,7 +250,7 @@ public final class RandomRegistry {
 	 * @param random the {@code random} generator to bind
 	 * @return a new scoped runner object
 	 */
-	public static ScopedRunner with(final RandomGenerator random) {
+	public static ScopedVariable.ScopedRunner with(final RandomGenerator random) {
 		requireNonNull(random);
 		return ScopedVariable.with(RANDOM.value(toThreadLocal(() -> random)));
 	}
@@ -265,7 +265,7 @@ public final class RandomRegistry {
 	 *        calling {@link RandomRegistry#random()}.
 	 * @return a new scoped runner object
 	 */
-	public static ScopedRunner with(final RandomGeneratorFactory<?> factory) {
+	public static ScopedVariable.ScopedRunner with(final RandomGeneratorFactory<?> factory) {
 		requireNonNull(factory);
 		return ScopedVariable.with(RANDOM.value(toThreadLocal(factory::create)));
 	}
@@ -280,7 +280,7 @@ public final class RandomRegistry {
 	 *        calling {@link RandomRegistry#random()}.
 	 * @return a new scoped runner object
 	 */
-	public static ScopedRunner with(final Supplier<? extends RandomGenerator> supplier) {
+	public static ScopedVariable.ScopedRunner with(final Supplier<? extends RandomGenerator> supplier) {
 		requireNonNull(supplier);
 		return ScopedVariable.with(RANDOM.value(toThreadLocal(supplier)));
 	}
