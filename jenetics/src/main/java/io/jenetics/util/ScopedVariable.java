@@ -177,7 +177,7 @@ final class ScopedVariable<T> {
 	/**
 	 * Create a new scoped variable with the given initial value.
 	 *
-	 * @param value the initial value of the scope, may be {@code null}
+	 * @param initial the initial value of the scope, may be {@code null}
 	 */
 	private ScopedVariable(final T initial) {
 		this.initial = initial;
