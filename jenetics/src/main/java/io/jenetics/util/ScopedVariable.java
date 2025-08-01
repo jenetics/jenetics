@@ -76,8 +76,8 @@ import java.util.stream.Stream;
  * @see ScopedValue
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 9.0
+ * @since 9.0
  */
 final class ScopedVariable<T> {
 
@@ -88,8 +88,8 @@ final class ScopedVariable<T> {
 	 * into an interface.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 9.0
+	 * @since 9.0
 	 */
 	public static final class Runner {
 
@@ -137,8 +137,8 @@ final class ScopedVariable<T> {
 	 * @param <T> the value type
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 9.0
+	 * @since 9.0
 	 */
 	public static final class Value<T> {
 		private final ScopedValue<AtomicReference<T>> key;

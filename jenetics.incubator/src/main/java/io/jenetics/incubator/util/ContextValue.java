@@ -21,8 +21,8 @@ package io.jenetics.incubator.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 9.0
+ * @since 9.0
  */
 public interface ContextValue<T> {
 	T get();

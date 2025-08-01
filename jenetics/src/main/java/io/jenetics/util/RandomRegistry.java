@@ -145,7 +145,7 @@ import java.util.random.RandomGeneratorFactory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 9.0
  */
 public final class RandomRegistry {
 
@@ -153,8 +153,8 @@ public final class RandomRegistry {
 	 * Runs code with specifically bound random generator.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 9.0
+	 * @since 9.0
 	 */
 	public static final class Runner {
 

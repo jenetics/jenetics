@@ -741,7 +741,7 @@ public final class Cfg<T> {
 	 * Maps the values of the terminal symbols from type {@code T} to type
 	 * {@code A}.
 	 *
-	 * @since !__version__!
+	 * @since 9.0
 	 *
 	 * @param mapper the mapper function
 	 * @param <A> the new value type of the terminal symbols
@@ -967,7 +967,7 @@ public final class Cfg<T> {
 	 * Factory method for creating a terminal symbol with the given
 	 * {@code name}.
 	 *
-	 * @since !__version__!
+	 * @since 9.0
 	 *
 	 * @param value the value of the terminal symbol
 	 * @return a new terminal symbol
