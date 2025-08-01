@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 8.3
+ * @version !__version__!
  */
 plugins {
 	base
@@ -32,7 +32,6 @@ plugins {
 }
 
 rootProject.version = providers.gradleProperty("jenetics.version").get()
-
 
 alljavadoc {
 	modules.set(listOf(
@@ -92,21 +91,32 @@ allprojects {
 		mavenCentral()
 	}
 
-	tasks.withType<JavaCompile>().configureEach {
-		options.compilerArgs.add("--enable-preview")
+	// Enable preview features. ////////////////////////////////////////////////
+	val preview = providers.gradleProperty("enablePreview")
+		.map { v -> "true".equals(v, true) }
+		.orElse(false).get()
+	if (preview) {
+		tasks.withType<JavaCompile>().configureEach {
+			options.compilerArgs.add("--enable-preview")
+		}
+		tasks.withType<Test>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<JavaExec>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<Javadoc>().configureEach {
+			val opt = options as CoreJavadocOptions
+			opt.addStringOption("-release", "24")
+			opt.addBooleanOption("-enable-preview", true)
+		}
 	}
-
-	tasks.withType<Test>().configureEach {
-		jvmArgs("--enable-preview")
-	}
-
-	tasks.withType<JavaExec>().configureEach {
-		jvmArgs("--enable-preview")
-	}
+	////////////////////////////////////////////////////////////////////////////
 
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
+
 }
 
 subprojects {
@@ -117,7 +127,6 @@ subprojects {
 	}
 
 	plugins.withType<JavaPlugin> {
-
 		configure<JavaPluginExtension> {
 			modularity.inferModulePath = true
 

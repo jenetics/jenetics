@@ -19,8 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.util.RandomRegistry.using;
-
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -30,6 +28,7 @@ import org.testng.annotations.Test;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,7 +47,7 @@ public class UniformCrossoverTest extends AltererTester {
 		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of("abcdefghij"));
 
 		final int rv1 = 12;
-		using(new Random(10), r -> {
+		RandomRegistry.with(new Random(10)).run(() -> {
 			final UniformCrossover<CharacterGene, Double>
 				crossover = new UniformCrossover<>(0.5, 0.5);
 
@@ -70,7 +69,7 @@ public class UniformCrossoverTest extends AltererTester {
 		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of("abcdefghij"));
 
 		final int rv1 = 12;
-		using(new Random(10), r -> {
+		RandomRegistry.with(new Random(10)).run(() -> {
 			final UniformCrossover<CharacterGene, Double>
 				crossover = new UniformCrossover<>(0.5, 0.5);
 

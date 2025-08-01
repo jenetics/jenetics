@@ -35,16 +35,17 @@ import java.util.stream.IntStream;
  * @version 7.0
  */
 public final class Randoms {
-	private Randoms() {}
+	private Randoms() {
+	}
 
 	public static byte nextByte(final RandomGenerator random) {
 		return (byte)random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
 	public static char nextChar(final RandomGenerator random) {
-		record Limits() {
-			private static final int LEFT = '0';
-			private static final int RIGHT = 'z' + 1;
+		final class Limits {
+			static final int LEFT = '0';
+			static final int RIGHT = 'z' + 1;
 		}
 
 		char c = '\0';

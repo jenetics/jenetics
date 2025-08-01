@@ -17,24 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
-
-import static java.util.Objects.requireNonNull;
-
-import java.util.concurrent.Executor;
-import java.util.random.RandomGeneratorFactory;
+package io.jenetics.incubator.util;
 
 /**
- * Helper class for making reproducible randomized tests.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public record StableRandomExecutor(long seed) implements Executor {
-	@Override
-	public void execute(Runnable command) {
-		requireNonNull(command);
-		RandomRegistry
-			.with(RandomGeneratorFactory.of("L32X64MixRandom").create(seed))
-			.run(command);
-	}
+public interface ContextValue<T> {
+	T get();
+	void set(T value);
+	void reset();
 }
+
+final class Context {
+	static final ContextValue<String> USER = null;
+}
+
