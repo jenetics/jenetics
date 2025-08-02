@@ -49,9 +49,9 @@ dependencies {
 //	implementation(libs.jakarta.validation.api)
 	implementation(libs.swagger.models)
 	implementation(libs.swagger.parser)
+	implementation(libs.codemodel)
 
 
-	testImplementation(libs.codemodel)
 	testImplementation(libs.assertj.core)
 	testImplementation(libs.commons.numbers.combinatorics)
 	testImplementation(libs.commons.numbers.gamma)

@@ -39,6 +39,7 @@ module io.jenetics.incubator {
 	requires org.apache.commons.statistics.distribution;
 //	requires org.openapitools.jackson.nullable;
     requires org.apache.commons.numbers.gamma;
+	requires com.sun.codemodel;
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;
 
