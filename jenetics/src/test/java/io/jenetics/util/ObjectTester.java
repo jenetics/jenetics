@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static io.jenetics.util.MSeq.toMSeq;
-import static io.jenetics.util.RandomRegistry.with;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -39,7 +38,9 @@ public abstract class ObjectTester<T> {
 
 	protected MSeq<T> newEqualObjects(final int length) {
 		return Stream
-			.generate(() -> with(new Random(589), r -> factory().newInstance()))
+			.generate(() -> RandomRegistry
+				.with(new Random(589))
+				.call(() -> factory().newInstance()))
 			.limit(length)
 			.collect(toMSeq());
 	}

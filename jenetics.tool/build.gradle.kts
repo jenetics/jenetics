@@ -34,6 +34,6 @@ dependencies {
 	implementation(project(":jenetics.xml"))
 	implementation(libs.prngine)
 
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.testng)
 }

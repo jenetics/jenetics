@@ -32,7 +32,7 @@ public class RastriginFunction {
 			.builder(
 				RastriginFunction::fitness,
 				// Codec for 'x' vector.
-				Codecs.ofVector(DoubleRange.of(-R, R), N))
+				Codecs.ofVector(new DoubleRange(-R, R), N))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(

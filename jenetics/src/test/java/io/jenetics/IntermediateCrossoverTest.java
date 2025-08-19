@@ -56,7 +56,7 @@ public class IntermediateCrossoverTest {
 
 	@Test
 	public void populationRecombine() {
-		RandomRegistry.using(new Random(123), r -> {
+		RandomRegistry.with(new Random(123)).run(() -> {
 			ISeq<Phenotype<DoubleGene, Double>> pop =
 				newDoubleGenePopulation(5, 1, 2);
 			final MSeq<Phenotype<DoubleGene, Double>> copy = pop.copy();

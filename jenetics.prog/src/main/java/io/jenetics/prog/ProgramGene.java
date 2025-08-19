@@ -41,7 +41,6 @@ import io.jenetics.prog.op.Program;
  * {@code ProgramGene} can't be created directly. This reduces the possible
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
  * it can be easily used as a result.
- *
  * {@snippet lang="java":
  * final ProgramGene<Double> program = engine.stream()
  *     .limit(300)

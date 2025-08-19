@@ -21,17 +21,14 @@ package io.jenetics.util;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
@@ -52,41 +49,74 @@ import io.jenetics.Genotype;
 public class RandomRegistryTest {
 
 	@Test
-	public void setDefault() {
-		RandomRegistry.reset();
-		final var devault = RandomRegistry.random();
-		Assert.assertNotNull(devault);
-
-		RandomRegistry.random(new Random());
-		Assert.assertNotNull(RandomRegistry.random());
-		RandomRegistry.reset();
-
-		assertSame(RandomRegistry.random(), devault);
+	public void getDefault() {
+		assertThat(RandomRegistry.random()).isNotNull();
 	}
 
 	@Test
-	public void setRandom() {
-		final Random random = new Random();
-		RandomRegistry.random(random);
+	public void setDefault() {
+		RandomRegistry.reset();
+		final var devault = RandomRegistry.random();
+		assertThat(devault).isNotNull();
 
-		assertSame(RandomRegistry.random(), random);
+		RandomRegistry.random(new Random());
+		assertThat(devault).isNotSameAs(RandomRegistry.random());
+		RandomRegistry.reset();
+
+		assertThat(RandomRegistry.random()).isSameAs(devault);
+	}
+
+	@Test(invocationCount = 10)
+	public void setRandom() throws Exception {
+		final var devault = RandomRegistry.random();
+
+		try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
+			for (int i = 0; i < 25; ++i) {
+				scope.fork(() -> {
+					final var random = new Random();
+					RandomRegistry.with(random).run(() -> {
+						assertThat(RandomRegistry.random()).isSameAs(random);
+
+						assertThat(RandomRegistry.random()).isNotSameAs(devault);
+
+						final var innerDefault = RandomRegistry.random();
+
+						final Random random2 = new Random();
+						RandomRegistry.random(random2);
+						assertThat(RandomRegistry.random()).isSameAs(random2);
+
+						RandomRegistry.reset();
+						assertThat(RandomRegistry.random()).isNotSameAs(innerDefault);
+					});
+
+					return "";
+				});
+			}
+
+			scope.join();
+			scope.throwIfFailed();
+		}
+
+		assertThat(RandomRegistry.random()).isSameAs(devault);
 	}
 
 	@Test
 	public void setRandomFactory() throws InterruptedException {
 		final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
 		RandomRegistry.random(factory);
+		final var devault = RandomRegistry.random();
 
-		final var random = RandomRegistry.random();
 		for (int i = 0; i < 10; ++i) {
-			assertThat(random).isSameAs(RandomRegistry.random());
+			assertThat(devault).isSameAs(RandomRegistry.random());
 		}
 
 		final var exception = new AtomicReference<AssertionError>();
-		final var thread = new Thread(() ->
-			assertThat(random).isNotSameAs(RandomRegistry.random())
-		);
-		thread.setUncaughtExceptionHandler((t, e) -> exception.set((AssertionError)e));
+		System.out.println(Thread.currentThread().getName());
+		final var thread = new Thread(() -> {
+			System.out.println(Thread.currentThread().getName());
+			assertThat(devault).isNotSameAs(RandomRegistry.random());
+		});
+		thread.setUncaughtExceptionHandler((_, e) -> exception.set((AssertionError)e));
 		thread.start();
 		thread.join();
 
@@ -114,11 +144,11 @@ public class RandomRegistryTest {
 		thread.join();
 	}
 
-	@Test
+	@Test(invocationCount = 10)
 	public void setRandomSupplierStream() throws InterruptedException {
 		final Iterator<RandomGenerator> randoms = StreamableGenerator.of("L128X1024MixRandom")
 			.rngs()
-			.peek(System.out::println)
+			//.peek(System.out::println)
 			.iterator();
 
 		final Supplier<RandomGenerator> supplier = randoms::next;
@@ -136,25 +166,22 @@ public class RandomRegistryTest {
 		thread.join();
 	}
 
-	@Test
+	@Test(invocationCount = 10)
 	public void setRandomThreading()
 		throws ExecutionException, InterruptedException
 	{
 		final Random random = new Random();
 		RandomRegistry.random(random);
 
-		final ExecutorService executor = Executors.newFixedThreadPool(10);
-		try {
+		try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 			final var futures = IntStream.range(0, 500)
-				.mapToObj(i -> executor
-					.submit(() -> assertSame(RandomRegistry.random(), random)))
+				.mapToObj(_ -> executor
+					.submit(() -> assertThat(RandomRegistry.random()).isSameAs(random)))
 				.toList();
 
 			for (Future<?> future : futures) {
 				future.get();
 			}
-		} finally {
-			executor.shutdown();
 		}
 	}
 
@@ -181,17 +208,18 @@ public class RandomRegistryTest {
 		final var random = RandomRegistry.random();
 
 		final Random random1 = new Random();
-		using(random1, r1 -> {
+		RandomRegistry.with(random1).run(() -> {
 			final Random random2 = new Random();
-			using(random2, r2 -> assertSame(RandomRegistry.random(), random2));
-			assertSame(RandomRegistry.random(), random1);
+			RandomRegistry.with(random2)
+				.run(() -> assertThat(RandomRegistry.random()).isSameAs(random2));
+			assertThat(RandomRegistry.random()).isSameAs(random1);
 		});
 
-		assertSame(RandomRegistry.random(), random);
+		assertThat(RandomRegistry.random()).isSameAs(random);
 	}
 
-	@Test(invocationCount = 10)
-	public void concurrentLocalContext() {
+	@Test(invocationCount = 20)
+	public void concurrentLocalContext() throws Exception {
 		try (var c = Executors.newVirtualThreadPerTaskExecutor()) {
 			for (int i = 0; i < 25; ++i) {
 				c.execute(new ContextRunnable());
@@ -202,34 +230,28 @@ public class RandomRegistryTest {
 	private static final class ContextRunnable implements Runnable {
 		@Override
 		public void run() {
-			using(new Random(), r -> {
+			RandomRegistry.with(new Random()).run(() -> {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
-				assertSame(r, RandomRegistry.random());
 
 				final Random random2 = new Random();
-				using(random2, r2 -> {
-					assertSame(RandomRegistry.random(), random2);
-					assertSame(r2, random2);
+				RandomRegistry.with(random2).run(() -> {
+					assertThat(RandomRegistry.random()).isSameAs(random2);
 
 					final Random random2_2 = new Random();
 					RandomRegistry.random(random2_2);
-					assertSame(RandomRegistry.random(), random2_2);
+					assertThat(RandomRegistry.random()).isSameAs(random2_2);
 
 					final Random random3 = new Random();
-					using(random3, r3 -> {
-						assertSame(RandomRegistry.random(), random3);
-						assertSame(r3, random3);
-					});
+					RandomRegistry.with(random3).run(() ->
+						assertThat(RandomRegistry.random()).isSameAs(random3)
+					);
 
-					assertSame(RandomRegistry.random(), random2_2);
-					Assert.assertNotEquals(r, RandomRegistry.random());
+					assertThat(RandomRegistry.random()).isSameAs(random2_2);
 				});
-
-				assertSame(r, RandomRegistry.random());
 			});
 		}
 	}
@@ -237,19 +259,19 @@ public class RandomRegistryTest {
 	@Test
 	public void withScope() {
 		final List<Genotype<DoubleGene>> genotypes1 =
-			RandomRegistry.with(new Random(123), random ->
+			RandomRegistry.with(new Random(123)).call(() ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())
 			);
 		final List<Genotype<DoubleGene>> genotypes2 =
-			RandomRegistry.with(new Random(123), random ->
+			RandomRegistry.with(new Random(123)).call(() ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())
 			);
 
-		assertEquals(genotypes1, genotypes2);
+		assertThat(genotypes1).isEqualTo(genotypes2);
 	}
 
 	//@Test

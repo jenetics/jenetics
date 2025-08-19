@@ -27,7 +27,7 @@ import org.assertj.core.data.Offset;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Interval;
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,7 +38,7 @@ public class BrentRootFinderTest {
 		Offset.offset(1e-6);
 
 	@Test(dataProvider = "testSinZeroParameters")
-	void testSinZero(double result, Interval interval) {
+	void testSinZero(double result, DoubleRange interval) {
 		assertThat(BrentRootFinder.DEFAULT.solve(Math::sin, interval))
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
 	}
@@ -46,13 +46,13 @@ public class BrentRootFinderTest {
 	@DataProvider
 	public Object[][] testSinZeroParameters() {
 		return new Object[][] {
-			{Math.PI, new Interval(3, 4)},
-			{Math.PI, new Interval(1, 4)}
+			{Math.PI, new DoubleRange(3, 4)},
+			{Math.PI, new DoubleRange(1, 4)}
 		};
 	}
 
 	@Test(dataProvider = "testQuinticZeroParameters")
-	void testQuinticZero(double result, Interval interval) {
+	void testQuinticZero(double result, DoubleRange interval) {
 		final DoubleUnaryOperator func = x -> (x - 1)*(x - 0.5)*x*(x + 0.5)*(x + 1);
 
 		assertThat(BrentRootFinder.DEFAULT.solve(func, interval))
@@ -62,16 +62,16 @@ public class BrentRootFinderTest {
 	@DataProvider
 	public Object[][] testQuinticZeroParameters() {
 		return new Object[][] {
-			{0.0, new Interval(-0.2, 0.2)},
-			{0.0, new Interval(-0.1, 0.3)},
-			{0.0, new Interval(-0.3, 0.45)},
-			{0.5, new Interval(0.3, 0.7)},
-			{0.5, new Interval(0.2, 0.6)},
-			{0.5, new Interval(0.05, 0.95)},
-			{1.0, new Interval(0.85, 1.25)},
-			{1.0, new Interval(0.8, 1.2)},
-			{1.0, new Interval(0.85, 1.75)},
-			{1.0, new Interval(0.55, 1.45)}
+			{0.0, new DoubleRange(-0.2, 0.2)},
+			{0.0, new DoubleRange(-0.1, 0.3)},
+			{0.0, new DoubleRange(-0.3, 0.45)},
+			{0.5, new DoubleRange(0.3, 0.7)},
+			{0.5, new DoubleRange(0.2, 0.6)},
+			{0.5, new DoubleRange(0.05, 0.95)},
+			{1.0, new DoubleRange(0.85, 1.25)},
+			{1.0, new DoubleRange(0.8, 1.2)},
+			{1.0, new DoubleRange(0.85, 1.75)},
+			{1.0, new DoubleRange(0.55, 1.45)}
 		};
 	}
 

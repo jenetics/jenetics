@@ -47,6 +47,7 @@ import io.jenetics.ext.internal.parser.ParsingException;
  * @version 7.1
  */
 public final class Bnf {
+
 	private Bnf() {}
 
 	static boolean isSymbolChar(final int ch) {
@@ -81,7 +82,7 @@ public final class Bnf {
 	 * @throws NullPointerException it the given {@code grammar} string is
 	 *         {@code null}
 	 */
-	public static Cfg<String> parse(final String grammar) {
+	public static Cfg<String> parse(final CharSequence grammar) {
 		final var tokenizer = new BnfTokenizer(grammar);
 		final var parser = new BnfParser(tokenizer);
 

@@ -44,7 +44,7 @@ public class CompositeCodecTest {
 	@Test(dataProvider = "scalarCodecCount")
 	public void minimalScalarCodec(final Integer scalars) {
 		final ISeq<Codec<Double,DoubleGene>> seq = Stream
-			.generate(() -> Codecs.ofScalar(DoubleRange.of(0, 1)))
+			.generate(() -> Codecs.ofScalar(new DoubleRange(0, 1)))
 			.limit(scalars)
 			.collect(ISeq.toISeq());
 
@@ -67,10 +67,10 @@ public class CompositeCodecTest {
 	public void minimalScalarVectorCodec() {
 		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
 			ISeq.of(
-				Codecs.ofScalar(DoubleRange.of(0, 1)),
-				Codecs.ofVector(DoubleRange.of(10, 100), 3),
-				Codecs.ofScalar(DoubleRange.of(2, 3)),
-				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+				Codecs.ofScalar(new DoubleRange(0, 1)),
+				Codecs.ofVector(new DoubleRange(10, 100), 3),
+				Codecs.ofScalar(new DoubleRange(2, 3)),
+				Codecs.ofVector(new DoubleRange(200, 500), new DoubleRange(200, 500))
 			),
 			values -> 10.0
 		);
@@ -83,9 +83,9 @@ public class CompositeCodecTest {
 	public void minimalNestedCodec() {
 		final Codec<Double, DoubleGene> codec1 = new CompositeCodec<>(
 			ISeq.of(
-				Codecs.ofScalar(DoubleRange.of(0, 1)),
-				Codecs.ofVector(DoubleRange.of(10, 100), 3),
-				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+				Codecs.ofScalar(new DoubleRange(0, 1)),
+				Codecs.ofVector(new DoubleRange(10, 100), 3),
+				Codecs.ofVector(new DoubleRange(200, 500), new DoubleRange(200, 500))
 			),
 			values ->  {
 				final Double v1 = (Double)values[0];
@@ -98,9 +98,9 @@ public class CompositeCodecTest {
 
 		final Codec<Double, DoubleGene> codec2 = new CompositeCodec<>(
 			ISeq.of(
-				Codecs.ofVector(DoubleRange.of(10, 100), 3),
-				Codecs.ofScalar(DoubleRange.of(0, 1)),
-				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+				Codecs.ofVector(new DoubleRange(10, 100), 3),
+				Codecs.ofScalar(new DoubleRange(0, 1)),
+				Codecs.ofVector(new DoubleRange(200, 500), new DoubleRange(200, 500))
 			),
 			values ->  {
 				final double[] v1 = (double[])values[0];
@@ -145,10 +145,10 @@ public class CompositeCodecTest {
 	public void encoding() {
 		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
 			ISeq.of(
-				Codecs.ofScalar(DoubleRange.of(0, 1)),
-				Codecs.ofVector(DoubleRange.of(10, 100), 3),
-				Codecs.ofScalar(DoubleRange.of(2, 3)),
-				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+				Codecs.ofScalar(new DoubleRange(0, 1)),
+				Codecs.ofVector(new DoubleRange(10, 100), 3),
+				Codecs.ofScalar(new DoubleRange(2, 3)),
+				Codecs.ofVector(new DoubleRange(200, 500), new DoubleRange(200, 500))
 			),
 			values -> {
 				final Double v1 = (Double)values[0];
@@ -180,9 +180,9 @@ public class CompositeCodecTest {
 
 		ISeq<Codec<?, DoubleGene>> codecs = ISeq
 			.of(
-				Codecs.ofScalar(DoubleRange.of(0.1, 0.9)),
-				Codecs.ofScalar(DoubleRange.of(0.3, 0.7)),
-				Codecs.ofVector(DoubleRange.of(0.3, 1.7), DoubleRange.of(0.3, 0.7)))
+				Codecs.ofScalar(new DoubleRange(0.1, 0.9)),
+				Codecs.ofScalar(new DoubleRange(0.3, 0.7)),
+				Codecs.ofVector(new DoubleRange(0.3, 1.7), new DoubleRange(0.3, 0.7)))
 			.map(codec -> constraint.constrain(codec));
 
 		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(

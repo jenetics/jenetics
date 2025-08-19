@@ -49,7 +49,7 @@ import io.jenetics.util.ISeq;
  *         final Engine<DoubleGene, Double> engine = Engine
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.
- *             .build(RealFunction::eval, Codecs.ofScalar(DoubleRange.of(0, 2*PI)))
+ *             .build(RealFunction::eval, Codecs.ofScalar(new DoubleRange(0, 2*PI)))
  *             .build();
  *         // ...
  *     }
@@ -58,7 +58,7 @@ import io.jenetics.util.ISeq;
  *
  * The {@code Codec} needed for the above usage example, will look like this:
  * {@snippet lang="java":
- * final DoubleRange domain = DoubleRange.of(0, 2*PI);
+ * final DoubleRange domain = new DoubleRange(0, 2*PI);
  * final Codec<Double, DoubleGene> codec = Codec.of(
  *     Genotype.of(DoubleChromosome.of(domain)),
  *     gt -> gt.chromosome().gene().allele()
@@ -135,7 +135,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * between {@code [0..1)}. Instead, the values now follow an exponential
 	 * function.
 	 * {@snippet lang="java":
-	 *  final Codec<Double, DoubleGene> c = Codecs.ofScalar(DoubleRange.of(0, 1))
+	 *  final Codec<Double, DoubleGene> c = Codecs.ofScalar(new DoubleRange(0, 1))
 	 *      .map(Math::exp);
 	 * }
 	 *
@@ -154,7 +154,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * {@snippet lang="java":
 	 * final Codec<Double, DoubleGene> codec = Codecs
-	 *     .ofScalar(DoubleRange.of(0, 10))
+	 *     .ofScalar(new DoubleRange(0, 10))
 	 *     .map(v -> {
 	 *             if (v >= 2 && v < 8) {
 	 *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;

@@ -371,7 +371,7 @@ public final class Serializer {
 	/**
 	 * Reads the objects from the given {@code input} stream, which were
 	 * previously written with one of the {@code write} methods.
-	 * The content is read lazily, object after object, and allows to read many
+	 * The content is read lazily, object after object, and allows reading many
 	 * objects efficiently. Note that the caller is responsible for closing the
 	 * returned object stream, which also closes the given {@code input} stream.
 	 * {@snippet lang="java":
@@ -430,8 +430,8 @@ public final class Serializer {
 	/**
 	 * Reads the objects from the given {@code path}, which were previously
 	 * written with the {@link #write(Iterable, Path, OpenOption...)} method.
-	 * The file content is read lazily, object after object, and allows to
-	 * read huge files efficiently. Note that the caller is responsible for
+	 * The file content is read lazily, object after object, and allows reading
+	 * huge files efficiently. Note that the caller is responsible for
 	 * closing the returned object stream.
 	 * {@snippet lang="java":
 	 * try (Stream<Object> stream = Serializer.objects(path)) {
