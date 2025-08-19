@@ -130,8 +130,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Program<?> other &&
+		return obj instanceof Program<?> other &&
 			Objects.equals(other._name, _name) &&
 			Objects.equals(other._tree, _tree);
 	}

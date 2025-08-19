@@ -47,7 +47,7 @@ public class DTLZ1Diagram {
 
 		final ISeq<Vec<double[]>> front = DTLZ1.ENGINE.stream()
 			.limit(3500)
-			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
+			.collect(MOEA.toParetoSet(new IntRange(1000, 1100)))
 			.map(Phenotype::fitness);
 
 		System.out.println(front.size());

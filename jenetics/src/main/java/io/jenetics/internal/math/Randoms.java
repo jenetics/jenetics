@@ -178,7 +178,6 @@ public final class Randoms {
 	 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
-	 *
 	 * {@snippet lang="java":
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
@@ -204,7 +203,6 @@ public final class Randoms {
 	 * Uses the given {@code base} value to create a reasonable safe seed
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
-	 *
 	 * {@snippet lang="java":
 	 * public static long seed(final long base) {
 	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |

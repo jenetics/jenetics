@@ -19,18 +19,20 @@
  */
 package io.jenetics;
 
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static org.assertj.core.api.Assertions.assertThat;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.Interval;
-import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,56 +44,34 @@ public class GaussianMutatorTest extends MutatorTester {
 		return new GaussianMutator<>(p);
 	}
 
-	//@Test(invocationCount = 20, successPercentage = 90)
-	public void mutate() {
-		final var random = RandomRegistry.random();
-
-		final double min = 0;
-		final double max = 10;
-		final double mean = 5;
-		final double var = Math.pow((max - min)/4.0, 2);
-
-		final DoubleGene gene = DoubleGene.of(mean, min, max);
-		final GaussianMutator<DoubleGene, Double> mutator = new GaussianMutator<>();
-
-		final var statistics = new DoubleMomentStatistics();
-		final var histogram = Histogram.Builder.of(new Interval(0, 10), 10);
-
-		for (int i = 0; i < 100_000; ++i) {
-			final double value = mutator.mutate(gene, random).allele();
-			statistics.accept(value);
-			histogram.add(value);
-		}
-
-		assertThatObservation(histogram.build())
-			.withinRange(min, max)
-			.isNormal(5, Math.sqrt(var));
-	}
-
 	@Test
-	public void mutateValidGene() {
-		final var mutator = new GaussianMutator<DoubleGene, Double>() {
-			public DoubleGene mutate(
-				final DoubleGene gene,
-				final RandomGenerator random
-			) {
-				return super.mutate(gene, random);
-			}
-		};
+	public void mutate() {
+		final var interval = new Interval(-10, 10);
+		final var range = new DoubleRange(interval.min(), interval.max());
+		final var shape = new GaussianMutator.Shape(0, 1.0);
+		final var stddev = shape.stddev(range);
+		final var mean = shape.mean(range);
 
-		final var random = new Random() {
-			@Override
-			public double nextGaussian(double mean, double stddev) {
-				return 1;
-			}
-		};
+		final var gene = DoubleGene.of(interval.min(), interval.max());
+		final var mutator = new GaussianMutator<DoubleGene, Double>(shape);
 
-		DoubleGene gene = DoubleGene.of(0.9, 0, 1);
-		Assert.assertTrue(gene.isValid());
+		final var observation = Observer
+			.using(new StableRandomExecutor(123))
+			.observe(
+				Sample.repeat(
+					100_000,
+					sample -> sample.accept(
+						mutator
+							.mutate(gene, RandomRegistry.random())
+							.allele()
+					)
+				),
+				Histogram.Partition.of(interval, 21)
+			);
 
-		gene = mutator.mutate(gene, random);
-		Assert.assertTrue(gene.isValid());
-		Assert.assertEquals(gene.doubleValue(), Math.nextDown(1.0));
+		assertThat(observation)
+			.withinRange(interval)
+			.isNormal(mean, stddev);
 	}
 
 	@Test
@@ -106,10 +86,10 @@ public class GaussianMutatorTest extends MutatorTester {
 		};
 
 		final DoubleGene gene = DoubleGene.of(0.9, 5, 1);
-		Assert.assertFalse(gene.isValid());
+		assertThat(gene.isValid()).isFalse();
 
-		final DoubleGene gene1 = mutator.mutate(gene, new Random());
-		Assert.assertSame(gene1, gene);
+		assertThat(mutator.mutate(gene, RandomRegistry.random()))
+			.isSameAs(gene);
 	}
 
 }

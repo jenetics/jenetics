@@ -52,7 +52,7 @@ public class GrammarBasedRegression
 			// gets its own chromosome. It would also be possible
 			// to define variable chromosome length with the
 			// returned integer range.
-			rule -> IntRange.of(rule.alternatives().size()*25),
+			rule -> new IntRange(rule.alternatives().size()*25),
 			// The used generator defines the generated data type,
 			// which is `List<Terminal<String>>`.
 			index -> new SentenceGenerator<>(index, 50)

@@ -32,7 +32,7 @@ import io.jenetics.internal.collection.Empty.EmptyISeq;
 import io.jenetics.internal.util.Requires;
 
 /**
- * Immutable, ordered, fixed sized sequence.
+ * Immutable, ordered, fixed-sized sequence.
  *
  * @see MSeq
  *
@@ -270,7 +270,7 @@ public interface ISeq<T>
 	/**
 	 * Allows a safe (without compiler warning) upcast from {@code B} to
 	 * {@code A}. Since {@code ISeq} instances are immutable, an <i>upcast</i>
-	 * will be always safe.
+	 * will always be safe.
 	 * {@snippet lang="java":
 	 * // The sequence which we want to case.
 	 * final ISeq<? extends Number> ints = ISeq.of(1, 2, 3, 4, 5);

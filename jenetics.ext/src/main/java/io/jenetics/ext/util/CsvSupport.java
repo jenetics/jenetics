@@ -44,7 +44,7 @@ import io.jenetics.internal.util.Lifecycle.IOValue;
  *     not split.</li>
  *     <li>{@link LineSplitter}: This class is responsible for splitting one
  *     CSV line into column values.</li>
- *     <li>{@link ColumnIndexes}: Allows to define the projection/embedding of
+ *     <li>{@link ColumnIndexes}: Allows defining the projection/embedding of
  *     the split/joined column values.</li>
  *     <li>{@link ColumnJoiner}: Joining a column array into a CSV line, which
  *     can be joined into a whole CSV string.</li>
@@ -215,8 +215,7 @@ public final class CsvSupport {
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof ColumnIndexes ci &&
+			return obj instanceof ColumnIndexes ci &&
 				Arrays.equals(values, ci.values);
 		}
 
@@ -1217,44 +1216,6 @@ public final class CsvSupport {
 		 */
 		public String join(final Object[] columns) {
 			return join(Arrays.asList(columns));
-		}
-	}
-
-	static final class CharSequenceCursor {
-		private final CharSequence chars;
-
-		int previous;
-		char current;
-		int next;
-		int index = 0;
-
-		private CharSequenceCursor(final CharSequence chars) {
-			this.chars = requireNonNull(chars);
-		}
-
-		boolean hasNext() {
-			return index < chars.length();
-		}
-
-		void advance() {
-			if (index == 0) {
-				previous = -1;
-				current = chars.charAt(0);
-				next = 1 < chars.length() ? chars.charAt(1) : -1;
-				++index;
-			} else {
-				previous = current;
-				current = (char)next;
-				++index;
-				next = index < chars.length() ? chars.charAt(index) : -1;
-			}
-		}
-
-		void set(int i) {
-			previous = i > 0 ? chars.charAt(i - 1) : -1;
-			current = chars.charAt(i);
-			next = i + 1 < chars.length() ? chars.charAt(i + 1) : -1;
-			index = i + 1;
 		}
 	}
 

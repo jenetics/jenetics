@@ -42,7 +42,6 @@ import javax.xml.stream.XMLStreamWriter;
  * } </pre>
  *
  * The XML has been written by the following {@code Writer} definition.
- *
  * {@snippet lang="java":
  * final Writer<IntegerChromosome> writer =
  *     elem("int-chromosome",
@@ -57,7 +56,6 @@ import javax.xml.stream.XMLStreamWriter;
  * }
  *
  * How to write the XML writing is shown by the next code snippet.
- *
  * {@snippet lang="java":
  * final IntegerChromosome ch = IntegerChromosome.of(MIN_VALUE, MAX_VALUE, 3);
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
@@ -119,7 +117,6 @@ public interface Writer<T> {
 	/**
 	 * Writes the attribute with the given {@code name} to the current
 	 * <em>outer</em> element.
-	 *
 	 * {@snippet lang="java":
 	 * final Writer<String> writer1 = elem("element", attr("attribute"));
 	 * }
@@ -144,7 +141,6 @@ public interface Writer<T> {
 	/**
 	 * Writes the attribute with the given {@code name} and a constant
 	 * {@code value} to the current <em>outer</em> element.
-	 *
 	 * {@snippet lang="java":
 	 * final Writer<MyObject> writer = elem("element", attr("version", "1.0"));
 	 * }

@@ -72,7 +72,7 @@ public class RepairingConstraint implements Constraint<DoubleGene, Double> {
 		final Genotype<DoubleGene> gt = Genotype.of(
 			DoubleChromosome.of(
 				DoubleStream.of(r).boxed()
-					.map(v -> DoubleGene.of(v, DoubleRange.of(0, 1)))
+					.map(v -> DoubleGene.of(v, new DoubleRange(0, 1)))
 					.collect(ISeq.toISeq())
 			)
 		);

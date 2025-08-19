@@ -32,13 +32,14 @@ The following projects/modules are also published to Maven.
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
 * **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA) and doing Grammatical Evolution (GE). 
 * **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contain classes that allow to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
-* **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
+* **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshaling module for the _Jenetics_ base data structures.
 
-**Non-published projects**
+**Non-published modules**
 
-* **jenetics.example**: This project contains example code for the *core*-module.
-* **jenetics.doc**: Contains the code of the website and the manual.
-* **jenetics.tool**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
+* **[jenetics.distassert](jenetics.distassert)**: This module allows testing whether some sample data follows a given statistical distribution. Jenetics uses this module for testing its GA operators.
+* **[jenetics.example](jenetics.example)**: This module contains example code for the *core*-module.
+* **[jenetics.doc](jenetics.doc)**: Contains the code of the website and the manual.
+* **[jenetics.tool](jenetics.tool)**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
 
 For building the library change into the `<builddir>` directory (or one of the module directories) and call one of the available tasks:
 

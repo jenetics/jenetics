@@ -32,8 +32,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Lifecycle.Releasable;
 import io.jenetics.internal.util.Lifecycle.IOValue;
+import io.jenetics.internal.util.Lifecycle.Releasable;
 import io.jenetics.internal.util.Lifecycle.Value;
 
 public class LifecycleTest {

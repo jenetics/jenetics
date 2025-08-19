@@ -62,7 +62,7 @@ public class DoubleGeneTravelingSalesman
 	public Codec<ISeq<WayPoint>, DoubleGene> codec() {
 		return Codec.of(
 			Genotype.of(
-				DoubleChromosome.of(DoubleRange.of(0, 1), _points.length())
+				DoubleChromosome.of(new DoubleRange(0, 1), _points.length())
 			),
 			gt -> {
 				// Use the sorted indexes as path permutations.
