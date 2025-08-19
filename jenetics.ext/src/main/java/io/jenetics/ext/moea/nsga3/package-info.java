@@ -19,22 +19,22 @@
  */
 
 /**
+ * This package contains classes implementing the <em>NSGA3</em> algorithm.
+ * <p>
+ * <b>References:</b>
+ * <ol>
+ *   <li>
+ *       Rajnikant H. Bhesdadiya, Indrajit N. Trivedi, Pradeep Jangir,
+ *       Narottam Jangir and Arvind Kumar.<em> An NSGA-III algorithm for solving
+ *       multi-objective economic/environmental dispatch problem</em>,
+ *       Cogent Engineering, 3:1,
+ *       <a href="http://dx.doi.org/10.1080/23311916.2016.1269383">
+ *           DOI: 10.1080/23311916.2016.1269383</a>
+ *   </li>
+ * </ol>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.ext {
-	requires transitive io.jenetics.base;
-
-    exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.grammar;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.moea.nsga3;
-	exports io.jenetics.ext.moea.weights;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
-
-	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
-	exports io.jenetics.ext.internal.util to io.jenetics.prog;
-}
+package io.jenetics.ext.moea.nsga3;

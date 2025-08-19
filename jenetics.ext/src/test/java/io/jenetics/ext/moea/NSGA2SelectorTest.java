@@ -54,10 +54,12 @@ public class NSGA2SelectorTest {
 			)
 		);
 
+	private static final int OBJECTIVES = 2;
+
 	@Test
 	public void selectMax() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
-			NSGA2Selector.ofVec();
+			NSGA2Selector.ofVec(OBJECTIVES);
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> population =
 			Stream.generate(this::phenotype)
@@ -92,7 +94,7 @@ public class NSGA2SelectorTest {
 	@Test
 	public void selectMin() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
-			NSGA2Selector.ofVec();
+			NSGA2Selector.ofVec(OBJECTIVES);
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> population =
 			Stream.generate(this::phenotype)

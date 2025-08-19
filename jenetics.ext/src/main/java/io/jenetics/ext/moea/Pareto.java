@@ -19,20 +19,16 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.ToIntFunction;
 
 import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.ProxySorter;
 
 import io.jenetics.ext.internal.util.IntList;
 
@@ -45,107 +41,7 @@ import io.jenetics.ext.internal.util.IntList;
  * @since 4.1
  */
 public final class Pareto {
-
 	private Pareto() {
-	}
-
-	/* *************************************************************************
-	 * Crowding distance methods.
-	 * ************************************************************************/
-
-	/**
-	 * The crowding distance value of a solution provides an estimate of the
-	 * density of solutions surrounding that solution. The <em>crowding
-	 * distance</em> value of a particular solution is the average distance of
-	 * its two neighboring solutions.
-	 *
-	 * @apiNote
-	 * Calculating the crowding distance has a time complexity of
-	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
-	 * {@code n} the {@code set} size.
-	 *
-	 * @see #crowdingDistance(BaseSeq, ElementComparator, ElementDistance, ToIntFunction)
-	 *
-	 * @param set the point set used for calculating the <em>crowding distance</em>
-	 * @param <T> the vector type
-	 * @return the crowded distances of the {@code set} points
-	 * @throws NullPointerException if the input {@code set} is {@code null}
-	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
-	 */
-	public static <T> double[]
-	crowdingDistance(final BaseSeq<? extends Vec<T>> set) {
-		return crowdingDistance(
-			set,
-			Vec::compare,
-			Vec::distance,
-			Vec::length
-		);
-	}
-
-	/**
-	 * The crowding distance value of a solution provides an estimate of the
-	 * density of solutions surrounding that solution. The <em>crowding
-	 * distance</em> value of a particular solution is the average distance of
-	 * its two neighboring solutions.
-	 *
-	 * @apiNote
-	 * Calculating the crowding distance has a time complexity of
-	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
-	 * {@code n} the {@code set} size.
-	 *
-	 * @see #crowdingDistance(BaseSeq)
-	 *
-	 * @param set the point set used for calculating the <em>crowding distance</em>
-	 * @param comparator the comparator which defines the (total) order of the
-	 *        vector elements of {@code T}
-	 * @param distance the distance of two vector elements
-	 * @param dimension the dimension of vector type {@code T}
-	 * @param <T> the vector type
-	 * @return the crowded distances of the {@code set} points
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T> double[] crowdingDistance(
-		final BaseSeq<? extends T> set,
-		final ElementComparator<? super T> comparator,
-		final ElementDistance<? super T> distance,
-		final ToIntFunction<? super T> dimension
-	) {
-		requireNonNull(set);
-		requireNonNull(comparator);
-		requireNonNull(distance);
-
-		final double[] result = new double[set.length()];
-		if (set.length() < 3) {
-			Arrays.fill(result, POSITIVE_INFINITY);
-		} else {
-			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
-				final int[] idx = ProxySorter.sort(
-					set,
-					comparator.ofIndex(m).reversed()
-				);
-
-				result[idx[0]] = POSITIVE_INFINITY;
-				result[idx[set.length() - 1]] = POSITIVE_INFINITY;
-
-				final T max = set.get(idx[0]);
-				final T min = set.get(idx[set.length() - 1]);
-				final double dm = distance.distance(max, min, m);
-
-				if (Double.compare(dm, 0) > 0) {
-					for (int i = 1, n = set.length() - 1; i < n; ++i) {
-						final double dist = distance.distance(
-							set.get(idx[i - 1]),
-							set.get(idx[i + 1]),
-							m
-						);
-
-						result[idx[i]] += dist/dm;
-					}
-				}
-			}
-		}
-
-		return result;
 	}
 
 	/* *************************************************************************
@@ -153,7 +49,7 @@ public final class Pareto {
 	 * ************************************************************************/
 
 	/**
-	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
+	 * Calculates the <em>non-domination</em> ranks of the given input {@code set},
 	 * using the <em>natural</em> order of the elements as <em>dominance</em>
 	 * measure.
 	 *
@@ -173,12 +69,12 @@ public final class Pareto {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] rank(final BaseSeq<? extends Vec<T>> set) {
-		return rank(set, Vec::dominance);
+	public static <T> int[] ranks(final BaseSeq<? extends Vec<T>> set) {
+		return ranks(set, Vec::dominance);
 	}
 
 	/**
-	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
+	 * Calculates the <em>non-domination</em> ranks of the given input {@code set},
 	 * using the given {@code dominance} comparator.
 	 *
 	 * @apiNote
@@ -198,7 +94,7 @@ public final class Pareto {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] rank(
+	public static <T> int[] ranks(
 		final BaseSeq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {

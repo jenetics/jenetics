@@ -17,24 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.moea.nsga3;
 
 /**
+ * This class implements the <em>niching</em> step of the NSGA3 algorithm,
+ * as described in (1).
+ * <p>
+ * <img alt="Normalization" src="doc-files/niching.png" width="500">
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 7.0
+ * @version !__version__!
+ * @since !__version__!
  */
-@SuppressWarnings("module")
-module io.jenetics.ext {
-	requires transitive io.jenetics.base;
-
-    exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.grammar;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.moea.nsga3;
-	exports io.jenetics.ext.moea.weights;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
-
-	exports io.jenetics.ext.internal.parser to io.jenetics.prog;
-	exports io.jenetics.ext.internal.util to io.jenetics.prog;
+public class Niching {
 }

@@ -115,13 +115,13 @@ public class UFTournamentSelector<
 	) {
 		final var random = RandomRegistry.random();
 
-		final CrowdedComparator<Phenotype<G, C>> cc = new CrowdedComparator<>(
+		final NSGA2Order<Phenotype<G, C>> order = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,
 			_comparator,
 			_distance,
-			_dimension
+			_dimension.applyAsInt(population.get(0))
 		);
 
 		final List<Phenotype<G, C>> S = new ArrayList<>();
@@ -130,7 +130,7 @@ public class UFTournamentSelector<
 			final int[] G = Subsets.next(random, population.size(), k);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
-				final int cmp = cc.compare(G[j], G[j + 1]);
+				final int cmp = order.compare(G[j], G[j + 1]);
 				final int p;
 				if (cmp > 0) {
 					p = G[j];
