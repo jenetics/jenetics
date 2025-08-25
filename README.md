@@ -1,7 +1,7 @@
 # Jenetics
 
-![Build Status](https://github.com/jenetics/jenetics/actions/workflows/gradle.yml/badge.svg)
-[![Maven Central Version](https://img.shields.io/maven-central/v/io.jenetics/jenetics)](https://central.sonatype.com/artifact/io.jenetics/jenetics)
+[![Build Status](https://github.com/jenetics/jenetics/actions/workflows/gradle.yml/badge.svg)](https://github.com/jenetics/jenetics/actions?query=branch%3Amaster)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.jenetics/jenetics?color=green)](https://central.sonatype.com/artifact/io.jenetics/jenetics)
 [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
 
 **Jenetics** is a **Genetic Algorithm**, **Evolutionary Algorithm**, **Grammatical Evolution**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
