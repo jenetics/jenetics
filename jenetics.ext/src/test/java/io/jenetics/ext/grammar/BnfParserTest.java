@@ -80,4 +80,28 @@ public class BnfParserTest {
 		assertThat(parsedBnf).isEqualTo(cfg);
 	}
 
+	sealed interface Expr {
+		final class Add implements Expr {
+			int apply(int a, int b) {
+				return a + b;
+			}
+		}
+		final class Sub implements Expr {
+			int apply(int a, int b) {
+				return a - b;
+			}
+		}
+		final class Mult implements Expr {
+			int apply(int a, int b) {
+				return a * b;
+			}
+		}
+		final class Div implements Expr {
+			int apply(int a, int b) {
+				return a / b;
+			}
+		}
+		record Const(int a) implements Expr {}
+	}
+
 }

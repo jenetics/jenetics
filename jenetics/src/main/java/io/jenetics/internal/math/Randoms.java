@@ -35,16 +35,17 @@ import java.util.stream.IntStream;
  * @version 7.0
  */
 public final class Randoms {
-	private Randoms() {}
+	private Randoms() {
+	}
 
 	public static byte nextByte(final RandomGenerator random) {
 		return (byte)random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
 	public static char nextChar(final RandomGenerator random) {
-		record Limits() {
-			private static final int LEFT = '0';
-			private static final int RIGHT = 'z' + 1;
+		final class Limits {
+			static final int LEFT = '0';
+			static final int RIGHT = 'z' + 1;
 		}
 
 		char c = '\0';
@@ -178,7 +179,6 @@ public final class Randoms {
 	 * PRNGs. This method uses a combination of {@code System.nanoTime()}
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
-	 *
 	 * {@snippet lang="java":
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
@@ -204,7 +204,6 @@ public final class Randoms {
 	 * Uses the given {@code base} value to create a reasonable safe seed
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
-	 *
 	 * {@snippet lang="java":
 	 * public static long seed(final long base) {
 	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |

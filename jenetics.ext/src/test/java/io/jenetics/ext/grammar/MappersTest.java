@@ -65,7 +65,8 @@ public class MappersTest {
 		assertThat(gt.chromosome().length()).isEqualTo(1000);
 
 		final Genotype<BitGene> gt2 = RandomRegistry
-			.with(new Random(1648154405976L), r -> Genotype.of(BitChromosome.of(1000)));
+			.with(new Random(1648154405976L))
+			.call(() -> Genotype.of(BitChromosome.of(1000)));
 
 		final var sentence = codec.decode(gt2).stream()
 			.map(Terminal::name)
@@ -79,18 +80,17 @@ public class MappersTest {
 		final Codec<List<Terminal<String>>, IntegerGene> codec =
 			Mappers.singleIntegerChromosomeMapper(
 				CFG,
-				IntRange.of(0, 256),
-				IntRange.of(100),
+				new IntRange(0, 256),
+				new IntRange(100),
 				index -> new SentenceGenerator<>(index, 1000)
 			);
 
 		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
 		assertThat(gt.chromosome().length()).isEqualTo(100);
 
-		final Genotype<IntegerGene> gt2 = RandomRegistry.with(
-			new Random(1648154989585L),
-			r -> Genotype.of(IntegerChromosome.of(IntRange.of(0, 256), 100))
-		);
+		final Genotype<IntegerGene> gt2 = RandomRegistry
+			.with(new Random(1648154989585L))
+			.call(() -> Genotype.of(IntegerChromosome.of(new IntRange(0, 256), 100)));
 
 		final var sentence = codec.decode(gt2).stream()
 			.map(Terminal::name)
@@ -104,7 +104,7 @@ public class MappersTest {
 		final Codec<List<Terminal<String>>, IntegerGene> codec = Mappers
 			.multiIntegerChromosomeMapper(
 				CFG,
-				rule -> IntRange.of(rule.alternatives().size()*25),
+				rule -> new IntRange(rule.alternatives().size()*25),
 				index -> new SentenceGenerator<>(index, 1_000)
 			);
 	}

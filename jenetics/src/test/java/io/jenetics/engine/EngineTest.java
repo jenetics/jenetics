@@ -78,7 +78,7 @@ public class EngineTest {
 				.map(pt -> pt.withFitness(1))
 				.asISeq();
 		};
-		final Codec<Integer, IntegerGene> codec = Codecs.ofScalar(IntRange.of(1, 100));
+		final Codec<Integer, IntegerGene> codec = Codecs.ofScalar(new IntRange(1, 100));
 
 		final Engine<IntegerGene, Integer> engine =
 			new Engine.Builder<>(evaluator, codec.encoding())
@@ -109,7 +109,7 @@ public class EngineTest {
 
 		final int genotypeCount = 10;
 		final int max = 1000;
-		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(1, genotypeCount)
+		final ISeq<Genotype<IntegerGene>> genotypes = new IntRange(1, genotypeCount)
 			.stream()
 			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(max - 1, 0, max)))
 			.map(Genotype::of)
@@ -134,7 +134,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.
@@ -166,7 +166,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.
@@ -316,7 +316,7 @@ public class EngineTest {
 		final Problem<int[], IntegerGene, Integer> problem = Problem.of(
 			array -> IntStream.of(array).sum(),
 			Codec.of(
-				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
+				Genotype.of(IntegerChromosome.of(0, 100, new IntRange(10, 100))),
 				gt -> gt.chromosome().as(IntegerChromosome.class).toArray()
 			)
 		);
@@ -361,32 +361,32 @@ public class EngineTest {
 	public Object[][] engineParams() {
 		return new Object[][] {
 			{
-				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(DoubleChromosome.of(0, 1, new IntRange(2, 10))),
 				new Mutator<>(),
 				new RouletteWheelSelector<>()
 			},
 			{
-				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(IntegerChromosome.of(0, 1, new IntRange(2, 10))),
 				new Mutator<>(),
 				new RouletteWheelSelector<>()
 			},
 			{
-				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(LongChromosome.of(0, 1, new IntRange(2, 10))),
 				new Mutator<>(),
 				new RouletteWheelSelector<>()
 			},
 			{
-				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(DoubleChromosome.of(0, 1, new IntRange(2, 10))),
 				new SwapMutator<>(),
 				new TruncationSelector<>()
 			},
 			{
-				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(IntegerChromosome.of(0, 1, new IntRange(2, 10))),
 				new Mutator<>(),
 				new RouletteWheelSelector<>()
 			},
 			{
-				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				Genotype.of(LongChromosome.of(0, 1, new IntRange(2, 10))),
 				new Mutator<>(),
 				new BoltzmannSelector<>()
 			}

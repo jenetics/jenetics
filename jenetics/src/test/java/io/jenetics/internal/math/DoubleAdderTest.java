@@ -20,7 +20,6 @@
 package io.jenetics.internal.math;
 
 import static java.util.stream.Collectors.summarizingDouble;
-import static io.jenetics.util.RandomRegistry.with;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +72,12 @@ public class DoubleAdderTest extends ObjectTester<DoubleAdder> {
 
 	@Test
 	public void sameState() {
-		final DoubleAdder da1 = with(new Random(589), r -> factory().newInstance());
-		final DoubleAdder da2 = with(new Random(589), r -> factory().newInstance());
+		final DoubleAdder da1 = RandomRegistry
+			.with(new Random(589))
+			.call(() -> factory().newInstance());
+		final DoubleAdder da2 = RandomRegistry
+			.with(new Random(589))
+			.call(() -> factory().newInstance());
 
 		Assert.assertTrue(da1.sameState(da2));
 

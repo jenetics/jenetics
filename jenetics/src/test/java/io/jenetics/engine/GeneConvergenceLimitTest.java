@@ -138,10 +138,10 @@ public class GeneConvergenceLimitTest {
 	@Test
 	// https://github.com/jenetics/jenetics/issues/318
 	public void initialGeneConvergence() {
-		RandomRegistry.using(Random32.of(() -> 234), random -> {
+		RandomRegistry.with(Random32.of(() -> 234)).run(() -> {
 			final Problem<Double, DoubleGene, Double> problem = Problem.of(
 				d -> 1.0,
-				Codecs.ofScalar(DoubleRange.of(0, 1))
+				Codecs.ofScalar(new DoubleRange(0, 1))
 			);
 
 			final Engine<DoubleGene, Double> engine = Engine

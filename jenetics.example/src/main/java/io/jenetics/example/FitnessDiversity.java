@@ -44,7 +44,7 @@ public class FitnessDiversity {
 	public static void main(final String[] args) {
 		final Knapsack knapsack = Knapsack.of(15, new Random(123));
 
-		// The base engine tries to approximate to good solution in current
+		// The base engine tries to approximate to a good solution in the current
 		// environment.
 		final Engine<BitGene, Double> baseEngine = Engine.builder(knapsack)
 			.populationSize(500)

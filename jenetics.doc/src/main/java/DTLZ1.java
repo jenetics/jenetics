@@ -26,7 +26,7 @@ public class DTLZ1 {
 	static final Problem<double[], DoubleGene, Vec<double[]>>
 	PROBLEM = Problem.of(
 		DTLZ1::f,
-		Codecs.ofVector(DoubleRange.of(0, 1.0), VARIABLES)
+		Codecs.ofVector(new DoubleRange(0, 1.0), VARIABLES)
 	);
 
 	static Vec<double[]> f(final double[] x) {
@@ -64,7 +64,7 @@ public class DTLZ1 {
 	public static void main(final String[] args) {
 		final ISeq<Vec<double[]>> front = ENGINE.stream()
 			.limit(2500)
-			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
+			.collect(MOEA.toParetoSet(new IntRange(1000, 1100)))
 			.map(Phenotype::fitness);
 	}
 

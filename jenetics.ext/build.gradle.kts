@@ -39,8 +39,7 @@ description = "Jenetics Extension"
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(libs.assertj)
-	testImplementation(libs.commons.math)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.equalsverifier)
 	testImplementation(libs.testng)
 	testImplementation(project.testClasses(":jenetics"))

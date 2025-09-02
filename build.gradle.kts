@@ -23,15 +23,15 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 8.1
+ * @version 9.0
  */
 plugins {
 	base
+	alias(libs.plugins.version.catalog.update)
 	id("alljavadoc")
 }
 
-rootProject.version = Jenetics.VERSION
-
+rootProject.version = providers.gradleProperty("jenetics.version").get()
 
 alljavadoc {
 	modules.set(listOf(
@@ -72,16 +72,16 @@ alljavadoc {
 
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.13"
+	gradleVersion = "8.14"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
 /**
- * Project configuration *before* the projects has been evaluated.
+ * Project configuration *before* the projects have been evaluated.
  */
 allprojects {
 	group =  Jenetics.GROUP
-	version = Jenetics.VERSION
+	version = rootProject.version
 
 	repositories {
 		flatDir {
@@ -91,9 +91,32 @@ allprojects {
 		mavenCentral()
 	}
 
+	// Enable preview features. ////////////////////////////////////////////////
+	val preview = providers.gradleProperty("enablePreview")
+		.map { v -> "true".equals(v, true) }
+		.orElse(false).get()
+	if (preview) {
+		tasks.withType<JavaCompile>().configureEach {
+			options.compilerArgs.add("--enable-preview")
+		}
+		tasks.withType<Test>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<JavaExec>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<Javadoc>().configureEach {
+			val opt = options as CoreJavadocOptions
+			opt.addStringOption("-release", "24")
+			opt.addBooleanOption("-enable-preview", true)
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////
+
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
+
 }
 
 subprojects {
@@ -104,15 +127,14 @@ subprojects {
 	}
 
 	plugins.withType<JavaPlugin> {
-
 		configure<JavaPluginExtension> {
-			modularity.inferModulePath.set(true)
+			modularity.inferModulePath = true
 
-			sourceCompatibility = JavaVersion.VERSION_21
-			targetCompatibility = JavaVersion.VERSION_21
+			sourceCompatibility = JavaVersion.VERSION_24
+			targetCompatibility = JavaVersion.VERSION_24
 
 			toolchain {
-				languageVersion = JavaLanguageVersion.of(21)
+				languageVersion = JavaLanguageVersion.of(24)
 			}
 		}
 
@@ -121,7 +143,7 @@ subprojects {
 	}
 
 	tasks.withType<JavaCompile> {
-		modularity.inferModulePath.set(true)
+		modularity.inferModulePath = true
 
 		options.compilerArgs.add("-Xlint:${xlint()}")
 	}
@@ -133,6 +155,21 @@ gradle.projectsEvaluated {
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
 		}
+
+		// Enforcing the library version defined in the version catalogs.
+		val catalogs = extensions.getByType<VersionCatalogsExtension>()
+		val libraries = catalogs.catalogNames
+			.map { catalogs.named(it) }
+			.flatMap { catalog -> catalog.libraryAliases.map { alias -> Pair(catalog, alias) } }
+			.map { it.first.findLibrary(it.second).get().get() }
+			.filter { it.version != null }
+			.map { it.toString() }
+			.toTypedArray()
+
+		configurations.all {
+			resolutionStrategy.preferProjectModules()
+			resolutionStrategy.force(*libraries)
+		}
 	}
 }
 
@@ -142,11 +179,11 @@ gradle.projectsEvaluated {
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
-		"Implementation-Version" to Jenetics.VERSION,
+		"Implementation-Version" to project.version,
 		"Implementation-URL" to Jenetics.URL,
 		"Implementation-Vendor" to Jenetics.NAME,
 		"ProjectName" to Jenetics.NAME,
-		"Version" to Jenetics.VERSION,
+		"Version" to project.version,
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
 		"Project-Version" to project.version,
@@ -177,7 +214,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.11"
+		toolVersion = libs.jacoco.agent.get().version.toString()
 	}
 
 	project.tasks {
@@ -231,7 +268,7 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
-val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+val identifier = "${Jenetics.ID}-${providers.gradleProperty("jenetics.version").get()}"
 
 /**
  * Setup of the Maven publishing.
@@ -327,7 +364,7 @@ fun setupPublishing(project: Project) {
 			}
 		}
 
-		// Exclude test fixtures from publication, as we use it only internally
+		// Exclude test fixtures from publication, as we use them only internally
 		plugins.withId("org.gradle.java-test-fixtures") {
 			val component = components["java"] as AdhocComponentWithVariants
 			component.withVariantsFromConfiguration(configurations["testFixturesApiElements"]) { skip() }
@@ -383,11 +420,11 @@ tasks.register(assemblePkg) {
 			plugins.withType<JavaPlugin> {
 				configurations.all {
 					if (isCanBeResolved) {
-						files.forEach {
-							if (it.name.endsWith(".jar") &&
-								!it.name.startsWith("jenetics"))
+						resolvedConfiguration.resolvedArtifacts.forEach {
+							if (it.file.name.endsWith(".jar") &&
+								!it.file.name.startsWith("jenetics"))
 							{
-								files.add(it)
+								files.add(it.file)
 							}
 						}
 					}
