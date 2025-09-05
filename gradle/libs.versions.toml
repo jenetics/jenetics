@@ -1,5 +1,5 @@
 [versions]
-assertj = "3.27.3"
+assertj = "3.27.4"
 codemodel = "4.0.5"
 commons-csv = "1.14.1"
 commons-math4-legacy = "4.0-beta1"
@@ -11,11 +11,11 @@ commons-rng-sampling = "1.6"
 commons-rng-simple = "1.6"
 commons-statistics-descriptive = "1.1"
 commons-statistics-distribution = "1.1"
-equalsverifier = "4.0.7"
+equalsverifier = "4.1"
 guava = "33.4.8-jre"
-jackson = "2.19.2"
-jackson-databind-nullable = "0.2.6"
-jackson-datatype-jsr310 = "2.19.2"
+jackson = "2.20"
+jackson-databind-nullable = "0.2.7"
+jackson-datatype-jsr310 = "2.20.0"
 jacoco-agent = "0.8.13"
 jakarta-annotation-api = "3.0.0"
 jakarta-validation-api = "3.1.1"
@@ -24,15 +24,15 @@ jexl = "3.5.0"
 jmh = "0.7.3"
 jpx = "3.2.1"
 mvel = "2.5.2.Final"
-nashorn = "15.6"
-openapi-generator = "7.14.0"
+nashorn = "15.7"
+openapi-generator = "7.15.0"
 opencsv = "5.12.0"
 prngine = "2.0.0"
-reactor-core = "3.7.8"
+reactor-core = "3.7.9"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
-swagger-models = "2.2.35"
-swagger-parser = "2.1.31"
+swagger-models = "2.2.36"
+swagger-parser = "2.1.33"
 testng = "7.11.0"
 version-catalog-update = "1.0.0"
 
@@ -57,7 +57,7 @@ commons-statistics-distribution = { module = "org.apache.commons:commons-statist
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.0"
 jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
