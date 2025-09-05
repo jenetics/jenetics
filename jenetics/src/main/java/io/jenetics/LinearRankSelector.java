@@ -25,8 +25,8 @@ import io.jenetics.util.Seq;
 
 /**
  * <p>
- * In linear-ranking selection the individuals are sorted according to their
- * fitness values. The rank <i>N</i> is assignee to the best individual and the
+ * In linear-ranking selection, the individuals are sorted according to their
+ * fitness values. The rank <i>N</i> is an assignee to the best individual and
  * rank 1 to the worst individual. The selection probability <i>P(i)</i>  of
  * individual <i>i</i> is linearly assigned to the individuals according to
  * their rank.

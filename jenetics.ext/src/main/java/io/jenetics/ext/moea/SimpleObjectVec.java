@@ -53,8 +53,7 @@ final class SimpleObjectVec<T> implements Vec<T[]> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof SimpleObjectVec<?> other &&
+		return obj instanceof SimpleObjectVec<?> other &&
 			Arrays.equals(other._data, _data);
 	}
 

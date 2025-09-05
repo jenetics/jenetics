@@ -38,7 +38,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * General interface for a ordered, fixed sized, object sequence.
+ * General interface for an ordered, fixed-sized, object sequence.
  * <br>
  * Use the {@link #asList()} method to work together with the
  * <a href="https://download.java.net/java/early_access/jdk21/docs/api/java.base/java/util/Collection.html">
@@ -170,7 +170,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * sequence element.
 	 * </p>
 	 * {@snippet lang="java":
-	 * // Finding index of first null value.
+	 * // Finding index of the first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
@@ -194,7 +194,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * sequence element.
 	 * </p>
 	 * {@snippet lang="java":
-	 * // Finding index of first null value.
+	 * // Finding index of the first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
@@ -224,7 +224,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * sequence element.
 	 * </p>
 	 * {@snippet lang="java":
-	 * // Finding index of first null value.
+	 * // Finding index of the first null value.
 	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
@@ -478,7 +478,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Return an array containing all of the elements in this sequence in right
+	 * Return an array containing all of the elements in this sequence in the right
 	 * order; the runtime type of the returned array is that of the specified
 	 * array. If this sequence fits in the specified array, it is returned
 	 * therein. Otherwise, a new array is allocated with the runtime type of the
@@ -494,7 +494,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @param <B> the runtime type of the array to contain the sequence
 	 * @param array the array into which the elements of this array are to be
-	 *         stored, if it is big enough; otherwise, a new array of the same
+	 *         stored if it is big enough; otherwise, a new array of the same
 	 *         runtime type is allocated for this purpose.
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is
@@ -590,7 +590,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of its element is
+	 * @throws NullPointerException if the given array or one of its elements is
 	 *         {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
@@ -715,7 +715,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
 	/**
 	 * Unified method for calculating the hash code of every {@link Seq}
-	 * implementation. The hash code is defined as followed:
+	 * implementation. The hash code is defined as follows:
 	 * {@snippet lang="java":
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();

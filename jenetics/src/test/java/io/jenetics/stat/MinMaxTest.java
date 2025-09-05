@@ -27,7 +27,8 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.statistics.descriptive.Max;
+import org.apache.commons.statistics.descriptive.Min;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -116,12 +117,11 @@ public class MinMaxTest {
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of();
-		Arrays.stream(numbers)
-			.mapToObj(Double::valueOf)
+		Arrays.stream(numbers).boxed()
 			.forEach(minMax);
 
-		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), Min.of(numbers).getAsDouble());
+		assertEquals(minMax.max().doubleValue(), Max.of(numbers).getAsDouble());
 	}
 
 	@Test
@@ -130,12 +130,11 @@ public class MinMaxTest {
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of(Comparator.reverseOrder());
-		Arrays.stream(numbers)
-			.mapToObj(Double::valueOf)
+		Arrays.stream(numbers).boxed()
 			.forEach(minMax);
 
-		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), Max.of(numbers).getAsDouble());
+		assertEquals(minMax.max().doubleValue(), Min.of(numbers).getAsDouble());
 	}
 
 	@Test
@@ -143,12 +142,11 @@ public class MinMaxTest {
 		final var random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
-		final MinMax<Double> minMax = Arrays.stream(numbers)
-			.mapToObj(Double::valueOf)
+		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
 			.collect(MinMax.toMinMax());
 
-		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), Min.of(numbers).getAsDouble());
+		assertEquals(minMax.max().doubleValue(), Max.of(numbers).getAsDouble());
 	}
 
 	@Test
@@ -159,8 +157,8 @@ public class MinMaxTest {
 		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
 			.collect(MinMax.toMinMax(Comparator.reverseOrder()));
 
-		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), Max.of(numbers).getAsDouble());
+		assertEquals(minMax.max().doubleValue(), Min.of(numbers).getAsDouble());
 	}
 
 	@Test
@@ -174,7 +172,7 @@ public class MinMaxTest {
 
 		assertEquals(minMax.max(), Integer.valueOf(99));
 		assertEquals(minMax.min(), Integer.valueOf(0));
-		assertEquals(100, minMax.count());
+		assertEquals(minMax.count(), 100);
 	}
 
 	@Test
