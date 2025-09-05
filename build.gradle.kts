@@ -73,7 +73,7 @@ alljavadoc {
 
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.14"
+	gradleVersion = "9.0.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
