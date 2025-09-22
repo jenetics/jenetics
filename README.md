@@ -17,7 +17,7 @@ The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 21** to compile and run.
+**Jenetics** requires at least **Java 21** to compile and run. It also compiles and runs with **Java 25**.
 
 Check out the master branch from GitHub.
 
