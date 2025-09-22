@@ -29,7 +29,7 @@ import java.io.InputStream;
  * @since 8.2
  * @version 8.2
  */
-@FunctionalInterface()
+@FunctionalInterface
 public interface Reader {
 
 	/**

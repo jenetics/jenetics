@@ -32,7 +32,7 @@ import java.util.concurrent.Flow;
  * @since 8.2
  * @version 8.2
  */
-final class ClientBodyPublisher implements HttpRequest.BodyPublisher{
+final class ClientBodyPublisher implements HttpRequest.BodyPublisher {
 
 	private final HttpRequest.BodyPublisher delegate;
 
