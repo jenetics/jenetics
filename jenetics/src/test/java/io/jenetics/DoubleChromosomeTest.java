@@ -20,18 +20,18 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.internal.math.DoubleAdder.sum;
 
 import java.util.Random;
 
-import io.jenetics.incubator.stat.Sampling;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -58,17 +58,18 @@ public class DoubleChromosomeTest
 		final double min = 0;
 		final double max = 100;
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(1_000, samples ->
-				DoubleChromosome.of(min, max, 500).stream()
-					.mapToDouble(DoubleGene::doubleValue)
-					.forEach(samples::add)
-			),
-			Histogram.Partition.of(min, max, 20)
-		);
-		new StableRandomExecutor(seed).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(1_000, samples ->
+					DoubleChromosome.of(min, max, 500).stream()
+						.mapToDouble(DoubleGene::doubleValue)
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertThatObservation(observation).isUniform();
+		assertThat(observation).isUniform();
 	}
 
 	@DataProvider
@@ -92,13 +93,13 @@ public class DoubleChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{DoubleChromosome.of(0, 1), IntRange.of(1)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1)), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 1), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 2), IntRange.of(2)},
-			{DoubleChromosome.of(0, 1, 20), IntRange.of(20)},
-			{DoubleChromosome.of(0, 1, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{DoubleChromosome.of(0, 1), new IntRange(1)},
+			{DoubleChromosome.of(new DoubleRange(0, 1)), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 1), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 2), new IntRange(2)},
+			{DoubleChromosome.of(0, 1, 20), new IntRange(20)},
+			{DoubleChromosome.of(0, 1, new IntRange(2, 10)), new IntRange(2, 10)},
+			{DoubleChromosome.of(new DoubleRange(0, 1), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

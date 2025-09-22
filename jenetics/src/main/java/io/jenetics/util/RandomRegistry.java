@@ -35,7 +35,7 @@ import java.util.random.RandomGeneratorFactory;
  * {@code RandomRegistry} is thread safe and is initialized with the
  * {@link RandomGeneratorFactory#getDefault()} PRNG.
  *
- * <h2>Setup the PRNG used for the evolution process</h2>
+ * <h2>Set up the PRNG used for the evolution process</h2>
  * There are several ways on how to set the {@link RandomGenerator} used during
  * the evolution process.
  * <p>
@@ -147,10 +147,11 @@ import java.util.random.RandomGeneratorFactory;
  * @version 8.0
  */
 public final class RandomRegistry {
-	private RandomRegistry() {}
+	private RandomRegistry() {
+	}
 
 	/**
-	 * Thread local wrapper for a random generator supplier (factory).
+	 * Thread-local wrapper for a random generator supplier (factory).
 	 *
 	 * @param <R> the type of the random generator
 	 */
@@ -170,10 +171,12 @@ public final class RandomRegistry {
 		}
 	}
 
-	private static final TLR<RandomGenerator> DEFAULT_RANDOM_FACTORY =
+	private static final TLR<RandomGenerator>
+		DEFAULT_RANDOM_FACTORY =
 		new TLR<>(RandomGeneratorFactory.of(Env.defaultRandomGenerator)::create);
 
-	private static final Context<Supplier<? extends RandomGenerator>> CONTEXT =
+	private static final Context<Supplier<? extends RandomGenerator>>
+		CONTEXT =
 		new Context<>(DEFAULT_RANDOM_FACTORY);
 
 	/**
@@ -237,9 +240,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(new Random(123), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(new Random(123), r -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the
@@ -267,9 +268,7 @@ public final class RandomRegistry {
 	 * Executes the consumer code using the given {@code random} generator.
 	 * {@snippet lang="java":
 	 * final MSeq<Integer> seq = null; // @replace substring='null' replacement="..."
-	 * using(RandomGeneratorFactory.getDefault(), r -> {
-	 *     seq.shuffle();
-	 * });
+	 * using(RandomGeneratorFactory.getDefault(), r -> seq.shuffle());
 	 * }
 	 *
 	 * The example above shuffles the given integer {@code seq} <i>using</i> the

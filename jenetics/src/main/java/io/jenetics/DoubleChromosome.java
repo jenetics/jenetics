@@ -121,7 +121,7 @@ public class DoubleChromosome
 	public DoubleChromosome map(final Function<? super double[], double[]> f) {
 		requireNonNull(f);
 
-		final var range = DoubleRange.of(_min, _max);
+		final var range = new DoubleRange(_min, _max);
 		final var genes = DoubleStream.of(f.apply(toArray()))
 			.mapToObj(v -> DoubleGene.of(v, range))
 			.collect(ISeq.toISeq());
@@ -196,7 +196,7 @@ public class DoubleChromosome
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		checkGeneRange(Stream.of(genes).map(DoubleGene::range));
-		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new DoubleChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class DoubleChromosome
 	public static DoubleChromosome of(final Iterable<DoubleGene> genes) {
 		final ISeq<DoubleGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(DoubleGene::range));
-		return new DoubleChromosome(values, IntRange.of(values.length()));
+		return new DoubleChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class DoubleChromosome
 		final double max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -352,7 +352,7 @@ public class DoubleChromosome
 
 	static DoubleChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = in.readDouble();
 		final var max = in.readDouble();
 

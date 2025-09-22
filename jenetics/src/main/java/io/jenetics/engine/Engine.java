@@ -198,7 +198,7 @@ public final class Engine<
 
 		final EvolutionStart<G, C> interceptedStart = _interceptor.before(start);
 
-		// Create initial population if `start` is empty.
+		// Create an initial population if `start` is empty.
 		final EvolutionStart<G, C> es = interceptedStart.population().isEmpty()
 			? evolutionStart(interceptedStart)
 			: interceptedStart;
@@ -988,7 +988,7 @@ public final class Engine<
 		}
 
 		/**
-		 * The maximal allowed age of a phenotype. <i>Default values is set to
+		 * The maximal allowed age of a phenotype. <i>Default value is set to
 		 * {@code 70}.</i>
 		 *
 		 * @param age the maximal phenotype age

@@ -83,7 +83,7 @@ Before developing your own `Codec`, have a look at the `Codecs` class, which con
 ```java
 record Solution(int[] values) {}
 final Codec<Solution, IntegerGene> codec = Codecs
-    .ofVector(IntRange.of(0, 100), 10)
+    .ofVector(new IntRange(0, 100), 10)
     .map(Solution::new);
 ```
 
@@ -91,7 +91,7 @@ Creating a `Codec` this way is more expressive and less error-prone. The `map` m
 
 ```java
 final Codec<Solution, DoubleGene> codec = Codecs
-    .ofVector(DoubleRange.of(0, 100), 10)
+    .ofVector(new DoubleRange(0, 100), 10)
     .map(Conversions::doubleToIntArray)
     .map(Solution::new);
 ```
@@ -111,7 +111,7 @@ It is now possible to implement a `Codec` for the `counters`
 
 ```java
 final Codec<int[], DoubleGene> countersCodec = Codecs
-    .ofVector(DoubleRange.of(0.0, 1000.0))
+    .ofVector(new DoubleRange(0.0, 1000.0))
     .map(Conversions::doubleToIntArray);
 ```
 
@@ -150,9 +150,9 @@ Such a solution model can't directly be encoded with the available chromosomes, 
 ```java
 final Codec<Solution, DoubleGene> codec = Codec.of(
     Genotype.of(
-        DoubleChromosome.of(DoubleRange.of(0.0, 1.0)),
-        DoubleChromosome.of(DoubleRange.of(0, 1000)),
-        DoubleChromosome.of(DoubleRange.of(0.0, 1.0), 100)
+        DoubleChromosome.of(new DoubleRange(0.0, 1.0)),
+        DoubleChromosome.of(new DoubleRange(0, 1000)),
+        DoubleChromosome.of(new DoubleRange(0.0, 1.0), 100)
     ),
     gt -> new Solution(
         gt.gene().doubleValue(),

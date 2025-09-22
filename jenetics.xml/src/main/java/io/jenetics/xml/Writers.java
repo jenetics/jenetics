@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
+import io.jenetics.BitChromosome;
 import io.jenetics.BoundedChromosome;
 import io.jenetics.BoundedGene;
 import io.jenetics.Chromosome;
@@ -44,9 +45,8 @@ import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
 
 /**
- * This class contains static fields and methods, for creating chromosome- and
+ * This class contains static fields and methods for creating chromosome- and
  * genotype writers for different gene types.
- *
  * {@snippet lang="java":
  * final Writer<Genotype<BitGene> bgw =
  *     Writers.Genotype.writer(Writers.BitChromosome.writer()));
@@ -111,7 +111,7 @@ public final class Writers {
 		public static Writer<io.jenetics.BitChromosome> writer() {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.BitChromosome::length),
-				attr(ONES_PROBABILITY_NAME).map(ch -> ch.oneProbability()),
+				attr(ONES_PROBABILITY_NAME).map(io.jenetics.BitChromosome::oneProbability),
 				text().map(io.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
@@ -714,9 +714,10 @@ public final class Writers {
 		 */
 		public static <A> Writer<io.jenetics.PermutationChromosome<A>>
 		writer(final Writer<? super A> alleleWriter) {
-			return Writer.<io.jenetics.PermutationChromosome<A>>elem(
+			return Writer.elem(
 				ROOT_NAME,
-				attr(LENGTH_NAME).map(io.jenetics.PermutationChromosome::length),
+				attr(LENGTH_NAME)
+					.map(io.jenetics.PermutationChromosome::length),
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					Writer.<A>elems(ALLELE_NAME, alleleWriter)
@@ -738,7 +739,7 @@ public final class Writers {
 		/**
 		 * Create a writer for permutation-chromosomes. The valid alleles are
 		 * serialized by calling the {@link Object#toString()} method. Calling
-		 * this method is equivalent with:
+		 * this method is equivalent to:
 		 * {@snippet lang="java":
 		 * final Writer<PermutationChromosome<Double>> writer =
 		 *     PermutationChromosome.write(text().map(Objects::toString));

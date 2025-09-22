@@ -19,17 +19,16 @@
  */
 package io.jenetics.util;
 
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
-import static io.jenetics.util.RandomRegistry.using;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,12 +38,10 @@ import java.util.random.RandomGenerator.StreamableGenerator;
 import java.util.random.RandomGeneratorFactory;
 import java.util.stream.IntStream;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.DoubleChromosome;
-import io.jenetics.DoubleGene;
-import io.jenetics.Genotype;
+import static io.jenetics.util.RandomRegistry.using;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -143,8 +140,7 @@ public class RandomRegistryTest {
 		final Random random = new Random();
 		RandomRegistry.random(random);
 
-		final ExecutorService executor = Executors.newFixedThreadPool(10);
-		try {
+		try (var executor = Executors.newFixedThreadPool(10)) {
 			final var futures = IntStream.range(0, 500)
 				.mapToObj(i -> executor
 					.submit(() -> assertSame(RandomRegistry.random(), random)))
@@ -153,8 +149,6 @@ public class RandomRegistryTest {
 			for (Future<?> future : futures) {
 				future.get();
 			}
-		} finally {
-			executor.shutdown();
 		}
 	}
 
@@ -240,13 +234,13 @@ public class RandomRegistryTest {
 			RandomRegistry.with(new Random(123), random ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
-					.collect(toList())
+					.toList()
 			);
 		final List<Genotype<DoubleGene>> genotypes2 =
 			RandomRegistry.with(new Random(123), random ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
-					.collect(toList())
+					.toList()
 			);
 
 		assertEquals(genotypes1, genotypes2);
@@ -256,8 +250,8 @@ public class RandomRegistryTest {
 	public void defaultRandomGenerator() {
 		System.setProperty(
 			"io.jenetics.util.defaultRandomGenerator",
-			"L64X1024MixRandom")
-		;
+			"L64X1024MixRandom"
+		);
 
 		final var generator = RandomRegistry.random();
 		assertThat(generator.getClass().getSimpleName())

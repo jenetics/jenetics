@@ -21,7 +21,6 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Map.entry;
-import static java.util.Objects.checkIndex;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
@@ -205,7 +204,7 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -256,7 +255,7 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -300,13 +299,13 @@ public final class Codecs {
 	 * values to {@code int} values.
 	 * {@snippet lang=java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
-	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .ofVector(new DoubleRange(0, 100), 100)
 	 *     .map(ArrayConversions::doubleToIntArray);
 	 * }
 	 * If you want round the double values, you can use the following code.
 	 * {@snippet lang=java:
 	 * final Codec<int[], DoubleGene> codec = Codecs
-	 *     .ofVector(DoubleRange.of(0, 100), 100)
+	 *     .ofVector(new DoubleRange(0, 100), 100)
 	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
 	 * }
 	 *
@@ -321,7 +320,7 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -596,8 +595,8 @@ public final class Codecs {
 	 *
 	 * // Codec fora single GPS point (latitude, longitude).
 	 * final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
-	 *     Codecs.ofScalar(DoubleRange.of(30, 50)), // latitude
-	 *     Codecs.ofScalar(DoubleRange.of(69, 72)), // longitude
+	 *     Codecs.ofScalar(new DoubleRange(30, 50)), // latitude
+	 *     Codecs.ofScalar(new DoubleRange(69, 72)), // longitude
 	 *     WayPoint::of
 	 * );
 	 *

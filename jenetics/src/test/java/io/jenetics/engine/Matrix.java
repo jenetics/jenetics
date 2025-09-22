@@ -38,7 +38,7 @@ public class Matrix {
 		final Problem<int[][], IntegerGene, Integer> problem = Problem.of(
 			Matrix::fitness,
 			Codec.of(
-				Genotype.of(IntegerChromosome.of(IntRange.of(0, 10), 3), 3),
+				Genotype.of(IntegerChromosome.of(new IntRange(0, 10), 3), 3),
 				gt -> gt.stream()
 					.map(ch -> ch.stream()
 						.mapToInt(IntegerGene::intValue).toArray())

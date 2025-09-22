@@ -147,7 +147,6 @@ public enum Optimize {
 	/**
 	 * Return a {@code null}-friendly function which returns the best element of
 	 * two values. E.g.
-	 *
 	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>best().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>best().apply(null, 4), (Integer)4);
@@ -188,7 +187,6 @@ public enum Optimize {
 	/**
 	 * Return a {@code null}-friendly function which returns the worst element
 	 * of two values. E.g.
-	 *
 	 * {@snippet lang="java":
 	 * assertNull(Optimize.MAXIMUM.<Integer>worst().apply(null, null));
 	 * assertEquals(Optimize.MAXIMUM.<Integer>worst().apply(null, 4), (Integer)4);

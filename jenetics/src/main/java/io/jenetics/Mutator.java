@@ -33,9 +33,9 @@ import io.jenetics.util.Seq;
  * This class is for mutating the chromosomes of a given population. There are
  * two distinct roles mutation plays
  * <ul>
- *     <li>Exploring the search space. By making small moves mutation allows a
+ *     <li>Exploring the search space. By making small moves, mutation allows a
  *     population to explore the search space. This exploration is often slow
- *     compared to crossover, but in problems where crossover is disruptive this
+ *     compared to crossover, but in problems where crossover is disruptive, this
  *     can be an important way to explore the landscape.
  *     </li>
  *     <li>Maintaining diversity. Mutation prevents a population from
@@ -47,7 +47,7 @@ import io.jenetics.util.Seq;
  * <p>
  * The mutation probability is the parameter that must be optimized. The optimal
  * value of the mutation rate depends on the role mutation plays. If mutation is
- * the only source of exploration (if there is no crossover) then the mutation
+ * the only source of exploration (if there is no crossover), then the mutation
  * rate should be set so that a reasonable neighborhood of solutions is explored.
  * </p>
  * The mutation probability <i>P(m)</i> is the probability that a specific gene
@@ -56,12 +56,15 @@ import io.jenetics.util.Seq;
  * <p>
  * <img src="doc-files/mutator-N_G.svg" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" >
  * </p>
- * where <i>N<sub>P</sub></i>  is the population size, <i>N<sub>g</sub></i> the
+ * Where <i>N<sub>P</sub></i>  is the population size, <i>N<sub>g</sub></i> the
  * number of genes of a genotype. So the (average) number of genes
  * mutated by the mutation is
  * <p>
  * <img src="doc-files/mutator-mean_m.svg" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" >
  * </p>
+ *
+ * @param <G> the gene type
+ * @param <C> the allele type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0

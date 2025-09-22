@@ -21,7 +21,6 @@ package io.jenetics.incubator.restful.generator;
 
 import io.swagger.v3.oas.models.media.Schema;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**

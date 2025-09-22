@@ -24,8 +24,6 @@ import static java.lang.String.format;
 import java.time.Clock;
 import java.time.Instant;
 
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

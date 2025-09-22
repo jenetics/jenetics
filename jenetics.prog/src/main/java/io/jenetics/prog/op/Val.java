@@ -90,8 +90,7 @@ public abstract sealed class Val<T>
 
 	@Override
 	public final boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Val<?> other &&
+		return obj instanceof Val<?> other &&
 			equals(other.value(), value());
 	}
 

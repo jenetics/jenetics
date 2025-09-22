@@ -45,7 +45,7 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
  *
  * // Creating a codons object from an integer chromosome.
- * final var ich = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+ * final var ich = IntegerChromosome.of(new IntRange(0, 256), 1_000);
  * final var codons = Codons.ofIntegerGenes(ich);
  * }
  *
@@ -123,7 +123,7 @@ public final class Codons implements SymbolIndex {
 	/**
 	 * Creates a new <em>codons</em> object from the given int-genes.
 	 * {@snippet lang="java":
-	 * final var chromosome = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+	 * final var chromosome = IntegerChromosome.of(new IntRange(0, 256), 1_000);
 	 * final var codons = Codons.ofIntegerGenes(chromosome);
 	 * }
 	 *

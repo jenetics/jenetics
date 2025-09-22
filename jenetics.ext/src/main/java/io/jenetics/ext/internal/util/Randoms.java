@@ -22,9 +22,8 @@ package io.jenetics.ext.internal.util;
 import static java.lang.String.format;
 
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.random.RandomGenerator;
-
-import io.jenetics.util.RandomAdapter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -65,7 +64,7 @@ public class Randoms {
 		} else if (n.bitLength() <= Long.SIZE - 1) {
 			result = BigInteger.valueOf(random.nextLong(n.longValue()));
 		} else {
-			final var rnd = RandomAdapter.of(random);
+			final var rnd = Random.from(random);
 			do {
 				result = new BigInteger(n.bitLength(), rnd).mod(n);
 			} while (result.compareTo(n) > 0);

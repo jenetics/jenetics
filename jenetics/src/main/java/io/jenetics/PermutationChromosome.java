@@ -264,7 +264,7 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Create a integer permutation chromosome with the given length.
+	 * Create an integer permutation chromosome with the given length.
 	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
@@ -296,7 +296,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		return ofInteger(IntRange.of(start, end), end - start);
+		return ofInteger(new IntRange(start, end), end - start);
 	}
 
 	/**

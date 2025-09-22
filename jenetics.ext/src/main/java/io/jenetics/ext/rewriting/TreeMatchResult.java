@@ -91,8 +91,7 @@ public final class TreeMatchResult<V> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreeMatchResult<?> other &&
+		return obj instanceof TreeMatchResult<?> other &&
 			_tree.equals(other._tree) &&
 			_vars.equals(other._vars);
 	}

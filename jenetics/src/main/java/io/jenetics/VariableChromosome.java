@@ -92,7 +92,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	/**
 	 * Return the allowed length range of the chromosome. The minimum value of
-	 * the range is included and the maximum value is excluded.
+	 * the range is included, and the maximum value is excluded.
 	 *
 	 * @return the allowed length range of the chromosome
 	 */

@@ -13,11 +13,11 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/8.2/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-8.2.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/8.3/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-8.3.0.pdf)).
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 21** to compile and run.
+**Jenetics** requires at least **Java 21** to compile and run. It also compiles and runs with **Java 25**.
 
 Check out the master branch from GitHub.
 
@@ -32,13 +32,14 @@ The following projects/modules are also published to Maven.
 * **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
 * **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA) and doing Grammatical Evolution (GE). 
 * **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contain classes that allow to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
-* **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
+* **[jenetics.xml](jenetics.xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshaling module for the _Jenetics_ base data structures.
 
-**Non-published projects**
+**Non-published modules**
 
-* **jenetics.example**: This project contains example code for the *core*-module.
-* **jenetics.doc**: Contains the code of the website and the manual.
-* **jenetics.tool**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
+* **[jenetics.distassert](jenetics.distassert)**: This module allows testing whether some sample data follows a given statistical distribution. Jenetics uses this module for testing its GA operators.
+* **[jenetics.example](jenetics.example)**: This module contains example code for the *core*-module.
+* **[jenetics.doc](jenetics.doc)**: Contains the code of the website and the manual.
+* **[jenetics.tool](jenetics.tool)**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
 
 For building the library change into the `<builddir>` directory (or one of the module directories) and call one of the available tasks:
 
@@ -291,94 +292,24 @@ Ritwik Murali, Ashwin Narayanan Sivamani, Abhinav Ramakrishnan, Hariharan Arul, 
 
 ## Release notes
 
-### [8.2.0](https://github.com/jenetics/jenetics/releases/tag/v8.2.0)
+### [8.3.0](https://github.com/jenetics/jenetics/releases/tag/v8.3.0)
 
 #### Improvements
 
-* [#889](https://github.com/jenetics/jenetics/issues/889): Allow adding annotations to `Cfg` elements for _Grammatical Evolution_.
-```java
-final var cfg2 = Cfg.<String>builder()
-    .R("expr", rule -> rule
-        .N("num", "annotation 1")
-        .N("var", "annotation 2")
-        .E(exp -> exp
-            .T("(")
-            .N("expr").N("op", 4).N("expr")
-            .T(")")))
-    .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
-    .R("var", rule -> rule.T("x").T("y"))
-    .R("num", rule -> rule
-        .T("0").T("1").T("2").T("3").T("4")
-        .T("5").T("6").T("7").T("8").T("9")
-    )
-    .build();
-```
-* [#915](https://github.com/jenetics/jenetics/issues/915): Remove usage of `java.security.AccessController`.
-* [#921](https://github.com/jenetics/jenetics/issues/921): Remove `object == this` "optimization" in `equals` methods.
-* [#923](https://github.com/jenetics/jenetics/issues/923): Improve parsing performance of `CsvSupport`.
-* [#925](https://github.com/jenetics/jenetics/issues/925): _INCUBATION_: Implement statistical hypothesis tester. The statistical tests for the engine classes has been stabilized and can be written in the following way.
-```java
-final var observation = new RunnableObservation(
-    Sampling.repeat(200_000, samples ->
-        samples.add(DoubleGene.of(0, 20).doubleValue())
-    ),
-    Partition.of(0, 20, 20)
-);
-new StableRandomExecutor(seed).execute(observation);
-
-assertThatObservation(observation).isUniform();
-```
-
+* [#933](https://github.com/jenetics/jenetics/issues/933): Deprecate `RandomAdapter` for removal.
+* [#935](https://github.com/jenetics/jenetics/issues/935): Compile and test Jenetics with Java 24/25
+* [#938](https://github.com/jenetics/jenetics/issues/938): Convert `Range` classes into records.
+* [#943](https://github.com/jenetics/jenetics/issues/943): Remove `org.apache.commons:commons-math3´ test dependency.
+* [#946](https://github.com/jenetics/jenetics/issues/946): Create `io.jenetics.distassert` module, used by statistical GA tests.
+* [#948](https://github.com/jenetics/jenetics/issues/948): Improve `GaussianMutator` implementation.
+* [#951](https://github.com/jenetics/jenetics/issues/951): Improve testing for `RandomRegistry`
+* 
 #### Bugs
 
-* [#914](https://github.com/jenetics/jenetics/issues/#914): Fix `Samplers.linear(double)` factory.
-
-### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
-
-#### Improvements
-
-* [#822](https://github.com/jenetics/jenetics/issues/822): Improve the build script for generating combined Javadoc.
-* [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
-```java
-static List<Sample<Double>> parseDoubles(final CharSequence csv) {
-	return CsvSupport.parseDoubles(csv).stream()
-		.map(Sample::ofDouble)
-		.toList();
-}
-```
-* [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
-* [#907](https://github.com/jenetics/jenetics/issues/907): Add a chapter in the user's manual for optimization strategies: _Practical Jenetics_.
-* [#909](https://github.com/jenetics/jenetics/issues/909): Helper methods for converting primitive arrays.
-```java
-final Codec<int[], DoubleGene> codec = Codecs
-    .ofVector(DoubleRange.of(0, 100), 100)
-    .map(Conversions::doubleToIntArray);
-```
-
-#### Bugs
-
-* [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
-
-### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
-
-#### Improvements
-
-* Java 21 is used for building and using the library.
-* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function. Must be enabled when creating an `Engine` (see code snippet below), the previous behavior has been preserved.
-```java
-final Engine<DoubleGene, Double> engine = Engine.builder(ff)
-	.fitnessExecutor(BatchExecutor.ofVirtualThreads())
-	.build();
-```
-* [#880](https://github.com/jenetics/jenetics/issues/880): Replace code examples in Javadoc with [JEP 413](https://openjdk.org/jeps/413).
-* [#886](https://github.com/jenetics/jenetics/issues/886): Improve `CharStore` sort.
-* [#894](https://github.com/jenetics/jenetics/issues/894): New genetic operators: `ShiftMutator`, `ShuffleMutator` and `UniformOrderBasedCrossover`.
-* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default `RandomGenerator` selection. The used `RandomGenerator` is selected in the following order:
-	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter is set. If so, take this generator.
-	2) Check if the `L64X256MixRandom` generator is available. If so, take this generator.
-	3) Find the _best_ available random generator according to the `RandomGeneratorFactory.stateBits()` value.
-	4) Use the `Random` generator if no _best_ generator can be found. This generator is guaranteed to be available on every platform.
-
+* [#936](https://github.com/jenetics/jenetics/issues/936): Fix `assemblePkg` task
+* [#941](https://github.com/jenetics/jenetics/issues/941): Fix statistical tests after [TestNG](https://github.com/testng-team/testng) upgrade.
+* [#952](https://github.com/jenetics/jenetics/issues/952): Fix artifact publishing.
+* [#955](https://github.com/jenetics/jenetics/pull/945): Improve stochastic universal selector.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

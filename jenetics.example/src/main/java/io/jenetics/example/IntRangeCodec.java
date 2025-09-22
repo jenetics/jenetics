@@ -16,7 +16,7 @@ public class IntRangeCodec {
 
 	static Codec<Ranges, DoubleGene> codec(IntRange[] iranges, DoubleRange drange) {
 		return Codec.of(
-			Genotype.of(DoubleChromosome.of(DoubleRange.of(0, 1), iranges.length + 1)),
+			Genotype.of(DoubleChromosome.of(new DoubleRange(0, 1), iranges.length + 1)),
 			gt -> {
 				final var ch = gt.chromosome();
 				return new Ranges(

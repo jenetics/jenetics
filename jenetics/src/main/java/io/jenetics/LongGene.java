@@ -110,7 +110,7 @@ public final class LongGene
 	 * @return the range of {@code this} gene
 	 */
 	public LongRange range() {
-		return LongRange.of(_min, _max);
+		return new LongRange(_min, _max);
 	}
 
 	@Override

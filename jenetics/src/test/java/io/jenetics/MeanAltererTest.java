@@ -21,15 +21,15 @@ package io.jenetics;
 
 import static io.jenetics.TestUtils.diff;
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.incubator.stat.Assurance.assertThatObservation;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.stat.Histogram;
-import io.jenetics.incubator.stat.RunnableObservation;
-import io.jenetics.incubator.stat.Sampling;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.StableRandomExecutor;
@@ -71,18 +71,19 @@ public class MeanAltererTest extends AltererTester {
 		final ISeq<Phenotype<DoubleGene, Double>> population =
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
-		final var observation = new RunnableObservation(
-			Sampling.repeat(100, samples -> {
-				final long alterations = new MeanAlterer<DoubleGene, Double>(p)
-					.alter(population, 1)
-					.alterations();
-				samples.add(alterations);
-			}),
-			Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
-		);
-		new StableRandomExecutor(123456789).execute(observation);
+		final var observation = Observer
+			.using(new StableRandomExecutor(123456789))
+			.observe(
+				Sample.repeat(100, samples -> {
+					final long alterations = new MeanAlterer<DoubleGene, Double>(p)
+						.alter(population, 1)
+						.alterations();
+					samples.accept(alterations);
+				}),
+				Histogram.Partition.of(0, ngenes*nchromosomes*npopulation, 20)
+			);
 
-		assertThatObservation(observation).isNormal();
+		assertThat(observation).isNormal();
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

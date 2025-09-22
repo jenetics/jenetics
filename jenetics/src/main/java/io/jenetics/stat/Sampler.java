@@ -29,11 +29,11 @@ import io.jenetics.util.IntRange;
  * <em>distribution</em>. This interface isn't responsible for creating the
  * random numbers itself. It uses a {@link RandomGenerator} generator, which is
  * given by the caller.
- * {@snippet lang = java:
+ * {@snippet lang="java":
  * final var random = RandomGenerator.getDefault();
- * final var range = DoubleRange.of(0, 1);
+ * final var range = new DoubleRange(0, 1);
  * final var sampler = Sampler.linear(0.1);
- * // Create a new sample point, which obeys the given distribution.
+ * // Create a new sample point which obeys the given distribution.
  * // The random generator is responsible for the base randomness.
  * final double value = sampler.sample(random, range);
  *}
@@ -76,7 +76,7 @@ public interface Sampler {
 	 * @return a new sample point between {@code [min, max)}
 	 */
 	default int sample(RandomGenerator random, IntRange range) {
-		return (int)sample(random, DoubleRange.of(range.min(), range.max()));
+		return (int)sample(random, new DoubleRange(range.min(), range.max()));
 	}
 
 }

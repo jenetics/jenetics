@@ -21,8 +21,6 @@ package io.jenetics.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 import java.util.Optional;
 
 import org.testng.annotations.DataProvider;
@@ -38,13 +36,8 @@ public class IntRangeTest extends ObjectTester<IntRange> {
 	protected Factory<IntRange> factory() {
 		return () -> {
 			final var random = RandomRegistry.random();
-			return IntRange.of(random.nextInt(10), random.nextInt(1000) + 20);
+			return new IntRange(random.nextInt(10), random.nextInt(1000) + 20);
 		};
-	}
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(IntRange.class).verify();
 	}
 
 	@Test(dataProvider = "containsRanges")
@@ -55,11 +48,11 @@ public class IntRangeTest extends ObjectTester<IntRange> {
 	@DataProvider
 	public Object[][] containsRanges() {
 		return new Object[][] {
-			{IntRange.of(0, 10), 5, true},
-			{IntRange.of(0, 10), 0, true},
-			{IntRange.of(0, 10), 10, false},
-			{IntRange.of(0, 10), -5, false},
-			{IntRange.of(0, 10), 15, false}
+			{new IntRange(0, 10), 5, true},
+			{new IntRange(0, 10), 0, true},
+			{new IntRange(0, 10), 10, false},
+			{new IntRange(0, 10), -5, false},
+			{new IntRange(0, 10), 15, false}
 		};
 	}
 
@@ -71,13 +64,13 @@ public class IntRangeTest extends ObjectTester<IntRange> {
 	@DataProvider
 	public Object[][] rangeIntersectionPairs() {
 		return new Object[][] {
-			{IntRange.of(0, 10), IntRange.of(5, 20), Optional.of(IntRange.of(5, 10))},
-			{IntRange.of(6, 10), IntRange.of(5, 20), Optional.of(IntRange.of(6, 10))},
-			{IntRange.of(0, 10), IntRange.of(5, 7), Optional.of(IntRange.of(5, 7))},
-			{IntRange.of(0, 100), IntRange.of(5, 20), Optional.of(IntRange.of(5, 20))},
-			{IntRange.of(0, 10), IntRange.of(10, 20), Optional.empty()},
-			{IntRange.of(0, 10), IntRange.of(11, 20), Optional.empty()},
-			{IntRange.of(20, 100), IntRange.of(1, 5), Optional.empty()}
+			{new IntRange(0, 10), new IntRange(5, 20), Optional.of(new IntRange(5, 10))},
+			{new IntRange(6, 10), new IntRange(5, 20), Optional.of(new IntRange(6, 10))},
+			{new IntRange(0, 10), new IntRange(5, 7), Optional.of(new IntRange(5, 7))},
+			{new IntRange(0, 100), new IntRange(5, 20), Optional.of(new IntRange(5, 20))},
+			{new IntRange(0, 10), new IntRange(10, 20), Optional.empty()},
+			{new IntRange(0, 10), new IntRange(11, 20), Optional.empty()},
+			{new IntRange(20, 100), new IntRange(1, 5), Optional.empty()}
 		};
 	}
 

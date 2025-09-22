@@ -24,7 +24,7 @@ import static java.util.Objects.checkFromToIndex;
 import java.util.List;
 
 /**
- * This sorting methods doesn't sort a given array directly; instead,
+ * These sorting methods don't sort a given array directly; instead,
  * an index lookup array is returned which allows accessing the array in a
  * sorted order.
  * {@snippet lang="java":
@@ -240,7 +240,7 @@ public final class ProxySorter {
 	 * @param to the index of the last element (exclusive) to be sorted
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+	 * @throws IndexOutOfBoundsException if the subrange is out of bounds
 	 */
 	public static int[] sort(final int[] array, final int from, final int to) {
 		checkFromToIndex(from, to, array.length);
@@ -610,7 +610,7 @@ public final class ProxySorter {
 	/**
 	 * Create an initial indexes array of the given {@code length}.
 	 *
-	 * @param length the length of the indexes array
+	 * @param length the length of the index array
 	 * @return the initialized indexes array
 	 */
 	static int[] indexes(final int length) {

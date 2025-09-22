@@ -48,7 +48,7 @@ import io.jenetics.util.Seq;
  * <br>
  * Positive values of <i>b</i> increases the selection probability of the phenotype
  * with high fitness values. Negative values of <i>b</i> increases the selection
- * probability of phenotypes with low fitness values. If <i>b</i> is zero the
+ * probability of phenotypes with low fitness values. If <i>b</i> is zero, the
  * selection probability of all phenotypes is set to <sup>1</sup>/<sub>N</sub>.
  *
  * @param <G> the gene type.

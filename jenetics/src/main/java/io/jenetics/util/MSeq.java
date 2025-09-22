@@ -42,10 +42,10 @@ import io.jenetics.internal.collection.Empty.EmptyMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
- * Mutable, ordered, fixed sized sequence.
+ * Mutable, ordered, fixed-sized sequence.
  *
  * @implNote
- * This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * This implementation is not thread-safe. All {@link ISeq} and {@link MSeq}
  * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
  * respectively, must be protected by the same lock, when they are accessed
  * (get/set) by different threads.
@@ -184,7 +184,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @since 4.0
 	 *
-	 * @param index the index of swapped element.
+	 * @param index the index of a swapped element.
 	 * @param other the other array to swap the elements with.
 	 * @throws IndexOutOfBoundsException if
 	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
@@ -213,7 +213,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
-	 * @param random the {@link RandomGenerator} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomizing.
 	 * @return this shuffled sequence
 	 * @throws NullPointerException if the random object is {@code null}.
 	 */

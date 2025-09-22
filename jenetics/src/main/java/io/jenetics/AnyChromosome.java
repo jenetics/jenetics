@@ -31,11 +31,10 @@ import io.jenetics.util.IntRange;
 /**
  * {@code Chromosome} implementation, which allows creating genes without
  * explicit implementing the {@code Chromosome} interface.
- *
  * {@snippet lang="java":
  * public class LastMonday {
  *
- *     // First monday of 2015.
+ *     // First Monday of 2015.
  *     private static final LocalDate MIN_MONDAY = LocalDate.of(2015, 1, 5);
  *
  *     // The used Codec.
@@ -45,13 +44,13 @@ import io.jenetics.util.IntRange;
  *     );
  *
  *     // Supplier of random 'LocalDate' objects. The implementation is responsible
- *     // for guaranteeing the desired allele restriction. In this case we will
+ *     // for guaranteeing the desired allele restriction. In this case, we will
  *     // generate only mondays.
  *     private static LocalDate nextRandomMonday() {
  *         return MIN_MONDAY.plusWeeks(RandomRegistry.getRandom().nextInt(1000));
  *     }
  *
- *     // The fitness function: find a monday at the end of the month.
+ *     // The fitness function: find a Monday at the end of the month.
  *     private static double fitness(final LocalDate date) {
  *         return date.getDayOfMonth();
  *     }
@@ -182,7 +181,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @param lengthRange the allowed length range of the chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the given arguments is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
@@ -213,7 +213,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @param length the length of the chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the given arguments is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
@@ -221,7 +222,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
-		return of(supplier, alleleValidator, alleleSeqValidator, IntRange.of(length));
+		return of(supplier, alleleValidator, alleleSeqValidator, new IntRange(length));
 	}
 
 	/**
@@ -238,7 +239,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} or {@code validator}
 	 *         is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
@@ -260,7 +262,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} or {@code validator}
 	 *         is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one.
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
@@ -303,7 +306,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @param lengthRange the allowed length range of the chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
@@ -323,7 +327,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	 * @param length the length of the created chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} is {@code null}
-	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 * @throws IllegalArgumentException if the chromosome length is smaller than
+	 *         one
 	 */
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
