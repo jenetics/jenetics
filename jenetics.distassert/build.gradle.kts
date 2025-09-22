@@ -35,11 +35,11 @@ moduleName = "io.jenetics.distassert"
 description = "Statistical distribution assertion library"
 
 dependencies {
+	implementation(libs.commons.math4.legacy)
 	implementation(libs.commons.numbers.core)
 	implementation(libs.commons.numbers.gamma)
 	implementation(libs.commons.numbers.rootfinder)
 	implementation(libs.commons.statistics.descriptive)
-	implementation("org.apache.commons:commons-math4-legacy:4.0-beta1")
 
 	testImplementation(libs.assertj.core)
 	testImplementation(libs.commons.statistics.distribution)

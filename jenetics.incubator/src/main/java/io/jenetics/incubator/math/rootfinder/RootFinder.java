@@ -17,46 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.moea;
+package io.jenetics.incubator.math.rootfinder;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.function.DoubleUnaryOperator;
+
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
- * @since 5.2
+ * @version 8.2
+ * @since 8.2
  */
-final class GeneralLongVec extends GeneralVec<long[]> {
+@FunctionalInterface
+public interface RootFinder {
 
-	GeneralLongVec(
-		final long[] data,
-		final ElementComparator<long[]> comparator,
-		final ElementDistance<long[]> distance,
-		final Comparator<long[]> dominance
-	) {
-		super(data, comparator, distance, dominance);
-	}
-
-	@Override
-	public int length() {
-		return _data.length;
-	}
-
-	@Override
-	public int hashCode() {
-		return Arrays.hashCode(_data);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof GeneralLongVec other &&
-			Arrays.equals(other._data, _data);
-	}
-
-	@Override
-	public String toString() {
-		return Arrays.toString(_data);
-	}
+	double solve(DoubleUnaryOperator fn, DoubleRange interval);
 
 }

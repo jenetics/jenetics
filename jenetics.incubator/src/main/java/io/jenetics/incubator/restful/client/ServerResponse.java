@@ -32,6 +32,7 @@ import io.jenetics.incubator.restful.Response;
  */
 sealed interface ServerResponse<T> {
 	record OK<T> (T value) implements ServerResponse<T> {}
+
 	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
 
 	default Response<T> toResponse(

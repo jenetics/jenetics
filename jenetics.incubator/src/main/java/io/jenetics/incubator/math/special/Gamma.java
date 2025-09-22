@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.math;
+package io.jenetics.incubator.math.special;
 
 /**
  * Simple gamma function implementation based on
@@ -29,8 +29,6 @@ package io.jenetics.incubator.math;
  * @since 8.2
  */
 public final class Gamma {
-
-	private static final double HALF_LOG_2PI = 0.91893853320467274178032973640562;
 
 	private static final double EULER_GAMMA = 0.577215664901532860606512090;
 
@@ -54,17 +52,6 @@ public final class Gamma {
 		4.75584627752788110767815E+3,
 		-1.34659959864969306392456E+5,
 		-1.15132259675553483497211E+5
-	};
-
-	private static final double[] C = {
-		1.0/12.0,
-		-1.0/360.0,
-		1.0/1260.0,
-		-1.0/1680.0,
-		1.0/1188.0,
-		-691.0/360360.0,
-		1.0/156.0,
-		-3617.0/122400.0
 	};
 
 	private Gamma() {
@@ -119,7 +106,7 @@ public final class Gamma {
 				// Use identity gamma(z) = gamma(z+1)/z
 				// The variable "result" now holds gamma of the original y + 1
 				// Thus we use y-1 to get back the original y.
-				result /= (y-1.0);
+				result /= (y - 1.0);
 			} else {
 				// Use the identity gamma(z+n) = z*(z+1)* ... *(z+n-1)*gamma(z)
 				for (i = 0; i < n; ++i) {
@@ -136,32 +123,7 @@ public final class Gamma {
 			return Double.POSITIVE_INFINITY;
 		}
 
-		return Math.exp(logGamma(x));
+		return Math.exp(LogGamma.apply(x));
 	}
-
-	public static double logGamma(final double x) {
-		if (Double.isNaN(x) || x <= 0.0) {
-			throw new IllegalArgumentException("Input value must be positive: " + x);
-		}
-
-		if (x < 12.0) {
-			return Math.log(Math.abs(gamma(x)));
-		}
-
-		// Abramowitz and Stegun 6.1.41
-		// Asymptotic series should be good to at least 11 or 12 figures
-		// For error analysis, see Whittiker and Watson
-		// A Course in Modern Analysis (1927), page 252
-
-		final double z = 1.0/(x*x);
-		double sum = C[7];
-		for (int i = 6; i >= 0; i--) {
-			sum *= z;
-			sum += C[i];
-		}
-
-		return (x - 0.5)*Math.log(x) - x + HALF_LOG_2PI + sum/x;
-	}
-
 
 }

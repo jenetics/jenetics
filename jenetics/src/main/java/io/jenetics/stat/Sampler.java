@@ -29,7 +29,7 @@ import io.jenetics.util.IntRange;
  * <em>distribution</em>. This interface isn't responsible for creating the
  * random numbers itself. It uses a {@link RandomGenerator} generator, which is
  * given by the caller.
- * {@snippet lang = java:
+ * {@snippet lang="java":
  * final var random = RandomGenerator.getDefault();
  * final var range = new DoubleRange(0, 1);
  * final var sampler = Sampler.linear(0.1);

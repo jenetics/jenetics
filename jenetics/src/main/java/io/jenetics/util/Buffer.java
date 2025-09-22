@@ -127,15 +127,19 @@ final class Buffer<T> implements Iterable<T> {
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
 	public void addAll(final Iterable<? extends T> values) {
-		if (values instanceof Buffer<?> buff) {
-			final Object[] array = buff.toArray();
-			addAll(array, 0, array.length);
-		} else if (values instanceof Collection<?> coll) {
-			final Object[] array = coll.toArray();
-			addAll(array, 0, array.length);
-		} else {
-			for (T value : values) {
-				add(value);
+		switch (values) {
+			case Buffer<?> buff -> {
+				final Object[] array = buff.toArray();
+				addAll(array, 0, array.length);
+			}
+			case Collection<?> coll -> {
+				final Object[] array = coll.toArray();
+				addAll(array, 0, array.length);
+			}
+			default -> {
+				for (T value : values) {
+					add(value);
+				}
 			}
 		}
 	}

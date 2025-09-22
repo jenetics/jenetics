@@ -17,27 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.math;
+package io.jenetics.incubator.math.rootfinder;
 
 import static java.lang.Math.abs;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleUnaryOperator;
 
+import io.jenetics.incubator.math.iterative.Accuracy;
+import io.jenetics.incubator.math.iterative.IterationCount;
+import io.jenetics.incubator.math.iterative.Iterative;
+import io.jenetics.incubator.math.iterative.Limit;
 import io.jenetics.util.DoubleRange;
 
 /**
  * Brent root finding method.
  *
- * @param epsilon the <em>relative</em> tolerance value
- * @param maxIterations the maximal number of iterations
+ * @param limit the finder algorithm limit
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.2
  * @since 8.2
  */
-public record BrentRootFinder(double epsilon, int maxIterations)
-	implements RootFinder
+public record BrentRootFinder(Limit limit)
+	implements RootFinder, Iterative
 {
 
 	/**
@@ -56,25 +59,11 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 	 */
 	public static final BrentRootFinder DEFAULT = new BrentRootFinder();
 
-	public BrentRootFinder {
-		if (epsilon <= 0) {
-			throw new IllegalArgumentException(
-				"Epsilon must be positive: " + epsilon
-			);
-		}
-		if (maxIterations <= 0) {
-			throw new IllegalArgumentException(
-				"Maximal iterations must be positive: " + maxIterations
-			);
-		}
-	}
-
-	public BrentRootFinder(final double epsilon) {
-		this(epsilon, 1_000_000);
-	}
-
 	public BrentRootFinder() {
-		this(0x1.0p-52);
+		this(new Limit(
+			new Accuracy(0x1.0p-52, 0x1.0p-52),
+			new IterationCount(0, 1_000_000)
+		));
 	}
 
 	@Override
@@ -86,12 +75,12 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 		final double m = 0.5*interval.min() + 0.5*interval.max();
 
 		final var fm = fn.applyAsDouble(m);
-		if (abs(fm) < epsilon) {
+		if (abs(fm) < limit.accuracy().relative()) {
 			return new Root(m, abs(fm), 0);
 		}
 
 		final var fa = fn.applyAsDouble(interval.min());
-		if (abs(fa) < epsilon) {
+		if (abs(fa) < limit.accuracy().relative()) {
 			return new Root(interval.min(), abs(fa), 0);
 		}
 		if (Double.compare(fm*fa, 0.0) < 0) {
@@ -99,7 +88,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 		}
 
 		final var fb = fn.applyAsDouble(interval.max());
-		if (abs(fb) < epsilon) {
+		if (abs(fb) < limit.accuracy().relative()) {
 			return new Root(interval.max(), abs(fb), 0);
 		}
 		if (Double.compare(fm*fb, 0.0) < 0) {
@@ -116,7 +105,7 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 		// Set up aliases to match Brent's notation.
 		double a = interval.min();
 		double b = interval.max();
-		double t = epsilon;
+		double t = limit.accuracy().relative();
 
 		// Implementation and notation based on Chapter 4 in "Algorithms for
 		// Minimization without Derivatives" by Richard Brent.
@@ -180,14 +169,12 @@ public record BrentRootFinder(double epsilon, int maxIterations)
 				} else {
 					b -= tol;
 				}
-				if (iteration == maxIterations) {
+				if (iteration == limit.iterations().max()) {
 					return new Root(b, err, iteration);
 				}
 
 				fb = fn.applyAsDouble(b);
-				if ((fb > 0.0 && fc > 0.0) ||
-					(fb <= 0.0 && fc <= 0.0))
-				{
+				if ((fb > 0.0 && fc > 0.0) || (fb <= 0.0 && fc <= 0.0)) {
 					c = a; fc = fa; d = e = b - a;
 				}
 			} else {

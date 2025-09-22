@@ -1,5 +1,24 @@
 ## Release notes
 
+### [8.3.0](https://github.com/jenetics/jenetics/releases/tag/v8.3.0)
+
+#### Improvements
+
+* [#933](https://github.com/jenetics/jenetics/issues/933): Deprecate `RandomAdapter` for removal.
+* [#935](https://github.com/jenetics/jenetics/issues/935): Compile and test Jenetics with Java 24/25
+* [#938](https://github.com/jenetics/jenetics/issues/938): Convert `Range` classes into records.
+* [#943](https://github.com/jenetics/jenetics/issues/943): Remove `org.apache.commons:commons-math3´ test dependency.
+* [#946](https://github.com/jenetics/jenetics/issues/946): Create `io.jenetics.distassert` module, used by statistical GA tests.
+* [#948](https://github.com/jenetics/jenetics/issues/948): Improve `GaussianMutator` implementation.
+* [#951](https://github.com/jenetics/jenetics/issues/951): Improve testing for `RandomRegistry`
+*
+#### Bugs
+
+* [#936](https://github.com/jenetics/jenetics/issues/936): Fix `assemblePkg` task
+* [#941](https://github.com/jenetics/jenetics/issues/941): Fix statistical tests after [TestNG](https://github.com/testng-team/testng) upgrade.
+* [#952](https://github.com/jenetics/jenetics/issues/952): Fix artifact publishing.
+* [#955](https://github.com/jenetics/jenetics/pull/945): Improve stochastic universal selector.
+
 ### [8.2.0](https://github.com/jenetics/jenetics/releases/tag/v8.2.0)
 
 #### Improvements

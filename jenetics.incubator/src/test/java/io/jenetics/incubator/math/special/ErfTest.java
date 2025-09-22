@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.math;
+package io.jenetics.incubator.math.special;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

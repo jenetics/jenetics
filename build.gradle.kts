@@ -72,7 +72,7 @@ alljavadoc {
 
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.14"
+	gradleVersion = "9.1.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -107,7 +107,7 @@ allprojects {
 		}
 		tasks.withType<Javadoc>().configureEach {
 			val opt = options as CoreJavadocOptions
-			opt.addStringOption("-release", "24")
+			opt.addStringOption("-release", "25")
 			opt.addBooleanOption("-enable-preview", true)
 		}
 	}
@@ -130,11 +130,11 @@ subprojects {
 		configure<JavaPluginExtension> {
 			modularity.inferModulePath = true
 
-			sourceCompatibility = JavaVersion.VERSION_24
-			targetCompatibility = JavaVersion.VERSION_24
+			sourceCompatibility = JavaVersion.VERSION_25
+			targetCompatibility = JavaVersion.VERSION_25
 
 			toolchain {
-				languageVersion = JavaLanguageVersion.of(24)
+				languageVersion = JavaLanguageVersion.of(25)
 			}
 		}
 
@@ -343,24 +343,10 @@ fun setupPublishing(project: Project) {
 		}
 		repositories {
 			maven {
-				url = if (version.toString().endsWith("SNAPSHOT")) {
-					uri(Maven.SNAPSHOT_URL)
-				} else {
-					uri(Maven.RELEASE_URL)
-				}
-
-				credentials {
-					username = if (extra.properties["nexus_username"] != null) {
-						extra.properties["nexus_username"] as String
-					} else {
-						"nexus_username"
-					}
-					password = if (extra.properties["nexus_password"] != null) {
-						extra.properties["nexus_password"] as String
-					} else {
-						"nexus_password"
-					}
-				}
+				url = if (version.toString().endsWith("SNAPSHOT"))
+						uri(layout.buildDirectory.dir("repos/snapshots"))
+					else
+						uri(layout.buildDirectory.dir("repos/releases"))
 			}
 		}
 

@@ -306,8 +306,7 @@ public final class TreePattern<V> implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreePattern<?> other &&
+		return obj instanceof TreePattern<?> other &&
 			_pattern.equals(other._pattern);
 	}
 
