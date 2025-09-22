@@ -323,9 +323,9 @@ fun setupPublishing(project: Project) {
 		repositories {
 			maven {
 				url = if (version.toString().endsWith("SNAPSHOT"))
-						uri(layout.buildDirectory.dir("repos/releases"))
-					else
 						uri(layout.buildDirectory.dir("repos/snapshots"))
+					else
+						uri(layout.buildDirectory.dir("repos/releases"))
 			}
 		}
 
