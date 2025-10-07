@@ -215,17 +215,6 @@ public final class MathExpr
 	}
 
 	/**
-	 * Return the math expression as an operation tree.
-	 *
-	 * @return a new expression tree
-	 * @deprecated Will be removed, use {@link #tree()} instead
-	 */
-	@Deprecated(forRemoval = true)
-	public TreeNode<Op<Double>> toTree() {
-		return TreeNode.ofTree(_tree);
-	}
-
-	/**
 	 * @see #eval(double...)
 	 * @see #eval(String, double...)
 	 */

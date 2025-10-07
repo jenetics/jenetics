@@ -577,11 +577,8 @@ public final class Cfg<T> {
 	 *         start symbol points to a missing rule or the rules uses symbols
 	 *         not defined in the list of {@link #nonTerminals()} or
 	 *         {@link #terminals()}
-	 * @deprecated This constructor will be removed, use {@link #of(Rule[])} or
-	 *             {@link #of(List)} instead.
 	 */
-	@Deprecated(forRemoval = true, since = "8.2")
-	public Cfg(
+	Cfg(
 		List<NonTerminal<T>> nonTerminals,
 		List<Terminal<T>> terminals,
 		List<Rule<T>> rules,
@@ -1037,28 +1034,6 @@ public final class Cfg<T> {
 		final Element<T>... elements
 	) {
 		return R(new NonTerminal<>(name), elements);
-	}
-
-	/**
-	 * Factory method for creating a new rule. The {@code elements} array doesn't
-	 * allow {@link Rule} objects.
-	 *
-	 * @param name the name of start symbol of the rule
-	 * @param alternatives the list of alternative rule expressions
-	 * @throws IllegalArgumentException if the given list of
-	 *         {@code alternatives} is empty
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @param <T> the terminal symbol value type
-	 * @return a new rule
-	 * @deprecated Will be removed, use {@link #R(String, Element[])} instead
-	 */
-	@Deprecated(forRemoval = true, since = "8.2")
-	@SafeVarargs
-	public static <T> Rule<T> R(
-		final String name,
-		final Expression<T>... alternatives
-	) {
-		return R(new NonTerminal<>(name), alternatives);
 	}
 
 	/**
