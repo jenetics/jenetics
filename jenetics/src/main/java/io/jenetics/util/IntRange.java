@@ -131,42 +131,6 @@ public record IntRange(int min, int max) implements Serializable {
 		return IntStream.range(min, max);
 	}
 
-	/**
-	 * Create a new {@code IntRange} object with the given {@code min} and
-	 * {@code max} values.
-	 *
-	 * @param min the lower bound of the integer range
-	 * @param max the upper bound of the integer range
-	 * @return a new {@code IntRange} object
-	 * @throws IllegalArgumentException if {@code min > max}
-	 *
-	 * @deprecated Class is a record now, and this factory method will be
-	 *             removed in the next major version. Use {@link #IntRange(int, int)}
-	 *             instead.
-	 */
-	@Deprecated(since = "8.2", forRemoval = true)
-	public static IntRange of(final int min, final int max) {
-		return new IntRange(min, max);
-	}
-
-	/**
-	 * Return a new (half-open) range, which contains only the given value:
-	 * {@code [value, value + 1)}.
-	 *
-	 * @since 4.0
-	 *
-	 * @param value the value of the created (half-open) integer range
-	 * @return a new (half-open) range, which contains only the given value
-	 *
-	 * @deprecated Class is a record now, and this factory method will be
-	 *             removed in the next major version. Use {@link #IntRange(int)}
-	 *             instead.
-	 */
-	@Deprecated(since = "8.2", forRemoval = true)
-	public static IntRange of(final int value) {
-		return of(value, value + 1);
-	}
-
 	@Override
 	public String toString() {
 		return "[" + min + ", " + max + "]";
