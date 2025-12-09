@@ -56,7 +56,7 @@ public final class Limits {
 	 * @return a predicate which always return {@code true}
 	 */
 	public static Predicate<Object> infinite() {
-		return result -> true;
+		return _ -> true;
 	}
 
 	/**

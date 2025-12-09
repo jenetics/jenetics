@@ -283,7 +283,7 @@ final class ScopedVariable<T> {
 	 * @return a new scoped variable with the given default value
 	 */
 	public static <T> ScopedVariable<T> of(final T initial) {
-		return new ScopedVariable<T>(initial);
+		return new ScopedVariable<>(initial);
 	}
 
 }

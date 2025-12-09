@@ -107,7 +107,7 @@ public final class Randoms {
 		} else {
 			final int P = Probabilities.toInt(p);
 			return IntStream.range(start, end)
-				.filter(i -> random.nextInt() < P);
+				.filter(_ -> random.nextInt() < P);
 		}
 	}
 

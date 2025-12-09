@@ -611,7 +611,7 @@ public final class EvolutionResult<
 				.collect(toMap(
 					Phenotype::genotype,
 					Function.identity(),
-					(a, b) -> a));
+					(a, _) -> a));
 
 		EvolutionResult<G, C> uniques = result;
 		if (elements.size() < population.size()) {

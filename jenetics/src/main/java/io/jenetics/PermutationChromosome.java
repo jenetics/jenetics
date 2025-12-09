@@ -267,7 +267,7 @@ public final class PermutationChromosome<T>
 	 * Create an integer permutation chromosome with the given length.
 	 *
 	 * @param length the chromosome length.
-	 * @return a integer permutation chromosome with the given length.
+	 * @return an integer permutation chromosome with the given length.
 	 * @throws IllegalArgumentException if {@code length <= 0}.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
@@ -283,7 +283,7 @@ public final class PermutationChromosome<T>
 	 *        chromosome.
 	 * @param end the end of the integer range (exclusively) of the returned
 	 *        chromosome.
-	 * @return a integer permutation chromosome with the given integer range
+	 * @return an integer permutation chromosome with the given integer range
 	 *         values.
 	 * @throws IllegalArgumentException if {@code start >= end} or
 	 *         {@code start <= 0}

@@ -112,7 +112,7 @@ public interface Alterer<
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> new AltererResult<>(p.asISeq())
+			? (p, _) -> new AltererResult<>(p.asISeq())
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

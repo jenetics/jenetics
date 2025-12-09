@@ -31,7 +31,7 @@ import java.util.function.Predicate;
 public final class Predicates {
 	private Predicates() {}
 
-	public static final Predicate<Object> TRUE = a -> true;
+	public static final Predicate<Object> TRUE = _ -> true;
 
 	/**
 	 * Return a predicate, which always return {@code true}.

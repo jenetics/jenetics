@@ -459,14 +459,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Return an array containing all of the elements in this sequence in right
+	 * Return an array containing all the elements in this sequence in right
 	 * order. The returned array will be "safe" in that no references to it
 	 * are maintained by this sequence. (In other words, this method must allocate
 	 * a new array.) The caller is thus free to modify the returned array.
 	 *
 	 * @see java.util.Collection#toArray()
 	 *
-	 * @return an array containing all of the elements in this list in the right
+	 * @return an array containing all the elements in this list in the right
 	 *          order
 	 */
 	default Object[] toArray() {
@@ -478,7 +478,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Return an array containing all of the elements in this sequence in the right
+	 * Return an array containing all the elements in this sequence in the right
 	 * order; the runtime type of the returned array is that of the specified
 	 * array. If this sequence fits in the specified array, it is returned
 	 * therein. Otherwise, a new array is allocated with the runtime type of the

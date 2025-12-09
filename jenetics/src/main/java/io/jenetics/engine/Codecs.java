@@ -924,7 +924,7 @@ public final class Codecs {
 			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
 				Entry::getKey, Entry::getValue,
-				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
+				(u, _) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}
 
