@@ -1,6 +1,6 @@
 [versions]
-assertj = "3.27.5"
-codemodel = "4.0.5"
+assertj = "3.27.6"
+codemodel = "4.0.6"
 commons-csv = "1.14.1"
 commons-math4-legacy = "4.0-beta1"
 commons-numbers-combinatorics = "1.2"
@@ -11,30 +11,30 @@ commons-rng-sampling = "1.6"
 commons-rng-simple = "1.6"
 commons-statistics-descriptive = "1.2"
 commons-statistics-distribution = "1.2"
-equalsverifier = "4.1.1"
+equalsverifier = "4.2.5"
 guava = "33.5.0-jre"
 jackson = "2.20"
-jackson-databind-nullable = "0.2.7"
-jackson-datatype-jsr310 = "2.20.0"
-jacoco-agent = "0.8.13"
+jackson-databind-nullable = "0.2.8"
+jackson-datatype-jsr310 = "2.20.1"
+jacoco-agent = "0.8.14"
 jakarta-annotation-api = "3.0.0"
 jakarta-validation-api = "3.1.1"
 javacsv = "2.0"
-jexl = "3.5.0"
+jexl = "3.6.0"
 jmh = "0.7.3"
 jpx = "3.2.1"
 mvel = "2.5.2.Final"
 nashorn = "15.7"
-openapi-generator = "7.15.0"
+openapi-generator = "7.17.0"
 opencsv = "5.12.0"
 prngine = "2.0.0"
-reactor-core = "3.7.11"
+reactor-core = "3.8.1"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
-swagger-models = "2.2.37"
-swagger-parser = "2.1.34"
+swagger-models = "2.2.41"
+swagger-parser = "2.1.36"
 testng = "7.11.0"
-version-catalog-update = "1.0.0"
+version-catalog-update = "1.0.1"
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
@@ -57,7 +57,7 @@ commons-statistics-distribution = { module = "org.apache.commons:commons-statist
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.0"
+jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.20.1"
 jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
