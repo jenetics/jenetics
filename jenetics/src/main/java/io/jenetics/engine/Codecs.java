@@ -628,7 +628,7 @@ public final class Codecs {
 
 		return Codec.combine(
 			IntStream.range(0, length)
-				.mapToObj(__ -> codec)
+				.mapToObj(_ -> codec)
 				.collect(ISeq.toISeq()),
 			objects -> ISeq.of((S[])objects)
 		);

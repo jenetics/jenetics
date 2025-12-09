@@ -132,7 +132,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		for (int i = 0; i < 25; ++i) {
 			final int length = random.nextInt(1000) + 1;
 			final var string = IntStream.range(0, length)
-				.mapToObj(__ -> random.nextBoolean() ? "1" : "0")
+				.mapToObj(_ -> random.nextBoolean() ? "1" : "0")
 				.collect(Collectors.joining());
 
 			values.add(new Object[]{string});

@@ -94,7 +94,7 @@ sealed abstract class PropertyDelegates
 	 */
 	private boolean write(final Object value) {
 		try {
-			if (param.accessor() instanceof Accessor.Writable(var __, var setter)) {
+			if (param.accessor() instanceof Accessor.Writable(var _, var setter)) {
 				setter.set(value);
 				return true;
 			} else {
