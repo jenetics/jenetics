@@ -54,6 +54,10 @@ For building the library jar from the source call
     $ cd <build-dir>
     $ ./gradlew jar
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jenetics/jenetics&type=Date)](https://www.star-history.com/#jenetics/jenetics&Date)
+
 
 ## Example
 
