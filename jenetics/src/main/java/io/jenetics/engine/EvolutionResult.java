@@ -55,14 +55,33 @@ import io.jenetics.util.Seq;
  * Represents a state of the GA after an evolution step. It also represents the
  * final state of an evolution process and can be created with an appropriate
  * collector:
- * <pre>{@code
- * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+ * {@snippet lang="java":
+ * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
  * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
- *     .optimize(Optimize.MINIMUM).build()
+ *     .optimize(Optimize.MINIMUM)
+ *     .build()
  *     .stream()
  *     .limit(100)
  *     .collect(EvolutionResult.toBestEvolutionResult());
- * }</pre>
+ * }
+ *
+ * @implSpec
+ * This class implements the {@link Comparable} interface, which compares two
+ * {@link EvolutionResult} objects according its <em>optimal</em> fitness value.
+ * This means that the better evolution result is always <em>greater</em>, no
+ * matter if the fitness function is minimized or maximized.
+ * {@snippet lang="java":
+ * final EvolutionResult<DoubleGene, Double> result1 = null; // @replace substring='null' replacement="..."
+ * final EvolutionResult<DoubleGene, Double> result2 = null; // @replace substring='null' replacement="..."
+ *
+ * if (result1.compareTo(result2) > 0) {
+ *      // Holds for maximizing evolution results.
+ *     assert result1.bestFitness() > result2.bestFitness();
+ *
+ *     // Holds for minimizing evolution results.
+  *    assert result1.bestFitness() < result2.bestFitness();
+ * }
+ * }
  *
  * @see EvolutionStart
  * @see Engine
@@ -280,7 +299,7 @@ public final class EvolutionResult<
 
 	/**
 	 * Compare {@code this} evolution result with another one, according the
-	 * populations best individual.
+	 * population's best individual.
 	 *
 	 * @param other the other evolution result to compare
 	 * @return  a negative integer, zero, or a positive integer as this result
@@ -359,8 +378,7 @@ public final class EvolutionResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof EvolutionResult<?, ?> other &&
+		return obj instanceof EvolutionResult<?, ?> other &&
 			Objects.equals(_optimize, other._optimize) &&
 			Objects.equals(_population, other._population) &&
 			Objects.equals(_generation, other._generation) &&
@@ -379,15 +397,14 @@ public final class EvolutionResult<
 
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
-	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestEvolutionResult());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -412,15 +429,14 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best phenotype of an evolution
 	 * stream.
-	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Phenotype<EnumGene<Point>, Double> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestPhenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -446,15 +462,14 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best genotype of an evolution
 	 * stream.
-	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final Genotype<EnumGene<Point>> result = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -482,15 +497,14 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
-	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -525,15 +539,14 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best <em>result</em> (in the native
 	 * problem space).
-	 *
-	 * <pre>{@code
-	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * {@snippet lang="java":
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = null; // @replace substring='null' replacement="..."
 	 * final ISeq<Point> route = Engine.builder(tsm)
 	 *     .optimize(Optimize.MINIMUM).build()
 	 *     .stream()
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec()));
-	 * }</pre>
+	 * }
 	 *
 	 * If the collected {@link EvolutionStream} is empty, the collector returns
 	 * <b>{@code null}</b>.
@@ -557,22 +570,21 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
-	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(problem.codec().encoding(), 100))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param factory the genotype factory which create new individuals
-	 * @param maxRetries the maximal number of genotype creation tries
+	 * @param factory the genotype factory which creates new individuals
+	 * @param maxRetries the maximal number of genotype creations tries
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -599,7 +611,7 @@ public final class EvolutionResult<
 				.collect(toMap(
 					Phenotype::genotype,
 					Function.identity(),
-					(a, b) -> a));
+					(a, _) -> a));
 
 		EvolutionResult<G, C> uniques = result;
 		if (elements.size() < population.size()) {
@@ -624,7 +636,7 @@ public final class EvolutionResult<
 
 
 	/* *************************************************************************
-	 * Some collectors and mapping functions.
+	 * Some collector and mapping functions.
 	 * ************************************************************************/
 
 
@@ -632,21 +644,20 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the given genotype
 	 * {@code factory}.
-	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(problem.codec().encoding()))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param factory the genotype factory which create new individuals
+	 * @param factory the genotype factory which creates new individuals
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -664,21 +675,20 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
-	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(toUniquePopulation(10))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype(5));
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
-	 * @param maxRetries the maximal number of genotype creation tries
+	 * @param maxRetries the maximal number of genotype creations tries
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return  a mapping function, which removes duplicate individuals from the
@@ -699,16 +709,15 @@ public final class EvolutionResult<
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the existing
 	 * genotype factory.
-	 *
-	 * <pre>{@code
-	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * {@snippet lang="java":
+	 * final Problem<Double, DoubleGene, Integer> problem = null; // @replace substring='null' replacement="..."
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
 	 *     .interceptor(EvolutionResult.toUniquePopulation())
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
-	 *     .limit(100);
+	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestGenotype());
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
@@ -730,7 +739,7 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return an new {@code EvolutionResult} object with the given values.
+	 * Return a new {@code EvolutionResult} object with the given values.
 	 *
 	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step
@@ -772,7 +781,7 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return an new {@code EvolutionResult} object with the given values.
+	 * Return a new {@code EvolutionResult} object with the given values.
 	 *
 	 * @param optimize the optimization strategy used
 	 * @param population the population after the evolution step

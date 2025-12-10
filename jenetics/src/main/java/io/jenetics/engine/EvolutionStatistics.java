@@ -38,9 +38,8 @@ import io.jenetics.stat.MinMax;
  * development phase of the GA or while testing the GA's performance. The
  * following example shows how to integrate the <i>statistics</i> object into
  * your evolution <i>stream</i>.
- *
- * <pre>{@code
- * final Engine<DoubleGene, Double> engine = ...
+ * {@snippet lang="java":
+ * final Engine<DoubleGene, Double> engine = null; // @replace substring='null' replacement="..."
  * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
  *     EvolutionStatistics.ofNumber();
  *
@@ -51,7 +50,7 @@ import io.jenetics.stat.MinMax;
  *     .collect(toBestPhenotype());
  *
  * System.println(statistics);
- * }</pre>
+ * }
  *
  * <b>Example output</b>
  *
@@ -189,7 +188,7 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the duration statistics needed for the whole evolve step, in
+	 * Return the duration statistics needed for the whole evolved step, in
 	 * seconds.
 	 *
 	 * @return the duration statistics needed for the whole evolve step
@@ -234,7 +233,7 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the statistics about the individuals age.
+	 * Return the statistics about the individual's age.
 	 *
 	 * @return individual age statistics
 	 */

@@ -19,8 +19,11 @@
  */
 package io.jenetics.util;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -33,13 +36,42 @@ public class IntRangeTest extends ObjectTester<IntRange> {
 	protected Factory<IntRange> factory() {
 		return () -> {
 			final var random = RandomRegistry.random();
-			return IntRange.of(random.nextInt(10), random.nextInt(1000) + 20);
+			return new IntRange(random.nextInt(10), random.nextInt(1000) + 20);
 		};
 	}
 
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(IntRange.class).verify();
+	@Test(dataProvider = "containsRanges")
+	public void contains(IntRange a, int value, boolean result) {
+		assertThat(a.contains(value)).isEqualTo(result);
+	}
+
+	@DataProvider
+	public Object[][] containsRanges() {
+		return new Object[][] {
+			{new IntRange(0, 10), 5, true},
+			{new IntRange(0, 10), 0, true},
+			{new IntRange(0, 10), 10, false},
+			{new IntRange(0, 10), -5, false},
+			{new IntRange(0, 10), 15, false}
+		};
+	}
+
+	@Test(dataProvider = "rangeIntersectionPairs")
+	public void intersect(IntRange a, IntRange b, Optional<IntRange> ir) {
+		assertThat(a.intersect(b)).isEqualTo(ir);
+	}
+
+	@DataProvider
+	public Object[][] rangeIntersectionPairs() {
+		return new Object[][] {
+			{new IntRange(0, 10), new IntRange(5, 20), Optional.of(new IntRange(5, 10))},
+			{new IntRange(6, 10), new IntRange(5, 20), Optional.of(new IntRange(6, 10))},
+			{new IntRange(0, 10), new IntRange(5, 7), Optional.of(new IntRange(5, 7))},
+			{new IntRange(0, 100), new IntRange(5, 20), Optional.of(new IntRange(5, 20))},
+			{new IntRange(0, 10), new IntRange(10, 20), Optional.empty()},
+			{new IntRange(0, 10), new IntRange(11, 20), Optional.empty()},
+			{new IntRange(20, 100), new IntRange(1, 5), Optional.empty()}
+		};
 	}
 
 }

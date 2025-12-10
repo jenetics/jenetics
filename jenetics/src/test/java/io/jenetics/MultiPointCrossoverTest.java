@@ -31,7 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -292,11 +292,8 @@ public class MultiPointCrossoverTest extends AltererTester {
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();
-			final int[] points = Subset.next(
-				a.length() + 1,
-				min(npoints, a.length() + 1),
-				new Random(1234)
-			);
+			final int[] points = Subsets.next(new Random(1234), a.length() + 1,
+				min(npoints, a.length() + 1));
 
 			MultiPointCrossover.crossover(ma1, mb1, points);
 			MultiPointCrossover.crossover(ma1, mb1, points);

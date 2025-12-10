@@ -119,8 +119,7 @@ public final class BigIntegerGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof BigIntegerGene other &&
+		return obj instanceof BigIntegerGene other &&
 			Objects.equals(other._value, _value) &&
 			Objects.equals(other._min, _min) &&
 			Objects.equals(other._max, _max);
@@ -152,7 +151,7 @@ public final class BigIntegerGene
 
 	/**
 	 * Create a new random {@code BigIntegerGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * given range. If the {@code value} isn't within the interval [min, max),
 	 * no exception is thrown. In this case the method
 	 * {@link BigIntegerGene#isValid()} returns {@code false}.
 	 *
@@ -172,7 +171,7 @@ public final class BigIntegerGene
 
 	/**
 	 * Create a new random {@code BigIntegerGene}. It is guaranteed that the
-	 * value of the {@code BigIntegerGene} lies in the interval [min, max].
+	 * value of the {@code BigIntegerGene} lies in the interval [min, max).
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).

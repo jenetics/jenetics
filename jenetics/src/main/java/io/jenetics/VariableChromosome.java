@@ -92,7 +92,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	/**
 	 * Return the allowed length range of the chromosome. The minimum value of
-	 * the range is included and the maximum value is excluded.
+	 * the range is included, and the maximum value is excluded.
 	 *
 	 * @return the allowed length range of the chromosome
 	 */
@@ -107,8 +107,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
+		return obj != null &&
 			getClass() == obj.getClass() &&
 			Objects.equals(_lengthRange, ((VariableChromosome<?>)obj)._lengthRange) &&
 			super.equals(obj);

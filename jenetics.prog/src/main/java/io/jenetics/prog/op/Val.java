@@ -90,23 +90,20 @@ public abstract sealed class Val<T>
 
 	@Override
 	public final boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Val<?> other &&
+		return obj instanceof Val<?> other &&
 			equals(other.value(), value());
 	}
 
 	private static boolean equals(final Object a, final Object b) {
-		if (a instanceof Double aa && b instanceof Double bb) {
-			return doubleToLongBits(aa) == doubleToLongBits(bb);
-		} else if (a instanceof Float aa && b instanceof Float bb) {
-			return floatToIntBits(aa) == floatToIntBits(bb);
-		} else if (a instanceof BigDecimal aa && b instanceof BigDecimal bb) {
-			return aa.compareTo(bb) == 0;
-		} else if (a instanceof BigInteger aa && b instanceof BigInteger bb) {
-			return aa.compareTo(bb) == 0;
-		}
+		record Pair(Object a, Object b) {}
 
-		return Objects.equals(a, b);
+		return switch (new Pair(a, b)) {
+			case Pair(Double x, Double y) -> doubleToLongBits(x) == doubleToLongBits(y);
+			case Pair(Float x, Float y) -> floatToIntBits(x) == floatToIntBits(y);
+			case Pair(BigDecimal x, BigDecimal y) -> x.compareTo(y) == 0;
+			case Pair(BigInteger x, BigInteger y) -> x.compareTo(y) == 0;
+			default -> Objects.equals(a, b);
+		};
 	}
 
 }

@@ -26,7 +26,7 @@ import io.jenetics.util.Seq;
 
 /**
  * This interface allows defining different strategies for evaluating the
- * fitness functions of a given population. <em>Normally</em>, there is no
+ * fitness functions of a given population. <em>Normally</em> there is no
  * need for <em>overriding</em> the default evaluation strategy, but it might
  * be necessary if you have performance problems and a <em>batched</em>
  * fitness evaluation would solve the problem.
@@ -34,22 +34,21 @@ import io.jenetics.util.Seq;
  * The implementer is free to do the evaluation <em>in place</em>, or create
  * new {@link Phenotype} instance and return the newly created one. A simple
  * serial evaluator can easily implement:
- *
- * <pre>{@code
- * final Function<? super Genotype<G>, ? extends C> fitness = ...;
+ * {@snippet lang="java":
+ * final Function<? super Genotype<G>, ? extends C> fitness = null; // @replace substring='null' replacement="..."
  * final Evaluator<G, C> evaluator = population -> population
  *     .map(pt -> pt.eval(fitness))
  *     .asISeq();
  *
  * final Engine<G, C> engine = new Engine.Builder<>(evaluator, genotypeFactory)
  *     .build();
- * }</pre>
+ * }
  *
  * @apiNote
  * The size of the returned, evaluated, phenotype sequence must be exactly
- * the size of the input phenotype sequence and all phenotypes must have a
+ * the size of the input phenotype sequence, and all phenotypes must have a
  * fitness value assigned ({@code assert population.forAll(Phenotype::isEvaluated);}).
- * It is allowed to return the input sequence, after evaluation, as well a newly
+ * It is allowed to return the input sequence, after evaluation, as well as a newly
  * created one.
  *
  * @see Evaluators

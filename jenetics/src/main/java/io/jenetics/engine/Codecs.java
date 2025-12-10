@@ -67,7 +67,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.ProxySorter;
 
 /**
- * This class contains factory methods for creating common  problem encodings.
+ * This class contains factory methods for creating common problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
@@ -138,7 +138,7 @@ public final class Codecs {
 	 * <p>
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} objects.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
@@ -149,7 +149,7 @@ public final class Codecs {
 	 *     // Verify that bit 7 is set. (For illustration purpose.)
 	 *     bi -> bi.testBit(7)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see AnyGene#of(Supplier, Predicate)
 	 * @see AnyChromosome#of(Supplier, Predicate)
@@ -211,7 +211,7 @@ public final class Codecs {
 		final IntRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -262,7 +262,7 @@ public final class Codecs {
 		final LongRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -300,7 +300,21 @@ public final class Codecs {
 
 	/**
 	 * Return a vector {@link InvertibleCodec} for the given range. All vector
-	 * values are restricted by the same domain.
+	 * values are restricted by the same domain. Use the following code if you
+	 * want to create {@code int[]} arrays and still using {@link DoubleGene}.
+	 * The {@code int[]} array elements are created by casting the {@code double}
+	 * values to {@code int} values.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(new DoubleRange(0, 100), 100)
+	 *     .map(ArrayConversions::doubleToIntArray);
+	 * }
+	 * If you want round the double values, you can use the following code.
+	 * {@snippet lang=java:
+	 * final Codec<int[], DoubleGene> codec = Codecs
+	 *     .ofVector(new DoubleRange(0, 100), 100)
+	 *     .map(ArrayConversions.doubleToIntArray(v -> (int)Math.round(v)));
+	 * }
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -313,7 +327,7 @@ public final class Codecs {
 		final DoubleRange domain,
 		final int length
 	) {
-		return ofVector(domain, IntRange.of(length));
+		return ofVector(domain, new IntRange(length));
 	}
 
 	/**
@@ -477,7 +491,7 @@ public final class Codecs {
 	 * <p>
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} object arrays.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
@@ -490,7 +504,7 @@ public final class Codecs {
 	 *     // The 'Chromosome' length.
 	 *     123
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see AnyChromosome#of(Supplier, Predicate, Predicate, int)
 	 *
@@ -577,6 +591,54 @@ public final class Codecs {
 		final int length
 	) {
 		return ofVector(supplier, Predicates.TRUE, length);
+	}
+
+	/**
+	 * Create a vector ({@link ISeq}) of domain objects, which are created with
+	 * the given {@code codec}.
+	 * {@snippet lang=java:
+	 * // Domain model of solution space.
+	 * record Path(WayPoint[] stops) {}
+	 *
+	 * // Codec fora single GPS point (latitude, longitude).
+	 * final Codec<WayPoint, DoubleGene> wpc = Codec.combine(
+	 *     Codecs.ofScalar(new DoubleRange(30, 50)), // latitude
+	 *     Codecs.ofScalar(new DoubleRange(69, 72)), // longitude
+	 *     WayPoint::of
+	 * );
+	 *
+	 * // Codec for the path object.
+	 * final Codec<Path, DoubleGene> pc = Codecs.ofVector(wpc, 10)
+	 *     .map(points -> points.toArray(WayPoint[]::new))
+	 *     .map(Path::new);
+	 *
+	 * final Path path = pc.decode(pc.encoding().newInstance());
+	 * }
+	 *
+	 * @since 8.1
+	 *
+	 * @param codec the codec for the <em>domain</em> object
+	 * @param length the length of the vector.
+	 * @return a codec for a sequence of domain objects
+	 * @param <S> the type of the domain object
+	 * @param <G> the encoding gene type
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 * @throws IllegalArgumentException if the length is smaller than 1
+	 */
+	@SuppressWarnings("unchecked")
+	public static <S, G extends Gene<?, G>> Codec<ISeq<S>, G>
+	ofVector(final Codec<? extends S, G> codec, final int length) {
+		requireNonNull(codec);
+		if (length <= 0) {
+			throw new IllegalArgumentException("Length must be positive: " + length);
+		}
+
+		return Codec.combine(
+			IntStream.range(0, length)
+				.mapToObj(_ -> codec)
+				.collect(ISeq.toISeq()),
+			objects -> ISeq.of((S[])objects)
+		);
 	}
 
 	/**
@@ -793,14 +855,13 @@ public final class Codecs {
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
 	 *     Codecs.ofMapping(numbers, strings, HashMap::new);
-	 * }</pre>
+	 * }
 	 *
 	 * If {@code source.size() > target.size()}, the created mapping is
 	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
@@ -822,7 +883,7 @@ public final class Codecs {
 	 * @param <M> the type of the encoded Map
 	 * @return a new mapping codec
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
-	 * @throws NullPointerException if one of the argument is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <A, B, M extends Map<A, B>> InvertibleCodec<M, EnumGene<Integer>>
 	ofMapping(
@@ -870,7 +931,7 @@ public final class Codecs {
 			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
 				Entry::getKey, Entry::getValue,
-				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
+				(u, _) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}
 
@@ -926,18 +987,17 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a codec, which creates a a mapping from the elements given in the
+	 * Create a codec, which creates a mapping from the elements given in the
 	 * {@code source} sequence to the elements given in the {@code target}
 	 * sequence. The returned mapping can be seen as a function which maps every
 	 * element of the {@code target} set to an element of the {@code source} set.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
 	 *     Codecs.ofMapping(numbers, strings);
-	 * }</pre>
+	 * }
 	 *
 	 * If {@code source.size() > target.size()}, the created mapping is
 	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
@@ -956,7 +1016,7 @@ public final class Codecs {
 	 * @param <B> the type of the target elements
 	 * @return a new mapping codec
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
-	 * @throws NullPointerException if one of the argument is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <A, B> InvertibleCodec<Map<A, B>, EnumGene<Integer>>
 	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
@@ -965,34 +1025,35 @@ public final class Codecs {
 
 	/**
 	 * The subset {@link InvertibleCodec} can be used for problems where it is
-	 * required to find the best <b>variable-sized</b> subset from given basic
+	 * required to find the best <b>variable-sized</b> subset from a given basic
 	 * set. A typical usage example of the returned {@code Codec} is the
 	 * Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * public final class Main {
-	 *     // The basic set from where to choose an 'optimal' subset.
-	 *     private final static ISeq<Integer> SET =
-	 *         ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 *      // The basic set from where to choose an 'optimal' subset.
+	 *      private final static ISeq<Integer> SET =
+	 *          ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	 *
-	 *     // Fitness function directly takes an 'int' value.
-	 *     private static int fitness(final ISeq<Integer> subset) {
-	 *         assert(subset.size() <= SET.size());
-	 *         final int size = subset.stream()
-	 *             .collect(Collectors.summingInt(Integer::intValue));
-	 *         return size <= 20 ? size : 0;
-	 *     }
+	 *      // Fitness function directly takes an 'int' value.
+	 *      private static int fitness(final ISeq<Integer> subset) {
+	 *          assert(subset.size() <= SET.size());
+	 *          final int size = subset.stream()
+	 *             .mapToInt(Integer::intValue)
+	 *             .sum();
+	 *          return size <= 20 ? size : 0;
+	 *      }
 	 *
-	 *     public static void main(final String[] args) {
-	 *         final Engine<BitGene, Double> engine = Engine
-	 *             .builder(Main::fitness, codec.ofSubSet(SET))
-	 *             .build();
-	 *         ...
-	 *     }
+	 *      public static void main(final String[] args) {
+	 *          final Engine<BitGene, Double> engine = Engine
+	 *              .builder(Main::fitness, codec.ofSubSet(SET))
+	 *              .build();
+	 *          // ...
+	 *      }
+	 *  }
 	 * }
-	 * }</pre>
 	 *
 	 * @param <T> the element type of the basic set
 	 * @param basicSet the basic set, from where to choose the <i>optimal</i>
@@ -1040,7 +1101,7 @@ public final class Codecs {
 
 	/**
 	 * The subset {@link InvertibleCodec} can be used for problems where it is
-	 * required to find the best <b>fixed-size</b> subset from given basic set.
+	 * required to find the best <b>fixed-size</b> subset from a given basic set.
 	 *
 	 * @since 3.4
 	 *

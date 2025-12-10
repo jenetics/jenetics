@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -38,12 +37,18 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
+import io.jenetics.distassert.observation.Observation;
+import io.jenetics.distassert.observation.Sample;
+import io.jenetics.distassert.observation.Sampler;
+import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
-import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.ObjectTester;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -123,7 +128,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		using(new LCG64ShiftRandom(543455), r -> {
+		RandomRegistry.with(new LCG64ShiftRandom(543455)).run(() -> {
 			final ISeq<Phenotype<DoubleGene, Double>> population = IntStream.range(0, size)
 				.mapToObj(i -> ptf.newInstance())
 				.collect(ISeq.toISeq());
@@ -240,17 +245,21 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int populationCount,
 		final int loops
 	) {
-		final List<Histogram<Double>> histograms = distributions(
+		final List<Sampler> samplers = samplers(
 			parameters,
 			selector,
 			opt,
 			populationCount,
 			loops
 		);
+		final List<Histogram> histograms = samplers.stream()
+			.map(Sampler::call)
+			.map(Observation::histogram)
+			.toList();
 
 		final List<Selector<?, ?>> selectors = parameters.stream()
 			.map(selector)
-			.collect(Collectors.toList());
+			.collect(Collectors.toUnmodifiableList());
 
 		print(writer, opt, selectors, parameters, histograms, populationCount, loops);
 	}
@@ -266,16 +275,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * @param <P> the parameter type
 	 * @return the selector distributions
 	 */
-	public static <P> List<Histogram<Double>> distributions(
+	public static <P> List<Sampler> samplers(
 		final List<P> parameters,
 		final Function<P, Selector<DoubleGene, Double>> selector,
 		final Optimize opt,
 		final int populationCount,
 		final int loops
 	) {
-
 		return parameters.stream()
-			.map(p -> distribution(selector.apply(p), opt, populationCount, loops))
+			.map(p -> sampler(selector.apply(p), opt, populationCount, loops))
 			.toList();
 	}
 
@@ -285,41 +293,37 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	 * with the given parameters.
 	 *
 	 * @param selector the selector for which to determine the distribution
-	 * @param opt the selectors optimization strategy
+	 * @param opt the selector optimization strategy
 	 * @param populationCount the number of in used for determining the
 	 *        selector distribution.
 	 * @param loops the number of selections performed for one population
-	 * @return the selectors selection distribution
+	 * @return the selector selection observation
 	 */
-	public static Histogram<Double> distribution(
+	public static Sampler sampler(
 		final Selector<DoubleGene, Double> selector,
 		final Optimize opt,
 		final int populationCount,
 		final int loops
 	) {
-		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.gene().allele();
-
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(MIN, MAX));
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		return IntStream.range(0, loops).parallel().mapToObj(j -> {
-			final Histogram<Double> hist = Histogram.ofDouble(MIN, MAX, CLASS_COUNT);
+		return new Sampler(
+			Sample.repeat(loops, samples -> {
+				final var population =
+					IntStream.range(0, populationCount)
+						.mapToObj(i -> ptf.newInstance())
+						.collect(ISeq.toISeq());
 
-			final ISeq<Phenotype<DoubleGene, Double>> population =
-				IntStream.range(0, populationCount)
-					.mapToObj(i -> ptf.newInstance())
-					.collect(ISeq.toISeq());
-
-			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
-			selector.select(population, selectionCount, opt).stream()
-				.map(pt -> pt.genotype().gene().allele())
-				.forEach(hist);
-
-			return hist;
-		}).collect(Histogram.toDoubleHistogram(MIN, MAX, CLASS_COUNT));
+				final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
+				selector.select(population, selectionCount, opt).stream()
+					.map(pt -> pt.genotype().gene().allele())
+					.forEach(samples::accept);
+			}),
+			Histogram.Partition.of(new Interval(MIN, MAX), CLASS_COUNT)
+		);
 	}
 
 	/**
@@ -334,7 +338,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Optimize opt,
 		final List<Selector<?, ?>> selectors,
 		final List<?> parameters,
-		final List<Histogram<Double>> histograms,
+		final List<Histogram> histograms,
 		final int populationCount,
 		final int loops
 	) {
@@ -348,7 +352,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		);
 		printv(writer);
 
-		println(writer, "# %-76s#", format("Selector distributions (opt=%s, npop=%d, loops=%d):", opt, populationCount, loops));
+		println(
+			writer,
+			"# %-76s#",
+			format("Selector distributions (opt=%s, npop=%d, loops=%d):",
+				opt,
+				populationCount,
+				loops
+			)
+		);
 		for (Selector<?, ?> selector : selectors) {
 			println(writer, "# %-76s#", format("   - %s", selector));
 		}
@@ -362,7 +374,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		writer.println(header);
 
 		final double[][] array = histograms.stream()
-			.map(Histogram::getNormalizedHistogram)
+			.map(hist -> Basics.normalize(
+				hist.buckets().stream()
+					.mapToLong(Histogram.Bucket::count)
+					.toArray()
+			))
 			.toArray(double[][]::new);
 
 		for (int i = 0; i < array[0].length; ++i) {
@@ -408,6 +424,6 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	}
 
 	private static void println(final PrintStream writer, final String pattern, final Object... args) {
-		writer.println(format(pattern, args));
+		writer.printf(pattern + "%n", args);
 	}
 }

@@ -48,7 +48,7 @@ import io.jenetics.util.Seq;
  * <br>
  * Positive values of <i>b</i> increases the selection probability of the phenotype
  * with high fitness values. Negative values of <i>b</i> increases the selection
- * probability of phenotypes with low fitness values. If <i>b</i> is zero the
+ * probability of phenotypes with low fitness values. If <i>b</i> is zero, the
  * selection probability of all phenotypes is set to <sup>1</sup>/<sub>N</sub>.
  *
  * @param <G> the gene type.
@@ -94,7 +94,7 @@ public final class BoltzmannSelector<
 		assert !population.isEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
-		// Copy the fitness values to probabilities arrays.
+		// Copy the fitness values to probability arrays.
 		final double[] fitness = new double[population.size()];
 
 		fitness[0] = population.get(0).fitness().doubleValue();

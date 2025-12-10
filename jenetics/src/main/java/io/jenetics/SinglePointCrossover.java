@@ -35,12 +35,12 @@ import io.jenetics.util.RandomRegistry;
  *	<img src="doc-files/SinglePointCrossover.svg" width="400"
  *	     alt="Single-point crossover" >
  * <p>
- * If we create a child and its complement we preserving the total number of
+ * If we create a child and its complement, we're preserving the total number of
  * genes in the population, preventing any genetic drift.
  * Single-point crossover is the classic form of crossover. However, it produces
- * very slow mixing compared with multi-point crossover or uniform crossover.
+ * very slow mixing compared with multipoint crossover or uniform crossover.
  * For problems where the site position has some intrinsic meaning to the
- * problem single-point crossover can lead to small disruption than multi-point
+ * problem, single-point crossover can lead to smaller disruption than multipoint
  * or uniform crossover.
  *
  * @see MultiPointCrossover
@@ -68,7 +68,7 @@ public class SinglePointCrossover<
 	}
 
 	/**
-	 * Create a new single point crossover object with crossover probability of
+	 * Create a new single-point crossover object with crossover probability of
 	 * {@code 0.05}.
 	 */
 	public SinglePointCrossover() {

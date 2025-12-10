@@ -1,3 +1,5 @@
+import io.jenetics.gradle.dsl.moduleName
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -30,20 +32,19 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
+moduleName = "io.jenetics.prog"
 description = "Jenetics Genetic Programming"
-
-extra["moduleName"] = "io.jenetics.prog"
 
 dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 
-	testImplementation(libs.testng)
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.equalsverifier)
+	testImplementation(libs.testng)
 }
 
 tasks.test { dependsOn(tasks.compileJmhJava) }

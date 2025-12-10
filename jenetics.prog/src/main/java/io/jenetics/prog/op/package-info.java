@@ -25,17 +25,17 @@
  * instance of the {@code ProgramGene} or {@code ProgramChromosome} class. The
  * extension point for own programs is the {@code Op} interface.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * public interface Op<T> {
- *     public String name();
- *     public int arity();
- *     public T apply(T[] args);
+ *     String name();
+ *     int arity();
+ *     T apply(T[] args);
  * }
- * }</pre>
+ * }
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Op<Double> myop = Op.of("myop", 3, v -> v[0]*v[1] + v[2]);
- * }</pre>
+ * }
  *
  * In the example above, a new operation with the "myop" and arity 3 is defined.
  * Whenever the operation is evaluated, the function <em>f(x, y, z) = x*y + z</em>
@@ -64,11 +64,11 @@
  * The {@code Var} operation defines a variable of a program, which are set
  * from the program arguments.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final ISeq<Op<Double>> terminals = ISeq.of(
  *     Var.of("x", 0), Var.of("y", 1), Var.of("z", 2)
  * );
- * }</pre>
+ * }
  *
  * The terminal operation list in the example code above will lead to a program
  * which takes three input parameters, <em>x</em>, <em>y</em> and <em>z</em>,
@@ -79,12 +79,12 @@
  * The {@code Const} operation will always return the same, constant, value
  * when evaluated.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Op<Double> one = Const.of(1.0);
  * final Op<Double> pi = Const.of("π", Math.PI);
- * }</pre>
+ * }
  *
- * We can create a constant operation in to flavours, with a value only and with
+ * We can create a constant operation in to flavors, with a value only and with
  * a dedicated name. If a constant has a name, the <em>symbolic</em> name is
  * used, instead of the value, when the program tree is printing.
  *
@@ -95,10 +95,10 @@
  * {@link java.util.function.Supplier} function the ephemeral constant is created
  * with.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Op<Double> rand1 = EphemeralConst.of(Math::random);
  * final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
- * }</pre>
+ * }
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

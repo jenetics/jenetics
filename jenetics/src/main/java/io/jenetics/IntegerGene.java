@@ -72,8 +72,8 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max),
-	 * no exception is thrown. In this case the method
+	 * given range. If the {@code value} isn't within the interval
+	 * {@code [min, max)}, no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
 	 * @param allele the value of the gene.
@@ -109,7 +109,7 @@ public final class IntegerGene
 	 * @return the range of {@code this} gene
 	 */
 	public IntRange range() {
-		return IntRange.of(_min, _max);
+		return new IntRange(_min, _max);
 	}
 
 	@Override
@@ -198,8 +198,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntegerGene other &&
+		return obj instanceof IntegerGene other &&
 			other._allele == _allele &&
 			other._min == _min &&
 			other._max == _max;
@@ -216,8 +215,8 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
-	 * no exception is thrown. In this case the method
+	 * given range. If the {@code value} isn't within the interval
+	 * {@code [min, max)}, no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
 	 * @param allele the value of the gene.
@@ -248,7 +247,7 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
-	 * the {@code IntegerGene} lies in the interval [min, max].
+	 * the {@code IntegerGene} lies in the interval {@code [min, max)}.
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
@@ -262,7 +261,7 @@ public final class IntegerGene
 
 	/**
 	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
-	 * the {@code IntegerGene} lies in the interval [min, max).
+	 * the {@code IntegerGene} lies in the interval {@code [min, max)}.
 	 *
 	 * @since 3.2
 	 *

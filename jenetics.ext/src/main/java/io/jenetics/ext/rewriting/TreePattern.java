@@ -48,7 +48,7 @@ import io.jenetics.ext.util.TreeNode;
  * This class serves two purposes. Firstly, it is used as a <em>classical</em>
  * pattern, which is used to find <em>matches</em> against a <em>matching</em>
  * tree. Secondly, it can <em>expand</em> a given pattern to a full tree with a
- * given <em>pattern</em> variable to sub-tree mapping.
+ * given <em>pattern</em> variable to subtree mapping.
  *
  * <p><b>Matching trees</b></p>
  *
@@ -56,22 +56,22 @@ import io.jenetics.ext.util.TreeNode;
  * specified as a parentheses string, must first be compiled into an instance of
  * this class. The resulting pattern can then be used to create a
  * {@link TreeMatcher} object that can match arbitrary trees against the tree
- * pattern. All the states involved in performing a match resides in the
+ * pattern. All the states involved in performing a match reside in the
  * matcher, so many matchers can share the same pattern.
  * <p>
  * The string representation of a tree pattern is a parenthesis tree string,
- * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
+ * with a special wildcard syntax for arbitrary subtrees. The subtree
  * variables are prefixed with a '$' and must be a valid Java identifier.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> p1 = TreePattern.compile("add($a,add($b,sin(x)))");
  * final TreePattern<String> p2 = TreePattern.compile("pow($x,$y)");
- * }</pre>
+ * }
  *
- * If you need to have values which starts with a '$' character, you can escape
+ * If you need to have values which start with a '$' character, you can escape
  * it with a '\'.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<String> p1 = TreePattern.compile("concat($x,\\$foo)");
- * }</pre>
+ * }
  *
  * The second value, {@code $foo}, of the {@code concat} function is not treated
  * as <em>pattern</em> variable.
@@ -79,18 +79,18 @@ import io.jenetics.ext.util.TreeNode;
  * If you want to match against trees with a different value type than
  * {@code String}, you have to specify an additional type mapper function when
  * compiling the pattern string.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TreePattern<Op<Double>> p = TreePattern.compile(
  *     "add($a,add($b,sin(x)))",
  *     MathOp::toMathOp
  * );
- * }</pre>
+ * }
  *
  * <p><b>Expanding trees</b></p>
  *
  * The second functionality of the tree pattern is to expand a pattern to a whole
- * tree with a given <em>pattern</em> variable to sub-tree mapping.
- * <pre>{@code
+ * tree with a given <em>pattern</em> variable to subtree mapping.
+ * {@snippet lang="java":
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
  * final Map<Var<String>, Tree<String, ?>> vars = Map.of(
  *     Var.of("x"), TreeNode.parse("sin(x)"),
@@ -99,13 +99,13 @@ import io.jenetics.ext.util.TreeNode;
  *
  * final Tree<String, ?> tree = pattern.expand(vars);
  * assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
- * }</pre>
+ * }
  *
  * @see TreeRewriteRule
  * @see Tree#toParenthesesString()
  * @see TreeMatcher
  *
- * @param <V> the value type of the tree than can be matched by this pattern
+ * @param <V> the value type of the tree than can match by this pattern
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -306,8 +306,7 @@ public final class TreePattern<V> implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TreePattern<?> other &&
+		return obj instanceof TreePattern<?> other &&
 			_pattern.equals(other._pattern);
 	}
 
@@ -328,7 +327,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree or one of the variable
-	 *         name is not a valid (Java) identifier
+	 *         names is not a valid (Java) identifier
 	 */
 	public static TreePattern<String> compile(final String pattern) {
 		return compile(pattern, Function.identity());
@@ -345,7 +344,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree or one of the variable
-	 *         name is not a valid (Java) identifier
+	 *         names is not a valid (Java) identifier
 	 */
 	public static <V> TreePattern<V> compile(
 		final String pattern,
@@ -429,7 +428,7 @@ public final class TreePattern<V> implements Serializable {
 	}
 
 	/**
-	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
+	 * Represents a placeholder (variable) for an arbitrary subtree. A
 	 * <em>pattern</em> variable is identified by its name. The pattern DSL
 	 * denotes variable names with a leading '$' character, e.g. {@code $x},
 	 * {@code $y} or {@code $my_var}.

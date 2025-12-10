@@ -21,19 +21,21 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -50,19 +52,28 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		EqualsVerifier.forClass(IntegerGene.class).verify();
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
 		final int min = 0;
 		final int max = Integer.MAX_VALUE;
-		final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
-		using(new Random(12345), r ->
-			IntStream.range(0, 200_000)
-				.mapToObj(i -> IntegerGene.of(min, max).allele())
-				.forEach(histogram)
-		);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(200_000, samples ->
+					samples.accept(IntegerGene.of(min, max).doubleValue())
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertUniformDistribution(histogram);
+		Assertions.assertThat(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456782).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test

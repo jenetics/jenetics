@@ -1,5 +1,145 @@
 ## Release notes
 
+### [8.3.0](https://github.com/jenetics/jenetics/releases/tag/v8.3.0)
+
+#### Improvements
+
+* [#933](https://github.com/jenetics/jenetics/issues/933): Deprecate `RandomAdapter` for removal.
+* [#935](https://github.com/jenetics/jenetics/issues/935): Compile and test Jenetics with Java 24/25
+* [#938](https://github.com/jenetics/jenetics/issues/938): Convert `Range` classes into records.
+* [#943](https://github.com/jenetics/jenetics/issues/943): Remove `org.apache.commons:commons-math3´ test dependency.
+* [#946](https://github.com/jenetics/jenetics/issues/946): Create `io.jenetics.distassert` module, used by statistical GA tests.
+* [#948](https://github.com/jenetics/jenetics/issues/948): Improve `GaussianMutator` implementation.
+* [#951](https://github.com/jenetics/jenetics/issues/951): Improve testing for `RandomRegistry`
+*
+#### Bugs
+
+* [#936](https://github.com/jenetics/jenetics/issues/936): Fix `assemblePkg` task
+* [#941](https://github.com/jenetics/jenetics/issues/941): Fix statistical tests after [TestNG](https://github.com/testng-team/testng) upgrade.
+* [#952](https://github.com/jenetics/jenetics/issues/952): Fix artifact publishing.
+* [#955](https://github.com/jenetics/jenetics/pull/945): Improve stochastic universal selector.
+
+### [8.2.0](https://github.com/jenetics/jenetics/releases/tag/v8.2.0)
+
+#### Improvements
+
+* [#889](https://github.com/jenetics/jenetics/issues/889): Allow adding annotations to `Cfg` elements for _Grammatical Evolution_.
+```java
+final var cfg2 = Cfg.<String>builder()
+    .R("expr", rule -> rule
+        .N("num", "annotation 1")
+        .N("var", "annotation 2")
+        .E(exp -> exp
+            .T("(")
+            .N("expr").N("op", 4).N("expr")
+            .T(")")))
+    .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
+    .R("var", rule -> rule.T("x").T("y"))
+    .R("num", rule -> rule
+        .T("0").T("1").T("2").T("3").T("4")
+        .T("5").T("6").T("7").T("8").T("9")
+    )
+    .build();
+```
+* [#915](https://github.com/jenetics/jenetics/issues/915): Remove usage of `java.security.AccessController`.
+* [#921](https://github.com/jenetics/jenetics/issues/921): Remove `object == this` "optimization" in `equals` methods.
+* [#923](https://github.com/jenetics/jenetics/issues/923): Improve parsing performance of `CsvSupport`.
+* [#925](https://github.com/jenetics/jenetics/issues/925): _INCUBATION_: Implement statistical hypothesis tester. The statistical tests for the engine classes has been stabilized and can be written in the following way.
+```java
+final var observation = new RunnableObservation(
+    Sampling.repeat(200_000, samples ->
+        samples.add(DoubleGene.of(0, 20).doubleValue())
+    ),
+    Partition.of(0, 20, 20)
+);
+new StableRandomExecutor(seed).execute(observation);
+
+assertThatObservation(observation).isUniform();
+```
+
+### Bugs
+
+* [#914](https://github.com/jenetics/jenetics/issues/#914): Fix `Samplers.linear(double)` factory.
+
+### [8.1.0](https://github.com/jenetics/jenetics/releases/tag/v8.1.0)
+
+#### Improvements
+
+* [#822](https://github.com/jenetics/jenetics/issues/822): Improve the build script for generating combined Javadoc.
+* [#898](https://github.com/jenetics/jenetics/issues/898): Add support for reading data from CSV files or strings. This simplifies the code for regression problems.
+```java
+static List<Sample<Double>> parseDoubles(final CharSequence csv) {
+	return CsvSupport.parseDoubles(csv).stream()
+		.map(Sample::ofDouble)
+		.toList();
+}
+```
+* [#904](https://github.com/jenetics/jenetics/issues/904): Upgrade to Gradle 8.10 and cleanup of build scripts.
+* [#907](https://github.com/jenetics/jenetics/issues/907): Add a chapter in the user's manual for optimization strategies: _Practical Jenetics_.
+* [#909](https://github.com/jenetics/jenetics/issues/909): Helper methods for converting primitive arrays.
+```java
+final Codec<int[], DoubleGene> codec = Codecs
+    .ofVector(DoubleRange.of(0, 100), 100)
+    .map(Conversions::doubleToIntArray);
+```
+
+### Bugs
+
+* [#419](https://github.com/jenetics/jenetics/issues/#419): Fix flaky statistical tests.
+
+### [8.0.0](https://github.com/jenetics/jenetics/releases/tag/v8.0.0)
+
+#### Improvements
+
+* Java 21 is used for building and using the library.
+* [#878](https://github.com/jenetics/jenetics/issues/878): Allow Virtual-Threads evaluating the fitness function.
+```java
+final Engine<DoubleGene, Double> engine = Engine.builder(ff)
+    .fitnessExecutor(BatchExecutor.ofVirtualThreads())
+    .build();
+```
+* [#880](https://github.com/jenetics/jenetics/issues/880): Replace code examples in Javadoc with [JEP 413](https://openjdk.org/jeps/413).
+* [#886](https://github.com/jenetics/jenetics/issues/886): Improve `CharStore` sort.
+* [#894](https://github.com/jenetics/jenetics/issues/894): New genetic operators: `ShiftMutator`, `ShuffleMutator` and `UniformOrderBasedCrossover`.
+* [#895](https://github.com/jenetics/jenetics/issues/895): Improve default `RandomGenerator` selection. The used `RandomGenerator` is selected in the following order:
+	1) Check if the `io.jenetics.util.defaultRandomGenerator` start parameter is set. If so, take this generator.
+	2) Check if the `L64X256MixRandom` generator is available. If so, take this generator.
+	3) Find the _best_ available random generator according to the `RandomGeneratorFactory.stateBits()` value.
+	4) Use the `Random` generator if no _best_ generator can be found. This generator is guaranteed to be available on every platform.
+
+### [7.2.0](https://github.com/jenetics/jenetics/releases/tag/v7.2.0)
+
+#### Improvements
+
+* [#862](https://github.com/jenetics/jenetics/issues/862): Add a method, which allows to create a sliced (chromosome) view onto a given Genotype.
+* [#866](https://github.com/jenetics/jenetics/issues/866): Allow specifying the default `RandomGenerator` used by the library.
+```
+java -Dio.jenetics.util.defaultRandomGenerator=L64X1024MixRandom\
+     -cp jenetics-@__version__@.jar:app.jar\
+         com.foo.bar.MyJeneticsAppjava 
+```
+
+* [#872](https://github.com/jenetics/jenetics/issues/872): Improve generic type parameters for some argument types in `io.jenetics.prog` module.
+* [#876](https://github.com/jenetics/jenetics/issues/876): Fix compiler warnings with Java 21-
+
+#### Bugs
+
+* [#865](https://github.com/jenetics/jenetics/issues/865), [#867](https://github.com/jenetics/jenetics/issues/867): Fixing typos in documentation.
+* [#868](https://github.com/jenetics/jenetics/issues/868): Fix execution script `./jrun.cmd`
+
+
+### [7.1.3](https://github.com/jenetics/jenetics/releases/tag/v7.1.3)
+
+#### Improvements
+
+* [#857](https://github.com/jenetics/jenetics/issues/857): Make library compile with Java 20.
+
+### [7.1.2](https://github.com/jenetics/jenetics/releases/tag/v7.1.2)
+
+#### Improvements
+
+* [#853](https://github.com/jenetics/jenetics/issues/853): Improve error message for `Codecs::ofSubSet::encode` method.
+
 ### [7.1.1](https://github.com/jenetics/jenetics/releases/tag/v7.1.1)
 
 #### Bugs

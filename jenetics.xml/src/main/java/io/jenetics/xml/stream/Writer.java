@@ -39,11 +39,10 @@ import javax.xml.stream.XMLStreamWriter;
  *         <allele>-88668137</allele>
  *     </alleles>
  * </int-chromosome>
- * }</pre>
+ * } </pre>
  *
  * The XML has been written by the following {@code Writer} definition.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Writer<IntegerChromosome> writer =
  *     elem("int-chromosome",
  *         attr("length").map(ch -> ch.length()),
@@ -54,16 +53,15 @@ import javax.xml.stream.XMLStreamWriter;
  *                 .map(ch -> ISeq.of(ch).map(g -> g.getAllele()))
  *         )
  *     );
- * }</pre>
+ * }
  *
  * How to write the XML writing is shown by the next code snippet.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final IntegerChromosome ch = IntegerChromosome.of(MIN_VALUE, MAX_VALUE, 3);
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
  *     write(ch, xml);
  * }
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -119,10 +117,9 @@ public interface Writer<T> {
 	/**
 	 * Writes the attribute with the given {@code name} to the current
 	 * <em>outer</em> element.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Writer<String> writer1 = elem("element", attr("attribute"));
-	 * }</pre>
+	 * }
 	 *
 	 * @see #attr(String, Object)
 	 *
@@ -144,10 +141,9 @@ public interface Writer<T> {
 	/**
 	 * Writes the attribute with the given {@code name} and a constant
 	 * {@code value} to the current <em>outer</em> element.
-	 *
-	 * <pre>{@code
-	 * final Writer<MyObject> = elem("element", attr("version", "1.0"));
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final Writer<MyObject> writer = elem("element", attr("version", "1.0"));
+	 * }
 	 *
 	 * @param name the attribute name
 	 * @param value the attribute value
@@ -168,7 +164,7 @@ public interface Writer<T> {
 	 * ************************************************************************/
 
 	/**
-	 * Create a new {@code Writer}, which writes a XML element with the given
+	 * Create a new {@code Writer}, which writes an XML element with the given
 	 * name and writes the given children into it.
 	 *
 	 * @param name the root element name
@@ -265,12 +261,12 @@ public interface Writer<T> {
 	}
 
 	/**
-	 * Adds a XML prolog element written by the given {@code writer}. The default
-	 * values for encoding and version is set to "UTF-8" and "1.0", respectively.
+	 * Adds an XML prolog element written by the given {@code writer}. The default
+	 * values for encoding and version are set to "UTF-8" and "1.0", respectively.
 	 *
 	 * <pre> {@code
 	 * <?xml version="1.0" encoding="UTF-8"?>
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * @param writer the root element writer
 	 * @param <T> the writer data type

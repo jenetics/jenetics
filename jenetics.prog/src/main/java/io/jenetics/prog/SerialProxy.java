@@ -69,7 +69,7 @@ final class SerialProxy implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case PROGRAM_CHROMOSOME -> ((ProgramChromosome)_object).write(out);
+			case PROGRAM_CHROMOSOME -> ((ProgramChromosome<?>)_object).write(out);
 			default -> throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}

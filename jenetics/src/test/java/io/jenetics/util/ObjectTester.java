@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static io.jenetics.util.MSeq.toMSeq;
-import static io.jenetics.util.RandomRegistry.with;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -30,18 +29,18 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.test.Retry;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public abstract class ObjectTester<T> extends Retry {
+public abstract class ObjectTester<T> {
 
 	protected abstract Factory<T> factory();
 
 	protected MSeq<T> newEqualObjects(final int length) {
 		return Stream
-			.generate(() -> with(new Random(589), r -> factory().newInstance()))
+			.generate(() -> RandomRegistry
+				.with(new Random(589))
+				.call(() -> factory().newInstance()))
 			.limit(length)
 			.collect(toMSeq());
 	}

@@ -49,21 +49,21 @@ final class SampleList<T>
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private final List<? extends Sample<T>> _samples;
+	private final List<? extends Sample<? extends T>> _samples;
 
 	private final Class<T> _type;
 	private final T[][] _arguments;
 	private final T[] _results;
 
 	@SuppressWarnings("unchecked")
-	SampleList(final List<? extends Sample<T>> samples) {
+	SampleList(final List<? extends Sample<? extends T>> samples) {
 		if (samples.isEmpty()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
 
-		_type = (Class<T>)samples.get(0).argAt(0).getClass();
+		_type = (Class<T>)samples.getFirst().argAt(0).getClass();
 
-		final int arity = samples.get(0).arity();
+		final int arity = samples.getFirst().arity();
 		if (arity == 0) {
 			throw new IllegalArgumentException(
 				"The arity of the sample point must not be zero."
@@ -80,10 +80,10 @@ final class SampleList<T>
 			}
 		}
 
-		_samples = samples;
+		_samples = (List<Sample<T>>)List.copyOf(samples);
 
 		_arguments = samples.stream()
-			.map(s -> args(_type, s))
+			.map(SampleList::args)
 			.toArray(size -> (T[][])Array.newInstance(_type, size, 0));
 
 		_results = _samples.stream()
@@ -91,7 +91,7 @@ final class SampleList<T>
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 	}
 
-	private static <T> T[] args(final Class<T> type, final Sample<T> sample) {
+	private static <T> T[] args(final Sample<? extends T> sample) {
 		@SuppressWarnings("unchecked")
 		final T[] args = (T[])Array
 			.newInstance(sample.argAt(0).getClass(), sample.arity());
@@ -120,8 +120,9 @@ final class SampleList<T>
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Sample<T> get(int index) {
-		return _samples.get(index);
+		return (Sample<T>)_samples.get(index);
 	}
 
 	@Override

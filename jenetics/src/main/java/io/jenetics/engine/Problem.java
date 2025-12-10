@@ -31,8 +31,7 @@ import io.jenetics.Genotype;
  * This interface describes a <i>problem</i> which can be solved by the GA
  * evolution {@code Engine}. It connects the actual {@link #fitness()} function
  * and the needed {@link #codec()}.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
  *     // Native fitness function
  *     genes -> (int)genes.stream()
@@ -44,7 +43,7 @@ import io.jenetics.Genotype;
  *         gt -> ISeq.of(gt.chromosome())
  *     )
  * );
- * }</pre>
+ * }
  *
  * The example above shows the Ones-Counting problem definition.
  *
@@ -95,12 +94,12 @@ public interface Problem<
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
 	 * a shortcut for
-	 * <pre>{@code
-	 * final Problem<SomeObject, DoubleGene, Double> problem = ...
+	 * {@snippet lang="java":
+	 * final Problem<SomeObject, DoubleGene, Double> problem = null; // @replace substring='null' replacement="..."
 	 * final Genotype<DoubleGene> gt = problem.codec().encoding().newInstance();
 	 *
 	 * final SomeObject arg = problem.decode(gt);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.2
 	 *

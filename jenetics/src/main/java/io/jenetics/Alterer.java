@@ -28,8 +28,7 @@ import io.jenetics.util.Seq;
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
  * {@link io.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
@@ -38,7 +37,7 @@ import io.jenetics.util.Seq;
  *         new MeanAlterer<>(0.2))
  *     .build();
  * final EvolutionStream<DoubleGene, Double> stream = engine.stream();
- * }</pre>
+ * }
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *
@@ -69,7 +68,7 @@ public interface Alterer<
 	 *        is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the alter-result object, which contains the altered population
-	 *         and the alteration count
+	 *         and the alteration counts
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
@@ -113,7 +112,7 @@ public interface Alterer<
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> new AltererResult<>(p.asISeq())
+			? (p, _) -> new AltererResult<>(p.asISeq())
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

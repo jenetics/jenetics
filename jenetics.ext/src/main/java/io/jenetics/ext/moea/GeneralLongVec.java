@@ -50,8 +50,7 @@ final class GeneralLongVec extends GeneralVec<long[]> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof GeneralLongVec other &&
+		return obj instanceof GeneralLongVec other &&
 			Arrays.equals(other._data, _data);
 	}
 

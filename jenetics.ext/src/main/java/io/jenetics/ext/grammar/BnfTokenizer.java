@@ -84,23 +84,26 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 		while (isNonEof(c)) {
 			final char value = c;
 			switch (value) {
-				case ' ', '\r', '\n', '\t':
-					WS();
-					continue;
-				case ':':
+				case ' ', '\r', '\n', '\t' -> WS();
+				case ':' -> {
 					return ASSIGN();
-				case '|':
+				}
+				case '|' -> {
 					consume();
 					return BAR.token(value);
-				case '>':
+				}
+				case '>' -> {
 					consume();
 					return GT.token(value);
-				case '<':
+				}
+				case '<' -> {
 					consume();
 					return LT.token(value);
-				case '\'':
+				}
+				case '\'' -> {
 					return QUOTED_STRING();
-				default:
+				}
+				default -> {
 					if (isAlphabetic(c)) {
 						return ID();
 					} else if (!isWhitespace(c)) {
@@ -111,6 +114,7 @@ final class BnfTokenizer extends CharSequenceTokenizer {
 							c, pos
 						));
 					}
+				}
 			}
 		}
 

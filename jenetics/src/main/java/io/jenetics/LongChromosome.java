@@ -74,7 +74,7 @@ public class LongChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected LongChromosome(
@@ -98,9 +98,8 @@ public class LongChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code long[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
-	 * <pre>{@code
-	 * final LongChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final LongChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final LongChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static long[] half(final long[] values) {
@@ -109,7 +108,7 @@ public class LongChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -123,7 +122,7 @@ public class LongChromosome
 	public LongChromosome map(final Function<? super long[], long[]> f) {
 		requireNonNull(f);
 
-		final var range = LongRange.of(_min, _max);
+		final var range = new LongRange(_min, _max);
 		final var genes = LongStream.of(f.apply(toArray()))
 			.mapToObj(v -> LongGene.of(v, range))
 			.collect(ISeq.toISeq());
@@ -144,8 +143,8 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -167,8 +166,8 @@ public class LongChromosome
 	}
 
 	/**
-	 * Returns an long array containing all the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a long array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -194,7 +193,7 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		checkGeneRange(Stream.of(genes).map(LongGene::range));
-		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new LongChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -211,7 +210,7 @@ public class LongChromosome
 	public static LongChromosome of(final Iterable<LongGene> genes) {
 		final ISeq<LongGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(LongGene::range));
-		return new LongChromosome(values, IntRange.of(values.length()));
+		return new LongChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -225,7 +224,7 @@ public class LongChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}
@@ -258,7 +257,7 @@ public class LongChromosome
 		final long max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -271,7 +270,7 @@ public class LongChromosome
 	 * @return a new {@code LongChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}
@@ -363,7 +362,7 @@ public class LongChromosome
 
 	static LongChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = readLong(in);
 		final var max = readLong(in);
 

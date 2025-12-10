@@ -20,9 +20,9 @@
 package io.jenetics.ext;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.clamp;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.Basics.clamp;
 
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
@@ -35,8 +35,8 @@ import io.jenetics.util.RandomRegistry;
  * Performs the simulated binary crossover (SBX) on a {@code Chromosome} of
  * {@link NumericGene}s such that each position is either crossed contracted or
  * expanded with a certain probability. The probability distribution is designed
- * such that the children will lie closer to their parents as is the case with
- * the single point binary crossover.
+ * such that the children will lie closer to their parents, as is the case with
+ * the single-point binary crossover.
  * <p>
  * It is implemented as described in Deb, K. and Agrawal, R. B. 1995. Simulated
  * binary crossover for continuous search space. Complex Systems, 9, pp. 115-148.

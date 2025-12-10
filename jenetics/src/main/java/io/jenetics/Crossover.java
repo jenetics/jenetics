@@ -28,8 +28,8 @@ import io.jenetics.util.RandomRegistry;
  * <p>
  * Performs a <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
  * Crossover</a> of two {@link Chromosome}. This crossover implementation can
- * handle genotypes with different length (different number of chromosomes). It
- * is guaranteed that chromosomes with the the same (genotype) index are chosen
+ * handle genotypes with different lengths (different number of chromosomes). It
+ * is guaranteed that chromosomes with the same (genotype) index are chosen
  * for <em>crossover</em>.
  * </p>
  * <p>
@@ -87,7 +87,7 @@ public abstract class Crossover<
 		c1.set(chIndex, c1.get(chIndex).newInstance(genes1.toISeq()));
 		c2.set(chIndex, c2.get(chIndex).newInstance(genes2.toISeq()));
 
-		//Creating two new Phenotypes and exchanging it with the old.
+		//Creating two new Phenotypes and exchanging them with the old.
 		population.set(
 			individuals[0],
 			Phenotype.of(Genotype.of(c1), generation)

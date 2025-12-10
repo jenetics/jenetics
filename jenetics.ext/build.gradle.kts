@@ -1,3 +1,6 @@
+import io.jenetics.gradle.dsl.moduleName
+import io.jenetics.gradle.dsl.testClasses
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -27,21 +30,24 @@ plugins {
 	`java-library`
 	idea
 	`maven-publish`
-	id("me.champeau.jmh")
+	alias(libs.plugins.jmh)
 }
 
+moduleName = "io.jenetics.ext"
 description = "Jenetics Extension"
-
-extra["moduleName"] = "io.jenetics.ext"
 
 dependencies {
 	api(project(":jenetics"))
 
-	testImplementation(libs.commons.math)
-	testImplementation(libs.testng)
-	testImplementation(libs.assertj)
+	testImplementation(libs.assertj.core)
 	testImplementation(libs.equalsverifier)
-	testImplementation(project(":jenetics").dependencyProject.sourceSets["test"].output)
+	testImplementation(libs.testng)
+	testImplementation(project.testClasses(":jenetics"))
+
+	jmh(libs.commons.csv)
+	jmh(libs.javacsv)
+	jmh(libs.opencsv)
+	jmh(libs.supercsv)
 }
 
 tasks.compileTestJava { dependsOn(":jenetics:compileTestJava") }
@@ -49,7 +55,7 @@ tasks.test { dependsOn(tasks.compileJmhJava) }
 
 jmh {
 	//includes.add(".*TreePerf.*")
-	includes.add(".*SentenceGeneratorPerf.*")
+	includes.add(".*CsvSupportPerf.*")
 }
 
 tasks.javadoc {

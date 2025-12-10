@@ -20,64 +20,82 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.internal.util.SerialIO.readInt;
-import static io.jenetics.internal.util.SerialIO.writeInt;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
  * Integer range class.
  *
- * @implNote
- * This class is immutable and thread-safe.
+ * @param min the minimum value of the range
+ * @param max the maximum value of the range
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version 8.3
  * @since 3.2
  */
-public final /*record*/ class IntRange implements Serializable {
+public record IntRange(int min, int max) implements Serializable {
 
-	@Serial
-	private static final long serialVersionUID = 2L;
-
-	private final int _min;
-	private final int _max;
-
-	private IntRange(final int min, final int max) {
+	/**
+	 * Create a new range instance.
+	 *
+	 * @param min the minimum value of the range
+	 * @param max the maximum value of the range
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
+	public IntRange {
 		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"Min greater than max: %s > %s", min, max
 			));
 		}
-
-		_min = min;
-		_max = max;
 	}
 
 	/**
-	 * Return the minimum value of the integer range.
+	 * Create a new (half-open) range, which contains only the given value:
+	 * {@code [value, value + 1)}.
 	 *
-	 * @return the minimum value of the integer range
+	 * @param value the value of the created (half-open) integer range
 	 */
-	public int min() {
-		return _min;
+	public IntRange(final int value) {
+		this(value, value + 1);
 	}
 
 	/**
-	 * Return the maximum value of the integer range.
+	 * Checks whether the given {@code value} is within the range
+	 * {@code [min, max)}.
 	 *
-	 * @return the maximum value of the integer range
+	 * @since 8.0
+	 *
+	 * @param value the value to check
+	 * @return {@code true} if the {@code value} is with the range
+	 *         {@code [min, max)}, {@code false} otherwise
 	 */
-	public int max() {
-		return _max;
+	public boolean contains(final int value) {
+		return value >= min && value < max;
+	}
+
+	/**
+	 * Return the intersection of {@code this} range with the {@code other}.
+	 *
+	 * @since 8.0
+	 *
+	 * @param other the intersection range or {@link Optional#empty()} if there
+	 *        is none
+	 * @return the range intersection
+	 */
+	public Optional<IntRange> intersect(final IntRange other) {
+		if (max <= other.min || min >= other.max) {
+			return Optional.empty();
+		} else {
+			return Optional.of(
+				new IntRange(
+					Math.max(min, other.min),
+					Math.min(max, other.max)
+				)
+			);
+		}
 	}
 
 	/**
@@ -88,7 +106,7 @@ public final /*record*/ class IntRange implements Serializable {
 	 * @return the size of the int range
 	 */
 	public int size() {
-		return _max - _min;
+		return max - min;
 	}
 
 	/**
@@ -98,11 +116,11 @@ public final /*record*/ class IntRange implements Serializable {
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * for (int i = range.min(); i < range.max(); ++i) {
-	 *     ...
+	 *     // ...
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 3.4
 	 *
@@ -110,77 +128,12 @@ public final /*record*/ class IntRange implements Serializable {
 	 *         elements
 	 */
 	public IntStream stream() {
-		return IntStream.range(_min, _max);
-	}
-
-	/**
-	 * Create a new {@code IntRange} object with the given {@code min} and
-	 * {@code max} values.
-	 *
-	 * @param min the lower bound of the integer range
-	 * @param max the upper bound of the integer range
-	 * @return a new {@code IntRange} object
-	 * @throws IllegalArgumentException if {@code min > max}
-	 */
-	public static IntRange of(final int min, final int max) {
-		return new IntRange(min, max);
-	}
-
-	/**
-	 * Return a new (half open) range, which contains only the given value:
-	 * {@code [value, value + 1)}.
-	 *
-	 * @since 4.0
-	 *
-	 * @param value the value of the created (half open) integer range
-	 * @return a new (half open) range, which contains only the given value
-	 */
-	public static IntRange of(final int value) {
-		return of(value, value + 1);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_min, hash(_max));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntRange other &&
-			_min == other._min &&
-			_max == other._max;
+		return IntStream.range(min, max);
 	}
 
 	@Override
 	public String toString() {
-		return "[" + _min + ", " + _max + "]";
-	}
-
-
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-
-	@Serial
-	private Object writeReplace() {
-		return new SerialProxy(SerialProxy.INT_RANGE, this);
-	}
-
-	@Serial
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	void write(final DataOutput out) throws IOException {
-		writeInt(_min, out);
-		writeInt(_max, out);
-	}
-
-	static IntRange read(final DataInput in) throws IOException {
-		return of(readInt(in), readInt(in));
+		return "[" + min + ", " + max + "]";
 	}
 
 }

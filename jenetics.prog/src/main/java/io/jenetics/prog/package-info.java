@@ -53,8 +53,7 @@
  * search space, and the execution time for finding a solution. For our
  * <em>polynomial</em> example we will chose the following <em>operations</em>
  * and <em>terminals</em>.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
  *     MathOp.ADD,
  *     MathOp.SUB,
@@ -65,7 +64,7 @@
  *     Var.of("x", 0),
  *     EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
  * );
- * }</pre>
+ * }
  *
  * The chosen non-terminal operation set is sufficient to create any polynomial.
  * For the terminal operations, we added a variable "x", with index zero, and
@@ -75,13 +74,12 @@
  * <p>
  * In the next step define the fitness function for the GP, which will be an
  * error function we will minimize.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * // The lookup table where the data points are stored.
  * static final double[][] SAMPLES = new double[][] {
  *     {-1.0, -8.0000},
- *     {-0.9, -6.2460},
- *     ...
+ *     {-0.9, -6.2460}
+ *     // ...
  * };
  *
  * static double error(final ProgramGene<Double> program) {
@@ -93,7 +91,7 @@
  *     })
  *     .sum();
  * }
- * }</pre>
+ * }
  *
  * The error function calculates the sum of the (absolute) difference between
  * the sample value and the value calculated the by the evolved <em>program</em>
@@ -109,8 +107,7 @@
  *
  * After we have defined the error function, we need to define the proper
  * {@code Codec}.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
  *     Codec.of(
  *         Genotype.of(ProgramChromosome.of(
@@ -123,7 +120,7 @@
  *         )),
  *         Genotype::gene
  *     );
- * }</pre>
+ * }
  *
  *
  * There are two particularities in the definition of the
@@ -139,8 +136,7 @@
  * </ol>
  *
  * Now we are ready to put everything together:
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * public static void main(final String[] args) {
  *     final Engine<ProgramGene<Double>, Double> engine = Engine
  *         .builder(Polynomial::error, CODEC)
@@ -157,7 +153,7 @@
  *
  *     System.out.println(Tree.toString(program));
  * }
- * }</pre>
+ * }
  *
  * The GP is capable of finding the polynomial which created the sample data.
  * After a few tries, we got the following (correct) output program:

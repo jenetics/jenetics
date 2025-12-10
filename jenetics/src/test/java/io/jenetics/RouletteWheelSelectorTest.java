@@ -19,8 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.StatisticsAssert.assertDistribution;
-import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +32,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.distassert.distribution.EmpiricalDistribution;
+import io.jenetics.distassert.observation.Observer;
 import io.jenetics.internal.util.Named;
-import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.StableRandomExecutor;
 import io.jenetics.util.TestData;
 
 /**
@@ -58,7 +60,7 @@ public class RouletteWheelSelectorTest
 
 	@Test
 	public void minimize() {
-		using(new Random(7345), r -> {
+		RandomRegistry.with(new Random(7345)).run(() -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.chromosome().gene().allele();
 
@@ -82,7 +84,7 @@ public class RouletteWheelSelectorTest
 
 	@Test
 	public void maximize() {
-		using(new Random(7345), r -> {
+		RandomRegistry.with(new Random(7345)).run(() -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.chromosome().gene().allele();
 
@@ -104,24 +106,25 @@ public class RouletteWheelSelectorTest
 		});
 	}
 
-	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	@Test(dataProvider = "expectedDistribution")
 	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		retry(3, () -> {
-			final int loops = 50;
-			final int npopulation = POPULATION_COUNT;
-
-			final Random random = new Random();
-			using(random, r -> {
-				final Histogram<Double> distribution = SelectorTester.distribution(
+		final var observation = Observer
+			.using(new StableRandomExecutor(1234561))
+			.observe(
+				SelectorTester.sampler(
 					new RouletteWheelSelector<>(),
 					opt,
-					npopulation,
-					loops
-				);
+					POPULATION_COUNT,
+					50
+				)
+			);
 
-				assertDistribution(distribution, expected.value, 0.001, 5);
-			});
-		});
+		final var distribution = EmpiricalDistribution.of(
+			observation.histogram().partition(),
+			expected.value
+		);
+
+		assertThat(observation).follows(distribution);
 	}
 
 	@DataProvider(name = "expectedDistribution")
@@ -148,7 +151,7 @@ public class RouletteWheelSelectorTest
 
 	private static void writeDistributionData(final Optimize opt) {
 		final Random random = new Random();
-		using(random, r -> {
+		RandomRegistry.with(random).run(() -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
 			final int loops = 5_000_000;

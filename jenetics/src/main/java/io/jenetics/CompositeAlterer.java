@@ -126,7 +126,7 @@ final class CompositeAlterer<
 
 	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
-	 * of the given alterers is a CompositeAlterer the sub alterers of it are
+	 * of the given alterers is a CompositeAlterer, the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
 	 *
 	 * @param <T> the gene type of the alterers.
@@ -135,7 +135,7 @@ final class CompositeAlterer<
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.
 	 * @return a new CompositeAlterer object.
-	 * @throws NullPointerException if one of the given alterer is {@code null}.
+	 * @throws NullPointerException if one of the given alterers is {@code null}.
 	 */
 	static <T extends Gene<?, T>, C extends Comparable<? super C>>
 	CompositeAlterer<T, C> join(

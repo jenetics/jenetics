@@ -27,6 +27,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import io.jenetics.util.ISeq;
@@ -37,7 +38,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class composes a given operation tree to a new operation. which can
+ * This class composes a given operation tree to a new operation, which can
  * serve as a sub <em>program</em> in another operation tree.
  *
  * @param <T> the argument type of the operation
@@ -114,7 +115,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
-	 * @throws IllegalArgumentException if the length of the arguments array
+	 * @throws IllegalArgumentException if the length of the argument array
 	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
@@ -129,8 +130,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Program<?> other &&
+		return obj instanceof Program<?> other &&
 			Objects.equals(other._name, _name) &&
 			Objects.equals(other._tree, _tree);
 	}
@@ -148,9 +148,9 @@ public class Program<T> implements Op<T>, Serializable {
 	/**
 	 * Evaluates the given operation tree with the given variables. This method
 	 * is equivalent to
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final T result = tree.reduce(variables, Op::apply);
-	 * }</pre>
+	 * }
 	 * but handles the variable sized {@code variables} array more conveniently.
 	 *
 	 * @see Tree#reduce(Object[], BiFunction)
@@ -168,7 +168,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		return tree.reduce(variables, Op::apply);
+		return tree.reduce(variables, Function::apply);
 	}
 
 	/**

@@ -110,7 +110,7 @@ public final class LongGene
 	 * @return the range of {@code this} gene
 	 */
 	public LongRange range() {
-		return LongRange.of(_min, _max);
+		return new LongRange(_min, _max);
 	}
 
 	@Override
@@ -199,8 +199,7 @@ public final class LongGene
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof LongGene other &&
+		return obj instanceof LongGene other &&
 			other._allele == _allele &&
 			other._min == _min &&
 			other._max == _max;
@@ -217,8 +216,8 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
-	 * no exception is thrown. In this case the method
+	 * given range. If the {@code value} isn't within the interval
+	 * {@code [min, max)}, no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
 	 * @param allele the value of the gene.
@@ -232,8 +231,8 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max],
-	 * no exception is thrown. In this case the method
+	 * given range. If the {@code value} isn't within the interval
+	 * {@code [min, max)}, no exception is thrown. In this case the method
 	 * {@link LongGene#isValid()} returns {@code false}.
 	 *
 	 * @since 3.2
@@ -249,7 +248,7 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene}. It is guaranteed that the value of
-	 * the {@code LongGene} lies in the interval [min, max].
+	 * the {@code LongGene} lies in the interval {@code [min, max)}.
 	 *
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
@@ -263,7 +262,7 @@ public final class LongGene
 
 	/**
 	 * Create a new random {@code LongGene}. It is guaranteed that the value of
-	 * the {@code LongGene} lies in the interval [min, max].
+	 * the {@code LongGene} lies in the interval {@code [min, max)}.
 	 *
 	 * @since 3.2
 	 *

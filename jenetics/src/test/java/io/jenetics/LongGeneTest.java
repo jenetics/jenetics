@@ -21,20 +21,22 @@ package io.jenetics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import java.math.BigInteger;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.distassert.assertion.Assertions;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -51,19 +53,28 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		EqualsVerifier.forClass(LongGene.class).verify();
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		final Long min = 0L;
-		final Long max = (long)Integer.MAX_VALUE;
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final long min = 0;
+		final long max = Integer.MAX_VALUE;
 
-		using(new Random(12345), r ->
-			IntStream.range(0, 200_000)
-				.mapToObj(i -> LongGene.of(min, max).allele())
-				.forEach(histogram)
-		);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(200_000, samples ->
+					samples.accept(LongGene.of(min, max).doubleValue())
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-		assertUniformDistribution(histogram);
+		Assertions.assertThat(observation).isUniform();
+	}
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456782).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test

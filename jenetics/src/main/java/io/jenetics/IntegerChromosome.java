@@ -70,7 +70,7 @@ public class IntegerChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected IntegerChromosome(
@@ -94,9 +94,8 @@ public class IntegerChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code int[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
-	 * <pre>{@code
-	 * final IntegerChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final IntegerChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final IntegerChromosome halved = chromosome.map(Main::half);
 	 *
 	 * static int[] half(final int[] values) {
@@ -105,7 +104,7 @@ public class IntegerChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -119,7 +118,7 @@ public class IntegerChromosome
 	public IntegerChromosome map(final Function<? super int[], int[]> f) {
 		requireNonNull(f);
 
-		final var range = IntRange.of(_min, _max);
+		final var range = new IntRange(_min, _max);
 		final var genes = IntStream.of(f.apply(toArray()))
 			.mapToObj(v -> IntegerGene.of(v, range))
 			.collect(ISeq.toISeq());
@@ -141,7 +140,7 @@ public class IntegerChromosome
 
 	/**
 	 * Returns an int array containing all the elements in this chromosome in
-	 * proper sequence.  If the chromosome fits in the specified array, it is
+	 * a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -164,7 +163,7 @@ public class IntegerChromosome
 
 	/**
 	 * Returns an int array containing all the elements in this chromosome in
-	 * proper sequence.
+	 * a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -182,14 +181,14 @@ public class IntegerChromosome
 	/**
 	 * Create a new {@code IntegerChromosome} with the given genes.
 	 *
-	 * @param genes the genes of the chromosome.
-	 * @return a new chromosome with the given genes.
+	 * @param genes the genes of the chromosome
+	 * @return a new chromosome with the given genes
 	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty or the given {@code genes} doesn't have the same range.
+	 *         empty or the given {@code genes} doesn't have the same range
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
 		checkGeneRange(Stream.of(genes).map(IntegerGene::range));
-		return new IntegerChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new IntegerChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -206,7 +205,7 @@ public class IntegerChromosome
 	public static IntegerChromosome of(final Iterable<IntegerGene> genes) {
 		final ISeq<IntegerGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(IntegerGene::range));
-		return new IntegerChromosome(values, IntRange.of(values.length()));
+		return new IntegerChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -220,7 +219,7 @@ public class IntegerChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws IllegalArgumentException if {@code max} is greater than
 	 *         or equal to {@code min}
@@ -252,7 +251,7 @@ public class IntegerChromosome
 		final int max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -265,7 +264,7 @@ public class IntegerChromosome
 	 * @return a new {@code IntegerChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -356,7 +355,7 @@ public class IntegerChromosome
 
 	static IntegerChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = readInt(in);
 		final var max = readInt(in);
 

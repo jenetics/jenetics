@@ -20,7 +20,6 @@
 package io.jenetics.gradle
 
 import Env
-import Jenetics
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -59,7 +58,7 @@ open class LyxPlugin : Plugin<Project> {
 						ReplaceTokens::class, "tokens" to mapOf(
 							"__version__" to project.version,
 							"__minor_version__" to Version.parse(project.version).minorVersionString(),
-							"__identifier__" to "${Jenetics.VERSION}-$BUILD_DATE",
+							"__identifier__" to "${project.version}-$BUILD_DATE",
 							"__year__" to Env.COPYRIGHT_YEAR
 						)
 					)
@@ -80,7 +79,7 @@ open class LyxPlugin : Plugin<Project> {
 			doLast {
 				project.copy {
 					from("${build.temporaryDir}/lyx/manual.pdf")
-					into("${project.buildDir}/doc")
+					into("${project.layout.buildDirectory.asFile.get()}/doc")
 					rename { name ->
 						name.replace("manual.pdf", "manual-${project.version}.pdf")
 					}
@@ -90,7 +89,7 @@ open class LyxPlugin : Plugin<Project> {
 
 		if (project.tasks.findByPath(CLEAN) == null) {
 			project.tasks.getByPath(CLEAN).doLast {
-				project.buildDir.deleteRecursively()
+				project.layout.buildDirectory.asFile.get().deleteRecursively()
 			}
 		}
 	}

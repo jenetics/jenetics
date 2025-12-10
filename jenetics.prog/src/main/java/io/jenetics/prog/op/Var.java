@@ -43,28 +43,28 @@ import io.jenetics.ext.util.TreeNode;
  * of the <em>n</em>-dimensional input space to the <em>1</em>-dimensional
  * result space.
  *
- * <pre>{@code
- * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
+ * {@snippet lang="java":
+ * final ISeq<? extends Op<Double>> operations = ISeq.of(null); // @replace substring='null' replacement="..."
  * final ISeq<? extends Op<Double>> terminals = ISeq.of(
  *     Var.of("x", 0), Var.of("y", 1)
  * );
- * }</pre>
+ * }
  *
  * The example above shows how to define the terminal operations for a GP, which
  * tries to optimize a 2-dimensional function.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * static double error(final ProgramChromosome<Double> program) {
- *     final double x = ...;
- *     final double y = ...;
+ *     final double x = null; // @replace substring='null' replacement="..."
+ *     final double y = null; // @replace substring='null' replacement="..."
  *     final double result = program.eval(x, y);
- *     ...
- *     return ...;
+ *     // ...
+ *     return null; // @replace substring='null' replacement="..."
  * }
- * }</pre>
+ * }
  *
  * @implNote
- * The {@code Var} object is comparable according it's name.
+ * The {@code Var} object is comparable, according its name.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 7.0
@@ -149,8 +149,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Var<?> other &&
+		return obj instanceof Var<?> other &&
 			Objects.equals(other._name, _name);
 	}
 
@@ -214,7 +213,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * x[0]
 	 * y[3]
 	 * my_var[4]
-	 * }</pre>
+	 * } </pre>
 	 *
 	 * If no variable <em>index</em> is encoded in the name, a variable with
 	 * index 0 is created.
@@ -239,7 +238,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	/**
 	 * Re-indexes the variables of the given operation {@code tree}. If the
-	 * operation tree is created from it's string representation, the indices
+	 * operation tree is created from its string representation, the indices
 	 * of the variables ({@link Var}), are all set to zero, since it needs the
 	 * whole tree for setting the indices correctly. The mapping from the node
 	 * string to the {@link Op} object, on the other hand, is a <em>local</em>
@@ -247,7 +246,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * the variables. The indices of the variables are assigned according it's
 	 * <em>natural</em> order.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
 	 *     "add(mul(x,y),sub(y,x))",
 	 *     MathOp::toMathOp
@@ -256,18 +255,18 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * assert Program.eval(tree, 10.0, 5.0) == 100.0; // wrong result
 	 * Var.reindex(tree);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0; // correct result
-	 * }</pre>
+	 * }
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
 	 * variables first. If not, you will get the wrong result when evaluating
-	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 * the tree. After the re-indexing, you will get the correct result of 45.0.
 	 *
 	 * @since 5.0
 	 *
 	 * @see MathOp#toMathOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *
-	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param tree the tree where the variable indices need to be fixed
 	 * @param <V> the operation value type
 	 */
 	public static <V> void reindex(final TreeNode<Op<V>> tree) {
@@ -287,11 +286,11 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	/**
 	 * Re-indexes the variables of the given operation {@code tree}. If the
-	 * operation tree is created from it's string representation, the indices
+	 * operation tree is created from its string representation, the indices
 	 * of the variables ({@link Var}), are all set to zero, since it needs the
 	 * whole tree for setting the indices correctly.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
 	 *     "add(mul(x,y),sub(y,x))",
 	 *     MathOp::toMathOp
@@ -303,11 +302,11 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * indexes.put(Var.of("y"), 1);
 	 * Var.reindex(tree, indexes);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0; // correct result
-	 * }</pre>
+	 * }
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
 	 * variables first. If not, you will get the wrong result when evaluating
-	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 * the tree. After the re-indexing, you will get the correct result of 45.0.
 	 *
 	 * @since 5.0
 	 *
@@ -315,7 +314,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * @see BoolOp#toBoolOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *
-	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param tree the tree where the variable indices need to be fixed
 	 * @param indexes the variable to index mapping
 	 * @param <V> the operation value type
 	 */

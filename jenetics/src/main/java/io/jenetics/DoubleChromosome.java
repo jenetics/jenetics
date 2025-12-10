@@ -41,7 +41,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * Numeric chromosome implementation which holds 64 bit floating point numbers.
+ * Numeric chromosome implementation which holds 64-bit floating point numbers.
  *
  * @see DoubleGene
  *
@@ -72,7 +72,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	protected DoubleChromosome(
@@ -96,9 +96,8 @@ public class DoubleChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code double[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
-	 * <pre>{@code
-	 * final DoubleChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final DoubleChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final DoubleChromosome normalized = chromosome.map(Main::normalize);
 	 *
 	 * static double[] normalize(final double[] values) {
@@ -108,7 +107,7 @@ public class DoubleChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -122,7 +121,7 @@ public class DoubleChromosome
 	public DoubleChromosome map(final Function<? super double[], double[]> f) {
 		requireNonNull(f);
 
-		final var range = DoubleRange.of(_min, _max);
+		final var range = new DoubleRange(_min, _max);
 		final var genes = DoubleStream.of(f.apply(toArray()))
 			.mapToObj(v -> DoubleGene.of(v, range))
 			.collect(ISeq.toISeq());
@@ -144,7 +143,7 @@ public class DoubleChromosome
 
 	/**
 	 * Returns a double array containing all the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
@@ -169,8 +168,8 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Returns an double array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a double array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -197,7 +196,7 @@ public class DoubleChromosome
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		checkGeneRange(Stream.of(genes).map(DoubleGene::range));
-		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return new DoubleChromosome(ISeq.of(genes), new IntRange(genes.length));
 	}
 
 	/**
@@ -214,7 +213,7 @@ public class DoubleChromosome
 	public static DoubleChromosome of(final Iterable<DoubleGene> genes) {
 		final ISeq<DoubleGene> values = ISeq.of(genes);
 		checkGeneRange(values.stream().map(DoubleGene::range));
-		return new DoubleChromosome(values, IntRange.of(values.length()));
+		return new DoubleChromosome(values, new IntRange(values.length()));
 	}
 
 	/**
@@ -228,7 +227,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -257,7 +256,7 @@ public class DoubleChromosome
 		final double max,
 		final int length
 	) {
-		return of(min, max, IntRange.of(length));
+		return of(min, max, new IntRange(length));
 	}
 
 	/**
@@ -270,7 +269,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 * @throws NullPointerException if the given {@code lengthRange} is
 	 *         {@code null}
@@ -353,7 +352,7 @@ public class DoubleChromosome
 
 	static DoubleChromosome read(final DataInput in) throws IOException {
 		final var length = readInt(in);
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var min = in.readDouble();
 		final var max = in.readDouble();
 

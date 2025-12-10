@@ -146,8 +146,7 @@ public abstract class ArraySeq<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Seq<?> other &&
+		return obj instanceof Seq<?> other &&
 			Seq.equals(this, other);
 	}
 

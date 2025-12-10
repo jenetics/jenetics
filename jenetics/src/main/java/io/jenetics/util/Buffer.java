@@ -31,7 +31,7 @@ import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
- * This class is a bounded buffer, which can store only a given amount of
+ * This class is a bounded buffer, which can store only a given number of
  * elements. If the buffer is full, it starts <em>overwriting</em> previously
  * inserted elements at the beginning of the buffer. A <em>full</em> buffer
  * neither blocks the insertion of new elements, nor does it throw an exception.
@@ -41,7 +41,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * {@link #toArray()}, {@link #toArray(IntFunction)} and {@link #toSeq()} methods.
  *
  * @implNote
- * This class is not thread-safe. If two threads accesses the buffer
+ * This class is not thread-safe. If two threads access the buffer
  * concurrently it must be <em>synchronized</em> externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -127,15 +127,19 @@ final class Buffer<T> implements Iterable<T> {
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
 	public void addAll(final Iterable<? extends T> values) {
-		if (values instanceof Buffer<?> buff) {
-			final Object[] array = buff.toArray();
-			addAll(array, 0, array.length);
-		} else if (values instanceof Collection<?> coll) {
-			final Object[] array = coll.toArray();
-			addAll(array, 0, array.length);
-		} else {
-			for (T value : values) {
-				add(value);
+		switch (values) {
+			case Buffer<?> buff -> {
+				final Object[] array = buff.toArray();
+				addAll(array, 0, array.length);
+			}
+			case Collection<?> coll -> {
+				final Object[] array = coll.toArray();
+				addAll(array, 0, array.length);
+			}
+			default -> {
+				for (T value : values) {
+					add(value);
+				}
 			}
 		}
 	}
@@ -148,7 +152,7 @@ final class Buffer<T> implements Iterable<T> {
 	 * @param values the array which contains the values to add
 	 * @param start the start index of the source array
 	 * @param length the number of elements to copy
-	 * @throws IndexOutOfBoundsException if copying would cause access of data
+	 * @throws IndexOutOfBoundsException if copying causes access of data
 	 *         outside array bounds
 	 * @throws ArrayStoreException if an element in the {@code value} array
 	 *         could not be stored into the dest array because of a type mismatch

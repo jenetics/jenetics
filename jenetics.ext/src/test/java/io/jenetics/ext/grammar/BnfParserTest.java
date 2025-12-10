@@ -56,9 +56,9 @@ public class BnfParserTest {
 		);
 	}
 
-	@Test
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void parseWithDuplicateRules() {
-		final var cfg1 = Bnf.parse("""
+		Bnf.parse("""
 			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
 			<op>   ::= + | - | * | /
 			<var>  ::= x
@@ -67,15 +67,6 @@ public class BnfParserTest {
 			<num>  ::= 5 | 6 | 7 | 8 | 9
 			"""
 		);
-		final var cfg2 = Bnf.parse("""
-			<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-			<op>   ::= + | - | * | /
-			<var>  ::= x | y
-			<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-			"""
-		);
-
-		assertThat(cfg1).isEqualTo(cfg2);
 	}
 
 	@Test(invocationCount = 30)
@@ -87,6 +78,30 @@ public class BnfParserTest {
 		final var parsedBnf = parser.parse();
 
 		assertThat(parsedBnf).isEqualTo(cfg);
+	}
+
+	sealed interface Expr {
+		final class Add implements Expr {
+			int apply(int a, int b) {
+				return a + b;
+			}
+		}
+		final class Sub implements Expr {
+			int apply(int a, int b) {
+				return a - b;
+			}
+		}
+		final class Mult implements Expr {
+			int apply(int a, int b) {
+				return a * b;
+			}
+		}
+		final class Div implements Expr {
+			int apply(int a, int b) {
+				return a / b;
+			}
+		}
+		record Const(int a) implements Expr {}
 	}
 
 }

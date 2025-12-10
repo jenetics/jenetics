@@ -38,7 +38,7 @@ import io.jenetics.util.Copyable;
  *  Array: |11110011|10011101|01000000|00101010|
  *          |                 |        |      |
  *  Bit:    23                15       7      0
- * }</pre>
+ * } </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.0
@@ -212,12 +212,11 @@ public final class BitArray implements Copyable<BitArray> {
 	/**
 	 * Return the signum of the number, represented by this bit-array (-1 for
 	 * negative, 0 for zero, 1 for positive).
-	 *
-	 * <pre>{@code
-	 * final BitArray bits = ...;
+	 * {@snippet lang="java":
+	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final BigInteger i = bits.toBigInteger();
 	 * assert bits.signum() == i.signum();
-	 * }</pre>
+	 * }
 	 *
 	 * @return the signum of the number, represented by this bit-array (-1 for
 	 * 	       negative, 0 for zero, 1 for positive)
@@ -234,12 +233,11 @@ public final class BitArray implements Copyable<BitArray> {
 	 * Return the value of this bit-array as {@link BigInteger} value. This
 	 * bit-array can be recreated by the returned {@code BigInteger} value. But
 	 * only with the same {@link #length()} of {@code this} bit-array.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var bits = BitArray.of("1111111010100110010110110010011110110101");
 	 * final var bint = bits.toBigInteger();
 	 * assert BitArray.of(bint, bits.length()).equals(bits);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #of(BigInteger, int)
 	 *
@@ -278,12 +276,11 @@ public final class BitArray implements Copyable<BitArray> {
 	/**
 	 * Return the {@code byte[]} array, which represents the state of the state
 	 * of {@code this} bit-array.
-	 *
-	 * <pre>{@code
-	 * final BitArray bits = ...;
+	 * {@snippet lang="java":
+	 * final BitArray bits = null; // @replace substring='null' replacement="..."
 	 * final byte[] bytes = bits.toByteArray();
 	 * assert bits.equals(BitArray.of(bytes, bits.length()));
-	 * }</pre>
+	 * }
 	 *
 	 * @return the bit-array data as {@code byte[]} array
 	 */
@@ -351,17 +348,16 @@ public final class BitArray implements Copyable<BitArray> {
 
 	/**
 	 * Creates a new bit-array from the given {@code value} and the given
-	 * {@code length}. It is guaranteed, that the created bit-array will
+	 * {@code length}. It is guaranteed that the created bit-array will
 	 * represent the given {@link BigInteger}, as long as the {@code length}
-	 * is big enough to store the whole value. If the length is shorter then
+	 * is big enough to store the whole value. If the length is shorter than
 	 * required, the higher order bits will be truncated.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var length = 2048;
 	 * final var bint = BigInteger.probablePrime(length, new Random());
 	 * final var bits = BitArray.of(bint, length + 1);
 	 * assert bits3.toBigInteger().equals(bint);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #toBigInteger()
 	 *
@@ -425,7 +421,7 @@ public final class BitArray implements Copyable<BitArray> {
 		for (int i = 0, j = length - 1; i < array.length; i++, j -= Byte.SIZE) {
 			for (int bits = 0; bits < BITS.length && (j - bits) >= 0; ++bits) {
 				if (get(chars, j - bits, length) == '1') {
-					array[i] |= BITS[bits];
+					array[i] |= (byte)BITS[bits];
 				}
 			}
 		}
@@ -447,12 +443,11 @@ public final class BitArray implements Copyable<BitArray> {
 	 * Creates a new bit-array from the given string {@code value}. The string,
 	 * created by the {@link #toString()} method, will be equals to the given
 	 * input {@code value}.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final var string = "11111110101001100101101100100111101101011101";
 	 * final var bits = BitArray.of(string);
 	 * assert bits.toString().equals(string);
-	 * }</pre>
+	 * }
 	 *
 	 * @see #toString()
 	 *
@@ -532,7 +527,7 @@ public final class BitArray implements Copyable<BitArray> {
 	 * probability {@code p}.
 	 *
 	 * @param length the number of bits, the returned bit-array can store.
-	 * @param p the ones probability of the returned byte array.
+	 * @param p the one's probability of the returned byte array.
 	 * @return the new byte array.s
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */

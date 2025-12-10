@@ -21,11 +21,14 @@ package io.jenetics.incubator.util;
 
 import org.testng.annotations.Test;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class PathTest {
 
 	@Test
 	public void foo() {
-		final var path = Path.of("a", "b", "c", "d");
+		final var path = java.nio.file.Path.of("a", "b", "c", "d");
 		for (var p : path) {
 			System.out.println(p);
 		}

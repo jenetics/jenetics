@@ -71,55 +71,64 @@ final class MathStringTokenizer extends CharSequenceTokenizer {
 		while (isNonEof(c)) {
 			final char value = c;
 
-			switch (value) {
-				case ' ', '\r', '\n', '\t':
-					WS();
-					continue;
-				case '(':
-					consume();
-					return LPAREN.token(value);
-				case ')':
-					consume();
-					return RPAREN.token(value);
-				case ',':
-					consume();
-					return COMMA.token(value);
-				case '+':
-					consume();
-					return PLUS.token(value);
-				case '-':
-					consume();
-					return MINUS.token(value);
-				case '*':
-					if (LA(2) == '*') {
-						consume();
-						consume();
-						return POW.token("**");
-					} else {
-						consume();
-						return TIMES.token(value);
-					}
-				case '/':
-					consume();
-					return DIV.token(value);
-				case '%':
-					consume();
-					return MOD.token(value);
-				case '^':
-					consume();
-					return POW.token(value);
-				case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-					return NUMBER();
-				default:
-					if (isJavaIdentifierStart(c)) {
-						return ID();
-					} else {
-						throw new ParsingException(format(
+            switch (value) {
+                case ' ', '\r', '\n', '\t' -> WS();
+                case '(' -> {
+                    consume();
+                    return LPAREN.token(value);
+                }
+                case ')' -> {
+                    consume();
+                    return RPAREN.token(value);
+                }
+                case ',' -> {
+                    consume();
+                    return COMMA.token(value);
+                }
+                case '+' -> {
+                    consume();
+                    return PLUS.token(value);
+                }
+                case '-' -> {
+                    consume();
+                    return MINUS.token(value);
+                }
+                case '*' -> {
+                    if (LA(2) == '*') {
+                        consume();
+                        consume();
+                        return POW.token("**");
+                    } else {
+                        consume();
+                        return TIMES.token(value);
+                    }
+                }
+                case '/' -> {
+                    consume();
+                    return DIV.token(value);
+                }
+                case '%' -> {
+                    consume();
+                    return MOD.token(value);
+                }
+                case '^' -> {
+                    consume();
+                    return POW.token(value);
+                }
+                case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
+                    return NUMBER();
+                }
+                default -> {
+                    if (isJavaIdentifierStart(c)) {
+                        return ID();
+                    } else {
+                        throw new ParsingException(format(
 							"Got invalid character '%s' at position '%d'.",
-							c, pos
-						));
-					}
-			}
+	                        c, pos
+                        ));
+                    }
+                }
+            }
 		}
 
 		return null;

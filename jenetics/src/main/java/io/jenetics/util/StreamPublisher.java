@@ -30,13 +30,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
+import io.jenetics.internal.util.Lifecycle.Releasable;
 
 /**
- * This class allows to create a reactive {@link Flow.Publisher} from a given
+ * This class allows creating a reactive {@link Flow.Publisher} from a given
  * Java {@link Stream}.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Stream<Long> stream = engine.stream()
  *     .limit(33)
  *     .map(EvolutionResult::generation);
@@ -44,19 +43,19 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  * try (var publisher = new StreamPublisher<Long>()) {
  *     publisher.subscribe(new Subscriber<>() {
  *         private Subscription subscription;
- *         \@Override
+ *         @Override
  *         public void onSubscribe(final Subscription subscription) {
  *             (this.subscription = subscription).request(1);
  *         }
- *         \@Override
+ *         @Override
  *         public void onNext(final Long g) {
  *             System.out.println("Got new generation: " + g);
  *             subscription.request(1);
  *         }
- *         \@Override
+ *         @Override
  *         public void onError(final Throwable throwable) {
  *         }
- *         \@Override
+ *         @Override
  *         public void onComplete() {
  *             System.out.println("Evolution completed.");
  *         }
@@ -65,9 +64,9 @@ import io.jenetics.internal.util.Lifecycle.ExtendedCloseable;
  *     // Attaching the stream, starts the element publishing.
  *     publisher.attach(stream);
  *
- *     ...
+ *     // ...
  * }
- * }</pre>
+ * }
  *
  * @param <T> the element type of the publisher
  *
@@ -169,19 +168,19 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 
 	/**
 	 * Unless already closed, issues {@code onComplete} signals to current
-	 * subscribers, and disallows subsequent attempts to publish. Upon return,
-	 * this method does NOT guarantee that all subscribers have yet completed.
+	 * subscribers, and disallows later attempts to publish. Upon return, this
+	 * method does NOT guarantee that all subscribers have already completed.
 	 */
 	@Override
 	public void close() {
 		synchronized (_lock) {
-			final var closeable = ExtendedCloseable.of(
+			final var closeable = Releasable.of(
 				() -> { if (_thread != null) _thread.interrupt(); },
 				() -> { if (_stream != null) _stream.close(); }
 			);
 
 			_proceed.set(false);
-			closeable.silentClose();
+			closeable.silentRelease();
 		}
 		super.close();
 	}

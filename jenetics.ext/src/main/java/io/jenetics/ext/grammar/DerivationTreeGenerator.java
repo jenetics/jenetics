@@ -25,13 +25,14 @@ import java.util.Optional;
 
 import io.jenetics.ext.grammar.Cfg.NonTerminal;
 import io.jenetics.ext.grammar.Cfg.Symbol;
+import io.jenetics.ext.grammar.Cfg.Terminal;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
  * Standard implementation of a derivation-tree generator. The following code
  * snippet lets you generate a derivation tree from a given grammar.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = Bnf.parse("""
  *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
  *     <fun>  ::= FUN1 | FUN2
@@ -48,7 +49,7 @@ import io.jenetics.ext.util.TreeNode;
  *     1_000
  * );
  * final Tree<Symbol<String>, ?> tree = generator.generate(cfg);
- * }</pre>
+ * }
  *
  * @see SentenceGenerator
  *
@@ -88,7 +89,7 @@ public final class DerivationTreeGenerator<T>
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created derivation tree, or an empty tree if
-	 *         the number of nodes exceed the defined node limit
+	 *         the number of nodes exceeds the defined node limit
 	 */
 	@Override
 	public Tree<Symbol<T>, ?> generate(final Cfg<? extends T> cfg) {
@@ -127,5 +128,53 @@ public final class DerivationTreeGenerator<T>
 
 		return symbols;
 	}
+
+	public static <T> Tree<Terminal<T>, ?>
+	toAst(final Tree<Symbol<T>, ?> derivationTree) {
+		final TreeNode<Terminal<T>> abstractSyntaxTree = TreeNode.of();
+		prune(derivationTree, abstractSyntaxTree);
+		return abstractSyntaxTree;
+	}
+
+	private static <T> void prune(
+		final Tree<Symbol<T>, ?> derivationTree,
+		final TreeNode<Terminal<T>> abstractSyntaxTree
+	) {
+		if (derivationTree.value() instanceof Terminal<T> terminal) {
+			abstractSyntaxTree.value(terminal);
+		}
+
+		for (int i = 0; i < derivationTree.childCount(); ++i) {
+			TreeNode<Terminal<T>> targetChild = abstractSyntaxTree;
+			if (abstractSyntaxTree.value() != null) {
+				targetChild = TreeNode.of();
+				abstractSyntaxTree.attach(targetChild);
+			}
+
+			prune(derivationTree.childAt(i), targetChild);
+		}
+	}
+
+	/*
+	public static <T> void prune(
+		final Tree<? extends T, ?> source,
+		final TreeNode<T> target,
+		final Predicate<? super T> filter
+	) {
+		if (filter.test(source.value())) {
+			target.value(source.value());
+		}
+
+		for (int i = 0; i < source.childCount(); ++i) {
+			TreeNode<T> targetChild = target;
+			if (target.value() != null) {
+				targetChild = TreeNode.of();
+				target.attach(targetChild);
+			}
+
+			prune(source.childAt(i), targetChild, filter);
+		}
+	}
+	 */
 
 }

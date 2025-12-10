@@ -60,6 +60,7 @@ public final class MetaCodecs {
 	private MetaCodecs() {
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Codec<EvolutionParams<G, C>, DoubleGene> ofEvolution(
 		Codec<Selector<IntegerGene, Double>, DoubleGene> selectors,
@@ -68,7 +69,7 @@ public final class MetaCodecs {
 		DoubleRange offspringFraction,
 		DoubleRange maximalPhenotypeAge
 	) {
-		return Codec.of(
+		return Codec.combine(
 			ISeq.of(
 				selectors,
 				selectors,
@@ -77,19 +78,14 @@ public final class MetaCodecs {
 				Codecs.ofScalar(offspringFraction),
 				Codecs.ofScalar(maximalPhenotypeAge)
 			),
-			values -> {
-				@SuppressWarnings("unchecked")
-				final var params = EvolutionParams.<G, C>builder()
-					.offspringSelector((Selector<G, C>)values[0])
-					.survivorsSelector((Selector<G, C>)values[1])
-					.alterers(Alterer.of(((ISeq<Alterer<G, C>>)values[2]).toArray(Alterer[]::new)))
-					.populationSize((int)values[3])
-					.offspringFraction((double)values[4])
-					.maximalPhenotypeAge((long)values[5])
-					.build();
-
-				return params;
-			}
+			values -> EvolutionParams.<G, C>builder()
+				.offspringSelector((Selector<G, C>)values[0])
+				.survivorsSelector((Selector<G, C>)values[1])
+				.alterers(Alterer.of(((ISeq<Alterer<G, C>>)values[2]).toArray(Alterer[]::new)))
+				.populationSize((int)values[3])
+				.offspringFraction((double)values[4])
+				.maximalPhenotypeAge((long)values[5])
+				.build()
 		);
 	}
 

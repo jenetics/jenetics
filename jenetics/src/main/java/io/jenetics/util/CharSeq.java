@@ -36,12 +36,11 @@ import io.jenetics.internal.collection.CharStore;
  * {@link io.jenetics.CharacterGene}. It is not a character sequence in the
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -170,8 +169,7 @@ public final class CharSeq
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof CharSeq other &&
+		return obj instanceof CharSeq other &&
 			Arrays.equals(other.array, array);
 	}
 
@@ -196,9 +194,9 @@ public final class CharSeq
 	}
 
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g
+	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @param pattern the {@code pattern} to expand.
 	 * @return the expanded pattern.
@@ -268,7 +266,7 @@ public final class CharSeq
 	/**
 	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
-	 * case characters (from a to z) and all digits form 0 to 9.
+	 * case characters (from a to z), and all digits form 0 to 9.
 	 *
 	 * @see #expand(CharSequence)
 	 *

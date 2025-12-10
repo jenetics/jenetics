@@ -56,7 +56,7 @@ import io.jenetics.util.ISeq;
  *  Array: |11110011|10011101|01000000|00101010|
  *          |                 |        |      |
  *  Bit:    23                15       7      0
- * }</pre>
+ * } </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -80,7 +80,7 @@ public final class BitChromosome extends Number
 	private final BitArray _genes;
 
 	/**
-	 * The ones probability of the randomly generated Chromosome.
+	 * The one's probability of the randomly generated Chromosome.
 	 */
 	private final double _p;
 
@@ -99,7 +99,7 @@ public final class BitChromosome extends Number
 	 * @param start the initial (bit) index of the range to be copied, inclusive
 	 * @param end the final (bit) index of the range to be copied, exclusive.
 	 *        (This index may lie outside the array.)
-	 * @param p the ones probability
+	 * @param p one's probability
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if {@code start < 0} or
 	 *         {@code start > bits.length*8}
 	 * @throws java.lang.IllegalArgumentException if {@code start > end}
@@ -236,7 +236,7 @@ public final class BitChromosome extends Number
 	/**
 	 * Return the double value this BitChromosome represents.
 	 *
-	 * @return double value this BitChromosome represents.
+	 * @return double the value this BitChromosome represents.
 	 */
 	@Override
 	public double doubleValue() {
@@ -468,8 +468,7 @@ public final class BitChromosome extends Number
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof BitChromosome other &&
+		return obj instanceof BitChromosome other &&
 			_genes.equals(other._genes);
 	}
 
@@ -574,7 +573,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability.
+	 * ones' probability.
 	 *
 	 * @param value the value of the created {@code BitChromosome}
 	 * @param length length of the BitChromosome
@@ -594,7 +593,7 @@ public final class BitChromosome extends Number
 
 	/**
 	 * Create a new {@code BitChromosome} from the given big integer value and
-	 * ones probability. The {@link #oneProbability()} of the chromosome is set
+	 * ones' probability. The {@link #oneProbability()} of the chromosome is set
 	 * to {@code 0.5}.
 	 *
 	 * @since 7.0

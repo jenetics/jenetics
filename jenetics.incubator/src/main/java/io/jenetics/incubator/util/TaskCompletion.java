@@ -42,14 +42,13 @@ import java.util.stream.Stream;
  * This execution service executes the tasks in exactly the same order as they
  * were submitted. The tasks are executed <em>asynchronously</em>, but <b>not</b>
  * <em>concurrently</em>.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final var executor = new TaskCompletion(ForkJoinPool.commonPool());
  * final var results = new ArrayList<Integer>();
  *
  * for (int i = 0; i < 100; ++i) {
  *     final int index = i;
- *     executor.execute(() -> results.add(i));
+ *     executor.execute(() -> results.add(index));
  * }
  *
  * executor.shutdown();
@@ -58,7 +57,7 @@ import java.util.stream.Stream;
  * for (int i = 0; i < results.size(); ++i) {
  *     assert results.get(i) == i;
  * }
- * }</pre>
+ * }
  *
  * Since the tasks are executed in the submitted order and the next task is
  * executed if the previous one has been finished, it is not necessary to use
@@ -172,7 +171,7 @@ public final class TaskCompletion extends AbstractExecutorService {
 	 * 	       task completion, {@code false} otherwise
 	 */
 	public boolean isEmpty() {
-		return _tasks.size() == 0;
+		return _tasks.isEmpty();
 	}
 
 	/**

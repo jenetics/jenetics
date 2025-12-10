@@ -44,7 +44,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
- * CharacterChromosome which represents character sequences.
+ * Character chromosome, which represents character sequences.
  *
  * @see CharacterGene
  *
@@ -68,7 +68,7 @@ public class CharacterChromosome
 
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
-	 * array is copied, so changes to the given genes array doesn't effect the
+	 * array is copied, so changes to the given genes array don't affect the
 	 * genes of this chromosome.
 	 *
 	 * @since 4.0
@@ -122,9 +122,8 @@ public class CharacterChromosome
 	 * Maps the gene alleles of this chromosome, given as {@code char[]} array,
 	 * by applying the given mapper function {@code f}. The mapped gene values
 	 * are then wrapped into a newly created chromosome.
-	 *
-	 * <pre>{@code
-	 * final CharacterChromosome chromosome = ...;
+	 * {@snippet lang="java":
+	 * final CharacterChromosome chromosome = null; // @replace substring='null' replacement="..."
 	 * final CharacterChromosome uppercase = chromosome.map(Main::uppercase);
 	 *
 	 * static int[] uppercase(final int[] values) {
@@ -133,7 +132,7 @@ public class CharacterChromosome
 	 *     }
 	 *     return values;
 	 * }
-	 * }</pre>
+	 * }
 	 *
 	 * @since 6.1
 	 *
@@ -162,8 +161,7 @@ public class CharacterChromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
+		return obj != null &&
 			getClass() == obj.getClass() &&
 			Objects.equals(_validCharacters, ((CharacterChromosome)obj)._validCharacters) &&
 			super.equals(obj);
@@ -175,14 +173,14 @@ public class CharacterChromosome
 	}
 
 	/**
-	 * Returns an char array containing all of the elements in this chromosome
-	 * in proper sequence.  If the chromosome fits in the specified array, it is
+	 * Returns a char array containing all the elements in this chromosome
+	 * in a proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
 	 * this chromosome.
 	 *
 	 * @since 3.0
 	 *
-	 * @param array the array into which the elements of this chromosomes are to
+	 * @param array the array into which the elements of this chromosome are to
 	 *        be stored, if it is big enough; otherwise, a new array is
 	 *        allocated for this purpose.
 	 * @return an array containing the elements of this chromosome
@@ -201,8 +199,8 @@ public class CharacterChromosome
 	}
 
 	/**
-	 * Returns an char array containing all of the elements in this chromosome
-	 * in proper sequence.
+	 * Returns a char array containing all the elements in this chromosome
+	 * in a proper sequence.
 	 *
 	 * @since 3.0
 	 *
@@ -230,7 +228,7 @@ public class CharacterChromosome
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	public static CharacterChromosome of(
@@ -269,14 +267,14 @@ public class CharacterChromosome
 	 *         {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene sequence is
 	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
+	 *         or maximum of the range is smaller or equal zero, or the given
 	 *         range size is zero.
 	 */
 	public static CharacterChromosome of(
 		final CharSeq validCharacters,
 		final int length
 	) {
-		return of(validCharacters, IntRange.of(length));
+		return of(validCharacters, new IntRange(length));
 	}
 
 	/**
@@ -309,7 +307,7 @@ public class CharacterChromosome
 			genes.set(i, CharacterGene.of(alleles.charAt(i), validChars));
 		}
 
-		return new CharacterChromosome(genes.toISeq(), IntRange.of(alleles.length()));
+		return new CharacterChromosome(genes.toISeq(), new IntRange(alleles.length()));
 	}
 
 	/**
@@ -348,7 +346,7 @@ public class CharacterChromosome
 	}
 
 	static CharacterChromosome read(final DataInput in) throws IOException {
-		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var lengthRange = new IntRange(readInt(in), readInt(in));
 		final var validCharacters = new CharSeq(readString(in));
 		final var chars = readString(in);
 

@@ -108,7 +108,7 @@ public final class Phenotype<
 	 * @since 5.0
 	 *
 	 * @param ff the fitness function
-	 * @return a evaluated phenotype or {@code this} if the fitness value is
+	 * @return an evaluated phenotype or {@code this} if the fitness value is
 	 *         already set
 	 * @throws NullPointerException if the given fitness function is {@code null}
 	 */
@@ -119,7 +119,7 @@ public final class Phenotype<
 	}
 
 	/**
-	 * This method returns a copy of the {@code Genotype}, to guarantee a
+	 * This method returns a copy of the {@code Genotype}, to guarantee an
 	 * immutable class.
 	 *
 	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
@@ -156,7 +156,7 @@ public final class Phenotype<
 	 *
 	 * @see #isEvaluated()
 	 *
-	 * @return {@code false} is this phenotype has an fitness value assigned,
+	 * @return {@code false} is this phenotype has a fitness value assigned,
 	 *         {@code true} otherwise
 	 */
 	public boolean nonEvaluated() {
@@ -313,7 +313,7 @@ public final class Phenotype<
 
 	/**
 	 * Create a new phenotype from the given arguments. The phenotype is created
-	 * with a non assigned fitness function and the call of {@link #isEvaluated()}
+	 * with a non-assigned fitness function and the call of {@link #isEvaluated()}
 	 * will return {@code false}.
 	 *
 	 * @param <G> the gene type of the chromosome
@@ -391,11 +391,7 @@ public final class Phenotype<
 		final var genotype = (Genotype)in.readObject();
 		final var fitness = (Comparable)in.readObject();
 
-		return new Phenotype(
-			genotype,
-			generation,
-			fitness
-		);
+		return new Phenotype(genotype, generation, fitness);
 	}
 
 }

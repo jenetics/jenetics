@@ -22,13 +22,13 @@ package io.jenetics;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.CompletionException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.PartialAlterer.Projection;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -63,10 +63,10 @@ public class PartialAltererTest {
 		final var projection = new PartialAlterer.Projection(new int[]{1, 3, 5});
 
 		final Phenotype<DoubleGene, Double> split = projection.project(pt);
-		Assert.assertEquals(split.genotype().length(), 3);
-		Assert.assertEquals(split.genotype().get(0), pt.genotype().get(1));
-		Assert.assertEquals(split.genotype().get(1), pt.genotype().get(3));
-		Assert.assertEquals(split.genotype().get(2), pt.genotype().get(5));
+		assertThat(split.genotype().length()).isEqualTo(3);
+		assertThat(split.genotype().get(0)).isEqualTo(pt.genotype().get(1));
+		assertThat(split.genotype().get(1)).isEqualTo(pt.genotype().get(3));
+		assertThat(split.genotype().get(2)).isEqualTo(pt.genotype().get(5));
 	}
 
 	@Test
@@ -216,7 +216,7 @@ public class PartialAltererTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(new DoubleRange(0.0, 2.0*PI))
 		);
 
 		final Genotype<DoubleGene> gtf = Genotype.of(

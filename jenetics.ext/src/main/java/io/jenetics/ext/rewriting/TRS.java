@@ -41,7 +41,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * This class represents a Tree Rewrite System, which consists of a set of
  * Tree Rewrite Rules.
- * <pre>{@code
+ * {@snippet lang="java":
  * final TRS<String> trs = TRS.parse(
  *     "add(0,$x) -> $x",
  *     "add(S($x),$y) -> S(add($x,$y))",
@@ -53,7 +53,7 @@ import io.jenetics.ext.util.TreeNode;
  * final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
  * trs.rewrite(tree);
  * assert tree.equals(TreeNode.parse("S(S(S(S(0))))"));
- * }</pre>
+ * }
  *
  * @see TreeRewriteRule
  * @see <a href="https://en.wikipedia.org/wiki/Rewriting">TRS</a>
@@ -108,8 +108,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof TRS<?> other &&
+		return obj instanceof TRS<?> other &&
 			_rules.equals(other._rules);
 	}
 

@@ -20,9 +20,9 @@
 package io.jenetics.util;
 
 /**
- * This interface indicates, that a class can create a copy of type {@code T}.
- * Typically, classes which implement this interface, are able to create a copy
- * from itself.
+ * This interface indicates that a class can create a copy of type {@code T}.
+ * Typically, classes which implement this interface are able to create a copy
+ * from themselves.
  *
  * @param <T> the type of the copied object
  *

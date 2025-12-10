@@ -263,17 +263,16 @@ public class CfgTest {
 
 	private static Set<Symbol<?>> getSymbolInstances(final Cfg<?> cfg) {
 		final var symbols = new IdentityHashMap<Symbol<?>, String>();
+
 		cfg.nonTerminals().forEach(nt -> symbols.put(nt, ""));
 		cfg.terminals().forEach(t -> symbols.put(t, ""));
 		symbols.put(cfg.start(), "");
-		for (var rule : cfg.rules()) {
-			symbols.put(rule.start(), "");
-			rule.alternatives().forEach(expr ->
-				expr.symbols().forEach(s ->
-					symbols.put(s, "")
-				)
-			);
-		}
+
+		cfg.rules().stream()
+			.peek(r -> symbols.put(r.start(), ""))
+			.flatMap(r -> r.alternatives().stream())
+			.flatMap(e -> e.symbols().stream())
+			.forEach(s -> symbols.put(s, ""));
 
 		return symbols.keySet();
 	}
@@ -311,6 +310,45 @@ public class CfgTest {
 		assertThat(getSymbolInstances(cfg2).size()).isEqualTo(22);
 		assertThat(cfg2).isEqualTo(cfg);
 	}
+
+	@Test
+	public void buildingWithAnnotations() {
+		final Cfg<String> cfg = Cfg.of(
+			R("expr",
+				N("num", 1),
+				N("var", 8),
+				E(T("("), N("expr"), N("op", 4), N("expr"), T(")"))
+			),
+			R("op", T("+"), T("-"), T("*"), T("/")),
+			R("var", T("x"), T("y")),
+			R("num",
+				T("0"), T("1"), T("2"), T("3"),
+				T("4"), T("5"), T("6"), T("7"),
+				T("8"), T("9")
+			)
+		);
+
+		assertThat(getSymbolInstances(cfg).size()).isEqualTo(25);
+
+		final var cfg2 = Cfg.<String>builder()
+			.R("expr", rule -> rule
+				.N("num", 1)
+				.N("var", 8)
+				.E(exp -> exp
+					.T("(")
+					.N("expr").N("op", 4).N("expr")
+					.T(")")))
+			.R("op", rule -> rule.T("+").T("-").T("*").T("/"))
+			.R("var", rule -> rule.T("x").T("y"))
+			.R("num", rule -> rule
+				.T("0").T("1").T("2").T("3").T("4")
+				.T("5").T("6").T("7").T("8").T("9")
+			)
+			.build();
+
+		assertThat(cfg2).isEqualTo(cfg);
+	}
+
 
 	@Test
 	public void map() {

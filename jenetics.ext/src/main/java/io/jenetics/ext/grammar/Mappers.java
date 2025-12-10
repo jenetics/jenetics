@@ -35,14 +35,14 @@ import io.jenetics.ext.grammar.Cfg.Rule;
  * This class defines factories for different CFG &harr; Chromosome mappings
  * (encodings). The classical mapping codec, with a bit-chromosome can be created
  * in the following way.
- * <pre>{@code
- * final Cfg<String> cfg = ...;
+ * {@snippet lang="java":
+ * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
  * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
  *     cfg,
  *     1000,
  *     index -> new SentenceGenerator<>(index, 1000)
  * );
- * }</pre>
+ * }
  * This codec creates a mapping for the given grammar {@code cfg} and uses
  * bit-chromosomes with length {@code 1000}. The result of the mapping will be a
  * list of terminal symbols which has been created by the given
@@ -66,15 +66,14 @@ public final class Mappers {
 	 * grammar results. The codons are created by dividing the chromosome in
 	 * 8-bit junks, as described in <a href="https://www.brinckerhoff.org/tmp/grammatica_evolution_ieee_tec_2001.pdf">
 	 * Grammatical Evolution</a> by Michael O’Neill and Conor Ryan.
-	 *
-	 * <pre>{@code
-	 * final Cfg<String> cfg = ...;
+	 * {@snippet lang="java":
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, BitGene> codec = singleBitChromosomeMapper(
 	 *     cfg,
 	 *     1000,
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see #singleIntegerChromosomeMapper(Cfg, IntRange, IntRange, Function)
 	 *
@@ -104,16 +103,15 @@ public final class Mappers {
 	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
-	 *
-	 * <pre>{@code
-	 * final Cfg<String> cfg = ...;
+	 * {@snippet lang="java":
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
-	 *     IntRange.of(0, 256), // Value range of chromosomes.
-	 *     IntRange.of(100),   // Length (range) ot the chromosome.
+	 *     new IntRange(0, 256), // Value range of chromosomes.
+	 *     new IntRange(100),   // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param range the value range of the integer genes
@@ -143,16 +141,15 @@ public final class Mappers {
 	 * Create a mapping codec, similar as in {@link #singleBitChromosomeMapper(Cfg, int, Function)}.
 	 * The only difference is that the codons are encoded directly, via an
 	 * integer-chromosome, so that no gene split is necessary.
-	 *
-	 * <pre>{@code
-	 * final Cfg<String> cfg = ...;
+	 * {@snippet lang="java":
+	 * final Cfg<String> cfg = null; // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = singleIntegerChromosomeMapper(
 	 *     cfg,
-	 *     IntRange.of(0, 256), // Value range of chromosomes.
+	 *     new IntRange(0, 256), // Value range of chromosomes.
 	 *     100,                 // Length (range) ot the chromosome.
 	 *     index -> new SentenceGenerator<>(index, 1000)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param range the value range of the integer genes
@@ -171,7 +168,7 @@ public final class Mappers {
 		final Function<? super SymbolIndex, ? extends Generator<T, R>> generator
 	) {
 		return singleIntegerChromosomeMapper(
-			cfg, range, IntRange.of(length), generator
+			cfg, range, new IntRange(length), generator
 		);
 	}
 
@@ -192,29 +189,28 @@ public final class Mappers {
 	 * }</pre>
 	 *
 	 * will be represented by the following {@link Genotype}
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * Genotype.of(
-	 *     IntegerChromosome.of(IntRange.of(0, 2), length.apply(cfg.rules().get(0))),
-	 *     IntegerChromosome.of(IntRange.of(0, 4), length.apply(cfg.rules().get(1))),
-	 *     IntegerChromosome.of(IntRange.of(0, 5), length.apply(cfg.rules().get(2)))
+	 *     IntegerChromosome.of(new IntRange(0, 2), length.apply(cfg.rules().get(0))),
+	 *     IntegerChromosome.of(new IntRange(0, 4), length.apply(cfg.rules().get(1))),
+	 *     IntegerChromosome.of(new IntRange(0, 5), length.apply(cfg.rules().get(2)))
 	 * )
-	 * }</pre>
+	 * }
 	 *
 	 * The {@code length} function lets you defining the number of codons as
 	 * function of the rule the chromosome is encoding.
-	 *
-	 * <pre>{@code
-	 * final Cfg<String> cfg = Bnf.parse(...);
+	 * {@snippet lang="java":
+	 * final Cfg<String> cfg = Bnf.parse(null); // @replace substring='null' replacement="..."
 	 * final Codec<List<Terminal<String>>, IntegerGene> codec = multiIntegerChromosomeMapper(
 	 *     cfg,
 	 *     // The chromosome length is 25 times the
 	 *     // number of rule alternatives.
-	 *     rule -> IntRange.of(rule.alternatives().size()*25),
+	 *     rule -> new IntRange(rule.alternatives().size()*25),
 	 *     // Using the standard sentence generator
 	 *     // with a maximal sentence length of 500.
 	 *     index -> new SentenceGenerator<>(index, 500)
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @param cfg the encoding grammar
 	 * @param length the length of the chromosome which is used for selecting

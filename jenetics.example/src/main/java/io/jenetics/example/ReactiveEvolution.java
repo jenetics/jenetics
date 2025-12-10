@@ -38,7 +38,7 @@ import io.jenetics.util.StreamPublisher;
 public class ReactiveEvolution implements AutoCloseable {
 
 	private final Codec<Double, DoubleGene> _codec = Codecs
-		.ofScalar(DoubleRange.of(0.0, 2.0*PI));
+		.ofScalar(new DoubleRange(0.0, 2.0*PI));
 
 	private final Engine<DoubleGene, Double> _engine = Engine
 		.builder(ReactiveEvolution::fitness, _codec)

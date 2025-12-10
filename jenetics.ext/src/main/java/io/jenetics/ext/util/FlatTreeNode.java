@@ -47,10 +47,9 @@ import io.jenetics.util.ISeq;
  * Default implementation of the {@link FlatTree} interface. Beside the
  * flattened and dense layout it is also an <em>immutable</em> implementation of
  * the {@link Tree} interface. It can only be created from an existing tree.
- *
- * <pre>{@code
- * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(...));
- * }</pre>
+ * {@snippet lang="java":
+ * final Tree<String, ?> immutable = FlatTreeNode.ofTree(TreeNode.parse(null)); // @replace substring='null' replacement="..."
+ * }
  *
  * @implNote
  * This class is immutable and thread-safe.
@@ -186,11 +185,11 @@ public final class FlatTreeNode<V>
 	/**
 	 * Return a sequence of all <em>mapped</em> nodes of the whole underlying
 	 * tree. This is a convenient method for
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final ISeq<B> seq = stream()
 	 *     .map(mapper)
-	 *     .collect(ISeq.toISeq())
-	 * }</pre>
+	 *     .collect(ISeq.toISeq());
+	 * }
 	 *
 	 * @param mapper the mapper function
 	 * @param <B> the mapped type
@@ -205,8 +204,7 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other == this ||
-			other instanceof FlatTreeNode<?> node &&
+		return other instanceof FlatTreeNode<?> node &&
 			node._index == _index &&
 			node._nodes == _nodes;
 	}
@@ -248,8 +246,7 @@ public final class FlatTreeNode<V>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj == this ||
-			(obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
+		return (obj instanceof FlatTreeNode<?> ftn && equals(ftn)) ||
 			(obj instanceof Tree<?, ?> tree && Tree.equals(tree, this));
 	}
 
@@ -353,12 +350,12 @@ public final class FlatTreeNode<V>
 	 *  0(1(4,5),2(6),3(7(10,11),8,9))
 	 * </pre>
 	 * and can be parsed to an integer tree with the following code:
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<Integer, ?> tree = FlatTreeNode.parse(
 	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
 	 *     Integer::parseInt
 	 * );
-	 * }</pre>
+	 * }
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()

@@ -42,10 +42,10 @@ import io.jenetics.internal.collection.Empty.EmptyMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
- * Mutable, ordered, fixed sized sequence.
+ * Mutable, ordered, fixed-sized sequence.
  *
  * @implNote
- * This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * This implementation is not thread-safe. All {@link ISeq} and {@link MSeq}
  * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
  * respectively, must be protected by the same lock, when they are accessed
  * (get/set) by different threads.
@@ -184,7 +184,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @since 4.0
 	 *
-	 * @param index the index of swapped element.
+	 * @param index the index of a swapped element.
 	 * @param other the other array to swap the elements with.
 	 * @throws IndexOutOfBoundsException if
 	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
@@ -213,7 +213,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
-	 * @param random the {@link RandomGenerator} object to use for randomize.
+	 * @param random the {@link RandomGenerator} object to use for randomizing.
 	 * @return this shuffled sequence
 	 * @throws NullPointerException if the random object is {@code null}.
 	 */
@@ -353,10 +353,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Returns a list iterator over the elements in this sequence (in proper
+	 * Returns a list iterator over the elements in this sequence (in a proper
 	 * sequence).
 	 *
-	 * @return a list iterator over the elements in this list (in proper
+	 * @return a list iterator over the elements in this list (in a proper
 	 *         sequence)
 	 */
 	default ListIterator<T> listIterator() {
@@ -544,31 +544,25 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 		@SuppressWarnings("unchecked")
 		final Iterable<T> vals = (Iterable<T>)values;
-
-		final MSeq<T> mseq;
-		if (vals instanceof ISeq<T> seq) {
-			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (vals instanceof MSeq<T> seq) {
-			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (vals instanceof Collection<T> collection) {
-			mseq = collection.isEmpty()
-				? empty()
-				: MSeq.<T>ofLength(collection.size()).setAll(values);
-		} else if (vals instanceof BaseSeq<T> seq) {
-			mseq = seq.isEmpty()
+		return switch (vals) {
+            case ISeq<T> seq -> seq.isEmpty() ? empty() : seq.copy();
+            case MSeq<T> seq -> seq.isEmpty() ? empty() : MSeq.of(seq);
+			case BaseSeq<T> seq -> seq.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(seq.length()).setAll(values);
-		} else {
-			final Stream.Builder<T> builder = Stream.builder();
-			values.forEach(builder::add);
-			final Object[] objects = builder.build().toArray();
+            case Collection<T> coll -> coll.isEmpty()
+	                ? empty()
+	                : MSeq.<T>ofLength(coll.size()).setAll(values);
+            default -> {
+                final Stream.Builder<T> builder = Stream.builder();
+                values.forEach(builder::add);
+                final Object[] objects = builder.build().toArray();
 
-			mseq = objects.length == 0
-				? empty()
-				: new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
-		}
-
-		return mseq;
+                yield objects.length == 0
+	                ? empty()
+	                : new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
+            }
+        };
 	}
 
 	/**
@@ -603,7 +597,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @param <T> the element type
 	 * @param values the array values.
-	 * @return an new {@code MSeq} with the given values
+	 * @return a new {@code MSeq} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")

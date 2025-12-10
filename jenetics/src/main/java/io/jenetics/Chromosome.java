@@ -31,7 +31,7 @@ import io.jenetics.util.Verifiable;
  *
  * @implSpec
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
- * and guarantee an efficient random access ({@code O(1)}) to the genes. A
+ * and guarantee efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipedia: Chromosome</a>
@@ -83,17 +83,17 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.
 	 * This is a convenient method for an ordinary cast and allows seamless
 	 * method-chaining. Instead of
-	 * <pre>{@code
-	 * final Genotype<BitGene> gt = ...
-	 * final int count = ((BitChromosome)gt.chromosome()).bitCount()
-	 * }</pre>
+	 * {@snippet lang="java":
+	 * final Genotype<BitGene> gt = null; // @replace substring='null' replacement="..."
+	 * final int count = ((BitChromosome)gt.chromosome()).bitCount();
+	 * }
 	 * you can write
-	 * <pre>{@code
-	 * final Genotype<BitGene> gt = ...
+	 * {@snippet lang="java":
+	 * final Genotype<BitGene> gt = null; // @replace substring='null' replacement="..."
 	 * final int count = gt.chromosome()
 	 *     .as(BitChromosome.class)
-	 *     .bitCount()
-	 * }</pre>
+	 *     .bitCount();
+	 * }
 	 * This may lead to a more elegant programming style in some cases.
 	 *
 	 * @since 3.7

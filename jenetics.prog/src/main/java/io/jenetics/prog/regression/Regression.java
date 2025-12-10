@@ -44,8 +44,7 @@ import io.jenetics.prog.regression.Sampling.Result;
 /**
  * This class implements a <em>symbolic</em> regression problem. The example
  * below shows a typical usage of the {@code Regression} class.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * public class SymbolicRegression {
  *     private static final ISeq<Op<Double>> OPERATIONS =
  *         ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
@@ -88,7 +87,7 @@ import io.jenetics.prog.regression.Sampling.Result;
  *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
  * }
- * }</pre>
+ * }
  *
  * @see SampleBuffer
  * @see Sampling
@@ -185,7 +184,7 @@ public final class Regression<T>
 	 * @param samples the sample points used for regression analysis
 	 * @return a new regression problem instance
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
-	 * @throws NullPointerException if on of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
@@ -214,7 +213,7 @@ public final class Regression<T>
 	 * @param samples the sample points used for regression analysis
 	 * @return a new regression problem instance
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
-	 * @throws NullPointerException if on of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SafeVarargs
 	public static <T> Regression<T> of(

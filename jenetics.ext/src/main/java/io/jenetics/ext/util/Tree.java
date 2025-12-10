@@ -198,9 +198,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	}
 
 	/**
-	 * Return the number of nodes of {@code this} node (sub-tree).
+	 * Return the number of nodes of {@code this} node (subtree).
 	 *
-	 * @return the number of nodes of {@code this} node (sub-tree)
+	 * @return the number of nodes of {@code this} node (subtree)
 	 */
 	default int size() {
 		return Trees.countChildren(this) + 1;
@@ -211,10 +211,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * {@code null} and has no children and parent. A newly created tree node
 	 * with no value is <em>empty</em>.
 	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<String, ?> tree = TreeNode.of();
 	 * assert tree.isEmpty();
-	 * }</pre>
+	 * }
 	 *
 	 * @since 7.0
 	 *
@@ -398,13 +398,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the {@link Path} of {@code this} tree, such that
-	 * <pre>{@code
-	 * final Tree<Integer, ?> tree = ...;
+	 * {@snippet lang="java":
+	 * final Tree<Integer, ?> tree = null; // @replace substring='null' replacement="..."
 	 * final Tree.Path path = tree.path();
 	 * assert tree == tree.getRoot()
 	 *     .childAtPath(path)
 	 *     .orElse(null);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 5.1
 	 *
@@ -604,7 +604,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return the next sibling of {@code this} node in the parent's children
-	 * array, or {@code null} if {@code this} node has no parent or it is the
+	 * array, or {@code null} if {@code this} node has no parent, or it is the
 	 * last child of the paren. This method performs a linear search that is
 	 * {@code O(n)} where n is the number of children; to traverse the entire
 	 * array, use the iterator of the parent instead.
@@ -897,7 +897,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 
 	/**
 	 * Return an iterator that follows the path from {@code ancestor} to
-	 * {@code this} node. The iterator return {@code ancestor} as first element,
+	 * {@code this} node. The iterator return {@code ancestor} as a first element,
 	 * The creation of the iterator is O(m), where m is the number of nodes
 	 * between {@code this} node and the {@code ancestor}, inclusive.
 	 * <p>
@@ -921,12 +921,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * Return the path of {@code this} child node from the root node. You will
 	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
 	 * root node of {@code this} node.
-	 * <pre>{@code
-	 * final Tree<?, ?> node = ...;
+	 * {@snippet lang="java":
+	 * final Tree<?, ?> node = null; // @replace substring='null' replacement="..."
 	 * final Tree<?, ?> root = node.getRoot();
 	 * final int[] path = node.childPath();
 	 * assert node == root.childAtPath(path);
-	 * }</pre>
+	 * }
 	 *
 	 * @since 4.4
 	 *
@@ -972,7 +972,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * Performs a reduction on the elements of {@code this} tree, using an
 	 * associative reduction function. This can be used for evaluating a given
 	 * expression tree in pre-order.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Tree<String, ?> formula = TreeNode.parse("add(sub(6,div(230,10)),mul(5,6))");
 	 * final double result = formula.reduce(new Double[0], (op, args) ->
 	 *     switch (op) {
@@ -984,7 +984,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 *     }
 	 * );
 	 * assert result == 13.0;
-	 * }</pre>
+	 * }
 	 *
 	 * @since 7.1
 	 *
@@ -1151,10 +1151,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 6.0
+	 * @version 7.2
 	 * @since 4.4
 	 */
-	final class Path implements Serializable {
+	final class Path implements Comparable<Path>, Serializable {
 
 		@Serial
 		private static final long serialVersionUID = 1L;
@@ -1211,14 +1211,25 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 		}
 
 		@Override
+		public int compareTo(final Path other) {
+			for (int i = 0, n = Math.min(length(), other.length()); i < n; ++i) {
+				final int cmp = Integer.compare(get(i), other.get(i));
+				if (cmp != 0) {
+					return cmp;
+				}
+			}
+
+			return Integer.compare(length(), other.length());
+		}
+
+		@Override
 		public int hashCode() {
 			return Arrays.hashCode(_path);
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof Path other &&
+			return obj instanceof Path other &&
 				Arrays.equals(_path, other._path);
 		}
 

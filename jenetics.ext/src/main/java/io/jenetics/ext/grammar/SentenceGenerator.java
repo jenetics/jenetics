@@ -38,7 +38,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * <p>
  * The following code snippet shows how to create a random sentence from a
  * given grammar:
- * <pre>{@code
+ * {@snippet lang="java":
  * final Cfg<String> cfg = Bnf.parse("""
  *     <expr> ::= ( <expr> <op> <expr> ) | <num> | <var> |  <fun> ( <arg>, <arg> )
  *     <fun>  ::= FUN1 | FUN2
@@ -60,7 +60,7 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  *     .collect(Collectors.joining());
  *
  * System.out.println(string);
- * }</pre>
+ * }
  * <em>Some sample output:</em>
  * <pre>{@code
  * > ((x-FUN1(5,5))+8)
@@ -71,7 +71,8 @@ import io.jenetics.ext.grammar.Cfg.Terminal;
  * > FUN2(y,FUN2((FUN1(5,FUN1(y,2))*9),y))
  * > ((FUN1(x,5)*9)*(x/(y*FUN2(x,y))))
  * > (9-(y*(x+x)))
- * > }</pre>
+ * >
+ * }</pre>
  *
  * @see DerivationTreeGenerator
  *
@@ -97,7 +98,7 @@ public final class SentenceGenerator<T>
 
 		/**
 		 * The symbol replacement is performed from left to right and is repeated
-		 * until all non-terminal symbol has been expanded.
+		 * until all non-terminal symbols have been expanded.
 		 */
 		LEFT_TO_RIGHT;
 	}
@@ -146,7 +147,7 @@ public final class SentenceGenerator<T>
 	 *
 	 * @param cfg the generating grammar
 	 * @return a newly created terminal list (sentence), or an empty list if
-	 *         the length of the sentence exceed the defined sentence limit
+	 *         the length of the sentence exceeds the defined sentence limit
 	 */
 	@Override
 	public List<Terminal<T>> generate(final Cfg<? extends T> cfg) {
@@ -166,7 +167,6 @@ public final class SentenceGenerator<T>
 		boolean proceed;
 		do {
 			proceed = false;
-
 
 			final ListIterator<Symbol<T>> sit = symbols.listIterator();
 			while (sit.hasNext() &&
@@ -190,7 +190,7 @@ public final class SentenceGenerator<T>
 	 * Converts a list of symbols to a string, by concatenating the names of
 	 * the given symbols.
 	 *
-	 * @param sentence the symbols list to covert
+	 * @param sentence the symbol list to covert
 	 * @return the converted sentences
 	 */
 	public static String toString(final List<? extends Symbol<?>> sentence) {

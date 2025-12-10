@@ -35,19 +35,19 @@ import io.jenetics.ext.grammar.Cfg.Rule;
 
 /**
  * Represents a mapping of a finite set of integers to symbol indexes. If more
- * indexes are needed, the values are read from the beginning again. You have
+ * indexes are necessary, the values are read from the beginning again. You have
  * the possibility to create a {@code Codons} object from different chromosome
  * types.
- * <pre>{@code
+ * {@snippet lang="java":
  * // Create 'classic' codons from a bit-chromosome, where
  * // the genes are split into 8-bit junks and converted
  * // into unsigned int values.
  * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
  *
  * // Creating a codons object from an integer chromosome.
- * final var ich = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+ * final var ich = IntegerChromosome.of(new IntRange(0, 256), 1_000);
  * final var codons = Codons.ofIntegerGenes(ich);
- * }</pre>
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 7.1
@@ -64,8 +64,8 @@ public final class Codons implements SymbolIndex {
 	 * Create a new {@code Codons} object from a given {@code codons} source and
 	 * its {@code length}.
 	 *
-	 * @param codons the codons source
-	 * @param length the length of the codons source
+	 * @param codons the codon source
+	 * @param length the length of the codon source
 	 * @throws NullPointerException if the {@code codons} source is {@code null}
 	 * @throws IllegalArgumentException if the given {@code length} is smaller
 	 *         than one
@@ -85,11 +85,11 @@ public final class Codons implements SymbolIndex {
 	 * Creates a new, classical <em>codons</em> object from the given bit-genes.
 	 * The genes is split into 8-bit chunks and converted into an unsigned
 	 * {@code int[]} array.
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Codons codons = Codons.ofBitGenes(BitChromosome.of(10_000));
-	 * }</pre>
+	 * }
 	 *
-	 * @param genes the genes used for creating the codons object
+	 * @param genes the genes used for creating the codon object
 	 * @return a new <em>codons</em> object
 	 */
 	public static Codons ofBitGenes(final BaseSeq<BitGene> genes) {
@@ -122,13 +122,12 @@ public final class Codons implements SymbolIndex {
 
 	/**
 	 * Creates a new <em>codons</em> object from the given int-genes.
-	 *
-	 * <pre>{@code
-	 * final var chromosome = IntegerChromosome.of(IntRange.of(0, 256), 1_000);
+	 * {@snippet lang="java":
+	 * final var chromosome = IntegerChromosome.of(new IntRange(0, 256), 1_000);
 	 * final var codons = Codons.ofIntegerGenes(chromosome);
-	 * }</pre>
+	 * }
 	 *
-	 * @param genes the genes used for creating the codons object
+	 * @param genes the genes used for creating the codon object
 	 * @return a new <em>codons</em> object
 	 */
 	public static Codons ofIntegerGenes(final BaseSeq<IntegerGene> genes) {

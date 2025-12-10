@@ -48,7 +48,7 @@ public abstract class CharSequenceTokenizer implements Tokenizer<Token<String>> 
 	protected CharSequenceTokenizer(final CharSequence input) {
 		requireNonNull(input);
 
-		if (input.length() > 0) {
+		if (!input.isEmpty()) {
 			c = input.charAt(0);
 		}
 		_input = input;

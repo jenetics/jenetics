@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -83,11 +83,11 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerRangeLength() {
 		final PermutationChromosome<Integer> c1 = PermutationChromosome
-			.ofInteger(IntRange.of(0, 2000), 1000);
+			.ofInteger(new IntRange(0, 2000), 1000);
 		Assert.assertTrue(c1.isValid());
 
 		final PermutationChromosome<Integer> c2 = PermutationChromosome
-			.ofInteger(IntRange.of(0, 2000), 1000);
+			.ofInteger(new IntRange(0, 2000), 1000);
 		Assert.assertTrue(c2.isValid());
 
 		final MSeq<EnumGene<Integer>> m1 = MSeq.of(c1);
@@ -117,7 +117,7 @@ public class PermutationChromosomeTest
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream.
-			of(Subset.next(100, 10, RandomGenerator.getDefault()))
+			of(Subsets.next(RandomGenerator.getDefault(), 100, 10))
 			.mapToObj(i -> EnumGene.of(i, alleles))
 			.collect(ISeq.toISeq());
 
@@ -133,7 +133,7 @@ public class PermutationChromosomeTest
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream
-			.of(Subset.next(100, 10, RandomGenerator.getDefault()))
+			.of(Subsets.next(RandomGenerator.getDefault(), 100, 10))
 			.mapToObj(i -> EnumGene.of(i%3, alleles))
 			.collect(ISeq.toISeq());
 

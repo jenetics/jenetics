@@ -26,11 +26,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,8 +66,8 @@ public class PartiallyMatchedCrossoverTest {
 		final PermutationChromosome<Integer> otherChrom2 = new PermutationChromosome<>(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2);
 
-		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
-		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
+        Assert.assertNotEquals(thatChrom2, thatChrom1, "That chromosome must not be equal");
+        Assert.assertNotEquals(otherChrom2, otherChrom1, "That chromosome must not be equal");
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class PartiallyMatchedCrossoverTest {
 
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
+	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
@@ -96,7 +96,7 @@ public class PartiallyMatchedCrossoverTest {
 			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Double, Double> crossover = new PartiallyMatchedCrossover<>(p);
+		final var crossover = new PartiallyMatchedCrossover<Double, Double>(p);
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -104,22 +104,24 @@ public class PartiallyMatchedCrossoverTest {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
+		final var interval = new Interval(min, max);
 
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
-		final LongMomentStatistics variance = new LongMomentStatistics();
+		final var statistics = new LongMomentStatistics();
+		final var observation = Histogram.Builder.of(interval, 10)
+			.accept(samples -> {
+				for (int i = 0; i < N; ++i) {
+					final long alterations = crossover
+						.alter(population, 1)
+						.alterations();
 
-		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover
-				.alter(population, 1)
-				.alterations();
-			histogram.accept(alterations);
-			variance.accept(alterations);
-		}
+					samples.accept(alterations);
+					statistics.accept(alterations);
+				}
+			});
 
-		// Normal distribution as approximation for binomial distribution.
-		// TODO: Implement test
-		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
+
+		//assertThatObservation(histogram.build())
+		//	.isNormal(mean, Math.sqrt(statistics.variance()), new DoubleRange(min, max));
 	}
 
 	@DataProvider(name = "alterProbabilityParameters")

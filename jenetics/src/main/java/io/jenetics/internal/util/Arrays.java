@@ -149,4 +149,12 @@ public final class Arrays {
 		return index;
 	}
 
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (var value : values) {
+			sum += value;
+		}
+		return sum;
+	}
+
 }

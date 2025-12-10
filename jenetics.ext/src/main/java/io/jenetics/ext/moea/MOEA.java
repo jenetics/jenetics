@@ -39,12 +39,12 @@ import io.jenetics.util.IntRange;
  * Collectors for collecting final <em>pareto-set</em> for multi-objective
  * optimization.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
  *      v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
  *      Codecs.ofVector(
- *          DoubleRange.of(0, 1),
- *          DoubleRange.of(0, 2*PI)
+ *          new DoubleRange(0, 1),
+ *          new DoubleRange(0, 2*PI)
  *      )
  *  );
  *
@@ -59,8 +59,7 @@ import io.jenetics.util.IntRange;
  *  final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
  *      .limit(Limits.byFixedGeneration(50))
  *      .collect(MOEA.toParetoSet());
- * }</pre>
- *
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
@@ -68,7 +67,7 @@ import io.jenetics.util.IntRange;
  */
 public final class MOEA {
 
-	private static final IntRange DEFAULT_SET_RANGE = IntRange.of(75, 100);
+	private static final IntRange DEFAULT_SET_RANGE = new IntRange(75, 100);
 
 	private MOEA() {
 	}
@@ -99,7 +98,7 @@ public final class MOEA {
 	 * @param size the allowed size range of the returned pareto set. If the
 	 *        size of the pareto set is bigger than {@code size.getMax()},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
-	 *        Pareto set elements which are close to each other are removed firsts.
+	 *        Pareto set elements which are close to each other are removed first.
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}
 	 * @param <V> the multi object result type vector
@@ -130,7 +129,7 @@ public final class MOEA {
 	 * @param size the allowed size range of the returned pareto set. If the
 	 *        size of the pareto set is bigger than {@code size.getMax()},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
-	 *        Pareto set elements which are close to each other are removed firsts.
+	 *        Pareto set elements which are close to each other are removed first.
 	 * @param dominance the pareto dominance measure of the fitness result type
 	 *        {@code C}
 	 * @param comparator the comparator of the elements of the vector type

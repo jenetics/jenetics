@@ -27,16 +27,16 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
- * This alterer takes two chromosome (treating it as vectors) and creates a
- * linear combination of these vectors as result. The  line-recombination depends
+ * This alterer takes two chromosomes (treating them as vectors) and creates a
+ * linear combination of these vectors as a result. The line-recombination depends
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the
  * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
  * be located anywhere on the line, even somewhat outside the hypercube.
  * <p>
- * Points outside the allowed numeric range are rejected and a new points are
- * generated, until they lie in the valid range. The strategy on how
+ * Points outside the allowed numeric range are rejected, and new points are
+ * generated until they lie in the valid range. The strategy on how
  * out-of-range points are handled, is the difference to the very similar
  * {@link LineCrossover}.
  *
@@ -61,9 +61,9 @@ public class IntermediateCrossover<
 	 * Creates a new intermediate-crossover with the given recombination
 	 * probability and the line-scaling factor <em>p</em>.
 	 * <p>
-	 * <b>When the value for <em>p</em> is greater then 0, the crossover point
+	 * <b>When the value for <em>p</em> is greater than 0, the crossover point
 	 * generation must be repeated until the points lie within the allowed
-	 * range. Values greater then 10 are usually not recommended, since this
+	 * range. Values greater than 10 are usually not recommended, since this
 	 * leads to unnecessary crossover point generation.</b>
 	 *
 	 * @param probability the recombination probability.

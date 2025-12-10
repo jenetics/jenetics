@@ -86,15 +86,14 @@ public record DoubleSummary(
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an double-producing mapping
-	 * function to each input element, and returns summary-statistics for the
+	 * Return a {@code Collector} which applies a double-producing mapping
+	 * function to each input element, and return summary-statistics for the
 	 * resulting values.
-	 *
-	 * <pre>{@code
-	 * final Stream<SomeObject> stream = ...
+	 * {@snippet lang="java":
+	 * final Stream<SomeObject> stream = null; // @replace substring='null' replacement="..."
 	 * final DoubleSummary summary = stream
 	 *     .collect(toDoubleSummary(v -> v.doubleValue()));
-	 * }</pre>
+	 * }
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

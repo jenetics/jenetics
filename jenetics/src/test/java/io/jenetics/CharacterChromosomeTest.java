@@ -19,8 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.StatisticsAssert.assertDistribution;
-import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 
 import java.util.Random;
 
@@ -28,10 +27,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
-import io.jenetics.stat.dist;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -43,21 +44,30 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		return () -> CharacterChromosome.of(500);
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		using(new Random(12345), r -> {
-			final CharSeq characters = new CharSeq("0123456789");
-			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final CharSeq characters = new CharSeq("0123456789");
 
-			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
-			chromosome.stream()
-				.map(g -> Long.valueOf(g.allele().toString()))
-				.forEach(histogram);
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(10, samples ->
+					CharacterChromosome.of(characters, 10_000).stream()
+						.map(g -> Long.parseLong(g.allele().toString()))
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(0, characters.length(), 10)
+			);
 
-			final double[] expected = dist.uniform(histogram.length());
-			assertDistribution(histogram, expected);
-		});
+		assertThat(observation).isUniform();
     }
+
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(123456781).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
+	}
 
 	@Test(dataProvider = "genes")
 	public void newCharacterChromosome(final String genes) {

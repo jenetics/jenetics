@@ -38,12 +38,12 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * This class allows you to convert a sequence of <em>tokens</em>, which
  * represents some kind of (mathematical) formula, into a tree structure. To do
- * this, it is assumed that the given tokens can be categorised. The two main
+ * this, it is assumed that the given tokens can be categorized. The two main
  * categories are <em>structural</em> tokens and <em>operational</em> tokens.
  *
  * <p><b>Structural tokens</b></p>
  * Structural tokens are used to influence the hierarchy of the parsed tokens
- * and are also part of function definitions. This kind of tokens will not be
+ * and are also part of function definitions. This kind of token will not be
  * part of the generated tree representation.
  * <ol>
  *     <li><em>lparen</em>: Represents left parentheses, which starts
@@ -76,7 +76,7 @@ import io.jenetics.ext.util.TreeNode;
  * grammar, where the output is already a list of tokens (aka sentence). The
  * following example parser can be used to parse arithmetic expressions.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * final FormulaParser<String> parser = FormulaParser.<String>builder()
  *     // Structural tokens.
  *     .lparen("(")
@@ -91,15 +91,15 @@ import io.jenetics.ext.util.TreeNode;
  *     .identifiers("x", "y", "z")
  *     .functions("pow", "sin", "cos")
  *     .build();
- * }</pre>
+ * }
  * This parser allows you to parse the following token list
- * <pre>{@code
+ * {@snippet lang="java":
  * final List<String> tokens = List.of(
  *     "x", "*", "x", "+", "sin", "(", "z", ")", "-", "cos", "(", "x",
  *     ")", "+", "y", "/", "z", "-", "pow", "(", "z", ",", "x", ")"
  * );
  * final Tree<String, ?> tree = parser.parse(tokens);
- * }</pre>
+ * }
  * which will result in the following parsed tree:
  * <pre>{@code
  * "-"
@@ -128,7 +128,7 @@ import io.jenetics.ext.util.TreeNode;
  * The following code snippet shows how to create an <em>executable</em> AST
  * from a token list. The {@code MathExpr} class in the {@code io.jenetics.prog}
  * module uses a similar {@link TokenConverter}.
- * <pre>{@code
+ * {@snippet lang="java":
  * final Tree<Op<Double>, ?> tree = formula.parse(
  *     tokens,
  *     (token, type) -> switch (token) {
@@ -140,11 +140,11 @@ import io.jenetics.ext.util.TreeNode;
  *         case "sin" -> MathOp.SIN;
  *         case "cos" -> MathOp.COS;
  *         default -> type == TokenType.IDENTIFIER
- *             ? Var.of(token);
+ *             ? Var.of(token)
  *             : throw new IllegalArgumentException("Unknown token: " + token);
  *     }
  * );
- * }</pre>
+ * }
  *
  * @param <T> the token type used as input for the parser
  *
@@ -225,7 +225,7 @@ public final class FormulaParser<T> {
 	 *        separator, ','
 	 * @param bops the list of binary operators, according its
 	 *        precedence. The first list element contains the operations with
-	 *        the lowest precedence and the last list element contains the
+	 *        the lowest precedence, and the last list element contains the
 	 *        operations with the highest precedence.
 	 * @param uops the token types representing the unary operations
 	 * @param identifiers the token type representing identifier, like variable
@@ -337,10 +337,10 @@ public final class FormulaParser<T> {
 	 * If the given {@code tokens} supplier returns null, no further token is
 	 * available.
 	 *
-	 * @param tokens the tokens which forms the formula
+	 * @param tokens the tokens which form the formula
 	 * @param mapper the mapper function which maps the token type to the parse
 	 *        tree value type
-	 * @return the parsed formula as tree
+	 * @return the parsed formula as a tree
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given {@code tokens} can't be
 	 *         parsed
@@ -360,8 +360,8 @@ public final class FormulaParser<T> {
 	 * If the given {@code tokens} supplier returns null, no further token is
 	 * available.
 	 *
-	 * @param tokens the tokens which forms the formula
-	 * @return the parsed formula as tree
+	 * @param tokens the tokens which form the formula
+	 * @return the parsed formula as a tree
 	 * @throws NullPointerException if the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given {@code tokens} can't be
 	 *         parsed
@@ -373,10 +373,10 @@ public final class FormulaParser<T> {
 	/**
 	 * Parses the given token sequence according {@code this} formula definition.
 	 *
-	 * @param tokens the tokens which forms the formula
+	 * @param tokens the tokens which form the formula
 	 * @param mapper the mapper function which maps the token type to the parse
 	 *        tree value type
-	 * @return the parsed formula as tree
+	 * @return the parsed formula as a tree
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given {@code tokens} can't be
 	 *         parsed
@@ -392,8 +392,8 @@ public final class FormulaParser<T> {
 	/**
 	 * Parses the given token sequence according {@code this} formula definition.
 	 *
-	 * @param tokens the tokens which forms the formula
-	 * @return the parsed formula as tree
+	 * @param tokens the tokens which form the formula
+	 * @return the parsed formula as a tree
 	 * @throws NullPointerException if the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given {@code tokens} can't be
 	 *         parsed
@@ -664,7 +664,7 @@ public final class FormulaParser<T> {
 
 		/**
 		 * Set the list of predicates which defines the binary ops. The
-		 * predicate indexes of the list represents the precedence of the binary
+		 * predicate indexes of the list represent the precedence of the binary
 		 * ops. {@code ops.get(0)} has the lowest precedence and
 		 * {@code ops.get(ops.size() - 1)} has the highest precedence
 		 *
@@ -679,7 +679,7 @@ public final class FormulaParser<T> {
 
 		/**
 		 * Set the list of predicates which defines the binary ops. The
-		 * predicate indexes of the list represents the precedence of the binary
+		 * predicate indexes of the list represent the precedence of the binary
 		 * ops. {@code ops.get(0)} has the lowest precedence and
 		 * {@code ops.get(ops.size() - 1)} has the highest precedence
 		 *
@@ -756,7 +756,7 @@ public final class FormulaParser<T> {
 		/**
 		 * Set all functions tokens.
 		 *
-		 * @param functions the functions tokens
+		 * @param functions the function tokens
 		 * @return {@code this} builder, for method chaining
 		 * @throws NullPointerException if the {@code functions} is {@code null}
 		 */
@@ -767,7 +767,7 @@ public final class FormulaParser<T> {
 		/**
 		 * Set all functions tokens.
 		 *
-		 * @param functions the functions tokens
+		 * @param functions the function tokens
 		 * @return {@code this} builder, for method chaining
 		 * @throws NullPointerException if the {@code functions} is {@code null}
 		 */

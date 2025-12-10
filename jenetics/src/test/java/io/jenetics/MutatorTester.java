@@ -26,10 +26,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -76,10 +76,9 @@ public abstract class MutatorTester extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
-		final LongMomentStatistics variance = new LongMomentStatistics();
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
+		final var variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator

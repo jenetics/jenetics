@@ -36,7 +36,7 @@ import io.jenetics.util.Seq;
 /**
  * Mutator implementation which is part of the
  * <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
- * algorithm. The <i>Weasel program</i> is an thought experiment by Richard
+ * algorithm. The <i>Weasel program</i> is a thought experiment by Richard
  * Dawkins to illustrate the functioning of the evolution: random <i>mutation</i>
  * combined with non-random cumulative <i>selection</i>.
  * <p>
@@ -44,7 +44,7 @@ import io.jenetics.util.Seq;
  * genotype in the population with the given mutation probability.
  * </p>
  * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
- * <pre>{@code
+ * {@snippet lang="java":
  * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *      // Set the 'WeaselSelector'.
  *     .selector(new WeaselSelector<>())
@@ -53,7 +53,7 @@ import io.jenetics.util.Seq;
  *      // Set the 'WeaselMutator'.
  *     .alterers(new WeaselMutator<>(0.05))
  *     .build();
- * }</pre>
+ * }
  *
  * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * @see WeaselSelector

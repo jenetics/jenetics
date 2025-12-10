@@ -20,9 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.distassert.assertion.Assertions.assertThat;
 import static io.jenetics.internal.math.DoubleAdder.sum;
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -30,11 +29,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
-import io.jenetics.stat.MinMax;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Observer;
+import io.jenetics.distassert.observation.Sample;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
+import io.jenetics.util.StableRandomExecutor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -52,28 +53,30 @@ public class DoubleChromosomeTest
 		return _factory;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstanceDistribution() {
-		using(new Random(12345), r -> {
-			final double min = 0;
-			final double max = 100;
+	@Test(dataProvider = "seeds")
+	public void newInstanceDistribution(final long seed) {
+		final double min = 0;
+		final double max = 100;
 
+		final var observation = Observer
+			.using(new StableRandomExecutor(seed))
+			.observe(
+				Sample.repeat(1_000, samples ->
+					DoubleChromosome.of(min, max, 500).stream()
+						.mapToDouble(DoubleGene::doubleValue)
+						.forEach(samples::accept)
+				),
+				Histogram.Partition.of(min, max, 20)
+			);
 
-			final MinMax<Double> mm = MinMax.of();
-			final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
+		assertThat(observation).isUniform();
+	}
 
-			for (int i = 0; i < 1000; ++i) {
-				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
-				for (DoubleGene gene : chromosome) {
-					mm.accept(gene.allele());
-					histogram.accept(gene.allele());
-				}
-			}
-
-			Assert.assertTrue(mm.min().compareTo(0.0) >= 0);
-			Assert.assertTrue(mm.max().compareTo(100.0) <= 100);
-			assertUniformDistribution(histogram);
-		});
+	@DataProvider
+	public Object[][] seeds() {
+		return new Random(12345678).longs(20)
+			.mapToObj(seed -> new Object[]{seed})
+			.toArray(Object[][]::new);
 	}
 
 	@Test(dataProvider = "chromosomes")
@@ -90,13 +93,13 @@ public class DoubleChromosomeTest
 	@DataProvider(name = "chromosomes")
 	public Object[][] chromosomes() {
 		return new Object[][] {
-			{DoubleChromosome.of(0, 1), IntRange.of(1)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1)), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 1), IntRange.of(1)},
-			{DoubleChromosome.of(0, 1, 2), IntRange.of(2)},
-			{DoubleChromosome.of(0, 1, 20), IntRange.of(20)},
-			{DoubleChromosome.of(0, 1, IntRange.of(2, 10)), IntRange.of(2, 10)},
-			{DoubleChromosome.of(DoubleRange.of(0, 1), IntRange.of(2, 10)), IntRange.of(2, 10)}
+			{DoubleChromosome.of(0, 1), new IntRange(1)},
+			{DoubleChromosome.of(new DoubleRange(0, 1)), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 1), new IntRange(1)},
+			{DoubleChromosome.of(0, 1, 2), new IntRange(2)},
+			{DoubleChromosome.of(0, 1, 20), new IntRange(20)},
+			{DoubleChromosome.of(0, 1, new IntRange(2, 10)), new IntRange(2, 10)},
+			{DoubleChromosome.of(new DoubleRange(0, 1), new IntRange(2, 10)), new IntRange(2, 10)}
 		};
 	}
 

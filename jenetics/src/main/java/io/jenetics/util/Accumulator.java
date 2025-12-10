@@ -33,8 +33,7 @@ import java.util.stream.Collector;
  * type {@code R}.  In contrast to a {@link Collector} an {@code Accumulator}
  * can deliver intermediate results while accumulating. An accumulator can be
  * created from any {@link Collector} with the ({@link #of(Collector)}) method.
- *
- * <pre>{@code
+ * {@snippet lang="java":
  * final Accumulator<Integer, ?, List<Integer>> accu =
  *     Accumulator.of(Collectors.toList());
  *
@@ -44,7 +43,7 @@ import java.util.stream.Collector;
  *     .collect(ISeq.toISeq());
  *
  * result.forEach(System.out::println);
- * }</pre>
+ * }
  * The code above gives you the following output.
  * <pre>
  * [0]
@@ -125,7 +124,7 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
-	 * accumulator. The given {@code lock} is used as synchronization object.
+	 * accumulator. The given {@code lock} is used as a synchronization object.
 	 *
 	 * @param lock the <em>lock</em> used for synchronization
 	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
@@ -144,7 +143,7 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Returns a synchronized (thread-safe) accumulator backed by {@code this}
-	 * accumulator. {@code this} accumulator is used as synchronization object.
+	 * accumulator. {@code this} accumulator is used as a synchronization object.
 	 *
 	 * @return a synchronized (thread-safe) accumulator backed by {@code this}
 	 * 	       accumulator
@@ -155,11 +154,10 @@ public interface Accumulator<T, A extends Accumulator<T, A, R>, R>
 
 	/**
 	 * Create a new accumulator from the given {@code collector}.
-	 *
-	 * <pre>{@code
+	 * {@snippet lang="java":
 	 * final Accumulator<Integer, ?, ISeq<Integer>> accu =
 	 *     Accumulator.of(ISeq.toISeq());
-	 * }</pre>
+	 * }
 	 *
 	 * @param collector the collector which is used for accumulation and creation
 	 *        the result value.

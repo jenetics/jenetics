@@ -22,7 +22,7 @@ package io.jenetics;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
-import io.jenetics.internal.math.Subset;
+import io.jenetics.internal.math.Subsets;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -89,7 +89,7 @@ public class MultiPointCrossover<
 	}
 
 	/**
-	 * Create a new crossover instance with default crossover probability of
+	 * Create a new crossover instance with a default crossover probability of
 	 * 0.05.
 	 *
 	 * @param n the number of crossover points.
@@ -124,7 +124,7 @@ public class MultiPointCrossover<
 		final int k = min(n, _n);
 
 		final var random = RandomRegistry.random();
-		final int[] points = k > 0 ? Subset.next(n, k, random) : new int[0];
+		final int[] points = k > 0 ? Subsets.next(random, n, k) : new int[0];
 
 		crossover(that, other, points);
 		return 2;

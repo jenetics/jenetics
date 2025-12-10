@@ -23,26 +23,65 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 6.3
+ * @version 9.0
  */
 plugins {
 	base
-	id("me.champeau.jmh") version "0.7.1" apply false
+	alias(libs.plugins.version.catalog.update)
+	id("alljavadoc")
 }
 
-rootProject.version = Jenetics.VERSION
+rootProject.version = providers.gradleProperty("jenetics.version").get()
+
+alljavadoc {
+	modules.set(listOf(
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	))
+
+	files.set { filter ->
+		filter.exclude("**/internal/**")
+	}
+
+	options.set { doclet ->
+		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
+		doclet.addStringOption("-show-module-contents", "api")
+		doclet.addStringOption("-show-packages", "exported")
+		doclet.version(true)
+		doclet.docEncoding = "UTF-8"
+		doclet.charSet = "UTF-8"
+		doclet.linkSource(true)
+		doclet.linksOffline(
+			"https://docs.oracle.com/en/java/javase/21/docs/api/",
+			"${project.rootDir}/buildSrc/resources/javadoc/java.se"
+		)
+		doclet.windowTitle = "Jenetics ${project.version}"
+		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
+		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
+
+		doclet.addStringOption("docfilessubdirs")
+		doclet.tags = listOf(
+			"apiNote:a:API Note:",
+			"implSpec:a:Implementation Requirements:",
+			"implNote:a:Implementation Note:"
+		)
+	}
+}
+
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "8.1"
+	gradleVersion = "9.2.1"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
 /**
- * Project configuration *before* the projects has been evaluated.
+ * Project configuration *before* the projects have been evaluated.
  */
 allprojects {
 	group =  Jenetics.GROUP
-	version = Jenetics.VERSION
+	version = rootProject.version
 
 	repositories {
 		flatDir {
@@ -52,49 +91,86 @@ allprojects {
 		mavenCentral()
 	}
 
+	// Enable preview features. ////////////////////////////////////////////////
+	val preview = providers.gradleProperty("enablePreview")
+		.map { v -> "true".equals(v, true) }
+		.orElse(false).get()
+	if (preview) {
+		tasks.withType<JavaCompile>().configureEach {
+			options.compilerArgs.add("--enable-preview")
+		}
+		tasks.withType<Test>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<JavaExec>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<Javadoc>().configureEach {
+			val opt = options as CoreJavadocOptions
+			opt.addStringOption("-release", "25")
+			opt.addBooleanOption("-enable-preview", true)
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////
+
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
+
 }
 
-apply("./gradle/alljavadoc.gradle")
+subprojects {
+	val project = this
 
-/**
- * Project configuration *after* the projects has been evaluated.
- */
+	tasks.withType<Test> {
+		useTestNG()
+	}
+
+	plugins.withType<JavaPlugin> {
+		configure<JavaPluginExtension> {
+			modularity.inferModulePath = true
+
+			sourceCompatibility = JavaVersion.VERSION_25
+			targetCompatibility = JavaVersion.VERSION_25
+
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(25)
+			}
+		}
+
+		setupJava(project)
+		setupTestReporting(project)
+	}
+
+	tasks.withType<JavaCompile> {
+		modularity.inferModulePath = true
+
+		options.compilerArgs.add("-Xlint:${xlint()}")
+	}
+
+}
+
 gradle.projectsEvaluated {
 	subprojects {
-		val project = this
-
-		tasks.withType<Test> {
-			useTestNG()
-		}
-
-		plugins.withType<JavaPlugin> {
-			configure<JavaPluginExtension> {
-				modularity.inferModulePath.set(true)
-
-				sourceCompatibility = JavaVersion.VERSION_17
-				targetCompatibility = JavaVersion.current()
-			}
-
-			setupJava(project)
-			setupTestReporting(project)
-			setupJavadoc(project, "")
-		}
-
-		tasks.withType<JavaCompile> {
-			modularity.inferModulePath.set(true)
-
-			options.compilerArgs.add("-Xlint:${xlint()}")
-		}
-
 		if (plugins.hasPlugin("maven-publish")) {
 			setupPublishing(project)
 		}
-	}
 
-	setupJavadoc(rootProject, "all")
+		// Enforcing the library version defined in the version catalogs.
+		val catalogs = extensions.getByType<VersionCatalogsExtension>()
+		val libraries = catalogs.catalogNames
+			.map { catalogs.named(it) }
+			.flatMap { catalog -> catalog.libraryAliases.map { alias -> Pair(catalog, alias) } }
+			.map { it.first.findLibrary(it.second).get().get() }
+			.filter { it.version != null }
+			.map { it.toString() }
+			.toTypedArray()
+
+		configurations.all {
+			resolutionStrategy.preferProjectModules()
+			resolutionStrategy.force(*libraries)
+		}
+	}
 }
 
 /**
@@ -103,11 +179,11 @@ gradle.projectsEvaluated {
 fun setupJava(project: Project) {
 	val attr = mutableMapOf(
 		"Implementation-Title" to project.name,
-		"Implementation-Version" to Jenetics.VERSION,
+		"Implementation-Version" to project.version,
 		"Implementation-URL" to Jenetics.URL,
 		"Implementation-Vendor" to Jenetics.NAME,
 		"ProjectName" to Jenetics.NAME,
-		"Version" to Jenetics.VERSION,
+		"Version" to project.version,
 		"Maintainer" to Jenetics.AUTHOR,
 		"Project" to project.name,
 		"Project-Version" to project.version,
@@ -138,7 +214,7 @@ fun setupTestReporting(project: Project) {
 	project.apply(plugin = "jacoco")
 
 	project.configure<JacocoPluginExtension> {
-		toolVersion = "0.8.9"
+		toolVersion = libs.jacoco.agent.get().version.toString()
 	}
 
 	project.tasks {
@@ -158,85 +234,14 @@ fun setupTestReporting(project: Project) {
 	}
 }
 
-/**
- * Setup of the projects Javadoc.
- */
-fun setupJavadoc(project: Project, taskName: String) {
-	project.tasks.withType<Javadoc> {
-		modularity.inferModulePath.set(true)
-
-		val doclet = options as StandardJavadocDocletOptions
-		doclet.addBooleanOption("Xdoclint:accessibility,html,reference,syntax", true)
-		doclet.memberLevel = JavadocMemberLevel.PROTECTED
-		doclet.version(true)
-		doclet.docEncoding = "UTF-8"
-		doclet.charSet = "UTF-8"
-		doclet.linkSource(true)
-		doclet.linksOffline(
-				"https://docs.oracle.com/en/java/javase/17/docs/api/",
-				"${project.rootDir}/buildSrc/resources/javadoc/java.se"
-			)
-		doclet.windowTitle = "Jenetics ${project.version}"
-		doclet.docTitle = "<h1>Jenetics ${project.version}</h1>"
-		doclet.bottom = "&copy; ${Env.COPYRIGHT_YEAR} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${Env.BUILD_DATE})</i>"
-		doclet.stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
-
-		doclet.addStringOption("noqualifier", "io.jenetics.internal.collection")
-		doclet.tags = listOf(
-				"apiNote:a:API Note:",
-				"implSpec:a:Implementation Requirements:",
-				"implNote:a:Implementation Note:"
-			)
-
-		doclet.group("Core API", "io.jenetics", "io.jenetics.engine")
-		doclet.group("Utilities", "io.jenetics.util", "io.jenetics.stat")
-
-		doLast {
-			project.copy {
-				from("src/main/java") {
-					include("io/**/doc-files/*.*")
-				}
-				includeEmptyDirs = false
-				into(destinationDir!!)
-			}
-		}
-	}
-
-	val javadoc = project.tasks.findByName("${taskName}javadoc") as Javadoc?
-	if (javadoc != null) {
-		project.tasks.register<io.jenetics.gradle.ColorizerTask>("${taskName}colorizer") {
-			directory = javadoc.destinationDir!!
-		}
-
-		project.tasks.register("${taskName}java2html") {
-			doLast {
-				val srcdir = file("${project.projectDir}/src/main/java")
-
-				if (srcdir.isDirectory) {
-					project.javaexec {
-						mainClass.set("de.java2html.Java2Html")
-						args = listOf(
-							"-srcdir", srcdir.toString(),
-							"-targetdir", "${javadoc.destinationDir}/src-html"
-						)
-						classpath = files("${project.rootDir}/buildSrc/lib/java2html.jar")
-					}
-				}
-			}
-		}
-
-		javadoc.doLast {
-			val colorizer = project.tasks.findByName("${taskName}colorizer")
-			colorizer?.actions?.forEach {
-				it.execute(colorizer)
-			}
-
-			val java2html = project.tasks.findByName("${taskName}java2html")
-			java2html?.actions?.forEach {
-				it.execute(java2html)
-			}
-		}
-	}
+fun snippetPaths(project: Project): String? {
+	return File("${project.projectDir}/src/main/java").walk()
+		.filter { file -> file.isDirectory && file.endsWith("snippet-files") }
+		.joinToString(
+			transform = { file -> file.absolutePath },
+			separator = File.pathSeparator
+		)
+		.ifEmpty { null }
 }
 
 /**
@@ -263,7 +268,7 @@ fun xlint(): String {
 	).joinToString(separator = ",")
 }
 
-val identifier = "${Jenetics.ID}-${Jenetics.VERSION}"
+val identifier = "${Jenetics.ID}-${providers.gradleProperty("jenetics.version").get()}"
 
 /**
  * Setup of the Maven publishing.
@@ -295,6 +300,9 @@ fun setupPublishing(project: Project) {
 	project.configure<PublishingExtension> {
 		publications {
 			create<MavenPublication>("mavenJava") {
+				suppressPomMetadataWarningsFor("testFixturesApiElements")
+				suppressPomMetadataWarningsFor("testFixturesRuntimeElements")
+
 				artifactId = project.name
 				from(project.components["java"])
 				versionMapping {
@@ -335,24 +343,23 @@ fun setupPublishing(project: Project) {
 		}
 		repositories {
 			maven {
-				url = if (version.toString().endsWith("SNAPSHOT")) {
-					uri(Maven.SNAPSHOT_URL)
-				} else {
-					uri(Maven.RELEASE_URL)
-				}
+				url = if (version.toString().endsWith("SNAPSHOT"))
+						uri(layout.buildDirectory.dir("repos/snapshots"))
+					else
+						uri(layout.buildDirectory.dir("repos/releases"))
+			}
+		}
 
-				credentials {
-					username = if (extra.properties["nexus_username"] != null) {
-						extra.properties["nexus_username"] as String
-					} else {
-						"nexus_username"
-					}
-					password = if (extra.properties["nexus_password"] != null) {
-						extra.properties["nexus_password"] as String
-					} else {
-						"nexus_password"
-					}
-				}
+		// Exclude test fixtures from publication, as we use them only internally
+		plugins.withId("org.gradle.java-test-fixtures") {
+			val component = components["java"] as AdhocComponentWithVariants
+			component.withVariantsFromConfiguration(configurations["testFixturesApiElements"]) { skip() }
+			component.withVariantsFromConfiguration(configurations["testFixturesRuntimeElements"]) { skip() }
+
+			// Workaround to not publish test fixtures sources added by com.vanniktech.maven.publish plugin
+			// TODO: Remove as soon as https://github.com/vanniktech/gradle-maven-publish-plugin/issues/779 closed
+			afterEvaluate {
+				component.withVariantsFromConfiguration(configurations["testFixturesSourcesElements"]) { skip() }
 			}
 		}
 	}
@@ -362,9 +369,10 @@ fun setupPublishing(project: Project) {
 	project.configure<SigningExtension> {
 		sign(project.the<PublishingExtension>().publications["mavenJava"])
 	}
+
 }
 
-val exportDir = file("${rootProject.buildDir}/package/${identifier}")
+val exportDir = file("${rootProject.layout.buildDirectory.asFile.get()}/package/${identifier}")
 
 val assemblePkg = "assemblePkg"
 tasks.register(assemblePkg) {
@@ -392,25 +400,29 @@ tasks.register(assemblePkg) {
 			into("${exportDir}/project")
 		}
 
-		// Copy external JAR files.
+		// Collect all external JAR files.
+		val files = mutableSetOf<File>()
 		allprojects {
-			val project = this
-
 			plugins.withType<JavaPlugin> {
 				configurations.all {
 					if (isCanBeResolved) {
-						resolvedConfiguration.files.forEach {
-							if (it.name.endsWith(".jar") &&
-								!it.name.startsWith("jenetics"))
+						resolvedConfiguration.resolvedArtifacts.forEach {
+							if (it.file.name.endsWith(".jar") &&
+								!it.file.name.startsWith("jenetics"))
 							{
-								project.copy {
-									from(it)
-									into("${exportDir}/project/buildSrc/lib")
-								}
+								files.add(it.file)
 							}
 						}
 					}
 				}
+			}
+		}
+
+		// Copy external JAR files.
+		files.forEach {
+			project.copy {
+				from(it)
+				into("${exportDir}/project/buildSrc/lib")
 			}
 		}
 
@@ -502,7 +514,7 @@ tasks.register<Zip>(pkgZip) {
 	description = "Zips the project package"
 
 	archiveFileName.set("${identifier}.zip")
-	destinationDirectory.set(file("${rootProject.buildDir}/package"))
+	destinationDirectory.set(file("${rootProject.layout.buildDirectory.asFile.get()}/package"))
 
 	from(exportDir)
 }

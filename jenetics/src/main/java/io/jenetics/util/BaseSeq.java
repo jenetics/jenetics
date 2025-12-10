@@ -32,7 +32,7 @@ import io.jenetics.internal.collection.BaseSeqIterator;
 import io.jenetics.internal.collection.BaseSeqSpliterator;
 
 /**
- * General base interface for a ordered, fixed sized, object sequence.
+ * General base interface for an ordered, fixed-sized, object sequence.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 5.2

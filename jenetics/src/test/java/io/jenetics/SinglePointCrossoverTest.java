@@ -20,20 +20,22 @@
 package io.jenetics;
 
 import static io.jenetics.TestUtils.newDoubleGenePopulation;
-import static io.jenetics.util.RandomRegistry.using;
 
+import java.io.Serial;
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
+import io.jenetics.distassert.observation.Histogram;
+import io.jenetics.distassert.observation.Interval;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Range;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,6 +43,7 @@ import io.jenetics.util.Range;
 public class SinglePointCrossoverTest extends AltererTester {
 
 	private static final class ConstRandom extends Random {
+		@Serial
 		private static final long serialVersionUID = 1L;
 		private final int _value;
 
@@ -73,7 +76,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of(chars, 20));
 
 		final int rv1 = 12;
-		using(new ConstRandom(rv1), r -> {
+		RandomRegistry.with(new ConstRandom(rv1)).run(() -> {
 			final SinglePointCrossover<CharacterGene, Double>
 			crossover = new SinglePointCrossover<>();
 
@@ -87,7 +90,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 			Assert.assertNotEquals(g2c, g1);
 
 			final int rv2 = 0;
-			using(new ConstRandom(rv2), r2 -> {
+			RandomRegistry.with(new ConstRandom(rv2)).run(() -> {
 				MSeq<CharacterGene> g1c2 = g1.copy();
 				MSeq<CharacterGene> g2c2 = g2.copy();
 				crossover.crossover(g1c2, g2c2);
@@ -97,7 +100,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 				Assert.assertEquals(g1c2.subSeq(rv2), g2.subSeq(rv2));
 
 				final int rv3 = 1;
-				using(new ConstRandom(rv3), r3 -> {
+				RandomRegistry.with(new ConstRandom(rv3)).run(() -> {
 					MSeq<CharacterGene> g1c3 = g1.copy();
 					MSeq<CharacterGene> g2c3 = g2.copy();
 					crossover.crossover(g1c3, g2c3);
@@ -105,7 +108,7 @@ public class SinglePointCrossoverTest extends AltererTester {
 					Assert.assertEquals(g1c3.subSeq(rv3), g2.subSeq(rv3));
 
 					final int rv4 = g1.length();
-					using(new ConstRandom(rv4), r4 -> {
+					RandomRegistry.with(new ConstRandom(rv4)).run(() -> {
 						MSeq<CharacterGene> g1c4 = g1.copy();
 						MSeq<CharacterGene> g2c4 = g2.copy();
 						crossover.crossover(g1c4, g2c);
@@ -139,9 +142,9 @@ public class SinglePointCrossoverTest extends AltererTester {
 
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
+		final var domain = new LongRange(min, max);
 
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+		final var histogram = Histogram.Builder.of(new Interval(min, max), 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
