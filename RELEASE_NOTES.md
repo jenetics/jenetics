@@ -1,5 +1,14 @@
 ## Release notes
 
+### [9.0.0](https://github.com/jenetics/jenetics/releases/tag/v9.0.0)
+
+#### Improvements
+
+* Update Java 25 and optimize code for new Java version.
+* [#917](https://github.com/jenetics/jenetics/issues/917): `ScopedValue` for `RandomRegistry` class.
+* [#940](https://github.com/jenetics/jenetics/issues/940): Remove deprecated API.
+* [#955](https://github.com/jenetics/jenetics/issues/955): Make `IntStream` counting more robust.
+
 ### [8.3.0](https://github.com/jenetics/jenetics/releases/tag/v8.3.0)
 
 #### Improvements
