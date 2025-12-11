@@ -36,6 +36,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.internal.util.Counter;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -134,9 +135,10 @@ public class DynamicGenotype {
 
 		private int mutate(final List<G> genes, final double p) {
 			final var random = RandomRegistry.random();
-			return (int)indexes(random, genes.size(), p)
+			return indexes(random, genes.size(), p)
 				.peek(i -> genes.set(i, genes.get(i).newInstance()))
-				.count();
+				.collect(Counter::new, Counter::inc, Counter::sum)
+				.intValue();
 		}
 	}
 

@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.lang.Math.min;
 import static io.jenetics.internal.math.Randoms.indexes;
 
+import io.jenetics.internal.util.Counter;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -112,9 +113,10 @@ public class UniformCrossover<
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
-		return (int)indexes(RandomRegistry.random(), length, _swapProbability)
+		return indexes(RandomRegistry.random(), length, _swapProbability)
 			.peek(i -> that.swap(i, other))
-			.count();
+			.collect(Counter::new, Counter::inc, Counter::sum)
+			.intValue();
 	}
 
 }
