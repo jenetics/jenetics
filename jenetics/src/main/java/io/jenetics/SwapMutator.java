@@ -23,6 +23,7 @@ import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.random.RandomGenerator;
 
+import io.jenetics.internal.util.Counter;
 import io.jenetics.util.MSeq;
 
 /**
@@ -81,9 +82,10 @@ public class SwapMutator<
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
 			final MSeq<G> genes = MSeq.of(chromosome);
-			final int mutations = (int)indexes(random, genes.length(), p)
+			final int mutations = indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-				.count();
+				.collect(Counter::new, Counter::inc, Counter::sum)
+				.intValue();
 
 			result = new MutatorResult<>(
 				chromosome.newInstance(genes.toISeq()),

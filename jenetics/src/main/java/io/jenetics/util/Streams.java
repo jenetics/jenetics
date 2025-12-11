@@ -30,7 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * This class contains factory methods for (flat) mapping stream elements. The
+ * This class contains factory methods for (flat) mapping stream element. The
  * functions of this class can be used in the following way.
  * {@snippet lang="java":
  * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
@@ -44,7 +44,8 @@ import java.util.stream.Stream;
  * @version 6.0
  */
 public final class Streams {
-	private Streams() {}
+	private Streams() {
+	}
 
 
 	/**
