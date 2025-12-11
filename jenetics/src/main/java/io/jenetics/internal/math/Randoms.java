@@ -88,8 +88,7 @@ public final class Randoms {
 	 * @param end the end index (exclusively)
 	 * @param p the index selection probability
 	 * @return a new random index stream
-	 * @throws IllegalArgumentException if {@code p} is not a
-	 *         valid probability.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability
 	 */
 	public static IntStream indexes(
 		final RandomGenerator random,

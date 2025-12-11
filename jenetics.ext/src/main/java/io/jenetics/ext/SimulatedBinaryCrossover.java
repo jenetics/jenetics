@@ -100,7 +100,7 @@ public class SimulatedBinaryCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		return (int) Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
+		return (int)Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
 			.peek(i -> crossover(that, other, i))
 			.count();
 	}
