@@ -11,6 +11,10 @@
 * [**Jenetics.Net**](https://github.com/rmeindl/jenetics.net): Experimental .NET Core port in C# of the base library. 
 * [**Helisa**](https://github.com/softwaremill/helisa/): Scala wrapper around the Jenetics library.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jenetics/jenetics&type=Date)](https://www.star-history.com/#jenetics/jenetics&Date)
+
 ## Documentation
 
 The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/9.0/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-9.0.0.pdf)).
@@ -53,10 +57,6 @@ For building the library jar from the source call
 
     $ cd <build-dir>
     $ ./gradlew jar
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=jenetics/jenetics&type=Date)](https://www.star-history.com/#jenetics/jenetics&Date)
 
 
 ## Example
