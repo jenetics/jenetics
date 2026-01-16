@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 8.3
+ * @version 9.0
  */
 plugins {
 	base
@@ -32,7 +32,6 @@ plugins {
 }
 
 rootProject.version = providers.gradleProperty("jenetics.version").get()
-
 
 alljavadoc {
 	modules.set(listOf(
@@ -73,7 +72,7 @@ alljavadoc {
 
 
 tasks.named<Wrapper>("wrapper") {
-	gradleVersion = "9.1.0"
+	gradleVersion = "9.3.0"
 	distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -92,9 +91,32 @@ allprojects {
 		mavenCentral()
 	}
 
+	// Enable preview features. ////////////////////////////////////////////////
+	val preview = providers.gradleProperty("enablePreview")
+		.map { v -> "true".equals(v, true) }
+		.orElse(false).get()
+	if (preview) {
+		tasks.withType<JavaCompile>().configureEach {
+			options.compilerArgs.add("--enable-preview")
+		}
+		tasks.withType<Test>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<JavaExec>().configureEach {
+			jvmArgs("--enable-preview")
+		}
+		tasks.withType<Javadoc>().configureEach {
+			val opt = options as CoreJavadocOptions
+			opt.addStringOption("-release", "25")
+			opt.addBooleanOption("-enable-preview", true)
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////
+
 	configurations.all {
 		resolutionStrategy.preferProjectModules()
 	}
+
 }
 
 subprojects {
@@ -105,15 +127,14 @@ subprojects {
 	}
 
 	plugins.withType<JavaPlugin> {
-
 		configure<JavaPluginExtension> {
 			modularity.inferModulePath = true
 
-			sourceCompatibility = JavaVersion.VERSION_21
-			targetCompatibility = JavaVersion.VERSION_21
+			sourceCompatibility = JavaVersion.VERSION_25
+			targetCompatibility = JavaVersion.VERSION_25
 
 			toolchain {
-				languageVersion = JavaLanguageVersion.of(21)
+				languageVersion = JavaLanguageVersion.of(25)
 			}
 		}
 

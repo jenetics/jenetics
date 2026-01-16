@@ -61,9 +61,9 @@ final class Seqs {
 				finisher)
 			: Collector.of(
 				() -> null,
-				(buffer, value) -> {},
-				(left, right) -> left,
-				buffer -> {
+				(_, _) -> {},
+				(left, _) -> left,
+				_ -> {
 					@SuppressWarnings("unchecked") final S seq = (S) Seq.empty();
 					return seq;
 				});

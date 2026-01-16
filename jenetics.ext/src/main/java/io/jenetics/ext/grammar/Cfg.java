@@ -80,7 +80,7 @@ import java.util.stream.Stream;
  * Annotating CFG elements can be used to influence the {@link Generator} classes,
  * which creates <em>sentences</em> from a given grammar.
  *
- * @see Bnf#parse(String)
+ * @see Bnf#parse(CharSequence)
  *
  * @param <T> the terminal symbol value type
  *
@@ -132,6 +132,7 @@ public final class Cfg<T> {
 	 */
 	public sealed interface Element<T> extends Annotatable<T> {
 	}
+
 
 	/**
 	 * Represents the <em>symbols</em> the BNF grammar consists.
@@ -576,11 +577,8 @@ public final class Cfg<T> {
 	 *         start symbol points to a missing rule or the rules uses symbols
 	 *         not defined in the list of {@link #nonTerminals()} or
 	 *         {@link #terminals()}
-	 * @deprecated This constructor will be removed, use {@link #of(Rule[])} or
-	 *             {@link #of(List)} instead.
 	 */
-	@Deprecated(forRemoval = true, since = "8.2")
-	public Cfg(
+	Cfg(
 		List<NonTerminal<T>> nonTerminals,
 		List<Terminal<T>> terminals,
 		List<Rule<T>> rules,
@@ -732,6 +730,37 @@ public final class Cfg<T> {
 		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
 		final Function<Terminal<T>, Terminal<A>> mapping = t -> cache
 			.computeIfAbsent(t, t2 -> new Terminal<>(t2.name(), mapper.apply(t2)));
+
+		return flatMap(mapping);
+	}
+
+	/**
+	 * Maps the values of the terminal symbols from type {@code T} to type
+	 * {@code A}.
+	 *
+	 * @since 9.0
+	 *
+	 * @param mapper the mapper function
+	 * @param <A> the new value type of the terminal symbols
+	 * @return the mapped grammar
+	 * @throws NullPointerException if the given mapper is {@code null}
+	 */
+	public <A> Cfg<A> flatMap(
+		final Function<
+			? super Terminal<T>,
+			? extends Terminal<? extends A>
+		> mapper
+	) {
+		requireNonNull(mapper);
+
+		final var cache = new HashMap<Terminal<T>, Terminal<A>>();
+
+		@SuppressWarnings("unchecked")
+		final Function<Terminal<T>, Terminal<A>>
+			fn = (Function<Terminal<T>, Terminal<A>>)mapper;
+
+		final Function<Terminal<T>, Terminal<A>> mapping =
+			t -> cache.computeIfAbsent(t, fn);
 
 		@SuppressWarnings("unchecked")
 		final List<Rule<A>> rules = rules().stream()
@@ -935,11 +964,13 @@ public final class Cfg<T> {
 	 * Factory method for creating a terminal symbol with the given
 	 * {@code name}.
 	 *
-	 * @param name the name of the terminal symbol
+	 * @since 9.0
+	 *
+	 * @param value the value of the terminal symbol
 	 * @return a new terminal symbol
 	 */
-	public static Terminal<String> T(final String name) {
-		return new Terminal<>(name, name);
+	public static <T> Terminal<T> T(final T value) {
+		return new Terminal<>(String.valueOf(value), value);
 	}
 
 	/**
@@ -1003,28 +1034,6 @@ public final class Cfg<T> {
 		final Element<T>... elements
 	) {
 		return R(new NonTerminal<>(name), elements);
-	}
-
-	/**
-	 * Factory method for creating a new rule. The {@code elements} array doesn't
-	 * allow {@link Rule} objects.
-	 *
-	 * @param name the name of start symbol of the rule
-	 * @param alternatives the list of alternative rule expressions
-	 * @throws IllegalArgumentException if the given list of
-	 *         {@code alternatives} is empty
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @param <T> the terminal symbol value type
-	 * @return a new rule
-	 * @deprecated Will be removed, use {@link #R(String, Element[])} instead
-	 */
-	@Deprecated(forRemoval = true, since = "8.2")
-	@SafeVarargs
-	public static <T> Rule<T> R(
-		final String name,
-		final Expression<T>... alternatives
-	) {
-		return R(new NonTerminal<>(name), alternatives);
 	}
 
 	/**

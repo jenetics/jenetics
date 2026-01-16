@@ -50,11 +50,12 @@ public class ReproducibleGA {
 		final var random = RandomGeneratorFactory.getDefault();
 
 		final ISeq<Genotype<DoubleGene>> population =
-			RandomRegistry.with(random.create(123), r ->
-				CODEC.encoding().instances()
-					.limit(10)
-					.collect(ISeq.toISeq())
-			);
+			RandomRegistry.with(random.create(123))
+				.call(() ->
+					CODEC.encoding().instances()
+						.limit(10)
+						.collect(ISeq.toISeq())
+				);
 
 		final Engine<DoubleGene, Double> engine =
 			Engine.builder(Function.identity(), CODEC)
@@ -62,11 +63,12 @@ public class ReproducibleGA {
 				.build();
 
 		final EvolutionResult<DoubleGene, Double> result =
-			RandomRegistry.with(random.create(456), r ->
-				engine.stream(population)
-					.limit(100)
-					.collect(EvolutionResult.toBestEvolutionResult())
-			);
+			RandomRegistry.with(random.create(456))
+				.call(() ->
+					engine.stream(population)
+						.limit(100)
+						.collect(EvolutionResult.toBestEvolutionResult())
+				);
 
 		System.out.println(result.bestPhenotype());
 	}

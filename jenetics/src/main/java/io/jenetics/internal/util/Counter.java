@@ -19,28 +19,53 @@
  */
 package io.jenetics.internal.util;
 
-import java.util.function.Predicate;
-
 /**
- * This class contains some common predicates
+ * Helper class for <em>non-shortcutting</em> count terminal stream operation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 4.3
+ * @version 9.0
+ * @since 9.0
  */
-public final class Predicates {
-	private Predicates() {}
+public final class Counter extends Number {
+	private long value;
 
-	public static final Predicate<Object> TRUE = _ -> true;
-
-	/**
-	 * Return a predicate, which always return {@code true}.
-	 *
-	 * @param <T> the predicate type
-	 * @return a predicate, which always return {@code true}
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Predicate<T> True() {
-		return (Predicate<T>)TRUE;
+	public void inc(long i) {
+		++value;
 	}
+
+	public Counter sum(final Counter counter) {
+		value += counter.value;
+		return this;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)value;
+	}
+
+	@Override
+	public long longValue() {
+		return value;
+	}
+
+	@Override
+	public float floatValue() {
+		return value;
+	}
+
+	@Override
+	public double doubleValue() {
+		return value;
+	}
+
+	@Override
+	public int hashCode() {
+		return Long.hashCode(value);
+	}
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Counter counter &&
+			value == counter.value;
+	}
+
 }

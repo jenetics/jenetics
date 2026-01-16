@@ -119,7 +119,7 @@ public final class Phenotype<
 	}
 
 	/**
-	 * This method returns a copy of the {@code Genotype}, to guarantee a
+	 * This method returns a copy of the {@code Genotype}, to guarantee an
 	 * immutable class.
 	 *
 	 * @return the cloned {@code Genotype} of this {@code Phenotype}.

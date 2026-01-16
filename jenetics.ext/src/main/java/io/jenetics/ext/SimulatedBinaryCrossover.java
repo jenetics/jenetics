@@ -27,6 +27,7 @@ import static java.lang.String.format;
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
 import io.jenetics.internal.math.Randoms;
+import io.jenetics.internal.util.Counter;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -100,9 +101,10 @@ public class SimulatedBinaryCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		return (int) Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
+		return Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
 			.peek(i -> crossover(that, other, i))
-			.count();
+			.collect(Counter::new, Counter::inc, Counter::sum)
+			.intValue();
 	}
 
 	private void crossover(final MSeq<G> that, final MSeq<G> other, final int i) {

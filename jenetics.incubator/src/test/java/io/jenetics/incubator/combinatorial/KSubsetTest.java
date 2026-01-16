@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.combinatorial;
 
+import static java.util.stream.Collectors.counting;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -105,10 +106,11 @@ public class KSubsetTest {
 
 		final var count = sub.stream()
 			.peek(e -> elements.add(new Ints(e)))
-			.count();
+			.collect(counting())
+			.intValue();
 
 		assertThat(count).isEqualTo(sub.size());
-		assertThat(elements).hasSize((int)count);
+		assertThat(elements).hasSize(count);
 	}
 
 	@Test

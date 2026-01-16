@@ -33,9 +33,8 @@ public record StableRandomExecutor(long seed) implements Executor {
 	@Override
 	public void execute(Runnable command) {
 		requireNonNull(command);
-		RandomRegistry.using(
-			RandomGeneratorFactory.of("L32X64MixRandom").create(seed),
-			r -> command.run()
-		);
+		RandomRegistry
+			.with(RandomGeneratorFactory.of("L32X64MixRandom").create(seed))
+			.run(command);
 	}
 }

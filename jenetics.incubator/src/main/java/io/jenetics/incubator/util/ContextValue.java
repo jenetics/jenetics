@@ -17,30 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
-
-import java.util.function.Predicate;
+package io.jenetics.incubator.util;
 
 /**
- * This class contains some common predicates
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.0
- * @version 4.3
+ * @version 9.0
+ * @since 9.0
  */
-public final class Predicates {
-	private Predicates() {}
-
-	public static final Predicate<Object> TRUE = _ -> true;
-
-	/**
-	 * Return a predicate, which always return {@code true}.
-	 *
-	 * @param <T> the predicate type
-	 * @return a predicate, which always return {@code true}
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Predicate<T> True() {
-		return (Predicate<T>)TRUE;
-	}
+public interface ContextValue<T> {
+	T get();
+	void set(T value);
+	void reset();
 }
+
+final class Context {
+	static final ContextValue<String> USER = null;
+}
+

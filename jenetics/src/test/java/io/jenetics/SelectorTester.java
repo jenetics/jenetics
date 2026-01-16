@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -41,14 +40,15 @@ import org.testng.annotations.Test;
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
 import io.jenetics.distassert.observation.Observation;
-import io.jenetics.distassert.observation.Sampler;
 import io.jenetics.distassert.observation.Sample;
+import io.jenetics.distassert.observation.Sampler;
 import io.jenetics.internal.math.Basics;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.ObjectTester;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -128,7 +128,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
-		using(new LCG64ShiftRandom(543455), r -> {
+		RandomRegistry.with(new LCG64ShiftRandom(543455)).run(() -> {
 			final ISeq<Phenotype<DoubleGene, Double>> population = IntStream.range(0, size)
 				.mapToObj(i -> ptf.newInstance())
 				.collect(ISeq.toISeq());

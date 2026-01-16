@@ -121,42 +121,6 @@ public record LongRange(long min, long max) implements Serializable {
 		return LongStream.range(min, max);
 	}
 
-	/**
-	 * Create a new {@code LongRange} object with the given {@code min} and
-	 * {@code max} values.
-	 *
-	 * @param min the lower bound of the long range
-	 * @param max the upper bound of the long range
-	 * @return a new {@code LongRange} object
-	 * @throws IllegalArgumentException if {@code min > max}
-	 *
-	 * @deprecated Class is a record now, and this factory method will be
-	 *             removed in the next major version. Use
-	 *             {@link #LongRange(long, long)} instead.
-	 */
-	@Deprecated(since = "8.2", forRemoval = true)
-	public static LongRange of(final long min, final long max) {
-		return new LongRange(min, max);
-	}
-
-	/**
-	 * Return a new (half-open) range, which contains only the given value:
-	 * {@code [value, value + 1)}.
-	 *
-	 * @since 4.0
-	 *
-	 * @param value the value of the created (half-open) integer range
-	 * @return a new (half-open) range, which contains only the given value
-	 *
-	 * @deprecated Class is a record now, and this factory method will be
-	 *             removed in the next major version. Use {@link #LongRange(long)}
-	 *             instead.
-	 */
-	@Deprecated(since = "8.2", forRemoval = true)
-	public static LongRange of(final long value) {
-		return of(value, value + 1);
-	}
-
 	@Override
 	public String toString() {
 		return "[" + min + ", " + max + "]";

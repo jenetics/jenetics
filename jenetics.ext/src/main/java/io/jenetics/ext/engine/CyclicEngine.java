@@ -56,7 +56,6 @@ import io.jenetics.ext.internal.util.CyclicSpliterator;
  *
  * The {@code CyclicEngine} allows to do a broad search-fine search-cycle
  * as long as you want.
- *
  * {@snippet lang="java":
  *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
  *      v -> Math.sin(v[0])*Math.cos(v[1]),

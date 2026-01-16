@@ -11,13 +11,17 @@
 * [**Jenetics.Net**](https://github.com/rmeindl/jenetics.net): Experimental .NET Core port in C# of the base library. 
 * [**Helisa**](https://github.com/softwaremill/helisa/): Scala wrapper around the Jenetics library.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jenetics/jenetics&type=Date)](https://www.star-history.com/#jenetics/jenetics&Date)
+
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/8.3/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-8.3.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/9.0/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-9.0.0.pdf)).
 
 ## Build Jenetics
 
-**Jenetics** requires at least **Java 21** to compile and run. It also compiles and runs with **Java 25**.
+**Jenetics** requires at least **Java 25** to compile and run.
 
 Check out the master branch from GitHub.
 
@@ -293,24 +297,14 @@ J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/112
 
 ## Release notes
 
-### [8.3.0](https://github.com/jenetics/jenetics/releases/tag/v8.3.0)
+### [9.0.0](https://github.com/jenetics/jenetics/releases/tag/v9.0.0)
 
 #### Improvements
 
-* [#933](https://github.com/jenetics/jenetics/issues/933): Deprecate `RandomAdapter` for removal.
-* [#935](https://github.com/jenetics/jenetics/issues/935): Compile and test Jenetics with Java 24/25
-* [#938](https://github.com/jenetics/jenetics/issues/938): Convert `Range` classes into records.
-* [#943](https://github.com/jenetics/jenetics/issues/943): Remove `org.apache.commons:commons-math3´ test dependency.
-* [#946](https://github.com/jenetics/jenetics/issues/946): Create `io.jenetics.distassert` module, used by statistical GA tests.
-* [#948](https://github.com/jenetics/jenetics/issues/948): Improve `GaussianMutator` implementation.
-* [#951](https://github.com/jenetics/jenetics/issues/951): Improve testing for `RandomRegistry`
-* 
-#### Bugs
-
-* [#936](https://github.com/jenetics/jenetics/issues/936): Fix `assemblePkg` task
-* [#941](https://github.com/jenetics/jenetics/issues/941): Fix statistical tests after [TestNG](https://github.com/testng-team/testng) upgrade.
-* [#952](https://github.com/jenetics/jenetics/issues/952): Fix artifact publishing.
-* [#955](https://github.com/jenetics/jenetics/pull/945): Improve stochastic universal selector.
+* Update Java 25 and optimize code for new Java version.
+* [#917](https://github.com/jenetics/jenetics/issues/917): `ScopedValue` for `RandomRegistry` class.
+* [#940](https://github.com/jenetics/jenetics/issues/940): Remove deprecated API.
+* [#955](https://github.com/jenetics/jenetics/issues/955): Make `IntStream` counting more robust.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

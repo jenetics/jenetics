@@ -23,14 +23,18 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Function;
+import java.util.function.IntConsumer;
 import java.util.function.IntFunction;
+import java.util.function.LongConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
@@ -38,6 +42,7 @@ import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
 import java.util.stream.DoubleStream;
+import java.util.stream.Gatherer;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -45,7 +50,7 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 9.0s
  */
 public abstract class StreamProxy<T> implements Stream<T> {
 
@@ -53,6 +58,36 @@ public abstract class StreamProxy<T> implements Stream<T> {
 
 	protected StreamProxy(final Stream<T> self) {
 		_self = requireNonNull(self);
+	}
+
+	@Override
+	public <R> Stream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
+		return _self.mapMulti(mapper);
+	}
+
+	@Override
+	public IntStream mapMultiToInt(BiConsumer<? super T, ? super IntConsumer> mapper) {
+		return _self.mapMultiToInt(mapper);
+	}
+
+	@Override
+	public LongStream mapMultiToLong(BiConsumer<? super T, ? super LongConsumer> mapper) {
+		return _self.mapMultiToLong(mapper);
+	}
+
+	@Override
+	public DoubleStream mapMultiToDouble(BiConsumer<? super T, ? super DoubleConsumer> mapper) {
+		return _self.mapMultiToDouble(mapper);
+	}
+
+	@Override
+	public <R> Stream<R> gather(Gatherer<? super T, ?, R> gatherer) {
+		return _self.gather(gatherer);
+	}
+
+	@Override
+	public List<T> toList() {
+		return _self.toList();
 	}
 
 	@Override

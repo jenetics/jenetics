@@ -165,7 +165,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		final A allele,
 		final Supplier<? extends A> supplier
 	) {
-		return new AnyGene<>(allele, supplier, a -> true);
+		return new AnyGene<>(allele, supplier, _ -> true);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	 * @throws NullPointerException if one of the parameters is {@code null}
 	 */
 	public static <A> AnyGene<A> of(final Supplier<? extends A> supplier) {
-		return new AnyGene<>(supplier.get(), supplier, a -> true);
+		return new AnyGene<>(supplier.get(), supplier, _ -> true);
 	}
 
 	/**

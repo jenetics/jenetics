@@ -93,24 +93,6 @@ public record DoubleRange(double min, double max) implements Serializable {
 		}
 	}
 
-	/**
-	 * Create a new {@code DoubleRange} object with the given {@code min} and
-	 * {@code max} values.
-	 *
-	 * @param min the lower bound of the double range
-	 * @param max the upper bound of the double range
-	 * @return a new {@code DoubleRange} object
-	 * @throws IllegalArgumentException if {@code min > max}
-	 *
-	 * @deprecated Class is a record now, and this factory method will be
-	 *             removed in the next major version. Use
-	 *             {@link #DoubleRange(double, double)} instead.
-	 */
-	@Deprecated(since = "8.2", forRemoval = true)
-	public static DoubleRange of(final double min, final double max) {
-		return new DoubleRange(min, max);
-	}
-
 	@Override
 	public String toString() {
 		return "[" + min + ", " + max + "]";

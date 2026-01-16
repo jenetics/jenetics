@@ -34,7 +34,6 @@ import io.jenetics.util.Seq;
  * The implementer is free to do the evaluation <em>in place</em>, or create
  * new {@link Phenotype} instance and return the newly created one. A simple
  * serial evaluator can easily implement:
- *
  * {@snippet lang="java":
  * final Function<? super Genotype<G>, ? extends C> fitness = null; // @replace substring='null' replacement="..."
  * final Evaluator<G, C> evaluator = population -> population

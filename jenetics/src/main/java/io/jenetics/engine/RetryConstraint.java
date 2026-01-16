@@ -31,7 +31,7 @@ import io.jenetics.util.Factory;
 /**
  * This simple {@code Constraint} implementation <em>repairs</em> an invalid
  * phenotype by creating new individuals until a valid one has been created.
- * If the probability of creating invalid individuals isn't to high, this is the
+ * If the probability of creating invalid individuals isn't too high, this is the
  * preferred constraint implementation. E.g., if the probability of creating an
  * invalid individual is 0.1, then the probability of creating an invalid
  * phenotype after <em>n</em> retries, is 0.1<sup>n</sup>.

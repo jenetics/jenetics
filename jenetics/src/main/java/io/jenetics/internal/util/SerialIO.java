@@ -157,7 +157,7 @@ public final class SerialIO {
 	}
 
 	/**
-	 * Reads a, possible {@code null}, string value from the given data input.
+	 * Reads a possible {@code null} string value from the given data input.
 	 *
 	 * @param in the data input
 	 * @return the read string value

@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static io.jenetics.distassert.assertion.Assertions.assertThat;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.List;
@@ -101,7 +100,7 @@ public class StochasticUniversalSelectorTest
 
 		// gives double equal to 1 on the first resolve
 		final Random random = new Random(43328395);
-		using(random, r -> {
+		RandomRegistry.with(random).run(() -> {
 			final StochasticUniversalSelector<DoubleGene, Double> selector = factory().newInstance();
 			final ISeq<Phenotype<DoubleGene, Double>> selectedPop =
 				selector.select(population, population.size(), Optimize.MAXIMUM);
@@ -156,7 +155,7 @@ public class StochasticUniversalSelectorTest
 
 	private static void writeDistributionData(final Optimize opt) {
 		final RandomGenerator random = RandomRegistry.random();
-		using(random, r -> {
+		RandomRegistry.with(random).run(() -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;
 			final int loops = 1_000_000;

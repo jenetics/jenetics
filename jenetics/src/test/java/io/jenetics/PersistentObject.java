@@ -23,7 +23,6 @@ import static io.jenetics.internal.math.Randoms.nextASCIIString;
 import static io.jenetics.internal.math.Randoms.nextByte;
 import static io.jenetics.internal.math.Randoms.nextChar;
 import static io.jenetics.internal.math.Randoms.nextShort;
-import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -508,7 +507,7 @@ public class PersistentObject<T> {
 
 	static {
 		final var random = new LCG64ShiftRandom(SEED);
-		using(random, r -> init());
+		RandomRegistry.with(random).run(PersistentObject::init);
 	}
 
 	public static void main(final String[] args) throws Exception {

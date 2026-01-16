@@ -35,16 +35,17 @@ import java.util.stream.IntStream;
  * @version 7.0
  */
 public final class Randoms {
-	private Randoms() {}
+	private Randoms() {
+	}
 
 	public static byte nextByte(final RandomGenerator random) {
 		return (byte)random.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
 	public static char nextChar(final RandomGenerator random) {
-		record Limits() {
-			private static final int LEFT = '0';
-			private static final int RIGHT = 'z' + 1;
+		final class Limits {
+			static final int LEFT = '0';
+			static final int RIGHT = 'z' + 1;
 		}
 
 		char c = '\0';
@@ -87,8 +88,7 @@ public final class Randoms {
 	 * @param end the end index (exclusively)
 	 * @param p the index selection probability
 	 * @return a new random index stream
-	 * @throws IllegalArgumentException if {@code p} is not a
-	 *         valid probability.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability
 	 */
 	public static IntStream indexes(
 		final RandomGenerator random,
@@ -106,7 +106,7 @@ public final class Randoms {
 		} else {
 			final int P = Probabilities.toInt(p);
 			return IntStream.range(start, end)
-				.filter(i -> random.nextInt() < P);
+				.filter(_ -> random.nextInt() < P);
 		}
 	}
 
