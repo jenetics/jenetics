@@ -150,11 +150,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Ritwik Murali, Ashwin Narayanan Sivamani, Abhinav Ramakrishnan, Hariharan Arul, and Ananya R. <a href="https://doi.org/10.1145/3712255.3726652"> Evolve On Click (EvOC) - An Intuitive Web Platform to Collaboratively Implement, Execute, and Visualize Evolutionary Algorithms.</a> <em>Proceedings of the Genetic and Evolutionary Computation Conference Companion (GECCO '25 Companion). Association for Computing Machinery, New York, NY, USA, 147–150.</em> Aug. 2025.
+J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/11298634"> Seasonal Reconfiguration of Electrical Distribution Systems to Mitigate the Impact of Electric Vehicle Charging.</a> <em>IEEE Access, vol. 13, pp. 212193-212212. </em> Dec 2025.
 
 ...
 </summary>
 
+1) J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/11298634"> Seasonal Reconfiguration of Electrical Distribution Systems to Mitigate the Impact of Electric Vehicle Charging.</a> <em>IEEE Access, vol. 13, pp. 212193-212212. </em> Dec 2025.
 1) Ritwik Murali, Ashwin Narayanan Sivamani, Abhinav Ramakrishnan, Hariharan Arul, and Ananya R. <a href="https://doi.org/10.1145/3712255.3726652"> Evolve On Click (EvOC) - An Intuitive Web Platform to Collaboratively Implement, Execute, and Visualize Evolutionary Algorithms.</a> <em>Proceedings of the Genetic and Evolutionary Computation Conference Companion (GECCO '25 Companion). Association for Computing Machinery, New York, NY, USA, 147–150.</em> Aug. 2025.
 2) Hotz, M., Malburg, L., Bergmann, R. <a href="https://doi.org/10.1007/978-3-031-96559-3_16"> Advanced Search Techniques for Determining Optimal Sequences of Adaptation Rules in Process-Oriented Case-Based Reasoning.</a> <em>Case-Based Reasoning Research and Development. ICCBR 2025. Lecture Notes in Computer Science(), vol 15662. Springer, Cham.</em> June 2025.
 3) C. Chen, B. Dolan-Gavitt, Z. Lin. <a href="https://arxiv.org/abs/2506.10323"> ELFuzz: Efficient Input Generation via LLM-driven Synthesis Over Fuzzer Space.</a> <em>USENIX Security'25 Cycle 2.</em> June 2025.
@@ -311,7 +312,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2025 Franz Wilhelmstötter
+	Copyright 2007-2026 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
