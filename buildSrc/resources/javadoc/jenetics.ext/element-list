@@ -1,6 +1,7 @@
 module:io.jenetics.ext
 io.jenetics.ext
 io.jenetics.ext.engine
+io.jenetics.ext.grammar
 io.jenetics.ext.moea
 io.jenetics.ext.rewriting
 io.jenetics.ext.util
