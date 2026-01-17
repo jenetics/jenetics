@@ -23,9 +23,12 @@ import static java.lang.String.format;
 import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
+import static io.jenetics.internal.util.Arrays.maxIndex;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -41,6 +44,7 @@ import io.jenetics.AnyChromosome;
 import io.jenetics.AnyGene;
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
+import io.jenetics.Chromosome;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.EnumGene;
@@ -55,16 +59,19 @@ import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 
 /**
  * This class contains factory methods for creating common problem encodings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 5.2
+ * @version !__version__!
  */
 public final class Codecs {
 
@@ -1220,5 +1227,141 @@ public final class Codecs {
 //	) {
 //		return ofAffineTransform(s, s, t, t, th, k, k);
 //	}
+
+
+	/**
+	 * Creates a codec, which selects a codec from the list of given
+	 * {@code codecs}. This codec is used for doing <em>meta</em>-optimization,
+	 * where you want to evolve the <em>optimal</em> codec for a given problem.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codecs the list of codecs from which the created codec is
+	 *        selecting one
+	 * @return the codec which selects a codec from the given list of codecs
+	 * @param <T> the encoded type
+	 */
+	public static <T> Codec<T, DoubleGene>
+	ofSelection(List<? extends Codec<? extends T, DoubleGene>> codecs) {
+		// The chromosome length of every selector codec.
+		final int[] lengths = codecs.stream()
+			.map(codec -> toGenotype(codec.encoding()))
+			.mapToInt(Genotype::length)
+			.toArray();
+
+		// The start index of the chromosome list.
+		final int[] starts = new int[codecs.size()];
+		int start = 1;
+		for (int i = 0; i < starts.length; ++i) {
+			starts[i] = start;
+			start += lengths[i];
+		}
+
+		// Creating the needed chromosomes.
+		final var chromosomes = new ArrayList<Chromosome<DoubleGene>>();
+		chromosomes.add(DoubleChromosome.of(0, 1, codecs.size()));
+		codecs.stream()
+			.flatMap(codec -> codec.encoding().newInstance().stream())
+			.forEach(chromosomes::add);
+
+		return Codec.of(
+			Genotype.of(chromosomes),
+			gt -> {
+				final double[] selector = gt.get(0)
+					.as(DoubleChromosome.class)
+					.toArray();
+
+				final int index = maxIndex(selector);
+
+				final var genotype = gt.slice(
+					starts[index],
+					starts[index] + lengths[index]
+				);
+
+				return codecs.get(index).decoder().apply(genotype);
+			}
+		);
+	}
+
+	private static <G extends Gene<?, G>> Genotype<G>
+	toGenotype(final Factory<Genotype<G>> factory) {
+		return factory instanceof Genotype<G> gt ? gt : factory.newInstance();
+	}
+
+	/**
+	 * Creates a codec, which selects a codec from the list of given
+	 * {@code codecs}. This codec is used for doing <em>meta</em>-optimization,
+	 * where you want to evolve the <em>optimal</em> codec for a given problem.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codecs the list of codecs from which the created codec is
+	 *        selecting one
+	 * @return the codec which selects a codec from the given list of codecs
+	 * @param <T> the encoded type
+	 */
+	@SafeVarargs
+	public static <T> Codec<T, DoubleGene>
+	ofSelection(Codec<? extends T, DoubleGene>... codecs) {
+		return ofSelection(List.of(codecs));
+	}
+
+
+	public static <T> Codec<ISeq<T>, DoubleGene>
+	ofSubSet(List<? extends Codec<? extends T, DoubleGene>> codecs) {
+		// The chromosome length of every selector codec.
+		final int[] lengths = codecs.stream()
+			.map(codec -> toGenotype(codec.encoding()))
+			.mapToInt(Genotype::length)
+			.toArray();
+
+		// The start index of the chromosome list.
+		final int[] starts = new int[codecs.size()];
+		int start = 1;
+		for (int i = 0; i < starts.length; ++i) {
+			starts[i] = start;
+			start += lengths[i];
+		}
+
+		// Creating the needed chromosomes.
+		final var chromosomes = new ArrayList<Chromosome<DoubleGene>>();
+		chromosomes.add(DoubleChromosome.of(0, 1, codecs.size()));
+		codecs.stream()
+			.flatMap(codec -> codec.encoding().newInstance().stream())
+			.forEach(chromosomes::add);
+
+		return Codec.of(
+			Genotype.of(chromosomes),
+			gt -> {
+				final double[] selector = gt.get(0)
+					.as(DoubleChromosome.class)
+					.toArray();
+
+				int count = 0;
+				for (double v : selector) {
+					if (v >= 0.5) {
+						++count;
+					}
+				}
+				count = Math.min(count, 1);
+
+				final int[] indexes = ProxySorter.sort(selector);
+
+				final var results = MSeq.<T>ofLength(count);
+				for (int i = 0; i < count; ++i) {
+					final var genotype = Genotype.of(
+						gt.slice(
+							starts[indexes[i]],
+							starts[indexes[i]] + lengths[indexes[i]]
+						)
+					);
+
+					results.set(i, codecs.get(indexes[i]).decoder().apply(genotype));
+				}
+
+				return results.toISeq();
+			}
+		);
+	}
 
 }

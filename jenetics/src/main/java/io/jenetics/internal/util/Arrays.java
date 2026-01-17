@@ -134,6 +134,21 @@ public final class Arrays {
 		}
 	}
 
+	public static int maxIndex(double[] values) {
+		double max = -Double.MAX_VALUE;
+		int index = 0;
+		for (int i = 0; i < values.length; ++i) {
+			final double value = values[i];
+
+			if (value > max) {
+				index = i;
+				max = value;
+			}
+		}
+
+		return index;
+	}
+
 	public static long sum(final long[] values) {
 		long sum = 0;
 		for (var value : values) {
