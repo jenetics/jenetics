@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 
 import io.jenetics.incubator.restful.Parameter;
 import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.Result;
 import io.jenetics.incubator.restful.ResponseException;
 
 /**
@@ -79,7 +79,7 @@ public final class DefaultClient implements Client {
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
 
-	public <T> CompletableFuture<Response.Success<T>>
+	public <T> CompletableFuture<Result.Success<T>>
 	call(final Resource<? extends T> resource) {
 		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
 			client.sendAsync(
@@ -90,15 +90,15 @@ public final class DefaultClient implements Client {
 		return response
 			.thenCompose(result ->
 				switch (result.body().toResponse(resource, result)) {
-					case Response.Success<T> success -> completedFuture(success);
-					case Response.Failure<T> failure -> {
+					case Result.Success<T> success -> completedFuture(success);
+					case Result.Failure<T> failure -> {
 						final var exception = new ResponseException(failure);
 						yield failedFuture(exception);
 					}
 				}
 			)
 			.exceptionallyCompose(throwable -> {
-				final var error = new Response.ClientError<>(
+				final var error = new Result.ClientError<>(
 					resource,
 					switch (throwable) {
 						case UncheckedIOException e -> e.getCause();

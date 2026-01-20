@@ -89,7 +89,7 @@ public class DefaultClientTest {
 
 		System.out.println(result0);
 
-		final Mono<Response.Success<Todo>> result = Resource
+		final Mono<Result.Success<Todo>> result = Resource
 			.of("/todos/{id}/", Todo.class)
 			.params(ID.value("1"))
 			.GET(MonoCaller.of(client));

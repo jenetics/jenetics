@@ -32,13 +32,13 @@ import static java.util.Objects.requireNonNull;
  */
 public final class ResponseException extends RuntimeException {
 
-	private final Response.Failure<?> failure;
+	private final Result.Failure<?> failure;
 
-	public ResponseException(final Response.Failure<?> failure) {
+	public ResponseException(final Result.Failure<?> failure) {
 		this.failure = requireNonNull(failure);
 	}
 
-	public ResponseException(final String message, final Response.Failure<?> failure) {
+	public ResponseException(final String message, final Result.Failure<?> failure) {
 		super(message);
 		this.failure = requireNonNull(failure);
 	}
@@ -48,7 +48,7 @@ public final class ResponseException extends RuntimeException {
 	 *
 	 * @return the wrapped failure response
 	 */
-	public Response.Failure<?> failure() {
+	public Result.Failure<?> failure() {
 		return failure;
 	}
 

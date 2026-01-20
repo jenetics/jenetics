@@ -23,7 +23,7 @@ import java.net.http.HttpResponse;
 
 import io.jenetics.incubator.restful.ProblemDetail;
 import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.Result;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,18 +35,18 @@ sealed interface ServerResponse<T> {
 
 	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
 
-	default Response<T> toResponse(
+	default Result<T> toResponse(
 		final Resource<? extends T> resource,
 		final HttpResponse<ServerResponse<T>> result
 	) {
 		return switch (this) {
-			case ServerResponse.OK(var body) -> new Response.Success<>(
+			case ServerResponse.OK(var body) -> new Result.Success<>(
 				resource,
 				result.headers(),
 				result.statusCode(),
 				resource.type().cast(body)
 			);
-			case ServerResponse.NOK(var detail) -> new Response.ServerError<>(
+			case ServerResponse.NOK(var detail) -> new Result.ServerError<>(
 				resource,
 				result.headers(),
 				result.statusCode(),

@@ -47,14 +47,14 @@ public final class MuseumApi {
 	public static void main(String[] args) throws Throwable {
 		var client = new DefaultClient("", null, null);
 
-		Response<Hours> response = ApiProxy.of(MuseumHours.class)
+		Result<Hours> response = ApiProxy.of(MuseumHours.class)
 			.get(LocalDate.now(), 1, 10)
 			.call(client.sync());
 
 		var result = switch (response) {
-			case Response.Success<Hours> s -> "";
-			case Response.ClientError<Hours> ce -> "";
-			case Response.ServerError<Hours> se -> "";
+			case Result.Success<Hours> s -> "";
+			case Result.ClientError<Hours> ce -> "";
+			case Result.ServerError<Hours> se -> "";
 		};
 
 		System.out.println(result);

@@ -35,7 +35,7 @@ import io.jenetics.incubator.restful.client.Client;
  * @since 8.2
  * @version 8.2
  */
-public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>> {
+public final class MonoCaller<T> implements Caller<T, Mono<Result.Success<T>>> {
 	private final Client client;
 
 	private MonoCaller(final Client client) {
@@ -43,7 +43,7 @@ public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>>
 	}
 
 	@Override
-	public Mono<Response.Success<T>> call(final Resource<? extends T> resource) {
+	public Mono<Result.Success<T>> call(final Resource<? extends T> resource) {
 		return Mono.create(sink -> {
 			final var result = client.call(resource);
 			final var cancelled = new AtomicBoolean(false);
@@ -61,7 +61,7 @@ public final class MonoCaller<T> implements Caller<T, Mono<Response.Success<T>>>
 						}
 					} else if (value != null) {
 						@SuppressWarnings("unchecked")
-						final var success = (Response.Success<T>)value;
+						final var success = (Result.Success<T>)value;
 						sink.success(success);
 					} else {
 						sink.success();

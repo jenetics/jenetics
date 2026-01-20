@@ -43,21 +43,21 @@ public interface Caller<T, C> {
 	 *
 	 * @param <T> the result type
 	 */
-	interface Sync<T> extends Caller<T, Response<T>> {}
+	interface Sync<T> extends Caller<T, Result<T>> {}
 
 	/**
 	 * Caller specialization for asynchronous REST calls.
 	 *
 	 * @param <T> the result type
 	 */
-	interface Async<T> extends Caller<T, CompletableFuture<Response.Success<T>>> {}
+	interface Async<T> extends Caller<T, CompletableFuture<Result.Success<T>>> {}
 
 	/**
 	 * Caller specialization for reactive REST calls.
 	 *
 	 * @param <T> the result type
 	 */
-	interface Reactive<T> extends Caller<T, Flow.Publisher<Response.Success<T>>> {}
+	interface Reactive<T> extends Caller<T, Flow.Publisher<Result.Success<T>>> {}
 
 	/**
 	 * Calls the given {@code resource} and returns its result.

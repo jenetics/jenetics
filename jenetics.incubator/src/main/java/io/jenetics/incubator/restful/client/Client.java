@@ -26,7 +26,7 @@ import java.util.concurrent.SubmissionPublisher;
 
 import io.jenetics.incubator.restful.Caller;
 import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.Result;
 import io.jenetics.incubator.restful.ResponseException;
 
 /**
@@ -46,7 +46,7 @@ public interface Client {
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-	<T> CompletableFuture<Response.Success<T>> call(Resource<? extends T> resource);
+	<T> CompletableFuture<Result.Success<T>> call(Resource<? extends T> resource);
 
 	/**
 	 * Return asynchronous caller.
@@ -68,19 +68,19 @@ public interface Client {
 	default <T> Caller.Sync<T> sync() {
 		return resource -> {
 			if (Thread.currentThread().isInterrupted()) {
-				return new Response.ClientError<>(resource, new InterruptedException());
+				return new Result.ClientError<>(resource, new InterruptedException());
 			}
 
 			@SuppressWarnings("unchecked")
 			final var result = this.call(resource)
 				.handle((value, error) ->
-					(Response<T>)switch (error) {
+					(Result<T>)switch (error) {
 						case ResponseException e -> e.failure();
-						case UncheckedIOException e -> new Response.ClientError<>(
+						case UncheckedIOException e -> new Result.ClientError<>(
 							resource,
 							e.getCause()
 						);
-						case Throwable e -> new Response.ClientError<>(resource, e);
+						case Throwable e -> new Result.ClientError<>(resource, e);
 						case null -> value;
 					}
 				);
@@ -90,11 +90,11 @@ public interface Client {
 			} catch (InterruptedException e) {
 				result.cancel(true);
 				Thread.currentThread().interrupt();
-				return new Response.ClientError<>(resource, e);
+				return new Result.ClientError<>(resource, e);
 			} catch (ExecutionException e) {
-				return new Response.ClientError<>(resource, e.getCause());
+				return new Result.ClientError<>(resource, e.getCause());
 			} catch (Exception e) {
-				return new Response.ClientError<>(resource, e);
+				return new Result.ClientError<>(resource, e);
 			}
 		};
 	}
@@ -109,7 +109,7 @@ public interface Client {
 	 */
 	default <T> Caller.Reactive<T> reactive() {
 		return resource -> {
-			var publisher = new SubmissionPublisher<Response.Success<T>>(
+			var publisher = new SubmissionPublisher<Result.Success<T>>(
 				Runnable::run,
 				1
 			);

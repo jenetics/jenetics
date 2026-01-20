@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @since 8.2
  * @version 8.2
  */
-public sealed interface Response<T> extends Serializable {
+public sealed interface Result<T> extends Serializable {
 
 	/**
 	 * Return the original resource object. The type of the original resource
@@ -67,7 +67,7 @@ public sealed interface Response<T> extends Serializable {
 		int status,
 		T body
 	)
-		implements Response<T>
+		implements Result<T>
 	{
 		public Success {
 			requireNonNull(resource);
@@ -83,7 +83,7 @@ public sealed interface Response<T> extends Serializable {
 	 *
 	 * @param <T> the body type
 	 */
-	sealed interface Failure<T> extends Response<T> { }
+	sealed interface Failure<T> extends Result<T> { }
 
 	/**
 	 * A client error, caused by an exception while accessing the server.
@@ -147,12 +147,12 @@ public sealed interface Response<T> extends Serializable {
 	 * @param <A> the new response body type
 	 */
 	@SuppressWarnings("unchecked")
-	default <A> Response<A> map(final Function<? super T, ? extends A> fn) {
+	default <A> Result<A> map(final Function<? super T, ? extends A> fn) {
 		requireNonNull(fn);
 
 		return switch (this) {
 			case Success(var s, var h, var r, var b) -> new Success<>(s, h, r, fn.apply(b));
-			case Response.Failure<T> f -> (Failure<A>)f;
+			case Result.Failure<T> f -> (Failure<A>)f;
 		};
 	}
 
@@ -165,12 +165,12 @@ public sealed interface Response<T> extends Serializable {
 	 * @param <A> the new response body type
 	 */
 	@SuppressWarnings("unchecked")
-	default  <A> Response<A> flatMap(final Function<? super T, Response<? extends A>> fn) {
+	default  <A> Result<A> flatMap(final Function<? super T, Result<? extends A>> fn) {
 		requireNonNull(fn);
 
-		return (Response<A>)switch (this) {
-			case Response.Success<T> s -> fn.apply(s.body());
-			case Response.Failure<T> f -> f;
+		return (Result<A>)switch (this) {
+			case Result.Success<T> s -> fn.apply(s.body());
+			case Result.Failure<T> f -> f;
 		};
 	}
 

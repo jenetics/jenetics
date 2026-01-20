@@ -33,11 +33,11 @@ public sealed interface Method<T> {
 	}
 
 	non-sealed interface Put<T> extends Method<T> {
-		<C> C call(final Object body,final Caller<? super T, ? extends C> caller);
+		<C> C call(final Object body, final Caller<? super T, ? extends C> caller);
 	}
 
-	non-sealed interface Pos<T> extends Method<T> {
-		<C> C call(final Object body,final Caller<? super T, ? extends C> caller);
+	non-sealed interface Post<T> extends Method<T> {
+		<C> C call(final Object body, final Caller<? super T, ? extends C> caller);
 	}
 
 	non-sealed interface Delete<T> extends Method<T> {

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jenetics.incubator.restful.Parameter;
 import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Response;
+import io.jenetics.incubator.restful.Result;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,15 +49,15 @@ final class RestfulClientSnippets {
 			record Todo(int userId, int id, String title, boolean completed) { }
 
 			// Call the resource.
-			final Response<Todo> result = Resource
+			final Result<Todo> result = Resource
 				.of("/todos/{id}/", Todo.class)
 				.params(Parameter.path("id", "123"))
 				.GET(client.sync());
 
 			// Print the result.
 			switch (result) {
-				case Response.Success<Todo> s -> System.out.println(s.body());
-				case Response.Failure<Todo> f -> System.err.println("Error: " + f.status());
+				case Result.Success<Todo> s -> System.out.println(s.body());
+				case Result.Failure<Todo> f -> System.err.println("Error: " + f.status());
 			}
 			// @end
 		}
