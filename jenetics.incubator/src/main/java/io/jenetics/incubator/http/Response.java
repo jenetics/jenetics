@@ -17,14 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.http;
 
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UncheckedIOException;
-import java.net.http.HttpHeaders;
 import java.util.function.Function;
 
 /**
@@ -34,7 +32,7 @@ import java.util.function.Function;
  * @since 8.2
  * @version 8.2
  */
-public sealed interface Result<T> extends Serializable {
+public sealed interface Response<T> {
 
 	/**
 	 * Return the original resource object. The type of the original resource
@@ -43,7 +41,7 @@ public sealed interface Result<T> extends Serializable {
 	 *
 	 * @return the original resource object
 	 */
-	Resource<?> resource();
+	Request<?> request();
 
 	/**
 	 * The HTTP status code of the response.
@@ -55,22 +53,22 @@ public sealed interface Result<T> extends Serializable {
 	/**
 	 * The success response object.
 	 *
-	 * @param resource the original resource object
+	 * @param request the original request object
 	 * @param headers the response headers
 	 * @param status the response status
 	 * @param body the response body
 	 * @param <T> the body type
 	 */
 	record Success<T>(
-		Resource<?> resource,
-		HttpHeaders headers,
+		Request<?> request,
+		Headers headers,
 		int status,
 		T body
 	)
-		implements Result<T>
+		implements Response<T>
 	{
 		public Success {
-			requireNonNull(resource);
+			requireNonNull(request);
 			requireNonNull(headers);
 		}
 	}
@@ -83,20 +81,20 @@ public sealed interface Result<T> extends Serializable {
 	 *
 	 * @param <T> the body type
 	 */
-	sealed interface Failure<T> extends Result<T> { }
+	sealed interface Failure<T> extends Response<T> { }
 
 	/**
 	 * A client error, caused by an exception while accessing the server.
 	 *
-	 * @param resource the original resource object
+	 * @param request the original resource object
 	 * @param error the thrown exception
 	 * @param <T> the body type
 	 */
-	record ClientError<T>(Resource<?> resource, Throwable error)
+	record ClientError<T>(Request<?> request, Throwable error)
 		implements Failure<T>
 	{
 		public ClientError {
-			requireNonNull(resource);
+			requireNonNull(request);
 			requireNonNull(error);
 		}
 
@@ -118,22 +116,22 @@ public sealed interface Result<T> extends Serializable {
 	/**
 	 * Error returned by the server.
 	 *
-	 * @param resource the original resource object
+	 * @param request the original request object
 	 * @param headers the response headers
 	 * @param status the response status
 	 * @param detail the detailed error detail, if available
 	 * @param <T> the body type
 	 */
 	record ServerError<T>(
-		Resource<?> resource,
-		HttpHeaders headers,
+		Request<?> request,
+		Headers headers,
 		int status,
 		ProblemDetail detail
 	)
 		implements Failure<T>
 	{
 		public ServerError {
-			requireNonNull(resource);
+			requireNonNull(request);
 			requireNonNull(headers);
 		}
 	}
@@ -147,12 +145,12 @@ public sealed interface Result<T> extends Serializable {
 	 * @param <A> the new response body type
 	 */
 	@SuppressWarnings("unchecked")
-	default <A> Result<A> map(final Function<? super T, ? extends A> fn) {
+	default <A> Response<A> map(final Function<? super T, ? extends A> fn) {
 		requireNonNull(fn);
 
 		return switch (this) {
 			case Success(var s, var h, var r, var b) -> new Success<>(s, h, r, fn.apply(b));
-			case Result.Failure<T> f -> (Failure<A>)f;
+			case Response.Failure<T> f -> (Failure<A>)f;
 		};
 	}
 
@@ -165,12 +163,12 @@ public sealed interface Result<T> extends Serializable {
 	 * @param <A> the new response body type
 	 */
 	@SuppressWarnings("unchecked")
-	default  <A> Result<A> flatMap(final Function<? super T, Result<? extends A>> fn) {
+	default  <A> Response<A> flatMap(final Function<? super T, Response<? extends A>> fn) {
 		requireNonNull(fn);
 
-		return (Result<A>)switch (this) {
-			case Result.Success<T> s -> fn.apply(s.body());
-			case Result.Failure<T> f -> f;
+		return (Response<A>)switch (this) {
+			case Response.Success<T> s -> fn.apply(s.body());
+			case Response.Failure<T> f -> f;
 		};
 	}
 

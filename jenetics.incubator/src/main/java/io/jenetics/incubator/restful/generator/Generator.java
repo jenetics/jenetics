@@ -1,8 +1,6 @@
 package io.jenetics.incubator.restful.generator;
 
-import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
-import com.sun.codemodel.JFormatter;
 import com.sun.codemodel.writer.OutputStreamCodeWriter;
 
 public class Generator {

@@ -19,82 +19,74 @@
  */
 package io.jenetics.incubator.restful;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import reactor.core.publisher.Mono;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.incubator.restful.client.Client;
-import io.jenetics.incubator.restful.client.DefaultClient;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class DefaultClientTest {
 
-	record Todo(int userId, int id, String title, boolean completed) {
-	}
-
-	public enum Account implements Parameter.Header {
-		FOO("x-account", "foo"),
-		BAR("x-account", "bar");
-
-		private final String name;
-		private final String value;
-
-		Account(final String name, final String value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		@Override
-		public String key() {
-			return name;
-		}
-
-		@Override
-		public String value() {
-			return value;
-		}
-	}
-
-	static final Resource<String> DOCUMENT = Resource
-		.of("/documents/{id}", String.class)
-		.params(ContentType.JSON);
-
-	static final Resource<String> BOOK = Resource
-		.of("/books/{id}", String.class)
-		.params(ContentType.JSON);
-
-	static final Resource<String> PERSON = Resource
-		.of("/persons/{id}", String.class)
-		.params(ContentType.JSON);
-
-	static final Parameter.Value ID = Parameter.Path.key("id");
-
-	@Test(enabled = false)
-	public void call() {
-		final var mapper = new ObjectMapper();
-
-		final Client client = new DefaultClient(
-			"https://jsonplaceholder.typicode.com/",
-			mapper::readValue,
-			mapper::writeValue
-		);
-
-		final var result0 = Resource
-			.of("/todos/{id}/", Todo.class)
-			.params(ID.value("1"))
-			.GET(client.sync());
-
-		System.out.println(result0);
-
-		final Mono<Result.Success<Todo>> result = Resource
-			.of("/todos/{id}/", Todo.class)
-			.params(ID.value("1"))
-			.GET(MonoCaller.of(client));
-
-		System.out.println(result.block());
-	}
+//	record Todo(int userId, int id, String title, boolean completed) {
+//	}
+//
+//	public enum Account implements Parameter.Header {
+//		FOO("x-account", "foo"),
+//		BAR("x-account", "bar");
+//
+//		private final String name;
+//		private final String value;
+//
+//		Account(final String name, final String value) {
+//			this.name = name;
+//			this.value = value;
+//		}
+//
+//		@Override
+//		public String key() {
+//			return name;
+//		}
+//
+//		@Override
+//		public String value() {
+//			return value;
+//		}
+//	}
+//
+//	static final Resource<String> DOCUMENT = Resource
+//		.of("/documents/{id}", String.class)
+//		.params(ContentType.JSON);
+//
+//	static final Resource<String> BOOK = Resource
+//		.of("/books/{id}", String.class)
+//		.params(ContentType.JSON);
+//
+//	static final Resource<String> PERSON = Resource
+//		.of("/persons/{id}", String.class)
+//		.params(ContentType.JSON);
+//
+//	static final Parameter.Value ID = Parameter.Path.key("id");
+//
+//	@Test(enabled = false)
+//	public void call() {
+//		final var mapper = new ObjectMapper();
+//
+//		final Client client = Client.of(
+//			null,
+//			mapper::readValue,
+//			mapper::writeValue
+//		);
+//
+//		final var result0 = Resource
+//			.of("/todos/{id}/", Todo.class)
+//			.params(ID.value("1"))
+//			.GET(client.sync());
+//
+//		System.out.println(result0);
+//
+//		final Mono<Result.Success<Todo>> result = Resource
+//			.of("/todos/{id}/", Todo.class)
+//			.params(ID.value("1"))
+//			.GET(MonoSender.of(client));
+//
+//		System.out.println(result.block());
+//	}
 
 }

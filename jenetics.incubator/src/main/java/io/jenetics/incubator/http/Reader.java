@@ -17,42 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.client;
+package io.jenetics.incubator.http;
 
-import java.net.http.HttpResponse;
-
-import io.jenetics.incubator.restful.ProblemDetail;
-import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Result;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
+ * Reader interface for reading values from a given input stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-sealed interface ServerResponse<T> {
-	record OK<T> (T value) implements ServerResponse<T> {}
+@FunctionalInterface
+public interface Reader {
 
-	record NOK<T> (ProblemDetail detail) implements ServerResponse<T> {}
-
-	default Result<T> toResponse(
-		final Resource<? extends T> resource,
-		final HttpResponse<ServerResponse<T>> result
-	) {
-		return switch (this) {
-			case ServerResponse.OK(var body) -> new Result.Success<>(
-				resource,
-				result.headers(),
-				result.statusCode(),
-				resource.type().cast(body)
-			);
-			case ServerResponse.NOK(var detail) -> new Result.ServerError<>(
-				resource,
-				result.headers(),
-				result.statusCode(),
-				detail
-			);
-		};
-	}
+	/**
+	 * Reads a value, of type {@code T}, from the given {@code input} stream.
+	 *
+	 * @param input the input stream the value is read from
+	 * @param type the type of the read object
+	 * @return the read (deserialized) value
+	 * @param <T> the value type
+	 * @throws IOException if reading the value fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	<T> T read(final InputStream input, Class<T> type) throws IOException;
 
 }

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.client;
+package io.jenetics.incubator.http;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.completedFuture;
@@ -30,108 +30,91 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-import io.jenetics.incubator.restful.Parameter;
-import io.jenetics.incubator.restful.Resource;
-import io.jenetics.incubator.restful.Result;
-import io.jenetics.incubator.restful.ResponseException;
-
 /**
- * The default client implementation which uses the Java {@link HttpClient}.
- * {@snippet class="RestfulClientSnippets" region="DefaultClient.usage"}
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public final class DefaultClient implements Client {
+final class DefaultClient implements Client {
 
-	private final URI host;
 	private final HttpClient client;
 	private final Reader reader;
 	private final Writer writer;
 
 	public DefaultClient(
-		final URI host,
 		final HttpClient client,
 		final Reader reader,
 		final Writer writer
 	) {
-		this.host = host.normalize();
 		this.client = requireNonNull(client);
 		this.reader = requireNonNull(reader);
 		this.writer = requireNonNull(writer);
 	}
 
-	public DefaultClient(
-		final String host,
-		final Reader reader,
-		final Writer writer
-	) {
-		this(URI.create(host), HttpClient.newHttpClient(), reader, writer);
-	}
-
 	/**
 	 * Calls the given {@code resource} and returns its result.
 	 *
-	 * @param resource the resource to call
+	 *
+	 * @param request the request object
 	 * @return the call response
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-
-	public <T> CompletableFuture<Result.Success<T>>
-	call(final Resource<? extends T> resource) {
-		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
+	@Override
+	public <T> CompletableFuture<Response.Success<T>>
+	send(URI uri, Request<? extends T> request) {
+		final CompletableFuture<HttpResponse<ServerResult<T>>> response =
 			client.sendAsync(
-				toRequest(resource),
-				new ServerBodyHandler<T>(reader, resource.type())
+				toHttpRequest(uri, request),
+				new ServerBodyHandler<T>(reader, request.type())
 			);
 
 		return response
 			.thenCompose(result ->
-				switch (result.body().toResponse(resource, result)) {
-					case Result.Success<T> success -> completedFuture(success);
-					case Result.Failure<T> failure -> {
-						final var exception = new ResponseException(failure);
+				switch (result.body().toResult(request, result)) {
+					case Response.Success<T> success -> completedFuture(success);
+					case Response.Failure<T> failure -> {
+						final var exception = new ResultException(failure);
 						yield failedFuture(exception);
 					}
 				}
 			)
 			.exceptionallyCompose(throwable -> {
-				final var error = new Result.ClientError<>(
-					resource,
+				final var error = new Response.ClientError<>(
+					request,
 					switch (throwable) {
 						case UncheckedIOException e -> e.getCause();
 						case Throwable e -> e;
 					}
 				);
-				final var exception = new ResponseException(error);
+				final var exception = new ResultException(error);
 				return failedFuture(exception);
 			});
 	}
 
-	private <T> HttpRequest toRequest(final Resource<? extends T> resource) {
-		final var builder = HttpRequest.newBuilder()
-			.uri(host.resolve(resource.resolvedPath().substring(1)));
+	private <T> HttpRequest
+	toHttpRequest(final URI uri, final Request<? extends T> request) {
+		final var builder = HttpRequest.newBuilder().uri(uri);
+		request.headers().addTo(builder);
 
-		resource.parameters().stream()
-			.filter(p -> p instanceof Parameter.Header)
-			.forEach(header -> builder.header(header.key(), header.value()));
-
-		switch (resource.method()) {
-			case GET -> builder.GET();
-			case POST -> builder.POST(new ClientBodyPublisher(
+		switch (request) {
+			case Request.GET<?> _ -> builder.GET();
+			case Request.POST<?> req -> builder.POST(new ClientBodyPublisher(
 				writer,
-				resource.body().orElse(null)
+				req.body().orElse(null)
 			));
-			case PUT -> builder.PUT(new ClientBodyPublisher(
+			case Request.PUT<?> req -> builder.PUT(new ClientBodyPublisher(
 				writer,
-				resource.body().orElse(null)
+				req.body().orElse(null)
 			));
-			case DELETE -> builder.DELETE();
+			case Request.DELETE<?> _ -> builder.DELETE();
 		}
 
 		return builder.build();
 	}
 
+	@Override
+	public void close() {
+		client.close();
+	}
 }

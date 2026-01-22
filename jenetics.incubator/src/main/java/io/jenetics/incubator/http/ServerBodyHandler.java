@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.client;
+package io.jenetics.incubator.http;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,15 +26,13 @@ import java.io.UncheckedIOException;
 import java.net.http.HttpResponse;
 import java.util.function.Function;
 
-import io.jenetics.incubator.restful.ProblemDetail;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
 final class ServerBodyHandler<T>
-	implements HttpResponse.BodyHandler<ServerResponse<T>>
+	implements HttpResponse.BodyHandler<ServerResult<T>>
 {
 	private final Reader reader;
 	private final Class<T> type;
@@ -46,12 +44,12 @@ final class ServerBodyHandler<T>
 	}
 
 	@Override
-	public HttpResponse.BodySubscriber<ServerResponse<T>>
+	public HttpResponse.BodySubscriber<ServerResult<T>>
 	apply(final HttpResponse.ResponseInfo info) {
 		if (info.statusCode() == 200) {
-			return subscriber(type, ServerResponse.OK::new);
+			return subscriber(type, ServerResult.OK::new);
 		} else {
-			return subscriber(ProblemDetail.class, ServerResponse.NOK::new);
+			return subscriber(ProblemDetail.class, ServerResult.NOK::new);
 		}
 	}
 

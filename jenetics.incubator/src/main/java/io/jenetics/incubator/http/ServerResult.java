@@ -17,39 +17,39 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.http;
 
-import static java.util.Objects.requireNonNull;
+import java.net.http.HttpResponse;
 
 /**
- * This class wraps a failure object into an exception. This exception is used
- * for asynchronous calls, which returns {@link java.util.concurrent.CompletableFuture}
- * objects. Such calls will transport the error state via exceptions.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public final class ResponseException extends RuntimeException {
+sealed interface ServerResult<T> {
 
-	private final Result.Failure<?> failure;
+	record OK<T> (T value) implements ServerResult<T> {}
 
-	public ResponseException(final Result.Failure<?> failure) {
-		this.failure = requireNonNull(failure);
-	}
+	record NOK<T> (ProblemDetail detail) implements ServerResult<T> {}
 
-	public ResponseException(final String message, final Result.Failure<?> failure) {
-		super(message);
-		this.failure = requireNonNull(failure);
-	}
-
-	/**
-	 * Return the wrapped failure response.
-	 *
-	 * @return the wrapped failure response
-	 */
-	public Result.Failure<?> failure() {
-		return failure;
+	default Response<T> toResult(
+		final Request<? extends T> request,
+		final HttpResponse<ServerResult<T>> result
+	) {
+		return switch (this) {
+			case ServerResult.OK(var body) -> new Response.Success<>(
+				request,
+				new Headers(result.headers().map()),
+				result.statusCode(),
+				request.type().cast(body)
+			);
+			case ServerResult.NOK(var detail) -> new Response.ServerError<>(
+				request,
+				new Headers(result.headers().map()),
+				result.statusCode(),
+				detail
+			);
+		};
 	}
 
 }

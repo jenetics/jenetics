@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.restful.api;
 
-import io.jenetics.incubator.restful.Caller;
+import io.jenetics.incubator.http.Endpoint;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -29,19 +29,19 @@ import io.jenetics.incubator.restful.Caller;
 public sealed interface Method<T> {
 
 	non-sealed interface Get<T> extends Method<T> {
-		<C> C call(final Caller<? super T, ? extends C> caller);
+		<C> C call(final Endpoint<? super T, ? extends C> caller);
 	}
 
 	non-sealed interface Put<T> extends Method<T> {
-		<C> C call(final Object body, final Caller<? super T, ? extends C> caller);
+		<C> C call(final Object body, final Endpoint<? super T, ? extends C> caller);
 	}
 
 	non-sealed interface Post<T> extends Method<T> {
-		<C> C call(final Object body, final Caller<? super T, ? extends C> caller);
+		<C> C call(final Object body, final Endpoint<? super T, ? extends C> caller);
 	}
 
 	non-sealed interface Delete<T> extends Method<T> {
-		<C> C call(final Caller<? super T, ? extends C> caller);
+		<C> C call(final Endpoint<? super T, ? extends C> caller);
 	}
 
 }
