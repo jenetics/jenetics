@@ -21,14 +21,15 @@ package io.jenetics.incubator.http;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.completedFuture;
-import static java.util.concurrent.CompletableFuture.failedFuture;
 
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,13 +39,13 @@ import java.util.concurrent.CompletableFuture;
 final class DefaultClient implements Client {
 
 	private final HttpClient client;
-	private final Reader reader;
-	private final Writer writer;
+	private final ResponseBodyReader reader;
+	private final RequestBodyWriter writer;
 
 	public DefaultClient(
 		final HttpClient client,
-		final Reader reader,
-		final Writer writer
+		final ResponseBodyReader reader,
+		final RequestBodyWriter writer
 	) {
 		this.client = requireNonNull(client);
 		this.reader = requireNonNull(reader);
@@ -61,24 +62,27 @@ final class DefaultClient implements Client {
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
 	@Override
-	public <T> CompletableFuture<Response.Success<T>>
+	public <T> CompletableFuture<ServerResponse<T>>
 	send(URI uri, Request<? extends T> request) {
-		final CompletableFuture<HttpResponse<ServerResult<T>>> response =
+		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
 			client.sendAsync(
 				toHttpRequest(uri, request),
-				new ServerBodyHandler<T>(reader, request.type())
+				new ServerBodyHandler<T>(request, reader, request.type())
 			);
 
 		return response
-			.thenCompose(result ->
-				switch (result.body().toResult(request, result)) {
-					case Response.Success<T> success -> completedFuture(success);
-					case Response.Failure<T> failure -> {
-						final var exception = new ResultException(failure);
+			.thenCompose(result -> completedFuture(result.body())
+				/*
+				switch (result.body()) {
+					case Response.OK<T> ok -> completedFuture(ok);
+					case Response.NOK<T> nok -> {
+						final var exception = new ResultException(nok);
 						yield failedFuture(exception);
 					}
 				}
-			)
+				 */
+			);
+		/*
 			.exceptionallyCompose(throwable -> {
 				final var error = new Response.ClientError<>(
 					request,
@@ -90,6 +94,8 @@ final class DefaultClient implements Client {
 				final var exception = new ResultException(error);
 				return failedFuture(exception);
 			});
+
+		 */
 	}
 
 	private <T> HttpRequest
@@ -117,4 +123,72 @@ final class DefaultClient implements Client {
 	public void close() {
 		client.close();
 	}
+
+
+	private static final class ServerBodyHandler<T>
+		implements HttpResponse.BodyHandler<ServerResponse<T>>
+	{
+		private final Request<T> request;
+		private final ResponseBodyReader reader;
+		private final Class<T> type;
+
+		@SuppressWarnings("unchecked")
+		private ServerBodyHandler(
+			final Request<? extends T> request,
+			final ResponseBodyReader reader,
+			final Class<? extends T> type
+		) {
+			this.request = (Request<T>)requireNonNull(request);
+			this.reader = requireNonNull(reader);
+			this.type = (Class<T>)requireNonNull(type);
+		}
+
+		@Override
+		public HttpResponse.BodySubscriber<ServerResponse<T>>
+		apply(final HttpResponse.ResponseInfo info) {
+			return switch (info.statusCode()) {
+				case 200, 201, 202, 203, 204 -> subscriber(
+					reader,
+					type,
+					body -> new ServerResponse.OK<>(
+						request,
+						Headers.of(info.headers()),
+						info.statusCode(),
+						body
+					)
+				);
+				default -> subscriber(
+					reader,
+					String.class,
+					body -> new ServerResponse.NOK<>(
+						request,
+						Headers.of(info.headers()),
+						info.statusCode(),
+						body
+					)
+				);
+			};
+		}
+
+		private static <A, B> HttpResponse.BodySubscriber<B> subscriber(
+			final ResponseBodyReader reader,
+			final Class<A> type,
+			final Function<? super A, ? extends B> fn
+		) {
+			requireNonNull(type);
+
+			return HttpResponse.BodySubscribers.mapping(
+				HttpResponse.BodySubscribers.ofInputStream(),
+				in -> {
+					try {
+						return fn.apply(reader.read(in, type));
+					} catch (IOException e) {
+						throw new UncheckedIOException(e);
+					}
+				}
+			);
+		}
+
+	}
+
 }

@@ -25,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
+import java.util.function.BiFunction;
 
 import io.jenetics.incubator.http.Response.ClientError;
 
@@ -33,6 +34,10 @@ import io.jenetics.incubator.http.Response.ClientError;
  * return a result object. This interface is not meant to be implemented directly.
  * The usual <em>implementation</em> will be a method reference from a client
  * implementation.
+ *
+ * @apiNote
+ * The {@link #call(Request)} method is not meant to throw any exception. Error
+ * results <b>must</b> be reported via the {@link Response} type.
  *
  * @param <T> the <em>main</em> result type of the {@code resource}
  * @param <C> the result type returned by the caller
@@ -43,6 +48,14 @@ import io.jenetics.incubator.http.Response.ClientError;
  */
 @FunctionalInterface
 public interface Endpoint<T, C> {
+
+	/**
+	 * Calls the given {@code resource} and returns its result.
+	 *
+	 * @param request the resource
+	 * @return the call result
+	 */
+	C call(Request<? extends T> request);
 
 	/**
 	 * Caller specialization for synchronous HTTP calls.
@@ -61,37 +74,30 @@ public interface Endpoint<T, C> {
 		 */
 		static <T> Sync<T> of(URI uri, Client client) {
 			return request -> {
+				@SuppressWarnings("unchecked")
+				final var req = (Request<T>)request;
+
 				if (Thread.currentThread().isInterrupted()) {
 					return new ClientError<>(
-						request,
+						req,
 						new InterruptedException()
 					);
 				}
 
-				@SuppressWarnings("unchecked")
-				final var result = client.send(uri, request)
-					.handle((value, error) ->
-						(Response<T>)switch (error) {
-							case ResultException e -> e.failure();
-							case UncheckedIOException e -> new ClientError<>(
-								request,
-								e.getCause()
-							);
-							case Throwable e -> new ClientError<>(request, e);
-							case null -> value;
-						}
-					);
+				final var result = client
+					.send(uri, request)
+					.handle(toResponse(request));
 
 				try {
 					return result.get();
 				} catch (InterruptedException e) {
 					result.cancel(true);
 					Thread.currentThread().interrupt();
-					return new ClientError<>(request, e);
+					return new ClientError<>(req, e);
 				} catch (ExecutionException e) {
-					return new ClientError<>(request, e.getCause());
+					return new ClientError<>(req, e.getCause());
 				} catch (Exception e) {
-					return new ClientError<>(request, e);
+					return new ClientError<>(req, e);
 				}
 			};
 		}
@@ -103,7 +109,7 @@ public interface Endpoint<T, C> {
 	 * @param <T> the result type
 	 */
 	interface Async<T>
-		extends Endpoint<T, CompletableFuture<Response.Success<T>>>
+		extends Endpoint<T, CompletableFuture<Response<T>>>
 	{
 
 		/**
@@ -115,9 +121,28 @@ public interface Endpoint<T, C> {
 		 * @param <T> the endpoint result type
 		 */
 		static <T> Async<T> of(URI uri, Client client) {
-			return request -> client.send(uri, request);
+			return request -> client
+				.send(uri, request)
+				.handle(toResponse(request));
 		}
 	}
+
+
+	static <T> BiFunction<ServerResponse<? extends T>, Throwable, Response<T>>
+	toResponse(Request<? extends T> request) {
+		@SuppressWarnings("unchecked")
+		final var req = (Request<T>)request;
+
+		return (value, error) -> switch (error) {
+			case UncheckedIOException e -> new ClientError<T>(
+				req,
+				e.getCause()
+			);
+			case Throwable e -> new ClientError<>(req, e);
+			case null -> Response.of(value);
+		};
+	}
+
 
 	/**
 	 * Caller specialization for reactive HTTP calls.
@@ -125,7 +150,7 @@ public interface Endpoint<T, C> {
 	 * @param <T> the result type
 	 */
 	interface Reactive<T>
-		extends Endpoint<T, Flow.Publisher<Response.Success<T>>>
+		extends Endpoint<T, Flow.Publisher<Response<T>>>
 	{
 
 		/**
@@ -138,7 +163,7 @@ public interface Endpoint<T, C> {
 		 */
 		static <T> Reactive<T> of(URI uri, Client client) {
 			return request -> {
-				var publisher = new SubmissionPublisher<Response.Success<T>>(
+				var publisher = new SubmissionPublisher<Response<T>>(
 					Runnable::run,
 					1
 				);
@@ -148,7 +173,7 @@ public interface Endpoint<T, C> {
 						if (error != null) {
 							publisher.closeExceptionally(error);
 						} else {
-							publisher.submit(response);
+							publisher.submit(Response.of(response));
 							publisher.close();
 						}
 					});
@@ -158,12 +183,27 @@ public interface Endpoint<T, C> {
 		}
 	}
 
-	/**
-	 * Calls the given {@code resource} and returns its result.
-	 *
-	 * @param request the resource
-	 * @return the call result
-	 */
-	C call(Request<? extends T> request);
+
+
+//	private static <T> Client.Response<T> toResult(
+//		final Request<? extends T> request,
+//		final Client.Response<T> response,
+//		final HttpResponse<Client.Response<T>> result
+//	) {
+//		return switch (response) {
+//			case Client.Response.OK(var body) -> new Client.Response.Success<>(
+//				request,
+//				new Headers(result.headers().map()),
+//				result.statusCode(),
+//				request.type().cast(body)
+//			);
+//			case Client.Response.NOK(var detail) -> new Client.Response.ServerError<>(
+//				request,
+//				new Headers(result.headers().map()),
+//				result.statusCode(),
+//				detail
+//			);
+//		};
+//	}
 
 }

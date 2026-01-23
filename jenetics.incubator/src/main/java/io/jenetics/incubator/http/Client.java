@@ -36,12 +36,17 @@ public interface Client extends Closeable {
 	/**
 	 * Calls the given {@code resource} and returns its result.
 	 *
+	 * @apiNote
+	 * Server side errors are reported via the {@link ServerResponse.NOK} class.
+	 * On the other hand, a client side error occurred if the returned future
+	 * terminates with an exception.
+	 *
 	 * @param request the resource to call
 	 * @return the call response
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-	<T> CompletableFuture<Response.Success<T>>
+	<T> CompletableFuture<ServerResponse<T>>
 	send(URI uri, Request<? extends T> request);
 
 	/**
@@ -54,8 +59,8 @@ public interface Client extends Closeable {
 	 */
 	static Client of(
 		final HttpClient client,
-		final Reader reader,
-		final Writer writer
+		final ResponseBodyReader reader,
+		final RequestBodyWriter writer
 	) {
 		return new DefaultClient(client, reader, writer);
 	}
@@ -69,7 +74,10 @@ public interface Client extends Closeable {
 	 * @param writer the object writer (serializer)
 	 * @return a new client
 	 */
-	static Client of(final Reader reader, final Writer writer) {
+	static Client of(
+		final ResponseBodyReader reader,
+		final RequestBodyWriter writer
+	) {
 		return of(HttpClient.newHttpClient(), reader, writer);
 	}
 

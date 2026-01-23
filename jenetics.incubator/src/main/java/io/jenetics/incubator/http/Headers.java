@@ -1,5 +1,6 @@
 package io.jenetics.incubator.http;
 
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,10 @@ public record Headers(Map<String, List<String>> values) {
 				builder.header(name, value)
 			)
 		);
+	}
+
+	static Headers of(HttpHeaders headers) {
+		return new Headers(headers.map());
 	}
 
 }

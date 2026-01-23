@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.function.Function;
 
 /**
  * Represents the resource response.
@@ -41,7 +40,7 @@ public sealed interface Response<T> {
 	 *
 	 * @return the original resource object
 	 */
-	Request<?> request();
+	Request<T> request();
 
 	/**
 	 * The HTTP status code of the response.
@@ -49,6 +48,26 @@ public sealed interface Response<T> {
 	 * @return the HTTP status code
 	 */
 	int status();
+
+	static <T> Response<T> of(ServerResponse<? extends T> response) {
+		@SuppressWarnings("unchecked")
+		final var resp = (ServerResponse<T>)response;
+
+		return switch (resp) {
+			case ServerResponse.OK<T> ok -> new Success<>(
+				ok.request(),
+				ok.headers(),
+				ok.status(),
+				ok.body()
+			);
+			case ServerResponse.NOK<T> nok -> new ServerError<>(
+				nok.request(),
+				nok.headers(),
+				nok.status(),
+				nok.detail()
+			);
+		};
+	}
 
 	/**
 	 * The success response object.
@@ -60,7 +79,7 @@ public sealed interface Response<T> {
 	 * @param <T> the body type
 	 */
 	record Success<T>(
-		Request<?> request,
+		Request<T> request,
 		Headers headers,
 		int status,
 		T body
@@ -90,7 +109,7 @@ public sealed interface Response<T> {
 	 * @param error the thrown exception
 	 * @param <T> the body type
 	 */
-	record ClientError<T>(Request<?> request, Throwable error)
+	record ClientError<T>(Request<T> request, Throwable error)
 		implements Failure<T>
 	{
 		public ClientError {
@@ -123,10 +142,10 @@ public sealed interface Response<T> {
 	 * @param <T> the body type
 	 */
 	record ServerError<T>(
-		Request<?> request,
+		Request<T> request,
 		Headers headers,
 		int status,
-		ProblemDetail detail
+		String detail
 	)
 		implements Failure<T>
 	{
@@ -134,42 +153,6 @@ public sealed interface Response<T> {
 			requireNonNull(request);
 			requireNonNull(headers);
 		}
-	}
-
-	/**
-	 * Applies the mapping function to the (success) response object. Errors are
-	 * returned unchanged.
-	 *
-	 * @param fn the mapping function
-	 * @return the mapped response object
-	 * @param <A> the new response body type
-	 */
-	@SuppressWarnings("unchecked")
-	default <A> Response<A> map(final Function<? super T, ? extends A> fn) {
-		requireNonNull(fn);
-
-		return switch (this) {
-			case Success(var s, var h, var r, var b) -> new Success<>(s, h, r, fn.apply(b));
-			case Response.Failure<T> f -> (Failure<A>)f;
-		};
-	}
-
-	/**
-	 * Applies the mapping function to the (success) response object. Errors are
-	 * returned unchanged.
-	 *
-	 * @param fn the mapping function
-	 * @return the mapped response object
-	 * @param <A> the new response body type
-	 */
-	@SuppressWarnings("unchecked")
-	default  <A> Response<A> flatMap(final Function<? super T, Response<? extends A>> fn) {
-		requireNonNull(fn);
-
-		return (Response<A>)switch (this) {
-			case Response.Success<T> s -> fn.apply(s.body());
-			case Response.Failure<T> f -> f;
-		};
 	}
 
 }

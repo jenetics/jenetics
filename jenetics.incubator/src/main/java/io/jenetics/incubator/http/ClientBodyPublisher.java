@@ -36,7 +36,7 @@ final class ClientBodyPublisher implements HttpRequest.BodyPublisher {
 
 	private final HttpRequest.BodyPublisher delegate;
 
-	ClientBodyPublisher(final Writer writer, final Object body) {
+	ClientBodyPublisher(final RequestBodyWriter writer, final Object body) {
 		requireNonNull(writer);
 
 		if (body == null) {

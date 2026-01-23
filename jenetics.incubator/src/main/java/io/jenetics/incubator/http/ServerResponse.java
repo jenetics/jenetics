@@ -19,26 +19,50 @@
  */
 package io.jenetics.incubator.http;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 /**
- * Writer interface for writing (serializing) a given object to an output stream.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-@FunctionalInterface
-public interface Writer {
+public sealed interface ServerResponse<T> {
 
-	/**
-	 * Writes the given {@code value} to the data sink.
-	 *
-	 * @param sink the output stream where the value is written to
-	 * @param value the value to write
-	 * @throws IOException if writing the value fails
-	 */
-	void write(OutputStream sink, Object value) throws IOException;
+	Request<T> request();
+
+	int status();
+
+	Headers headers();
+
+	record OK<T>(Request<T> request, Headers headers, int status, T body)
+		implements ServerResponse<T>
+	{
+	}
+
+	record NOK<T> (Request<T> request, Headers headers, int status, String detail)
+		implements ServerResponse<T>
+	{
+	}
+
+/*
+	default Response<T> toResult(
+		final Request<? extends T> request,
+		final HttpResponse<ServerResponse<T>> result
+	) {
+		return switch (this) {
+			case ServerResponse.OK(var body) -> new Response.Success<>(
+				request,
+				new Headers(result.headers().map()),
+				result.statusCode(),
+				request.type().cast(body)
+			);
+			case ServerResponse.NOK(var detail) -> new Response.ServerError<>(
+				request,
+				new Headers(result.headers().map()),
+				result.statusCode(),
+				detail
+			);
+		};
+	}
+
+ */
 
 }
