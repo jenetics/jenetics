@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A read-only view of a set of HTTP headers.
+ *
+ * @param values the header values
+ */
 public record Headers(Map<String, List<String>> values) {
 
 	public Headers {

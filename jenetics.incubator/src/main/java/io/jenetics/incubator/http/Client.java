@@ -46,8 +46,7 @@ public interface Client extends Closeable {
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-	<T> CompletableFuture<ServerResponse<T>>
-	send(URI uri, Request<? extends T> request);
+	<T> CompletableFuture<ServerResponse<T>> send(URI uri, Request<? extends T> request);
 
 	/**
 	 * Return a client which uses the standard Java {@link HttpClient}.

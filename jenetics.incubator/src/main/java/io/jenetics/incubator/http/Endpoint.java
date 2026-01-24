@@ -19,13 +19,11 @@
  */
 package io.jenetics.incubator.http;
 
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
-import java.util.function.BiFunction;
 
 import io.jenetics.incubator.http.Response.ClientError;
 
@@ -65,6 +63,20 @@ public interface Endpoint<T, C> {
 	interface Sync<T> extends Endpoint<T, Response<T>> {
 
 		/**
+		 * Calls the endpoint with the given {@code request}. The method call is
+		 * synchronous and doesn't throw an exception.
+		 *
+		 * @apiNote
+		 * All errors, server side and client side, are returned via the
+		 * {@link Response} object.
+		 *
+		 * @param request the request
+		 * @return the response fo the request
+		 */
+		@Override
+		Response<T> call(Request<? extends T> request);
+
+		/**
 		 * Return a new synchronous endpoint.
 		 *
 		 * @param uri the endpoint URI
@@ -86,7 +98,7 @@ public interface Endpoint<T, C> {
 
 				final var result = client
 					.send(uri, request)
-					.handle(toResponse(request));
+					.handle((value, error) -> Response.of(request, value, error));
 
 				try {
 					return result.get();
@@ -113,6 +125,20 @@ public interface Endpoint<T, C> {
 	{
 
 		/**
+		 * Calls the endpoint with the given {@code request}. The method call is
+		 * asynchronous and doesn't throw an exception.
+		 *
+		 * @apiNote
+		 * All errors, server side and client side, are returned via the
+		 * {@link Response} object.
+		 *
+		 * @param request the request
+		 * @return the response fo the request
+		 */
+		@Override
+		CompletableFuture<Response<T>> call(Request<? extends T> request);
+
+		/**
 		 * Return a new asynchronous endpoint.
 		 *
 		 * @param uri the endpoint URI
@@ -123,26 +149,9 @@ public interface Endpoint<T, C> {
 		static <T> Async<T> of(URI uri, Client client) {
 			return request -> client
 				.send(uri, request)
-				.handle(toResponse(request));
+				.handle((value, error) -> Response.of(request, value, error));
 		}
 	}
-
-
-	static <T> BiFunction<ServerResponse<? extends T>, Throwable, Response<T>>
-	toResponse(Request<? extends T> request) {
-		@SuppressWarnings("unchecked")
-		final var req = (Request<T>)request;
-
-		return (value, error) -> switch (error) {
-			case UncheckedIOException e -> new ClientError<T>(
-				req,
-				e.getCause()
-			);
-			case Throwable e -> new ClientError<>(req, e);
-			case null -> Response.of(value);
-		};
-	}
-
 
 	/**
 	 * Caller specialization for reactive HTTP calls.
@@ -152,6 +161,20 @@ public interface Endpoint<T, C> {
 	interface Reactive<T>
 		extends Endpoint<T, Flow.Publisher<Response<T>>>
 	{
+
+		/**
+		 * Calls the endpoint with the given {@code request}. The method call is
+		 * reactive and doesn't throw an exception.
+		 *
+		 * @apiNote
+		 * All errors, server side and client side, are returned via the
+		 * {@link Response} object.
+		 *
+		 * @param request the request
+		 * @return the response fo the request
+		 */
+		@Override
+		Flow.Publisher<Response<T>> call(Request<? extends T> request);
 
 		/**
 		 * Return a new reactive endpoint.
@@ -182,28 +205,5 @@ public interface Endpoint<T, C> {
 			};
 		}
 	}
-
-
-
-//	private static <T> Client.Response<T> toResult(
-//		final Request<? extends T> request,
-//		final Client.Response<T> response,
-//		final HttpResponse<Client.Response<T>> result
-//	) {
-//		return switch (response) {
-//			case Client.Response.OK(var body) -> new Client.Response.Success<>(
-//				request,
-//				new Headers(result.headers().map()),
-//				result.statusCode(),
-//				request.type().cast(body)
-//			);
-//			case Client.Response.NOK(var detail) -> new Client.Response.ServerError<>(
-//				request,
-//				new Headers(result.headers().map()),
-//				result.statusCode(),
-//				detail
-//			);
-//		};
-//	}
 
 }

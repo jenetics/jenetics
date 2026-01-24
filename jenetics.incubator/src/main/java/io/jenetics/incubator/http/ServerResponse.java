@@ -19,50 +19,66 @@
  */
 package io.jenetics.incubator.http;
 
+import java.net.URI;
+
 /**
+ * The response object returned by the {@link Client#send(URI, Request)} method.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
 public sealed interface ServerResponse<T> {
 
+	/**
+	 * Return the original resource object. The type of the original resource
+	 * is not known, since the response type might have been changed by one
+	 * of the mapping methods.
+	 *
+	 * @return the original resource object
+	 */
 	Request<T> request();
 
+	/**
+	 * The HTTP status code of the response.
+	 *
+	 * @return the HTTP status code
+	 */
 	int status();
 
+	/**
+	 * The response headers.
+	 *
+	 * @return response headers
+	 */
 	Headers headers();
 
+	/**
+	 * The server success response.
+	 *
+	 * @param request the original request object
+	 * @param headers the response headers
+	 * @param status the response status
+	 * @param body the response body
+	 * @param <T> the body type
+	 */
 	record OK<T>(Request<T> request, Headers headers, int status, T body)
 		implements ServerResponse<T>
 	{
 	}
 
+	/**
+	 * The server error response
+	 *
+	 * @param request the original request object
+	 * @param headers the response headers
+	 * @param status the response status
+	 * @param detail the error details as string
+	 * @param <T> the body type
+	 */
 	record NOK<T> (Request<T> request, Headers headers, int status, String detail)
 		implements ServerResponse<T>
 	{
 	}
-
-/*
-	default Response<T> toResult(
-		final Request<? extends T> request,
-		final HttpResponse<ServerResponse<T>> result
-	) {
-		return switch (this) {
-			case ServerResponse.OK(var body) -> new Response.Success<>(
-				request,
-				new Headers(result.headers().map()),
-				result.statusCode(),
-				request.type().cast(body)
-			);
-			case ServerResponse.NOK(var detail) -> new Response.ServerError<>(
-				request,
-				new Headers(result.headers().map()),
-				result.statusCode(),
-				detail
-			);
-		};
-	}
-
- */
 
 }

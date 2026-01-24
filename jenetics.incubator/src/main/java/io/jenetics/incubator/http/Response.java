@@ -49,26 +49,6 @@ public sealed interface Response<T> {
 	 */
 	int status();
 
-	static <T> Response<T> of(ServerResponse<? extends T> response) {
-		@SuppressWarnings("unchecked")
-		final var resp = (ServerResponse<T>)response;
-
-		return switch (resp) {
-			case ServerResponse.OK<T> ok -> new Success<>(
-				ok.request(),
-				ok.headers(),
-				ok.status(),
-				ok.body()
-			);
-			case ServerResponse.NOK<T> nok -> new ServerError<>(
-				nok.request(),
-				nok.headers(),
-				nok.status(),
-				nok.detail()
-			);
-		};
-	}
-
 	/**
 	 * The success response object.
 	 *
@@ -153,6 +133,77 @@ public sealed interface Response<T> {
 			requireNonNull(request);
 			requireNonNull(headers);
 		}
+	}
+
+	/**
+	 * Convert the given server {@code response} into a {@link Response} object.
+	 * <br>
+	 * <b>Response mapping</b>
+	 * <ul>
+	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.OK} -> {@link Success}</li>
+	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.NOK} -> {@link ServerError}</li>
+	 * </ul>
+	 *
+	 * @param response the server response
+	 * @return the converted response object
+	 * @param <T> the response body type
+	 */
+	static <T> Response<T> of(final ServerResponse<? extends T> response) {
+		requireNonNull(response);
+
+		@SuppressWarnings("unchecked")
+		final var resp = (ServerResponse<T>)response;
+
+		return switch (resp) {
+			case ServerResponse.OK<T> ok -> new Success<>(
+				ok.request(),
+				ok.headers(),
+				ok.status(),
+				ok.body()
+			);
+			case ServerResponse.NOK<T> nok -> new ServerError<>(
+				nok.request(),
+				nok.headers(),
+				nok.status(),
+				nok.detail()
+			);
+		};
+	}
+
+	/**
+	 * Convert the given server {@code response} into a {@link Response} object.
+	 * If the {@code error} is not {@code null}, a {@link ClientError} is
+	 * returned.
+	 * <br>
+	 * <b>Response mapping</b>
+	 * <ul>
+	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.OK} -> {@link Success}</li>
+	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.NOK} -> {@link ServerError}</li>
+	 *     <li>{@link Throwable} -> {@link ClientError}</li>
+	 * </ul>
+	 *
+	 * @param request the original request
+	 * @param response the server response
+	 * @param error the exception thrown on the client side, or {@code null}
+	 * @return the converted response object
+	 * @param <T> the response body type
+	 */
+	static <T> Response<T> of(
+		final Request<? extends T> request,
+		final ServerResponse<? extends T> response,
+		final Throwable error
+	) {
+		@SuppressWarnings("unchecked")
+		final var req = (Request<T>)request;
+
+		return switch (error) {
+			case UncheckedIOException e -> new ClientError<T>(
+				req,
+				e.getCause()
+			);
+			case Throwable e -> new ClientError<>(req, e);
+			case null -> Response.of(response);
+		};
 	}
 
 }

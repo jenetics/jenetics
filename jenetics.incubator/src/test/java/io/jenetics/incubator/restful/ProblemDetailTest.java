@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.http.ProblemDetail;
-
 public class ProblemDetailTest {
 
 	@Test
