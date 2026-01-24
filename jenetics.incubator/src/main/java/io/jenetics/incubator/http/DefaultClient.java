@@ -62,40 +62,15 @@ final class DefaultClient implements Client {
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
 	@Override
-	public <T> CompletableFuture<ServerResponse<T>>
+	public <T> CompletableFuture<ServerResult<T>>
 	send(URI uri, Request<? extends T> request) {
-		final CompletableFuture<HttpResponse<ServerResponse<T>>> response =
+		final CompletableFuture<HttpResponse<ServerResult<T>>> response =
 			client.sendAsync(
 				toHttpRequest(uri, request),
 				new ServerBodyHandler<T>(request, reader, request.type())
 			);
 
-		return response
-			.thenCompose(result -> completedFuture(result.body())
-				/*
-				switch (result.body()) {
-					case Response.OK<T> ok -> completedFuture(ok);
-					case Response.NOK<T> nok -> {
-						final var exception = new ResultException(nok);
-						yield failedFuture(exception);
-					}
-				}
-				 */
-			);
-		/*
-			.exceptionallyCompose(throwable -> {
-				final var error = new Response.ClientError<>(
-					request,
-					switch (throwable) {
-						case UncheckedIOException e -> e.getCause();
-						case Throwable e -> e;
-					}
-				);
-				final var exception = new ResultException(error);
-				return failedFuture(exception);
-			});
-
-		 */
+		return response.thenCompose(result -> completedFuture(result.body()));
 	}
 
 	private <T> HttpRequest
@@ -126,7 +101,7 @@ final class DefaultClient implements Client {
 
 
 	private static final class ServerBodyHandler<T>
-		implements HttpResponse.BodyHandler<ServerResponse<T>>
+		implements HttpResponse.BodyHandler<ServerResult<T>>
 	{
 		private final Request<T> request;
 		private final ResponseBodyReader reader;
@@ -144,13 +119,13 @@ final class DefaultClient implements Client {
 		}
 
 		@Override
-		public HttpResponse.BodySubscriber<ServerResponse<T>>
+		public HttpResponse.BodySubscriber<ServerResult<T>>
 		apply(final HttpResponse.ResponseInfo info) {
 			return switch (info.statusCode()) {
 				case 200, 201, 202, 203, 204 -> subscriber(
 					reader,
 					type,
-					body -> new ServerResponse.OK<>(
+					body -> new ServerResult.OK<>(
 						request,
 						Headers.of(info.headers()),
 						info.statusCode(),
@@ -160,7 +135,7 @@ final class DefaultClient implements Client {
 				default -> subscriber(
 					reader,
 					String.class,
-					body -> new ServerResponse.NOK<>(
+					body -> new ServerResult.NOK<>(
 						request,
 						Headers.of(info.headers()),
 						info.statusCode(),

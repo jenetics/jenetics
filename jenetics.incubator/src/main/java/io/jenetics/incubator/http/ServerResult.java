@@ -22,13 +22,13 @@ package io.jenetics.incubator.http;
 import java.net.URI;
 
 /**
- * The response object returned by the {@link Client#send(URI, Request)} method.
+ * The result object returned by the {@link Client#send(URI, Request)} method.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-public sealed interface ServerResponse<T> {
+public sealed interface ServerResult<T> {
 
 	/**
 	 * Return the original resource object. The type of the original resource
@@ -63,7 +63,7 @@ public sealed interface ServerResponse<T> {
 	 * @param <T> the body type
 	 */
 	record OK<T>(Request<T> request, Headers headers, int status, T body)
-		implements ServerResponse<T>
+		implements ServerResult<T>
 	{
 	}
 
@@ -77,7 +77,7 @@ public sealed interface ServerResponse<T> {
 	 * @param <T> the body type
 	 */
 	record NOK<T> (Request<T> request, Headers headers, int status, String detail)
-		implements ServerResponse<T>
+		implements ServerResult<T>
 	{
 	}
 

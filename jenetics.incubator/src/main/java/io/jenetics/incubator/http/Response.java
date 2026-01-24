@@ -140,28 +140,28 @@ public sealed interface Response<T> {
 	 * <br>
 	 * <b>Response mapping</b>
 	 * <ul>
-	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.OK} -> {@link Success}</li>
-	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.NOK} -> {@link ServerError}</li>
+	 *     <li>{@link ServerResult.OK} -> {@link Success}</li>
+	 *     <li>{@link ServerResult.NOK} -> {@link ServerError}</li>
 	 * </ul>
 	 *
 	 * @param response the server response
 	 * @return the converted response object
 	 * @param <T> the response body type
 	 */
-	static <T> Response<T> of(final ServerResponse<? extends T> response) {
+	static <T> Response<T> of(final ServerResult<? extends T> response) {
 		requireNonNull(response);
 
 		@SuppressWarnings("unchecked")
-		final var resp = (ServerResponse<T>)response;
+		final var resp = (ServerResult<T>)response;
 
 		return switch (resp) {
-			case ServerResponse.OK<T> ok -> new Success<>(
+			case ServerResult.OK<T> ok -> new Success<>(
 				ok.request(),
 				ok.headers(),
 				ok.status(),
 				ok.body()
 			);
-			case ServerResponse.NOK<T> nok -> new ServerError<>(
+			case ServerResult.NOK<T> nok -> new ServerError<>(
 				nok.request(),
 				nok.headers(),
 				nok.status(),
@@ -177,8 +177,8 @@ public sealed interface Response<T> {
 	 * <br>
 	 * <b>Response mapping</b>
 	 * <ul>
-	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.OK} -> {@link Success}</li>
-	 *     <li>{@link io.jenetics.incubator.http.ServerResponse.NOK} -> {@link ServerError}</li>
+	 *     <li>{@link ServerResult.OK} -> {@link Success}</li>
+	 *     <li>{@link ServerResult.NOK} -> {@link ServerError}</li>
 	 *     <li>{@link Throwable} -> {@link ClientError}</li>
 	 * </ul>
 	 *
@@ -190,7 +190,7 @@ public sealed interface Response<T> {
 	 */
 	static <T> Response<T> of(
 		final Request<? extends T> request,
-		final ServerResponse<? extends T> response,
+		final ServerResult<? extends T> response,
 		final Throwable error
 	) {
 		@SuppressWarnings("unchecked")

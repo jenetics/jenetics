@@ -37,7 +37,7 @@ public interface Client extends Closeable {
 	 * Calls the given {@code resource} and returns its result.
 	 *
 	 * @apiNote
-	 * Server side errors are reported via the {@link ServerResponse.NOK} class.
+	 * Server side errors are reported via the {@link ServerResult.NOK} class.
 	 * On the other hand, a client side error occurred if the returned future
 	 * terminates with an exception.
 	 *
@@ -46,7 +46,7 @@ public interface Client extends Closeable {
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-	<T> CompletableFuture<ServerResponse<T>> send(URI uri, Request<? extends T> request);
+	<T> CompletableFuture<ServerResult<T>> send(URI uri, Request<? extends T> request);
 
 	/**
 	 * Return a client which uses the standard Java {@link HttpClient}.
