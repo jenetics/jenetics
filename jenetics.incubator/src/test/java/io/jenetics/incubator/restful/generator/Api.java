@@ -31,8 +31,7 @@ import io.jenetics.incubator.restful.generator.model.AllOf;
 import io.jenetics.incubator.restful.generator.model.AnyOf;
 import io.jenetics.incubator.restful.generator.model.Complex;
 import io.jenetics.incubator.restful.generator.model.OneOf;
-import io.jenetics.incubator.restful.generator.model.Primitive;
-import io.jenetics.incubator.restful.generator.model.Property;
+import io.jenetics.incubator.openapi.model.Property;
 import io.jenetics.incubator.restful.generator.model.Struct;
 import io.jenetics.incubator.restful.generator.model.Type;
 

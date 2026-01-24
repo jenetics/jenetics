@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @since 8.2
  * @version 8.2
  */
-public sealed interface Parameter extends Serializable {
+public sealed interface Parameter {
 
 	/**
 	 * Factory for a parameter of a given type and key.

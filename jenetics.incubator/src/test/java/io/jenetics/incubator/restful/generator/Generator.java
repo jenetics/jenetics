@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.jenetics.incubator.restful.generator.model.Property;
+import io.jenetics.incubator.openapi.model.Property;
 import io.jenetics.incubator.restful.generator.model.Struct;
 
 /**

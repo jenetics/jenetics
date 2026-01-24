@@ -17,12 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful.api;
+package io.jenetics.incubator.openapi.model;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
- */
-public interface ApiPath<T> {
-}
+import java.util.List;
+
+public record Property(
+	String name,
+	Type type,
+	boolean required,
+	List<Extension> extensions
+) {}
