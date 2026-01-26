@@ -50,7 +50,7 @@ public final class MuseumApi {
 
 			final Response<Hours> response = MUSEUM_HOURS
 				.add(Parameter.path("museum-name", "KHM"))
-				.add(Parameter.header("Content-Type", "application/json"))
+				.add(Parameter.query("limit", "10"))
 				.PUT("body", Caller.Sync.of(client));
 
 			switch (response) {
@@ -65,17 +65,17 @@ public final class MuseumApi {
 
 			final CompletableFuture<Response<Hours>> async = MUSEUM_HOURS
 				.add(Parameter.path("museum-name", "KHM"))
-				.add(Parameter.header("Content-Type", "application/json"))
+				.add(Parameter.query("limit", "10"))
 				.PUT("body", Caller.Async.of(client));
 
 			final Flow.Publisher<Response<Hours>> publisher = MUSEUM_HOURS
 				.add(Parameter.path("museum-name", "KHM"))
-				.add(Parameter.header("Content-Type", "application/json"))
+				.add(Parameter.query("limit", "10"))
 				.PUT("body", Caller.Reactive.of(client));
 
 			final Mono<Response<Hours>> mono = MUSEUM_HOURS
 				.add(Parameter.path("museum-name", "KHM"))
-				.add(Parameter.header("Content-Type", "application/json"))
+				.add(Parameter.query("limit", "10"))
 				.PUT("body", MonoCaller.of(client));
 
 		}

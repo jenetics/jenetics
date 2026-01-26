@@ -190,6 +190,19 @@ public final class Resource<T> {
 	 * @return a new resource
 	 * @param <T> the resource type
 	 */
+	public static <T> Resource<T> of(Path path, Class<? extends T> type) {
+		return new Resource<>(type, path, List.of());
+	}
+
+	/**
+	 * Create a new resource object from the given {@code path} a return
+	 * {@code type}.
+	 *
+	 * @param path the (local) resource path
+	 * @param type the resource return type
+	 * @return a new resource
+	 * @param <T> the resource type
+	 */
 	public static <T> Resource<T> of(String path, Class<? extends T> type) {
 		return new Resource<>(type, Path.of(path), List.of());
 	}
