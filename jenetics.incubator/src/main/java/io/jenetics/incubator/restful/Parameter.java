@@ -19,9 +19,12 @@
  */
 package io.jenetics.incubator.restful;
 
+import static java.net.URLEncoder.encode;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Defines the resource parameters: header, path and query.
@@ -93,6 +96,22 @@ public sealed interface Parameter {
 		 */
 		static Value key(String key) {
 			return value -> query(key, value);
+		}
+
+		/**
+		 * Return the query string from the given list of query parameters.
+		 *
+		 * @param parameters the query parameters
+		 * @return the query string
+		 */
+		static String toString(final Collection<? extends Query> parameters) {
+			return "?" + parameters.stream()
+				.map(Query::string)
+				.collect(Collectors.joining("&"));
+		}
+
+		private static String string(Query query) {
+			return encode(query.key(), UTF_8) + "=" + encode(query.value(), UTF_8);
 		}
 	}
 

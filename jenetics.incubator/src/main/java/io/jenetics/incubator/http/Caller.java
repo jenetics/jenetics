@@ -19,7 +19,6 @@
  */
 package io.jenetics.incubator.http;
 
-import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow;
@@ -45,7 +44,7 @@ import io.jenetics.incubator.http.Response.ClientError;
  * @version 8.2
  */
 @FunctionalInterface
-public interface Endpoint<T, C> {
+public interface Caller<T, C> {
 
 	/**
 	 * Calls the given {@code resource} and returns its result.
@@ -60,7 +59,7 @@ public interface Endpoint<T, C> {
 	 *
 	 * @param <T> the result type
 	 */
-	interface Sync<T> extends Endpoint<T, Response<T>> {
+	interface Sync<T> extends Caller<T, Response<T>> {
 
 		/**
 		 * Calls the endpoint with the given {@code request}. The method call is
@@ -79,12 +78,11 @@ public interface Endpoint<T, C> {
 		/**
 		 * Return a new synchronous endpoint.
 		 *
-		 * @param uri the endpoint URI
 		 * @param client the client implementation used for calling the endpoint
 		 * @return a new synchronous endpoint
 		 * @param <T> the endpoint result type
 		 */
-		static <T> Sync<T> of(URI uri, Client client) {
+		static <T> Sync<T> of(Client client) {
 			return request -> {
 				@SuppressWarnings("unchecked")
 				final var req = (Request<T>)request;
@@ -97,7 +95,7 @@ public interface Endpoint<T, C> {
 				}
 
 				final var result = client
-					.send(uri, request)
+					.send(request.uri(), request)
 					.handle((value, error) -> Response.of(request, value, error));
 
 				try {
@@ -121,7 +119,7 @@ public interface Endpoint<T, C> {
 	 * @param <T> the result type
 	 */
 	interface Async<T>
-		extends Endpoint<T, CompletableFuture<Response<T>>>
+		extends Caller<T, CompletableFuture<Response<T>>>
 	{
 
 		/**
@@ -141,14 +139,13 @@ public interface Endpoint<T, C> {
 		/**
 		 * Return a new asynchronous endpoint.
 		 *
-		 * @param uri the endpoint URI
 		 * @param client the client implementation used for calling the endpoint
 		 * @return a new asynchronous endpoint
 		 * @param <T> the endpoint result type
 		 */
-		static <T> Async<T> of(URI uri, Client client) {
+		static <T> Async<T> of(Client client) {
 			return request -> client
-				.send(uri, request)
+				.send(request.uri(), request)
 				.handle((value, error) -> Response.of(request, value, error));
 		}
 	}
@@ -159,7 +156,7 @@ public interface Endpoint<T, C> {
 	 * @param <T> the result type
 	 */
 	interface Reactive<T>
-		extends Endpoint<T, Flow.Publisher<Response<T>>>
+		extends Caller<T, Flow.Publisher<Response<T>>>
 	{
 
 		/**
@@ -179,19 +176,18 @@ public interface Endpoint<T, C> {
 		/**
 		 * Return a new reactive endpoint.
 		 *
-		 * @param uri the endpoint URI
 		 * @param client the client implementation used for calling the endpoint
 		 * @return a new reactive endpoint
 		 * @param <T> the endpoint result type
 		 */
-		static <T> Reactive<T> of(URI uri, Client client) {
+		static <T> Reactive<T> of(Client client) {
 			return request -> {
 				var publisher = new SubmissionPublisher<Response<T>>(
 					Runnable::run,
 					1
 				);
 
-				client.<T>send(uri, request)
+				client.<T>send(request.uri(), request)
 					.whenComplete((response, error) -> {
 						if (error != null) {
 							publisher.closeExceptionally(error);

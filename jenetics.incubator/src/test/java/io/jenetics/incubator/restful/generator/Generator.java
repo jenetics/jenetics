@@ -19,15 +19,6 @@
  */
 package io.jenetics.incubator.restful.generator;
 
-import static java.util.Objects.requireNonNull;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import io.jenetics.incubator.openapi.model.Property;
-import io.jenetics.incubator.restful.generator.model.Struct;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
@@ -35,39 +26,39 @@ import io.jenetics.incubator.restful.generator.model.Struct;
  */
 public class Generator {
 
-	private final Api api;
-
-	public Generator(final Api api) {
-		this.api = requireNonNull(api);
-	}
-
-	public static void main(String[] args) throws IOException {
-		final var resource = "/io/jenetics/incubator/restful/museum-api.yaml";
-		final var generator = new Generator(Api.of(resource));
-
-		final List<Struct> structs = generator.api.types().stream()
-			.peek(System.out::println)
-			.filter(t -> "Ticket".equals(t.name()))
-			.map(t -> (Struct)t)
-			.toList();
-
-		System.out.println(toString(structs.getFirst()));
-	}
-
-	static String toString(final Struct struct) {
-		var prop = struct.properties().stream()
-			.map(Generator::toString)
-			.collect(Collectors.joining(",\n"))
-			.indent(4);
-
-		return  """
-			public record %s(
-			%s) { }
-			""".formatted(struct.name(), prop);
-	}
-
-	static String toString(final Property property) {
-		return property.type() + " " + property.name();
-	}
+//	private final Api api;
+//
+//	public Generator(final Api api) {
+//		this.api = requireNonNull(api);
+//	}
+//
+//	public static void main(String[] args) throws IOException {
+//		final var resource = "/io/jenetics/incubator/restful/museum-api.yaml";
+//		final var generator = new Generator(Api.of(resource));
+//
+//		final List<Struct> structs = generator.api.types().stream()
+//			.peek(System.out::println)
+//			.filter(t -> "Ticket".equals(t.name()))
+//			.map(t -> (Struct)t)
+//			.toList();
+//
+//		System.out.println(toString(structs.getFirst()));
+//	}
+//
+//	static String toString(final Struct struct) {
+//		var prop = struct.properties().stream()
+//			.map(Generator::toString)
+//			.collect(Collectors.joining(",\n"))
+//			.indent(4);
+//
+//		return  """
+//			public record %s(
+//			%s) { }
+//			""".formatted(struct.name(), prop);
+//	}
+//
+//	static String toString(final Property property) {
+//		return property.type() + " " + property.name();
+//	}
 
 }

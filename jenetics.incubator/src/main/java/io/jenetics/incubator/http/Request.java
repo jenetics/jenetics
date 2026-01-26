@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.http;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
@@ -44,6 +45,13 @@ public sealed interface Request<T> {
 	Headers headers();
 
 	/**
+	 * Return the request URI.
+	 *
+	 * @return the request URI
+	 */
+	URI uri();
+
+	/**
 	 * Interface for HTTP <em>GET</em> request.
 	 *
 	 * @param <T> the response body type of the request.
@@ -59,11 +67,11 @@ public sealed interface Request<T> {
 		 * @return a new <em>GET</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> GET<T> of(Class<T> type, Headers headers) {
-			record GETRecord<T>(Class<T> type, Headers headers)
+		static <T> GET<T> of(Class<T> type, URI uri, Headers headers) {
+			record GETRecord<T>(Class<T> type, URI uri, Headers headers)
 				implements GET<T> { }
 
-			return new GETRecord<>(type, headers);
+			return new GETRecord<>(type, uri, headers);
 		}
 
 		/**
@@ -73,8 +81,8 @@ public sealed interface Request<T> {
 		 * @return a new <em>GET</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> GET<T> of(Class<T> type) {
-			return of(type, new Headers(Map.of()));
+		static <T> GET<T> of(Class<T> type, URI uri) {
+			return of(type, uri, new Headers(Map.of()));
 		}
 	}
 
@@ -102,11 +110,16 @@ public sealed interface Request<T> {
 		 * @return a new <em>PUT</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> PUT<T> of(Class<T> type, Object body, Headers headers) {
-			record PUTRecord<T>(Class<T> type, Optional<Object> body, Headers headers)
+		static <T> PUT<T> of(Class<T> type, URI uri, Headers headers, Object body) {
+			record PUTRecord<T>(
+				Class<T> type,
+				URI uri,
+				Headers headers,
+				Optional<Object> body
+			)
 				implements PUT<T> { }
 
-			return new PUTRecord<>(type, Optional.ofNullable(body), headers);
+			return new PUTRecord<>(type, uri, headers, Optional.ofNullable(body));
 		}
 
 		/**
@@ -118,8 +131,8 @@ public sealed interface Request<T> {
 		 * @return a new <em>PUT</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> PUT<T> of(Class<T> type, Object body) {
-			return of(type, Optional.ofNullable(body),  new Headers(Map.of()));
+		static <T> PUT<T> of(Class<T> type, URI uri, Object body) {
+			return of(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
 		}
 	}
 
@@ -147,11 +160,16 @@ public sealed interface Request<T> {
 		 * @return a new <em>POST</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> POST<T> of(Class<T> type, Object body, Headers headers) {
-			record POSTRecord<T>(Class<T> type, Optional<Object> body, Headers headers)
+		static <T> POST<T> of(Class<T> type, URI uri, Headers headers, Object body) {
+			record POSTRecord<T>(
+				Class<T> type,
+				URI uri,
+				Headers headers,
+				Optional<Object> body
+			)
 				implements POST<T> { }
 
-			return new POSTRecord<>(type, Optional.ofNullable(body), headers);
+			return new POSTRecord<>(type, uri, headers, Optional.ofNullable(body));
 		}
 
 		/**
@@ -163,8 +181,8 @@ public sealed interface Request<T> {
 		 * @return a new <em>POST</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> POST<T> of(Class<T> type, Object body) {
-			return of(type, Optional.ofNullable(body),  new Headers(Map.of()));
+		static <T> POST<T> of(Class<T> type, URI uri, Object body) {
+			return of(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
 		}
 	}
 
@@ -184,11 +202,11 @@ public sealed interface Request<T> {
 		 * @return a new <em>DELETE</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> DELETE<T> of(Class<T> type, Headers headers) {
-			record DELETERecord<T>(Class<T> type, Headers headers)
+		static <T> DELETE<T> of(Class<T> type, URI uri, Headers headers) {
+			record DELETERecord<T>(Class<T> type, URI uri, Headers headers)
 				implements DELETE<T> { }
 
-			return new DELETERecord<>(type, headers);
+			return new DELETERecord<>(type, uri, headers);
 		}
 
 		/**
@@ -198,8 +216,8 @@ public sealed interface Request<T> {
 		 * @return a new <em>DELETE</em> request
 		 * @param <T> the response body type of the request
 		 */
-		static <T> DELETE<T> of(Class<T> type) {
-			return of(type, new Headers(Map.of()));
+		static <T> DELETE<T> of(Class<T> type, URI uri) {
+			return of(type, uri, new Headers(Map.of()));
 		}
 	}
 

@@ -20,6 +20,7 @@
 package io.jenetics.incubator.http;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
@@ -47,6 +48,20 @@ public interface Client extends Closeable {
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
 	<T> CompletableFuture<ServerResult<T>> send(URI uri, Request<? extends T> request);
+
+	default Client server(URI server) {
+		return new Client() {
+			@Override
+			public <T> CompletableFuture<ServerResult<T>>
+			send(URI uri, Request<? extends T> request) {
+				return Client.this.send(uri.resolve(server), request);
+			}
+			@Override
+			public void close() throws IOException {
+				Client.this.close();
+			}
+		};
+	}
 
 	/**
 	 * Return a client which uses the standard Java {@link HttpClient}.

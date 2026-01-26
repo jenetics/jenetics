@@ -19,37 +19,67 @@
  */
 package io.jenetics.incubator.restful;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Flow;
+
+import org.joda.time.Hours;
+
+import io.jenetics.incubator.http.Caller;
+import io.jenetics.incubator.http.Client;
+import io.jenetics.incubator.http.Response;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
 public final class MuseumApi {
-//	private MuseumApi() { }
-//
-//	record Hours(String name, LocalTime start, LocalTime end) {}
-//
-//	interface MuseumHours extends ApiPath<Hours> {
-//		Resource<Hours> PATH = Resource.of("/museum-hours", Hours.class);
-//
-//		Method.Get<Hours> get(LocalDate startDate, int page, int limit);
-//		Method.Put<Hours> get(LocalDate startDate, LocalDate endDate, int page, int limit);
-//	}
-//
-//	public static void main(String[] args) throws Throwable {
-//		var client = Client.of(null, null, null);
-//
-//		Result<Hours> response = ApiProxy.of(MuseumHours.class)
-//			.get(LocalDate.now(), 1, 10)
-//			.call(client.sync());
-//
-//		var result = switch (response) {
-//			case Result.Success<Hours> s -> "";
-//			case Result.ClientError<Hours> ce -> "";
-//			case Result.ServerError<Hours> se -> "";
-//		};
-//
-//		System.out.println(result);
-//	}
+
+	static final Resource<Hours>
+		MUSEUM_HOURS =
+		Resource.of("/museums/{museum-name}/museum-hours", Hours.class)
+			.add(ContentType.JSON);
+
+	static void main() throws Exception {
+		final var mapper = new ObjectMapper();
+
+		try (var client = Client.of(mapper::readValue, mapper::writeValue)) {
+
+			final Response<Hours> response = MUSEUM_HOURS
+				.add(Parameter.path("museum-name", "KHM"))
+				.add(Parameter.header("Content-Type", "application/json"))
+				.PUT("body", Caller.Sync.of(client));
+
+			switch (response) {
+				case Response.Success<Hours> s -> {}
+				case Response.Failure<?> f -> {
+					switch (f) {
+						case Response.ServerError<?> se -> {}
+						case Response.ClientError<?> ce -> {}
+					}
+				}
+			}
+
+			final CompletableFuture<Response<Hours>> async = MUSEUM_HOURS
+				.add(Parameter.path("museum-name", "KHM"))
+				.add(Parameter.header("Content-Type", "application/json"))
+				.PUT("body", Caller.Async.of(client));
+
+			final Flow.Publisher<Response<Hours>> publisher = MUSEUM_HOURS
+				.add(Parameter.path("museum-name", "KHM"))
+				.add(Parameter.header("Content-Type", "application/json"))
+				.PUT("body", Caller.Reactive.of(client));
+
+			final Mono<Response<Hours>> mono = MUSEUM_HOURS
+				.add(Parameter.path("museum-name", "KHM"))
+				.add(Parameter.header("Content-Type", "application/json"))
+				.PUT("body", MonoCaller.of(client));
+
+		}
+
+	}
 
 }

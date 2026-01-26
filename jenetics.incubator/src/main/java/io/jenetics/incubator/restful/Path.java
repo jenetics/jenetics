@@ -24,60 +24,66 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.Serializable;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
+ * This class represents the path of an endpoint. The path parameters are put
+ * between curly braces.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
  * @version 8.2
  */
-final class Path implements Serializable {
+public final class Path {
 
-	private record Param(int index, String name) {}
+	private final String value;
+	private final List<ParamIndex> params;
 
-	private static final Pattern PARAM_PATTERN = Pattern.compile("\\{(.*?)}");
-
-	private final String string;
-	private final List<Param> params;
-
-	private List<String> paramNames = null;
-
-	private Path(final String string, final List<Param> params) {
-		this.string = requireNonNull(string);
+	private Path(final String value, final List<ParamIndex> params) {
+		this.value = requireNonNull(value);
 		this.params = List.copyOf(params);
 	}
 
 	/**
-	 * Return the original path string, this object is created with.
+	 * Tests whether {@code this} path has unresolved path parameters.
 	 *
-	 * @return the original path string
+	 * @return {@code true} if {@code this} path hasn't any <em>free</em> path
+	 *         parameter, {@code false} otherwise
 	 */
-	String path() {
-		final var sql = new StringBuilder();
+	public boolean isResolved() {
+		return params.isEmpty();
+	}
+
+	/**
+	 * Return the path string
+	 *
+	 * @return the path string
+	 */
+	public String path() {
+		if (isResolved()) {
+			return value;
+		}
+
+		final var result = new StringBuilder();
 
 		int index = 0;
 		for (var param : params) {
-			sql.append(string, index, param.index - 1);
-			sql.append("{").append(param.name).append("}");
+			result.append(value, index, param.index - 1);
+			result.append("{").append(param.name).append("}");
 			index = param.index;
 		}
-		sql.append(string.substring(index));
+		result.append(value.substring(index));
 
-		return sql.toString();
+		return result.toString();
 	}
 
 	/**
@@ -87,53 +93,76 @@ final class Path implements Serializable {
 	 *
 	 * @return the parsed parameter names
 	 */
-	List<String> paramNames() {
-		List<String> names = paramNames;
-		if (names == null) {
-			paramNames = names = params.stream()
-				.map(Param::name)
+	public List<String> parameterNames() {
+		return params.stream()
+				.map(ParamIndex::name)
 				.toList();
-		}
-
-		return names;
 	}
 
-	Path resolve(final String name, final String value) {
-		if (params.isEmpty()) {
-			return this;
+	public Path resolve(final String name, final String value) {
+		return resolve(Parameter.path(name, value));
+	}
+
+	public Path resolve(final Parameter.Path parameter) {
+		return resolve(List.of(parameter));
+	}
+
+	/**
+	 * Resolves the path with the given list of path parameters.
+	 *
+	 * @param parameters the path parameters
+	 * @return a new resolved path object
+	 */
+	public Path resolve(final Collection<? extends Parameter.Path> parameters) {
+		final Map<String, List<Parameter>> params = parameters.stream()
+			.collect(Collectors.groupingBy(Parameter::key));
+
+		final var duplicates = params.entrySet().stream()
+			.filter(entry -> entry.getValue().size() > 1)
+			.map(Map.Entry::getKey)
+			.toList();
+
+		if (!duplicates.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Duplicate parameters: " + duplicates
+			);
 		}
 
-		final var expansion = URLEncoder.encode(value, UTF_8);
-
-		final List<Param> parameters = new ArrayList<>();
-		final var resolved = new StringBuilder(string);
+		final var updatedParams = new ArrayList<ParamIndex>();
+		final var resolved = new StringBuilder(value);
 		int offset = 0;
 
-		for (var param : params) {
-			if (param.name.equals(name)) {
-				resolved.insert(param.index + offset, expansion);
+		for (var param : this.params) {
+			final var key = param.name;
+
+			if (params.containsKey(key)) {
+				var value = params.get(key).getFirst().value();
+				value = URLEncoder.encode(value, UTF_8);
+
+				resolved.insert(param.index + offset, value);
 				resolved.delete(param.index + offset - 1, param.index + offset);
+				offset += value.length() - 1;
 			} else {
-				parameters.add(new Param(param.index + offset, param.name));
+				updatedParams.add(new ParamIndex(param.name, param.index + offset));
 			}
 		}
 
-		return new Path(resolved.toString(), parameters);
+		return new Path(resolved.toString(), updatedParams);
 	}
 
-	Path resolve(final Parameter.Path parameter) {
-		return resolve(parameter.key(), parameter.value());
+	public URI toURI() {
+		return  URI.create(path());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(string, params);
+		return Objects.hash(value, params);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Path path &&
-			string.equals(path.string) &&
+			value.equals(path.value) &&
 			params.equals(path.params);
 	}
 
@@ -146,8 +175,16 @@ final class Path implements Serializable {
 	 * Static factory methods.
 	 * ************************************************************************/
 
+	private record ParamIndex(String name, int index) {
+	}
+
+	private static final Pattern PARAM_PATTERN = Pattern.compile("\\{(.*?)}");
+
 	/**
 	 * Create a new Path object from the given path string.
+	 * <ul>
+	 *     <li>{@code asdf}</li>
+	 * </ul>
 	 *
 	 * @param path the path string to parse.
 	 * @return the newly created {@code Path} object
@@ -155,8 +192,8 @@ final class Path implements Serializable {
 	 * @throws IllegalArgumentException if one of the parameter names is not a
 	 *         valid Java identifier
 	 */
-	static Path of(final String path) {
-		final List<Param> params = new ArrayList<>();
+	public static Path of(final String path) {
+		final List<ParamIndex> params = new ArrayList<>();
 		final var parsed = new StringBuilder();
 
 		var normalizedPath = java.nio.file.Path.of(path)
@@ -173,13 +210,13 @@ final class Path implements Serializable {
 			final String name = group.substring(1, group.length() - 1);
 			matcher.appendReplacement(parsed, "?");
 			final int index = parsed.length();
-			params.add(new Param(index, name));
+			params.add(new ParamIndex(name, index));
 		}
 		matcher.appendTail(parsed);
 
 		final var invalid = params.stream()
 			.map(p -> p.name)
-			.filter(not(Path::isIdentifier))
+			.filter(not(Path::isValid))
 			.toList();
 
 		if (!invalid.isEmpty()) {
@@ -191,90 +228,19 @@ final class Path implements Serializable {
 		return new Path(parsed.toString(), params);
 	}
 
-	private static boolean isIdentifier(final String name) {
-		if (name.isEmpty()) {
+	private static boolean isValid(final String name) {
+		if (name.isBlank()) {
 			return false;
 		}
-		int cp = name.codePointAt(0);
-		if (!Character.isJavaIdentifierStart(cp)) {
-			return false;
-		}
-		for (int i = Character.charCount(cp);
-		     i < name.length();
-		     i += Character.charCount(cp))
-		{
-			cp = name.codePointAt(i);
-			if (!Character.isJavaIdentifierPart(cp)) {
-				return false;
+
+		for (int i = 0, n = name.length(); i < n; ++i) {
+			final char c = name.charAt(i);
+			if (Character.isWhitespace(c)) {
+				return true;
 			}
 		}
+
 		return true;
-	}
-
-	/* *************************************************************************
-	 *  Serialization methods
-	 * ************************************************************************/
-
-	@java.io.Serial
-	private Object writeReplace() {
-		return new Serial(this);
-	}
-
-	@java.io.Serial
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	private static final class Serial implements Externalizable {
-		@java.io.Serial
-		private static final long serialVersionUID = 1;
-
-		/**
-		 * The object being serialized.
-		 */
-		private Path object;
-
-		/**
-		 * Constructor for deserialization.
-		 */
-		public Serial() {
-		}
-
-		/**
-		 * Creates an instance for serialization.
-		 *
-		 * @param object  the object
-		 */
-		Serial(final Path object) {
-			this.object = object;
-		}
-
-		@Override
-		public void writeExternal(final ObjectOutput out) throws IOException {
-			object.write(out);
-		}
-
-		@Override
-		public void readExternal(final ObjectInput in) throws IOException {
-			object = Path.read(in);
-		}
-
-		@java.io.Serial
-		private Object readResolve() {
-			return object;
-		}
-
-	}
-
-	private void write(final DataOutput out) throws IOException {
-		out.writeUTF(path());
-	}
-
-	private static Path read(final DataInput in) throws IOException {
-		final String path = in.readUTF();
-		return Path.of(path);
 	}
 
 }
