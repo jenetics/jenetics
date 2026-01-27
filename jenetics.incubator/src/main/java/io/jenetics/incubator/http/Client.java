@@ -19,14 +19,62 @@
  */
 package io.jenetics.incubator.http;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Rest client interface. Clients are inherently asynchronous.
+ * Http client interface.
+ * {@snippet lang = java:
+ * // Jackson object mapper
+ * final var mapper = new ObjectMapper();
+ * final var marshaling = BodyMarshaling.of(
+ *     mapper::writeValue,
+ *     mapper::readValue
+ * );
+ *
+ * // Create client with Java default 'HttpClient',
+ * // using the Jackson read and write methods.
+ * try (var client = Client.of(marshaling)) {
+ *     final var request = new Request.GET<>(
+ *         String.class,
+ *         URI.create("https://server/apo")
+ *     );
+ *
+ *     final CompletableFuture<ServerResult<String>> result = client.send(request);
+ *     result.thenAccept(r -> {
+ *         switch (r) {
+ *             case ServerResult.OK<String> ok -> IO.println("OK: " + ok);
+ *             case ServerResult.NOK<String> nok -> IO.println("ERROR: " + nok);
+ *         }
+ *     });
+ * }
+ *}
+ *
+ * The {@code Client} interface is meant to a low-level API. Requests are usually
+ * send via the {@link Caller} interface, which lets you control the request
+ * flavor: e.g. <em>synchronuos</em> or <em>asynchronuos</em>.
+ * {@snippet lang=java:
+ * final Client client = null; // @replace substring='null' replacement="..."
+ * final Caller.Sync<String> caller = Caller.Sync.of(client);
+ *
+ * final Request<String> request = null; // @replace substring='null' replacement="..."
+ * final Response<String> response = caller.call(request);
+ * switch (response) {
+ *     case Response.Success<String> s -> {} // @replace substring='{}' replacement="{...}"
+ *     case Response.Failure<?> f -> {
+ *         switch (f) {
+ *             case Response.ServerError<?> se -> {} // @replace substring='{}' replacement="{...}"
+ *             case Response.ClientError<?> ce -> {} // @replace substring='{}' replacement="{...}"
+ *         }
+ *     }
+ * }
+ * }
+ *
+ * @see Caller
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2
@@ -47,36 +95,38 @@ public interface Client extends Closeable {
 	 * @param <T> the response body type
 	 * @throws NullPointerException if the given {@code resource} is {@code null}
 	 */
-	<T> CompletableFuture<ServerResult<T>> send(URI uri, Request<? extends T> request);
+	<T> CompletableFuture<ServerResult<T>> send(Request<? extends T> request);
 
-	default Client server(URI server) {
-		return new Client() {
-			@Override
-			public <T> CompletableFuture<ServerResult<T>>
-			send(URI uri, Request<? extends T> request) {
-				return Client.this.send(uri.resolve(server), request);
-			}
-			@Override
-			public void close() throws IOException {
-				Client.this.close();
-			}
-		};
+	/**
+	 * Return a client which uses the standard Java {@link HttpClient}.
+	 *
+	 * @param base the base {@code URI} of the client, {@link URI#isAbsolute()}
+	 *        must be {@code true}
+	 * @param client the underlying HTTP client
+	 * @param marshaling the body marshaling
+	 * @return a new client
+	 */
+	static Client of(
+		final URI base,
+		final HttpClient client,
+		final BodyMarshaling marshaling
+	) {
+		requireNonNull(base);
+		return new DefaultClient(base, client, marshaling);
 	}
 
 	/**
 	 * Return a client which uses the standard Java {@link HttpClient}.
 	 *
 	 * @param client the underlying HTTP client
-	 * @param reader the object reader (deserializer)
-	 * @param writer the object writer (serializer)
+	 * @param marshaling the body marshaling
 	 * @return a new client
 	 */
 	static Client of(
 		final HttpClient client,
-		final ResponseBodyReader reader,
-		final RequestBodyWriter writer
+		final BodyMarshaling marshaling
 	) {
-		return new DefaultClient(client, reader, writer);
+		return new DefaultClient(null, client, marshaling);
 	}
 
 	/**
@@ -84,15 +134,25 @@ public interface Client extends Closeable {
 	 *
 	 * @see HttpClient#newHttpClient()
 	 *
-	 * @param reader the object reader (deserializer)
-	 * @param writer the object writer (serializer)
+	 * @param base the base {@code URI} of the client, {@link URI#isAbsolute()}
+	 *        must be {@code true}
+	 * @param marshaling the body marshaling
 	 * @return a new client
 	 */
-	static Client of(
-		final ResponseBodyReader reader,
-		final RequestBodyWriter writer
-	) {
-		return of(HttpClient.newHttpClient(), reader, writer);
+	static Client of(final URI base, final BodyMarshaling marshaling) {
+		return of(base, HttpClient.newHttpClient(), marshaling);
+	}
+
+	/**
+	 * Return a client which uses the standard Java {@link HttpClient}.
+	 *
+	 * @see HttpClient#newHttpClient()
+	 *
+	 * @param marshaling the body marshaling
+	 * @return a new client
+	 */
+	static Client of(final BodyMarshaling marshaling) {
+		return of(HttpClient.newHttpClient(), marshaling);
 	}
 
 }

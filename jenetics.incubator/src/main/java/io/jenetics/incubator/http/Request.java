@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.http;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -52,173 +54,142 @@ public sealed interface Request<T> {
 	URI uri();
 
 	/**
-	 * Interface for HTTP <em>GET</em> request.
+	 * Return a new request of the same type, but with the given {@code uri}.
 	 *
-	 * @param <T> the response body type of the request.
+	 * @param uri the new request uri
+	 * @return a new request of the same type
 	 */
-	non-sealed interface GET<T> extends Request<T> {
+	default Request<T> withUri(URI uri) {
+		requireNonNull(uri);
 
-		/**
-		 * Create a new <em>GET</em> request for the given response {@code type}
-		 * and request {@code headers}.
-		 *
-		 * @param type the response body type
-		 * @param headers the request headers
-		 * @return a new <em>GET</em> request
-		 * @param <T> the response body type of the request
-		 */
-		static <T> GET<T> of(Class<T> type, URI uri, Headers headers) {
-			record GETRecord<T>(Class<T> type, URI uri, Headers headers)
-				implements GET<T> { }
-
-			return new GETRecord<>(type, uri, headers);
-		}
-
-		/**
-		 * Create a new <em>GET</em> request for the given response {@code type}.
-		 *
-		 * @param type the response body type
-		 * @return a new <em>GET</em> request
-		 * @param <T> the response body type of the request
-		 */
-		static <T> GET<T> of(Class<T> type, URI uri) {
-			return of(type, uri, new Headers(Map.of()));
-		}
+		return switch (this) {
+			case GET<T> _ -> new GET<>(type(), uri, headers());
+			case PUT<T> r -> new PUT<>(type(), uri, headers(), r.body());
+			case POST<T> r -> new POST<>(type(), uri, headers(), r.body());
+			case DELETE<T> _ -> new DELETE<>(type(), uri, headers());
+		};
 	}
 
 	/**
-	 * Interface for HTTP <em>PUT</em> request.
+	 * <em>GET</em> request.
 	 *
-	 * @param <T> the response body type of the request.
+	 * @param type the response body type
+	 * @param uri the request's {@code URI}
+	 * @param headers the request headers
+	 * @param <T> the response body type of the request
 	 */
-	non-sealed interface PUT<T> extends Request<T> {
+	record GET<T>(Class<T> type, URI uri, Headers headers) implements Request<T> {
 
-		/**
-		 * Return the request body of the request, if any.
-		 *
-		 * @return the request body
-		 */
-		Optional<Object> body();
-
-		/**
-		 * Create a new <em>PUT</em> request for the given response {@code type},
-		 * request {@code body}, maybe {@code null} and request {@code headers}.
-		 *
-		 * @param type the response body type
-		 * @param body the request body, maybe {@code null}
-		 * @param headers the request headers
-		 * @return a new <em>PUT</em> request
-		 * @param <T> the response body type of the request
-		 */
-		static <T> PUT<T> of(Class<T> type, URI uri, Headers headers, Object body) {
-			record PUTRecord<T>(
-				Class<T> type,
-				URI uri,
-				Headers headers,
-				Optional<Object> body
-			)
-				implements PUT<T> { }
-
-			return new PUTRecord<>(type, uri, headers, Optional.ofNullable(body));
+		public GET {
+			requireNonNull(type);
+			requireNonNull(uri);
+			requireNonNull(headers);
 		}
 
 		/**
-		 * Create a new <em>PUT</em> request for the given response {@code type},
-		 * and request {@code body}, maybe {@code null}.
+		 * <em>GET</em> request.
 		 *
 		 * @param type the response body type
-		 * @param body the request body, maybe {@code null}
-		 * @return a new <em>PUT</em> request
-		 * @param <T> the response body type of the request
+		 * @param uri the request's {@code URI}
 		 */
-		static <T> PUT<T> of(Class<T> type, URI uri, Object body) {
-			return of(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
+		public GET(Class<T> type, URI uri) {
+			this(type, uri, new Headers(Map.of()));
 		}
+
 	}
 
 	/**
-	 * Interface for HTTP <em>POST</em> request.
+	 * <em>PUT</em> request.
 	 *
-	 * @param <T> the response body type of the request.
+	 * @param type the response body type
+	 * @param uri the request's {@code URI}
+	 * @param headers the request headers
+	 * @param body the request body
+	 * @param <T> the response body type of the request
 	 */
-	non-sealed interface POST<T> extends Request<T> {
+	record PUT<T>(Class<T> type, URI uri, Headers headers, Optional<Object> body)
+		implements Request<T>
+	{
 
-		/**
-		 * Return the request body of the request, if any.
-		 *
-		 * @return the request body
-		 */
-		Optional<Object> body();
-
-		/**
-		 * Create a new <em>POST</em> request for the given response {@code type},
-		 * request {@code body}, maybe {@code null} and request {@code headers}.
-		 *
-		 * @param type the response body type
-		 * @param body the request body, maybe {@code null}
-		 * @param headers the request headers
-		 * @return a new <em>POST</em> request
-		 * @param <T> the response body type of the request
-		 */
-		static <T> POST<T> of(Class<T> type, URI uri, Headers headers, Object body) {
-			record POSTRecord<T>(
-				Class<T> type,
-				URI uri,
-				Headers headers,
-				Optional<Object> body
-			)
-				implements POST<T> { }
-
-			return new POSTRecord<>(type, uri, headers, Optional.ofNullable(body));
+		public PUT {
+			requireNonNull(type);
+			requireNonNull(uri);
+			requireNonNull(headers);
+			requireNonNull(body);
 		}
 
 		/**
-		 * Create a new <em>POST</em> request for the given response {@code type}
-		 * and request {@code body}, maybe {@code null}.
+		 * <em>PUT</em> request.
 		 *
 		 * @param type the response body type
-		 * @param body the request body, maybe {@code null}
-		 * @return a new <em>POST</em> request
-		 * @param <T> the response body type of the request
+		 * @param uri the request's {@code URI}
+		 * @param body the request body, may be {@code null}
 		 */
-		static <T> POST<T> of(Class<T> type, URI uri, Object body) {
-			return of(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
+		public PUT(Class<T> type, URI uri, Object body) {
+			this(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
 		}
+
 	}
 
 	/**
-	 * Interface for HTTP <em>DELETE</em> request.
+	 * <em>POST</em> request.
 	 *
-	 * @param <T> the response body type of the request.
+	 * @param type the response body type
+	 * @param uri the request's {@code URI}
+	 * @param headers the request headers
+	 * @param body the request body
+	 * @param <T> the response body type of the request
 	 */
-	non-sealed interface DELETE<T> extends Request<T> {
+	record POST<T>(Class<T> type, URI uri, Headers headers, Optional<Object> body)
+		implements Request<T>
+	{
 
-		/**
-		 * Create a new <em>DELETE</em> request for the given response {@code type}
-		 * and request {@code headers}.
-		 *
-		 * @param type the response body type
-		 * @param headers the request headers
-		 * @return a new <em>DELETE</em> request
-		 * @param <T> the response body type of the request
-		 */
-		static <T> DELETE<T> of(Class<T> type, URI uri, Headers headers) {
-			record DELETERecord<T>(Class<T> type, URI uri, Headers headers)
-				implements DELETE<T> { }
-
-			return new DELETERecord<>(type, uri, headers);
+		public POST {
+			requireNonNull(type);
+			requireNonNull(uri);
+			requireNonNull(headers);
+			requireNonNull(body);
 		}
 
 		/**
-		 * Create a new <em>DELETE</em> request for the given response {@code type}.
+		 * <em>POST</em> request.
 		 *
 		 * @param type the response body type
-		 * @return a new <em>DELETE</em> request
-		 * @param <T> the response body type of the request
+		 * @param uri the request's {@code URI}
+		 * @param body the request body, may be {@code null}
 		 */
-		static <T> DELETE<T> of(Class<T> type, URI uri) {
-			return of(type, uri, new Headers(Map.of()));
+		public POST(Class<T> type, URI uri, Object body) {
+			this(type, uri, new Headers(Map.of()), Optional.ofNullable(body));
 		}
+
+	}
+
+	/**
+	 * <em>DELETE</em> request.
+	 *
+	 * @param type the response body type
+	 * @param uri the request's {@code URI}
+	 * @param headers the request headers
+	 * @param <T> the response body type of the request
+	 */
+	record DELETE<T>(Class<T> type, URI uri, Headers headers) implements Request<T> {
+
+		public DELETE {
+			requireNonNull(type);
+			requireNonNull(uri);
+			requireNonNull(headers);
+		}
+
+		/**
+		 * <em>DELETE</em> request.
+		 *
+		 * @param type the response body type
+		 * @param uri the request's {@code URI}
+		 */
+		public DELETE(Class<T> type, URI uri) {
+			this(type, uri, new Headers(Map.of()));
+		}
+
 	}
 
 }

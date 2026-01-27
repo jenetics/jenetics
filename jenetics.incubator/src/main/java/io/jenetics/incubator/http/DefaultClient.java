@@ -33,59 +33,59 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 final class DefaultClient implements Client {
 
+	private final URI base;
 	private final HttpClient client;
-	private final ResponseBodyReader reader;
-	private final RequestBodyWriter writer;
+	private final BodyMarshaling marshaling;
 
 	public DefaultClient(
+		final URI base,
 		final HttpClient client,
-		final ResponseBodyReader reader,
-		final RequestBodyWriter writer
+		final BodyMarshaling marshaling
 	) {
+		this.base = base;
 		this.client = requireNonNull(client);
-		this.reader = requireNonNull(reader);
-		this.writer = requireNonNull(writer);
+		this.marshaling = requireNonNull(marshaling);
+
+		if (base != null && !base.isAbsolute()) {
+			throw new IllegalArgumentException(
+				"Base URI must be absolute: " + base
+			);
+		}
 	}
 
-	/**
-	 * Calls the given {@code resource} and returns its result.
-	 *
-	 *
-	 * @param request the request object
-	 * @return the call response
-	 * @param <T> the response body type
-	 * @throws NullPointerException if the given {@code resource} is {@code null}
-	 */
 	@Override
 	public <T> CompletableFuture<ServerResult<T>>
-	send(URI uri, Request<? extends T> request) {
+	send(Request<? extends T> request) {
 		final CompletableFuture<HttpResponse<ServerResult<T>>> response =
 			client.sendAsync(
-				toHttpRequest(uri, request),
-				new ServerBodyHandler<T>(request, reader, request.type())
+				toHttpRequest(request),
+				new ServerBodyHandler<T>(request, marshaling, request.type())
 			);
 
 		return response.thenCompose(result -> completedFuture(result.body()));
 	}
 
-	private <T> HttpRequest
-	toHttpRequest(final URI uri, final Request<? extends T> request) {
+	private <T> HttpRequest toHttpRequest(final Request<? extends T> request) {
+		final var uri = base != null
+			? base.resolve(request.uri())
+			: request.uri();
+
 		final var builder = HttpRequest.newBuilder().uri(uri);
 		request.headers().addTo(builder);
 
 		switch (request) {
 			case Request.GET<?> _ -> builder.GET();
 			case Request.POST<?> req -> builder.POST(new ClientBodyPublisher(
-				writer,
+				marshaling,
 				req.body().orElse(null)
 			));
 			case Request.PUT<?> req -> builder.PUT(new ClientBodyPublisher(
-				writer,
+				marshaling,
 				req.body().orElse(null)
 			));
 			case Request.DELETE<?> _ -> builder.DELETE();
@@ -156,7 +156,9 @@ final class DefaultClient implements Client {
 				HttpResponse.BodySubscribers.ofInputStream(),
 				in -> {
 					try {
-						return fn.apply(reader.read(in, type));
+						return fn
+							.apply(reader
+								.read(in, type));
 					} catch (IOException e) {
 						throw new UncheckedIOException(e);
 					}

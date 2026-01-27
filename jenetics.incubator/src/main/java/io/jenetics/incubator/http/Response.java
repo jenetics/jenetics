@@ -25,11 +25,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * Represents the resource response.
+ * HTTP response.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 public sealed interface Response<T> {
 

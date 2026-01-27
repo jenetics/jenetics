@@ -47,7 +47,7 @@ public final class MonoCaller<T> implements Caller<T, Mono<Response<T>>> {
 	@Override
 	public Mono<Response<T>> call(final Request<? extends T> request) {
 		return Mono.fromCompletionStage(
-			Caller.Async.<T>of(client).call(request)
+			() -> Caller.Async.<T>of(client).call(request)
 		);
 	}
 

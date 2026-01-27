@@ -27,7 +27,10 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import io.jenetics.incubator.http.Caller;
-import io.jenetics.incubator.http.Request;
+import io.jenetics.incubator.http.Request.DELETE;
+import io.jenetics.incubator.http.Request.GET;
+import io.jenetics.incubator.http.Request.POST;
+import io.jenetics.incubator.http.Request.PUT;
 
 /**
  * This object represents a REST endpoint. It is immutable and can be reused
@@ -102,7 +105,7 @@ public final class Resource<T> {
 	 * @return the GET caller result
 	 */
 	public <C> C GET(final Caller<T, C> caller) {
-		return caller.call(Request.GET.of(type(), path.toURI()));
+		return caller.call(new GET<>(type(), path.toURI()));
 	}
 
 	/**
@@ -114,7 +117,7 @@ public final class Resource<T> {
 	 * @param <C> the caller result type
 	 */
 	public <C> C PUT(final Object body, final Caller<T, C> caller) {
-		return caller.call(Request.PUT.of(type(), path.toURI(), body));
+		return caller.call(new PUT<>(type(), path.toURI(), body));
 	}
 
 	/**
@@ -125,7 +128,7 @@ public final class Resource<T> {
 	 * @param <C> the caller result type
 	 */
 	public <C> C PUT(final Caller<T, C> caller) {
-		return caller.call(Request.PUT.of(type(), path.toURI(), null));
+		return caller.call(new PUT<>(type(), path.toURI(), null));
 	}
 
 	/**
@@ -137,7 +140,7 @@ public final class Resource<T> {
 	 * @param <C> the caller result type
 	 */
 	public <C> C POST(final Object body, final Caller<T, C> caller) {
-		return caller.call(Request.POST.of(type(), path.toURI(), body));
+		return caller.call(new POST<>(type(), path.toURI(), body));
 	}
 
 	/**
@@ -148,7 +151,7 @@ public final class Resource<T> {
 	 * @param <C> the caller result type
 	 */
 	public <C> C POST(final Caller<T, C> caller) {
-		return caller.call(Request.POST.of(type(), path.toURI(), null));
+		return caller.call(new POST<>(type(), path.toURI(), null));
 	}
 
 	/**
@@ -159,7 +162,7 @@ public final class Resource<T> {
 	 * @param <C> the caller result type
 	 */
 	public <C> C DELETE(final Caller<T, C> caller) {
-		return caller.call(Request.DELETE.of(type(), path.toURI()));
+		return caller.call(new DELETE<>(type(), path.toURI()));
 	}
 
 	@Override

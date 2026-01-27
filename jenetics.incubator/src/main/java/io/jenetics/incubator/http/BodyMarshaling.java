@@ -19,29 +19,43 @@
  */
 package io.jenetics.incubator.http;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
- * Reader interface for reading values from a given input stream.
+ * Combines a {@link RequestBodyWriter} and {@link ResponseBodyReader} into one
+ * interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
-@FunctionalInterface
-public interface ResponseBodyReader {
+public interface BodyMarshaling extends RequestBodyWriter, ResponseBodyReader {
 
 	/**
-	 * Reads a value, of type {@code T}, from the given {@code input} stream.
+	 * Return a body marshaling from the given {@code writer} and {@code reader}.
 	 *
-	 * @param input the input stream the value is read from
-	 * @param type the type of the read object
-	 * @return the read (deserialized) value
-	 * @param <T> the value type
-	 * @throws IOException if reading the value fails
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param writer the request body writer
+	 * @param reader the response body reader
+	 * @return aa body marshaling
 	 */
-	<T> T read(InputStream input, Class<T> type) throws IOException;
+	static BodyMarshaling of(RequestBodyWriter writer, ResponseBodyReader reader) {
+		requireNonNull(writer);
+		requireNonNull(reader);
+
+		return new BodyMarshaling() {
+			@Override
+			public void write(OutputStream sink, Object value) throws IOException {
+				writer.write(sink, value);
+			}
+			@Override
+			public <T> T read(InputStream input, Class<T> type) throws IOException {
+				return reader.read(input, type);
+			}
+		};
+	}
 
 }

@@ -22,14 +22,19 @@ package io.jenetics.incubator.restful;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Flow;
 
 import org.joda.time.Hours;
 
+import io.jenetics.incubator.http.BodyMarshaling;
 import io.jenetics.incubator.http.Caller;
 import io.jenetics.incubator.http.Client;
+import io.jenetics.incubator.http.Request;
 import io.jenetics.incubator.http.Response;
+import io.jenetics.incubator.http.ServerResult;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -45,9 +50,12 @@ public final class MuseumApi {
 
 	static void main() throws Exception {
 		final var mapper = new ObjectMapper();
+		final var marshaling = BodyMarshaling.of(
+			mapper::writeValue,
+			mapper::readValue
+		);
 
-		try (var client = Client.of(mapper::readValue, mapper::writeValue)) {
-
+		try (var client = Client.of(marshaling)) {
 			final Response<Hours> response = MUSEUM_HOURS
 				.add(Parameter.path("museum-name", "KHM"))
 				.add(Parameter.query("limit", "10"))
@@ -80,6 +88,32 @@ public final class MuseumApi {
 
 		}
 
+	}
+
+	void foo() throws IOException {
+		// Jackson object mapper
+		final var mapper = new ObjectMapper();
+		final var marshaling = BodyMarshaling.of(
+			mapper::writeValue,
+			mapper::readValue
+		);
+
+		// Create client with Java default 'HttpClient',
+		// using the Jackson read and write methods.
+		try (var client = Client.of(marshaling)) {
+			final var request = new Request.GET<>(
+				String.class,
+				URI.create("https://server/apo")
+			);
+
+			final CompletableFuture<ServerResult<String>> result = client.send(request);
+			result.thenAccept(r -> {
+				switch (r) {
+					case ServerResult.OK<String> ok -> System.out.println("OK: " + ok);
+					case ServerResult.NOK<String> nok -> System.out.println("ERROR: " + nok);
+				}
+			});
+		}
 	}
 
 }

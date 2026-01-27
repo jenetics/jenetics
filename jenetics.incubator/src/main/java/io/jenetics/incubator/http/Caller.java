@@ -88,14 +88,11 @@ public interface Caller<T, C> {
 				final var req = (Request<T>)request;
 
 				if (Thread.currentThread().isInterrupted()) {
-					return new ClientError<>(
-						req,
-						new InterruptedException()
-					);
+					return new ClientError<>(req, new InterruptedException());
 				}
 
 				final var result = client
-					.send(request.uri(), request)
+					.send(request)
 					.handle((value, error) -> Response.of(request, value, error));
 
 				try {
@@ -145,7 +142,7 @@ public interface Caller<T, C> {
 		 */
 		static <T> Async<T> of(Client client) {
 			return request -> client
-				.send(request.uri(), request)
+				.send(request)
 				.handle((value, error) -> Response.of(request, value, error));
 		}
 	}
@@ -187,7 +184,7 @@ public interface Caller<T, C> {
 					1
 				);
 
-				client.<T>send(request.uri(), request)
+				client.<T>send(request)
 					.whenComplete((response, error) -> {
 						if (error != null) {
 							publisher.closeExceptionally(error);

@@ -19,10 +19,8 @@
  */
 package io.jenetics.incubator.http;
 
-import java.net.URI;
-
 /**
- * The result object returned by the {@link Client#send(URI, Request)} method.
+ * The result object returned by the {@link Client#send(Request)} method.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 8.2

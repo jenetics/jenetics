@@ -17,42 +17,41 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.restful;
+package io.jenetics.incubator.http;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.testng.annotations.Test;
+import java.net.URI;
 
-public class ProblemDetailTest {
+public class ClientTest {
 
-	@Test
-	public void unmarshalling() throws JsonProcessingException {
-		var mapper = new ObjectMapper();
-
-		var detail = mapper.readValue("""
-			{
-				"type": "https://example.net/validation-error",
-				"title": "Form validation failed",
-				"status": 400,
-				"detail": "One or more fields have validation errors. Please check and try again.",
-				"instance": "/log/registration/12345",
-				"errors": [
-					{
-						"name": "username",
-						"reason": "Username is already taken."
-					},
-					{
-						"name": "email",
-						"reason": "Email format is invalid."
-					}
-				]
-			}
-			""",
-			ProblemDetail.class
+	static void main() throws Exception {
+		final var mapper = new ObjectMapper();
+		final var marshaling = BodyMarshaling.of(
+			mapper::writeValue,
+			mapper::readValue
 		);
 
-		System.out.println(detail);
+		try (var client = Client.of(marshaling)) {
+			final var request = new Request.GET<>(
+				String.class,
+				URI.create("https://github.com/")
+			);
+
+			final Caller.Sync<String> caller = Caller.Sync.of(client);
+			final Response<String> response = caller.call(request);
+			switch (response) {
+				case Response.Success<String> s -> IO.println(s);
+				case Response.Failure<?> f -> {
+					switch (f) {
+						case Response.ServerError<?> se -> IO.println(se);
+						case Response.ClientError<?> ce -> {
+							ce.error().printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 
 }
