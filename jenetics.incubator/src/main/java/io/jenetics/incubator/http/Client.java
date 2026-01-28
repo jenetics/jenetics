@@ -54,31 +54,11 @@ import java.util.concurrent.CompletableFuture;
  * }
  *}
  *
- * The {@code Client} interface is meant to a low-level API. Requests are usually
- * send via the {@link Caller} interface, which lets you control the request
- * flavor: e.g. <em>synchronuos</em> or <em>asynchronuos</em>.
- * {@snippet lang=java:
- * final Client client = null; // @replace substring='null' replacement="..."
- * final Caller.Sync<String> caller = Caller.Sync.of(client);
- *
- * final Request<String> request = null; // @replace substring='null' replacement="..."
- * final Response<String> response = caller.call(request);
- * switch (response) {
- *     case Response.Success<String> s -> {} // @replace substring='{}' replacement="{...}"
- *     case Response.Failure<?> f -> {
- *         switch (f) {
- *             case Response.ServerError<?> se -> {} // @replace substring='{}' replacement="{...}"
- *             case Response.ClientError<?> ce -> {} // @replace substring='{}' replacement="{...}"
- *         }
- *     }
- * }
- * }
- *
  * @see Caller
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 public interface Client extends Closeable {
 

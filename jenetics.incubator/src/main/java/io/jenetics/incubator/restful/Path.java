@@ -31,17 +31,26 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * This class represents the path of an endpoint. The path parameters are put
  * between curly braces.
+ * {@snippet lang=java:
+ * var path = Path.of("/users/{user-id}/addresses/{address-id}/street");
+ * assert path.parameters().equals(Set.of("user-id", "address-id"));
+ *
+ * path = path.resolve("user-id", "4", "address-id", "8");
+ * assert path.toString().equals("/users/4/addresses/8/street");
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Path {
 
@@ -64,47 +73,14 @@ public final class Path {
 	}
 
 	/**
-	 * Return the path string
+	 * Return the unresolved parameter names.
 	 *
-	 * @return the path string
+	 * @return the unresolved parameter names
 	 */
-	public String path() {
-		if (isResolved()) {
-			return value;
-		}
-
-		final var result = new StringBuilder();
-
-		int index = 0;
-		for (var param : params) {
-			result.append(value, index, param.index - 1);
-			result.append("{").append(param.name).append("}");
-			index = param.index;
-		}
-		result.append(value.substring(index));
-
-		return result.toString();
-	}
-
-	/**
-	 * Return the list of parsed parameter names. The list may be empty or
-	 * contain duplicate entries, depending on the input string. The list is
-	 * in exactly the order they appeared in the SQL string.
-	 *
-	 * @return the parsed parameter names
-	 */
-	public List<String> parameterNames() {
+	public Set<String> parameters() {
 		return params.stream()
-				.map(ParamIndex::name)
-				.toList();
-	}
-
-	public Path resolve(final String name, final String value) {
-		return resolve(Parameter.path(name, value));
-	}
-
-	public Path resolve(final Parameter.Path parameter) {
-		return resolve(List.of(parameter));
+			.map(ParamIndex::name)
+			.collect(Collectors.toUnmodifiableSet());
 	}
 
 	/**
@@ -114,6 +90,10 @@ public final class Path {
 	 * @return a new resolved path object
 	 */
 	public Path resolve(final Collection<? extends Parameter.Path> parameters) {
+		if (parameters.isEmpty()) {
+			return this;
+		}
+
 		final Map<String, List<Parameter>> params = parameters.stream()
 			.collect(Collectors.groupingBy(Parameter::key));
 
@@ -150,8 +130,51 @@ public final class Path {
 		return new Path(resolved.toString(), updatedParams);
 	}
 
+	/**
+	 * Resolves the path with the given array of name-value pairs. The length of
+	 * the parameter array must be even.
+	 *
+	 * @param values array of name-value pairs
+	 * @return the resolved path
+	 * @throws IllegalArgumentException if the length of name-value array is
+	 *         odd
+	 */
+	public Path resolve(final String...values) {
+		if (values.length%2 != 0) {
+			throw new IllegalArgumentException(format(
+				"Path value length must be even %d",
+				values.length
+			));
+		}
+		if (values.length == 0) {
+			return this;
+		}
+
+		final var params = IntStream.range(0, values.length/2)
+			.mapToObj(i -> Parameter.path(values[i*2], values[i*2 + 1]))
+			.toList();
+
+		return resolve(params);
+	}
+
+	/**
+	 * Resolves the given path parameter
+	 *
+	 * @param parameter the parameter to be resolved
+	 * @return the resolved path
+	 */
+	public Path resolve(final Parameter.Path parameter) {
+		return resolve(List.of(parameter));
+	}
+
+	/**
+	 * Converts {@code this} path to an {@code URI}. The returned {@code URI} is
+	 * always <em>relative</em> ({@link URI#isAbsolute()} == {@code false}).
+	 *
+	 * @return {@code this} path as {@code URI}
+	 */
 	public URI toURI() {
-		return  URI.create(path());
+		return URI.create("./" + this).normalize();
 	}
 
 	@Override
@@ -168,7 +191,21 @@ public final class Path {
 
 	@Override
 	public String toString() {
-		return path();
+		if (isResolved()) {
+			return value;
+		}
+
+		final var result = new StringBuilder();
+
+		int index = 0;
+		for (var param : params) {
+			result.append(value, index, param.index - 1);
+			result.append("{").append(param.name).append("}");
+			index = param.index;
+		}
+		result.append(value.substring(index));
+
+		return result.toString();
 	}
 
 	/* *************************************************************************

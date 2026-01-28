@@ -39,8 +39,8 @@ import io.jenetics.incubator.http.Request.PUT;
  * @param <T> the resource return type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 public final class Resource<T> {
 	private final Class<? extends T> type;

@@ -27,11 +27,11 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Defines the resource parameters: header, path and query.
+ * Defines the resource parameters {@link Header}, {@link Path} and {@link Query}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 8.2
- * @version 8.2
+ * @since !__version__!
+ * @version !__version__!
  */
 public sealed interface Parameter {
 

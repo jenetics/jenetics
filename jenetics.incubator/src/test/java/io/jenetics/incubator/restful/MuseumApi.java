@@ -43,6 +43,14 @@ import io.jenetics.incubator.http.ServerResult;
  */
 public final class MuseumApi {
 
+	static final Parameter.Value
+		MUSEUM_NAME =
+		Parameter.Path.key("museum-name");
+
+	static final Parameter.Value
+		LIMIT =
+		Parameter.Query.key("limit");
+
 	static final Resource<Hours>
 		MUSEUM_HOURS =
 		Resource.of("/museums/{museum-name}/museum-hours", Hours.class)
