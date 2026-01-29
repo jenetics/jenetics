@@ -1,6 +1,6 @@
 [versions]
 assertj = "3.27.6"
-codemodel = "4.0.6"
+codemodel = "4.1.0"
 commons-csv = "1.14.1"
 commons-math4-legacy = "4.0-beta1"
 commons-numbers-combinatorics = "1.2"
@@ -43,7 +43,7 @@ version-catalog-update = { id = "nl.littlerobots.version-catalog-update", versio
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
-codemodel = { module = "org.glassfish.jaxb:codemodel", version.ref = "codemodel" }
+codemodel = { module = "com.helger:jcodemodel", version.ref = "codemodel" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
 commons-math4-legacy = { module = "org.apache.commons:commons-math4-legacy", version.ref = "commons-math4-legacy" }
 commons-numbers-combinatorics = { module = "org.apache.commons:commons-numbers-combinatorics", version.ref = "commons-numbers-combinatorics" }

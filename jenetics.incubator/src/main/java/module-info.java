@@ -39,7 +39,10 @@ module io.jenetics.incubator {
 	requires org.apache.commons.statistics.distribution;
 //	requires org.openapitools.jackson.nullable;
     requires org.apache.commons.numbers.gamma;
-	requires com.sun.codemodel;
+	requires com.helger.jcodemodel;
+	requires org.slf4j;
+	requires io.swagger.v3.oas.models;
+	requires org.jspecify;
 	//requires swagger.parser.v3;
 	//requires swagger.parser.core;
 
@@ -55,7 +58,6 @@ module io.jenetics.incubator {
 	exports io.jenetics.incubator.metamodel;
 	exports io.jenetics.incubator.prog;
 	exports io.jenetics.incubator.util;
-	exports io.jenetics.incubator.web.openapi.model;
 	exports io.jenetics.incubator.web.openapi;
 	exports io.jenetics.incubator.web.restful;
     exports io.jenetics.incubator.web.http;
