@@ -1,45 +1,41 @@
 package io.jenetics.incubator.web.openapi.model;
 
-import java.util.Set;
+import java.util.Map;
 
 public sealed interface Type {
 
 	String name();
 
-	record Str(String format, Set<String> enumeration) implements Type {
+	record Str() implements Type {
 		public String name() {
-			return "string";
+			return "java.lang.String";
 		}
 	}
 
-	record Num(String format) implements Type {
+	record Num() implements Type {
 		public String name() {
-			return "number";
+			return "java.math.BigDecimal";
 		}
 	}
 
 	record Bool() implements Type {
 		public String name() {
-			return "boolean";
+			return "java.lang.Boolean";
 		}
 	}
 
 	record Array(Type elemetType) implements Type {
 		public String name() {
-			return "array";
+			return "java.util.List<%s>".formatted(elemetType.name());
 		}
 	}
 
-	record Obj() implements Type {
-		public String name() {
-			return "object";
-		}
-	}
+	record Obj(String name, Map<String, ? extends Type> properties) implements Type {
 
-	record Ref(Schema.Primitive schema) implements Type {
-		public String name() {
-			return "ref";
+		public Obj {
+			properties = Map.copyOf(properties);
 		}
+
 	}
 
 }

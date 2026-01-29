@@ -19,7 +19,7 @@ public sealed interface Schema {
 
 		@Override
 		default Type.Obj type() {
-			return new Type.Obj();
+			return new Type.Obj("asdf", Map.of());
 		}
 	}
 
