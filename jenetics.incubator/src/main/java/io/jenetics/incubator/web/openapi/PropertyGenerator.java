@@ -2,6 +2,8 @@ package io.jenetics.incubator.web.openapi;
 
 import static java.util.Objects.requireNonNull;
 
+import com.helger.jcodemodel.AbstractJClass;
+import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
@@ -10,7 +12,7 @@ import org.jspecify.annotations.NonNull;
 
 final class PropertyGenerator {
 	private String name;
-	private Class<?> type;
+	private AbstractJType type;
 	private boolean mutable = true;
 
 	PropertyGenerator name(final String name) {
@@ -18,7 +20,7 @@ final class PropertyGenerator {
 		return this;
 	}
 
-	PropertyGenerator type(final Class<?> type) {
+	PropertyGenerator type(final AbstractJType type) {
 		this.type = requireNonNull(type);
 		return this;
 	}
