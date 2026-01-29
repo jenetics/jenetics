@@ -212,7 +212,7 @@ components:
                     properties:
                         email:
                             $ref: "#/components/schemas/Email"
-                -   $ref: "#/components/schemas/Ticket"
+                -   $ref: "#/components/schemas/EventId"
         Message:
             oneOf:
                 -   $ref: "#/components/schemas/Ticket"
@@ -392,6 +392,7 @@ components:
             schema:
                 type: string
                 format: uuid
+                default: "foo"
                 example: dad4bce8-f5cb-4078-a211-995864315e39
         StartDate:
             name: startDate

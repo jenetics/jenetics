@@ -54,7 +54,7 @@ alljavadoc {
 		doclet.charSet = "UTF-8"
 		doclet.linkSource(true)
 		doclet.linksOffline(
-			"https://docs.oracle.com/en/java/javase/21/docs/api/",
+			"https://docs.oracle.com/en/java/javase/25/docs/api/",
 			"${project.rootDir}/buildSrc/resources/javadoc/java.se"
 		)
 		doclet.windowTitle = "Jenetics ${project.version}"
