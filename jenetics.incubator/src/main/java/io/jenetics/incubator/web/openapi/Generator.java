@@ -1,34 +1,45 @@
 package io.jenetics.incubator.web.openapi;
 
-import com.helger.jcodemodel.AbstractJType;
+import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
+import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
-import com.helger.jcodemodel.writer.JCMWriter;
-import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
+import io.swagger.v3.oas.models.OpenAPI;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
+import static java.util.Objects.requireNonNull;
 
-public class Generator {
+abstract class Generator {
 
-	static void main() throws IOException, JCodeModelException {
-		final var cm = new JCodeModel();
-		final var cls = cm._class("io.jenetics.Foo");
+	final OpenAPI api;
+	final JCodeModel model;
 
-		new DataClassGenerator(cm, cls)
-			.property(p -> p.name("count").type(type(cm,"int")))
-			.property(p -> p.name("metric").type(type(cm,"double")))
-			.property(p -> p.name("name").type(type(cm,"java.lang.String")))
-			.property(p -> p.name("values").type(type(cm,"java.util.List<java.math.BigDecimal>")))
-			.equalsAndHashCode();
-
-		var writer = new JCMWriter(cm);
-		writer.build(new OutputStreamCodeWriter(System.out, Charset.defaultCharset()));
+	protected Generator(final OpenAPI api, final JCodeModel model) {
+		this.api = requireNonNull(api);
+		this.model = requireNonNull(model);
 	}
 
-	static AbstractJType type(JCodeModel model, final String name) {
-			return model.parseType(name);
+	JDefinedClass interface_(final String name) {
+		try {
+			return model._class(name, EClassType.INTERFACE);
+		} catch (JCodeModelException e) {
+			throw new GenerationException(e);
+		}
 	}
 
+	JDefinedClass class_(final String name) {
+		try {
+			return model._class(name, EClassType.CLASS);
+		} catch (JCodeModelException e) {
+			throw new GenerationException(e);
+		}
+	}
+
+	JDefinedClass enum_(final String name) {
+		try {
+			return model._class(name, EClassType.ENUM);
+		} catch (JCodeModelException e) {
+			throw new GenerationException(e);
+		}
+	}
 
 }

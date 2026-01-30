@@ -1,19 +1,23 @@
 package io.jenetics.incubator.web.openapi;
 
-import static java.util.Objects.requireNonNull;
-
-import com.helger.jcodemodel.AbstractJClass;
 import com.helger.jcodemodel.AbstractJType;
+import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
-
+import io.swagger.v3.oas.models.OpenAPI;
 import org.jspecify.annotations.NonNull;
 
-final class PropertyGenerator {
+import static java.util.Objects.requireNonNull;
+
+final class PropertyGenerator extends Generator {
 	private String name;
 	private AbstractJType type;
 	private boolean mutable = true;
+
+	PropertyGenerator(final OpenAPI api, final JCodeModel model) {
+		super(api, model);
+	}
 
 	PropertyGenerator name(final String name) {
 		this.name = requireNonNull(name);

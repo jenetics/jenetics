@@ -1,7 +1,5 @@
 package io.jenetics.incubator.web.openapi;
 
-import static java.util.Objects.requireNonNull;
-
 import com.helger.jcodemodel.JBlock;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
@@ -9,35 +7,51 @@ import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JInvocation;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.JVar;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-final class DataClassGenerator {
+import static java.util.Objects.requireNonNull;
 
-	private final JCodeModel model;
+final class ModelClassGenerator extends Generator {
+
 	private final JDefinedClass clazz;
 
-	DataClassGenerator(final JCodeModel model, final JDefinedClass clazz) {
-		this.model = requireNonNull(model);
+	ModelClassGenerator(
+		final OpenAPI api,
+		final JCodeModel model,
+		final JDefinedClass clazz
+	) {
+		super(api, model);
 		this.clazz = requireNonNull(clazz);
 	}
 
-	DataClassGenerator property(final Consumer<PropertyGenerator> property) {
-		final var generator = new PropertyGenerator();
+	ModelClassGenerator property(final Consumer<PropertyGenerator> property) {
+		final var generator = new PropertyGenerator(api, model);
 		property.accept(generator);
 		generator.generate(clazz);
 		return this;
 	}
 
-	DataClassGenerator equalsAndHashCode() {
+	ModelClassGenerator property(String name, String type) {
+		return property(p -> p.name(name).type(model.parseType(type)));
+	}
+
+	ModelClassGenerator property(String name, Schema<?> schema) {
+		property(name, "String");
+		return this;
+	}
+
+	ModelClassGenerator equalsAndHashCode() {
 		generateHashCode();
 		generateEquals();
 		return this;
 	}
 
-	private DataClassGenerator generateHashCode() {
+	private ModelClassGenerator generateHashCode() {
 		final var hashCode = clazz.method(JMod.PUBLIC, int.class, "hasCode");
 		hashCode.annotate(Override.class);
 
@@ -56,7 +70,7 @@ final class DataClassGenerator {
 		return this;
 	}
 
-	private DataClassGenerator generateEquals() {
+	private ModelClassGenerator generateEquals() {
 		final var equalsMethod = clazz.method(JMod.PUBLIC, boolean.class, "equals");
 		equalsMethod.annotate(Override.class);
 
