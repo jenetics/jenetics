@@ -22,7 +22,6 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toMap;
 import static io.jenetics.engine.EvolutionInterceptor.ofAfter;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeInt;
@@ -365,15 +364,16 @@ public final class EvolutionResult<
 
 	@Override
 	public int hashCode() {
-		return
-			hash(_optimize,
-			hash(_population,
-			hash(_generation,
-			hash(_totalGenerations,
-			hash(_durations,
-			hash(_killCount,
-			hash(_invalidCount,
-			hash(_alterCount))))))));
+		return Objects.hash(
+			_optimize,
+			_population,
+			_generation,
+			_totalGenerations,
+			_durations,
+			_killCount,
+			_invalidCount,
+			_alterCount
+		);
 	}
 
 	@Override

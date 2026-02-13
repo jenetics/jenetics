@@ -20,7 +20,6 @@
 package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.Serial;
@@ -114,7 +113,7 @@ public final class BigIntegerGene
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
+		return Objects.hash(_value, _min, _max);
 	}
 
 	@Override

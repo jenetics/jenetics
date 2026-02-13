@@ -20,9 +20,9 @@
 package io.jenetics.ext.rewriting;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Map;
+import java.util.Objects;
 
 import io.jenetics.ext.rewriting.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
@@ -30,7 +30,6 @@ import io.jenetics.ext.util.Tree;
 /**
  * The result of a tree match operation. It contains the matching tree and the
  * tree variables which matches the matching tree.
- *
  * {@snippet lang="java":
  * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
  * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
@@ -86,7 +85,7 @@ public final class TreeMatchResult<V> {
 
 	@Override
 	public int hashCode() {
-		return hash(_tree, hash(_vars));
+		return Objects.hash(_tree, _vars);
 	}
 
 	@Override
