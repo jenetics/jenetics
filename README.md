@@ -150,11 +150,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/11298634"> Seasonal Reconfiguration of Electrical Distribution Systems to Mitigate the Impact of Electric Vehicle Charging.</a> <em>IEEE Access, vol. 13, pp. 212193-212212. </em> Dec 2025.
+Milan Cugurovic, Aleksandar Prokopec, Boris Spasojevic, Vojin Jovanovic, and Milena Vujošević Janičić. <a href="https://doi.org/10.1145/3771775.3786276"> GraalMHC: ML-Based Method-Hotness Classification for Binary-Size Reduction in Optimizing Compilers.</a> <em>In Proceedings of the 35th ACM SIGPLAN International Conference on Compiler Construction (CC '26). Association for Computing Machinery, New York, NY, USA, 1–13. </em> Jan. 2026.
 
 ...
 </summary>
 
+1) Milan Cugurovic, Aleksandar Prokopec, Boris Spasojevic, Vojin Jovanovic, and Milena Vujošević Janičić. <a href="https://doi.org/10.1145/3771775.3786276"> GraalMHC: ML-Based Method-Hotness Classification for Binary-Size Reduction in Optimizing Compilers.</a> <em>In Proceedings of the 35th ACM SIGPLAN International Conference on Compiler Construction (CC '26). Association for Computing Machinery, New York, NY, USA, 1–13. </em> Jan. 2026.
 1) J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/11298634"> Seasonal Reconfiguration of Electrical Distribution Systems to Mitigate the Impact of Electric Vehicle Charging.</a> <em>IEEE Access, vol. 13, pp. 212193-212212. </em> Dec 2025.
 1) Ritwik Murali, Ashwin Narayanan Sivamani, Abhinav Ramakrishnan, Hariharan Arul, and Ananya R. <a href="https://doi.org/10.1145/3712255.3726652"> Evolve On Click (EvOC) - An Intuitive Web Platform to Collaboratively Implement, Execute, and Visualize Evolutionary Algorithms.</a> <em>Proceedings of the Genetic and Evolutionary Computation Conference Companion (GECCO '25 Companion). Association for Computing Machinery, New York, NY, USA, 147–150.</em> Aug. 2025.
 2) Hotz, M., Malburg, L., Bergmann, R. <a href="https://doi.org/10.1007/978-3-031-96559-3_16"> Advanced Search Techniques for Determining Optimal Sequences of Adaptation Rules in Process-Oriented Case-Based Reasoning.</a> <em>Case-Based Reasoning Research and Development. ICCBR 2025. Lecture Notes in Computer Science(), vol 15662. Springer, Cham.</em> June 2025.
