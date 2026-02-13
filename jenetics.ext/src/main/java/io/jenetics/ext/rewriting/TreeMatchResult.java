@@ -60,7 +60,6 @@ public final class TreeMatchResult<V> {
 	 * The node (tree), which has been matched by some pattern. This tree is the
 	 * argument of the {@link TreePattern#match(Tree)} call, in the case of a
 	 * match.
-	 *
 	 * {@snippet lang="java":
 	 * final Tree<String, ?> tree = null; // @replace substring='null' replacement="..."
 	 * final TreePattern<String> pattern = null; // @replace substring='null' replacement="..."
