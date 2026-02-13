@@ -36,7 +36,7 @@ public final class Escaper {
 	}
 
 	public String escape(final CharSequence value) {
-		final StringBuilder result = new StringBuilder();
+		final var result = new StringBuilder();
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 			if (isProtectedChar(c)) {
@@ -57,7 +57,7 @@ public final class Escaper {
 
 
 	public String unescape(final CharSequence value) {
-		final StringBuilder result = new StringBuilder();
+		final var result = new StringBuilder();
 
 		boolean escaping = false;
 		for (int i = 0; i < value.length(); ++i) {

@@ -354,7 +354,7 @@ public final class Lifecycle {
 			final var resources = new Resources<E>();
 			try {
 				_value = builder.apply(resources);
-				_release = value -> resources.close();
+				_release = _ -> resources.close();
 			} catch (Throwable error) {
 				resources.silentRelease(error);
 				throw error;
@@ -506,7 +506,7 @@ public final class Lifecycle {
 			final var resources = new IOResources();
 			try {
 				_value = builder.apply(resources);
-				_release = value -> resources.close();
+				_release = _ -> resources.close();
 			} catch (Throwable error) {
 				resources.silentRelease(error);
 				throw error;
