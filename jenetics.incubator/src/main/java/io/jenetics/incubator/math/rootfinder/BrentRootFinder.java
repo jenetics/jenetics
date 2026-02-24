@@ -36,26 +36,15 @@ import io.jenetics.util.DoubleRange;
  * @param limit the finder algorithm limit
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 public record BrentRootFinder(Limit limit)
 	implements RootFinder, Iterative
 {
 
 	/**
-	 * Represents the found root value plus error estimation and performed
-	 * iterations.
-	 *
-	 * @param value the found root value
-	 * @param error the error estimate
-	 * @param iterations the performed iterations
-	 */
-	public record Root(double value, double error, int iterations) {
-	}
-
-	/**
-	 * Default Brent's solver.
+	 * Brent's solver, using default limits.
 	 */
 	public static final BrentRootFinder DEFAULT = new BrentRootFinder();
 
@@ -67,8 +56,8 @@ public record BrentRootFinder(Limit limit)
 	}
 
 	@Override
-	public double solve(final DoubleUnaryOperator fn, final DoubleRange interval) {
-		return root(fn, interval).value();
+	public Root solve(final DoubleUnaryOperator fn, final DoubleRange interval) {
+		return root(fn, interval);
 	}
 
 	public Root root(final DoubleUnaryOperator fn, final DoubleRange interval) {

@@ -20,9 +20,14 @@
 package io.jenetics.incubator.math.iterative;
 
 /**
+ * The iteration range of an iterative algorithm.
  *
- * @param min
- * @param max
+ * @param min the minimal iteration count
+ * @param max the maximal iteration count
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public record IterationCount(long min, long max) {
 }

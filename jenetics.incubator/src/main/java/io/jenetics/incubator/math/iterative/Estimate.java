@@ -20,15 +20,33 @@
 package io.jenetics.incubator.math.iterative;
 
 /**
- * The estimation result, given by an iterative, numerical algorithm.
- *
- * @param value the estimated value
- * @param error the estimation error
- * @param iterations the number of iterations
+ * The estimate, given by an iterative, numerical algorithm.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.3
- * @since 8.3
+ * @version !__version__!
+ * @since !__version__!
  */
-public record Estimate(double value, double error, long iterations) {
+public interface Estimate {
+
+	/**
+	 * Return the estimation value.
+	 *
+	 * @return the estimation value
+	 */
+	double value();
+
+	/**
+	 * Return the estimation error.
+	 *
+	 * @return the estimation error
+	 */
+	double error();
+
+	/**
+	 * Return the number of iterations executed for this estimate.
+	 *
+	 * @return the number of iterations executed for this estimate
+	 */
+	long iterations();
+
 }
