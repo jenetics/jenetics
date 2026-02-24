@@ -60,10 +60,10 @@ public record BrentRootFinder(Limit limit)
 	public static final BrentRootFinder DEFAULT = new BrentRootFinder();
 
 	public BrentRootFinder() {
-		this(new Limit(
-			new Accuracy(0x1.0p-52, 0x1.0p-52),
-			new IterationCount(0, 1_000_000)
-		));
+		final var accuracy = new Accuracy(0x1.0p-52, 0x1.0p-52, 0x1.0p-52);
+		final var iterations = new IterationCount(0, 1_000_000);
+		final var limit = new Limit(accuracy, iterations);
+		this(limit);
 	}
 
 	@Override
