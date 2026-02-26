@@ -22,12 +22,33 @@ package io.jenetics.incubator.math.iterative;
 /**
  * The iteration range of an iterative algorithm.
  *
- * @param min the minimal iteration count
- * @param max the maximal iteration count
+ * @param min the minimal iteration count, inclusively
+ * @param max the maximal iteration count, inclusively
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public record IterationCount(long min, long max) {
+public record IterationRange(long min, long max) {
+
+	/**
+	 * Create a new iteration range.
+	 *
+	 * @param min the minimal iteration count, inclusively
+	 * @param max the maximal iteration count, inclusively
+	 * @throws IllegalArgumentException if {@code min <= 0} or {@code min > max}
+	 */
+	public IterationRange {
+		if (min <= 0) {
+			throw new IllegalArgumentException(
+				"Minimum iteration count must be greater than zero: " + min
+			);
+		}
+		if (min > max) {
+			throw new IllegalArgumentException(
+				"Maximum iteration count must be less than minimal: %s > %s"
+					.formatted(min, max)
+			);
+		}
+	}
 }

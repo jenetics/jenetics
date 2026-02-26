@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.DoubleUnaryOperator;
 
 import io.jenetics.incubator.math.iterative.Accuracy;
-import io.jenetics.incubator.math.iterative.IterationCount;
+import io.jenetics.incubator.math.iterative.IterationRange;
 import io.jenetics.incubator.math.iterative.Iterative;
 import io.jenetics.incubator.math.iterative.Limit;
 import io.jenetics.util.DoubleRange;
@@ -50,7 +50,7 @@ public record BrentRootFinder(Limit limit)
 
 	public BrentRootFinder() {
 		final var accuracy = new Accuracy(0x1.0p-52, 0x1.0p-52, 0x1.0p-52);
-		final var iterations = new IterationCount(0, 1_000_000);
+		final var iterations = new IterationRange(1, 1_000_000);
 		final var limit = new Limit(accuracy, iterations);
 		this(limit);
 	}

@@ -39,7 +39,7 @@ public class BrentRootFinderTest {
 
 	@Test(dataProvider = "testSinZeroParameters")
 	void testSinZero(double result, DoubleRange interval) {
-		assertThat(BrentRootFinder.DEFAULT.solve(Math::sin, interval))
+		assertThat(BrentRootFinder.DEFAULT.solve(Math::sin, interval).value())
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
 	}
 
@@ -55,7 +55,7 @@ public class BrentRootFinderTest {
 	void testQuinticZero(double result, DoubleRange interval) {
 		final DoubleUnaryOperator func = x -> (x - 1)*(x - 0.5)*x*(x + 0.5)*(x + 1);
 
-		assertThat(BrentRootFinder.DEFAULT.solve(func, interval))
+		assertThat(BrentRootFinder.DEFAULT.solve(func, interval).value())
 			.isCloseTo(result, DEFAULT_ABSOLUTE_ACCURACY);
 	}
 

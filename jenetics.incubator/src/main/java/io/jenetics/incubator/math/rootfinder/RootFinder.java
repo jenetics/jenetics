@@ -47,6 +47,14 @@ public interface RootFinder {
 	{
 	}
 
+	/**
+	 * Finds the <em>x</em>, where the function value of {@code fn} becomes
+	 * zero, or near zero.
+	 *
+	 * @param fn the function to find the root value for
+	 * @param interval the <em>search</em> interval
+	 * @return the root value for the given function {@code fn}
+	 */
 	Root solve(DoubleUnaryOperator fn, DoubleRange interval);
 
 }
