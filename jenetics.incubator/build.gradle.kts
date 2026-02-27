@@ -52,6 +52,7 @@ dependencies {
 //	implementation(libs.jakarta.validation.api)
 	implementation(libs.swagger.models)
 	implementation(libs.swagger.parser)
+	implementation(libs.reactor.core)
 	implementation(libs.codemodel)
 
 
@@ -62,7 +63,6 @@ dependencies {
 	testImplementation(libs.guava)
 	testImplementation(libs.jackson.databind)
 	testImplementation(libs.jpx)
-	testImplementation(libs.reactor.core)
 	testImplementation(libs.testng)
 
 	jmh(libs.commons.csv)
