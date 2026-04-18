@@ -150,12 +150,13 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 <details>
 <summary>
-Marko Šmid, Miha Ravber. <a href="https://doi.org/10.1016/j.softx.2026.102607"> GIANT: General intelligent AgeNt trainer.</a> <em>SoftwareX, Volume 34, </em> June 2026.
+Milan Cugurovic, Aleksandar Prokopec, Boris Spasojevic, Vojin Jovanovic, Milena Vujošević Janičić. <a href="https://doi.org/10.1145/3801119.3801123"> The Promise of Static Profiling: Exploring the Limits.</a> <em>Programming› Companion '26: Companion Proceedings of the 10th International Conference on the Art, Science, and Engineering of Programming, </em> April 2026.
 
 ...
 </summary>
 
 1) Marko Šmid, Miha Ravber. <a href="https://doi.org/10.1016/j.softx.2026.102607"> GIANT: General intelligent AgeNt trainer.</a> <em>SoftwareX, Volume 34, </em> June 2026.
+2) Milan Cugurovic, Aleksandar Prokopec, Boris Spasojevic, Vojin Jovanovic, Milena Vujošević Janičić. <a href="https://doi.org/10.1145/3801119.3801123"> The Promise of Static Profiling: Exploring the Limits.</a> <em>Programming› Companion '26: Companion Proceedings of the 10th International Conference on the Art, Science, and Engineering of Programming, </em> April 2026.
 2) Milan Cugurovic, Aleksandar Prokopec, Boris Spasojevic, Vojin Jovanovic, and Milena Vujošević Janičić. <a href="https://doi.org/10.1145/3771775.3786276"> GraalMHC: ML-Based Method-Hotness Classification for Binary-Size Reduction in Optimizing Compilers.</a> <em>In Proceedings of the 35th ACM SIGPLAN International Conference on Compiler Construction (CC '26). Association for Computing Machinery, New York, NY, USA, 1–13. </em> Jan. 2026.
 3) J. Daniel Dávalos Soto et al. <a href="https://ieeexplore.ieee.org/document/11298634"> Seasonal Reconfiguration of Electrical Distribution Systems to Mitigate the Impact of Electric Vehicle Charging.</a> <em>IEEE Access, vol. 13, pp. 212193-212212. </em> Dec 2025.
 4) Ritwik Murali, Ashwin Narayanan Sivamani, Abhinav Ramakrishnan, Hariharan Arul, and Ananya R. <a href="https://doi.org/10.1145/3712255.3726652"> Evolve On Click (EvOC) - An Intuitive Web Platform to Collaboratively Implement, Execute, and Visualize Evolutionary Algorithms.</a> <em>Proceedings of the Genetic and Evolutionary Computation Conference Companion (GECCO '25 Companion). Association for Computing Machinery, New York, NY, USA, 147–150.</em> Aug. 2025.
