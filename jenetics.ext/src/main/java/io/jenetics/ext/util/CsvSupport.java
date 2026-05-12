@@ -681,8 +681,8 @@ public final class CsvSupport {
 	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
 	 * @implNote
-	 * The split {@code String[]} array will never contain {@code null} values.
-	 * Empty columns will be returned as empty strings.
+	 * The split {@code String[]} array will contain {@code null} value instead
+	 * of empty strings.
 	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
