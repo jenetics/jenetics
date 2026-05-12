@@ -22,6 +22,7 @@ package io.jenetics.ext.util;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.CharBuffer;
 import java.util.Arrays;
@@ -588,7 +589,7 @@ public final class CsvSupport {
 					}
 				);
 
-				final var source = CharCursor.of(rdr);
+				final var source = new CharCursor(rdr);
 				final var line = new CharAppender();
 
 				final Supplier<String> nextLine = () -> {
@@ -623,7 +624,7 @@ public final class CsvSupport {
 				final char current = next != -2 ? (char)next : (char)i;
 				next = -2;
 
-				if (isLineBreak(current)) {
+				if (current == '\r' || current == '\n') {
 					if (quoted) {
 						line.append(current);
 					} else {
@@ -792,6 +793,9 @@ public final class CsvSupport {
 		 * @throws NullPointerException if the CSV {@code line} is {@code null}
 		 */
 		public String[] split(final CharSequence line) {
+			final char[] chars = line.toString().toCharArray();
+			final int length = chars.length;
+
 			columns.clear();
 			column.reset();
 
@@ -801,10 +805,10 @@ public final class CsvSupport {
 
 			int quoteIndex = 0;
 
-			for (int i = 0, n = line.length(); i < n && !full; ++i) {
-				final int previous = i > 0 ? line.charAt(i - 1) : -1;
-				final char current = line.charAt(i);
-				final int next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
+			for (int i = 0; i < length && !full; ++i) {
+				final int previous = i > 0 ? chars[i - 1] : -1;
+				final char current = chars[i];
+				final int next = i + 1 < length ? chars[i + 1] : -1;
 
 				if (current == quote.value) {
 					if (quoted) {
@@ -861,7 +865,9 @@ public final class CsvSupport {
 					// Read till the next token separator.
 					int j = i;
 					char c;
-					while (j < line.length() && !isTokenSeparator(c = line.charAt(j))) {
+					while (j < length &&
+						!((c = chars[j]) == separator.value || c == quote.value))
+					{
 						column.append(c);
 						++j;
 					}
@@ -884,7 +890,7 @@ public final class CsvSupport {
 				);
 			}
 			if (line.isEmpty() ||
-				separator.value == line.charAt(line.length() - 1))
+				separator.value == chars[length - 1])
 			{
 				add(column);
 			}
@@ -895,10 +901,6 @@ public final class CsvSupport {
 		private void add(final CharAppender column) {
 			columns.add(column.toString());
 			column.reset();
-		}
-
-		private boolean isTokenSeparator(final char c) {
-			return c == separator.value || c == quote.value;
 		}
 
 		private static String toErrorDesc(final CharSequence line, final int pos) {
@@ -934,7 +936,8 @@ public final class CsvSupport {
 		 */
 		void add(String column) {
 			if (!isFull()) {
-				count += set(column, index++);
+				count += set(column, index);
+				++index;
 			}
 		}
 
@@ -1219,93 +1222,62 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Character source interface.
-	 *
-	 * @since 8.2
-	 * @version 8.2
-	 */
-	sealed interface CharCursor {
-		/**
-		 * Return the next character or -1 if there is no one.
-		 *
-		 * @return the next character or -1 if there is no one
-		 * @throws IOException if reading the next character failed
-		 */
-		int next() throws IOException;
-
-		/**
-		 * Return the correct kind of {@code CharCursor}, depending on the
-		 * given {@code readable} type
-		 *
-		 * @param readable the character source
-		 * @return a new character cursor
-		 */
-		static CharCursor of(final Readable readable) {
-			return readable instanceof CharBuffer cb
-				? new CharBufferCharCursor(cb)
-				: new ReadableCharCursor(readable);
-		}
-	}
-
-	/**
 	 * Cursor <em>view</em> on a readable object.
 	 *
 	 * @since 8.2
 	 * @version 8.2
 	 */
-	static final class ReadableCharCursor implements CharCursor {
+	static final class CharCursor {
 		private static final int SIZE = 1024;
 		private final Readable readable;
-		private final CharBuffer buffer;
 
-		ReadableCharCursor(final Readable readable) {
+		private final CharBuffer buffer;
+		private final char[] array;
+
+		private int length;
+		private int index;
+
+		CharCursor(final Readable readable) {
 			this.readable = requireNonNull(readable);
-			this.buffer = CharBuffer.allocate(SIZE).flip();
+
+			if (readable instanceof Reader) {
+				this.buffer = null;
+				this.array = new char[SIZE];
+			} else {
+				this.buffer = CharBuffer.allocate(SIZE).flip();
+				this.array = buffer.array();
+			}
 		}
 
-		@Override
 		public int next() throws IOException {
-			if (!buffer.hasRemaining()) {
+			if (index == length) {
 				if (!fill()) {
 					return -1;
 				}
 			}
 
-			return buffer.get();
+			final int result = array[index];
+			++index;
+			return result;
 		}
 
 		private boolean fill() throws IOException {
-			int n;
 			int i = 0;
-			buffer.clear();
-			do {
-				n = readable.read(buffer);
-			} while (n == 0 && i++ < 1000); // Make sure re-read will terminate.
-			buffer.flip();
 
-			return n > 0;
-		}
-	}
-
-	/**
-	 * Cursor <em>view</em> on a character buffer.
-	 *
-	 * @since 8.2
-	 * @version 8.2
-	 */
-	static final class CharBufferCharCursor implements CharCursor {
-		private final CharBuffer buffer;
-
-		CharBufferCharCursor(final CharBuffer buffer) {
-			this.buffer = requireNonNull(buffer);
-		}
-
-		@Override
-		public int next() {
-			if (!buffer.hasRemaining()) {
-				return -1;
+			if (readable instanceof Reader reader) {
+				do {
+					length = reader.read(array);
+				} while (length == 0 && i++ < 1000); // Make sure re-read will terminate.
+			} else {
+				buffer.clear();
+				do {
+					length = readable.read(buffer);
+				} while (length == 0 && i++ < 1000); // Make sure re-read will terminate.
+				buffer.flip();
 			}
-			return buffer.get();
+
+			index = 0;
+			return length > 0;
 		}
 	}
 
@@ -1333,7 +1305,8 @@ public final class CsvSupport {
 				increaseSize(buffer.length*2);
 			}
 
-			buffer[index++] = c;
+			buffer[index] = c;
+			++index;
 		}
 
 		@Override
@@ -1376,7 +1349,8 @@ public final class CsvSupport {
 			if (size == elements.length) {
 				increaseSize(elements.length*2);
 			}
-			elements[size++] = value;
+			elements[size] = value;
+			++size;
 		}
 
 		public void set(final int index, final String value) {
