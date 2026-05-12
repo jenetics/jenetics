@@ -12,6 +12,7 @@ public class FnBuilderTest {
 
 	@Test
 	public void buildEmpty() {
+		@SuppressWarnings("auxiliaryclass")
 		final Function<Object, Object> fn = FnBuilder.of().build();
 		final var arg = "ARG";
 		final var result = fn.apply(arg);
@@ -20,6 +21,7 @@ public class FnBuilderTest {
 
 	@Test
 	public void buildOne() {
+		@SuppressWarnings("auxiliaryclass")
 		final Function<String, Integer> fn = FnBuilder.<String>of()
 			.then(Integer::parseInt, new ValueMap<>())
 			.build();
@@ -31,6 +33,7 @@ public class FnBuilderTest {
 
 	@Test
 	public void buildMany() {
+		@SuppressWarnings("auxiliaryclass")
 		final Function<String, String> fn = FnBuilder.<String>of()
 			.then(Integer::parseInt, new ValueMap<>())
 			.then(i -> (double)(i + 1), new ValueMap<>())
