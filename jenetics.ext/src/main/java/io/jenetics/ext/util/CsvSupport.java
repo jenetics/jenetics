@@ -1039,11 +1039,10 @@ public final class CsvSupport {
 		private record Param(char separator, char quote, int... embedding) {
 
 			private String escape(Object value) {
-				final var quoteStr = String.valueOf(quote);
-
 				if (value == null) {
 					return "";
 				} else {
+					final var quoteStr = String.valueOf(quote);
 					var stringValue = value.toString();
 					var string = stringValue.replace(quoteStr, quoteStr + quoteStr);
 

@@ -105,7 +105,7 @@ public class CsvSupportPerf {
 				.setSkipHeaderRecord(true)
 				.get();
 
-            for (var record : format.parse(in)) {
+            for (var _ : format.parse(in)) {
                 count++;
             }
 		}
