@@ -106,7 +106,7 @@ record ColumnsRow(String[] columns, Converter converter) implements Row {
 	}
 
 	@Override
-	public <T> T objectAt(final int index, final Class<T> type) {
+	public <T> T at(final int index, final Class<T> type) {
 		requireNonNull(type);
 		if (isEmptyAt(index)) {
 			return null;

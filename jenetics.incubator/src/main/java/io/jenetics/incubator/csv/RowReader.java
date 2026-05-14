@@ -21,8 +21,6 @@ package io.jenetics.incubator.csv;
 
 import static java.util.Objects.requireNonNull;
 
-import java.nio.CharBuffer;
-import java.util.List;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
@@ -34,14 +32,12 @@ import io.jenetics.ext.util.CsvSupport.Separator;
 /**
  * Reads a CSV as a list of objects.
  *
- * @param <T> the record type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.2
  * @since 8.2
  */
 @FunctionalInterface
-public interface CsvReader<T> {
+public interface RowReader {
 
 	/**
 	 * CSV reader with the given <em>default</em> values:
@@ -51,7 +47,7 @@ public interface CsvReader<T> {
 	 *     <li><b>Headers:</b> {@code 0}</li>
 	 * </ul>
 	 */
-	CsvReader<String[]> DEFAULT = CsvReader.builder().build();
+	RowReader DEFAULT = RowReader.builder().build();
 
 	/**
 	 * Reads the CSV records as {@link Stream} from the given {@code reader}.
@@ -61,32 +57,10 @@ public interface CsvReader<T> {
 	 * The caller is responsible for either closing the given {@code reader} or
 	 * the returned record {@code Stream}.
 	 *
-	 * @param reader the CSV source reader
+	 * @param readable the CSV source
 	 * @return the lazy record stream
 	 */
-	Stream<T> read(Readable reader);
-
-	/**
-	 * Reads the CSV records as {@link List} from the given {@code reader}.
-	 *
-	 * @param reader the CSV source reader
-	 * @return the record list
-	 */
-	default List<T> readAll(Readable reader) {
-		try (var lines = read(reader)) {
-			return lines.toList();
-		}
-	}
-
-	/**
-	 * Parses the given CSV string.
-	 *
-	 * @param csv the CSV string
-	 * @return the parsed CSV records
-	 */
-	default List<T> parse(String csv) {
-		return readAll(CharBuffer.wrap(csv));
-	}
+	Rows read(Readable readable);
 
 	/**
 	 * Create a new CSV reader builder.
@@ -212,67 +186,23 @@ public interface CsvReader<T> {
 		 *
 		 * @return {@code String[]} columns reader
 		 */
-		public CsvReader<String[]> build() {
+		public RowReader build() {
 			final var headers = this.headers;
 			final var comment = this.comment;
 			final var separator = this.separator;
 			final var quote = this.quote;
 			final var projection = this.projection;
+			final var reader = new LineReader(quote);
 
-			return reader -> new LineReader(quote)
-				.read(reader)
-				.skip(headers)
-				.filter(line -> comment.isEmpty() || !line.startsWith(comment))
-				.map(new LineSplitter(separator, quote, projection)::split);
+			return source -> new Rows(
+				reader
+					.read(source)
+					.skip(headers)
+					.filter(line -> comment.isEmpty() || !line.startsWith(comment))
+					.map(new LineSplitter(separator, quote, projection)::split)
+					.map(ColumnsRow::new)
+			);
 		}
-
-		/**
-		 * Return a CSV reader, which parses the rows with the given row
-		 * constructor.
-		 *
-		 * @param ctor the row constructor used for creating the CSV records
-		 * @return a new record CSV reader
-		 * @param <T> the record type
-		 */
-		public <T> CsvReader<T> build(final RecordCtor<? extends T> ctor) {
-			requireNonNull(ctor);
-
-			final var base = build();
-			return reader -> base.read(reader).map(ctor::apply);
-		}
-
-		/**
-		 * Return a CSV reader, which parses the rows with the given row
-		 * {@code type}. The row type must be a {@link Record} for being parsed
-		 * automatically.
-		 *
-		 * @param type the record type
-		 * @param converter the converter to use for converting the string
-		 *        columns of the CSV row
-		 * @return a new record CSV reader
-		 * @param <T> the record type
-		 */
-		public <T extends Record> CsvReader<T>
-		build(final Class<T> type, final Converter converter) {
-			if (projection.equals(ColumnIndexes.ALL)) {
-				projection(Projection.of(type));
-			}
-			return build(RecordCtor.of(type, converter));
-		}
-
-		/**
-		 * Return a CSV reader, which parses the rows with the given row
-		 * {@code type}. The row type must be a {@link Record} for being parsed
-		 * automatically.
-		 *
-		 * @param type the record type
-		 * @return a new record CSV reader
-		 * @param <T> the record type
-		 */
-		public <T extends Record> CsvReader<T> build(final Class<T> type) {
-			return build(type, Converter.DEFAULT);
-		}
-
 
 	}
 
