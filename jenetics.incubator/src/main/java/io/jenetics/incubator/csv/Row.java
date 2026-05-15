@@ -90,11 +90,31 @@ public interface Row {
 		return stringAt(index) == null;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default boolean booleanAt(int index, boolean defaultValue) {
 		final var value = at(index, Boolean.class);
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Boolean booleanAt(int index) {
 		return at(index, Boolean.class);
 	}
@@ -103,6 +123,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -113,6 +135,15 @@ public interface Row {
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Byte byteAt(int index) {
 		return at(index, Byte.class);
 	}
@@ -121,6 +152,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -131,6 +164,15 @@ public interface Row {
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Short shortAt(int index) {
 		return at(index, Short.class);
 	}
@@ -139,6 +181,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -149,6 +193,15 @@ public interface Row {
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Integer intAt(int index) {
 		return at(index, Integer.class);
 	}
@@ -157,6 +210,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -167,6 +222,15 @@ public interface Row {
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Long longAt(int index) {
 		return at(index, Long.class);
 	}
@@ -175,6 +239,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -185,6 +251,15 @@ public interface Row {
 		return value != null ? value : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Float floatAt(int index) {
 		return at(index, Float.class);
 	}
@@ -193,6 +268,8 @@ public interface Row {
 	 * Return the value at the given {@code index}.
 	 *
 	 * @param index the row {@code index} of the value
+	 * @param defaultValue the value returned if the value at the given
+	 *         {@code index} is empty
 	 * @return the value at the given {@code index}, or the {@code defaultValue}
 	 *         if the value at the given {@code index} is empty
 	 * @throws IndexOutOfBoundsException if the index is out of range
@@ -203,34 +280,106 @@ public interface Row {
 		return value != null ? Double.parseDouble(value) : defaultValue;
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default Double doubleAt(int index) {
 		return at(index, Double.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default BigInteger bigIntegerAt(int index) {
 		return at(index, BigInteger.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default BigDecimal bigDecimalAt(int index) {
 		return at(index, BigDecimal.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default LocalTime localTimeAt(int index) {
 		return at(index, LocalTime.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default LocalDate localDateAt(int index) {
 		return at(index, LocalDate.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default LocalDateTime localDateTimeAt(int index) {
 		return at(index, LocalDateTime.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default OffsetTime offsetTimeAt(int index) {
 		return at(index, OffsetTime.class);
 	}
 
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or {@code null} if the
+	 *         value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
 	default OffsetDateTime offsetDateTimeAt(int index) {
 		return at(index, OffsetDateTime.class);
 	}
