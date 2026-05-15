@@ -26,6 +26,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.Arrays;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Abstracts the typed access to the values of a CSV row.
@@ -67,10 +70,10 @@ public interface Row {
 	 * @throws UnsupportedOperationException if the conversion target
 	 *         {@code type} is not supported
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the registered converter function.
+	 *         the exception thrown by the registered parser function.
 	 */
 	default <T> T at(int index, Class<T> type) {
-		return null;
+		return StringParsers.DEFAULT.parse(stringAt(index), type);
 	}
 
 	/* *************************************************************************
@@ -386,14 +389,58 @@ public interface Row {
 
 	/**
 	 * Return a new {@code Row} object from the given {@code columns} and
-	 * type {@code converter}.
+	 * string {@code parser}.
 	 *
 	 * @param columns the columns of the row
-	 * @param converter the type converter
+	 * @param parser the string parser
 	 * @return a new {@code Row} object
 	 */
-	static Row of(final String[] columns, final Converter converter) {
-		return new ColumnsRow(columns, converter);
+	static Row of(final String[] columns, final StringParser parser) {
+		record RowRecord(String[] columns, StringParser parser) implements Row {
+			RowRecord {
+				requireNonNull(columns);
+				requireNonNull(parser);
+			}
+
+			@Override
+			public String stringAt(int index) {
+				return columns[index];
+			}
+			@Override
+			public int size() {
+				return columns.length;
+			}
+			@Override
+			public <T> T at(int index, Class<T> type) {
+				return parser.parse(stringAt(index), type);
+			}
+			@Override
+			public int hashCode() {
+				return Arrays.hashCode(columns);
+			}
+			@Override
+			public boolean equals(final Object obj) {
+				return obj instanceof RowRecord row &&
+					Arrays.equals(columns, row.columns);
+			}
+			@Override
+			public String toString() {
+				return Arrays.toString(columns);
+			}
+		}
+
+		return new RowRecord(columns, parser);
+	}
+
+	/**
+	 * Return a new {@code Row} object from the given {@code columns} and
+	 * using the {@link StringParsers#DEFAULT} string parser.
+	 *
+	 * @param columns the columns of the row
+	 * @return a new {@code Row} object
+	 */
+	static Row of(final String[] columns) {
+		return of(columns, StringParsers.DEFAULT);
 	}
 
 }

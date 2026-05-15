@@ -22,19 +22,12 @@ package io.jenetics.incubator.csv;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.google.common.io.CharSource;
-
 import java.io.IOException;
 import java.nio.CharBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.testng.annotations.Test;
 
 import io.jenetics.ext.util.CsvSupport;
 
@@ -54,9 +47,9 @@ public class RowReaderTest {
 	) {}
 
 	record PartialEntry(
-		@ColumnIndex(4) Integer population,
-		@ColumnIndex(1) String city,
-		@ColumnIndex(0) String country
+		Integer population,
+		String city,
+		String country
 	) {}
 
 //	@Test

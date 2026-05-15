@@ -43,9 +43,9 @@ import java.util.function.Function;
  * @version 8.2
  * @since 8.2
  */
-public final class Converter {
+public final class StringParsers implements StringParser {
 
-	private static final Map<Class<?>, Function<String, ?>> DEFAULT_CONVERTERS =
+	private static final Map<Class<?>, Function<String, ?>> DEFAULT_PARSERS =
 		Map.ofEntries(
 			Map.entry(String.class, Function.identity()),
 			Map.entry(boolean.class, Boolean::parseBoolean),
@@ -75,57 +75,23 @@ public final class Converter {
 		);
 
 	/**
-	 * The default converter with the default converter functions.
+	 * The default parser with the default parser functions.
 	 */
-	public static final Converter DEFAULT = new Converter(DEFAULT_CONVERTERS);
+	public static final StringParsers DEFAULT = new StringParsers(DEFAULT_PARSERS);
 
-	private final Map<Class<?>, ? extends Function<? super String, ?>> converters;
+	private final Map<Class<?>, ? extends Function<? super String, ?>> parsers;
 
-	private Converter(
+	private StringParsers(
 		final Map<
 			Class<?>,
 			? extends Function<? super String, ?>
-		> converters
+		> parsers
 	) {
-		this.converters = Map.copyOf(converters);
+		this.parsers = Map.copyOf(parsers);
 	}
 
-	/**
-	 * Return the set of the supported conversion types.
-	 *
-	 * @return the set of the supported conversion types
-	 */
-	public Set<Class<?>> supportedTypes() {
-		return converters.keySet();
-	}
-
-	/**
-	 * Checks whether the given {@code type} is supported for conversion.
-	 *
-	 * @param type the conversion target type to check
-	 * @return {@code true} if a string can be converted to the give {@code type},
-	 *         {@code false} otherwise
-	 */
-	public boolean isSupported(final Class<?> type) {
-		requireNonNull(type);
-		return converters.containsKey(type);
-	}
-
-	/**
-	 * Convert the given string {@code value} to the desired {@code type}. If
-	 * the given input {@code value} is {@code null}, the converter method
-	 * also returns {@code null}.
-	 *
-	 * @param value the string value to convert
-	 * @param type the target type
-	 * @return the converted string value
-	 * @param <T> the target type
-	 * @throws UnsupportedOperationException if the conversion target {@code type}
-	 *         is not supported
-	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the registered converter function.
-	 */
-	public <T> T convert(final String value, final Class<T> type) {
+	@Override
+	public <T> T parse(final String value, final Class<T> type) {
 		requireNonNull(type);
 		if (!isSupported(type)) {
 			throw new UnsupportedOperationException(
@@ -139,18 +105,39 @@ public final class Converter {
 		}
 
 		@SuppressWarnings("unchecked")
-		final T result = (T)converters.get(type).apply(value);
+		final T result = (T)parsers.get(type).apply(value);
 		return result;
 	}
 
 	/**
-	 * Return a {@code Converter} builder with the currently defined converter
+	 * Return the set of the supported conversion types.
+	 *
+	 * @return the set of the supported conversion types
+	 */
+	public Set<Class<?>> supportedTypes() {
+		return parsers.keySet();
+	}
+
+	/**
+	 * Checks whether the given {@code type} is supported for conversion.
+	 *
+	 * @param type the conversion target type to check
+	 * @return {@code true} if a string can be converted to the give {@code type},
+	 *         {@code false} otherwise
+	 */
+	public boolean isSupported(final Class<?> type) {
+		requireNonNull(type);
+		return parsers.containsKey(type);
+	}
+
+	/**
+	 * Return a {@code Converter} builder with the currently defined parser
 	 * functions. The returned builder lets override converters.
 	 *
-	 * @return a builder with the currently defined converter functions
+	 * @return a builder with the currently defined parser functions
 	 */
 	public Builder toBuilder() {
-		return new Builder(converters);
+		return new Builder(parsers);
 	}
 
 	/**
@@ -163,7 +150,7 @@ public final class Converter {
 	}
 
 	/**
-	 * The converter builder class.
+	 * The parser builder class.
 	 */
 	public static final class Builder {
 		private final Map<Class<?>, Function<? super String, ?>>
@@ -179,10 +166,10 @@ public final class Converter {
 		}
 
 		/**
-		 * Registers a converter function for a given type.
+		 * Registers a parser function for a given type.
 		 *
 		 * @param type the target type
-		 * @param converter the converter function
+		 * @param converter the parser function
 		 * @return {@code this} builder for method chaining
 		 * @param <T> the target type
 		 */
@@ -195,8 +182,8 @@ public final class Converter {
 			return this;
 		}
 
-		public Converter build() {
-			return new Converter(converters);
+		public StringParsers build() {
+			return new StringParsers(converters);
 		}
 	}
 
