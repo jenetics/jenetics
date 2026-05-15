@@ -820,13 +820,14 @@ public final class CsvSupport {
 								escaped = false;
 							} else {
 								if (next != -1 && separator.value != next) {
-									throw new IllegalArgumentException("""
+									throw new IllegalArgumentException(
+										"""
 										Only separator character, '%s', allowed \
 										after quote, but found '%c':
 										%s
 										""".formatted(
 											separator.value,
-										next,
+											next,
 											toErrorDesc(line, i + 1)
 										)
 									);
@@ -839,13 +840,14 @@ public final class CsvSupport {
 						}
 					} else {
 						if (previous != -1 && separator.value != previous) {
-							throw new IllegalArgumentException("""
+							throw new IllegalArgumentException(
+								"""
 								Only separator character, '%s', allowed before \
 								quote, but found '%c':
 								%s
 								""".formatted(
 									separator.value,
-								previous,
+									previous,
 									toErrorDesc(line, Math.max(i - 1, 0))
 								)
 							);
@@ -883,7 +885,8 @@ public final class CsvSupport {
 			}
 
 			if (quoted) {
-				throw new IllegalArgumentException("""
+				throw new IllegalArgumentException(
+					"""
 					Unbalanced quote character.
 					%s
 					""".formatted(toErrorDesc(line, quoteIndex))
@@ -1250,10 +1253,8 @@ public final class CsvSupport {
 		}
 
 		public int next() throws IOException {
-			if (index == length) {
-				if (!fill()) {
-					return -1;
-				}
+			if (index == length && !fill()) {
+				return -1;
 			}
 
 			final int result = array[index];
@@ -1333,24 +1334,25 @@ public final class CsvSupport {
 	 */
 	static final class StringList {
 		private static final int SIZE = 16;
+
 		private String[] elements;
-		private int size;
+		private int length;
 
 		StringList() {
-			size = 0;
+			length = 0;
 			elements = new String[SIZE];
 		}
 
 		public int size() {
-			return size;
+			return length;
 		}
 
 		public void add(final String value) {
-			if (size == elements.length) {
+			if (length == elements.length) {
 				increaseSize(elements.length*2);
 			}
-			elements[size] = value;
-			++size;
+			elements[length] = value;
+			++length;
 		}
 
 		public void set(final int index, final String value) {
@@ -1358,18 +1360,18 @@ public final class CsvSupport {
 		}
 
 		public void clear() {
-			size = 0;
+			length = 0;
 		}
 
 		public String[] toArray() {
-			final var result = new String[size];
-			System.arraycopy(elements, 0, result, 0, size);
+			final var result = new String[length];
+			System.arraycopy(elements, 0, result, 0, length);
 			return result;
 		}
 
 		private void increaseSize(final int newSize) {
 			final String[] newElements = new String[newSize];
-			System.arraycopy(elements, 0, newElements, 0, size);
+			System.arraycopy(elements, 0, newElements, 0, length);
 			elements = newElements;
 		}
 

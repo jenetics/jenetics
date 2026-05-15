@@ -659,10 +659,7 @@ public final class Lifecycle {
 		 * @param releases the release methods
 		 */
 		@SafeVarargs
-		public IOResources(
-			final ThrowingRunnable<
-				? extends IOException>... releases
-		) {
+		public IOResources(final ThrowingRunnable<? extends IOException>... releases) {
 			super(releases);
 		}
 
