@@ -54,7 +54,7 @@ public interface RecordDtor<T> {
 	 * @param <T> the record type
 	 */
 	static <T extends Record> RecordDtor<T>
-	of(final Class<T> type, final Formatter formatter) {
+	of(final Class<T> type, final Formats formatter) {
 		requireNonNull(type);
 		requireNonNull(formatter);
 

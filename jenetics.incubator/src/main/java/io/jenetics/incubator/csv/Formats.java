@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @version 8.2
  * @since 8.2
  */
-public final class Formatter {
+public final class Formats {
 
 	private static final Map<Class<?>, Function<?, String>> DEFAULT_CONVERTERS =
 		Map.of(
@@ -44,11 +44,11 @@ public final class Formatter {
 	/**
 	 * The default converter with the default formatter functions.
 	 */
-	public static final Formatter DEFAULT = new Formatter(DEFAULT_CONVERTERS);
+	public static final Formats DEFAULT = new Formats(DEFAULT_CONVERTERS);
 
 	private final Map<Class<?>, ? extends Function<?, String>> formatters;
 
-	private Formatter(final Map<Class<?>, ? extends Function<?, String>> formatters) {
+	private Formats(final Map<Class<?>, ? extends Function<?, String>> formatters) {
 		this.formatters = Map.copyOf(formatters);
 	}
 
@@ -145,8 +145,8 @@ public final class Formatter {
 			return this;
 		}
 
-		public Formatter build() {
-			return new Formatter(formatters);
+		public Formats build() {
+			return new Formats(formatters);
 		}
 	}
 

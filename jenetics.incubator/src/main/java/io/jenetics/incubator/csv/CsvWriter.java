@@ -37,14 +37,12 @@ import io.jenetics.ext.util.CsvSupport.Separator;
 /**
  * Writes records in CSV format.
  *
- * @param <T> the record type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.2
  * @since 8.2
  */
 @FunctionalInterface
-public interface CsvWriter<T> {
+public interface CsvWriter {
 
 	/**
 	 * CSV writer with the given <em>default</em> values:
@@ -54,26 +52,26 @@ public interface CsvWriter<T> {
 	 *     <li><b>Headers:</b> {@code null}</li>
 	 * </ul>
 	 */
-	CsvWriter<String[]> DEFAULT = CsvWriter.builder().build();
+	CsvWriter DEFAULT = CsvWriter.builder().build();
 
 	/**
 	 * Write the given {@code records} to the given {@code writer}.
 	 *
-	 * @param records the records to write
-	 * @param writer the record sink
+	 * @param rows the rows to write
+	 * @param sink the row sink
 	 * @return the number of written records
 	 */
-	long write(final Stream<? extends T> records, final Appendable writer);
+	long write(final Stream<String[]> rows, final Appendable sink);
 
 	/**
 	 * Write the given {@code records} to the given {@code writer}.
 	 *
-	 * @param records the records to write
-	 * @param writer the record sink
+	 * @param records the rows to write
+	 * @param sink the row sink
 	 * @return the number of written records
 	 */
-	default int write(final List<? extends T> records, final Appendable writer) {
-		return (int)write(records.stream(), writer);
+	default int write(final List<String[]> records, final Appendable sink) {
+		return (int)write(records.stream(), sink);
 	}
 
 	/**
@@ -179,12 +177,11 @@ public interface CsvWriter<T> {
 		 *
 		 * @return {@code String[]} columns reader
 		 */
-		public CsvWriter<String[]> build() {
+		public CsvWriter build() {
 			final var header = this.header;
 			final var separator = this.separator;
 			final var quote = this.quote;
 			final var embedding = this.embedding;
-
 			final var joiner = new ColumnJoiner(separator, quote, embedding);
 
 			return (values, writer) -> {
@@ -203,45 +200,6 @@ public interface CsvWriter<T> {
 				flush(writer);
 				return count.get();
 			};
-		}
-
-		/**
-		 * CSV writer which deconstructs and writes records of type {@code T}.
-		 *
-		 * @param dtor the record deconstructor
-		 * @return a new CSV writer
-		 * @param <T> the record type
-		 */
-		public <T> CsvWriter<T> build(final RecordDtor<? super T> dtor) {
-			requireNonNull(dtor);
-
-			final var base = build();
-			return (values, writer) ->
-				base.write(values.map(dtor::unapply), writer);
-		}
-
-		/**
-		 * CSV writer which deconstructs and writes records of type {@code T}.
-		 *
-		 * @param type the record type
-		 * @param formatter the string formatter used for record deconstruction
-		 * @return a new CSV writer
-		 * @param <T> the record type
-		 */
-		public <T extends Record> CsvWriter<T>
-		build(final Class<T> type, final Formatter formatter) {
-			return build(RecordDtor.of(type, formatter));
-		}
-
-		/**
-		 * CSV writer which deconstructs and writes records of type {@code T}.
-		 *
-		 * @param type the record type
-		 * @return a new CSV writer
-		 * @param <T> the record type
-		 */
-		public <T extends Record> CsvWriter<T> build(final Class<T> type) {
-			return build(type, Formatter.DEFAULT);
 		}
 
 	}
