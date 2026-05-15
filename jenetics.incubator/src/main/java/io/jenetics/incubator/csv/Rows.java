@@ -28,6 +28,13 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+/**
+ * Represents the result of the {@link RowReader#read(Readable)} method.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
+ */
 public final class Rows implements Stream<Row> {
 	private final Stream<Row> stream;
 
@@ -36,10 +43,22 @@ public final class Rows implements Stream<Row> {
 		this.stream = stream;
 	}
 
+	/**
+	 * Applies the row {@code parser} to {@code this} stream of {@link Row}
+	 * objects.
+	 *
+	 * @param parser the rows result parser
+	 * @return the parse result
+	 * @param <T> the parse result type
+	 */
 	public <T> T as(final RowsParser<T> parser) {
 		requireNonNull(parser);
 		return parser.parse(this);
 	}
+
+	/* *************************************************************************
+	 * Stream delegates.
+	 * ************************************************************************/
 
 	@Override
 	public void close() {
