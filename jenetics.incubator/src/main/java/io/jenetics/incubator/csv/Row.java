@@ -19,6 +19,14 @@
  */
 package io.jenetics.incubator.csv;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+
 /**
  * Abstracts the typed access to the values of a CSV row.
  *
@@ -27,24 +35,6 @@ package io.jenetics.incubator.csv;
  * @since 8.2
  */
 public interface Row {
-
-	/**
-	 * Return the of row values.
-	 *
-	 * @return the number of row values
-	 */
-	int size();
-
-	/**
-	 * Checks if the value at the given {@code index} is empty.
-	 *
-	 * @param index the column index
-	 * @return {@code true} if the value at the given {@code index} is empty,
-	 *         {@code false} otherwise
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	boolean isEmptyAt(int index);
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -57,70 +47,11 @@ public interface Row {
 	String stringAt(int index);
 
 	/**
-	 * Return the value at the given {@code index}.
+	 * Return the number of columns
 	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
+	 * @return the number of columns
 	 */
-	byte byteAt(int index, byte defaultValue);
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	short shortAt(int index, short defaultValue);
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	int intAt(int index, int defaultValue);
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	long longAt(int index, long defaultValue);
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	float floatAt(int index, float defaultValue);
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}, or the {@code defaultValue}
-	 *         if the value at the given {@code index} is empty
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	double doubleAt(int index, double defaultValue);
+	int size();
 
 	/**
 	 * Return the value at the given {@code index} and tries to convert it into
@@ -138,7 +69,174 @@ public interface Row {
 	 * @throws RuntimeException if the {@code value} can't be converted. This is
 	 *         the exception thrown by the registered converter function.
 	 */
-	<T> T objectAt(int index, Class<T> type);
+	default <T> T at(int index, Class<T> type) {
+		switch (type) {
+			case Integer.class _-> (T)Integer.valueOf(index);
+			default: return null;
+		}
+	}
+
+	/* *************************************************************************
+	 * Default implementations of basic string conversions.
+	 * ************************************************************************/
+
+	/**
+	 * Checks if the value at the given {@code index} is empty.
+	 *
+	 * @param index the column index
+	 * @return {@code true} if the value at the given {@code index} is empty,
+	 *         {@code false} otherwise
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default boolean isEmptyAt(int index) {
+		return stringAt(index) == null;
+	}
+
+	default boolean booleanAt(int index, boolean defaultValue) {
+		final var value = at(index, Boolean.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Boolean booleanAt(int index) {
+		return at(index, Boolean.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default byte byteAt(int index, byte defaultValue) {
+		final var value = at(index, Byte.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Byte byteAt(int index) {
+		return at(index, Byte.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default short shortAt(int index, short defaultValue) {
+		final var value = at(index, Short.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Short shortAt(int index) {
+		return at(index, Short.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default int intAt(int index, int defaultValue) {
+		final var value = at(index, Integer.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Integer intAt(int index) {
+		return at(index, Integer.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default long longAt(int index, long defaultValue) {
+		final var value = at(index, Long.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Long longAt(int index) {
+		return at(index, Long.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default float floatAt(int index, float defaultValue) {
+		final var value = at(index, Float.class);
+		return value != null ? value : defaultValue;
+	}
+
+	default Float floatAt(int index) {
+		return at(index, Float.class);
+	}
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}, or the {@code defaultValue}
+	 *         if the value at the given {@code index} is empty
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default double doubleAt(int index, double defaultValue) {
+		final var value = stringAt(index);
+		return value != null ? Double.parseDouble(value) : defaultValue;
+	}
+
+	default Double doubleAt(int index) {
+		return at(index, Double.class);
+	}
+
+	default BigInteger bigIntegerAt(int index) {
+		return at(index, BigInteger.class);
+	}
+
+	default BigDecimal bigDecimalAt(int index) {
+		return at(index, BigDecimal.class);
+	}
+
+	default LocalTime localTimeAt(int index) {
+		return at(index, LocalTime.class);
+	}
+
+	default LocalDate localDateAt(int index) {
+		return at(index, LocalDate.class);
+	}
+
+	default LocalDateTime localDateTimeAt(int index) {
+		return at(index, LocalDateTime.class);
+	}
+
+	default OffsetTime offsetTimeAt(int index) {
+		return at(index, OffsetTime.class);
+	}
+
+	default OffsetDateTime offsetDateTimeAt(int index) {
+		return at(index, OffsetDateTime.class);
+	}
 
 	/**
 	 * Return a new {@code Row} object from the given {@code columns} and

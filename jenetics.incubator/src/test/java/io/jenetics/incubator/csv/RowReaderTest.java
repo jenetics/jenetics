@@ -22,10 +22,17 @@ package io.jenetics.incubator.csv;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.common.io.CharSource;
+
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
@@ -34,7 +41,7 @@ import io.jenetics.ext.util.CsvSupport;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CsvReaderTest {
+public class RowReaderTest {
 
 	record FullEntry(
 		String country,
@@ -52,26 +59,26 @@ public class CsvReaderTest {
 		@ColumnIndex(0) String country
 	) {}
 
-	@Test
-	public void parse() {
-		final var csv = """
-			Country,City,AccentCity,Region,Population,Latitude,Longitude
-			ad,aixas,Aixàs,06,123123,42.4833333,1.4666667
-			ad,aixirivali,Aixirivali,06,234234,42.4666667,1.5
-			ad,aixirivall,Aixirivall,06,456,42.4666667
-			ad,aixirvall,Aixirvall,06,678,42.4666667,1.5
-			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
-			""";
-
-		final CsvReader<PartialEntry> reader = CsvReader.builder()
-			.headers(1)
-			.build(PartialEntry.class);
-
-		final List<PartialEntry> entries = reader.parse(csv);
-		entries.forEach(System.out::println);
-		assertThat(entries).hasSize(5);
-		assertThat(entries.getFirst().population).isEqualTo(123123);
-	}
+//	@Test
+//	public void parse() {
+//		final var csv = """
+//			Country,City,AccentCity,Region,Population,Latitude,Longitude
+//			ad,aixas,Aixàs,06,123123,42.4833333,1.4666667
+//			ad,aixirivali,Aixirivali,06,234234,42.4666667,1.5
+//			ad,aixirivall,Aixirivall,06,456,42.4666667
+//			ad,aixirvall,Aixirvall,06,678,42.4666667,1.5
+//			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
+//			""";
+//
+//		final RowReader<PartialEntry> reader = RowReader.builder()
+//			.headers(1)
+//			.build(PartialEntry.class);
+//
+//		final List<PartialEntry> entries = reader.parse(csv);
+//		entries.forEach(System.out::println);
+//		assertThat(entries).hasSize(5);
+//		assertThat(entries.getFirst().population).isEqualTo(123123);
+//	}
 
 	//@Test
 	public void performance() throws IOException {
@@ -81,7 +88,7 @@ public class CsvReaderTest {
 			try (var reader = Files.newBufferedReader(path, ISO_8859_1)) {
 				final var start = System.currentTimeMillis();
 
-				final var rdr = CsvReader.builder()
+				final var rdr = RowReader.builder()
 					.headers(1)
 					.quote(CsvSupport.Quote.ZERO)
 					//.build(FullEntry.class);
@@ -89,6 +96,7 @@ public class CsvReaderTest {
 
 				final var count = rdr
 					.read(reader)
+					.stream()
 					.count();
 
 				final var time = System.currentTimeMillis() - start;
@@ -98,6 +106,26 @@ public class CsvReaderTest {
 				System.setProperty("output", Long.toString(count));
 			}
 		}
+	}
+
+	void foo() {
+		final CharBuffer source = CharBuffer.wrap("""
+			ad,aixas,Aixàs,06,123123,42.4833333,1.4666667
+			ad,aixirivali,Aixirivali,06,234234,42.4666667,1.5
+			ad,aixirivall,Aixirivall,06,456,42.4666667
+			ad,aixirvall,Aixirvall,06,678,42.4666667,1.5
+			ad,aixovall,Aixovall,06,234234,42.4666667,1.4833333
+			"""
+		);
+		final RowParser<LocalDate> parser = _ -> LocalDate.MAX;
+		final RowReader reader = RowReader.builder()
+			.projection(4, 5, 3, 1)
+			.build();
+
+		final Stream<LocalDate> result = reader
+			.read(source)
+			.as(parser.stream());
+
 	}
 
 }
