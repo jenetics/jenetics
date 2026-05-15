@@ -21,11 +21,12 @@ package io.jenetics.incubator.csv;
 
 import static java.util.Objects.requireNonNull;
 
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Formatter class for formatting objects of a given type to a string.
@@ -34,11 +35,10 @@ import java.util.function.Function;
  * @version 8.2
  * @since 8.2
  */
-public final class Formats {
+public final class Formats extends Format {
 
-	private static final Map<Class<?>, Function<?, String>> DEFAULT_CONVERTERS =
+	private static final Map<Class<?>, Format> DEFAULT_CONVERTERS =
 		Map.of(
-			Object.class, Objects::toString
 		);
 
 	/**
@@ -46,9 +46,9 @@ public final class Formats {
 	 */
 	public static final Formats DEFAULT = new Formats(DEFAULT_CONVERTERS);
 
-	private final Map<Class<?>, ? extends Function<?, String>> formatters;
+	private final Map<Class<?>, Format> formatters;
 
-	private Formats(final Map<Class<?>, ? extends Function<?, String>> formatters) {
+	private Formats(final Map<Class<?>, ? extends Format> formatters) {
 		this.formatters = Map.copyOf(formatters);
 	}
 
@@ -73,33 +73,25 @@ public final class Formats {
 		return formatters.containsKey(type);
 	}
 
-	/**
-	 * Formats the given {@code value} to a string. If the given input
-	 * {@code value} is {@code null}, the formatter method also returns
-	 * {@code null}. If no formatter is defined for the given input type, the
-	 * {@link Object#toString()} value is returned.
-	 *
-	 * @param value the string value to convert
-	 * @return the formatted string value
-	 * @param <T> the source type
-	 * @throws RuntimeException if the {@code value} can't be converted. This is
-	 *         the exception thrown by the registered converter function.
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> String format(final T value) {
-		if (value == null) {
-			return null;
-		}
-
-		var formatter = (Function<T, String>)formatters.get(value.getClass());
-		if (formatter == null) {
-			formatter = (Function<T, String>)formatters.get(Object.class);
-			if (formatter == null) {
-				formatter = Object::toString;
+	@Override
+	public StringBuffer format(Object obj, StringBuffer out, FieldPosition pos) {
+		if (obj != null)  {
+			final var format = formatters.get(obj.getClass());
+			if (format != null) {
+				format.format(obj, out, pos);
 			}
 		}
 
-		return formatter.apply(value);
+		return out;
+	}
+
+	@Override
+	public Object parseObject(String source, ParsePosition pos) {
+		if (source != null) {
+			return null;
+		}
+
+		return null;
 	}
 
 	/**
@@ -121,13 +113,14 @@ public final class Formats {
 		return new Builder(Map.of());
 	}
 
+
 	/**
 	 * The formatter builder class.
 	 */
 	public static final class Builder {
-		private final Map<Class<?>, Function<?, String>> formatters = new HashMap<>();
+		private final Map<Class<?>, Format> formatters = new HashMap<>();
 
-		private Builder(final Map<Class<?>, ? extends Function<?, String>> formatters) {
+		private Builder(final Map<Class<?>, ? extends Format> formatters) {
 			this.formatters.putAll(formatters);
 		}
 
@@ -140,7 +133,7 @@ public final class Formats {
 		 * @param <T> the target type
 		 */
 		public <T> Builder
-		add(final Class<T> type, final Function<? super T, String> formatter) {
+		add(final Class<T> type, final Format formatter) {
 			formatters.put(requireNonNull(type), requireNonNull(formatter));
 			return this;
 		}
