@@ -70,10 +70,7 @@ public interface Row {
 	 *         the exception thrown by the registered converter function.
 	 */
 	default <T> T at(int index, Class<T> type) {
-		switch (type) {
-			case Integer.class _-> (T)Integer.valueOf(index);
-			default: return null;
-		}
+		return null;
 	}
 
 	/* *************************************************************************

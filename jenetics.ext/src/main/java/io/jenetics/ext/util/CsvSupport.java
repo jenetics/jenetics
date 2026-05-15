@@ -1278,6 +1278,7 @@ public final class CsvSupport {
 			}
 
 			index = 0;
+			length = Math.max(length, 0);
 			return length > 0;
 		}
 	}
@@ -1378,5 +1379,4 @@ public final class CsvSupport {
 	}
 
 }
-
 
