@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.csv;
 
+import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -27,8 +29,8 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.util.Arrays;
-
-import static java.util.Objects.requireNonNull;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Abstracts the typed access to the values of a CSV row.
@@ -37,17 +39,9 @@ import static java.util.Objects.requireNonNull;
  * @version 8.2
  * @since 8.2
  */
-public interface Row {
+public interface Row extends Iterable<Object> {
 
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @param index the row {@code index} of the value
-	 * @return the value at the given {@code index}
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	String stringAt(int index);
+	Object at(int index);
 
 	/**
 	 * Return the number of columns
@@ -55,6 +49,46 @@ public interface Row {
 	 * @return the number of columns
 	 */
 	int size();
+
+	/* *************************************************************************
+	 * Default implementations of basic string conversions.
+	 * ************************************************************************/
+
+	@Override
+	default Iterator<Object> iterator() {
+		return new Iterator<>() {
+			private int cursor = 0;
+
+			@Override
+			public boolean hasNext() {
+				return cursor != size();
+			}
+
+			@Override
+			public Object next() {
+				final int i = cursor;
+				if (cursor >= size()) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i + 1;
+				return at(i);
+			}
+		};
+	}
+
+	/**
+	 * Checks if the value at the given {@code index} is empty.
+	 *
+	 * @param index the column index
+	 * @return {@code true} if the value at the given {@code index} is empty,
+	 *         {@code false} otherwise
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         ({@code index < 0 || index >= size()})
+	 */
+	default boolean isEmptyAt(int index) {
+		return stringAt(index) == null;
+	}
 
 	/**
 	 * Return the value at the given {@code index} and tries to convert it into
@@ -73,24 +107,19 @@ public interface Row {
 	 *         the exception thrown by the registered parser function.
 	 */
 	default <T> T at(int index, Class<T> type) {
-		return StringParsers.DEFAULT.parse(stringAt(index), type);
+		return StringFormats.DEFAULT.parse(stringAt(index), type);
 	}
 
-	/* *************************************************************************
-	 * Default implementations of basic string conversions.
-	 * ************************************************************************/
-
 	/**
-	 * Checks if the value at the given {@code index} is empty.
+	 * Return the value at the given {@code index}.
 	 *
-	 * @param index the column index
-	 * @return {@code true} if the value at the given {@code index} is empty,
-	 *         {@code false} otherwise
+	 * @param index the row {@code index} of the value
+	 * @return the value at the given {@code index}
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         ({@code index < 0 || index >= size()})
 	 */
-	default boolean isEmptyAt(int index) {
-		return stringAt(index) == null;
+	default String stringAt(int index) {
+		return StringFormats.DEFAULT.format(at(index));
 	}
 
 	/**
@@ -392,16 +421,20 @@ public interface Row {
 	 * string {@code parser}.
 	 *
 	 * @param columns the columns of the row
-	 * @param parser the string parser
+	 * @param format the string parser
 	 * @return a new {@code Row} object
 	 */
-	static Row of(final String[] columns, final StringParser parser) {
-		record RowRecord(String[] columns, StringParser parser) implements Row {
-			RowRecord {
+	static Row of(final String[] columns, final StringFormat format) {
+		record Columns(String[] columns, StringFormat format) implements Row {
+			Columns {
 				requireNonNull(columns);
-				requireNonNull(parser);
+				requireNonNull(format);
 			}
 
+			@Override
+			public Object at(int index) {
+				return columns[index];
+			}
 			@Override
 			public String stringAt(int index) {
 				return columns[index];
@@ -412,7 +445,7 @@ public interface Row {
 			}
 			@Override
 			public <T> T at(int index, Class<T> type) {
-				return parser.parse(stringAt(index), type);
+				return format.parse(columns[index], type);
 			}
 			@Override
 			public int hashCode() {
@@ -420,7 +453,7 @@ public interface Row {
 			}
 			@Override
 			public boolean equals(final Object obj) {
-				return obj instanceof RowRecord row &&
+				return obj instanceof Columns row &&
 					Arrays.equals(columns, row.columns);
 			}
 			@Override
@@ -429,18 +462,63 @@ public interface Row {
 			}
 		}
 
-		return new RowRecord(columns, parser);
+		return new Columns(columns, format);
 	}
 
 	/**
 	 * Return a new {@code Row} object from the given {@code columns} and
-	 * using the {@link StringParsers#DEFAULT} string parser.
+	 * using the {@link StringFormats#DEFAULT} string parser.
 	 *
 	 * @param columns the columns of the row
 	 * @return a new {@code Row} object
 	 */
-	static Row of(final String[] columns) {
-		return of(columns, StringParsers.DEFAULT);
+	static Row of(final String... columns) {
+		return Row.of(columns, StringFormats.DEFAULT);
+	}
+
+	static Row of(final Object[] components, final StringFormat format) {
+		record Components(Object[] components, StringFormat format) implements Row {
+			Components {
+				requireNonNull(components);
+				requireNonNull(format);
+			}
+
+			@Override
+			public Object at(int index) {
+				return components[index];
+			}
+			@Override
+			public String stringAt(int index) {
+				return format.format(components[index]);
+			}
+			@Override
+			public int size() {
+				return components.length;
+			}
+			@Override
+			public <T> T at(int index, Class<T> type) {
+				return format.parse(stringAt(index), type);
+			}
+			@Override
+			public int hashCode() {
+				return Arrays.hashCode(components);
+			}
+			@Override
+			public boolean equals(final Object obj) {
+				return obj instanceof Components row &&
+					Arrays.equals(components, row.components);
+			}
+			@Override
+			public String toString() {
+				return Arrays.toString(components);
+			}
+		}
+
+		return new Components(components, format);
+	}
+
+	static Row of(final Object... components) {
+		return Row.of(components, StringFormats.DEFAULT);
 	}
 
 }

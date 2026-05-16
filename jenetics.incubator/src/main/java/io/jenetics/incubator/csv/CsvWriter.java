@@ -61,18 +61,7 @@ public interface CsvWriter {
 	 * @param sink the row sink
 	 * @return the number of written records
 	 */
-	long write(final Stream<String[]> rows, final Appendable sink);
-
-	/**
-	 * Write the given {@code records} to the given {@code writer}.
-	 *
-	 * @param records the rows to write
-	 * @param sink the row sink
-	 * @return the number of written records
-	 */
-	default int write(final List<String[]> records, final Appendable sink) {
-		return (int)write(records.stream(), sink);
-	}
+	long write(final Rows rows, final Appendable sink);
 
 	/**
 	 * Create a new CSV writer builder.
@@ -91,6 +80,7 @@ public interface CsvWriter {
 		private Quote quote = Quote.DEFAULT;
 		private ColumnIndexes embedding = ColumnIndexes.ALL;
 		private String[] header = null;
+		private StringFormat format = StringFormats.DEFAULT;
 
 		private Builder() {
 		}
@@ -182,16 +172,17 @@ public interface CsvWriter {
 			final var separator = this.separator;
 			final var quote = this.quote;
 			final var embedding = this.embedding;
+			final var format = this.format;
 			final var joiner = new ColumnJoiner(separator, quote, embedding);
 
-			return (values, writer) -> {
+			return (rows, writer) -> {
 				final var count = new AtomicLong();
 
 				final Stream<String> hdr = header != null
 					? Stream.ofNullable(new ColumnJoiner(separator, quote).join(header))
 					: Stream.empty();
 
-				Stream.concat(hdr, values.map(joiner::join))
+				Stream.concat(hdr, rows.map(joiner::join))
 					.forEach(line -> {
 						writeln(line, writer);
 						count.getAndIncrement();

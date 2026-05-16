@@ -102,7 +102,7 @@ public final class StringFormats implements StringFormat {
 		}
 	}
 
-	public <T> StringFormats add(
+	public <T> StringFormats put(
 		final Class<T> type,
 		final Function<? super T, String> format,
 		final Function<String, ? extends T> parser
@@ -116,7 +116,7 @@ public final class StringFormats implements StringFormat {
 		return new StringFormats(fmts);
 	}
 
-	public <T> StringFormats add(
+	public <T> StringFormats put(
 		final Class<T> type,
 		final Function<String, ? extends T> parser
 	) {

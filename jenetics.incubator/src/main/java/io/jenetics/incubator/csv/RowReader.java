@@ -80,7 +80,7 @@ public interface RowReader {
 		private ColumnIndexes projection = ColumnIndexes.ALL;
 		private String comment = "";
 		private int headers = 0;
-		private StringParser parser;
+		private StringFormat format = StringFormats.DEFAULT;
 
 		private Builder() {
 		}
@@ -154,11 +154,11 @@ public interface RowReader {
 		/**
 		 * Set the column projection indexes.
 		 *
-		 * @param parser the string parser
+		 * @param format the string parser
 		 * @return {@code this} builder
 		 */
-		public Builder parser(final StringParser parser) {
-			this.parser = requireNonNull(parser);
+		public Builder format(final StringFormat format) {
+			this.format = requireNonNull(format);
 			return this;
 		}
 
@@ -204,7 +204,7 @@ public interface RowReader {
 			final var separator = this.separator;
 			final var quote = this.quote;
 			final var projection = this.projection;
-			final var parser = this.parser;
+			final var format = this.format;
 			final var reader = new LineReader(quote);
 
 			return source -> new Rows(
@@ -213,7 +213,7 @@ public interface RowReader {
 					.skip(headers)
 					.filter(line -> comment.isEmpty() || !line.startsWith(comment))
 					.map(new LineSplitter(separator, quote, projection)::split)
-					.map(cols -> Row.of(cols, parser))
+					.map(cols -> Row.of(cols, format))
 			);
 		}
 
