@@ -9,9 +9,16 @@ public interface StringFormat {
 	 *
 	 * @param value the value to <em>format</em>
 	 * @return the string format of the given value
-	 * @param <T> the value type
 	 */
-	<T> String format(T value);
+	String format(Object value);
+
+	default String[] format(Object[] components) {
+		final String[] values = new String[components.length];
+		for (int i = 0; i < components.length; ++i) {
+			values[i] = format(components[i]);
+		}
+		return values;
+	}
 
 	/**
 	 * Convert the given string {@code value} to the desired {@code type}. If

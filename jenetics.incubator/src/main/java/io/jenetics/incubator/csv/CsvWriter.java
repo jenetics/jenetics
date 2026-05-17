@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -61,7 +60,7 @@ public interface CsvWriter {
 	 * @param sink the row sink
 	 * @return the number of written records
 	 */
-	long write(final Rows rows, final Appendable sink);
+	long write(final Stream<String[]> rows, final Appendable sink);
 
 	/**
 	 * Create a new CSV writer builder.
@@ -80,7 +79,6 @@ public interface CsvWriter {
 		private Quote quote = Quote.DEFAULT;
 		private ColumnIndexes embedding = ColumnIndexes.ALL;
 		private String[] header = null;
-		private StringFormat format = StringFormats.DEFAULT;
 
 		private Builder() {
 		}
@@ -172,7 +170,6 @@ public interface CsvWriter {
 			final var separator = this.separator;
 			final var quote = this.quote;
 			final var embedding = this.embedding;
-			final var format = this.format;
 			final var joiner = new ColumnJoiner(separator, quote, embedding);
 
 			return (rows, writer) -> {

@@ -82,9 +82,9 @@ public final class StringFormats implements StringFormat {
 	}
 
 	@Override
-	public <T> String format(T value) {
+	public String format(Object value) {
 		@SuppressWarnings("unchecked")
-		final var format = (Format<T>)formats.get(value.getClass());
+		final var format = (Format<Object>)formats.get(value.getClass());
 		return format != null ? format.format(value) : value.toString();
 	}
 
