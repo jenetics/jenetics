@@ -50,7 +50,21 @@ public class RowReaderTest {
 		Integer population,
 		String city,
 		String country
-	) {}
+	) {
+
+		static final Dtor<PartialEntry> DTOR = entry -> new Object[] {
+			entry.population(),
+			entry.city(),
+			entry.country()
+		};
+
+		static final Ctor<PartialEntry> CTOR = row -> new PartialEntry(
+			row.intAt(0),
+			row.stringAt(1),
+			row.stringAt(2)
+		);
+
+	}
 
 //	@Test
 //	public void parse() {
@@ -111,6 +125,7 @@ public class RowReaderTest {
 			"""
 		);
 		final RowParser<LocalDate> parser = _ -> LocalDate.MAX;
+
 		final RowReader reader = RowReader.builder()
 			.projection(4, 5, 3, 1)
 			.build();

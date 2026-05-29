@@ -41,6 +41,12 @@ import java.util.NoSuchElementException;
  */
 public interface Row extends Iterable<Object> {
 
+	/**
+	 * Return the column at the given index.
+	 *
+	 * @param index the column index
+	 * @return the column at the given index
+	 */
 	Object at(int index);
 
 	/**
@@ -49,10 +55,6 @@ public interface Row extends Iterable<Object> {
 	 * @return the number of columns
 	 */
 	int size();
-
-	/* *************************************************************************
-	 * Default implementations of basic string conversions.
-	 * ************************************************************************/
 
 	@Override
 	default Iterator<Object> iterator() {
@@ -77,18 +79,10 @@ public interface Row extends Iterable<Object> {
 		};
 	}
 
-	/**
-	 * Checks if the value at the given {@code index} is empty.
-	 *
-	 * @param index the column index
-	 * @return {@code true} if the value at the given {@code index} is empty,
-	 *         {@code false} otherwise
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         ({@code index < 0 || index >= size()})
-	 */
-	default boolean isEmptyAt(int index) {
-		return stringAt(index) == null;
-	}
+
+	/* *************************************************************************
+	 * Default implementations of basic string conversions.
+	 * ************************************************************************/
 
 	/**
 	 * Return the value at the given {@code index} and tries to convert it into
@@ -430,13 +424,8 @@ public interface Row extends Iterable<Object> {
 				requireNonNull(columns);
 				requireNonNull(format);
 			}
-
 			@Override
 			public Object at(int index) {
-				return columns[index];
-			}
-			@Override
-			public String stringAt(int index) {
 				return columns[index];
 			}
 			@Override
@@ -446,6 +435,10 @@ public interface Row extends Iterable<Object> {
 			@Override
 			public <T> T at(int index, Class<T> type) {
 				return format.parse(columns[index], type);
+			}
+			@Override
+			public String stringAt(int index) {
+				return columns[index];
 			}
 			@Override
 			public int hashCode() {

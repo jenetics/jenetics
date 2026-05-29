@@ -19,12 +19,23 @@ public interface Dtor<T> {
 	static <T extends Record> Dtor<T> record(final Class<T> type) {
 		final var components = type.getRecordComponents();
 
-		return record -> {
-			final Object[] values = new Object[components.length];
-			for (int i = 0; i < components.length; ++i) {
-				values[i] = get(components[i], record);
+		return new Dtor<T>() {
+			@Override
+			public Object[] unapply(T value) {
+				final Object[] values = new Object[components.length];
+				for (int i = 0; i < components.length; ++i) {
+					values[i] = get(components[i], value);
+				}
+				return values;
 			}
-			return values;
+			@Override
+			public String[] format(T value, StringFormat format) {
+				final String[] values = new String[components.length];
+				for (int i = 0; i < components.length; ++i) {
+					values[i] = format.format(get(components[i], value));
+				}
+				return values;
+			}
 		};
 	}
 
