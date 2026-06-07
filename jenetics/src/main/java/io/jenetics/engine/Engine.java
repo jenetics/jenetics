@@ -168,8 +168,6 @@ public final class Engine<
 	 * @param interceptor the evolution interceptor, which gives additional
 	 *        possibilities to influence the actual evolution
 	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @throws IllegalArgumentException if the given integer values are smaller
-	 *         than one.
 	 */
 	Engine(
 		final Evaluator<G, C> evaluator,
@@ -573,6 +571,13 @@ public final class Engine<
 	 * of the current evolution {@code Engine}. With this method, the evolution
 	 * engine can serve as a template for a new one.
 	 *
+	 * @apiNote
+	 * If this engine was created from a fitness function and a dedicated
+	 * fitness executor, the returned builder preserves the fitness function,
+	 * but not the originally configured fitness executor. Calling
+	 * {@link Builder#fitnessExecutor(BatchExecutor)} on the returned builder
+	 * creates a new fitness evaluator with the given executor.
+	 *
 	 * @return a new engine builder
 	 */
 	public Builder<G, C> toBuilder() {
@@ -843,16 +848,16 @@ public final class Engine<
 		 * and repairing them.
 		 *
 		 * <p><i>Default implementation uses {@code Phenotype::isValid} for
-		 * validating the phenotype.</i></p>
+		 * validating the phenotype.</i> Calling this method with {@code null}
+		 * resets the builder to the default constraint.</p>
 		 *
 		 * @since 5.0
 		 *
 		 * @param constraint phenotype constraint which can override the default
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
-		 *        invalid phenotypes when needed.
+		 *        invalid phenotypes when needed, or {@code null} for the default
+		 *        constraint.
 		 * @return {@code this} builder, for command chaining
-		 * @throws NullPointerException if one of the {@code constraint} is
-		 *         {@code null}.
 		 */
 		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
 			_constraint = constraint;
@@ -937,6 +942,11 @@ public final class Engine<
 		 *
 		 * @since 3.8
 		 *
+		 * @apiNote
+		 * The offspring size is stored as a fraction of the current population
+		 * size. Changing the population size afterwards keeps this fraction, not
+		 * the absolute offspring size.
+		 *
 		 * @param size the number of offspring individuals.
 		 * @return {@code this} builder, for command chaining
 		 * @throws java.lang.IllegalArgumentException if the size is not
@@ -957,6 +967,11 @@ public final class Engine<
 		 * The number of survivors.
 		 *
 		 * @since 3.8
+		 *
+		 * @apiNote
+		 * The survivor size is stored as a fraction of the current population
+		 * size. Changing the population size afterwards keeps this fraction, not
+		 * the absolute survivor size.
 		 *
 		 * @param size the number of survivors.
 		 * @return {@code this} builder, for command chaining
@@ -1254,6 +1269,12 @@ public final class Engine<
 		/**
 		 * Create a new builder, with the current configuration.
 		 *
+		 * @apiNote
+		 * For builders created from a fitness function, a configured fitness
+		 * executor is not copied. Calling {@link #fitnessExecutor(BatchExecutor)}
+		 * on the copied builder creates a new fitness evaluator with the given
+		 * executor.
+		 *
 		 * @since 3.1
 		 *
 		 * @return a new builder, with the current configuration
@@ -1312,6 +1333,3 @@ public final class Engine<
 
 	}
 }
-
-
-
