@@ -142,4 +142,12 @@ public final class Arrays {
 		return sum;
 	}
 
+	public static int sum(final int[] values) {
+		int sum = 0;
+		for (var value : values) {
+			sum += value;
+		}
+		return sum;
+	}
+
 }
