@@ -46,39 +46,39 @@ public final class Gatherers {
 	 *     +----3-----5-----7--------9----|
 	 * }</pre>
 	 *
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
-	 *     .gather(Gatherers.toStrictlyIncreasing())
+	 *     .gather(Gatherers.strictlyIncreasing())
 	 *     .collect(ISeq.toISeq());
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }
+	 *}
 	 *
 	 * @param <C> the comparable type
 	 * @return a new gatherer
 	 */
 	public static <C extends Comparable<? super C>> Gatherer<C, ?, C>
-	toStrictlyIncreasing() {
-		return toStrictlyImproving(Comparator.naturalOrder());
+	strictlyIncreasing() {
+		return strictlyImproving(Comparator.naturalOrder());
 	}
 
 	/**
 	 * Return a new gatherer, which guarantees a strictly improving stream, from
 	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
 	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
-	 * {@snippet lang="java":
+	 * {@snippet lang = "java":
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
-	 *     .gather(Gatherers.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .gather(Gatherers.strictlyImproving(Comparator.naturalOrder()))
 	 *     .collect(ISeq.toISeq());
 	 *
 	 * System.out.println(values);
 	 * // [6,47,65,78,96,96,99]
-	 * }
+	 *}
 	 *
 	 * @param <T> the element type
 	 * @param comparator the comparator used for testing the elements
@@ -87,7 +87,7 @@ public final class Gatherers {
 	 *         {@code null}
 	 */
 	public static <T> Gatherer<T, ?, T>
-	toStrictlyImproving(final Comparator<? super T> comparator) {
+	strictlyImproving(final Comparator<? super T> comparator) {
 		requireNonNull(comparator);
 		return Gatherer.ofSequential(
 			State<T>::new,

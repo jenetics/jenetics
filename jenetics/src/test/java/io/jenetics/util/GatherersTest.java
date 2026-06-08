@@ -19,10 +19,12 @@
  */
 package io.jenetics.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -31,67 +33,68 @@ import org.testng.annotations.Test;
 public class GatherersTest {
 
 	@Test
-	public void toStrictlyIncreasing() {
+	public void strictlyIncreasing() {
 		final ISeq<Integer> values = Stream.of(3, 2, 5, 4, 7, 7, 4, 9)
-			.gather(Gatherers.toStrictlyIncreasing())
+			.gather(Gatherers.strictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(values, ISeq.of(3, 5, 7, 9));
+		assertThat(values).isEqualTo(ISeq.of(3, 5, 7, 9));
 	}
 
 	@Test
-	public void toStrictlyIncreasingWithDuplicates() {
+	public void strictlyIncreasingWithDuplicates() {
 		final ISeq<Integer> values = Stream.of(1, 1, 1, 2, 2, 1, 3)
-			.gather(Gatherers.toStrictlyIncreasing())
+			.gather(Gatherers.strictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(values, ISeq.of(1, 2, 3));
+		assertThat(values).isEqualTo(ISeq.of(1, 2, 3));
 	}
 
 	@Test
-	public void toStrictlyIncreasingEmptyStream() {
+	public void strictlyIncreasingEmptyStream() {
 		final ISeq<Integer> values = Stream.<Integer>empty()
-			.gather(Gatherers.toStrictlyIncreasing())
+			.gather(Gatherers.strictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(values, ISeq.empty());
+		assertThat(values).isEqualTo(ISeq.empty());
 	}
 
 	@Test
-	public void toStrictlyIncreasingSameAsStreamsFlatMap() {
+	public void strictlyIncreasingSameAsStreamsFlatMap() {
 		final ISeq<Integer> source = ISeq.of(3, 2, 5, 4, 7, 7, 4, 9);
 
 		final ISeq<Integer> flatMapped = source.stream()
 			.flatMap(Streams.toStrictlyIncreasing())
 			.collect(ISeq.toISeq());
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Gatherers.toStrictlyIncreasing())
+			.gather(Gatherers.strictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(gathered, flatMapped);
+		assertThat(gathered).isEqualTo(flatMapped);
 	}
 
 	@Test
-	public void toStrictlyImproving() {
+	public void strictlyImproving() {
 		final ISeq<Integer> values = Stream.of(9, 8, 9, 5, 6, 6, 2, 9)
-			.gather(Gatherers.toStrictlyImproving(Comparator.reverseOrder()))
+			.gather(Gatherers.strictlyImproving(Comparator.reverseOrder()))
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(values, ISeq.of(9, 8, 5, 2));
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void toStrictlyImprovingNullComparator() {
-		Gatherers.toStrictlyImproving(null);
+		assertThat(values).isEqualTo(ISeq.of(9, 8, 5, 2));
 	}
 
 	@Test
-	public void toStrictlyImprovingWithNullValues() {
+	public void strictlyImprovingNullComparator() {
+		assertThatNullPointerException()
+			.isThrownBy(() -> Gatherers.strictlyImproving(null));
+	}
+
+	@Test
+	public void strictlyImprovingWithNullValues() {
 		final ISeq<Integer> values = Stream.<Integer>of(null, 1, null, 2)
-			.gather(Gatherers.toStrictlyIncreasing())
+			.gather(Gatherers.strictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		Assert.assertEquals(values, ISeq.of(1, 2));
+		assertThat(values).isEqualTo(ISeq.of(1, 2));
 	}
 
 }
