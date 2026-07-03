@@ -1,0 +1,254 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.incubator.util;
+
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.util.TypedValue.box;
+import static io.jenetics.incubator.util.TypedValue.flatMap;
+import static io.jenetics.incubator.util.TypedValue.map;
+import static io.jenetics.incubator.util.TypedValue.or;
+import static io.jenetics.incubator.util.TypedValue.orElse;
+import static io.jenetics.incubator.util.TypedValue.orElseGet;
+import static io.jenetics.incubator.util.TypedValue.unbox;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.jspecify.annotations.Nullable;
+
+/**
+ * Interface for <em>typed</em> values. Instead of building APIs which only
+ * works with <em>values</em>, like {@link String}, {@link Integer} or
+ * {@link java.time.LocalDate}, and helps to enrich the value with type
+ * information. It is essentially a <em>box</em> around a <em>primitive</em>
+ * value. With the {@link #box(Object, Class)} method, a box of a given type can
+ * be created, which is unboxed with the {@link #unbox(TypedValue)} method.
+ *
+ * @param <V> the underlying, boxed value type
+ * @param <B> the <em>box</em> type
+ */
+public interface TypedValue<V, B extends TypedValue<V, B>> {
+
+    /**
+     * Return the boxed value, which will never be {@code null}. If a value
+     * needs to be {@code null}, the box type will be {@code null}.
+     *
+     * @return the boxed value
+     */
+    V value();
+
+    /**
+     * Creates a new box, with the given {@code fn} applied to the value. If the
+     * function returns {@code null}, the new box will be {@code null}.
+     *
+     * @param fn the function to apply to the value
+     * @return the new box, or {@code null}
+     */
+    @SuppressWarnings("unchecked")
+    default @Nullable B with(Function<? super V, ? extends @Nullable V> fn) {
+        requireNonNull(fn);
+
+        final V newValue = fn.apply(value());
+        return newValue != null
+            ? (B)box(newValue, this.getClass())
+            : null;
+    }
+
+    /* *************************************************************************
+     * Static methods that form the API for the typed-value usage. These methods
+     * gracefully handle {@code null} values.
+     * ************************************************************************/
+
+    /**
+     * Creates a box of the given {@code type} and the given {@code value}.
+     * If the value is {@code null}, the box will be {@code null} as well. Which
+     * is the main difference for just calling the constructor of the box type.
+     *
+     * @param value the value to box
+     * @param type the box type
+     * @return a new boxed value, or {@code null}
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>>
+    @Nullable B box(@Nullable V value, Class<B> type) {
+        requireNonNull(type);
+        if (type.isInterface()) {
+            throw new IllegalArgumentException(
+                "Box type '%s' is an interface".formatted(type.getName())
+            );
+        }
+
+        if (value == null) {
+            return null;
+        }
+
+        try {
+            return type.getConstructor(value.getClass())
+                .newInstance(value);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
+     * Returns the boxed value, or {@code null} if the box is {@code null}.
+     *
+     * @see #value()
+     *
+     * @param box the boxed value
+     * @return the unboxed value, or {@code null}
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> @Nullable V unbox(@Nullable B box) {
+        return box != null ? box.value() : null;
+    }
+
+    /**
+     * Unboxes a value, given in an optional.
+     *
+     * @param box the optional box
+     * @return the unboxed value as optional
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> Optional<V>
+    unbox(Optional<B> box) {
+        return box.map(TypedValue::unbox);
+    }
+
+    /**
+     * Transforms value of the given {@code box}. If the box is {@code null},
+     * {@code null} is returned without calling the transformation function.
+     *
+     * @see #with(Function)
+     *
+     * @param box the box value
+     * @param fn the transformation function
+     * @return the transformed box
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> @Nullable B map(
+        @Nullable B box,
+        Function<? super V, ? extends @Nullable V> fn
+    ) {
+        requireNonNull(fn);
+        return box != null ? box.with(fn) : null;
+    }
+
+    /**
+     * Transforms value of the given {@code box}. If the box is {@code null},
+     * {@code null} is returned without calling the transformation function.
+     *
+     * @param box the box value
+     * @param fn the transformation function
+     * @return the transformed box
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> @Nullable B flatMap(
+        @Nullable B box,
+        Function<? super V, ? extends @Nullable B> fn
+    ) {
+        requireNonNull(fn);
+        return box != null ? fn.apply(box.value()) : null;
+    }
+
+    /**
+     * Return a box of the {@code other} value, if the {@code box} is {@code null}.
+     *
+     * @param box the box value
+     * @param other the other value
+     * @param type the box type
+     * @return a new value box
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> B
+    orElse(@Nullable B box, V other, Class<B> type) {
+        requireNonNull(other);
+        requireNonNull(type);
+        return box != null ? box : requireNonNull(box(other, type));
+    }
+
+    /**
+     * Return a box of the {@code other} value, if the {@code box} is {@code null}.
+     *
+     * @param box the box value
+     * @param other the other value
+     * @param type the box type
+     * @return a new value box
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> B
+    orElseGet(@Nullable B box, Supplier<? extends V> other, Class<B> type) {
+        return box != null ? box : requireNonNull(box(other.get(), type));
+    }
+
+    /**
+     * Return the {@code other} box, if the {@code box} is {@code null}.
+     *
+     * @param box the box value
+     * @param other the other box
+     * @return a new value box
+     * @param <V> the underlying, boxed value type
+     * @param <B> the <em>box</em> type
+     */
+    static <V, B extends TypedValue<V, B>> @Nullable B
+    or(@Nullable B box, Supplier<? extends @Nullable B> other) {
+        return box != null ? box : other.get();
+    }
+
+}
+
+record Meter(Double value) implements TypedValue<Double, Meter> {
+
+    public Meter {
+        requireNonNull(value);
+    }
+
+    static void main() {
+        Meter length = box(4.0, Meter.class);
+        Meter distant = box(6.5, Meter.class);
+
+        // Value transformation of instance value.
+        length = length.with(v -> 5*v);
+
+        // Access value from instance.
+        double v1 = length.value();
+
+        // Null-safe value access (unboxing).
+        Double v2 = unbox(length);
+
+        // Null-safe transformation.
+        length = map(length, v -> 4*v);
+        length = flatMap(length, v -> box(v*6.5, Meter.class));
+
+        // Null-safe access if box is null.
+        length = orElse(length, 6.5, Meter.class);
+        length = orElseGet(length, Math::random, Meter.class);
+        length = or(length, () -> distant);
+    }
+
+}
