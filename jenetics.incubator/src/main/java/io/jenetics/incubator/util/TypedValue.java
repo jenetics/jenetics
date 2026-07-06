@@ -28,7 +28,6 @@ import static io.jenetics.incubator.util.TypedValue.orElse;
 import static io.jenetics.incubator.util.TypedValue.orElseGet;
 import static io.jenetics.incubator.util.TypedValue.unbox;
 
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -40,16 +39,42 @@ import org.jspecify.annotations.Nullable;
  * {@link java.time.LocalDate}, and helps to enrich the value with type
  * information. It is essentially a <em>box</em> around a <em>primitive</em>
  * value. With the {@link #box(Object, Class)} method, a box of a given type can
- * be created, which is unboxed with the {@link #unbox(TypedValue)} method.
+ * be created, which is unboxed with the {@link #unbox(Record)} method.
+ *
+ * <h1>Problem</h1>
+ * When designing a good API, it is not sufficient to have only the values. A value
+ * only transports the value without semantic. Classes (Types) with proper names
+ * transport semantic. APIs should use a type instead of a value only. Makes the
+ * usage of the API safer. Avoid stringified APIs. When using wrapper types, the
+ * nullable problem becomes apparent. The value of a typed-value can never be null.
+ * If a null value for a parameter is needed, the wrapper type or box type must
+ * be null. If you have a null value and have to box it, there is some boilerplate
+ * necessary when the value needs to be boxed. The same is true for unboxing the
+ * value. The Java language has no native box/unbox feature, which also handles
+ * null values gracefully. The unbox method can't be an instance method. When it
+ * is needed to handle null values/boxes gracefully, static methods must be implemented.
+ * The main point is to design an API of static methods, which can handle nulls
+ * correctly.
+ * The second problem is the multistep boxing/unboxing. Boxing and unboxing hierarchically.
+ * Should this problem be addressed by this interface?
+ * A box is a higher kinded type?
+ *
+ * @apiNote
+ * The central metaphor of the {@code Typedvalue} interface ist <em>boxing</em>
+ * and <em>unboxing</em>. To make use of the actual value, it must be unboxed.
+ * The main purpose is therefore to make the APIs (method- and class arguments)
+ * safer.
  *
  * @param <V> the underlying, boxed value type
  * @param <B> the <em>box</em> type
  */
-public interface TypedValue<V, B extends TypedValue<V, B>> {
+public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 
     /**
      * Return the boxed value, which will never be {@code null}. If a value
      * needs to be {@code null}, the box type will be {@code null}.
+     *
+     * @see #unbox(Record)
      *
      * @return the boxed value
      */
@@ -64,12 +89,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      */
     @SuppressWarnings("unchecked")
     default @Nullable B with(Function<? super V, ? extends @Nullable V> fn) {
-        requireNonNull(fn);
-
-        final V newValue = fn.apply(value());
-        return newValue != null
-            ? (B)box(newValue, this.getClass())
-            : null;
+		return box(fn.apply(value()), (Class<B>)getClass());
     }
 
     /* *************************************************************************
@@ -88,7 +108,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>>
+    static <V, B extends Record & TypedValue<V, B>>
     @Nullable B box(@Nullable V value, Class<B> type) {
         requireNonNull(type);
         if (type.isInterface()) {
@@ -119,21 +139,8 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> @Nullable V unbox(@Nullable B box) {
+    static <V, B extends Record & TypedValue<V, B>> @Nullable V unbox(@Nullable B box) {
         return box != null ? box.value() : null;
-    }
-
-    /**
-     * Unboxes a value, given in an optional.
-     *
-     * @param box the optional box
-     * @return the unboxed value as optional
-     * @param <V> the underlying, boxed value type
-     * @param <B> the <em>box</em> type
-     */
-    static <V, B extends TypedValue<V, B>> Optional<V>
-    unbox(Optional<B> box) {
-        return box.map(TypedValue::unbox);
     }
 
     /**
@@ -148,7 +155,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> @Nullable B map(
+    static <V, B extends Record & TypedValue<V, B>> @Nullable B map(
         @Nullable B box,
         Function<? super V, ? extends @Nullable V> fn
     ) {
@@ -166,7 +173,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> @Nullable B flatMap(
+    static <V, B extends Record & TypedValue<V, B>> @Nullable B flatMap(
         @Nullable B box,
         Function<? super V, ? extends @Nullable B> fn
     ) {
@@ -184,7 +191,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> B
+    static <V, B extends Record & TypedValue<V, B>> B
     orElse(@Nullable B box, V other, Class<B> type) {
         requireNonNull(other);
         requireNonNull(type);
@@ -201,7 +208,7 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> B
+    static <V, B extends Record & TypedValue<V, B>> B
     orElseGet(@Nullable B box, Supplier<? extends V> other, Class<B> type) {
         return box != null ? box : requireNonNull(box(other.get(), type));
     }
@@ -215,40 +222,73 @@ public interface TypedValue<V, B extends TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends TypedValue<V, B>> @Nullable B
+    static <V, B extends Record & TypedValue<V, B>> @Nullable B
     or(@Nullable B box, Supplier<? extends @Nullable B> other) {
         return box != null ? box : other.get();
     }
 
+
+}
+
+interface TypedValue2<V, B1 extends Record & TypedValue<V, B1>, B2 extends Record & TypedValue2<V, B1, B2>> {
+	B1 box1();
 }
 
 record Meter(Double value) implements TypedValue<Double, Meter> {
-
-    public Meter {
-        requireNonNull(value);
-    }
-
-    static void main() {
-        Meter length = box(4.0, Meter.class);
-        Meter distant = box(6.5, Meter.class);
-
-        // Value transformation of instance value.
-        length = length.with(v -> 5*v);
-
-        // Access value from instance.
-        double v1 = length.value();
-
-        // Null-safe value access (unboxing).
-        Double v2 = unbox(length);
-
-        // Null-safe transformation.
-        length = map(length, v -> 4*v);
-        length = flatMap(length, v -> box(v*6.5, Meter.class));
-
-        // Null-safe access if box is null.
-        length = orElse(length, 6.5, Meter.class);
-        length = orElseGet(length, Math::random, Meter.class);
-        length = or(length, () -> distant);
-    }
-
 }
+
+record Distance(Meter value) implements TypedValue<Meter, Distance> {
+}
+
+record ViennaToZurichDistance(Distance value)
+	implements TypedValue<Distance, ViennaToZurichDistance>
+{
+}
+
+record MilliSecond(Long value) implements TypedValue<Long, MilliSecond> {
+}
+
+final class Main {
+
+	static void sleep(MilliSecond time) throws InterruptedException {
+		Thread.sleep(time.value());
+	}
+
+	static void main() throws Exception {
+
+		var dist = box(box(3.4, Meter.class), Distance.class);
+		var fooo = new Distance(new Meter(3.4));
+		dist = dist.with(m -> m.with(v -> v*2.0));
+
+		Double val = unbox(unbox(dist));
+		dist.value().value();
+
+
+		Thread.sleep(1000);
+		sleep(new MilliSecond(1000L));
+		sleep(box(1000L, MilliSecond.class));
+
+
+		Meter length = box(4.0, Meter.class);
+		Meter distant = box(6.5, Meter.class);
+
+		// Value transformation of instance value.
+		length = length.with(v -> 5*v);
+
+		// Access value from instance.
+		double v1 = length.value();
+
+		// Null-safe value access (unboxing).
+		Double v2 = unbox(length);
+
+		// Null-safe transformation.
+		length = map(length, v -> 4*v);
+		length = flatMap(length, v -> box(v*6.5, Meter.class));
+
+		// Null-safe access if box is null.
+		length = orElse(length, 6.5, Meter.class);
+		length = orElseGet(length, Math::random, Meter.class);
+		length = or(length, () -> distant);
+	}
+}
+
