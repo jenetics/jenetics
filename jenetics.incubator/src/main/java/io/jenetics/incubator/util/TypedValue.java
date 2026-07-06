@@ -186,16 +186,14 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
      *
      * @param box the box value
      * @param other the other value
-     * @param type the box type
      * @return a new value box
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends Record & TypedValue<V, B>> B
-    orElse(@Nullable B box, V other, Class<B> type) {
+    static <V, B extends Record & TypedValue<V, B>> V
+    orElse(@Nullable B box, V other) {
         requireNonNull(other);
-        requireNonNull(type);
-        return box != null ? box : requireNonNull(box(other, type));
+        return box != null ? box.value() : other;
     }
 
     /**
@@ -203,14 +201,14 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
      *
      * @param box the box value
      * @param other the other value
-     * @param type the box type
      * @return a new value box
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends Record & TypedValue<V, B>> B
-    orElseGet(@Nullable B box, Supplier<? extends V> other, Class<B> type) {
-        return box != null ? box : requireNonNull(box(other.get(), type));
+    static <V, B extends Record & TypedValue<V, B>> V
+    orElseGet(@Nullable B box, Supplier<? extends V> other) {
+	    requireNonNull(other);
+	    return box != null ? box.value() : other.get();
     }
 
     /**
@@ -222,8 +220,8 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
      * @param <V> the underlying, boxed value type
      * @param <B> the <em>box</em> type
      */
-    static <V, B extends Record & TypedValue<V, B>> @Nullable B
-    or(@Nullable B box, Supplier<? extends @Nullable B> other) {
+    static <V, B extends Record & TypedValue<V, B>> B
+    or(@Nullable B box, Supplier<? extends B> other) {
         return box != null ? box : other.get();
     }
 
@@ -286,9 +284,10 @@ final class Main {
 		length = flatMap(length, v -> box(v*6.5, Meter.class));
 
 		// Null-safe access if box is null.
-		length = orElse(length, 6.5, Meter.class);
-		length = orElseGet(length, Math::random, Meter.class);
 		length = or(length, () -> distant);
+		var lengthValue = orElse(length, 6.5);
+		lengthValue = orElseGet(length, Math::random);
+
 	}
 }
 
