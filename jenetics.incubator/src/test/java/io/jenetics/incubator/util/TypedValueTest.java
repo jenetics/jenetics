@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static io.jenetics.incubator.util.TypedValue.box;
 import static io.jenetics.incubator.util.TypedValue.flatMap;
 import static io.jenetics.incubator.util.TypedValue.map;
@@ -26,9 +29,6 @@ import static io.jenetics.incubator.util.TypedValue.or;
 import static io.jenetics.incubator.util.TypedValue.orElse;
 import static io.jenetics.incubator.util.TypedValue.orElseGet;
 import static io.jenetics.incubator.util.TypedValue.unbox;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
