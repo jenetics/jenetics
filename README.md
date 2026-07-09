@@ -13,13 +13,7 @@
 
 ## Star History
 
-<a href="https://www.star-history.com/?type=date&repos=jenetics%2Fjenetics">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=jenetics/jenetics&type=date&theme=dark&legend=top-left&sealed_token=K-h8xv_EKbLzc370Brgxm68-vWdxpTTKTQUfH0G3fTRyLWXkP_KHKkoanU4LgNDoPzaNTpQNUXuxVOzVXubt" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=jenetics/jenetics&type=date&legend=top-left&sealed_token=K-h8xv_EKbLzc370Brgxm68-vWdxpTTKTQUfH0G3fTRyLWXkP_KHKkoanU4LgNDoPzaNTpQNUXuxVOzVXubt" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=jenetics/jenetics&type=date&legend=top-left&sealed_token=K-h8xv_EKbLzc370Brgxm68-vWdxpTTKTQUfH0G3fTRyLWXkP_KHKkoanU4LgNDoPzaNTpQNUXuxVOzVXubt" />
- </picture>
-</a>
+[![Star History Chart](https://api.star-history.com/chart?repos=jenetics/jenetics&type=date&legend=top-left&sealed_token=MY-xXPEqUk3s9Qs6erUYjBnlpGECFZLEU3Abk7SIcCmo1M9suhDEnlLHDWKTxdF-Hkw)](https://www.star-history.com/?type=date&repos=jenetics%2Fjenetics)
 
 ## Documentation
 
