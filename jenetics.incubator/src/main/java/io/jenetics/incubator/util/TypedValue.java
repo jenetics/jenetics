@@ -56,25 +56,27 @@ import static java.util.Objects.requireNonNull;
  * will be {@code null}. The drawback of this approach is, that the <em>boxing</em>
  * and <em>unboxing</em> of nullable values can be quite cumbersome.
  * {@snippet lang=java:
- * String value = null;
+ * String value = null; // @replace substring='null' replacement="..."
  * User user = value != null ? new User(value) : null;
  * }
  * The same pattern has to be applied, when a potential nullable user object has
  * to be unboxed.
  * {@snippet lang=java:
- * User user = null;
+ * User user = null; // @replace substring='null' replacement="..."
  * String value = user != null ? user.value() : null;
  * }
  * The static methods of the {@link TypedValue} form an API for extracting and
  * manipulating the boxed values in a null-safe manner.
  * <p><b>Null-safe boxing</b></p>
  * {@snippet lang=java:
- * String value = null;
- * User = box(value, User::new);
+ * String value = null; // @replace substring='null' replacement="..."
+ * User user = box(value, User::new);
+ * // or
+ * User user = box(value, User.class);
  * }
  * <p><b>Null-safe unboxing</b></p>
  * {@snippet lang=java:
- * User user = null;
+ * User user = null; // @replace substring='null' replacement="..."
  * String value = unbox(user);
  * }
  *
@@ -88,31 +90,31 @@ import static java.util.Objects.requireNonNull;
  * If the box might be {@code null}, the box value can be changed with the
  * {@link #map(Record, Function)} method.
  * {@snippet lang=java:
- * Millis ms = null;
+ * Millis ms = null; // @replace substring='null' replacement="..."
  * ms = map(ms, v -> v*10);
  * }
  * Or using the {@link #flatMap(Record, Function)}.
  * {@snippet lang=java:
- * Millis timeout = null;
- * Millis offset = null;
+ * Millis timeout = null; // @replace substring='null' replacement="..."
+ * Millis offset = null; // @replace substring='null' replacement="..."
  * Millis ms = flatMap(offset, o -> map(timeout, t -> t + o));
  * }
  *
  * <h2>Default values</h2>
  * <p><b>Returning a default value for a possible null box</b></p>
  * {@snippet lang=java:
- * User user = null;
+ * User user = null; // @replace substring='null' replacement="..."
  * String name = orElse(user, "default-user");
  * }
  * <p><b>Returning a lazy default value for a possible null box</b></p>
  * {@snippet lang=java:
- * User user = null;
+ * User user = null; // @replace substring='null' replacement="..."
  * String name = orElseGet(user, () -> "default-user");
  * }
  * <p><b>Returning another box for a possible null box</b></p>
  * {@snippet lang=java:
  * User defaultUser = new User("default-user");
- * User user = null;
+ * User user = null; // @replace substring='null' replacement="..."
  * user = or(user, () -> defaultUser);
  * }
  *
