@@ -21,73 +21,158 @@ package io.jenetics.incubator.util;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static io.jenetics.incubator.util.TypedValue.box;
-import static io.jenetics.incubator.util.TypedValue.flatMap;
-import static io.jenetics.incubator.util.TypedValue.map;
-import static io.jenetics.incubator.util.TypedValue.or;
-import static io.jenetics.incubator.util.TypedValue.orElse;
-import static io.jenetics.incubator.util.TypedValue.orElseGet;
-import static io.jenetics.incubator.util.TypedValue.unbox;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Interface for <em>typed</em> values. Instead of building APIs which only
- * works with <em>values</em>, like {@link String}, {@link Integer} or
- * {@link java.time.LocalDate}, and helps to enrich the value with type
- * information. It is essentially a <em>box</em> around a <em>primitive</em>
- * value. With the {@link #box(Object, Class)} method, a box of a given type can
- * be created, which is unboxed with the {@link #unbox(Record)} method.
+ * Instead of using {@link String}, {@link java.math.BigDecimal} or
+ * {@link java.time.LocalDate} objects directly in an API, it is often better to
+ * have wrapper classes for these values, which determines the concrete usage of
+ * these values E.g. instead of {@link String} use a {@code UserId} type or
+ * instead of a {@link java.math.BigDecimal} use a {@code Premium} class. The
+ * {@link TypedValue} interface makes the intent for such wrapper/box types
+ * clear and simplifies the value transformation and the {@code null}-handling.
  *
- * <h1>Problem</h1>
- * When designing a good API, it is not sufficient to have only the values. A value
- * only transports the value without semantic. Classes (Types) with proper names
- * transport semantic. APIs should use a type instead of a value only. Makes the
- * usage of the API safer. Avoid stringified APIs. When using wrapper types, the
- * nullable problem becomes apparent. The value of a typed-value can never be null.
- * If a null value for a parameter is needed, the wrapper type or box type must
- * be null. If you have a null value and have to box it, there is some boilerplate
- * necessary when the value needs to be boxed. The same is true for unboxing the
- * value. The Java language has no native box/unbox feature, which also handles
- * null values gracefully. The unbox method can't be an instance method. When it
- * is needed to handle null values/boxes gracefully, static methods must be implemented.
- * The main point is to design an API of static methods, which can handle nulls
- * correctly.
- * The second problem is the multistep boxing/unboxing. Boxing and unboxing hierarchically.
- * Should this problem be addressed by this interface?
- * A box is a higher kinded type?
+ * <h1>Description</h1>
+ * When designing an API, using <em>raw</em> value types is often not good
+ * enough. A value alone is most of the time ambiguous, because of the missing
+ * semantic. E.g. a {@link String} can represent a username or a customer id.
+ * The meaning of the values is lost, when using sole a string. To add meaning
+ * to the value a wrapper {@code record} for the string value is created.
+ * {@snippet lang=java:
+ * record User(String value) implements TypedValue<String, User> {}
+ * // or
+ * record CustomerId(String value) implements TypedValue<String, CostumerId> {}
+ * }
+ * The {@link TypedValue} interface makes the purpose of the wrapper record clear.
  *
- * @param <V> the underlying, boxed value type
- * @param <B> the <em>box</em> type
- * @apiNote The central metaphor of the {@code Typedvalue} interface ist <em>boxing</em>
- * and <em>unboxing</em>. To make use of the actual value, it must be unboxed.
- * The main purpose is therefore to make the APIs (method- and class arguments)
- * safer.
+ * <h2>Instance creation</h2>
+ * To general contract of {@link TypedValue} boxes is, that the {@link #value()}
+ * itself is never {@code null}. If {@code null}-values are needed, the box itself
+ * will be {@code null}. The drawback of this approach is, that the <em>boxing</em>
+ * and <em>unboxing</em> of nullable values can be quite cumbersome.
+ * {@snippet lang=java:
+ * String value = null;
+ * User user = value != null ? new User(value) : null;
+ * }
+ * The same pattern has to be applied, when a potential nullable user object has
+ * to be unboxed.
+ * {@snippet lang=java:
+ * User user = null;
+ * String value = user != null ? user.value() : null;
+ * }
+ * The static methods of the {@link TypedValue} form an API for extracting and
+ * manipulating the boxed values in a null-safe manner.
+ * <p><b>Null-safe boxing</b></p>
+ * {@snippet lang=java:
+ * String value = null;
+ * User = box(value, User::new);
+ * }
+ * <p><b>Null-safe unboxing</b></p>
+ * {@snippet lang=java:
+ * User user = null;
+ * String value = unbox(user);
+ * }
+ *
+ * <h2>Value transformation</h2>
+ * Existing boxed values can easily be changed with the {@link #with(Function)}
+ * method, if the box isn't {@code null}.
+ * {@snippet lang=java:
+ * Millis ms = new Millis(1000L)
+ * ms = ms.with(v -> v*10);
+ * }
+ * If the box might be {@code null}, the box value can be changed with the
+ * {@link #map(Record, Function)} method.
+ * {@snippet lang=java:
+ * Millis ms = null;
+ * ms = map(ms, v -> v*10);
+ * }
+ * Or using the {@link #flatMap(Record, Function)}.
+ * {@snippet lang=java:
+ * Millis timeout = null;
+ * Millis offset = null;
+ * Millis ms = flatMap(offset, o -> map(timeout, t -> t + o));
+ * }
+ *
+ * <h2>Default values</h2>
+ * <p><b>Returning a default value for a possible null box</b></p>
+ * {@snippet lang=java:
+ * User user = null;
+ * String name = orElse(user, "default-user");
+ * }
+ * <p><b>Returning a lazy default value for a possible null box</b></p>
+ * {@snippet lang=java:
+ * User user = null;
+ * String name = orElseGet(user, () -> "default-user");
+ * }
+ * <p><b>Returning another box for a possible null box</b></p>
+ * {@snippet lang=java:
+ * User defaultUser = new User("default-user");
+ * User user = null;
+ * user = or(user, () -> defaultUser);
+ * }
+ *
+ * @apiNote
+ * <b>The boxed value type must never be {@code null}. Only the box type can be
+ * {@code null}.</b>
+ *
+ * @param <V> the boxed type
+ * @param <B> the box type
  */
 public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
+
+	/**
+	 * Return the boxed value, which will never be {@code null}. If a value
+	 * needs to be {@code null}, the box type will be {@code null}.
+	 *
+	 * @return the boxed value
+	 * @see #unbox(Record)
+	 */
+	V value();
+
+	/**
+	 * Creates a new box, with the given {@code fn} applied to the value. If the
+	 * function returns {@code null}, the new box will be {@code null}.
+	 *
+	 * @see #map(Record, Function)
+	 *
+	 * @param fn the function to apply to the value
+	 * @return the new box, or {@code null}
+	 * @throws UnsupportedOperationException if the record box type, {@code B},
+	 *         has no {@code value} component
+	 */
+	@SuppressWarnings("unchecked")
+	default @Nullable B with(Function<? super V, ? extends @Nullable V> fn) {
+		return box(fn.apply(value()), (Class<B>)getClass());
+	}
+
+
+	/* *************************************************************************
+	 * Static methods from boxing and unboxing.
+	 * ************************************************************************/
 
 	/**
 	 * Creates a box of the given {@code type} and the given {@code value}.
 	 * If the value is {@code null}, the box will be {@code null} as well. Which
 	 * is the main difference for just calling the constructor of the box type.
 	 *
+	 * @see #box(Object, Function)
+	 *
 	 * @param value the value to box
 	 * @param type  the box type
-	 * @param <V>   the underlying, boxed value type
-	 * @param <B>   the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return a new boxed value, or {@code null}
+	 * @throws UnsupportedOperationException if the record box type, {@code B},
+	 *         has no {@code value} component
 	 */
 	static <V, B extends Record & TypedValue<V, B>>
 	@Nullable B box(@Nullable V value, Class<B> type) {
 		requireNonNull(type);
-		if (type.isInterface()) {
-			throw new IllegalArgumentException(
-				"Box type '%s' is an interface".formatted(type.getName())
-			);
-		}
-
 		if (value == null) {
 			return null;
 		}
@@ -107,22 +192,37 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 			}
 		}
 
-		throw new IllegalArgumentException(
-			"Box type '%s' has no 'value' component.".formatted(type.getName())
+		throw new UnsupportedOperationException(
+			"'box' - Box type '%s' has no 'value' component."
+				.formatted(type.getName())
 		);
 	}
 
-	/* *************************************************************************
-	 * Static methods that form the API for the typed-value usage. These methods
-	 * gracefully handle {@code null} values.
-	 * ************************************************************************/
+	/**
+	 * Creates a box of the given {@code type} and the given {@code value}.
+	 * If the value is {@code null}, the box will be {@code null} as well. Which
+	 * is the main difference for just calling the constructor of the box type.
+	 *
+	 * @see #box(Object, Class)
+	 *
+	 * @param value the value to box
+	 * @param ctor the box constructor
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 * @return a new boxed value, or {@code null}
+	 */
+	static <V, B extends Record & TypedValue<V, B>>
+	@Nullable B box(@Nullable V value, Function<? super V, ? extends B> ctor) {
+		requireNonNull(ctor);
+		return value == null ? null : ctor.apply(value);
+	}
 
 	/**
 	 * Returns the boxed value, or {@code null} if the box is {@code null}.
 	 *
 	 * @param box the boxed value
-	 * @param <V> the underlying, boxed value type
-	 * @param <B> the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return the unboxed value, or {@code null}
 	 * @see #value()
 	 */
@@ -130,16 +230,24 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 		return box != null ? box.value() : null;
 	}
 
+
+	/* *************************************************************************
+	 * Static methods from transforming the box values.
+	 * ************************************************************************/
+
 	/**
 	 * Transforms value of the given {@code box}. If the box is {@code null},
 	 * {@code null} is returned without calling the transformation function.
 	 *
+	 * @see #with(Function)
+	 * @see #map(Record, Function, Class)
+	 * @see #map(Record, Function, Function)
+	 *
 	 * @param box the box value
 	 * @param fn  the transformation function
-	 * @param <V> the underlying, boxed value type
-	 * @param <B> the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return the transformed box
-	 * @see #with(Function)
 	 */
 	static <V, B extends Record & TypedValue<V, B>> @Nullable B map(
 		@Nullable B box,
@@ -153,27 +261,105 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 * Transforms value of the given {@code box}. If the box is {@code null},
 	 * {@code null} is returned without calling the transformation function.
 	 *
+	 * @see #map(Record, Function)
+	 * @see #map(Record, Function, Function)
+	 *
 	 * @param box the box value
 	 * @param fn  the transformation function
-	 * @param <V> the underlying, boxed value type
-	 * @param <B> the <em>box</em> type
+	 * @param type the resulting box type
+	 * @return the transformed box
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 * @param <V2> the mapped boxed type
+	 * @param <B2> the mapped box type
+	 */
+	static <V, B extends Record & TypedValue<V, B>, V2, B2 extends Record & TypedValue<V2, B2>>
+	@Nullable B2 map(
+		@Nullable B box,
+		Function<? super V, ? extends @Nullable V2> fn,
+		Class<B2> type
+	) {
+		requireNonNull(fn);
+		requireNonNull(type);
+
+		return box != null
+			? box(fn.apply(box.value()), type)
+			: null;
+	}
+
+	/**
+	 * Transforms value of the given {@code box}. If the box is {@code null},
+	 * {@code null} is returned without calling the transformation function.
+	 *
+	 * @see #map(Record, Function)
+	 *
+	 * @param box the box value
+	 * @param fn  the transformation function
+	 * @param ctor the box constructor
+	 * @return the transformed box
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 * @param <V2> the mapped boxed type
+	 * @param <B2> the mapped box type
+	 */
+	static <V, B extends Record & TypedValue<V, B>, V2, B2 extends Record & TypedValue<V2, B2>>
+	@Nullable B2 map(
+		@Nullable B box,
+		Function<? super V, ? extends @Nullable V2> fn,
+		Function<? super V2, ? extends B2> ctor
+	) {
+		requireNonNull(fn);
+		requireNonNull(ctor);
+
+		return box != null
+			? box(fn.apply(box.value()), ctor)
+			: null;
+	}
+
+	/**
+	 * Transforms value of the given {@code box}. If the box is {@code null},
+	 * {@code null} is returned without calling the transformation function.
+	 *
+	 * @param box the box value
+	 * @param fn  the transformation function
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 * @param <B2> the mapped box type
 	 * @return the transformed box
 	 */
-	static <V, B extends Record & TypedValue<V, B>> @Nullable B flatMap(
+	static <V, B extends Record & TypedValue<V, B>, B2 extends Record & TypedValue<?, B2>>
+	@Nullable B2 flatMap(
 		@Nullable B box,
-		Function<? super V, ? extends @Nullable B> fn
+		Function<? super V, ? extends @Nullable B2> fn
 	) {
 		requireNonNull(fn);
 		return box != null ? fn.apply(box.value()) : null;
 	}
 
 	/**
+	 * Converts the boxed value into an {@link Optional}.
+	 *
+	 * @param box the input box
+	 * @return the boxed value, or {@link Optional#empty()} if the {@code box}
+	 *         is null
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 */
+	static <V, B extends Record & TypedValue<V, B>> Optional<V> toOptional(@Nullable B box) {
+		return Optional.ofNullable(box).map(TypedValue::unbox);
+	}
+
+	/* *************************************************************************
+	 * Static methods from returning default values and default boxes.
+	 * ************************************************************************/
+
+	/**
 	 * Return a box of the {@code other} value, if the {@code box} is {@code null}.
 	 *
 	 * @param box   the box value
 	 * @param other the other value
-	 * @param <V>   the underlying, boxed value type
-	 * @param <B>   the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return a new value box
 	 */
 	static <V, B extends Record & TypedValue<V, B>> V
@@ -187,8 +373,8 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 *
 	 * @param box   the box value
 	 * @param other the other value
-	 * @param <V>   the underlying, boxed value type
-	 * @param <B>   the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return a new value box
 	 */
 	static <V, B extends Record & TypedValue<V, B>> V
@@ -202,97 +388,13 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 *
 	 * @param box   the box value
 	 * @param other the other box
-	 * @param <V>   the underlying, boxed value type
-	 * @param <B>   the <em>box</em> type
+	 * @param <V> the boxed type
+	 * @param <B> the box type
 	 * @return a new value box
 	 */
 	static <V, B extends Record & TypedValue<V, B>> B
 	or(@Nullable B box, Supplier<? extends B> other) {
 		return box != null ? box : other.get();
 	}
-
-	/**
-	 * Return the boxed value, which will never be {@code null}. If a value
-	 * needs to be {@code null}, the box type will be {@code null}.
-	 *
-	 * @return the boxed value
-	 * @see #unbox(Record)
-	 */
-	V value();
-
-	/**
-	 * Creates a new box, with the given {@code fn} applied to the value. If the
-	 * function returns {@code null}, the new box will be {@code null}.
-	 *
-	 * @param fn the function to apply to the value
-	 * @return the new box, or {@code null}
-	 */
-	@SuppressWarnings("unchecked")
-	default @Nullable B with(Function<? super V, ? extends @Nullable V> fn) {
-		return box(fn.apply(value()), (Class<B>)getClass());
-	}
-
-
 }
 
-interface TypedValue2<V, B1 extends Record & TypedValue<V, B1>, B2 extends Record & TypedValue2<V, B1, B2>> {
-	B1 box1();
-}
-
-record Meter(Double value) implements TypedValue<Double, Meter> {
-}
-
-record Distance(Meter value) implements TypedValue<Meter, Distance> {
-}
-
-record ViennaToZurichDistance(Distance value)
-	implements TypedValue<Distance, ViennaToZurichDistance> {
-}
-
-record MilliSecond(Long value) implements TypedValue<Long, MilliSecond> {
-}
-
-final class Main {
-
-	static void sleep(MilliSecond time) throws InterruptedException {
-		Thread.sleep(time.value());
-	}
-
-	static void main() throws Exception {
-
-		var dist = box(box(3.4, Meter.class), Distance.class);
-		var fooo = new Distance(new Meter(3.4));
-		dist = dist.with(m -> m.with(v -> v * 2.0));
-
-		Double val = unbox(unbox(dist));
-		dist.value().value();
-
-
-		Thread.sleep(1000);
-		sleep(new MilliSecond(1000L));
-		sleep(box(1000L, MilliSecond.class));
-
-
-		Meter length = box(4.0, Meter.class);
-		Meter distant = box(6.5, Meter.class);
-
-		// Value transformation of instance value.
-		length = length.with(v -> 5 * v);
-
-		// Access value from instance.
-		double v1 = length.value();
-
-		// Null-safe value access (unboxing).
-		Double v2 = unbox(length);
-
-		// Null-safe transformation.
-		length = map(length, v -> 4 * v);
-		length = flatMap(length, v -> box(v * 6.5, Meter.class));
-
-		// Null-safe access if box is null.
-		length = or(length, () -> distant);
-		var lengthValue = orElse(length, 6.5);
-		lengthValue = orElseGet(length, Math::random);
-
-	}
-}
