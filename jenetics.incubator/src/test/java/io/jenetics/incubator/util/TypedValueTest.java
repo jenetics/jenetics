@@ -36,9 +36,6 @@ import org.testng.annotations.Test;
 
 public class TypedValueTest {
 
-	record MilliSecond(Long value) implements TypedValue<Long, MilliSecond> {
-	}
-
 	record Meter(Double value) implements TypedValue<Double, Meter> {
 	}
 
@@ -77,7 +74,7 @@ public class TypedValueTest {
 	@Test
 	public void boxWithNullType() {
 		assertThatNullPointerException()
-			.isThrownBy(() -> box(12.5, null));
+			.isThrownBy(() -> box(12.5, (Class<Meter>)null));
 	}
 
 	@Test
@@ -143,15 +140,15 @@ public class TypedValueTest {
 
 	@Test
 	public void flatMapValue() {
-		assertThat(flatMap(new Meter(12.5), value -> box(value * 2, Meter.class)))
-			.isEqualTo(new Meter(25.0));
+		final var result = flatMap(new Meter(12.5), value -> box(value * 2, Meter.class));
+		assertThat(result).isEqualTo(new Meter(25.0));
 	}
 
 	@Test
 	public void flatMapNullValue() {
 		final var called = new AtomicBoolean();
 
-		final Meter result = TypedValue.<Double, Meter>flatMap(null, _ -> {
+		final Meter result = TypedValue.flatMap(null, _ -> {
 			called.set(true);
 			return new Meter(12.5);
 		});
@@ -224,3 +221,5 @@ public class TypedValueTest {
 	}
 
 }
+
+
