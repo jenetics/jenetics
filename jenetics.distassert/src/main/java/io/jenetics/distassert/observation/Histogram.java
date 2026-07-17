@@ -457,7 +457,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		private final Partition partition;
 		private final long[] frequencies;
 
-		private DoubleConsumer observer = value -> {};
+		private DoubleConsumer observer = _ -> {};
 
 		/**
 		 * Create a <i>histogram</i> builder with the given {@code buckets} and
@@ -767,6 +767,7 @@ public record Histogram(Buckets buckets, Residual residual) {
 		final Partition partition,
 		final ToDoubleFunction<? super T> fn
 	) {
+		requireNonNull(partition);
 		requireNonNull(fn);
 
 		return Collector.of(
