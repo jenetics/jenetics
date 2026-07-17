@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  * {@link java.time.LocalDate} objects directly in an API, it is often better to
  * have wrapper classes for these values, which determines the concrete usage of
  * these values E.g. instead of {@link String} use a {@code UserId} type or
- * instead of a {@link java.math.BigDecimal} use a {@code Premium} class. The
+ * instead of a {@link java.math.BigDecimal} use a {@code Euro} class. The
  * {@link TypedValue} interface makes the intent for such wrapper/box types
  * clear and simplifies the value transformation and the {@code null}-handling.
  *
@@ -100,6 +100,30 @@ import static java.util.Objects.requireNonNull;
  * Millis ms = flatMap(offset, o -> map(timeout, t -> t + o));
  * }
  *
+ * <h2>Combining values</h2>
+ * The {@link #map(Record, Function)}, {@link #mapValue(Record, Function)} and
+ * {@link #flatMap(Record, Function)} functions can be used for safely combining
+ * several, possible {@code null}, typed values.
+ * {@snippet lang=java:
+ * record Ohm(Double value) implements TypedValue<Double, Ohm> {}
+ * record Ampere(Double value) implements TypedValue<Double, Ampere> {}
+ * record Volt(Double value) implements TypedValue<Double, Volt> {}
+ * record Watt(Double value) implements TypedValue<Double, Watt> {}
+ *
+ * final Ohm resistance = box(3.4, Ohm::new);
+ * final Ampere current = box(5.4, Ampere::new);
+ *
+ * final Volt volt = flatMap(resistance, r ->
+ *         flatMap(current, c -> new Volt(r*c))
+ *     );
+ * final Watt watt = flatMap(volt, v ->
+ *        map(current, c -> c*v, Watt::new)
+ *     );
+ * final Double value = mapValue(volt, v ->
+ *         mapValue(current, c -> c*v)
+ *     );
+ * }
+ *
  * <h2>Default values</h2>
  * <p><b>Returning a default value for a possible null box</b></p>
  * {@snippet lang=java:
@@ -147,9 +171,10 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 * @throws UnsupportedOperationException if the record box type, {@code B},
 	 *         has no {@code value} component
 	 */
-	@SuppressWarnings("unchecked")
 	default @Nullable B with(Function<? super V, ? extends @Nullable V> fn) {
-		return box(fn.apply(value()), (Class<B>)getClass());
+		@SuppressWarnings("unchecked")
+		final var type = (Class<B>)getClass();
+		return box(fn.apply(value()), type);
 	}
 
 
@@ -175,15 +200,16 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	static <V, B extends Record & TypedValue<V, B>>
 	@Nullable B box(@Nullable V value, Class<B> type) {
 		requireNonNull(type);
-		if (value == null) {
-			return null;
-		}
 
-		try {
-			return type.getDeclaredConstructor(valueType(type))
-				.newInstance(value);
-		} catch (ReflectiveOperationException e) {
-			throw new IllegalArgumentException(e);
+		if (value != null) {
+			try {
+				return type.getDeclaredConstructor(valueType(type))
+					.newInstance(value);
+			} catch (ReflectiveOperationException e) {
+				throw new UnsupportedOperationException(e);
+			}
+		} else {
+			return null;
 		}
 	}
 
@@ -260,6 +286,24 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	}
 
 	/**
+	 * Maps the values of a box type.
+	 *
+	 * @param box the box
+	 * @param fn the value mapping function
+	 * @return the mapped boxed value
+	 * @param <V> the boxed type
+	 * @param <B> the box type
+	 * @param <V2> the mapped value
+	 */
+	static <V, B extends Record & TypedValue<V, B>, V2> @Nullable V2 mapValue(
+		@Nullable B box,
+		Function<? super V, ? extends @Nullable V2> fn
+	) {
+		requireNonNull(fn);
+		return box != null ? fn.apply(box.value()) : null;
+	}
+
+	/**
 	 * Transforms value of the given {@code box}. If the box is {@code null},
 	 * {@code null} is returned without calling the transformation function.
 	 *
@@ -270,15 +314,18 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 * @param fn  the transformation function
 	 * @param type the resulting box type
 	 * @return the transformed box
-	 * @param <V> the boxed type
-	 * @param <B> the box type
+	 * @param <V1> the boxed type
+	 * @param <B1> the box type
 	 * @param <V2> the mapped boxed type
 	 * @param <B2> the mapped box type
 	 */
-	static <V, B extends Record & TypedValue<V, B>, V2, B2 extends Record & TypedValue<V2, B2>>
+	static <
+		V1, B1 extends Record & TypedValue<V1, B1>,
+		V2, B2 extends Record & TypedValue<V2, B2>
+	>
 	@Nullable B2 map(
-		@Nullable B box,
-		Function<? super V, ? extends @Nullable V2> fn,
+		@Nullable B1 box,
+		Function<? super V1, ? extends @Nullable V2> fn,
 		Class<B2> type
 	) {
 		requireNonNull(fn);
@@ -299,15 +346,18 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 * @param fn  the transformation function
 	 * @param ctor the box constructor
 	 * @return the transformed box
-	 * @param <V> the boxed type
-	 * @param <B> the box type
+	 * @param <V1> the boxed type
+	 * @param <B1> the box type
 	 * @param <V2> the mapped boxed type
 	 * @param <B2> the mapped box type
 	 */
-	static <V, B extends Record & TypedValue<V, B>, V2, B2 extends Record & TypedValue<V2, B2>>
+	static <
+		V1, B1 extends Record & TypedValue<V1, B1>,
+		V2, B2 extends Record & TypedValue<V2, B2>
+	>
 	@Nullable B2 map(
-		@Nullable B box,
-		Function<? super V, ? extends @Nullable V2> fn,
+		@Nullable B1 box,
+		Function<? super V1, ? extends @Nullable V2> fn,
 		Function<? super V2, ? extends B2> ctor
 	) {
 		requireNonNull(fn);
@@ -324,15 +374,18 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 *
 	 * @param box the box value
 	 * @param fn  the transformation function
-	 * @param <V> the boxed type
-	 * @param <B> the box type
+	 * @param <V1> the boxed type
+	 * @param <B1> the box type
 	 * @param <B2> the mapped box type
 	 * @return the transformed box
 	 */
-	static <V, B extends Record & TypedValue<V, B>, B2 extends Record & TypedValue<?, B2>>
+	static <
+		V1, B1 extends Record & TypedValue<V1, B1>,
+		B2 extends Record & TypedValue<?, B2>
+	>
 	@Nullable B2 flatMap(
-		@Nullable B box,
-		Function<? super V, ? extends @Nullable B2> fn
+		@Nullable B1 box,
+		Function<? super V1, ? extends @Nullable B2> fn
 	) {
 		requireNonNull(fn);
 		return box != null ? fn.apply(box.value()) : null;
@@ -347,7 +400,8 @@ public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 	 * @param <V> the boxed type
 	 * @param <B> the box type
 	 */
-	static <V, B extends Record & TypedValue<V, B>> Optional<V> toOptional(@Nullable B box) {
+	static <V, B extends Record & TypedValue<V, B>> Optional<V>
+	toOptional(@Nullable B box) {
 		return Optional.ofNullable(box).map(TypedValue::unbox);
 	}
 
