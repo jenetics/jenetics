@@ -690,4 +690,20 @@ public class CodecsTest {
 		assertThat(path.stops).hasSize(10);
 	}
 
+	@Test
+	public void ofSelection() {
+		final var codec1 = Codecs.ofVector(new DoubleRange(0, 10));
+		final var codec2 = Codecs.ofVector(new DoubleRange(10, 20));
+		final var codec3 = Codecs.ofVector(new DoubleRange(20, 30));
+		final var codec4 = Codecs.ofVector(new DoubleRange(30, 40));
+
+		final var selection = Codecs.ofSelection(codec1, codec2, codec3, codec4);
+
+		final var genotype = selection.encoding().newInstance();
+		assertThat(genotype.length()).isEqualTo(5);
+
+		final double[] codec = selection.decoder().apply(genotype);
+		assertThat(codec.length).isEqualTo(1);
+	}
+
 }
