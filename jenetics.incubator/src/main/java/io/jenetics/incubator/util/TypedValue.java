@@ -20,24 +20,10 @@
 package io.jenetics.incubator.util;
 
 
-import org.jspecify.annotations.Nullable;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.util.TypedValue.box;
 
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static io.jenetics.incubator.util.TypedValue.box;
-import static java.util.Objects.requireNonNull;
-
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.util.TypedValue.box;
-import static io.jenetics.incubator.util.TypedValue.flatMap;
-import static io.jenetics.incubator.util.TypedValue.map;
-import static io.jenetics.incubator.util.TypedValue.or;
-import static io.jenetics.incubator.util.TypedValue.orElse;
-import static io.jenetics.incubator.util.TypedValue.orElseGet;
-import static io.jenetics.incubator.util.TypedValue.unbox;
-
 import java.util.function.Function;
 import java.util.function.Supplier;
 
