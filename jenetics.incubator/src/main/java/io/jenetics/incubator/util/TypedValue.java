@@ -150,6 +150,10 @@ import org.jspecify.annotations.Nullable;
  *
  * @param <V> the boxed type
  * @param <B> the box type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
  */
 public interface TypedValue<V, B extends Record & TypedValue<V, B>> {
 
