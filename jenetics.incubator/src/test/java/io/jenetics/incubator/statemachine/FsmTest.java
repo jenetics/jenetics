@@ -73,18 +73,19 @@ public class FsmTest {
 
 	@Test
 	public void running() {
-		final var runner = new Fsm.Runner(
+		final var publisher = new Fsm.EventPublisher(
 			FSM,
+			INACTIVE,
 			(_, event, prev, next) -> IO.println(
 				"%s: %s -> %s".formatted(event, prev, next)
 			)
 		);
 
-		runner.next(BEGIN);
-		runner.next(PAUSE);
-		runner.next(RESUME);
-		runner.next(END);
-		runner.next(EXIT);
+		publisher.publish(BEGIN);
+		publisher.publish(PAUSE);
+		publisher.publish(RESUME);
+		publisher.publish(END);
+		publisher.publish(EXIT);
 	}
 
 }

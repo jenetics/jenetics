@@ -168,33 +168,34 @@ public record Fsm(
 	}
 
 	/**
-	 * The event listener which is called for every state transition.
+	 * The event subscriber which is called for every new event being published.
 	 */
-	public interface EventListener {
+	public interface EventSubscriber {
 		/**
 		 * This method is called for every event.
 		 *
-		 * @param source the runner object which called {@code this} listener
+		 * @param source the publisher object which called {@code this} subscriber
 		 * @param event the event object, which triggers the state transition
 		 * @param prev the FSM state before the transition
 		 * @param next the FSM state after the transition
 		 */
-		void onEvent(Runner source, Event event, State prev, State next);
+		void onEvent(EventPublisher source, Event event, State prev, State next);
 
 	}
 
 	/**
-	 * The runner class for an FSM.
+	 * The event publisher for an FSM. It holds the state, which is updated for
+	 * every published event, according the Finite State Machine {@link Fsm}.
 	 */
-	public static final class Runner {
+	public static final class EventPublisher {
 
 		private final Fsm fsm;
-		private final EventListener listener;
+		private final EventSubscriber listener;
 		private final Object lock = new Object() {};
 
 		private State state;
 
-		public Runner(Fsm fsm, State state, EventListener listener) {
+		public EventPublisher(Fsm fsm, State state, EventSubscriber listener) {
 			this.fsm = requireNonNull(fsm);
 			this.listener = requireNonNull(listener);
 			this.state = requireNonNull(state);
@@ -207,7 +208,7 @@ public record Fsm(
 			}
 		}
 
-		public Runner(Fsm fsm, EventListener listener) {
+		public EventPublisher(Fsm fsm, EventSubscriber listener) {
 			this(fsm, fsm.start(), listener);
 		}
 
@@ -237,7 +238,13 @@ public record Fsm(
 		 *         otherwise. If {@code false} is returned, one of the final
 		 *         states has been reached.
 		 */
-		public boolean next(Event event) {
+		public boolean publish(Event event) {
+			if (!fsm.symbols().contains(event.kind())) {
+				throw new IllegalArgumentException(
+					"Got event with unknown kind: " + event
+				);
+			}
+
 			synchronized (lock) {
 				if (isFinished()) {
 					return false;
