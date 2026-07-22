@@ -19,12 +19,14 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.function.BiFunction;
-
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
@@ -42,11 +44,11 @@ import static java.util.function.Predicate.not;
  * @since 9.1
  */
 public record Fsm(
-	Set<Symbol> symbols,
-	Set<State> states,
+	Set<? extends Symbol> symbols,
+	Set<? extends State> states,
 	State start,
-	Set<State> finals,
-	BiFunction<? super State, ? super Symbol, ? extends State> delta
+	Set<? extends State> finals,
+	Delta delta
 ) {
 
 	public Fsm {
@@ -62,7 +64,7 @@ public record Fsm(
 		if (states.isEmpty()) {
 			throw new IllegalArgumentException("The states must not be empty.");
 		}
-		if (states.contains(start)) {
+		if (!states.contains(start)) {
 			throw new IllegalArgumentException(
 				"Start state '%s' is not part of available states, %s."
 					.formatted(start, states)
@@ -83,6 +85,16 @@ public record Fsm(
 					.formatted(missing, states)
 			);
 		}
+	}
+
+	public Fsm(
+		Set<? extends Symbol> symbols,
+		Set<? extends State> states,
+		State start,
+		Set<? extends State> finals,
+		Set<Transition> transitions
+	) {
+		this(symbols, states, start, finals, Transition.toDelta(transitions));
 	}
 
 	/**
@@ -109,65 +121,100 @@ public record Fsm(
 		String name();
 	}
 
+	@FunctionalInterface
+	public interface Delta {
+		Optional<State> apply(State state, Symbol symbol);
+	}
+
+	/**
+	 * Defines a state-transition triple.
+	 *
+	 * @param state the current state
+	 * @param symbol the event kind
+	 * @param next the transitioned state
+	 */
+	public record Transition(State state, Symbol symbol, State next) {
+		public Transition {
+			requireNonNull(state);
+			requireNonNull(symbol);
+			requireNonNull(next);
+		}
+
+		public static Delta toDelta(Collection<Transition> transitions) {
+			record StateSymbol(State state, Symbol symbol) {}
+
+			final Map<StateSymbol, State> map = transitions.stream()
+				.collect(Collectors.toMap(
+					e -> new StateSymbol(e.state, e.symbol),
+					e -> e.next
+				));
+
+			return (state, symbol) -> Optional.ofNullable(
+				map.get(new StateSymbol(state, symbol))
+			);
+		}
+	}
+
+	/**
+	 * Interface for FSM transition events. Events may hold additional payload.
+	 */
+	public interface Event {
+		/**
+		 * Return the symbol, this event belongs to.
+		 *
+		 * @return the event symbol
+		 */
+		Symbol kind();
+	}
+
+	/**
+	 * The event listener which is called for every state transition.
+	 */
+	public interface EventListener {
+		/**
+		 * This method is called for every event.
+		 *
+		 * @param source the runner object which called {@code this} listener
+		 * @param event the event object, which triggers the state transition
+		 * @param prev the FSM state before the transition
+		 * @param next the FSM state after the transition
+		 */
+		void onEvent(Runner source, Event event, State prev, State next);
+
+	}
+
 	/**
 	 * The runner class for an FSM.
 	 */
 	public static final class Runner {
 
-		/**
-		 * Interface for FSM transition events. Events may hold additional payload.
-		 */
-		public interface Event {
-			/**
-			 * Return the symbol, this event belongs to.
-			 *
-			 * @return the event symbol
-			 */
-			Symbol symbol();
-		}
-
-		/**
-		 * The event listener which is called for every state transition.
-		 */
-		public interface EventListener {
-			/**
-			 * This method is called for every event.
-			 *
-			 * @param source the runner object which called {@code this} listener
-			 * @param event the event object, which triggers the state transition
-			 * @param prev the FSM state before the transition
-			 * @param next the FSM state after the transition
-			 */
-			void update(Runner source, Event event, State prev, State next);
-
-			/**
-			 * This method is called for receiving events if the state is already
-			 * final.
-			 *
-			 * @param source
-			 * @param event
-			 */
-			void finished(Runner source, Event event);
-		}
-
 		private final Fsm fsm;
 		private final EventListener listener;
-		private final Executor executor;
 		private final Object lock = new Object() {};
 
 		private State state;
 
-		public Runner(Fsm fsm, EventListener listener, Executor executor) {
+		public Runner(Fsm fsm, State state, EventListener listener) {
 			this.fsm = requireNonNull(fsm);
 			this.listener = requireNonNull(listener);
-			this.executor = requireNonNull(executor);
-			this.state = fsm.start();
+			this.state = requireNonNull(state);
+
+			if (!fsm.states().contains(state)) {
+				throw new IllegalArgumentException(
+					"Initial state '%s' is not part of available states, %s."
+						.formatted(state, fsm.states())
+				);
+			}
+		}
+
+		public Runner(Fsm fsm, EventListener listener) {
+			this(fsm, fsm.start(), listener);
 		}
 
 		/**
 		 * Return the current state of the runner.
 		 *
-		 * @return the current statte of the runner
+		 * @return the current state of the runner
 		 */
 		public State state() {
 			synchronized (lock) {
@@ -193,12 +240,11 @@ public record Fsm(
 		public boolean next(Event event) {
 			synchronized (lock) {
 				if (isFinished()) {
-					listener.finished(this, event);
 					return false;
 				} else {
-					final var next = fsm.delta.apply(state, event.symbol());
-					listener.update(this, event, state, next);
-					state = next;
+					final var next = fsm.delta.apply(state, event.kind());
+					next.ifPresent(n -> listener.onEvent(this, event, state, n));
+					state = next.orElse(state);
 					return !isFinished();
 				}
 			}
