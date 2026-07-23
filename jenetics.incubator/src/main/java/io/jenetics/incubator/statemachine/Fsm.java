@@ -145,8 +145,8 @@ public record Fsm(
 
 			final Map<StateSymbol, State> map = transitions.stream()
 				.collect(Collectors.toMap(
-					e -> new StateSymbol(e.state, e.symbol),
-					e -> e.next
+					t -> new StateSymbol(t.state(), t.symbol()),
+					Transition::next
 				));
 
 			return (state, symbol) -> Optional.ofNullable(
@@ -190,14 +190,14 @@ public record Fsm(
 	public static final class EventPublisher {
 
 		private final Fsm fsm;
-		private final EventSubscriber listener;
+		private final EventSubscriber subscriber;
 		private final Object lock = new Object() {};
 
 		private State state;
 
-		public EventPublisher(Fsm fsm, State state, EventSubscriber listener) {
+		public EventPublisher(Fsm fsm, State state, EventSubscriber subscriber) {
 			this.fsm = requireNonNull(fsm);
-			this.listener = requireNonNull(listener);
+			this.subscriber = requireNonNull(subscriber);
 			this.state = requireNonNull(state);
 
 			if (!fsm.states().contains(state)) {
@@ -208,8 +208,8 @@ public record Fsm(
 			}
 		}
 
-		public EventPublisher(Fsm fsm, EventSubscriber listener) {
-			this(fsm, fsm.start(), listener);
+		public EventPublisher(Fsm fsm, EventSubscriber subscriber) {
+			this(fsm, fsm.start(), subscriber);
 		}
 
 		/**
@@ -238,7 +238,7 @@ public record Fsm(
 		 *         otherwise. If {@code false} is returned, one of the final
 		 *         states has been reached.
 		 */
-		public boolean publish(Event event) {
+		public boolean submit(Event event) {
 			if (!fsm.symbols().contains(event.kind())) {
 				throw new IllegalArgumentException(
 					"Got event with unknown kind: " + event
@@ -250,7 +250,7 @@ public record Fsm(
 					return false;
 				} else {
 					final var next = fsm.delta.apply(state, event.kind());
-					next.ifPresent(n -> listener.onEvent(this, event, state, n));
+					next.ifPresent(n -> subscriber.onEvent(this, event, state, n));
 					state = next.orElse(state);
 					return !isFinished();
 				}

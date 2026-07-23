@@ -19,6 +19,11 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import org.testng.annotations.Test;
+
+import java.util.EnumSet;
+import java.util.Set;
+
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.EXIT;
@@ -28,11 +33,6 @@ import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.PAUSED;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.TERMINATED;
-
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.testng.annotations.Test;
 
 public class FsmTest {
 
@@ -72,7 +72,7 @@ public class FsmTest {
 	);
 
 	@Test
-	public void running() {
+	public void submitting() {
 		final var publisher = new Fsm.EventPublisher(
 			FSM,
 			INACTIVE,
@@ -81,11 +81,15 @@ public class FsmTest {
 			)
 		);
 
-		publisher.publish(BEGIN);
-		publisher.publish(PAUSE);
-		publisher.publish(RESUME);
-		publisher.publish(END);
-		publisher.publish(EXIT);
+		publisher.submit(BEGIN);
+		publisher.submit(PAUSE);
+		publisher.submit(RESUME);
+		publisher.submit(END);
+		publisher.submit(EXIT);
 	}
 
 }
+
+
+
+
