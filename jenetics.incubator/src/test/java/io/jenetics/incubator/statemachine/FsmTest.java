@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Gatherer;
 
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
@@ -64,12 +63,12 @@ public class FsmTest {
 		INACTIVE,
 		EnumSet.of(TERMINATED),
 		Set.of(
-			new Fsm.Transition(INACTIVE, BEGIN, ACTIVE),
-			new Fsm.Transition(ACTIVE, PAUSE, PAUSED),
-			new Fsm.Transition(PAUSED, RESUME, ACTIVE),
-			new Fsm.Transition(ACTIVE, END, INACTIVE),
-			new Fsm.Transition(PAUSED, END, INACTIVE),
-			new Fsm.Transition(INACTIVE, EXIT, TERMINATED)
+			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
+			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
+			new Fsm.Transition<>(PAUSED, END, INACTIVE),
+			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
 		)
 	);
 
@@ -78,8 +77,8 @@ public class FsmTest {
 		final var publisher = new Fsm.EventPublisher(
 			FSM,
 			INACTIVE,
-			(_, event, prev, next) -> IO.println(
-				"%s: %s -> %s".formatted(event, prev, next)
+			(event, before, after) -> IO.println(
+				"%s: %s -> %s".formatted(event, before, after)
 			)
 		);
 
@@ -95,34 +94,9 @@ public class FsmTest {
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		events.stream()
-			.gather(states(FSM))
+			.gather(Fsm.transitions(FSM))
 			.forEach(System.out::println);
 
-	}
-
-	record EventState(Fsm.Event event, Fsm.State prev, Fsm.State next) {
-	}
-
-	static Gatherer<Fsm.Event, ?, EventState> states(Fsm fsm, Fsm.State start) {
-		final class State {
-			Fsm.State current = start;
-		}
-
-		return Gatherer.ofSequential(
-			State::new,
-			Gatherer.Integrator.of((state, event, downstream) -> {
-				var next = fsm.delta().apply(state.current, event.kind());
-				next.ifPresent(n -> {
-					downstream.push(new EventState(event, state.current, n));
-					state.current = n;
-				});
-				return !fsm.finals().contains(next.orElse(state.current));
-			})
-		);
-	}
-
-	static Gatherer<Fsm.Event, ?, EventState> states(Fsm fsm) {
-		return states(fsm, fsm.start());
 	}
 
 }
