@@ -19,12 +19,6 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import org.testng.annotations.Test;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.EXIT;
@@ -35,6 +29,11 @@ import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.PAUSED;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.TERMINATED;
 
+import java.util.EnumSet;
+import java.util.List;
+
+import org.testng.annotations.Test;
+
 public class FsmTest {
 
 	enum ProcessState implements Fsm.State {
@@ -44,7 +43,7 @@ public class FsmTest {
 		TERMINATED
 	}
 
-	enum Command implements Fsm.Symbol, Fsm.Event {
+	enum Command implements Fsm.Symbol, Fsm.Event<Command> {
 		BEGIN,
 		END,
 		PAUSE,
@@ -52,17 +51,17 @@ public class FsmTest {
 		EXIT;
 
 		@Override
-		public Fsm.Symbol kind() {
+		public Command kind() {
 			return this;
 		}
 	}
 
-	static final Fsm FSM = new Fsm(
+	static final Fsm<ProcessState, Command> FSM = new Fsm<>(
 		EnumSet.allOf(Command.class),
 		EnumSet.allOf(ProcessState.class),
 		INACTIVE,
 		EnumSet.of(TERMINATED),
-		Set.of(
+		Fsm.Delta.of(
 			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
 			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
 			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
@@ -74,9 +73,8 @@ public class FsmTest {
 
 	@Test
 	public void submitting() {
-		final var publisher = new Fsm.EventPublisher(
-			FSM,
-			INACTIVE,
+		final var publisher = new Fsm.EventPublisher<>(
+			FSM, FSM.start(),
 			(event, before, after) -> IO.println(
 				"%s: %s -> %s".formatted(event, before, after)
 			)

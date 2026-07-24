@@ -22,11 +22,11 @@ package io.jenetics.incubator.statemachine;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
@@ -34,6 +34,9 @@ import java.util.stream.Gatherer;
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
  *     Finit State Machine</a>.
+ * @implNote
+ * The {@link Fsm} class is immutable and thread safe and can be shared between
+ * different threads and processors (event publisher).
  *
  * @param symbols the input alphabet (a finite non-empty set of symbols)
  * @param states the finite non-empty set of states
@@ -41,17 +44,19 @@ import java.util.stream.Gatherer;
  * @param finals the set of final states, a (possibly empty) subset of
  *        {@link #states()}
  * @param delta the state-transition function
+ * @param <ST> the state type
+ * @param <SY> the symbol (signal) type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 9.1
  * @since 9.1
  */
-public record Fsm(
-	Set<? extends Symbol> symbols,
-	Set<? extends State> states,
-	State start,
-	Set<? extends State> finals,
-	Delta delta
+public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
+	Set<SY> symbols,
+	Set<ST> states,
+	ST start,
+	Set<ST> finals,
+	Delta<ST, SY> delta
 ) {
 
 	public Fsm {
@@ -90,15 +95,9 @@ public record Fsm(
 		}
 	}
 
-	public Fsm(
-		Set<? extends Symbol> symbols,
-		Set<? extends State> states,
-		State start,
-		Set<? extends State> finals,
-		Set<? extends Transition<? extends Symbol>> transitions
-	) {
-		this(symbols, states, start, finals, Transition.toDelta(transitions));
-	}
+	/* *************************************************************************
+	 * Classes and interfaces for defining the FSM.
+	 * ************************************************************************/
 
 	/**
 	 * Base interface for {@link Symbol} and {@link Event} interfaces. The purpose
@@ -111,6 +110,7 @@ public record Fsm(
 	 * Interface for FSM symbols. A set of symbols form the alphabet of the FSM.
 	 */
 	public non-sealed interface Symbol extends Signal {
+
 		/**
 		 * Return the symbol name.
 		 *
@@ -144,6 +144,7 @@ public record Fsm(
 	 * Interface for the FSM states.
 	 */
 	public interface State {
+
 		/**
 		 * Return the state name
 		 *
@@ -173,21 +174,82 @@ public record Fsm(
 	}
 
 	/**
-	 * Interface for FSM transition events. Events may hold additional payload.
+	 * The <em>partial</em> state transition function.
+	 *
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
 	 */
-	public non-sealed interface Event extends Signal {
+	@FunctionalInterface
+	public interface Delta<ST extends State, SY extends Symbol> {
 
 		/**
-		 * Return the symbol, this event belongs to.
+		 * Applies the transition from the {@code current} state to the next
+		 * state when the {@code symbol} is signaled.
 		 *
-		 * @return the event symbol
+		 * @param current the current state
+		 * @param symbol the signaled symbol
+		 * @return the next state, if a transition is defined
 		 */
-		Symbol kind();
-	}
+		Optional<ST> apply(ST current, SY symbol);
 
-	@FunctionalInterface
-	public interface Delta {
-		Optional<State> apply(State state, Symbol symbol);
+		/**
+		 * Creates a <em>delta</em> function from the given set of
+		 * {@code transitions}.
+		 *
+		 * @param transitions the state transitions which defines the
+		 *        <em>delta</em> function
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 * @return a <em>delta</em> function from the given set of
+		 *         {@code transitions}
+		 * @throws IllegalArgumentException if the transitions have multiple
+		 *         (before, end) pairs.
+		 */
+		static <ST extends State, SY extends Symbol>
+		Delta<ST, SY> of(Set<Transition<ST, SY>> transitions) {
+
+			record StateSymbol<ST extends State, SY extends Symbol>(
+				ST state,
+				SY symbol
+			) {}
+
+			final Map<StateSymbol<ST, SY>, ST> map;
+			try {
+				map = transitions.stream()
+					.collect(Collectors.toMap(
+						t -> new StateSymbol<>(t.before(), t.event()),
+						Transition::after
+					));
+			} catch (IllegalStateException e) {
+				throw new IllegalArgumentException(e);
+			}
+
+			return (state, symbol) -> Optional.ofNullable(
+				map.get(new StateSymbol<>(state, symbol))
+			);
+		}
+
+		/**
+		 * Creates a <em>delta</em> function from the given set of
+		 * {@code transitions}.
+		 *
+		 * @see #of(Set)
+		 *
+		 * @param transitions the state transitions which defines the
+		 *        <em>delta</em> function
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 * @return a <em>delta</em> function from the given set of
+		 *         {@code transitions}
+		 * @throws IllegalArgumentException if the transitions have multiple
+		 *         (before, end) pairs.
+		 */
+		@SafeVarargs
+		static <ST extends State, SY extends Symbol>
+		Delta<ST, SY> of(Transition<ST, SY>... transitions) {
+			return of(Set.of(transitions));
+		}
+
 	}
 
 	/**
@@ -196,35 +258,63 @@ public record Fsm(
 	 * @param before the current state
 	 * @param event the event that is triggering (or triggered) the transition
 	 * @param after the transitioned state
-	 * @param <T> the event type
+	 * @param <ST> the state type
+	 * @param <SI> the signal type
 	 */
-	public record Transition<T extends Signal>(State before, T event, State after) {
+	public record Transition<ST extends State, SI extends Signal>(
+		ST before,
+		SI event,
+		ST after
+	) {
 		public Transition {
 			requireNonNull(before);
 			requireNonNull(event);
 			requireNonNull(after);
 		}
+	}
 
-		public static Delta
-		toDelta(Collection<? extends Transition<? extends Symbol>> transitions) {
-			record StateSymbol(State state, Symbol symbol) {}
 
-			final Map<StateSymbol, State> map = transitions.stream()
-				.collect(Collectors.toMap(
-					t -> new StateSymbol(t.before(), t.event()),
-					Transition::after
-				));
+	/* *************************************************************************
+	 * Classes and interfaces for processing/executing the FSM.
+	 * ************************************************************************/
 
-			return (state, symbol) -> Optional.ofNullable(
-				map.get(new StateSymbol(state, symbol))
-			);
-		}
+	/**
+	 * Interface for FSM transition events. Events may hold additional payload.
+	 *
+	 * @param <SY> the symbol (signal) type
+	 */
+	public non-sealed interface Event<SY extends Symbol> extends Signal {
+
+		/**
+		 * Return the symbol, this event belongs to.
+		 *
+		 * @return the event symbol
+		 */
+		SY kind();
+	}
+
+	/**
+	 * Common interface for event submitter.
+	 *
+	 * @param <SY> the symbol (signal) type
+	 * @param <E> the event type
+	 */
+	public interface Submitter<SY extends Symbol, E extends Event<SY>> {
+		void submit(E event);
 	}
 
 	/**
 	 * The event subscriber which is called for every new event being published.
+	 *
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 * @param <E> the event type
 	 */
-	public interface EventSubscriber {
+	public interface EventSubscriber<
+		ST extends State,
+		SY extends Symbol,
+		E extends Event<SY>
+	> {
 
 		/**
 		 * This method is called for every event.
@@ -233,7 +323,7 @@ public record Fsm(
 		 * @param before the FSM state before the transition
 		 * @param after the FSM state after the transition
 		 */
-		void onEvent(Event event, State before, State after);
+		void onEvent(E event, ST before, ST after);
 
 		/**
 		 * This method is called for invalid events, for events where no state
@@ -244,7 +334,7 @@ public record Fsm(
 		 * @throws IllegalStateException always. Implementer may override this
 		 *         method and handle invalid events differently.
 		 */
-		default void onInvalidEvent(Event event, State state) {
+		default void onInvalidEvent(E event, ST state) {
 			throw new IllegalStateException(
 				"Illegal event %s for state %s.".formatted(event, state)
 			);
@@ -259,7 +349,7 @@ public record Fsm(
 		 * @throws IllegalStateException always. Implementer may override this
 		 *         method and handle events after the finished state differently.
 		 */
-		default void onAfterFinishEvent(Event event, State state) {
+		default void onAfterFinishEvent(E event, ST state) {
 			throw new IllegalStateException(
 				"Illegal event %s after finish state %s.".formatted(event, state)
 			);
@@ -270,21 +360,29 @@ public record Fsm(
 	/**
 	 * The event publisher for an FSM. It holds the state, which is updated for
 	 * every published event, according the Finite State Machine {@link Fsm}.
+	 *
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 * @param <E> the event type
 	 */
-	public static final class EventPublisher {
+	public static final class EventPublisher<
+		ST extends State,
+		SY extends Symbol,
+		E extends Event<SY>
+	> {
 
-		private final Fsm fsm;
-		private final EventSubscriber subscriber;
+		private final Fsm<ST, SY> fsm;
+		private final EventSubscriber<ST, SY, E> subscriber;
 
 		private final Executor executor;
 		private final Object lock = new Object() {};
 
-		private State state;
+		private ST state;
 
 		public EventPublisher(
-			final Fsm fsm,
-			final State start,
-			final EventSubscriber subscriber,
+			final Fsm<ST, SY> fsm,
+			final ST start,
+			final EventSubscriber<ST, SY, E> subscriber,
 			final Executor executor
 		) {
 			this.fsm = requireNonNull(fsm);
@@ -300,7 +398,11 @@ public record Fsm(
 			}
 		}
 
-		public EventPublisher(Fsm fsm, State start, EventSubscriber subscriber) {
+		public EventPublisher(
+			final Fsm<ST, SY> fsm,
+			final ST start,
+			final EventSubscriber<ST, SY, E> subscriber
+		) {
 			this(fsm, start, subscriber, Runnable::run);
 		}
 
@@ -309,7 +411,7 @@ public record Fsm(
 		 *
 		 * @return the current state of the runner
 		 */
-		public State state() {
+		public ST state() {
 			synchronized (lock) {
 				return state;
 			}
@@ -330,7 +432,7 @@ public record Fsm(
 		 *         otherwise. If {@code false} is returned, one of the final
 		 *         states has been reached.
 		 */
-		public boolean submit(Event event) {
+		public boolean submit(E event) {
 			if (!fsm.symbols().contains(event.kind())) {
 				throw new IllegalArgumentException(
 					"Got event with unknown kind: " + event
@@ -362,6 +464,20 @@ public record Fsm(
 
 	}
 
+
+	public static final class FlowPublisher<
+		ST extends State,
+		SY extends Symbol,
+		E extends Event<SY>
+	>
+		implements Flow.Publisher<Transition<ST, E>>
+	{
+		@Override
+		public void subscribe(Flow.Subscriber<? super Transition<ST, E>> subscriber) {
+		}
+	}
+
+
 	/* *************************************************************************
 	 * Static methods for working with FSMs.
 	 * ************************************************************************/
@@ -375,27 +491,28 @@ public record Fsm(
 	 * @param fsm the state machine which defines the before and after state of
 	 *        an event stream
 	 * @param start the start state
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 * @param <E> the event type
 	 * @return a new states gatherer
 	 */
-	public static Gatherer<Event, ?, Transition<Event>>
-	transitions(Fsm fsm, State start) {
+	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
+	Gatherer<E, ?, Transition<ST, E>>
+	transitions(Fsm<ST, SY> fsm, ST start) {
 		requireNonNull(fsm);
 		requireNonNull(start);
 
-		record StateHolder(AtomicReference<State> value) {}
-
 		return Gatherer.ofSequential(
-			() -> new StateHolder(new AtomicReference<>(start)),
-
-			Gatherer.Integrator.of((state, event, downstream) -> {
-				var after = fsm.delta().apply(state.value.get(), event.kind());
+			() -> new AtomicReference<>(start),
+			(state, event, downstream) -> {
+				var after = fsm.delta().apply(state.get(), event.kind());
 				after.ifPresent(s -> {
-					downstream.push(new Transition<>(state.value.get(), event, s));
-					state.value.set(s);
+					downstream.push(new Transition<>(state.get(), event, s));
+					state.set(s);
 				});
 
-				return !fsm.finals().contains(after.orElse(state.value.get()));
-			})
+				return !fsm.finals().contains(after.orElse(state.get()));
+			}
 		);
 	}
 
@@ -407,9 +524,13 @@ public record Fsm(
 	 *
 	 * @param fsm the state machine which defines the before and after state of
 	 *        an event stream
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 * @param <E> the event type
 	 * @return a new states gatherer
 	 */
-	public static Gatherer<Event, ?, Transition<Event>> transitions(Fsm fsm) {
+	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
+	Gatherer<E, ?, Transition<ST, E>> transitions(Fsm<ST, SY> fsm) {
 		return transitions(fsm, fsm.start());
 	}
 
