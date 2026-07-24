@@ -22,7 +22,9 @@ package io.jenetics.incubator.statemachine;
 import org.testng.annotations.Test;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Gatherer;
 
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
@@ -86,6 +88,41 @@ public class FsmTest {
 		publisher.submit(RESUME);
 		publisher.submit(END);
 		publisher.submit(EXIT);
+	}
+
+	@Test
+	public void eventStream() {
+		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
+
+		events.stream()
+			.gather(states(FSM))
+			.forEach(System.out::println);
+
+	}
+
+	record EventState(Fsm.Event event, Fsm.State prev, Fsm.State next) {
+	}
+
+	static Gatherer<Fsm.Event, ?, EventState> states(Fsm fsm, Fsm.State start) {
+		final class State {
+			Fsm.State current = start;
+		}
+
+		return Gatherer.ofSequential(
+			State::new,
+			Gatherer.Integrator.of((state, event, downstream) -> {
+				var next = fsm.delta().apply(state.current, event.kind());
+				next.ifPresent(n -> {
+					downstream.push(new EventState(event, state.current, n));
+					state.current = n;
+				});
+				return !fsm.finals().contains(next.orElse(state.current));
+			})
+		);
+	}
+
+	static Gatherer<Fsm.Event, ?, EventState> states(Fsm fsm) {
+		return states(fsm, fsm.start());
 	}
 
 }

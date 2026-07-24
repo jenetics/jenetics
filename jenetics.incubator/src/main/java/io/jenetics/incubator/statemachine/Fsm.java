@@ -19,14 +19,15 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
 
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
@@ -171,6 +172,7 @@ public record Fsm(
 	 * The event subscriber which is called for every new event being published.
 	 */
 	public interface EventSubscriber {
+
 		/**
 		 * This method is called for every event.
 		 *
@@ -180,6 +182,38 @@ public record Fsm(
 		 * @param next the FSM state after the transition
 		 */
 		void onEvent(EventPublisher source, Event event, State prev, State next);
+
+		/**
+		 * This method is called for invalid events, for events where no state
+		 * transition is defined.
+		 *
+		 * @param source the publisher object which called {@code this} subscriber
+		 * @param event the event object, which triggers the state transition
+		 * @param state the FSM state before the transition
+		 * @throws IllegalStateException always. Implementer may override this
+		 *         method and handle invalid events differently.
+		 */
+		default void onInvalidEvent(EventPublisher source, Event event, State state) {
+			throw new IllegalStateException(
+				"Illegal event %s for state %s.".formatted(event, state)
+			);
+		}
+
+		/**
+		 * This method is called for all events after the FSM state is already
+		 * a finished state.
+		 *
+		 * @param source the publisher object which called {@code this} subscriber
+		 * @param event the event object, which triggers the state transition
+		 * @param state the finished state
+		 * @throws IllegalStateException always. Implementer may override this
+		 *         method and handle events after the finished state differently.
+		 */
+		default void onAfterFinishEvent(EventPublisher source, Event event, State state) {
+			throw new IllegalStateException(
+				"Illegal event %s after finish state %s.".formatted(event, state)
+			);
+		}
 
 	}
 
@@ -191,14 +225,22 @@ public record Fsm(
 
 		private final Fsm fsm;
 		private final EventSubscriber subscriber;
+
+		private final Executor executor;
 		private final Object lock = new Object() {};
 
 		private State state;
 
-		public EventPublisher(Fsm fsm, State state, EventSubscriber subscriber) {
+		public EventPublisher(
+			final Fsm fsm,
+			final State start,
+			final EventSubscriber subscriber,
+			final Executor executor
+		) {
 			this.fsm = requireNonNull(fsm);
 			this.subscriber = requireNonNull(subscriber);
-			this.state = requireNonNull(state);
+			this.state = requireNonNull(start);
+			this.executor = requireNonNull(executor);
 
 			if (!fsm.states().contains(state)) {
 				throw new IllegalArgumentException(
@@ -208,8 +250,8 @@ public record Fsm(
 			}
 		}
 
-		public EventPublisher(Fsm fsm, EventSubscriber subscriber) {
-			this(fsm, fsm.start(), subscriber);
+		public EventPublisher(Fsm fsm, State start, EventSubscriber subscriber) {
+			this(fsm, start, subscriber, Runnable::run);
 		}
 
 		/**
@@ -247,10 +289,20 @@ public record Fsm(
 
 			synchronized (lock) {
 				if (isFinished()) {
+					executor.execute(() ->
+						subscriber.onAfterFinishEvent(this, event, state)
+					);
 					return false;
 				} else {
 					final var next = fsm.delta.apply(state, event.kind());
-					next.ifPresent(n -> subscriber.onEvent(this, event, state, n));
+					next.ifPresentOrElse(
+						n -> executor.execute(() ->
+								subscriber.onEvent(this, event, state, n)
+						),
+						() -> executor.execute(() ->
+							subscriber.onInvalidEvent(this, event, state)
+						)
+					);
 					state = next.orElse(state);
 					return !isFinished();
 				}
@@ -258,6 +310,5 @@ public record Fsm(
 		}
 
 	}
-
 
 }
