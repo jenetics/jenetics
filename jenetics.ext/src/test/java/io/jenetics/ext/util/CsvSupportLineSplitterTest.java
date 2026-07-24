@@ -20,17 +20,20 @@
 package io.jenetics.ext.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.util.CsvSupport.ColumnIndexes;
 import io.jenetics.ext.util.CsvSupport.LineReader;
 import io.jenetics.ext.util.CsvSupport.LineSplitter;
+import io.jenetics.ext.util.CsvSupport.Quote;
 import io.jenetics.ext.util.CsvSupport.Separator;
 
 /**
@@ -113,6 +116,144 @@ public class CsvSupportLineSplitterTest {
 				[06, aixovall, ad]
 				""");
 		}
+	}
+
+	@Test(dataProvider = "columnProjections")
+	public void projectColumns(
+		final String line,
+		final ColumnIndexes projection,
+		final String[] expected
+	) {
+		final var splitter = new LineSplitter(projection);
+
+		assertThat(splitter.split(line)).containsExactly(expected);
+	}
+
+	@DataProvider
+	public Object[][] columnProjections() {
+		return new Object[][] {
+			{
+				"Country,City,AccentCity,Region,Population,Latitude,Longitude",
+				new ColumnIndexes(3, 1, 0),
+				new String[] {"Region", "City", "Country"}
+			},
+			{
+				"ad,aixas,Aixàs,06,,42.4833333,1.4666667",
+				new ColumnIndexes(4, 5, 3, 1),
+				new String[] {"", "42.4833333", "06", "aixas"}
+			},
+			{
+				"0,1,2,3,4",
+				new ColumnIndexes(2, 0, 2, 5, -1, 1),
+				new String[] {"2", "0", "2", null, null, "1"}
+			},
+			{
+				",alpha,,omega,",
+				new ColumnIndexes(0, 2, 4, 3),
+				new String[] {"", "", "", "omega"}
+			},
+			{
+				"alpha,beta,",
+				new ColumnIndexes(2, 0),
+				new String[] {"", "alpha"}
+			},
+			{
+				"",
+				new ColumnIndexes(0, 1),
+				new String[] {"", null}
+			},
+			{
+				"alpha,beta",
+				new ColumnIndexes(3, 0, 3, -1),
+				new String[] {null, "alpha", null, null}
+			},
+			{
+				"id,\"alpha,beta\",\"with \"\"quote\"\"\",omega",
+				new ColumnIndexes(3, 1, 2),
+				new String[] {"omega", "alpha,beta", "with \"quote\""}
+			},
+			{
+				"selected,\"unbalanced",
+				new ColumnIndexes(0),
+				new String[] {"selected"}
+			}
+		};
+	}
+
+	@Test
+	public void splitEmptyLine() {
+		final var splitter = new LineSplitter();
+
+		assertThat(splitter.split("")).containsExactly("");
+	}
+
+	@Test
+	public void splitOnlySeparators() {
+		final var splitter = new LineSplitter();
+
+		assertThat(splitter.split(",,,")).containsExactly("", "", "", "");
+	}
+
+	@Test
+	public void splitLeadingTrailingAndConsecutiveEmptyColumns() {
+		final var splitter = new LineSplitter();
+
+		assertThat(splitter.split(",alpha,,omega,"))
+			.containsExactly("", "alpha", "", "omega", "");
+	}
+
+	@Test
+	public void splitQuotedSeparatorsAndEscapedQuotes() {
+		final var splitter = new LineSplitter();
+
+		assertThat(splitter.split("\"alpha, beta\",\"with \"\"quote\"\"\",omega"))
+			.containsExactly("alpha, beta", "with \"quote\"", "omega");
+	}
+
+	@Test
+	public void splitQuotedColumnWithLineBreak() {
+		final var splitter = new LineSplitter();
+
+		assertThat(splitter.split("\"alpha\nbeta\",gamma"))
+			.containsExactly("alpha\nbeta", "gamma");
+	}
+
+	@Test
+	public void splitWithCustomSeparatorAndQuote() {
+		final var splitter = new LineSplitter(
+			new Separator(';'),
+			new Quote('\'')
+		);
+
+		assertThat(splitter.split("'alpha;beta';'gamma''delta';omega"))
+			.containsExactly("alpha;beta", "gamma'delta", "omega");
+	}
+
+	@Test
+	public void splitUnbalancedQuote() {
+		final var splitter = new LineSplitter();
+
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> splitter.split("alpha,\"beta"))
+			.withMessageContaining("Unbalanced quote character");
+	}
+
+	@Test
+	public void splitQuoteInsideUnquotedColumn() {
+		final var splitter = new LineSplitter();
+
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> splitter.split("alpha\"beta,gamma"))
+			.withMessageContaining("allowed before quote");
+	}
+
+	@Test
+	public void splitCharactersAfterQuotedColumn() {
+		final var splitter = new LineSplitter();
+
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() -> splitter.split("\"alpha\"beta,gamma"))
+			.withMessageContaining("allowed after quote");
 	}
 
 }

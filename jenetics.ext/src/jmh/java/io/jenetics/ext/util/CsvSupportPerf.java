@@ -105,7 +105,7 @@ public class CsvSupportPerf {
 				.setSkipHeaderRecord(true)
 				.get();
 
-            for (var record : format.parse(in)) {
+            for (var _ : format.parse(in)) {
                 count++;
             }
 		}
@@ -240,4 +240,16 @@ CsvSupportPerf.parseSuperCSV    avgt   20  30.921 ± 0.126  ms/op
 CsvSupportPerf.read             avgt   20   4.125 ± 0.059  ms/op
 CsvSupportPerf.scan             avgt   20  16.098 ± 0.205  ms/op
 CsvSupportPerf.split            avgt   20  16.725 ± 0.204  ms/op
+ */
+/*
+-- 2026.05.12 // Java 25
+Benchmark                       Mode  Cnt   Score   Error  Units
+CsvSupportPerf.parseCommonsCSV  avgt   20  33.704 ± 0.064  ms/op
+CsvSupportPerf.parseCsvSupport  avgt   20  19.207 ± 0.052  ms/op
+CsvSupportPerf.parseJavaCSV     avgt   20  25.683 ± 0.052  ms/op
+CsvSupportPerf.parseOpenCSV     avgt   20  26.268 ± 0.077  ms/op
+CsvSupportPerf.parseSuperCSV    avgt   20  22.226 ± 0.033  ms/op
+CsvSupportPerf.read             avgt   20   3.708 ± 0.009  ms/op
+CsvSupportPerf.scan             avgt   20  14.757 ± 0.027  ms/op
+CsvSupportPerf.split            avgt   20  12.333 ± 0.022  ms/op
  */

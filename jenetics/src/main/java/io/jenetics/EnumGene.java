@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -170,7 +169,7 @@ public final class EnumGene<A>
 
 	@Override
 	public int hashCode() {
-		return hash(_alleleIndex, hash(_validAlleles));
+		return Objects.hash(_alleleIndex, _validAlleles);
 	}
 
 	@Override

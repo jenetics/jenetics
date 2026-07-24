@@ -21,12 +21,14 @@ package io.jenetics.engine;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.LongChromosome;
@@ -34,6 +36,7 @@ import io.jenetics.LongGene;
 import io.jenetics.Phenotype;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
 /**
@@ -171,6 +174,71 @@ public class CompositeCodecTest {
 		Assert.assertEquals(sum, codec.decoder().apply(gt), 0.000001);
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void decodeWithLongerThanExpectedGenotype() {
+		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
+			ISeq.of(
+				Codecs.ofScalar(new DoubleRange(0, 1)),
+				Codecs.ofScalar(new DoubleRange(0, 1))
+			),
+			_ -> 10.0
+		);
+
+		codec.decode(Genotype.of(
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(0, 1)
+		));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void variableLengthComponentEncoding() {
+		final AtomicInteger count = new AtomicInteger();
+		final Factory<Genotype<DoubleGene>> encoding = () ->
+			count.getAndIncrement() == 0
+				? oneChromosomeGenotype()
+				: twoChromosomeGenotype();
+
+		final Codec<Integer, DoubleGene> variable = Codec.of(
+			encoding,
+			Genotype::length
+		);
+
+		final Codec<Integer, DoubleGene> codec = new CompositeCodec<>(
+			ISeq.of(
+				variable,
+				Codecs.ofScalar(new DoubleRange(0, 1))
+			),
+			values -> (Integer)values[0]
+		);
+
+		codec.decode(codec.encoding().newInstance());
+	}
+
+	@Test
+	public void nonGenotypeEncodingFactoryIsProbedAtConstructionTime() {
+		final AtomicInteger count = new AtomicInteger();
+		final Factory<Genotype<DoubleGene>> encoding = () -> {
+			count.incrementAndGet();
+			return oneChromosomeGenotype();
+		};
+
+		final Codec<Double, DoubleGene> codec = Codec.of(
+			encoding,
+			gt -> gt.gene().doubleValue()
+		);
+
+		new CompositeCodec<>(
+			ISeq.of(
+				codec,
+				Codecs.ofScalar(new DoubleRange(0, 1))
+			),
+			values -> 10.0
+		);
+
+		Assert.assertEquals(count.get(), 1);
+	}
+
 	@Test(invocationCount = 10)
 	public void constrainedEncoding() {
 		final Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
@@ -274,6 +342,17 @@ public class CompositeCodecTest {
 		final Duration duration = durationCodec.decoder()
 			.apply(pt.genotype());
 		//System.out.println(duration);
+	}
+
+	private static Genotype<DoubleGene> oneChromosomeGenotype() {
+		return Genotype.of(DoubleChromosome.of(0, 1));
+	}
+
+	private static Genotype<DoubleGene> twoChromosomeGenotype() {
+		return Genotype.of(
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(0, 1)
+		);
 	}
 
 }

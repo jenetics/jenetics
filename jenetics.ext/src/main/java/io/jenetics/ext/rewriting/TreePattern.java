@@ -226,38 +226,36 @@ public final class TreePattern<V> implements Serializable {
 		final Tree<Decl<V>, ?> pattern,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		final Decl<V> decl = pattern.value();
-
-		if (decl instanceof Var<V> var) {
-			final Tree<? extends V, ?> tree = vars.get(decl);
-			if (tree == null) {
-				vars.put(var, node);
-				return true;
-			}
-
-			return tree.equals(node);
-		} else {
-			final Val<V> p = (Val<V>)decl;
-			final V v = node.value();
-
-			if (Objects.equals(v, p.value())) {
-				if (node.childCount() == pattern.childCount()) {
-					for (int i = 0; i < node.childCount(); ++i) {
-						final Tree<V, ?> cn = node.childAt(i);
-						final Tree<Decl<V>, ?> cp = pattern.childAt(i);
-
-						if (!matches(cn, cp, vars)) {
-							return false;
-						}
-					}
-					return true;
-				} else {
-					return false;
+		return switch (pattern.value()) {
+			case Var<V> var -> {
+				final Tree<? extends V, ?> tree = vars.get(var);
+				if (tree == null) {
+					vars.put(var, node);
+					yield  true;
 				}
-			} else {
-				return false;
+
+				yield tree.equals(node);
 			}
-		}
+			case Val<V>(var value) -> {
+				if (Objects.equals(node.value(), value)) {
+					if (node.childCount() == pattern.childCount()) {
+						for (int i = 0; i < node.childCount(); ++i) {
+							final Tree<V, ?> cn = node.childAt(i);
+							final Tree<Decl<V>, ?> cp = pattern.childAt(i);
+
+							if (!matches(cn, cp, vars)) {
+								yield false;
+							}
+						}
+						yield true;
+					} else {
+						yield false;
+					}
+				} else {
+					yield false;
+				}
+			}
+		};
 	}
 
 	/**
@@ -284,7 +282,7 @@ public final class TreePattern<V> implements Serializable {
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
-			n -> n instanceof Val<V> val ? val.value() : null
+			n -> n instanceof Val<V>(V value) ? value : null
 		);
 
 		paths.forEach((path, decl) -> {

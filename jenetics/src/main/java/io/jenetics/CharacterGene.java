@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.Serial;
@@ -144,7 +143,7 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_validCharacters));
+		return Objects.hash(_allele, _validCharacters);
 	}
 
 	@Override

@@ -21,7 +21,6 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
 
@@ -113,7 +112,7 @@ public final class EvolutionStart<
 
 	@Override
 	public int hashCode() {
-		return hash(_generation, hash(_population, hash(getClass())));
+		return Objects.hash(_generation, _population);
 	}
 
 	@Override

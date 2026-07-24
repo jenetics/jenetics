@@ -41,7 +41,10 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
+	api("org.jspecify:jspecify:1.0.0")
 	implementation(libs.commons.statistics.distribution)
+	implementation("org.slf4j:slf4j-api:2.0.17")
+	implementation("org.slf4j:slf4j-jdk14:2.0.17")
 //	implementation(libs.jackson.annotations)
 //	implementation(libs.jackson.databind.nullable)
 //	implementation(libs.jackson.datatype.jsr310)
@@ -49,6 +52,7 @@ dependencies {
 //	implementation(libs.jakarta.validation.api)
 	implementation(libs.swagger.models)
 	implementation(libs.swagger.parser)
+	implementation(libs.reactor.core)
 	implementation(libs.codemodel)
 
 
@@ -59,7 +63,6 @@ dependencies {
 	testImplementation(libs.guava)
 	testImplementation(libs.jackson.databind)
 	testImplementation(libs.jpx)
-	testImplementation(libs.reactor.core)
 	testImplementation(libs.testng)
 
 	jmh(libs.commons.csv)
