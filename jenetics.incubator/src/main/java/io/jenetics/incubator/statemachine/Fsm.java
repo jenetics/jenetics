@@ -369,7 +369,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		ST extends State,
 		SY extends Symbol,
 		E extends Event<SY>
-	> {
+	>
+		implements Submitter<SY, E>
+	{
 
 		private final Fsm<ST, SY> fsm;
 		private final EventSubscriber<ST, SY, E> subscriber;
@@ -428,11 +430,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * event has been processed and the final state hasn't been reached yet.
 		 *
 		 * @param event the transitioning event
-		 * @return {@code true} if the event has been processed, {@code false}
-		 *         otherwise. If {@code false} is returned, one of the final
-		 *         states has been reached.
 		 */
-		public boolean submit(E event) {
+		@Override
+		public void submit(E event) {
 			if (!fsm.symbols().contains(event.kind())) {
 				throw new IllegalArgumentException(
 					"Got event with unknown kind: " + event
@@ -444,7 +444,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 					executor.execute(() ->
 						subscriber.onAfterFinishEvent(event, state)
 					);
-					return false;
 				} else {
 					final var next = fsm.delta.apply(state, event.kind());
 					next.ifPresentOrElse(
@@ -457,7 +456,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 					);
 
 					state = next.orElse(state);
-					return !isFinished();
 				}
 			}
 		}

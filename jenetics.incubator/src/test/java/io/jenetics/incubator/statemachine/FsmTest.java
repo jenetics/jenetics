@@ -73,22 +73,33 @@ public class FsmTest {
 
 	@Test
 	public void submitting() {
-		final var publisher = new Fsm.EventPublisher<>(
+		var publisher = new Fsm.EventPublisher<>(
 			FSM, FSM.start(),
 			(event, before, after) -> IO.println(
 				"%s: %s -> %s".formatted(event, before, after)
 			)
 		);
 
-		publisher.submit(BEGIN);
-		publisher.submit(PAUSE);
-		publisher.submit(RESUME);
-		publisher.submit(END);
-		publisher.submit(EXIT);
+		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
+		for (var it = events.iterator(); it.hasNext() && !publisher.isFinished();) {
+			publisher.submit(it.next());
+		}
+
 	}
 
 	@Test
-	public void eventStream() {
+	public void terminating() {
+		final var publisher = new Fsm.EventPublisher<>(FSM, FSM.start(), (_, _, _) -> {});
+
+		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
+		events.stream()
+			.takeWhile(_ -> !publisher.isFinished())
+			.peek(publisher::submit)
+			.forEach(System.out::println);
+	}
+
+	@Test
+	public void transitionGatherer() {
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		events.stream()
