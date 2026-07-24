@@ -19,15 +19,16 @@
  */
 package io.jenetics.util;
 
-import static java.time.Clock.systemUTC;
-import static java.util.Objects.requireNonNull;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.stream.Gatherer;
 import java.util.stream.Stream;
+
+import static java.time.Clock.systemUTC;
+import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains factory methods for (flat) mapping stream element. The
@@ -74,10 +75,43 @@ public final class Streams {
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
+	 *
+	 * @deprecated Use the {@link #strictlyIncreasing()} method instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
-		return strictlyImproving(Streams::max);
+		return strictlyImproving0(Streams::max);
+	}
+
+	/**
+	 * Return a new gatherer, which guarantees a strictly increasing stream, from
+	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
+	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
+	 *
+	 * <pre>{@code
+	 *     +----3--2--5--4--7--7--4--9----|
+	 *        toStrictlyIncreasing()
+	 *     +----3-----5-----7--------9----|
+	 * }</pre>
+	 *
+	 * {@snippet lang = "java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .gather(Streams.strictlyIncreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 *}
+	 *
+	 * @param <C> the comparable type
+	 * @return a new gatherer
+	 */
+	public static <C extends Comparable<? super C>> Gatherer<C, ?, C>
+	strictlyIncreasing() {
+		return strictlyImproving(Comparator.naturalOrder());
 	}
 
 	/**
@@ -108,7 +142,7 @@ public final class Streams {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
-		return strictlyImproving(Streams::min);
+		return strictlyImproving0(Streams::min);
 	}
 
 	/**
@@ -133,14 +167,16 @@ public final class Streams {
 	 * @param <T> the element type
 	 * @param comparator the comparator used for testing the elements
 	 * @return a new flat-mapper function
+	 * @deprecated Use {@link #strictlyImproving(Comparator)} instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <T> Function<T, Stream<T>>
 	toStrictlyImproving(final Comparator<? super T> comparator) {
-		return strictlyImproving((a, b) -> best(comparator, a, b));
+		return strictlyImproving0((a, b) -> best(comparator, a, b));
 	}
 
 	private static <C> Function<C, Stream<C>>
-	strictlyImproving(final BinaryOperator<C> comparator) {
+	strictlyImproving0(final BinaryOperator<C> comparator) {
 		requireNonNull(comparator);
 
 		return new Function<>() {
@@ -159,6 +195,47 @@ public final class Streams {
 				return stream;
 			}
 		};
+	}
+
+	/**
+	 * Return a new gatherer, which guarantees a strictly improving stream, from
+	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
+	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
+	 * {@snippet lang = "java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .gather(Streams.strictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 *}
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new gatherer
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <T> Gatherer<T, ?, T>
+	strictlyImproving(final Comparator<? super T> comparator) {
+		requireNonNull(comparator);
+		return Gatherer.ofSequential(
+			State<T>::new,
+			(state, value, downstream) -> {
+				final T best = best(comparator, state.best, value);
+				if (best != state.best) {
+					state.best = best;
+					return downstream.push(best);
+				}
+				return true;
+			}
+		);
+	}
+
+	private static final class State<T> {
+		private T best;
 	}
 
 	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
