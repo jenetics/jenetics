@@ -21,7 +21,9 @@ package io.jenetics.incubator.statemachine;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -213,20 +215,28 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 				SY symbol
 			) {}
 
-			final Map<StateSymbol<ST, SY>, ST> map;
-			try {
-				map = transitions.stream()
-					.collect(Collectors.toMap(
-						t -> new StateSymbol<>(t.before(), t.event()),
-						Transition::after
-					));
-			} catch (IllegalStateException e) {
-				throw new IllegalArgumentException(e);
+			final Map<StateSymbol<ST, SY>, List<Transition<ST, SY>>> map =
+				transitions.stream()
+					.collect(groupingBy(t -> new StateSymbol<>(t.before(), t.event())));
+
+			final List<StateSymbol<ST, SY>> duplicates = map.entrySet().stream()
+				.filter(t -> t.getValue().size() > 1)
+				.map(Map.Entry::getKey)
+				.toList();
+
+			if (!duplicates.isEmpty()) {
+				throw new IllegalArgumentException(
+					"Found ambiguous transitions: %s.".formatted(
+						duplicates.stream()
+							.map(ss -> "(%s, %s)".formatted(ss.state, ss.symbol))
+							.collect(Collectors.joining(", "))
+					)
+				);
 			}
 
-			return (state, symbol) -> Optional.ofNullable(
-				map.get(new StateSymbol<>(state, symbol))
-			);
+			return (state, symbol) -> Optional
+				.ofNullable(map.get(new StateSymbol<>(state, symbol)))
+				.map(t -> t.getFirst().after());
 		}
 
 		/**
@@ -301,6 +311,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 */
 	public interface Submitter<SY extends Symbol, E extends Event<SY>> {
 		void submit(E event);
+	}
+
+	public interface Stepper {
+
 	}
 
 	/**
@@ -504,9 +518,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			() -> new AtomicReference<>(start),
 			(state, event, downstream) -> {
 				var after = fsm.delta().apply(state.get(), event.kind());
-				after.ifPresent(s -> {
-					downstream.push(new Transition<>(state.get(), event, s));
-					state.set(s);
+				after.ifPresent(aftr -> {
+					downstream.push(new Transition<>(state.get(), event, aftr));
+					state.set(aftr);
 				});
 
 				return !fsm.finals().contains(after.orElse(state.get()));
