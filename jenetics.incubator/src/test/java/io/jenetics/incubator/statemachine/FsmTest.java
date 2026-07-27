@@ -72,6 +72,16 @@ public class FsmTest {
 	);
 
 	@Test
+	public void stepper() {
+		final var stepper = new Fsm.Stepper<>(FSM);
+		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
+
+		for (var it = events.iterator(); it.hasNext() && !stepper.isFinished();) {
+			System.out.println(stepper.next(it.next()));
+		}
+	}
+
+	@Test
 	public void submitting() {
 		var publisher = new Fsm.EventPublisher<>(
 			FSM, FSM.start(),

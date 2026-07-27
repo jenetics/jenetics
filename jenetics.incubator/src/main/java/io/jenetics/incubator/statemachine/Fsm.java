@@ -19,12 +19,9 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.groupingBy;
-
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -32,6 +29,10 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
@@ -71,21 +72,25 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		if (symbols.isEmpty()) {
 			throw new IllegalArgumentException("The symbols must not be empty.");
 		}
+
 		if (states.isEmpty()) {
 			throw new IllegalArgumentException("The states must not be empty.");
 		}
+
 		if (!states.contains(start)) {
 			throw new IllegalArgumentException(
 				"Start state '%s' is not part of available states, %s."
 					.formatted(start, states)
 			);
 		}
+
 		if (finals.contains(start)) {
 			throw new IllegalArgumentException(
 				"Start state '%s' must not be a final state, %s."
 					.formatted(start, finals)
 			);
 		}
+
 		final var missing = finals.stream()
 			.filter(not(states::contains))
 			.toList();
@@ -95,6 +100,26 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 					.formatted(missing, states)
 			);
 		}
+
+		// Final states must not have further transitions.
+		final var finished = finals;
+		final List<Transition<ST, SY>> transitions = symbols.stream()
+			.flatMap(sy -> finished.stream().map(st -> Map.entry(st, sy)))
+			.flatMap(step -> delta.apply(step.getKey(), step.getValue())
+				.map(to -> new Transition<>(step.getKey(), step.getValue(), to))
+				.stream()
+			)
+			.toList();
+		if (!transitions.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Found transitions from final state(s): %s.".formatted(
+					transitions.stream()
+						.map(Objects::toString)
+						.collect(Collectors.joining(", "))
+				)
+			);
+		}
+
 	}
 
 	/* *************************************************************************
@@ -289,6 +314,181 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 * ************************************************************************/
 
 	/**
+	 * This class steps through the FSM, with the {@link #next(Symbol)} method.
+	 * and holds the current state.
+	 *
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 */
+	public static final class Stepper<ST extends State, SY extends Symbol> {
+
+		/**
+		 * The step result.
+		 *
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 */
+		public sealed interface Step<ST extends State, SY extends Symbol> {
+
+			/**
+			 * Return the state before the step (transition).
+			 *
+			 * @return the state before the step (transition)
+			 */
+			ST before();
+
+			/**
+			 * Return the signal which triggered the step (transition).
+			 *
+			 * @return the signal which triggered the step (transition)
+			 */
+			SY signal();
+		}
+
+		/**
+		 * A valid step result.
+		 *
+		 * @param before the state before the step
+		 * @param signal the transition symbol
+		 * @param after the state after the step
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 */
+		public record Valid<ST extends State, SY extends Symbol>(ST before, SY signal, ST after)
+			implements Step<ST, SY>
+		{
+			public Valid {
+				requireNonNull(before);
+				requireNonNull(signal);
+				requireNonNull(after);
+			}
+		}
+
+		/**
+		 * An invalid step result, which is not defined by the {@link Delta}
+		 * function of the {@link Fsm}.
+		 *
+		 * @param before the state before the step
+		 * @param signal the transition symbol
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 */
+		public record Invalid<ST extends State, SY extends Symbol>(ST before, SY signal)
+			implements Step<ST, SY>
+		{
+			public Invalid {
+				requireNonNull(before);
+				requireNonNull(signal);
+			}
+		}
+
+
+		private final Fsm<ST, SY> fsm;
+		private ST state;
+
+		/**
+		 * Create a new stepper object with the given {@code fsm} and
+		 * {@code start} state.
+		 *
+		 * @param fsm the FSM used by the stepper
+		 * @param start the steppers start state
+		 * @throws IllegalArgumentException if the given {@code start} state is
+		 *         not an element of {@link Fsm#states()}
+		 */
+		public Stepper(Fsm<ST, SY> fsm, ST start) {
+			this.fsm = requireNonNull(fsm);
+			this.state = requireNonNull(start);
+
+			if (!fsm.states().contains(state)) {
+				throw new IllegalArgumentException(
+					"Initial state '%s' is not part of available states, %s."
+						.formatted(state, fsm.states())
+				);
+			}
+		}
+
+		/**
+		 * Create a new stepper object with the given {@code fsm} and the
+		 * {@link Fsm#start()} state.
+		 *
+		 * @param fsm the FSM used by the stepper
+		 */
+		public Stepper(Fsm<ST, SY> fsm) {
+			this(fsm, fsm.start());
+		}
+
+		/**
+		 * Returns the current state.
+		 *
+		 * @return the current state
+		 */
+		public synchronized ST current() {
+			return state;
+		}
+
+		/**
+		 * Changes the current state.
+		 *
+		 * @param state the new stepper state
+		 */
+		public synchronized void current(ST state) {
+			this.state = requireNonNull(state);
+		}
+
+		/**
+		 * Return {@code true} if the current state is an element of the
+		 * {@link Fsm#finals()} states.
+		 *
+		 * @return {@code true} if the current state is an element of the
+		 *         {@link Fsm#finals()} states, {@code false} otherwise.
+		 */
+		public synchronized boolean isFinished() {
+			return fsm.finals().contains(state);
+		}
+
+		/**
+		 * Moves the current state to the next state by applying the given
+		 * {@code signal}.
+		 *
+		 * @param signal the signal which moves the current step to the next step
+		 * @return the step result. If the step is {@link Invalid}, the current
+		 *         step is not changed.
+		 * @throws IllegalStateException if the {@link #isFinished()} is
+		 *         {@code true}
+		 * @throws IllegalArgumentException if the given {@code signal} is not
+		 *         an element of {@link Fsm#symbols()}
+		 */
+		public synchronized Step<ST, SY> next(SY signal) {
+			requireNonNull(signal);
+			if (!fsm.symbols().contains(signal)) {
+				throw new IllegalArgumentException(
+					"Got unknown signal: " + signal
+				);
+			}
+			if (isFinished()) {
+				throw new IllegalStateException(
+					"No transition triggered by '%s', already in a final state '%s'."
+						.formatted(signal, state)
+				);
+			}
+
+			final var next = fsm.delta().apply(state, signal).orElse(null);
+
+			final Step<ST, SY> step;
+			if (next != null) {
+				step = new Valid<>(state, signal, next);
+				state = next;
+			} else {
+				step = new Invalid<>(state, signal);
+			}
+
+			return step;
+		}
+
+	}
+
+
+	/**
 	 * Interface for FSM transition events. Events may hold additional payload.
 	 *
 	 * @param <SY> the symbol (signal) type
@@ -311,10 +511,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 */
 	public interface Submitter<SY extends Symbol, E extends Event<SY>> {
 		void submit(E event);
-	}
-
-	public interface Stepper {
-
 	}
 
 	/**
@@ -387,13 +583,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		implements Submitter<SY, E>
 	{
 
-		private final Fsm<ST, SY> fsm;
+		private final Stepper<ST, SY> stepper;
 		private final EventSubscriber<ST, SY, E> subscriber;
 
 		private final Executor executor;
-		private final Object lock = new Object() {};
-
-		private ST state;
 
 		public EventPublisher(
 			final Fsm<ST, SY> fsm,
@@ -401,17 +594,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			final EventSubscriber<ST, SY, E> subscriber,
 			final Executor executor
 		) {
-			this.fsm = requireNonNull(fsm);
+			this.stepper = new Stepper<>(fsm, start);
 			this.subscriber = requireNonNull(subscriber);
-			this.state = requireNonNull(start);
 			this.executor = requireNonNull(executor);
-
-			if (!fsm.states().contains(state)) {
-				throw new IllegalArgumentException(
-					"Initial state '%s' is not part of available states, %s."
-						.formatted(state, fsm.states())
-				);
-			}
 		}
 
 		public EventPublisher(
@@ -427,16 +612,12 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 *
 		 * @return the current state of the runner
 		 */
-		public ST state() {
-			synchronized (lock) {
-				return state;
-			}
+		public ST current() {
+			return stepper.current();
 		}
 
 		public boolean isFinished() {
-			synchronized (lock) {
-				return fsm.finals().contains(state);
-			}
+			return stepper.isFinished();
 		}
 
 		/**
@@ -447,33 +628,20 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 */
 		@Override
 		public void submit(E event) {
-			if (!fsm.symbols().contains(event.kind())) {
-				throw new IllegalArgumentException(
-					"Got event with unknown kind: " + event
+			requireNonNull(event);
+
+			if (isFinished()) {
+				executor.execute(() ->
+					subscriber.onAfterFinishEvent(event, current())
 				);
-			}
-
-			synchronized (lock) {
-				if (isFinished()) {
-					executor.execute(() ->
-						subscriber.onAfterFinishEvent(event, state)
-					);
-				} else {
-					final var next = fsm.delta.apply(state, event.kind());
-					next.ifPresentOrElse(
-						n -> executor.execute(() ->
-								subscriber.onEvent(event, state, n)
-						),
-						() -> executor.execute(() ->
-							subscriber.onInvalidEvent(event, state)
-						)
-					);
-
-					state = next.orElse(state);
+			} else {
+				switch (stepper.next(event.kind())) {
+					case Stepper.Valid(var before, _, var after) -> executor
+						.execute(() -> subscriber.onEvent(event, before, after));
+					case Stepper.Invalid(var before, _) -> executor
+						.execute(() -> subscriber.onInvalidEvent(event, before));
 				}
 			}
-		}
-
 	}
 
 
