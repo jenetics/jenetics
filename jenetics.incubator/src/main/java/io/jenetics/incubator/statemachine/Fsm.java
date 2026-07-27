@@ -19,6 +19,10 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,10 +34,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.groupingBy;
-
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
  *     Finit State Machine</a>.
@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.groupingBy;
  * The {@link Fsm} class is immutable and thread safe and can be shared between
  * different threads and processors (event publisher).
  *
- * @param symbols the input alphabet (a finite non-empty set of symbols)
+ * @param alphabet the input alphabet (a finite non-empty set of symbols)
  * @param states the finite non-empty set of states
  * @param start the initial state, an element of {@link #states()}
  * @param finals the set of final states, a (possibly empty) subset of
@@ -55,7 +55,7 @@ import static java.util.stream.Collectors.groupingBy;
  * @since 9.1
  */
 public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
-	Set<SY> symbols,
+	Set<SY> alphabet,
 	Set<ST> states,
 	ST start,
 	Set<ST> finals,
@@ -63,13 +63,13 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 ) {
 
 	public Fsm {
-		symbols = Set.copyOf(symbols);
+		alphabet = Set.copyOf(alphabet);
 		states = Set.copyOf(states);
 		requireNonNull(start);
 		finals = Set.copyOf(finals);
 		requireNonNull(delta);
 
-		if (symbols.isEmpty()) {
+		if (alphabet.isEmpty()) {
 			throw new IllegalArgumentException("The symbols must not be empty.");
 		}
 
@@ -103,7 +103,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 
 		// Final states must not have further transitions.
 		final var finished = finals;
-		final List<Transition<ST, SY>> transitions = symbols.stream()
+		final List<Transition<ST, SY>> transitions = alphabet.stream()
 			.flatMap(sy -> finished.stream().map(st -> Map.entry(st, sy)))
 			.flatMap(step -> delta.apply(step.getKey(), step.getValue())
 				.map(to -> new Transition<>(step.getKey(), step.getValue(), to))
@@ -314,36 +314,28 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 * ************************************************************************/
 
 	/**
-	 * This class steps through the FSM, with the {@link #next(Symbol)} method.
-	 * and holds the current state.
+	 * The base interface for an FSM step. A step might be {@link Valid}, if the
+	 * {@link Delta} function is defined for a given {@link Symbol}, or
+	 * {@link Invalid}, if such a transition is not defined.
 	 *
 	 * @param <ST> the state type
 	 * @param <SY> the symbol (signal) type
 	 */
-	public static final class Stepper<ST extends State, SY extends Symbol> {
+	public sealed interface Step<ST extends State, SY extends Symbol> {
 
 		/**
-		 * The step result.
+		 * Return the state before the step (transition).
 		 *
-		 * @param <ST> the state type
-		 * @param <SY> the symbol (signal) type
+		 * @return the state before the step (transition)
 		 */
-		public sealed interface Step<ST extends State, SY extends Symbol> {
+		ST before();
 
-			/**
-			 * Return the state before the step (transition).
-			 *
-			 * @return the state before the step (transition)
-			 */
-			ST before();
-
-			/**
-			 * Return the signal which triggered the step (transition).
-			 *
-			 * @return the signal which triggered the step (transition)
-			 */
-			SY signal();
-		}
+		/**
+		 * Return the signal which triggered the step (transition).
+		 *
+		 * @return the signal which triggered the step (transition)
+		 */
+		SY signal();
 
 		/**
 		 * A valid step result.
@@ -354,7 +346,11 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * @param <ST> the state type
 		 * @param <SY> the symbol (signal) type
 		 */
-		public record Valid<ST extends State, SY extends Symbol>(ST before, SY signal, ST after)
+		record Valid<ST extends State, SY extends Symbol>(
+			ST before,
+			SY signal,
+			ST after
+		)
 			implements Step<ST, SY>
 		{
 			public Valid {
@@ -373,7 +369,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * @param <ST> the state type
 		 * @param <SY> the symbol (signal) type
 		 */
-		public record Invalid<ST extends State, SY extends Symbol>(ST before, SY signal)
+		record Invalid<ST extends State, SY extends Symbol>(
+			ST before,
+			SY signal
+		)
 			implements Step<ST, SY>
 		{
 			public Invalid {
@@ -381,8 +380,16 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 				requireNonNull(signal);
 			}
 		}
+	}
 
-
+	/**
+	 * This class steps through the FSM, with the {@link #next(Symbol)} method.
+	 * and holds the current state.
+	 *
+	 * @param <ST> the state type
+	 * @param <SY> the symbol (signal) type
+	 */
+	public static final class Stepper<ST extends State, SY extends Symbol> {
 		private final Fsm<ST, SY> fsm;
 		private ST state;
 
@@ -427,15 +434,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		}
 
 		/**
-		 * Changes the current state.
-		 *
-		 * @param state the new stepper state
-		 */
-		public synchronized void current(ST state) {
-			this.state = requireNonNull(state);
-		}
-
-		/**
 		 * Return {@code true} if the current state is an element of the
 		 * {@link Fsm#finals()} states.
 		 *
@@ -451,16 +449,16 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * {@code signal}.
 		 *
 		 * @param signal the signal which moves the current step to the next step
-		 * @return the step result. If the step is {@link Invalid}, the current
+		 * @return the step result. If the step is {@link Step.Invalid}, the current
 		 *         step is not changed.
 		 * @throws IllegalStateException if the {@link #isFinished()} is
 		 *         {@code true}
 		 * @throws IllegalArgumentException if the given {@code signal} is not
-		 *         an element of {@link Fsm#symbols()}
+		 *         an element of {@link Fsm#alphabet()}
 		 */
 		public synchronized Step<ST, SY> next(SY signal) {
 			requireNonNull(signal);
-			if (!fsm.symbols().contains(signal)) {
+			if (!fsm.alphabet().contains(signal)) {
 				throw new IllegalArgumentException(
 					"Got unknown signal: " + signal
 				);
@@ -476,10 +474,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 
 			final Step<ST, SY> step;
 			if (next != null) {
-				step = new Valid<>(state, signal, next);
+				step = new Step.Valid<>(state, signal, next);
 				state = next;
 			} else {
-				step = new Invalid<>(state, signal);
+				step = new Step.Invalid<>(state, signal);
 			}
 
 			return step;
@@ -631,17 +629,17 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			requireNonNull(event);
 
 			if (isFinished()) {
-				executor.execute(() ->
-					subscriber.onAfterFinishEvent(event, current())
-				);
+				executor.execute(() -> subscriber
+					.onAfterFinishEvent(event, current()));
 			} else {
 				switch (stepper.next(event.kind())) {
-					case Stepper.Valid(var before, _, var after) -> executor
+					case Step.Valid(var before, _, var after) -> executor
 						.execute(() -> subscriber.onEvent(event, before, after));
-					case Stepper.Invalid(var before, _) -> executor
+					case Step.Invalid(var before, _) -> executor
 						.execute(() -> subscriber.onInvalidEvent(event, before));
 				}
 			}
+		}
 	}
 
 
@@ -661,6 +659,26 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	/* *************************************************************************
 	 * Static methods for working with FSMs.
 	 * ************************************************************************/
+
+
+	public static <ST extends State, SY extends Symbol>
+	Gatherer<SY, ?, Step<ST, SY>> steps(Fsm<ST, SY> fsm, ST start) {
+		requireNonNull(fsm);
+		requireNonNull(start);
+
+		return Gatherer.ofSequential(
+			() -> new Stepper<>(fsm, start),
+			(stepper, signal, downstream) -> {
+				downstream.push(stepper.next(signal));
+				return !stepper.isFinished();
+			}
+		);
+	}
+
+	public static <ST extends State, SY extends Symbol>
+	Gatherer<SY, ?, Step<ST, SY>> steps(Fsm<ST, SY> fsm) {
+		return steps(fsm, fsm.start());
+	}
 
 	/**
 	 * Return a gatherer which enriches an event stream with the states, defined
