@@ -10,9 +10,11 @@ import static java.util.Objects.requireNonNull;
 final class ModelGenerator extends Generator {
 
 	private final String pkg;
+	private final OpenAPI api;
 
 	ModelGenerator(final OpenAPI api, final JCodeModel model, String pkg) {
-		super(api, model);
+		super(model);
+		this.api = requireNonNull(api);
 		this.pkg = requireNonNull(pkg);
 
 		api.getComponents().getSchemas().forEach((name, schema) ->
@@ -32,7 +34,7 @@ final class ModelGenerator extends Generator {
 
 	private ModelGenerator schema(final ObjectSchema schema) {
 		final var generator = new ModelClassGenerator(
-			api, model,
+			model,
 			class_(schema.getName())
 		);
 
@@ -45,7 +47,7 @@ final class ModelGenerator extends Generator {
 	private ModelGenerator schema(final StringSchema schema) {
 		if (schema.getEnum() != null && !schema.getEnum().isEmpty()) {
 			final var generator = new ModelEnumGenerator(
-				api, model,
+				model,
 				enum_(schema.getName())
 			);
 			schema.getEnum().forEach(generator::constant);

@@ -7,7 +7,6 @@ import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JInvocation;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.JVar;
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Arrays;
@@ -21,16 +20,15 @@ final class ModelClassGenerator extends Generator {
 	private final JDefinedClass clazz;
 
 	ModelClassGenerator(
-		final OpenAPI api,
 		final JCodeModel model,
 		final JDefinedClass clazz
 	) {
-		super(api, model);
+		super(model);
 		this.clazz = requireNonNull(clazz);
 	}
 
 	ModelClassGenerator property(final Consumer<PropertyGenerator> property) {
-		final var generator = new PropertyGenerator(api, model);
+		final var generator = new PropertyGenerator(model);
 		property.accept(generator);
 		generator.generate(clazz);
 		return this;

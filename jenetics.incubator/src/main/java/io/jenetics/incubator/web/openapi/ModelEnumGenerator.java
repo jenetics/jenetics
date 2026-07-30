@@ -11,11 +11,10 @@ final class ModelEnumGenerator extends Generator {
 	private final JDefinedClass clazz;
 
 	ModelEnumGenerator(
-		final OpenAPI api,
 		final JCodeModel model,
 		final JDefinedClass clazz
 	) {
-		super(api, model);
+		super(model);
 		this.clazz = requireNonNull(clazz);
 	}
 

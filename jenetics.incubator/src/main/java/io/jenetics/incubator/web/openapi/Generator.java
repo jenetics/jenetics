@@ -4,21 +4,18 @@ import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
-import io.swagger.v3.oas.models.OpenAPI;
 
 import static java.util.Objects.requireNonNull;
 
-abstract class Generator {
+public abstract class Generator {
 
-	final OpenAPI api;
-	final JCodeModel model;
+	protected final JCodeModel model;
 
-	protected Generator(final OpenAPI api, final JCodeModel model) {
-		this.api = requireNonNull(api);
+	protected Generator(final JCodeModel model) {
 		this.model = requireNonNull(model);
 	}
 
-	JDefinedClass interface_(final String name) {
+	public JDefinedClass interface_(final String name) {
 		try {
 			return model._class(name, EClassType.INTERFACE);
 		} catch (JCodeModelException e) {
@@ -26,7 +23,7 @@ abstract class Generator {
 		}
 	}
 
-	JDefinedClass class_(final String name) {
+	public JDefinedClass class_(final String name) {
 		try {
 			return model._class(name, EClassType.CLASS);
 		} catch (JCodeModelException e) {
@@ -34,7 +31,7 @@ abstract class Generator {
 		}
 	}
 
-	JDefinedClass enum_(final String name) {
+	public JDefinedClass enum_(final String name) {
 		try {
 			return model._class(name, EClassType.ENUM);
 		} catch (JCodeModelException e) {

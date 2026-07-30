@@ -5,7 +5,6 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
-import io.swagger.v3.oas.models.OpenAPI;
 import org.jspecify.annotations.NonNull;
 
 import static java.util.Objects.requireNonNull;
@@ -15,8 +14,8 @@ final class PropertyGenerator extends Generator {
 	private AbstractJType type;
 	private boolean mutable = true;
 
-	PropertyGenerator(final OpenAPI api, final JCodeModel model) {
-		super(api, model);
+	PropertyGenerator(JCodeModel model) {
+		super(model);
 	}
 
 	PropertyGenerator name(final String name) {
