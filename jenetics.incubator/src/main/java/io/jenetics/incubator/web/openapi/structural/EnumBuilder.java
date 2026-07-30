@@ -17,7 +17,7 @@ import java.util.Optional;
  * Generates {@link Enum} class from a
  * {@link io.swagger.v3.oas.models.media.StringSchema} with enum format.
  */
-public final class EnumGenerator {
+public final class EnumBuilder {
 
 	private static final String VALUE_NAME = "value";
 
@@ -27,7 +27,7 @@ public final class EnumGenerator {
 	/**
 	 * Create a new enum code generator.
 	 */
-	public EnumGenerator() {
+	public EnumBuilder() {
 	}
 
 	/**
@@ -36,7 +36,7 @@ public final class EnumGenerator {
 	 * @param name the enum class name
 	 * @return {@code this} builder
 	 */
-	public EnumGenerator name(final String name) {
+	public EnumBuilder name(final String name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -50,7 +50,7 @@ public final class EnumGenerator {
 	 * @param name the constant name
 	 * @return {@code this} generator
 	 */
-	public EnumGenerator constant(final String name) {
+	public EnumBuilder constant(final String name) {
 		requireNonNull(name);
 		constants.add(name);
 		return this;
@@ -125,7 +125,7 @@ public final class EnumGenerator {
 		return name.isEmpty() ? "VALUE" : name.toString();
 	}
 
-	public static Optional<EnumGenerator>
+	public static Optional<EnumBuilder>
 	of(final JCodeModel model, final Schema<?> schema) {
 		return Optional.empty();
 

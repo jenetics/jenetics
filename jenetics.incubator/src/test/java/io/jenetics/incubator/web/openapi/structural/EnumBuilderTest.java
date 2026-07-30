@@ -20,13 +20,13 @@ import javax.tools.ToolProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EnumGeneratorTest {
+public class EnumBuilderTest {
 
 	@Test
 	public void enumConstantsKeepOriginalStringValue() throws IOException {
 		final var model = new JCodeModel();
 
-		new EnumGenerator(model, "io.jenetics.incubator.test.TicketType")
+		new EnumBuilder(model, "io.jenetics.incubator.test.TicketType")
 			.constant("vip-ticket")
 			.constant("123 basic")
 			.constant("standard");
@@ -73,7 +73,7 @@ public class EnumGeneratorTest {
 		final var dir = Files.createTempDirectory("enum-generator-test");
 		try {
 			final var model = new JCodeModel();
-			new EnumGenerator(model, "io.jenetics.incubator.test.TicketType")
+			new EnumBuilder(model, "io.jenetics.incubator.test.TicketType")
 				.constant("vip-ticket");
 
 			final var writer = new JCMWriter(model);

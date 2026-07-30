@@ -48,7 +48,7 @@ public class TypesGenerator extends Generator {
 	}
 
 	private void schema(final StringSchema schema) {
-		EnumGenerator.of(model, schema)
+		EnumBuilder.of(model, schema)
 			.ifPresentOrElse(
 				g -> schema.getEnum().forEach(g::constant),
 				() -> TypedValueGenerator.of(model, schema)
