@@ -19,6 +19,13 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+/**
+ * This exception is thrown if an error occurs while building the OpenAPI classes.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
 public class GenerationException extends RuntimeException {
 
 	public GenerationException(Throwable cause) {
