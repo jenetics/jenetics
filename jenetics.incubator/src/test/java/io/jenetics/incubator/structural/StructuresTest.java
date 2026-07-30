@@ -6,7 +6,7 @@ public class StructuresTest {
 
 	@Test
 	public void components() {
-		Structures.components(Ticket.Builder.class)
+		Structures.components(Ticket.class)
 			.forEach(System.out::println);
 	}
 
