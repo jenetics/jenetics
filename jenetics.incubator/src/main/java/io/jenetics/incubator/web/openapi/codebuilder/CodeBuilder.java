@@ -36,7 +36,7 @@ import java.util.List;
  * @since 9.1
  * @version 9.1
  */
-public class TypesGenerator  {
+public class CodeBuilder {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
 		StructuralTypeBuilder::build,
@@ -47,7 +47,7 @@ public class TypesGenerator  {
 	private final OpenAPI api;
 	private final JCodeModel model;
 
-	TypesGenerator(final OpenAPI api, final JCodeModel model, String pkg) {
+	CodeBuilder(final OpenAPI api, final JCodeModel model, String pkg) {
 		this.api = requireNonNull(api);
 		this.model = requireNonNull(model);
 
@@ -68,7 +68,7 @@ public class TypesGenerator  {
 		final var api = read("/museum-api.yaml");
 		final var model = new JCodeModel();
 
-		new TypesGenerator(api, model, "com.museum.model")
+		new CodeBuilder(api, model, "com.museum.model")
 			.generate();
 
 		var writer = new JCMWriter(model);
@@ -76,7 +76,7 @@ public class TypesGenerator  {
 	}
 
 	static OpenAPI read(final String name) throws IOException {
-		final var input = TypesGenerator.class.getResourceAsStream(name);
+		final var input = CodeBuilder.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();
