@@ -36,7 +36,7 @@ import java.util.List;
  * @since 9.1
  * @version 9.1
  */
-public class CodeBuilder {
+public class ModelBuilder {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
 		StructuralTypeBuilder::build,
@@ -47,15 +47,15 @@ public class CodeBuilder {
 	private OpenAPI api;
 	private String package_;
 
-	public CodeBuilder() {
+	public ModelBuilder() {
 	}
 
-	public CodeBuilder api(OpenAPI api) {
+	public ModelBuilder api(OpenAPI api) {
 		this.api = requireNonNull(api);
 		return this;
 	}
 
-	public CodeBuilder package_(String name) {
+	public ModelBuilder package_(String name) {
 		this.package_ = requireNonNull(name);
 		return this;
 	}
@@ -76,7 +76,7 @@ public class CodeBuilder {
 		final var api = read("/museum-api.yaml");
 		final var model = new JCodeModel();
 
-		new CodeBuilder()
+		new ModelBuilder()
 			.api(api)
 			.package_("com.museum.model")
 			.build(model);
@@ -86,7 +86,7 @@ public class CodeBuilder {
 	}
 
 	static OpenAPI read(final String name) throws IOException {
-		final var input = CodeBuilder.class.getResourceAsStream(name);
+		final var input = ModelBuilder.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();
