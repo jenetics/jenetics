@@ -3,7 +3,9 @@ package io.jenetics.incubator.structural;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -20,18 +22,42 @@ public class StructureView {
 	}
 
 	public static <T> T of(Map<String, Object> store, Class<T> type) {
+		return of(store, type, new Class<?>[0]);
+	}
+
+	public static <T> T of(
+		Map<String, Object> store,
+		Class<T> type,
+		Class<?>... additionalTypes
+	) {
 		requireNonNull(store);
 		requireNonNull(type);
+		requireNonNull(additionalTypes);
 
-		final var structure = structureType(type);
+		final var types = types(type, additionalTypes);
+		final List<Class<?>> structures = types.stream()
+			.map(StructureView::structureType)
+			.collect(Collectors.toUnmodifiableList());
+		final var components = components(structures);
 
 		final var instance = Proxy.newProxyInstance(
 			type.getClassLoader(),
-			new Class<?>[]{ type },
-			new StructureComponentHandler(store, type, structure)
+			types.toArray(Class<?>[]::new),
+			new StructureComponentHandler(store, types, structures.getFirst(), components)
 		);
 
 		return type.cast(instance);
+	}
+
+	private static List<Class<?>> types(
+		final Class<?> type,
+		final Class<?>[] additionalTypes
+	) {
+		return Stream.concat(
+				Stream.of(type),
+				Arrays.stream(additionalTypes).map(Objects::requireNonNull)
+			)
+			.toList();
 	}
 
 	private static Class<?> structureType(final Class<?> type) {
@@ -46,17 +72,41 @@ public class StructureView {
 			.orElseThrow();
 	}
 
+	private static Map<String, Class<?>> components(final List<Class<?>> structures) {
+		final var components = new LinkedHashMap<String, Class<?>>();
+
+		for (var structure : structures) {
+			for (var component : Structures.components(structure)) {
+				final var existing = components.putIfAbsent(
+					component.getName(),
+					component.getReturnType()
+				);
+
+				if (existing != null && !existing.equals(component.getReturnType())) {
+					throw new IllegalArgumentException(
+						"Conflicting component type for '%s'."
+							.formatted(component.getName())
+					);
+				}
+			}
+		}
+
+		return components;
+	}
+
 	private record StructureComponentHandler(
 		Map<String, Object> store,
-		Class<?> type,
-		Class<?> structure
+		List<Class<?>> types,
+		Class<?> primaryStructure,
+		Map<String, Class<?>> components
 	)
 		implements InvocationHandler
 	{
 		private StructureComponentHandler {
 			requireNonNull(store);
-			requireNonNull(type);
-			requireNonNull(structure);
+			requireNonNull(types);
+			requireNonNull(primaryStructure);
+			requireNonNull(components);
 		}
 
 		@Override
@@ -149,11 +199,7 @@ public class StructureView {
 		}
 
 		private Class<?> componentType(final Method method) {
-			return Structures.components(structure).stream()
-				.filter(component -> component.getName().equals(method.getName()))
-				.map(Method::getReturnType)
-				.findFirst()
-				.orElseThrow();
+			return components.get(method.getName());
 		}
 
 		private static Class<?> builderType(final Class<?> type) {
@@ -168,21 +214,22 @@ public class StructureView {
 			return obj instanceof Proxy proxy &&
 				getInvocationHandler(proxy) instanceof StructureComponentHandler(
 					var s,
-					var t,
-					var ignored
+					var ts,
+					var ignored,
+					var ignoredComponents
 				) &&
-				type.equals(t) &&
+				types.equals(ts) &&
 				store.equals(s);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(type, store);
+			return Objects.hash(types, store);
 		}
 
 		@Override
 		public String toString() {
-			return format(structure, store);
+			return format(primaryStructure, store);
 		}
 	}
 

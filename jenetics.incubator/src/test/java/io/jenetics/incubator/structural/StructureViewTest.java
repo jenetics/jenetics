@@ -96,6 +96,51 @@ public class StructureViewTest {
 	}
 
 	@Test
+	public void proxyImplementsAdditionalStructuralTypes() {
+		final var store = ticketStore();
+		store.put("confirmationCode", "ABC-123");
+
+		final var ticket = StructureView.of(
+			store,
+			Ticket.class,
+			Confirmation.class
+		);
+
+		assertThat(ticket).isInstanceOf(Confirmation.class);
+		assertThat(((Confirmation)ticket).confirmationCode()).isEqualTo("ABC-123");
+		assertThat(ticket.ticketId()).isEqualTo("_ticket_id_");
+	}
+
+	@Test
+	public void proxyImplementsAdditionalStructuralBuilders() {
+		final var store = new LinkedHashMap<String, Object>();
+		final var builder = StructureView.of(
+			store,
+			Ticket.Builder.class,
+			Confirmation.Builder.class
+		);
+
+		assertThat(((Confirmation.Builder)builder).confirmationCode("ABC-123"))
+			.isSameAs(builder);
+		assertThat(builder.ticketId("_ticket_id_")).isSameAs(builder);
+
+		assertThat(store).containsExactly(
+			Map.entry("confirmationCode", "ABC-123"),
+			Map.entry("ticketId", "_ticket_id_")
+		);
+		assertThat(((Confirmation)builder).confirmationCode()).isEqualTo("ABC-123");
+		assertThat(builder.ticketId()).isEqualTo("_ticket_id_");
+	}
+
+	@Test
+	public void additionalTypesMustBeStructuralTypesOrBuilders() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+			.isThrownBy(() ->
+				StructureView.of(Map.of(), Ticket.class, NotAStructure.class)
+			);
+	}
+
+	@Test
 	public void nullStoreIsRejected() {
 		assertThatExceptionOfType(NullPointerException.class)
 			.isThrownBy(() -> StructureView.of(null, Ticket.class));
@@ -123,6 +168,17 @@ public class StructureViewTest {
 		ticket.put("event", event);
 
 		return ticket;
+	}
+
+	private interface Confirmation {
+		String confirmationCode();
+
+		interface Builder extends Confirmation {
+			Builder confirmationCode(String value);
+		}
+	}
+
+	private static final class NotAStructure {
 	}
 
 }
