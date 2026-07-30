@@ -45,9 +45,30 @@ public final class EnumGenerator extends Generator {
 		final var method = clazz.method(JMod.PUBLIC, String.class, VALUE_NAME);
 		method.body()._return(field);
 
+		// Override 'toString' method.
 		final var toString = clazz.method(JMod.PUBLIC, String.class, "toString");
 		toString.annotate(Override.class);
 		toString.body()._return(field);
+
+		// Implement 'parse' method.
+		final var optional = model.ref(Optional.class);
+		final var parse = clazz.method(
+			JMod.PUBLIC | JMod.STATIC,
+			optional.narrow(clazz),
+			"parse"
+		);
+		final var parseValue = parse.param(String.class, VALUE_NAME);
+		final var constants = parse.body()
+			.forEach(clazz, "constant", JExpr.invoke("values"));
+		final var constant = constants.var();
+		constants.body()
+			._if(
+				constant.invoke(VALUE_NAME).invoke("equals").arg(parseValue)
+					.cor(constant.invoke("name").invoke("equals").arg(parseValue))
+			)
+			._then()
+			._return(optional.staticInvoke("of").arg(constant));
+		parse.body()._return(optional.staticInvoke("empty"));
 	}
 
 	/**
