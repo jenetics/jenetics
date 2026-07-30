@@ -41,7 +41,7 @@ public final class CodeModels {
 		try {
 			return model._class(name, EClassType.INTERFACE);
 		} catch (JCodeModelException e) {
-			throw new GenerationException(e);
+			throw new CodeBuilderException(e);
 		}
 	}
 
@@ -50,7 +50,7 @@ public final class CodeModels {
 		try {
 			return model._class(name, EClassType.CLASS);
 		} catch (JCodeModelException e) {
-			throw new GenerationException(e);
+			throw new CodeBuilderException(e);
 		}
 	}
 
@@ -59,7 +59,7 @@ public final class CodeModels {
 		try {
 			return model._class(name, EClassType.ENUM);
 		} catch (JCodeModelException e) {
-			throw new GenerationException(e);
+			throw new CodeBuilderException(e);
 		}
 	}
 
@@ -68,7 +68,7 @@ public final class CodeModels {
 		try {
 			return model._class(name, EClassType.RECORD);
 		} catch (JCodeModelException e) {
-			throw new GenerationException(e);
+			throw new CodeBuilderException(e);
 		}
 	}
 }

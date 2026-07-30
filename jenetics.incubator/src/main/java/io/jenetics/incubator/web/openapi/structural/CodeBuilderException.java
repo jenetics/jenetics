@@ -26,17 +26,17 @@ package io.jenetics.incubator.web.openapi.structural;
  * @since 9.1
  * @version 9.1
  */
-public class GenerationException extends RuntimeException {
+public class CodeBuilderException extends RuntimeException {
 
-	public GenerationException(Throwable cause) {
+	public CodeBuilderException(Throwable cause) {
 		super(cause);
 	}
 
-	public GenerationException(String message, Throwable cause) {
+	public CodeBuilderException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public GenerationException(String message) {
+	public CodeBuilderException(String message) {
 		super(message);
 	}
 }
