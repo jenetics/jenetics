@@ -149,8 +149,11 @@ public final class EnumBuilder {
 		final var constant = constants.var();
 		constants.body()
 			._if(
-				constant.invoke(VALUE_NAME).invoke("equals").arg(parseValue)
-					.cor(constant.invoke("name").invoke("equals").arg(parseValue))
+				constant.invoke(VALUE_NAME)
+					.invoke("equals").arg(parseValue)
+					.cor(constant
+						.invoke("name")
+						.invoke("equals").arg(parseValue))
 			)
 			._then()
 			._return(optional.staticInvoke("of").arg(constant));

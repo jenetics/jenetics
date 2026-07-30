@@ -30,9 +30,11 @@ import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
@@ -121,15 +123,16 @@ public final class TypedValueBuilder {
 		final var type = switch (schema) {
 			case NumberSchema ns -> Schemas.typeNameOf(ns);
 			case DateSchema _ -> LocalDate.class.getName();
+			case UUIDSchema _ -> UUID.class.getName();
 			case StringSchema ss when !isEnum(ss) -> String.class.getName();
 			default -> null;
 		};
 
 		if (type != null) {
-			final var builder = new TypedValueBuilder();
-			builder.name(schema.getName());
-			builder.type(type);
-			builder.build(model);
+			new TypedValueBuilder()
+				.name(schema.getName())
+				.type(type)
+				.build(model);
 
 			return true;
 		} else {

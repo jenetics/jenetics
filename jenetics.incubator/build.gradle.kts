@@ -151,3 +151,12 @@ tasks.javadoc {
 		"${project.rootDir}/buildSrc/resources/javadoc/jenetics.prog"
 	)
 }
+
+sourceSets {
+	main {
+		java {
+			srcDir("${buildDir}/generated/sources/openapi")
+		}
+	}
+}
+

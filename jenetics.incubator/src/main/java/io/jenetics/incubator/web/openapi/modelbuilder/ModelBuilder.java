@@ -29,6 +29,7 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -80,7 +81,7 @@ public class ModelBuilder {
 	/**
 	 * Builds the model classes class and adds it to the {@code model}.
 	 *
-	 * @param model the model the model classes is build and added to
+	 * @param model the model classes is build and added to
 	 */
 	public void build(final JCodeModel model) {
 		api.getComponents().getSchemas()
@@ -104,7 +105,8 @@ public class ModelBuilder {
 			.build(model);
 
 		var writer = new JCMWriter(model);
-		writer.build(new OutputStreamCodeWriter(System.out, Charset.defaultCharset()));
+		writer.setCharset(Charset.defaultCharset());
+		writer.build(Path.of("./jenetics.incubator/build/generated/sources/openapi/").toFile());
 	}
 
 	static OpenAPI read(final String name) throws IOException {

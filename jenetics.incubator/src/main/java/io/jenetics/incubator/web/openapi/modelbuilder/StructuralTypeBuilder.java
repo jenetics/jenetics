@@ -107,7 +107,7 @@ public final class StructuralTypeBuilder {
 	public void build(final JCodeModel model) {
 		final var clazz = interface_(model, name);
 		components.forEach(c ->
-			clazz.method(JMod.PUBLIC, model.parseType(c.type()), c.name())
+			clazz.method(JMod.NONE, model.parseType(c.type()), c.name())
 		);
 	}
 
