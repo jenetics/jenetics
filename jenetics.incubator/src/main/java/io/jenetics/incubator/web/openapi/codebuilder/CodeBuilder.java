@@ -44,19 +44,27 @@ public class CodeBuilder {
 		TypedValueBuilder::build
 	);
 
-	private final OpenAPI api;
-	private final JCodeModel model;
+	private OpenAPI api;
+	private String package_;
 
-	CodeBuilder(final OpenAPI api, final JCodeModel model, String pkg) {
-		this.api = requireNonNull(api);
-		this.model = requireNonNull(model);
-
-		api.getComponents().getSchemas().forEach((name, schema) ->
-			schema.setName("%s.%s".formatted(pkg, name))
-		);
+	public CodeBuilder() {
 	}
 
-	void generate() {
+	public CodeBuilder api(OpenAPI api) {
+		this.api = requireNonNull(api);
+		return this;
+	}
+
+	public CodeBuilder package_(String name) {
+		this.package_ = requireNonNull(name);
+		return this;
+	}
+
+	void build(final JCodeModel model) {
+		api.getComponents().getSchemas()
+			.forEach((name, schema) -> schema
+				.setName("%s.%s".formatted(package_, name)));
+
 		api.getComponents().getSchemas()
 			.forEach((_, schema) -> BUILDERS
 				.forEach(b -> b.build(schema, model)));
@@ -68,8 +76,10 @@ public class CodeBuilder {
 		final var api = read("/museum-api.yaml");
 		final var model = new JCodeModel();
 
-		new CodeBuilder(api, model, "com.museum.model")
-			.generate();
+		new CodeBuilder()
+			.api(api)
+			.package_("com.museum.model")
+			.build(model);
 
 		var writer = new JCMWriter(model);
 		writer.build(new OutputStreamCodeWriter(System.out, Charset.defaultCharset()));
