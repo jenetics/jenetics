@@ -19,17 +19,6 @@
  */
 package io.jenetics.incubator.csv;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.ext.util.CsvSupport;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

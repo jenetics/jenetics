@@ -19,6 +19,9 @@
  */
 package io.jenetics.incubator.structural;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -28,9 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Function.identity;
 
 /**
  * Helper methods for checking and working with <em>structural</em> interfaces.

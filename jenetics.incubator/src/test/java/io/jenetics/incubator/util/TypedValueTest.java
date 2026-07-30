@@ -21,7 +21,6 @@ package io.jenetics.incubator.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static io.jenetics.incubator.util.TypedValue.box;
 import static io.jenetics.incubator.util.TypedValue.flatMap;

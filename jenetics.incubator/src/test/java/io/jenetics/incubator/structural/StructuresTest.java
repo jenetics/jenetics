@@ -1,12 +1,12 @@
 package io.jenetics.incubator.structural;
 
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDate;
 import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import org.testng.annotations.Test;
 
 public class StructuresTest {
 

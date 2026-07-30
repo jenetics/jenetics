@@ -19,6 +19,11 @@
  */
 package io.jenetics.incubator.structural;
 
+import static java.lang.reflect.Proxy.getInvocationHandler;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
+import static io.jenetics.incubator.structural.Structures.isStructure;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -30,11 +35,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static io.jenetics.incubator.structural.Structures.isStructure;
-import static java.lang.reflect.Proxy.getInvocationHandler;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 
 public class StructureView {
 	private StructureView() {
