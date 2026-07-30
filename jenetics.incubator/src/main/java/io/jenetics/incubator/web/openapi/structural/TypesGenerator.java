@@ -19,25 +19,30 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
+
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
-import io.jenetics.incubator.web.openapi.Generator;
-import io.jenetics.incubator.web.openapi.Main;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.incubator.web.openapi.Generator;
+import io.jenetics.incubator.web.openapi.Main;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
 public class TypesGenerator extends Generator {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
+		StructuralTypeBuilder::build,
 		EnumBuilder::build
 	);
 
@@ -53,36 +58,10 @@ public class TypesGenerator extends Generator {
 	}
 
 	void generate() {
-		api.getComponents().getSchemas().forEach((_, schema) -> {
-			switch (schema) {
-				case ObjectSchema os -> schema(os);
-				//case StringSchema ss -> schema(ss);
-				case Schema<?> s -> BUILDERS.forEach(b -> b.build(s, model));
-			}
-		});
+		api.getComponents().getSchemas()
+			.forEach((_, schema) -> BUILDERS
+				.forEach(b -> b.build(schema, model)));
 	}
-
-	private void schema(final ObjectSchema schema) {
-		final var generator = new StructuralTypeBuilder(
-			model,
-			interface_(schema.getName())
-		);
-
-		schema.getProperties().forEach(generator::component);
-	}
-
-//	private void schema(final StringSchema schema) {
-//		EnumBuilder.of(model, schema)
-//			.ifPresentOrElse(
-//				g -> schema.getEnum().forEach(g::constant),
-//				() -> TypedValueGenerator.of(model, schema)
-//			);
-//	}
-
-	private void schema(final Schema<?> schema) {
-		TypedValueGenerator.of(model, schema);
-	}
-
 
 	// /////////////////////////////////////////////////////////////////////////
 

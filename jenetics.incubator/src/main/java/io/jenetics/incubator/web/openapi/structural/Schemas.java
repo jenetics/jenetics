@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
+
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
@@ -37,7 +39,16 @@ public final class Schemas {
 	private Schemas() {
 	}
 
+	/**
+	 * Return the type name of the given {@code schema}. The type name is used
+	 * as component type in structural interfaces.
+	 *
+	 * @param schema the schema
+	 * @return the type name of the given {@code schema}
+	 */
 	public static String typeNameOf(Schema<?> schema) {
+		requireNonNull(schema);
+
 		return switch (schema) {
 			case NumberSchema _ -> "java.lang.Double";
 			case BooleanSchema _ -> "java.lang.Boolean";
