@@ -41,7 +41,6 @@ import java.util.Optional;
  *     GENERAL("general");
  *
  *     private final String value;
- *
  *     TicketType(String value) {
  *         this.value = value;
  *     }
@@ -49,19 +48,17 @@ import java.util.Optional;
  *     public String value() {
  *         return value;
  *     }
- *
  *     @Override
  *     public String toString() {
  *         return value;
  *     }
- *
  *     public static Optional<TicketType> of(String value) {
- *         for (TicketType constant:values()) {
+ *         for (TicketType constant : values()) {
  *             if (constant.value().equals(value) ||
  *                 constant.name().equals(value))
- * 			 {
+ *             {
  *                 return Optional.of(constant);
- *            }
+ *             }
  *         }
  *         return Optional.empty();
  *     }
