@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi;
+package io.jenetics.incubator.web.openapi.structural;
 
 public class GenerationException extends RuntimeException {
 

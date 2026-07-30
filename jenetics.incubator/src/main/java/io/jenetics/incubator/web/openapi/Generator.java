@@ -26,6 +26,8 @@ import com.helger.jcodemodel.exceptions.JCodeModelException;
 
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.incubator.web.openapi.structural.GenerationException;
+
 public abstract class Generator {
 
 	protected final JCodeModel model;

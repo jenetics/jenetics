@@ -24,8 +24,6 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
 
-import io.jenetics.incubator.web.openapi.GenerationException;
-
 /**
  * Some static helper methods for using the {@link JCodeModel} class.
  *
