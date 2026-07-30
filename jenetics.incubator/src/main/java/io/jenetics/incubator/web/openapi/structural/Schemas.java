@@ -28,6 +28,8 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
+import java.math.BigDecimal;
+
 /**
  * Some helper methods for handling schemas.
  *
@@ -70,6 +72,24 @@ public final class Schemas {
 					yield "java.lang.Object";
 				}
 			}
+		};
+	}
+
+	/**
+	 * Return the numeric Java type name of the given number schema.
+	 *
+	 * @param schema the number schema
+	 * @return the numeric Java type
+	 */
+	public static String javaTypeNameOf(NumberSchema schema) {
+		requireNonNull(schema);
+
+		return switch (schema.getFormat()) {
+			case "float" -> "float";
+			case "double" -> "double";
+			case "int32" -> "int";
+			case "int64" -> "long";
+			default -> BigDecimal.class.getName();
 		};
 	}
 

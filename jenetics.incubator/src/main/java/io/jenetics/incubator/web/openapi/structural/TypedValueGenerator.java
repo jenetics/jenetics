@@ -19,10 +19,10 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.structural.CodeModels.record_;
 
 import com.helger.jcodemodel.JCodeModel;
-import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.DateSchema;
@@ -30,27 +30,64 @@ import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 
+/**
+ * Builds <em>typed value</em> classes, which is essentially a record with wraps
+ * a <em>value</em> type, like a numeric value or a string. The name of the
+ * record adds semantic to the value.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
 public final class TypedValueGenerator {
 
-	private final JDefinedClass clazz;
+	private String name;
+	private String type;
 
-	public TypedValueGenerator(
-		final JCodeModel model,
-		final String name,
-		final String type
-	) {
-		this.clazz = record_(name);
+	/**
+	 * Create a new typed value builder.
+	 */
+	public TypedValueGenerator() {
+	}
+
+	/**
+	 * Set the (full qualified) wrapper class name.
+	 *
+	 * @param name the wrapper class name
+	 * @return {@code this} builder
+	 */
+	public TypedValueGenerator name(final String name) {
+		this.name = requireNonNull(name);
+		return this;
+	}
+
+	/**
+	 * The wrapped type.
+	 *
+	 * @param type the wrapped type
+	 * @return {@code this} builder
+	 */
+	public TypedValueGenerator type(final String type) {
+		this.type = requireNonNull(type);
+		return this;
+	}
+
+	/**
+	 * Builds wrapper class and adds it to the {@code model}.
+	 *
+	 * @param model the model the enum class is build and added to
+	 */
+	public void build(final JCodeModel model) {
+		final var clazz = record_(model, name);
 
 		final var valueType = model.parseType(type);
-		this.clazz.recordComponent(valueType, "value");
+		clazz.recordComponent(valueType, "value");
 
 		if (valueType.isReference()) {
-			this.clazz.compactConstructor(JMod.PUBLIC).body().add(
+			clazz.compactConstructor(JMod.PUBLIC).body().add(
 				model.ref(Objects.class)
 					.staticInvoke("requireNonNull")
 					.arg(JExpr.ref("value"))
@@ -58,38 +95,38 @@ public final class TypedValueGenerator {
 		}
 	}
 
-	public static Optional<TypedValueGenerator>
-	of(final JCodeModel model, final Schema<?> schema) {
-		return switch (schema) {
-			case NumberSchema ns -> Optional.of(
-				new TypedValueGenerator(
-					model,
-					schema.getName(),
-					switch (ns.getFormat()) {
-						case "float" -> "float";
-						case "double" -> "double";
-						case "int32" -> "int";
-						case "int64" -> "long";
-						default -> BigDecimal.class.getName();
-					}
-				)
-			);
-			case StringSchema _ -> Optional.of(
-				new TypedValueGenerator(
-					model,
-					schema.getName(),
-					String.class.getName()
-				)
-			);
-			case DateSchema _ -> Optional.of(
-				new TypedValueGenerator(
-					model,
-					schema.getName(),
-					LocalDate.class.getName()
-				)
-			);
-			default -> Optional.empty();
+	/**
+	 * Builds the class from the {@code schema} and adds it to the {@code model}.
+	 *
+	 * @see SchemaTypeBuilder
+	 *
+	 * @param schema the schema spec which defines the class
+	 * @param model the model where the class is added to
+	 * @return {@code true} if the builder has generated a class from the schema,
+	 *         {@code false} if the {@code schema} doesn't specify the Java type,
+	 *         the builder is able to build.
+	 */
+	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
+
+		final var type = switch (schema) {
+			case NumberSchema ns -> Schemas.javaTypeNameOf(ns);
+			case DateSchema _ -> LocalDate.class.getName();
+			case StringSchema _ -> String.class.getName();
+			default -> null;
 		};
+
+		if (type != null) {
+			final var builder = new TypedValueGenerator();
+			builder.name(schema.getName());
+			builder.type(type);
+			builder.build(model);
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

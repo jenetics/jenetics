@@ -19,28 +19,27 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
-import org.testng.annotations.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.testng.annotations.Test;
 
 public class TypedValueGeneratorTest {
 
 	@Test
 	public void typedValueHasValueComponent() throws IOException {
 		final var model = new JCodeModel();
-
-		new TypedValueGenerator(
-			model,
-			"io.jenetics.incubator.test.Price",
-			"java.math.BigDecimal"
-		);
+		new TypedValueGenerator()
+			.name("io.jenetics.incubator.test.Price")
+			.type("java.math.BigDecimal")
+			.build(model);
 
 		assertThat(source(model))
 			.contains("import java.math.BigDecimal;")
@@ -51,12 +50,10 @@ public class TypedValueGeneratorTest {
 	@Test
 	public void primitiveTypedValueHasNoNullCheck() throws IOException {
 		final var model = new JCodeModel();
-
-		new TypedValueGenerator(
-			model,
-			"io.jenetics.incubator.test.Count",
-			"int"
-		);
+		new TypedValueGenerator()
+			.name("io.jenetics.incubator.test.Count")
+			.type("int")
+			.build(model);
 
 		assertThat(source(model))
 			.contains("record Count(int value)")

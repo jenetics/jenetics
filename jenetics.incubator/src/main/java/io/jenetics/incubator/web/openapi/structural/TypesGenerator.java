@@ -40,7 +40,8 @@ public class TypesGenerator  {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
 		StructuralTypeBuilder::build,
-		EnumBuilder::build
+		EnumBuilder::build,
+		TypedValueGenerator::build
 	);
 
 	private final OpenAPI api;
