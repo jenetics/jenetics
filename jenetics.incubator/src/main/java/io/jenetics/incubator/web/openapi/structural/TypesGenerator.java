@@ -31,15 +31,12 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import io.jenetics.incubator.web.openapi.Generator;
-import io.jenetics.incubator.web.openapi.Main;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
  * @version 9.1
  */
-public class TypesGenerator extends Generator {
+public class TypesGenerator  {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
 		StructuralTypeBuilder::build,
@@ -47,10 +44,11 @@ public class TypesGenerator extends Generator {
 	);
 
 	private final OpenAPI api;
+	private final JCodeModel model;
 
 	TypesGenerator(final OpenAPI api, final JCodeModel model, String pkg) {
-		super(model);
 		this.api = requireNonNull(api);
+		this.model = requireNonNull(model);
 
 		api.getComponents().getSchemas().forEach((name, schema) ->
 			schema.setName("%s.%s".formatted(pkg, name))
@@ -77,7 +75,7 @@ public class TypesGenerator extends Generator {
 	}
 
 	static OpenAPI read(final String name) throws IOException {
-		final var input = Main.class.getResourceAsStream(name);
+		final var input = TypesGenerator.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();

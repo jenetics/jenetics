@@ -19,11 +19,12 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static io.jenetics.incubator.web.openapi.structural.CodeModels.record_;
+
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
-import io.jenetics.incubator.web.openapi.Generator;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -34,7 +35,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class TypedValueGenerator extends Generator {
+public final class TypedValueGenerator {
 
 	private final JDefinedClass clazz;
 
@@ -43,7 +44,6 @@ public final class TypedValueGenerator extends Generator {
 		final String name,
 		final String type
 	) {
-		super(model);
 		this.clazz = record_(name);
 
 		final var valueType = model.parseType(type);
