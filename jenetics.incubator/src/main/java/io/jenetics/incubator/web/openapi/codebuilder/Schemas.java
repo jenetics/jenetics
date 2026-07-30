@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.structural;
+package io.jenetics.incubator.web.openapi.codebuilder;
 
 import static java.util.Objects.requireNonNull;
 

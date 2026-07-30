@@ -17,33 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.structural;
+package io.jenetics.incubator.web.openapi.codebuilder;
 
-import static java.util.Objects.requireNonNull;
-
-import com.helger.jcodemodel.AbstractJType;
-import com.helger.jcodemodel.JDefinedClass;
-import com.helger.jcodemodel.JMod;
+import com.helger.jcodemodel.JCodeModel;
+import io.swagger.v3.oas.models.media.Schema;
 
 /**
+ * Building a type (class) from a given schema.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
  * @version 9.1
  */
-final class ComponentGenerator {
-	private final String name;
-	private final AbstractJType type;
+@FunctionalInterface
+public interface SchemaTypeBuilder {
 
-	ComponentGenerator(
-		final String name,
-		final AbstractJType type
-	) {
-		this.name = requireNonNull(name);
-		this.type = requireNonNull(type);
-	}
-
-	void generate(final JDefinedClass clazz) {
-		clazz.method(JMod.PUBLIC, type, name);
-	}
+	/**
+	 * Builds the class from the {@code schema} and adds it to the {@code model}.
+	 *
+	 * @param schema the schema spec which defines the class
+	 * @param model the model where the class is added to
+	 * @return {@code true} if the builder has generated a class from the schema,
+	 *         {@code false} if the {@code schema} doesn't specify the Java type,
+	 *         the builder is able to build.
+	 */
+	boolean build(final Schema<?> schema, final JCodeModel model);
 
 }

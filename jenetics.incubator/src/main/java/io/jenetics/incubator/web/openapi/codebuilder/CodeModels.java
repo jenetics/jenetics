@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.structural;
+package io.jenetics.incubator.web.openapi.codebuilder;
 
 import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;

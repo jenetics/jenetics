@@ -17,90 +17,82 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.structural;
+package io.jenetics.incubator.web.openapi.codebuilder;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.structural.CodeModels.interface_;
-import static io.jenetics.incubator.web.openapi.structural.Schemas.typeNameOf;
+import static io.jenetics.incubator.web.openapi.codebuilder.CodeModels.record_;
 
 import com.helger.jcodemodel.JCodeModel;
+import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
-import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.DateSchema;
+import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
- * Builds a structural interface from a {@link ObjectSchema}.
+ * Builds <em>typed value</em> classes, which is essentially a record with wraps
+ * a <em>value</em> type, like a numeric value or a string. The name of the
+ * record adds semantic to the value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
  * @version 9.1
  */
-public final class StructuralTypeBuilder {
-
-	private record Component(String name, String type) {
-		Component {
-			requireNonNull(name);
-			requireNonNull(type);
-		}
-	}
+public final class TypedValueBuilder {
 
 	private String name;
-	private final List<Component> components = new ArrayList<>();
+	private String type;
 
 	/**
-	 * Create a new structural interface builder.
+	 * Create a new typed value builder.
 	 */
-	public StructuralTypeBuilder() {
+	public TypedValueBuilder() {
 	}
 
 	/**
-	 * Set the (full qualified) structural interface name.
+	 * Set the (full qualified) wrapper class name.
 	 *
-	 * @param name the structural interface name
+	 * @param name the wrapper class name
 	 * @return {@code this} builder
 	 */
-	public StructuralTypeBuilder name(final String name) {
+	public TypedValueBuilder name(final String name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
 
 	/**
-	 * Adds a component to the structural interface.
+	 * The wrapped type.
 	 *
-	 * @param name the component name
-	 * @param type the component type
+	 * @param type the wrapped type
 	 * @return {@code this} builder
 	 */
-	StructuralTypeBuilder component(final String name, final String type) {
-		components.add(new Component(name, type));
+	public TypedValueBuilder type(final String type) {
+		this.type = requireNonNull(type);
 		return this;
 	}
 
 	/**
-	 * Adds a component to the structural interface.
+	 * Builds wrapper class and adds it to the {@code model}.
 	 *
-	 * @param name the component name
-	 * @param schema the component schema
-	 * @return {@code this} builder
-	 */
-	StructuralTypeBuilder component(String name, Schema<?> schema) {
-		component(name, typeNameOf(schema));
-		return this;
-	}
-
-	/**
-	 * Builds a structural interface and adds it to the {@code model}.
-	 *
-	 * @param model the model the structural interface is build and added to
+	 * @param model the model the enum class is build and added to
 	 */
 	public void build(final JCodeModel model) {
-		final var clazz = interface_(model, name);
-		components.forEach(c ->
-			clazz.method(JMod.PUBLIC, model.parseType(c.type()), c.name())
-		);
+		final var clazz = record_(model, name);
+
+		final var valueType = model.parseType(type);
+		clazz.recordComponent(valueType, "value");
+
+		if (valueType.isReference()) {
+			clazz.compactConstructor(JMod.PUBLIC).body().add(
+				model.ref(Objects.class)
+					.staticInvoke("requireNonNull")
+					.arg(JExpr.ref("value"))
+			);
+		}
 	}
 
 	/**
@@ -118,17 +110,23 @@ public final class StructuralTypeBuilder {
 		requireNonNull(schema);
 		requireNonNull(model);
 
-		if (schema instanceof ObjectSchema os) {
-			final var builder = new StructuralTypeBuilder();
+		final var type = switch (schema) {
+			case NumberSchema ns -> Schemas.typeNameOf(ns);
+			case DateSchema _ -> LocalDate.class.getName();
+			case StringSchema _ -> String.class.getName();
+			default -> null;
+		};
+
+		if (type != null) {
+			final var builder = new TypedValueBuilder();
 			builder.name(schema.getName());
-			os.getProperties().forEach(builder::component);
+			builder.type(type);
 			builder.build(model);
 
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 }

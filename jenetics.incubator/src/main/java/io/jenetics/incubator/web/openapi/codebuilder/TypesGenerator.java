@@ -17,7 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi;
+package io.jenetics.incubator.web.openapi.codebuilder;
+
+import static java.util.Objects.requireNonNull;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
@@ -27,14 +29,46 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
-public class Main {
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
+public class TypesGenerator  {
+
+	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
+		StructuralTypeBuilder::build,
+		EnumBuilder::build,
+		TypedValueBuilder::build
+	);
+
+	private final OpenAPI api;
+	private final JCodeModel model;
+
+	TypesGenerator(final OpenAPI api, final JCodeModel model, String pkg) {
+		this.api = requireNonNull(api);
+		this.model = requireNonNull(model);
+
+		api.getComponents().getSchemas().forEach((name, schema) ->
+			schema.setName("%s.%s".formatted(pkg, name))
+		);
+	}
+
+	void generate() {
+		api.getComponents().getSchemas()
+			.forEach((_, schema) -> BUILDERS
+				.forEach(b -> b.build(schema, model)));
+	}
+
+	// /////////////////////////////////////////////////////////////////////////
 
 	static void main() throws IOException {
 		final var api = read("/museum-api.yaml");
 		final var model = new JCodeModel();
 
-		new ModelGenerator(api, model, "com.museum.model")
+		new TypesGenerator(api, model, "com.museum.model")
 			.generate();
 
 		var writer = new JCMWriter(model);
@@ -42,7 +76,7 @@ public class Main {
 	}
 
 	static OpenAPI read(final String name) throws IOException {
-		final var input = Main.class.getResourceAsStream(name);
+		final var input = TypesGenerator.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();
