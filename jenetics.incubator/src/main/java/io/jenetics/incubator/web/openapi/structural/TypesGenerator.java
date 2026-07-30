@@ -1,3 +1,22 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.incubator.web.openapi.structural;
 
 import com.helger.jcodemodel.JCodeModel;
@@ -13,10 +32,16 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
 public class TypesGenerator extends Generator {
+
+	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
+		EnumBuilder::build
+	);
+
 	private final OpenAPI api;
 
 	TypesGenerator(final OpenAPI api, final JCodeModel model, String pkg) {
@@ -32,8 +57,8 @@ public class TypesGenerator extends Generator {
 		api.getComponents().getSchemas().forEach((_, schema) -> {
 			switch (schema) {
 				case ObjectSchema os -> schema(os);
-				case StringSchema ss -> schema(ss);
-				case Schema<?> _ -> schema(schema);
+				//case StringSchema ss -> schema(ss);
+				case Schema<?> s -> BUILDERS.forEach(b -> b.build(s, model));
 			}
 		});
 	}
@@ -47,13 +72,13 @@ public class TypesGenerator extends Generator {
 		schema.getProperties().forEach(generator::component);
 	}
 
-	private void schema(final StringSchema schema) {
-		EnumBuilder.of(model, schema)
-			.ifPresentOrElse(
-				g -> schema.getEnum().forEach(g::constant),
-				() -> TypedValueGenerator.of(model, schema)
-			);
-	}
+//	private void schema(final StringSchema schema) {
+//		EnumBuilder.of(model, schema)
+//			.ifPresentOrElse(
+//				g -> schema.getEnum().forEach(g::constant),
+//				() -> TypedValueGenerator.of(model, schema)
+//			);
+//	}
 
 	private void schema(final Schema<?> schema) {
 		TypedValueGenerator.of(model, schema);

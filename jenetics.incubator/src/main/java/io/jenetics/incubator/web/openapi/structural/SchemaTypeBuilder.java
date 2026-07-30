@@ -17,8 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi;
+package io.jenetics.incubator.web.openapi.structural;
 
-public interface Property<T> {
-	T get();
+import com.helger.jcodemodel.JCodeModel;
+import io.swagger.v3.oas.models.media.Schema;
+
+/**
+ * Building a type (class) from a given schema.
+ */
+@FunctionalInterface
+public interface SchemaTypeBuilder {
+
+	/**
+	 * Builds the class from the {@code schema} and adds it to the {@code model}.
+	 *
+	 * @param schema the schema spec which defines the class
+	 * @param model the model where the class is added to
+	 * @return {@code true} if the builder has generated a class from the schema,
+	 *         {@code false} if the {@code schema} doesn't specify the Java type,
+	 *         the builder is able to build.
+	 */
+	boolean build(final Schema<?> schema, final JCodeModel model);
+
 }

@@ -1,3 +1,22 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.incubator.web.openapi.structural;
 
 import static java.util.Objects.requireNonNull;
@@ -7,6 +26,7 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +76,11 @@ public final class EnumBuilder {
 		return this;
 	}
 
+	/**
+	 * Builds the enum class and adds it to the {@code model}.
+	 *
+	 * @param model the model the enum class is build and added to
+	 */
 	public void build(final JCodeModel model) {
 		final var clazz = enum_(model, name);
 
@@ -125,20 +150,21 @@ public final class EnumBuilder {
 		return name.isEmpty() ? "VALUE" : name.toString();
 	}
 
-	public static Optional<EnumBuilder>
-	of(final JCodeModel model, final Schema<?> schema) {
-		return Optional.empty();
-
-		/*
-		if (schema instanceof StringSchema &&
+	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+		if (schema instanceof StringSchema ss &&
 			schema.getEnum() != null &&
 			!schema.getEnum().isEmpty())
 		{
-			return Optional.of(new EnumGenerator(model, schema.getName()));
+			final var builder = new EnumBuilder();
+			builder.name(schema.getName());
+			ss.getEnum().forEach(builder::constant);
+			builder.build(model);
+
+			return true;
 		} else {
-			return Optional.empty();
+			return false;
 		}
-		 */
+
 	}
 
 }
