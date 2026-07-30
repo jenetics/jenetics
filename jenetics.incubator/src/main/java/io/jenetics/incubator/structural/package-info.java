@@ -37,5 +37,34 @@
  *     String ticketType
  * ) implements Ticket {}
  * }
+ *
+ * <h2>"Structural" type builder</h2>
+ * Structural types defines only accessors to their components. Changing the
+ * component values is done via a builder interface and the corresponding
+ * builder methods. Builder methods have the following properties:
+ * <ol>
+ *     <li>The builder method has the same name as the corresponding component.</li>
+ *     <li>The builder method takes only one argument with the component type.</li>
+ *     <li>The builder method returns a {@code this} reference, for method chaining.</li>
+ *     <li>Components which are itself structural types may have an additional
+ *     builder method, which takes a {@link java.util.function.Consumer} of the
+ *     structural type builder, if available.</li>
+ * </ol>
+ * {@snippet lang=java:
+ * public interface Ticket {
+ *     String ticketId();
+ *     LocalDate ticketDate();
+ *     String ticketType();
+ *     Event event();
+ *
+ *     interface Builder extends Ticket {
+ *         Builder ticketId(String value);
+ *         Builder ticketDate(LocalDate value);
+ *         Builder ticketType(String value);
+ *         Builder event(Event value);
+ *         Builder event(Consumer<? super Event.Builder> builder);
+ *     }
+ * }
+ * }
  */
 package io.jenetics.incubator.structural;
