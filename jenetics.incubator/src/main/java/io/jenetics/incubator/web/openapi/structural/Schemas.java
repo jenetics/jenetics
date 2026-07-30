@@ -52,7 +52,7 @@ public final class Schemas {
 		requireNonNull(schema);
 
 		return switch (schema) {
-			case NumberSchema _ -> "java.lang.Double";
+			case NumberSchema ns -> typeNameOf(ns);
 			case BooleanSchema _ -> "java.lang.Boolean";
 			case ArraySchema _ -> "java.util.List<?>";
 			case StringSchema ss -> switch (ss.getFormat()) {
@@ -81,7 +81,7 @@ public final class Schemas {
 	 * @param schema the number schema
 	 * @return the numeric Java type
 	 */
-	public static String javaTypeNameOf(NumberSchema schema) {
+	public static String typeNameOf(NumberSchema schema) {
 		requireNonNull(schema);
 
 		return switch (schema.getFormat()) {

@@ -111,7 +111,7 @@ public final class TypedValueBuilder {
 		requireNonNull(model);
 
 		final var type = switch (schema) {
-			case NumberSchema ns -> Schemas.javaTypeNameOf(ns);
+			case NumberSchema ns -> Schemas.typeNameOf(ns);
 			case DateSchema _ -> LocalDate.class.getName();
 			case StringSchema _ -> String.class.getName();
 			default -> null;
