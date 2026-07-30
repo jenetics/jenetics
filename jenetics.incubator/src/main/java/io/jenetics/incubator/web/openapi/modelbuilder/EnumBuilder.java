@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.codebuilder;
+package io.jenetics.incubator.web.openapi.modelbuilder;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codebuilder.CodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.enum_;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.codebuilder;
+package io.jenetics.incubator.web.openapi.modelbuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
