@@ -1,6 +1,6 @@
 package io.jenetics.incubator.web.openapi;
 
-class GenerationException extends RuntimeException {
+public class GenerationException extends RuntimeException {
 
 	public GenerationException(Throwable cause) {
 		super(cause);

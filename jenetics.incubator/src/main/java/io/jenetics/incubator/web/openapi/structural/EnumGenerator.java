@@ -1,41 +1,65 @@
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.structural.CodeModels.enum_;
+
 import com.helger.jcodemodel.JCodeModel;
-import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
-import io.jenetics.incubator.web.openapi.Generator;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Generates {@link Enum} class from a
  * {@link io.swagger.v3.oas.models.media.StringSchema} with enum format.
  */
-public final class EnumGenerator extends Generator {
+public final class EnumGenerator {
 
 	private static final String VALUE_NAME = "value";
 
-	private final JDefinedClass clazz;
+	private String name;
+	private final List<String> constants = new ArrayList<>();
 
 	/**
 	 * Create a new enum code generator.
-	 *
-	 * @param model the code model to use
-	 * @param name the full qualified enum name
 	 */
-	public EnumGenerator(final JCodeModel model, final String name) {
-		super(model);
-		this.clazz = enum_(name);
-		createEnumBody();
+	public EnumGenerator() {
 	}
 
-	private void createEnumBody() {
+	/**
+	 * Set the (full qualified) enum class name.
+	 *
+	 * @param name the enum class name
+	 * @return {@code this} builder
+	 */
+	public EnumGenerator name(final String name) {
+		this.name = requireNonNull(name);
+		return this;
+	}
+
+	/**
+	 * Add an enum constant with the given {@code name}. The {@code name} is
+	 * converted into upper case letters and name mangling is performed if needed.
+	 * The original enum name can be accessed with the {@code value()} method of
+	 * the generated enum class.
+	 *
+	 * @param name the constant name
+	 * @return {@code this} generator
+	 */
+	public EnumGenerator constant(final String name) {
+		requireNonNull(name);
+		constants.add(name);
+		return this;
+	}
+
+	public void build(final JCodeModel model) {
+		final var clazz = enum_(model, name);
+
+		// Create field, which contains the original string value of the enum.
 		final var field = clazz.field(JMod.PRIVATE_FINAL, String.class, VALUE_NAME);
 
 		final var constructor = clazz.constructor(JMod.NONE);
@@ -44,6 +68,11 @@ public final class EnumGenerator extends Generator {
 
 		final var method = clazz.method(JMod.PUBLIC, String.class, VALUE_NAME);
 		method.body()._return(field);
+
+		// Add the enum constants
+		for (final var name : constants) {
+			clazz.enumConstant(toConstantName(name)).arg(JExpr.lit(name));
+		}
 
 		// Override 'toString' method.
 		final var toString = clazz.method(JMod.PUBLIC, String.class, "toString");
@@ -69,22 +98,6 @@ public final class EnumGenerator extends Generator {
 			._then()
 			._return(optional.staticInvoke("of").arg(constant));
 		parse.body()._return(optional.staticInvoke("empty"));
-	}
-
-	/**
-	 * Add an enum constant with the given {@code name}. The {@code name} is
-	 * converted into upper case letters and name mangling is performed if needed.
-	 * The original enum name can be accessed with the {@code value()} method of
-	 * the generated enum class.
-	 *
-	 * @param name the constant name
-	 * @return {@code this} generator
-	 */
-	public EnumGenerator constant(String name) {
-		requireNonNull(name);
-
-		clazz.enumConstant(toConstantName(name)).arg(JExpr.lit(name));
-		return this;
 	}
 
 	private static String toConstantName(final String value) {
@@ -114,6 +127,9 @@ public final class EnumGenerator extends Generator {
 
 	public static Optional<EnumGenerator>
 	of(final JCodeModel model, final Schema<?> schema) {
+		return Optional.empty();
+
+		/*
 		if (schema instanceof StringSchema &&
 			schema.getEnum() != null &&
 			!schema.getEnum().isEmpty())
@@ -122,6 +138,7 @@ public final class EnumGenerator extends Generator {
 		} else {
 			return Optional.empty();
 		}
+		 */
 	}
 
 }
