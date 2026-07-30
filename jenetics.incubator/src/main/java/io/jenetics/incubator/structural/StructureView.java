@@ -8,7 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.jenetics.incubator.structural.Structures.isStructure;
+import static java.lang.reflect.Proxy.getInvocationHandler;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 public class StructureView {
 	private StructureView() {
@@ -22,19 +24,19 @@ public class StructureView {
 		final var instance = Proxy.newProxyInstance(
 			type.getClassLoader(),
 			new Class<?>[]{ type },
-			new Handler(store, type)
+			new StructureComponentHandler(store, type)
 		);
 
 		return type.cast(instance);
 	}
 
-	private record Handler(
+	private record StructureComponentHandler(
 		Map<String, Object> store,
 		Class<?> type
 	)
 		implements InvocationHandler
 	{
-		private Handler {
+		private StructureComponentHandler {
 			requireNonNull(store);
 			requireNonNull(type);
 		}
@@ -55,7 +57,9 @@ public class StructureView {
 				case "toString" -> toString();
 				case "hashCode" -> hashCode();
 				case "equals" -> equals(args[0]);
-				default -> throw new AssertionError("Unknown Object method: " + method);
+				default -> throw new AssertionError(
+					"Unknown Object method: " + method
+				);
 			};
 		}
 
@@ -74,9 +78,9 @@ public class StructureView {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj instanceof Proxy proxy &&
-				Proxy.getInvocationHandler(proxy) instanceof Handler handler &&
-				type.equals(handler.type) &&
-				store.equals(handler.store);
+				getInvocationHandler(proxy) instanceof StructureComponentHandler(var s, var t) &&
+				type.equals(t) &&
+				store.equals(s);
 		}
 
 		@Override
@@ -105,7 +109,7 @@ public class StructureView {
 					format(components.get(entry.getKey()), entry.getValue())
 				)
 			)
-			.collect(Collectors.joining(", ", type.getSimpleName() + "[", "]"));
+			.collect(joining(", ", type.getSimpleName() + "[", "]"));
 	}
 
 	private static Object format(final Class<?> type, final Object value) {
