@@ -32,10 +32,10 @@ public final class EnumGenerator extends Generator {
 	public EnumGenerator(final JCodeModel model, final String name) {
 		super(model);
 		this.clazz = enum_(name);
-		createEnumConstructor();
+		createEnumBody();
 	}
 
-	private void createEnumConstructor() {
+	private void createEnumBody() {
 		final var field = clazz.field(JMod.PRIVATE_FINAL, String.class, VALUE_NAME);
 
 		final var constructor = clazz.constructor(JMod.NONE);
@@ -44,6 +44,10 @@ public final class EnumGenerator extends Generator {
 
 		final var method = clazz.method(JMod.PUBLIC, String.class, VALUE_NAME);
 		method.body()._return(field);
+
+		final var toString = clazz.method(JMod.PUBLIC, String.class, "toString");
+		toString.annotate(Override.class);
+		toString.body()._return(field);
 	}
 
 	/**
