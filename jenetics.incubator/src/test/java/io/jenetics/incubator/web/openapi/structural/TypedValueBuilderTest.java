@@ -31,12 +31,12 @@ import java.nio.charset.StandardCharsets;
 
 import org.testng.annotations.Test;
 
-public class TypedValueGeneratorTest {
+public class TypedValueBuilderTest {
 
 	@Test
 	public void typedValueHasValueComponent() throws IOException {
 		final var model = new JCodeModel();
-		new TypedValueGenerator()
+		new TypedValueBuilder()
 			.name("io.jenetics.incubator.test.Price")
 			.type("java.math.BigDecimal")
 			.build(model);
@@ -50,7 +50,7 @@ public class TypedValueGeneratorTest {
 	@Test
 	public void primitiveTypedValueHasNoNullCheck() throws IOException {
 		final var model = new JCodeModel();
-		new TypedValueGenerator()
+		new TypedValueBuilder()
 			.name("io.jenetics.incubator.test.Count")
 			.type("int")
 			.build(model);

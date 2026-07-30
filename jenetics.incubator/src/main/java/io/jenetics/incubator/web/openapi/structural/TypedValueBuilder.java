@@ -42,7 +42,7 @@ import java.util.Objects;
  * @since 9.1
  * @version 9.1
  */
-public final class TypedValueGenerator {
+public final class TypedValueBuilder {
 
 	private String name;
 	private String type;
@@ -50,7 +50,7 @@ public final class TypedValueGenerator {
 	/**
 	 * Create a new typed value builder.
 	 */
-	public TypedValueGenerator() {
+	public TypedValueBuilder() {
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class TypedValueGenerator {
 	 * @param name the wrapper class name
 	 * @return {@code this} builder
 	 */
-	public TypedValueGenerator name(final String name) {
+	public TypedValueBuilder name(final String name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -70,7 +70,7 @@ public final class TypedValueGenerator {
 	 * @param type the wrapped type
 	 * @return {@code this} builder
 	 */
-	public TypedValueGenerator type(final String type) {
+	public TypedValueBuilder type(final String type) {
 		this.type = requireNonNull(type);
 		return this;
 	}
@@ -118,7 +118,7 @@ public final class TypedValueGenerator {
 		};
 
 		if (type != null) {
-			final var builder = new TypedValueGenerator();
+			final var builder = new TypedValueBuilder();
 			builder.name(schema.getName());
 			builder.type(type);
 			builder.build(model);
