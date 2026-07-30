@@ -19,60 +19,116 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.structural.CodeModels.interface_;
+import static io.jenetics.incubator.web.openapi.structural.Schemas.typeNameOf;
+
 import com.helger.jcodemodel.JCodeModel;
-import com.helger.jcodemodel.JDefinedClass;
-import io.jenetics.incubator.web.openapi.Generator;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.BooleanSchema;
-import io.swagger.v3.oas.models.media.NumberSchema;
+import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 
-import static java.util.Objects.requireNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
-final class StructuralTypeGenerator extends Generator {
-	private final JDefinedClass clazz;
+/**
+ * Builds a structural interface from a {@link ObjectSchema}.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
+public final class StructuralTypeGenerator {
 
-	StructuralTypeGenerator(final JCodeModel model, final JDefinedClass clazz) {
-		super(model);
-		this.clazz = requireNonNull(clazz);
+	private record Component(String name, String type) {
+		Component {
+			requireNonNull(name);
+			requireNonNull(type);
+		}
 	}
 
-	StructuralTypeGenerator component(String name, String type) {
-		final var generator = new ComponentGenerator(name, model.parseType(type));
-		generator.generate(clazz);
+	private String name;
+	private final List<Component> components = new ArrayList<>();
+
+	/**
+	 * Create a new structural interface builder.
+	 */
+	public StructuralTypeGenerator() {
+	}
+
+	/**
+	 * Set the (full qualified) structural interface name.
+	 *
+	 * @param name the structural interface name
+	 * @return {@code this} builder
+	 */
+	public StructuralTypeGenerator name(final String name) {
+		this.name = requireNonNull(name);
 		return this;
 	}
 
+	/**
+	 * Adds a component to the structural interface.
+	 *
+	 * @param name the component name
+	 * @param type the component type
+	 * @return {@code this} builder
+	 */
+	StructuralTypeGenerator component(final String name, final String type) {
+		components.add(new Component(name, type));
+		return this;
+	}
+
+	/**
+	 * Adds a component to the structural interface.
+	 *
+	 * @param name the component name
+	 * @param schema the component schema
+	 * @return {@code this} builder
+	 */
 	StructuralTypeGenerator component(String name, Schema<?> schema) {
 		component(name, typeNameOf(schema));
 		return this;
 	}
 
-	static String typeNameOf(Schema<?> schema) {
-		return switch (schema) {
-			case NumberSchema _ -> "java.lang.Double";
-			case BooleanSchema _ -> "java.lang.Boolean";
-			case ArraySchema _ -> "java.util.List<?>";
-			case StringSchema ss -> switch (ss.getFormat()) {
-				case null, default -> "String";
-			};
-			case ObjectSchema os -> os.getName();
-			case Schema<?> s -> {
-				final var ref = s.get$ref();
-				if (ref != null) {
-					final var index = ref.lastIndexOf("/");
-					if (index != -1) {
-						yield ref.substring(index + 1);
-					} else {
-						yield "java.lang.Object";
-					}
-				} else {
-					yield "java.lang.Object";
-				}
-			}
-		};
+	/**
+	 * Builds a structural interface and adds it to the {@code model}.
+	 *
+	 * @param model the model the structural interface is build and added to
+	 */
+	public void build(final JCodeModel model) {
+		final var clazz = interface_(model, name);
+		components.forEach(c ->
+			clazz.method(JMod.PUBLIC, model.parseType(c.type()), c.name())
+		);
+	}
+
+	/**
+	 * Builds the class from the {@code schema} and adds it to the {@code model}.
+	 *
+	 * @see SchemaTypeBuilder
+	 *
+	 * @param schema the schema spec which defines the class
+	 * @param model the model where the class is added to
+	 * @return {@code true} if the builder has generated a class from the schema,
+	 *         {@code false} if the {@code schema} doesn't specify the Java type,
+	 *         the builder is able to build.
+	 */
+	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
+
+		if (schema instanceof ObjectSchema os) {
+			final var builder = new StructuralTypeGenerator();
+			builder.name(schema.getName());
+			os.getProperties().forEach(builder::component);
+			builder.build(model);
+
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 }

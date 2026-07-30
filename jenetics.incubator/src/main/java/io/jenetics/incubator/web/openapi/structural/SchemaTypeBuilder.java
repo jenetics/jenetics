@@ -24,6 +24,10 @@ import io.swagger.v3.oas.models.media.Schema;
 
 /**
  * Building a type (class) from a given schema.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
  */
 @FunctionalInterface
 public interface SchemaTypeBuilder {

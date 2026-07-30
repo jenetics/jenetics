@@ -26,6 +26,13 @@ import com.helger.jcodemodel.exceptions.JCodeModelException;
 
 import io.jenetics.incubator.web.openapi.GenerationException;
 
+/**
+ * Some static helper methods for using the {@link JCodeModel} class.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
 public final class CodeModels {
 	private CodeModels() {
 	}

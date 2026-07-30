@@ -19,12 +19,17 @@
  */
 package io.jenetics.incubator.web.openapi.structural;
 
+import static java.util.Objects.requireNonNull;
+
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JMod;
 
-import static java.util.Objects.requireNonNull;
-
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
 final class ComponentGenerator {
 	private final String name;
 	private final AbstractJType type;

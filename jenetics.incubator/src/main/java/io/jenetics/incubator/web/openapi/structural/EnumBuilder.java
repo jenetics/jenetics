@@ -34,8 +34,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Generates {@link Enum} class from a
- * {@link io.swagger.v3.oas.models.media.StringSchema} with enum format.
+ * Builds {@link Enum} class from a {@link Schema} with enum format.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
  */
 public final class EnumBuilder {
 
@@ -45,7 +48,7 @@ public final class EnumBuilder {
 	private final List<String> constants = new ArrayList<>();
 
 	/**
-	 * Create a new enum code generator.
+	 * Create a new enum code builder.
 	 */
 	public EnumBuilder() {
 	}
@@ -68,7 +71,7 @@ public final class EnumBuilder {
 	 * the generated enum class.
 	 *
 	 * @param name the constant name
-	 * @return {@code this} generator
+	 * @return {@code this} builder
 	 */
 	public EnumBuilder constant(final String name) {
 		requireNonNull(name);
@@ -77,7 +80,7 @@ public final class EnumBuilder {
 	}
 
 	/**
-	 * Builds the enum class and adds it to the {@code model}.
+	 * Builds an enum class and adds it to the {@code model}.
 	 *
 	 * @param model the model the enum class is build and added to
 	 */
@@ -150,7 +153,21 @@ public final class EnumBuilder {
 		return name.isEmpty() ? "VALUE" : name.toString();
 	}
 
+	/**
+	 * Builds the class from the {@code schema} and adds it to the {@code model}.
+	 *
+	 * @see SchemaTypeBuilder
+	 *
+	 * @param schema the schema spec which defines the class
+	 * @param model the model where the class is added to
+	 * @return {@code true} if the builder has generated a class from the schema,
+	 *         {@code false} if the {@code schema} doesn't specify the Java type,
+	 *         the builder is able to build.
+	 */
 	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
+
 		if (schema instanceof StringSchema ss &&
 			schema.getEnum() != null &&
 			!schema.getEnum().isEmpty())
