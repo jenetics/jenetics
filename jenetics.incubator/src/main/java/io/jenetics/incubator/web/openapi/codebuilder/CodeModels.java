@@ -68,7 +68,9 @@ public final class CodeModels {
 		try {
 			return model._class(name, EClassType.RECORD);
 		} catch (JCodeModelException e) {
-			throw new CodeBuilderException(e);
+			throw new CodeBuilderException(
+				"Record[%s]".formatted(name), e
+			);
 		}
 	}
 }

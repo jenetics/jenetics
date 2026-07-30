@@ -21,6 +21,7 @@ package io.jenetics.incubator.web.openapi.codebuilder;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codebuilder.CodeModels.record_;
+import static io.jenetics.incubator.web.openapi.codebuilder.Schemas.isEnum;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
@@ -113,7 +114,7 @@ public final class TypedValueBuilder {
 		final var type = switch (schema) {
 			case NumberSchema ns -> Schemas.typeNameOf(ns);
 			case DateSchema _ -> LocalDate.class.getName();
-			case StringSchema _ -> String.class.getName();
+			case StringSchema ss when !isEnum(ss) -> String.class.getName();
 			default -> null;
 		};
 

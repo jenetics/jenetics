@@ -32,6 +32,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
+ * Code builder for the schemas of an OpenAPI specification.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
  * @version 9.1
@@ -47,20 +49,40 @@ public class ModelBuilder {
 	private OpenAPI api;
 	private String package_;
 
+	/**
+	 * Create a new enum code builder.
+	 */
 	public ModelBuilder() {
 	}
 
+	/**
+	 * Set the OpenAPI specification to build.
+	 *
+	 * @param api the OpenAPI specification
+	 * @return {@code this} builder
+	 */
 	public ModelBuilder api(OpenAPI api) {
 		this.api = requireNonNull(api);
 		return this;
 	}
 
+	/**
+	 * Set the package name for the generated model classes.
+	 *
+	 * @param name the package name of the model classes.
+	 * @return {@code this} builder
+	 */
 	public ModelBuilder package_(String name) {
 		this.package_ = requireNonNull(name);
 		return this;
 	}
 
-	void build(final JCodeModel model) {
+	/**
+	 * Builds the model classes class and adds it to the {@code model}.
+	 *
+	 * @param model the model the model classes is build and added to
+	 */
+	public void build(final JCodeModel model) {
 		api.getComponents().getSchemas()
 			.forEach((name, schema) -> schema
 				.setName("%s.%s".formatted(package_, name)));

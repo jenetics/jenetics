@@ -93,4 +93,9 @@ public final class Schemas {
 		};
 	}
 
+	public static boolean isEnum(Schema<?> schema) {
+		requireNonNull(schema);
+		return schema.getEnum() != null && !schema.getEnum().isEmpty();
+	}
+
 }
