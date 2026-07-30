@@ -2,7 +2,6 @@ package io.jenetics.incubator.web.openapi;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
-import io.swagger.v3.oas.models.OpenAPI;
 
 import static java.util.Objects.requireNonNull;
 

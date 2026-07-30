@@ -1,6 +1,6 @@
 [versions]
 assertj = "3.27.7"
-codemodel = "4.2.1"
+codemodel = "4.3.0"
 commons-csv = "1.14.1"
 commons-math4-legacy = "4.0-beta1"
 commons-numbers-combinatorics = "1.3"

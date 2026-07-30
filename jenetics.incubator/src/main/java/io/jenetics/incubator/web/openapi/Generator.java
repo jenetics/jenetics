@@ -39,4 +39,12 @@ public abstract class Generator {
 		}
 	}
 
+	public JDefinedClass record_(final String name) {
+		try {
+			return model._class(name, EClassType.RECORD);
+		} catch (JCodeModelException e) {
+			throw new GenerationException(e);
+		}
+	}
+
 }
