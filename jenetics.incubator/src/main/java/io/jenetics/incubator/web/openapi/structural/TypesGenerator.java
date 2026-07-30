@@ -27,7 +27,6 @@ import io.jenetics.incubator.web.openapi.Main;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class TypesGenerator extends Generator {
 	}
 
 	private void schema(final ObjectSchema schema) {
-		final var generator = new StructuralTypeGenerator(
+		final var generator = new StructuralTypeBuilder(
 			model,
 			interface_(schema.getName())
 		);

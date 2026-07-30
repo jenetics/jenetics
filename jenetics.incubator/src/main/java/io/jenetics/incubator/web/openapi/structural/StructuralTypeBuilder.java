@@ -38,7 +38,7 @@ import java.util.List;
  * @since 9.1
  * @version 9.1
  */
-public final class StructuralTypeGenerator {
+public final class StructuralTypeBuilder {
 
 	private record Component(String name, String type) {
 		Component {
@@ -53,7 +53,7 @@ public final class StructuralTypeGenerator {
 	/**
 	 * Create a new structural interface builder.
 	 */
-	public StructuralTypeGenerator() {
+	public StructuralTypeBuilder() {
 	}
 
 	/**
@@ -62,7 +62,7 @@ public final class StructuralTypeGenerator {
 	 * @param name the structural interface name
 	 * @return {@code this} builder
 	 */
-	public StructuralTypeGenerator name(final String name) {
+	public StructuralTypeBuilder name(final String name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -74,7 +74,7 @@ public final class StructuralTypeGenerator {
 	 * @param type the component type
 	 * @return {@code this} builder
 	 */
-	StructuralTypeGenerator component(final String name, final String type) {
+	StructuralTypeBuilder component(final String name, final String type) {
 		components.add(new Component(name, type));
 		return this;
 	}
@@ -86,7 +86,7 @@ public final class StructuralTypeGenerator {
 	 * @param schema the component schema
 	 * @return {@code this} builder
 	 */
-	StructuralTypeGenerator component(String name, Schema<?> schema) {
+	StructuralTypeBuilder component(String name, Schema<?> schema) {
 		component(name, typeNameOf(schema));
 		return this;
 	}
@@ -119,7 +119,7 @@ public final class StructuralTypeGenerator {
 		requireNonNull(model);
 
 		if (schema instanceof ObjectSchema os) {
-			final var builder = new StructuralTypeGenerator();
+			final var builder = new StructuralTypeBuilder();
 			builder.name(schema.getName());
 			os.getProperties().forEach(builder::component);
 			builder.build(model);
