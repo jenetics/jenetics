@@ -33,6 +33,14 @@ import java.util.List;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
+ * {@snippet lang=java:
+ * public interface Ticket {
+ *     TicketId ticketId();
+ *     Date ticketDate();
+ *     TicketType ticketType();
+ *     EventId eventId();
+ * }
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1

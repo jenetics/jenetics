@@ -38,6 +38,13 @@ import java.util.Objects;
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
  * a <em>value</em> type, like a numeric value or a string. The name of the
  * record adds semantic to the value.
+ * {@snippet lang=java:
+ * public record TicketConfirmation(String value) {
+ *     public TicketConfirmation {
+ *         Objects.requireNonNull(value);
+ *     }
+ * }
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1

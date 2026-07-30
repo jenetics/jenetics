@@ -35,6 +35,38 @@ import java.util.Optional;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.
+ * {@snippet lang=java:
+ * public enum TicketType {
+ *     EVENT("event"),
+ *     GENERAL("general");
+ *
+ *     private final String value;
+ *
+ *     TicketType(String value) {
+ *         this.value = value;
+ *     }
+ *
+ *     public String value() {
+ *         return value;
+ *     }
+ *
+ *     @Override
+ *     public String toString() {
+ *         return value;
+ *     }
+ *
+ *     public static Optional<TicketType> of(String value) {
+ *         for (TicketType constant:values()) {
+ *             if (constant.value().equals(value) ||
+ *                 constant.name().equals(value))
+ * 			 {
+ *                 return Optional.of(constant);
+ *            }
+ *         }
+ *         return Optional.empty();
+ *     }
+ * }
+ * }
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
@@ -107,12 +139,12 @@ public final class EnumBuilder {
 		toString.annotate(Override.class);
 		toString.body()._return(field);
 
-		// Implement 'parse' method.
+		// Implement 'of' factory method.
 		final var optional = model.ref(Optional.class);
 		final var parse = clazz.method(
 			JMod.PUBLIC | JMod.STATIC,
 			optional.narrow(clazz),
-			"parse"
+			"of"
 		);
 		final var parseValue = parse.param(String.class, VALUE_NAME);
 		final var constants = parse.body()

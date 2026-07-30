@@ -71,7 +71,7 @@ public class EnumBuilderTest {
 	public void parseEnumNameAndValue() throws Exception {
 		final var type = compileEnum();
 
-		final var parse = type.getMethod("parse", String.class);
+		final var parse = type.getMethod("of", String.class);
 		final var byValue = (Optional<?>)parse.invoke(null, "vip-ticket");
 		final var byName = (Optional<?>)parse.invoke(null, "VIP_TICKET");
 		final var unknown = (Optional<?>)parse.invoke(null, "unknown");
