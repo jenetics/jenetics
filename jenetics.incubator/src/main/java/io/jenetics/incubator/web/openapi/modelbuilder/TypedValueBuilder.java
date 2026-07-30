@@ -27,12 +27,14 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.DateSchema;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -123,6 +125,7 @@ public final class TypedValueBuilder {
 		final var type = switch (schema) {
 			case NumberSchema ns -> Schemas.typeNameOf(ns);
 			case DateSchema _ -> LocalDate.class.getName();
+			case DateTimeSchema _ -> OffsetDateTime.class.getName();
 			case UUIDSchema _ -> UUID.class.getName();
 			case StringSchema ss when !isEnum(ss) -> String.class.getName();
 			default -> null;
