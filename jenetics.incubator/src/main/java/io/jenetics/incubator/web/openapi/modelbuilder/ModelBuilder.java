@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
-import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
