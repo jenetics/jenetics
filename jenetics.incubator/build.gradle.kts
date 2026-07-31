@@ -41,7 +41,7 @@ dependencies {
 	api(project(":jenetics"))
 	api(project(":jenetics.ext"))
 	api(project(":jenetics.prog"))
-	api("org.jspecify:jspecify:1.0.0")
+	api(libs.jspecify)
 	implementation(libs.commons.statistics.distribution)
 	implementation("org.slf4j:slf4j-api:2.0.17")
 	implementation("org.slf4j:slf4j-jdk14:2.0.17")
