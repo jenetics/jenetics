@@ -24,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
+import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.Schema;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,6 +70,21 @@ public class EnumBuilderTest {
 	}
 
 	@Test
+	public void buildEnumForNonStringSchema() throws Exception {
+		final var schema = new IntegerSchema();
+		schema.setName("io.jenetics.incubator.test.Priority");
+		schema.addEnumItem(1);
+		schema.addEnumItem(2);
+		schema.addEnumItem(3);
+
+		final var type = compileEnum(schema);
+		final var value = type.getMethod("value");
+
+		assertThat(value.getReturnType()).isEqualTo(int.class);
+		assertThat(value.invoke(enumConstant(type, "_1"))).isEqualTo(1);
+	}
+
+	@Test
 	public void parseEnumNameAndValue() throws Exception {
 		final var type = compileEnum();
 
@@ -92,20 +109,44 @@ public class EnumBuilderTest {
 	}
 
 	private static Class<?> compileEnum() throws Exception {
+		final var model = new JCodeModel();
+		new EnumBuilder()
+			.name("io.jenetics.incubator.test.TicketType")
+			.constant("vip-ticket")
+			.build(model);
+
+		return compileEnum(model, "io.jenetics.incubator.test.TicketType");
+	}
+
+	private static Class<?> compileEnum(final Schema<?> schema) throws Exception {
+		final var model = new JCodeModel();
+		assertThat(EnumBuilder.build(schema, model)).isTrue();
+
+		return compileEnum(model, schema.getName());
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private static Enum<?> enumConstant(
+		final Class<?> enumType,
+		final String name
+	) {
+		return Enum.valueOf((Class)enumType, name);
+	}
+
+	private static Class<?> compileEnum(
+		final JCodeModel model,
+		final String className
+	)
+		throws Exception
+	{
 		final var dir = Files.createTempDirectory("enum-generator-test");
 		try {
-			final var model = new JCodeModel();
-			new EnumBuilder()
-				.name("io.jenetics.incubator.test.TicketType")
-				.constant("vip-ticket")
-				.build(model);
-
 			final var writer = new JCMWriter(model);
 			writer.setCharset(Charset.defaultCharset());
 			writer.build(dir.toFile());
 
 			final var source = dir.resolve(
-				Path.of("io/jenetics/incubator/test/TicketType.java")
+				Path.of(className.replace('.', '/') + ".java")
 			);
 			final var compiler = ToolProvider.getSystemJavaCompiler();
 			final var result = compiler.run(
@@ -122,7 +163,7 @@ public class EnumBuilderTest {
 			final var loader = URLClassLoader.newInstance(
 				new java.net.URL[]{ dir.toUri().toURL() }
 			);
-			return loader.loadClass("io.jenetics.incubator.test.TicketType");
+			return loader.loadClass(className);
 		} finally {
 			delete(dir);
 		}

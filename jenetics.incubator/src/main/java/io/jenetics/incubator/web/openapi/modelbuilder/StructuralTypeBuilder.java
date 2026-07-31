@@ -113,7 +113,9 @@ public final class StructuralTypeBuilder {
 	}
 
 	private boolean isStructureSchema(Schema<?> schema) {
-		if (schema.get$ref() != null) {
+		if (schema instanceof ObjectSchema) {
+			return true;
+		} else if (schema.get$ref() != null && API.isBound()) {
 			return Schemas.schemaOfRef(API.get(), schema.get$ref()) instanceof ObjectSchema;
 		} else {
 			return false;
@@ -121,7 +123,8 @@ public final class StructuralTypeBuilder {
 	}
 
 	private boolean isStructureType(String type) {
-		return API.get().getComponents().getSchemas().get(type) instanceof ObjectSchema;
+		return API.isBound() &&
+			API.get().getComponents().getSchemas().get(type) instanceof ObjectSchema;
 	}
 
 	private void component(
@@ -173,7 +176,7 @@ public final class StructuralTypeBuilder {
 	private static JDefinedClass builderInterface(final JDefinedClass type) {
 		try {
 			return type._class(
-				JMod.PUBLIC,
+				JMod.NONE,
 				"Builder",
 				EClassType.INTERFACE
 			);

@@ -22,15 +22,18 @@ package io.jenetics.incubator.web.openapi.modelbuilder;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.enum_;
 
+import com.helger.jcodemodel.AbstractJType;
+import com.helger.jcodemodel.IJExpression;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -74,7 +77,8 @@ public final class EnumBuilder {
 	private static final String VALUE_NAME = "value";
 
 	private String name;
-	private final List<String> constants = new ArrayList<>();
+	private String valueType = String.class.getName();
+	private final List<Object> constants = new ArrayList<>();
 
 	/**
 	 * Create a new enum code builder.
@@ -108,6 +112,16 @@ public final class EnumBuilder {
 		return this;
 	}
 
+	private EnumBuilder valueType(final String valueType) {
+		this.valueType = requireNonNull(valueType);
+		return this;
+	}
+
+	private EnumBuilder constantValue(final Object value) {
+		constants.add(requireNonNull(value));
+		return this;
+	}
+
 	/**
 	 * Builds an enum class and adds it to the {@code model}.
 	 *
@@ -115,26 +129,29 @@ public final class EnumBuilder {
 	 */
 	public void build(final JCodeModel model) {
 		final var clazz = enum_(model, name);
+		final var string = model.ref(String.class);
+		final var type = model.parseType(valueType);
 
-		// Create field, which contains the original string value of the enum.
-		final var field = clazz.field(JMod.PRIVATE_FINAL, String.class, VALUE_NAME);
+		// Create field, which contains the original value of the enum.
+		final var field = clazz.field(JMod.PRIVATE_FINAL, type, VALUE_NAME);
 
 		final var constructor = clazz.constructor(JMod.NONE);
-		final var value = constructor.param(String.class, VALUE_NAME);
+		final var value = constructor.param(type, VALUE_NAME);
 		constructor.body().assign(JExpr.refthis(field), value);
 
-		final var method = clazz.method(JMod.PUBLIC, String.class, VALUE_NAME);
+		final var method = clazz.method(JMod.PUBLIC, type, VALUE_NAME);
 		method.body()._return(field);
 
 		// Add the enum constants
-		for (final var name : constants) {
-			clazz.enumConstant(toConstantName(name)).arg(JExpr.lit(name));
+		for (final var constant : constants) {
+			clazz.enumConstant(toConstantName(String.valueOf(constant)))
+				.arg(literal(model, type, constant));
 		}
 
 		// Override 'toString' method.
 		final var toString = clazz.method(JMod.PUBLIC, String.class, "toString");
 		toString.annotate(Override.class);
-		toString.body()._return(field);
+		toString.body()._return(string.staticInvoke("valueOf").arg(field));
 
 		// Implement 'of' factory method.
 		final var optional = model.ref(Optional.class);
@@ -149,7 +166,7 @@ public final class EnumBuilder {
 		final var constant = constants.var();
 		constants.body()
 			._if(
-				constant.invoke(VALUE_NAME)
+				string.staticInvoke("valueOf").arg(constant.invoke(VALUE_NAME))
 					.invoke("equals").arg(parseValue)
 					.cor(constant
 						.invoke("name")
@@ -158,6 +175,40 @@ public final class EnumBuilder {
 			._then()
 			._return(optional.staticInvoke("of").arg(constant));
 		parse.body()._return(optional.staticInvoke("empty"));
+	}
+
+	private static IJExpression literal(
+		final JCodeModel model,
+		final AbstractJType type,
+		final Object value
+	) {
+		return switch (type.fullName()) {
+			case "boolean", "java.lang.Boolean" -> JExpr.lit(booleanValue(value));
+			case "double", "java.lang.Double" ->
+				JExpr.lit(numberValue(value).doubleValue());
+			case "float", "java.lang.Float" ->
+				JExpr.lit(numberValue(value).floatValue());
+			case "int", "java.lang.Integer" ->
+				JExpr.lit(numberValue(value).intValue());
+			case "long", "java.lang.Long" ->
+				JExpr.lit(numberValue(value).longValue());
+			case "java.math.BigDecimal" ->
+				JExpr._new(model.ref(BigDecimal.class))
+					.arg(JExpr.lit(value.toString()));
+			default -> JExpr.lit(String.valueOf(value));
+		};
+	}
+
+	private static Number numberValue(final Object value) {
+		return value instanceof Number number
+			? number
+			: new BigDecimal(value.toString());
+	}
+
+	private static boolean booleanValue(final Object value) {
+		return value instanceof Boolean bool
+			? bool
+			: Boolean.parseBoolean(value.toString());
 	}
 
 	private static String toConstantName(final String value) {
@@ -200,13 +251,12 @@ public final class EnumBuilder {
 		requireNonNull(schema);
 		requireNonNull(model);
 
-		if (schema instanceof StringSchema ss &&
-			schema.getEnum() != null &&
-			!schema.getEnum().isEmpty())
-		{
+		if (schema.getEnum() != null && !schema.getEnum().isEmpty()) {
 			final var builder = new EnumBuilder();
-			builder.name(schema.getName());
-			ss.getEnum().forEach(builder::constant);
+			builder
+				.name(schema.getName())
+				.valueType(valueTypeNameOf(schema));
+			schema.getEnum().forEach(builder::constantValue);
 			builder.build(model);
 
 			return true;
@@ -214,6 +264,46 @@ public final class EnumBuilder {
 			return false;
 		}
 
+	}
+
+	private static String valueTypeNameOf(final Schema<?> schema) {
+		final var type = Schemas.typeNameOf(schema);
+		return type.equals(Object.class.getName())
+			? valueTypeNameOfSchema(schema)
+			: type;
+	}
+
+	private static String valueTypeNameOfSchema(final Schema<?> schema) {
+		return switch (schema.getType()) {
+			case "boolean" -> Boolean.class.getName();
+			case "integer" -> switch (schema.getFormat()) {
+				case "int64" -> "long";
+				case null, default -> "int";
+			};
+			case "number" -> switch (schema.getFormat()) {
+				case "float" -> "float";
+				case "double" -> "double";
+				case null, default -> BigDecimal.class.getName();
+			};
+			case "string" -> String.class.getName();
+			case null, default -> valueTypeNameOfEnum(schema);
+		};
+	}
+
+	private static String valueTypeNameOfEnum(final Schema<?> schema) {
+		return schema.getEnum().stream()
+			.filter(Objects::nonNull)
+			.findFirst()
+			.map(value -> switch (value) {
+				case Boolean _ -> Boolean.class.getName();
+				case Double _ -> "double";
+				case Float _ -> "float";
+				case Integer _ -> "int";
+				case Long _ -> "long";
+				case BigDecimal _ -> BigDecimal.class.getName();
+				default -> String.class.getName();
+			})
+			.orElse(String.class.getName());
 	}
 
 }
