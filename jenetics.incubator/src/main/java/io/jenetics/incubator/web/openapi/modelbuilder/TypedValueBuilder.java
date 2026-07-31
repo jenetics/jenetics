@@ -26,6 +26,7 @@ import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.isEnum;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
+import com.helger.jcodemodel.JOp;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
@@ -106,6 +107,18 @@ public final class TypedValueBuilder {
 					.arg(JExpr.ref("value"))
 			);
 		}
+
+		final var of = clazz.method(
+			JMod.PUBLIC | JMod.STATIC,
+			clazz,
+			"of"
+		);
+		final var value = of.param(valueType.boxify(), "value");
+		of.body()._return(JOp.cond(
+			JOp.ne(value, JExpr._null()),
+			JExpr._new(clazz).arg(value),
+			JExpr._null()
+		));
 	}
 
 	/**

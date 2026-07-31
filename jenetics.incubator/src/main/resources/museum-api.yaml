@@ -291,6 +291,14 @@ components:
                 - date
                 - timeOpen
                 - timeClose
+        CodeType:
+            type: integer
+            enum:
+                - 10
+                - 20
+                - 25
+                - 30
+                - 40
         EventId:
             description: Identifier for a special event.
             type: string

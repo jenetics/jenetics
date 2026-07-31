@@ -26,8 +26,17 @@ import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.URLClassLoader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.UUID;
+
+import javax.tools.ToolProvider;
 
 import org.testng.annotations.Test;
 
@@ -60,6 +69,39 @@ public class TypedValueBuilderTest {
 			.doesNotContain("requireNonNull(value);");
 	}
 
+	@Test
+	public void typedValueFactoryIsNullSafe() throws Exception {
+		try (var classes = compileTypedValues()) {
+			final var ticketId = classes.loadClass(
+				"io.jenetics.incubator.test.TicketId"
+			);
+			final var of = ticketId.getMethod("of", UUID.class);
+			final var id = UUID.fromString("3b344c14-5a7f-4c6b-9a9d-c696355ca79d");
+
+			final var value = of.invoke(null, id);
+
+			assertThat(value).isInstanceOf(ticketId);
+			assertThat(ticketId.getMethod("value").invoke(value)).isEqualTo(id);
+			assertThat(of.invoke(null, (Object)null)).isNull();
+		}
+	}
+
+	@Test
+	public void primitiveTypedValueFactoryUsesBoxedParameter() throws Exception {
+		try (var classes = compileTypedValues()) {
+			final var count = classes.loadClass(
+				"io.jenetics.incubator.test.Count"
+			);
+			final var of = count.getMethod("of", Integer.class);
+
+			final var value = of.invoke(null, 123);
+
+			assertThat(value).isInstanceOf(count);
+			assertThat(count.getMethod("value").invoke(value)).isEqualTo(123);
+			assertThat(of.invoke(null, (Object)null)).isNull();
+		}
+	}
+
 	private static String source(final JCodeModel model) throws IOException {
 		final var out = new ByteArrayOutputStream();
 		final var writer = new JCMWriter(model);
@@ -67,6 +109,73 @@ public class TypedValueBuilderTest {
 			new OutputStreamCodeWriter(out, StandardCharsets.UTF_8)
 		);
 		return out.toString(StandardCharsets.UTF_8);
+	}
+
+	private record CompiledTypes(URLClassLoader loader, Path dir)
+		implements AutoCloseable
+	{
+		Class<?> loadClass(final String name) throws ClassNotFoundException {
+			return loader.loadClass(name);
+		}
+
+		@Override
+		public void close() throws IOException {
+			loader.close();
+			delete(dir);
+		}
+	}
+
+	private static CompiledTypes compileTypedValues() throws Exception {
+		final var dir = Files.createTempDirectory("typed-value-builder-test");
+		try {
+			final var model = new JCodeModel();
+			new TypedValueBuilder()
+				.name("io.jenetics.incubator.test.TicketId")
+				.type(UUID.class.getName())
+				.build(model);
+			new TypedValueBuilder()
+				.name("io.jenetics.incubator.test.Count")
+				.type("int")
+				.build(model);
+
+			final var writer = new JCMWriter(model);
+			writer.setCharset(Charset.defaultCharset());
+			writer.build(dir.toFile());
+
+			final var compiler = ToolProvider.getSystemJavaCompiler();
+			final var result = compiler.run(
+				null,
+				null,
+				null,
+				"-d",
+				dir.toString(),
+				dir.resolve("io/jenetics/incubator/test/TicketId.java").toString(),
+				dir.resolve("io/jenetics/incubator/test/Count.java").toString()
+			);
+
+			assertThat(result).isZero();
+
+			final var loader = URLClassLoader.newInstance(
+				new java.net.URL[]{ dir.toUri().toURL() },
+				TypedValueBuilderTest.class.getClassLoader()
+			);
+
+			return new CompiledTypes(loader, dir);
+		} catch (Exception e) {
+			delete(dir);
+			throw e;
+		}
+	}
+
+	private static void delete(final Path dir) throws IOException {
+		if (Files.exists(dir)) {
+			try (var files = Files.walk(dir)) {
+				files
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+			}
+		}
 	}
 
 }
