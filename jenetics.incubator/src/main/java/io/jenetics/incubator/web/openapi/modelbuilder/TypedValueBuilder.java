@@ -26,6 +26,7 @@ import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.isEnum;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
@@ -124,6 +125,7 @@ public final class TypedValueBuilder {
 
 		final var type = switch (schema) {
 			case NumberSchema ns -> Schemas.typeNameOf(ns);
+			case ArraySchema as -> Schemas.typeNameOf(as);
 			case DateSchema _ -> LocalDate.class.getName();
 			case DateTimeSchema _ -> OffsetDateTime.class.getName();
 			case UUIDSchema _ -> UUID.class.getName();

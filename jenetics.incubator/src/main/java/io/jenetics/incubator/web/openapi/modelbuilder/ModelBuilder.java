@@ -28,6 +28,7 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -96,6 +97,8 @@ public class ModelBuilder {
 
 	static void main() throws IOException {
 		final var api = read("/museum-api.yaml");
+		final var buildDir = Path.of("./jenetics.incubator/build/generated/sources/openapi/");
+		Files.createDirectories(buildDir);
 		final var model = new JCodeModel();
 
 		new ModelBuilder()
@@ -105,7 +108,7 @@ public class ModelBuilder {
 
 		var writer = new JCMWriter(model);
 		writer.setCharset(Charset.defaultCharset());
-		writer.build(Path.of("./jenetics.incubator/build/generated/sources/openapi/").toFile());
+		writer.build(buildDir.toFile());
 	}
 
 	static OpenAPI read(final String name) throws IOException {

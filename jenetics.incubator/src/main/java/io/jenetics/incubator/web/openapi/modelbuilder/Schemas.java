@@ -54,25 +54,26 @@ public final class Schemas {
 		return switch (schema) {
 			case NumberSchema ns -> typeNameOf(ns);
 			case BooleanSchema _ -> "java.lang.Boolean";
-			case ArraySchema _ -> "java.util.List<?>";
+			case ArraySchema as -> typeNameOf(as);
 			case StringSchema ss -> switch (ss.getFormat()) {
 				case null, default -> "String";
 			};
 			case ObjectSchema os -> os.getName();
-			case Schema<?> s -> {
-				final var ref = s.get$ref();
-				if (ref != null) {
-					final var index = ref.lastIndexOf("/");
-					if (index != -1) {
-						yield ref.substring(index + 1);
-					} else {
-						yield "java.lang.Object";
-					}
-				} else {
-					yield "java.lang.Object";
-				}
-			}
+			case Schema<?> s -> typeNameOfRef(s.get$ref());
 		};
+	}
+
+	public static String typeNameOfRef(final String ref) {
+		if (ref != null) {
+			final var index = ref.lastIndexOf("/");
+			if (index != -1) {
+				return ref.substring(index + 1);
+			} else {
+				return  "java.lang.Object";
+			}
+		} else {
+			return "java.lang.Object";
+		}
 	}
 
 	/**
@@ -91,6 +92,11 @@ public final class Schemas {
 			case "int64" -> "long";
 			default -> BigDecimal.class.getName();
 		};
+	}
+
+	public static String typeNameOf(ArraySchema schema) {
+		return "java.util.List<%s>"
+			.formatted(typeNameOfRef(schema.getItems().get$ref()));
 	}
 
 	public static boolean isEnum(Schema<?> schema) {
