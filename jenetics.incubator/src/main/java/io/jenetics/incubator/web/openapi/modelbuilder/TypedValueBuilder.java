@@ -34,6 +34,7 @@ import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -113,12 +114,16 @@ public final class TypedValueBuilder {
 			clazz,
 			"of"
 		);
+		of.annotate(Nullable.class);
 		final var value = of.param(valueType.boxify(), "value");
-		of.body()._return(JOp.cond(
-			JOp.ne(value, JExpr._null()),
-			JExpr._new(clazz).arg(value),
-			JExpr._null()
-		));
+		value.annotate(Nullable.class);
+		of.body()._return(
+			JOp.cond(
+				JOp.ne(value, JExpr._null()),
+				JExpr._new(clazz).arg(value),
+				JExpr._null()
+			)
+		);
 	}
 
 	/**

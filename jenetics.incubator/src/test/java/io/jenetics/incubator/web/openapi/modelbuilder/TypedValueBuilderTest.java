@@ -70,6 +70,24 @@ public class TypedValueBuilderTest {
 	}
 
 	@Test
+	public void typedValueFactoryIsAnnotatedNullable() throws IOException {
+		final var model = new JCodeModel();
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.TicketId")
+			.type(UUID.class.getName())
+			.build(model);
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.Count")
+			.type("int")
+			.build(model);
+
+		assertThat(source(model))
+			.contains("import org.jspecify.annotations.Nullable;")
+			.contains("@Nullable\n    public static TicketId of(@Nullable UUID value)")
+			.contains("@Nullable\n    public static Count of(@Nullable Integer value)");
+	}
+
+	@Test
 	public void typedValueFactoryIsNullSafe() throws Exception {
 		try (var classes = compileTypedValues()) {
 			final var ticketId = classes.loadClass(
