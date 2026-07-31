@@ -21,6 +21,7 @@ package io.jenetics.incubator.web.openapi.modelbuilder;
 
 import static java.util.Objects.requireNonNull;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
@@ -29,6 +30,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Some helper methods for handling schemas.
@@ -102,6 +104,11 @@ public final class Schemas {
 	public static boolean isEnum(Schema<?> schema) {
 		requireNonNull(schema);
 		return schema.getEnum() != null && !schema.getEnum().isEmpty();
+	}
+
+	public static Schema<?> schemaOfRef(OpenAPI api, String ref) {
+		final var typeName = typeNameOfRef(ref);
+		return api.getComponents().getSchemas().get(typeName);
 	}
 
 }

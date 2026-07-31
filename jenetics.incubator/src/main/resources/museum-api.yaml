@@ -241,6 +241,8 @@ components:
                     $ref: "#/components/schemas/Date"
                 ticketType:
                     $ref: "#/components/schemas/TicketType"
+                eventFields:
+                    $ref: "#/components/schemas/SpecialEventFields"
                 eventId:
                     description: Unique identifier for a special event. Required if purchasing tickets for the museum's special events.
                     $ref: "#/components/schemas/EventId"

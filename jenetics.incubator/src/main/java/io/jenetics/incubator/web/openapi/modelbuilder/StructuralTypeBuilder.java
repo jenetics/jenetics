@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.modelbuilder;
 
+import static io.jenetics.incubator.web.openapi.modelbuilder.ModelBuilder.API;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
 import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.typeNameOf;
@@ -29,6 +30,7 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.jspecify.annotations.Nullable;
@@ -94,7 +96,7 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(final String name, final String type) {
-		component(name, type, false, false);
+		component(name, type, isStructureType(type), false);
 		return this;
 	}
 
@@ -106,8 +108,20 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(String name, Schema<?> schema) {
-		component(name, typeNameOf(schema), schema instanceof ObjectSchema, false);
+		component(name, typeNameOf(schema), isStructureSchema(schema), false);
 		return this;
+	}
+
+	private boolean isStructureSchema(Schema<?> schema) {
+		if (schema.get$ref() != null) {
+			return Schemas.schemaOfRef(API.get(), schema.get$ref()) instanceof ObjectSchema;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isStructureType(String type) {
+		return API.get().getComponents().getSchemas().get(type) instanceof ObjectSchema;
 	}
 
 	private void component(
@@ -201,7 +215,7 @@ public final class StructuralTypeBuilder {
 				builder.component(
 					name,
 					typeNameOf(property),
-					property instanceof ObjectSchema,
+					builder.isStructureSchema(property),
 					!required.contains(name) ||
 					property.getNullable() != null && property.getNullable()
 				)
