@@ -100,6 +100,7 @@ public final class TypedValueBuilder {
 		final var clazz = record_(model, name);
 
 		final var valueType = model.parseType(type);
+		final var boxedValueType = valueType.boxify();
 		clazz.recordComponent(valueType, "value");
 
 		if (valueType.isReference()) {
@@ -116,12 +117,28 @@ public final class TypedValueBuilder {
 			"box"
 		);
 		box.annotate(Nullable.class);
-		final var value = box.param(valueType.boxify(), "value");
+		final var value = box.param(boxedValueType, "value");
 		value.annotate(Nullable.class);
 		box.body()._return(
 			JOp.cond(
 				JOp.ne(value, JExpr._null()),
 				JExpr._new(clazz).arg(value),
+				JExpr._null()
+			)
+		);
+
+		final var unbox = clazz.method(
+			JMod.PUBLIC | JMod.STATIC,
+			boxedValueType,
+			"unbox"
+		);
+		unbox.annotate(Nullable.class);
+		final var boxed = unbox.param(clazz, "box");
+		boxed.annotate(Nullable.class);
+		unbox.body()._return(
+			JOp.cond(
+				JOp.ne(boxed, JExpr._null()),
+				JExpr.invoke(boxed, "value"),
 				JExpr._null()
 			)
 		);
@@ -134,14 +151,14 @@ public final class TypedValueBuilder {
 		with.annotate(Nullable.class);
 		final var fn = with.param(
 			model.ref(Function.class).narrow(
-				valueType.boxify().wildcardSuper(),
-				valueType.boxify().annotated(Nullable.class).wildcardExtends()
+				boxedValueType.wildcardSuper(),
+				boxedValueType.annotated(Nullable.class).wildcardExtends()
 			),
 			"fn"
 		);
 		final var newValue = with.body().decl(
 			JMod.FINAL,
-			valueType.boxify(),
+			boxedValueType,
 			"newValue",
 			JExpr.invoke(fn, "apply").arg(JExpr.ref("value"))
 		);

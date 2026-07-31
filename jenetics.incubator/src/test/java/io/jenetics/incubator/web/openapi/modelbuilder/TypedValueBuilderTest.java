@@ -71,7 +71,7 @@ public class TypedValueBuilderTest {
 	}
 
 	@Test
-	public void typedValueFactoryIsAnnotatedNullable() throws IOException {
+	public void typedValueBoxMethodIsAnnotatedNullable() throws IOException {
 		final var model = new JCodeModel();
 		new TypedValueBuilder()
 			.name("io.jenetics.incubator.test.TicketId")
@@ -84,8 +84,26 @@ public class TypedValueBuilderTest {
 
 		assertThat(source(model))
 			.contains("import org.jspecify.annotations.Nullable;")
-			.contains("@Nullable\n    public static TicketId of(@Nullable UUID value)")
-			.contains("@Nullable\n    public static Count of(@Nullable Integer value)");
+			.contains("@Nullable\n    public static TicketId box(@Nullable UUID value)")
+			.contains("@Nullable\n    public static Count box(@Nullable Integer value)");
+	}
+
+	@Test
+	public void typedValueUnboxMethodIsAnnotatedNullable() throws IOException {
+		final var model = new JCodeModel();
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.TicketId")
+			.type(UUID.class.getName())
+			.build(model);
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.Count")
+			.type("int")
+			.build(model);
+
+		assertThat(source(model))
+			.contains("import org.jspecify.annotations.Nullable;")
+			.contains("@Nullable\n    public static UUID unbox(@Nullable TicketId box)")
+			.contains("@Nullable\n    public static Integer unbox(@Nullable Count box)");
 	}
 
 	@Test
@@ -113,19 +131,50 @@ public class TypedValueBuilderTest {
 	}
 
 	@Test
-	public void typedValueFactoryIsNullSafe() throws Exception {
+	public void typedValueBoxMethodIsNullSafe() throws Exception {
 		try (var classes = compileTypedValues()) {
 			final var ticketId = classes.loadClass(
 				"io.jenetics.incubator.test.TicketId"
 			);
-			final var of = ticketId.getMethod("of", UUID.class);
+			final var box = ticketId.getMethod("box", UUID.class);
 			final var id = UUID.fromString("3b344c14-5a7f-4c6b-9a9d-c696355ca79d");
 
-			final var value = of.invoke(null, id);
+			final var value = box.invoke(null, id);
 
 			assertThat(value).isInstanceOf(ticketId);
 			assertThat(ticketId.getMethod("value").invoke(value)).isEqualTo(id);
-			assertThat(of.invoke(null, (Object)null)).isNull();
+			assertThat(box.invoke(null, (Object)null)).isNull();
+		}
+	}
+
+	@Test
+	public void typedValueUnboxMethodIsNullSafe() throws Exception {
+		try (var classes = compileTypedValues()) {
+			final var ticketId = classes.loadClass(
+				"io.jenetics.incubator.test.TicketId"
+			);
+			final var box = ticketId.getMethod("box", UUID.class);
+			final var unbox = ticketId.getMethod("unbox", ticketId);
+			final var id = UUID.fromString("3b344c14-5a7f-4c6b-9a9d-c696355ca79d");
+
+			assertThat(unbox.invoke(null, box.invoke(null, id))).isEqualTo(id);
+			assertThat(unbox.invoke(null, (Object)null)).isNull();
+		}
+	}
+
+	@Test
+	public void primitiveTypedValueUnboxMethodUsesBoxedReturnType()
+		throws Exception
+	{
+		try (var classes = compileTypedValues()) {
+			final var count = classes.loadClass(
+				"io.jenetics.incubator.test.Count"
+			);
+			final var box = count.getMethod("box", Integer.class);
+			final var unbox = count.getMethod("unbox", count);
+
+			assertThat(unbox.invoke(null, box.invoke(null, 123))).isEqualTo(123);
+			assertThat(unbox.invoke(null, (Object)null)).isNull();
 		}
 	}
 
@@ -135,14 +184,14 @@ public class TypedValueBuilderTest {
 			final var ticketId = classes.loadClass(
 				"io.jenetics.incubator.test.TicketId"
 			);
-			final var of = ticketId.getMethod("of", UUID.class);
+			final var box = ticketId.getMethod("box", UUID.class);
 			final var with = ticketId.getMethod("with", Function.class);
 			final var id = UUID.fromString("3b344c14-5a7f-4c6b-9a9d-c696355ca79d");
 			final var mappedId = UUID.fromString(
 				"6b5e1e9c-5856-4da6-829b-3fdd8c4b8c8e"
 			);
 
-			final var value = of.invoke(null, id);
+			final var value = box.invoke(null, id);
 			final var mapped = with.invoke(
 				value,
 				(Function<Object, Object>)ignored -> mappedId
@@ -166,10 +215,10 @@ public class TypedValueBuilderTest {
 			final var count = classes.loadClass(
 				"io.jenetics.incubator.test.Count"
 			);
-			final var of = count.getMethod("of", Integer.class);
+			final var box = count.getMethod("box", Integer.class);
 			final var with = count.getMethod("with", Function.class);
 
-			final var value = of.invoke(null, 123);
+			final var value = box.invoke(null, 123);
 			final var mapped = with.invoke(
 				value,
 				(Function<Object, Object>)current -> (Integer)current + 1
@@ -185,18 +234,18 @@ public class TypedValueBuilderTest {
 	}
 
 	@Test
-	public void primitiveTypedValueFactoryUsesBoxedParameter() throws Exception {
+	public void primitiveTypedValueBoxMethodUsesBoxedParameter() throws Exception {
 		try (var classes = compileTypedValues()) {
 			final var count = classes.loadClass(
 				"io.jenetics.incubator.test.Count"
 			);
-			final var of = count.getMethod("of", Integer.class);
+			final var box = count.getMethod("box", Integer.class);
 
-			final var value = of.invoke(null, 123);
+			final var value = box.invoke(null, 123);
 
 			assertThat(value).isInstanceOf(count);
 			assertThat(count.getMethod("value").invoke(value)).isEqualTo(123);
-			assertThat(of.invoke(null, (Object)null)).isNull();
+			assertThat(box.invoke(null, (Object)null)).isNull();
 		}
 	}
 
