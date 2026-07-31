@@ -107,6 +107,9 @@ public final class Schemas {
 	}
 
 	public static Schema<?> schemaOfRef(OpenAPI api, String ref) {
+		if (ref == null) {
+			return null;
+		}
 		final var typeName = typeNameOfRef(ref);
 		return api.getComponents().getSchemas().get(typeName);
 	}

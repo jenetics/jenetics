@@ -19,25 +19,31 @@
  */
 package io.jenetics.incubator.web.openapi.modelbuilder;
 
-import static io.jenetics.incubator.web.openapi.modelbuilder.ModelBuilder.API;
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
-import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.typeNameOf;
-
 import com.helger.jcodemodel.AbstractJClass;
 import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
-import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
+import static io.jenetics.incubator.web.openapi.modelbuilder.ModelBuilder.API;
+import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.schemaOfRef;
+import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.typeNameOf;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
@@ -116,7 +122,7 @@ public final class StructuralTypeBuilder {
 		if (schema instanceof ObjectSchema) {
 			return true;
 		} else if (schema.get$ref() != null && API.isBound()) {
-			return Schemas.schemaOfRef(API.get(), schema.get$ref()) instanceof ObjectSchema;
+			return schemaOfRef(API.get(), schema.get$ref()) instanceof ObjectSchema;
 		} else {
 			return false;
 		}
@@ -210,29 +216,56 @@ public final class StructuralTypeBuilder {
 		requireNonNull(schema);
 		requireNonNull(model);
 
-		if (schema instanceof ObjectSchema os) {
-			final var builder = new StructuralTypeBuilder();
-			builder.name(schema.getName());
-			final var required = required(os);
-			os.getProperties().forEach((name, property) ->
-				builder.component(
-					name,
-					typeNameOf(property),
-					builder.isStructureSchema(property),
-					!required.contains(name) ||
-					property.getNullable() != null && property.getNullable()
-				)
-			);
-			builder.build(model);
+		return switch (schema) {
+			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
+				final var builder = new StructuralTypeBuilder();
+				builder.name(schema.getName());
+				final var required = required(schema);
+				propertiesOf(schema).forEach((name, property) ->
+					builder.component(
+						name,
+						typeNameOf(property),
+						builder.isStructureSchema(property),
+						!required.contains(name) ||
+							property.getNullable() != null && property.getNullable()
+					)
+				);
+				builder.build(model);
 
-			return true;
-		} else {
-			return false;
-		}
-
+				yield true;
+			}
+			default -> false;
+		};
 	}
 
-	private static List<String> required(final ObjectSchema schema) {
+	@SuppressWarnings("unchecked")
+	public static Map<String, Schema<?>> propertiesOf(Schema<?> schema) {
+		return (Map<String, Schema<?>>)switch (schema) {
+			case ObjectSchema s -> s.getProperties();
+			case ComposedSchema cs -> {
+				final var schemas = new HashMap<String, Schema<?>>();
+
+				if (cs.getAllOf() != null) {
+					for (var s : cs.getAllOf()) {
+						final Schema<?> ref = schemaOfRef(API.get(), s.get$ref());
+						if (ref != null) {
+							schemas.putAll(propertiesOf(ref));
+						}
+						final var props = s.getProperties();
+						if (props != null) {
+							schemas.putAll(props);
+						}
+					}
+				}
+
+				yield  schemas;
+			}
+			default -> Map.of();
+		};
+	}
+
+	private static List<String> required(final Schema<?> schema) {
+		if (schema == null) return List.of();
 		final var required = schema.getRequired();
 		return required != null ? List.copyOf(required) : List.of();
 	}

@@ -30,6 +30,7 @@ import com.helger.jcodemodel.JOp;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -190,6 +191,7 @@ public final class TypedValueBuilder {
 			case NumberSchema ns -> Schemas.typeNameOf(ns);
 			case ArraySchema as -> Schemas.typeNameOf(as);
 			case DateSchema _ -> LocalDate.class.getName();
+			case EmailSchema _ -> String.class.getName();
 			case DateTimeSchema _ -> OffsetDateTime.class.getName();
 			case UUIDSchema _ -> UUID.class.getName();
 			case StringSchema ss when !isEnum(ss) -> String.class.getName();
