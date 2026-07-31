@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.web.openapi.modelbuilder;
 
-import static java.util.Objects.requireNonNull;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
@@ -30,7 +28,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.math.BigDecimal;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Some helper methods for handling schemas.
@@ -88,10 +87,10 @@ public final class Schemas {
 		requireNonNull(schema);
 
 		return switch (schema.getFormat()) {
-			case "float" -> "float";
-			case "double" -> "double";
-			case "int32" -> "int";
-			case "int64" -> "long";
+			case "float" -> Float.class.getName();
+			case "double" -> Double.class.getName();
+			case "int32" -> Integer.class.getName();
+			case "int64" -> Long.class.getName();
 			default -> BigDecimal.class.getName();
 		};
 	}

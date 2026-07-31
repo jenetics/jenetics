@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
+import io.swagger.v3.oas.models.media.IntegerSchema;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,6 +69,16 @@ public class TypedValueBuilderTest {
 		assertThat(source(model))
 			.contains("record Count(int value)")
 			.doesNotContain("requireNonNull(value);");
+	}
+
+	@Test
+	public void typedValueBuilderIgnoresEnumSchemas() {
+		final var schema = new IntegerSchema();
+		schema.setName("io.jenetics.incubator.test.CodeType");
+		schema.addEnumItem(10);
+		schema.addEnumItem(20);
+
+		assertThat(TypedValueBuilder.build(schema, new JCodeModel())).isFalse();
 	}
 
 	@Test

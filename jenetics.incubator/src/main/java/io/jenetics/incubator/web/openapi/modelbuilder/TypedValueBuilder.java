@@ -194,6 +194,10 @@ public final class TypedValueBuilder {
 		requireNonNull(schema);
 		requireNonNull(model);
 
+		if (isEnum(schema)) {
+			return false;
+		}
+
 		final var type = switch (schema) {
 			//case ArbitrarySchema _ -> ArbitrarySchema.class.getName();
 			case ArraySchema as -> Schemas.typeNameOf(as);
