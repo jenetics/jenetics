@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.function.Function;
 
 import javax.tools.ToolProvider;
 
@@ -88,6 +89,30 @@ public class TypedValueBuilderTest {
 	}
 
 	@Test
+	public void typedValueWithMethodIsAnnotatedNullable() throws IOException {
+		final var model = new JCodeModel();
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.TicketId")
+			.type(UUID.class.getName())
+			.build(model);
+		new TypedValueBuilder()
+			.name("io.jenetics.incubator.test.Count")
+			.type("int")
+			.build(model);
+
+		assertThat(source(model))
+			.contains("import java.util.function.Function;")
+			.contains(
+				"@Nullable\n" +
+				"    public TicketId with(Function<? super UUID, ? extends @Nullable UUID> fn)"
+			)
+			.contains(
+				"@Nullable\n" +
+				"    public Count with(Function<? super Integer, ? extends @Nullable Integer> fn)"
+			);
+	}
+
+	@Test
 	public void typedValueFactoryIsNullSafe() throws Exception {
 		try (var classes = compileTypedValues()) {
 			final var ticketId = classes.loadClass(
@@ -101,6 +126,61 @@ public class TypedValueBuilderTest {
 			assertThat(value).isInstanceOf(ticketId);
 			assertThat(ticketId.getMethod("value").invoke(value)).isEqualTo(id);
 			assertThat(of.invoke(null, (Object)null)).isNull();
+		}
+	}
+
+	@Test
+	public void typedValueWithMethodMapsValue() throws Exception {
+		try (var classes = compileTypedValues()) {
+			final var ticketId = classes.loadClass(
+				"io.jenetics.incubator.test.TicketId"
+			);
+			final var of = ticketId.getMethod("of", UUID.class);
+			final var with = ticketId.getMethod("with", Function.class);
+			final var id = UUID.fromString("3b344c14-5a7f-4c6b-9a9d-c696355ca79d");
+			final var mappedId = UUID.fromString(
+				"6b5e1e9c-5856-4da6-829b-3fdd8c4b8c8e"
+			);
+
+			final var value = of.invoke(null, id);
+			final var mapped = with.invoke(
+				value,
+				(Function<Object, Object>)ignored -> mappedId
+			);
+
+			assertThat(mapped).isInstanceOf(ticketId);
+			assertThat(ticketId.getMethod("value").invoke(mapped))
+				.isEqualTo(mappedId);
+			assertThat(with.invoke(
+				value,
+				(Function<Object, Object>)ignored -> null
+			)).isNull();
+		}
+	}
+
+	@Test
+	public void primitiveTypedValueWithMethodUsesBoxedFunctionTypes()
+		throws Exception
+	{
+		try (var classes = compileTypedValues()) {
+			final var count = classes.loadClass(
+				"io.jenetics.incubator.test.Count"
+			);
+			final var of = count.getMethod("of", Integer.class);
+			final var with = count.getMethod("with", Function.class);
+
+			final var value = of.invoke(null, 123);
+			final var mapped = with.invoke(
+				value,
+				(Function<Object, Object>)current -> (Integer)current + 1
+			);
+
+			assertThat(mapped).isInstanceOf(count);
+			assertThat(count.getMethod("value").invoke(mapped)).isEqualTo(124);
+			assertThat(with.invoke(
+				value,
+				(Function<Object, Object>)ignored -> null
+			)).isNull();
 		}
 	}
 

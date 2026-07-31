@@ -40,6 +40,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
@@ -109,18 +110,45 @@ public final class TypedValueBuilder {
 			);
 		}
 
-		final var of = clazz.method(
+		final var box = clazz.method(
 			JMod.PUBLIC | JMod.STATIC,
 			clazz,
-			"of"
+			"box"
 		);
-		of.annotate(Nullable.class);
-		final var value = of.param(valueType.boxify(), "value");
+		box.annotate(Nullable.class);
+		final var value = box.param(valueType.boxify(), "value");
 		value.annotate(Nullable.class);
-		of.body()._return(
+		box.body()._return(
 			JOp.cond(
 				JOp.ne(value, JExpr._null()),
 				JExpr._new(clazz).arg(value),
+				JExpr._null()
+			)
+		);
+
+		final var with = clazz.method(
+			JMod.PUBLIC,
+			clazz,
+			"with"
+		);
+		with.annotate(Nullable.class);
+		final var fn = with.param(
+			model.ref(Function.class).narrow(
+				valueType.boxify().wildcardSuper(),
+				valueType.boxify().annotated(Nullable.class).wildcardExtends()
+			),
+			"fn"
+		);
+		final var newValue = with.body().decl(
+			JMod.FINAL,
+			valueType.boxify(),
+			"newValue",
+			JExpr.invoke(fn, "apply").arg(JExpr.ref("value"))
+		);
+		with.body()._return(
+			JOp.cond(
+				JOp.ne(newValue, JExpr._null()),
+				JExpr._new(clazz).arg(newValue),
 				JExpr._null()
 			)
 		);
