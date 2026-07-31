@@ -31,6 +31,7 @@ import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,12 @@ import java.util.function.Consumer;
  */
 public final class StructuralTypeBuilder {
 
-	private record Component(String name, String type, boolean nestedBuilder) {
+	private record Component(
+		String name,
+		String type,
+		boolean nestedBuilder,
+		boolean nullable
+	) {
 		Component {
 			requireNonNull(name);
 			requireNonNull(type);
@@ -88,7 +94,7 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(final String name, final String type) {
-		component(name, type, false);
+		component(name, type, false, false);
 		return this;
 	}
 
@@ -100,16 +106,17 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(String name, Schema<?> schema) {
-		component(name, typeNameOf(schema), schema instanceof ObjectSchema);
+		component(name, typeNameOf(schema), schema instanceof ObjectSchema, false);
 		return this;
 	}
 
 	private void component(
 		final String name,
 		final String type,
-		final boolean nestedBuilder
+		final boolean nestedBuilder,
+		final boolean nullable
 	) {
-		components.add(new Component(name, type, nestedBuilder));
+		components.add(new Component(name, type, nestedBuilder, nullable));
 	}
 
 	/**
@@ -119,16 +126,28 @@ public final class StructuralTypeBuilder {
 	 */
 	public void build(final JCodeModel model) {
 		final var clazz = interface_(model, name);
-		components.forEach(c ->
-			clazz.method(JMod.NONE, model.parseType(c.type()), c.name())
-		);
+		components.forEach(c -> {
+			final var component = clazz.method(
+				JMod.NONE,
+				model.parseType(c.type()),
+				c.name()
+			);
+
+			if (c.nullable()) {
+				component.annotate(Nullable.class);
+			}
+		});
 
 		final var builder = builderInterface(clazz);
 		builder._extends(clazz);
 		components.forEach(c -> {
 			final var componentType = model.parseType(c.type());
-			builder.method(JMod.NONE, builder, c.name())
+			final var value = builder.method(JMod.NONE, builder, c.name())
 				.param(componentType, "value");
+
+			if (c.nullable()) {
+				value.annotate(Nullable.class);
+			}
 
 			if (c.nestedBuilder()) {
 				builder.method(JMod.NONE, builder, c.name())
@@ -177,7 +196,16 @@ public final class StructuralTypeBuilder {
 		if (schema instanceof ObjectSchema os) {
 			final var builder = new StructuralTypeBuilder();
 			builder.name(schema.getName());
-			os.getProperties().forEach(builder::component);
+			final var required = required(os);
+			os.getProperties().forEach((name, property) ->
+				builder.component(
+					name,
+					typeNameOf(property),
+					property instanceof ObjectSchema,
+					!required.contains(name) ||
+					property.getNullable() != null && property.getNullable()
+				)
+			);
 			builder.build(model);
 
 			return true;
@@ -185,6 +213,11 @@ public final class StructuralTypeBuilder {
 			return false;
 		}
 
+	}
+
+	private static List<String> required(final ObjectSchema schema) {
+		final var required = schema.getRequired();
+		return required != null ? List.copyOf(required) : List.of();
 	}
 
 }

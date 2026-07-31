@@ -23,19 +23,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
+import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
 import io.jenetics.incubator.structural.StructureView;
 import io.jenetics.incubator.structural.Structures;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -44,6 +49,27 @@ import javax.tools.ToolProvider;
 import org.testng.annotations.Test;
 
 public class StructuralTypeBuilderTest {
+
+	@Test
+	public void optionalComponentsAreAnnotatedNullable() throws IOException {
+		final var model = new JCodeModel();
+		final var schema = new ObjectSchema();
+		schema.name("io.jenetics.incubator.test.Ticket");
+		schema.addProperty("ticketId", new StringSchema());
+		schema.addProperty("comment", new StringSchema());
+		schema.setRequired(List.of("ticketId"));
+
+		StructuralTypeBuilder.build(schema, model);
+
+		assertThat(source(model))
+			.contains("import org.jspecify.annotations.Nullable;")
+			.contains("String ticketId();")
+			.contains("@Nullable\n    String comment();")
+			.contains("Builder ticketId(String value);")
+			.contains("Builder comment(@Nullable String value);")
+			.doesNotContain("@Nullable\n    String ticketId();")
+			.doesNotContain("Builder ticketId(@Nullable String value);");
+	}
 
 	@Test
 	public void structuralTypeHasCompatibleBuilderInterface() throws Exception {
@@ -96,6 +122,15 @@ public class StructuralTypeBuilderTest {
 					"name", "Concert"
 				));
 		}
+	}
+
+	private static String source(final JCodeModel model) throws IOException {
+		final var out = new ByteArrayOutputStream();
+		final var writer = new JCMWriter(model);
+		writer.build(
+			new OutputStreamCodeWriter(out, StandardCharsets.UTF_8)
+		);
+		return out.toString(StandardCharsets.UTF_8);
 	}
 
 	private record CompiledTypes(URLClassLoader loader, Path dir)
