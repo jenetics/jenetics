@@ -23,13 +23,18 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
 import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.typeNameOf;
 
+import com.helger.jcodemodel.AbstractJClass;
+import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
+import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JMod;
+import com.helger.jcodemodel.exceptions.JCodeModelException;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
@@ -48,7 +53,7 @@ import java.util.List;
  */
 public final class StructuralTypeBuilder {
 
-	private record Component(String name, String type) {
+	private record Component(String name, String type, boolean nestedBuilder) {
 		Component {
 			requireNonNull(name);
 			requireNonNull(type);
@@ -83,7 +88,7 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(final String name, final String type) {
-		components.add(new Component(name, type));
+		component(name, type, false);
 		return this;
 	}
 
@@ -95,8 +100,16 @@ public final class StructuralTypeBuilder {
 	 * @return {@code this} builder
 	 */
 	StructuralTypeBuilder component(String name, Schema<?> schema) {
-		component(name, typeNameOf(schema));
+		component(name, typeNameOf(schema), schema instanceof ObjectSchema);
 		return this;
+	}
+
+	private void component(
+		final String name,
+		final String type,
+		final boolean nestedBuilder
+	) {
+		components.add(new Component(name, type, nestedBuilder));
 	}
 
 	/**
@@ -109,6 +122,41 @@ public final class StructuralTypeBuilder {
 		components.forEach(c ->
 			clazz.method(JMod.NONE, model.parseType(c.type()), c.name())
 		);
+
+		final var builder = builderInterface(clazz);
+		builder._extends(clazz);
+		components.forEach(c -> {
+			final var componentType = model.parseType(c.type());
+			builder.method(JMod.NONE, builder, c.name())
+				.param(componentType, "value");
+
+			if (c.nestedBuilder()) {
+				builder.method(JMod.NONE, builder, c.name())
+					.param(nestedBuilderConsumer(model, c.type()), "builder");
+			}
+		});
+	}
+
+	private static JDefinedClass builderInterface(final JDefinedClass type) {
+		try {
+			return type._class(
+				JMod.PUBLIC,
+				"Builder",
+				EClassType.INTERFACE
+			);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(
+				"Builder[%s]".formatted(type.fullName()), e
+			);
+		}
+	}
+
+	private static AbstractJClass nestedBuilderConsumer(
+		final JCodeModel model,
+		final String type
+	) {
+		return model.ref(Consumer.class)
+			.narrow(model.ref("%s.Builder".formatted(type)).wildcardSuper());
 	}
 
 	/**
