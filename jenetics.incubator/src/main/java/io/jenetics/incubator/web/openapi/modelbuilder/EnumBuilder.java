@@ -28,12 +28,12 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -195,7 +195,7 @@ public final class EnumBuilder {
 			case "java.math.BigDecimal" ->
 				JExpr._new(model.ref(BigDecimal.class))
 					.arg(JExpr.lit(value.toString()));
-			default -> JExpr.lit(String.valueOf(value));
+			case null, default -> JExpr.lit(String.valueOf(value));
 		};
 	}
 
@@ -251,7 +251,7 @@ public final class EnumBuilder {
 		requireNonNull(schema);
 		requireNonNull(model);
 
-		if (schema.getEnum() != null && !schema.getEnum().isEmpty()) {
+		if (Schemas.isEnum(schema)) {
 			final var builder = new EnumBuilder();
 			builder
 				.name(schema.getName())
@@ -267,43 +267,10 @@ public final class EnumBuilder {
 	}
 
 	private static String valueTypeNameOf(final Schema<?> schema) {
-		final var type = Schemas.typeNameOf(schema);
-		return type.equals(Object.class.getName())
-			? valueTypeNameOfSchema(schema)
-			: type;
-	}
-
-	private static String valueTypeNameOfSchema(final Schema<?> schema) {
-		return switch (schema.getType()) {
-			case "boolean" -> Boolean.class.getName();
-			case "integer" -> switch (schema.getFormat()) {
-				case "int64" -> "long";
-				case null, default -> "int";
-			};
-			case "number" -> switch (schema.getFormat()) {
-				case "float" -> "float";
-				case "double" -> "double";
-				case null, default -> BigDecimal.class.getName();
-			};
-			case "string" -> String.class.getName();
-			case null, default -> valueTypeNameOfEnum(schema);
+		return switch (schema) {
+			case StringSchema ss -> Schemas.javaTypeNameOf(ss);
+			default -> Schemas.javaTypeNameOfPrimitives(schema);
 		};
-	}
-
-	private static String valueTypeNameOfEnum(final Schema<?> schema) {
-		return schema.getEnum().stream()
-			.filter(Objects::nonNull)
-			.findFirst()
-			.map(value -> switch (value) {
-				case Boolean _ -> Boolean.class.getName();
-				case Double _ -> "double";
-				case Float _ -> "float";
-				case Integer _ -> "int";
-				case Long _ -> "long";
-				case BigDecimal _ -> BigDecimal.class.getName();
-				default -> String.class.getName();
-			})
-			.orElse(String.class.getName());
 	}
 
 }

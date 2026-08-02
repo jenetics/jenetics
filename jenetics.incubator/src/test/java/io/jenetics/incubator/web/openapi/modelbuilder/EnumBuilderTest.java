@@ -80,7 +80,7 @@ public class EnumBuilderTest {
 		final var type = compileEnum(schema);
 		final var value = type.getMethod("value");
 
-		assertThat(value.getReturnType()).isEqualTo(int.class);
+		assertThat(value.getReturnType()).isEqualTo(Integer.class);
 		assertThat(value.invoke(enumConstant(type, "_1"))).isEqualTo(1);
 	}
 

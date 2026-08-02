@@ -19,17 +19,31 @@
  */
 package io.jenetics.incubator.web.openapi.modelbuilder;
 
+import static java.util.Objects.requireNonNull;
+
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.ByteArraySchema;
+import io.swagger.v3.oas.models.media.DateSchema;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.EmailSchema;
+import io.swagger.v3.oas.models.media.FileSchema;
+import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 
 import java.math.BigDecimal;
-
-import static java.util.Objects.requireNonNull;
+import java.net.URI;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Some helper methods for handling schemas.
@@ -52,19 +66,71 @@ public final class Schemas {
 	public static String typeNameOf(Schema<?> schema) {
 		requireNonNull(schema);
 
-		return switch (schema) {
-			case NumberSchema ns -> typeNameOf(ns);
-			case BooleanSchema _ -> "java.lang.Boolean";
-			case ArraySchema as -> typeNameOf(as);
-			case StringSchema ss -> switch (ss.getFormat()) {
-				case null, default -> "String";
+		var name = javaTypeNameOfPrimitives(schema);
+		if (name == null) {
+			name = switch (schema) {
+				case StringSchema ss when isEnum(ss) -> ss.getName();
+				case ObjectSchema os -> os.getName();
+				case Schema<?> s -> typeNameOfSchemaRef(s.get$ref());
 			};
-			case ObjectSchema os -> os.getName();
-			case Schema<?> s -> typeNameOfRef(s.get$ref());
+		}
+
+		return name;
+	}
+
+	/**
+	 * Returns the type name for all primitive schemas, which are essentially
+	 * all, exception {@link ObjectSchema}.
+	 *
+	 * @param schema the schema
+	 * @return the corresponding Java type name, or {@code null} if the schema
+	 *         can't be represented by a Java type.
+	 */
+	public static String javaTypeNameOfPrimitives(Schema<?> schema) {
+		return switch (schema) {
+			case ArraySchema as -> "java.util.List<%s>"
+				.formatted(typeNameOfSchemaRef(as.getItems().get$ref()));
+			case BinarySchema _ -> "byte[]";
+			case BooleanSchema _ -> Boolean.class.getName();
+			case ByteArraySchema _ -> "byte[]";
+			case DateSchema _ -> LocalDate.class.getName();
+			case DateTimeSchema _ -> OffsetDateTime.class.getName();
+			case EmailSchema _ -> String.class.getName();
+			case FileSchema _ -> Path.class.getName();
+			case IntegerSchema _ -> Integer.class.getName();
+			case NumberSchema ns -> Schemas.javaTypeNameOf(ns);
+			case PasswordSchema _  -> char[].class.getName();
+			case StringSchema ss when !isEnum(ss) -> javaTypeNameOf(ss);
+			case UUIDSchema _ -> UUID.class.getName();
+			default -> null;
 		};
 	}
 
-	public static String typeNameOfRef(final String ref) {
+	/**
+	 * Return the Java type name of the given {@code schame}. This method
+	 * obeys the schema string format when returning the Java type name.
+	 *
+	 * @param schema the schema
+	 * @return the corresponding Java type name
+	 */
+	public static String javaTypeNameOf(StringSchema schema) {
+		return switch (schema.getFormat()) {
+			case "uri", "URI" -> URI.class.getName();
+			case null, default -> String.class.getName();
+		};
+	}
+
+	public static String javaTypeNameOf(NumberSchema schema) {
+		return switch (schema.getFormat()) {
+			case "float" -> Float.class.getName();
+			case "double" -> Double.class.getName();
+			case "int32" -> Integer.class.getName();
+			case "int64" -> Long.class.getName();
+			default -> BigDecimal.class.getName();
+		};
+	}
+
+	public static String typeNameOfSchemaRef(final String ref) {
 		if (ref != null) {
 			final var index = ref.lastIndexOf("/");
 			if (index != -1) {
@@ -77,29 +143,6 @@ public final class Schemas {
 		}
 	}
 
-	/**
-	 * Return the numeric Java type name of the given number schema.
-	 *
-	 * @param schema the number schema
-	 * @return the numeric Java type
-	 */
-	public static String typeNameOf(NumberSchema schema) {
-		requireNonNull(schema);
-
-		return switch (schema.getFormat()) {
-			case "float" -> Float.class.getName();
-			case "double" -> Double.class.getName();
-			case "int32" -> Integer.class.getName();
-			case "int64" -> Long.class.getName();
-			default -> BigDecimal.class.getName();
-		};
-	}
-
-	public static String typeNameOf(ArraySchema schema) {
-		return "java.util.List<%s>"
-			.formatted(typeNameOfRef(schema.getItems().get$ref()));
-	}
-
 	public static boolean isEnum(Schema<?> schema) {
 		requireNonNull(schema);
 		return schema.getEnum() != null && !schema.getEnum().isEmpty();
@@ -109,7 +152,7 @@ public final class Schemas {
 		if (ref == null) {
 			return null;
 		}
-		final var typeName = typeNameOfRef(ref);
+		final var typeName = typeNameOfSchemaRef(ref);
 		return api.getComponents().getSchemas().get(typeName);
 	}
 

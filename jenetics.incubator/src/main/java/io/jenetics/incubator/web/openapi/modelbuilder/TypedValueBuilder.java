@@ -19,34 +19,20 @@
  */
 package io.jenetics.incubator.web.openapi.modelbuilder;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.record_;
+import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.isEnum;
+
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.JOp;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.BooleanSchema;
-import io.swagger.v3.oas.models.media.DateSchema;
-import io.swagger.v3.oas.models.media.DateTimeSchema;
-import io.swagger.v3.oas.models.media.EmailSchema;
-import io.swagger.v3.oas.models.media.FileSchema;
-import io.swagger.v3.oas.models.media.IntegerSchema;
-import io.swagger.v3.oas.models.media.NumberSchema;
-import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
-import io.swagger.v3.oas.models.media.UUIDSchema;
-import org.jspecify.annotations.Nullable;
 
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Function;
 
-import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.record_;
-import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.isEnum;
-import static java.util.Objects.requireNonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
@@ -198,28 +184,7 @@ public final class TypedValueBuilder {
 			return false;
 		}
 
-		final var type = switch (schema) {
-			//case ArbitrarySchema _ -> ArbitrarySchema.class.getName();
-			case ArraySchema as -> Schemas.typeNameOf(as);
-			//case BinarySchema bs -> BinarySchema.class.getName();
-			case BooleanSchema _ -> BooleanSchema.class.getName();
-			//case ByteArraySchema _ -> ByteArraySchema.class.getName();
-			//case ComposedSchema _  -> ComposedSchema.class.getName();
-			case DateSchema _ -> LocalDate.class.getName();
-			case DateTimeSchema _ -> OffsetDateTime.class.getName();
-			case EmailSchema _ -> String.class.getName();
-			case FileSchema _ -> Path.class.getName();
-			case IntegerSchema _ -> Integer.class.getName();
-			//case JsonSchema _  -> JsonSchema.class.getName();
-			//case MapSchema _ -> MapSchema.class.getName();
-			case NumberSchema ns -> Schemas.typeNameOf(ns);
-			//case ObjectSchema _ -> ObjectSchema.class.getName();
-			case PasswordSchema _  -> char[].class.getName();
-			case StringSchema ss when !isEnum(ss) -> String.class.getName();
-			case UUIDSchema _ -> UUID.class.getName();
-			default -> null;
-		};
-
+		final var type = Schemas.javaTypeNameOfPrimitives(schema);
 		if (type != null) {
 			new TypedValueBuilder()
 				.name(schema.getName())

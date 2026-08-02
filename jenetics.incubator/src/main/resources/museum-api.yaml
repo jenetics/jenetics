@@ -246,6 +246,9 @@ components:
                 eventId:
                     description: Unique identifier for a special event. Required if purchasing tickets for the museum's special events.
                     $ref: "#/components/schemas/EventId"
+                download:
+                    type: string
+                    format: uri
             required:
                 - ticketType
                 - ticketDate

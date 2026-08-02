@@ -34,10 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
 import static io.jenetics.incubator.web.openapi.modelbuilder.ModelBuilder.API;
@@ -224,7 +221,9 @@ public final class StructuralTypeBuilder {
 				propertiesOf(schema).forEach((name, property) ->
 					builder.component(
 						name,
-						typeNameOf(property),
+						typeNameOf(property) != null
+							? typeNameOf(property)
+							: Schemas.typeNameOfSchemaRef(property.get$ref()),
 						builder.isStructureSchema(property),
 						!required.contains(name) ||
 							property.getNullable() != null && property.getNullable()
