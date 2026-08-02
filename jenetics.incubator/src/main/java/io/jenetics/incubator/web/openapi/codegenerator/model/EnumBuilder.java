@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.modelbuilder;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;
@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.

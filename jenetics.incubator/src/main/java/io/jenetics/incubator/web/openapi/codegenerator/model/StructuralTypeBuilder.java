@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.modelbuilder;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import com.helger.jcodemodel.AbstractJClass;
 import com.helger.jcodemodel.EClassType;
@@ -36,11 +36,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.interface_;
-import static io.jenetics.incubator.web.openapi.modelbuilder.ModelBuilder.API;
-import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.schemaOfRef;
-import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.typeNameOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.interface_;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.ModelBuilder.API;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
 import static java.util.Objects.requireNonNull;
+
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.

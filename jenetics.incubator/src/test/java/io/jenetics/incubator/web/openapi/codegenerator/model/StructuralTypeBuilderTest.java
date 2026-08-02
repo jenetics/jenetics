@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.modelbuilder;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +26,7 @@ import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
 import io.jenetics.incubator.structural.StructureView;
 import io.jenetics.incubator.structural.Structures;
+
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 

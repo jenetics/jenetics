@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.modelbuilder;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.modelbuilder.CodeModels.record_;
-import static io.jenetics.incubator.web.openapi.modelbuilder.Schemas.isEnum;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.record_;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
@@ -33,6 +33,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps

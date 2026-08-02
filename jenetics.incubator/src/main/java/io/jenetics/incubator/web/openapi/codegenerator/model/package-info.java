@@ -17,26 +17,8 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.modelbuilder;
 
 /**
- * This exception is thrown if an error occurs while building the OpenAPI classes.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 9.1
- * @version 9.1
+ * This package contains the code generation for the OpenAPI specification.
  */
-public class CodeBuilderException extends RuntimeException {
-
-	public CodeBuilderException(Throwable cause) {
-		super(cause);
-	}
-
-	public CodeBuilderException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public CodeBuilderException(String message) {
-		super(message);
-	}
-}
+package io.jenetics.incubator.web.openapi.codegenerator.model;
