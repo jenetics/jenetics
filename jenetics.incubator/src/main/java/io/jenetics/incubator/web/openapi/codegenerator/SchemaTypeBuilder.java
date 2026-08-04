@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.codegenerator.model;
+package io.jenetics.incubator.web.openapi.codegenerator;
 
 import com.helger.jcodemodel.JCodeModel;
 import io.swagger.v3.oas.models.media.Schema;

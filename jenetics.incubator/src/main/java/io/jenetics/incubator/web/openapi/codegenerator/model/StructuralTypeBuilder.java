@@ -43,6 +43,7 @@ import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**

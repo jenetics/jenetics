@@ -143,6 +143,12 @@ public final class Schemas {
 		}
 	}
 
+	public static String packageNameOf(Schema<?> schema) {
+		final var name = schema.getName();
+		final var index = name.lastIndexOf("/");
+		return index != -1 ? name.substring(0, index) : "";
+	}
+
 	public static boolean isEnum(Schema<?> schema) {
 		requireNonNull(schema);
 		return schema.getEnum() != null && !schema.getEnum().isEmpty();

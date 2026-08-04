@@ -32,6 +32,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
+
 /**
  * Code builder for the schemas of an OpenAPI specification.
  *

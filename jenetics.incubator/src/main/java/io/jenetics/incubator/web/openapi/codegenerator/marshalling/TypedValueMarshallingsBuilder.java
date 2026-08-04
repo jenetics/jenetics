@@ -1,0 +1,55 @@
+package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
+
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
+
+import com.helger.jcodemodel.JCodeModel;
+import io.swagger.v3.oas.models.media.Schema;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
+import io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels;
+
+public class TypedValueMarshallingsBuilder {
+
+	private String name;
+	private String type;
+
+	public TypedValueMarshallingsBuilder() {
+	}
+
+	public TypedValueMarshallingsBuilder name(final String name) {
+		this.name = name;
+		return this;
+	}
+
+	public TypedValueMarshallingsBuilder type(final String type) {
+		this.type = type;
+		return this;
+	}
+
+	public void build(final JCodeModel model) {
+		final var clazz = CodeModels.class_(model, name);
+		clazz.generify(type);
+	}
+
+	public static boolean build(final Schema<?> schema, final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
+
+		if (isEnum(schema)) {
+			return false;
+		}
+
+		final var type = Schemas.javaTypeNameOfPrimitives(schema);
+		if (type != null) {
+			new TypedValueMarshallingsBuilder()
+				.type(schema.getName())
+				.build(model);
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}

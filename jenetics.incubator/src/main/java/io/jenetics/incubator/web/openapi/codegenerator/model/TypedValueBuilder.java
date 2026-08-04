@@ -34,6 +34,7 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
