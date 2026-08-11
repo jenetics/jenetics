@@ -19,6 +19,15 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.properties;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.interface_;
+
 import com.helger.jcodemodel.AbstractJClass;
 import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
@@ -28,7 +37,6 @@ import com.helger.jcodemodel.exceptions.JCodeModelException;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,14 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.properties;
-import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.interface_;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
-import static java.util.Objects.requireNonNull;
+import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;

@@ -11,7 +11,9 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public record EnumModel(Qname name, String type, List<Object> constants) {
+public record EnumModel(Qname name, Qname type, List<Object> constants)
+	implements SchemaModel
+{
 
 	public static Optional<EnumModel> of(final Schema<?> schema) {
 		requireNonNull(schema);
@@ -30,11 +32,14 @@ public record EnumModel(Qname name, String type, List<Object> constants) {
 		}
 	}
 
-	private static String valueTypeNameOf(final Schema<?> schema) {
-		return switch (schema) {
+	private static Qname valueTypeNameOf(final Schema<?> schema) {
+		final var name = switch (schema) {
 			case StringSchema ss -> Schemas.javaTypeNameOf(ss);
 			default -> Schemas.javaTypeNameOfPrimitives(schema);
 		};
+
+		// TODO return split name.
+		return new Qname("", name);
 	}
 
 	public static String toConstantName(final String value) {
