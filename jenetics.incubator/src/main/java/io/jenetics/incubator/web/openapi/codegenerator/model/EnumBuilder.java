@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
@@ -77,7 +78,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
  * @since 9.1
  * @version 9.1
  */
-public final class EnumBuilder {
+public final class EnumBuilder implements CodeBuilder {
 
 	private static final String VALUE_NAME = "value";
 
@@ -132,6 +133,7 @@ public final class EnumBuilder {
 	 *
 	 * @param model the model the enum class is build and added to
 	 */
+	@Override
 	public void build(final JCodeModel model) {
 		final var clazz = enum_(model, name);
 		final var string = model.ref(String.class);
@@ -268,7 +270,6 @@ public final class EnumBuilder {
 		} else {
 			return false;
 		}
-
 	}
 
 	private static String valueTypeNameOf(final Schema<?> schema) {

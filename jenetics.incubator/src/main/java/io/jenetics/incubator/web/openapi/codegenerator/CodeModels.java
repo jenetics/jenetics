@@ -37,18 +37,18 @@ public final class CodeModels {
 
 
 	public static JDefinedClass
-	interface_(final JCodeModel model, final String name) {
+	interface_(final JCodeModel model, final Qname name) {
 		try {
-			return model._class(name, EClassType.INTERFACE);
+			return model._class(name.toString(), EClassType.INTERFACE);
 		} catch (JCodeModelException e) {
 			throw new CodeBuilderException(e);
 		}
 	}
 
 	public static JDefinedClass
-	class_(final JCodeModel model, final String name) {
+	class_(final JCodeModel model, final Qname name) {
 		try {
-			return model._class(name, EClassType.CLASS);
+			return model._class(name.toString(), EClassType.CLASS);
 		} catch (JCodeModelException e) {
 			throw new CodeBuilderException(e);
 		}

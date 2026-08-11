@@ -42,7 +42,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
  * @since 9.1
  * @version 9.1
  */
-public class ModelBuilder {
+public class ModelsBuilder {
 
 	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
 		StructuralTypeBuilder::build,
@@ -53,7 +53,7 @@ public class ModelBuilder {
 	/**
 	 * Create a new enum code builder.
 	 */
-	public ModelBuilder() {
+	public ModelsBuilder() {
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class ModelBuilder {
 		final var model = new JCodeModel();
 
 		new Context(api, "com.museum.model").run(() ->
-			new ModelBuilder()
+			new ModelsBuilder()
 				.build(model)
 		);
 
@@ -89,7 +89,7 @@ public class ModelBuilder {
 	}
 
 	static OpenAPI read(final String name) throws IOException {
-		final var input = ModelBuilder.class.getResourceAsStream(name);
+		final var input = ModelsBuilder.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();

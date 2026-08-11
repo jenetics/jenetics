@@ -152,7 +152,7 @@ public final class StructuralTypeBuilder {
 	 * @param model the model the structural interface is build and added to
 	 */
 	public void build(final JCodeModel model) {
-		final var clazz = interface_(model, name.toString());
+		final var clazz = interface_(model, name);
 		components.forEach(c -> {
 			final var component = clazz.method(
 				JMod.NONE,

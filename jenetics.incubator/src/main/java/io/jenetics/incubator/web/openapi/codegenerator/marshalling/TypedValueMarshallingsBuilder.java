@@ -6,18 +6,19 @@ import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 import com.helger.jcodemodel.JCodeModel;
 import io.swagger.v3.oas.models.media.Schema;
 
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 import io.jenetics.incubator.web.openapi.codegenerator.CodeModels;
 
 public class TypedValueMarshallingsBuilder {
 
-	private String name;
+	private Qname name;
 	private String type;
 
 	public TypedValueMarshallingsBuilder() {
 	}
 
-	public TypedValueMarshallingsBuilder name(final String name) {
+	public TypedValueMarshallingsBuilder name(final Qname name) {
 		this.name = name;
 		return this;
 	}
