@@ -17,15 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.web.openapi.codegenerator.model;
+package io.jenetics.incubator.web.openapi.codegenerator;
 
 import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
-
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 
 /**
  * Some static helper methods for using the {@link JCodeModel} class.

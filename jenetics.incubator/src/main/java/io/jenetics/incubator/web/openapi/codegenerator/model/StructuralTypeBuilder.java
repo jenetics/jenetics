@@ -40,7 +40,7 @@ import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.properties;
-import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.interface_;
+import static io.jenetics.incubator.web.openapi.codegenerator.CodeModels.interface_;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
 import static java.util.Objects.requireNonNull;

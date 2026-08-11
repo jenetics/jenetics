@@ -21,7 +21,7 @@ package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.codegenerator.CodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;

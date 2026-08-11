@@ -7,7 +7,7 @@ import com.helger.jcodemodel.JCodeModel;
 import io.swagger.v3.oas.models.media.Schema;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
-import io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels;
+import io.jenetics.incubator.web.openapi.codegenerator.CodeModels;
 
 public class TypedValueMarshallingsBuilder {
 
