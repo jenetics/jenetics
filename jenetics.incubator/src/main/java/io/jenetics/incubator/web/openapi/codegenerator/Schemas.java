@@ -43,6 +43,8 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -160,6 +162,34 @@ public final class Schemas {
 		}
 		final var typeName = typeNameOfSchemaRef(ref);
 		return api.getComponents().getSchemas().get(typeName);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Schema<?>> allOf(Schema<?> schema) {
+		return schema.getAllOf() != null
+			? List.copyOf((List<Schema<?>>)(List<?>)schema.getAllOf())
+			: List.of();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Schema<?>> oneOf(Schema<?> schema) {
+		return schema.getOneOf() != null
+			? List.copyOf((List<Schema<?>>)(List<?>)schema.getOneOf())
+			: List.of();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Schema<?>> anyOf(Schema<?> schema) {
+		return schema.getAnyOf() != null
+			? List.copyOf((List<Schema<?>>)(List<?>)schema.getAnyOf())
+			: List.of();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, Schema<?>> properties(Schema<?> schema) {
+		return schema.getProperties() != null
+			? Map.copyOf((Map<String, Schema<?>>)(Map<String, ?>)schema.getProperties())
+			: Map.of();
 	}
 
 }

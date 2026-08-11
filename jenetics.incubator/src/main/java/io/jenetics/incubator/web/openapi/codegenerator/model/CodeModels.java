@@ -25,6 +25,7 @@ import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 
 /**
  * Some static helper methods for using the {@link JCodeModel} class.
@@ -57,18 +58,18 @@ public final class CodeModels {
 	}
 
 	public static JDefinedClass
-	enum_(final JCodeModel model, final String name) {
+	enum_(final JCodeModel model, final Qname name) {
 		try {
-			return model._class(name, EClassType.ENUM);
+			return model._class(name.toString(), EClassType.ENUM);
 		} catch (JCodeModelException e) {
 			throw new CodeBuilderException(e);
 		}
 	}
 
 	public static JDefinedClass
-	record_(final JCodeModel model, final String name) {
+	record_(final JCodeModel model, final Qname name) {
 		try {
-			return model._class(name, EClassType.RECORD);
+			return model._class(name.toString(), EClassType.RECORD);
 		} catch (JCodeModelException e) {
 			throw new CodeBuilderException(
 				"Record[%s]".formatted(name), e

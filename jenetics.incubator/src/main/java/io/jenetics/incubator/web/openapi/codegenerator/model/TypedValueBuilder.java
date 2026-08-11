@@ -20,6 +20,7 @@
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.record_;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 
@@ -34,6 +35,7 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
@@ -57,7 +59,7 @@ public final class TypedValueBuilder {
 
 	static final String VALUE_COMPONENT_NAME = "value";
 
-	private String name;
+	private Qname name;
 	private String type;
 
 	/**
@@ -72,7 +74,7 @@ public final class TypedValueBuilder {
 	 * @param name the wrapper class name
 	 * @return {@code this} builder
 	 */
-	public TypedValueBuilder name(final String name) {
+	public TypedValueBuilder name(final Qname name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -190,7 +192,7 @@ public final class TypedValueBuilder {
 		final var type = Schemas.javaTypeNameOfPrimitives(schema);
 		if (type != null) {
 			new TypedValueBuilder()
-				.name(schema.getName())
+				.name(qnameOf(schema))
 				.type(type)
 				.build(model);
 

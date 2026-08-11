@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import io.jenetics.incubator.web.openapi.codegenerator.Context;
 import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 
 /**
@@ -49,25 +50,10 @@ public class ModelBuilder {
 		TypedValueBuilder::build
 	);
 
-	public static final ScopedValue<OpenAPI> API = ScopedValue.newInstance();
-
-	private String package_;
-
 	/**
 	 * Create a new enum code builder.
 	 */
 	public ModelBuilder() {
-	}
-
-	/**
-	 * Set the package name for the generated model classes.
-	 *
-	 * @param name the package name of the model classes.
-	 * @return {@code this} builder
-	 */
-	public ModelBuilder package_(String name) {
-		this.package_ = requireNonNull(name);
-		return this;
 	}
 
 	/**
@@ -76,13 +62,10 @@ public class ModelBuilder {
 	 * @param model the model classes is build and added to
 	 */
 	public void build(final JCodeModel model) {
-		final var api = API.get();
+		api().getComponents().getSchemas()
+			.forEach((name, schema) -> schema.setName(name));
 
-		api.getComponents().getSchemas()
-			.forEach((name, schema) -> schema
-				.setName("%s.%s".formatted(package_, name)));
-
-		api.getComponents().getSchemas()
+		api().getComponents().getSchemas()
 			.forEach((_, schema) -> BUILDERS
 				.forEach(b -> b.build(schema, model)));
 	}
@@ -95,9 +78,8 @@ public class ModelBuilder {
 		Files.createDirectories(buildDir);
 		final var model = new JCodeModel();
 
-		ScopedValue.where(API, api).run(() ->
+		new Context(api, "com.museum.model").run(() ->
 			new ModelBuilder()
-				.package_("com.museum.model")
 				.build(model)
 		);
 

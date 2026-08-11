@@ -20,6 +20,7 @@
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
@@ -79,7 +81,7 @@ public final class EnumBuilder {
 
 	private static final String VALUE_NAME = "value";
 
-	private String name;
+	private Qname name;
 	private String valueType = String.class.getName();
 	private final List<Object> constants = new ArrayList<>();
 
@@ -95,7 +97,7 @@ public final class EnumBuilder {
 	 * @param name the enum class name
 	 * @return {@code this} builder
 	 */
-	public EnumBuilder name(final String name) {
+	public EnumBuilder name(final Qname name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -257,7 +259,7 @@ public final class EnumBuilder {
 		if (Schemas.isEnum(schema)) {
 			final var builder = new EnumBuilder();
 			builder
-				.name(schema.getName())
+				.name(qnameOf(schema))
 				.valueType(valueTypeNameOf(schema));
 			schema.getEnum().forEach(builder::constantValue);
 			builder.build(model);

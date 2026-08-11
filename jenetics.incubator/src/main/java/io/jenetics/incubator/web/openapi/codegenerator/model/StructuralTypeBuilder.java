@@ -36,13 +36,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.properties;
 import static io.jenetics.incubator.web.openapi.codegenerator.model.CodeModels.interface_;
-import static io.jenetics.incubator.web.openapi.codegenerator.model.ModelBuilder.API;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
@@ -75,7 +79,7 @@ public final class StructuralTypeBuilder {
 		}
 	}
 
-	private String name;
+	private Qname name;
 	private final List<Component> components = new ArrayList<>();
 
 	/**
@@ -90,7 +94,7 @@ public final class StructuralTypeBuilder {
 	 * @param name the structural interface name
 	 * @return {@code this} builder
 	 */
-	public StructuralTypeBuilder name(final String name) {
+	public StructuralTypeBuilder name(final Qname name) {
 		this.name = requireNonNull(name);
 		return this;
 	}
@@ -122,16 +126,15 @@ public final class StructuralTypeBuilder {
 	private boolean isStructureSchema(Schema<?> schema) {
 		if (schema instanceof ObjectSchema) {
 			return true;
-		} else if (schema.get$ref() != null && API.isBound()) {
-			return schemaOfRef(API.get(), schema.get$ref()) instanceof ObjectSchema;
+		} else if (schema.get$ref() != null) {
+			return schemaOfRef(api(), schema.get$ref()) instanceof ObjectSchema;
 		} else {
 			return false;
 		}
 	}
 
 	private boolean isStructureType(String type) {
-		return API.isBound() &&
-			API.get().getComponents().getSchemas().get(type) instanceof ObjectSchema;
+		return api().getComponents().getSchemas().get(type) instanceof ObjectSchema;
 	}
 
 	private void component(
@@ -149,7 +152,7 @@ public final class StructuralTypeBuilder {
 	 * @param model the model the structural interface is build and added to
 	 */
 	public void build(final JCodeModel model) {
-		final var clazz = interface_(model, name);
+		final var clazz = interface_(model, name.toString());
 		components.forEach(c -> {
 			final var component = clazz.method(
 				JMod.NONE,
@@ -220,7 +223,7 @@ public final class StructuralTypeBuilder {
 		return switch (schema) {
 			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
 				final var builder = new StructuralTypeBuilder();
-				builder.name(schema.getName());
+				builder.name(qnameOf(schema));
 				final var required = required(schema);
 				propertiesOf(schema).forEach((name, property) ->
 					builder.component(
@@ -241,29 +244,21 @@ public final class StructuralTypeBuilder {
 		};
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Map<String, Schema<?>> propertiesOf(Schema<?> schema) {
-		return (Map<String, Schema<?>>)switch (schema) {
-			case ObjectSchema s -> s.getProperties();
+		return switch (schema) {
+			case ObjectSchema s -> properties(s);
 			case ComposedSchema cs -> {
 				final var schemas = new HashMap<String, Schema<?>>();
 
-				if (cs.getAllOf() != null) {
-					for (var s : cs.getAllOf()) {
-						final Schema<?> ref = schemaOfRef(API.get(), s.get$ref());
-						if (ref != null) {
-							schemas.putAll(propertiesOf(ref));
-						}
-						final var props = s.getProperties();
-						if (props != null) {
-							schemas.putAll(props);
-						}
-					}
+				for (var s : allOf(cs)) {
+					final Schema<?> ref = schemaOfRef(api(), s.get$ref());
+					schemas.putAll(propertiesOf(ref));
+					schemas.putAll(properties(s));
 				}
 
-				yield  schemas;
+				yield Map.copyOf(schemas);
 			}
-			default -> Map.of();
+			case null, default -> Map.of();
 		};
 	}
 
