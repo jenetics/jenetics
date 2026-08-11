@@ -21,7 +21,8 @@ package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.CodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.codegenerator.EnumModel.toConstantName;
 
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;
@@ -34,7 +35,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
@@ -215,31 +215,6 @@ public final class EnumBuilder implements CodeBuilder {
 		return value instanceof Boolean bool
 			? bool
 			: Boolean.parseBoolean(value.toString());
-	}
-
-	private static String toConstantName(final String value) {
-		final var name = new StringBuilder();
-		final var text = value.toUpperCase(Locale.ROOT);
-
-		for (int i = 0; i < text.length();) {
-			final var cp = text.codePointAt(i);
-			i += Character.charCount(cp);
-
-			if (Character.isJavaIdentifierPart(cp)) {
-				if (name.isEmpty() && !Character.isJavaIdentifierStart(cp)) {
-					name.append('_');
-				}
-				name.appendCodePoint(cp);
-			} else if (!name.isEmpty() && name.charAt(name.length() - 1) != '_') {
-				name.append('_');
-			}
-		}
-
-		while (!name.isEmpty() && name.charAt(name.length() - 1) == '_') {
-			name.setLength(name.length() - 1);
-		}
-
-		return name.isEmpty() ? "VALUE" : name.toString();
 	}
 
 	public static Optional<EnumBuilder> of(final Schema<?> schema) {

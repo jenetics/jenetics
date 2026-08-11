@@ -8,7 +8,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
-import io.jenetics.incubator.web.openapi.codegenerator.CodeModels;
+import io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels;
 
 public class TypedValueMarshallingsBuilder {
 
@@ -29,7 +29,7 @@ public class TypedValueMarshallingsBuilder {
 	}
 
 	public void build(final JCodeModel model) {
-		final var clazz = CodeModels.class_(model, name);
+		final var clazz = JCodeModels.class_(model, name);
 		clazz.generify(type);
 	}
 

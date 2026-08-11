@@ -21,7 +21,7 @@ package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.CodeModels.record_;
+import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.record_;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 
 import com.helger.jcodemodel.JCodeModel;
@@ -37,7 +37,6 @@ import java.util.function.Function;
 import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderFactory;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
