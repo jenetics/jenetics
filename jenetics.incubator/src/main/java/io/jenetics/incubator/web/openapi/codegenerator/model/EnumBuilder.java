@@ -39,7 +39,6 @@ import java.util.Optional;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
@@ -243,20 +242,8 @@ public final class EnumBuilder implements CodeBuilder {
 		return name.isEmpty() ? "VALUE" : name.toString();
 	}
 
-	/**
-	 * Builds the class from the {@code schema} and adds it to the {@code model}.
-	 *
-	 * @see SchemaTypeBuilder
-	 *
-	 * @param schema the schema spec which defines the class
-	 * @param model the model where the class is added to
-	 * @return {@code true} if the builder has generated a class from the schema,
-	 *         {@code false} if the {@code schema} doesn't specify the Java type,
-	 *         the builder is able to build.
-	 */
-	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+	public static Optional<EnumBuilder> of(final Schema<?> schema) {
 		requireNonNull(schema);
-		requireNonNull(model);
 
 		if (Schemas.isEnum(schema)) {
 			final var builder = new EnumBuilder();
@@ -264,11 +251,10 @@ public final class EnumBuilder implements CodeBuilder {
 				.name(qnameOf(schema))
 				.valueType(valueTypeNameOf(schema));
 			schema.getEnum().forEach(builder::constantValue);
-			builder.build(model);
 
-			return true;
+			return Optional.of(builder);
 		} else {
-			return false;
+			return Optional.empty();
 		}
 	}
 

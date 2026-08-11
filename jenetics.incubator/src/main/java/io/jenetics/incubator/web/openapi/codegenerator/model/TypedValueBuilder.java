@@ -31,31 +31,34 @@ import com.helger.jcodemodel.JOp;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderFactory;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
  * a <em>value</em> type, like a numeric value or a string. The name of the
  * record adds semantic to the value.
- * {@snippet lang=java:
+ * {@snippet lang = java:
+ * import java.util.Objects;
  * public record TicketConfirmation(String value) {
  *     public TicketConfirmation {
  *         Objects.requireNonNull(value);
  *     }
  * }
- * }
+ *}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
  * @version 9.1
  */
-public final class TypedValueBuilder {
+public final class TypedValueBuilder implements CodeBuilder {
 
 	static final String VALUE_COMPONENT_NAME = "value";
 
@@ -95,6 +98,7 @@ public final class TypedValueBuilder {
 	 *
 	 * @param model the model the enum class is build and added to
 	 */
+	@Override
 	public void build(final JCodeModel model) {
 		final var clazz = record_(model, name);
 
@@ -170,35 +174,22 @@ public final class TypedValueBuilder {
 		);
 	}
 
-	/**
-	 * Builds the class from the {@code schema} and adds it to the {@code model}.
-	 *
-	 * @see SchemaTypeBuilder
-	 *
-	 * @param schema the schema spec which defines the class
-	 * @param model the model where the class is added to
-	 * @return {@code true} if the builder has generated a class from the schema,
-	 *         {@code false} if the {@code schema} doesn't specify the Java type,
-	 *         the builder is able to build.
-	 */
-	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+	public static Optional<TypedValueBuilder> of(final Schema<?> schema) {
 		requireNonNull(schema);
-		requireNonNull(model);
 
 		if (isEnum(schema)) {
-			return false;
+			return Optional.empty();
 		}
 
 		final var type = Schemas.javaTypeNameOfPrimitives(schema);
 		if (type != null) {
-			new TypedValueBuilder()
+			final var builder = new TypedValueBuilder()
 				.name(qnameOf(schema))
-				.type(type)
-				.build(model);
+				.type(type);
 
-			return true;
+			return Optional.of(builder);
 		} else {
-			return false;
+			return Optional.empty();
 		}
 	}
 

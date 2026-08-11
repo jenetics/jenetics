@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
@@ -45,9 +46,9 @@ import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRe
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
 import static java.util.Objects.requireNonNull;
 
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 /**
@@ -65,7 +66,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
  * @since 9.1
  * @version 9.1
  */
-public final class StructuralTypeBuilder {
+public final class StructuralTypeBuilder implements CodeBuilder {
 
 	private record Component(
 		String name,
@@ -151,6 +152,7 @@ public final class StructuralTypeBuilder {
 	 *
 	 * @param model the model the structural interface is build and added to
 	 */
+	@Override
 	public void build(final JCodeModel model) {
 		final var clazz = interface_(model, name);
 		components.forEach(c -> {
@@ -205,20 +207,8 @@ public final class StructuralTypeBuilder {
 			.narrow(model.ref("%s.Builder".formatted(type)).wildcardSuper());
 	}
 
-	/**
-	 * Builds the class from the {@code schema} and adds it to the {@code model}.
-	 *
-	 * @see SchemaTypeBuilder
-	 *
-	 * @param schema the schema spec which defines the class
-	 * @param model the model where the class is added to
-	 * @return {@code true} if the builder has generated a class from the schema,
-	 *         {@code false} if the {@code schema} doesn't specify the Java type,
-	 *         the builder is able to build.
-	 */
-	public static boolean build(final Schema<?> schema,  final JCodeModel model) {
+	public static Optional<StructuralTypeBuilder> of(final Schema<?> schema) {
 		requireNonNull(schema);
-		requireNonNull(model);
 
 		return switch (schema) {
 			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
@@ -236,11 +226,9 @@ public final class StructuralTypeBuilder {
 							property.getNullable() != null && property.getNullable()
 					)
 				);
-				builder.build(model);
-
-				yield true;
+				yield Optional.of(builder);
 			}
-			default -> false;
+			default -> Optional.empty();
 		};
 	}
 

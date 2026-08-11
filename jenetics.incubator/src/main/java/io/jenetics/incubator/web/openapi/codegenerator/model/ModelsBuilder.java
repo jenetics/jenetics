@@ -32,8 +32,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderFactory;
 import io.jenetics.incubator.web.openapi.codegenerator.Context;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
 
 /**
  * Code builder for the schemas of an OpenAPI specification.
@@ -42,12 +43,12 @@ import io.jenetics.incubator.web.openapi.codegenerator.SchemaTypeBuilder;
  * @since 9.1
  * @version 9.1
  */
-public class ModelsBuilder {
+public class ModelsBuilder implements CodeBuilder {
 
-	private static final List<SchemaTypeBuilder> BUILDERS = List.of(
-		StructuralTypeBuilder::build,
-		EnumBuilder::build,
-		TypedValueBuilder::build
+	private static final List<CodeBuilderFactory> BUILDERS = List.of(
+		StructuralTypeBuilder::of,
+		EnumBuilder::of,
+		TypedValueBuilder::of
 	);
 
 	/**
@@ -61,19 +62,21 @@ public class ModelsBuilder {
 	 *
 	 * @param model the model classes is build and added to
 	 */
+	@Override
 	public void build(final JCodeModel model) {
 		api().getComponents().getSchemas()
-			.forEach((name, schema) -> schema.setName(name));
-
-		api().getComponents().getSchemas()
-			.forEach((_, schema) -> BUILDERS
-				.forEach(b -> b.build(schema, model)));
+			.forEach((_, schema) -> BUILDERS.stream()
+				.flatMap(b -> b.create(schema).stream())
+				.forEach(b -> b.build(model)));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
 
 	static void main() throws IOException {
 		final var api = read("/museum-api.yaml");
+		api.getComponents().getSchemas()
+			.forEach((name, schema) -> schema.setName(name));
+
 		final var buildDir = Path.of("./jenetics.incubator/build/generated/sources/openapi/");
 		Files.createDirectories(buildDir);
 		final var model = new JCodeModel();
