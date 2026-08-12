@@ -35,8 +35,8 @@ import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
-import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
@@ -62,13 +62,13 @@ public final class StructuralTypeBuilder {
 	}
 
 
-	public static void build(SchemaModel schema, final JCodeModel model) {
-		if (schema instanceof StructuralTypeModel stm) {
+	public static void build(ModelSchema schema, final JCodeModel model) {
+		if (schema instanceof StructuralTypeSchema stm) {
 			build0(stm, model);
 		}
 	}
 
-	private static void build0(final StructuralTypeModel schema, final JCodeModel model) {
+	private static void build0(final StructuralTypeSchema schema, final JCodeModel model) {
 		final var clazz = interface_(model, schema.name());
 		schema.components().forEach(component -> {
 			// Is the component an inlined enum? Create it.

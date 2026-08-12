@@ -34,7 +34,7 @@ import java.util.List;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Context;
-import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
 
 /**
  * Code builder for the schemas of an OpenAPI specification.
@@ -64,7 +64,7 @@ public class ModelsBuilder {
 	 */
 	public void build(final JCodeModel model) {
 		api().getComponents().getSchemas().values().stream()
-			.flatMap(s -> SchemaModel.of(s).stream())
+			.flatMap(s -> ModelSchema.of(s).stream())
 			.forEach(schema -> BUILDERS.forEach(b -> b.build(schema, model)));
 	}
 

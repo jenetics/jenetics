@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> components)
-	implements SchemaModel
+public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component> components)
+	implements ModelSchema
 {
 
 	public record Component(
@@ -48,10 +48,10 @@ public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> 
 			}
 		}
 
-		public Optional<EnumModel> enumModel() {
+		public Optional<EnumSchema> enumModel() {
 			if (Schemas.isEnum(schema)) {
 				return Optional.of(
-					new EnumModel(
+					new EnumSchema(
 						schema,
 						new Qname(capitalize(name)),
 						Schemas.typeOf(schema),
@@ -81,7 +81,7 @@ public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> 
 
 	}
 
-	public static Optional<StructuralTypeModel> of(final Schema<?> schema) {
+	public static Optional<StructuralTypeSchema> of(final Schema<?> schema) {
 		requireNonNull(schema);
 
 		return switch (schema) {
@@ -100,7 +100,7 @@ public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> 
 					.toList();
 
 				yield Optional.of(
-					new StructuralTypeModel(
+					new StructuralTypeSchema(
 						schema,
 						new Qname(namespace(), schema.getName()),
 						components

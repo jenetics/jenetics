@@ -11,11 +11,11 @@ import java.util.Optional;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record TypedValueModel(Schema<?> schema, Qname name, Qname type)
-	implements SchemaModel
+public record TypedValueSchema(Schema<?> schema, Qname name, Qname type)
+	implements ModelSchema
 {
 
-	public static Optional<TypedValueModel> of(final Schema<?> schema) {
+	public static Optional<TypedValueSchema> of(final Schema<?> schema) {
 		requireNonNull(schema);
 
 		if (isEnum(schema)) {
@@ -25,7 +25,7 @@ public record TypedValueModel(Schema<?> schema, Qname name, Qname type)
 		final var name = Schemas.nameOf(schema);
 		if (name.isJavaName()) {
 			return Optional.of(
-				new TypedValueModel(
+				new TypedValueSchema(
 					schema,
 					new Qname(namespace(), schema.getName()),
 					name

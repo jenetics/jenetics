@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record EnumModel(Schema<?> schema, Qname name, Qname type, List<Object> constants)
-	implements SchemaModel
+public record EnumSchema(Schema<?> schema, Qname name, Qname type, List<Object> constants)
+	implements ModelSchema
 {
 
-	public static Optional<EnumModel> of(final Schema<?> schema) {
+	public static Optional<EnumSchema> of(final Schema<?> schema) {
 		requireNonNull(schema);
 
 		if (Schemas.isEnum(schema)) {
 			return Optional.of(
-				new EnumModel(
+				new EnumSchema(
 					schema,
 					Schemas.nameOf(schema),
 					Schemas.typeOf(schema),

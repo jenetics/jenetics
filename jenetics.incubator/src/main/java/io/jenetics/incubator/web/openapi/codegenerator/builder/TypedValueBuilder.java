@@ -31,8 +31,8 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
-import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
@@ -58,13 +58,13 @@ public final class TypedValueBuilder {
 	private TypedValueBuilder() {
 	}
 
-	public static void build(SchemaModel schema, final JCodeModel model) {
-		if (schema instanceof TypedValueModel tvm) {
+	public static void build(ModelSchema schema, final JCodeModel model) {
+		if (schema instanceof TypedValueSchema tvm) {
 			build0(tvm, model);
 		}
 	}
 
-	private static void build0(TypedValueModel schema, final JCodeModel model) {
+	private static void build0(TypedValueSchema schema, final JCodeModel model) {
 		final var clazz = record_(model, schema.name());
 
 		final var valueType = model.parseType(schema.type().toString());

@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
-import static io.jenetics.incubator.web.openapi.codegenerator.model.EnumModel.toConstantName;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema.toConstantName;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
@@ -33,8 +33,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import io.jenetics.incubator.web.openapi.codegenerator.model.EnumModel;
-import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.
@@ -79,14 +79,14 @@ public final class EnumModelBuilder {
 	private EnumModelBuilder() {
 	}
 
-	public static void build(final SchemaModel schema, final JCodeModel model) {
-		if (schema instanceof EnumModel em) {
+	public static void build(final ModelSchema schema, final JCodeModel model) {
+		if (schema instanceof EnumSchema em) {
 			build0(em, model);
 		}
 	}
 
 	static void build(
-		final EnumModel schema,
+		final EnumSchema schema,
 		final JDefinedClass clazz,
 		final JCodeModel model
 	) {
@@ -138,7 +138,7 @@ public final class EnumModelBuilder {
 		parse.body()._return(optional.staticInvoke("empty"));
 	}
 
-	private static void build0(final EnumModel schema, final JCodeModel model) {
+	private static void build0(final EnumSchema schema, final JCodeModel model) {
 		final var clazz = enum_(model, schema.name());
 		build(schema, clazz, model);
 	}
