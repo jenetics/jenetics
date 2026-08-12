@@ -13,7 +13,7 @@ public sealed interface SchemaModel
 		TypedValueModel,
 		NoModel
 {
-	Qname name();
+	Schema<?> schema();
 
 	static Optional<SchemaModel> of(final Schema<?> schema) {
 		Optional<? extends SchemaModel> model = EnumModel.of(schema);

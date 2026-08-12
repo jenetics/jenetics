@@ -52,6 +52,7 @@ public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> 
 			if (Schemas.isEnum(schema)) {
 				return Optional.of(
 					new EnumModel(
+						schema,
 						new Qname(capitalize(name)),
 						Schemas.typeOf(schema),
 						schema.getEnum().stream()

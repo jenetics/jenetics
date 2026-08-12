@@ -11,7 +11,7 @@ import java.util.Optional;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record TypedValueModel(Qname name, Qname type)
+public record TypedValueModel(Schema<?> schema, Qname name, Qname type)
 	implements SchemaModel
 {
 
@@ -26,6 +26,7 @@ public record TypedValueModel(Qname name, Qname type)
 		if (name.isJavaName()) {
 			return Optional.of(
 				new TypedValueModel(
+					schema,
 					new Qname(namespace(), schema.getName()),
 					name
 				)

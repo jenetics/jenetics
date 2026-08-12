@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record EnumModel(Qname name, Qname type, List<Object> constants)
+public record EnumModel(Schema<?> schema, Qname name, Qname type, List<Object> constants)
 	implements SchemaModel
 {
 
@@ -22,6 +22,7 @@ public record EnumModel(Qname name, Qname type, List<Object> constants)
 		if (Schemas.isEnum(schema)) {
 			return Optional.of(
 				new EnumModel(
+					schema,
 					Schemas.nameOf(schema),
 					Schemas.typeOf(schema),
 					schema.getEnum().stream()
