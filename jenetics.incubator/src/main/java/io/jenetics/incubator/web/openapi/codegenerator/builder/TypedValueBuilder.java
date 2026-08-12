@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.record_;
 
 import com.helger.jcodemodel.JCodeModel;
@@ -31,7 +32,6 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 /**
@@ -58,13 +58,10 @@ public final class TypedValueBuilder {
 	private TypedValueBuilder() {
 	}
 
-	public static void build(TypedSchema schema, final JCodeModel model) {
-		if (schema instanceof TypedValueSchema tvm) {
-			build0(tvm, model);
-		}
-	}
+	public static void build(TypedValueSchema schema, final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
 
-	private static void build0(TypedValueSchema schema, final JCodeModel model) {
 		final var clazz = record_(model, schema.name());
 
 		final var valueType = model.parseType(schema.type().toString());

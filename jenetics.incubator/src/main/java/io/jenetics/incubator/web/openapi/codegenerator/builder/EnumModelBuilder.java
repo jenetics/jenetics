@@ -19,8 +19,9 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
-import static io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema.toConstantName;
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema.toConstantName;
 
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;
@@ -31,10 +32,10 @@ import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Optional;
 
 import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
-import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.
@@ -79,10 +80,12 @@ public final class EnumModelBuilder {
 	private EnumModelBuilder() {
 	}
 
-	public static void build(final TypedSchema schema, final JCodeModel model) {
-		if (schema instanceof EnumSchema em) {
-			build0(em, model);
-		}
+	public static void build(final EnumSchema schema, final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
+
+		final var clazz = enum_(model, schema.name());
+		build(schema, clazz, model);
 	}
 
 	static void build(
@@ -105,7 +108,7 @@ public final class EnumModelBuilder {
 
 		// Add the enum constants
 		for (final var constant : schema.constants()) {
-			clazz.enumConstant(toConstantName(String.valueOf(constant)))
+			clazz.enumConstant(toConstantName(constant))
 				.arg(literal(model, type, constant));
 		}
 
@@ -138,11 +141,6 @@ public final class EnumModelBuilder {
 		parse.body()._return(optional.staticInvoke("empty"));
 	}
 
-	private static void build0(final EnumSchema schema, final JCodeModel model) {
-		final var clazz = enum_(model, schema.name());
-		build(schema, clazz, model);
-	}
-
 	private static IJExpression literal(
 		final JCodeModel model,
 		final AbstractJType type,
@@ -160,6 +158,9 @@ public final class EnumModelBuilder {
 				JExpr.lit(numberValue(value).longValue());
 			case "java.math.BigDecimal" ->
 				JExpr._new(model.ref(BigDecimal.class))
+					.arg(JExpr.lit(value.toString()));
+			case "java.net.URI" ->
+				model.ref(URI.class).staticInvoke("create")
 					.arg(JExpr.lit(value.toString()));
 			case null, default -> JExpr.lit(String.valueOf(value));
 		};

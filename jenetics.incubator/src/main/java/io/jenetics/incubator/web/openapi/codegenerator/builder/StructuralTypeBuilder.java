@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.interface_;
 
@@ -31,12 +32,15 @@ import com.helger.jcodemodel.exceptions.JCodeModelException;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
+import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema.Component;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
@@ -61,21 +65,18 @@ public final class StructuralTypeBuilder {
 	private StructuralTypeBuilder() {
 	}
 
+	public static void build(final StructuralTypeSchema schema, final JCodeModel model) {
+		requireNonNull(schema);
+		requireNonNull(model);
 
-	public static void build(TypedSchema schema, final JCodeModel model) {
-		if (schema instanceof StructuralTypeSchema stm) {
-			build0(stm, model);
-		}
-	}
-
-	private static void build0(final StructuralTypeSchema schema, final JCodeModel model) {
 		final var clazz = interface_(model, schema.name());
 		schema.components().forEach(component -> {
-			// Is the component an inlined enum? Create it.
-			component.enumModel().ifPresent(em -> {
-				final var et = enum_(clazz, em.name());
-				EnumModelBuilder.build(em, et, model);
-			});
+			// Create inlined enum types.
+			final var enumSchema = enumSchemaOf(component);
+			if (enumSchema != null) {
+				final var et = enum_(clazz, enumSchema.name());
+				EnumModelBuilder.build(enumSchema, et, model);
+			}
 
 			final var accessor = clazz.method(
 				JMod.NONE,
@@ -104,6 +105,20 @@ public final class StructuralTypeBuilder {
 					.param(nestedBuilderConsumer(model, component.type().toString()), "builder");
 			}
 		});
+	}
+
+	private static EnumSchema enumSchemaOf(Component component) {
+		if (Schemas.isEnum(component.schema())) {
+			return new EnumSchema(
+					component.schema(),
+					component.type(),
+					Schemas.typeOf(component.schema()),
+					component.schema().getEnum().stream()
+						.collect(Collectors.toUnmodifiableList())
+			);
+		} else {
+			return null;
+		}
 	}
 
 	private static JDefinedClass builderInterface(final JDefinedClass type) {

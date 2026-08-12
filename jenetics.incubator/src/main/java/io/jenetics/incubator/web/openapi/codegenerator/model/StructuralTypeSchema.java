@@ -1,5 +1,6 @@
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.deref;
@@ -12,21 +13,50 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
-public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component> components)
+/**
+ * Boxes a {@code schema} which represents a structural type.
+ *
+ * @param schema the schema
+ * @param name the Java type name of the structural type
+ * @param components the component list of the structural type
+ */
+public record StructuralTypeSchema(
+	Schema<?> schema,
+	Qname name,
+	List<Component> components
+)
 	implements TypedSchema
 {
 
-	public record Component(
-		Schema<?> schema,
-		String name
-	) {
+	public StructuralTypeSchema {
+		requireNonNull(schema);
+		requireNonNull(name);
+		components = List.copyOf(components);
+	}
 
+	/**
+	 * A component of the structural type.
+	 *
+	 * @param schema the <em>property</em> schema: {@link Schema#getProperties()}
+	 * @param name the component name
+	 */
+	public record Component(Schema<?> schema, String name) {
+
+		public Component {
+			requireNonNull(schema);
+			requireNonNull(name);
+		}
+
+		/**
+		 * Return {@code true} if {@code this} component is nullable.
+		 *
+		 * @return {@code true} if {@code this} component is nullable,
+		 *         {@code false} otherwise
+		 */
 		public boolean isNullable() {
 			final var required = schema.getRequired() != null
 				? schema.getRequired()
@@ -37,6 +67,13 @@ public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component>
 					schema.getNullable();
 		}
 
+		/**
+		 * Return {@code true} if {@code this} component is also a structural
+		 * type.
+		 *
+		 * @return {@code true} if {@code this} component is also a structural
+		 * 		   type, {@code false} otherwise
+		 */
 		public boolean isStructural() {
 			if (schema instanceof ObjectSchema) {
 				return true;
@@ -47,22 +84,11 @@ public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component>
 			}
 		}
 
-		public Optional<EnumSchema> enumModel() {
-			if (Schemas.isEnum(schema)) {
-				return Optional.of(
-					new EnumSchema(
-						schema,
-						new Qname(capitalize(name)),
-						Schemas.typeOf(schema),
-						schema.getEnum().stream()
-							.collect(Collectors.toUnmodifiableList())
-					)
-				);
-			} else {
-				return Optional.empty();
-			}
-		}
-
+		/**
+		 * Return the qualified name of the type of the component.
+		 *
+		 * @return the qualified name of the type of the component
+		 */
 		public Qname type() {
 			if (Schemas.isEnum(schema)) {
 				return new Qname(capitalize(name));
@@ -82,25 +108,17 @@ public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component>
 
 	static StructuralTypeSchema of(final Schema<?> schema) {
 		return switch (schema) {
-			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
-				final var components = propertiesOf(schema).entrySet().stream()
-					.map(entry -> {
-						final String name = entry.getKey();
-						final Schema<?> property = entry.getValue();
+			case ObjectSchema _, ComposedSchema _
+				when !propertiesOf(schema).isEmpty()-> {
+					final var components = propertiesOf(schema).entrySet().stream()
+						.map(entry -> new Component(entry.getValue(), entry.getKey()))
+						.toList();
 
-						final Qname type = Schemas.hasName(property)
-							? Schemas.nameOf(property)
-							: Schemas.nameOf(Schemas.deref(property.get$ref()).orElse(null));
-
-						return new Component(property, name);
-					})
-					.toList();
-
-				yield new StructuralTypeSchema(
-					schema,
-					new Qname(namespace(), schema.getName()),
-					components
-				);
+					yield new StructuralTypeSchema(
+						schema,
+						new Qname(namespace(), schema.getName()),
+						components
+					);
 			}
 			case null, default -> null;
 		};

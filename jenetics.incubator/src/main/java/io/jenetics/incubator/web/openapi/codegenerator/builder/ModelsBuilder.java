@@ -30,11 +30,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Context;
+import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.GenericSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 /**
  * Code builder for the schemas of an OpenAPI specification.
@@ -44,12 +46,6 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
  * @version 9.1
  */
 public class ModelsBuilder {
-
-	private static final List<CodeBuilder> BUILDERS = List.of(
-		StructuralTypeBuilder::build,
-		EnumModelBuilder::build,
-		TypedValueBuilder::build
-	);
 
 	/**
 	 * Create a new enum code builder.
@@ -63,9 +59,15 @@ public class ModelsBuilder {
 	 * @param model the model classes is build and added to
 	 */
 	public void build(final JCodeModel model) {
-		api().getComponents().getSchemas().values().stream()
-			.map(TypedSchema::of)
-			.forEach(schema -> BUILDERS.forEach(b -> b.build(schema, model)));
+		api().getComponents().getSchemas().values()
+			.forEach(schema -> {
+				switch (TypedSchema.of(schema)) {
+					case EnumSchema s -> EnumModelBuilder.build(s, model);
+					case TypedValueSchema s -> TypedValueBuilder.build(s, model);
+					case StructuralTypeSchema s -> StructuralTypeBuilder.build(s, model);
+					case GenericSchema _ -> {}
+				};
+			});
 	}
 
 	// /////////////////////////////////////////////////////////////////////////

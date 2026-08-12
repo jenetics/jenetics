@@ -360,6 +360,13 @@ components:
                     $ref: "#/components/schemas/EventDates"
                 price:
                     $ref: "#/components/schemas/EventPrice"
+                page:
+                    type: string
+                    format: uri
+                    enum:
+                        - "http://google.com"
+                        - "http://x.com"
+                        - "http://jenetics.io"
             required:
                 - name
                 - location
