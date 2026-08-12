@@ -1,8 +1,10 @@
-package io.jenetics.incubator.web.openapi.codegenerator;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Optional;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 
 public sealed interface SchemaModel
 	permits EnumModel, StructuralTypeModel, TypedValueModel

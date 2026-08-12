@@ -31,8 +31,8 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
-import io.jenetics.incubator.web.openapi.codegenerator.TypedValueModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueModel;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps

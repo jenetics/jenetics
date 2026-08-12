@@ -35,8 +35,8 @@ import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
-import io.jenetics.incubator.web.openapi.codegenerator.StructuralTypeModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeModel;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.

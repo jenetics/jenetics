@@ -34,7 +34,7 @@ import java.util.List;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.Context;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
 
 /**
  * Code builder for the schemas of an OpenAPI specification.

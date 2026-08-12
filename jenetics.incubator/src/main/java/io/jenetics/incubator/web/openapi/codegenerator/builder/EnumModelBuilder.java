@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
-import static io.jenetics.incubator.web.openapi.codegenerator.EnumModel.toConstantName;
+import static io.jenetics.incubator.web.openapi.codegenerator.model.EnumModel.toConstantName;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
@@ -33,8 +33,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import io.jenetics.incubator.web.openapi.codegenerator.EnumModel;
-import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.EnumModel;
+import io.jenetics.incubator.web.openapi.codegenerator.model.SchemaModel;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.

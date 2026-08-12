@@ -1,7 +1,6 @@
-package io.jenetics.incubator.web.openapi.codegenerator;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
 
 import io.swagger.v3.oas.models.media.Schema;
 
@@ -9,6 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record EnumModel(Qname name, Qname type, List<Object> constants)
 	implements SchemaModel

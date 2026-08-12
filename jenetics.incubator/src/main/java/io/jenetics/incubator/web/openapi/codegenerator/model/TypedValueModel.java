@@ -1,4 +1,4 @@
-package io.jenetics.incubator.web.openapi.codegenerator;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
@@ -7,6 +7,9 @@ import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Optional;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record TypedValueModel(Qname name, Qname type)
 	implements SchemaModel

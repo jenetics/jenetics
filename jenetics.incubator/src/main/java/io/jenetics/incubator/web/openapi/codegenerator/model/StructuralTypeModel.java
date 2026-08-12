@@ -1,4 +1,4 @@
-package io.jenetics.incubator.web.openapi.codegenerator;
+package io.jenetics.incubator.web.openapi.codegenerator.model;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
+import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> components)
 	implements SchemaModel
