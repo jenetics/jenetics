@@ -88,8 +88,16 @@ public final class Schemas {
 		var result = switch (schema) {
 			// These types will be generated and not mapped on
 			// existing Java types.
-			case Schema<?> s when isEnum(s) -> new Qname(namespace(), s.getName());
-			case ObjectSchema _, ComposedSchema _ -> new Qname(namespace(), schema.getName());
+			case Schema<?> s when isEnum(s) -> {
+				if (s.getName() != null) {
+					yield new Qname(namespace(), s.getName());
+				} else {
+					final var parent = parentOf(s).orElseThrow();
+					final var name = nameOf(parent).toString();
+				}
+				yield null;
+			}
+			case ObjectSchema _, ComposedSchema _ when schema.getName() != null -> new Qname(namespace(), schema.getName());
 			default -> null;
 		};
 
@@ -127,7 +135,7 @@ public final class Schemas {
 				case null, default -> Qname.of(String.class.getName());
 			};
 			case IntegerSchema s -> switch (s.getFormat()) {
-				case "int64" -> Qname.of(Integer.class.getName());
+				case "int64" -> Qname.of(Long.class.getName());
 				case null, default -> Qname.of(Integer.class.getName());
 			};
 			case NumberSchema s -> switch (s.getFormat()) {
@@ -159,16 +167,7 @@ public final class Schemas {
 			final var index = ref.lastIndexOf("/");
 			if (index != -1) {
 				final var name = ref.substring(index + 1);
-				final var components = api().getComponents();
-				if (components != null) {
-					final var schemas = components.getSchemas();
-					if (schemas != null) {
-						@SuppressWarnings("unchecked")
-						final Optional<Schema<?>> schema =
-							Optional.ofNullable(schemas.get(name));
-						return schema;
-					}
-				}
+				return Optional.ofNullable(schemas().get(name));
 			}
 		}
 
@@ -179,6 +178,26 @@ public final class Schemas {
 		final var ref = schema != null ? schema.get$ref() : null;
 		return deref(ref);
 	}
+
+	public static Optional<Schema<?>> parentOf(Schema<?> schema) {
+		return schemas().values().stream()
+			.filter(s -> properties(s).values().stream().anyMatch(p -> p == schema))
+			.findFirst();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, Schema<?>> schemas() {
+		final var components = api().getComponents();
+		if (components != null) {
+			final var schemas = (Map<String, Schema<?>>)(Object)components.getSchemas();
+			if (schemas != null) {
+				return Map.copyOf(schemas);
+			}
+		}
+
+		return Map.of();
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public static List<Schema<?>> allOf(Schema<?> schema) {

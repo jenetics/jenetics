@@ -22,6 +22,7 @@ package io.jenetics.incubator.web.openapi.codegenerator.internal;
 import com.helger.jcodemodel.EClassType;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
+import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
@@ -61,6 +62,15 @@ public final class JCodeModels {
 	enum_(final JCodeModel model, final Qname name) {
 		try {
 			return model._class(name.toString(), EClassType.ENUM);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(e);
+		}
+	}
+
+	public static JDefinedClass
+	enum_(JDefinedClass clazz, final Qname name) {
+		try {
+			return clazz._enum(JMod.NONE, name.toString());
 		} catch (JCodeModelException e) {
 			throw new CodeBuilderException(e);
 		}

@@ -642,6 +642,15 @@ components:
                     $ref: "#/components/schemas/ArtifactCollection"
                 primaryCurator:
                     $ref: "#/components/schemas/Curator"
+                kind:
+                    type: integer
+                    format: int32
+                    enum:
+                        - 10
+                        - 20
+                        - 25
+                        - 30
+                        - 40
             required:
                 - galleryId
                 - name

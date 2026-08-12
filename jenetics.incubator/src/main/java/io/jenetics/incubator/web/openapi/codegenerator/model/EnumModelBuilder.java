@@ -25,6 +25,7 @@ import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeMode
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;
 import com.helger.jcodemodel.JCodeModel;
+import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
@@ -84,8 +85,11 @@ public final class EnumModelBuilder {
 		}
 	}
 
-	private static void build0(final EnumModel schema, final JCodeModel model) {
-		final var clazz = enum_(model, schema.name());
+	static void build(
+		final EnumModel schema,
+		final JDefinedClass clazz,
+		final JCodeModel model
+	) {
 		final var string = model.ref(String.class);
 		final var type = model.parseType(schema.type().toString());
 
@@ -132,6 +136,11 @@ public final class EnumModelBuilder {
 			._then()
 			._return(optional.staticInvoke("of").arg(constant));
 		parse.body()._return(optional.staticInvoke("empty"));
+	}
+
+	private static void build0(final EnumModel schema, final JCodeModel model) {
+		final var clazz = enum_(model, schema.name());
+		build(schema, clazz, model);
 	}
 
 	private static IJExpression literal(

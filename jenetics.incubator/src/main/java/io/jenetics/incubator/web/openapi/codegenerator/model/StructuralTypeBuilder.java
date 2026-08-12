@@ -19,6 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
+import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.interface_;
 
 import com.helger.jcodemodel.AbstractJClass;
@@ -69,15 +70,21 @@ public final class StructuralTypeBuilder {
 
 	private static void build0(final StructuralTypeModel schema, final JCodeModel model) {
 		final var clazz = interface_(model, schema.name());
-		schema.components().forEach(c -> {
-			final var component = clazz.method(
+		schema.components().forEach(component -> {
+			// Is the component an inlined enum? Create it.
+			component.enumModel().ifPresent(em -> {
+				final var et = enum_(clazz, em.name());
+				EnumModelBuilder.build(em, et, model);
+			});
+
+			final var accessor = clazz.method(
 				JMod.NONE,
-				model.parseType(c.type().toString()),
-				c.name()
+				model.parseType(component.type().toString()),
+				component.name()
 			);
 
-			if (c.nullable()) {
-				component.annotate(Nullable.class);
+			if (component.isNullable()) {
+				accessor.annotate(Nullable.class);
 			}
 		});
 
@@ -88,11 +95,11 @@ public final class StructuralTypeBuilder {
 			final var value = builder.method(JMod.NONE, builder, component.name())
 				.param(componentType, "value");
 
-			if (component.nullable()) {
+			if (component.isNullable()) {
 				value.annotate(Nullable.class);
 			}
 
-			if (component.structural()) {
+			if (component.isStructural()) {
 				builder.method(JMod.NONE, builder, component.name())
 					.param(nestedBuilderConsumer(model, component.type().toString()), "builder");
 			}

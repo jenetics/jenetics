@@ -14,17 +14,67 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public record StructuralTypeModel(Qname name, List<Component> components)
+public record StructuralTypeModel(Schema<?> schema, Qname name, List<Component> components)
 	implements SchemaModel
 {
 
 	public record Component(
-		String name,
-		Qname type,
-		boolean nullable,
-		boolean structural
+		Schema<?> schema,
+		String name
 	) {
+
+		public boolean isNullable() {
+			final var required = schema.getRequired() != null
+				? schema.getRequired()
+				: List.of();
+
+			return !required.contains(name) ||
+				schema.getNullable() != null &&
+					schema.getNullable();
+		}
+
+		public boolean isStructural() {
+			if (schema instanceof ObjectSchema) {
+				return true;
+			} else if (schema.get$ref() != null) {
+				return Schemas.ref(schema).orElse(null) instanceof ObjectSchema;
+			} else {
+				return false;
+			}
+		}
+
+		public Optional<EnumModel> enumModel() {
+			if (Schemas.isEnum(schema)) {
+				return Optional.of(
+					new EnumModel(
+						new Qname(capitalize(name)),
+						Schemas.typeOf(schema),
+						schema.getEnum().stream()
+							.collect(Collectors.toUnmodifiableList())
+					)
+				);
+			} else {
+				return Optional.empty();
+			}
+		}
+
+		public Qname type() {
+			if (Schemas.isEnum(schema)) {
+				return new Qname(capitalize(name));
+			} else {
+				return Schemas.hasName(schema)
+					? Schemas.nameOf(schema)
+					: Schemas.nameOf(Schemas.deref(schema.get$ref()).orElse(null));
+			}
+		}
+
+		private static String capitalize(String str) {
+			if (str == null || str.isEmpty()) return str;
+			return str.substring(0, 1).toUpperCase() + str.substring(1);
+		}
+
 	}
 
 	public static Optional<StructuralTypeModel> of(final Schema<?> schema) {
@@ -32,24 +82,22 @@ public record StructuralTypeModel(Qname name, List<Component> components)
 
 		return switch (schema) {
 			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
-				final var required = required(schema);
-
 				final var components = propertiesOf(schema).entrySet().stream()
 					.map(entry -> {
 						final String name = entry.getKey();
 						final Schema<?> property = entry.getValue();
+
 						final Qname type = Schemas.hasName(property)
 							? Schemas.nameOf(property)
 							: Schemas.nameOf(Schemas.deref(property.get$ref()).orElse(null));
-						final boolean nullable = !required.contains(name) ||
-							property.getNullable() != null && property.getNullable();
 
-						return new Component(name, type, nullable, isStructureSchema(property));
+						return new Component(property, name);
 					})
 					.toList();
 
 				yield Optional.of(
 					new StructuralTypeModel(
+						schema,
 						new Qname(namespace(), schema.getName()),
 						components
 					)
@@ -59,7 +107,7 @@ public record StructuralTypeModel(Qname name, List<Component> components)
 		};
 	}
 
-	public static Map<String, Schema<?>> propertiesOf(Schema<?> schema) {
+	private static Map<String, Schema<?>> propertiesOf(Schema<?> schema) {
 		return switch (schema) {
 			case ObjectSchema s -> properties(s);
 			case ComposedSchema cs -> {
@@ -76,22 +124,6 @@ public record StructuralTypeModel(Qname name, List<Component> components)
 			}
 			case null, default -> Map.of();
 		};
-	}
-
-	private static List<String> required(final Schema<?> schema) {
-		if (schema == null) return List.of();
-		final var required = schema.getRequired();
-		return required != null ? List.copyOf(required) : List.of();
-	}
-
-	private static boolean isStructureSchema(Schema<?> schema) {
-		if (schema instanceof ObjectSchema) {
-			return true;
-		} else if (schema.get$ref() != null) {
-			return Schemas.ref(schema).orElse(null) instanceof  ObjectSchema;
-		} else {
-			return false;
-		}
 	}
 
 }
