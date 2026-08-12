@@ -20,12 +20,14 @@
 package io.jenetics.incubator.web.openapi.codegenerator;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
 
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.ByteArraySchema;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.EmailSchema;
@@ -45,10 +47,15 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Some helper methods for handling schemas.
+ *
+ * @implNote
+ * Uses {@link Context} class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1
@@ -65,103 +72,112 @@ public final class Schemas {
 	 * @param schema the schema
 	 * @return the type name of the given {@code schema}
 	 */
-	public static String typeNameOf(Schema<?> schema) {
-		requireNonNull(schema);
-
-		var name = javaTypeNameOfPrimitives(schema);
-		if (name == null) {
-			name = switch (schema) {
-				case StringSchema ss when isEnum(ss) -> ss.getName();
-				case ObjectSchema os -> os.getName();
-				case Schema<?> s -> typeNameOfSchemaRef(s.get$ref());
-			};
-		}
-
-		return name;
+	public static Qname nameOf(Schema<?> schema) {
+		return nameOf0(schema).orElseThrow(() ->
+			new IllegalArgumentException("No name for '%s'.".formatted(schema))
+		);
 	}
 
-	/**
-	 * Returns the type name for all primitive schemas, which are essentially
-	 * all, exception {@link ObjectSchema}.
-	 *
-	 * @param schema the schema
-	 * @return the corresponding Java type name, or {@code null} if the schema
-	 *         can't be represented by a Java type.
-	 */
-	public static String javaTypeNameOfPrimitives(Schema<?> schema) {
+	public static boolean hasName(Schema<?> schema) {
+		return nameOf0(schema).isPresent();
+	}
+
+	private static Optional<Qname> nameOf0(Schema<?> schema) {
+		requireNonNull(schema);
+
+		var result = switch (schema) {
+			// These types will be generated and not mapped on
+			// existing Java types.
+			case Schema<?> s when isEnum(s) -> new Qname(namespace(), s.getName());
+			case ObjectSchema _, ComposedSchema _ -> new Qname(namespace(), schema.getName());
+			default -> null;
+		};
+
+		if (result == null) {
+			result = typeOf(schema);
+		}
+
+		return Optional.ofNullable(result);
+	}
+
+	public static Qname typeOf(Schema<?> schema) {
 		return switch (schema) {
-			case ArraySchema as -> "java.util.List<%s>"
-				.formatted(typeNameOfSchemaRef(as.getItems().get$ref()));
-			case BinarySchema _ -> "byte[]";
-			case BooleanSchema _ -> Boolean.class.getName();
-			case ByteArraySchema _ -> "byte[]";
-			case DateSchema _ -> LocalDate.class.getName();
-			case DateTimeSchema _ -> OffsetDateTime.class.getName();
-			case EmailSchema _ -> String.class.getName();
-			case FileSchema _ -> Path.class.getName();
-			case IntegerSchema _ -> Integer.class.getName();
-			case NumberSchema ns -> Schemas.javaTypeNameOf(ns);
-			case PasswordSchema _  -> char[].class.getName();
-			case StringSchema ss when !isEnum(ss) -> javaTypeNameOf(ss);
-			case UUIDSchema _ -> UUID.class.getName();
+			// These schemas are mapped to Java types.
+			case BinarySchema _ -> Qname.of("byte[]");
+			case BooleanSchema _ -> Qname.of(Boolean.class.getName());
+			case ByteArraySchema _ -> Qname.of("byte[]");
+			case DateSchema _ -> Qname.of(LocalDate.class.getName());
+			case DateTimeSchema _ -> Qname.of(OffsetDateTime.class.getName());
+			case EmailSchema _ -> Qname.of(String.class.getName());
+			case FileSchema _ -> Qname.of(Path.class.getName());
+			case PasswordSchema _  -> Qname.of("char[]");
+			case UUIDSchema _ -> Qname.of(UUID.class.getName());
+			case ArraySchema s -> Qname.of(
+				"java.util.List<%s>".formatted(
+					deref(s.getItems().get$ref())
+						.map(Schemas::nameOf)
+						.map(Objects::toString)
+						.orElse(Object.class.getName())
+				)
+			);
+
+			// Obey the format for the following schemas.
+			case StringSchema s -> switch (s.getFormat()) {
+				case "uri", "URI" -> Qname.of(URI.class.getName());
+				case null, default -> Qname.of(String.class.getName());
+			};
+			case IntegerSchema s -> switch (s.getFormat()) {
+				case "int64" -> Qname.of(Integer.class.getName());
+				case null, default -> Qname.of(Integer.class.getName());
+			};
+			case NumberSchema s -> switch (s.getFormat()) {
+				case "float" -> Qname.of(Float.class.getName());
+				case "double" -> Qname.of(Double.class.getName());
+				case "int32" -> Qname.of(Integer.class.getName());
+				case "int64" -> Qname.of(Long.class.getName());
+				case null, default -> Qname.of(BigDecimal.class.getName());
+			};
+
 			default -> null;
 		};
 	}
 
 	/**
-	 * Return the Java type name of the given {@code schame}. This method
-	 * obeys the schema string format when returning the Java type name.
+	 * Checks whether the given {@code schema} is an enumeration.
 	 *
-	 * @param schema the schema
-	 * @return the corresponding Java type name
+	 * @param schema the schema to check; nulls allowed
+	 * @return {@code true} if the given {@code schema} is an enumeration,
+	 *         {@code false} otherwise
 	 */
-	public static String javaTypeNameOf(StringSchema schema) {
-		return switch (schema.getFormat()) {
-			case "uri", "URI" -> URI.class.getName();
-			case null, default -> String.class.getName();
-		};
-	}
-
-	public static String javaTypeNameOf(NumberSchema schema) {
-		return switch (schema.getFormat()) {
-			case "float" -> Float.class.getName();
-			case "double" -> Double.class.getName();
-			case "int32" -> Integer.class.getName();
-			case "int64" -> Long.class.getName();
-			default -> BigDecimal.class.getName();
-		};
-	}
-
-	public static String typeNameOfSchemaRef(final String ref) {
-		if (ref != null) {
-			final var index = ref.lastIndexOf("/");
-			if (index != -1) {
-				return ref.substring(index + 1);
-			} else {
-				return  "java.lang.Object";
-			}
-		} else {
-			return "java.lang.Object";
-		}
-	}
-
-	public static String packageNameOf(Schema<?> schema) {
-		final var name = schema.getName();
-		final var index = name.lastIndexOf("/");
-		return index != -1 ? name.substring(0, index) : "";
-	}
-
 	public static boolean isEnum(Schema<?> schema) {
 		requireNonNull(schema);
 		return schema.getEnum() != null && !schema.getEnum().isEmpty();
 	}
 
-	public static Schema<?> schemaOfRef(OpenAPI api, String ref) {
-		if (ref == null) {
-			return null;
+	public static Optional<Schema<?>> deref(String ref) {
+		if (ref != null) {
+			final var index = ref.lastIndexOf("/");
+			if (index != -1) {
+				final var name = ref.substring(index + 1);
+				final var components = api().getComponents();
+				if (components != null) {
+					final var schemas = components.getSchemas();
+					if (schemas != null) {
+						@SuppressWarnings("unchecked")
+						final Optional<Schema<?>> schema =
+							Optional.ofNullable(schemas.get(name));
+						return schema;
+					}
+				}
+			}
 		}
-		final var typeName = typeNameOfSchemaRef(ref);
-		return api.getComponents().getSchemas().get(typeName);
+
+		return Optional.empty();
+	}
+
+	public static Optional<Schema<?>> ref(Schema<?> schema) {
+		final var ref = schema != null ? schema.get$ref() : null;
+		return deref(ref);
 	}
 
 	@SuppressWarnings("unchecked")

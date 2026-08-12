@@ -19,13 +19,6 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.properties;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.schemaOfRef;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.typeNameOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.interface_;
 
 import com.helger.jcodemodel.AbstractJClass;
@@ -34,23 +27,15 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.exceptions.JCodeModelException;
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.StructuralTypeModel;
 
 /**
  * Builds a structural interface from a {@link ObjectSchema}.
@@ -67,99 +52,27 @@ import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
  * @since 9.1
  * @version 9.1
  */
-public final class StructuralTypeBuilder implements CodeBuilder {
-
-	private record Component(
-		String name,
-		String type,
-		boolean nestedBuilder,
-		boolean nullable
-	) {
-		Component {
-			requireNonNull(name);
-			requireNonNull(type);
-		}
-	}
-
-	private Qname name;
-	private final List<Component> components = new ArrayList<>();
+public final class StructuralTypeBuilder {
 
 	/**
 	 * Create a new structural interface builder.
 	 */
-	public StructuralTypeBuilder() {
+	private StructuralTypeBuilder() {
 	}
 
-	/**
-	 * Set the (full qualified) structural interface name.
-	 *
-	 * @param name the structural interface name
-	 * @return {@code this} builder
-	 */
-	public StructuralTypeBuilder name(final Qname name) {
-		this.name = requireNonNull(name);
-		return this;
-	}
 
-	/**
-	 * Adds a component to the structural interface.
-	 *
-	 * @param name the component name
-	 * @param type the component type
-	 * @return {@code this} builder
-	 */
-	StructuralTypeBuilder component(final String name, final String type) {
-		component(name, type, isStructureType(type), false);
-		return this;
-	}
-
-	/**
-	 * Adds a component to the structural interface.
-	 *
-	 * @param name the component name
-	 * @param schema the component schema
-	 * @return {@code this} builder
-	 */
-	StructuralTypeBuilder component(String name, Schema<?> schema) {
-		component(name, typeNameOf(schema), isStructureSchema(schema), false);
-		return this;
-	}
-
-	private boolean isStructureSchema(Schema<?> schema) {
-		if (schema instanceof ObjectSchema) {
-			return true;
-		} else if (schema.get$ref() != null) {
-			return schemaOfRef(api(), schema.get$ref()) instanceof ObjectSchema;
-		} else {
-			return false;
+	public static void build(SchemaModel schema, final JCodeModel model) {
+		if (schema instanceof StructuralTypeModel stm) {
+			build0(stm, model);
 		}
 	}
 
-	private boolean isStructureType(String type) {
-		return api().getComponents().getSchemas().get(type) instanceof ObjectSchema;
-	}
-
-	private void component(
-		final String name,
-		final String type,
-		final boolean nestedBuilder,
-		final boolean nullable
-	) {
-		components.add(new Component(name, type, nestedBuilder, nullable));
-	}
-
-	/**
-	 * Builds a structural interface and adds it to the {@code model}.
-	 *
-	 * @param model the model the structural interface is build and added to
-	 */
-	@Override
-	public void build(final JCodeModel model) {
-		final var clazz = interface_(model, name);
-		components.forEach(c -> {
+	private static void build0(final StructuralTypeModel schema, final JCodeModel model) {
+		final var clazz = interface_(model, schema.name());
+		schema.components().forEach(c -> {
 			final var component = clazz.method(
 				JMod.NONE,
-				model.parseType(c.type()),
+				model.parseType(c.type().toString()),
 				c.name()
 			);
 
@@ -170,18 +83,18 @@ public final class StructuralTypeBuilder implements CodeBuilder {
 
 		final var builder = builderInterface(clazz);
 		builder._extends(clazz);
-		components.forEach(c -> {
-			final var componentType = model.parseType(c.type());
-			final var value = builder.method(JMod.NONE, builder, c.name())
+		schema.components().forEach(component -> {
+			final var componentType = model.parseType(component.type().toString());
+			final var value = builder.method(JMod.NONE, builder, component.name())
 				.param(componentType, "value");
 
-			if (c.nullable()) {
+			if (component.nullable()) {
 				value.annotate(Nullable.class);
 			}
 
-			if (c.nestedBuilder()) {
-				builder.method(JMod.NONE, builder, c.name())
-					.param(nestedBuilderConsumer(model, c.type()), "builder");
+			if (component.structural()) {
+				builder.method(JMod.NONE, builder, component.name())
+					.param(nestedBuilderConsumer(model, component.type().toString()), "builder");
 			}
 		});
 	}
@@ -206,55 +119,6 @@ public final class StructuralTypeBuilder implements CodeBuilder {
 	) {
 		return model.ref(Consumer.class)
 			.narrow(model.ref("%s.Builder".formatted(type)).wildcardSuper());
-	}
-
-	public static Optional<StructuralTypeBuilder> of(final Schema<?> schema) {
-		requireNonNull(schema);
-
-		return switch (schema) {
-			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
-				final var builder = new StructuralTypeBuilder();
-				builder.name(qnameOf(schema));
-				final var required = required(schema);
-				propertiesOf(schema).forEach((name, property) ->
-					builder.component(
-						name,
-						typeNameOf(property) != null
-							? typeNameOf(property)
-							: Schemas.typeNameOfSchemaRef(property.get$ref()),
-						builder.isStructureSchema(property),
-						!required.contains(name) ||
-							property.getNullable() != null && property.getNullable()
-					)
-				);
-				yield Optional.of(builder);
-			}
-			default -> Optional.empty();
-		};
-	}
-
-	public static Map<String, Schema<?>> propertiesOf(Schema<?> schema) {
-		return switch (schema) {
-			case ObjectSchema s -> properties(s);
-			case ComposedSchema cs -> {
-				final var schemas = new HashMap<String, Schema<?>>();
-
-				for (var s : allOf(cs)) {
-					final Schema<?> ref = schemaOfRef(api(), s.get$ref());
-					schemas.putAll(propertiesOf(ref));
-					schemas.putAll(properties(s));
-				}
-
-				yield Map.copyOf(schemas);
-			}
-			case null, default -> Map.of();
-		};
-	}
-
-	private static List<String> required(final Schema<?> schema) {
-		if (schema == null) return List.of();
-		final var required = schema.getRequired();
-		return required != null ? List.copyOf(required) : List.of();
 	}
 
 }

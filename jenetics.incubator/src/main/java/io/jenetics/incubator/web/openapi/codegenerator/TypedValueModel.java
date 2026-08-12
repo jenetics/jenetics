@@ -1,6 +1,8 @@
 package io.jenetics.incubator.web.openapi.codegenerator;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
+import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 
 import io.swagger.v3.oas.models.media.Schema;
 
@@ -13,7 +15,21 @@ public record TypedValueModel(Qname name, Qname type)
 	public static Optional<TypedValueModel> of(final Schema<?> schema) {
 		requireNonNull(schema);
 
-		return Optional.empty();
+		if (isEnum(schema)) {
+			return Optional.empty();
+		}
+
+		final var name = Schemas.nameOf(schema);
+		if (name.isJavaName()) {
+			return Optional.of(
+				new TypedValueModel(
+					new Qname(namespace(), schema.getName()),
+					name
+				)
+			);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }

@@ -19,10 +19,8 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
-import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 import static io.jenetics.incubator.web.openapi.codegenerator.EnumModel.toConstantName;
+import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.enum_;
 
 import com.helger.jcodemodel.AbstractJType;
 import com.helger.jcodemodel.IJExpression;
@@ -30,16 +28,12 @@ import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
-import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
+import io.jenetics.incubator.web.openapi.codegenerator.EnumModel;
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.
@@ -77,66 +71,23 @@ import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
  * @since 9.1
  * @version 9.1
  */
-public final class EnumBuilder implements CodeBuilder {
+public final class EnumModelBuilder {
 
 	private static final String VALUE_NAME = "value";
 
-	private Qname name;
-	private String valueType = String.class.getName();
-	private final List<Object> constants = new ArrayList<>();
-
-	/**
-	 * Create a new enum code builder.
-	 */
-	public EnumBuilder() {
+	private EnumModelBuilder() {
 	}
 
-	/**
-	 * Set the (full qualified) enum class name.
-	 *
-	 * @param name the enum class name
-	 * @return {@code this} builder
-	 */
-	public EnumBuilder name(final Qname name) {
-		this.name = requireNonNull(name);
-		return this;
+	public static void build(final SchemaModel schema, final JCodeModel model) {
+		if (schema instanceof EnumModel em) {
+			build0(em, model);
+		}
 	}
 
-	/**
-	 * Add an enum constant with the given {@code name}. The {@code name} is
-	 * converted into upper case letters and name mangling is performed if needed.
-	 * The original enum name can be accessed with the {@code value()} method of
-	 * the generated enum class.
-	 *
-	 * @param name the constant name
-	 * @return {@code this} builder
-	 */
-	public EnumBuilder constant(final String name) {
-		requireNonNull(name);
-		constants.add(name);
-		return this;
-	}
-
-	private EnumBuilder valueType(final String valueType) {
-		this.valueType = requireNonNull(valueType);
-		return this;
-	}
-
-	private EnumBuilder constantValue(final Object value) {
-		constants.add(requireNonNull(value));
-		return this;
-	}
-
-	/**
-	 * Builds an enum class and adds it to the {@code model}.
-	 *
-	 * @param model the model the enum class is build and added to
-	 */
-	@Override
-	public void build(final JCodeModel model) {
-		final var clazz = enum_(model, name);
+	private static void build0(final EnumModel schema, final JCodeModel model) {
+		final var clazz = enum_(model, schema.name());
 		final var string = model.ref(String.class);
-		final var type = model.parseType(valueType);
+		final var type = model.parseType(schema.type().toString());
 
 		// Create field, which contains the original value of the enum.
 		final var field = clazz.field(JMod.PRIVATE_FINAL, type, VALUE_NAME);
@@ -149,7 +100,7 @@ public final class EnumBuilder implements CodeBuilder {
 		method.body()._return(field);
 
 		// Add the enum constants
-		for (final var constant : constants) {
+		for (final var constant : schema.constants()) {
 			clazz.enumConstant(toConstantName(String.valueOf(constant)))
 				.arg(literal(model, type, constant));
 		}
@@ -215,29 +166,6 @@ public final class EnumBuilder implements CodeBuilder {
 		return value instanceof Boolean bool
 			? bool
 			: Boolean.parseBoolean(value.toString());
-	}
-
-	public static Optional<EnumBuilder> of(final Schema<?> schema) {
-		requireNonNull(schema);
-
-		if (Schemas.isEnum(schema)) {
-			final var builder = new EnumBuilder();
-			builder
-				.name(qnameOf(schema))
-				.valueType(valueTypeNameOf(schema));
-			schema.getEnum().forEach(builder::constantValue);
-
-			return Optional.of(builder);
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	private static String valueTypeNameOf(final Schema<?> schema) {
-		return switch (schema) {
-			case StringSchema ss -> Schemas.javaTypeNameOf(ss);
-			default -> Schemas.javaTypeNameOfPrimitives(schema);
-		};
 	}
 
 }

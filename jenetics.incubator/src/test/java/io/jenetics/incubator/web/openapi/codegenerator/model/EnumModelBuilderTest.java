@@ -42,13 +42,13 @@ import javax.tools.ToolProvider;
 
 import org.testng.annotations.Test;
 
-public class EnumBuilderTest {
+public class EnumModelBuilderTest {
 
 	@Test
 	public void enumConstantsKeepOriginalStringValue() throws IOException {
 		final var model = new JCodeModel();
 
-		new EnumBuilder()
+		new EnumModelBuilder()
 			.name("io.jenetics.incubator.test.TicketType")
 			.constant("vip-ticket")
 			.constant("123 basic")
@@ -110,7 +110,7 @@ public class EnumBuilderTest {
 
 	private static Class<?> compileEnum() throws Exception {
 		final var model = new JCodeModel();
-		new EnumBuilder()
+		new EnumModelBuilder()
 			.name("io.jenetics.incubator.test.TicketType")
 			.constant("vip-ticket")
 			.build(model);
@@ -120,7 +120,7 @@ public class EnumBuilderTest {
 
 	private static Class<?> compileEnum(final Schema<?> schema) throws Exception {
 		final var model = new JCodeModel();
-		assertThat(EnumBuilder.build(schema, model)).isTrue();
+		assertThat(EnumModelBuilder.build(schema, model)).isTrue();
 
 		return compileEnum(model, schema.getName());
 	}

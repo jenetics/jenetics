@@ -11,12 +11,13 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-import com.museum.model.Email;
+//import com.museum.model.Email;
 
 import java.io.IOException;
 
 public class ModuleBuilder {
 
+	/*
 	static final class EmailSerializer extends JsonSerializer<Email> {
 		@Override
 		public void serialize(Email value, JsonGenerator gen, SerializerProvider serializers)
@@ -57,5 +58,6 @@ public class ModuleBuilder {
 			return new Version(0,0,1,"SNAPSHOT", "group.id",  "artifactId");
 		}
 	}
+	 */
 
 }

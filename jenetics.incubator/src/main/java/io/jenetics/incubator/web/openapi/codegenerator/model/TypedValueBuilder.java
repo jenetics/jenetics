@@ -19,26 +19,20 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.record_;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JExpr;
 import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.JOp;
-import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
-import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
+import io.jenetics.incubator.web.openapi.codegenerator.TypedValueModel;
 
 /**
  * Builds <em>typed value</em> classes, which is essentially a record with wraps
@@ -57,51 +51,23 @@ import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
  * @since 9.1
  * @version 9.1
  */
-public final class TypedValueBuilder implements CodeBuilder {
+public final class TypedValueBuilder {
 
 	static final String VALUE_COMPONENT_NAME = "value";
 
-	private Qname name;
-	private String type;
-
-	/**
-	 * Create a new typed value builder.
-	 */
-	public TypedValueBuilder() {
+	private TypedValueBuilder() {
 	}
 
-	/**
-	 * Set the (full qualified) wrapper class name.
-	 *
-	 * @param name the wrapper class name
-	 * @return {@code this} builder
-	 */
-	public TypedValueBuilder name(final Qname name) {
-		this.name = requireNonNull(name);
-		return this;
+	public static void build(SchemaModel schema, final JCodeModel model) {
+		if (schema instanceof TypedValueModel tvm) {
+			build0(tvm, model);
+		}
 	}
 
-	/**
-	 * The wrapped type.
-	 *
-	 * @param type the wrapped type
-	 * @return {@code this} builder
-	 */
-	public TypedValueBuilder type(final String type) {
-		this.type = requireNonNull(type);
-		return this;
-	}
+	private static void build0(TypedValueModel schema, final JCodeModel model) {
+		final var clazz = record_(model, schema.name());
 
-	/**
-	 * Builds wrapper class and adds it to the {@code model}.
-	 *
-	 * @param model the model the enum class is build and added to
-	 */
-	@Override
-	public void build(final JCodeModel model) {
-		final var clazz = record_(model, name);
-
-		final var valueType = model.parseType(type);
+		final var valueType = model.parseType(schema.type().toString());
 		final var boxedValueType = valueType.boxify();
 		clazz.recordComponent(valueType, VALUE_COMPONENT_NAME);
 
@@ -171,25 +137,6 @@ public final class TypedValueBuilder implements CodeBuilder {
 				JExpr._null()
 			)
 		);
-	}
-
-	public static Optional<TypedValueBuilder> of(final Schema<?> schema) {
-		requireNonNull(schema);
-
-		if (isEnum(schema)) {
-			return Optional.empty();
-		}
-
-		final var type = Schemas.javaTypeNameOfPrimitives(schema);
-		if (type != null) {
-			final var builder = new TypedValueBuilder()
-				.name(qnameOf(schema))
-				.type(type);
-
-			return Optional.of(builder);
-		} else {
-			return Optional.empty();
-		}
 	}
 
 }

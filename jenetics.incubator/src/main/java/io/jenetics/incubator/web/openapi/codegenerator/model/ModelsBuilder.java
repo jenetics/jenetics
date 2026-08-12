@@ -33,8 +33,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilder;
-import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderFactory;
 import io.jenetics.incubator.web.openapi.codegenerator.Context;
+import io.jenetics.incubator.web.openapi.codegenerator.SchemaModel;
 
 /**
  * Code builder for the schemas of an OpenAPI specification.
@@ -43,12 +43,12 @@ import io.jenetics.incubator.web.openapi.codegenerator.Context;
  * @since 9.1
  * @version 9.1
  */
-public class ModelsBuilder implements CodeBuilder {
+public class ModelsBuilder {
 
-	private static final List<CodeBuilderFactory> BUILDERS = List.of(
-		StructuralTypeBuilder::of,
-		EnumBuilder::of,
-		TypedValueBuilder::of
+	private static final List<CodeBuilder> BUILDERS = List.of(
+		StructuralTypeBuilder::build,
+		EnumModelBuilder::build,
+		TypedValueBuilder::build
 	);
 
 	/**
@@ -62,12 +62,10 @@ public class ModelsBuilder implements CodeBuilder {
 	 *
 	 * @param model the model classes is build and added to
 	 */
-	@Override
 	public void build(final JCodeModel model) {
-		api().getComponents().getSchemas()
-			.forEach((_, schema) -> BUILDERS.stream()
-				.flatMap(b -> b.create(schema).stream())
-				.forEach(b -> b.build(model)));
+		api().getComponents().getSchemas().values().stream()
+			.flatMap(s -> SchemaModel.of(s).stream())
+			.forEach(schema -> BUILDERS.forEach(b -> b.build(schema, model)));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////

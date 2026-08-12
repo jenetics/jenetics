@@ -1,10 +1,9 @@
 package io.jenetics.incubator.web.openapi.codegenerator;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.qnameOf;
+import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
 
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.util.List;
 import java.util.Locale;
@@ -21,8 +20,8 @@ public record EnumModel(Qname name, Qname type, List<Object> constants)
 		if (Schemas.isEnum(schema)) {
 			return Optional.of(
 				new EnumModel(
-					qnameOf(schema),
-					valueTypeNameOf(schema),
+					Schemas.nameOf(schema),
+					Schemas.typeOf(schema),
 					schema.getEnum().stream()
 						.collect(Collectors.toUnmodifiableList())
 				)
@@ -30,16 +29,6 @@ public record EnumModel(Qname name, Qname type, List<Object> constants)
 		} else {
 			return Optional.empty();
 		}
-	}
-
-	private static Qname valueTypeNameOf(final Schema<?> schema) {
-		final var name = switch (schema) {
-			case StringSchema ss -> Schemas.javaTypeNameOf(ss);
-			default -> Schemas.javaTypeNameOfPrimitives(schema);
-		};
-
-		// TODO return split name.
-		return new Qname("", name);
 	}
 
 	public static String toConstantName(final String value) {

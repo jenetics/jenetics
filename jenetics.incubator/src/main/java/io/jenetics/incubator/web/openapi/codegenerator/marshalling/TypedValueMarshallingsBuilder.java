@@ -1,13 +1,8 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.isEnum;
-
 import com.helger.jcodemodel.JCodeModel;
-import io.swagger.v3.oas.models.media.Schema;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 import io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels;
 
 public class TypedValueMarshallingsBuilder {
@@ -33,6 +28,7 @@ public class TypedValueMarshallingsBuilder {
 		clazz.generify(type);
 	}
 
+	/*
 	public static boolean build(final Schema<?> schema, final JCodeModel model) {
 		requireNonNull(schema);
 		requireNonNull(model);
@@ -52,5 +48,6 @@ public class TypedValueMarshallingsBuilder {
 			return false;
 		}
 	}
+	 */
 
 }
