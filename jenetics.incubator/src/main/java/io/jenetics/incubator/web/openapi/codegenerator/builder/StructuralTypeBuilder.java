@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
 
 import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
-import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema;
 
 /**
@@ -62,7 +62,7 @@ public final class StructuralTypeBuilder {
 	}
 
 
-	public static void build(ModelSchema schema, final JCodeModel model) {
+	public static void build(TypedSchema schema, final JCodeModel model) {
 		if (schema instanceof StructuralTypeSchema stm) {
 			build0(stm, model);
 		}

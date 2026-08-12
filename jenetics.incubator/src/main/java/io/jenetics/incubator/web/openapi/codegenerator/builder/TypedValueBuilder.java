@@ -31,7 +31,7 @@ import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
 
-import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 /**
@@ -58,7 +58,7 @@ public final class TypedValueBuilder {
 	private TypedValueBuilder() {
 	}
 
-	public static void build(ModelSchema schema, final JCodeModel model) {
+	public static void build(TypedSchema schema, final JCodeModel model) {
 		if (schema instanceof TypedValueSchema tvm) {
 			build0(tvm, model);
 		}

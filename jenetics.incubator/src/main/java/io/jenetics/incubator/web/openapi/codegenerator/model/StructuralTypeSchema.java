@@ -20,7 +20,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component> components)
-	implements ModelSchema
+	implements TypedSchema
 {
 
 	public record Component(

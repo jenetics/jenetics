@@ -12,7 +12,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record TypedValueSchema(Schema<?> schema, Qname name, Qname type)
-	implements ModelSchema
+	implements TypedSchema
 {
 
 	public static Optional<TypedValueSchema> of(final Schema<?> schema) {

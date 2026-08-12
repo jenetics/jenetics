@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
-import io.jenetics.incubator.web.openapi.codegenerator.model.ModelSchema;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 
 /**
  * Builds {@link Enum} class from a {@link Schema} with enum format.
@@ -79,7 +79,7 @@ public final class EnumModelBuilder {
 	private EnumModelBuilder() {
 	}
 
-	public static void build(final ModelSchema schema, final JCodeModel model) {
+	public static void build(final TypedSchema schema, final JCodeModel model) {
 		if (schema instanceof EnumSchema em) {
 			build0(em, model);
 		}

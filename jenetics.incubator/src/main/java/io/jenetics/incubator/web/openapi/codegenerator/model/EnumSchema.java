@@ -13,7 +13,7 @@ import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.Schemas;
 
 public record EnumSchema(Schema<?> schema, Qname name, Qname type, List<Object> constants)
-	implements ModelSchema
+	implements TypedSchema
 {
 
 	public static Optional<EnumSchema> of(final Schema<?> schema) {
