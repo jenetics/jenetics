@@ -7,7 +7,11 @@ import java.util.Optional;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 
 public sealed interface SchemaModel
-	permits EnumModel, StructuralTypeModel, TypedValueModel
+	permits
+		StructuralTypeModel,
+		EnumModel,
+		TypedValueModel,
+		NoModel
 {
 	Qname name();
 
