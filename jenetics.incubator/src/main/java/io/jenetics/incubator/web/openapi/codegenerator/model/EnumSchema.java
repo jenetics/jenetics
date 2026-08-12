@@ -1,12 +1,9 @@
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
-
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
@@ -16,21 +13,17 @@ public record EnumSchema(Schema<?> schema, Qname name, Qname type, List<Object> 
 	implements TypedSchema
 {
 
-	public static Optional<EnumSchema> of(final Schema<?> schema) {
-		requireNonNull(schema);
-
-		if (Schemas.isEnum(schema)) {
-			return Optional.of(
-				new EnumSchema(
-					schema,
-					Schemas.nameOf(schema),
-					Schemas.typeOf(schema),
-					schema.getEnum().stream()
-						.collect(Collectors.toUnmodifiableList())
-				)
+	static EnumSchema of(final Schema<?> schema) {
+		if (schema != null && Schemas.isEnum(schema)) {
+			return new EnumSchema(
+				schema,
+				Schemas.nameOf(schema),
+				Schemas.typeOf(schema),
+				schema.getEnum().stream()
+					.collect(Collectors.toUnmodifiableList())
 			);
 		} else {
-			return Optional.empty();
+			return null;
 		}
 	}
 

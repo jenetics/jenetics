@@ -64,7 +64,7 @@ public class ModelsBuilder {
 	 */
 	public void build(final JCodeModel model) {
 		api().getComponents().getSchemas().values().stream()
-			.flatMap(s -> TypedSchema.of(s).stream())
+			.map(TypedSchema::of)
 			.forEach(schema -> BUILDERS.forEach(b -> b.build(schema, model)));
 	}
 

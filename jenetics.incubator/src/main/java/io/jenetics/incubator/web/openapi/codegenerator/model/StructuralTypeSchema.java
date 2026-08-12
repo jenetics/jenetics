@@ -1,6 +1,5 @@
 package io.jenetics.incubator.web.openapi.codegenerator.model;
 
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.allOf;
 import static io.jenetics.incubator.web.openapi.codegenerator.Schemas.deref;
@@ -81,9 +80,7 @@ public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component>
 
 	}
 
-	public static Optional<StructuralTypeSchema> of(final Schema<?> schema) {
-		requireNonNull(schema);
-
+	static StructuralTypeSchema of(final Schema<?> schema) {
 		return switch (schema) {
 			case ObjectSchema _, ComposedSchema _ when !propertiesOf(schema).isEmpty()-> {
 				final var components = propertiesOf(schema).entrySet().stream()
@@ -99,15 +96,13 @@ public record StructuralTypeSchema(Schema<?> schema, Qname name, List<Component>
 					})
 					.toList();
 
-				yield Optional.of(
-					new StructuralTypeSchema(
-						schema,
-						new Qname(namespace(), schema.getName()),
-						components
-					)
+				yield new StructuralTypeSchema(
+					schema,
+					new Qname(namespace(), schema.getName()),
+					components
 				);
 			}
-			default -> Optional.empty();
+			case null, default -> null;
 		};
 	}
 
