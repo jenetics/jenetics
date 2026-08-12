@@ -21,4 +21,4 @@
 /**
  * This package contains the code generation for the OpenAPI specification.
  */
-package io.jenetics.incubator.web.openapi.codegenerator.model;
+package io.jenetics.incubator.web.openapi.codegenerator.builder;
