@@ -88,16 +88,12 @@ public final class Schemas {
 		var result = switch (schema) {
 			// These types will be generated and not mapped on
 			// existing Java types.
-			case Schema<?> s when isEnum(s) -> {
-				if (s.getName() != null) {
-					yield new Qname(namespace(), s.getName());
-				} else {
-					final var parent = parentOf(s).orElseThrow();
-					final var name = nameOf(parent).toString();
-				}
-				yield null;
-			}
-			case ObjectSchema _, ComposedSchema _ when schema.getName() != null -> new Qname(namespace(), schema.getName());
+			case Schema<?> s
+				when isEnum(s) && s.getName() != null ->
+					new Qname(namespace(), s.getName());
+			case ObjectSchema _, ComposedSchema _
+				when schema.getName() != null ->
+					new Qname(namespace(), schema.getName());
 			default -> null;
 		};
 

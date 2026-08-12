@@ -73,11 +73,11 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
  * @since 9.1
  * @version 9.1
  */
-public final class EnumModelBuilder {
+public final class EnumBuilder {
 
 	private static final String VALUE_NAME = "value";
 
-	private EnumModelBuilder() {
+	private EnumBuilder() {
 	}
 
 	public static void build(final EnumSchema schema, final JCodeModel model) {

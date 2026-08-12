@@ -75,7 +75,7 @@ public final class StructuralTypeBuilder {
 			final var enumSchema = enumSchemaOf(component);
 			if (enumSchema != null) {
 				final var et = enum_(clazz, enumSchema.name());
-				EnumModelBuilder.build(enumSchema, et, model);
+				EnumBuilder.build(enumSchema, et, model);
 			}
 
 			final var accessor = clazz.method(

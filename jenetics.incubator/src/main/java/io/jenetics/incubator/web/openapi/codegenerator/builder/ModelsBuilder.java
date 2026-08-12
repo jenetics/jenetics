@@ -62,7 +62,7 @@ public class ModelsBuilder {
 		api().getComponents().getSchemas().values()
 			.forEach(schema -> {
 				switch (TypedSchema.of(schema)) {
-					case EnumSchema s -> EnumModelBuilder.build(s, model);
+					case EnumSchema s -> EnumBuilder.build(s, model);
 					case TypedValueSchema s -> TypedValueBuilder.build(s, model);
 					case StructuralTypeSchema s -> StructuralTypeBuilder.build(s, model);
 					case GenericSchema _ -> {}
