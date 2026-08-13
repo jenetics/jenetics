@@ -4,6 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
+
 /**
  * Holds the OpenAPI model context, needed for the code generation.
  */
@@ -21,6 +24,10 @@ public final class ApiContext {
 
 	public void run(Runnable op) {
 		ScopedValue.where(INSTANCE, this).run(op);
+	}
+
+	public <T> T call(Supplier<? extends T> fn) {
+		return ScopedValue.where(INSTANCE,this).call(fn::get);
 	}
 
 	public static ApiContext get() {

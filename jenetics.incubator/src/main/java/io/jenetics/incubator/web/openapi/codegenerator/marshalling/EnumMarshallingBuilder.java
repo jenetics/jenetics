@@ -1,7 +1,7 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
+import static com.helger.jcodemodel.JMod.PUBLIC;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.builder.ModelBuilder.read;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.class_;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.JDefinedClass;
-import com.helger.jcodemodel.JMod;
 import com.helger.jcodemodel.writer.JCMWriter;
 import com.helger.jcodemodel.writer.OutputStreamCodeWriter;
 
@@ -20,64 +19,64 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.stream.Stream;
 
+import io.jenetics.incubator.web.openapi.codegenerator.API;
 import io.jenetics.incubator.web.openapi.codegenerator.ApiContext;
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.TypedSchema;
 
-public final class EnumMarshallingBuilder {
+final class EnumMarshallingBuilder {
 
 	private final EnumSchema schema;
 	private final String namespace;
 
-	private EnumMarshallingBuilder(
-		final EnumSchema schema,
-		final String namespace
-	) {
+	private JDefinedClass serializer;
+	private JDefinedClass deserializer;
+
+	EnumMarshallingBuilder(final EnumSchema schema, final String namespace) {
 		this.schema = requireNonNull(schema);
 		this.namespace = requireNonNull(namespace);
 	}
 
+	JDefinedClass serializer() {
+		return serializer;
+	}
+
+	JDefinedClass deserializer() {
+		return deserializer;
+	}
+
 	public void build(final JCodeModel model) {
-		final var serializer = serializer(model);
-		final var deserializer = deserializer(model);
+		serializer = serializer(model);
+		deserializer = deserializer(model);
 	}
 
 	private JDefinedClass serializer(final JCodeModel model) {
 		final var enumType = model.ref(schema.name().toString());
-		final var genType = model.ref(JsonGenerator.class);
-		final var serType = model.ref(SerializerProvider.class);
-		final var jsonSerType = model.ref(JsonSerializer.class).narrow(enumType);
 
+		// public class EmailSerializer extends JsonSerializer<Email>
 		final var serializer = class_(
-			model,
-			new Qname(
-				namespace,
-				schema.name().name() + "Serializer"
+				model,
+				new Qname(namespace, schema.name().name() + "Serializer")
 			)
-		);
-		serializer._extends(jsonSerType);
+			._extends(model.ref(JsonSerializer.class).narrow(enumType));
 
-
-		final var serialize = serializer
-			.method(JMod.PUBLIC, model.VOID, "serialize");
+		// @Override
+		// public void serialize(Email value, JsonGenerator gen, SerializerProvider ser)
+		//     throws IOException;
+		final var serialize = serializer.method(PUBLIC, model.VOID, "serialize");
 		serialize.annotate(Override.class);
 		serialize._throws(IOException.class);
-
-		final var enumValue = serialize.param(enumType, "value");
-		final var genValue = serialize.param(genType, "gen");
-		final var serValue = serialize.param(serType, "ser");
+		final var value = serialize.param(enumType, "value");
+		final var gen = serialize.param(JsonGenerator.class, "gen");
+		serialize.param(SerializerProvider.class, "ser");
 
 		// gen.writeObject(Email.unbox(value));
 		serialize.body()
 			.add(
-				genValue
-					.invoke("writeObject")
-					.arg(
-						enumType
-							.staticInvoke("unbox")
-							.arg(enumValue)
-					)
+				gen.invoke("writeObject").arg(
+					enumType.staticInvoke("unbox").arg(value)
+				)
 			);
 
 		return serializer;
@@ -85,39 +84,39 @@ public final class EnumMarshallingBuilder {
 
 	private JDefinedClass deserializer(final JCodeModel model) {
 		final var enumType = model.ref(schema.name().toString());
-		final var jsonDeserType = model.ref(JsonDeserializer.class).narrow(enumType);
 
+		// public class EmailDeserializer extends JsonDeserializer<Email>
 		final var deserializer = class_(
-			model,
-			new Qname(
-				namespace,
-				schema.name().name() + "Deserializer"
+				model,
+				new Qname(namespace, schema.name().name() + "Deserializer")
 			)
-		);
-		deserializer._extends(jsonDeserType);
+			._extends(model.ref(JsonDeserializer.class).narrow(enumType));
 
-
-		final var deserialize = deserializer
-			.method(JMod.PUBLIC, enumType, "deserialize");
+		// @Override
+		// public Email deserialize(JsonParser p, DeserializationContext ctx)
+		//     throws IOException
+		final var deserialize = deserializer.method(PUBLIC, enumType, "deserialize");
 		deserialize.annotate(Override.class);
 		deserialize._throws(IOException.class);
-
-		final var parser = deserialize.param(JsonParser.class, "p");
-		final var context = deserialize.param(DeserializationContext.class, "ctx");
+		final var p = deserialize.param(JsonParser.class, "p");
+		deserialize.param(DeserializationContext.class, "ctx");
 
 		// return Email.box(p.getValueAsString());
 		deserialize.body()._return(
 			enumType.staticInvoke("box")
-				.arg(parser.invoke("getValueAsString"))
+				.arg(p.invoke("getValueAsString"))
 			);
 
 		return deserializer;
 	}
 
+
+	/* *************************************************************************
+	 * Create the marshaling classes for the example museum API.
+	 * ************************************************************************/
+
 	static void main() throws IOException {
-		final var api = read("/museum-api.yaml");
-		api.getComponents().getSchemas()
-			.forEach((name, schema) -> schema.setName(name));
+		final var api =  API.readResource("/museum-api.yaml");
 
 		final var model = new JCodeModel();
 		new ApiContext(api, "com.museum.model").run(() -> {
