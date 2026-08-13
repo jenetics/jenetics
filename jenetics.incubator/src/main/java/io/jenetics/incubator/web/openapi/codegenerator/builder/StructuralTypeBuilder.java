@@ -76,8 +76,8 @@ public final class StructuralTypeBuilder implements CodeBuilder {
 			// Create inlined enum types.
 			final var enumSchema = enumSchemaOf(component);
 			if (enumSchema != null) {
-				final var et = enum_(clazz, enumSchema.name());
-				EnumBuilder.build(enumSchema, et, model);
+				final var enumClass = enum_(clazz, enumSchema.name());
+				new EnumBodyBuilder(enumSchema, enumClass).build(model);
 			}
 
 			final var accessor = clazz.method(
@@ -112,11 +112,11 @@ public final class StructuralTypeBuilder implements CodeBuilder {
 	private static EnumSchema enumSchemaOf(Component component) {
 		if (Schemas.isEnum(component.schema())) {
 			return new EnumSchema(
-					component.schema(),
-					component.type(),
-					Schemas.typeOf(component.schema()),
-					component.schema().getEnum().stream()
-						.collect(Collectors.toUnmodifiableList())
+				component.schema(),
+				component.type(),
+				Schemas.typeOf(component.schema()),
+				component.schema().getEnum().stream()
+					.collect(Collectors.toUnmodifiableList())
 			);
 		} else {
 			return null;
