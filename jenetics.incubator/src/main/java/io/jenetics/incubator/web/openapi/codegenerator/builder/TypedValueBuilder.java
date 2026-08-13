@@ -51,15 +51,18 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
  * @since 9.1
  * @version 9.1
  */
-public final class TypedValueBuilder {
+public final class TypedValueBuilder implements CodeBuilder {
 
-	static final String VALUE_COMPONENT_NAME = "value";
+	private static final String VALUE_COMPONENT_NAME = "value";
 
-	private TypedValueBuilder() {
+	private final TypedValueSchema schema;
+
+	public TypedValueBuilder(final TypedValueSchema schema) {
+		this.schema = requireNonNull(schema);
 	}
 
-	public static void build(TypedValueSchema schema, final JCodeModel model) {
-		requireNonNull(schema);
+	@Override
+	public void build(final JCodeModel model) {
 		requireNonNull(model);
 
 		final var clazz = record_(model, schema.name());

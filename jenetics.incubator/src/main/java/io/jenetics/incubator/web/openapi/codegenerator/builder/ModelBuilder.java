@@ -67,15 +67,17 @@ public final class ModelBuilder implements CodeBuilder {
 				.forEach(schema -> {
 					switch (TypedSchema.of(schema)) {
 						case EnumSchema s -> new EnumBuilder(s).build(model);
-						case TypedValueSchema s -> TypedValueBuilder.build(s, model);
-						case StructuralTypeSchema s -> StructuralTypeBuilder.build(s, model);
+						case TypedValueSchema s -> new TypedValueBuilder(s).build(model);
+						case StructuralTypeSchema s -> new StructuralTypeBuilder(s).build(model);
 						case GenericSchema _ -> {}
 					}
 				})
 		);
 	}
 
-	// /////////////////////////////////////////////////////////////////////////
+	/* *************************************************************************
+	 * Create the model classes for the example museum API.
+	 * ************************************************************************/
 
 	static void main() throws IOException {
 		final var api = read("/museum-api.yaml");

@@ -57,16 +57,18 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchem
  * @since 9.1
  * @version 9.1
  */
-public final class StructuralTypeBuilder {
+public final class StructuralTypeBuilder implements CodeBuilder {
+
+	private final StructuralTypeSchema schema;
 
 	/**
 	 * Create a new structural interface builder.
 	 */
-	private StructuralTypeBuilder() {
+	public StructuralTypeBuilder(final StructuralTypeSchema schema) {
+		this.schema = requireNonNull(schema);
 	}
 
-	public static void build(final StructuralTypeSchema schema, final JCodeModel model) {
-		requireNonNull(schema);
+	public void build(final JCodeModel model) {
 		requireNonNull(model);
 
 		final var clazz = interface_(model, schema.name());
