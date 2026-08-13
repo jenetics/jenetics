@@ -45,12 +45,12 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
  * @since 9.1
  * @version 9.1
  */
-public final class ModelsBuilder implements CodeBuilder {
+public final class ModelBuilder implements CodeBuilder {
 
 	private final OpenAPI api;
 	private final String namespace;
 
-	public ModelsBuilder(final OpenAPI api, final String namespace) {
+	public ModelBuilder(final OpenAPI api, final String namespace) {
 		this.api = requireNonNull(api);
 		this.namespace = requireNonNull(namespace);
 	}
@@ -86,7 +86,7 @@ public final class ModelsBuilder implements CodeBuilder {
 		Files.createDirectories(buildDir);
 
 		final var model = new JCodeModel();
-		new ModelsBuilder(api, "com.museum.model").build(model);
+		new ModelBuilder(api, "com.museum.model").build(model);
 
 		var writer = new JCMWriter(model);
 		writer.setCharset(Charset.defaultCharset());
@@ -94,7 +94,7 @@ public final class ModelsBuilder implements CodeBuilder {
 	}
 
 	public static OpenAPI read(final String name) throws IOException {
-		final var input = ModelsBuilder.class.getResourceAsStream(name);
+		final var input = ModelBuilder.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
 		return parser.readContents(api).getOpenAPI();

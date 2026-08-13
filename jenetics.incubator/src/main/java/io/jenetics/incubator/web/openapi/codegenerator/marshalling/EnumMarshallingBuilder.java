@@ -1,7 +1,7 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.builder.ModelsBuilder.read;
+import static io.jenetics.incubator.web.openapi.codegenerator.builder.ModelBuilder.read;
 import static io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels.class_;
 
 import com.fasterxml.jackson.core.JsonGenerator;
