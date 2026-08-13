@@ -1,6 +1,7 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
-import com.fasterxml.jackson.core.JacksonException;
+import static io.jenetics.incubator.web.openapi.codegenerator.ApiContext.api;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.Version;
@@ -11,13 +12,16 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
-//import com.museum.model.Email;
+import com.helger.jcodemodel.JCodeModel;
+import com.museum.model.Email;
 
 import java.io.IOException;
 
-public class ModuleBuilder {
+public class JacksonModuleBuilder {
 
-	/*
+	private JacksonModuleBuilder() {
+	}
+
 	static final class EmailSerializer extends JsonSerializer<Email> {
 		@Override
 		public void serialize(Email value, JsonGenerator gen, SerializerProvider serializers)
@@ -29,8 +33,8 @@ public class ModuleBuilder {
 
 	static final class EmailDeserializer extends JsonDeserializer<Email> {
 		@Override
-		public Email deserialize(JsonParser p, DeserializationContext ctxt)
-			throws IOException, JacksonException
+		public Email deserialize(JsonParser p, DeserializationContext ctx)
+			throws IOException
 		{
 			return Email.box(p.getValueAsString());
 		}
@@ -58,6 +62,14 @@ public class ModuleBuilder {
 			return new Version(0,0,1,"SNAPSHOT", "group.id",  "artifactId");
 		}
 	}
-	 */
+
+	public static void build(final JCodeModel model) {
+		api().getComponents().getSchemas().values()
+			.forEach(schema -> {});
+	}
+
+	static void main() throws IOException {
+
+	}
 
 }

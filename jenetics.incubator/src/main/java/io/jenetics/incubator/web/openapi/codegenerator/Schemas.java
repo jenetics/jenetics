@@ -20,8 +20,8 @@
 package io.jenetics.incubator.web.openapi.codegenerator;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.namespace;
+import static io.jenetics.incubator.web.openapi.codegenerator.ApiContext.api;
+import static io.jenetics.incubator.web.openapi.codegenerator.ApiContext.namespace;
 
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
@@ -55,7 +55,7 @@ import java.util.UUID;
  * Some helper methods for handling schemas.
  *
  * @implNote
- * Uses {@link Context} class.
+ * Uses {@link ApiContext} class.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 9.1

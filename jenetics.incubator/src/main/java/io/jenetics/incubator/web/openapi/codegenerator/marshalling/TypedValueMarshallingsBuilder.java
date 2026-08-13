@@ -1,9 +1,11 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.helger.jcodemodel.JCodeModel;
 
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
 import io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels;
+import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 public class TypedValueMarshallingsBuilder {
 
@@ -23,10 +25,14 @@ public class TypedValueMarshallingsBuilder {
 		return this;
 	}
 
-	public void build(final JCodeModel model) {
-		final var clazz = JCodeModels.class_(model, name);
-		clazz.generify(type);
-	}
+//	public static void build(TypedValueSchema schema, final JCodeModel model) {
+//		final var clazz = JCodeModels.class_(model, schema.name());
+//
+//		var jackson = model._class(JsonSerializer.class.getName());
+//
+//		clazz._extends(jackson)
+//		clazz.generify(schema.type().toString());
+//	}
 
 	/*
 	public static boolean build(final Schema<?> schema, final JCodeModel model) {

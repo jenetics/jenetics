@@ -73,14 +73,18 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
  * @since 9.1
  * @version 9.1
  */
-public final class EnumBuilder {
+public final class EnumBuilder implements CodeBuilder {
 
 	private static final String VALUE_NAME = "value";
 
-	private EnumBuilder() {
+	private final EnumSchema schema;
+
+	public EnumBuilder(EnumSchema schema) {
+		this.schema = requireNonNull(schema);
 	}
 
-	public static void build(final EnumSchema schema, final JCodeModel model) {
+	@Override
+	public void build(final JCodeModel model) {
 		requireNonNull(schema);
 		requireNonNull(model);
 

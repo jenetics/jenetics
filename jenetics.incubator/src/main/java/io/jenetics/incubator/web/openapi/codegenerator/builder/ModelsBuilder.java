@@ -19,7 +19,7 @@
  */
 package io.jenetics.incubator.web.openapi.codegenerator.builder;
 
-import static io.jenetics.incubator.web.openapi.codegenerator.Context.api;
+import static java.util.Objects.requireNonNull;
 
 import com.helger.jcodemodel.JCodeModel;
 import com.helger.jcodemodel.writer.JCMWriter;
@@ -31,7 +31,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import io.jenetics.incubator.web.openapi.codegenerator.Context;
+import io.jenetics.incubator.web.openapi.codegenerator.ApiContext;
 import io.jenetics.incubator.web.openapi.codegenerator.model.EnumSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.GenericSchema;
 import io.jenetics.incubator.web.openapi.codegenerator.model.StructuralTypeSchema;
@@ -45,12 +45,14 @@ import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
  * @since 9.1
  * @version 9.1
  */
-public class ModelsBuilder {
+public final class ModelsBuilder implements CodeBuilder {
 
-	/**
-	 * Create a new enum code builder.
-	 */
-	public ModelsBuilder() {
+	private final OpenAPI api;
+	private final String namespace;
+
+	public ModelsBuilder(final OpenAPI api, final String namespace) {
+		this.api = requireNonNull(api);
+		this.namespace = requireNonNull(namespace);
 	}
 
 	/**
@@ -58,16 +60,19 @@ public class ModelsBuilder {
 	 *
 	 * @param model the model classes is build and added to
 	 */
+	@Override
 	public void build(final JCodeModel model) {
-		api().getComponents().getSchemas().values()
-			.forEach(schema -> {
-				switch (TypedSchema.of(schema)) {
-					case EnumSchema s -> EnumBuilder.build(s, model);
-					case TypedValueSchema s -> TypedValueBuilder.build(s, model);
-					case StructuralTypeSchema s -> StructuralTypeBuilder.build(s, model);
-					case GenericSchema _ -> {}
-				};
-			});
+		new ApiContext(api, namespace).run(() ->
+			api.getComponents().getSchemas().values()
+				.forEach(schema -> {
+					switch (TypedSchema.of(schema)) {
+						case EnumSchema s -> new EnumBuilder(s).build(model);
+						case TypedValueSchema s -> TypedValueBuilder.build(s, model);
+						case StructuralTypeSchema s -> StructuralTypeBuilder.build(s, model);
+						case GenericSchema _ -> {}
+					}
+				})
+		);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -79,19 +84,16 @@ public class ModelsBuilder {
 
 		final var buildDir = Path.of("./jenetics.incubator/build/generated/sources/openapi/");
 		Files.createDirectories(buildDir);
-		final var model = new JCodeModel();
 
-		new Context(api, "com.museum.model").run(() ->
-			new ModelsBuilder()
-				.build(model)
-		);
+		final var model = new JCodeModel();
+		new ModelsBuilder(api, "com.museum.model").build(model);
 
 		var writer = new JCMWriter(model);
 		writer.setCharset(Charset.defaultCharset());
 		writer.build(buildDir.toFile());
 	}
 
-	static OpenAPI read(final String name) throws IOException {
+	public static OpenAPI read(final String name) throws IOException {
 		final var input = ModelsBuilder.class.getResourceAsStream(name);
 		final var parser = new OpenAPIV3Parser();
 		final var api = new String(input.readAllBytes());
