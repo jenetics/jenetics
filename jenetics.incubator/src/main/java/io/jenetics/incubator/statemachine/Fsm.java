@@ -168,6 +168,21 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/**
+	 * Interface for FSM transition events. Events may hold additional payload.
+	 *
+	 * @param <SY> the symbol (signal) type
+	 */
+	public non-sealed interface Event<SY extends Symbol> extends Signal {
+
+		/**
+		 * Return the symbol, this event belongs to.
+		 *
+		 * @return the event symbol
+		 */
+		SY kind();
+	}
+
+	/**
 	 * Interface for the FSM states.
 	 */
 	public interface State {
@@ -288,7 +303,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/**
-	 * Defines a state-transition triple.
+	 * Defines a state-transition triple {@code (s1, e, s2)}.
 	 *
 	 * @param before the current state
 	 * @param event the event that is triggering (or triggered) the transition
@@ -483,22 +498,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			return step;
 		}
 
-	}
-
-
-	/**
-	 * Interface for FSM transition events. Events may hold additional payload.
-	 *
-	 * @param <SY> the symbol (signal) type
-	 */
-	public non-sealed interface Event<SY extends Symbol> extends Signal {
-
-		/**
-		 * Return the symbol, this event belongs to.
-		 *
-		 * @return the event symbol
-		 */
-		SY kind();
 	}
 
 	/**
