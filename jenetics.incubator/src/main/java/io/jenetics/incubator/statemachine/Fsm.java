@@ -188,6 +188,23 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * @return the signal symbol
 		 */
 		SY kind();
+
+		/**
+		 * Return a new event of the given {@code kind}.
+		 *
+		 * @param kind the event kind
+		 * @return a new event of the given {@code kind}
+		 * @param <SY> the event kind type
+		 */
+		static <SY extends Symbol> Event<SY> of(SY kind) {
+			record SimpleEvent<SY extends Symbol>(SY kind) implements Event<SY> {
+				SimpleEvent {
+					requireNonNull(kind);
+				}
+			}
+
+			return new  SimpleEvent<>(kind);
+		}
 	}
 
 	/**
