@@ -19,20 +19,18 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.groupingBy;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Flow;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
@@ -361,240 +359,65 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		}
 	}
 
-
-	/* *************************************************************************
-	 * Classes and interfaces for processing/executing the FSM.
-	 * ************************************************************************/
-
 	/**
-	 * Common interface for signal submitter.
-	 *
-	 * @param <SY> the symbol (signal) type
-	 * @param <E> the signal type
-	 */
-	public interface Submitter<SY extends Symbol, E extends Event<SY>> {
-		void submit(E event);
-	}
-
-	/**
-	 * The signal subscriber which is called for every new signal being published.
+	 * Interface for a symbol (event) stepper.
 	 *
 	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 * @param <E> the signal type
+	 * @param <SI> the symbol (signal) type
 	 */
-	public interface EventSubscriber<
-		ST extends State,
-		SY extends Symbol,
-		E extends Event<SY>
-	> {
+	public interface Stepper<ST extends State, SI extends Signal> {
 
 		/**
-		 * This method is called for every signal.
+		 * Return {@code true} if the current state is an element of the
+		 * {@link Fsm#finals()} states.
 		 *
-		 * @param event the signal object, which triggers the state transition
-		 * @param before the FSM state before the transition
-		 * @param after the FSM state after the transition
+		 * @return {@code true} if the current state is an element of the
+		 * {@link Fsm#finals()} states, {@code false} otherwise.
 		 */
-		void onEvent(E event, ST before, ST after);
+		boolean isFinished();
 
 		/**
-		 * This method is called for invalid events, for events where no state
-		 * transition is defined.
+		 * Moves the current state to the next state by applying the given
+		 * {@code signal}.
 		 *
-		 * @param event the signal object, which triggers the state transition
-		 * @param state the FSM state before the transition
-		 * @throws IllegalStateException always. Implementer may override this
-		 *         method and handle invalid events differently.
+		 * @param signal the signal which moves the current step to the next step
+		 * @return the transition, if any
+		 * @throws IllegalStateException if the {@link #isFinished()} is {@code true}
+		 * @throws IllegalArgumentException if the given {@code signal} is not
+		 *         an element of {@link Fsm#alphabet()}
 		 */
-		default void onInvalidEvent(E event, ST state) {
-			throw new IllegalStateException(
-				"Illegal signal %s for state %s.".formatted(event, state)
-			);
-		}
-
-		/**
-		 * This method is called for all events after the FSM state is already
-		 * a finished state.
-		 *
-		 * @param event the signal object, which triggers the state transition
-		 * @param state the finished state
-		 * @throws IllegalStateException always. Implementer may override this
-		 *         method and handle events after the finished state differently.
-		 */
-		default void onAfterFinishEvent(E event, ST state) {
-			throw new IllegalStateException(
-				"Illegal signal %s after finish state %s.".formatted(event, state)
-			);
-		}
+		Optional<Fsm.Transition<ST, SI>> next(SI signal);
 
 	}
-
-	/**
-	 * The signal publisher for an FSM. It holds the state, which is updated for
-	 * every published signal, according the Finite State Machine {@link Fsm}.
-	 *
-	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 * @param <E> the signal type
-	 */
-	public static final class EventPublisher<
-		ST extends State,
-		SY extends Symbol,
-		E extends Event<SY>
-	>
-		implements Submitter<SY, E>
-	{
-
-		private final Stepper<ST, SY> stepper;
-		private final EventSubscriber<ST, SY, E> subscriber;
-
-		private final Executor executor;
-
-		public EventPublisher(
-			final Fsm<ST, SY> fsm,
-			final ST start,
-			final EventSubscriber<ST, SY, E> subscriber,
-			final Executor executor
-		) {
-			this.stepper = new Stepper<>(fsm, start);
-			this.subscriber = requireNonNull(subscriber);
-			this.executor = requireNonNull(executor);
-		}
-
-		public EventPublisher(
-			final Fsm<ST, SY> fsm,
-			final ST start,
-			final EventSubscriber<ST, SY, E> subscriber
-		) {
-			this(fsm, start, subscriber, Runnable::run);
-		}
-
-		/**
-		 * Return the current state of the runner.
-		 *
-		 * @return the current state of the runner
-		 */
-		public ST current() {
-			return stepper.state();
-		}
-
-		public boolean isFinished() {
-			return stepper.isFinished();
-		}
-
-		/**
-		 * Consumer the <em>next</em> signal. {@code true} is returned, if the
-		 * signal has been processed and the final state hasn't been reached yet.
-		 *
-		 * @param event the transitioning signal
-		 */
-		@Override
-		public void submit(E event) {
-			requireNonNull(event);
-
-			if (isFinished()) {
-				executor.execute(() -> subscriber
-					.onAfterFinishEvent(event, current()));
-			} else {
-				switch (stepper.next(event.kind())) {
-					case Step.Valid(var before, _, var after) -> executor
-						.execute(() -> subscriber.onEvent(event, before, after));
-					case Step.Invalid(var before, _) -> executor
-						.execute(() -> subscriber.onInvalidEvent(event, before));
-				}
-			}
-		}
-	}
-
-
-	public static final class FlowPublisher<
-		ST extends State,
-		SY extends Symbol,
-		E extends Event<SY>
-	>
-		implements Flow.Publisher<Transition<ST, E>>
-	{
-		@Override
-		public void subscribe(Flow.Subscriber<? super Transition<ST, E>> subscriber) {
-		}
-	}
-
 
 	/* *************************************************************************
 	 * Static methods for working with FSMs.
 	 * ************************************************************************/
 
-
-	public static <ST extends State, SY extends Symbol>
-	Gatherer<SY, ?, Step<ST, SY>> steps(Fsm<ST, SY> fsm, ST start) {
-		requireNonNull(fsm);
-		requireNonNull(start);
-
-		return Gatherer.ofSequential(
-			() -> new Stepper<>(fsm, start),
-			(stepper, signal, downstream) -> {
-				downstream.push(stepper.next(signal));
-				return !stepper.isFinished();
-			}
-		);
-	}
-
-	public static <ST extends State, SY extends Symbol>
-	Gatherer<SY, ?, Step<ST, SY>> steps(Fsm<ST, SY> fsm) {
-		return steps(fsm, fsm.start());
-	}
-
 	/**
-	 * Return a gatherer which enriches an signal stream with the states, defined
+	 * Return a gatherer which enriches a signal stream with the states, defined
 	 * by the given state machine, {@code fsm}. The gatherer ignores invalid
 	 * signal (transitions) and stops when a final state, as defined by the
 	 * {@code fsm}, has been reached.
 	 *
-	 * @param fsm the state machine which defines the before and after state of
-	 *        an signal stream
-	 * @param start the start state
+	 * @param stepper the stepper used for gathering the transitions.
+	 * @return a new transition gatherer
 	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 * @param <E> the signal type
-	 * @return a new states gatherer
+	 * @param <SI> the symbol (signal) type
 	 */
-	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
-	Gatherer<E, ?, Transition<ST, E>>
-	transitions(Fsm<ST, SY> fsm, ST start) {
-		requireNonNull(fsm);
-		requireNonNull(start);
+	public static <ST extends State, SI extends Signal>
+	Gatherer<SI, ?, Transition<ST, SI>>
+	transitions(Supplier<Stepper<ST, SI>> stepper) {
+		requireNonNull(stepper);
 
 		return Gatherer.ofSequential(
-			() -> new AtomicReference<>(start),
-			(state, event, downstream) -> {
-				var after = fsm.delta().apply(state.get(), event.kind());
-				after.ifPresent(aftr -> {
-					downstream.push(Transition.of(state.get(), event, aftr));
-					state.set(aftr);
-				});
-
-				return !fsm.finals().contains(after.orElse(state.get()));
+			stepper,
+			(stpr, signal, downstream) -> {
+				final var transition = stpr.next(signal);
+				transition.ifPresent(downstream::push);
+				return !stpr.isFinished();
 			}
 		);
-	}
-
-	/**
-	 * Return a gatherer which enriches an signal stream with the states, defined
-	 * by the given state machine, {@code fsm}. The gatherer ignores invalid
-	 * signal (transitions) and stops when a final state, as defined by the
-	 * {@code fsm}, has been reached.
-	 *
-	 * @param fsm the state machine which defines the before and after state of
-	 *        an signal stream
-	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 * @param <E> the signal type
-	 * @return a new states gatherer
-	 */
-	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
-	Gatherer<E, ?, Transition<ST, E>> transitions(Fsm<ST, SY> fsm) {
-		return transitions(fsm, fsm.start());
 	}
 
 }

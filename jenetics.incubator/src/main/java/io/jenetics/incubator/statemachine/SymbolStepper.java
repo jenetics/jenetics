@@ -19,6 +19,8 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import java.util.Optional;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -31,14 +33,11 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <ST> the state type
  * @param <SY> the symbol (signal) type
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 9.1
- * @since 9.1
  */
-public final class Stepper<ST extends Fsm.State, SY extends Fsm.Symbol> {
-	private final Fsm<ST, SY> fsm;
-	private ST state;
+public final class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
+	extends StepperBase<ST, SY>
+	implements Fsm.Stepper<ST, SY>
+{
 
 	/**
 	 * Create a new stepper object with the given {@code fsm} and
@@ -49,16 +48,8 @@ public final class Stepper<ST extends Fsm.State, SY extends Fsm.Symbol> {
 	 * @throws IllegalArgumentException if the given {@code start} state is
 	 *                                  not an element of {@link Fsm#states()}
 	 */
-	public Stepper(Fsm<ST, SY> fsm, ST start) {
-		this.fsm = requireNonNull(fsm);
-		this.state = requireNonNull(start);
-
-		if (!fsm.states().contains(state)) {
-			throw new IllegalArgumentException(
-				"Initial state '%s' is not part of available states, %s."
-					.formatted(state, fsm.states())
-			);
-		}
+	public SymbolStepper(Fsm<ST, SY> fsm, ST start) {
+		super(fsm, start);
 	}
 
 	/**
@@ -67,42 +58,12 @@ public final class Stepper<ST extends Fsm.State, SY extends Fsm.Symbol> {
 	 *
 	 * @param fsm the FSM used by the stepper
 	 */
-	public Stepper(Fsm<ST, SY> fsm) {
-		this(fsm, fsm.start());
+	public SymbolStepper(Fsm<ST, SY> fsm) {
+		super(fsm, fsm.start());
 	}
 
-	/**
-	 * Returns the current state.
-	 *
-	 * @return the current state
-	 */
-	public synchronized ST state() {
-		return state;
-	}
-
-	/**
-	 * Return {@code true} if the current state is an element of the
-	 * {@link Fsm#finals()} states.
-	 *
-	 * @return {@code true} if the current state is an element of the
-	 * {@link Fsm#finals()} states, {@code false} otherwise.
-	 */
-	public synchronized boolean isFinished() {
-		return fsm.finals().contains(state);
-	}
-
-	/**
-	 * Moves the current state to the next state by applying the given
-	 * {@code signal}.
-	 *
-	 * @param signal the signal which moves the current step to the next step
-	 * @return the step result. If the step is {@link Step.Invalid}, the current
-	 * step is not changed.
-	 * @throws IllegalStateException if the {@link #isFinished()} is {@code true}
-	 * @throws IllegalArgumentException if the given {@code signal} is not
-	 *         an element of {@link Fsm#alphabet()}
-	 */
-	public synchronized Step<ST, SY> next(SY signal) {
+	@Override
+	public synchronized Optional<Fsm.Transition<ST, SY>> next(SY signal) {
 		requireNonNull(signal);
 		if (!fsm.alphabet().contains(signal)) {
 			throw new IllegalArgumentException(
@@ -118,15 +79,14 @@ public final class Stepper<ST extends Fsm.State, SY extends Fsm.Symbol> {
 
 		final var next = fsm.delta().apply(state, signal).orElse(null);
 
-		final Step<ST, SY> step;
+		final Fsm.Transition<ST, SY> transition;
 		if (next != null) {
-			step = new Step.Valid<>(state, signal, next);
+			transition = Fsm.Transition.of(state, signal, next);
 			state = next;
+			return Optional.of(transition);
 		} else {
-			step = new Step.Invalid<>(state, signal);
+			return Optional.empty();
 		}
-
-		return step;
 	}
 
 }

@@ -19,6 +19,11 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import org.testng.annotations.Test;
+
+import java.util.EnumSet;
+import java.util.List;
+
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.EXIT;
@@ -28,11 +33,6 @@ import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.PAUSED;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.TERMINATED;
-
-import java.util.EnumSet;
-import java.util.List;
-
-import org.testng.annotations.Test;
 
 public class FsmTest {
 
@@ -73,7 +73,7 @@ public class FsmTest {
 
 	@Test
 	public void stepper() {
-		final var stepper = new Stepper<>(FSM);
+		final var stepper = new SymbolStepper<>(FSM);
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		for (var it = events.iterator(); it.hasNext() && !stepper.isFinished();) {
@@ -82,40 +82,12 @@ public class FsmTest {
 	}
 
 	@Test
-	public void submitting() {
-		var publisher = new Fsm.EventPublisher<>(
-			FSM, FSM.start(),
-			(event, before, after) -> IO.println(
-				"%s: %s -> %s".formatted(event, before, after)
-			)
-		);
-
-		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
-		for (var it = events.iterator(); it.hasNext() && !publisher.isFinished();) {
-			publisher.submit(it.next());
-		}
-
-	}
-
-	@Test
-	public void terminating() {
-		final var publisher = new Fsm.EventPublisher<>(FSM, FSM.start(), (_, _, _) -> {});
-
-		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
-		events.stream()
-			.takeWhile(_ -> !publisher.isFinished())
-			.peek(publisher::submit)
-			.forEach(System.out::println);
-	}
-
-	@Test
 	public void transitionGatherer() {
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		events.stream()
-			.gather(Fsm.transitions(FSM))
+			.gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))
 			.forEach(System.out::println);
-
 	}
 
 }
