@@ -19,6 +19,12 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
+
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,10 +33,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
@@ -73,6 +75,20 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 
 		if (states.isEmpty()) {
 			throw new IllegalArgumentException("The states must not be empty.");
+		}
+
+		final var duplicateSymbols = Named.duplicates(alphabet);
+		if (!duplicateSymbols.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Alphabet contains duplicate symbols: " + duplicateSymbols
+			);
+		}
+
+		final var duplicateStates = Named.duplicates(states);
+		if (!duplicateStates.isEmpty()) {
+			throw new IllegalArgumentException(
+				"States contains duplicate entries: " + duplicateStates
+			);
 		}
 
 		if (!states.contains(start)) {
@@ -141,16 +157,40 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	public sealed interface Signal {
 	}
 
+	public sealed interface Named {
+
+		/**
+		 * Return the object name.
+		 *
+		 * @return the object name
+		 */
+		String name();
+
+		private static <N extends Named> List<N>
+		duplicates(Collection<? extends N> values) {
+			final var grouped = values.stream()
+				.collect(Collectors.groupingBy(Named::name));
+
+			return grouped.values().stream()
+				.filter(ns -> ns.size() > 1)
+				.map(List::getFirst)
+				.sorted(Comparator.comparing(Named::name))
+				.collect(Collectors.toUnmodifiableList());
+		}
+
+	}
+
 	/**
 	 * Interface for FSM symbols. A set of symbols form the alphabet of the FSM.
 	 */
-	public non-sealed interface Symbol extends Signal {
+	public non-sealed interface Symbol extends Signal, Named {
 
 		/**
 		 * Return the symbol name.
 		 *
 		 * @return the symbol name
 		 */
+		@Override
 		String name();
 
 		/**
@@ -210,13 +250,14 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	/**
 	 * Interface for the FSM states.
 	 */
-	public interface State {
+	public non-sealed interface State extends Named {
 
 		/**
-		 * Return the state name
+		 * Return the state name. The name must be unique within a {@link Fsm}.
 		 *
 		 * @return the name of the state
 		 */
+		@Override
 		String name();
 
 		/**
