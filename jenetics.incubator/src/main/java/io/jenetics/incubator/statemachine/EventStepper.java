@@ -23,6 +23,17 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Performs state transitions for events.
+ *
+ * @param <ST> the state type
+ * @param <SY> the symbol type
+ * @param <E> the event type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
+ */
 public class EventStepper<
 	ST extends Fsm.State,
 	SY extends Fsm.Symbol,
@@ -71,10 +82,8 @@ public class EventStepper<
 		}
 
 		final var next = fsm.delta().apply(state, event.kind()).orElse(null);
-
-		final Fsm.Transition<ST, E> transition;
 		if (next != null) {
-			transition = new Fsm.Transition<>(state, event, next);
+			final var transition = new Fsm.Transition<>(state, event, next);
 			state = next;
 			return Optional.of(transition);
 		} else {

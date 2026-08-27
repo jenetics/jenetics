@@ -333,12 +333,21 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/**
-	 * Interface for a symbol (event) stepper.
+	 * A stepper is responsible for performing the state transitions for given
+	 * signals. Implementations will be mutable and update the current state
+	 * according the transition function, <em>delta</em>, defined by the FSM.
 	 *
 	 * @param <ST> the state type
 	 * @param <SI> the symbol (signal) type
 	 */
 	public interface Stepper<ST extends State, SI extends Signal> {
+
+		/**
+		 * Returns the current stepper state.
+		 *
+		 * @return the current stepper state
+		 */
+		ST state();
 
 		/**
 		 * Return {@code true} if the current state is an element of the
@@ -364,7 +373,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/* *************************************************************************
-	 * Static methods for working with FSMs.
+	 * Static methods for working with FSMs and event streams.
 	 * ************************************************************************/
 
 	/**
@@ -380,7 +389,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 */
 	public static <ST extends State, SI extends Signal>
 	Gatherer<SI, ?, Transition<ST, SI>>
-	transitions(Supplier<Stepper<ST, SI>> stepper) {
+	transitions(Supplier<? extends Stepper<ST, SI>> stepper) {
 		requireNonNull(stepper);
 
 		return Gatherer.ofSequential(

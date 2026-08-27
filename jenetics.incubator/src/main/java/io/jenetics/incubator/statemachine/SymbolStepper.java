@@ -33,6 +33,10 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <ST> the state type
  * @param <SY> the symbol (signal) type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
  */
 public final class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
 	extends StepperBase<ST, SY>
@@ -78,10 +82,8 @@ public final class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
 		}
 
 		final var next = fsm.delta().apply(state, signal).orElse(null);
-
-		final Fsm.Transition<ST, SY> transition;
 		if (next != null) {
-			transition = new Fsm.Transition<>(state, signal, next);
+			final var transition = new Fsm.Transition<>(state, signal, next);
 			state = next;
 			return Optional.of(transition);
 		} else {

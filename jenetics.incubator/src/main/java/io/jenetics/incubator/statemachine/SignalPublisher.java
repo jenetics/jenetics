@@ -23,13 +23,23 @@ import java.util.concurrent.SubmissionPublisher;
 
 import static java.util.Objects.requireNonNull;
 
-public class EventPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
+/**
+ * Reactive signal transition publisher.
+ *
+ * @param <ST> the state type
+ * @param <SI> the symbol type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
+ */
+public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 	extends SubmissionPublisher<Fsm.Transition<ST, SI>>
 {
 
 	private final Fsm.Stepper<ST, SI> stepper;
 
-	public EventPublisher(Fsm.Stepper<ST, SI> stepper) {
+	public SignalPublisher(Fsm.Stepper<ST, SI> stepper) {
 		this.stepper = requireNonNull(stepper);
 	}
 

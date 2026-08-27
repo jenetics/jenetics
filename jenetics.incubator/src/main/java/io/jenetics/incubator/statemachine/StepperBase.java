@@ -21,6 +21,16 @@ package io.jenetics.incubator.statemachine;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Base implementation for stepper interface.
+ *
+ * @param <ST> the state type
+ * @param <SY> the symbol type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
+ */
 abstract class StepperBase<ST extends Fsm.State, SY extends Fsm.Symbol> {
 
 	final Fsm<ST, SY> fsm;
