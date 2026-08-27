@@ -62,18 +62,18 @@ public class FsmTest {
 		INACTIVE,
 		EnumSet.of(TERMINATED),
 		Fsm.Delta.of(
-			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
-			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
-			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
-			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
-			new Fsm.Transition<>(PAUSED, END, INACTIVE),
-			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
+			Fsm.Transition.of(INACTIVE, BEGIN, ACTIVE),
+			Fsm.Transition.of(ACTIVE, PAUSE, PAUSED),
+			Fsm.Transition.of(PAUSED, RESUME, ACTIVE),
+			Fsm.Transition.of(ACTIVE, END, INACTIVE),
+			Fsm.Transition.of(PAUSED, END, INACTIVE),
+			Fsm.Transition.of(INACTIVE, EXIT, TERMINATED)
 		)
 	);
 
 	@Test
 	public void stepper() {
-		final var stepper = new Fsm.Stepper<>(FSM);
+		final var stepper = new Stepper<>(FSM);
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		for (var it = events.iterator(); it.hasNext() && !stepper.isFinished();) {

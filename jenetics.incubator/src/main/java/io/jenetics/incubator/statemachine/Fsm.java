@@ -39,7 +39,7 @@ import java.util.stream.Gatherer;
  *     Finit State Machine</a>.
  * @implNote
  * The {@link Fsm} class is immutable and thread safe and can be shared between
- * different threads and processors (event publisher).
+ * different threads and processors (signal publisher).
  *
  * @param alphabet the input alphabet (a finite non-empty set of symbols)
  * @param states the finite non-empty set of states
@@ -91,6 +91,16 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			);
 		}
 
+		final var abth = alphabet;
+		final var finalsWithTransition = finals.stream()
+			.filter(f -> abth.stream().anyMatch(a -> delta.apply(f, a).isPresent()))
+			.toList();
+		if (!finalsWithTransition.isEmpty()) {
+			throw new IllegalArgumentException(
+				"No transition allowed from final state: " + finalsWithTransition
+			);
+		}
+
 		final var missing = finals.stream()
 			.filter(not(states::contains))
 			.toList();
@@ -106,7 +116,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		final List<Transition<ST, SY>> transitions = alphabet.stream()
 			.flatMap(sy -> finished.stream().map(st -> Map.entry(st, sy)))
 			.flatMap(step -> delta.apply(step.getKey(), step.getValue())
-				.map(to -> new Transition<>(step.getKey(), step.getValue(), to))
+				.map(to -> Transition.of(step.getKey(), step.getValue(), to))
 				.stream()
 			)
 			.toList();
@@ -175,9 +185,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	public non-sealed interface Event<SY extends Symbol> extends Signal {
 
 		/**
-		 * Return the symbol, this event belongs to.
+		 * Return the symbol, this signal belongs to.
 		 *
-		 * @return the event symbol
+		 * @return the signal symbol
 		 */
 		SY kind();
 	}
@@ -257,7 +267,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 
 			final Map<StateSymbol<ST, SY>, List<Transition<ST, SY>>> map =
 				transitions.stream()
-					.collect(groupingBy(t -> new StateSymbol<>(t.before(), t.event())));
+					.collect(groupingBy(t -> new StateSymbol<>(t.before(), t.signal())));
 
 			final List<StateSymbol<ST, SY>> duplicates = map.entrySet().stream()
 				.filter(t -> t.getValue().size() > 1)
@@ -305,21 +315,49 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	/**
 	 * Defines a state-transition triple {@code (s1, e, s2)}.
 	 *
-	 * @param before the current state
-	 * @param event the event that is triggering (or triggered) the transition
-	 * @param after the transitioned state
 	 * @param <ST> the state type
-	 * @param <SI> the signal type
+	 * @param <SI> the signal (event) type
 	 */
-	public record Transition<ST extends State, SI extends Signal>(
-		ST before,
-		SI event,
-		ST after
-	) {
-		public Transition {
-			requireNonNull(before);
-			requireNonNull(event);
-			requireNonNull(after);
+	public interface Transition<ST extends State, SI extends Signal> {
+
+		/**
+		 * return the state before the transition.
+		 *
+		 * @return the state before the transition
+		 */
+		ST before();
+
+		/**
+		 * Return the signal that is triggering (or triggered) the transition.
+		 *
+		 * @return the signal that is triggering (or triggered) the transition
+		 */
+		SI signal();
+
+		/**
+		 * return the state after the transition.
+		 *
+		 * @return the state after the transition
+		 */
+		ST after();
+
+		static <ST extends State, SI extends Signal>
+		Transition<ST, SI> of(ST before, SI signal, ST after) {
+			record SimpleTransition<ST extends State, SI extends Signal>(
+				ST before,
+				SI signal,
+				ST after
+			)
+				implements Transition<ST, SI>
+			{
+				public SimpleTransition {
+					requireNonNull(before);
+					requireNonNull(signal);
+					requireNonNull(after);
+				}
+			}
+
+			return new SimpleTransition<>(before, signal, after);
 		}
 	}
 
@@ -329,193 +367,21 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 * ************************************************************************/
 
 	/**
-	 * The base interface for an FSM step. A step might be {@link Valid}, if the
-	 * {@link Delta} function is defined for a given {@link Symbol}, or
-	 * {@link Invalid}, if such a transition is not defined.
-	 *
-	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 */
-	public sealed interface Step<ST extends State, SY extends Symbol> {
-
-		/**
-		 * Return the state before the step (transition).
-		 *
-		 * @return the state before the step (transition)
-		 */
-		ST before();
-
-		/**
-		 * Return the signal which triggered the step (transition).
-		 *
-		 * @return the signal which triggered the step (transition)
-		 */
-		SY signal();
-
-		/**
-		 * A valid step result.
-		 *
-		 * @param before the state before the step
-		 * @param signal the transition symbol
-		 * @param after the state after the step
-		 * @param <ST> the state type
-		 * @param <SY> the symbol (signal) type
-		 */
-		record Valid<ST extends State, SY extends Symbol>(
-			ST before,
-			SY signal,
-			ST after
-		)
-			implements Step<ST, SY>
-		{
-			public Valid {
-				requireNonNull(before);
-				requireNonNull(signal);
-				requireNonNull(after);
-			}
-		}
-
-		/**
-		 * An invalid step result, which is not defined by the {@link Delta}
-		 * function of the {@link Fsm}.
-		 *
-		 * @param before the state before the step
-		 * @param signal the transition symbol
-		 * @param <ST> the state type
-		 * @param <SY> the symbol (signal) type
-		 */
-		record Invalid<ST extends State, SY extends Symbol>(
-			ST before,
-			SY signal
-		)
-			implements Step<ST, SY>
-		{
-			public Invalid {
-				requireNonNull(before);
-				requireNonNull(signal);
-			}
-		}
-	}
-
-	/**
-	 * This class steps through the FSM, with the {@link #next(Symbol)} method.
-	 * and holds the current state.
-	 *
-	 * @param <ST> the state type
-	 * @param <SY> the symbol (signal) type
-	 */
-	public static final class Stepper<ST extends State, SY extends Symbol> {
-		private final Fsm<ST, SY> fsm;
-		private ST state;
-
-		/**
-		 * Create a new stepper object with the given {@code fsm} and
-		 * {@code start} state.
-		 *
-		 * @param fsm the FSM used by the stepper
-		 * @param start the steppers start state
-		 * @throws IllegalArgumentException if the given {@code start} state is
-		 *         not an element of {@link Fsm#states()}
-		 */
-		public Stepper(Fsm<ST, SY> fsm, ST start) {
-			this.fsm = requireNonNull(fsm);
-			this.state = requireNonNull(start);
-
-			if (!fsm.states().contains(state)) {
-				throw new IllegalArgumentException(
-					"Initial state '%s' is not part of available states, %s."
-						.formatted(state, fsm.states())
-				);
-			}
-		}
-
-		/**
-		 * Create a new stepper object with the given {@code fsm} and the
-		 * {@link Fsm#start()} state.
-		 *
-		 * @param fsm the FSM used by the stepper
-		 */
-		public Stepper(Fsm<ST, SY> fsm) {
-			this(fsm, fsm.start());
-		}
-
-		/**
-		 * Returns the current state.
-		 *
-		 * @return the current state
-		 */
-		public synchronized ST current() {
-			return state;
-		}
-
-		/**
-		 * Return {@code true} if the current state is an element of the
-		 * {@link Fsm#finals()} states.
-		 *
-		 * @return {@code true} if the current state is an element of the
-		 *         {@link Fsm#finals()} states, {@code false} otherwise.
-		 */
-		public synchronized boolean isFinished() {
-			return fsm.finals().contains(state);
-		}
-
-		/**
-		 * Moves the current state to the next state by applying the given
-		 * {@code signal}.
-		 *
-		 * @param signal the signal which moves the current step to the next step
-		 * @return the step result. If the step is {@link Step.Invalid}, the current
-		 *         step is not changed.
-		 * @throws IllegalStateException if the {@link #isFinished()} is
-		 *         {@code true}
-		 * @throws IllegalArgumentException if the given {@code signal} is not
-		 *         an element of {@link Fsm#alphabet()}
-		 */
-		public synchronized Step<ST, SY> next(SY signal) {
-			requireNonNull(signal);
-			if (!fsm.alphabet().contains(signal)) {
-				throw new IllegalArgumentException(
-					"Got unknown signal: " + signal
-				);
-			}
-			if (isFinished()) {
-				throw new IllegalStateException(
-					"No transition triggered by '%s', already in a final state '%s'."
-						.formatted(signal, state)
-				);
-			}
-
-			final var next = fsm.delta().apply(state, signal).orElse(null);
-
-			final Step<ST, SY> step;
-			if (next != null) {
-				step = new Step.Valid<>(state, signal, next);
-				state = next;
-			} else {
-				step = new Step.Invalid<>(state, signal);
-			}
-
-			return step;
-		}
-
-	}
-
-	/**
-	 * Common interface for event submitter.
+	 * Common interface for signal submitter.
 	 *
 	 * @param <SY> the symbol (signal) type
-	 * @param <E> the event type
+	 * @param <E> the signal type
 	 */
 	public interface Submitter<SY extends Symbol, E extends Event<SY>> {
 		void submit(E event);
 	}
 
 	/**
-	 * The event subscriber which is called for every new event being published.
+	 * The signal subscriber which is called for every new signal being published.
 	 *
 	 * @param <ST> the state type
 	 * @param <SY> the symbol (signal) type
-	 * @param <E> the event type
+	 * @param <E> the signal type
 	 */
 	public interface EventSubscriber<
 		ST extends State,
@@ -524,9 +390,9 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	> {
 
 		/**
-		 * This method is called for every event.
+		 * This method is called for every signal.
 		 *
-		 * @param event the event object, which triggers the state transition
+		 * @param event the signal object, which triggers the state transition
 		 * @param before the FSM state before the transition
 		 * @param after the FSM state after the transition
 		 */
@@ -536,14 +402,14 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * This method is called for invalid events, for events where no state
 		 * transition is defined.
 		 *
-		 * @param event the event object, which triggers the state transition
+		 * @param event the signal object, which triggers the state transition
 		 * @param state the FSM state before the transition
 		 * @throws IllegalStateException always. Implementer may override this
 		 *         method and handle invalid events differently.
 		 */
 		default void onInvalidEvent(E event, ST state) {
 			throw new IllegalStateException(
-				"Illegal event %s for state %s.".formatted(event, state)
+				"Illegal signal %s for state %s.".formatted(event, state)
 			);
 		}
 
@@ -551,26 +417,26 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * This method is called for all events after the FSM state is already
 		 * a finished state.
 		 *
-		 * @param event the event object, which triggers the state transition
+		 * @param event the signal object, which triggers the state transition
 		 * @param state the finished state
 		 * @throws IllegalStateException always. Implementer may override this
 		 *         method and handle events after the finished state differently.
 		 */
 		default void onAfterFinishEvent(E event, ST state) {
 			throw new IllegalStateException(
-				"Illegal event %s after finish state %s.".formatted(event, state)
+				"Illegal signal %s after finish state %s.".formatted(event, state)
 			);
 		}
 
 	}
 
 	/**
-	 * The event publisher for an FSM. It holds the state, which is updated for
-	 * every published event, according the Finite State Machine {@link Fsm}.
+	 * The signal publisher for an FSM. It holds the state, which is updated for
+	 * every published signal, according the Finite State Machine {@link Fsm}.
 	 *
 	 * @param <ST> the state type
 	 * @param <SY> the symbol (signal) type
-	 * @param <E> the event type
+	 * @param <E> the signal type
 	 */
 	public static final class EventPublisher<
 		ST extends State,
@@ -610,7 +476,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 * @return the current state of the runner
 		 */
 		public ST current() {
-			return stepper.current();
+			return stepper.state();
 		}
 
 		public boolean isFinished() {
@@ -618,10 +484,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		}
 
 		/**
-		 * Consumer the <em>next</em> event. {@code true} is returned, if the
-		 * event has been processed and the final state hasn't been reached yet.
+		 * Consumer the <em>next</em> signal. {@code true} is returned, if the
+		 * signal has been processed and the final state hasn't been reached yet.
 		 *
-		 * @param event the transitioning event
+		 * @param event the transitioning signal
 		 */
 		@Override
 		public void submit(E event) {
@@ -680,17 +546,17 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/**
-	 * Return a gatherer which enriches an event stream with the states, defined
+	 * Return a gatherer which enriches an signal stream with the states, defined
 	 * by the given state machine, {@code fsm}. The gatherer ignores invalid
-	 * event (transitions) and stops when a final state, as defined by the
+	 * signal (transitions) and stops when a final state, as defined by the
 	 * {@code fsm}, has been reached.
 	 *
 	 * @param fsm the state machine which defines the before and after state of
-	 *        an event stream
+	 *        an signal stream
 	 * @param start the start state
 	 * @param <ST> the state type
 	 * @param <SY> the symbol (signal) type
-	 * @param <E> the event type
+	 * @param <E> the signal type
 	 * @return a new states gatherer
 	 */
 	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
@@ -704,7 +570,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			(state, event, downstream) -> {
 				var after = fsm.delta().apply(state.get(), event.kind());
 				after.ifPresent(aftr -> {
-					downstream.push(new Transition<>(state.get(), event, aftr));
+					downstream.push(Transition.of(state.get(), event, aftr));
 					state.set(aftr);
 				});
 
@@ -714,16 +580,16 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	}
 
 	/**
-	 * Return a gatherer which enriches an event stream with the states, defined
+	 * Return a gatherer which enriches an signal stream with the states, defined
 	 * by the given state machine, {@code fsm}. The gatherer ignores invalid
-	 * event (transitions) and stops when a final state, as defined by the
+	 * signal (transitions) and stops when a final state, as defined by the
 	 * {@code fsm}, has been reached.
 	 *
 	 * @param fsm the state machine which defines the before and after state of
-	 *        an event stream
+	 *        an signal stream
 	 * @param <ST> the state type
 	 * @param <SY> the symbol (signal) type
-	 * @param <E> the event type
+	 * @param <E> the signal type
 	 * @return a new states gatherer
 	 */
 	public static <ST extends State, SY extends Symbol, E extends Event<SY>>
