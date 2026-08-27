@@ -74,7 +74,7 @@ public class EventStepper<
 
 		final Fsm.Transition<ST, E> transition;
 		if (next != null) {
-			transition = Fsm.Transition.of(state, event, next);
+			transition = new Fsm.Transition<>(state, event, next);
 			state = next;
 			return Optional.of(transition);
 		} else {

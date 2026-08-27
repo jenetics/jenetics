@@ -114,7 +114,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		final List<Transition<ST, SY>> transitions = alphabet.stream()
 			.flatMap(sy -> finished.stream().map(st -> Map.entry(st, sy)))
 			.flatMap(step -> delta.apply(step.getKey(), step.getValue())
-				.map(to -> Transition.of(step.getKey(), step.getValue(), to))
+				.map(to -> new Transition<>(step.getKey(), step.getValue(), to))
 				.stream()
 			)
 			.toList();
@@ -313,49 +313,22 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	/**
 	 * Defines a state-transition triple {@code (s1, e, s2)}.
 	 *
+	 * @param before the current state
+	 * @param signal the signal (event) that is triggering (or triggered) the
+	 *        transition
+	 * @param after the transitioned state
 	 * @param <ST> the state type
-	 * @param <SI> the signal (event) type
+	 * @param <SI> the signal type
 	 */
-	public interface Transition<ST extends State, SI extends Signal> {
-
-		/**
-		 * return the state before the transition.
-		 *
-		 * @return the state before the transition
-		 */
-		ST before();
-
-		/**
-		 * Return the signal that is triggering (or triggered) the transition.
-		 *
-		 * @return the signal that is triggering (or triggered) the transition
-		 */
-		SI signal();
-
-		/**
-		 * return the state after the transition.
-		 *
-		 * @return the state after the transition
-		 */
-		ST after();
-
-		static <ST extends State, SI extends Signal>
-		Transition<ST, SI> of(ST before, SI signal, ST after) {
-			record SimpleTransition<ST extends State, SI extends Signal>(
-				ST before,
-				SI signal,
-				ST after
-			)
-				implements Transition<ST, SI>
-			{
-				public SimpleTransition {
-					requireNonNull(before);
-					requireNonNull(signal);
-					requireNonNull(after);
-				}
-			}
-
-			return new SimpleTransition<>(before, signal, after);
+	public record Transition<ST extends State, SI extends Signal>(
+		ST before,
+		SI signal,
+		ST after
+	) {
+		public Transition {
+			requireNonNull(before);
+			requireNonNull(signal);
+			requireNonNull(after);
 		}
 	}
 

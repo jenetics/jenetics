@@ -81,7 +81,7 @@ public final class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
 
 		final Fsm.Transition<ST, SY> transition;
 		if (next != null) {
-			transition = Fsm.Transition.of(state, signal, next);
+			transition = new Fsm.Transition<>(state, signal, next);
 			state = next;
 			return Optional.of(transition);
 		} else {

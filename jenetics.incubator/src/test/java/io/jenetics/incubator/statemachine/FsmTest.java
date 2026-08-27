@@ -62,12 +62,12 @@ public class FsmTest {
 		INACTIVE,
 		EnumSet.of(TERMINATED),
 		Fsm.Delta.of(
-			Fsm.Transition.of(INACTIVE, BEGIN, ACTIVE),
-			Fsm.Transition.of(ACTIVE, PAUSE, PAUSED),
-			Fsm.Transition.of(PAUSED, RESUME, ACTIVE),
-			Fsm.Transition.of(ACTIVE, END, INACTIVE),
-			Fsm.Transition.of(PAUSED, END, INACTIVE),
-			Fsm.Transition.of(INACTIVE, EXIT, TERMINATED)
+			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
+			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
+			new Fsm.Transition<>(PAUSED, END, INACTIVE),
+			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
 		)
 	);
 
@@ -82,7 +82,7 @@ public class FsmTest {
 	}
 
 	@Test
-	public void transitionGatherer() {
+	public void gatherer() {
 		final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
 
 		events.stream()
