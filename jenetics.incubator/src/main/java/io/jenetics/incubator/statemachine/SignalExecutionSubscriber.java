@@ -19,13 +19,11 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import java.util.concurrent.Flow;
-import java.util.concurrent.SubmissionPublisher;
-
 import static java.util.Objects.requireNonNull;
 
+import java.util.concurrent.Flow;
+
 /**
- * Reactive signal transition publisher.
  *
  * @param <ST> the state type
  * @param <SI> the symbol type
@@ -34,26 +32,38 @@ import static java.util.Objects.requireNonNull;
  * @version 9.1
  * @since 9.1
  */
-public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
-	extends SubmissionPublisher<Fsm.Transition<ST, SI>>
+public class SignalExecutionSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
+	implements Flow.Subscriber<Fsm.Transition<ST, SI>>
 {
 
-	private final Fsm.Stepper<ST, SI> stepper;
+	private final Execution<ST, SI> execution;
 
-	public SignalPublisher(Fsm.Stepper<ST, SI> stepper) {
-		this.stepper = requireNonNull(stepper);
+	private Flow.Subscription subscription;
+
+	public SignalExecutionSubscriber(final Execution<ST, SI> execution) {
+		this.execution = requireNonNull(execution);
 	}
 
-	public void submit(SI signal) {
-		if (isClosed()) {
-			throw new IllegalStateException("Closed");
-		}
-
-		stepper.next(signal).ifPresent(this::submit);
-		if (stepper.isFinished()) {
-			getSubscribers().forEach(Flow.Subscriber::onComplete);
-			close();
-		}
+	@Override
+	public void onSubscribe(Flow.Subscription subscription) {
+		this.subscription = requireNonNull(subscription);
+		this.subscription.request(1);
 	}
 
+	@Override
+	public void onNext(Fsm.Transition<ST, SI> transition) {
+		execution.apply(transition).run();
+		subscription.request(1);
+	}
+
+	@Override
+	public void onError(Throwable throwable) {
+		subscription.cancel();
+		subscription = null;
+	}
+
+	@Override
+	public void onComplete() {
+		subscription = null;
+	}
 }

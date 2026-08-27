@@ -19,13 +19,8 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import java.util.concurrent.Flow;
-import java.util.concurrent.SubmissionPublisher;
-
-import static java.util.Objects.requireNonNull;
-
 /**
- * Reactive signal transition publisher.
+ * Defines the actual transition execution.
  *
  * @param <ST> the state type
  * @param <SI> the symbol type
@@ -34,26 +29,15 @@ import static java.util.Objects.requireNonNull;
  * @version 9.1
  * @since 9.1
  */
-public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
-	extends SubmissionPublisher<Fsm.Transition<ST, SI>>
-{
+@FunctionalInterface
+public interface Execution<ST extends Fsm.State, SI extends Fsm.Signal> {
 
-	private final Fsm.Stepper<ST, SI> stepper;
-
-	public SignalPublisher(Fsm.Stepper<ST, SI> stepper) {
-		this.stepper = requireNonNull(stepper);
-	}
-
-	public void submit(SI signal) {
-		if (isClosed()) {
-			throw new IllegalStateException("Closed");
-		}
-
-		stepper.next(signal).ifPresent(this::submit);
-		if (stepper.isFinished()) {
-			getSubscribers().forEach(Flow.Subscriber::onComplete);
-			close();
-		}
-	}
+	/**
+	 * Returns the action to be executed for the given state {@code transition}.
+	 *
+	 * @param transition the state transition
+	 * @return the action to be executed for the given state {@code transition}
+	 */
+	Runnable apply(Fsm.Transition<ST, SI> transition);
 
 }

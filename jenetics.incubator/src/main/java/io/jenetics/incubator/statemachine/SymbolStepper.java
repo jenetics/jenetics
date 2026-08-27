@@ -38,7 +38,7 @@ import static java.util.Objects.requireNonNull;
  * @version 9.1
  * @since 9.1
  */
-public final class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
+public class SymbolStepper<ST extends Fsm.State, SY extends Fsm.Symbol>
 	extends StepperBase<ST, SY>
 	implements Fsm.Stepper<ST, SY>
 {

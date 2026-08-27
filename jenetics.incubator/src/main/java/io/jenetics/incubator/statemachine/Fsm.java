@@ -428,6 +428,10 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 */
 		Optional<Fsm.Transition<ST, SI>> next(SI signal);
 
+		default void forEach(Execution<ST, SI> execution) {
+
+		}
+
 	}
 
 	/* *************************************************************************
