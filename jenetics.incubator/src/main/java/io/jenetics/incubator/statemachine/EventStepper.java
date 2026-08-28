@@ -40,7 +40,7 @@ public class EventStepper<
 	E extends Fsm.Event<SY>
 >
 	extends StepperBase<ST, SY>
-	implements Fsm.Stepper<ST, E>
+	implements Stepper<ST, E>
 {
 
 	/**

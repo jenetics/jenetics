@@ -26,16 +26,27 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * This class wraps an existing stepper and notifies registered listeners on
+ * state changes (transitions).
+ *
+ * @param <ST> the state type
+ * @param <SI> the symbol (signal) type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 9.1
+ * @since 9.1
+ */
 public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Signal>
-	implements Fsm.Stepper<ST, SI>
+	implements Stepper<ST, SI>
 {
 
-	private final Fsm.Stepper<ST, SI> adoptee;
+	private final Stepper<ST, SI> adoptee;
 
 	private final List<Consumer<? super Fsm.Transition<ST, SI>>>
 		listeners = new CopyOnWriteArrayList<>();
 
-	public OberservableStepper(final Fsm.Stepper<ST, SI> adoptee) {
+	public OberservableStepper(final Stepper<ST, SI> adoptee) {
 		this.adoptee = requireNonNull(adoptee);
 	}
 

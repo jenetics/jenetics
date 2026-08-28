@@ -37,9 +37,55 @@ import java.util.stream.Gatherer;
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
  *     Finit State Machine</a>.
+ * A {@link Fsm} instance is usually created as static constant.
+ * <p>
+ * <b>Defining state machine</b>
+ * {@snippet lang=java:
+ * static final Fsm<ProcessState, Command> FSM = new Fsm<>(
+ *     EnumSet.allOf(Command.class),
+ *     EnumSet.allOf(ProcessState.class),
+ *     INACTIVE,
+ *     EnumSet.of(TERMINATED),
+ *     Fsm.Delta.of(
+ *         new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
+ *         new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
+ *         new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
+ *         new Fsm.Transition<>(ACTIVE, END, INACTIVE),
+ *         new Fsm.Transition<>(PAUSED, END, INACTIVE),
+ *         new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
+ *     )
+ * );
+ * }
+ * The <em>execution</em> of the state machine is done by the {@link Stepper}
+ * implementations, which also holds the current state of the state machines.
+ * {@link Stepper} instances are usually not shared between different threads.
+ * On top of the {@link Stepper}, the FSM can be run in a reactive manner using
+ * the {@link SignalPublisher} and {@link SignalSubscriber} classes. The
+ * {@link OberservableStepper} adapter lets you execute the FSM in an event-based
+ * kind.
+ * <p>
+ * <b>Execute action on state transitions</b>
+ * {@snippet lang=java:
+ * events.stream()
+ *     .gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))
+ *     .forEach(IO::println);
+ * }
+ *
+ * @apiNote
+ * This API has no concept about the execution of action on state transitions.
+ * It only allows you to create a <em>stream</em> of {@link Transition} objects
+ * out of a <em>stream</em> of {@link Signal}s. Executing user actions
+ * on state transitions must be implemented by the user. In the simplest case,
+ * a static methods is called for every transition.
+ *
  * @implNote
  * The {@link Fsm} class is immutable and thread safe and can be shared between
  * different threads and processors (signal publisher).
+ *
+ * @see Stepper
+ * @see SymbolStepper
+ * @see SignalPublisher
+ * @see SignalSubscriber
  *
  * @param alphabet the input alphabet (a finite non-empty set of symbols)
  * @param states the finite non-empty set of states
@@ -388,46 +434,6 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			requireNonNull(signal);
 			requireNonNull(after);
 		}
-	}
-
-	/**
-	 * A stepper is responsible for performing the state transitions for given
-	 * signals. Implementations will be mutable and update the current state
-	 * according the transition function, <em>delta</em>, defined by the FSM.
-	 *
-	 * @param <ST> the state type
-	 * @param <SI> the symbol (signal) type
-	 */
-	public interface Stepper<ST extends State, SI extends Signal> {
-
-		/**
-		 * Returns the current stepper state.
-		 *
-		 * @return the current stepper state
-		 */
-		ST state();
-
-		/**
-		 * Return {@code true} if the current state is an element of the
-		 * {@link Fsm#finals()} states.
-		 *
-		 * @return {@code true} if the current state is an element of the
-		 * {@link Fsm#finals()} states, {@code false} otherwise.
-		 */
-		boolean isFinished();
-
-		/**
-		 * Moves the current state to the next state by applying the given
-		 * {@code signal}.
-		 *
-		 * @param signal the signal which moves the current step to the next step
-		 * @return the transition, if any
-		 * @throws IllegalStateException if the {@link #isFinished()} is {@code true}
-		 * @throws IllegalArgumentException if the given {@code signal} is not
-		 *         an element of {@link Fsm#alphabet()}
-		 */
-		Optional<Fsm.Transition<ST, SI>> next(SI signal);
-
 	}
 
 	/* *************************************************************************

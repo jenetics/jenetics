@@ -40,14 +40,14 @@ public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 	extends SubmissionPublisher<Fsm.Transition<ST, SI>>
 {
 
-	private final Fsm.Stepper<ST, SI> stepper;
+	private final Stepper<ST, SI> stepper;
 
-	public SignalPublisher(Fsm.Stepper<ST, SI> stepper) {
+	public SignalPublisher(Stepper<ST, SI> stepper) {
 		this.stepper = requireNonNull(stepper);
 	}
 
 	public SignalPublisher(
-		Fsm.Stepper<ST, SI> stepper,
+		Stepper<ST, SI> stepper,
 		Executor executor,
 		int maxBufferCapacity
 	) {
@@ -56,7 +56,7 @@ public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 	}
 
 	public SignalPublisher(
-		Fsm.Stepper<ST, SI> stepper,
+		Stepper<ST, SI> stepper,
 		Executor executor,
 		int maxBufferCapacity,
 		BiConsumer<? super Flow.Subscriber<? super Fsm.Transition<ST, SI>>, ? super Throwable> handler
