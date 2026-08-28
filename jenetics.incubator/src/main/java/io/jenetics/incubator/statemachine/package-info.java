@@ -24,6 +24,33 @@
  * finite-state machine</a> implementation. It models the state machine itself
  * as an immutable definition and keeps execution state in separate, mutable
  * steppers.
+ * <p>
+ * The following diagram shows the interaction between the main components:
+ *
+ * <pre>{@code
+ * +-------------+       uses definition        +----------------+
+ * | Fsm         |<-----------------------------| Stepper        |
+ * |-------------|                              |----------------|
+ * | alphabet    |                              | state()        |
+ * | states      |                              | isFinished()   |
+ * | start       |                              | next(signal)   |
+ * | finals      |                              +-------^--------+
+ * | delta       |                                      |
+ * +-------------+                                      |
+ *                                                      | delegates to
+ *                                                      |
+ *                                              +-------+--------+
+ *                                              | SignalPublisher|
+ *                                              |----------------|
+ *                          Application ----->  | submit(signal) |
+ *                          submits Fsm.Signal  | subscribe(...) |
+ *                                              | close()        |
+ *                                              +-------+--------+
+ *                                                      |
+ *                                                      | emits Fsm.Transition
+ *                                                      v
+ *                                              Flow.Subscriber
+ * }</pre>
  *
  * <h2>Definition</h2>
  *
