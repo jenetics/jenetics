@@ -19,8 +19,12 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.Flow;
+import java.util.function.Consumer;
+
 /**
- * Defines the actual transition execution.
  *
  * @param <ST> the state type
  * @param <SI> the symbol type
@@ -29,15 +33,38 @@ package io.jenetics.incubator.statemachine;
  * @version 9.1
  * @since 9.1
  */
-@FunctionalInterface
-public interface Execution<ST extends Fsm.State, SI extends Fsm.Signal> {
+public class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
+	implements Flow.Subscriber<Fsm.Transition<ST, SI>>
+{
 
-	/**
-	 * Returns the action to be executed for the given state {@code transition}.
-	 *
-	 * @param transition the state transition
-	 * @return the action to be executed for the given state {@code transition}
-	 */
-	Runnable apply(Fsm.Transition<ST, SI> transition);
+	private final Consumer<? super Fsm.Transition<ST, SI>> consumer;
 
+	private Flow.Subscription subscription;
+
+	public SignalSubscriber(Consumer<? super Fsm.Transition<ST, SI>> consumer) {
+		this.consumer = requireNonNull(consumer);
+	}
+
+	@Override
+	public void onSubscribe(Flow.Subscription subscription) {
+		this.subscription = requireNonNull(subscription);
+		this.subscription.request(1);
+	}
+
+	@Override
+	public void onNext(Fsm.Transition<ST, SI> transition) {
+		consumer.accept(transition);
+		subscription.request(1);
+	}
+
+	@Override
+	public void onError(Throwable throwable) {
+		subscription.cancel();
+		subscription = null;
+	}
+
+	@Override
+	public void onComplete() {
+		subscription = null;
+	}
 }
