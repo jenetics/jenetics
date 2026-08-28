@@ -40,6 +40,7 @@ public class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
 	private final Consumer<? super Fsm.Transition<ST, SI>> consumer;
 
 	private Flow.Subscription subscription;
+	private boolean completed;
 
 	public SignalSubscriber(Consumer<? super Fsm.Transition<ST, SI>> consumer) {
 		this.consumer = requireNonNull(consumer);
@@ -47,24 +48,83 @@ public class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
 
 	@Override
 	public void onSubscribe(Flow.Subscription subscription) {
-		this.subscription = requireNonNull(subscription);
-		this.subscription.request(1);
+		requireNonNull(subscription);
+
+		final boolean accept;
+		synchronized (this) {
+			accept = this.subscription == null && !completed;
+			if (accept) {
+				this.subscription = subscription;
+			}
+		}
+
+		if (accept) {
+			subscription.request(1);
+		} else {
+			subscription.cancel();
+		}
 	}
 
 	@Override
 	public void onNext(Fsm.Transition<ST, SI> transition) {
-		consumer.accept(transition);
-		subscription.request(1);
+		requireNonNull(transition);
+
+		final var subscription = subscription();
+		if (subscription == null) {
+			return;
+		}
+
+		try {
+			consumer.accept(transition);
+		} catch (RuntimeException | Error error) {
+			cancel(subscription);
+			throw error;
+		}
+
+		if (isSubscribed(subscription)) {
+			subscription.request(1);
+		}
 	}
 
 	@Override
 	public void onError(Throwable throwable) {
-		subscription.cancel();
-		subscription = null;
+		requireNonNull(throwable);
+
+		final var subscription = complete();
+		if (subscription != null) {
+			subscription.cancel();
+		}
 	}
 
 	@Override
 	public void onComplete() {
-		subscription = null;
+		complete();
+	}
+
+	private synchronized Flow.Subscription subscription() {
+		return completed ? null : subscription;
+	}
+
+	private synchronized boolean isSubscribed(
+		final Flow.Subscription subscription
+	) {
+		return this.subscription == subscription && !completed;
+	}
+
+	private void cancel(final Flow.Subscription subscription) {
+		synchronized (this) {
+			if (this.subscription == subscription) {
+				this.subscription = null;
+				completed = true;
+			}
+		}
+		subscription.cancel();
+	}
+
+	private synchronized Flow.Subscription complete() {
+		final var subscription = this.subscription;
+		this.subscription = null;
+		completed = true;
+		return subscription;
 	}
 }

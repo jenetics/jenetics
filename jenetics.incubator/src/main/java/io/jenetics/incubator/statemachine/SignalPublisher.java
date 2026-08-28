@@ -19,8 +19,10 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
+import java.util.function.BiConsumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -44,15 +46,46 @@ public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 		this.stepper = requireNonNull(stepper);
 	}
 
-	public void submit(SI signal) {
+	public SignalPublisher(
+		Fsm.Stepper<ST, SI> stepper,
+		Executor executor,
+		int maxBufferCapacity
+	) {
+		super(requireNonNull(executor), maxBufferCapacity);
+		this.stepper = requireNonNull(stepper);
+	}
+
+	public SignalPublisher(
+		Fsm.Stepper<ST, SI> stepper,
+		Executor executor,
+		int maxBufferCapacity,
+		BiConsumer<? super Flow.Subscriber<? super Fsm.Transition<ST, SI>>, ? super Throwable> handler
+	) {
+		super(requireNonNull(executor), maxBufferCapacity, handler);
+		this.stepper = requireNonNull(stepper);
+	}
+
+	public synchronized int submit(SI signal) {
+		requireNonNull(signal);
 		if (isClosed()) {
 			throw new IllegalStateException("Closed");
 		}
 
-		stepper.next(signal).ifPresent(this::submit);
-		if (stepper.isFinished()) {
-			getSubscribers().forEach(Flow.Subscriber::onComplete);
-			close();
+		try {
+			final var lag = stepper.next(signal)
+				.map(super::submit)
+				.orElseGet(this::estimateMaximumLag);
+
+			if (stepper.isFinished()) {
+				close();
+			}
+
+			return lag;
+		} catch (RuntimeException | Error error) {
+			if (!isClosed()) {
+				closeExceptionally(error);
+			}
+			throw error;
 		}
 	}
 
