@@ -37,9 +37,20 @@ import java.util.stream.Gatherer;
 /**
  * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
  *     Finit State Machine</a>.
+ * The {@link Fsm} is modeled as a quintuple (record) {@code (Σ, S, s0, δ, F)},
+ * where:
+ * <ul>
+ *     <li><b>Σ</b> is the non-empty alphabet of symbols (signals);</li>
+ *     <li><b>S</b> is the finit non-empty set of states;</li>
+ *     <li><b>s0</b> is the initial state, which is an element of S;</li>
+ *     <li><b>δ</b> is the transition function: δ: S x Σ -> S;</li>
+ *     <li><b>F</b> is the possible empty set of final states, which are
+ *         elements of S.</li>
+ * </ul>
+ *
  * A {@link Fsm} instance is usually created as static constant.
- * <p>
- * <b>Defining state machine</b>
+ *
+ * <h1>Defining state machine</h1>
  * {@snippet lang=java:
  * static final Fsm<ProcessState, Command> FSM = new Fsm<>(
  *     EnumSet.allOf(Command.class),
@@ -63,8 +74,10 @@ import java.util.stream.Gatherer;
  * the {@link SignalPublisher} and {@link SignalSubscriber} classes. The
  * {@link OberservableStepper} adapter lets you execute the FSM in an event-based
  * kind.
- * <p>
- * <b>Execute action on state transitions</b>
+ *
+ * <h1>Execute action on state transitions</h1>
+ * The immutable FSM can be used to convert a stream of events into a stream of
+ * state transitions. It is then possible to execute actions on these transitions.
  * {@snippet lang=java:
  * events.stream()
  *     .gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))

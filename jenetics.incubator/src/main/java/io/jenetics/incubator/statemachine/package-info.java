@@ -19,52 +19,41 @@
  */
 
 /**
- * This package contains a small
+ * This package contains a simple
  * <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
- * finite-state machine</a> implementation. It models the state machine itself
- * as an immutable definition and keeps execution state in separate, mutable
- * steppers.
- * <p>
- * The following diagram shows the interaction between the main components:
+ * finite-state machine</a> implementation. It separates the definition of the
+ * FSM from its execution, where the {@link Fsm} implementation is modeled as
+ * a quintuple (record) {@code (Σ, S, s0, δ, F)}, with
+ * <ul>
+ *     <li><b>Σ</b> as the non-empty alphabet of symbols (signals);</li>
+ *     <li><b>S</b> as the finit non-empty set of states;</li>
+ *     <li><b>s0</b> as the initial state, which is an element of S;</li>
+ *     <li><b>δ</b> as the transition function: δ: S x Σ -> S;</li>
+ *     <li><b>F</b> as the possible empty set of final states, which are
+ *         elements of S.</li>
+ * </ul>
  *
- * <pre>{@code
- * +-------------+       uses definition        +----------------+
- * | Fsm         |<-----------------------------| Stepper        |
- * |-------------|                              |----------------|
- * | alphabet    |                              | state()        |
- * | states      |                              | isFinished()   |
- * | start       |                              | next(signal)   |
- * | finals      |                              +-------^--------+
- * | delta       |                                      |
- * +-------------+                                      |
- *                                                      | delegates to
- *                                                      |
- *                                              +-------+--------+
- *                                              | SignalPublisher|
- *                                              |----------------|
- *                          Application ----->  | submit(signal) |
- *                          submits Fsm.Signal  | subscribe(...) |
- *                                              | close()        |
- *                                              +-------+--------+
- *                                                      |
- *                                                      | emits Fsm.Transition
- *                                                      v
- *                                              Flow.Subscriber
- * }</pre>
+ * <h1>Architecture</h1>
  *
- * <h2>Definition</h2>
+ * The static definition of the {@link Fsm} is separated from the actual
+ * execution of it. Executing an FSM is essentially the transformation of a
+ * stream of {@link Fsm.Signal}s (events) into a stream of state
+ * {@link Fsm.Transition}s. Depending on the transition, actual actions can be
+ * triggered during the execution.
+ * // TODO: add a diagram
  *
- * The {@link Fsm} record is the immutable FSM definition. It contains the
- * input alphabet, the available states, the start state, the final states and
- * the partial transition function, {@link Fsm.Delta}. A state machine is
- * usually defined once and stored as a static constant.
+ *
+ * <h2>Defining an FSM</h2>
+ *
+ * The {@link Fsm} record implements the FSM quintuple. Since the {@link Fsm} is
+ * immutable, it can be shared between threads and can be used for arbitrary
+ * executions.
  * <p>
  * The constructor checks the basic FSM invariants: the alphabet and the states
  * must not be empty, the start state must be part of the state set, final states
  * must be part of the state set, the start state must not be final and final
  * states must not have outgoing transitions. States and symbols are identified
  * by their {@link Fsm.Named#name()} and must be unique within one FSM.
- *
  * {@snippet lang=java:
  * enum ProcessState implements Fsm.State {
  *     ACTIVE,
