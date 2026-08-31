@@ -1,0 +1,89 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.incubator.web.openapi.codegenerator.internal;
+
+import com.helger.jcodemodel.EClassType;
+import com.helger.jcodemodel.JCodeModel;
+import com.helger.jcodemodel.JDefinedClass;
+import com.helger.jcodemodel.JMod;
+import com.helger.jcodemodel.exceptions.JCodeModelException;
+
+import io.jenetics.incubator.web.openapi.codegenerator.CodeBuilderException;
+import io.jenetics.incubator.web.openapi.codegenerator.Qname;
+
+/**
+ * Some static helper methods for using the {@link JCodeModel} class.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 9.1
+ * @version 9.1
+ */
+public final class JCodeModels {
+	private JCodeModels() {
+	}
+
+
+	public static JDefinedClass
+	interface_(final JCodeModel model, final Qname name) {
+		try {
+			return model._class(name.toString(), EClassType.INTERFACE);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(e);
+		}
+	}
+
+	public static JDefinedClass
+	class_(final JCodeModel model, final Qname name) {
+		try {
+			return model._class(name.toString(), EClassType.CLASS);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(e);
+		}
+	}
+
+	public static JDefinedClass
+	enum_(final JCodeModel model, final Qname name) {
+		try {
+			return model._class(name.toString(), EClassType.ENUM);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(e);
+		}
+	}
+
+	public static JDefinedClass
+	enum_(JDefinedClass clazz, final Qname name) {
+		try {
+			return clazz._enum(JMod.NONE, name.toString());
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(e);
+		}
+	}
+
+	public static JDefinedClass
+	record_(final JCodeModel model, final Qname name) {
+		try {
+			return model._class(name.toString(), EClassType.RECORD);
+		} catch (JCodeModelException e) {
+			throw new CodeBuilderException(
+				"Record[%s]".formatted(name), e
+			);
+		}
+	}
+}

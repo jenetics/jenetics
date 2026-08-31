@@ -20,7 +20,6 @@
 package io.jenetics.incubator.csv;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.nio.CharBuffer;

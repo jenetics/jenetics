@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
@@ -46,6 +47,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	private final Function<? super Object[], ? extends T> _decoder;
 
 	private final int[] _lengths;
+	private final int _length;
 	private final Factory<Genotype<G>> _encoding;
 
 	/**
@@ -68,6 +70,8 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 			.map(codec -> toGenotype(codec.encoding()))
 			.mapToInt(Genotype::length)
 			.toArray();
+
+		_length = Arrays.sum(_lengths);
 
 		_encoding = () -> Genotype.of(
 			_codecs.stream()
@@ -93,6 +97,13 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 	}
 
 	private Object[] groups(final Genotype<G> genotype) {
+		if (genotype.length() != _length) {
+			throw new IllegalArgumentException(
+				"Expected genotype length " + _length + ", but got " +
+					genotype.length() + "."
+			);
+		}
+
 		final Object[] groups = new Object[_codecs.length()];
 
 		int start = 0;

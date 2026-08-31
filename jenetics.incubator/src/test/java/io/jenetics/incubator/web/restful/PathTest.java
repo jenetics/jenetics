@@ -23,9 +23,6 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.web.restful.Parameter;
-import io.jenetics.incubator.web.restful.Path;
-
 public class PathTest {
 
 	@Test

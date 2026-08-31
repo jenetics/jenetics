@@ -241,9 +241,14 @@ components:
                     $ref: "#/components/schemas/Date"
                 ticketType:
                     $ref: "#/components/schemas/TicketType"
+                eventFields:
+                    $ref: "#/components/schemas/SpecialEventFields"
                 eventId:
                     description: Unique identifier for a special event. Required if purchasing tickets for the museum's special events.
                     $ref: "#/components/schemas/EventId"
+                download:
+                    type: string
+                    format: uri
             required:
                 - ticketType
                 - ticketDate
@@ -287,10 +292,19 @@ components:
                     type: string
                     pattern: '^([01]\d|2[0-3]):?([0-5]\d)$'
                     example: 18:00
+                    nullable: true
             required:
                 - date
                 - timeOpen
                 - timeClose
+        CodeType:
+            type: integer
+            enum:
+                - 10
+                - 20
+                - 25
+                - 30
+                - 40
         EventId:
             description: Identifier for a special event.
             type: string
@@ -346,6 +360,13 @@ components:
                     $ref: "#/components/schemas/EventDates"
                 price:
                     $ref: "#/components/schemas/EventPrice"
+                page:
+                    type: string
+                    format: uri
+                    enum:
+                        - "http://google.com"
+                        - "http://x.com"
+                        - "http://jenetics.io"
             required:
                 - name
                 - location
@@ -357,6 +378,348 @@ components:
             type: array
             items:
                 $ref: "#/components/schemas/SpecialEvent"
+        GalleryId:
+            description: Unique identifier for a museum gallery.
+            type: string
+            format: uuid
+            example: 795ca52a-3c64-4f7d-91c9-e10a77a25327
+        ArtifactId:
+            description: Unique identifier for an artifact in the collection.
+            type: string
+            format: uuid
+            example: a868d4e5-1c4c-4bc5-8a22-f4b7dd7f92c6
+        CuratorId:
+            description: Unique identifier for a museum curator.
+            type: string
+            format: uuid
+            example: 5a8e2c6d-3a17-47b8-b588-31521de8d29c
+        AccessionNumber:
+            description: Museum accession number assigned to an artifact.
+            type: string
+            pattern: '^[0-9]{4}\.[0-9]{1,4}(\.[0-9]{1,4})?$'
+            example: '2024.17.3'
+        ExhibitLabel:
+            description: Short public label shown beside an artifact.
+            type: string
+            example: Bronze votive figure
+        ArtifactAgeYears:
+            description: Estimated age of an artifact in years.
+            type: integer
+            format: int32
+            minimum: 0
+            example: 2400
+        GalleryCapacity:
+            description: Maximum visitor capacity for a gallery.
+            type: integer
+            format: int32
+            minimum: 1
+            example: 120
+        HumidityPercent:
+            description: Relative humidity percentage for gallery climate control.
+            type: number
+            format: double
+            minimum: 0
+            maximum: 100
+            example: 45.5
+        TemperatureCelsius:
+            description: Temperature reading in degrees Celsius.
+            type: number
+            format: float
+            example: 21.5
+        InsuranceValue:
+            description: Insured value of a loaned artifact.
+            type: number
+            format: double
+            minimum: 0
+            example: 1250000.00
+        InspectionTimestamp:
+            description: Date and time when a conservation inspection was recorded.
+            type: string
+            format: date-time
+            example: '2024-04-18T10:15:30+01:00'
+        GalleryWing:
+            description: Named area of the museum where a gallery is located.
+            type: string
+            enum:
+                - main-hall
+                - 19th-century
+                - kids and families
+                - rooftop sculpture
+            example: main-hall
+        ArtifactType:
+            description: Curatorial type assigned to an artifact.
+            type: string
+            enum:
+                - painting
+                - sculpture
+                - textile fragment
+                - 3d scan
+                - field-note
+            example: sculpture
+        AcquisitionMethod:
+            description: How an artifact entered the museum collection.
+            type: string
+            enum:
+                - purchase
+                - gift
+                - long-term loan
+                - field-collection
+                - 1910 legacy
+            example: gift
+        ConservationState:
+            description: Current conservation state of an artifact.
+            type: string
+            enum:
+                - stable
+                - monitored
+                - needs-treatment
+                - not display-ready
+            example: stable
+        AccessLevel:
+            description: Numeric access level required for staff-only collection areas.
+            type: integer
+            format: int32
+            enum:
+                - 1
+                - 2
+                - 3
+                - 4
+            example: 2
+        FloorNumber:
+            description: Public floor number within the museum building.
+            type: integer
+            format: int32
+            enum:
+                - 0
+                - 1
+                - 2
+                - 3
+            example: 1
+        HumidityBand:
+            description: Allowed humidity bands for sensitive galleries.
+            type: number
+            format: float
+            enum:
+                - 40.0
+                - 45.5
+                - 50.0
+            example: 45.5
+        ExhibitPublished:
+            description: Whether an exhibit is visible in public catalogue channels.
+            type: boolean
+            enum:
+                - true
+                - false
+            example: true
+        Dimensions:
+            description: Physical dimensions for an artifact.
+            type: object
+            properties:
+                heightCm:
+                    type: number
+                    format: double
+                    example: 32.5
+                widthCm:
+                    type: number
+                    format: double
+                    example: 12.0
+                depthCm:
+                    type: number
+                    format: double
+                    nullable: true
+                    example: 8.4
+                weightKg:
+                    type: number
+                    format: double
+                    nullable: true
+                    example: 2.75
+            required:
+                - heightCm
+                - widthCm
+        Curator:
+            description: Museum staff member responsible for a gallery or artifact.
+            type: object
+            properties:
+                curatorId:
+                    $ref: "#/components/schemas/CuratorId"
+                name:
+                    type: string
+                    example: Ada Lovelace
+                email:
+                    $ref: "#/components/schemas/Email"
+                accessLevel:
+                    $ref: "#/components/schemas/AccessLevel"
+            required:
+                - curatorId
+                - name
+                - email
+        ClimateReading:
+            description: Climate reading captured inside a gallery.
+            type: object
+            properties:
+                recordedAt:
+                    $ref: "#/components/schemas/InspectionTimestamp"
+                temperatureCelsius:
+                    $ref: "#/components/schemas/TemperatureCelsius"
+                humidityPercent:
+                    $ref: "#/components/schemas/HumidityPercent"
+                humidityBand:
+                    $ref: "#/components/schemas/HumidityBand"
+            required:
+                - recordedAt
+                - temperatureCelsius
+                - humidityPercent
+        ArtifactSummary:
+            description: Compact artifact data used in lists and nested views.
+            type: object
+            properties:
+                artifactId:
+                    $ref: "#/components/schemas/ArtifactId"
+                accessionNumber:
+                    $ref: "#/components/schemas/AccessionNumber"
+                label:
+                    $ref: "#/components/schemas/ExhibitLabel"
+                artifactType:
+                    $ref: "#/components/schemas/ArtifactType"
+                conservationState:
+                    $ref: "#/components/schemas/ConservationState"
+            required:
+                - artifactId
+                - accessionNumber
+                - label
+        Artifact:
+            description: Full catalogue record for an artifact.
+            type: object
+            properties:
+                artifactId:
+                    $ref: "#/components/schemas/ArtifactId"
+                accessionNumber:
+                    $ref: "#/components/schemas/AccessionNumber"
+                label:
+                    $ref: "#/components/schemas/ExhibitLabel"
+                artifactType:
+                    $ref: "#/components/schemas/ArtifactType"
+                acquisitionMethod:
+                    $ref: "#/components/schemas/AcquisitionMethod"
+                originDate:
+                    $ref: "#/components/schemas/Date"
+                acquisitionDate:
+                    $ref: "#/components/schemas/Date"
+                    nullable: true
+                estimatedAgeYears:
+                    $ref: "#/components/schemas/ArtifactAgeYears"
+                dimensions:
+                    $ref: "#/components/schemas/Dimensions"
+                primaryCurator:
+                    $ref: "#/components/schemas/Curator"
+                publicLabel:
+                    type: string
+                    nullable: true
+                    example: On view in Gallery 2
+            required:
+                - artifactId
+                - accessionNumber
+                - label
+                - artifactType
+                - acquisitionMethod
+                - dimensions
+        ArtifactCollection:
+            description: List of artifacts in the museum collection.
+            type: array
+            items:
+                $ref: "#/components/schemas/Artifact"
+        Gallery:
+            description: Museum gallery with climate and display information.
+            type: object
+            properties:
+                galleryId:
+                    $ref: "#/components/schemas/GalleryId"
+                name:
+                    type: string
+                    example: Ancient Worlds
+                wing:
+                    $ref: "#/components/schemas/GalleryWing"
+                floor:
+                    $ref: "#/components/schemas/FloorNumber"
+                capacity:
+                    $ref: "#/components/schemas/GalleryCapacity"
+                currentClimate:
+                    $ref: "#/components/schemas/ClimateReading"
+                featuredArtifacts:
+                    $ref: "#/components/schemas/ArtifactCollection"
+                primaryCurator:
+                    $ref: "#/components/schemas/Curator"
+                kind:
+                    type: integer
+                    format: int32
+                    enum:
+                        - 10
+                        - 20
+                        - 25
+                        - 30
+                        - 40
+            required:
+                - galleryId
+                - name
+                - wing
+                - floor
+                - capacity
+        GalleryCollection:
+            description: List of public museum galleries.
+            type: array
+            items:
+                $ref: "#/components/schemas/Gallery"
+        ConservationReport:
+            description: Report created after inspecting an artifact.
+            allOf:
+                -   $ref: "#/components/schemas/ArtifactSummary"
+                -   type: object
+                    properties:
+                        inspectedAt:
+                            $ref: "#/components/schemas/InspectionTimestamp"
+                        inspector:
+                            $ref: "#/components/schemas/Curator"
+                        condition:
+                            $ref: "#/components/schemas/ConservationState"
+                        notes:
+                            type: string
+                            nullable: true
+                            example: Minor surface dusting recommended.
+                    required:
+                        - inspectedAt
+                        - inspector
+                        - condition
+        ConservationReportCollection:
+            description: List of conservation reports.
+            type: array
+            items:
+                $ref: "#/components/schemas/ConservationReport"
+        LoanedArtifact:
+            description: Artifact temporarily held through an inter-museum loan.
+            allOf:
+                -   $ref: "#/components/schemas/Artifact"
+                -   type: object
+                    properties:
+                        lenderName:
+                            type: string
+                            example: City Museum of Applied Arts
+                        loanStart:
+                            $ref: "#/components/schemas/Date"
+                        loanEnd:
+                            $ref: "#/components/schemas/Date"
+                            nullable: true
+                        insuranceValue:
+                            $ref: "#/components/schemas/InsuranceValue"
+                    required:
+                        - lenderName
+                        - loanStart
+                        - insuranceValue
+        MuseumNotice:
+            description: Public notice shown to visitors or attached to an event.
+            oneOf:
+                -   $ref: "#/components/schemas/TicketMessage"
+                -   $ref: "#/components/schemas/ConservationReport"
+                -   $ref: "#/components/schemas/MuseumDailyHours"
         Error:
             type: object
             properties:

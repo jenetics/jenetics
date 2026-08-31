@@ -23,12 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 
-import io.jenetics.incubator.web.http.BodyMarshaling;
-import io.jenetics.incubator.web.http.Caller;
-import io.jenetics.incubator.web.http.Client;
-import io.jenetics.incubator.web.http.Request;
-import io.jenetics.incubator.web.http.Response;
-
 public class ClientTest {
 
 	static void main() throws Exception {

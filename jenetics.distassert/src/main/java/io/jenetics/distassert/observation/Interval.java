@@ -46,7 +46,7 @@ public record Interval(double min, double max) {
 	 * @param max the maximal value of the interval, exclusively. Might be
 	 * {@link Double#POSITIVE_INFINITY}
 	 * @throws IllegalArgumentException if the {@code min} and {@code max}
-	 * values are {@link Double#NaN} or {@code min >= max}
+	 *         values are {@link Double#NaN} or {@code min >= max}
 	 */
 	public Interval {
 		if (Double.isNaN(min) || Double.isNaN(max) || min >= max) {
